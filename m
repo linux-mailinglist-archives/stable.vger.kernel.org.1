@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D3E9BE6C6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243639BECA5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CBEAB23996
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7D11F25968
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517911DF252;
-	Wed,  6 Nov 2024 12:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7021F585D;
+	Wed,  6 Nov 2024 12:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI8qFsHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEAuGQVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB32E1DF241;
-	Wed,  6 Nov 2024 12:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA3E1F5857;
+	Wed,  6 Nov 2024 12:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894816; cv=none; b=u/EdgpFpzaHmPU5zAavrxs82YfIAh4JwqZ5CoTZvwzyw5Pxe+OkSTf3v8whcuTydd5yUi700utZlOXGSofQ7raxXd9vvcFZUs5wTVWOTsTVbFJvw/5QNf3WAh6C6wnfiWnWRnkEQ0YAfdwjklWKIs9/VfHxyF1YXlygtX966KDk=
+	t=1730897841; cv=none; b=qgtRxxq1v2GYYSDwYPJYCDvtqpbgu9Y1pc0kTS4vD78nQ6/F75DKSqOzKYnP0KLGhP2fKOvlalNJ1R/fFQidWnd1mvlyahbIIOORAY90VVAkdvKDzTa6n6NpSVQR8u0GuPCIvV7GRU4HWUHwnn6bXDlxCsaJCBvF+NFd9uEERYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894816; c=relaxed/simple;
-	bh=YdOlRUcrhtlhS+RXnT5vjn5Q3x1VWEi4ow6U+yLd/4w=;
+	s=arc-20240116; t=1730897841; c=relaxed/simple;
+	bh=5Hiz9Kp6CaV0akCQvgq0VVi36foHCY2A/IjG4YogGg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rb7TQJOamquIwGJ3qH+O05cO6LypaGVsUgqTnn4NpI2zWgtybYU//RHgjafHYHG675dPMrCRnlCyiwNGB5V9rCVdfOa2dNDagxe4QYjob0RkB9EVnEj/1VjCXZsbuQH9VBbO/eyT/O2Z9aE4YGCNza2EI8HFom+veQNjZUVcmRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI8qFsHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC563C4CECD;
-	Wed,  6 Nov 2024 12:06:54 +0000 (UTC)
+	 MIME-Version; b=e/B4TUh1IPdwFhgW1AhFPypWuNZBAFn2FyC4uD4Xy5MJiSZfxVMaxolOr8sHplvH3g5fXKHFwLnyOXSZTg0V9hwQHdrSxb59SU0nLT1+DmR/cv5lwUymL5h+FnZi9EM9XKB5z87ZWJPsdgLhlk3zWVi3ZsGWOuJIGo0yBwLmQqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEAuGQVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB2FC4CECD;
+	Wed,  6 Nov 2024 12:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894815;
-	bh=YdOlRUcrhtlhS+RXnT5vjn5Q3x1VWEi4ow6U+yLd/4w=;
+	s=korg; t=1730897841;
+	bh=5Hiz9Kp6CaV0akCQvgq0VVi36foHCY2A/IjG4YogGg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iI8qFsHBb0KdoD0dcy5juZ8ZMQRfor7PJxt55QJ15WU/DGMnSjhvKXv3cEsoz0zT3
-	 N54942SkQAbjgAFAQtfSkUURl8XeyiMHxLJKN06mHhv834adZwjgr7k+C76XTc7dFq
-	 lCtfZToLnE7NkU4I8UJxBtimKatB9wToJw6jY4XI=
+	b=tEAuGQVXC53a4dFTc2XTRTYO52RZorROmAafOJPebAQxotswLqWqzGLfIUeWr8mc+
+	 3w6FFraVKRUmDdaYyUZj/MkpjrnIJNzrDyUtSsRJrb0QaKkJM5dxVIsbKd8kHK57tJ
+	 DmEK8Hm6LGlc0hutldDo/LttDbXztlnQizLxrqmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beniamin Bia <beniamin.bia@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Olaf Hering <olaf@aepfle.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 002/350] staging: iio: frequency: ad9833: Load clock using clock framework
-Date: Wed,  6 Nov 2024 12:58:50 +0100
-Message-ID: <20241106120320.928707029@linuxfoundation.org>
+Subject: [PATCH 5.4 038/462] mount: handle OOM on mnt_warn_timestamp_expiry
+Date: Wed,  6 Nov 2024 12:58:51 +0100
+Message-ID: <20241106120332.463095233@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beniamin Bia <biabeniamin@gmail.com>
+From: Olaf Hering <olaf@aepfle.de>
 
-[ Upstream commit 8e8040c52e63546d1171c188a24aacf145a9a7e0 ]
+[ Upstream commit 4bcda1eaf184e308f07f9c61d3a535f9ce477ce8 ]
 
-The clock frequency is loaded from device-tree using clock framework
-instead of statically value. The change allow configuration of
-the device via device-trees and better initialization sequence.
-This is part of broader effort to add device-tree support to this driver
-and take it out from staging.
+If no page could be allocated, an error pointer was used as format
+string in pr_warn.
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: b48aa9917589 ("staging: iio: frequency: ad9834: Validate frequency parameter value")
+Rearrange the code to return early in case of OOM. Also add a check
+for the return value of d_path.
+
+Fixes: f8b92ba67c5d ("mount: Add mount warning for impending timestamp expiry")
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Link: https://lore.kernel.org/r/20240730085856.32385-1-olaf@aepfle.de
+[brauner: rewrite commit and commit message]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c | 35 ++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ fs/namespace.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index f6b36eedd48e..5e98ee5dfbdc 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -6,6 +6,7 @@
-  * Licensed under the GPL-2.
-  */
- 
-+#include <linux/clk.h>
- #include <linux/interrupt.h>
- #include <linux/workqueue.h>
- #include <linux/device.h>
-@@ -71,7 +72,7 @@
- struct ad9834_state {
- 	struct spi_device		*spi;
- 	struct regulator		*reg;
--	unsigned int			mclk;
-+	struct clk			*mclk;
- 	unsigned short			control;
- 	unsigned short			devid;
- 	struct spi_transfer		xfer;
-@@ -110,12 +111,15 @@ static unsigned int ad9834_calc_freqreg(unsigned long mclk, unsigned long fout)
- static int ad9834_write_frequency(struct ad9834_state *st,
- 				  unsigned long addr, unsigned long fout)
- {
-+	unsigned long clk_freq;
- 	unsigned long regval;
- 
--	if (fout > (st->mclk / 2))
-+	clk_freq = clk_get_rate(st->mclk);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index f1c0e0a705621..281f08eaba5b9 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2494,8 +2494,15 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 	if (!__mnt_is_readonly(mnt) &&
+ 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
+ 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+-		char *buf = (char *)__get_free_page(GFP_KERNEL);
+-		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
++		char *buf, *mntpath;
 +
-+	if (fout > (clk_freq / 2))
- 		return -EINVAL;
++		buf = (char *)__get_free_page(GFP_KERNEL);
++		if (buf)
++			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
++		else
++			mntpath = ERR_PTR(-ENOMEM);
++		if (IS_ERR(mntpath))
++			mntpath = "(unknown)";
  
--	regval = ad9834_calc_freqreg(st->mclk, fout);
-+	regval = ad9834_calc_freqreg(clk_freq, fout);
+ 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
+ 			sb->s_type->name,
+@@ -2503,8 +2510,9 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 			mntpath, &sb->s_time_max,
+ 			(unsigned long long)sb->s_time_max);
  
- 	st->freq_data[0] = cpu_to_be16(addr | (regval &
- 				       RES_MASK(AD9834_FREQ_BITS / 2)));
-@@ -413,7 +417,14 @@ static int ad9834_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, indio_dev);
- 	st = iio_priv(indio_dev);
- 	mutex_init(&st->lock);
--	st->mclk = 25000000;
-+	st->mclk = devm_clk_get(&spi->dev, NULL);
-+
-+	ret = clk_prepare_enable(st->mclk);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to enable master clock\n");
-+		goto error_disable_reg;
-+	}
-+
- 	st->spi = spi;
- 	st->devid = spi_get_device_id(spi)->driver_data;
- 	st->reg = reg;
-@@ -458,31 +469,32 @@ static int ad9834_probe(struct spi_device *spi)
- 	ret = spi_sync(st->spi, &st->msg);
- 	if (ret) {
- 		dev_err(&spi->dev, "device init failed\n");
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
+-		free_page((unsigned long)buf);
+ 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
++		if (buf)
++			free_page((unsigned long)buf);
  	}
+ }
  
- 	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, 1000000);
- 	if (ret)
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
- 
- 	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, 5000000);
- 	if (ret)
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
- 
- 	ret = ad9834_write_phase(st, AD9834_REG_PHASE0, 512);
- 	if (ret)
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
- 
- 	ret = ad9834_write_phase(st, AD9834_REG_PHASE1, 1024);
- 	if (ret)
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
- 
- 	ret = iio_device_register(indio_dev);
- 	if (ret)
--		goto error_disable_reg;
-+		goto error_clock_unprepare;
- 
- 	return 0;
--
-+error_clock_unprepare:
-+	clk_disable_unprepare(st->mclk);
- error_disable_reg:
- 	regulator_disable(reg);
- 
-@@ -495,6 +507,7 @@ static int ad9834_remove(struct spi_device *spi)
- 	struct ad9834_state *st = iio_priv(indio_dev);
- 
- 	iio_device_unregister(indio_dev);
-+	clk_disable_unprepare(st->mclk);
- 	regulator_disable(st->reg);
- 
- 	return 0;
 -- 
 2.43.0
 
