@@ -1,94 +1,123 @@
-Return-Path: <stable+bounces-90087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D23B9BE123
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 09:37:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B0A9BE141
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 09:44:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA7D51F23EB0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:37:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04B6A1C22D2F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C24E1D7E30;
-	Wed,  6 Nov 2024 08:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7F41D5AC6;
+	Wed,  6 Nov 2024 08:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJjN9v3r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgMe4KmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5CE1D5171;
-	Wed,  6 Nov 2024 08:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636131D54D1;
+	Wed,  6 Nov 2024 08:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730882175; cv=none; b=Ig+NP6l3LYfXQsa2tLzN7R0Ykfx7t92dZvOrGlRn5tOay1NdmXy+oE0G0tK0FBEmIFpS8YwTC0g6zmAJR8nUWrQwFnKdc8s1bdR4KuGqbI/7p/GYTaoflSiM8v3rWmHYVDjtKVERmEVBsiDGuw2o/fsl+B0AscSGY9Sr397l5dE=
+	t=1730882666; cv=none; b=Kptd3h0mBsOqYbTfzMQm8a4Sfaa8Bjk0mnSp51+Az0zfrlX5hgHtL9YX+OcVl2iUDeH28MfGBd5qDr6930sqletLdGcJpuLg5dtGShg26WxwQSCpRubQws8keq4qDqT0YaAVqGW3JGv2rROy0LzWyOLGFE/flo/N7tzCN5Mk9Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730882175; c=relaxed/simple;
-	bh=4lWAHklcm14vPuh3Q9+OKVUs+RH3n6zDXgavv2ivdck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qLqZcNDwj24j+ShPikTt6IIuggZ2D9E/V1knBEek4uW7VaYPIubyg6C59a3qGGiSm2bA79FDaM0C8RH37emua1EbDLwf7svER5qHLZPxoxSmBkKczuIENQDutuja5ohIEifa3v4YhGEyniSH6aav0u0zJ/vcqm8iuWgVH/4E5pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJjN9v3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199BAC4CED0;
-	Wed,  6 Nov 2024 08:36:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730882173;
-	bh=4lWAHklcm14vPuh3Q9+OKVUs+RH3n6zDXgavv2ivdck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OJjN9v3rVc4ENn4RYJBUjgoOCXtqvP850TvOAoB/SzkW0mEHaOLMWsCkHdLYOf24P
-	 pSrTGIk7WnEXDrwJ7CY7Uv8hHLkJnBE48ChZedL0PFecpO/c4unHGTkp8vIzZ7Kf2D
-	 0ca7KP3jMz9jfC7g4DUjNTsONxlfLvHvilgWAvQk=
-Date: Wed, 6 Nov 2024 09:35:55 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Christian Ebner <c.ebner@proxmox.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org, stable@vger.kernel.org,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before
- netfs_clear_unread() tail clean
-Message-ID: <2024110625-blot-uncooked-48f9@gregkh>
-References: <20241027114315.730407-1-c.ebner@proxmox.com>
- <2024110644-audible-canine-30ca@gregkh>
- <7e364258-e643-4656-9233-f89f1c4b1a66@proxmox.com>
+	s=arc-20240116; t=1730882666; c=relaxed/simple;
+	bh=epVEU2AYAhlpV2xVETpPhEIE78lqpbGzb/PrPhs7GSM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DlXKkZh5ElPT/0JIv6cP0dICSeTqUzMfn6kbQ/8FHktUIzPhhyZZFnxIb/A6NTIKXDtad82p4DrnMgmi5A8dm1yNE2GstFl4NhyfH79FyV4Vq+veJXR2AQ6v19i8QJWWouGsSRUDWtxS1+F00Jx5UA/jnVnramyrF2Vw9UzYxb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgMe4KmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E91CC4CECD;
+	Wed,  6 Nov 2024 08:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730882666;
+	bh=epVEU2AYAhlpV2xVETpPhEIE78lqpbGzb/PrPhs7GSM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sgMe4KmOH7KJ1IcKn+B9Q79s6G9NZe5vOEBlKBzaiZHzZeOK0+NotQ+v2nOORZdpA
+	 46AIMqkYAd2Tmt+NDDGwIgyv++GFm6xhc9geukIkjFPthX+nxH5EtcezUywjY7Wkti
+	 mpq2aRs1pxyUMnJoJNpnM/3B0xt/Fk7FGC4WPflxBD6VVjNQiAa5+ga4GQNChoER6F
+	 mgoIr5qxqLTFZwexUfgLZuvjLAIJ80KrX9GZbHetq6TtgkucijjkI8WN8eMGu91C2f
+	 0KuhZQ6jvGo8Go5MpOzXYlgK09OYNZVczVQDGlBGLE743vpGiPNlSF+QH4ZrRfiBvV
+	 P8mFZzxa+0Zfw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t8beJ-00AHp5-UJ;
+	Wed, 06 Nov 2024 08:44:24 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] irqchip/gic-v3: Force propagation of the active state with a read-back
+Date: Wed,  6 Nov 2024 08:44:18 +0000
+Message-Id: <20241106084418.3794612-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e364258-e643-4656-9233-f89f1c4b1a66@proxmox.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, tglx@linutronix.de, christoffer.dall@arm.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Nov 06, 2024 at 09:26:46AM +0100, Christian Ebner wrote:
-> On 11/6/24 06:59, Greg KH wrote:
-> > We would much rather take the original series of commits, what exactly
-> > are they here?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Hello Greg,
-> thank you for your reply.
-> 
-> AFAIK the relevant patches for this series are commits 80887f31..ee4cdf7b,
-> although the last patch containing the fix does not apply cleanly on the
-> current 6.11.y branch.
-> 
-> Please note, I am not very familiar with the code so unsure if all of the
-> patches in the series are required for the fix. Maybe David Howells as
-> author of the series can provide some more insights?
-> 
-> The patch series introducing the fix is
-> https://lore.kernel.org/all/20240814203850.2240469-1-dhowells@redhat.com/
-> 
-> Please let me know how to proceed, thanks!
+Christoffer reports that on some implementations, writing to
+GICR_ISACTIVER0 (and similar GICD registers) can race badly
+with a guest issuing a deactivation of that interrupt via the
+system register interface.
 
-Please try testing the original fixes and providing them as a patch
-series and send them for us to review.
+There are multiple reasons to this:
 
-thanks,
+- we use an early write-acknoledgement memory type (nGnRE), meaning
+  that the write may only have made it as far as some interconnect
+  by the time the store is considered "done"
 
-greg k-h
+- the GIC itself is allowed to buffer the write until it decides to
+  take it into account (as long as it is in finite time)
+
+The effects are that the activation may not have taken effect by the
+time we enter the guest, forcing an immediate exit, or that a guest
+deactivation occurs before the interrupt is active, doing nothing.
+
+In order to guarantee that the write to the ISACTIVER register has
+taken effect, read back from it, forcing the interconnect to propagate
+the write, and the GIC to process the write before returning the read.
+
+Reported-by: Christoffer Dall <christoffer.dall@arm.com>
+Acked-by: Christoffer Dall <christoffer.dall@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/irqchip/irq-gic-v3.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index ce87205e3e823..8b6159f4cdafa 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -524,6 +524,13 @@ static int gic_irq_set_irqchip_state(struct irq_data *d,
+ 	}
+ 
+ 	gic_poke_irq(d, reg);
++
++	/*
++	 * Force read-back to guarantee that the active state has taken
++	 * effect, and won't race with a guest-driven deactivation.
++	 */
++	if (reg == GICD_ISACTIVER)
++		gic_peek_irq(d, reg);
+ 	return 0;
+ }
+ 
+-- 
+2.39.2
+
 
