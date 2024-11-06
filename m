@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D10F9BEABD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:50:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1219BE976
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52003281E69
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E0F1F23C0F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28711FEFDA;
-	Wed,  6 Nov 2024 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E711E1DFD90;
+	Wed,  6 Nov 2024 12:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DX4XB1vt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOKNQpXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0231FEFBF;
-	Wed,  6 Nov 2024 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B8B1DF974;
+	Wed,  6 Nov 2024 12:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896757; cv=none; b=guCYeUKNM11v50dxVU1sWmAx6H1L8aM/Q50r6BJSYa0PVr1oiXP29EvIpf1JMyC9ZIpjdVq6WtuwcYrHGmIBg/KpuJj/FltxArHRryduYaBWXbSG3xf+SAzLFXS1HfwvyVYCa8Ik4+8q3uv84riHeOE5uIJYm9v/aIQwjTzCgEY=
+	t=1730896471; cv=none; b=f2CG7ZBW5RVCmCU8zBwDAQWgpFrEZKnqYAP5RtaWr1ju4hwxN32j/9tFc+C0NB61T82OjxV7QLPQ4LS7yNzp5z95stSGi11Elvx9nhdCbYXNl/gy+X6rCtze0dBW+xZU1dEuHluzLFymWTO0v7L/pBq5VP2/aMIixl01Zu3TN0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896757; c=relaxed/simple;
-	bh=UR3hx/+PvkbfTZLgFCb81wDZAfCVheJACu+/p0/nKEM=;
+	s=arc-20240116; t=1730896471; c=relaxed/simple;
+	bh=hdg5UsZ1XJ+IoYuyaBU5J4jwDzLvoHJT9SKlcRydBuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSwkH2Xa1NOL/hwxA0SoQTuDY8eSZpZoZSSDc9RxDQ+l1QlvnVt3IEwrkTQeaAWZdVBpoZtaIW6w3kA4PfNWnUiE59bT5k6+INg84SrEYG8TW1qA//Ebrn5kNG42E3+hg74lDwOwJP6SwVXEfTka7bxh7+A3Rm3ZGX1nPaWV7k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DX4XB1vt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F223C4CED8;
-	Wed,  6 Nov 2024 12:39:16 +0000 (UTC)
+	 MIME-Version; b=DPsMZVo/B1WmAADVLNHZyYRWZNfJ+K5FW1xah8UjkuRFXKMPyObmR3BWBKyxG7rVaS5V9fuFlKvlLHfyJohcTAmSWA+yAG3krZWonSoRFypIj98cRDrWEWa7GzaSV00mTe1ebEqmYjlIoG7oCIvF7R8aLKvERl0TK5txdzL4560=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOKNQpXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E38C4CED4;
+	Wed,  6 Nov 2024 12:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896757;
-	bh=UR3hx/+PvkbfTZLgFCb81wDZAfCVheJACu+/p0/nKEM=;
+	s=korg; t=1730896471;
+	bh=hdg5UsZ1XJ+IoYuyaBU5J4jwDzLvoHJT9SKlcRydBuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DX4XB1vtrowurdznaMqCosBOSugzoTwbtsTjfsOnET4BS2nmXSo+eJgL5eJORmo0P
-	 xyW4LPtYTP+11yjuqIMeVrX1PvWLbHSdFi544PEgUCjLzRv5HCVp37U6PBM4cBXu8Z
-	 S1+hVb1Y6F6nNWGg9ImnikQdQ4vHFgQ+4u39dTYg=
+	b=LOKNQpXhJonfKQ3Zf6cc391652NHkpWIXbcWQynVqQGnOw5vLnrh4Ai1fgjmLNB/Z
+	 txiNDlZfAIhG7JJXZ8JD7nl7Tts8JcvolSMeD88n60ER57s5j4udSBZ6MnqR6T9y4+
+	 /gyQuWwuY7O1cmXUDfFoyXBss/0zYzUWJp8ZnCXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/110] wifi: brcm80211: BRCM_TRACING should depend on TRACING
+	Xilin Wu <wuxilin123@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 214/245] arm64: dts: qcom: x1e80100-vivobook-s15: fix nvme regulator boot glitch
 Date: Wed,  6 Nov 2024 13:04:27 +0100
-Message-ID: <20241106120304.881323916@linuxfoundation.org>
+Message-ID: <20241106120324.521426644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit b73b2069528f90ec49d5fa1010a759baa2c2be05 ]
+commit c6d151f61b6703124e14bc0eae98d05206e36e02 upstream.
 
-When tracing is disabled, there is no point in asking the user about
-enabling Broadcom wireless device tracing.
+The NVMe regulator has been left enabled by the boot firmware. Mark it
+as such to avoid disabling the regulator temporarily during boot.
 
-Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be enabled separately from debug")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d0e2f8f62dff ("arm64: dts: qcom: Add device tree for ASUS Vivobook S 15")
+Cc: stable@vger.kernel.org	# 6.11
+Cc: Xilin Wu <wuxilin123@gmail.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241016145112.24785-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/Kconfig b/drivers/net/wireless/broadcom/brcm80211/Kconfig
-index 5bf2318763c55..8f51099e15c90 100644
---- a/drivers/net/wireless/broadcom/brcm80211/Kconfig
-+++ b/drivers/net/wireless/broadcom/brcm80211/Kconfig
-@@ -23,6 +23,7 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
- config BRCM_TRACING
- 	bool "Broadcom device tracing"
- 	depends on BRCMSMAC || BRCMFMAC
-+	depends on TRACING
- 	help
- 	  If you say Y here, the Broadcom wireless drivers will register
- 	  with ftrace to dump event information into the trace ringbuffer.
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
+index 20616bd4aa6c..fb4a48a1e2a8 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
+@@ -134,6 +134,8 @@ vreg_nvme: regulator-nvme {
+ 
+ 		pinctrl-0 = <&nvme_reg_en>;
+ 		pinctrl-names = "default";
++
++		regulator-boot-on;
+ 	};
+ };
+ 
 -- 
-2.43.0
+2.47.0
 
 
 
