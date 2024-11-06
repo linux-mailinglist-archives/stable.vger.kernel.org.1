@@ -1,125 +1,94 @@
-Return-Path: <stable+bounces-89943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA269BDB07
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E87B9BDB3D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769DD283899
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD2A284632
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C4E18BBBB;
-	Wed,  6 Nov 2024 01:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492D517DFF2;
+	Wed,  6 Nov 2024 01:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2nts/Rb0"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lchHlTP9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368B21865EA;
-	Wed,  6 Nov 2024 01:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0B13D66
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 01:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730855632; cv=none; b=JpRx6sQgMD1ZjxdNMnLZOvTNAHFHJMXDCldkFov4oMLmL3d/mhzctY5shtl351xzO71FKPT0EoqoenO3zPJrtE4sB3CtFtrqZsOlNFZ+EQsFrsu/IFIj79w8uWhe5DAhnUSRSWrlflo03TWr8U20urTW7ET/qOy4DG9nOU73618=
+	t=1730856787; cv=none; b=qxIDehao3mxRd4DDTGs97b9NblfjNJgccZKCKH1HA/FgP7g1nJLjkav6rf8gyDGTkHRqzp4JN31aCVw8x6lYqZWgDqzzpueMmjOYMiUvNKjs9gmpW1218WdNVqsIIPWRIGQmtdnPfWnQ0VdXcq/iuGvoLakY7mjzQTpnYDNlk4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730855632; c=relaxed/simple;
-	bh=/MMoDEzuAYbS9Kqzg8bMd6grxDEF23J2Z+gD9DHw6X4=;
-	h=Date:To:From:Subject:Message-Id; b=oIFwAWKw8D/yh92vn1/hWYy7Z2kBo46SW/7NQc4W7nyJxjkmvQYPWxg5pl0xHZzHpNvPI04/A1ZoTgBUlTFtYn/AMcE8OUJawQKeNJrlzD+taB6PzYcfDhIWZm+LMDfEbaUeWRZ8mXLKsudpiRNCjLeeyWx3OWVGyRzJg0vnZTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2nts/Rb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F401BC4CECF;
-	Wed,  6 Nov 2024 01:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730855632;
-	bh=/MMoDEzuAYbS9Kqzg8bMd6grxDEF23J2Z+gD9DHw6X4=;
-	h=Date:To:From:Subject:From;
-	b=2nts/Rb0/b5Fi7TL9uJ6ByydNoW2K3hePGQDuJMy6RqnzVkU0j/fjO739BNruQN3H
-	 DwQqTWhsLUYbTo3UplFy0PSW7o6Kp/WhSLdJ7GejfYU59bQ1KbkYSOJrCIcFXBytVY
-	 yw4O+/+LzQPsOghY1D3zEVqlkF+hb70TEKbtzibQ=
-Date: Tue, 05 Nov 2024 17:13:51 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mawupeng1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch removed from -mm tree
-Message-Id: <20241106011351.F401BC4CECF@smtp.kernel.org>
+	s=arc-20240116; t=1730856787; c=relaxed/simple;
+	bh=T8TSSH9vC+xuqwWLtvuSmsWAENczxGZF4Hk4GuT1PoE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hDy1okOEx8tdS2eIy7UMPAgzGUsLG6r0KWxaFNhx2VHRRLxLwhJ+ZvD67DV+6bCPHeRoApW3BEytO1eG5vrGXVfvgWUQYxQDZCVY2jNAosImvi0K83m9SAMeTx1he0TeTKWBU6mfaFXysN+5hIrZMwM1ZwG5wmwFuvsrAqfmIAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lchHlTP9; arc=none smtp.client-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Wed, 6 Nov 2024 01:32:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730856781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UXENiiBPrtKGHgokfuDpSrDdZeSnPcm0OZeF9aDTtlk=;
+	b=lchHlTP9AyPGZhl8bTdCCXBeyzBTnOI/tAYx3EnNg15TY7hLErpysQZpCplkXKcBkF+6on
+	sPJsLLggrc9CwFqVxmeBNF6u4BoqVKIFHBf0Cs76ZpAKBzf0xOZKY+SJHeR1uRCCO+USJ2
+	DpbgbDS3MsR+6eyUik+e6vOmE5BeTOw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
+ free_pages_prepare()
+Message-ID: <ZyrHSfS8Ro0l5VCP@google.com>
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+ <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com>
+ <ZxcK_Gkdn0fegRl6@google.com>
+ <ZyrBuZPBjJi75gGU@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZyrBuZPBjJi75gGU@google.com>
+X-Migadu-Flow: FLOW_OUT
 
+On Tue, Nov 05, 2024 at 05:09:13PM -0800, Sean Christopherson wrote:
+> On Tue, Oct 22, 2024, Roman Gushchin wrote:
+> > On Mon, Oct 21, 2024 at 12:49:28PM -0700, Hugh Dickins wrote:
+> > > On Mon, 21 Oct 2024, Roman Gushchin wrote:
+> > > I don't think there's any need to change your text, but
+> > > let me remind us that any "Bad page" report stops that page from being
+> > > allocated again (because it's in an undefined, potentially dangerous
+> > > state): so does amount to a small memory leak even if otherwise harmless.
+> > 
+> > It looks like I need to post v3 as soon as I get a publicly available
+> > syzkaller report, so I'll add this to the commit log.
+> 
+> Today is your lucky day :-)
 
-The quilt patch titled
-     Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-has been removed from the -mm tree.  Its filename was
-     ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch
+I've been waiting for it for a long time :)
+Thanks for forwarding it my way!
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I'm still not sure what the conclusion of our discussion was. My understanding
+is that my fix is not that pretty, but there are no better immediate ideas, only
+long-term improvement projects. Does it matches everybody else's understanding?
 
-------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-Date: Wed, 23 Oct 2024 17:31:29 +0800
+If so, I'll prepare a v3 with an updated link. Otherwise, please, let me know.
 
-From: Ma Wupeng <mawupeng1@huawei.com>
-
-Percpu memory allocation may failed during create_ipc_ns however this
-fail is not handled properly since ipc sysctls and mq sysctls is not
-released properly. Fix this by release these two resource when failure.
-
-Here is the kmemleak stack when percpu failed:
-
-unreferenced object 0xffff88819de2a600 (size 512):
-  comm "shmem_2nstest", pid 120711, jiffies 4300542254
-  hex dump (first 32 bytes):
-    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
-    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
-  backtrace (crc be7cba35):
-    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
-    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
-    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
-    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
-    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
-    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
-    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
-    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
-    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
-    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
-    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
-Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- ipc/namespace.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/ipc/namespace.c~ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns
-+++ a/ipc/namespace.c
-@@ -83,13 +83,15 @@ static struct ipc_namespace *create_ipc_
- 
- 	err = msg_init_ns(ns);
- 	if (err)
--		goto fail_put;
-+		goto fail_ipc;
- 
- 	sem_init_ns(ns);
- 	shm_init_ns(ns);
- 
- 	return ns;
- 
-+fail_ipc:
-+	retire_ipc_sysctls(ns);
- fail_mq:
- 	retire_mq_sysctls(ns);
- 
-_
-
-Patches currently in -mm which might be from mawupeng1@huawei.com are
-
-
+Thanks!
 
