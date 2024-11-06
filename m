@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-90936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F279BEBBB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8289BE986
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A86F4B23FB0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B9FD281203
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DB31EE015;
-	Wed,  6 Nov 2024 12:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61561E048F;
+	Wed,  6 Nov 2024 12:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld2UcbF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrvXoR4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BE41EE00F;
-	Wed,  6 Nov 2024 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35FD1E00B0;
+	Wed,  6 Nov 2024 12:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897254; cv=none; b=QyFRTJpHibTL055gqJ5e0miUlOSHddtx5pIlsHGSqjYiG4O1ai1R6Ut4nxteFkZANJpVuyUBGjzn4jk2t2glv+z1QwvP8Gv5pMrLW3rXcBXNoL9N4cCOw1yReq4s0fmFcdQsdcO3gTR6icOay5pkXpTHOelbld2ITsnD2unctuc=
+	t=1730896489; cv=none; b=cXrCNYiyjtjzZ1g1JLJt0RhCSDofIzL6zbi0WmMH/rOGN9L+8uFBpurTLDWu1QNzAP2NQMrX7xcGBpWtq4ESMh+C2C6XHqqp5hSq+/cys4VDr2oS/9Ik2u2lcGDDhg7kDY7D7ZBRatku1dtCPIWkvL8C3TYT9onI6yMCA3JqSEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897254; c=relaxed/simple;
-	bh=9nJv/kUUVM4jJcMZtD8DQfUF4lseZjiXmC4hvCFKb4o=;
+	s=arc-20240116; t=1730896489; c=relaxed/simple;
+	bh=riixdz2zUTqr4BK/DPN16lttERMF9iBdtKtU3YmffOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HkSxFL5HLGCQx8QKMsZX9/GY0HJBlp0QujaYlvBgS/+DxAv5tpwzQI6G34AS03AUb+/tw+mKXs1/uyCdOtuL0hA1mOgGKVwOM35YhDKyP+hX4sabozUmMDLAgObfbf5epRMKxvXJ7VDOofrR7ldCFP+7ixP5U2L9CiwQ6zxcnrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld2UcbF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1361FC4CECD;
-	Wed,  6 Nov 2024 12:47:32 +0000 (UTC)
+	 MIME-Version; b=SvJqalIyZ7NC2WUud9YFuNg2ZDvCPm0bA6pMhOghjKMPH5ATeJsf1hn5tj9SOq/gCPHkljkE+2PV84VgpVrQTOwXdi2F08x9Sr19F5WuN4aCCUr53etJZRJvzJ1YI74yKDnBEq+tJ1ztCze0HJDus9e/0WnetMckKP8Gy/Rd1VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrvXoR4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25997C4CED3;
+	Wed,  6 Nov 2024 12:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897253;
-	bh=9nJv/kUUVM4jJcMZtD8DQfUF4lseZjiXmC4hvCFKb4o=;
+	s=korg; t=1730896489;
+	bh=riixdz2zUTqr4BK/DPN16lttERMF9iBdtKtU3YmffOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ld2UcbF56F2DFjGPkEQuYHCZS/abQnCBNlyk9nyghhGN3viXj+oxJN/AeIXIV9L3E
-	 BqglRudFxXPRsKgEFakuFMVjg9zlHxon2DWVCe0vcfvSbXO4W2QZvul4Fb9FFnaHe5
-	 QYaU/xL0I+3kESkO9hAF0tYMHYxfFmVPJT4gjxoc=
+	b=WrvXoR4uJLOb41Tu1X0bmze/ivwqE8fM9b8f/xjBAve3IhU3JagwXGPLqSR2g0cdg
+	 xsicUJd/8SWbWXGfBhx4DHzds6f6dViT+H6FsssPj5AGwhJn2azmBeR/x6oesLCt1R
+	 wIJbdPcUymrnwaxQhaayevzCIc6Hju2W505mEd+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.1 071/126] Revert "driver core: Fix uevent_show() vs driver detach race"
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 219/245] arm64: dts: qcom: x1e80100: Add Broadcast_AND region in LLCC block
 Date: Wed,  6 Nov 2024 13:04:32 +0100
-Message-ID: <20241106120308.008333876@linuxfoundation.org>
+Message-ID: <20241106120324.647368502@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
+commit 80fe25fcc605209b707583e3337e3cd40b7ed0bf upstream.
 
-This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
+Add missing Broadcast_AND region to the LLCC block for x1e80100,
+as the LLCC version on this platform is 4.1 and it provides the region.
 
-This commit causes a regression, so revert it for now until it can come
-back in a way that works for everyone.
+This also fixes the following error caused by the missing region:
 
-Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
-Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
-Cc: stable <stable@kernel.org>
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
+[    3.797768] qcom-llcc 25000000.system-cache-controller: error -EINVAL: invalid resource (null)
+
+This error started showing up only after the new regmap region called
+Broadcast_AND that has been added to the llcc-qcom driver.
+
+Cc: stable@vger.kernel.org # 6.11: 055afc34fd21: soc: qcom: llcc: Add regmap for Broadcast_AND region
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20241014-x1e80100-dts-llcc-add-broadcastand_region-v2-1-5ee6ac128627@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c   |   13 +++++--------
- drivers/base/module.c |    4 ----
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -25,7 +25,6 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
--#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sched/mm.h>
- #include <linux/swiotlb.h>
-@@ -2559,7 +2558,6 @@ static const char *dev_uevent_name(struc
- static int dev_uevent(struct kobject *kobj, struct kobj_uevent_env *env)
- {
- 	struct device *dev = kobj_to_dev(kobj);
--	struct device_driver *driver;
- 	int retval = 0;
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -5700,7 +5700,8 @@
+ 			      <0 0x25a00000 0 0x200000>,
+ 			      <0 0x25c00000 0 0x200000>,
+ 			      <0 0x25e00000 0 0x200000>,
+-			      <0 0x26000000 0 0x200000>;
++			      <0 0x26000000 0 0x200000>,
++			      <0 0x26200000 0 0x200000>;
+ 			reg-names = "llcc0_base",
+ 				    "llcc1_base",
+ 				    "llcc2_base",
+@@ -5709,7 +5710,8 @@
+ 				    "llcc5_base",
+ 				    "llcc6_base",
+ 				    "llcc7_base",
+-				    "llcc_broadcast_base";
++				    "llcc_broadcast_base",
++				    "llcc_broadcast_and_base";
+ 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
  
- 	/* add device node properties if present */
-@@ -2588,12 +2586,8 @@ static int dev_uevent(struct kobject *ko
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
- 
--	/* Synchronize with module_remove_driver() */
--	rcu_read_lock();
--	driver = READ_ONCE(dev->driver);
--	if (driver)
--		add_uevent_var(env, "DRIVER=%s", driver->name);
--	rcu_read_unlock();
-+	if (dev->driver)
-+		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
- 
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -2663,8 +2657,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
- 
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
- 
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,7 +7,6 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/rcupdate.h>
- #include "base.h"
- 
- static char *make_driver_name(struct device_driver *drv)
-@@ -78,9 +77,6 @@ void module_remove_driver(struct device_
- 	if (!drv)
- 		return;
- 
--	/* Synchronize with dev_uevent() */
--	synchronize_rcu();
--
- 	sysfs_remove_link(&drv->p->kobj, "module");
- 
- 	if (drv->owner)
 
 
 
