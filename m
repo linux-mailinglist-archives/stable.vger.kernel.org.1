@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285E29BE94C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D916D9BEC16
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB2C1C217BF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB70281017
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E7A1DED4F;
-	Wed,  6 Nov 2024 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EB31F4286;
+	Wed,  6 Nov 2024 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4nX0k38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smHHwrS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F297DA7F;
-	Wed,  6 Nov 2024 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972001F426A;
+	Wed,  6 Nov 2024 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896361; cv=none; b=PiaMmS2w/dR4D2TdYMjiez25fIukAnkUAZCdL42i+hE2EETsL45EAa1C7UZUhGFvsfZLEnw8VLaVlwNdzoPrn+U/UL4vHkpe5SLY+9O/ADNMeSdwMid84ks7obxBlqhynvE+hyT0fnlf/XBRFOCk83yL8qOygmHTBv0MGl7XoZQ=
+	t=1730897512; cv=none; b=Xdfm/ncVpKdHKkJpkgZjF0L6/A3TsyzwMVVieFr42WfmFXZWtAfFBsDw0e1MU1TvwtThssKPRZ8PIWdmpld2oaliKy4C8Rn4k8MkIxzvkrPQnoPSKvBChm+dUtbYKVtwlSMVsXfeSxiaWKLRsK05YHE5DfJA4jfiSiD2UnsBiT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896361; c=relaxed/simple;
-	bh=g9gw8P4YtUt6Jb3hUfIw7pqS0hzCblkIAuiTOZdRdaU=;
+	s=arc-20240116; t=1730897512; c=relaxed/simple;
+	bh=GrfMnHdWVkSn60rWybw59t0kBKu6Bp63wnPQtMuaNo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpqogDLiX35URKFvR1jajrbb4YMozKCKJJCuECWdlJMzjgxzqB7qiePzbY4QFdI61mWCPZAh9ArU84lblhluqJ6yiir6oIfpis23sCb1ogKTtFrq+6iqgCwP60ddrw/8KzShPuc3lWEy9dfrLWUf+kvgUvoODDlOfDu04SfDRYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4nX0k38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2545C4CECD;
-	Wed,  6 Nov 2024 12:32:40 +0000 (UTC)
+	 MIME-Version; b=UWDHcLzbDYoEn1WKYZmJJqAr7T9NM87MvL6c6iiqG40xubBy0CmZlZ+UuTtnFQLiWVkG1O1zi85KM7R554ih55UBWP1FUXHfEU0Fm8UIuUCSgkx9GF9MdbHQiTbGy/MdnW/uqEBwoVwkyd6f/dV/+cAiKwdbNa80c4WIkteFGts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smHHwrS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E821C4CECD;
+	Wed,  6 Nov 2024 12:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896361;
-	bh=g9gw8P4YtUt6Jb3hUfIw7pqS0hzCblkIAuiTOZdRdaU=;
+	s=korg; t=1730897512;
+	bh=GrfMnHdWVkSn60rWybw59t0kBKu6Bp63wnPQtMuaNo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4nX0k38N4Vha/41tulTjpR1COUeyps27nQhvQKiMtrckU+ThA0HcAMfXIN9Mi1QU
-	 TaBxkqQxoNBY7UB+ACqncxV6jVbuiH8QQ0IdIjebEJvffqZg9dFxNJ6NjpYsBdS+Pw
-	 U5bbbqYOPkGZABg3l0l1WY2NFaIeHXv6u1XTRuoc=
+	b=smHHwrS4oS+vzNCmCwLKnMdCVny/tSzbQU82+Y+NvNoGK9UuoUFhiElgVIMZXCMJn
+	 fa717CM0IltjJ1FMkigBDWbyaXJ+2iWJyNcNU3oR/pM7kQtdonBV90D1V15gxrzEFv
+	 WtXpa9qv2ENwpoPsRtcQ+BFydVrD+wxxAlobKfrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Michal Hocko <mhocko@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 176/245] mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves
+Subject: [PATCH 6.6 041/151] iomap: improve shared block detection in iomap_unshare_iter
 Date: Wed,  6 Nov 2024 13:03:49 +0100
-Message-ID: <20241106120323.570324244@linuxfoundation.org>
+Message-ID: <20241106120309.962841697@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 281dd25c1a018261a04d1b8bf41a0674000bfe38 ]
+[ Upstream commit b53fdb215d13f8e9c29541434bf2d14dac8bcbdc ]
 
-Under memory pressure it's possible for GFP_ATOMIC order-0 allocations to
-fail even though free pages are available in the highatomic reserves.
-GFP_ATOMIC allocations cannot trigger unreserve_highatomic_pageblock()
-since it's only run from reclaim.
+Currently iomap_unshare_iter relies on the IOMAP_F_SHARED flag to detect
+blocks to unshare.  This is reasonable, but IOMAP_F_SHARED is also useful
+for the file system to do internal book keeping for out of place writes.
+XFS used to that, until it got removed in commit 72a048c1056a
+("xfs: only set IOMAP_F_SHARED when providing a srcmap to a write")
+because unshare for incorrectly unshare such blocks.
 
-Given that such allocations will pass the watermarks in
-__zone_watermark_unusable_free(), it makes sense to fallback to highatomic
-reserves the same way that ALLOC_OOM can.
+Add an extra safeguard by checking the explicitly provided srcmap instead
+of the fallback to the iomap for valid data, as that catches the case
+where we'd just copy from the same place we'd write to easily, allowing
+to reinstate setting IOMAP_F_SHARED for all XFS writes that go to the
+COW fork.
 
-This fixes order-0 page allocation failures observed on Cloudflare's fleet
-when handling network packets:
-
-  kswapd1: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
-  nodemask=(null),cpuset=/,mems_allowed=0-7
-  CPU: 10 PID: 696 Comm: kswapd1 Kdump: loaded Tainted: G           O 6.6.43-CUSTOM #1
-  Hardware name: MACHINE
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x3c/0x50
-   warn_alloc+0x13a/0x1c0
-   __alloc_pages_slowpath.constprop.0+0xc9d/0xd10
-   __alloc_pages+0x327/0x340
-   __napi_alloc_skb+0x16d/0x1f0
-   bnxt_rx_page_skb+0x96/0x1b0 [bnxt_en]
-   bnxt_rx_pkt+0x201/0x15e0 [bnxt_en]
-   __bnxt_poll_work+0x156/0x2b0 [bnxt_en]
-   bnxt_poll+0xd9/0x1c0 [bnxt_en]
-   __napi_poll+0x2b/0x1b0
-   bpf_trampoline_6442524138+0x7d/0x1000
-   __napi_poll+0x5/0x1b0
-   net_rx_action+0x342/0x740
-   handle_softirqs+0xcf/0x2b0
-   irq_exit_rcu+0x6c/0x90
-   sysvec_apic_timer_interrupt+0x72/0x90
-   </IRQ>
-
-[mfleming@cloudflare.com: update comment]
-  Link: https://lkml.kernel.org/r/20241015125158.3597702-1-matt@readmodwrite.com
-Link: https://lkml.kernel.org/r/20241011120737.3300370-1-matt@readmodwrite.com
-Link: https://lore.kernel.org/all/CAGis_TWzSu=P7QJmjD58WWiu3zjMTVKSzdOwWE8ORaGytzWJwQ@mail.gmail.com/
-Fixes: 1d91df85f399 ("mm/page_alloc: handle a missing case for memalloc_nocma_{save/restore} APIs")
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-3-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/iomap/buffered-io.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 91ace8ca97e21..ec459522c2934 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2874,12 +2874,12 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- 			page = __rmqueue(zone, order, migratetype, alloc_flags);
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index aedaad4c37d75..7db9bb0d15184 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1273,16 +1273,25 @@ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ {
+ 	struct iomap *iomap = &iter->iomap;
+-	const struct iomap *srcmap = iomap_iter_srcmap(iter);
+ 	loff_t pos = iter->pos;
+ 	loff_t length = iomap_length(iter);
+ 	loff_t written = 0;
  
- 			/*
--			 * If the allocation fails, allow OOM handling access
--			 * to HIGHATOMIC reserves as failing now is worse than
--			 * failing a high-order atomic allocation in the
--			 * future.
-+			 * If the allocation fails, allow OOM handling and
-+			 * order-0 (atomic) allocs access to HIGHATOMIC
-+			 * reserves as failing now is worse than failing a
-+			 * high-order atomic allocation in the future.
- 			 */
--			if (!page && (alloc_flags & ALLOC_OOM))
-+			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
- 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+-	/* don't bother with blocks that are not shared to start with */
++	/* Don't bother with blocks that are not shared to start with. */
+ 	if (!(iomap->flags & IOMAP_F_SHARED))
+ 		return length;
+-	/* don't bother with holes or unwritten extents */
+-	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
++
++	/*
++	 * Don't bother with holes or unwritten extents.
++	 *
++	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
++	 * unsharing requires providing a separate source map, and the presence
++	 * of one is a good indicator that unsharing is needed, unlike
++	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
++	 * fork for XFS.
++	 */
++	if (iter->srcmap.type == IOMAP_HOLE ||
++	    iter->srcmap.type == IOMAP_UNWRITTEN)
+ 		return length;
  
- 			if (!page) {
+ 	do {
 -- 
 2.43.0
 
