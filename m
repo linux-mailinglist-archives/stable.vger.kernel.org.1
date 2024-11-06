@@ -1,102 +1,58 @@
-Return-Path: <stable+bounces-90112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970B39BE68D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE43F9BE760
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5523C282909
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:02:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8952FB24A5C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A6D1DFDB3;
-	Wed,  6 Nov 2024 12:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988F61DF24C;
+	Wed,  6 Nov 2024 12:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="ap9JzklA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzCAZyca"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BA51DF98B
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 12:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BBC1D416E;
+	Wed,  6 Nov 2024 12:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894497; cv=none; b=svKFAL8rNqo5PRaA9DYMBjmRlmrtfjfFhPdUsab1zf2X0YcVl83z9IaGGeMWx7VaeI7M0Xcbnouv/f8fcBxwe6xZb0+eVUDMBgrdvC3nDB/IQHZ+gWPOh3i7RkIkqFMRFHAVhd2PPAE2KU/s1UWTCT6fk38BUww/0MDFUI6dK7M=
+	t=1730895214; cv=none; b=eHJqiagAPSKaV+xsEyeigLcOvXk1MHZ2qG0ictlBZ/Dt+e2mPQOpmh3rBLR5xrW+5gq1uGHJfEouqa+xtmTumCM93ZqjTWNx8Lzzr0WupbjnDYyzEpyaN4OVSOnKkx9yNHDrFCv+GlVzo0p1wgtOqq9OYCMSlKDJjSEQGYl7bYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894497; c=relaxed/simple;
-	bh=Lh8DevTbvanScGSPN6SnkhvaV5yCyT7xZvKsjN0ZrgQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KPk//wb8T1Wt8M5CppPxHdNd5agdCKQYi/JeQZbhFc3CNi15Dz71SAshpfqbuwnKVvmkdk366rYM7b1MXeKBiNz0oUYikqxIRpwud2jQoiBlJmaffhDAL6LaHKPv90IOUyyUrZCXEuUTsx1KTZae/mN9ea3SXNEvANVOCLMkUcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=ap9JzklA; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9693dc739so8754475a12.3
-        for <stable@vger.kernel.org>; Wed, 06 Nov 2024 04:01:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1730894493; x=1731499293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DuQQ9nuz/fv1v5WB3vsq3Ar711CKbKh3RUk1VzcE0FA=;
-        b=ap9JzklAFb9pgRzo803oF6Qz//6IYMmJvTmmaNz3F+adaTpP/KJaIhrlsZlkSRThXU
-         DcsB04OiJxK0RHvM6ED2WxasoKhwiXIKg/sO7K8h++fc7ji9cr4thdk6ZUQq5Xwd6eYb
-         IctsJiFDtB/1o7mT82Iagl2zhxFusOz7Ag7ZgEQ2M6XZBaqhqUnVItjn1BQONqh5nNN1
-         HIxhJF65A1HaPCW/hkKHROAA5nHRbHi2Qg+AU9Q5rZG/LhvHaryq2PcZj3WFr8y+P7Th
-         lgo9pGAa4E+F0dxQUO0jb5FTE3j4WVNvTAyrMA7Sg2rJfMFzY3kCiNSBXVZXd7bqDcfg
-         Cb5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730894493; x=1731499293;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DuQQ9nuz/fv1v5WB3vsq3Ar711CKbKh3RUk1VzcE0FA=;
-        b=uonOf26aLMlFZNalqEKJa69iT5X7eXla96ddfj9TENx6RRSYP1dIxYyRlRn9ocxVPy
-         d+Z/M/i7CVfof0N0T/HIIkvcyTSDUhOGlvvG0CqLJYQ2bB/SoGonqljWv/7qtzqg93m3
-         XsYUwryFrRBGW4tZH3s02RVDV5OcSDKmjgXxiavqVVCn5P0jWH+cRfjOCIXIIyFGVNfm
-         qvWVGcp0YXc+QatLy5mYCyw0mn6DhxY6SVEIR2rjJ/yYqVxdic4QWqeNHXDrH/aHEGIV
-         siXhpUK5CTDFQSvIashyJfyBi/jb72nTYiYC2GlXIpA+8ZkIxWOZyUv4KV9FNL+lpTIv
-         zQdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtnSjzTfzGUdATrBzvdQ86+L0bu5vm1FBkKZsUbTdbYl2kOAHGU6wVgU0ZYkGqc+vxaKPXNLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDBVd/k2SdG4VFQJQcT5d3yjHSxO2eWVeA1xhwjhh1EUs4fErS
-	ohSPqv5eYkaWKPSZVTlISs/m1SoJv7fuqVWK3RFk4nTR5hQBn190g75YQV7CYpU=
-X-Google-Smtp-Source: AGHT+IHtx5Uc49jn/5rFDtZbXkQTqsz1oLlOj01V707XR4uAHqys9j21kgOR3dB2dECT7Z2GpaF6/g==
-X-Received: by 2002:a05:6402:348e:b0:5ce:fa13:2630 with SMTP id 4fb4d7f45d1cf-5cefa13273fmr591343a12.33.1730894493047;
-        Wed, 06 Nov 2024 04:01:33 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cee6afe528sm2697984a12.55.2024.11.06.04.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 04:01:32 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: geert+renesas@glider.be,
-	magnus.damm@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	p.zabel@pengutronix.de,
-	lethal@linux-sh.org,
-	g.liakhovetski@gmx.de,
-	ysato@users.sourceforge.jp,
-	ulrich.hecht+renesas@gmail.com
-Cc: claudiu.beznea@tuxon.dev,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/9] serial: sh-sci: Check if TX data was written to device in .tx_empty()
-Date: Wed,  6 Nov 2024 14:01:11 +0200
-Message-Id: <20241106120118.1719888-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1730895214; c=relaxed/simple;
+	bh=KKLnagFOIQBNwwmRARsm6TJLAjNDdQ4Ce4DEgOzPPKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DXUa7tJCVf38Vxtt0oia6Td85tCae4EwF6bGNOSraWkgGGO+lMaAysX1aGNxLwo4A/3k5e+WrNhQPVimWZlkfw0ZKuhBQOhhI1XPqXDdXQu6HPTn7lvRSOL+GLx/2ABeNy7vrMWW+4KXO7yYg3YK3B/LtlfWCPjxKqnpEM3FOCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzCAZyca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3761C4CECD;
+	Wed,  6 Nov 2024 12:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730895214;
+	bh=KKLnagFOIQBNwwmRARsm6TJLAjNDdQ4Ce4DEgOzPPKI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mzCAZycaaIuJMjacSm3q2OKZ2AITffWwfc1/ml5D/AyPs/V+4kLRzQra4ms6K2Pbj
+	 +TRzhMg6rbSlB8iqijFnzPb0AnWxvFlQ/Xwfc5AwZI+LYFl0wfjTn9rzyC71wFF+Mq
+	 hffte8Oq4iS2PF0gMwmAM3ehK8GBlxFne6sRKibQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 143/350] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
+Date: Wed,  6 Nov 2024 13:01:11 +0100
+Message-ID: <20241106120324.449179326@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,115 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
-is called. The uart_suspend_port() calls 3 times the
-struct uart_port::ops::tx_empty() before shutting down the port.
+------------------
 
-According to the documentation, the struct uart_port::ops::tx_empty()
-API tests whether the transmitter FIFO and shifter for the port is
-empty.
+From: Takashi Iwai <tiwai@suse.de>
 
-The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
-transmit FIFO through the FDR (FIFO Data Count Register). The data units
-in the FIFOs are written in the shift register and transmitted from there.
-The TEND bit in the Serial Status Register reports if the data was
-transmitted from the shift register.
+[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
 
-In the previous code, in the tx_empty() API implemented by the sh-sci
-driver, it is considered that the TX is empty if the hardware reports the
-TEND bit set and the number of data units in the FIFO is zero.
+Some time ago, we introduced the obey_preferred_dacs flag for choosing
+the DAC/pin pairs specified by the driver instead of parsing the
+paths.  This works as expected, per se, but there have been a few
+cases where we forgot to set this flag while preferred_dacs table is
+already set up.  It ended up with incorrect wiring and made us
+wondering why it doesn't work.
 
-According to the HW manual, the TEND bit has the following meaning:
+Basically, when the preferred_dacs table is provided, it means that
+the driver really wants to wire up to follow that.  That is, the
+presence of the preferred_dacs table itself is already a "do-it"
+flag.
 
-0: Transmission is in the waiting state or in progress.
-1: Transmission is completed.
+In this patch, we simply replace the evaluation of obey_preferred_dacs
+flag with the presence of preferred_dacs table for fixing the
+misbehavior.  Another patch to drop of the obsoleted flag will
+follow.
 
-It has been noticed that when opening the serial device w/o using it and
-then switch to a power saving mode, the tx_empty() call in the
-uart_port_suspend() function fails, leading to the "Unable to drain
-transmitter" message being printed on the console. This is because the
-TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
-TEND=0 has double meaning (waiting state, in progress) we can't
-determined the scenario described above.
-
-Add a software workaround for this. This sets a variable if any data has
-been sent on the serial console (when using PIO) or if the DMA callback has
-been called (meaning something has been transmitted).
-
-Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
+Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/pci/hda/hda_generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index df523c744423..8e2d534401fa 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -153,6 +153,7 @@ struct sci_port {
- 	int				rx_trigger;
- 	struct timer_list		rx_fifo_timer;
- 	int				rx_fifo_timeout;
-+	atomic_t			first_time_tx;
- 	u16				hscif_tot;
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index f4b07dc6f1cc1..e48dca4d6e43f 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		struct nid_path *path;
+ 		hda_nid_t pin = pins[i];
  
- 	bool has_rtscts;
-@@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
- {
- 	struct tty_port *tport = &port->state->port;
- 	unsigned int stopped = uart_tx_stopped(port);
-+	struct sci_port *s = to_sci_port(port);
- 	unsigned short status;
- 	unsigned short ctrl;
- 	int count;
-@@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+-		if (!spec->obey_preferred_dacs) {
++		if (!spec->preferred_dacs) {
+ 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
+ 			if (path) {
+ 				badness += assign_out_path_ctls(codec, path);
+@@ -1395,7 +1395,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		if (dacs[i]) {
+ 			if (is_dac_already_used(codec, dacs[i]))
+ 				badness += bad->shared_primary;
+-		} else if (spec->obey_preferred_dacs) {
++		} else if (spec->preferred_dacs) {
+ 			badness += BAD_NO_PRIMARY_DAC;
  		}
  
- 		sci_serial_out(port, SCxTDR, c);
-+		atomic_set(&s->first_time_tx, 1);
- 
- 		port->icount.tx++;
- 	} while (--count > 0);
-@@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
- 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
- 
-+	atomic_set(&s->first_time_tx, 1);
-+
- 	if (!kfifo_is_empty(&tport->xmit_fifo)) {
- 		s->cookie_tx = 0;
- 		schedule_work(&s->work_tx);
-@@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port *port)
- {
- 	unsigned short status = sci_serial_in(port, SCxSR);
- 	unsigned short in_tx_fifo = sci_txfill(port);
-+	struct sci_port *s = to_sci_port(port);
-+
-+	if (!atomic_read(&s->first_time_tx))
-+		return TIOCSER_TEMT;
- 
- 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
- }
-@@ -2247,6 +2256,7 @@ static int sci_startup(struct uart_port *port)
- 
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
-+	atomic_set(&s->first_time_tx, 0);
- 	sci_request_dma(port);
- 
- 	ret = sci_request_irq(s);
-@@ -2267,6 +2277,7 @@ static void sci_shutdown(struct uart_port *port)
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
- 	s->autorts = false;
-+	atomic_set(&s->first_time_tx, 0);
- 	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
- 
- 	uart_port_lock_irqsave(port, &flags);
 -- 
-2.39.2
+2.43.0
+
+
 
 
