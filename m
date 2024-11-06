@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-90303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6AA9BE7A5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD129BE8C7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7315B281484
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6B21C217E4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3201DF252;
-	Wed,  6 Nov 2024 12:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E211DFD84;
+	Wed,  6 Nov 2024 12:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erbk3NnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJVj86pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3861DE8B4;
-	Wed,  6 Nov 2024 12:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E487D1D2784;
+	Wed,  6 Nov 2024 12:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895374; cv=none; b=D0LbjL6I+ohbqDkaHCrY+hjDIBZiBLsPYKR9vY49MybBIjYqzzL8tLs8a+Rc8Au+64zXl+aQs9zVkIVBzW1twDXjTf/++aC1+tzLJUXRAa3vxPuti6mg+Ywcuk8tzu5L4iGYTeN8Kj0WNMDUrcA1lTrFwcw9zIQJuD20Iya4950=
+	t=1730896051; cv=none; b=ZTwVprAnTphd3Y7qEnM7mBfBcHTktqZcGG6wNdy+2oSIbNbaKFqHmEMIBnjTxuUWm9LbK77MeM1Bvfigf42ULJT7N3FGK5+IusfRjSE5SkeJnwBIU8hw06Z3KXklhx5OdsV4tiIt/fn9ISwnvgI2WqbcLu8Jwzq7g8gB0n6UIcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895374; c=relaxed/simple;
-	bh=Wi+S184fFzCv1cI1Ap9BcjazYUnz9PiiP1vIQyJlDIk=;
+	s=arc-20240116; t=1730896051; c=relaxed/simple;
+	bh=uLnWG7QAamuITbol5sadPK8dse3klJcFIo18gpCr1ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=espyUTc50QyUuZGPtJrhlms6sIuT/CbxNJxkGipMDUe7l2y6n/3mEe6onY3p4jG/gnGZOXvKXBc0pp88w4mDNG9tKuPkCu8y5L8IxZ8yZiFe6A8m1MuJTAZ30NW8w9f7Q3aI9vlPDrJWd8TIcHSO7iIreSA5kN09SK43bqCnwOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erbk3NnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F991C4CECD;
-	Wed,  6 Nov 2024 12:16:13 +0000 (UTC)
+	 MIME-Version; b=IohjnCYCe5c1BoZEA3sViT/OGi0cUj3rcya2XVAPrdmwXhKqomgDh8cA4F3qud1VFB88F9etYkklY/JDaTlJeO6jPk2cvToLicDWR3gTg/BFBtXjz8OE729NsIsdLLZ0kDUhqTXGZkhlWY5AjlI/Ho05oMbHgwziKFbZr6gu4zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJVj86pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63320C4CED4;
+	Wed,  6 Nov 2024 12:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895373;
-	bh=Wi+S184fFzCv1cI1Ap9BcjazYUnz9PiiP1vIQyJlDIk=;
+	s=korg; t=1730896050;
+	bh=uLnWG7QAamuITbol5sadPK8dse3klJcFIo18gpCr1ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erbk3NnKUD6HbaJVpedNY0A+wmArgOS6oAcg9daxekjJ+vD8Xtqiny1XoLtexVv35
-	 gCfo93NePIRbkFdGZcFzKiv00XqykwGaoBPdlCwiXbV/hEGC08YHtAcjoHy2nCyEco
-	 8aoi5Hi2VCOCGzpW9wDhFZBxeo7tpN256x43zbn4=
+	b=DJVj86pmjTVewfSgzuiOmnUcwrDNzTrmoKh6O+K8KY7pCfXrObBtox1hiyLfNPG25
+	 yx+5ryhx9WeibXqw9aOa1PbgWoTm/VGAkfIcKRYW1Dep4fva5JxQuru4NFOc+7Xy0d
+	 VeyShhSyMp7ThTwzJLNcbdzKK1+BEaUHwQzNE5CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 196/350] jbd2: stop waiting for space when jbd2_cleanup_journal_tail() returns error
-Date: Wed,  6 Nov 2024 13:02:04 +0100
-Message-ID: <20241106120325.810059965@linuxfoundation.org>
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Liankun Yang <liankun.yang@mediatek.com>,
+	Fei Shao <fshao@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 072/245] drm/mediatek: Fix get efuse issue for MT8188 DPTX
+Date: Wed,  6 Nov 2024 13:02:05 +0100
+Message-ID: <20241106120320.978352869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +66,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Liankun Yang <liankun.yang@mediatek.com>
 
-commit f5cacdc6f2bb2a9bf214469dd7112b43dd2dd68a upstream.
+[ Upstream commit 3ded11b5c1b476f6d027d9017aa7deb8ab381ec1 ]
 
-In __jbd2_log_wait_for_space(), we might call jbd2_cleanup_journal_tail()
-to recover some journal space. But if an error occurs while executing
-jbd2_cleanup_journal_tail() (e.g., an EIO), we don't stop waiting for free
-space right away, we try other branches, and if j_committing_transaction
-is NULL (i.e., the tid is 0), we will get the following complain:
+Update efuse data for MT8188 displayport.
 
-============================================
-JBD2: I/O error when updating journal superblock for sdd-8.
-__jbd2_log_wait_for_space: needed 256 blocks and only had 217 space available
-__jbd2_log_wait_for_space: no way to get more journal space in sdd-8
-------------[ cut here ]------------
-WARNING: CPU: 2 PID: 139804 at fs/jbd2/checkpoint.c:109 __jbd2_log_wait_for_space+0x251/0x2e0
-Modules linked in:
-CPU: 2 PID: 139804 Comm: kworker/u8:3 Not tainted 6.6.0+ #1
-RIP: 0010:__jbd2_log_wait_for_space+0x251/0x2e0
-Call Trace:
- <TASK>
- add_transaction_credits+0x5d1/0x5e0
- start_this_handle+0x1ef/0x6a0
- jbd2__journal_start+0x18b/0x340
- ext4_dirty_inode+0x5d/0xb0
- __mark_inode_dirty+0xe4/0x5d0
- generic_update_time+0x60/0x70
-[...]
-============================================
+The DP monitor can not display when DUT connected to USB-c to DP dongle.
+Analysis view is invalid DP efuse data.
 
-So only if jbd2_cleanup_journal_tail() returns 1, i.e., there is nothing to
-clean up at the moment, continue to try to reclaim free space in other ways.
-
-Note that this fix relies on commit 6f6a6fda2945 ("jbd2: fix ocfs2 corrupt
-when updating journal superblock fails") to make jbd2_cleanup_journal_tail
-return the correct error code.
-
-Fixes: 8c3f25d8950c ("jbd2: don't give up looking for space so easily in __jbd2_log_wait_for_space")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240718115336.2554501-1-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350c3fe907fb ("drm/mediatek: dp: Add support MT8188 dp/edp function")
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240923132521.22785-1-liankun.yang@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 85 ++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 1 deletion(-)
 
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -147,8 +147,11 @@ void __jbd2_log_wait_for_space(journal_t
- 			write_unlock(&journal->j_state_lock);
- 			if (chkpt) {
- 				jbd2_log_do_checkpoint(journal);
--			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
--				/* We were able to recover space; yay! */
-+			} else if (jbd2_cleanup_journal_tail(journal) <= 0) {
-+				/*
-+				 * We were able to recover space or the
-+				 * journal was aborted due to an error.
-+				 */
- 				;
- 			} else if (has_transaction) {
- 				/*
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index d8796a904eca4..f2bee617f063a 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -145,6 +145,89 @@ struct mtk_dp_data {
+ 	u16 audio_m_div2_bit;
+ };
+ 
++static const struct mtk_dp_efuse_fmt mt8188_dp_efuse_fmt[MTK_DP_CAL_MAX] = {
++	[MTK_DP_CAL_GLB_BIAS_TRIM] = {
++		.idx = 0,
++		.shift = 10,
++		.mask = 0x1f,
++		.min_val = 1,
++		.max_val = 0x1e,
++		.default_val = 0xf,
++	},
++	[MTK_DP_CAL_CLKTX_IMPSE] = {
++		.idx = 0,
++		.shift = 15,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_0] = {
++		.idx = 1,
++		.shift = 0,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_1] = {
++		.idx = 1,
++		.shift = 8,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_2] = {
++		.idx = 1,
++		.shift = 16,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_3] = {
++		.idx = 1,
++		.shift = 24,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_0] = {
++		.idx = 1,
++		.shift = 4,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_1] = {
++		.idx = 1,
++		.shift = 12,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_2] = {
++		.idx = 1,
++		.shift = 20,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_3] = {
++		.idx = 1,
++		.shift = 28,
++		.mask = 0xf,
++		.min_val = 1,
++		.max_val = 0xe,
++		.default_val = 0x8,
++	},
++};
++
+ static const struct mtk_dp_efuse_fmt mt8195_edp_efuse_fmt[MTK_DP_CAL_MAX] = {
+ 	[MTK_DP_CAL_GLB_BIAS_TRIM] = {
+ 		.idx = 3,
+@@ -2771,7 +2854,7 @@ static SIMPLE_DEV_PM_OPS(mtk_dp_pm_ops, mtk_dp_suspend, mtk_dp_resume);
+ static const struct mtk_dp_data mt8188_dp_data = {
+ 	.bridge_type = DRM_MODE_CONNECTOR_DisplayPort,
+ 	.smc_cmd = MTK_DP_SIP_ATF_VIDEO_UNMUTE,
+-	.efuse_fmt = mt8195_dp_efuse_fmt,
++	.efuse_fmt = mt8188_dp_efuse_fmt,
+ 	.audio_supported = true,
+ 	.audio_pkt_in_hblank_area = true,
+ 	.audio_m_div2_bit = MT8188_AUDIO_M_CODE_MULT_DIV_SEL_DP_ENC0_P0_DIV_2,
+-- 
+2.43.0
+
 
 
 
