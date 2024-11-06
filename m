@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-90449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DB99BE85A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:24:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D3D9BE97B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5FE91F2355E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A32828557D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD331E0B87;
-	Wed,  6 Nov 2024 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17B71DFE06;
+	Wed,  6 Nov 2024 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTKHCEKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cD1Ipra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4EE1E0B73;
-	Wed,  6 Nov 2024 12:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0121DFD9D;
+	Wed,  6 Nov 2024 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895806; cv=none; b=iE5W9To1q0lT3UjfukTfPDo4pGEp8OYADp6J5aekpht/RxqaqOVsATfU7dus+LuOisn7QDIt8lX0LHkRXxzTzm025qDk1gep387/f4GPgLEDAwVwP3cuDuY6lXzRv/8ctlt+I3j9eBQGPp38ckCABsxP9kg9ye36EKtOpo3DWBs=
+	t=1730896483; cv=none; b=lcYtjbsA9khAk3WF4hXLgCemDrwfUVZCNy74unfmPtltfs+JNNSgPLaHSqnJUwwGPe94woAV70Ia2PuFJh931nJxPSbNoQ4mTl6BE51nsbv/G6cdQkdaeMj3ogiOmEL5I1xiWhnipgE99glSVYFwk6gnoEmZ1LSENXrW3X3cHS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895806; c=relaxed/simple;
-	bh=iy+LlTG9VrkQBT96/L+74/ek4HJ42GuGxeyDtxvKfH8=;
+	s=arc-20240116; t=1730896483; c=relaxed/simple;
+	bh=RVaVfb/SJpjdmCKrsFJu6zrTGBWgW9UL7AMJrvF0jxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZFt1/sR8Za51QQRTeDCDCo2XSA12gYIKTgKosFUT67y8edGsi1MlfMBYF5spump0xymFIFBFkWPVuGovExd6+I0K8LOYpdTTzmNcAdEGS9qoJQY5yslssMls4cS4qpsmQ4aUsEsn7shn8bSAZ6mcNXIvRiSUYKyVEj1vfyDkp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTKHCEKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1496C4AF0B;
-	Wed,  6 Nov 2024 12:23:25 +0000 (UTC)
+	 MIME-Version; b=ErWYDkMAIzQWywFVf9BIGPl6UFPMO81olaokp8woumVsUf4KXn+QaLLxCJdIJHBQo9yTebbswiviZU7wsS5Hybi1hLN+mQgal/aFryXuh68XgVDIKhMUj8UgOTMAZjTtiH1eBlwxTyrpwDfFUxq/EY92C7kCvkWBjwBMh8a1l8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cD1Ipra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245C6C4CED5;
+	Wed,  6 Nov 2024 12:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895806;
-	bh=iy+LlTG9VrkQBT96/L+74/ek4HJ42GuGxeyDtxvKfH8=;
+	s=korg; t=1730896483;
+	bh=RVaVfb/SJpjdmCKrsFJu6zrTGBWgW9UL7AMJrvF0jxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTKHCEKiVPk8nCQNCKFPrTdcjEgZM5m+NKD9HMa8RXOQxgi7SQZwrcay91AZ7Fr4Z
-	 CeB/69rN7YMbXMR7DZXsB4t24PFxFQjcYnPKvj9WEPlxX+qx6MN6bd8f9pu6Y373sl
-	 +6rANMl34XkEHq3CkGmNxaGZ+EDq9hRRR3Lpzk10=
+	b=1cD1Ipra7d7TGcE3fyD3dMuAot4wn2RAkWvUkykGxFfXVq6gNEV7tZQfalcjDxjIC
+	 L6xs8gUuO97F1TJAiK0rHA3t0Q4KEjzJunhcIR775TkZM0Jz4OhOh80BBZzRCp5sFQ
+	 mISHDCnfL7O9u/wDLY4Qc04/Bayza+rHhwtTpBfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 4.19 342/350] Revert "driver core: Fix uevent_show() vs driver detach race"
+	Abel Vesa <abel.vesa@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 217/245] arm64: dts: qcom: x1e80100-crd: fix nvme regulator boot glitch
 Date: Wed,  6 Nov 2024 13:04:30 +0100
-Message-ID: <20241106120329.144034449@linuxfoundation.org>
+Message-ID: <20241106120324.596592350@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
+commit 37f9477ce9d07ed87f6efe9b99de580bc9d27df5 upstream.
 
-This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
+The NVMe regulator has been left enabled by the boot firmware. Mark it
+as such to avoid disabling the regulator temporarily during boot.
 
-This commit causes a regression, so revert it for now until it can come
-back in a way that works for everyone.
-
-Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
-Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
-Cc: stable <stable@kernel.org>
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
+Fixes: eb57cbe730d1 ("arm64: dts: qcom: x1e80100: Describe the PCIe 6a resources")
+Cc: stable@vger.kernel.org	# 6.11
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241016145112.24785-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c   |   13 +++++--------
- drivers/base/module.c |    4 ----
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-crd.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -24,7 +24,6 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
--#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sysfs.h>
+--- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
+@@ -283,6 +283,8 @@
  
-@@ -1138,7 +1137,6 @@ static int dev_uevent(struct kset *kset,
- 		      struct kobj_uevent_env *env)
- {
- 	struct device *dev = kobj_to_dev(kobj);
--	struct device_driver *driver;
- 	int retval = 0;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&nvme_reg_en>;
++
++		regulator-boot-on;
+ 	};
+ };
  
- 	/* add device node properties if present */
-@@ -1167,12 +1165,8 @@ static int dev_uevent(struct kset *kset,
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
- 
--	/* Synchronize with module_remove_driver() */
--	rcu_read_lock();
--	driver = READ_ONCE(dev->driver);
--	if (driver)
--		add_uevent_var(env, "DRIVER=%s", driver->name);
--	rcu_read_unlock();
-+	if (dev->driver)
-+		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
- 
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -1242,8 +1236,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
- 
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
- 
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,7 +7,6 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/rcupdate.h>
- #include "base.h"
- 
- static char *make_driver_name(struct device_driver *drv)
-@@ -78,9 +77,6 @@ void module_remove_driver(struct device_
- 	if (!drv)
- 		return;
- 
--	/* Synchronize with dev_uevent() */
--	synchronize_rcu();
--
- 	sysfs_remove_link(&drv->p->kobj, "module");
- 
- 	if (drv->owner)
 
 
 
