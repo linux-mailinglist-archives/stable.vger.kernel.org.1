@@ -1,71 +1,53 @@
-Return-Path: <stable+bounces-91252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFA29BED23
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:09:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FE69BECF9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E92CB24386
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5D51F21831
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C931F8192;
-	Wed,  6 Nov 2024 13:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856FE1EE039;
+	Wed,  6 Nov 2024 13:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IY0VEpCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kg6tSej4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E58D1F1318;
-	Wed,  6 Nov 2024 13:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415B01E0DB6;
+	Wed,  6 Nov 2024 13:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898189; cv=none; b=hRc1q2r1IUrBJnFF9jDww9/pYIodXEW1SLBzz1hVpjEx8wSNOjBpjZMqAesGJ77tePWZtP/znm1dlsyToSwy61LYQrxktazOVN5xFvSwcBbZW0nahnCh2LAKzaynTpbCbSpl5755J228EYEdy/03n3km4+Gpokp3qX0tFAWVp0s=
+	t=1730898074; cv=none; b=RuLSl+AOqT/v41EvgswapYIiuvk8XKQo822A0S0UotNaGKMsfHS2m80FmwIWluxG26bHwj0rbHOBQOFcZ3KaDezWxVUkte8wPggWce2DP9DOkVIVYPLMygvJilr0kGULlpD3fVHrHY3w2Pcb7VDbQh5Z43RHsSh7Nf2vbkCSKYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898189; c=relaxed/simple;
-	bh=RK1c7DeV+6kc8990AaM7oHqvWKvJGk5Ze2P7aKATyf8=;
+	s=arc-20240116; t=1730898074; c=relaxed/simple;
+	bh=XbwLMgsb74Pkf1S6tmkL/Kq8q4bCorgUSicg0DIMGLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YU5NprWnUnLYEBOAsoID8hfn1G8WU5l2ZJXcgBPW88KssqdO3yuy1Z48RGg7wnbfRzhZ6IycitsJlRCkP1mQBK/f+ynoh8cBXXHH0V93WJ/FTbw7cTkxSr3r3b/oc1PzTrY7Rzpa8sTaDiFq8wfnfpQL+dz5DoO6/k0sijLbu7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IY0VEpCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347D4C4CED6;
-	Wed,  6 Nov 2024 13:03:08 +0000 (UTC)
+	 MIME-Version; b=A/zdn3xgCvzNiAV8YL5/xaTEDwmaSbFy/KSv3hxacUBsPFIThFTGHOzp/Eyhw/NfF/sSu5slMHVTZAOcuZQJeIHQ4NqP2NRiQN6WmDCp1rE4ziu1HNYUwSmdN106I9lNXwvI2jBw7TnBXMpIdQ8lE5McekH+Ft0PVD8LuNGjRwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kg6tSej4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B934FC4CECD;
+	Wed,  6 Nov 2024 13:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898189;
-	bh=RK1c7DeV+6kc8990AaM7oHqvWKvJGk5Ze2P7aKATyf8=;
+	s=korg; t=1730898074;
+	bh=XbwLMgsb74Pkf1S6tmkL/Kq8q4bCorgUSicg0DIMGLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IY0VEpCVk2X7SxdffgTA2So/gNyLkt3ZSMEsmvIhQKru3nkwkNPZFqDG8SLTd/o10
-	 R6DbvPRuXuomqgO1o4XqZ1NLqCQxil3n39GnAS2QayrQsx/M3vLJfWlCWVevzBjqGi
-	 NRUofva/XtjlFDkAOnLk8IaSevVFtXdX21XjHCKY=
+	b=Kg6tSej44KTa6XAjhqFWfscxLb80J0r0c7eYuLpKgKdvhFqBOq/Sm3aBM4PgnQVft
+	 7Sn4EHWs80C5i2wllvutux3EzqRCfM4c6AO4KZeQnTiKyC0L3/VSU4UDdM4L4wO6X0
+	 bBQFVQotRW1lfJ2p3seSdAsGNYTa7bH/AHAiyhGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	David Ahern <dsa@cumulusnetworks.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yang Jihong <yangjihong@bytedance.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 107/462] perf time-utils: Fix 32-bit nsec parsing
-Date: Wed,  6 Nov 2024 13:00:00 +0100
-Message-ID: <20241106120334.151015794@linuxfoundation.org>
+Subject: [PATCH 5.4 108/462] clk: rockchip: Set parent rate for DCLK_VOP clock on RK3228
+Date: Wed,  6 Nov 2024 13:00:01 +0100
+Message-ID: <20241106120334.176273267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -84,68 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 38e2648a81204c9fc5b4c87a8ffce93a6ed91b65 ]
+[ Upstream commit 1d34b9757523c1ad547bd6d040381f62d74a3189 ]
 
-The "time utils" test fails in 32-bit builds:
-  ...
-  parse_nsec_time("18446744073.709551615")
-  Failed. ptime 4294967295709551615 expected 18446744073709551615
-  ...
+Similar to DCLK_LCDC on RK3328, the DCLK_VOP on RK3228 is typically
+parented by the hdmiphy clk and it is expected that the DCLK_VOP and
+hdmiphy clk rate are kept in sync.
 
-Switch strtoul to strtoull as an unsigned long in 32-bit build isn't
-64-bits.
+Use CLK_SET_RATE_PARENT and CLK_SET_RATE_NO_REPARENT flags, same as used
+on RK3328, to make full use of all possible supported display modes.
 
-Fixes: c284d669a20d408b ("perf tools: Move parse_nsec_time to time-utils.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: David Ahern <dsa@cumulusnetworks.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yang Jihong <yangjihong@bytedance.com>
-Link: https://lore.kernel.org/r/20240831070415.506194-3-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0a9d4ac08ebc ("clk: rockchip: set the clock ids for RK3228 VOP")
+Fixes: 307a2e9ac524 ("clk: rockchip: add clock controller for rk3228")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240615170417.3134517-3-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/time-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/rockchip/clk-rk3228.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/time-utils.c b/tools/perf/util/time-utils.c
-index 3024439216816..1b91ccd4d5234 100644
---- a/tools/perf/util/time-utils.c
-+++ b/tools/perf/util/time-utils.c
-@@ -20,7 +20,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 	u64 time_sec, time_nsec;
- 	char *end;
+diff --git a/drivers/clk/rockchip/clk-rk3228.c b/drivers/clk/rockchip/clk-rk3228.c
+index 47d6482dda9df..a2b4d54875142 100644
+--- a/drivers/clk/rockchip/clk-rk3228.c
++++ b/drivers/clk/rockchip/clk-rk3228.c
+@@ -408,7 +408,7 @@ static struct rockchip_clk_branch rk3228_clk_branches[] __initdata = {
+ 			RK2928_CLKSEL_CON(29), 0, 3, DFLAGS),
+ 	DIV(0, "sclk_vop_pre", "sclk_vop_src", 0,
+ 			RK2928_CLKSEL_CON(27), 8, 8, DFLAGS),
+-	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, 0,
++	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT,
+ 			RK2928_CLKSEL_CON(27), 1, 1, MFLAGS),
  
--	time_sec = strtoul(str, &end, 10);
-+	time_sec = strtoull(str, &end, 10);
- 	if (*end != '.' && *end != '\0')
- 		return -1;
- 
-@@ -38,7 +38,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 		for (i = strlen(nsec_buf); i < 9; i++)
- 			nsec_buf[i] = '0';
- 
--		time_nsec = strtoul(nsec_buf, &end, 10);
-+		time_nsec = strtoull(nsec_buf, &end, 10);
- 		if (*end != '\0')
- 			return -1;
- 	} else
+ 	FACTOR(0, "xin12m", "xin24m", 0, 1, 2),
 -- 
 2.43.0
 
