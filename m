@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB0F9BEB79
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F187A9BE84B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22DECB229F2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213931C20D1A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33051F80A8;
-	Wed,  6 Nov 2024 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B52B1DF98C;
+	Wed,  6 Nov 2024 12:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKM/V6vq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APwJ+/nu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5981EC00A;
-	Wed,  6 Nov 2024 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B851DF740;
+	Wed,  6 Nov 2024 12:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897097; cv=none; b=IzafdbbOYzNx5IWuPTiU3Ug+o7LWoBWASVaCCCmgs94VUHfOeg5xJz6suRsg8Zbjj33iDEMLmBQ6xuc1Gjqtbzx5XdA9FBWS4MFVxhY3o8PRHzK0LI+iWf3qVfrKTN+IiUtFWBpA2eNW9yaORjF62hCwf/yemkqCsH01N9VK+BE=
+	t=1730895789; cv=none; b=oIU/+/2G7bOhpvxipds592+z7SVaAeTaPsuCVsNcuPwqEqo+ATzLLuqAc3YlAgzJWG/Lp+Q+NW5JO9m1UaAaOqeW6fbG1em2EuCRwOG6BbmADJyXW+3/P0chsektd//GSSbofDTy7fbNo5iPIv1rrGbsOKtdqycjbP1ZYJPhi5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897097; c=relaxed/simple;
-	bh=I2oqnyvrbSdvHR5UFYRZUmZtaC1Xp+Hbn2OENQWChHM=;
+	s=arc-20240116; t=1730895789; c=relaxed/simple;
+	bh=hTY7Gm2/z88U4KdNYRHBrsiXP++MTLNdaI+qm79FO0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqT/lI3qtpufTT1W8Bb6En5tgoi7+OainR+h3Cg5a/apznWsZXc4smnq9AJ6lCvww0lY3LarY6sJmDHW+sMnN2fsGmCYlJkHEVsUGm5FF1J4vbvzFOSNBqBWAN1so2UhyDV8SkWpmlK5BoIDE8PAONkT3+q4d48Ad9fwcyuHFLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKM/V6vq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E0AC4CECD;
-	Wed,  6 Nov 2024 12:44:56 +0000 (UTC)
+	 MIME-Version; b=T1Zj2z5lJXDdgbHryeAg4kbvdcyak3Uc/gjOijPMzxtTxAvP9/qaC4TJelm2w4wyhmtSyO3JxLhL8oveI3xR/4Wd+49XigMFi0700cEKzHce3vqPUtNDTaV/rGQQ5ky87Op2xWhjhkIMJA6tn7ozi2SzYtOIeUnysNpKnunB8gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APwJ+/nu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE103C4CECD;
+	Wed,  6 Nov 2024 12:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897097;
-	bh=I2oqnyvrbSdvHR5UFYRZUmZtaC1Xp+Hbn2OENQWChHM=;
+	s=korg; t=1730895789;
+	bh=hTY7Gm2/z88U4KdNYRHBrsiXP++MTLNdaI+qm79FO0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKM/V6vqiHLC+x6OMLK0E4+xZlLD4z1PLGFA06cKIpbLaH4Z9t7bilen8Vuz2CnZ7
-	 K3TcURou79bdQ3igVKMA7pqKhPBUdQ+AONnNO+6xTqz0eEzyxLhKDd6OdwyQf31ea2
-	 sAYPxSNCaaTnyD8q+hcNBODdusLp4v8Zu1WGjhT0=
+	b=APwJ+/nuwG4RgtGb985qhBGnn8N0lJnzCfjZ9UTrhZYwbohGXIp4y5e9apa4OQmpu
+	 UYCBVkF5kcyTQBZeu4BHS0OG6JtbwN0UXwUk4XFiZbdNeGeWsS8AYN+MY8jUQ6ds34
+	 KAWEa4cUwWZf7kzdLBoFfdneB3sEkQhmGEg/4guM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Marcello Sylvester Bauer <sylv@sylv.io>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/126] USB: gadget: dummy-hcd: Fix "task hung" problem
+Subject: [PATCH 4.19 337/350] net: amd: mvme147: Fix probe banner message
 Date: Wed,  6 Nov 2024 13:04:25 +0100
-Message-ID: <20241106120307.821099935@linuxfoundation.org>
+Message-ID: <20241106120329.032809198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 5189df7b8088268012882c220d6aca4e64981348 ]
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-The syzbot fuzzer has been encountering "task hung" problems ever
-since the dummy-hcd driver was changed to use hrtimers instead of
-regular timers.  It turns out that the problems are caused by a subtle
-difference between the timer_pending() and hrtimer_active() APIs.
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-The changeover blindly replaced the first by the second.  However,
-timer_pending() returns True when the timer is queued but not when its
-callback is running, whereas hrtimer_active() returns True when the
-hrtimer is queued _or_ its callback is running.  This difference
-occasionally caused dummy_urb_enqueue() to think that the callback
-routine had not yet started when in fact it was almost finished.  As a
-result the hrtimer was not restarted, which made it impossible for the
-driver to dequeue later the URB that was just enqueued.  This caused
-usb_kill_urb() to hang, and things got worse from there.
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
 
-Since hrtimers have no API for telling when they are queued and the
-callback isn't running, the driver must keep track of this for itself.
-That's what this patch does, adding a new "timer_pending" flag and
-setting or clearing it at the appropriate times.
-
-Reported-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/6709234e.050a0220.3e960.0011.GAE@google.com/
-Tested-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-Cc: Marcello Sylvester Bauer <sylv@sylv.io>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/2dab644e-ef87-4de8-ac9a-26f100b2c609@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index 019e8f3007c94..6e18e8e76e8b9 100644
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -254,6 +254,7 @@ struct dummy_hcd {
- 	u32				stream_en_ep;
- 	u8				num_stream[30 / 2];
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index 0a920448522f3..0bb27f4dd6428 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -105,10 +105,6 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 	address = address >> 8;
+ 	dev->dev_addr[3] = address&0xff;
  
-+	unsigned			timer_pending:1;
- 	unsigned			active:1;
- 	unsigned			old_active:1;
- 	unsigned			resuming:1;
-@@ -1304,9 +1305,11 @@ static int dummy_urb_enqueue(
- 		urb->error_count = 1;		/* mark as a new urb */
- 
- 	/* kick the scheduler, it'll do the rest */
--	if (!hrtimer_active(&dum_hcd->timer))
-+	if (!dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
-+	}
- 
-  done:
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1325,9 +1328,10 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 	spin_lock_irqsave(&dum_hcd->dum->lock, flags);
- 
- 	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
--	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
--			!list_empty(&dum_hcd->urbp_list))
-+	if (rc == 0 && !dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+	}
- 
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
- 	return rc;
-@@ -1814,6 +1818,7 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 
- 	/* look at each urb queued by the host side driver */
- 	spin_lock_irqsave(&dum->lock, flags);
-+	dum_hcd->timer_pending = 0;
- 
- 	if (!dum_hcd->udev) {
- 		dev_err(dummy_dev(dum_hcd),
-@@ -1995,8 +2000,10 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 	if (list_empty(&dum_hcd->urbp_list)) {
- 		usb_put_dev(dum_hcd->udev);
- 		dum_hcd->udev = NULL;
--	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
-+	} else if (!dum_hcd->timer_pending &&
-+			dum_hcd->rh_state == DUMMY_RH_RUNNING) {
- 		/* want a 1 msec delay here */
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -138,6 +134,9 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 		return ERR_PTR(err);
  	}
-@@ -2391,8 +2398,10 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
- 	} else {
- 		dum_hcd->rh_state = DUMMY_RH_RUNNING;
- 		set_link_state(dum_hcd);
--		if (!list_empty(&dum_hcd->urbp_list))
-+		if (!list_empty(&dum_hcd->urbp_list)) {
-+			dum_hcd->timer_pending = 1;
- 			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+		}
- 		hcd->state = HC_STATE_RUNNING;
- 	}
- 	spin_unlock_irq(&dum_hcd->dum->lock);
-@@ -2523,6 +2532,7 @@ static void dummy_stop(struct usb_hcd *hcd)
- 	struct dummy_hcd	*dum_hcd = hcd_to_dummy_hcd(hcd);
  
- 	hrtimer_cancel(&dum_hcd->timer);
-+	dum_hcd->timer_pending = 0;
- 	device_remove_file(dummy_dev(dum_hcd), &dev_attr_urbs);
- 	dev_info(dummy_dev(dum_hcd), "stopped\n");
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
  }
+ 
 -- 
 2.43.0
 
