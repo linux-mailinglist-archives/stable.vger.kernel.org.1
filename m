@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-91059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623459BEC3F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613499BE975
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5AEB254CF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267A528539A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F021FB3F0;
-	Wed,  6 Nov 2024 12:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002981DFD9D;
+	Wed,  6 Nov 2024 12:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtQHSoWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSZXnuKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1281E0E1F;
-	Wed,  6 Nov 2024 12:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF73198E96;
+	Wed,  6 Nov 2024 12:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897619; cv=none; b=B4P9Pj+hUU/FwiyjnbXQxJo7vrHVgZ2iHrn2NL8GO+pdDXe9qCwtX/ZY99iAOOojdh6PmZm7psKj+IbhacaRIAapmquzmlErUp4swBjQ7mJeV7+PN6MCHVZPKHdrg7VhjtL6SLtOpt6qSvI4OPnSHgaAlhGj7qkVb8MUXasu1Ck=
+	t=1730896468; cv=none; b=vGOogGTPu0/cJNRibKp9RVooy6mcA3hxuQ5RK/bSGeEnZpq4UfQ1xweQGNCQ3PetLUEToG2URa0kEnT8H+QfOofyIpJwJh95GgQrfz7SaI48UBDZnIOxSpnrS/QnjR1LJygtsPlzPjlxtMvTezGxf/9sxpVQqamSOzRXeOAdic0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897619; c=relaxed/simple;
-	bh=7ifTCB3M6HrjVXWuHTztjoX24kKCNIDImunVzeO/vCw=;
+	s=arc-20240116; t=1730896468; c=relaxed/simple;
+	bh=BSeKeT75Q6r68kNEmA6TLJ9l0xkfJsiF+NW7dGJr/EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNizgnUGHPvnSeHP2PZd5YJzdIQVikOxF9yt2loPDZI2TCsxRqFNJVsjpKJfrQ4KwOj7xOxOq4y7OCju1syBZ2x+MFa01ZE+sBXVAXePS5MjEkKwHPUVhKd72qowR6y9Lol2jb8+A7iRhzqxmd8ilxHQm8YK92WPoU55fGWe5sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtQHSoWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFF0C4CECD;
-	Wed,  6 Nov 2024 12:53:38 +0000 (UTC)
+	 MIME-Version; b=FQIvDFH+N6QQUv3UnfMmw4HcYlW39oE9VcJMP+W+Y6rf/t7rR6Z0c+Srs+NSnHHx+J4J7a2MMa7WRhiLkO4M8RvEeL70Oz9jesVjrm8Eeooo9BULprQIQ6TaTG4hnQb4AduGEYOK7jl00/UAJOaRgDIjObyZ3XkHNDhlbjztOkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSZXnuKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A81C4CECD;
+	Wed,  6 Nov 2024 12:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897618;
-	bh=7ifTCB3M6HrjVXWuHTztjoX24kKCNIDImunVzeO/vCw=;
+	s=korg; t=1730896468;
+	bh=BSeKeT75Q6r68kNEmA6TLJ9l0xkfJsiF+NW7dGJr/EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtQHSoWCcKgZ1t3rf/GiX/50RIxoSv1IiWlXIuXqYKAuliURnAMyUSfftJzP/x3OO
-	 DT2dlDDmTZtpHXtkqzNnsH5LWnKA4y2kM4eRnZ0moP7ReQ3w5UNuXEo+j4208ew7R7
-	 eLNU2GNjIfxEUZRh04I19hVG74gH8hxwjEWGM9Wk=
+	b=wSZXnuKi2Ky9dBglY6W8qHMZcrs/Pj/4FKFFqHsuLF6GrfzRGajXkkC/ZPfEZYcNa
+	 1Rl95HmXYqhAbYCQNWcarkUwxJld6BWyEihGFqAvA2XiLc3CrFBWtEozK6jZb4In8L
+	 h94+e/vSaCd8Kmt5qFmye9LS5UdZvC5pZYJwn+PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Zhongjin <chenzhongjin@huawei.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/151] rcu-tasks: Initialize data to eliminate RCU-tasks/do_exit() deadlocks
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 213/245] arm64: dts: qcom: x1e80100: Fix up BAR spaces
 Date: Wed,  6 Nov 2024 13:04:26 +0100
-Message-ID: <20241106120311.000301310@linuxfoundation.org>
+Message-ID: <20241106120324.498382303@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 46faf9d8e1d52e4a91c382c6c72da6bd8e68297b ]
+commit 7af1418500124150f9fd24e1a5b9c288771df271 upstream.
 
-Holding a mutex across synchronize_rcu_tasks() and acquiring
-that same mutex in code called from do_exit() after its call to
-exit_tasks_rcu_start() but before its call to exit_tasks_rcu_stop()
-results in deadlock.  This is by design, because tasks that are far
-enough into do_exit() are no longer present on the tasks list, making
-it a bit difficult for RCU Tasks to find them, let alone wait on them
-to do a voluntary context switch.  However, such deadlocks are becoming
-more frequent.  In addition, lockdep currently does not detect such
-deadlocks and they can be difficult to reproduce.
+The 32-bit BAR spaces are reaching outside their assigned register
+regions. Shrink them to match their actual sizes.
 
-In addition, if a task voluntarily context switches during that time
-(for example, if it blocks acquiring a mutex), then this task is in an
-RCU Tasks quiescent state.  And with some adjustments, RCU Tasks could
-just as well take advantage of that fact.
+This resolves an issue where the regions overlap and one of the
+controllers won't come up, which can be seen in the log as:
 
-This commit therefore initializes the data structures that will be needed
-to rely on these quiescent states and to eliminate these deadlocks.
+  qcom-pcie 1c08000.pci: resource collision: [mem 0x7c300000-0x7fffffff] conflicts with 1c00000.pci dbi [mem 0x7e000000-0x7e000f1c]
 
-Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
+While at it, unify the style.
 
-Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
-Reported-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Yang Jihong <yangjihong1@huawei.com>
-Tested-by: Chen Zhongjin <chenzhongjin@huawei.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Stable-dep-of: fd70e9f1d85f ("rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Tested-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240710-topic-barman-v1-1-5f63fca8d0fc@linaro.org
+[bjorn: Added note about overlapping resource regions]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/init_task.c   | 1 +
- kernel/fork.c      | 1 +
- kernel/rcu/tasks.h | 2 ++
- 3 files changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/init/init_task.c b/init/init_task.c
-index ff6c4b9bfe6b1..fd9e27185e23a 100644
---- a/init/init_task.c
-+++ b/init/init_task.c
-@@ -152,6 +152,7 @@ struct task_struct init_task
- 	.rcu_tasks_holdout = false,
- 	.rcu_tasks_holdout_list = LIST_HEAD_INIT(init_task.rcu_tasks_holdout_list),
- 	.rcu_tasks_idle_cpu = -1,
-+	.rcu_tasks_exit_list = LIST_HEAD_INIT(init_task.rcu_tasks_exit_list),
- #endif
- #ifdef CONFIG_TASKS_TRACE_RCU
- 	.trc_reader_nesting = 0,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 32ffbc1c96bae..9098284720e38 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1973,6 +1973,7 @@ static inline void rcu_copy_process(struct task_struct *p)
- 	p->rcu_tasks_holdout = false;
- 	INIT_LIST_HEAD(&p->rcu_tasks_holdout_list);
- 	p->rcu_tasks_idle_cpu = -1;
-+	INIT_LIST_HEAD(&p->rcu_tasks_exit_list);
- #endif /* #ifdef CONFIG_TASKS_RCU */
- #ifdef CONFIG_TASKS_TRACE_RCU
- 	p->trc_reader_nesting = 0;
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 7ac3c8af075fc..4eae3b1bda70e 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -277,6 +277,8 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
- 		rtpcp->rtpp = rtp;
- 		if (!rtpcp->rtp_blkd_tasks.next)
- 			INIT_LIST_HEAD(&rtpcp->rtp_blkd_tasks);
-+		if (!rtpcp->rtp_exit_list.next)
-+			INIT_LIST_HEAD(&rtpcp->rtp_exit_list);
- 	}
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -2895,9 +2895,9 @@
+ 				    "mhi";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0 0x00000000 0 0x70200000 0 0x100000>,
+-				 <0x02000000 0 0x70300000 0 0x70300000 0 0x3d00000>;
+-			bus-range = <0 0xff>;
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x70200000 0x0 0x100000>,
++				 <0x02000000 0x0 0x70300000 0x0 0x70300000 0x0 0x1d00000>;
++			bus-range = <0x00 0xff>;
  
- 	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d.\n", rtp->name,
--- 
-2.43.0
-
+ 			dma-coherent;
+ 
+@@ -3017,8 +3017,8 @@
+ 				    "mhi";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			ranges = <0x01000000 0 0x00000000 0 0x7c200000 0 0x100000>,
+-				 <0x02000000 0 0x7c300000 0 0x7c300000 0 0x3d00000>;
++			ranges = <0x01000000 0x0 0x00000000 0x0 0x7c200000 0x0 0x100000>,
++				 <0x02000000 0x0 0x7c300000 0x0 0x7c300000 0x0 0x1d00000>;
+ 			bus-range = <0x00 0xff>;
+ 
+ 			dma-coherent;
 
 
 
