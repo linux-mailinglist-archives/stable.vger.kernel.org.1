@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFB19BEADF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:52:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A249BE830
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0496228364C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:52:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01AD1F20355
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78682003C4;
-	Wed,  6 Nov 2024 12:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6D1DF75C;
+	Wed,  6 Nov 2024 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr2+icHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMHzeHgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB902003AC;
-	Wed,  6 Nov 2024 12:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561361DF73C;
+	Wed,  6 Nov 2024 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896788; cv=none; b=ZwSay0VTmInTXSC+RvEtj9hz8y73zWr6LtE0Um6u5SLdwtygOxAO1UdAPpigHflluXr4x5a1xNBX945gPfqL0cBu/16dNFqeTza7+CgmC082f9SYX3QdfOP8o33zE04tha1G++f31/0/7B8beprgnj8YvgHAAXEC8xgbvyHbo+U=
+	t=1730895724; cv=none; b=e4Cn+KSD5h6EkW/jOiU5Wl0YjHWJl2XHeJT7teEFCvO39mSaMxsGQkX9pup3oEPfRqV+PAkhZ9/bSi9+IroYippRGWKXq1ldpaMADiCuYGtQMn56vWYh0SPOp2xFDgMGxto0NAz/k4yUO0kvZLD6lLldar5dCi54JHSoP2OJ/jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896788; c=relaxed/simple;
-	bh=KiWqeZCj6oTC8/tKLmKEEFgEbLLLy2c+uNmD+UjXOfg=;
+	s=arc-20240116; t=1730895724; c=relaxed/simple;
+	bh=05gSxXv3GUaZsdVN19SWpNELepyB0djIA2hQbRlzAxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgubAQQflxcBc4cZcOROI2gnd90+XuF8tuyHrjcpWGEUVYZSEG3w/b9jMLppGzTtpauZV8D3JL5U6+pZQClC7aW3/2qKg5Lfd/hlgq3tJeyoPBnhk+FaR5gZOfz4CaEw8SUg83omPazLlRty2fOtS5463Hk7d4SRGpcnpe/9C/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr2+icHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C1DC4CED6;
-	Wed,  6 Nov 2024 12:39:47 +0000 (UTC)
+	 MIME-Version; b=R/zJFm4gYSH3flnIypPu2U+YupzENVt51MSCrmckB720moTUJ3DJqm1Fl9iVSdnQzVZFu62UWX2ih9XO92yAw8VOONPp5fXIQudLJh7pztl3yvu83oFp6po/iba9EUy4dN+0OQQAxF3p2rkNNU8kkoSJEuWh1eCkZKISkMqNzZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMHzeHgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1BDC4CECD;
+	Wed,  6 Nov 2024 12:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896788;
-	bh=KiWqeZCj6oTC8/tKLmKEEFgEbLLLy2c+uNmD+UjXOfg=;
+	s=korg; t=1730895724;
+	bh=05gSxXv3GUaZsdVN19SWpNELepyB0djIA2hQbRlzAxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sr2+icHhOsRaLrAdWzLnhIGwuHPKjcADIvc/a8ij8VNwQLynhaQKzbrZ+oQX6lPSU
-	 kTCiYtp2mKZ1pykHi/BimefQl10XTsE3BKbGO5RE4q9zOdj0PD+c3wR26JSsmESW/P
-	 i1VuxfYfhYIXaQD4zTGhq247TSb/uCm7W7GXPy14=
+	b=HMHzeHgu74k8nhaiPRS/gw1QChuKScIN6DX+Ic5Mr+8Yn78vYgd2D4VC8hUkY9mU4
+	 qF0Qjwd9lbzt9Il36qlPOHk+EanbYe5CQJHXvwb1F5dTSg8OECcCxhrgxRKi8yUozO
+	 E1a9K+jNTfs+IE0FVlVhAqLdkGnzC2llsVh5q+jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/110] be2net: fix potential memory leak in be_xmit()
+Subject: [PATCH 4.19 314/350] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
 Date: Wed,  6 Nov 2024 13:04:02 +0100
-Message-ID: <20241106120304.192789759@linuxfoundation.org>
+Message-ID: <20241106120328.523314225@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit e4dd8bfe0f6a23acd305f9b892c00899089bd621 ]
+[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
 
-The be_xmit() returns NETDEV_TX_OK without freeing skb
-in case of be_xmit_enqueue() fails, add dev_kfree_skb_any() to fix it.
+If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
+and get the clk->rwsem read lock, so the error path should release
+the lock to make the lock balance and fput the clockid's fd to make
+the refcount balance and release the fd related resource.
 
-Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Message-ID: <20241015144802.12150-1-wanghai38@huawei.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+However the below commit left the error path locked behind resulting in
+unbalanced locking. Check timespec64_valid_strict() before
+get_clock_desc() to fix it, because the "ts" is not changed
+after that.
+
+Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+[pabeni@redhat.com: fixed commit message typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/time/posix-clock.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index edd4dd73b3e32..f018379d13509 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1382,10 +1382,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	be_get_wrb_params_from_skb(adapter, skb, &wrb_params);
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index cda319c7529e5..c1e5feff8185d 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -303,6 +303,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 	struct posix_clock_desc cd;
+ 	int err;
  
- 	wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
--	if (unlikely(!wrb_cnt)) {
--		dev_kfree_skb_any(skb);
--		goto drop;
--	}
-+	if (unlikely(!wrb_cnt))
-+		goto drop_skb;
- 
- 	/* if os2bmc is enabled and if the pkt is destined to bmc,
- 	 * enqueue the pkt a 2nd time with mgmt bit set.
-@@ -1394,7 +1392,7 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
- 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
- 		if (unlikely(!wrb_cnt))
--			goto drop;
-+			goto drop_skb;
- 		else
- 			skb_get(skb);
++	if (!timespec64_valid_strict(ts))
++		return -EINVAL;
++
+ 	err = get_clock_desc(id, &cd);
+ 	if (err)
+ 		return err;
+@@ -312,9 +315,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 		goto out;
  	}
-@@ -1408,6 +1406,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		be_xmit_flush(adapter, txo);
  
- 	return NETDEV_TX_OK;
-+drop_skb:
-+	dev_kfree_skb_any(skb);
- drop:
- 	tx_stats(txo)->tx_drv_drops++;
- 	/* Flush the already enqueued tx requests */
+-	if (!timespec64_valid_strict(ts))
+-		return -EINVAL;
+-
+ 	if (cd.clk->ops.clock_settime)
+ 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+ 	else
 -- 
 2.43.0
 
