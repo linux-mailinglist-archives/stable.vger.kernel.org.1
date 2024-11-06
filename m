@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7889BE99F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0909BEA87
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89807B23865
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D440B24982
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0D91DFE27;
-	Wed,  6 Nov 2024 12:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A0D1EE015;
+	Wed,  6 Nov 2024 12:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOXvRZWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSNVnLUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451C91DFE38;
-	Wed,  6 Nov 2024 12:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B241FAEFC;
+	Wed,  6 Nov 2024 12:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896540; cv=none; b=FOtea8HH8m+RNAcU9lk35fpClSgwviW0eELbxoMMUCVq4mT1yppuC5Tm+KCuPVnQmTYinNxIPGbeip0hIhxrWxe7F08MFpz0s/xdvpLdoosc1IQxEf8MczdjB795Om18Jmp1dVQLM9iZoAO+Og+fB9AoIQ1nu+VK/o/DkDIMjlo=
+	t=1730896711; cv=none; b=RuJenGRG8UPAG0Bgz5qqOWigdLQt47HP77kEjdHSSnqSofUZipVFztiq85GOaxD0bYu3MJu7A6cjFKBKQF9bF38x8WAxOZsvqwYXoO7mFQk4XxEEDmprVqM0E8TbRVFr/9wFGuYZTmoskApXiKsRdwi4YSzSwvG0YVIQpowvqG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896540; c=relaxed/simple;
-	bh=16Y44MslnunBM6i514PsS2eWfQJJIVDwbaqtMCiQBYw=;
+	s=arc-20240116; t=1730896711; c=relaxed/simple;
+	bh=Ybxs+/ZJeH3hZrZVgI2r+SoYkZha3CpfnpprRjfGugI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bu58cspEgbbgq+5f/RfmJP+4wrxLL0lvJTzL43T7bbIqAYhKuU8zuB4cru7RYKNJgIg3NkJ1D221QIR0vh1a24lu9mpC3AM9uIYzc1DdDAEhs+OZefaFzgcYH3YU/PUWOYbSU/oESvaoZgnMcP+6EaGZTED9ooGlKjxnM3Eq0bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOXvRZWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE16C4CECD;
-	Wed,  6 Nov 2024 12:35:39 +0000 (UTC)
+	 MIME-Version; b=hIwTmX3Xg9gRHhi3BHMUUsrl5v3286Gk8wkq5oIAwSYALawa8betKLFTQbw57+KqQFop+EJsvMfFgQf8uivPLkQHSATuUufXVlJXTueAcWAaARXXmIHFxSiKIdrR+goK2oYWRGkK9b5oQIU3LBjEMoqxF86VkgBaZgH4gV8ksPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSNVnLUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123ACC4CED6;
+	Wed,  6 Nov 2024 12:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896540;
-	bh=16Y44MslnunBM6i514PsS2eWfQJJIVDwbaqtMCiQBYw=;
+	s=korg; t=1730896711;
+	bh=Ybxs+/ZJeH3hZrZVgI2r+SoYkZha3CpfnpprRjfGugI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOXvRZWGcBR4AFabl6vz/rgaNWSHQLNEaapDuOrTPebEg1KlyFn8ZanVumvmeDUxD
-	 EmrFWFgB/k+o+58J44I0OIzjqcvi38ObrYS3frrmYbKdkUmRV6er2ySvLmNh35FkNp
-	 OWsd2V+vhDava3xI1QS9xr6j/wr+iwiJJ7xCMz2s=
+	b=QSNVnLUGuy1gLKCPTpUxEyVGBBMTJQzmDJfFxPKboat0l/4m/PfEgP9U161VhJ+cp
+	 RoxZYi8TWAvIm3YuscIt5h+DEtPJ3E4x34fsJAr3D0treEdh5j2y98Ads/Lv/TAY1U
+	 3potk0eusPit7yR/bA897z1Qap7y7usGFtjLQrpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 200/245] gpiolib: fix debugfs newline separators
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 047/110] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
 Date: Wed,  6 Nov 2024 13:04:13 +0100
-Message-ID: <20241106120324.167325739@linuxfoundation.org>
+Message-ID: <20241106120304.502928439@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit 3e8b7238b427e05498034c240451af5f5495afda ]
+commit f92f0a1b05698340836229d791b3ffecc71b265a upstream.
 
-The gpiolib debugfs interface exports a list of all gpio chips in a
-system and the state of their pins.
+While we do currently return -EFAULT in this case, it seems prudent to
+follow the behaviour of other syscalls like clone3. It seems quite
+unlikely that anyone depends on this error code being EFAULT, but we can
+always revert this if it turns out to be an issue.
 
-The gpio chip sections are supposed to be separated by a newline
-character, but a long-standing bug prevents the separator from
-being included when output is generated in multiple sessions, making the
-output inconsistent and hard to read.
-
-Make sure to only suppress the newline separator at the beginning of the
-file as intended.
-
-Fixes: f9c4a31f6150 ("gpiolib: Use seq_file's iterator interface")
-Cc: stable@vger.kernel.org	# 3.7
-Cc: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241028125000.24051-2-johan+linaro@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.6+
+Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/r/20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 2 ++
+ fs/open.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 148bcfbf98e02..1f522499c6fc5 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4834,6 +4834,8 @@ static void *gpiolib_seq_start(struct seq_file *s, loff_t *pos)
- 		return NULL;
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1270,6 +1270,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const
  
- 	s->private = priv;
-+	if (*pos > 0)
-+		priv->newline = true;
- 	priv->idx = srcu_read_lock(&gpio_devices_srcu);
+ 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
+ 		return -EINVAL;
++	if (unlikely(usize > PAGE_SIZE))
++		return -E2BIG;
  
- 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
--- 
-2.43.0
-
+ 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
+ 	if (err)
 
 
 
