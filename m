@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FDF9BEE24
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2B29BEE27
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FEEE2861B0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A11B28682E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7BA1F472B;
-	Wed,  6 Nov 2024 13:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147231F5821;
+	Wed,  6 Nov 2024 13:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td09aG37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdDijRPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2261DF738;
-	Wed,  6 Nov 2024 13:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67CD1F4298;
+	Wed,  6 Nov 2024 13:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898837; cv=none; b=YA9WkZsBEUc//nDOR74KCWHcZQA6itLhbqRsHqINvdx6AwtYUnudbh7vIEctI7Z4PtLSTfUwJ400b6RgbTUzI8LUEdKMjMrLwjmazCvooUUu/JG0cmVnq9SaflKb1H8iHVieFttXyJZatrvUOpf3N4DIBaxNjgWFTMbGg1UaeSM=
+	t=1730898842; cv=none; b=eD3WgBbjaVqyPMi3o11CuR/WHfMdZ0Gzk3jZ2C7VJSm+ACnszOE50yWMHohSTUsifToUWAv9jaWECM+7OP302lDh4OkYKO3rU8J20op0JAHeLflXzTm36jQGKM9016qoZ6d5JE4iYGofRvVNmPI3To76wcd4fl3XkOCxAb9wgI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898837; c=relaxed/simple;
-	bh=jzUmavmKupLtkrvDcvzleD5w7Gq0NRXxmwoqF3p+a8w=;
+	s=arc-20240116; t=1730898842; c=relaxed/simple;
+	bh=T4OIWkDdJGOP6NidLkGwOwl8O6aDMuvw5+an22rn9KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOkirddN1LBfGHu1taZb+8aK/rO7AKlgDrRvb6pYrQwvUJGm8G0FanRkFMJtnQU4Ef+LVqXFFkk/SPw/02LwNu1iZYZMzhGEH8WHbOL9H9DFrbDBl0pACf/J2xNTXWvDCEU5BqyP5dyFF+pKKcgp3uFdeLpeA2EXIX2pIyjkZNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td09aG37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85926C4CED5;
-	Wed,  6 Nov 2024 13:13:56 +0000 (UTC)
+	 MIME-Version; b=Ts48jcGdSJOYrBeH7DjDTAYjGtog0pkoNJ0zfpFkz+5IogmcvkFvS41r003POkHVnaUFiyaqFmrvNSMp8rTOtgffzp34xNSfiRbVn0FOpnKVxcaDhIuVDRjjtrUqp68I4oVFBoqZtah4wJVfkDT7KwKx6lhg1TeAtafywEfNKhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdDijRPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD20C4CECD;
+	Wed,  6 Nov 2024 13:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898836;
-	bh=jzUmavmKupLtkrvDcvzleD5w7Gq0NRXxmwoqF3p+a8w=;
+	s=korg; t=1730898842;
+	bh=T4OIWkDdJGOP6NidLkGwOwl8O6aDMuvw5+an22rn9KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Td09aG37orOePJ3j9j0LVoojm5tn3yDu0rDuyLRQ+KD+UJ2jc6TkDOviOd5yrnqS2
-	 hYkHe3NFB8bTBvNCXGW9XmbTuQeKHU23u4AnDXwpl8LFJFt3DYsIqfZHCBDlg+m/TC
-	 MLgUN8/y5sKCT0nloBEafRQcHEV/0H/xACDATiDo=
+	b=EdDijRPY7PHlfgGEIthYZNtLtyIGrL2VqBG5lISVqhBYb+zgMM0zPEyCiH7sowC3e
+	 xtIXwP/2sx+tGSfhaAZMqKnjlq/OI+EYRz5xRLUqy4EPJtm6sdQqcb2jyXd81W23Tp
+	 mFQVKvclRsFOJBYlt3fcevOQQ7FdejXYMzDTuEtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 372/462] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-Date: Wed,  6 Nov 2024 13:04:25 +0100
-Message-ID: <20241106120340.714649607@linuxfoundation.org>
+Subject: [PATCH 5.4 373/462] iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+Date: Wed,  6 Nov 2024 13:04:26 +0100
+Message-ID: <20241106120340.738474006@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -68,34 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
+commit eb143d05def52bc6d193e813018e5fa1a0e47c77 upstream.
 
 This driver makes use of triggered buffers, but does not select the
 required modules.
 
 Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
+Link: https://patch.msgid.link/20241003-iio-select-v1-3-67c0385197cd@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/proximity/Kconfig |    2 ++
+ drivers/iio/adc/Kconfig |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -49,6 +49,8 @@ config LIDAR_LITE_V2
- config MB1232
- 	tristate "MaxSonar I2CXL family ultrasonic sensors"
- 	depends on I2C
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -992,6 +992,8 @@ config TI_ADS8688
+ config TI_ADS124S08
+ 	tristate "Texas Instruments ADS124S08"
+ 	depends on SPI && OF
 +	select IIO_BUFFER
 +	select IIO_TRIGGERED_BUFFER
  	help
- 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
- 	  MaxBotix which have an i2c interface. It can be used to measure
+ 	  If you say yes here you get support for Texas Instruments ADS124S08
+ 	  and ADS124S06 ADC chips
 
 
 
