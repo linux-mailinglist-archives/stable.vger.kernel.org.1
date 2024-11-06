@@ -1,108 +1,180 @@
-Return-Path: <stable+bounces-90106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCEF9BE4EF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DA89BE502
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE8A2821DD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32B9281DFE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B7E1DE4D4;
-	Wed,  6 Nov 2024 10:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37D61DE3DC;
+	Wed,  6 Nov 2024 10:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ab0F7Azu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CVEkhLX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FCB193094
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 10:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EC91DE3CD
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 10:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730890555; cv=none; b=f4SXmRP0fBCT1/FjD1o0Y2eiFgGZ+CLgq45DV+hcrSeNfIlxVgNBIDthdWQt0OpipKXJp1rbEnQrQV7SaDeKPLc/r70zvYqH6QucRvZ22cwD/eu0WsbQkWxOvK/4hJsknP1/5iSZBbVawHcMWCBOHJ4hunxGRug/iF3ihOZsd1o=
+	t=1730890717; cv=none; b=a+TLrJtZ1xHQgghhPKsn85FD48pXnug5TP9lv+zdkWizb2Ts3RRihUIvh1s7ZU2mNhV1qTCLK97asoTi/gTvqnZZP+a0D1zyHJ00RtFtdsLLxrJwMxW/NB6vNXIDyZbRZyIEOwNa+e1BalMeYs/iNoS4q3KSo1NEwRxFG1oHTzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730890555; c=relaxed/simple;
-	bh=6q7sgTYxQRgA9QPt05CvYZG30tLcNj75A+bn169rni8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KLbyuGcYVkP1peIACR/PlhG674wCTcSV6TK9L2FYyKAY2KlgKRYv9uT8Cb/ml4UkvhFYyg/4q3IKkurVTygHn38AJg/Y2PPo9e42qGRGVR6UiBA8JZ0TkmhsVZrKLQoM0AKBDGxIBUR1mV3W9ZI1vuJaUEOfQXiKVMDf69WCFIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ab0F7Azu; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730890554; x=1762426554;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6q7sgTYxQRgA9QPt05CvYZG30tLcNj75A+bn169rni8=;
-  b=ab0F7Azu7bZK9bU4zEpXgsnNrSvERVpFVfks+ixykQuDyNaY2kmLhTpc
-   mjzZlvEniZwTYszvs1RY8RRO1x6zAwcwv/hDWJHqkIrbHVWHA0oDw7CC2
-   Mi8qTjN6if6W34M3tUBNXQ6u/zTNXGhMocU7NIW42tX80poYuEZQJ3c2f
-   SO4pHOTcNbx7aYJOSnYtDXn4uEaU08X7N2cBxHlBQO9htOw02IUI9o8CB
-   rP9EN6d4W/ZrWb8mQbvC/xfint2cl9ttEhSgo+dJ7qb/yAFZ+VDPUw3pQ
-   BbpYD83TKBDza5gETRaDP4V0Oabnh/B8ixXrngFvNbyJrCOzBLT3dwItK
-   g==;
-X-CSE-ConnectionGUID: +Ft+BkW7QZO2y3FRGEcdYA==
-X-CSE-MsgGUID: z1X57WAySOiDJmh3hf7dzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="42081292"
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="42081292"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 02:55:53 -0800
-X-CSE-ConnectionGUID: 5mr3BCv5TMqdlFbsYAnVMw==
-X-CSE-MsgGUID: PUt/0mEWSVSJNR/zWkcVuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="84114826"
-Received: from jlawryno.igk.intel.com ([10.91.220.59])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 02:55:51 -0800
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com,
-	quic_jhugo@quicinc.com,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org,
-	Karol Wachowski <karol.wachowski@linux.intel.com>
-Subject: [PATCH] accel/ivpu: Fix Qemu crash when running in passthrough
-Date: Wed,  6 Nov 2024 11:55:49 +0100
-Message-ID: <20241106105549.2757115-1-jacek.lawrynowicz@linux.intel.com>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1730890717; c=relaxed/simple;
+	bh=KL0o3DTpOE7FR+rdI6lipb6tAaehEKsnXkNsW5xps5s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nB0Ccezoq3NInV4h4chQ4XOpj2ZpebtV9iEEOqDTzcSRy6URxToNR85cm5SfghduyaKPLr7/J/Pv+QxAifIUgCJfkgcMDtEMCu8EwGPQHh1NIjmdHHcC8yyyY3Bjh/2QYLVs4uJPNEUS5oz6LivnSqiTaQFBbgSQtvpLRU352K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CVEkhLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D131BC4CED2;
+	Wed,  6 Nov 2024 10:58:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730890717;
+	bh=KL0o3DTpOE7FR+rdI6lipb6tAaehEKsnXkNsW5xps5s=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0CVEkhLXG4Hp3gf81HVDooTxBCUU0H0P7nqnaRKCqfAu1au7FHX/CcruQO0a4H276
+	 RhesMfVYFWUS5KXfIU6XHyQ+Ofh3d85PZ7OQcvG9Kkge5b3IuPh83Oi99LO034MRu9
+	 ZTaufPHWvLVEtb6WYCR9XiOYGbbAr4hU1bsnMFQU=
+Subject: FAILED: patch "[PATCH] block: fix queue limits checks in blk_rq_map_user_bvec for" failed to apply to 6.1-stable tree
+To: hch@lst.de,axboe@kernel.dk,john.g.garry@oracle.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 06 Nov 2024 11:58:19 +0100
+Message-ID: <2024110618-voicing-yield-48ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Restore PCI state after putting the NPU in D0.
-Restoring state before powering up the device caused a Qemu crash
-if NPU was running in passthrough mode and recovery was performed.
 
-Fixes: 3534eacbf101 ("accel/ivpu: Fix PCI D0 state entry in resume")
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
----
- drivers/accel/ivpu/ivpu_pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index 59d3170f5e354..5aac3d64045d3 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -73,8 +73,8 @@ static int ivpu_resume(struct ivpu_device *vdev)
- 	int ret;
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x be0e822bb3f5259c7f9424ba97e8175211288813
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110618-voicing-yield-48ff@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From be0e822bb3f5259c7f9424ba97e8175211288813 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Mon, 28 Oct 2024 10:07:48 +0100
+Subject: [PATCH] block: fix queue limits checks in blk_rq_map_user_bvec for
+ real
+
+blk_rq_map_user_bvec currently only has ad-hoc checks for queue limits,
+and the last fix to it enabled valid NVMe I/O to pass, but also allowed
+invalid one for drivers that set a max_segment_size or seg_boundary
+limit.
+
+Fix it once for all by using the bio_split_rw_at helper from the I/O
+path that indicates if and where a bio would be have to be split to
+adhere to the queue limits, and it returns a positive value, turn that
+into -EREMOTEIO to retry using the copy path.
+
+Fixes: 2ff949441802 ("block: fix sanity checks in blk_rq_map_user_bvec")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241028090840.446180-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 6ef2ec1f7d78..b5fd1d857461 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -561,55 +561,33 @@ EXPORT_SYMBOL(blk_rq_append_bio);
+ /* Prepare bio for passthrough IO given ITER_BVEC iter */
+ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+ {
+-	struct request_queue *q = rq->q;
+-	size_t nr_iter = iov_iter_count(iter);
+-	size_t nr_segs = iter->nr_segs;
+-	struct bio_vec *bvecs, *bvprvp = NULL;
+-	const struct queue_limits *lim = &q->limits;
+-	unsigned int nsegs = 0, bytes = 0;
++	const struct queue_limits *lim = &rq->q->limits;
++	unsigned int max_bytes = lim->max_hw_sectors << SECTOR_SHIFT;
++	unsigned int nsegs;
+ 	struct bio *bio;
+-	size_t i;
++	int ret;
  
- retry:
--	pci_restore_state(to_pci_dev(vdev->drm.dev));
- 	pci_set_power_state(to_pci_dev(vdev->drm.dev), PCI_D0);
-+	pci_restore_state(to_pci_dev(vdev->drm.dev));
+-	if (!nr_iter || (nr_iter >> SECTOR_SHIFT) > queue_max_hw_sectors(q))
+-		return -EINVAL;
+-	if (nr_segs > queue_max_segments(q))
++	if (!iov_iter_count(iter) || iov_iter_count(iter) > max_bytes)
+ 		return -EINVAL;
  
- 	ret = ivpu_hw_power_up(vdev);
- 	if (ret) {
--- 
-2.45.1
+-	/* no iovecs to alloc, as we already have a BVEC iterator */
++	/* reuse the bvecs from the iterator instead of allocating new ones */
+ 	bio = blk_rq_map_bio_alloc(rq, 0, GFP_KERNEL);
+-	if (bio == NULL)
++	if (!bio)
+ 		return -ENOMEM;
+-
+ 	bio_iov_bvec_set(bio, (struct iov_iter *)iter);
+-	blk_rq_bio_prep(rq, bio, nr_segs);
+ 
+-	/* loop to perform a bunch of sanity checks */
+-	bvecs = (struct bio_vec *)iter->bvec;
+-	for (i = 0; i < nr_segs; i++) {
+-		struct bio_vec *bv = &bvecs[i];
+-
+-		/*
+-		 * If the queue doesn't support SG gaps and adding this
+-		 * offset would create a gap, fallback to copy.
+-		 */
+-		if (bvprvp && bvec_gap_to_prev(lim, bvprvp, bv->bv_offset)) {
+-			blk_mq_map_bio_put(bio);
+-			return -EREMOTEIO;
+-		}
+-		/* check full condition */
+-		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
+-			goto put_bio;
+-		if (bytes + bv->bv_len > nr_iter)
+-			break;
+-
+-		nsegs++;
+-		bytes += bv->bv_len;
+-		bvprvp = bv;
++	/* check that the data layout matches the hardware restrictions */
++	ret = bio_split_rw_at(bio, lim, &nsegs, max_bytes);
++	if (ret) {
++		/* if we would have to split the bio, copy instead */
++		if (ret > 0)
++			ret = -EREMOTEIO;
++		blk_mq_map_bio_put(bio);
++		return ret;
+ 	}
++
++	blk_rq_bio_prep(rq, bio, nsegs);
+ 	return 0;
+-put_bio:
+-	blk_mq_map_bio_put(bio);
+-	return -EINVAL;
+ }
+ 
+ /**
 
 
