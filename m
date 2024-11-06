@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-90459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A8D9BE86F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075039BE9A0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5709F1C20B12
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0D9B2821C4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D91DF969;
-	Wed,  6 Nov 2024 12:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0711DFE10;
+	Wed,  6 Nov 2024 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZDoELmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/1/pdxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024751DF992;
-	Wed,  6 Nov 2024 12:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5DA1DFE33;
+	Wed,  6 Nov 2024 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895836; cv=none; b=j/7+7mcbTAwSoMHo7O75EnaWPqM028rOyUYbDv7cwZs9SFLdZ2nViWRk0RvNAEtLr7txgsd32TUI7DRzjoICayHS4G85CZWzpx0AdYUpYgKbMgGNd1XcnamfHTOrUbNPzc/x1SeI4u1FHsLu8rM5ftg1iIzWqxt95iEsj6ru/Lg=
+	t=1730896546; cv=none; b=jqFLqWMzDdevoULpFoZxhGWLxegSWSj48FINnxv1Z2iQp826z8CDKymI7YUZ9evRTMiNPKlhj9864W0Tu3wuHeyQugiDbG+vassW2k8CWOVpjfofBkDMitwqPA3m958Zm/FOsp2z+GEDimOGlWc75391PfsXnXx3mePDRLzE7Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895836; c=relaxed/simple;
-	bh=Tq4Ze5icao/nDFokhyGb2R3CDxVC5US75BU4+4FQcbI=;
+	s=arc-20240116; t=1730896546; c=relaxed/simple;
+	bh=YuqQFOaGOAiVHjM6S13nrwdRk4GfdWKiDQh+Wrba0SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6Q7zp/0O2LmdUKRprJaCMkvr7eALcN4BTl4BF/Bub6OlyHF4Vp+udJeUhDARkWzzvjuPKObZQHhqJg0M4cXzWNAFWGJmcvYhr6obNmkFZHwy7Lb44tuwsKCcHY4N16kGR7k4Kj2QQtrdcK/IM4ZgQGwFMh2ebMiqXDViQedHW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZDoELmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503D3C4CECD;
-	Wed,  6 Nov 2024 12:23:55 +0000 (UTC)
+	 MIME-Version; b=Stv2YxNx55qlT8f0J+Yq3GzLIC1+ql7cTqh5JBwHMzVN1C5FyHYi0gRW6c37CxX1XdwfM7Q9YESYPGDNIsVH4WgukBmcUs2CumKnaFxCICH0pz2TdXkPFbjQT6PGf51w7GXazlX6SaCFv1iQlevZGIM3OhOeM3WlEocupexlS/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/1/pdxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DCFC4CECD;
+	Wed,  6 Nov 2024 12:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895835;
-	bh=Tq4Ze5icao/nDFokhyGb2R3CDxVC5US75BU4+4FQcbI=;
+	s=korg; t=1730896546;
+	bh=YuqQFOaGOAiVHjM6S13nrwdRk4GfdWKiDQh+Wrba0SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZDoELmgC65YreV367vB8VtHKdiMLEsDKPsmI6VlIkBdX2FUi7SlWpjficOjBCyMm
-	 wnbjandkMImVMLZiwd5+PS+nE4EZzV8TKiHNAsHicSyL6kYdkmCqyNboqyiv+yTH9j
-	 QSAgfRJkh4aXKAkHB40qCanVHaf20r66FO/aJoKc=
+	b=C/1/pdxJNHYGmvGuGOgLSiMb2svsg9C7jddTaVJxHRt4d7uB+qZzF/0sNAgpStoBc
+	 4GwuuosKquvdH1MhVa6qNz1NvLWBDOwc53oevlnDYDUBDVf0I1PG4t+rZD4aLouYdM
+	 MuluN+C4oxdE0bBAzYk2Jilb/DdtFKMOrMoFi6gI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Price <gourry@gourry.net>,
+	Yang Shi <shy828301@gmail.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Wei Xu <weixugc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 327/350] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
+Subject: [PATCH 6.11 202/245] vmscan,migrate: fix page count imbalance on node stats when demoting pages
 Date: Wed,  6 Nov 2024 13:04:15 +0100
-Message-ID: <20241106120328.808609801@linuxfoundation.org>
+Message-ID: <20241106120324.219898278@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +69,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Gregory Price <gourry@gourry.net>
 
-[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
+[ Upstream commit 35e41024c4c2b02ef8207f61b9004f6956cf037b ]
 
-Sync iterator conditions with ieee80211_iter_keys_rcu.
+When numa balancing is enabled with demotion, vmscan will call
+migrate_pages when shrinking LRUs.  migrate_pages will decrement the
+the node's isolated page count, leading to an imbalanced count when
+invoked from (MG)LRU code.
 
-Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The result is dmesg output like such:
+
+$ cat /proc/sys/vm/stat_refresh
+
+[77383.088417] vmstat_refresh: nr_isolated_anon -103212
+[77383.088417] vmstat_refresh: nr_isolated_file -899642
+
+This negative value may impact compaction and reclaim throttling.
+
+The following path produces the decrement:
+
+shrink_folio_list
+  demote_folio_list
+    migrate_pages
+      migrate_pages_batch
+        migrate_folio_move
+          migrate_folio_done
+            mod_node_page_state(-ve) <- decrement
+
+This path happens for SUCCESSFUL migrations, not failures.  Typically
+callers to migrate_pages are required to handle putback/accounting for
+failures, but this is already handled in the shrink code.
+
+When accounting for migrations, instead do not decrement the count when
+the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
+is the only source of MR_DEMOTION.
+
+Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
+Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 7fc55177db847..bb09a1ec258d8 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -777,6 +777,26 @@ void ieee80211_reset_crypto_tx_tailroom(struct ieee80211_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->key_mtx);
- }
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 368ab3878fa6e..75b858bd6aa58 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1099,7 +1099,7 @@ static void migrate_folio_done(struct folio *src,
+ 	 * not accounted to NR_ISOLATED_*. They can be recognized
+ 	 * as __folio_test_movable
+ 	 */
+-	if (likely(!__folio_test_movable(src)))
++	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
+ 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
+ 				    folio_is_file_lru(src), -folio_nr_pages(src));
  
-+static void
-+ieee80211_key_iter(struct ieee80211_hw *hw,
-+		   struct ieee80211_vif *vif,
-+		   struct ieee80211_key *key,
-+		   void (*iter)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				struct ieee80211_key_conf *key,
-+				void *data),
-+		   void *iter_data)
-+{
-+	/* skip keys of station in removal process */
-+	if (key->sta && key->sta->removed)
-+		return;
-+	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
-+		return;
-+	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
-+	     &key->conf, iter_data);
-+}
-+
- void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 			 struct ieee80211_vif *vif,
- 			 void (*iter)(struct ieee80211_hw *hw,
-@@ -796,16 +816,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
--			iter(hw, &sdata->vif,
--			     key->sta ? &key->sta->sta : NULL,
--			     &key->conf, iter_data);
-+			ieee80211_key_iter(hw, vif, key, iter, iter_data);
- 	} else {
- 		list_for_each_entry(sdata, &local->interfaces, list)
- 			list_for_each_entry_safe(key, tmp,
- 						 &sdata->key_list, list)
--				iter(hw, &sdata->vif,
--				     key->sta ? &key->sta->sta : NULL,
--				     &key->conf, iter_data);
-+				ieee80211_key_iter(hw, &sdata->vif, key,
-+						   iter, iter_data);
- 	}
- 	mutex_unlock(&local->key_mtx);
- }
-@@ -823,17 +840,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
- {
- 	struct ieee80211_key *key;
- 
--	list_for_each_entry_rcu(key, &sdata->key_list, list) {
--		/* skip keys of station in removal process */
--		if (key->sta && key->sta->removed)
--			continue;
--		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
--			continue;
--
--		iter(hw, &sdata->vif,
--		     key->sta ? &key->sta->sta : NULL,
--		     &key->conf, iter_data);
--	}
-+	list_for_each_entry_rcu(key, &sdata->key_list, list)
-+		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
- }
- 
- void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
