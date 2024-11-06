@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537C19BE904
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261479BE7E1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854A31C2170D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B046FB25459
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52911DF726;
-	Wed,  6 Nov 2024 12:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0D21DF991;
+	Wed,  6 Nov 2024 12:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSNot3uV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2/mwYp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9208D1D2784;
-	Wed,  6 Nov 2024 12:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD961DF738;
+	Wed,  6 Nov 2024 12:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896179; cv=none; b=gICRI+Matks0McmGROWvVBdBB6P0mhwXyOr3XDWIi0MfcQBqDJ2WbbC5Jm5J04fd/OucihqLekmrrjSwUUCIvimT1R8PPtNmcbL4VqmVosQBC9CssknxTIBDvlTixSppHQa8dyqqMGOIiHpT8OWsNJXLgkoUrQFF1syjyknbfWs=
+	t=1730895508; cv=none; b=BNtW7vgyaD8pTIkEXhHMrCidsZUEoM2tQ2GryFa8xc4Vm7wZCvmjgP5eVaDA/eeATaTd3S33Br/1z7wmSTOKnDL+P6oPnBzPJ6MghoyiSzwNNLMflki5cxX5Fj8mDbSJWRlxMwlsPdRfzb4RfGMQBU4/bFxW5DhVGlVRwq48MgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896179; c=relaxed/simple;
-	bh=kOw/woW92YIl1ImYUVK3S5Pevdu9UZAPeZUSSrb5ync=;
+	s=arc-20240116; t=1730895508; c=relaxed/simple;
+	bh=QdzHY29gaoVRB6/WK4hdp7st9Qzhgm/HoR+d8i9uQlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUYLFf12WhivYEj9DZhJMC9bC/F+Z0jjHX2lm2lu4ukRbJyWURgt0hBSW3kivUTbb/MepS0OeCKhdDSvg/dc+d12kiES2qo5gA8tM2cAjcQL5OXkyWMo6CBLEUedJJkYLQXTSCXHN6Sm2rT9PWNomikorX6/Qouf/w0AJaYF0qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSNot3uV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF6C4CECD;
-	Wed,  6 Nov 2024 12:29:38 +0000 (UTC)
+	 MIME-Version; b=Y7VE2b3MwLMent3UutU9S6yEA1U9KVtGLLa4aovQUZxKCPwngjeNAYIMhko1ctHWZmWdlMhJx2MvH9csq7g1OA1D8frJzMkXaAzHdPfxfrykGkapqXrlpOgV2Z+4rEMkrDZt2djio7Ik7eQtlD+NDME2/3gJ9VYv4sSY4yogCz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2/mwYp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4603C4CECD;
+	Wed,  6 Nov 2024 12:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896179;
-	bh=kOw/woW92YIl1ImYUVK3S5Pevdu9UZAPeZUSSrb5ync=;
+	s=korg; t=1730895508;
+	bh=QdzHY29gaoVRB6/WK4hdp7st9Qzhgm/HoR+d8i9uQlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSNot3uV4h3tgrX3CiIYTIcnDl8tTjb4PK8PSVFmkPhhbBBijM7f/8abrOfiGvuDX
-	 GykK1YsaoI0mtNQZ1TaGJm09naee36TA3i9uMfGVbbxXAAbK4cR8WXUaCzJWnb1AGo
-	 xDt/oXW7XgsVHqRjX04RBeJXfrMy393sgLwZJLxY=
+	b=Y2/mwYp298ryII5SRNHg5vkeIknLXoBx4OLPx7VMAntskHe5auF2ehqvktgcZzqaZ
+	 cB56SeE/Eh7Qr2l78ayHN8etDu16tgVc4hcgwaFQunkdbOQPshL49IGM8V5Iqr+idc
+	 h+cUbpONdSb++24SDHTJYbOEHWh7QgLLsnImJWpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.11 115/245] phy: qcom: qmp-usbc: fix NULL-deref on runtime suspend
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 240/350] clk: bcm: bcm53573: fix OF node leak in init
 Date: Wed,  6 Nov 2024 13:02:48 +0100
-Message-ID: <20241106120322.049644649@linuxfoundation.org>
+Message-ID: <20241106120326.876572855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 34c21f94fa1e147a19b54b6adf0c93a623b70dd8 upstream.
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-removed most users of the platform device driver data from the
-qcom-qmp-usb driver, but mistakenly also removed the initialisation
-despite the data still being used in the runtime PM callbacks. This bug
-was later reproduced when the driver was copied to create the qmp-usbc
-driver.
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-Restore the driver data initialisation at probe to avoid a NULL-pointer
-dereference on runtime suspend.
-
-Apparently no one uses runtime PM, which currently needs to be enabled
-manually through sysfs, with these drivers.
-
-Fixes: 19281571a4d5 ("phy: qcom: qmp-usb: split USB-C PHY driver")
-Cc: stable@vger.kernel.org	# 6.9
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240911115253.10920-4-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usbc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
-@@ -1049,6 +1049,7 @@ static int qmp_usbc_probe(struct platfor
- 		return -ENOMEM;
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 36eb3716ffb00..3bc6837f844db 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -115,7 +115,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
+ 	}
  
- 	qmp->dev = dev;
-+	dev_set_drvdata(dev, qmp);
- 
- 	qmp->orientation = TYPEC_ORIENTATION_NORMAL;
- 
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
+-- 
+2.43.0
+
 
 
 
