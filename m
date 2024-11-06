@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-91045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDD59BEC2E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFE79BEB05
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A46C41F24B74
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DB81F25F30
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23DD1F4732;
-	Wed,  6 Nov 2024 12:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CA71E1C0B;
+	Wed,  6 Nov 2024 12:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQZ/dgsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgYZRu9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94811E1037;
-	Wed,  6 Nov 2024 12:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9D4202648;
+	Wed,  6 Nov 2024 12:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897577; cv=none; b=HlUQY97cDePI+b9HF3TcsinfbVd5f69BjJH7/xPEVzhxHz+FcdOrEHkHCWucxhqK0NVIPG9Ym47v9C5cT+2k3Yjgs8ghzm400kpbhmCCf7dj7s3QgM+psCW6umd4/7HluNlvYBUjlwHzkbgfyMR+KJ1AcdRnq5/p9liVfh2F/sU=
+	t=1730896815; cv=none; b=GdpphIrwktG1JdYUtWkkx3X+QpwV4wmWiMzT//Va0CoS5AfTyjv0QqFbxV5rK/wVtkXmZea0yaGDLtwosietrBq5IQChD9JFdd73iWZaiVue/IYaaSE8LLiAJZrHf72TAYrolyJXK3OaYApnf6pphKnuvpUQqyoz4UYzcOUseBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897577; c=relaxed/simple;
-	bh=4m4WENZWwyr01K6itWog8klejy0MOmEL3nO4ZjXH2Mk=;
+	s=arc-20240116; t=1730896815; c=relaxed/simple;
+	bh=crMCxQ2Y6rpRSBCPGfLq6Dlik+Ad2GMtZfOBMjVhNbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJFJiI9Jp81RhCeif+pzes7TE4qpLlfsEtBwBRmp8+aIjajmPIxmq8guWU+MmgggJTgHSbczFfEn8jPmjyvRnhIRBYF2OZ93VYuXKjM/WlI6NsP4bF9DZhKPsAeNnzdVWjXzRxNeYmERkXhfgDlBMqRrzmXVkH0AnW5y/1AaSu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQZ/dgsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3132AC4CECD;
-	Wed,  6 Nov 2024 12:52:57 +0000 (UTC)
+	 MIME-Version; b=bBxyzbZV65NT9HIdKF5QNuNgN139MPRAst3SDCmIJoY8jei7QSva4RmkyeQL3CH1SnVh8vVDlA/Jj73u6nJjvwPD8XWgEz/dCaED/L9VxtxYPa2nIo9tSfXmMCi9/Kl79zHvC/HHiKt4LG8KCUt9XpI5W5cJqvlZaf0ojEO1byQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgYZRu9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AFBC4CED8;
+	Wed,  6 Nov 2024 12:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897577;
-	bh=4m4WENZWwyr01K6itWog8klejy0MOmEL3nO4ZjXH2Mk=;
+	s=korg; t=1730896815;
+	bh=crMCxQ2Y6rpRSBCPGfLq6Dlik+Ad2GMtZfOBMjVhNbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQZ/dgsBojDo/jPkvy9EUFCmBwry1EK5fW0p1bMvUIbtrl+oktm13Ilb38uEX5HZJ
-	 C0+rB60cNMDwWMbis/hnyqH1YJA/TkI2LGIo+kmzt0TlRtrpHeTzVwxMF5AGHWFTI0
-	 XA6b7fwQYCVn13vwgcGPoS6z5u7BXS5m0i6wQ4Yc=
+	b=ZgYZRu9ZyDndZkAXQ5dvaMGIzEg5wEg1Qj6mn8HA9tsW+ginDrJl7emXQXLTdG0Kl
+	 I2CBRkT53fYqFrVq69IrPR/rxAFSME6YylO2TLyTYA9cxU9tfF4RP+evuKySHzHRG9
+	 QbgKFKdpKoC5xVmAZWDVGO4t2KPetmX9OJpsgrK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 100/151] iio: light: veml6030: fix microlux value calculation
+	Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 082/110] net: amd: mvme147: Fix probe banner message
 Date: Wed,  6 Nov 2024 13:04:48 +0100
-Message-ID: <20241106120311.625985643@linuxfoundation.org>
+Message-ID: <20241106120305.452167963@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-commit 63dd163cd61dda6f38343776b42331cc6b7e56e0 upstream.
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-The raw value conversion to obtain a measurement in lux as
-INT_PLUS_MICRO does not calculate the decimal part properly to display
-it as micro (in this case microlux). It only calculates the module to
-obtain the decimal part from a resolution that is 10000 times the
-provided in the datasheet (0.5376 lux/cnt for the veml6030). The
-resulting value must still be multiplied by 100 to make it micro.
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-This bug was introduced with the original implementation of the driver.
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
 
-Only the illuminance channel is fixed becuase the scale is non sensical
-for the intensity channels anyway.
-
-Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/veml6030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -522,7 +522,7 @@ static int veml6030_read_raw(struct iio_
- 			}
- 			if (mask == IIO_CHAN_INFO_PROCESSED) {
- 				*val = (reg * data->cur_resolution) / 10000;
--				*val2 = (reg * data->cur_resolution) % 10000;
-+				*val2 = (reg * data->cur_resolution) % 10000 * 100;
- 				return IIO_VAL_INT_PLUS_MICRO;
- 			}
- 			*val = reg;
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index 3f2e4cdd0b83e..133fe0f1166b0 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -106,10 +106,6 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 	address = address >> 8;
+ 	dev->dev_addr[3] = address&0xff;
+ 
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -139,6 +135,9 @@ struct net_device * __init mvme147lance_probe(int unit)
+ 		return ERR_PTR(err);
+ 	}
+ 
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
