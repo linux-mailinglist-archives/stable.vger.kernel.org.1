@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-91590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8679BEEAE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9008A9BEE6C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E90282F3D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E361F258E6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D6F1DF97A;
-	Wed,  6 Nov 2024 13:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0871E04BF;
+	Wed,  6 Nov 2024 13:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PU2BDPgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSZQIZZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E0E1DFE27;
-	Wed,  6 Nov 2024 13:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9441CC14B;
+	Wed,  6 Nov 2024 13:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899181; cv=none; b=qkFMlwd0Mm685/EUB6qlENGHPDTiIup0+X6chLbt7hWuVR+/AWjY/E2yKRmHEf9D/qZvkEe9DnhtQ4Pa0YzO2qqLOVySx4Xle9Pn8ThyI0miDYZsW1pW4snhFgwebyiMWpzTSsdDXnQ535RdlNomqYGb6z7IrdKnSCN8tEO4Gmw=
+	t=1730899026; cv=none; b=QJBWg6BgoaL+V4xrQ0dEnyBONb0C0oO2uCuUrTFqzZ4ybn2OMrMw2voUF0nU6VOis2taEdmYMab3AA6HmnZwPjg5uawEST6t9oERZxdO8LmWHwrob6YMa/PRa3lhiCxwCgAbWdPZXDOHnB6sXZB9Yq0n92DUBfTbAjcmN0MlcxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899181; c=relaxed/simple;
-	bh=gifWxZMjB5g7JIh7aC62pe9xmUDOI6lojO3nCIU+Tlk=;
+	s=arc-20240116; t=1730899026; c=relaxed/simple;
+	bh=Cn3c4cwij1IfXRgAF1bbdsvrVaa0GTBXL5Lrf/YpUnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TdcbwIPRWqSJ92ZaVUxG6nrIm1bi9wrb/PcTDQQY5f5seT7ydwoJfD8zx2eMkX21jdiuU/+N1wwUXLFszETo+wlR66WhWsr92x/PvQpu/ScWWiBlGgaANhcz52aPd1LETcDpx7dBG5daHHmZvslrOdlnsmuNkqHSnVQstRJ40uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PU2BDPgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25649C4CECD;
-	Wed,  6 Nov 2024 13:19:39 +0000 (UTC)
+	 MIME-Version; b=iz6eLpFVjISyCQJqgZI+/Eb6WwhDy+q7d3sU/ou8Jdfb4nJ4FPzvueRLQxGZnoW9YknhVs1rmTWAaoqZbhlueDCeCKbh91OowPBl38RLMuyi6kRLnvxU491r2rm+0jiX7bUwCbFldBtjl+RzYqvFORq8IkEfAkJmMo/KDRPaGzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSZQIZZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D2EC4CED5;
+	Wed,  6 Nov 2024 13:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899180;
-	bh=gifWxZMjB5g7JIh7aC62pe9xmUDOI6lojO3nCIU+Tlk=;
+	s=korg; t=1730899026;
+	bh=Cn3c4cwij1IfXRgAF1bbdsvrVaa0GTBXL5Lrf/YpUnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PU2BDPgGebndz0SRrOuzOubQbjoKNhD+f40IX8UreBT/nsW8Bnp6yjgJl3avKopNa
-	 6WSQevUCjFHyO7UL648F1sLsgU7XCgELHiv9J9sitaI0ppk3vDDETeUmj3rqBVRwUN
-	 aEdtRay2ACBSl9R3Efr0jjQWcMAxQVX8K6y3dvAU=
+	b=vSZQIZZQM4F3BnIHQt6ATMuVgA0/0gLhnweACpVQLSdikmvcfOxoy7A3Wp5Dshb5f
+	 Ti+wFoigMMvdFA7Ysc6TmiC9CZxzDuwhCdFlgpQ1UO+DD+C5lWGEasiiTJy7C8I94l
+	 yo0dBuLPS01CDZYU/4LeoVMyoPYeeYt1Cz3p2K1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Willem de Bruijn <willemb@google.com>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/73] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
+Subject: [PATCH 5.4 437/462] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
 Date: Wed,  6 Nov 2024 13:05:30 +0100
-Message-ID: <20241106120300.746553511@linuxfoundation.org>
+Message-ID: <20241106120342.297207814@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
+[ Upstream commit 2e95c4384438adeaa772caa560244b1a2efef816 ]
 
-As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
-can only checksum TCP and UDP over IPv6 if the IP header does not
-contains extension.
+In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
+to be either root or ingress. This assumption is bogus since it's valid
+to create egress qdiscs with major handle ffff:
+Budimir Markovic found that for qdiscs like DRR that maintain an active
+class list, it will cause a UAF with a dangling class pointer.
 
-This is enforced for UDP packets emitted from user-space to an IPv6
-address as they go through ip6_make_skb(), which calls
-__ip6_append_data() where a check is done on the header size before
-setting CHECKSUM_PARTIAL.
+In 066a3b5b2346, the concern was to avoid iterating over the ingress
+qdisc since its parent is itself. The proper fix is to stop when parent
+TC_H_ROOT is reached because the only way to retrieve ingress is when a
+hierarchy which does not contain a ffff: major handle call into
+qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
 
-But the introduction of UDP encapsulation with fou6 added a code-path
-where it is possible to get an skb with a partial UDP checksum and an
-IPv6 header with extension:
-* fou6 adds a UDP header with a partial checksum if the inner packet
-does not contains a valid checksum.
-* ip6_tunnel adds an IPv6 header with a destination option extension
-header if encap_limit is non-zero (the default value is 4).
+In the scenario where major ffff: is an egress qdisc in any of the tree
+levels, the updates will also propagate to TC_H_ROOT, which then the
+iteration must stop.
 
-The thread linked below describes in more details how to reproduce the
-problem with GRE-in-UDP tunnel.
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Add a check on the network header size in skb_csum_hwoffload_help() to
-make sure no IPv6 packet with extension header is handed to a network
-device with NETIF_F_IPV6_CSUM capability.
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
-Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
+Link: https://patch.msgid.link/20241024165547.418570-1-jhs@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8a22ce15b7f53..15ed4a79be46f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3668,6 +3668,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return 0;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 069d0d8a89397..b8dc03a7487e3 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -770,7 +770,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 	drops = max_t(int, n, 0);
+ 	rcu_read_lock();
+ 	while ((parentid = sch->parent)) {
+-		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
++		if (parentid == TC_H_ROOT)
+ 			break;
  
- 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-+		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+			goto sw_checksum;
- 		switch (skb->csum_offset) {
- 		case offsetof(struct tcphdr, check):
- 		case offsetof(struct udphdr, check):
-@@ -3675,6 +3678,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		}
- 	}
- 
-+sw_checksum:
- 	return skb_checksum_help(skb);
- }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
+ 		if (sch->flags & TCQ_F_NOPARENT)
 -- 
 2.43.0
 
