@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCDF9BEC5C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5012A9BEBC0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E55F2285BDD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817D61C237D2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337C31FBCA4;
-	Wed,  6 Nov 2024 12:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922AF1F9426;
+	Wed,  6 Nov 2024 12:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3lTQd87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBCpDG9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAC21FBC9A;
-	Wed,  6 Nov 2024 12:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6DC1E04B3;
+	Wed,  6 Nov 2024 12:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897691; cv=none; b=g52d/4PA8+PqCVoSQEqo3k5OJHDqI2Ujhp8ysgdfV9S2EkuNfn5ZweqvSUDYhhn2uHXCPznv8dVLfQkothO0A3WowJ/mRCpThr3y4RHZN+/Nma9aiRfA6xDDdf1uhcf26SD1DyYZCLt4p4qjb4SyFsCsPa/KtdMPqsImzT+SS1Y=
+	t=1730897271; cv=none; b=PcHTwiEDzvKs/qK9HnCTossb04pl02/dUHKkmcpsS2Ff0l5qo+gS0wAIMdy7uaoQ95KJUvF0Q7SYku+/Kq+7voqTpOQdOtRDckiB91TH6en8idX8GF2ZpJcurw/0P4902ztbMZbry5gLIzLMFP1XvxCF40nodXHYPKY9xo129bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897691; c=relaxed/simple;
-	bh=KgYgwRIW87RpGFZjnm3SBedogxjkbj+vIXNA8G6SvOk=;
+	s=arc-20240116; t=1730897271; c=relaxed/simple;
+	bh=Ndh/kAr+ECu9nr3tPYyIdj6Gh/qk5WiWJMGjikRSOZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSrJo5UDCVe7SElDTUhd/FYajMOGTXJ20xR/gC22a+8yxBkfkfONA/XZtvYjDoYMTirDdPp7uMYjvlq8VZpU9HgmhpMwjjDSqE0zKgL5QhO+gu0Yj/Tnnx9iK8fW3vJkKlpUlmTXScYmSpqeaNNfV+7CyZ1UkDgTGGuzBetJgks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3lTQd87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615D2C4CECD;
-	Wed,  6 Nov 2024 12:54:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j7+Xza6KkgkFRCJvdS0zLe5qrY/58XXlss49SYj50zeFee82zTpiMrsOblY64i17ojod1P5erR634XbGU0A+lDrtc0ZfnDCeTQoAu8Z2wyr7zM4fqa7Hmf4nssmf7m10nFpDs0Ix6LI1V2aKLQPiEnkDa5ziBbRWBeSpcIkM6y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBCpDG9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECFAC4CECD;
+	Wed,  6 Nov 2024 12:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897690;
-	bh=KgYgwRIW87RpGFZjnm3SBedogxjkbj+vIXNA8G6SvOk=;
+	s=korg; t=1730897271;
+	bh=Ndh/kAr+ECu9nr3tPYyIdj6Gh/qk5WiWJMGjikRSOZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3lTQd87ikRGwFi5lIpH2EdG4in9NaNukFTgEkN1//OWV9C2MAFdKbDbW2DmHZTjY
-	 BCja9CQgwzoKvX7ngd0FzlZWItYF0iHOgmFvcPstEWnNhRvOchbQopTMqVi14niVqH
-	 vEFHR3PQRBls+16CvLocfoqUWjUFQXXobcIOzvYs=
+	b=FBCpDG9KeZ8Tpl4D5rgXcGoAEzn56rS9Pk3GWvqHcJ0qmUr5RrU8hLmykMNA3jeqr
+	 oAD9hrD0UB5zjSg9HSsyvc+1nsKUzx0m0vNrdGD69Ku3XB91R+fc/NAKaRhc2C73Vk
+	 C7YHaMLjnO+GfwFtQcArAK2+GizzjY59UhgNdCAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 138/151] arm64: dts: imx8ulp: correct the flexspi compatible string
+	"Huang, Ying" <ying.huang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 125/126] mm: avoid gcc complaint about pointer casting
 Date: Wed,  6 Nov 2024 13:05:26 +0100
-Message-ID: <20241106120312.652611126@linuxfoundation.org>
+Message-ID: <20241106120309.434275095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 409dc5196d5b6eb67468a06bf4d2d07d7225a67b upstream.
+commit e77d587a2c04e82c6a0dffa4a32c874a4029385d upstream.
 
-The flexspi on imx8ulp only has 16 LUTs, and imx8mm flexspi has
-32 LUTs, so correct the compatible string here, otherwise will
-meet below error:
+The migration code ends up temporarily stashing information of the wrong
+type in unused fields of the newly allocated destination folio.  That
+all works fine, but gcc does complain about the pointer type mis-use:
 
-[    1.119072] ------------[ cut here ]------------
-[    1.123926] WARNING: CPU: 0 PID: 1 at drivers/spi/spi-nxp-fspi.c:855 nxp_fspi_exec_op+0xb04/0xb64
-[    1.133239] Modules linked in:
-[    1.136448] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc6-next-20240902-00001-g131bf9439dd9 #69
-[    1.146821] Hardware name: NXP i.MX8ULP EVK (DT)
-[    1.151647] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    1.158931] pc : nxp_fspi_exec_op+0xb04/0xb64
-[    1.163496] lr : nxp_fspi_exec_op+0xa34/0xb64
-[    1.168060] sp : ffff80008002b2a0
-[    1.171526] x29: ffff80008002b2d0 x28: 0000000000000000 x27: 0000000000000000
-[    1.179002] x26: ffff2eb645542580 x25: ffff800080610014 x24: ffff800080610000
-[    1.186480] x23: ffff2eb645548080 x22: 0000000000000006 x21: ffff2eb6455425e0
-[    1.193956] x20: 0000000000000000 x19: ffff80008002b5e0 x18: ffffffffffffffff
-[    1.201432] x17: ffff2eb644467508 x16: 0000000000000138 x15: 0000000000000002
-[    1.208907] x14: 0000000000000000 x13: ffff2eb6400d8080 x12: 00000000ffffff00
-[    1.216378] x11: 0000000000000000 x10: ffff2eb6400d8080 x9 : ffff2eb697adca80
-[    1.223850] x8 : ffff2eb697ad3cc0 x7 : 0000000100000000 x6 : 0000000000000001
-[    1.231324] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000000007a6
-[    1.238795] x2 : 0000000000000000 x1 : 00000000000001ce x0 : 00000000ffffff92
-[    1.246267] Call trace:
-[    1.248824]  nxp_fspi_exec_op+0xb04/0xb64
-[    1.253031]  spi_mem_exec_op+0x3a0/0x430
-[    1.257139]  spi_nor_read_id+0x80/0xcc
-[    1.261065]  spi_nor_scan+0x1ec/0xf10
-[    1.264901]  spi_nor_probe+0x108/0x2fc
-[    1.268828]  spi_mem_probe+0x6c/0xbc
-[    1.272574]  spi_probe+0x84/0xe4
-[    1.275958]  really_probe+0xbc/0x29c
-[    1.279713]  __driver_probe_device+0x78/0x12c
-[    1.284277]  driver_probe_device+0xd8/0x15c
-[    1.288660]  __device_attach_driver+0xb8/0x134
-[    1.293316]  bus_for_each_drv+0x88/0xe8
-[    1.297337]  __device_attach+0xa0/0x190
-[    1.301353]  device_initial_probe+0x14/0x20
-[    1.305734]  bus_probe_device+0xac/0xb0
-[    1.309752]  device_add+0x5d0/0x790
-[    1.313408]  __spi_add_device+0x134/0x204
-[    1.317606]  of_register_spi_device+0x3b4/0x590
-[    1.322348]  spi_register_controller+0x47c/0x754
-[    1.327181]  devm_spi_register_controller+0x4c/0xa4
-[    1.332289]  nxp_fspi_probe+0x1cc/0x2b0
-[    1.336307]  platform_probe+0x68/0xc4
-[    1.340145]  really_probe+0xbc/0x29c
-[    1.343893]  __driver_probe_device+0x78/0x12c
-[    1.348457]  driver_probe_device+0xd8/0x15c
-[    1.352838]  __driver_attach+0x90/0x19c
-[    1.356857]  bus_for_each_dev+0x7c/0xdc
-[    1.360877]  driver_attach+0x24/0x30
-[    1.364624]  bus_add_driver+0xe4/0x208
-[    1.368552]  driver_register+0x5c/0x124
-[    1.372573]  __platform_driver_register+0x28/0x34
-[    1.377497]  nxp_fspi_driver_init+0x1c/0x28
-[    1.381888]  do_one_initcall+0x80/0x1c8
-[    1.385908]  kernel_init_freeable+0x1c4/0x28c
-[    1.390472]  kernel_init+0x20/0x1d8
-[    1.394138]  ret_from_fork+0x10/0x20
-[    1.397885] ---[ end trace 0000000000000000 ]---
-[    1.407908] ------------[ cut here ]------------
+    mm/migrate.c: In function ‘__migrate_folio_extract’:
+    mm/migrate.c:1050:20: note: randstruct: casting between randomized structure pointer types (ssa): ‘struct anon_vma’ and ‘struct address_space’
 
-Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
-Cc: stable@kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+     1050 |         *anon_vmap = (void *)dst->mapping;
+          |         ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+
+and gcc is actually right to complain since it really doesn't understand
+that this is a very temporary special case where this is ok.
+
+This could be fixed in different ways by just obfuscating the assignment
+sufficiently that gcc doesn't see what is going on, but the truly
+"proper C" way to do this is by explicitly using a union.
+
+Using unions for type conversions like this is normally hugely ugly and
+syntactically nasty, but this really is one of the few cases where we
+want to make it clear that we're not doing type conversion, we're really
+re-using the value bit-for-bit just using another type.
+
+IOW, this should not become a common pattern, but in this one case using
+that odd union is probably the best way to document to the compiler what
+is conceptually going on here.
+
+[ Side note: there are valid cases where we convert pointers to other
+  pointer types, notably the whole "folio vs page" situation, where the
+  types actually have fundamental commonalities.
+
+  The fact that the gcc note is limited to just randomized structures
+  means that we don't see equivalent warnings for those cases, but it
+  migth also mean that we miss other cases where we do play these kinds
+  of dodgy games, and this kind of explicit conversion might be a good
+  idea. ]
+
+I verified that at least for an allmodconfig build on x86-64, this
+generates the exact same code, apart from line numbers and assembler
+comment changes.
+
+Fixes: 64c8902ed441 ("migrate_pages: split unmap_and_move() to _unmap() and _move()")
+Cc: Huang, Ying <ying.huang@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8ulp.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/migrate.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-@@ -352,7 +352,7 @@
- 			};
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1017,11 +1017,16 @@ out:
+  * destination folio.  This is safe because nobody is using them
+  * except us.
+  */
++union migration_ptr {
++	struct anon_vma *anon_vma;
++	struct address_space *mapping;
++};
+ static void __migrate_folio_record(struct folio *dst,
+ 				   unsigned long page_was_mapped,
+ 				   struct anon_vma *anon_vma)
+ {
+-	dst->mapping = (void *)anon_vma;
++	union migration_ptr ptr = { .anon_vma = anon_vma };
++	dst->mapping = ptr.mapping;
+ 	dst->private = (void *)page_was_mapped;
+ }
  
- 			flexspi2: spi@29810000 {
--				compatible = "nxp,imx8mm-fspi";
-+				compatible = "nxp,imx8ulp-fspi";
- 				reg = <0x29810000 0x10000>, <0x60000000 0x10000000>;
- 				reg-names = "fspi_base", "fspi_mmap";
- 				#address-cells = <1>;
+@@ -1029,7 +1034,8 @@ static void __migrate_folio_extract(stru
+ 				   int *page_was_mappedp,
+ 				   struct anon_vma **anon_vmap)
+ {
+-	*anon_vmap = (void *)dst->mapping;
++	union migration_ptr ptr = { .mapping = dst->mapping };
++	*anon_vmap = ptr.anon_vma;
+ 	*page_was_mappedp = (unsigned long)dst->private;
+ 	dst->mapping = NULL;
+ 	dst->private = NULL;
 
 
 
