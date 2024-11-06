@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09C59BEEB4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EABF9BEE6F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2B4B23FEF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF6C1C2478A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130691DFE1E;
-	Wed,  6 Nov 2024 13:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91041E0DB6;
+	Wed,  6 Nov 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzHAzNJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIDjK9DL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322E1CCB5F;
-	Wed,  6 Nov 2024 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F2B1CC14B;
+	Wed,  6 Nov 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899183; cv=none; b=tkzvEvBM9Ho44AwX3H3KmlrPSxKaUJoYBPB7JI8zMLODrrADDs4QfAxMYfU1eUcKn9W8FO2gTkw5u9kPyB38sURdNW/R/3TTTMb+AreUZD8nKCpXW+041Ec/0gJDgGX9kaA8FDQ/oswQ0tTDDsOAHxDGTUeGoYX/jzgRzEYu954=
+	t=1730899032; cv=none; b=mdMs1wlS1DBvh8fQkXXz3pnS60wEJmG7r5deGGPWpARzDJMYs/N0+ILicZkcd6nZb+PkYa5wiZxus1SsT6AOkrytSvzOoozzUCvoSA+BUn7XBhtOQcSwYGknghAi4LIHnvSUGmxB+t11duS4pCmagB03YzPq0YlEsc/akCnSic4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899183; c=relaxed/simple;
-	bh=6ISEkHdkZMWRGz4q8aF1a6aDlVt46VLcIEGPk6r8n4g=;
+	s=arc-20240116; t=1730899032; c=relaxed/simple;
+	bh=kyMlYqpn3UpKdPIUHidUZnTCx/D/+ras64opWFxCceM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W37BeZatDJxva8xIsgRV4d5O0E4bQMul5/h9UXrsHfW3t31qXFQQZqmdlUA+JvtEFm+JHakJ8HpHFquC6Oa0Ny5EFwWeJOvBFf1IVezPvrVNh9GRlHrkxOX6WfHgVetB1vjVfOrlKORbNwizjZNO5AVKnDlSOFoNGQsklWuYa40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzHAzNJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45487C4CECD;
-	Wed,  6 Nov 2024 13:19:43 +0000 (UTC)
+	 MIME-Version; b=E19ueLq8gAcwPbSkHptNRUgdgfHhRma6LLKNJnOCbcWukl30MYLICrLSZ8h8padOZFF3Ry3MzzOeAbcFzlS9QHGOj+DiPyoK+uQWeHpGdW1pgSmzJ4sFYbzm7lmqDXZue9YHNv72neW0w+qxKVosEW8hZ0JGW98XVF7Yg2W+WJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIDjK9DL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23A5C4CED4;
+	Wed,  6 Nov 2024 13:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899183;
-	bh=6ISEkHdkZMWRGz4q8aF1a6aDlVt46VLcIEGPk6r8n4g=;
+	s=korg; t=1730899032;
+	bh=kyMlYqpn3UpKdPIUHidUZnTCx/D/+ras64opWFxCceM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzHAzNJjmy5Q9B/WwEBa2IJ90Y9GIdsV2rngmU1YrHDczhGvTNN0Ybk1uSg9DIxAQ
-	 dnDW/QsMWb1JH0wJXuyr7/Kl4ndIqTxfAZd+gWCMdRCfp2xDBkh9H9FnlKYI6UQXME
-	 3pdM0DBeCvP64Bou0i+/pGlPwYiq3dtrGZ81mjTk=
+	b=zIDjK9DL0oW42+9ho/k8DeUhJnEe458b3LUxIl8ARQzXtWPSDazXi5MVlhgOuylqX
+	 jt8P7mUgu5yCny5JlUUZtq8Nr5iJtPygtNCCgF1+heX7DV2TyaxHrjgaj+ob3yGWDr
+	 mC1j3RnZt/Oeq2WRkgOfzxWpRjJmCs5flhnyFYtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin-ayu@qq.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Alexander Duyck <alexander.duyck@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/73] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
-Date: Wed,  6 Nov 2024 13:05:31 +0100
-Message-ID: <20241106120300.776266927@linuxfoundation.org>
+Subject: [PATCH 5.4 439/462] net: support ip generic csum processing in skb_csum_hwoffload_help
+Date: Wed,  6 Nov 2024 13:05:32 +0100
+Message-ID: <20241106120342.344708199@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
+[ Upstream commit 62fafcd63139920eb25b3fbf154177ce3e6f3232 ]
 
-If access to offset + length is larger than the skbuff length, then
-skb_checksum() triggers BUG_ON().
+NETIF_F_IP|IPV6_CSUM feature flag indicates UDP and TCP csum offload
+while NETIF_F_HW_CSUM feature flag indicates ip generic csum offload
+for HW, which includes not only for TCP/UDP csum, but also for other
+protocols' csum like GRE's.
 
-skb_checksum() internally subtracts the length parameter while iterating
-over skbuff, BUG_ON(len) at the end of it checks that the expected
-length to be included in the checksum calculation is fully consumed.
+However, in skb_csum_hwoffload_help() it only checks features against
+NETIF_F_CSUM_MASK(NETIF_F_HW|IP|IPV6_CSUM). So if it's a non TCP/UDP
+packet and the features doesn't support NETIF_F_HW_CSUM, but supports
+NETIF_F_IP|IPV6_CSUM only, it would still return 0 and leave the HW
+to do csum.
 
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Reported-by: Slavin Liu <slavin-ayu@qq.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This patch is to support ip generic csum processing by checking
+NETIF_F_HW_CSUM for all protocols, and check (NETIF_F_IP_CSUM |
+NETIF_F_IPV6_CSUM) only for TCP and UDP.
+
+Note that we're using skb->csum_offset to check if it's a TCP/UDP
+proctol, this might be fragile. However, as Alex said, for now we
+only have a few L4 protocols that are requesting Tx csum offload,
+we'd better fix this until a new protocol comes with a same csum
+offset.
+
+v1->v2:
+  - not extend skb->csum_not_inet, but use skb->csum_offset to tell
+    if it's an UDP/TCP csum packet.
+v2->v3:
+  - add a note in the changelog, as Willem suggested.
+
+Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/dev.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 55237d8a3d882..49a1cf53064fe 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -749,6 +749,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
- 	    ((priv->base != NFT_PAYLOAD_TRANSPORT_HEADER &&
- 	      priv->base != NFT_PAYLOAD_INNER_HEADER) ||
- 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
-+		if (offset + priv->len > skb->len)
-+			goto err;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 8f2f14df3610b..ff62b0027d600 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3263,7 +3263,18 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		return !!(features & NETIF_F_SCTP_CRC) ? 0 :
+ 			skb_crc32c_csum_help(skb);
+ 
+-	return !!(features & NETIF_F_CSUM_MASK) ? 0 : skb_checksum_help(skb);
++	if (features & NETIF_F_HW_CSUM)
++		return 0;
 +
- 		fsum = skb_checksum(skb, offset, priv->len, 0);
- 		tsum = csum_partial(src, priv->len, 0);
++	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
++		switch (skb->csum_offset) {
++		case offsetof(struct tcphdr, check):
++		case offsetof(struct udphdr, check):
++			return 0;
++		}
++	}
++
++	return skb_checksum_help(skb);
+ }
+ EXPORT_SYMBOL(skb_csum_hwoffload_help);
  
 -- 
 2.43.0
