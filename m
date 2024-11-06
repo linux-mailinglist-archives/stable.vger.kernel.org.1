@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-91525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EF49BEE5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B5F9BEE99
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EA971F25866
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594FC1C245F7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C881EE028;
-	Wed,  6 Nov 2024 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D11D1DF278;
+	Wed,  6 Nov 2024 13:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAJDc4KB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlJ41PSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1F754765;
-	Wed,  6 Nov 2024 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410421CC89D;
+	Wed,  6 Nov 2024 13:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898988; cv=none; b=Lbc60cVvNp4rJRNawv6vV2zLUDXkMK+sNEibyhrLi++eOJBlro9nNnEQB9J7cwCRHXONIASZA6Ug+bZXfFKVdxdkGPBo9qV19HwiNalnyv+Usqynr2hFAVLRNP3dQXwn73Ir8gclSbHsHk/WaKmCYiihHC+244lRS7nMgD3Y4eA=
+	t=1730899135; cv=none; b=eq9rpeeeFkhiC6iXoWonobnvh0yRvN8hliJEhFJDk74v+nrEXOSy9TWszzdtVSKma/EvZJqulGjKckVL9G7JP0sCEMboPs5cyn35K5t2KYQZJGCmod/TxjokRCrxwviI2aCr0nIpbV9zl1rRNMaNuk0o8iGmSIM5RBwvD76uiCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898988; c=relaxed/simple;
-	bh=pu7NONszcEuj8SIFkd42kGVv4JzVZ0AWlL1VdIm6B5Q=;
+	s=arc-20240116; t=1730899135; c=relaxed/simple;
+	bh=X7r8GxgCWwOOCiIro1NNEhL7PVboIg51Qp6UCGnDNqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGrjGaiQbDgFankjO5cA4hghWE3y2QX/xNo4QQ2DajeEZTzXnPbxdlYln22DaoEO5ifMzlM8F4nLEJLqbT5Dx3sZHxDq91JelCbcZZVAw31aOgTUXZotyZA+ZPGgRgaj+3OSE2d7m44EWlf7cFp1mGmpmU7gUKmFSN/MdDCj6WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAJDc4KB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FB7C4CECD;
-	Wed,  6 Nov 2024 13:16:27 +0000 (UTC)
+	 MIME-Version; b=Ua0KSIdp3Pn3QLeQQtlInNarQrlUH2RI/l0KrwDw64GXf9OGfIr28QZLRYcs2rYnPKGInVGEiLETJmAIylUw/bCLolDzT8he2734f+lReIG6xMNR0XNafT7/rs9UgITx2M3OjZthYfjE5xM7BWaMtbF2rKkwy+QPvxa0Pn7c44k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlJ41PSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9706C4CECD;
+	Wed,  6 Nov 2024 13:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898988;
-	bh=pu7NONszcEuj8SIFkd42kGVv4JzVZ0AWlL1VdIm6B5Q=;
+	s=korg; t=1730899135;
+	bh=X7r8GxgCWwOOCiIro1NNEhL7PVboIg51Qp6UCGnDNqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BAJDc4KBQgeBBCPkr6zR8GDv5thOfU8zfVYBhqMFbiw9kRIhQq8DRCkiR5Qu1Mk3+
-	 vHDwaUr+1KiL6eDPqlaQE6XnSf7haSZJMFPI2Ld0M8y643zsOe4iHQAdXwPurooftV
-	 c0NUiIxNi0grzxQpFoZ6L3z16fh3WG2C9FWVAHGk=
+	b=dlJ41PSOvIsnC0HCGUubGx5cOJMID3G2aNwYkpnikAlgCEF4oLFkDTPZRDPq96krh
+	 LiVcRDwKPTloeRlHaBmjypnU0ZXlNcATIBny4ErwrxbaLkvYjHZ4jBmp3iTkMmI2d+
+	 u5yZg8OG6DAEwk2+VxLrk06Fe0dfO+O+Zv5c28Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 422/462] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 11/73] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
 Date: Wed,  6 Nov 2024 13:05:15 +0100
-Message-ID: <20241106120341.938423002@linuxfoundation.org>
+Message-ID: <20241106120300.299958229@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
+[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+After the cited commit below max_dest_rd_atomic and max_rd_atomic values
+are being rounded down to the next power of 2. As opposed to the old
+behavior and mlx4 driver where they used to be rounded up instead.
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
+In order to stay consistent with older code and other drivers, revert to
+using fls round function which rounds up to the next power of 2.
 
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
+Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/infiniband/hw/mlx5/qp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2540,6 +2540,31 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index d4b5ce37c2cbd..d2b4db783b254 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -4182,14 +4182,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
+ 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
  
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev;
-+	int ret;
-+
-+	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2552,6 +2577,11 @@ static int netvsc_netdev_event(struct no
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
+ 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
+-		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
++		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
  
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
+ 	if (attr_mask & IB_QP_SQ_PSN)
+ 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
+ 
+ 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
+ 		MLX5_SET(qpc, qpc, log_rra_max,
+-			 ilog2(attr->max_dest_rd_atomic));
++			 fls(attr->max_dest_rd_atomic - 1));
+ 
+ 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
+ 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
+-- 
+2.43.0
+
 
 
 
