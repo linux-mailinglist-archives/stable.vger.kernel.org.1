@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-90703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0289BE9A6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0E99BEC39
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0029F1C23479
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321A4285931
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E75F1DFE06;
-	Wed,  6 Nov 2024 12:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEC91FB3EB;
+	Wed,  6 Nov 2024 12:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/0eZmSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTJETMQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDDC1DEFF3;
-	Wed,  6 Nov 2024 12:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098DB1FB3E9;
+	Wed,  6 Nov 2024 12:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896561; cv=none; b=rj/iMj9bAulgLSVauh/o7WXu2qLa2AGLXOcVbFNtgc1xZEsje04mjcEYZF0F+P4qGyNNHBw9J3vNuJ2Oi/RVVWuDmMwk+8lL8fFO01BHU4EPGzXbrSpBfCxH2fRDQTWPqoBGXWHqYvYq+r7LsAZLc77qDZf5ARUnzyC16S3eGTU=
+	t=1730897607; cv=none; b=qs2JZlVFfoEUDoLqR7aPwnXdn2YR/TFGVNoIPKPvPxhUjdboSUhfKqnQ850jdUeRpIU6uHBT5JSzGmWkLcprbQzjtKoE8uZOGrcVDwMx5npdPrGnT2QHnd/Y98QmatswnUa0cAFrzByW1R6QSKXbNg1lvpo1iflpZjY2iHHrPnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896561; c=relaxed/simple;
-	bh=cn6sK+6+9/4NSlphZlN6EsAGVDxgRb3+XY6K5TY0Hkk=;
+	s=arc-20240116; t=1730897607; c=relaxed/simple;
+	bh=+215ncCYJYjmTo/poj4Eh3QYJB7TG+QZam3a8ljrLEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFJgLYlGUtJZue/d0xPp2OIekOMMbAMywg7Z63tRDQOmAVC7LoGkxepmh7zwbyHcQ2oQfo/Imf/mEo3rN6rntrvkWz5mMT6HCjHo8HEe7vrM7TzOYXs0tZHHFoSLG2iLkg92ZepRJv+Zd1uCJdpL4bG+4ZrlmHaGJ2L8567PGyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/0eZmSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97680C4CED9;
-	Wed,  6 Nov 2024 12:36:00 +0000 (UTC)
+	 MIME-Version; b=D33sH8EonKc7QGvXYOz50T2qV0+AAdKKWs4rqWb5lmno9SEZIacSxG7gGIGNDheNIMXKIKZH12G4X5MfZttjnYdH4MwaWfQxFSa+TNjvq+ooBO6b2xEHIb/N4pkPX6z/l7nPKpTmes3A9EudXqHa6ZyUh+rOLsJcXWDsHLKyzh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTJETMQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82983C4CECD;
+	Wed,  6 Nov 2024 12:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896561;
-	bh=cn6sK+6+9/4NSlphZlN6EsAGVDxgRb3+XY6K5TY0Hkk=;
+	s=korg; t=1730897606;
+	bh=+215ncCYJYjmTo/poj4Eh3QYJB7TG+QZam3a8ljrLEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/0eZmSuVY7daeBTL1dsXC2pwCCyAfnR/1txxUUYjS35yxbBdK92zwEg2VmhHLYGD
-	 RRxxZOPTSUQmJkStqHERX7qnG/i5xF51/wEBXiensRGbeAPXccOwCAub3KlputdTcS
-	 LLcgesfw8dsDRUtb11vaCd9RjwNsDHFx3FhQVxaY=
+	b=rTJETMQqX8mNOyrwos8bdx73cspqi5e9LegxyW2cTFEIw+xsMFnYCWh/1KePKuN95
+	 PQzgrReZwI7CoCjKrsopo+5ndrnmXBmP0GLrjoV4YH3/j+AdcOMjMgrxD5Uy/qiAxv
+	 T0EUzWzlvlOGN4WpOOd/cHb3x1WyapZ/sYpNiKj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.11 244/245] fs/ntfs3: Sequential field availability check in mi_enum_attr()
+	Xinyu Zhang <xizhang@purestorage.com>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 109/151] block: fix sanity checks in blk_rq_map_user_bvec
 Date: Wed,  6 Nov 2024 13:04:57 +0100
-Message-ID: <20241106120325.277904149@linuxfoundation.org>
+Message-ID: <20241106120311.869383711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Xinyu Zhang <xizhang@purestorage.com>
 
-commit 090f612756a9720ec18b0b130e28be49839d7cb5 upstream.
+[ Upstream commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd ]
 
-The code is slightly reformatted to consistently check field availability
-without duplication.
+blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
+causes unnecessary failures in NVMe passthrough I/O, reproducible as
+follows:
 
-Fixes: 556bdf27c2dd ("ntfs3: Add bounds checking to mi_enum_attr()")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- register a 2 page, page-aligned buffer against a ring
+- use that buffer to do a 1 page io_uring NVMe passthrough read
+
+The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
+then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
+the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
+fail. This failure is unnecessary, as when the check succeeds, it means
+we've checked the entire buffer that will be used by the request - i.e.
+blk_rq_map_user_bvec should complete successfully. Therefore, terminate
+the loop early and return successfully when the check bytes + bv->bv_len
+> nr_iter succeeds.
+
+While we're at it, also remove the check that all segments in the bvec
+are single-page. While this seems to be true for all users of the
+function, it doesn't appear to be required anywhere downstream.
+
+CC: stable@vger.kernel.org
+Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
+Co-developed-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
+Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/record.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ block/blk-map.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -237,6 +237,7 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 	}
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 71210cdb34426..0aadbaf7a9ddd 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+ 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
+ 			goto put_bio;
+ 		if (bytes + bv->bv_len > nr_iter)
+-			goto put_bio;
+-		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
+-			goto put_bio;
++			break;
  
- 	/* Can we use the first field (attr->type). */
-+	/* NOTE: this code also checks attr->size availability. */
- 	if (off + 8 > used) {
- 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
- 		return NULL;
-@@ -257,10 +258,6 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 		return NULL;
- 
- 	asize = le32_to_cpu(attr->size);
--	if (asize < SIZEOF_RESIDENT) {
--		/* Impossible 'cause we should not return such attribute. */
--		return NULL;
--	}
- 
- 	/* Check overflow and boundary. */
- 	if (off + asize < off || off + asize > used)
-@@ -290,6 +287,10 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 	if (attr->non_res != 1)
- 		return NULL;
- 
-+	/* Can we use memory including attr->nres.valid_size? */
-+	if (asize < SIZEOF_NONRESIDENT)
-+		return NULL;
-+
- 	t16 = le16_to_cpu(attr->nres.run_off);
- 	if (t16 > asize)
- 		return NULL;
-@@ -316,7 +317,8 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 
- 	if (!attr->nres.svcn && is_attr_ext(attr)) {
- 		/* First segment of sparse/compressed attribute */
--		if (asize + 8 < SIZEOF_NONRESIDENT_EX)
-+		/* Can we use memory including attr->nres.total_size? */
-+		if (asize < SIZEOF_NONRESIDENT_EX)
- 			return NULL;
- 
- 		tot_size = le64_to_cpu(attr->nres.total_size);
-@@ -326,9 +328,6 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 		if (tot_size > alloc_size)
- 			return NULL;
- 	} else {
--		if (asize + 8 < SIZEOF_NONRESIDENT)
--			return NULL;
--
- 		if (attr->nres.c_unit)
- 			return NULL;
- 
+ 		nsegs++;
+ 		bytes += bv->bv_len;
+-- 
+2.43.0
+
 
 
 
