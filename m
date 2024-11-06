@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746559BEB6B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854009BEA88
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A27E1F27A09
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5D2281461
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472631F76D4;
-	Wed,  6 Nov 2024 12:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD661EE023;
+	Wed,  6 Nov 2024 12:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLYMU1Bq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="np+dvDTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BC51EABD7;
-	Wed,  6 Nov 2024 12:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C211FB3EC;
+	Wed,  6 Nov 2024 12:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897062; cv=none; b=gZ5VYTXhAvn4KzeLe2j5ry8Xy9ADRF9IS5gXBgltbAvfsp1I20/YKXUCn1qqHX12cxYhIkYmh1Ad56zdEYWyfH8D7tQUufosrLN99/0leIutazgNCy+SHQvwPlfV3NRHM5NCMhl57moJ8RIDRxot1wRpNheIOnVgECq+UazRW4M=
+	t=1730896714; cv=none; b=odQY/Y0WL17sQgFMW0YTozEBPwSSQCSQ9npqz4t9jqcFiy6oIipZmJ4OtwPfUcN4pkjkT3PAHAoJL7swCuxg3fnZR85E3Hdqj8ijmKvaqwk7ujEZx9Ei8q5KsKSaoFMC8qe1cjY7m47bKPWZcMwqTRCjuejt+yiNjZX2R4fT9sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897062; c=relaxed/simple;
-	bh=n8yKDnTFjeIvyjquPGfMElJ4w6QJZQbVH04Q10EcCb4=;
+	s=arc-20240116; t=1730896714; c=relaxed/simple;
+	bh=Eh1ygb2QOP89KLcmWAG6G2WLDfNkHCU3A45e4SK2Cpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/63bcqkrGaxPYdMvMgavzp3p9w7pdC1MtYMglHUe/zo+ZzzQ/BgwnWSsEUoT2W7vX7cvGjggDoqA5l+anzQCeGfn8xVM/AoQ/aGgoXjINCzoKjsemgrMdbeD1udttRxq+Im3Vi+wlC2F8Ga+Jhiky/ic/trlWxC/Hg1w92Bnqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLYMU1Bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B927C4CECD;
-	Wed,  6 Nov 2024 12:44:21 +0000 (UTC)
+	 MIME-Version; b=F6OHChZbcOANPaN9na65dy9FzLMsa/g49u+pvZpoQe5MHO4kBQMbDTqDVdeKq3mLeIEmzod+q3h5zyhUyxj0Csm/403eYjL0/NoebnqQsKSf/aoY9lsXV5h5u4MKaN83MGGW+JvsgKvS8VB5aYgj2eNNjPsfILfS0ExQ8+ZHSWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=np+dvDTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18F0C4CED3;
+	Wed,  6 Nov 2024 12:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897061;
-	bh=n8yKDnTFjeIvyjquPGfMElJ4w6QJZQbVH04Q10EcCb4=;
+	s=korg; t=1730896714;
+	bh=Eh1ygb2QOP89KLcmWAG6G2WLDfNkHCU3A45e4SK2Cpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLYMU1Bq3yTLgg2SUJAYAaJTDkXBh2tf9JhH/zpil7aDIdpPOFhGQAg6OqpWuHk6a
-	 8Y7uQcD+46gA4ruMpgW6vnB819T7HDI3zne2/Zq59LBhHq9vS8TlQ8ysWWBkaGDIL9
-	 SFKa8GDMN6u4dMMwscbOVN5pHUpf4xK59xCj/aJg=
+	b=np+dvDTocJCeF2htSOtBWOGAsmO2gqtM6n6Ybc1Inl56nOtYdNtQGBjErcedrj74F
+	 h/AeYuopVjE6aQWTZwCFaRbicg3rZQW7krfQK8zal0OKgPj1OnVGKhKxl8JC3fhLHl
+	 Mns2ZtQCnrXNqEYucl/RzeRihoI3pk/CSWQce53w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/126] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
+	Kirk Swidowski <swidowski@google.com>,
+	Andy Nguyen <theflow@google.com>,
+	3pvd <3pvd@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 048/110] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory
 Date: Wed,  6 Nov 2024 13:04:14 +0100
-Message-ID: <20241106120307.531931380@linuxfoundation.org>
+Message-ID: <20241106120304.529873068@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
+commit f559b2e9c5c5308850544ab59396b7d53cfc67bd upstream.
 
-Use non-zero subkey to skip analyzer warnings.
+Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits
+4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn't
+enforce 32-byte alignment of nCR3.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the absolute worst case scenario, failure to ignore bits 4:0 can result
+in an out-of-bounds read, e.g. if the target page is at the end of a
+memslot, and the VMM isn't using guard pages.
+
+Per the APM:
+
+  The CR3 register points to the base address of the page-directory-pointer
+  table. The page-directory-pointer table is aligned on a 32-byte boundary,
+  with the low 5 address bits 4:0 assumed to be 0.
+
+And the SDM's much more explicit:
+
+  4:0    Ignored
+
+Note, KVM gets this right when loading PDPTRs, it's only the nSVM flow
+that is broken.
+
+Fixes: e4e517b4be01 ("KVM: MMU: Do not unconditionally read PDPTE from guest memory")
+Reported-by: Kirk Swidowski <swidowski@google.com>
+Cc: Andy Nguyen <theflow@google.com>
+Cc: 3pvd <3pvd@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20241009140838.1036226-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/ntfs_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index a88f6879fcaaa..26dbe1b46fdd1 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -328,7 +328,7 @@ struct mft_inode {
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -75,8 +75,12 @@ static u64 nested_svm_get_tdp_pdptr(stru
+ 	u64 pdpte;
+ 	int ret;
  
- /* Nested class for ntfs_inode::ni_lock. */
- enum ntfs_inode_mutex_lock_class {
--	NTFS_INODE_MUTEX_DIRTY,
-+	NTFS_INODE_MUTEX_DIRTY = 1,
- 	NTFS_INODE_MUTEX_SECURITY,
- 	NTFS_INODE_MUTEX_OBJID,
- 	NTFS_INODE_MUTEX_REPARSE,
--- 
-2.43.0
-
++	/*
++	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
++	 * nCR3[4:0] when loading PDPTEs from memory.
++	 */
+ 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
+-				       offset_in_page(cr3) + index * 8, 8);
++				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
+ 	if (ret)
+ 		return 0;
+ 	return pdpte;
 
 
 
