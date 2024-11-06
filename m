@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-90993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356409BEBF7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E6E9BEB7F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597941C238B9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A0241F2787A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353C91FA275;
-	Wed,  6 Nov 2024 12:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A68A1DE4E6;
+	Wed,  6 Nov 2024 12:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKnSidGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pa/ipGHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CDA1EF928;
-	Wed,  6 Nov 2024 12:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7581E04A8;
+	Wed,  6 Nov 2024 12:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897424; cv=none; b=EVALPCfoyPiBcbC+IiAW4b3xp2UME44/XHuwphUepI3VVcAv7X+4stKl8LV4bdmg0lEz6dwxwc9+PDlwIjiOpGYa6gUXKiyr2ytyEdl/aDYE/EZtV1fZwG+yDnhOQ7gGXewsUOhkgYMKtpzvFfViDEgq11a3tZ/Xd+wsaUZaBtI=
+	t=1730897118; cv=none; b=VfLpa1WBKBORS+eC2wyzPYEU0/qoEuZ1q8Wwn0zO6dxr26H6InHNZvRxSR6DoHAelCjlkaRiNs00qe9U+X2Mlv5p0siZKcBIwxeEUENz2yZMbV/hV4oYnBUDQedzDCawb6qFt+OQ9ZFOwVFBa1uDLu8VR2THx9dVCeGy2QwTanU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897424; c=relaxed/simple;
-	bh=6j2/29NNUPXB+tH+PFuqZK+DFCkru8kUrdIxmqHz/GU=;
+	s=arc-20240116; t=1730897118; c=relaxed/simple;
+	bh=aND5+6HqoPnaUJ02Jmk7n33KdZGN2ZWpS12Knsdh/tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7WHxhhMMsZ47lwvjJ5/aZ3FVDlYshBXQAUAcvO2jSRrKyu7wLcFd/mOhY+wYHFt4MyaRColCEQ/k2yLyrKpL+0950DeFvEUi1/gDGHPOvJIVwMDZXlc49C1w0DqPh7XBBOJeRnsSkXw5a4AjEhzw/TtoaJGjzsJ8yCJ0/DaGHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKnSidGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A31AC4CECD;
-	Wed,  6 Nov 2024 12:50:22 +0000 (UTC)
+	 MIME-Version; b=lZMK/F7/61m148fAKr7Byv7qNBZRv9lv9k9XEB7mJ7O4urmgx3gArwAbI7PRiQjTzk0k/RZIPUyLiv880zFJI2IetsLaou7dGAPBUqAx/Im3RAf72L+RAE3796zXkR+KmjlooTvcQ26tmBcqCAnrEhn3EhBDMmpqLWSYBQvIHLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pa/ipGHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EE6C4CECD;
+	Wed,  6 Nov 2024 12:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897423;
-	bh=6j2/29NNUPXB+tH+PFuqZK+DFCkru8kUrdIxmqHz/GU=;
+	s=korg; t=1730897117;
+	bh=aND5+6HqoPnaUJ02Jmk7n33KdZGN2ZWpS12Knsdh/tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gKnSidGHY2zbPTOT4gkkh3AcwArHwqv3qdZfU8KhXhDzWwSiXCZF7CmEShpRidbzV
-	 Pc0ugB6dUrOWWTW11QwOhDRxOm6tT4EHUUDUNLsFAh9jCGDTy1qLcDEGXv6kif1U9t
-	 OuIanA8t2GDbbu8sofylmeLHgcdHiwXyr0w9KfxY=
+	b=Pa/ipGHQ/JwaSHNxanuKGPa8xZJh49keBAjwDq+o3bFtj04ORMtBHxtUT2QuOzS7b
+	 uWA+9GlCYr8rQoU4IlfvAxqGzpkDu3gZRs2CESNyVTXew8LWBbj0aXZ9PnYvTQh9L0
+	 xC8SdZQuW8zsswdWI2bmvcJQCy4MybXT7Bp2xlNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
+	Maksym Yaremchuk <maksymy@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/151] afs: Automatically generate trace tag enums
+Subject: [PATCH 6.1 036/126] mlxsw: spectrum_ipip: Fix memory leak when changing remote IPv6 address
 Date: Wed,  6 Nov 2024 13:03:57 +0100
-Message-ID: <20241106120310.182090045@linuxfoundation.org>
+Message-ID: <20241106120307.083075475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,294 +64,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 2daa6404fd2f00985d5bfeb3c161f4630b46b6bf ]
+[ Upstream commit 12ae97c531fcd3bfd774d4dfeaeac23eafe24280 ]
 
-Automatically generate trace tag enums from the symbol -> string mapping
-tables rather than having the enums as well, thereby reducing duplicated
-data.
+The device stores IPv6 addresses that are used for encapsulation in
+linear memory that is managed by the driver.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-Stable-dep-of: 247d65fb122a ("afs: Fix missing subdir edit when renamed between parent dirs")
+Changing the remote address of an ip6gre net device never worked
+properly, but since cited commit the following reproducer [1] would
+result in a warning [2] and a memory leak [3]. The problem is that the
+new remote address is never added by the driver to its hash table (and
+therefore the device) and the old address is never removed from it.
+
+Fix by programming the new address when the configuration of the ip6gre
+net device changes and removing the old one. If the address did not
+change, then the above would result in increasing the reference count of
+the address and then decreasing it.
+
+[1]
+ # ip link add name bla up type ip6gre local 2001:db8:1::1 remote 2001:db8:2::1 tos inherit ttl inherit
+ # ip link set dev bla type ip6gre remote 2001:db8:3::1
+ # ip link del dev bla
+ # devlink dev reload pci/0000:01:00.0
+
+[2]
+WARNING: CPU: 0 PID: 1682 at drivers/net/ethernet/mellanox/mlxsw/spectrum.c:3002 mlxsw_sp_ipv6_addr_put+0x140/0x1d0
+Modules linked in:
+CPU: 0 UID: 0 PID: 1682 Comm: ip Not tainted 6.12.0-rc3-custom-g86b5b55bc835 #151
+Hardware name: Nvidia SN5600/VMOD0013, BIOS 5.13 05/31/2023
+RIP: 0010:mlxsw_sp_ipv6_addr_put+0x140/0x1d0
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_router_netdevice_event+0x55f/0x1240
+ notifier_call_chain+0x5a/0xd0
+ call_netdevice_notifiers_info+0x39/0x90
+ unregister_netdevice_many_notify+0x63e/0x9d0
+ rtnl_dellink+0x16b/0x3a0
+ rtnetlink_rcv_msg+0x142/0x3f0
+ netlink_rcv_skb+0x50/0x100
+ netlink_unicast+0x242/0x390
+ netlink_sendmsg+0x1de/0x420
+ ____sys_sendmsg+0x2bd/0x320
+ ___sys_sendmsg+0x9a/0xe0
+ __sys_sendmsg+0x7a/0xd0
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[3]
+unreferenced object 0xffff898081f597a0 (size 32):
+  comm "ip", pid 1626, jiffies 4294719324
+  hex dump (first 32 bytes):
+    20 01 0d b8 00 02 00 00 00 00 00 00 00 00 00 01   ...............
+    21 49 61 83 80 89 ff ff 00 00 00 00 01 00 00 00  !Ia.............
+  backtrace (crc fd9be911):
+    [<00000000df89c55d>] __kmalloc_cache_noprof+0x1da/0x260
+    [<00000000ff2a1ddb>] mlxsw_sp_ipv6_addr_kvdl_index_get+0x281/0x340
+    [<000000009ddd445d>] mlxsw_sp_router_netdevice_event+0x47b/0x1240
+    [<00000000743e7757>] notifier_call_chain+0x5a/0xd0
+    [<000000007c7b9e13>] call_netdevice_notifiers_info+0x39/0x90
+    [<000000002509645d>] register_netdevice+0x5f7/0x7a0
+    [<00000000c2e7d2a9>] ip6gre_newlink_common.isra.0+0x65/0x130
+    [<0000000087cd6d8d>] ip6gre_newlink+0x72/0x120
+    [<000000004df7c7cc>] rtnl_newlink+0x471/0xa20
+    [<0000000057ed632a>] rtnetlink_rcv_msg+0x142/0x3f0
+    [<0000000032e0d5b5>] netlink_rcv_skb+0x50/0x100
+    [<00000000908bca63>] netlink_unicast+0x242/0x390
+    [<00000000cdbe1c87>] netlink_sendmsg+0x1de/0x420
+    [<0000000011db153e>] ____sys_sendmsg+0x2bd/0x320
+    [<000000003b6d53eb>] ___sys_sendmsg+0x9a/0xe0
+    [<00000000cae27c62>] __sys_sendmsg+0x7a/0xd0
+
+Fixes: cf42911523e0 ("mlxsw: spectrum_ipip: Use common hash table for IPv6 address mapping")
+Reported-by: Maksym Yaremchuk <maksymy@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/e91012edc5a6cb9df37b78fd377f669381facfcb.1729866134.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/afs.h | 233 +++++--------------------------------
- 1 file changed, 27 insertions(+), 206 deletions(-)
+ .../ethernet/mellanox/mlxsw/spectrum_ipip.c   | 26 +++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
-index e9d412d19dbbb..54d10c69e55ec 100644
---- a/include/trace/events/afs.h
-+++ b/include/trace/events/afs.h
-@@ -18,97 +18,6 @@
- #ifndef __AFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
- #define __AFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+index fd421fbfc71bd..0888d2d16375c 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+@@ -538,11 +538,33 @@ mlxsw_sp_ipip_ol_netdev_change_gre6(struct mlxsw_sp *mlxsw_sp,
+ 				    struct mlxsw_sp_ipip_entry *ipip_entry,
+ 				    struct netlink_ext_ack *extack)
+ {
++	u32 new_kvdl_index, old_kvdl_index = ipip_entry->dip_kvdl_index;
++	struct in6_addr old_addr6 = ipip_entry->parms.daddr.addr6;
+ 	struct mlxsw_sp_ipip_parms new_parms;
++	int err;
  
--enum afs_call_trace {
--	afs_call_trace_alloc,
--	afs_call_trace_free,
--	afs_call_trace_get,
--	afs_call_trace_put,
--	afs_call_trace_wake,
--	afs_call_trace_work,
--};
--
--enum afs_server_trace {
--	afs_server_trace_alloc,
--	afs_server_trace_callback,
--	afs_server_trace_destroy,
--	afs_server_trace_free,
--	afs_server_trace_gc,
--	afs_server_trace_get_by_addr,
--	afs_server_trace_get_by_uuid,
--	afs_server_trace_get_caps,
--	afs_server_trace_get_install,
--	afs_server_trace_get_new_cbi,
--	afs_server_trace_get_probe,
--	afs_server_trace_give_up_cb,
--	afs_server_trace_purging,
--	afs_server_trace_put_call,
--	afs_server_trace_put_cbi,
--	afs_server_trace_put_find_rsq,
--	afs_server_trace_put_probe,
--	afs_server_trace_put_slist,
--	afs_server_trace_put_slist_isort,
--	afs_server_trace_put_uuid_rsq,
--	afs_server_trace_update,
--};
--
--
--enum afs_volume_trace {
--	afs_volume_trace_alloc,
--	afs_volume_trace_free,
--	afs_volume_trace_get_alloc_sbi,
--	afs_volume_trace_get_cell_insert,
--	afs_volume_trace_get_new_op,
--	afs_volume_trace_get_query_alias,
--	afs_volume_trace_put_cell_dup,
--	afs_volume_trace_put_cell_root,
--	afs_volume_trace_put_destroy_sbi,
--	afs_volume_trace_put_free_fc,
--	afs_volume_trace_put_put_op,
--	afs_volume_trace_put_query_alias,
--	afs_volume_trace_put_validate_fc,
--	afs_volume_trace_remove,
--};
--
--enum afs_cell_trace {
--	afs_cell_trace_alloc,
--	afs_cell_trace_free,
--	afs_cell_trace_get_queue_dns,
--	afs_cell_trace_get_queue_manage,
--	afs_cell_trace_get_queue_new,
--	afs_cell_trace_get_vol,
--	afs_cell_trace_insert,
--	afs_cell_trace_manage,
--	afs_cell_trace_put_candidate,
--	afs_cell_trace_put_destroy,
--	afs_cell_trace_put_queue_fail,
--	afs_cell_trace_put_queue_work,
--	afs_cell_trace_put_vol,
--	afs_cell_trace_see_source,
--	afs_cell_trace_see_ws,
--	afs_cell_trace_unuse_alias,
--	afs_cell_trace_unuse_check_alias,
--	afs_cell_trace_unuse_delete,
--	afs_cell_trace_unuse_fc,
--	afs_cell_trace_unuse_lookup,
--	afs_cell_trace_unuse_mntpt,
--	afs_cell_trace_unuse_no_pin,
--	afs_cell_trace_unuse_parse,
--	afs_cell_trace_unuse_pin,
--	afs_cell_trace_unuse_probe,
--	afs_cell_trace_unuse_sbi,
--	afs_cell_trace_unuse_ws,
--	afs_cell_trace_use_alias,
--	afs_cell_trace_use_check_alias,
--	afs_cell_trace_use_fc,
--	afs_cell_trace_use_fc_alias,
--	afs_cell_trace_use_lookup,
--	afs_cell_trace_use_mntpt,
--	afs_cell_trace_use_pin,
--	afs_cell_trace_use_probe,
--	afs_cell_trace_use_sbi,
--	afs_cell_trace_wait,
--};
--
- enum afs_fs_operation {
- 	afs_FS_FetchData		= 130,	/* AFS Fetch file data */
- 	afs_FS_FetchACL			= 131,	/* AFS Fetch file ACL */
-@@ -202,121 +111,6 @@ enum yfs_cm_operation {
- 	yfs_CB_CallBack			= 64204,
- };
+ 	new_parms = mlxsw_sp_ipip_netdev_parms_init_gre6(ipip_entry->ol_dev);
+-	return mlxsw_sp_ipip_ol_netdev_change_gre(mlxsw_sp, ipip_entry,
+-						  &new_parms, extack);
++
++	err = mlxsw_sp_ipv6_addr_kvdl_index_get(mlxsw_sp,
++						&new_parms.daddr.addr6,
++						&new_kvdl_index);
++	if (err)
++		return err;
++	ipip_entry->dip_kvdl_index = new_kvdl_index;
++
++	err = mlxsw_sp_ipip_ol_netdev_change_gre(mlxsw_sp, ipip_entry,
++						 &new_parms, extack);
++	if (err)
++		goto err_change_gre;
++
++	mlxsw_sp_ipv6_addr_put(mlxsw_sp, &old_addr6);
++
++	return 0;
++
++err_change_gre:
++	ipip_entry->dip_kvdl_index = old_kvdl_index;
++	mlxsw_sp_ipv6_addr_put(mlxsw_sp, &new_parms.daddr.addr6);
++	return err;
+ }
  
--enum afs_edit_dir_op {
--	afs_edit_dir_create,
--	afs_edit_dir_create_error,
--	afs_edit_dir_create_inval,
--	afs_edit_dir_create_nospc,
--	afs_edit_dir_delete,
--	afs_edit_dir_delete_error,
--	afs_edit_dir_delete_inval,
--	afs_edit_dir_delete_noent,
--};
--
--enum afs_edit_dir_reason {
--	afs_edit_dir_for_create,
--	afs_edit_dir_for_link,
--	afs_edit_dir_for_mkdir,
--	afs_edit_dir_for_rename_0,
--	afs_edit_dir_for_rename_1,
--	afs_edit_dir_for_rename_2,
--	afs_edit_dir_for_rmdir,
--	afs_edit_dir_for_silly_0,
--	afs_edit_dir_for_silly_1,
--	afs_edit_dir_for_symlink,
--	afs_edit_dir_for_unlink,
--};
--
--enum afs_eproto_cause {
--	afs_eproto_bad_status,
--	afs_eproto_cb_count,
--	afs_eproto_cb_fid_count,
--	afs_eproto_cellname_len,
--	afs_eproto_file_type,
--	afs_eproto_ibulkst_cb_count,
--	afs_eproto_ibulkst_count,
--	afs_eproto_motd_len,
--	afs_eproto_offline_msg_len,
--	afs_eproto_volname_len,
--	afs_eproto_yvl_fsendpt4_len,
--	afs_eproto_yvl_fsendpt6_len,
--	afs_eproto_yvl_fsendpt_num,
--	afs_eproto_yvl_fsendpt_type,
--	afs_eproto_yvl_vlendpt4_len,
--	afs_eproto_yvl_vlendpt6_len,
--	afs_eproto_yvl_vlendpt_type,
--};
--
--enum afs_io_error {
--	afs_io_error_cm_reply,
--	afs_io_error_extract,
--	afs_io_error_fs_probe_fail,
--	afs_io_error_vl_lookup_fail,
--	afs_io_error_vl_probe_fail,
--};
--
--enum afs_file_error {
--	afs_file_error_dir_bad_magic,
--	afs_file_error_dir_big,
--	afs_file_error_dir_missing_page,
--	afs_file_error_dir_name_too_long,
--	afs_file_error_dir_over_end,
--	afs_file_error_dir_small,
--	afs_file_error_dir_unmarked_ext,
--	afs_file_error_mntpt,
--	afs_file_error_writeback_fail,
--};
--
--enum afs_flock_event {
--	afs_flock_acquired,
--	afs_flock_callback_break,
--	afs_flock_defer_unlock,
--	afs_flock_extend_fail,
--	afs_flock_fail_other,
--	afs_flock_fail_perm,
--	afs_flock_no_lockers,
--	afs_flock_release_fail,
--	afs_flock_silly_delete,
--	afs_flock_timestamp,
--	afs_flock_try_to_lock,
--	afs_flock_vfs_lock,
--	afs_flock_vfs_locking,
--	afs_flock_waited,
--	afs_flock_waiting,
--	afs_flock_work_extending,
--	afs_flock_work_retry,
--	afs_flock_work_unlocking,
--	afs_flock_would_block,
--};
--
--enum afs_flock_operation {
--	afs_flock_op_copy_lock,
--	afs_flock_op_flock,
--	afs_flock_op_grant,
--	afs_flock_op_lock,
--	afs_flock_op_release_lock,
--	afs_flock_op_return_ok,
--	afs_flock_op_return_eagain,
--	afs_flock_op_return_edeadlk,
--	afs_flock_op_return_error,
--	afs_flock_op_set_lock,
--	afs_flock_op_unlock,
--	afs_flock_op_wake,
--};
--
--enum afs_cb_break_reason {
--	afs_cb_break_no_break,
--	afs_cb_break_no_promise,
--	afs_cb_break_for_callback,
--	afs_cb_break_for_deleted,
--	afs_cb_break_for_lapsed,
--	afs_cb_break_for_s_reinit,
--	afs_cb_break_for_unlink,
--	afs_cb_break_for_v_break,
--	afs_cb_break_for_volume_callback,
--	afs_cb_break_for_zap,
--};
--
- #endif /* end __AFS_DECLARE_TRACE_ENUMS_ONCE_ONLY */
- 
- /*
-@@ -391,6 +185,7 @@ enum afs_cb_break_reason {
- 	EM(afs_cell_trace_unuse_fc,		"UNU fc    ") \
- 	EM(afs_cell_trace_unuse_lookup,		"UNU lookup") \
- 	EM(afs_cell_trace_unuse_mntpt,		"UNU mntpt ") \
-+	EM(afs_cell_trace_unuse_no_pin,		"UNU no-pin") \
- 	EM(afs_cell_trace_unuse_parse,		"UNU parse ") \
- 	EM(afs_cell_trace_unuse_pin,		"UNU pin   ") \
- 	EM(afs_cell_trace_unuse_probe,		"UNU probe ") \
-@@ -614,6 +409,32 @@ enum afs_cb_break_reason {
- 	EM(afs_cb_break_for_volume_callback,	"break-v-cb")		\
- 	E_(afs_cb_break_for_zap,		"break-zap")
- 
-+/*
-+ * Generate enums for tracing information.
-+ */
-+#ifndef __AFS_GENERATE_TRACE_ENUMS_ONCE_ONLY
-+#define __AFS_GENERATE_TRACE_ENUMS_ONCE_ONLY
-+
-+#undef EM
-+#undef E_
-+#define EM(a, b) a,
-+#define E_(a, b) a
-+
-+enum afs_call_trace		{ afs_call_traces } __mode(byte);
-+enum afs_cb_break_reason	{ afs_cb_break_reasons } __mode(byte);
-+enum afs_cell_trace		{ afs_cell_traces } __mode(byte);
-+enum afs_edit_dir_op		{ afs_edit_dir_ops } __mode(byte);
-+enum afs_edit_dir_reason	{ afs_edit_dir_reasons } __mode(byte);
-+enum afs_eproto_cause		{ afs_eproto_causes } __mode(byte);
-+enum afs_file_error		{ afs_file_errors } __mode(byte);
-+enum afs_flock_event		{ afs_flock_events } __mode(byte);
-+enum afs_flock_operation	{ afs_flock_operations } __mode(byte);
-+enum afs_io_error		{ afs_io_errors } __mode(byte);
-+enum afs_server_trace		{ afs_server_traces } __mode(byte);
-+enum afs_volume_trace		{ afs_volume_traces } __mode(byte);
-+
-+#endif /* end __AFS_GENERATE_TRACE_ENUMS_ONCE_ONLY */
-+
- /*
-  * Export enum symbols via userspace.
-  */
+ static int
 -- 
 2.43.0
 
