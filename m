@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-90897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5819F9BEB86
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1129BEB9A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCED1F27918
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50B781C21127
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1D91F80D9;
-	Wed,  6 Nov 2024 12:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A3C1E04AF;
+	Wed,  6 Nov 2024 12:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xB1Zj3sQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx1sJFwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6361E0496;
-	Wed,  6 Nov 2024 12:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0630E1F8918;
+	Wed,  6 Nov 2024 12:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897138; cv=none; b=mxzJQ+rZ/vev+mz9fXuSjIT3IeIcNz5RT2ugmJAZ1ot8SyQTPaH4fOO60dvKGKrqiK5BNMO8WMvVUjlr30BYYQqulzNFahurSbvfnoMajIHNHwt6/3betrSd5kXcYEkOPZkmP9QDVrEHW9jcCtzMoIZwoZavgYKtkbPjXVl7tOs=
+	t=1730897171; cv=none; b=qRhbl2vuUr5fNgPcHabwUwBYoz4aQ2aEtLs+sxpxDVzLEtc5nVXSv2wOvjjPKMreqrtY+yI0SEp7LhJy96Gs/FKaikccmvJQJty6TjfThKTToyWXKscWhzeyOAWlBtDfQbAVBEWIPqqe1UzFPeRchElQHMJ1h4Yn6IwUZq+EhFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897138; c=relaxed/simple;
-	bh=J9LZVQ79rDUQ8bPVtMpjZ1uawyLXK6ObflXmhSQCFeQ=;
+	s=arc-20240116; t=1730897171; c=relaxed/simple;
+	bh=18KeR/JSTbAqh9lcjqGSzkxG6e9XV8B23LQX/xdvPwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYemlfTlkS64AYQfVN6G2c6T9653R4epCWrlJhKBo2UF1LRCc5S8veECM8G3rlbr/t9MIwIfAhtBmGtlBmF+Z7gz20hb29I6pCyQ0t0AhWXoVinkpSahS9W8DHKec/tlcfdKPjNyPwH25wl5j6LDtw5Btfp4ECyswIuxiuSTrY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xB1Zj3sQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021F2C4CECD;
-	Wed,  6 Nov 2024 12:45:37 +0000 (UTC)
+	 MIME-Version; b=oIoxCX6np/AuDsV8UfIGqhCCafLr8bWUCCnBYCoeBDD1qMNMpoSkV2LrpAgz2XEni9OCAPZvX+TIPiqL9Fk4Jn4Ywrz88dG7r/MOsC/vciSGo/ajLcJMCMeusyI1iwZae095Ej9XHEMnec1OTxnJoQeKefRs9jvTkNwRCcwqsMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx1sJFwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F78C4CECD;
+	Wed,  6 Nov 2024 12:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897138;
-	bh=J9LZVQ79rDUQ8bPVtMpjZ1uawyLXK6ObflXmhSQCFeQ=;
+	s=korg; t=1730897170;
+	bh=18KeR/JSTbAqh9lcjqGSzkxG6e9XV8B23LQX/xdvPwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xB1Zj3sQ80GxcLFVTaaJTaunHAPh+OmcGxYI91Bg3exL1XA9g0qEZh1cinn9deSlh
-	 014k3w6I9X6pQFDolfwGxzaoYLomP/ABnYj9W6rztLcJTZLEZvfE7nJy0CEJGruf9v
-	 PW3f0CVT2f9BDdyBtYnlYT5LP7IundyOpVzI1d9Y=
+	b=Gx1sJFwzTWYIc/CI6jU7CxGRcCp68JGXJxySbJE5R1oWznUkAICJcwPkIob6Y87+J
+	 cxgSkFlnBDfU8lcuZfATWFCEwmKnDDT4a/Vij8IcX3OdBGggXdRrDRNz5Pgcl2PAxK
+	 3+ULVIfuDHTDER5obb6My5Tt8FbRshv3f/LcAYpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 072/126] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
-Date: Wed,  6 Nov 2024 13:04:33 +0100
-Message-ID: <20241106120308.035486282@linuxfoundation.org>
+	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: [PATCH 6.1 073/126] wifi: ath10k: Fix memory leak in management tx
+Date: Wed,  6 Nov 2024 13:04:34 +0100
+Message-ID: <20241106120308.063197907@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
 References: <20241106120306.038154857@linuxfoundation.org>
@@ -65,34 +65,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
+commit e15d84b3bba187aa372dff7c58ce1fd5cb48a076 upstream.
 
-Avoid potentially crashing in the driver because of uninitialized private data
+In the current logic, memory is allocated for storing the MSDU context
+during management packet TX but this memory is not being freed during
+management TX completion. Similar leaks are seen in the management TX
+cleanup logic.
 
-Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
+Kmemleak reports this problem as below,
+
+unreferenced object 0xffffff80b64ed250 (size 16):
+  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
+  hex dump (first 16 bytes):
+    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
+  backtrace:
+    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
+    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
+    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
+    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
+    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
+    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
+    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
+    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
+
+Free the memory during completion and cleanup to fix the leak.
+
+Protect the mgmt_pending_tx idr_remove() operation in
+ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
+other instances.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+
+Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
+Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
 Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Link: https://patch.msgid.link/20241015064103.6060-1-quic_mpubbise@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c |    7 ++++++-
+ drivers/net/wireless/ath/ath10k/wmi.c     |    2 ++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3001,7 +3001,8 @@ static int ieee80211_get_tx_power(struct
- 	struct ieee80211_local *local = wiphy_priv(wiphy);
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+--- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
++++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+@@ -3035,9 +3035,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(s
+ 				       struct sk_buff *msdu)
+ {
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
++	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
+ 	struct ath10k_wmi *wmi = &ar->wmi;
  
--	if (local->ops->get_txpower)
-+	if (local->ops->get_txpower &&
-+	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
- 		return drv_get_txpower(local, sdata, dbm);
+-	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_lock_bh(&ar->data_lock);
++	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_unlock_bh(&ar->data_lock);
++
++	kfree(pkt_addr);
  
- 	if (!local->use_chanctx)
+ 	return 0;
+ }
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2440,6 +2440,7 @@ wmi_process_mgmt_tx_comp(struct ath10k *
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	info = IEEE80211_SKB_CB(msdu);
++	kfree(pkt_addr);
+ 
+ 	if (param->status) {
+ 		info->flags &= ~IEEE80211_TX_STAT_ACK;
+@@ -9581,6 +9582,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_p
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	ieee80211_free_txskb(ar->hw, msdu);
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
 
 
 
