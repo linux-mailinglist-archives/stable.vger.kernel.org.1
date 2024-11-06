@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8079BEBE1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160579BE83C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2234628215F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD521F2228A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29EE1EF0B6;
-	Wed,  6 Nov 2024 12:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC831DF986;
+	Wed,  6 Nov 2024 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcDKgqFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz9d9uZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7111E0B7B;
-	Wed,  6 Nov 2024 12:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08091DF74E;
+	Wed,  6 Nov 2024 12:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897364; cv=none; b=MddRJIri8DKMVQs0DG8O5aba/WVucvif2e5K3q9kx7BzyXm/ypCm10BsBl+WyJ8rHMkFv17t1vh+XR58tK9WX3N9LcuKg8hlfwObD9wlQcWHGO479aGtJQdsDoACg9seKM+/I8wfsVmjTu3Gv3VYKXxwtRkBxqjbW1FgYxj9w58=
+	t=1730895757; cv=none; b=lsrweoDFglyK1FSs58ufeop63jLu5sFlHDKq1ggJoSeBuAjp62DTxvCdmOTiLmgKR8rtf7ziUndPcTzhTJ74jeiUUFwhgquEqH7zpxY5S3pZ7Ozuh8Jek/kRrcr9+p6tG71XERDzpeDvOzFcttbjN+XbJrpyPIg73QMlp61Q2b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897364; c=relaxed/simple;
-	bh=H5h22hvXToWXUMrZ8BvgFM83tCmEKCL7vHLi0lR/2dk=;
+	s=arc-20240116; t=1730895757; c=relaxed/simple;
+	bh=lkJXP0bg/wX5lDngaJ94fV6aWSFuyBDQ1MkGhgxZRqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofYFxnpfGp7XhuklScQxiDyvoVb1cO47cFaaprun+Ztn7WfdEIRXq55r461XQrHko3Dpky1LnElOFBgBqTU01oqHawc2Q1eudl6qp+6HolUqSROWiAaxB40Lj7u9YeYTTzCzlXZ1rS7YGw7JG18MJ0Im7geDkQY6X/r0i4oTjUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcDKgqFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C5AC4CECD;
-	Wed,  6 Nov 2024 12:49:23 +0000 (UTC)
+	 MIME-Version; b=btAm/oR3CVy4Z+HuJ7OxJmRUuH1nc35uJEW3asO7JYQUNcm9BNlqvdWBI+cjhpNgnpaPvwtPFpAD+K+suXJV0X2P2uk59JkDIrdWpmZMV7t89X0wVPBCAM1sMXqCkl7ayRlVt/DlsqWxBeeGaHyqlOFN1AEmEhS3gbR4DdOsJic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz9d9uZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656A6C4CECD;
+	Wed,  6 Nov 2024 12:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897364;
-	bh=H5h22hvXToWXUMrZ8BvgFM83tCmEKCL7vHLi0lR/2dk=;
+	s=korg; t=1730895756;
+	bh=lkJXP0bg/wX5lDngaJ94fV6aWSFuyBDQ1MkGhgxZRqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LcDKgqFjUqPACnd+K5X41gT1FzOaxt/1vsNYtsMM0YtCsmWGX7TcGqEqpaapkn0ao
-	 80PFijzOfW942xg34kmc2zv7NsjC1KFVgCFNcz7Tkb71l+oumbat0I3X98KZH2iMyk
-	 BufM8jPX8cepBDAU3BNfXJ8Y6Rd5UB5sm2now3PA=
+	b=cz9d9uZz6+IIHKKfs+z+42Uf41Hhzx4ttBpkSkxPi3XGx1bU6NMpkbKeKXTqo7+ot
+	 SdZiTfdUZNkH8NhL87ZA7dcvZShTYCn9pSXeFguQvEYxrKl5r5CNNRJGkS3Y3NiW/P
+	 CLJ1FFPraNZ1FgwlTO4v78BKTJ5wkPer2h/0QK7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/151] selftests/bpf: Add bpf_percpu_obj_{new,drop}() macro in bpf_experimental.h
-Date: Wed,  6 Nov 2024 13:03:36 +0100
-Message-ID: <20241106120309.610940862@linuxfoundation.org>
+	Dave Hansen <dave.hansen@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Todd Brandt <todd.e.brandt@intel.com>
+Subject: [PATCH 4.19 289/350] x86/apic: Always explicitly disarm TSC-deadline timer
+Date: Wed,  6 Nov 2024 13:03:37 +0100
+Message-ID: <20241106120327.974814012@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 968c76cb3dc6cc86e8099ecaa5c30dc0d4738a30 ]
+commit ffd95846c6ec6cf1f93da411ea10d504036cab42 upstream.
 
-The new macro bpf_percpu_obj_{new/drop}() is very similar to bpf_obj_{new,drop}()
-as they both take a type as the argument.
+New processors have become pickier about the local APIC timer state
+before entering low power modes. These low power modes are used (for
+example) when you close your laptop lid and suspend. If you put your
+laptop in a bag and it is not in this low power mode, it is likely
+to get quite toasty while it quickly sucks the battery dry.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20230827152805.1999417-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: aa30eb3260b2 ("bpf: Force checkpoint when jmp history is too long")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem boils down to some CPUs' inability to power down until the
+CPU recognizes that the local APIC timer is shut down. The current
+kernel code works in one-shot and periodic modes but does not work for
+deadline mode. Deadline mode has been the supported and preferred mode
+on Intel CPUs for over a decade and uses an MSR to drive the timer
+instead of an APIC register.
+
+Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
+MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
+to the initial-count register (APIC_TMICT) which is ignored in
+TSC-deadline mode.
+
+Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
+enough to tell the hardware that the timer will not fire in any of the
+timer modes. But mitigating AMD erratum 411[1] also requires clearing
+out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
+practice on Intel Lunar Lake systems, which is the motivation for this
+change.
+
+1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
+
+Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/bpf/bpf_experimental.h  | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/x86/kernel/apic/apic.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-index 209811b1993af..4494eaa9937e5 100644
---- a/tools/testing/selftests/bpf/bpf_experimental.h
-+++ b/tools/testing/selftests/bpf/bpf_experimental.h
-@@ -131,4 +131,35 @@ extern int bpf_rbtree_add_impl(struct bpf_rb_root *root, struct bpf_rb_node *nod
-  */
- extern struct bpf_rb_node *bpf_rbtree_first(struct bpf_rb_root *root) __ksym;
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -484,7 +484,19 @@ static int lapic_timer_shutdown(struct c
+ 	v = apic_read(APIC_LVTT);
+ 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+ 	apic_write(APIC_LVTT, v);
+-	apic_write(APIC_TMICT, 0);
++
++	/*
++	 * Setting APIC_LVT_MASKED (above) should be enough to tell
++	 * the hardware that this timer will never fire. But AMD
++	 * erratum 411 and some Intel CPU behavior circa 2024 say
++	 * otherwise.  Time for belt and suspenders programming: mask
++	 * the timer _and_ zero the counter registers:
++	 */
++	if (v & APIC_LVT_TIMER_TSCDEADLINE)
++		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
++	else
++		apic_write(APIC_TMICT, 0);
++
+ 	return 0;
+ }
  
-+/* Description
-+ *	Allocates a percpu object of the type represented by 'local_type_id' in
-+ *	program BTF. User may use the bpf_core_type_id_local macro to pass the
-+ *	type ID of a struct in program BTF.
-+ *
-+ *	The 'local_type_id' parameter must be a known constant.
-+ *	The 'meta' parameter is rewritten by the verifier, no need for BPF
-+ *	program to set it.
-+ * Returns
-+ *	A pointer to a percpu object of the type corresponding to the passed in
-+ *	'local_type_id', or NULL on failure.
-+ */
-+extern void *bpf_percpu_obj_new_impl(__u64 local_type_id, void *meta) __ksym;
-+
-+/* Convenience macro to wrap over bpf_percpu_obj_new_impl */
-+#define bpf_percpu_obj_new(type) ((type __percpu_kptr *)bpf_percpu_obj_new_impl(bpf_core_type_id_local(type), NULL))
-+
-+/* Description
-+ *	Free an allocated percpu object. All fields of the object that require
-+ *	destruction will be destructed before the storage is freed.
-+ *
-+ *	The 'meta' parameter is rewritten by the verifier, no need for BPF
-+ *	program to set it.
-+ * Returns
-+ *	Void.
-+ */
-+extern void bpf_percpu_obj_drop_impl(void *kptr, void *meta) __ksym;
-+
-+/* Convenience macro to wrap over bpf_obj_drop_impl */
-+#define bpf_percpu_obj_drop(kptr) bpf_percpu_obj_drop_impl(kptr, NULL)
-+
- #endif
--- 
-2.43.0
-
 
 
 
