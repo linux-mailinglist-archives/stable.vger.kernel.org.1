@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-91022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC209BEC15
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD319BE822
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80C9C1F2445C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B301F2180C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4D31F428B;
-	Wed,  6 Nov 2024 12:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEC21DF73E;
+	Wed,  6 Nov 2024 12:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7xR8Mvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2e8lFPbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6F51F1318;
-	Wed,  6 Nov 2024 12:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1614A1DED49;
+	Wed,  6 Nov 2024 12:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897510; cv=none; b=YychqKBfYdGUneWfUo1ihg2zEIuz7BUkNESKmSMQwdn32No3LwxkwweIQB6flY2/dyjQa2WKtgfB7o+J0niq6HUIU+iVMnUCRQGNR0tlVoMCFS8PqDab1bEVMrXAqubYzEbvfxiL4bauPq3itkWx3wFgEk+xpVCM9tWDi1+pC98=
+	t=1730895683; cv=none; b=WJo39aZtg02eLCefr/K+jfdv+XdYTVxqUiMTiPT/jTJdT5P2K/9qYV54KXxcr2xxDQZeLf3s8W+91hFZO0VM/Cm8xJoyvf6bk4FLgWvQYCkXRsclivAt/ksrZ1XwAUV+UdKUU5dSCggYn4al0JisYoQQLPQxySO9okSwkeVtL1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897510; c=relaxed/simple;
-	bh=8saJ8SkLUCldLK8mjQifWeUVOrJu2J+HLSyzoy/PRpY=;
+	s=arc-20240116; t=1730895683; c=relaxed/simple;
+	bh=gUn5gs9yBIBW2szbV87iOY8+l9TCjYMgYtJLDVzNl8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pNx9Hb5zJegytm/Q76dUbKair+ZLfCtPphTXJfg+xRtI19Hw6qxFiL3UwBNS06HfbJIGTOJfTTcTmgITBIgZGQZHiPcnjoFbDygF0yOs2vYgCY7e4TyJXs4wSZkJYlzoSgKgngMRzMCHQ0OT/qwS1xDGXv0Zcy8Aw8Um23wccKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7xR8Mvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E958C4CED4;
-	Wed,  6 Nov 2024 12:51:49 +0000 (UTC)
+	 MIME-Version; b=hb7THaDBz+RzuPYkNQGSzvsfzIDP4LlFr/TeEuZSMDiAxUBhX7kMQamwF3/ZB8YcNIFq7EMvly+0Q0n2iv6i1AZB4ygGmfAAAaY4Yn7xtuTqEhsrMfj0rzQkXL4oKFfaIPji3H5dIB4r/DwdAs2A/XD9o0guwpYvO4oyPSirdk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2e8lFPbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61358C4CECD;
+	Wed,  6 Nov 2024 12:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897509;
-	bh=8saJ8SkLUCldLK8mjQifWeUVOrJu2J+HLSyzoy/PRpY=;
+	s=korg; t=1730895683;
+	bh=gUn5gs9yBIBW2szbV87iOY8+l9TCjYMgYtJLDVzNl8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7xR8MvzjXwiw3gJBZ8jcz9Pc0x6P0ZVo9LAU8MaHIxZR2dSUIo67QZJYH/SUI8tx
-	 X+urxkdOZi1ZeW5iAnz4pYryCfe+5K+CD6dTXWTQFOASiXpHa0//lQdNzGpjHC/FlK
-	 RytgV1zadFDMq9pxqliOFQI3pPz28Td2oQPdToR0=
+	b=2e8lFPbtyPKEyTCq4FZX36m3/7KLaEI8yXphxbjJSJovHWRm72R8/EL6pCC/7mTvA
+	 82CmWl/Qfe/RHOjV4VzcvP9uJxYFseY/ajmtxTL8IAKlQBy7vzP6sHVtTGwyqHP2XN
+	 bMhuSdaX2YY/LwUzj3Xkm7jywh3a5NoxAjTIGtmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d121e098da06af416d23@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Ye Bin <yebin10@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/151] bpf, test_run: Fix LIVE_FRAME frame update after a page has been recycled
-Date: Wed,  6 Nov 2024 13:03:48 +0100
-Message-ID: <20241106120309.933607951@linuxfoundation.org>
+Subject: [PATCH 4.19 301/350] Bluetooth: bnep: fix wild-memory-access in proto_unregister
+Date: Wed,  6 Nov 2024 13:03:49 +0100
+Message-ID: <20241106120328.234911481@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit c40dd8c4732551605712985bc5b7045094c6458d ]
+[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
 
-The test_run code detects whether a page has been modified and
-re-initialises the xdp_frame structure if it has, using
-xdp_update_frame_from_buff(). However, xdp_update_frame_from_buff()
-doesn't touch frame->mem, so that wasn't correctly re-initialised, which
-led to the pages from page_pool not being returned correctly. Syzbot
-noticed this as a memory leak.
+There's issue as follows:
+  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
+  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
+  RIP: 0010:proto_unregister+0xee/0x400
+  Call Trace:
+   <TASK>
+   __do_sys_delete_module+0x318/0x580
+   do_syscall_64+0xc1/0x1d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fix this by also copying the frame->mem structure when re-initialising
-the frame, like we do on initialisation of a new page from page_pool.
+As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
+will cleanup all resource. Then when remove bnep module will call
+bnep_sock_cleanup() to cleanup sock's resource.
+To solve above issue just return bnep_sock_init()'s return value in
+bnep_exit().
 
-Fixes: e5995bc7e2ba ("bpf, test_run: fix crashes due to XDP frame overwriting/corruption")
-Fixes: b530e9e1063e ("bpf: Add "live packet" mode for XDP in BPF_PROG_RUN")
-Reported-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/bpf/20241030-test-run-mem-fix-v1-1-41e88e8cae43@redhat.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/bnep/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 12a2934b28ffb..905de361f8623 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -244,6 +244,7 @@ static void reset_ctx(struct xdp_page_head *head)
- 	head->ctx.data_meta = head->orig_ctx.data_meta;
- 	head->ctx.data_end = head->orig_ctx.data_end;
- 	xdp_update_frame_from_buff(&head->ctx, head->frame);
-+	head->frame->mem = head->orig_ctx.rxq->mem;
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index a16d584a6c0d0..e1cfd110d281e 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -744,8 +744,7 @@ static int __init bnep_init(void)
+ 	if (flt[0])
+ 		BT_INFO("BNEP filters: %s", flt);
+ 
+-	bnep_sock_init();
+-	return 0;
++	return bnep_sock_init();
  }
  
- static int xdp_recv_frames(struct xdp_frame **frames, int nframes,
+ static void __exit bnep_exit(void)
 -- 
 2.43.0
 
