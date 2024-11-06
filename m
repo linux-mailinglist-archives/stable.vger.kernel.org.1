@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-91316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFECD9BED72
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BD99BED7C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 851A5285EC3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCB291F2492C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8528D1E25F5;
-	Wed,  6 Nov 2024 13:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1681E00B1;
+	Wed,  6 Nov 2024 13:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZaJGKTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QP8mL+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419C81E1A25;
-	Wed,  6 Nov 2024 13:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14FF1E1A25;
+	Wed,  6 Nov 2024 13:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898376; cv=none; b=Swfs9AtyD7C5+jVDb5cQU4ovZ0QVacmRNhXSpebqXkGntvf4Rs7NHLonkm0nbEGFi/6TMqDGP76Yd6c6KbxfidZ1cIyDuWxX1IC62xWAqzl8Vt+EwPeW9ukOzLoDWiiI7KPTJ56DyrnUMbfU5PMz1U1QpskiWwzbKAkXp+pyuL4=
+	t=1730898405; cv=none; b=nwcH5xq+lTXUJhwgG9ZEBqnR9vfhN3s/qHZCBG0tJmb7jnkMzqOEbGk3ji2BYvD6lCpUlLgzirs5iG4Z3hjlAm2wLu0Y3r3dqj5x/MCALMER+GdoeJ7NxVpgF3nYnj+3M+kDln3c741+faB8lRXAqRZms33jNWefdLI/RQ289LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898376; c=relaxed/simple;
-	bh=TqeKsJKxxwErvNjn83VnUKvMXbLzMEb4OMGvf7gjqWQ=;
+	s=arc-20240116; t=1730898405; c=relaxed/simple;
+	bh=YopIsaDkhqFgb4Ow7CnpYiTcQuLP3/BXXfQc99G30ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QljuNX/lzjkkXJemWGyxTDar4rlJObuA7LfU3T41jOWDN4YHISGuXSm96JKv/V5NciLTfXHQxnknuhX/14umU3KTmFC+ehoHjieGWrsPoV5pVqcXzwVLZibqE6tm+vFOyUoCGtpqgzTbNBPmJ6+gz7UoxPiD70eoIKZTjeV6LOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZaJGKTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAB2C4CED8;
-	Wed,  6 Nov 2024 13:06:15 +0000 (UTC)
+	 MIME-Version; b=rJWR/gujyiBtsK/d/TLOkx9Uqy+uTpSoC6PAxpXcC/lAFtMvSZcrHJTCO5l6pPcmFlyFkoz+QrZPbuysMSm6kU5cpb5noB9JM0JOyi26ldNgAfSFJBNrZqfCv2e7jwgGMHXKp2jswKhPbiF4+iokfgm2VhWIJN+yR0aDsSlAxfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QP8mL+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4896EC4CED4;
+	Wed,  6 Nov 2024 13:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898375;
-	bh=TqeKsJKxxwErvNjn83VnUKvMXbLzMEb4OMGvf7gjqWQ=;
+	s=korg; t=1730898405;
+	bh=YopIsaDkhqFgb4Ow7CnpYiTcQuLP3/BXXfQc99G30ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZaJGKTiuxlAoNPV0v7zQO4quPqpkRUa7b4ICNcaVk1ozKG79zCKTeFXUCVlP0N/y
-	 seRlOxDVz1uV4q/rf+PE2YQpZ7Jx/sewlbBgF01V41hBh/LOaUCywkOFZ/xpegNqZj
-	 ihc7VjjJlOkdR1988rImnmntR/hpT3naQFWwbypE=
+	b=1QP8mL+YmjL7TRFBsS4XuDyI93hsR3qZCgZ7y170jPtN73Na8uOxkoOeGvdY32a+3
+	 yCSZRwUBniaOCxsSEGJA+ng6Lx+vL3vbP32OgCNcOYZGLm8PQGW09Q67JvPyiwoqtQ
+	 kMa212blgHV/whIXmzQReADadONdCK60eOmdUI3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oder Chiou <oder_chiou@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 190/462] ALSA: hda/realtek: Fix the push button function for the ALC257
-Date: Wed,  6 Nov 2024 13:01:23 +0100
-Message-ID: <20241106120336.207607829@linuxfoundation.org>
+Subject: [PATCH 5.4 191/462] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
+Date: Wed,  6 Nov 2024 13:01:24 +0100
+Message-ID: <20241106120336.233482698@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,34 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oder Chiou <oder_chiou@realtek.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 05df9732a0894846c46d0062d4af535c5002799d ]
+[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
 
-The headset push button cannot work properly in case of the ALC257.
-This patch reverted the previous commit to correct the side effect.
+Some time ago, we introduced the obey_preferred_dacs flag for choosing
+the DAC/pin pairs specified by the driver instead of parsing the
+paths.  This works as expected, per se, but there have been a few
+cases where we forgot to set this flag while preferred_dacs table is
+already set up.  It ended up with incorrect wiring and made us
+wondering why it doesn't work.
 
-Fixes: ef9718b3d54e ("ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7")
-Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
-Link: https://patch.msgid.link/20240930105039.3473266-1-oder_chiou@realtek.com
+Basically, when the preferred_dacs table is provided, it means that
+the driver really wants to wire up to follow that.  That is, the
+presence of the preferred_dacs table itself is already a "do-it"
+flag.
+
+In this patch, we simply replace the evaluation of obey_preferred_dacs
+flag with the presence of preferred_dacs table for fixing the
+misbehavior.  Another patch to drop of the obsoleted flag will
+follow.
+
+Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
+Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/hda_generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index fbd8b4206bad8..f32c3c3752417 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -520,6 +520,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
- 	case 0x10ec0285:
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 77c0abd252eb0..a534460b4222c 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -1371,7 +1371,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		struct nid_path *path;
+ 		hda_nid_t pin = pins[i];
+ 
+-		if (!spec->obey_preferred_dacs) {
++		if (!spec->preferred_dacs) {
+ 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
+ 			if (path) {
+ 				badness += assign_out_path_ctls(codec, path);
+@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		if (dacs[i]) {
+ 			if (is_dac_already_used(codec, dacs[i]))
+ 				badness += bad->shared_primary;
+-		} else if (spec->obey_preferred_dacs) {
++		} else if (spec->preferred_dacs) {
+ 			badness += BAD_NO_PRIMARY_DAC;
+ 		}
+ 
 -- 
 2.43.0
 
