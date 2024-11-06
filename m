@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039EF9BEB73
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97889BEAA4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8C628474A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE991C20DBC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB2D1EBFF3;
-	Wed,  6 Nov 2024 12:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C551FBF72;
+	Wed,  6 Nov 2024 12:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz5TUc7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paWlm81f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A724C1EC009;
-	Wed,  6 Nov 2024 12:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90351FBF65;
+	Wed,  6 Nov 2024 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897082; cv=none; b=l/RR2UVi948uqwpcZW8DxC3gIua68DFvH8EtWcI126WEAbo/dG87yAqa7v3ZzNe5qNnYKIgfx7nYfHr4uLI6geqG7F7Kt1Gf+SQ4gjr2PLOwcAZTjIrb6k+gQ3fc5Bp3DsLKEa2GhWPRSJLBPrfiPNj7iVWs6JvUPf+3jEJ6v9c=
+	t=1730896736; cv=none; b=PMEundaS1YCoVmB/8/vu1BuDfHiPzIISyB0yq0jh8A4WUYMjemTT0gIWIImKdh8LsGW/c87xB9HbTu+YKydKWQ4M8M2I1hUA20TXJHRCPIYu7TnxHRwykN+W8ljnVgmcZt82erBfXDXy+J1GfSaaAUHK7BxkRmnLWVQqVI7F594=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897082; c=relaxed/simple;
-	bh=lxYN9RJBj1hwvhgtM39/ohOZQRLOuoiWNJam7UaH1eI=;
+	s=arc-20240116; t=1730896736; c=relaxed/simple;
+	bh=VR59fxSQRyeuAahpLsHaBV+yYCiQCvaTT3+4/4ldOwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfnFuExmaTQR1tP3X54+fW2uJ90TTTZGGA86EYBvBvAZm6Yd4ZuRRQ7O4J5V4Q96wHBoc+RnjXD5FeK8VnLJ3JWSPIqausrm7SPmUXJZ0ryQzlm9R0SOyQTy1PkG7eP9qOKnxRsZSluzdKJlyKCBCOT/6MSWvXRiVaypHbjGOYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lz5TUc7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D964C4CECD;
-	Wed,  6 Nov 2024 12:44:41 +0000 (UTC)
+	 MIME-Version; b=pKJVusjiDJjcYveBWfj49IXci5GSKc2df4+6UAxAcoXDC2/Eje5SmD4LGS9ip1tk0fsDaIdtlYjzrKUpV0PQc/pFzfX+9EVXYId/pZqWYdku7EwbaiTTJQkQLfwJ3rUjo0/GbyG0MYaVSUsHHF4pj+Nsf3SlOSLGeysuz4vQDUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paWlm81f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DF4C4CED4;
+	Wed,  6 Nov 2024 12:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897082;
-	bh=lxYN9RJBj1hwvhgtM39/ohOZQRLOuoiWNJam7UaH1eI=;
+	s=korg; t=1730896736;
+	bh=VR59fxSQRyeuAahpLsHaBV+yYCiQCvaTT3+4/4ldOwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lz5TUc7zr90cSXrTbz7bwMp0OjqoNV7nn8gJJtbRx2fsdhoMrB9C5ZogdNhG8oBx/
-	 nu/s6nPdeHiRwrnScEcjyF9edk5Sn2WltKVKzZ9TBWazm7EsJT8iqVSrhFGGOyOt3C
-	 ZN1wRdsTxe+2/7MFswaOFEU19ssL1IbDlMVQbsdg=
+	b=paWlm81fFCpxJ13QH/bqaIMgL113W7PkaNwx+hIJyGves+Zqcq0CrxH7w/LQua3zF
+	 11Qqhw9X/C81uQsTDGM7Ot8gER0aXZxCmdbx7DjP7tcxegaup4z59H8ig7iF3StqTd
+	 pJyJoY8TmU7V039e+VY7XlV5gFgl0quVR/4aJmDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/126] misc: sgi-gru: Dont disable preemption in GRU driver
+	kernel test robot <lkp@intel.com>,
+	junhua huang <huang.junhua@zte.com.cn>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 055/110] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
 Date: Wed,  6 Nov 2024 13:04:21 +0100
-Message-ID: <20241106120307.716470146@linuxfoundation.org>
+Message-ID: <20241106120304.721158082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitri Sivanich <sivanich@hpe.com>
+From: junhua huang <huang.junhua@zte.com.cn>
 
-[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
+commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
 
-Disabling preemption in the GRU driver is unnecessary, and clashes with
-sleeping locks in several code paths.  Remove preempt_disable and
-preempt_enable from the GRU driver.
+After we fixed the uprobe inst endian in aarch_be, the sparse check report
+the following warning info:
 
-Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sparse warnings: (new ones prefixed by >>)
+>> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
+>> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
+@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
+   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
+   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
+>> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
+@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
+   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
+   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
+
+use the __le32 to u32 for uprobe_opcode_t, to keep the same.
+
+Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
+Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/sgi-gru/grukservices.c | 2 --
- drivers/misc/sgi-gru/grumain.c      | 4 ----
- drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
- 3 files changed, 8 deletions(-)
+ arch/arm64/include/asm/uprobes.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
-index fa1f5a632e7fc..093b0459a8a00 100644
---- a/drivers/misc/sgi-gru/grukservices.c
-+++ b/drivers/misc/sgi-gru/grukservices.c
-@@ -258,7 +258,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- 	int lcpu;
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -14,7 +14,7 @@
+ #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
+ #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
  
- 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
--	preempt_disable();
- 	bs = gru_lock_kernel_context(-1);
- 	lcpu = uv_blade_processor_id();
- 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
-@@ -272,7 +271,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- static void gru_free_cpu_resources(void *cb, void *dsr)
- {
- 	gru_unlock_kernel_context(uv_numa_blade_id());
--	preempt_enable();
- }
+-typedef u32 uprobe_opcode_t;
++typedef __le32 uprobe_opcode_t;
  
- /*
-diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
-index 4eb4b94551390..d2b2e39783d06 100644
---- a/drivers/misc/sgi-gru/grumain.c
-+++ b/drivers/misc/sgi-gru/grumain.c
-@@ -941,10 +941,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 
- again:
- 	mutex_lock(&gts->ts_ctxlock);
--	preempt_disable();
- 
- 	if (gru_check_context_placement(gts)) {
--		preempt_enable();
- 		mutex_unlock(&gts->ts_ctxlock);
- 		gru_unload_context(gts, 1);
- 		return VM_FAULT_NOPAGE;
-@@ -953,7 +951,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 	if (!gts->ts_gru) {
- 		STAT(load_user_context);
- 		if (!gru_assign_gru_context(gts)) {
--			preempt_enable();
- 			mutex_unlock(&gts->ts_ctxlock);
- 			set_current_state(TASK_INTERRUPTIBLE);
- 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
-@@ -969,7 +966,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 				vma->vm_page_prot);
- 	}
- 
--	preempt_enable();
- 	mutex_unlock(&gts->ts_ctxlock);
- 
- 	return VM_FAULT_NOPAGE;
-diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
-index 10921cd2608df..1107dd3e2e9fa 100644
---- a/drivers/misc/sgi-gru/grutlbpurge.c
-+++ b/drivers/misc/sgi-gru/grutlbpurge.c
-@@ -65,7 +65,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- 	struct gru_tlb_global_handle *tgh;
- 	int n;
- 
--	preempt_disable();
- 	if (uv_numa_blade_id() == gru->gs_blade_id)
- 		n = get_on_blade_tgh(gru);
- 	else
-@@ -79,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
- {
- 	unlock_tgh_handle(tgh);
--	preempt_enable();
- }
- 
- /*
--- 
-2.43.0
-
+ struct arch_uprobe_task {
+ };
 
 
 
