@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-91001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392B69BEC00
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE699BE833
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ACE11C2385F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D75284C7D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAACC1FAC2C;
-	Wed,  6 Nov 2024 12:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662131DF97D;
+	Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INMpPCUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfOM0JjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DBC1E0B7C;
-	Wed,  6 Nov 2024 12:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EF01DF726;
+	Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897447; cv=none; b=QFhjk3aWLnhHGWN+x8iuZQGhPC4wJDnFNYl4vA6z1NSfTb6GeuSQNGSPBrUx+ATyltV0JwYwOX5Oc45FzPnX02jlWMhSxciPIMQwYjawyX2y5qT4+XBWngLkpSXCBSQoGLg8t+EMDqLRWLBQ7aykLfZbnsr6ryFQNzDXRbTL9jo=
+	t=1730895733; cv=none; b=BjljzLviVCaiqHJbYGav+z+kF/r4NbdlYmGcOyE8YqLvFLVFUrcGUUlT/25Qcq4hEM4PcycoPD43mE0ryOSfvnFepEbgdXP/cvFxmrzlSKb370XR74qAnRkY420DKskdY9P0yQ6QsyQaAvLyrPa+0pCX/UjlPV4+f34HhRbrKyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897447; c=relaxed/simple;
-	bh=GPnnOKSp57biSLO6PLAG82Qp0Atta0wB7MafzQ/9VRc=;
+	s=arc-20240116; t=1730895733; c=relaxed/simple;
+	bh=gkEnmai8byE98Vt93iUXhh7VmUsVoOSPsUcM2vhohSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvfRFAak/EnOpVlEv+cYe88lk+VGr3sEZWxnAU0cUtYMRyJ+yOZgRZ5PEtTTlhissQr8NpTmlFKQSiQI8AkCI/4H+5P0MRkWhsEjufYCwjeHaAgwE905pWZnW7/rMAnw4ljISrG4Po/rRrl9xcLN4z65/chAJZOoBQSoso5DhQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INMpPCUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7AFC4CECD;
-	Wed,  6 Nov 2024 12:50:46 +0000 (UTC)
+	 MIME-Version; b=SzvFjWaTu8y1+25+oIQ6YYHe/jML03rfDafbQIcJlkVfN/dmyq5t9w4EZPnYV6dZXX0c1VHTiB7FE1il+uhWATObC01WP+kNiAU2gh6G4bk8Y8YSpW/1yxT42DLFiz21LRP7mfxKEZJ2vWUjbsk4VpTK5qQcvLir6Fc3w7GPbQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfOM0JjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E89C4CECD;
+	Wed,  6 Nov 2024 12:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897447;
-	bh=GPnnOKSp57biSLO6PLAG82Qp0Atta0wB7MafzQ/9VRc=;
+	s=korg; t=1730895733;
+	bh=gkEnmai8byE98Vt93iUXhh7VmUsVoOSPsUcM2vhohSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INMpPCUHuJVNsl+IqNuB5/d0g9pHIzbS7Vysxqf712hg8ztRt4jW7VhDeKcrTUvTQ
-	 DiATjsSveLIPm8vULe5IvAsADJ9Hb3ktGw7jKoKtdhCpl7JlVuj2gsDB0PWhLJXBzF
-	 cXhXzGAtaJuRByvfUZQAYRqJnqM7+VipjsRqg7qQ=
+	b=MfOM0JjTk4tTDvTHokhN+t9MT6a1o+FOrS6mc54G4kEMjTMCPYwP0wxFLjUKOQlBK
+	 Hbf9IeUYw91CBpiIhEdlVFdfRsRRBVpi/Y7mrQqlbPi+Od/EY3MvQhBoUKRbru4Vkl
+	 vS1h7VMnefV1HRb3NuZDL8qc5cJNI9D0PMDLC1hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/151] fs/ntfs3: Check if more than chunk-size bytes are written
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 4.19 316/350] drm/amd: Guard against bad data for ATIF ACPI method
 Date: Wed,  6 Nov 2024 13:04:04 +0100
-Message-ID: <20241106120310.379487290@linuxfoundation.org>
+Message-ID: <20241106120328.566232813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Ballance <andrewjballance@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
+commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
 
-A incorrectly formatted chunk may decompress into
-more than LZNT_CHUNK_SIZE bytes and a index out of bounds
-will occur in s_max_off.
+If a BIOS provides bad data in response to an ATIF method call
+this causes a NULL pointer dereference in the caller.
 
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+```
+? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
+? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
+? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
+? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
+? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
+? exc_page_fault (arch/x86/mm/fault.c:1542)
+? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
+```
+
+It has been encountered on at least one system, so guard for it.
+
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/lznt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
-index 4aae598d6d884..fdc9b2ebf3410 100644
---- a/fs/ntfs3/lznt.c
-+++ b/fs/ntfs3/lznt.c
-@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -90,6 +90,7 @@ static union acpi_object *amdgpu_atif_ca
+ 					   struct acpi_buffer *params)
+ {
+ 	acpi_status status;
++	union acpi_object *obj;
+ 	union acpi_object atif_arg_elements[2];
+ 	struct acpi_object_list atif_arg;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+@@ -112,16 +113,24 @@ static union acpi_object *amdgpu_atif_ca
  
- 	/* Do decompression until pointers are inside range. */
- 	while (up < unc_end && cmpr < cmpr_end) {
-+		// return err if more than LZNT_CHUNK_SIZE bytes are written
-+		if (up - unc > LZNT_CHUNK_SIZE)
-+			return -EINVAL;
- 		/* Correct index */
- 		while (unc + s_max_off[index] < up)
- 			index += 1;
--- 
-2.43.0
-
+ 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
+ 				      &buffer);
++	obj = (union acpi_object *)buffer.pointer;
+ 
+-	/* Fail only if calling the method fails and ATIF is supported */
++	/* Fail if calling the method fails and ATIF is supported */
+ 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+-		kfree(buffer.pointer);
++		kfree(obj);
+ 		return NULL;
+ 	}
+ 
+-	return buffer.pointer;
++	if (obj->type != ACPI_TYPE_BUFFER) {
++		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
++				 obj->type);
++		kfree(obj);
++		return NULL;
++	}
++
++	return obj;
+ }
+ 
+ /**
 
 
 
