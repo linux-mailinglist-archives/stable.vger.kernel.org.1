@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9AF9BE761
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0669E9BE883
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9EC21F22F4B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C002B283F65
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A321DF24C;
-	Wed,  6 Nov 2024 12:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0E81DFDB8;
+	Wed,  6 Nov 2024 12:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ON3sQQOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkcZ4VfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F4A1D416E;
-	Wed,  6 Nov 2024 12:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB9A1DF978;
+	Wed,  6 Nov 2024 12:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895220; cv=none; b=nonaQmoW4GY+TKxUg/BQBa5a1s/DA6OFwl/2w/mMSAjVll/cR3HG7FC348SaiUBzmiKV7MbTrvVy+0lxVTGPNuu21ANeKrvHvqG5WcnoZ5/OGvKiEaG/nh/uqb1TsUPJikkcUFnKd5UcJ9iTWGF++31+MRdQbZxuPecDFcrxtHw=
+	t=1730895895; cv=none; b=O0nkSkxbqHEifO+k+jQlxHpqmNnso2TfUEV2zqFJxFShJR/yRkNPjaoevFDitvN5TMcmpM225/+Y21DJ2RrGQYBZAloGDbW05/Jp0Qq8qDumZFapVpcanGpuIGNWI6OQE2Hhx5KUmjCF3nJTRJC+UMUIDmzzEq1fXr4tUMM7w54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895220; c=relaxed/simple;
-	bh=xFybGxbKwYaE0WfGStYvjxEpEe3ZyIZWcmHMVR7UBSc=;
+	s=arc-20240116; t=1730895895; c=relaxed/simple;
+	bh=ba7vP08H5CqCxEwuLk2nkeHMHp0Pk+WtwZxR+DCcigg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mm+ybF5bGIZ6WLCzjfFY1X63sr1nTcTgS1cLjwCGdX7YOuKkAP4Cu2G1gpQ34DX8hkegL4yojbbMPpDZYGkbW095CPwnzBMdELgZvVo9jG9DbtPOdWD9G6EImA6d3n/kQ0CIphaYpZ3Hfoq8AGQdtXwH67AICkybb8WAC7WZSZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ON3sQQOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0E5C4CECD;
-	Wed,  6 Nov 2024 12:13:39 +0000 (UTC)
+	 MIME-Version; b=Zc0xNqVOUEOlNafrfYpl7VwsA958Q/BEA2FpaUOKh983xZx+rTQ5Ficj9HKqLjjhBx367ZI0dKYJGTt84RtXIcL2tiGSqYb0UQtuhFXo0Jn34tyD/9NB7oswlf2FYk8TO3h0JyrVInz39yToJcyisRzD2bA7fV0cynyykHj4/uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkcZ4VfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772FEC4CECD;
+	Wed,  6 Nov 2024 12:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895220;
-	bh=xFybGxbKwYaE0WfGStYvjxEpEe3ZyIZWcmHMVR7UBSc=;
+	s=korg; t=1730895894;
+	bh=ba7vP08H5CqCxEwuLk2nkeHMHp0Pk+WtwZxR+DCcigg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ON3sQQOE46w1D5GZ92CARSD8DCLrMo+rzjMAp9ueXhc2TU1K8O/PphBTmUUzevmgG
-	 mSaEU1BBoXtHBMHzmRd1kfS4q9jErg8ztUI0dM/9qqyKNFydCRS9qBgFE58s7cB/u1
-	 Dg9w1XvQRHlO8nr0IgGnpZsJfWO1FxshmyfG8q5A=
+	b=jkcZ4VfW8op9PhlV5kWopfyBRSi635MCZzDBaptV3dfUCUUVgvBrXSyiQYIRqtwIs
+	 UrbcWoYbzzbctsbviJvLUHSjvttpDop+idXgj05VzaZ55vAJyN4qsHC7nIVbOVMAtj
+	 cJUOVkBiTBtoFU09x6s8MbAklbRZ7YfLBT0G3uyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 145/350] f2fs: Require FMODE_WRITE for atomic write ioctls
+Subject: [PATCH 6.11 020/245] wifi: iwlwifi: mvm: really send iwl_txpower_constraints_cmd
 Date: Wed,  6 Nov 2024 13:01:13 +0100
-Message-ID: <20241106120324.496676150@linuxfoundation.org>
+Message-ID: <20241106120319.734219622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit 4f5a100f87f32cb65d4bb1ad282a08c92f6f591e upstream.
+[ Upstream commit cbe84e9ad5e28ef083beff7f6edf2e623fac09e4 ]
 
-The F2FS ioctls for starting and committing atomic writes check for
-inode_owner_or_capable(), but this does not give LSMs like SELinux or
-Landlock an opportunity to deny the write access - if the caller's FSUID
-matches the inode's UID, inode_owner_or_capable() immediately returns true.
+iwl_mvm_send_ap_tx_power_constraint_cmd is a no-op if the link is not
+active (we need to know the band etc.)
+However, for the station case it will be called just before we set the
+link to active (by calling iwl_mvm_link_changed with
+the LINK_CONTEXT_MODIFY_ACTIVE bit set in the 'changed' flags and
+active = true), so it will end up doing nothing.
 
-There are scenarios where LSMs want to deny a process the ability to write
-particular files, even files that the FSUID of the process owns; but this
-can currently partially be bypassed using atomic write ioctls in two ways:
+Fix this by calling iwl_mvm_send_ap_tx_power_constraint_cmd before
+iwl_mvm_link_changed.
 
- - F2FS_IOC_START_ATOMIC_REPLACE + F2FS_IOC_COMMIT_ATOMIC_WRITE can
-   truncate an inode to size 0
- - F2FS_IOC_START_ATOMIC_WRITE + F2FS_IOC_ABORT_ATOMIC_WRITE can revert
-   changes another process concurrently made to a file
-
-Fix it by requiring FMODE_WRITE for these operations, just like for
-F2FS_IOC_MOVE_RANGE. Since any legitimate caller should only be using these
-ioctls when intending to write into the file, that seems unlikely to break
-anything.
-
-Fixes: 88b88a667971 ("f2fs: support atomic writes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Fixes: 6b82f4e119d1 ("wifi: iwlwifi: mvm: handle TPE advertised by AP")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.5c235fccd3f1.I2d40dea21e5547eba458565edcb4c354d094d82a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 41eec5bfc7b31..aabc5fe45a3bd 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1716,6 +1716,9 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
- 	struct inode *inode = file_inode(filp);
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 3c99396ad3692..27980d58e6956 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -347,11 +347,6 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 		rcu_read_unlock();
+ 	}
  
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
+-	if (vif->type == NL80211_IFTYPE_STATION)
+-		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
+-							link_conf,
+-							false);
+-
+ 	/* then activate */
+ 	ret = iwl_mvm_link_changed(mvm, vif, link_conf,
+ 				   LINK_CONTEXT_MODIFY_ACTIVE |
+@@ -360,6 +355,11 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 	if (ret)
+ 		goto out;
+ 
++	if (vif->type == NL80211_IFTYPE_STATION)
++		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
++							link_conf,
++							false);
 +
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
-@@ -1773,6 +1776,9 @@ static int f2fs_ioc_commit_atomic_write(struct file *filp)
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
-@@ -1818,6 +1824,9 @@ static int f2fs_ioc_start_volatile_write(struct file *filp)
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
-@@ -1853,6 +1862,9 @@ static int f2fs_ioc_release_volatile_write(struct file *filp)
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
-@@ -1882,6 +1894,9 @@ static int f2fs_ioc_abort_volatile_write(struct file *filp)
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
+ 	/*
+ 	 * Power state must be updated before quotas,
+ 	 * otherwise fw will complain.
 -- 
 2.43.0
 
