@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-90015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350499BDC94
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:26:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD159BDC96
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1D181F291D3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BD051C20AD2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B621F757B;
-	Wed,  6 Nov 2024 02:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98231F8918;
+	Wed,  6 Nov 2024 02:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRO21QH0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHyBOef8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB71F7574;
-	Wed,  6 Nov 2024 02:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6579218FDB4;
+	Wed,  6 Nov 2024 02:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859189; cv=none; b=ommP849U5jtpgezomRUJuTw9DknPJ+Um7hXpbmGF/p5ki7Ga1fZ1WAX69rCgaXi/LeDAaGSRJTPWoCP5y7y1E026Rbj5zyRRKvQ5vYGO7UlPui/iGWjPmn2FO9vjM/c58t57suHhfAakP2N1vu2mL1/MW2jafJis30id6MGtOQU=
+	t=1730859193; cv=none; b=VccrRiyKQcHLIYin8TgNUY5jcC2WEr9Ivp6OKnY+Kq9O70AnOaf/rLA2hzC5egZ/S5fSiJQ5oOBOW42iVSQtRB7Pc4snV9Bx0b/LegqHqzDmJLq7eiMB6uZYvx76lGM2T0bJDP/GyUHGAnpuS4AK6euy/GM6FKn7UZbAPkWIuMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859189; c=relaxed/simple;
-	bh=LK8O32ryrR36QBqT2i4Q5Z4wfcG6NDPXs6IKa66b5+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GtAukmG5MTjACCijmnnDbGzVwTClX+9Blnn7Zmc0FXMuwJ8WZk22B8UJqeq3VhysmsrK22SQGe3547LrdnW9cYJW88slVMOF7TD+vhGQ0Xi2Tx+0xzio7iRtPm9uKQF1ZfQwm93TwilkVJ81+kBjXf3nNbkdu+dmlHqbgI1E+Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRO21QH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93676C4CECF;
-	Wed,  6 Nov 2024 02:13:08 +0000 (UTC)
+	s=arc-20240116; t=1730859193; c=relaxed/simple;
+	bh=QSP/lSs7yMgnj3/4WugVr9ngjLfrxkibW89b70zL1ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AgSTEIlCpde9h1yDPxxyDb/WethP3PENnJd2PHKGCUV363L5mzCEcis622yeZvHO4Q2dkaejpT7A1vfzdda57S2KCKgcGFG0CaR0oLgNW0LnKFo0PSQ5y04EpWsoD2tsv2zYbTORuEpoyj/sXiUyvqW065PPzgYRRxs+209YiXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHyBOef8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85821C4CECF;
+	Wed,  6 Nov 2024 02:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859189;
-	bh=LK8O32ryrR36QBqT2i4Q5Z4wfcG6NDPXs6IKa66b5+I=;
+	s=k20201202; t=1730859192;
+	bh=QSP/lSs7yMgnj3/4WugVr9ngjLfrxkibW89b70zL1ic=;
 	h=From:To:Cc:Subject:Date:From;
-	b=rRO21QH0xfFTeP7bYnslEKVBxjjIJoiDbFByTo/ukFj3zOIDYV3VhH2fIUdyV91xn
-	 7qyPJhk+lv4XIe5tw/Vq7fMkcppN1H8mWBg1C7TvkCqApLMcONQiIiQnCjwqNL7xFJ
-	 VyFqj/dysm8MJpBQd+D4wmZyiRvUMv6yHGCbR+KNqJavpeIKwA2DoJmakBkHBIKu8M
-	 wIVoiN5yI5onXOqO4Rv4pooegBe2vbsiCRpYlJcMUNOW99jQsEsjiuHBE2DhVK9hZk
-	 WdSjpCYHxEajXQVZb1b1WwE+qgSYi8LerR2v7reVYV0BXBuLkD6gzWG1pkrnDf8+OE
-	 +KjuYy6rjY+KQ==
+	b=BHyBOef8lrBN+dkyLNG/mcX/xupQXUxg4XJ7YE83e5Zi1Xje/wVfRnxKpAYz2GiQK
+	 VyzsVbB4VAnKkFSB9xvH/JOggF1QkEJ02TNmC0AMPuDeGyKF5kUv8SoRlCdaZmSkzn
+	 XnOCr6MVwJpCuapVGdQL0DDs1J3uoXUtR7g9yf5SjCniKuf7SpT1P5CHFFUuz6H7dC
+	 /Eoem/K8QuDme/LNraxh//mVmaV18HxhzxI7OiYyA6SHFLds/3gGlPxp4HYLNw0JsU
+	 8j1/K3F1DH+Ed2pkagZdKG3O9x/hedjePrhkpadpB/HPJGSkrfjDAMSi3cVqPwOfy3
+	 l7zwXuoK3v6Gw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	axboe@kernel.dk
-Cc: Peter Mann <peter.mann@sh.cz>,
-	io-uring@vger.kernel.org,
+	Ovidiu.Bunea@amd.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "io_uring/rw: fix missing NOWAIT check for O_DIRECT start write" failed to apply to v5.10-stable tree
-Date: Tue,  5 Nov 2024 21:13:06 -0500
-Message-ID: <20241106021306.183371-1-sashal@kernel.org>
+Subject: FAILED: Patch "Revert "drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35"" failed to apply to v5.10-stable tree
+Date: Tue,  5 Nov 2024 21:13:09 -0500
+Message-ID: <20241106021310.183408-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,120 +75,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1d60d74e852647255bd8e76f5a22dc42531e4389 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 31 Oct 2024 08:05:44 -0600
-Subject: [PATCH] io_uring/rw: fix missing NOWAIT check for O_DIRECT start
- write
+From 1b6063a57754eae5705753c01e78dc268b989038 Mon Sep 17 00:00:00 2001
+From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Date: Fri, 11 Oct 2024 11:12:19 -0400
+Subject: [PATCH] Revert "drm/amd/display: update DML2 policy
+ EnhancedPrefetchScheduleAccelerationFinal DCN35"
 
-When io_uring starts a write, it'll call kiocb_start_write() to bump the
-super block rwsem, preventing any freezes from happening while that
-write is in-flight. The freeze side will grab that rwsem for writing,
-excluding any new writers from happening and waiting for existing writes
-to finish. But io_uring unconditionally uses kiocb_start_write(), which
-will block if someone is currently attempting to freeze the mount point.
-This causes a deadlock where freeze is waiting for previous writes to
-complete, but the previous writes cannot complete, as the task that is
-supposed to complete them is blocked waiting on starting a new write.
-This results in the following stuck trace showing that dependency with
-the write blocked starting a new write:
+This reverts
+commit 9dad21f910fc ("drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35")
 
-task:fio             state:D stack:0     pid:886   tgid:886   ppid:876
-Call trace:
- __switch_to+0x1d8/0x348
- __schedule+0x8e8/0x2248
- schedule+0x110/0x3f0
- percpu_rwsem_wait+0x1e8/0x3f8
- __percpu_down_read+0xe8/0x500
- io_write+0xbb8/0xff8
- io_issue_sqe+0x10c/0x1020
- io_submit_sqes+0x614/0x2110
- __arm64_sys_io_uring_enter+0x524/0x1038
- invoke_syscall+0x74/0x268
- el0_svc_common.constprop.0+0x160/0x238
- do_el0_svc+0x44/0x60
- el0_svc+0x44/0xb0
- el0t_64_sync_handler+0x118/0x128
- el0t_64_sync+0x168/0x170
-INFO: task fsfreeze:7364 blocked for more than 15 seconds.
-      Not tainted 6.12.0-rc5-00063-g76aaf945701c #7963
+[why & how]
+The offending commit exposes a hang with lid close/open behavior.
+Both issues seem to be related to ODM 2:1 mode switching, so there
+is another issue generic to that sequence that needs to be
+investigated.
 
-with the attempting freezer stuck trying to grab the rwsem:
-
-task:fsfreeze        state:D stack:0     pid:7364  tgid:7364  ppid:995
-Call trace:
- __switch_to+0x1d8/0x348
- __schedule+0x8e8/0x2248
- schedule+0x110/0x3f0
- percpu_down_write+0x2b0/0x680
- freeze_super+0x248/0x8a8
- do_vfs_ioctl+0x149c/0x1b18
- __arm64_sys_ioctl+0xd0/0x1a0
- invoke_syscall+0x74/0x268
- el0_svc_common.constprop.0+0x160/0x238
- do_el0_svc+0x44/0x60
- el0_svc+0x44/0xb0
- el0t_64_sync_handler+0x118/0x128
- el0t_64_sync+0x168/0x170
-
-Fix this by having the io_uring side honor IOCB_NOWAIT, and only attempt a
-blocking grab of the super block rwsem if it isn't set. For normal issue
-where IOCB_NOWAIT would always be set, this returns -EAGAIN which will
-have io_uring core issue a blocking attempt of the write. That will in
-turn also get completions run, ensuring forward progress.
-
-Since freezing requires CAP_SYS_ADMIN in the first place, this isn't
-something that can be triggered by a regular user.
-
-Cc: stable@vger.kernel.org # 5.10+
-Reported-by: Peter Mann <peter.mann@sh.cz>
-Link: https://lore.kernel.org/io-uring/38c94aec-81c9-4f62-b44e-1d87f5597644@sh.cz
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 68bf95317ebf2cfa7105251e4279e951daceefb7)
+Cc: stable@vger.kernel.org
 ---
- io_uring/rw.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 354c4e175654c..155938f100931 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -1014,6 +1014,25 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
- 	return IOU_OK;
- }
- 
-+static bool io_kiocb_start_write(struct io_kiocb *req, struct kiocb *kiocb)
-+{
-+	struct inode *inode;
-+	bool ret;
-+
-+	if (!(req->flags & REQ_F_ISREG))
-+		return true;
-+	if (!(kiocb->ki_flags & IOCB_NOWAIT)) {
-+		kiocb_start_write(kiocb);
-+		return true;
-+	}
-+
-+	inode = file_inode(kiocb->ki_filp);
-+	ret = sb_start_write_trylock(inode->i_sb);
-+	if (ret)
-+		__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
-+	return ret;
-+}
-+
- int io_write(struct io_kiocb *req, unsigned int issue_flags)
- {
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
-@@ -1051,8 +1070,8 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
- 	if (unlikely(ret))
- 		return ret;
- 
--	if (req->flags & REQ_F_ISREG)
--		kiocb_start_write(kiocb);
-+	if (unlikely(!io_kiocb_start_write(req, kiocb)))
-+		return -EAGAIN;
- 	kiocb->ki_flags |= IOCB_WRITE;
- 
- 	if (likely(req->file->f_op->write_iter))
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+index 11c904ae29586..c4c52173ef224 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+@@ -303,6 +303,7 @@ void build_unoptimized_policy_settings(enum dml_project_id project, struct dml_m
+ 	if (project == dml_project_dcn35 ||
+ 		project == dml_project_dcn351) {
+ 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
++		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
+ 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
+ 		policy->UseOnlyMaxPrefetchModes = 1;
+ 	}
 -- 
 2.43.0
 
