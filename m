@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003909BEB1E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD69BEBA5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5491F26958
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2C4F1F24E0F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FF51F585B;
-	Wed,  6 Nov 2024 12:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E6F1F8F01;
+	Wed,  6 Nov 2024 12:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4gJQ0xG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bu4bUjF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544971E0491;
-	Wed,  6 Nov 2024 12:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721DD1EE004;
+	Wed,  6 Nov 2024 12:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896851; cv=none; b=nuktgwFZNnLCpyjpYRWQwdNwkHx7rJ0+aKbYDv0cyvHOs4VaG1GDYmFieapjgtG+TVWHX5BZu82Y5ibMe+v4wj9ZdD8WlrC53O36EJ0BvyyYkYDll28p7/NAsSZbl0iHfkn5zoXlTuAQCPdhkCKgVIV8I8GihKcp7lu76GKxOL0=
+	t=1730897194; cv=none; b=Qfkeh8KgbYXSpF9rLlkpoVx5lMJoNvbQO47r7iz5RjO4yD2Gp7ONtLqBDETwd+7Gg9mMdLIPf24C1/paSsWaKvL5K0BFwylKzxTwTmvCOxX9rqWirSPGB1eX8iw43NpcxPgSpy8Nyu5cQAhGWUgFocwynbge+bG++TbDzDzSYNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896851; c=relaxed/simple;
-	bh=GRD3gGfxiiwfIIISTpVxijrvZ5NfVgs56gQt8ChSdGY=;
+	s=arc-20240116; t=1730897194; c=relaxed/simple;
+	bh=+qH9YaIAhESJLjQt9RblCloqBxmD+s+7EqS/xfdqZRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ry7shMUhufjpFFuY3OGxOIwdj/zJxv/WaU/e0iIYrtv25uJzPQzKEbGhJUBKRKF/y4DnQeoHcOQqgAsAe1/9W/DuFq//WVQeLmWpFhIPXzlhKkKb4Ca9mFbyzCq84nXFTYD9MT7GDOD2K3p5qlRLPtMExwQLJvP1LxQ5wxFPcHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4gJQ0xG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D633C4CECD;
-	Wed,  6 Nov 2024 12:40:50 +0000 (UTC)
+	 MIME-Version; b=DQeVBJUqF+DswfZmCVnZZ2m4ojmhkbmPRj7wOiNt6CcplaASPHpWN9ruHMawQF+KtthWmAJqG/a92hGxwqhIzGxNhAMYcu7TkkfIDdaUUt0UqFQ4uTpYCFbDSeUua/MVoxDMx+k39y+v2c03ov6wAEspHSZrOL0VIxS8qhVHTQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bu4bUjF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87A3C4CECD;
+	Wed,  6 Nov 2024 12:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896850;
-	bh=GRD3gGfxiiwfIIISTpVxijrvZ5NfVgs56gQt8ChSdGY=;
+	s=korg; t=1730897194;
+	bh=+qH9YaIAhESJLjQt9RblCloqBxmD+s+7EqS/xfdqZRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4gJQ0xGS+9gitPJbzvOu1R592SVAFvwVcngtvS9dKywd6z1BCgrQ5dTwZaF2XpTI
-	 Z4ggTd8tz2dQ2WPqixzAGdUpnZjl2xpn7vlLFZEhqN+Dkjna4k8bg3jt2kfPVxTlgR
-	 ciiYT589vddlTIJLGc52agnfLUVCoiSJka0EyLZk=
+	b=Bu4bUjF9yzX4jnQuvCiKjffpb2dPkQxvsWgoOVInUkhNPpw6LQbeyhpMvbs3U5rxM
+	 zCsy6b+iLqY8/GJUST4wa08I4dwyOqGgs0KMXMu5sBsLJAJDWfAPXh4kzUq5VrAUrq
+	 ltYoxQBdYWVUT0FCN0aqt1sU1ut2fVfrcqkPkWWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 093/110] staging: iio: frequency: ad9832: fix division by zero in ad9832_calc_freqreg()
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 098/126] ALSA: hda/realtek: Fix headset mic on TUXEDO Stellaris 16 Gen6 mb1
 Date: Wed,  6 Nov 2024 13:04:59 +0100
-Message-ID: <20241106120305.754433644@linuxfoundation.org>
+Message-ID: <20241106120308.713088950@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 6bd301819f8f69331a55ae2336c8b111fc933f3d upstream.
+[ Upstream commit e49370d769e71456db3fbd982e95bab8c69f73e8 ]
 
-In the ad9832_write_frequency() function, clk_get_rate() might return 0.
-This can lead to a division by zero when calling ad9832_calc_freqreg().
-The check if (fout > (clk_get_rate(st->mclk) / 2)) does not protect
-against the case when fout is 0. The ad9832_write_frequency() function
-is called from ad9832_write(), and fout is derived from a text buffer,
-which can contain any value.
+Quirk is needed to enable headset microphone on missing pin 0x19.
 
-Link: https://lore.kernel.org/all/2024100904-CVE-2024-47663-9bdc@gregkh/
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20241022134354.574614-1-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029151653.80726-2-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9832.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -129,12 +129,15 @@ static unsigned long ad9832_calc_freqreg
- static int ad9832_write_frequency(struct ad9832_state *st,
- 				  unsigned int addr, unsigned long fout)
- {
-+	unsigned long clk_freq;
- 	unsigned long regval;
- 
--	if (fout > (clk_get_rate(st->mclk) / 2))
-+	clk_freq = clk_get_rate(st->mclk);
-+
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
--	regval = ad9832_calc_freqreg(clk_get_rate(st->mclk), fout);
-+	regval = ad9832_calc_freqreg(clk_freq, fout);
- 
- 	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
- 					(addr << ADD_SHIFT) |
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3cbd9cf80be96..d750c6e6eb984 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10214,6 +10214,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+-- 
+2.43.0
+
 
 
 
