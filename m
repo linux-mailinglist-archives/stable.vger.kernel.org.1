@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-90021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACDB9BDCA2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:27:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCEE9BDCA4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA3D7B23C53
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:27:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93DAB20B75
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176C4216447;
-	Wed,  6 Nov 2024 02:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014F6216DE3;
+	Wed,  6 Nov 2024 02:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZSIiHiS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9Un1h73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AA32064E3;
-	Wed,  6 Nov 2024 02:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6B5216A0A;
+	Wed,  6 Nov 2024 02:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859209; cv=none; b=bF5HH0MYSoq4rVb5aAfsG1VF+vijGa1HmZsoIm5yjfymkwnQfWF0GaMFJr2OpPWtkwluAZ5EOMnPntXbvtkRBtCwpo+fTcoqn+BExIOdwhibGicLtPSDvt1XD+Zbm75+m5687GP2XS/P+0lv5zdry3zP9WTQZ5F361S7NFR7pSA=
+	t=1730859212; cv=none; b=nyf5A3keXZovE22azHSyvDNRlwMh1sZf3ntGIgmu70/2wGPrCipipeBDjzHnhSG+Hh2gqemJL8BMdfNiG3C5sxrwDX+cF7tJawySzBM9AEZ1/vPmmNe5wtHY/Zzre0N/PW3UvN5oU/5ID6k3gatsYgIqyrQ/454rxC7B+LVnq2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859209; c=relaxed/simple;
-	bh=iqC+OPH3hLESQQrFbTP3lgm0j0c9WFR7tDyYA1IV99c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uio+jYAFw+74Omf63WD53fFnToJI4cprC08dv1O6w5TkMGWwrn2PIbbPPhV3WdchMluuA6gXakV521o6O8Vfiqg35KerVX6Igp/XZCJ+YFLIluGMf8Wi4pvXXqtLHves1QQPxuFiggmQkYMaR7AvE/JXdcH3RR2fQbHXxjFwpKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZSIiHiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE26C4CED2;
-	Wed,  6 Nov 2024 02:13:28 +0000 (UTC)
+	s=arc-20240116; t=1730859212; c=relaxed/simple;
+	bh=qmziZDX0+N0h9dvCzzQjgrIngSrcENn+XwUBGzXpEoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OnMsmxoy66F+DiEpPCK+mn8y5dCSwe5F3LAVKjsJFGP3ILoRxBa7pBCmJ+CXXHhH+dj1B5H0XO5VlcYxn4IEk2DSb4ca1t7XZzuBPvqk0Zf6mv/nqynjdg8lkZV4/3Wwr/3NlA5jQPlwcDc4w+zhQmlNUqTM3hFRNwu9iXHREUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9Un1h73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD965C4CECF;
+	Wed,  6 Nov 2024 02:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859209;
-	bh=iqC+OPH3hLESQQrFbTP3lgm0j0c9WFR7tDyYA1IV99c=;
+	s=k20201202; t=1730859212;
+	bh=qmziZDX0+N0h9dvCzzQjgrIngSrcENn+XwUBGzXpEoM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=oZSIiHiSdvaZ9jKFWzv6ogID36Or9YJVrT39hoaoIxT9WIJ5pTTXxyfpbuQawJq5w
-	 mBI1zRMBG9/KNbGlmoaLKHfkG5MSZ9PBWTwZWKPV+iC/O3ZIgpTOCc7Kiu7PlkNTX/
-	 UWF6szF/yHot7NB/lI/XjQ++TIISDSGhtjk4rghskSrUo8VgzIBP5enWD0N76tqQKr
-	 quNmBsN77MBdjP64+TKSncdjVEa7D8899Q1K+8pJEKt1Bs1Hnukq8pL8lMwRCnem3c
-	 LQgCBisGwhRCQbCwCiwt+p1b4WLJk1y/5HpzdiolWJ7TdJKaAd1oFKKLMksId3PgVH
-	 6qmoD1svtYmLQ==
+	b=u9Un1h73tLazkVGhgCDNMbZJL5R51WF7Hfm+JfVSpSLYTNNDONzAhpXBz9Wqffq0x
+	 AmE+avDs/RUHOY8Op81neGsMLIyJhFRmAHAnRU+ve5lPKagi5ug/eJRRKu74VZXWdP
+	 hruvWiSN1CbYah1OfdRYPuZMHWVVkSWIqT9VlOASt6LFBPtqk/S9hOtqK6cTtiwBUn
+	 tAWqnw/8C7GuFyZgFJ4Afz2vqU9f/a1Rp/etbctzkFVZa9/zqFdSHV7iHSlAy/59ix
+	 YkGtWl/nMgPHlMpxQg21rC2yJHH/Rs3YxBDAcmmrLRf8rupvTJ2RVLWgSHH6B9TxFj
+	 VKVKN0iCW4/ag==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	bsegall@google.com
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	chengzhihao1@huawei.com
+Cc: David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone" failed to apply to v5.4-stable tree
-Date: Tue,  5 Nov 2024 21:13:26 -0500
-Message-ID: <20241106021327.183601-1-sashal@kernel.org>
+Subject: FAILED: Patch "btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()" failed to apply to v5.4-stable tree
+Date: Tue,  5 Nov 2024 21:13:29 -0500
+Message-ID: <20241106021330.183642-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,6 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the v5.4-stable tree.
@@ -70,90 +71,76 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b5413156bad91dc2995a5c4eab1b05e56914638a Mon Sep 17 00:00:00 2001
-From: Benjamin Segall <bsegall@google.com>
-Date: Fri, 25 Oct 2024 18:35:35 -0700
-Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+From aec8e6bf839101784f3ef037dcdb9432c3f32343 Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Mon, 21 Oct 2024 22:02:15 +0800
+Subject: [PATCH] btrfs: fix use-after-free of block device file in
+ __btrfs_free_extra_devids()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+Mounting btrfs from two images (which have the same one fsid and two
+different dev_uuids) in certain executing order may trigger an UAF for
+variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
+following are the details:
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
+1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
+   devices by ioctl(BTRFS_IOC_SCAN_DEV):
 
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
+             /  btrfs_device_1 → loop0
+   fs_device
+             \  btrfs_device_2 → loop1
+2. mount /dev/loop0 /mnt
+   btrfs_open_devices
+    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     fail: btrfs_close_devices // -ENOMEM
+	    btrfs_close_bdev(btrfs_device_1)
+             fput(btrfs_device_1->bdev_file)
+	      // btrfs_device_1->bdev_file is freed
+	    btrfs_close_bdev(btrfs_device_2)
+             fput(btrfs_device_2->bdev_file)
 
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
+3. mount /dev/loop1 /mnt
+   btrfs_open_devices
+    btrfs_get_bdev_and_sb(&bdev_file)
+     // EIO, btrfs_device_1->bdev_file is not assigned,
+     // which points to a freed memory area
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     btrfs_free_extra_devids
+      if (btrfs_device_1->bdev_file)
+       fput(btrfs_device_1->bdev_file) // UAF !
 
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Fix it by setting 'device->bdev_file' as 'NULL' after closing the
+btrfs_device in btrfs_close_one_device().
+
+Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
+CC: stable@vger.kernel.org # 4.19+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 72744638c5b0f..99c9c5a7252aa 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 89ceb4a68af25..6fa9fe62e01e3 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -105,6 +105,7 @@
- #include <linux/rseq.h>
- #include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
-+#include <linux/tick.h>
- 
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2292,6 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
- 
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
- 
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 8f340ad1d9384..eb51b609190fb 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1105,6 +1105,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
+ 	if (device->bdev) {
+ 		fs_devices->open_devices--;
+ 		device->bdev = NULL;
++		device->bdev_file = NULL;
+ 	}
+ 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+ 	btrfs_destroy_dev_zone_info(device);
 -- 
 2.43.0
 
