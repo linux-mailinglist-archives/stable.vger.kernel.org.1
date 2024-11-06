@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE53F9BEBD6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D542D9BE933
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01EE1C23733
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA6E1F21F63
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932111F9AAB;
-	Wed,  6 Nov 2024 12:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6801DFDB5;
+	Wed,  6 Nov 2024 12:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9YVeInP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjYnFXv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5271EC017;
-	Wed,  6 Nov 2024 12:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6317DA7F;
+	Wed,  6 Nov 2024 12:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897331; cv=none; b=EXrpcgcTrpMbOJXVzD9NoiIoGPLavBGedP4eARbtFXFWxADO2fxeaArUYAvvFubnno6UTZAo9qmHc+X9dO9Qb6V2XUqPCp7nRCghDKXJSfjkl2+TtpdOJ81qciND3bhih3vUsQ4od8T2mQhXIqax9WADrC9Mvlu7IDJTwA/ZGVs=
+	t=1730896292; cv=none; b=FIhRAZmBbSNQWYgNyT8nYQPGlUF1GZPbBn596BVqju6L49vQg/O9qO/5/0jXOyNUzMhxBDcIrN+8/HlxcXcuXaDnZeOouw2k9NewcNfKoVuEvP2UAkwcNVqyOPSWlA8UuwOKYDpN29aA5ZlN5QO25NxU112hre+W7+DzNSmTI+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897331; c=relaxed/simple;
-	bh=qXeNJwgXdq3YRmq9qQb3oKYyfPI8csf4W7rZ4vjkWNI=;
+	s=arc-20240116; t=1730896292; c=relaxed/simple;
+	bh=oaUqqjrtaK16H9Sl3YjB/5SUpszKz+mkIagysHqG0rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+cUY0AE0+k39Z3Rty8Ce5Dau5tBy9QWh/lLpi+jFGSX2WP52yhY8Fr0kyQMcY9n/hhY+R8qb9SsX4wqB0aAD5UrCmH6kt+sLmKzdXffo2Xz/C2tMsD8INa6CnC2ndc+KrEIqvfKuw9x1GTjDrjrcX84b+jVQgPRJSDfPxCP9KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9YVeInP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE341C4CECD;
-	Wed,  6 Nov 2024 12:48:50 +0000 (UTC)
+	 MIME-Version; b=dWaY0ADesJzcKCoZbF8PA8PVWsyX7SYRK+iARDO4ZM8YH+/Po0IdiOGBXjpH8yW9c6xqJ/0UgPKbrpA0fZJQr8ZNxwa59ToAV9VhQKzSpeRPwciNBmx5xKHf2GIKoCw3+TsxudhZX51Rv6mIGQs3sbVBetKw/MUOepMOpzPsrKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjYnFXv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A709CC4CECD;
+	Wed,  6 Nov 2024 12:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897331;
-	bh=qXeNJwgXdq3YRmq9qQb3oKYyfPI8csf4W7rZ4vjkWNI=;
+	s=korg; t=1730896292;
+	bh=oaUqqjrtaK16H9Sl3YjB/5SUpszKz+mkIagysHqG0rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9YVeInP9OUDu7USzvKOxwq9oLKTwgOr0ScYbLMR8Zn1iOOEzT3vk0BD/10gt8rk+
-	 o4Ei8ayBfsIADQMocZjxCdf2NvPc1nsr3IbIr3Q6AfOjWVs7xPXkm4vuIxXfFILvkP
-	 UuA5eg8DfMTOh3l6ziwGrfRIjYk9lyeYOpH6ja90=
+	b=ZjYnFXv7n3NjNRFBmRavcMjvEm36M1jv5BaqoFTF1Dh0E4n5ooH/2cAgczygHXOpE
+	 eIEecCsQUhkze1JJCobk1BPcBXbjVyrs2kUDc/6PZTK692ow8Nda+8nfdBQxqM/8h5
+	 M0u5iZyUjr/Ywfq7NXFrNLWwrYfpYrFeH5fZxYbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/151] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+Subject: [PATCH 6.11 153/245] riscv: vdso: Prevent the compiler from inserting calls to memset()
 Date: Wed,  6 Nov 2024 13:03:26 +0100
-Message-ID: <20241106120309.337945733@linuxfoundation.org>
+Message-ID: <20241106120322.997474845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+[ Upstream commit bf40167d54d55d4b54d0103713d86a8638fb9290 ]
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+The compiler is smart enough to insert a call to memset() in
+riscv_vdso_get_cpus(), which generates a dynamic relocation.
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
+So prevent this by using -fno-builtin option.
 
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/riscv/kernel/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 4bc395a5731b2..80b5c20d3a480 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1404,8 +1404,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index f7ef8ad9b550d..54a7fec25d5f8 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
  
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1413,7 +1413,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1433,7 +1432,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
- 	}
+ ccflags-y := -fno-stack-protector
+ ccflags-y += -DDISABLE_BRANCH_PROFILING
++ccflags-y += -fno-builtin
  
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
- 
-@@ -1444,11 +1443,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
+ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
 -- 
 2.43.0
 
