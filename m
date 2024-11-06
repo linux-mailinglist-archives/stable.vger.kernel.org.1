@@ -1,114 +1,83 @@
-Return-Path: <stable+bounces-90079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873C29BDFCD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:56:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91819BDFF4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 09:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C48A2844D4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DAF728562E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D6A1D1F56;
-	Wed,  6 Nov 2024 07:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2321A00FE;
+	Wed,  6 Nov 2024 08:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="eJCtf7Ob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/EjQw3d"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77521D1724
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 07:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4841714B3
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 08:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730879764; cv=none; b=rMh2cUNBUPrfXo8YM1z6GohLeLoTmoUgpJYgzzYJG61IM4OxrBIExXXhKWXq9RHagdbiZJle4e3YWaEn77R5NUTFVO/qSfjS9YaRJw4vZ8X5Z3RSGUPjm+LfVAFiDxrrXk0qI7wcPkhIbwfDyC9iv9jAM6R+u/0UiLNAaHUSTLs=
+	t=1730880086; cv=none; b=EaP1IkQCJ+cvvjkd0lNdWQcz0P2mE0gP2A1D6FdfizV18yi+/fWiLfgnG7LPKJ0roIwNfPPD9HKrd6ALAnC30+lt4AkmOU9tqv/DnAncJ1iZTu+wl+kboI+Xqqg0E6NNNh5m4JA6qcOQ3blX1vua6QB9Lwyv6qGE5cPs43MtJbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730879764; c=relaxed/simple;
-	bh=+UjGtkMMC4oOadeOb4EaGKo1VDzVepDcF2ccau4AAcM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=duR/6RQwU40hTrh44CSpviQr2yaDz+jMhq9x2hXqT9Jc1a7Qd1RNfH5qpWKkItcDR0LWAKo0YwFJ4MMU1uEhRfRiaGSfwiPcGBobeGXjobhrNDoiI+Rz3Eqb9V8wGsi/HxuvXjJ08mDeH1S4Oz1n7/IA0GPJ1i6d030H3xidIlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=eJCtf7Ob; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 527D214C1E2;
-	Wed,  6 Nov 2024 08:55:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1730879753;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=a9MeM4NSgEHB7vTRku8APHtesJxqOu51xmhXXpdVGD0=;
-	b=eJCtf7ObKsGUNVGClQFUk1yhmXyEkuKJMGuBMRQ8OanDiKwVM4gebzFx8u7j/rLoZiCMfL
-	nn8OLHdwyuGGckhHleAshzU1fept3dVMMHBcIX9hxCVJ+BPKwCRicyrmJDDyrfQNrBeZL5
-	4usMjLqnsUM+wOzexRHhbwQtJHAuWr/C8IuBHcQcqWG0viCQhKonJKGgU2lzjqdIDw0cf4
-	c6Wzuo6ZmNb+BrDcWXkzPZPLGAT+BMLGsJzNhMmmaJhfGEBY0cuYaF70AaIt2EqkeFtf3D
-	dpwnufr3g8/c9mEXIg5av8/42pnrMzJ2mHtHzVwl/mbKiWEJJLrkC+K9lKMjSA==
-Received: from gaia.codewreck.org (localhost.lan [::1])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 2085c327;
-	Wed, 6 Nov 2024 07:55:49 +0000 (UTC)
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.6 v2] SUNRPC: Remove BUG_ON call sites
-Date: Wed,  6 Nov 2024 16:54:59 +0900
-Message-ID: <20241106075457.201502-3-asmadeus@codewreck.org>
-X-Mailer: git-send-email 2.46.1
+	s=arc-20240116; t=1730880086; c=relaxed/simple;
+	bh=98IRxvH+61aAXBP1RI9/iTZ2fmCxP9IxZZF+V0qfC7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXTwNFb2ffCU5mLa2z6cyE7ztdpEu6KgjuiNohYiHuIQSu04igdqTkhc5eTgX/VFIFstapA+wET0MwDZi1D5JqMQh1xNXvU8p2z52RmCjj9EXwHWelzgsgqN6fXIjT1Oqx2EyEKYSxxnSh2N32Nbo1RVyq6uD5F+oZ61zFszjBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/EjQw3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CB0C4CECD;
+	Wed,  6 Nov 2024 08:01:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730880085;
+	bh=98IRxvH+61aAXBP1RI9/iTZ2fmCxP9IxZZF+V0qfC7Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I/EjQw3dYapT023qNgFjYm3na+288p1AO6ndkdTuR6rbNXBwT/va5e8gBJ+D0Xz1b
+	 3WE/Su2IXVMdy5KGPbNYBY0PfKL/rv2484HH4bycIEZlni9d/RVAPX8S3+C2xr9FHA
+	 WBy3UDrfHeI9OofqqEi76F5OMB6seHKYqi4q0tek=
+Date: Wed, 6 Nov 2024 09:01:06 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>, NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH 6.6 v2] SUNRPC: Remove BUG_ON call sites
+Message-ID: <2024110659-falcon-poser-545d@gregkh>
+References: <20241106075457.201502-3-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106075457.201502-3-asmadeus@codewreck.org>
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On Wed, Nov 06, 2024 at 04:54:59PM +0900, Dominique Martinet wrote:
+> From: Chuck Lever <chuck.lever@oracle.com>
+> 
+> [ Upstream commit 789ce196a31dd13276076762204bee87df893e53 ]
+> 
+> There is no need to take down the whole system for these assertions.
+> 
+> I'd rather not attempt a heroic save here, as some bug has occurred
+> that has left the transport data structures in an unknown state.
+> Just warn and then leak the left-over resources.
+> 
+> Acked-by: Christian Brauner <brauner@kernel.org>
+> Reviewed-by: NeilBrown <neilb@suse.de>
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+> ---
+> v2: resend with signoff properly set as requested
+> v1: https://lkml.kernel.org/r/20241102065203.13291-1-asmadeus@codewreck.org
 
-[ Upstream commit 789ce196a31dd13276076762204bee87df893e53 ]
+Thanks, now queued up.
 
-There is no need to take down the whole system for these assertions.
-
-I'd rather not attempt a heroic save here, as some bug has occurred
-that has left the transport data structures in an unknown state.
-Just warn and then leak the left-over resources.
-
-Acked-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
----
-v2: resend with signoff properly set as requested
-v1: https://lkml.kernel.org/r/20241102065203.13291-1-asmadeus@codewreck.org
-
- net/sunrpc/svc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 029c49065016..b43dc8409b1f 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -577,11 +577,12 @@ svc_destroy(struct kref *ref)
- 	timer_shutdown_sync(&serv->sv_temptimer);
- 
- 	/*
--	 * The last user is gone and thus all sockets have to be destroyed to
--	 * the point. Check this.
-+	 * Remaining transports at this point are not expected.
- 	 */
--	BUG_ON(!list_empty(&serv->sv_permsocks));
--	BUG_ON(!list_empty(&serv->sv_tempsocks));
-+	WARN_ONCE(!list_empty(&serv->sv_permsocks),
-+		  "SVC: permsocks remain for %s\n", serv->sv_program->pg_name);
-+	WARN_ONCE(!list_empty(&serv->sv_tempsocks),
-+		  "SVC: tempsocks remain for %s\n", serv->sv_program->pg_name);
- 
- 	cache_clean_deferred(serv);
- 
--- 
-2.46.1
-
+greg k-h
 
