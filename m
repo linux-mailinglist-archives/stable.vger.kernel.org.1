@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB939BE8D4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8941A9BE780
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10A2DB21481
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA652846EA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7B01DFDB7;
-	Wed,  6 Nov 2024 12:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE911DF24A;
+	Wed,  6 Nov 2024 12:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIW2VGlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyM3WeuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99CE1DF995;
-	Wed,  6 Nov 2024 12:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC041DF737;
+	Wed,  6 Nov 2024 12:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896065; cv=none; b=u4iRlEzUAwZFQc//pECZzNWaCj1M7BjGH8PC0f2fPrKXYM3xmxya6YWkTWvbacKpJXOkQ2R/DvNZDshOAJjRNLxutUvYirpbF/0ur7Zi2ddpUcM9Pzv3FsZnROmxSh+P9kZLQh/N3MXQJbOf705hAPpbvKf+LqUyNevcXm4Rqc0=
+	t=1730895291; cv=none; b=Q8RQ8QLzB2ISZxBISW9Ws2NAh7tdqe7yLSHf0ZOgg/7PhsXY/jsqBBaCqdkvgEJYQYYXi2BIT6zpvBh4lUYSDxRjYe7OZN/KYWFbdbcngb8QwNznL7h6XCFTqI/27+OP9bkAk8jr8+5yGmWPZnkXvd0wXJIOVHX0WBZWXNV2ds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896065; c=relaxed/simple;
-	bh=dAMbRBplsCB8Z3PiZYtKo85iQ73JQWxoUccH0cES8WU=;
+	s=arc-20240116; t=1730895291; c=relaxed/simple;
+	bh=1a93myLSpzHo9k++CZiF8ni4Uvi53dPoWQUWhJv/rU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrPUq0T8Pxe7UU5mrlioP80tnvS/apHcQU7adpRQoWnLVDkofcMFJ72Qzq0nU0mM+Gg1vlZ4BXGG6cc2EUz7yDnvvkhXORls0id/2oFwJr8s7gaiM1beU0UjsG0WaZ5tQyJnzCW9jXYvnM3vwzRnQXDk69wGJz0Z7OMGONr735U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIW2VGlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECB5C4CED4;
-	Wed,  6 Nov 2024 12:27:45 +0000 (UTC)
+	 MIME-Version; b=KBVgbZAOCI1t37qLqSlgvHdRsY4TD5i1xKFYXAiGYP6uSWTuJiUMsxbAYs1wvaQ7QUSkvcZHIpWhHsjCFE4VYfUKZeKYMZ6t2celwOdp642LDu8DHzuu6S4wPOygzdT4oAVuA9w0SS63hwGpoqRS7RJ0300eK29ImFk7wptCQrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyM3WeuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E579AC4CECD;
+	Wed,  6 Nov 2024 12:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896065;
-	bh=dAMbRBplsCB8Z3PiZYtKo85iQ73JQWxoUccH0cES8WU=;
+	s=korg; t=1730895291;
+	bh=1a93myLSpzHo9k++CZiF8ni4Uvi53dPoWQUWhJv/rU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIW2VGlj5+yZgM2t+dbdxRK+E2TRwBIaf4P6jvJ0fgmHiG7VDm4SNV7M87k6aWZy/
-	 9DznJOudlMJb4EaBffMUWQlYrzbyida3t6wrg3EktYubcKypaZLtSl4w44OpsHwVwZ
-	 IpATf6zZim6t7AyoVWyOae8aBEYopOaJxtzrIDKc=
+	b=gyM3WeuGklJCgfevssBZCI4KDrluW+TPOZ0yTjz6O+fwnJN1Ey1hGo81L0XMu2Ni7
+	 nuIf+aV7q8UUaRXtVIV1yd0kXwJoVePfBs5kDlYool1B0aevXVuelNrHXsQ1rK/MEz
+	 c5Pbb5FuJWP71eUv47TRMZMw9seHgdb8F9YalRYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 042/245] net: fix crash when config small gso_max_size/gso_ipv4_max_size
+Subject: [PATCH 4.19 167/350] ata: sata_sil: Rename sil_blacklist to sil_quirks
 Date: Wed,  6 Nov 2024 13:01:35 +0100
-Message-ID: <20241106120320.261280726@linuxfoundation.org>
+Message-ID: <20241106120325.048719272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
+[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
 
-Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
-in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
-because sk->sk_gso_max_size would be much bigger than device limits.
-Call Trace:
-tcp_write_xmit
-    tso_segs = tcp_init_tso_segs(skb, mss_now);
-        tcp_set_skb_tso_segs
-            tcp_skb_pcount_set
-                // skb->len = 524288, mss_now = 8
-                // u16 tso_segs = 524288/8 = 65535 -> 0
-                tso_segs = DIV_ROUND_UP(skb->len, mss_now)
-    BUG_ON(!tso_segs)
-Add check for the minimum value of gso_max_size and gso_ipv4_max_size.
+Rename the array sil_blacklist to sil_quirks as this name is more
+neutral and is also consistent with how this driver define quirks with
+the SIL_QUIRK_XXX flags.
 
-Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
-Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/sata_sil.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 97a38a7e1b2cc..3c5dead0c71ce 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2032,7 +2032,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
--	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
- 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
- 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
-@@ -2057,7 +2057,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_TSO_MAX_SIZE]	= { .type = NLA_REJECT },
- 	[IFLA_TSO_MAX_SEGS]	= { .type = NLA_REJECT },
- 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
--	[IFLA_GSO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
- };
+diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
+index 82adaf02887fb..8613a3cf2c8a5 100644
+--- a/drivers/ata/sata_sil.c
++++ b/drivers/ata/sata_sil.c
+@@ -144,7 +144,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
+ static const struct sil_drivelist {
+ 	const char *product;
+ 	unsigned int quirk;
+-} sil_blacklist [] = {
++} sil_quirks[] = {
+ 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
+@@ -617,8 +617,8 @@ static void sil_thaw(struct ata_port *ap)
+  *	list, and apply the fixups to only the specific
+  *	devices/hosts/firmwares that need it.
+  *
+- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
+- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
++ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
++ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
+  *	pessimistic fix for the following reasons...
+  *	- There seems to be less info on it, only one device gleaned off the
+  *	Windows	driver, maybe only one is affected.  More info would be greatly
+@@ -637,9 +637,9 @@ static void sil_dev_config(struct ata_device *dev)
+ 
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	for (n = 0; sil_blacklist[n].product; n++)
+-		if (!strcmp(sil_blacklist[n].product, model_num)) {
+-			quirks = sil_blacklist[n].quirk;
++	for (n = 0; sil_quirks[n].product; n++)
++		if (!strcmp(sil_quirks[n].product, model_num)) {
++			quirks = sil_quirks[n].quirk;
+ 			break;
+ 		}
  
 -- 
 2.43.0
