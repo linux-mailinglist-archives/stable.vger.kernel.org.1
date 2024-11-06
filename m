@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-90522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833FE9BE8B4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522DD9BE797
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498AC2831D0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A57D1F250E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCDF1DF736;
-	Wed,  6 Nov 2024 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF7F1DF24A;
+	Wed,  6 Nov 2024 12:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KH+cybDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOBpcdQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E871D2784;
-	Wed,  6 Nov 2024 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A751922DB;
+	Wed,  6 Nov 2024 12:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896021; cv=none; b=nEUWcMbj6zSBUyXfNVHWwEUvoXYvBXtpFhlE3eeyfTweVv1Zhti+GPOIRNnI79PY54ztjYTFrcbhtBd3WqOww0p54isERgQEHu8MujKRR8E8tNDA7srIwyLnbl2NPYL3IMxjwXU1jsSxSfiWvoWIBQ8qRhrmejrg/EdClfNNImQ=
+	t=1730895353; cv=none; b=HDebIV+oMnFfPVSiV29WCwse3IA0TaEFXyY4/IWqOc6sEGHwD36c3BzqSWorTN05sPDo9ll9dfPzRKPPRypCkoLvkF3OEsgjl01bTqxaKtHbjniOkWMZveTi8Q+4uXVx/r2VbC7/eZvij4PVNIA51Lm6JnUgWSOo/rGD5X3/aIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896021; c=relaxed/simple;
-	bh=tuKrpcj7ZGjgh/hfz7LPmqu5VBDDwidoOS+zIDgdeUY=;
+	s=arc-20240116; t=1730895353; c=relaxed/simple;
+	bh=AS81y26eVlgUsmw5W3S6/JDgeA5vsXbvMMD4+BQ8zig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdp7/FfF8Meo/LzBpEiy/uR68MVerzW8g9wh5Oh8tIHKEe7QQ72GT72iy5kJ4vNh5My4t6gxSGXR8Adh8VMf9GOWzUMgVqN7R4Ti3BcViJ1Q9TP7T+AVf23w5IKtAmkHAYR9o91xQqdaC4bUnBuqD1giAbh8FOXmCb7e3kCGahM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KH+cybDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281E4C4CECD;
-	Wed,  6 Nov 2024 12:27:00 +0000 (UTC)
+	 MIME-Version; b=idzNMokmYa5aTF2h32CsUnNrvkBqj5pnvnsFs8ICelVy6+Zs5XlubmL3r3/CGwT8ff59+wulEl3a8evhfOcYrBz1azI67c9iNNdgk2QeXdisMR6QVm5YwO4aZ1lOTsaKyWfuDoB2jsEHcxORajh5wEj0AN3Y+CMXzOWI6uqEoFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOBpcdQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBA0C4CECD;
+	Wed,  6 Nov 2024 12:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896021;
-	bh=tuKrpcj7ZGjgh/hfz7LPmqu5VBDDwidoOS+zIDgdeUY=;
+	s=korg; t=1730895353;
+	bh=AS81y26eVlgUsmw5W3S6/JDgeA5vsXbvMMD4+BQ8zig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KH+cybDrmocV6Tk75vZIJpxzDJqhrz1aWaDF+EgUPiS/QtLwfesPHTa5IVSZYmAa1
-	 C3KStZ9ajqlm/0/73mrWPldXgGzZtfVHgpDOHXQFjMMVE+zc1bSsHkCpZX3pMNa/SB
-	 AX+1WPgnkvPXKhVabDMEJ30t/5DBlH5EyIypyc4s=
+	b=uOBpcdQw7w15S1O8dZf8zN+xBRUl3j+WstkHGwDTYf6dqeJaDLML2KDbmaKh5Wl9f
+	 YtIvOwzm6RNqb6WinjlZL7HDz5o7HPwTF8Y076sw6qippjL8bAB73A7eHOquEIFZV+
+	 23NaSTHJBnIkA9LeB4cmG3nnKEKGQsSj+ju/JtDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+908886656a02769af987@syzkaller.appspotmail.com,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrew Pinski <pinskia@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 063/245] kasan: Fix Software Tag-Based KASAN with GCC
-Date: Wed,  6 Nov 2024 13:01:56 +0100
-Message-ID: <20241106120320.756228876@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 189/350] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
+Date: Wed,  6 Nov 2024 13:01:57 +0100
+Message-ID: <20241106120325.626148095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 894b00a3350c560990638bdf89bdf1f3d5491950 ]
+commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
 
-Per [1], -fsanitize=kernel-hwaddress with GCC currently does not disable
-instrumentation in functions with __attribute__((no_sanitize_address)).
+Even though ext4_find_extent() returns an error, ext4_insert_range() still
+returns 0. This may confuse the user as to why fallocate returns success,
+but the contents of the file are not as expected. So propagate the error
+returned by ext4_find_extent() to avoid inconsistencies.
 
-However, __attribute__((no_sanitize("hwaddress"))) does correctly
-disable instrumentation. Use it instead.
-
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117196 [1]
-Link: https://lore.kernel.org/r/000000000000f362e80620e27859@google.com
-Link: https://lore.kernel.org/r/ZvFGwKfoC4yVjN_X@J2N7QTR9R3
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218854
-Reported-by: syzbot+908886656a02769af987@syzkaller.appspotmail.com
-Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrew Pinski <pinskia@gmail.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Fixes: 7b861a53e46b ("kasan: Bump required compiler version")
-Link: https://lore.kernel.org/r/20241021120013.3209481-1-elver@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler-gcc.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index f805adaa316e9..cd6f9aae311fc 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -80,7 +80,11 @@
- #define __noscs __attribute__((__no_sanitize__("shadow-call-stack")))
- #endif
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5731,6 +5731,7 @@ int ext4_insert_range(struct inode *inod
+ 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
+ 	if (IS_ERR(path)) {
+ 		up_write(&EXT4_I(inode)->i_data_sem);
++		ret = PTR_ERR(path);
+ 		goto out_stop;
+ 	}
  
-+#ifdef __SANITIZE_HWADDRESS__
-+#define __no_sanitize_address __attribute__((__no_sanitize__("hwaddress")))
-+#else
- #define __no_sanitize_address __attribute__((__no_sanitize_address__))
-+#endif
- 
- #if defined(__SANITIZE_THREAD__)
- #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
--- 
-2.43.0
-
 
 
 
