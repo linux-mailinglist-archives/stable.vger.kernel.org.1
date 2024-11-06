@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-90044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3300E9BDCDE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:33:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17E29BDCE0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF981288967
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FD21C2312A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C21D86FB;
-	Wed,  6 Nov 2024 02:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9500F219C98;
+	Wed,  6 Nov 2024 02:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyyoZYPF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtVFlk+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CCA1D86E4;
-	Wed,  6 Nov 2024 02:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA46191F9C;
+	Wed,  6 Nov 2024 02:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859291; cv=none; b=N40xyjKpTcmz3mm3M1oQDKXeoHEsUCdUvqmE5+aFfFTSpY4SAfvXaNg/Ov3SM0d9plHy5z4T3+0kOyaYaVpGRj16MhfwaB9kbrtUBMm0gGhkbK25Xcd/J1YfjBGYCJL5Qb7gPVV3ye1I7OdkHXlSG8LbZiOExdBLkYErhF/X84E=
+	t=1730859295; cv=none; b=bumGWstkCIg2+JPSNFqk+rDT9sultz3SgoiPamzfwfoCvFHv0tHXIZPU0mQrs42/RpXk/zrpIMNc93OL/oWsnegVQBLCyeZlIywIvFhkHyRivh/CBacYvwr1gZpxptCUA9dqBmt3bpn3rZvRbRB3NKKoJ5OB+DsnDyc7y82/png=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859291; c=relaxed/simple;
-	bh=P2id+Gw2WOcfKdVpLPLdbz2/z6zU4UVmt7vCNRcdu5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X7W5jTiwpy6w/e519d8ElPcpwh0+R64T4UNPbU67Fbj8rrfmzyQUuqREkbZkgr4/Yn3JSDZWp+9FJgERMK8GbtBh6KwtuqmV2aMYR6gWnR/PFigJFsWaXWeDhexpvmMsIc0woFnhfwIwk7ZEakC4Dpy6ahR8prfMigMbCzErE18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyyoZYPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2516DC4CECF;
-	Wed,  6 Nov 2024 02:14:48 +0000 (UTC)
+	s=arc-20240116; t=1730859295; c=relaxed/simple;
+	bh=x/WkULtpgcu+7wn+mbnUIATgu5kHvQQi4ewRNtvfbmA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gJzZgZe68mHMYn3sIzOH8K63YfFEjgvFbu30gJXxBdx6lBvF3/1Ga0/tOMvne7nYqgisU/K7QlMX2R+DjeQJ8e3ILsBNuHuXitSUdmnH7n/QoZ2qL4/l6pbYOl85oNxo+FBz7oX0x9qBZq7LZrbyt/T63HgwluZcUZtRpkq1ZFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtVFlk+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AE0C4CECF;
+	Wed,  6 Nov 2024 02:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859290;
-	bh=P2id+Gw2WOcfKdVpLPLdbz2/z6zU4UVmt7vCNRcdu5Y=;
+	s=k20201202; t=1730859295;
+	bh=x/WkULtpgcu+7wn+mbnUIATgu5kHvQQi4ewRNtvfbmA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DyyoZYPFweVzH6gYO49j2bHiLQ6miHraSUZuy85KXX5UsELMxHMEpbh2pNJZTqnsD
-	 qV05dIosfL2kPNELivTElKdt5LfYq9l/Z75beFOPfIGRQyPvO3tK1OfEqoxd5Gn3o+
-	 9vQAi+LimbM5qaXMO6qRKRjsVVDblb7d1D+6v2a8AihEqyAOctHuoXZCAxmAX7T5sK
-	 8i3mVq4DRI+Uiaeu8ATetpIUh3I9zujyhAB7lBvOJt0JOqBIGNS5rtTA6emHT/KVaV
-	 EXpPxbBrzcKrhtc819Yt2BvwSU3u2FG6VRxe+YJdVLQOzmIDEr6AqogM1xc6CWcYxP
-	 Ret+wrakWr81Q==
+	b=jtVFlk+n58LCuoZdUsAbVYksnz8OM0IqhUjYa7XstJYxkn7djA4ScQ1X6i8QzTP+6
+	 9fMCum1zDPJnhK/8a9V7MIrAgx71B7eTT0byYCHWDEsTghIT/lwxTBc/AUSdH9j/tE
+	 X6gm39tpFGjqtVBhDQJzcUcB/wZKsQaXDVCt0DAUaZymXwxbrBSVF8MrThttvAhMXp
+	 IV72iTrRyOWEKIOLd29rfLjexFEr5E2ZPGczr/vW/TdTVFvm+D1MTbjYoiqCBucWjn
+	 jgKRnKM+v/M1znZ2CW6IzxtOlQfL7xkSO8yx4xKeQAeGz5aBRedGuA49LtMbIkDTBQ
+	 OuAekNrd8iMqw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	Ovidiu.Bunea@amd.com
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+	cs@tuxedo.de
+Cc: Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "Revert "drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35"" failed to apply to v4.19-stable tree
-Date: Tue,  5 Nov 2024 21:14:47 -0500
-Message-ID: <20241106021447.184517-1-sashal@kernel.org>
+Subject: FAILED: Patch "ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3" failed to apply to v4.19-stable tree
+Date: Tue,  5 Nov 2024 21:14:51 -0500
+Message-ID: <20241106021451.184554-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,46 +71,34 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1b6063a57754eae5705753c01e78dc268b989038 Mon Sep 17 00:00:00 2001
-From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
-Date: Fri, 11 Oct 2024 11:12:19 -0400
-Subject: [PATCH] Revert "drm/amd/display: update DML2 policy
- EnhancedPrefetchScheduleAccelerationFinal DCN35"
+From 0b04fbe886b4274c8e5855011233aaa69fec6e75 Mon Sep 17 00:00:00 2001
+From: Christoffer Sandberg <cs@tuxedo.de>
+Date: Tue, 29 Oct 2024 16:16:52 +0100
+Subject: [PATCH] ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3
 
-This reverts
-commit 9dad21f910fc ("drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35")
+Quirk is needed to enable headset microphone on missing pin 0x19.
 
-[why & how]
-The offending commit exposes a hang with lid close/open behavior.
-Both issues seem to be related to ODM 2:1 mode switching, so there
-is another issue generic to that sequence that needs to be
-investigated.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 68bf95317ebf2cfa7105251e4279e951daceefb7)
-Cc: stable@vger.kernel.org
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029151653.80726-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c | 1 +
+ sound/pci/hda/patch_realtek.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-index 11c904ae29586..c4c52173ef224 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-@@ -303,6 +303,7 @@ void build_unoptimized_policy_settings(enum dml_project_id project, struct dml_m
- 	if (project == dml_project_dcn35 ||
- 		project == dml_project_dcn351) {
- 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
-+		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
- 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
- 		policy->UseOnlyMaxPrefetchModes = 1;
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 7f4926194e50f..e06a6fdc0bab7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10750,6 +10750,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x28c1, "Clevo V370VND", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 -- 
 2.43.0
 
