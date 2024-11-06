@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5696C9BE9AA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003909BEB1E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F41B6B23F6A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5491F26958
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4E1E009E;
-	Wed,  6 Nov 2024 12:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FF51F585B;
+	Wed,  6 Nov 2024 12:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gz9DOFnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4gJQ0xG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8CE1DF992;
-	Wed,  6 Nov 2024 12:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544971E0491;
+	Wed,  6 Nov 2024 12:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896565; cv=none; b=MTjkqBmYNoo7FSLhpuApqaP02Ssc25bQK/EpKkme4D3iaJU7VkF3HQHNRmiRHLyq6sl3/8QGOcpZ5T+YgGfD6nSF5oQ58dRj8BgVCJeNGvxVOmY7xhK+VZYLkC56oAzfahl0Nmh+Y4lnzImkIR0N0ivL3tyMdAiNGJBrbhNUT68=
+	t=1730896851; cv=none; b=nuktgwFZNnLCpyjpYRWQwdNwkHx7rJ0+aKbYDv0cyvHOs4VaG1GDYmFieapjgtG+TVWHX5BZu82Y5ibMe+v4wj9ZdD8WlrC53O36EJ0BvyyYkYDll28p7/NAsSZbl0iHfkn5zoXlTuAQCPdhkCKgVIV8I8GihKcp7lu76GKxOL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896565; c=relaxed/simple;
-	bh=ZIcg5deJz95cjLrw/Jm6ksG/YxH/gyBWioMDyyNGIjQ=;
+	s=arc-20240116; t=1730896851; c=relaxed/simple;
+	bh=GRD3gGfxiiwfIIISTpVxijrvZ5NfVgs56gQt8ChSdGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iq9oSZv43ZqNAV7/vS77sUlX0OMbHFDLbEVleQUK9vfnK+HmUGWWDsuFNcaZEIQ9c9PpJZ13lPA2LoG6Dlhp943mjKsLJDVg+y1ioj2XmzyCjmun3GV1WGvAdFAdWIjAhbRLV22cozKpH4hYpuErZoFiHT4zldUAZW0XHKsTZ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gz9DOFnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AC8C4CECD;
-	Wed,  6 Nov 2024 12:36:04 +0000 (UTC)
+	 MIME-Version; b=Ry7shMUhufjpFFuY3OGxOIwdj/zJxv/WaU/e0iIYrtv25uJzPQzKEbGhJUBKRKF/y4DnQeoHcOQqgAsAe1/9W/DuFq//WVQeLmWpFhIPXzlhKkKb4Ca9mFbyzCq84nXFTYD9MT7GDOD2K3p5qlRLPtMExwQLJvP1LxQ5wxFPcHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4gJQ0xG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D633C4CECD;
+	Wed,  6 Nov 2024 12:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896565;
-	bh=ZIcg5deJz95cjLrw/Jm6ksG/YxH/gyBWioMDyyNGIjQ=;
+	s=korg; t=1730896850;
+	bh=GRD3gGfxiiwfIIISTpVxijrvZ5NfVgs56gQt8ChSdGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gz9DOFnx2AvJfmGlfvnlLjnho0TOQa+jRkEl1T+rr5eLCgZ+Tr5lINJHXBLzZ4Z+g
-	 TIklMHgOTmalo7Sti4VC3jtJnaxC7aTmAd7aih/XNDgnUxo1ZPkvIlEdft3TlCCalw
-	 1GG7GumhNkCt+cFK2v3oDvvZATRFakrc0cVNXGeQ=
+	b=r4gJQ0xGS+9gitPJbzvOu1R592SVAFvwVcngtvS9dKywd6z1BCgrQ5dTwZaF2XpTI
+	 Z4ggTd8tz2dQ2WPqixzAGdUpnZjl2xpn7vlLFZEhqN+Dkjna4k8bg3jt2kfPVxTlgR
+	 ciiYT589vddlTIJLGc52agnfLUVCoiSJka0EyLZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>
-Subject: [PATCH 6.11 245/245] drm/amdgpu: handle default profile on on devices without fullscreen 3D
-Date: Wed,  6 Nov 2024 13:04:58 +0100
-Message-ID: <20241106120325.302774561@linuxfoundation.org>
+	Zicheng Qu <quzicheng@huawei.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 093/110] staging: iio: frequency: ad9832: fix division by zero in ad9832_calc_freqreg()
+Date: Wed,  6 Nov 2024 13:04:59 +0100
+Message-ID: <20241106120305.754433644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-commit 7c210ca5a2d72868e5a052fc533d5dcb7e070f89 upstream.
+commit 6bd301819f8f69331a55ae2336c8b111fc933f3d upstream.
 
-Some devices do not support fullscreen 3D.
+In the ad9832_write_frequency() function, clk_get_rate() might return 0.
+This can lead to a division by zero when calling ad9832_calc_freqreg().
+The check if (fout > (clk_get_rate(st->mclk) / 2)) does not protect
+against the case when fout is 0. The ad9832_write_frequency() function
+is called from ad9832_write(), and fout is derived from a text buffer,
+which can contain any value.
 
-v2: Make the check generic.
-
-Fixes: ec1aab7816b0 ("drm/amdgpu/swsmu: default to fullscreen 3D profile for dGPUs")
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Kenneth Feng <kenneth.feng@amd.com>
-Cc: Lijo Lazar <lijo.lazar@amd.com>
-(cherry picked from commit 1cdd67510e54e3832f14a885dbf5858584558650)
+Link: https://lore.kernel.org/all/2024100904-CVE-2024-47663-9bdc@gregkh/
+Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20241022134354.574614-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/staging/iio/frequency/ad9832.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1234,6 +1234,14 @@ static void smu_init_xgmi_plpd_mode(stru
- 	}
- }
- 
-+static bool smu_is_workload_profile_available(struct smu_context *smu,
-+					      u32 profile)
-+{
-+	if (profile >= PP_SMC_POWER_PROFILE_COUNT)
-+		return false;
-+	return smu->workload_map && smu->workload_map[profile].valid_mapping;
-+}
-+
- static int smu_sw_init(void *handle)
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -129,12 +129,15 @@ static unsigned long ad9832_calc_freqreg
+ static int ad9832_write_frequency(struct ad9832_state *st,
+ 				  unsigned int addr, unsigned long fout)
  {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-@@ -1265,7 +1273,8 @@ static int smu_sw_init(void *handle)
- 	smu->workload_prority[PP_SMC_POWER_PROFILE_COMPUTE] = 5;
- 	smu->workload_prority[PP_SMC_POWER_PROFILE_CUSTOM] = 6;
++	unsigned long clk_freq;
+ 	unsigned long regval;
  
--	if (smu->is_apu)
-+	if (smu->is_apu ||
-+	    !smu_is_workload_profile_available(smu, PP_SMC_POWER_PROFILE_FULLSCREEN3D))
- 		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
- 	else
- 		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_FULLSCREEN3D];
+-	if (fout > (clk_get_rate(st->mclk) / 2))
++	clk_freq = clk_get_rate(st->mclk);
++
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
+ 
+-	regval = ad9832_calc_freqreg(clk_get_rate(st->mclk), fout);
++	regval = ad9832_calc_freqreg(clk_freq, fout);
+ 
+ 	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+ 					(addr << ADD_SHIFT) |
 
 
 
