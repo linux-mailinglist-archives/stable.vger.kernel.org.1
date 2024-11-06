@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-91086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611F29BEC5F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EB09BEB22
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 932AF1C23AA6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF6D1C21B85
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018071FBCB9;
-	Wed,  6 Nov 2024 12:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204971F6664;
+	Wed,  6 Nov 2024 12:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsmYxS61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOfegCuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B225A1FBCAE;
-	Wed,  6 Nov 2024 12:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C31E230E;
+	Wed,  6 Nov 2024 12:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897699; cv=none; b=atDalmZGKGbLETzsOtD9MWTApu6LZoKAgQDh+0kypYMmy15BHVJvXwOFEc7cWdj3JKJc4rbGpUg4nW0wI0+mZh6BhCjsRaz6xZu9WFB46Go766eiG4LSfkERK+Kd3TtfoI3W9V26EWWtuwECo5ZHTVJW7Jvt/t+ZyVXZW4E3ZdU=
+	t=1730896862; cv=none; b=jdqzx3doGxjyBZf8vgeJRHb7cZQVHG4pTV0Uvt5ZTXLnTj0x6OcwjGOGuRR26kuLISCA11ZfkgO+dZ4WsBF/k/uDJpF10cGh6/gNtwEITBmVy+aLElLEMr4hLqrNpmHRg6PH3TDULy7YNbzU0LGxa5BrnpTt9Jowq1Of+tc1d/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897699; c=relaxed/simple;
-	bh=3cm+Va+MyqIZyZdhfuUf4bH066YPiaiNSI4czWicQWc=;
+	s=arc-20240116; t=1730896862; c=relaxed/simple;
+	bh=RDCKZv/pVr5oqH1xDwv6aB4rlQUcSTzcxS9uINkx9as=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHAybjrhHqIs9U9YBMuHYSEBPvPADwxI9EeQCxYAXxf1WcxkBcWG0Mm08LB2ltB3d1WaQCshDxXjgcuXBlL3jVfKi/UjF/BqYBav6GXsMkYuNmEnyVEkfeExgfhPZUOmFImCjSEa3qK9VdqdZN5b5XFrSZyXJouNObGlsZpFMp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsmYxS61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B15C4CECD;
-	Wed,  6 Nov 2024 12:54:59 +0000 (UTC)
+	 MIME-Version; b=Z2BTs7cFBINfNP5klaaqzOQ4AlmmWC/N00Bqh/fBN3prO3dCVJyIN3n1vph9LQUHK54hzg41XA+wr1YGFKRxiwZUUKf4cQHNesVnV/Am7wGNyAFRINeYlyCQ/zOMFq7SHt7LIFqY7cCNhIj8T5ANSp59DVE4DNV0b7RcJpaRaGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOfegCuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C75C4CECD;
+	Wed,  6 Nov 2024 12:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897699;
-	bh=3cm+Va+MyqIZyZdhfuUf4bH066YPiaiNSI4czWicQWc=;
+	s=korg; t=1730896862;
+	bh=RDCKZv/pVr5oqH1xDwv6aB4rlQUcSTzcxS9uINkx9as=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsmYxS61s8xQSyyZx6eNX/cKLjYYbZ/oEUsnOfQYSQ+reHRPwaPPom4fT3lBGyEyd
-	 U0x97Yo8sarkEeezQY4ivEl55+4ukybpUrLOvVe0NBWlSF2Ln/bfIjuSfty+w1kSox
-	 sCEZFS/Wzc+KkYKB32Q1qv8SoRKl/b8aDq1bbrwk=
+	b=rOfegCuSpNDSezzwTzaSjRp3Rq++dbaNeG/OnTGG49nCvvCn8LJIHAl0zu7yY3C92
+	 byaK42mHTeTtcha6Pn9mLtnKX7ES7LECdu3DvC/wKTxdHVZFjFuRuZTdvXECbMM3rQ
+	 tgiXGvq9kMVAIz+9Hn0lNGf59gXj+yBqflptTH/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	Oliver Graute <oliver.graute@kococonnector.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/151] Input: edt-ft5x06 - fix regmap leak when probe fails
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.10 096/110] mm: add remap_pfn_range_notrack
 Date: Wed,  6 Nov 2024 13:05:02 +0100
-Message-ID: <20241106120312.005175424@linuxfoundation.org>
+Message-ID: <20241106120305.832960601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +69,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit bffdf9d7e51a7be8eeaac2ccf9e54a5fde01ff65 ]
+commit 74ffa5a3e68504dd289135b1cf0422c19ffb3f2e upstream.
 
-The driver neglects to free the instance of I2C regmap constructed at
-the beginning of the edt_ft5x06_ts_probe() method when probe fails.
-Additionally edt_ft5x06_ts_remove() is freeing the regmap too early,
-before the rest of the device resources that are managed by devm are
-released.
+Patch series "add remap_pfn_range_notrack instead of reinventing it in i915", v2.
 
-Fix this by installing a custom devm action that will ensure that the
-regmap is released at the right time during normal teardown as well as
-in case of probe failure.
+i915 has some reason to want to avoid the track_pfn_remap overhead in
+remap_pfn_range.  Add a function to the core VM to do just that rather
+than reinventing the functionality poorly in the driver.
 
-Note that devm_regmap_init_i2c() could not be used because the driver
-may replace the original regmap with a regmap specific for M06 devices
-in the middle of the probe, and using devm_regmap_init_i2c() would
-result in releasing the M06 regmap too early.
+Note that the remap_io_sg path does get exercises when using Xorg on my
+Thinkpad X1, so this should be considered lightly tested, I've not managed
+to hit the remap_io_mapping path at all.
 
-Reported-by: Li Zetao <lizetao1@huawei.com>
-Fixes: 9dfd9708ffba ("Input: edt-ft5x06 - convert to use regmap API")
-Cc: stable@vger.kernel.org
-Reviewed-by: Oliver Graute <oliver.graute@kococonnector.com>
-Link: https://lore.kernel.org/r/ZxL6rIlVlgsAu-Jv@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch (of 4):
+
+Add a version of remap_pfn_range that does not call track_pfn_range.  This
+will be used to fix horrible abuses of VM internals in the i915 driver.
+
+Link: https://lkml.kernel.org/r/20210326055505.1424432-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20210326055505.1424432-2-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/edt-ft5x06.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ include/linux/mm.h |    2 ++
+ mm/memory.c        |   51 +++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
-index 457d53337fbb3..a365577a19945 100644
---- a/drivers/input/touchscreen/edt-ft5x06.c
-+++ b/drivers/input/touchscreen/edt-ft5x06.c
-@@ -1124,6 +1124,14 @@ static void edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
- 	}
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2749,6 +2749,8 @@ unsigned long change_prot_numa(struct vm
+ struct vm_area_struct *find_extend_vma(struct mm_struct *, unsigned long addr);
+ int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
+ 			unsigned long pfn, unsigned long size, pgprot_t);
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot);
+ int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
+ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
+ 			struct page **pages, unsigned long *num);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2290,26 +2290,17 @@ static inline int remap_p4d_range(struct
+ 	return 0;
  }
  
-+static void edt_ft5x06_exit_regmap(void *arg)
-+{
-+	struct edt_ft5x06_ts_data *data = arg;
-+
-+	if (!IS_ERR_OR_NULL(data->regmap))
-+		regmap_exit(data->regmap);
+-/**
+- * remap_pfn_range - remap kernel memory to userspace
+- * @vma: user vma to map to
+- * @addr: target page aligned user address to start at
+- * @pfn: page frame number of kernel physical memory address
+- * @size: size of mapping area
+- * @prot: page protection flags for this mapping
+- *
+- * Note: this is only safe if the mm semaphore is held when called.
+- *
+- * Return: %0 on success, negative error code otherwise.
++/*
++ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
++ * must have pre-validated the caching bits of the pgprot_t.
+  */
+-int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+-		    unsigned long pfn, unsigned long size, pgprot_t prot)
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	pgd_t *pgd;
+ 	unsigned long next;
+ 	unsigned long end = addr + PAGE_ALIGN(size);
+ 	struct mm_struct *mm = vma->vm_mm;
+-	unsigned long remap_pfn = pfn;
+ 	int err;
+ 
+ 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
+@@ -2339,10 +2330,6 @@ int remap_pfn_range(struct vm_area_struc
+ 		vma->vm_pgoff = pfn;
+ 	}
+ 
+-	err = track_pfn_remap(vma, &prot, remap_pfn, addr, PAGE_ALIGN(size));
+-	if (err)
+-		return -EINVAL;
+-
+ 	vma->vm_flags |= VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
+ 
+ 	BUG_ON(addr >= end);
+@@ -2354,12 +2341,36 @@ int remap_pfn_range(struct vm_area_struc
+ 		err = remap_p4d_range(mm, pgd, addr, next,
+ 				pfn + (addr >> PAGE_SHIFT), prot);
+ 		if (err)
+-			break;
++			return err;
+ 	} while (pgd++, addr = next, addr != end);
+ 
++	return 0;
 +}
 +
- static void edt_ft5x06_disable_regulators(void *arg)
- {
- 	struct edt_ft5x06_ts_data *data = arg;
-@@ -1157,6 +1165,16 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
- 		return PTR_ERR(tsdata->regmap);
- 	}
- 
-+	/*
-+	 * We are not using devm_regmap_init_i2c() and instead install a
-+	 * custom action because we may replace regmap with M06-specific one
-+	 * and we need to make sure that it will not be released too early.
-+	 */
-+	error = devm_add_action_or_reset(&client->dev, edt_ft5x06_exit_regmap,
-+					 tsdata);
-+	if (error)
-+		return error;
++/**
++ * remap_pfn_range - remap kernel memory to userspace
++ * @vma: user vma to map to
++ * @addr: target page aligned user address to start at
++ * @pfn: page frame number of kernel physical memory address
++ * @size: size of mapping area
++ * @prot: page protection flags for this mapping
++ *
++ * Note: this is only safe if the mm semaphore is held when called.
++ *
++ * Return: %0 on success, negative error code otherwise.
++ */
++int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int err;
 +
- 	chip_data = device_get_match_data(&client->dev);
- 	if (!chip_data)
- 		chip_data = (const struct edt_i2c_chip_data *)id->driver_data;
-@@ -1354,7 +1372,6 @@ static void edt_ft5x06_ts_remove(struct i2c_client *client)
- 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(client);
++	err = track_pfn_remap(vma, &prot, pfn, addr, PAGE_ALIGN(size));
+ 	if (err)
+-		untrack_pfn(vma, remap_pfn, PAGE_ALIGN(size));
++		return -EINVAL;
  
- 	edt_ft5x06_ts_teardown_debugfs(tsdata);
--	regmap_exit(tsdata->regmap);
++	err = remap_pfn_range_notrack(vma, addr, pfn, size, prot);
++	if (err)
++		untrack_pfn(vma, pfn, PAGE_ALIGN(size));
+ 	return err;
  }
- 
- static int edt_ft5x06_ts_suspend(struct device *dev)
--- 
-2.43.0
-
+ EXPORT_SYMBOL(remap_pfn_range);
 
 
 
