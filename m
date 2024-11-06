@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FCF9BEBD1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB069BE807
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C151F234CC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A37285004
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D071F9AAC;
-	Wed,  6 Nov 2024 12:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EA21DF743;
+	Wed,  6 Nov 2024 12:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYHVgx2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgE7ry1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87DA1F9AA7;
-	Wed,  6 Nov 2024 12:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3225B1DF726;
+	Wed,  6 Nov 2024 12:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897318; cv=none; b=FEJPBYTjdNEwnAkP5pdcbKFREHK6H1qyc340faa+xR/h/thH6BC7DKDp/qhT57i9jfh2boIcZ1S+XgR9jajnqWT9nNMVbM/QAKHvQOnnCQD9PPLFkG+jqKm2R8uMGcIaG/21tGdEtKZM4hScUvPj+wG2FFcNDi8ayCa+pXQEptk=
+	t=1730895609; cv=none; b=Ng8gbQGzW/FNwFe0ARUqNHnlHMIKC1n8ymeps/seetGnUvKCnbvAA+YUx1j0ZWleoqZGnIE7SkLb+gTU/dl2gazS3meKqZl35EcTGreeBlA65iwlKRKi4SzNxrdLvXciJOcgWRtIw8wnhah89SHWbzUrYj0SU9N0R3965J4TOVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897318; c=relaxed/simple;
-	bh=SF94qhWKaRhgLCF8FJzvRsXAs5+40ppN7nzQtEqNclQ=;
+	s=arc-20240116; t=1730895609; c=relaxed/simple;
+	bh=Zf/JrKA0heXWA/SKb+zO3Jqh7e1u9P82ET/gquVOkwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBYngDNFNHIhONh8XqL3cWxx1MFO2ask2VzC9d6dDZ+LdeiJ9srkcyMLiQY/vvppK4wYN+7LpWwwbh9TRPbBw5i25OQhGCcB8MAfU8Y1Ib3cHehelNABmy0KmkfYeN9QA24HmXkS/BqGPLc6AnflWVM9eNOhhehKM+waMbEZONg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYHVgx2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6DBC4CECD;
-	Wed,  6 Nov 2024 12:48:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sc33OsMZNT2DZCN00aSoYpm2etuzYGldvQOSGzbaqWcdR/+pA0Smth9TyizcfdIYkJi3G155iNmboQatvM5mmS/77vySUcYWyU468JIwubjiucfzgeJY5eQsbzIw9R1QBdTiA6Eh3HnVWVhvABs3kgLHR15Hum7kePZqoLjHbbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgE7ry1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB84C4CECD;
+	Wed,  6 Nov 2024 12:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897318;
-	bh=SF94qhWKaRhgLCF8FJzvRsXAs5+40ppN7nzQtEqNclQ=;
+	s=korg; t=1730895609;
+	bh=Zf/JrKA0heXWA/SKb+zO3Jqh7e1u9P82ET/gquVOkwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYHVgx2rIXquu6Q8id3rYV/R1LbL81HwM3binuiM/sR6FqhfRQa5KE2OUziNoc/BC
-	 w19UXCGvHTkqfdc06q7jmmKbVhiOLc++Ley/BMp7KKCO5omaZPHFJLBVOrugF0/aut
-	 r1SbY7rCR7KTs1jHSBsptnwIdZIt6CYrV9166lY4=
+	b=bgE7ry1EEaVxtJuhLLa1dn2i3Io1W5DtgREhafkcpdtoAE1C1GhS6BQKp6ZsLYT/+
+	 oQ4vBY7ScPVglIs8JujV4o2C7XQBN8nKIHuaEKghxNvtSdIBEUItaMVNzKkqSvNo/L
+	 2/v7rAS2bfDk8zFWBoOICO4Z8t0HqX/hLk88SPiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/151] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
-Date: Wed,  6 Nov 2024 13:03:22 +0100
-Message-ID: <20241106120309.229363416@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 4.19 275/350] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
+Date: Wed,  6 Nov 2024 13:03:23 +0100
+Message-ID: <20241106120327.665200120@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
+commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
 
-After the cited commit below max_dest_rd_atomic and max_rd_atomic values
-are being rounded down to the next power of 2. As opposed to the old
-behavior and mlx4 driver where they used to be rounded up instead.
+According to the VT220 specification the possible character combinations
+sent on RETURN are only CR or CRLF [0].
 
-In order to stay consistent with older code and other drivers, revert to
-using fls round function which rounds up to the next power of 2.
+	The Return key sends either a CR character (0/13) or a CR
+	character (0/13) and an LF character (0/10), depending on the
+	set/reset state of line feed/new line mode (LNM).
 
-Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
-Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The sclp/vt220 driver however uses LFCR. This can confuse tools, for
+example the kunit runner.
+
+Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 4 ++--
+ drivers/s390/char/sclp_vt220.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 2340baaba8e67..93d9b15cbbb98 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -4272,14 +4272,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
- 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
+--- a/drivers/s390/char/sclp_vt220.c
++++ b/drivers/s390/char/sclp_vt220.c
+@@ -325,7 +325,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
  
- 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
--		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
-+		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
+ 	if (convertlf) {
+-		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
++		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
+ 		for (from=0, to=0;
+ 		     (from < count) && (to < sclp_vt220_space_left(request));
+ 		     from++) {
+@@ -334,8 +334,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 			/* Perform conversion */
+ 			if (c == 0x0a) {
+ 				if (to + 1 < sclp_vt220_space_left(request)) {
+-					((unsigned char *) buffer)[to++] = c;
+ 					((unsigned char *) buffer)[to++] = 0x0d;
++					((unsigned char *) buffer)[to++] = c;
+ 				} else
+ 					break;
  
- 	if (attr_mask & IB_QP_SQ_PSN)
- 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
- 
- 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
- 		MLX5_SET(qpc, qpc, log_rra_max,
--			 ilog2(attr->max_dest_rd_atomic));
-+			 fls(attr->max_dest_rd_atomic - 1));
- 
- 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
- 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
--- 
-2.43.0
-
 
 
 
