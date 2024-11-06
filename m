@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6869BE916
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6885D9BE818
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60B7E1C21790
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1531F213D2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941A91DD55A;
-	Wed,  6 Nov 2024 12:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA64F1DF73C;
+	Wed,  6 Nov 2024 12:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8ZX/0d4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqwNzPJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A3D4207F;
-	Wed,  6 Nov 2024 12:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C081DED49;
+	Wed,  6 Nov 2024 12:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896218; cv=none; b=XhGcbNGqAgAs7QKilsgBZ6jXmByD0Cu9eJNc58UZFoIAc8NEJQMiGQx4SoLqx6Ap554xuj1peiMLuIDM/Zp6Wwnyhk00y1tyTNmuimTjlhOk4IVHx8fMEpM/IWpVlsAYM8XE+sqeN7EHFd2o6iyDrajCrBDagk/NyeBWjDl75Is=
+	t=1730895656; cv=none; b=U4J8ttHMrnk5wK3Xnxy9ecqUxgjC3xqwX42bBWcVV1tu753LEn35gx/s3QZZmN+RMpsSMXYgqZcBRqcNnXfoBtmY8qt2lI2Dqkvqh4DfMFsdyIsBjjTYvTiKzegEAwIfCBLbbG9l+XhJO82pLECWzRxKMx6i1IXnpkCHIozhpg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896218; c=relaxed/simple;
-	bh=Vc5WL8RQh2rb1a+IIO/oavQ9+fHtmm+FdXEfrV8iv4A=;
+	s=arc-20240116; t=1730895656; c=relaxed/simple;
+	bh=BSCDvNy6iBCEy4hGpsp+mu7DYZw2DOxmqJt3H4pvcNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFdsMs7E7ckHvMLnhxCE4qaixnagq8eUNlHBGeMpjg9SbSNAKkvC0YpAG7znH8mWgNZx2q+yMOrOaVqUq327ZyG7tO0JsmsQwoa/yr/v3bX4BtCAYZ7fLDYs8aK23JeLL6rJfCodTrXeqQLZ78IsPVDr1+0XIENH6EG2GvlJkng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8ZX/0d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E601C4CED3;
-	Wed,  6 Nov 2024 12:30:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Vj4Bt1H9GEHKzy6HpQtpAM0X/hoh881L0LiH0+1tRmsyS7bJsZXro0Hnq9Y4sPuDe44YwuhYE5YqTFISkkH2TMIiQBwtdRS8F6Fnx+YiLftUHjHsKAEHHs0wepKpY1P5N2GtVQdp/HjN1CwW0DrSqkGx1I+hQTYMrQ+RWTRHOc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqwNzPJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BD4C4CECD;
+	Wed,  6 Nov 2024 12:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896217;
-	bh=Vc5WL8RQh2rb1a+IIO/oavQ9+fHtmm+FdXEfrV8iv4A=;
+	s=korg; t=1730895656;
+	bh=BSCDvNy6iBCEy4hGpsp+mu7DYZw2DOxmqJt3H4pvcNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8ZX/0d49V47SZkb2RpV7Pdw4BheTqfRe8J7a8VgvBVbscsUCKqZ64ILpYUkjq7C0
-	 NWS4pQ84zeOHTCYiFiy6xk42dyP3V5qfr1meVU0hG2Pe6b41R2MVYaNz7xPdefgAqZ
-	 T/Wy9+5X3ntokwoIWYlPKQfkgDw3YuTxMQfTsmiA=
+	b=tqwNzPJQrJn/rfB9Y/hPAB3RkIgUMR/WPHnKZsPEjbhoDkfZvhJ74OoxqwfyrNVhb
+	 VSB6IN2uZ9S3qysH/PgheWAzODGfF6/GvDum86XHOwf7bWfDP8wCLscW/VvdcvYr2j
+	 4pDb2NoiuZbwRPD0kdpLmAZRRGv9O4RCKYWL3+VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 130/245] iio: gts-helper: Fix memory leaks for the error path of iio_gts_build_avail_scale_table()
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alexandru Ardelean <aardelean@deviqon.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 255/350] clk: generalize devm_clk_get() a bit
 Date: Wed,  6 Nov 2024 13:03:03 +0100
-Message-ID: <20241106120322.423227991@linuxfoundation.org>
+Message-ID: <20241106120327.209647832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 369f05688911b05216cfcd6ca74473bec87948d7 upstream.
+[ Upstream commit abae8e57e49aa75f6db76aa866c775721523908f ]
 
-If per_time_scales[i] or per_time_gains[i] kcalloc fails in the for loop
-of iio_gts_build_avail_scale_table(), the err_free_out will fail to call
-kfree() each time when i is reduced to 0, so all the per_time_scales[0]
-and per_time_gains[0] will not be freed, which will cause memory leaks.
+Allow to add an exit hook to devm managed clocks. Also use
+clk_get_optional() in devm_clk_get_optional instead of open coding it.
+The generalisation will be used in the next commit to add some more
+devm_clk helpers.
 
-Fix it by checking if i >= 0.
-
-Cc: stable@vger.kernel.org
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20241016012453.2013302-1-ruanjinjie@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20220520075737.758761-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: a6191a3d1811 ("gpio: aspeed: Use devm_clk api to manage clock source")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-gts-helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk-devres.c | 66 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 49 insertions(+), 17 deletions(-)
 
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -313,7 +313,7 @@ static int iio_gts_build_avail_scale_tab
- 	return 0;
+diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
+index a062389ccd3d5..3a45b4d0d502d 100644
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -9,39 +9,71 @@
+ #include <linux/export.h>
+ #include <linux/gfp.h>
  
- err_free_out:
--	for (i--; i; i--) {
-+	for (i--; i >= 0; i--) {
- 		kfree(per_time_scales[i]);
- 		kfree(per_time_gains[i]);
++struct devm_clk_state {
++	struct clk *clk;
++	void (*exit)(struct clk *clk);
++};
++
+ static void devm_clk_release(struct device *dev, void *res)
+ {
+-	clk_put(*(struct clk **)res);
++	struct devm_clk_state *state = *(struct devm_clk_state **)res;
++
++	if (state->exit)
++		state->exit(state->clk);
++
++	clk_put(state->clk);
+ }
+ 
+-struct clk *devm_clk_get(struct device *dev, const char *id)
++static struct clk *__devm_clk_get(struct device *dev, const char *id,
++				  struct clk *(*get)(struct device *dev, const char *id),
++				  int (*init)(struct clk *clk),
++				  void (*exit)(struct clk *clk))
+ {
+-	struct clk **ptr, *clk;
++	struct devm_clk_state *state;
++	struct clk *clk;
++	int ret;
+ 
+-	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
++	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
++	if (!state)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	clk = clk_get(dev, id);
+-	if (!IS_ERR(clk)) {
+-		*ptr = clk;
+-		devres_add(dev, ptr);
+-	} else {
+-		devres_free(ptr);
++	clk = get(dev, id);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto err_clk_get;
  	}
+ 
++	if (init) {
++		ret = init(clk);
++		if (ret)
++			goto err_clk_init;
++	}
++
++	state->clk = clk;
++	state->exit = exit;
++
++	devres_add(dev, state);
++
+ 	return clk;
++
++err_clk_init:
++
++	clk_put(clk);
++err_clk_get:
++
++	devres_free(state);
++	return ERR_PTR(ret);
++}
++
++struct clk *devm_clk_get(struct device *dev, const char *id)
++{
++	return __devm_clk_get(dev, id, clk_get, NULL, NULL);
+ }
+ EXPORT_SYMBOL(devm_clk_get);
+ 
+ struct clk *devm_clk_get_optional(struct device *dev, const char *id)
+ {
+-	struct clk *clk = devm_clk_get(dev, id);
+-
+-	if (clk == ERR_PTR(-ENOENT))
+-		return NULL;
+-
+-	return clk;
++	return __devm_clk_get(dev, id, clk_get_optional, NULL, NULL);
+ }
+ EXPORT_SYMBOL(devm_clk_get_optional);
+ 
+-- 
+2.43.0
+
 
 
 
