@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E030A9BE8B3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015B09BE796
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5D43281FA9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339BD1C235E3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E830B1DF726;
-	Wed,  6 Nov 2024 12:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961CC1DED58;
+	Wed,  6 Nov 2024 12:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiKwtoy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inhuS4Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70771D2784;
-	Wed,  6 Nov 2024 12:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546461DE8A2;
+	Wed,  6 Nov 2024 12:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896018; cv=none; b=FyfIwAVj/AY+8kLkVPQCahxAYzLj6+MhblG7c2tj9Krs6GkgaVGP8Oivq/YL6A72Xo4S6DtV5ce01UNmYrcraOfupEfyp6iCZ40stcTlgDdQEaWqfFaHGubiBPV6nYf4JNQOWt1jVLNLRxbDiO44z5nC+eQpOJ/YtnndZwHrtKQ=
+	t=1730895350; cv=none; b=WFYhtMkgfsJK+0XHC84J6hk5fPHqq38qrkNfPqPLmIrvtMmNZT6TDgvtRd9/s+oM8KeQDt2wXZIhUT+dmHK2/3gUSfl+FG2vXvkcPVklcAyfvuzsltsKkzAnfTztnqsBnSGI21wSbtHlNWtOLuZAnHcE4jh+/aRg3CQ+I5Fd3JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896018; c=relaxed/simple;
-	bh=LWwQelKiI9aoiu4s10FQx4GsPyWakaQZfITOtYQwwh8=;
+	s=arc-20240116; t=1730895350; c=relaxed/simple;
+	bh=0MKfJR2N5nZQiMADHSpEEYKzsKySVXX6f7TTG/PpXL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDG+jvdNJwcJOwZHdIMFrFrZt1P6FGWnFs9Bj3O1eRta2pJo2hx+OJ205N6wT1qpIelirHWVdTknhzK/2WqkF+Fidb+cFC5a8GFXzJVz6xOb7Hn7dWXGBBC7r9dZms7YBquYfrER9qpTgxKZDo6XJ+IuA3E/qSwF8UZaJy2mNaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiKwtoy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBCAC4CECD;
-	Wed,  6 Nov 2024 12:26:57 +0000 (UTC)
+	 MIME-Version; b=auXb+FMDDMRajirSUPi8ybPK3Sp0BQn1bM8v/1skzBKKk7EQXvGTt42IsbZ/HPDqQJ7TUZ7B1yffXfpiQjjFSEoDAAxYKcL14lNo1HD75JDZxxvq7pEBrg4cD2aIcCHaM+w0P3LQ1fR6EE0OqYMZt47XCvKcfSiu3fOWVf3jojA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inhuS4Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAE9C4CECD;
+	Wed,  6 Nov 2024 12:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896018;
-	bh=LWwQelKiI9aoiu4s10FQx4GsPyWakaQZfITOtYQwwh8=;
+	s=korg; t=1730895350;
+	bh=0MKfJR2N5nZQiMADHSpEEYKzsKySVXX6f7TTG/PpXL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiKwtoy4J5iY8zR4n5OZnSEMwI/ML0jkiFTziBZpzfT3qdU4dnZ0Wl9X9kHQJiPUC
-	 AHCrM+YJ/dlX7xBoqvAdyC1/gObT1+PcTH0YH0AXgrSo4yvpF1/7QQlMLXtHzXSmpM
-	 bq94tQjrehwk1y2ZRW5gE/s76FtRhIgBTjP0N1R8=
+	b=inhuS4TkWwxlVoeuHLGcIg0FuHeps0WslTmTzCef7iKoiolOuF7wdjLqEGFR3QPqn
+	 jOdDWNhWI0LXL40nTRL54tNAfM7pYGgiWHHh3Soimn19T3ZP5vPJfzxVEeT7PT4JYq
+	 MxlNNlLb5sRWVN/ubNdcu8voEitrtnCNg9la2upY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 062/245] iomap: turn iomap_want_unshare_iter into an inline function
-Date: Wed,  6 Nov 2024 13:01:55 +0100
-Message-ID: <20241106120320.732848528@linuxfoundation.org>
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 4.19 188/350] ext4: no need to continue when the number of entries is 1
+Date: Wed,  6 Nov 2024 13:01:56 +0100
+Message-ID: <20241106120325.598920889@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 6db388585e486c0261aeef55f8bc63a9b45756c0 ]
+commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
 
-iomap_want_unshare_iter currently sits in fs/iomap/buffered-io.c, which
-depends on CONFIG_BLOCK.  It is also in used in fs/dax.c whіch has no
-such dependency.  Given that it is a trivial check turn it into an inline
-in include/linux/iomap.h to fix the DAX && !BLOCK build.
-
-Fixes: 6ef6a0e821d3 ("iomap: share iomap_unshare_iter predicate code with fsdax")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241015041350.118403-1-hch@lst.de
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 17 -----------------
- include/linux/iomap.h  | 20 +++++++++++++++++++-
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index db8061b1a0821..c8e984be39823 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1334,23 +1334,6 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
- }
- EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1832,7 +1832,7 @@ static struct ext4_dir_entry_2 *do_split
+ 		split = count/2;
  
--bool iomap_want_unshare_iter(const struct iomap_iter *iter)
--{
--	/*
--	 * Don't bother with blocks that are not shared to start with; or
--	 * mappings that cannot be shared, such as inline data, delalloc
--	 * reservations, holes or unwritten extents.
--	 *
--	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
--	 * unsharing requires providing a separate source map, and the presence
--	 * of one is a good indicator that unsharing is needed, unlike
--	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
--	 * fork for XFS.
--	 */
--	return (iter->iomap.flags & IOMAP_F_SHARED) &&
--		iter->srcmap.type == IOMAP_MAPPED;
--}
--
- static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- {
- 	struct iomap *iomap = &iter->iomap;
-diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 634f5746ae7bb..034399030609e 100644
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -256,6 +256,25 @@ static inline const struct iomap *iomap_iter_srcmap(const struct iomap_iter *i)
- 	return &i->iomap;
- }
- 
-+/*
-+ * Check if the range needs to be unshared for a FALLOC_FL_UNSHARE_RANGE
-+ * operation.
-+ *
-+ * Don't bother with blocks that are not shared to start with; or mappings that
-+ * cannot be shared, such as inline data, delalloc reservations, holes or
-+ * unwritten extents.
-+ *
-+ * Note that we use srcmap directly instead of iomap_iter_srcmap as unsharing
-+ * requires providing a separate source map, and the presence of one is a good
-+ * indicator that unsharing is needed, unlike IOMAP_F_SHARED which can be set
-+ * for any data that goes into the COW fork for XFS.
-+ */
-+static inline bool iomap_want_unshare_iter(const struct iomap_iter *iter)
-+{
-+	return (iter->iomap.flags & IOMAP_F_SHARED) &&
-+		iter->srcmap.type == IOMAP_MAPPED;
-+}
-+
- ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
- 		const struct iomap_ops *ops);
- int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
-@@ -271,7 +290,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
- bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio);
- int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 		const struct iomap_ops *ops);
--bool iomap_want_unshare_iter(const struct iomap_iter *iter);
- int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
- 		bool *did_zero, const struct iomap_ops *ops);
- int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
--- 
-2.43.0
-
+ 	hash2 = map[split].hash;
+-	continued = hash2 == map[split - 1].hash;
++	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
+ 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
+ 			(unsigned long)dx_get_block(frame->at),
+ 					hash2, split, count-split));
 
 
 
