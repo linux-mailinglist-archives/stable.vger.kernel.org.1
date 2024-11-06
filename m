@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC0D9BE84A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270CE9BE972
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B268528529F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF196B21A6B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53661DF994;
-	Wed,  6 Nov 2024 12:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7FC1DFD9D;
+	Wed,  6 Nov 2024 12:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkWCzdSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCLStmQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6188D1DF740;
-	Wed,  6 Nov 2024 12:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB35198E96;
+	Wed,  6 Nov 2024 12:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895783; cv=none; b=uQZekBmgvqFN1VvssV3chWmsurz49ofaKp3KOLZjdDoZ7Ac+JnTaxgW6wBc5VSBOIHQ5HWodlJep6tcdoN4TTLceurHmKe8n9sKGYORbxjd9iRSL/NLhkx+Ei0G4/aA3ZsS8MV5xPcZl6t/80DFJuikUMio/JTiFebfmqul8jF8=
+	t=1730896460; cv=none; b=VaVQ5LIQ/01kPACYQxe11i/qyrOWvAAmRniC4BSnRpXUmDW3/kEL6nYmALQs74dglk0Vqilz1hxyTFc8olzRZjuH1mMLYJZLxLV0sbXq22fqAGth6d60PwLn44ls81ZqJNlKtOulEXECbb0SAcFeRosZwtAZZ6VuWxCSy7PgKWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895783; c=relaxed/simple;
-	bh=n83JAOG2MJo+YCCI4CFxVTgwN5QUaoLZgYRRA3U3wpw=;
+	s=arc-20240116; t=1730896460; c=relaxed/simple;
+	bh=vyR6NpioDDJmHtkVsY0HNy+mtrz0WauPFUo4f2FSPUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGv/9JGBUQFYtOjYuQKWpn8TAh3FM5jozyT+d+z+jMcWAUHXOPX06ivlJ73fYfBEMhQVoZ5jLoKBlzLY+sSdbAFQCbYkWNx4FxQxtA/t209ICtHX7jSyikgie2AYCT/c3iOQgBiPPqJxCJHJpgBGU3vDvaY4JwEz1/jRwst4AOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkWCzdSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB93C4CECD;
-	Wed,  6 Nov 2024 12:23:02 +0000 (UTC)
+	 MIME-Version; b=lVEs46svTLiMBQb/8bPvMi0+4bPviFASuWcK4LpeNh+CBUVdirb71efiioFo3Oi6wUiwtPJH3hUvrFeZXgDbRKdf5O7Sryiu/oV57W3oLmB1aNFSlaeRJVgDvRIMnghF+x6RfdbOl14p6LHAW/lYEG/EMVA9GbqbogrsTiMX+mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCLStmQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63294C4CECD;
+	Wed,  6 Nov 2024 12:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895783;
-	bh=n83JAOG2MJo+YCCI4CFxVTgwN5QUaoLZgYRRA3U3wpw=;
+	s=korg; t=1730896459;
+	bh=vyR6NpioDDJmHtkVsY0HNy+mtrz0WauPFUo4f2FSPUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkWCzdSomw7eR2ge6ISaQF+qvpx/1wrOm8DzNK2EsYg4Lh2bk99NiDNe/Hlm37OEL
-	 gFOAUh4NFMJgApEca2+PuSeetFDt60F3VRMl7EOIiqrqZ9DxNPiqy7DJwEjRgdAxQe
-	 ZV33fdSYNTvpjuhd967tXVM7V4wLB/jEaF/Dh6qk=
+	b=GCLStmQ8oseMIAUPrafeEZn8vzyxgCo8UFmwGdEnSSs1oWnGpp2JRVj+4m8EZErTF
+	 co3Fcqo8NDdGLvY0i6I1/9WWvuzvT6c29VeArQJ8gfUJEkLBboGKRTWHnMMgurw+XO
+	 GCWKA1YMDkAbSG4AqYxr13yjWvnYlDENjb48ftIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin-ayu@qq.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 335/350] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.11 210/245] riscv: dts: starfive: disable unused csi/camss nodes
 Date: Wed,  6 Nov 2024 13:04:23 +0100
-Message-ID: <20241106120328.988060978@linuxfoundation.org>
+Message-ID: <20241106120324.423289022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
+commit 2e11e78667db90a9e732fbe42820e734d0658fc7 upstream.
 
-If access to offset + length is larger than the skbuff length, then
-skb_checksum() triggers BUG_ON().
+Aurelien reported probe failures due to the csi node being enabled
+without having a camera attached to it. A camera was in the initial
+submissions, but was removed from the dts, as it had not actually been
+present on the board, but was from an addon board used by the
+developer of the relevant drivers. The non-camera pipeline nodes were
+not disabled when this happened and the probe failures are problematic
+for Debian. Disable them.
 
-skb_checksum() internally subtracts the length parameter while iterating
-over skbuff, BUG_ON(len) at the end of it checks that the expected
-length to be included in the checksum calculation is fully consumed.
-
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Reported-by: Slavin Liu <slavin-ayu@qq.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 28ecaaa5af192 ("riscv: dts: starfive: jh7110: Add camera subsystem nodes")
+Closes: https://lore.kernel.org/all/Zw1-vcN4CoVkfLjU@aurel32.net/
+Reported-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_payload.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/boot/dts/starfive/jh7110-common.dtsi |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 0ef51c81ec94c..128195a7ea5ed 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -306,6 +306,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
- 	if ((priv->csum_type == NFT_PAYLOAD_CSUM_INET || priv->csum_flags) &&
- 	    (priv->base != NFT_PAYLOAD_TRANSPORT_HEADER ||
- 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
-+		if (offset + priv->len > skb->len)
-+			goto err;
-+
- 		fsum = skb_checksum(skb, offset, priv->len, 0);
- 		tsum = csum_partial(src, priv->len, 0);
+--- a/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
+@@ -128,7 +128,6 @@
+ 	assigned-clocks = <&ispcrg JH7110_ISPCLK_DOM4_APB_FUNC>,
+ 			  <&ispcrg JH7110_ISPCLK_MIPI_RX0_PXL>;
+ 	assigned-clock-rates = <49500000>, <198000000>;
+-	status = "okay";
  
--- 
-2.43.0
-
+ 	ports {
+ 		#address-cells = <1>;
+@@ -151,7 +150,6 @@
+ &csi2rx {
+ 	assigned-clocks = <&ispcrg JH7110_ISPCLK_VIN_SYS>;
+ 	assigned-clock-rates = <297000000>;
+-	status = "okay";
+ 
+ 	ports {
+ 		#address-cells = <1>;
 
 
 
