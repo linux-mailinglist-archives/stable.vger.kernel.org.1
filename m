@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-90639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082089BE94F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECC89BEB53
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C25A8284BB5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 673201F27310
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A271DF726;
-	Wed,  6 Nov 2024 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EE31F7093;
+	Wed,  6 Nov 2024 12:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXECJLp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHx5f4tx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6A47DA7F;
-	Wed,  6 Nov 2024 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB501E909B;
+	Wed,  6 Nov 2024 12:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896370; cv=none; b=R798PnoX3HMA/3QYsudPlvFuWED5DN0WneFYh0zlH0CcfGicU9PNrkrHLhVmm5rzPK0JB7TlNf0G7l7+NVt18uEkoHJXITFFk46Ym4UbCWYISOlqCjJ0kgPX37f9OlLvCCKve6Y01FaQWZjaM0ZKD1xn3syAfRjJucLo/f4GI2A=
+	t=1730896998; cv=none; b=IQ+MWHtbClJA8G0GjX2K78WKLr4UE9hzLH2B48u/usjgT0kwaVQK3dK3ZscON2qnRYxIx/x2bs/s0FYprKW/o9Q9LATNrJCQnkkSVo5eJs2TAI8S+x+jcuOTUvc3nj4t1ma+1zx3RPfHIP2UtH9VoAv3Z7+I5QJSnWsaDJgCVRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896370; c=relaxed/simple;
-	bh=J2lwHUhHdiPpWhJ9QUnlDFg8KSxpg+3CBfKx2sJi+Xo=;
+	s=arc-20240116; t=1730896998; c=relaxed/simple;
+	bh=mPg4mOjwrtL73Cl4keWQpGgcdI6OjsBSkYNRlp7ySI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fncsdyhoZfkoxXGLjysRfpo0FJtPQQaj/DZqI8vMpTFZbO+uOK9IMDpfnXeSDg0E9dAif1sPk0npYx5C/JyLpx5WsvFdyfOrlnoMHergqCjcVmtnWGAbQu+2vqtGXYHeF3hg7ANRsdpX/of0V61Nq156QOYP67VAkhgsigMM3lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXECJLp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708F2C4CECD;
-	Wed,  6 Nov 2024 12:32:49 +0000 (UTC)
+	 MIME-Version; b=dPAmMu5JcBsX5OrzuYLAnWXFoNsHyGiZxtrG8HO5y0z/xh5gmop+gsldlPgMd90I8CNd5oYbPBHTsr1preKlQc9YO0C0hVt/QLhoefR5X9xSe6er/MER9w+Q4zx6ert5oQ1TYpW3gwiMdbsDqrnf8+z24wC0/LuT3RsIcC7GiqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHx5f4tx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85076C4CECD;
+	Wed,  6 Nov 2024 12:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896370;
-	bh=J2lwHUhHdiPpWhJ9QUnlDFg8KSxpg+3CBfKx2sJi+Xo=;
+	s=korg; t=1730896997;
+	bh=mPg4mOjwrtL73Cl4keWQpGgcdI6OjsBSkYNRlp7ySI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXECJLp0lxTzZ1HoIZuNShTyhizncU5OZNGQZe+HwpTzqWEg6lNNrv99wbCiPSY+A
-	 NQ1ggUaKzZVahDlLvcNTCc/d5jkjutexBXN7LlrtEff3JIDRdCszUdX/cNvFX+V3fu
-	 fkINVV9Ol/uwRauVUUFgqb8sPkDM6fVA1yykAeT4=
+	b=aHx5f4txAlBXphqzrgVw4i3YSLc8FPWMZ0KwWo3425kc+d7NSB6FiA6AZYkf3N5yl
+	 ojPjPQXpZHbp1ntHlPFen9OxdnbeQywr3l2uE7QBuXGZ40YvD67Ga2oI0akD8XSVjU
+	 t7RuXkDLSQDT/8Fpr3qlOObDzB0T8t0rttWh23pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 179/245] ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
+Subject: [PATCH 6.1 031/126] Bluetooth: hci: fix null-ptr-deref in hci_read_supported_codecs
 Date: Wed,  6 Nov 2024 13:03:52 +0100
-Message-ID: <20241106120323.644138801@linuxfoundation.org>
+Message-ID: <20241106120306.949460086@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,62 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit bc0a2f3a73fcdac651fca64df39306d1e5ebe3b0 ]
+[ Upstream commit 1e67d8641813f1876a42eeb4f532487b8a7fb0a8 ]
 
-Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two
-reasons for this: first, the parameter value passed is greater than
-ocfs2_max_inline_data_with_xattr, second, the start and end parameters of
-ocfs2_truncate_inline are "unsigned int".
+Fix __hci_cmd_sync_sk() to return not NULL for unknown opcodes.
 
-So, we need to add a sanity check for byte_start and byte_len right before
-ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater
-than ocfs2_max_inline_data_with_xattr return -EINVAL.
+__hci_cmd_sync_sk() returns NULL if a command returns a status event.
+However, it also returns NULL where an opcode doesn't exist in the
+hci_cc table because hci_cmd_complete_evt() assumes status = skb->data[0]
+for unknown opcodes.
+This leads to null-ptr-deref in cmd_sync for HCI_OP_READ_LOCAL_CODECS as
+there is no hci_cc for HCI_OP_READ_LOCAL_CODECS, which always assumes
+status = skb->data[0].
 
-Link: https://lkml.kernel.org/r/tencent_D48DB5122ADDAEDDD11918CFB68D93258C07@qq.com
-Fixes: 1afc32b95233 ("ocfs2: Write support for inline data")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=81092778aac03460d6b7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 1 PID: 2000 Comm: kworker/u9:5 Not tainted 6.9.0-ga6bcb805883c-dirty #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: hci7 hci_power_on
+RIP: 0010:hci_read_supported_codecs+0xb9/0x870 net/bluetooth/hci_codec.c:138
+Code: 08 48 89 ef e8 b8 c1 8f fd 48 8b 75 00 e9 96 00 00 00 49 89 c6 48 ba 00 00 00 00 00 fc ff df 4c 8d 60 70 4c 89 e3 48 c1 eb 03 <0f> b6 04 13 84 c0 0f 85 82 06 00 00 41 83 3c 24 02 77 0a e8 bf 78
+RSP: 0018:ffff888120bafac8 EFLAGS: 00010212
+RAX: 0000000000000000 RBX: 000000000000000e RCX: ffff8881173f0040
+RDX: dffffc0000000000 RSI: ffffffffa58496c0 RDI: ffff88810b9ad1e4
+RBP: ffff88810b9ac000 R08: ffffffffa77882a7 R09: 1ffffffff4ef1054
+R10: dffffc0000000000 R11: fffffbfff4ef1055 R12: 0000000000000070
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88810b9ac000
+FS:  0000000000000000(0000) GS:ffff8881f6c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6ddaa3439e CR3: 0000000139764003 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ hci_read_local_codecs_sync net/bluetooth/hci_sync.c:4546 [inline]
+ hci_init_stage_sync net/bluetooth/hci_sync.c:3441 [inline]
+ hci_init4_sync net/bluetooth/hci_sync.c:4706 [inline]
+ hci_init_sync net/bluetooth/hci_sync.c:4742 [inline]
+ hci_dev_init_sync net/bluetooth/hci_sync.c:4912 [inline]
+ hci_dev_open_sync+0x19a9/0x2d30 net/bluetooth/hci_sync.c:4994
+ hci_dev_do_open net/bluetooth/hci_core.c:483 [inline]
+ hci_power_on+0x11e/0x560 net/bluetooth/hci_core.c:1015
+ process_one_work kernel/workqueue.c:3267 [inline]
+ process_scheduled_works+0x8ef/0x14f0 kernel/workqueue.c:3348
+ worker_thread+0x91f/0xe50 kernel/workqueue.c:3429
+ kthread+0x2cb/0x360 kernel/kthread.c:388
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Fixes: abfeea476c68 ("Bluetooth: hci_sync: Convert MGMT_OP_START_DISCOVERY")
+
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/bluetooth/hci_sync.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index ccc57038a9779..02d2beb7ddb95 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1783,6 +1783,14 @@ int ocfs2_remove_inode_range(struct inode *inode,
- 		return 0;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 0cc187ff35874..c368235202b25 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -200,6 +200,12 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return ERR_PTR(err);
+ 	}
  
- 	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
-+		int id_count = ocfs2_max_inline_data_with_xattr(inode->i_sb, di);
++	/* If command return a status event skb will be set to NULL as there are
++	 * no parameters.
++	 */
++	if (!skb)
++		return ERR_PTR(-ENODATA);
 +
-+		if (byte_start > id_count || byte_start + byte_len > id_count) {
-+			ret = -EINVAL;
-+			mlog_errno(ret);
-+			goto out;
-+		}
+ 	return skb;
+ }
+ EXPORT_SYMBOL(__hci_cmd_sync_sk);
+@@ -249,6 +255,11 @@ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 	u8 status;
+ 
+ 	skb = __hci_cmd_sync_sk(hdev, opcode, plen, param, event, timeout, sk);
 +
- 		ret = ocfs2_truncate_inline(inode, di_bh, byte_start,
- 					    byte_start + byte_len, 0);
- 		if (ret) {
++	/* If command return a status event, skb will be set to -ENODATA */
++	if (skb == ERR_PTR(-ENODATA))
++		return 0;
++
+ 	if (IS_ERR(skb)) {
+ 		if (!event)
+ 			bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld", opcode,
+@@ -256,13 +267,6 @@ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return PTR_ERR(skb);
+ 	}
+ 
+-	/* If command return a status event skb will be set to NULL as there are
+-	 * no parameters, in case of failure IS_ERR(skb) would have be set to
+-	 * the actual error would be found with PTR_ERR(skb).
+-	 */
+-	if (!skb)
+-		return 0;
+-
+ 	status = skb->data[0];
+ 
+ 	kfree_skb(skb);
 -- 
 2.43.0
 
