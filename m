@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA799BE881
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7E89BE75D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3D3F1F22507
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E22901F24780
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD991E0B61;
-	Wed,  6 Nov 2024 12:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819071DEFF5;
+	Wed,  6 Nov 2024 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2/gWpnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhkchYRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9471DF978;
-	Wed,  6 Nov 2024 12:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA531D416E;
+	Wed,  6 Nov 2024 12:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895888; cv=none; b=VKnfFo0t+TBYDTjxJ68JAwWCeeVsyVezPQDgrvNOmZhTakS7C1TuKL5jqmW8KftyqQZ9fqfv076rqKtGqahBUrP4rWq2iEo0ZuF2x9Qe6JVYbo4rR+Q4B5WYDcfxjWSNiQBo3qkAAWGUNcauz7aEPKUh53GqdV2DMfYZGIc1sW0=
+	t=1730895217; cv=none; b=FwFdMlzibDzl8My6Xi/YE67RW868lNUii9awQGbpOQEwiBrkrXfAlshD+3wCNvofXldEPYsEMStQTLRhsphVfFmjGVai9gUPc7jplswf1nxquf/GCD+fpCJ/r7zrs5ave+dQZoFEODp1ivN9UIKp0bPv8UyQ3AG+g/IeQ9ESORU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895888; c=relaxed/simple;
-	bh=7JME/qD7oQuttpd5vCbtWuQ//Zv0xh4OTdp6yFz8bTw=;
+	s=arc-20240116; t=1730895217; c=relaxed/simple;
+	bh=PcVg41KPSN8LMKHmKihEWrA0wIRCAYoca6UACFjUgEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7xI0/vqlP2BDjU1LpPgNd7UJRFMMU+5TVYWiBTTu5tQgwqdTzTpCdCRlCH2etbeWa2UTgdxaJqGYkAc7bssjOD0EfZSoZbdDYjB99GQeIIY1j9RlpIF1crWWEvzdPfQKK94HUGaBzROdeD9t39FiGPHddkW1UI1asM7jClhRO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2/gWpnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F4FC4CECD;
-	Wed,  6 Nov 2024 12:24:48 +0000 (UTC)
+	 MIME-Version; b=L+rJlxektddKYRG+50iTSLBsirdZEC5r9eBrAE/EZrgZuBI+qHy5BbZEfOrPKlgMQY0G7X9x2w8ry7wNsi9JJnWCXqxSB8A3u7Dd2G+yK7BXiVukD3wY4ESrvI8nC4ewDDGqzVylrSpIIjolSX5Ywrk7BEbugldc87sTCND63fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhkchYRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6EBC4CECD;
+	Wed,  6 Nov 2024 12:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895888;
-	bh=7JME/qD7oQuttpd5vCbtWuQ//Zv0xh4OTdp6yFz8bTw=;
+	s=korg; t=1730895217;
+	bh=PcVg41KPSN8LMKHmKihEWrA0wIRCAYoca6UACFjUgEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2/gWpnLUURNT27BsOLO5BA6dNbF3B0/PBse6iyc7NO1E4u4kRFoBuc/58fdNiKGs
-	 6SBLCcYoiUZ9oqbNuPqj2NGLPXRVcgrbPCLHRRKIxWvLh08ZloCENeX0pd1f+1vD5N
-	 Bz9bVECdOrb5H0lyZYl9W3GAb/6lR70Z1Daa+BLM=
+	b=hhkchYRoOl0DeQtrHReJo+SDN3MV/OER0Qtr1wpFvbGptbMGQeI/bwxqhXVzAa1IL
+	 L2hxQNY8VSD1jZhV451IYM83uUA5namb3D3hIXNUDOkMAvAVpdmH0KlOJlBJ2YsO4H
+	 YgKXNXeQDWXGWrQ8jPABhhRCCEHwqU1hbb6uRQuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Christian Heusel <christian@heusel.eu>,
+	Jerry <jerryluo225@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 019/245] wifi: iwlwifi: mvm: dont leak a link on AP removal
+Subject: [PATCH 4.19 144/350] ALSA: hda/conexant: Fix conflicting quirk for System76 Pangolin
 Date: Wed,  6 Nov 2024 13:01:12 +0100
-Message-ID: <20241106120319.708814924@linuxfoundation.org>
+Message-ID: <20241106120324.473281554@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3ed092997a004d68a3a5b0eeb94e71b69839d0f7 ]
+[ Upstream commit b3ebb007060f89d5a45c9b99f06a55e36a1945b5 ]
 
-Release the link mapping resource in AP removal. This impacted devices
-that do not support the MLD API (9260 and down).
-On those devices, we couldn't start the AP again after the AP has been
-already started and stopped.
+We received a regression report for System76 Pangolin (pang14) due to
+the recent fix for Tuxedo Sirius devices to support the top speaker.
+The reason was the conflicting PCI SSID, as often seen.
 
-Fixes: a8b5d4809b50 ("wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.c54c42779882.Ied79e0d6244dc5a372e8b6ffa8ee9c6e1379ec1d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+As a workaround, now the codec SSID is checked and the quirk is
+applied conditionally only to Sirius devices.
+
+Fixes: 4178d78cd7a8 ("ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices")
+Reported-by: Christian Heusel <christian@heusel.eu>
+Reported-by: Jerry <jerryluo225@gmail.com>
+Closes: https://lore.kernel.org/c930b6a6-64e5-498f-b65a-1cd5e0a1d733@heusel.eu
+Link: https://patch.msgid.link/20241004082602.29016-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 1ebcc6417ecef..e38cff6176dd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1951,7 +1951,6 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
- 		mvm->p2p_device_vif = NULL;
- 	}
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 1d95977b4a91f..ad658f6982576 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -730,6 +730,23 @@ static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
+ 	{}
+ };
  
--	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
- 	iwl_mvm_mac_ctxt_remove(mvm, vif);
++/* pincfg quirk for Tuxedo Sirius;
++ * unfortunately the (PCI) SSID conflicts with System76 Pangolin pang14,
++ * which has incompatible pin setup, so we check the codec SSID (luckily
++ * different one!) and conditionally apply the quirk here
++ */
++static void cxt_fixup_sirius_top_speaker(struct hda_codec *codec,
++					 const struct hda_fixup *fix,
++					 int action)
++{
++	/* ignore for incorrectly picked-up pang14 */
++	if (codec->core.subsystem_id == 0x278212b3)
++		return;
++	/* set up the top speaker pin */
++	if (action == HDA_FIXUP_ACT_PRE_PROBE)
++		snd_hda_codec_set_pincfg(codec, 0x1d, 0x82170111);
++}
++
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -886,11 +903,8 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.v.pins = cxt_pincfg_sws_js201d,
+ 	},
+ 	[CXT_PINCFG_TOP_SPEAKER] = {
+-		.type = HDA_FIXUP_PINS,
+-		.v.pins = (const struct hda_pintbl[]) {
+-			{ 0x1d, 0x82170111 },
+-			{ }
+-		},
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_sirius_top_speaker,
+ 	},
+ };
  
- 	RCU_INIT_POINTER(mvm->vif_id_to_mac[mvmvif->id], NULL);
-@@ -1960,6 +1959,7 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
- 		mvm->monitor_on = false;
- 
- out:
-+	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
- 	if (vif->type == NL80211_IFTYPE_AP ||
- 	    vif->type == NL80211_IFTYPE_ADHOC) {
- 		iwl_mvm_dealloc_int_sta(mvm, &mvmvif->deflink.mcast_sta);
 -- 
 2.43.0
 
