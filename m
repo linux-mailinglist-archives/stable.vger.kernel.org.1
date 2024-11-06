@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096CC9BEA1E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:41:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0539BE823
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC99E2840DC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:40:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90FD21F21DAE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905561F6681;
-	Wed,  6 Nov 2024 12:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392F1DF740;
+	Wed,  6 Nov 2024 12:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWU58xKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dafo7fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8B91F6672;
-	Wed,  6 Nov 2024 12:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A141DED49;
+	Wed,  6 Nov 2024 12:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896643; cv=none; b=WAzIpSDOVKDoTNxGCqbm167l7BdVAEBeNeRozir17qCUVZofVQ4/en2Ve6GDYXLFkH/TdGhDhmaJCRFpLyesaEWiFXArOraM+am6h3i5nNzFkJKWjGTCGGML9CgQa4RJzzli7e8y2jck5nQaPf8aF87jFB93Fa57k1SjNEn0YRg=
+	t=1730895686; cv=none; b=XVKpkOdYhLPnjZ+F4Z3DZyd98QoEpXnTwIPn78748jS8fsKb+HYS+Gtz4AXKPaTlKS7W2d3gSLd8LKQXNUFLMO3qFV9HPYfLC5zWpMlYs3qJVvXUY0MNuGCm/n/FK9Ga+v23RlLmPJHUqYANhabbSLGWfKCP0he+NYHlbKYufFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896643; c=relaxed/simple;
-	bh=KQ0Af49HGrGEqhcVjCkWlPw7CSbLOXk/mMcyL1HAheM=;
+	s=arc-20240116; t=1730895686; c=relaxed/simple;
+	bh=y8GI5TNIvIIQRUG4GmiAvxH0MoawKxfNeUjnD7Hf8Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fc9hdnepXRFkfurIRfHCu6rgqiGYg568kZngJCyo9xcHJVuyTW5b6iTW6lQuHAaxJEr8d7haevM7ROA/Bk4sf7le8FKxLLcB/yJWmL2ft+dvFuqavrHV/2zXJr77shSL3xhuF1VDqn7e7AYhjzdAUbE+UIxWmlD69gHJ6Tom4fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWU58xKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF0C4CED8;
-	Wed,  6 Nov 2024 12:37:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E8fgVSO7HM/FdcbxjrrAQX11RFKc/dPXrRIDN512tb0ZZEjnZ1mqm1/DelbpgQB3PUv4ITC/9YsGEIoQ96ArYlWNb+cevc9IeScqxkbL1PSWULbTXd60ngV9etuOlMaATPZba9UtGuBq8e8lFoDpCx3FiC+IjfdiEY9awMK3kh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dafo7fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C42C4CECD;
+	Wed,  6 Nov 2024 12:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896642;
-	bh=KQ0Af49HGrGEqhcVjCkWlPw7CSbLOXk/mMcyL1HAheM=;
+	s=korg; t=1730895685;
+	bh=y8GI5TNIvIIQRUG4GmiAvxH0MoawKxfNeUjnD7Hf8Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWU58xKYkRcexWW0roOTIq3RmjPfJS9NuP20/wx4b5wueIuqwCUpe4RGECzMuRaX0
-	 mJYKGwyg3+6M1Lckcxf9tn5V1GMq/obH9pkA18zw4rhdeCGjKQRNly6UaZeGYNe1Pv
-	 iSxo6wZ2nM06VknD/ewrQkvLRnwrmc9/k48PevgA=
+	b=1dafo7fv9qw+NaPZyhavZN4wjG9eB6H0P7tT1fXxBrvthN0PPurgazxwCy4VZniKX
+	 rFxbKEmeymCnOZX2dZaHAFEcYphuxSBeois3sTDKzVeFPI1RA8m1Ok6PF0QIDyZo1J
+	 q7NFXYMPrYkKKqlxDDJ4IqmfVINh/c91Sl7ETPf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	junhua huang <huang.junhua@zte.com.cn>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/110] KVM: s390: gaccess: Check if guest address is in memslot
+Subject: [PATCH 4.19 302/350] arm64:uprobe fix the uprobe SWBP_INSN in big-endian
 Date: Wed,  6 Nov 2024 13:03:50 +0100
-Message-ID: <20241106120303.833455227@linuxfoundation.org>
+Message-ID: <20241106120328.257089092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,129 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nico Boehr <nrb@linux.ibm.com>
+From: junhua huang <huang.junhua@zte.com.cn>
 
-[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
+[ Upstream commit 60f07e22a73d318cddaafa5ef41a10476807cc07 ]
 
-Previously, access_guest_page() did not check whether the given guest
-address is inside of a memslot. This is not a problem, since
-kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
+We use uprobe in aarch64_be, which we found the tracee task would exit
+due to SIGILL when we enable the uprobe trace.
+We can see the replace inst from uprobe is not correct in aarch big-endian.
+As in Armv8-A, instruction fetches are always treated as little-endian,
+we should treat the UPROBE_SWBP_INSN as little-endian。
 
-However, -EFAULT is also returned when copy_to/from_user fails.
+The test case is as following。
+bash-4.4# ./mqueue_test_aarchbe 1 1 2 1 10 > /dev/null &
+bash-4.4# cd /sys/kernel/debug/tracing/
+bash-4.4# echo 'p:test /mqueue_test_aarchbe:0xc30 %x0 %x1' > uprobe_events
+bash-4.4# echo 1 > events/uprobes/enable
+bash-4.4#
+bash-4.4# ps
+  PID TTY          TIME CMD
+  140 ?        00:00:01 bash
+  237 ?        00:00:00 ps
+[1]+  Illegal instruction     ./mqueue_test_aarchbe 1 1 2 1 100 > /dev/null
 
-When emulating a guest instruction, the address being outside a memslot
-usually means that an addressing exception should be injected into the
-guest.
+which we debug use gdb as following:
 
-Failure in copy_to/from_user however indicates that something is wrong
-in userspace and hence should be handled there.
+bash-4.4# gdb attach 155
+(gdb) disassemble send
+Dump of assembler code for function send:
+   0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
+   0x0000000000400c34 <+4>:     mov     x29, sp
+   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
+   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
+   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
+   0x0000000000400c44 <+20>:    str     xzr, [sp, #48]
+   0x0000000000400c48 <+24>:    add     x0, sp, #0x1b
+   0x0000000000400c4c <+28>:    mov     w3, #0x0                 // #0
+   0x0000000000400c50 <+32>:    mov     x2, #0x1                 // #1
+   0x0000000000400c54 <+36>:    mov     x1, x0
+   0x0000000000400c58 <+40>:    ldr     w0, [sp, #28]
+   0x0000000000400c5c <+44>:    bl      0x405e10 <mq_send>
+   0x0000000000400c60 <+48>:    str     w0, [sp, #60]
+   0x0000000000400c64 <+52>:    ldr     w0, [sp, #60]
+   0x0000000000400c68 <+56>:    ldp     x29, x30, [sp], #64
+   0x0000000000400c6c <+60>:    ret
+End of assembler dump.
+(gdb) info b
+No breakpoints or watchpoints.
+(gdb) c
+Continuing.
 
-To be able to distinguish these two cases, return PGM_ADDRESSING in
-access_guest_page() when the guest address is outside guest memory. In
-access_guest_real(), populate vcpu->arch.pgm.code such that
-kvm_s390_inject_prog_cond() can be used in the caller for injecting into
-the guest (if applicable).
+Program received signal SIGILL, Illegal instruction.
+0x0000000000400c30 in send ()
+(gdb) x/10x 0x400c30
+0x400c30 <send>:    0xd42000a0   0xfd030091      0xe01f00b9      0xe16f0039
+0x400c40 <send+16>: 0xff1700f9   0xff1b00f9      0xe06f0091      0x03008052
+0x400c50 <send+32>: 0x220080d2   0xe10300aa
+(gdb) disassemble 0x400c30
+Dump of assembler code for function send:
+=> 0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
+   0x0000000000400c34 <+4>:     mov     x29, sp
+   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
+   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
+   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
 
-Since this adds a new return value to access_guest_page(), we need to make
-sure that other callers are not confused by the new positive return value.
-
-There are the following users of access_guest_page():
-- access_guest_with_key() does the checking itself (in
-  guest_range_to_gpas()), so this case should never happen. Even if, the
-  handling is set up properly.
-- access_guest_real() just passes the return code to its callers, which
-  are:
-    - read_guest_real() - see below
-    - write_guest_real() - see below
-
-There are the following users of read_guest_real():
-- ar_translation() in gaccess.c which already returns PGM_*
-- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
-  return -EFAULT on read_guest_read() nonzero return - no change
-- shadow_crycb(), handle_stfle() always present this as validity, this
-  could be handled better but doesn't change current behaviour - no change
-
-There are the following users of write_guest_real():
-- kvm_s390_store_status_unloaded() always returns -EFAULT on
-  write_guest_real() failure.
-
-Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
-Acked-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
+Link: https://lore.kernel.org/r/202212021511106844809@zte.com.cn
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: 13f8f1e05f1d ("arm64: probes: Fix uprobes for big-endian kernels")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c |  4 ++++
- arch/s390/kvm/gaccess.h | 14 ++++++++------
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ arch/arm64/include/asm/uprobes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 164f96ba61dd2..5a880e2545243 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
- 	const gfn_t gfn = gpa_to_gfn(gpa);
- 	int rc;
+diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
+index 8d004073d0e8e..189755d332601 100644
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -15,7 +15,7 @@
  
-+	if (!gfn_to_memslot(kvm, gfn))
-+		return PGM_ADDRESSING;
- 	if (mode == GACC_STORE)
- 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
- 	else
-@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 		gra += fragment_len;
- 		data += fragment_len;
- 	}
-+	if (rc > 0)
-+		vcpu->arch.pgm.code = rc;
- 	return rc;
- }
+ #define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
  
-diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
-index 7c72a5e3449f8..8ed2d6c7404ff 100644
---- a/arch/s390/kvm/gaccess.h
-+++ b/arch/s390/kvm/gaccess.h
-@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest low address and key protection are not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying from @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to guest memory.
-  */
-@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest key protection is not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying to @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to kernel space.
-  */
+-#define UPROBE_SWBP_INSN	BRK64_OPCODE_UPROBES
++#define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
+ #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
+ #define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
+ 
 -- 
 2.43.0
 
