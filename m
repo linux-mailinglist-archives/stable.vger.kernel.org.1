@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-91562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322F19BEE8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AFB9BEECB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC23C285CD7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1DDB1F24B94
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645E31DF97A;
-	Wed,  6 Nov 2024 13:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE4E1DF278;
+	Wed,  6 Nov 2024 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrbzTb23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKiXr9DY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E9F54765;
-	Wed,  6 Nov 2024 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C735646;
+	Wed,  6 Nov 2024 13:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899097; cv=none; b=TUZnE+8xTbk/RtTfBEFl/bw/oZ2nmrLvb50xyAUw2VBRxE43kzIbS+bRfKCIiOQ1gNpM5M53cc/Fia1OHjkLpFQkMe96ybqVYLUQV1MDafw9tZuKjiHorNIN1d6o3DucaXjkbVYm+6dFYwPxt7/fqFhtPG38o8f+fFekRXkp7c0=
+	t=1730899251; cv=none; b=lHtyRjzByN0QF1Wwcooke4hh8xxmblHXx4gpRuakCgXcTHNwdjVFrHFmMbDsYP4vvKwimxPWnFdeyc7UcIjWpdciyn3CRs3xJNWDuYtasvEFAXexSS6yGuuSYLY+nz9xrmgroEQXm53sHWcvM7r8ZTHC6MZ8JPEsW8OjEoS/JnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899097; c=relaxed/simple;
-	bh=ozgyNJ/9Hmdz/kGsY/ziSCDULa4UdbdcFUQYjgAt3sE=;
+	s=arc-20240116; t=1730899251; c=relaxed/simple;
+	bh=vGOKkIw1fjr0tCZ0TjRg012AER4MpsFsfTaiKXpj0V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xen85IdtAYOMlawS+01bkl1IqnnqPIHQUvS2hKsl0JQYRR/F0Qpg7VraGOF7V+R/PZD2UJ3KTkXeaQs8+XZHGNxb7jJNCjxFBtnVtYNZrZB6905OSPF0jJezRpqfaf0ymLPpz8n/iGZkmQtFDzWJTIGyfhj+wVual4FZsh8NPWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrbzTb23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5E1C4CECD;
-	Wed,  6 Nov 2024 13:18:16 +0000 (UTC)
+	 MIME-Version; b=T6QReLROgxliTcbkGcaJWHd6ai1FJdWTyA0Uy+WIg1M+DEPhjHNLkTi/iO+ICO9ZppupA8vS8tNwzp2Wo149l1TYKhSJxSMqD2hStAo/fsXU9ZvjmbfH0vff6d4zHYZ6iAcottP18wxVAVks+xFLgZxU5SLFLvNq0CyDqnf4Rg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKiXr9DY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B677BC4CECD;
+	Wed,  6 Nov 2024 13:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899096;
-	bh=ozgyNJ/9Hmdz/kGsY/ziSCDULa4UdbdcFUQYjgAt3sE=;
+	s=korg; t=1730899251;
+	bh=vGOKkIw1fjr0tCZ0TjRg012AER4MpsFsfTaiKXpj0V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrbzTb2365KCe1N1/5sNbElIqdEQxbbxEXISEdJ3tQoIva4AaDZvYEJFlN6T2TMR2
-	 T+YSe5zhN/dyIEqrR0Wy8vVZY76JwXs+Dt9LaqPgs+K/nKU34vK14dbVkkE1H/nbsJ
-	 OWTm78DbcjgBaypFyta29dGojgmwd3eYV4mtGMYU=
+	b=pKiXr9DYEvLNhYFcCAhk3nCLVhZbVTE9fm9VIEdaG9JdqSvWbXELaUKr54DOgdeDd
+	 63vlH6ASDWcXXY3vIFBH/gLHomQJBojnwz73GIENIxUPaeIYH1D/rbGUx16n2aLBdQ
+	 snpJQSqeVkr66onJOPnU6E7EKF3QqQ6LYEaZyutA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>
-Subject: [PATCH 5.4 459/462] Revert "drm/mipi-dsi: Set the fwnode for mipi_dsi_device"
+	Zicheng Qu <quzicheng@huawei.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 48/73] iio: adc: ad7124: fix division by zero in ad7124_set_channel_odr()
 Date: Wed,  6 Nov 2024 13:05:52 +0100
-Message-ID: <20241106120342.840494585@linuxfoundation.org>
+Message-ID: <20241106120301.398926014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-This reverts commit 22b8ac608af5b8a859ed9dc0b15f31dea26cdbb0 which is
-commit a26cc2934331b57b5a7164bff344f0a2ec245fc0 upstream.
+commit efa353ae1b0541981bc96dbf2e586387d0392baa upstream.
 
-Reason for revert:
-1. The commit [1] does not land on linux-5.15, so this patch does not
-fix anything.
+In the ad7124_write_raw() function, parameter val can potentially
+be zero. This may lead to a division by zero when DIV_ROUND_CLOSEST()
+is called within ad7124_set_channel_odr(). The ad7124_write_raw()
+function is invoked through the sequence: iio_write_channel_raw() ->
+iio_write_channel_attribute() -> iio_channel_write(), with no checks
+in place to ensure val is non-zero.
 
-2. Since the fw_devlink improvements series [2] does not land on
-linux-5.15, using device_set_fwnode() causes the panel to flash during
-bootup.
-
-Incorrect link management may lead to incorrect device initialization,
-affecting firmware node links and consumer relationships.
-The fwnode setting of panel to the DSI device would cause a DSI
-initialization error without series[2], so this patch was reverted to
-avoid using the incomplete fw_devlink functionality.
-
-[1] commit 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
-[2] Link: https://lore.kernel.org/all/20230207014207.1678715-1-saravanak@google.com
-
-Cc: stable@vger.kernel.org # 5.15.169
-Cc: stable@vger.kernel.org # 5.10.228
-Cc: stable@vger.kernel.org # 5.4.284
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Cc: stable@vger.kernel.org
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20241022134330.574601-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c |    2 +-
+ drivers/iio/adc/ad7124.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mip
- 		return dsi;
- 	}
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -596,7 +596,7 @@ static int ad7124_write_raw(struct iio_d
  
--	device_set_node(&dsi->dev, of_fwnode_handle(info->node));
-+	dsi->dev.of_node = info->node;
- 	dsi->channel = info->channel;
- 	strlcpy(dsi->name, info->type, sizeof(dsi->name));
- 
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (val2 != 0) {
++		if (val2 != 0 || val == 0) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
 
 
 
