@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C879BE804
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075419BEBCE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F4EF1C23179
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0651283E43
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9482C1DF73B;
-	Wed,  6 Nov 2024 12:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339C41F9AA3;
+	Wed,  6 Nov 2024 12:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE7SJHnt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3iegBsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D011DF257;
-	Wed,  6 Nov 2024 12:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9F21E0083;
+	Wed,  6 Nov 2024 12:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895600; cv=none; b=lfcnH5VGm0yEEmPhplAACI0w20hkDCL4nhvnDmKq1hwsJy4b01E6oLKYnQDU0BX8gzSNNv4qJh3KfHiWpjWoT0tcSrxzfPpbRCOdqAvz3fXX6CpOFiKYVggnGVD6AT3V2/Dx5AbIHWzqwwFJ6g7Jmm6ntKd8EVFgpDvnXzObHi4=
+	t=1730897313; cv=none; b=cKwLmM6aSxgRc0ON+eQsTCdUp9nMhlHcJPCrzyATtHutvUzU2oplcY5fc1l1I4Nic+65pe5wroeYtwV1RYuF3REXdqDmJshfbJ9Li0T36FbyKuqNeo1i5vpCR79l7mCW6rbW4WLxyHNYlVha+2ZvFGLC3imX8WVVXGnm1dFwW+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895600; c=relaxed/simple;
-	bh=q4TwM7Th4cmo2u0YcA+pYME2W1tIA2H+9ehBJM4jaqA=;
+	s=arc-20240116; t=1730897313; c=relaxed/simple;
+	bh=OFsek5c7L7b+oEn9EYOQhvI012Ek2REEX3UxP6jO7po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LulaLC6W5alAIDDwbw8jUNh7SPsVK2OLnki2JojT0hw1rjlMOzDfXDJgalec37JFFsCQGENAPf/Nac5lN/Vx07OENbDAG8oVDGT3YDrfhqf8XnU+SPkLf94pgz6Pm8xqgJ+DCZg43s5RuqXhAEjy11XnZFr2Sv7uarcOzH+oABQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE7SJHnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDE6C4CECD;
-	Wed,  6 Nov 2024 12:19:59 +0000 (UTC)
+	 MIME-Version; b=u7bjsvlFQlAlFZxBq0gHk7mfZcytBO62/FZfVtv6U0rXoRYJoRt8FosYr10N4oYkRddn66Pydu4LlTwNX560CzPP01ielEhn+1a87e4FPvDePQJhZgEpolJgSepcZq3fFDt7aRxp8r1d2sgQEfwl1uFlqTFpryCILNRuhiWZSss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3iegBsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BD3C4CECD;
+	Wed,  6 Nov 2024 12:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895600;
-	bh=q4TwM7Th4cmo2u0YcA+pYME2W1tIA2H+9ehBJM4jaqA=;
+	s=korg; t=1730897312;
+	bh=OFsek5c7L7b+oEn9EYOQhvI012Ek2REEX3UxP6jO7po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yE7SJHntwXyC2foKq1XBVO6sJi8pD3THrJfWlDbGRLKfh10FIAr+HpdqLw8Y+NzQ9
-	 uyc+BXjy8xDzffIV9yPlmdt0IhMJAfZtSwpbGAJpYW8ysAH9snU/IIw3T+xpFGbmhS
-	 vdkk12JbAPPS3IffiyCA2I6TIUjxtSFkQO1pHIa8=
+	b=z3iegBsusMlVAfJ/sa1AFFP0KnYIIK8be4O5WrnaqPgp4F/GQ7daxkZrrArYWVi2g
+	 AtyW5JUq6ah/zF8Djg8gTslGXwlad53mfE0qxgnPKNn3JoYbQ4or4H7Hw26kmp1+w3
+	 IHO3AXUDBcBGS4z2C2hgS18rV/HzyPVFOYbTC7II=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 272/350] fat: fix uninitialized variable
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 012/151] wifi: brcm80211: BRCM_TRACING should depend on TRACING
 Date: Wed,  6 Nov 2024 13:03:20 +0100
-Message-ID: <20241106120327.600699946@linuxfoundation.org>
+Message-ID: <20241106120309.176666211@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 963a7f4d3b90ee195b895ca06b95757fcba02d1a upstream.
+[ Upstream commit b73b2069528f90ec49d5fa1010a759baa2c2be05 ]
 
-syszbot produced this with a corrupted fs image.  In theory, however an IO
-error would trigger this also.
+When tracing is disabled, there is no point in asking the user about
+enabling Broadcom wireless device tracing.
 
-This affects just an error report, so should not be a serious error.
-
-Link: https://lkml.kernel.org/r/87r08wjsnh.fsf@mail.parknet.co.jp
-Link: https://lkml.kernel.org/r/66ff2c95.050a0220.49194.03e9.GAE@google.com
-Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Reported-by: syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be enabled separately from debug")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fat/namei_vfat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/fat/namei_vfat.c
-+++ b/fs/fat/namei_vfat.c
-@@ -1018,7 +1018,7 @@ error_inode:
- 	if (corrupt < 0) {
- 		fat_fs_error(new_dir->i_sb,
- 			     "%s: Filesystem corrupted (i_pos %lld)",
--			     __func__, sinfo.i_pos);
-+			     __func__, new_i_pos);
- 	}
- 	goto out;
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/Kconfig b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+index 3a1a35b5672f1..19d0c003f6262 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/Kconfig
++++ b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+@@ -27,6 +27,7 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
+ config BRCM_TRACING
+ 	bool "Broadcom device tracing"
+ 	depends on BRCMSMAC || BRCMFMAC
++	depends on TRACING
+ 	help
+ 	  If you say Y here, the Broadcom wireless drivers will register
+ 	  with ftrace to dump event information into the trace ringbuffer.
+-- 
+2.43.0
+
 
 
 
