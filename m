@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1129BEB9A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C35159BEB14
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50B781C21127
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB711F267E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A3C1E04AF;
-	Wed,  6 Nov 2024 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C1020604F;
+	Wed,  6 Nov 2024 12:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gx1sJFwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgkB04Ji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0630E1F8918;
-	Wed,  6 Nov 2024 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12661F4FDC;
+	Wed,  6 Nov 2024 12:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897171; cv=none; b=qRhbl2vuUr5fNgPcHabwUwBYoz4aQ2aEtLs+sxpxDVzLEtc5nVXSv2wOvjjPKMreqrtY+yI0SEp7LhJy96Gs/FKaikccmvJQJty6TjfThKTToyWXKscWhzeyOAWlBtDfQbAVBEWIPqqe1UzFPeRchElQHMJ1h4Yn6IwUZq+EhFk=
+	t=1730896828; cv=none; b=b5XC6ktFuXZ/ykAnQuPyS3b0dRiEhCNZ5oQdEeFZrOszvlqrKm9e7PzPGrMIwc+M/yWV+TMivt5mhfQ5sC3P2X4jQQcQ/U+ZA9XtBV7kZ8NhZ1U9HDfFUd1Z6Eg6+V6HCzGm3qRXCsPzXTtGHLN35XJwjSm11F6aZeYIGnPXNoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897171; c=relaxed/simple;
-	bh=18KeR/JSTbAqh9lcjqGSzkxG6e9XV8B23LQX/xdvPwA=;
+	s=arc-20240116; t=1730896828; c=relaxed/simple;
+	bh=Fpg/jbVvD6UMp77hz9/78o9+L8J9Yvt6wvpGSoGei6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIoxCX6np/AuDsV8UfIGqhCCafLr8bWUCCnBYCoeBDD1qMNMpoSkV2LrpAgz2XEni9OCAPZvX+TIPiqL9Fk4Jn4Ywrz88dG7r/MOsC/vciSGo/ajLcJMCMeusyI1iwZae095Ej9XHEMnec1OTxnJoQeKefRs9jvTkNwRCcwqsMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gx1sJFwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F78C4CECD;
-	Wed,  6 Nov 2024 12:46:10 +0000 (UTC)
+	 MIME-Version; b=WTwVFCDW32pLLdjQaRoWSH/iItM1pANpZmISDCRUb5/MtrjrPr6rJlj+EhLZHuH+M2ro3WmT6VkzlT6ikPpjN1siW791EHw/IMPC+yenXinoEik+wT+43tdRvNdGH3ugsgSNkIvePHjVNNs6gd3LjhEDsDm/+sVX64kUDe2dmJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgkB04Ji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953CC4CECD;
+	Wed,  6 Nov 2024 12:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897170;
-	bh=18KeR/JSTbAqh9lcjqGSzkxG6e9XV8B23LQX/xdvPwA=;
+	s=korg; t=1730896827;
+	bh=Fpg/jbVvD6UMp77hz9/78o9+L8J9Yvt6wvpGSoGei6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gx1sJFwzTWYIc/CI6jU7CxGRcCp68JGXJxySbJE5R1oWznUkAICJcwPkIob6Y87+J
-	 cxgSkFlnBDfU8lcuZfATWFCEwmKnDDT4a/Vij8IcX3OdBGggXdRrDRNz5Pgcl2PAxK
-	 3+ULVIfuDHTDER5obb6My5Tt8FbRshv3f/LcAYpY=
+	b=RgkB04JiubcCUeNmWTCgeuV1ikmO2yjYfvwV9C1AkziM5saddRVdc6/aS7n9C0hJw
+	 DdeLZWRib0GH9H7VYcsiX79z4x1zUTeSDs7GF/NG/wmnhS9giK7j+MKRUjmn6710Rh
+	 Gw6GeN613qzvdJkdleBbPn+3qboxXkAna93E5jWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH 6.1 073/126] wifi: ath10k: Fix memory leak in management tx
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 068/110] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
 Date: Wed,  6 Nov 2024 13:04:34 +0100
-Message-ID: <20241106120308.063197907@linuxfoundation.org>
+Message-ID: <20241106120305.067593767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-commit e15d84b3bba187aa372dff7c58ce1fd5cb48a076 upstream.
+[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
 
-In the current logic, memory is allocated for storing the MSDU context
-during management packet TX but this memory is not being freed during
-management TX completion. Similar leaks are seen in the management TX
-cleanup logic.
+1. The size of the response packet is not validated.
+2. The response buffer is not freed.
 
-Kmemleak reports this problem as below,
+Resolve these issues by switching to iwl_mvm_send_cmd_status(),
+which handles both size validation and frees the buffer.
 
-unreferenced object 0xffffff80b64ed250 (size 16):
-  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
-  hex dump (first 16 bytes):
-    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
-  backtrace:
-    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
-    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
-    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
-    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
-    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
-    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
-    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
-    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
-
-Free the memory during completion and cleanup to fix the leak.
-
-Protect the mgmt_pending_tx idr_remove() operation in
-ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
-other instances.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
-
-Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
-Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
-Cc: stable@vger.kernel.org
-Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Link: https://patch.msgid.link/20241015064103.6060-1-quic_mpubbise@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c |    7 ++++++-
- drivers/net/wireless/ath/ath10k/wmi.c     |    2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -3035,9 +3035,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(s
- 				       struct sk_buff *msdu)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 594c88a9ac496..553117e8fdd90 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1261,8 +1261,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
+ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
  {
- 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
-+	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
- 	struct ath10k_wmi *wmi = &ar->wmi;
+ 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
++	u32 status = 0;
+ 	int ret;
+-	u32 resp;
  
--	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	spin_lock_bh(&ar->data_lock);
-+	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	kfree(pkt_addr);
+ 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
+ 		.flags = cpu_to_le32(flags),
+@@ -1270,7 +1270,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
+ 	};
+ 	struct iwl_host_cmd host_cmd = {
+ 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
+-		.flags = CMD_WANT_SKB,
+ 		.data = {&recovery_cmd, },
+ 		.len = {sizeof(recovery_cmd), },
+ 	};
+@@ -1290,7 +1289,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
+ 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
+ 	}
  
- 	return 0;
- }
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -2440,6 +2440,7 @@ wmi_process_mgmt_tx_comp(struct ath10k *
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
- 			 msdu->len, DMA_TO_DEVICE);
- 	info = IEEE80211_SKB_CB(msdu);
-+	kfree(pkt_addr);
+-	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
++	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
+ 	kfree(mvm->error_recovery_buf);
+ 	mvm->error_recovery_buf = NULL;
  
- 	if (param->status) {
- 		info->flags &= ~IEEE80211_TX_STAT_ACK;
-@@ -9581,6 +9582,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_p
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
- 			 msdu->len, DMA_TO_DEVICE);
- 	ieee80211_free_txskb(ar->hw, msdu);
-+	kfree(pkt_addr);
+@@ -1301,11 +1300,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
  
- 	return 0;
- }
+ 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
+ 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
+-		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
+-		if (resp) {
++		if (status) {
+ 			IWL_ERR(mvm,
+ 				"Failed to send recovery cmd blob was invalid %d\n",
+-				resp);
++				status);
+ 
+ 			ieee80211_iterate_interfaces(mvm->hw, 0,
+ 						     iwl_mvm_disconnect_iterator,
+-- 
+2.43.0
+
 
 
 
