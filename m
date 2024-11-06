@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740489BE968
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7653D9BEB41
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3D71F22FCC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B69EFB20F99
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36C31DFD90;
-	Wed,  6 Nov 2024 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940FC1E7C3C;
+	Wed,  6 Nov 2024 12:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMOynjwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="molGheFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDFE198E96;
-	Wed,  6 Nov 2024 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520F41E0493;
+	Wed,  6 Nov 2024 12:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896430; cv=none; b=mvNj91xCZWodZACH7h0tH7XPJECFJTTQDEcrLvYpjjZVeb+2u7lcd6IgQNIAkdLrLCN8WgzfzH8gsAF8oaEqIJZFpjjZ4qEEroQnXRdsr6P8oVOiQFMHdKAMAUlt5KGEoosobvtyWXTly0OJyhWTIF5dJxjv3FqMfM+jvIua7LA=
+	t=1730896942; cv=none; b=Lr8+JHrdS9o7HVid+wfmOSXFs+cw57Y87Bcg+nstidKtCtaj1KoG6kgYcpAUEfi9UuZicen/UxA4T9CSa/DvHqhJrmXOkafq0N2nArhx4VKk5WxueiFR9gpM/llLJU5vdSf2XC8pjTiy0eWn8/BpL8QP7leXUK1yO5Qf5htjsZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896430; c=relaxed/simple;
-	bh=/9YKwSPT2PpRoHwCTdKnzdYO+0WLdUWuffRe91JCzjY=;
+	s=arc-20240116; t=1730896942; c=relaxed/simple;
+	bh=2oRiRcMsbMqDNSEoFdFpCWTDOmksJVcHmOxSkWWCAKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gagkYoH16+YUhGijEW78y4tCpHAIUxpflL3kzsqpDrwlZmcp0+n4uLm5Hi6xHzSfcPlbDqnD1OyJ7KIlc5ICPz1covjhJVOFnF/UuKFGFEDluIrmUCgukV77oZgO97tzz5NP7ItjkM3Y3NHnZUCtX41evC+SonWgYN7mPA+GmNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMOynjwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4669C4CECD;
-	Wed,  6 Nov 2024 12:33:49 +0000 (UTC)
+	 MIME-Version; b=cpCMNSiNdg47pNh44LL+yPS9pO8MTiJZBqIAaIWNo8rbii/FZMbsJJAoXNgHxbHkENh/7vZawf7tCETP+hU+PBeI/ZTx5DP7B9WDIwANTbhcW0q8IuaLDjmLpbibQkI3duqAL+OG5DwZhcaMr2eVo2jEPb7LfmCTEZObD7IvGuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=molGheFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB118C4CED3;
+	Wed,  6 Nov 2024 12:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896430;
-	bh=/9YKwSPT2PpRoHwCTdKnzdYO+0WLdUWuffRe91JCzjY=;
+	s=korg; t=1730896942;
+	bh=2oRiRcMsbMqDNSEoFdFpCWTDOmksJVcHmOxSkWWCAKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMOynjwcQjAA5d+vMSvgFDIZefP2XkzPEnwKoM9bmoLxITrBImbmAo0/cDB24iJ1E
-	 6FnRIJA1TSl90Cf/m2KO5B6VHsVx2Ba7+XEc4HT6JmElXQL+QsE6kwsCX6F1LFPlfY
-	 rs752agZdMUH1S94NP5uzb/crzARRYYdVnNyG/Fg=
+	b=molGheFZEAOlkMURBiic8BTKzNfhvOd23h3hubxLjt9TmbPX5p9/eAQl6MpOGCOnB
+	 UM4NOVL+BTRnN6aBpnm4FQseoPyVs+vi1RPuhZbEY+o3oL4QxScsttQaPbMW4BR/hx
+	 EE0x/7wWKCnMBzOyxqT4OlvT4xw5kK1+VWoL7vRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 162/245] cxl/port: Fix cxl_bus_rescan() vs bus_rescan_devices()
+Subject: [PATCH 6.1 014/126] wifi: brcm80211: BRCM_TRACING should depend on TRACING
 Date: Wed,  6 Nov 2024 13:03:35 +0100
-Message-ID: <20241106120323.223459944@linuxfoundation.org>
+Message-ID: <20241106120306.466523869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 3d6ebf16438de5d712030fefbb4182b46373d677 ]
+[ Upstream commit b73b2069528f90ec49d5fa1010a759baa2c2be05 ]
 
-It turns out since its original introduction, pre-2.6.12,
-bus_rescan_devices() has skipped devices that might be in the process of
-attaching or detaching from their driver. For CXL this behavior is
-unwanted and expects that cxl_bus_rescan() is a probe barrier.
+When tracing is disabled, there is no point in asking the user about
+enabling Broadcom wireless device tracing.
 
-That behavior is simple enough to achieve with bus_for_each_dev() paired
-with call to device_attach(), and it is unclear why bus_rescan_devices()
-took the position of lockless consumption of dev->driver which is racy.
-
-The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
-is merely by inspection since the bug that triggered the discovery of
-this potential problem [1] is fixed by other means.  However, a stable
-backport should do no harm.
-
-Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
-Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/172964781104.81806.4277549800082443769.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be enabled separately from debug")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/port.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 1d5007e3795a3..d3237346f6877 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -2088,11 +2088,18 @@ static void cxl_bus_remove(struct device *dev)
- 
- static struct workqueue_struct *cxl_bus_wq;
- 
--static void cxl_bus_rescan_queue(struct work_struct *w)
-+static int cxl_rescan_attach(struct device *dev, void *data)
- {
--	int rc = bus_rescan_devices(&cxl_bus_type);
-+	int rc = device_attach(dev);
-+
-+	dev_vdbg(dev, "rescan: %s\n", rc ? "attach" : "detached");
- 
--	pr_debug("CXL bus rescan result: %d\n", rc);
-+	return 0;
-+}
-+
-+static void cxl_bus_rescan_queue(struct work_struct *w)
-+{
-+	bus_for_each_dev(&cxl_bus_type, NULL, NULL, cxl_rescan_attach);
- }
- 
- void cxl_bus_rescan(void)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/Kconfig b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+index 3a1a35b5672f1..19d0c003f6262 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/Kconfig
++++ b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+@@ -27,6 +27,7 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
+ config BRCM_TRACING
+ 	bool "Broadcom device tracing"
+ 	depends on BRCMSMAC || BRCMFMAC
++	depends on TRACING
+ 	help
+ 	  If you say Y here, the Broadcom wireless drivers will register
+ 	  with ftrace to dump event information into the trace ringbuffer.
 -- 
 2.43.0
 
