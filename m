@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DD9BE94D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F339E9BEBF0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109601F23622
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B291B26074
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F0E1DF726;
-	Wed,  6 Nov 2024 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C001FA24F;
+	Wed,  6 Nov 2024 12:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIwGI8ab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SujI1fWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591217DA7F;
-	Wed,  6 Nov 2024 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EB91FA248;
+	Wed,  6 Nov 2024 12:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896364; cv=none; b=rQ0C21qKn7DVM2k1vZWGHAjp6uIPm+Gr9MTS1o7AERq4WXsCYcfEkhz+1Mcwdgc+/hiXWWIrCgedDMlri/N9B5vv5eEeOMt0QmuZ6Yn/O2K1ndmBg7uwGf+A+gSu+dT3pSW8hJu5xjdMscaDvzeoBUXA90gg970tmN6aZCaw68I=
+	t=1730897403; cv=none; b=ZImDZaTHi72f4UggjWFmbBXwZdHsd8k6bMhCyQ9dCU2RAjBGKuNyKuMZ9nj/Bo8Q3IFA/a0x3wGUqVRt6DNx/7wCMBiMR3k/KECg9NSkauGJuOmXnWVwt82fdOP4KCWdzRGsBkK+OJ+b9LaBFe3oKZjTsM9UMNWE4ev+Oqg4kE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896364; c=relaxed/simple;
-	bh=uGZcHt9jdj0G81cu3giiV7ty5ezP5g1ILd9SS04ixsg=;
+	s=arc-20240116; t=1730897403; c=relaxed/simple;
+	bh=uHm1IOiF7PNHEIg5Xgq3CqLanRcbwSrt0nOoRJg1HV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLGrT1oqpwuAoB12DMFK4tN2hh4oj5BJw8Zco5bGmEExd3KMPmk654cD3PoQ/I84CpgNkvj7j+xMwQvDuTlJN/30k1hsLK7pMJcK+zin/73mb92ee+TgE2rbLCH0suUXqT4vchCeWVtHs+5OI8rhwWTbVHMXK6I3XhTzQR9iFn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIwGI8ab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E26C4CECD;
-	Wed,  6 Nov 2024 12:32:43 +0000 (UTC)
+	 MIME-Version; b=N8Yb8RqgMerMpjflYBIAo3DiiRg7GLJXLdsBEhfuyjGNmU4S4KFsQSPw5zOYc0w1nfSLjtP86SNaDRHie2igPTgRbvEiTPOatSdnNR1oyZiJ+mM7x+3O0+jlhqxD83JfeQ0gvrmhpJ1A3PyqCDvtyTVvcI9vM/hCxK1rVzywbDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SujI1fWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E3AC4CECD;
+	Wed,  6 Nov 2024 12:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896364;
-	bh=uGZcHt9jdj0G81cu3giiV7ty5ezP5g1ILd9SS04ixsg=;
+	s=korg; t=1730897402;
+	bh=uHm1IOiF7PNHEIg5Xgq3CqLanRcbwSrt0nOoRJg1HV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIwGI8abBQwoAkVFledOWIyFD6QgWMmNyyhsll1CqT5MV7GIyA267zK6t4UKpRNtS
-	 qoQ5y25Tap4NTL7cie0GyWLPpsAEmxdjg9sepWoerbTKYISgfLXfsfjZvXwtbYQ69C
-	 HYTVTCGpCwDOL9r4Fczqtd51kxuM1kQ4zhZuEnhI=
+	b=SujI1fWt+kNH5qgzNjfdkGRqyXpBSeCIh1Th0eGuiLJM7Mophw+0A1QIeoNenI352
+	 l9wZixcEF3EmWCVoM+Hlkc1dc0InOXt+1W23ID/q+dBAO4w+RujCr+pdGIZ7ku05B+
+	 fS+3TBis8NR1Ngaw5nxIoU4d4jCD5S+ZW7eYODrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gatlin Newhouse <gatlin.newhouse@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kees Cook <keescook@chromium.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 177/245] x86/traps: Enable UBSAN traps on x86
+Subject: [PATCH 6.6 042/151] iomap: dont bother unsharing delalloc extents
 Date: Wed,  6 Nov 2024 13:03:50 +0100
-Message-ID: <20241106120323.594037037@linuxfoundation.org>
+Message-ID: <20241106120309.991625456@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,197 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gatlin Newhouse <gatlin.newhouse@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 7424fc6b86c8980a87169e005f5cd4438d18efe6 ]
+[ Upstream commit f7a4874d977bf4202ad575031222e78809a36292 ]
 
-Currently ARM64 extracts which specific sanitizer has caused a trap via
-encoded data in the trap instruction. Clang on x86 currently encodes the
-same data in the UD1 instruction but x86 handle_bug() and
-is_valid_bugaddr() currently only look at UD2.
+If unshare encounters a delalloc reservation in the srcmap, that means
+that the file range isn't shared because delalloc reservations cannot be
+reflinked.  Therefore, don't try to unshare them.
 
-Bring x86 to parity with ARM64, similar to commit 25b84002afb9 ("arm64:
-Support Clang UBSAN trap codes for better reporting"). See the llvm
-links for information about the code generation.
-
-Enable the reporting of UBSAN sanitizer details on x86 compiled with clang
-when CONFIG_UBSAN_TRAP=y by analysing UD1 and retrieving the type immediate
-which is encoded by the compiler after the UD1.
-
-[ tglx: Simplified it by moving the printk() into handle_bug() ]
-
-Signed-off-by: Gatlin Newhouse <gatlin.newhouse@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/all/20240724000206.451425-1-gatlin.newhouse@gmail.com
-Link: https://github.com/llvm/llvm-project/commit/c5978f42ec8e9#diff-bb68d7cd885f41cfc35843998b0f9f534adb60b415f647109e597ce448e92d9f
-Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/X86/X86InstrSystem.td#L27
-Stable-dep-of: 1db272864ff2 ("x86/traps: move kmsan check after instrumentation_begin")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20241002150040.GB21853@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/bug.h | 12 ++++++++
- arch/x86/kernel/traps.c    | 59 ++++++++++++++++++++++++++++++++++----
- include/linux/ubsan.h      |  5 ++++
- lib/Kconfig.ubsan          |  4 +--
- 4 files changed, 73 insertions(+), 7 deletions(-)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index a3ec87d198ac8..806649c7f23dc 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -13,6 +13,18 @@
- #define INSN_UD2	0x0b0f
- #define LEN_UD2		2
- 
-+/*
-+ * In clang we have UD1s reporting UBSAN failures on X86, 64 and 32bit.
-+ */
-+#define INSN_ASOP		0x67
-+#define OPCODE_ESCAPE		0x0f
-+#define SECOND_BYTE_OPCODE_UD1	0xb9
-+#define SECOND_BYTE_OPCODE_UD2	0x0b
-+
-+#define BUG_NONE		0xffff
-+#define BUG_UD1			0xfffe
-+#define BUG_UD2			0xfffd
-+
- #ifdef CONFIG_GENERIC_BUG
- 
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 4fa0b17e5043a..415881607c5df 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -42,6 +42,7 @@
- #include <linux/hardirq.h>
- #include <linux/atomic.h>
- #include <linux/iommu.h>
-+#include <linux/ubsan.h>
- 
- #include <asm/stacktrace.h>
- #include <asm/processor.h>
-@@ -91,6 +92,47 @@ __always_inline int is_valid_bugaddr(unsigned long addr)
- 	return *(unsigned short *)addr == INSN_UD2;
- }
- 
-+/*
-+ * Check for UD1 or UD2, accounting for Address Size Override Prefixes.
-+ * If it's a UD1, get the ModRM byte to pass along to UBSan.
-+ */
-+__always_inline int decode_bug(unsigned long addr, u32 *imm)
-+{
-+	u8 v;
-+
-+	if (addr < TASK_SIZE_MAX)
-+		return BUG_NONE;
-+
-+	v = *(u8 *)(addr++);
-+	if (v == INSN_ASOP)
-+		v = *(u8 *)(addr++);
-+	if (v != OPCODE_ESCAPE)
-+		return BUG_NONE;
-+
-+	v = *(u8 *)(addr++);
-+	if (v == SECOND_BYTE_OPCODE_UD2)
-+		return BUG_UD2;
-+
-+	if (!IS_ENABLED(CONFIG_UBSAN_TRAP) || v != SECOND_BYTE_OPCODE_UD1)
-+		return BUG_NONE;
-+
-+	/* Retrieve the immediate (type value) for the UBSAN UD1 */
-+	v = *(u8 *)(addr++);
-+	if (X86_MODRM_RM(v) == 4)
-+		addr++;
-+
-+	*imm = 0;
-+	if (X86_MODRM_MOD(v) == 1)
-+		*imm = *(u8 *)addr;
-+	else if (X86_MODRM_MOD(v) == 2)
-+		*imm = *(u32 *)addr;
-+	else
-+		WARN_ONCE(1, "Unexpected MODRM_MOD: %u\n", X86_MODRM_MOD(v));
-+
-+	return BUG_UD1;
-+}
-+
-+
- static nokprobe_inline int
- do_trap_no_signal(struct task_struct *tsk, int trapnr, const char *str,
- 		  struct pt_regs *regs,	long error_code)
-@@ -216,6 +258,8 @@ static inline void handle_invalid_op(struct pt_regs *regs)
- static noinstr bool handle_bug(struct pt_regs *regs)
- {
- 	bool handled = false;
-+	int ud_type;
-+	u32 imm;
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 7db9bb0d15184..eb65953895d24 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1282,7 +1282,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 		return length;
  
  	/*
- 	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
-@@ -223,7 +267,8 @@ static noinstr bool handle_bug(struct pt_regs *regs)
- 	 * irqentry_enter().
+-	 * Don't bother with holes or unwritten extents.
++	 * Don't bother with delalloc reservations, holes or unwritten extents.
+ 	 *
+ 	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+ 	 * unsharing requires providing a separate source map, and the presence
+@@ -1291,6 +1291,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 	 * fork for XFS.
  	 */
- 	kmsan_unpoison_entry_regs(regs);
--	if (!is_valid_bugaddr(regs->ip))
-+	ud_type = decode_bug(regs->ip, &imm);
-+	if (ud_type == BUG_NONE)
- 		return handled;
+ 	if (iter->srcmap.type == IOMAP_HOLE ||
++	    iter->srcmap.type == IOMAP_DELALLOC ||
+ 	    iter->srcmap.type == IOMAP_UNWRITTEN)
+ 		return length;
  
- 	/*
-@@ -236,10 +281,14 @@ static noinstr bool handle_bug(struct pt_regs *regs)
- 	 */
- 	if (regs->flags & X86_EFLAGS_IF)
- 		raw_local_irq_enable();
--	if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
--	    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
--		regs->ip += LEN_UD2;
--		handled = true;
-+	if (ud_type == BUG_UD2) {
-+		if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
-+		    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
-+			regs->ip += LEN_UD2;
-+			handled = true;
-+		}
-+	} else if (IS_ENABLED(CONFIG_UBSAN_TRAP)) {
-+		pr_crit("%s at %pS\n", report_ubsan_failure(regs, imm), (void *)regs->ip);
- 	}
- 	if (regs->flags & X86_EFLAGS_IF)
- 		raw_local_irq_disable();
-diff --git a/include/linux/ubsan.h b/include/linux/ubsan.h
-index bff7445498ded..d8219cbe09ff8 100644
---- a/include/linux/ubsan.h
-+++ b/include/linux/ubsan.h
-@@ -4,6 +4,11 @@
- 
- #ifdef CONFIG_UBSAN_TRAP
- const char *report_ubsan_failure(struct pt_regs *regs, u32 check_type);
-+#else
-+static inline const char *report_ubsan_failure(struct pt_regs *regs, u32 check_type)
-+{
-+	return NULL;
-+}
- #endif
- 
- #endif
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index bdda600f8dfbe..1d4aa7a83b3a5 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -29,8 +29,8 @@ config UBSAN_TRAP
- 
- 	  Also note that selecting Y will cause your kernel to Oops
- 	  with an "illegal instruction" error with no further details
--	  when a UBSAN violation occurs. (Except on arm64, which will
--	  report which Sanitizer failed.) This may make it hard to
-+	  when a UBSAN violation occurs. (Except on arm64 and x86, which
-+	  will report which Sanitizer failed.) This may make it hard to
- 	  determine whether an Oops was caused by UBSAN or to figure
- 	  out the details of a UBSAN violation. It makes the kernel log
- 	  output less useful for bug reports.
 -- 
 2.43.0
 
