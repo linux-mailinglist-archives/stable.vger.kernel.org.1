@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045359BE805
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9A19BE92F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDDF8285004
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D346F1F23336
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919C81DED49;
-	Wed,  6 Nov 2024 12:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DB31DFE27;
+	Wed,  6 Nov 2024 12:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUKYOh8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2wICfar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDA71DF986;
-	Wed,  6 Nov 2024 12:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAD31D5AB5;
+	Wed,  6 Nov 2024 12:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895603; cv=none; b=g1MGIBhrXGeZR474bYweZbKO1TSzOcFsqZ4IBBXAbILvzvM0vWr0OMO6/6B/SVyrhvosbLNWnxbSu11eBPk8MZYiAJAwHVOwb5M6RM9wLlFbeKl3OwUDArH9696CsG15eaU8WCiJ1k3syX1PGTC+gAhqI3HpfZz32Bn/LX3PGoQ=
+	t=1730896277; cv=none; b=Ic8eLUFOyafyYXZRXPveqhtbm3GQB70Xbnuv8h0fR+MUV878y66BpZTlPGFL1SgT9TN/2PG6spOewn85abVBHobYSUIQbfi/GMHb4gfYpCWahVuOUopR9Kul5Igg0ZnKmNc8XnovphApoFHivUeFFXUswMbD3iHOcIvYmhvXBYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895603; c=relaxed/simple;
-	bh=giDBu+dFGb+Jjb4CFE0d1xFXnNTfJAjUEWMCzW6xeDQ=;
+	s=arc-20240116; t=1730896277; c=relaxed/simple;
+	bh=scyAAxIutKdOD848z/F4NJVFwvWMUhZ1oob255UkWY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPBzYhSok8l8+sH+NBGRJ/TwMx0YQlHfEaigDuK6XpaXKTbVlVYCImFZgLYx3/cDKAuHL/oXugQMUpc8M7EMXx/JUIYeNvGN1V5AvQlI9TN2hX7uJlyEYO+iqkNY+inSsIl/FSRJhoXnlI7vmGBUK8Fj7iJ2VMSgL4/HbaXxpHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUKYOh8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5708C4CED3;
-	Wed,  6 Nov 2024 12:20:02 +0000 (UTC)
+	 MIME-Version; b=C3Zr6UZxH4bSW/PS/PrrPXUgZT72dLCw9h9lizbm6ojnCa9wIrpoOusunlD6/qirbyM5uYQBmABSWlT0sRn9zTUD/NdYJeeUbIff+lKxSC2vPas7G8aj0jXjFhOF5c4VO6rptEMZqv5sjqx/y65RT6KiGDAIHSqT+5LHhTfMagY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2wICfar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF077C4CECD;
+	Wed,  6 Nov 2024 12:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895603;
-	bh=giDBu+dFGb+Jjb4CFE0d1xFXnNTfJAjUEWMCzW6xeDQ=;
+	s=korg; t=1730896277;
+	bh=scyAAxIutKdOD848z/F4NJVFwvWMUhZ1oob255UkWY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUKYOh8IFK6zYlbNa+JgJFJiuUETYVuJm2eJ/1ATbdif1OJT7pxl0zKOsCUwrhM7Z
-	 zZFE17fBTJKyL5fs+LqqH5bMzpNSExhMg7kBdHJTqszQ/AzNiz+eUet9dpiEs+UiRK
-	 /4EGkqYAdKbFIWnkhkc18wgRmwMzLHPSR21rpUT4=
+	b=f2wICfarRJM6sdQ4CStgby9LErRXBzK/VnS1UdT0kv9N4FcrgqesOWT+91wA1AcAR
+	 jh3J8vBPE0S24kziFP0MTFL/+bxSmxYMM+rK9VFkQeP187m7KX42zQs9WEJj8lH74w
+	 og7ZkrvKEvYfWnvCi5gZxUhoB9kZXQYGvK5f9SGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Subject: [PATCH 4.19 273/350] KVM: Fix a data race on last_boosted_vcpu in kvm_vcpu_on_spin()
+	Vishal Chourasia <vishalc@linux.ibm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 148/245] cgroup/bpf: use a dedicated workqueue for cgroup bpf destruction
 Date: Wed,  6 Nov 2024 13:03:21 +0100
-Message-ID: <20241106120327.621893284@linuxfoundation.org>
+Message-ID: <20241106120322.873173839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 49f683b41f28918df3e51ddc0d928cb2e934ccdb upstream.
+[ Upstream commit 117932eea99b729ee5d12783601a4f7f5fd58a23 ]
 
-Use {READ,WRITE}_ONCE() to access kvm->last_boosted_vcpu to ensure the
-loads and stores are atomic.  In the extremely unlikely scenario the
-compiler tears the stores, it's theoretically possible for KVM to attempt
-to get a vCPU using an out-of-bounds index, e.g. if the write is split
-into multiple 8-bit stores, and is paired with a 32-bit load on a VM with
-257 vCPUs:
+A hung_task problem shown below was found:
 
-  CPU0                              CPU1
-  last_boosted_vcpu = 0xff;
+INFO: task kworker/0:0:8 blocked for more than 327 seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Workqueue: events cgroup_bpf_release
+Call Trace:
+ <TASK>
+ __schedule+0x5a2/0x2050
+ ? find_held_lock+0x33/0x100
+ ? wq_worker_sleeping+0x9e/0xe0
+ schedule+0x9f/0x180
+ schedule_preempt_disabled+0x25/0x50
+ __mutex_lock+0x512/0x740
+ ? cgroup_bpf_release+0x1e/0x4d0
+ ? cgroup_bpf_release+0xcf/0x4d0
+ ? process_scheduled_works+0x161/0x8a0
+ ? cgroup_bpf_release+0x1e/0x4d0
+ ? mutex_lock_nested+0x2b/0x40
+ ? __pfx_delay_tsc+0x10/0x10
+ mutex_lock_nested+0x2b/0x40
+ cgroup_bpf_release+0xcf/0x4d0
+ ? process_scheduled_works+0x161/0x8a0
+ ? trace_event_raw_event_workqueue_execute_start+0x64/0xd0
+ ? process_scheduled_works+0x161/0x8a0
+ process_scheduled_works+0x23a/0x8a0
+ worker_thread+0x231/0x5b0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x14d/0x1c0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x59/0x70
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-                                    (last_boosted_vcpu = 0x100)
-                                    last_boosted_vcpu[15:8] = 0x01;
-  i = (last_boosted_vcpu = 0x1ff)
-                                    last_boosted_vcpu[7:0] = 0x00;
+This issue can be reproduced by the following pressuse test:
+1. A large number of cpuset cgroups are deleted.
+2. Set cpu on and off repeatly.
+3. Set watchdog_thresh repeatly.
+The scripts can be obtained at LINK mentioned above the signature.
 
-  vcpu = kvm->vcpu_array[0x1ff];
+The reason for this issue is cgroup_mutex and cpu_hotplug_lock are
+acquired in different tasks, which may lead to deadlock.
+It can lead to a deadlock through the following steps:
+1. A large number of cpusets are deleted asynchronously, which puts a
+   large number of cgroup_bpf_release works into system_wq. The max_active
+   of system_wq is WQ_DFL_ACTIVE(256). Consequently, all active works are
+   cgroup_bpf_release works, and many cgroup_bpf_release works will be put
+   into inactive queue. As illustrated in the diagram, there are 256 (in
+   the acvtive queue) + n (in the inactive queue) works.
+2. Setting watchdog_thresh will hold cpu_hotplug_lock.read and put
+   smp_call_on_cpu work into system_wq. However step 1 has already filled
+   system_wq, 'sscs.work' is put into inactive queue. 'sscs.work' has
+   to wait until the works that were put into the inacvtive queue earlier
+   have executed (n cgroup_bpf_release), so it will be blocked for a while.
+3. Cpu offline requires cpu_hotplug_lock.write, which is blocked by step 2.
+4. Cpusets that were deleted at step 1 put cgroup_release works into
+   cgroup_destroy_wq. They are competing to get cgroup_mutex all the time.
+   When cgroup_metux is acqured by work at css_killed_work_fn, it will
+   call cpuset_css_offline, which needs to acqure cpu_hotplug_lock.read.
+   However, cpuset_css_offline will be blocked for step 3.
+5. At this moment, there are 256 works in active queue that are
+   cgroup_bpf_release, they are attempting to acquire cgroup_mutex, and as
+   a result, all of them are blocked. Consequently, sscs.work can not be
+   executed. Ultimately, this situation leads to four processes being
+   blocked, forming a deadlock.
 
-As detected by KCSAN:
+system_wq(step1)		WatchDog(step2)			cpu offline(step3)	cgroup_destroy_wq(step4)
+...
+2000+ cgroups deleted asyn
+256 actives + n inactives
+				__lockup_detector_reconfigure
+				P(cpu_hotplug_lock.read)
+				put sscs.work into system_wq
+256 + n + 1(sscs.work)
+sscs.work wait to be executed
+				warting sscs.work finish
+								percpu_down_write
+								P(cpu_hotplug_lock.write)
+								...blocking...
+											css_killed_work_fn
+											P(cgroup_mutex)
+											cpuset_css_offline
+											P(cpu_hotplug_lock.read)
+											...blocking...
+256 cgroup_bpf_release
+mutex_lock(&cgroup_mutex);
+..blocking...
 
-  BUG: KCSAN: data-race in kvm_vcpu_on_spin [kvm] / kvm_vcpu_on_spin [kvm]
+To fix the problem, place cgroup_bpf_release works on a dedicated
+workqueue which can break the loop and solve the problem. System wqs are
+for misc things which shouldn't create a large number of concurrent work
+items. If something is going to generate >WQ_DFL_ACTIVE(256) concurrent
+work items, it should use its own dedicated workqueue.
 
-  write to 0xffffc90025a92344 of 4 bytes by task 4340 on cpu 16:
-  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4112) kvm
-  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
-  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
-		 arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
-  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
-  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
-  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
-  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
-  __x64_sys_ioctl (fs/ioctl.c:890)
-  x64_sys_call (arch/x86/entry/syscall_64.c:33)
-  do_syscall_64 (arch/x86/entry/common.c:?)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-  read to 0xffffc90025a92344 of 4 bytes by task 4342 on cpu 4:
-  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4069) kvm
-  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
-  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
-			arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
-  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
-  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
-  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
-  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
-  __x64_sys_ioctl (fs/ioctl.c:890)
-  x64_sys_call (arch/x86/entry/syscall_64.c:33)
-  do_syscall_64 (arch/x86/entry/common.c:?)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-  value changed: 0x00000012 -> 0x00000000
-
-Fixes: 217ece6129f2 ("KVM: use yield_to instead of sleep in kvm_vcpu_on_spin")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240510092353.2261824-1-leitao@debian.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
+Cc: stable@vger.kernel.org # v5.3+
+Link: https://lore.kernel.org/cgroups/e90c32d2-2a85-4f28-9154-09c7d320cb60@huawei.com/T/#t
+Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/kvm_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/bpf/cgroup.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2586,12 +2586,13 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
- {
- 	struct kvm *kvm = me->kvm;
- 	struct kvm_vcpu *vcpu;
--	int last_boosted_vcpu = me->kvm->last_boosted_vcpu;
-+	int last_boosted_vcpu;
- 	int yielded = 0;
- 	int try = 3;
- 	int pass;
- 	int i;
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 8ba73042a2395..479a2ea5d9af6 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -24,6 +24,23 @@
+ DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_ATTACH_TYPE);
+ EXPORT_SYMBOL(cgroup_bpf_enabled_key);
  
-+	last_boosted_vcpu = READ_ONCE(kvm->last_boosted_vcpu);
- 	kvm_vcpu_set_in_spin_loop(me, true);
- 	/*
- 	 * We boost the priority of a VCPU that is runnable but not
-@@ -2620,7 +2621,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
++/*
++ * cgroup bpf destruction makes heavy use of work items and there can be a lot
++ * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
++ * destruction work items don't end up filling up max_active of system_wq
++ * which may lead to deadlock.
++ */
++static struct workqueue_struct *cgroup_bpf_destroy_wq;
++
++static int __init cgroup_bpf_wq_init(void)
++{
++	cgroup_bpf_destroy_wq = alloc_workqueue("cgroup_bpf_destroy", 0, 1);
++	if (!cgroup_bpf_destroy_wq)
++		panic("Failed to alloc workqueue for cgroup bpf destroy.\n");
++	return 0;
++}
++core_initcall(cgroup_bpf_wq_init);
++
+ /* __always_inline is necessary to prevent indirect call through run_prog
+  * function pointer.
+  */
+@@ -334,7 +351,7 @@ static void cgroup_bpf_release_fn(struct percpu_ref *ref)
+ 	struct cgroup *cgrp = container_of(ref, struct cgroup, bpf.refcnt);
  
- 			yielded = kvm_vcpu_yield_to(vcpu);
- 			if (yielded > 0) {
--				kvm->last_boosted_vcpu = i;
-+				WRITE_ONCE(kvm->last_boosted_vcpu, i);
- 				break;
- 			} else if (yielded < 0) {
- 				try--;
+ 	INIT_WORK(&cgrp->bpf.release_work, cgroup_bpf_release);
+-	queue_work(system_wq, &cgrp->bpf.release_work);
++	queue_work(cgroup_bpf_destroy_wq, &cgrp->bpf.release_work);
+ }
+ 
+ /* Get underlying bpf_prog of bpf_prog_list entry, regardless if it's through
+-- 
+2.43.0
+
 
 
 
