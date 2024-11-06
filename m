@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9E49BECCE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96F59BE6F0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A4D1C235A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7758FB25536
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D2D1EBFE3;
-	Wed,  6 Nov 2024 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217D41DF254;
+	Wed,  6 Nov 2024 12:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlcDUZ8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwktbXgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113BC1F6698;
-	Wed,  6 Nov 2024 12:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19E61DEFF4;
+	Wed,  6 Nov 2024 12:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897962; cv=none; b=q0lCuTAqr31SdhQ7tlXGkTrRRpxvsvVUs28H93falJmg30U+AJRxjNB24bPa8ymxT+66DRykfo38FD5GChvm6YuVTOZCWYhmIrc93Je6jwIzD6NcHV36HFa61oibe6NFSerqT+S35oHxBKeOCurUADtMXDP3DywNDsRsOG2n0jU=
+	t=1730894921; cv=none; b=U/GMTEtqc3g3Xol/v6+iqvkKtUduVy3Y0ZlAWAzOmhZlCx/lwg9f7FW7BXoOgl4N03l3S36K9gOn/7mev8cvPCdtYLaSWey0GlthDrVxunm3vnrt0UC/AWlMtYlsPY0IgcV7d3lqcQktCgA7vn+JqsVuZl6i6yHwszOEeq2ZOss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897962; c=relaxed/simple;
-	bh=gbx3e5U4w7mzydddGFZUw21YhSoylCZxg2FTOgPfoWY=;
+	s=arc-20240116; t=1730894921; c=relaxed/simple;
+	bh=HculaqOZCXPEqCQJpCR0vepg+opukch91pxKmaAZAXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqIxDhMVOMCg3w8WAhS2tOs5s1HepoQddR1tT5gW5W8C/Ovkk0BWIGN8/INQrljJ/5BtxOW8Qke/Cf5aMcEZpN6r3PUO7cpbc+yvobrxPamt7gyh4krB569LwzhZT/u7WGiyw9+S1xjscHYlvhOUPsAQwBvU07R1QnUlGynlKuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlcDUZ8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCBEC4CECD;
-	Wed,  6 Nov 2024 12:59:21 +0000 (UTC)
+	 MIME-Version; b=GdoFXKuSXUi+aUuaR3NOLOtoGn2TCClvbslbgoGxjnmnyN3dYV0embzbGbv4/VBR6XMEEleoyzNPhtQA9TgUQX+ftS21tVhd7MZ/AlOCAGYmYvSW20C8LMZ2ud5sMo3RfMyCP87tVPG1caXZ/75tRwrtKIW5CI6OeisRMF7cUBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwktbXgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA703C4CECD;
+	Wed,  6 Nov 2024 12:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897961;
-	bh=gbx3e5U4w7mzydddGFZUw21YhSoylCZxg2FTOgPfoWY=;
+	s=korg; t=1730894921;
+	bh=HculaqOZCXPEqCQJpCR0vepg+opukch91pxKmaAZAXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlcDUZ8vpa/OGM4hh3HXfE0TKX7C4Bw+9ZwG07HHtZxWfHvPzmSmk8EZpmywxcvgG
-	 mhbaJyFWSHW5YLLSRcy5Jmr2z2+FcISydm90toCgnlOCsGFHDR3BChdsbertDz/aIS
-	 whfRvmI0WGpR1ZngOweRISstL5Zgj7/bQDIQxtuY=
+	b=MwktbXgBzWBVq7Inw94/RoP1Jn0rrb3j+dcS60sI0fjJkYpxl3A/TgROxSJuSYlNh
+	 LIbPP0b2qOT30AIvFNrVITJFZtyid30fTJGRRP4MNUlCqvpEpsZALHNuWXaVXqeQ/F
+	 1vMyuFqLsbKrf1KBuvA4cVJvIFxxAbuZJQ0iDGl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/462] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Subject: [PATCH 4.19 043/350] reset: berlin: fix OF node leak in probe() error path
 Date: Wed,  6 Nov 2024 12:59:31 +0100
-Message-ID: <20241106120333.434437568@linuxfoundation.org>
+Message-ID: <20241106120321.950791083@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
+[ Upstream commit 5f58a88cc91075be38cec69b7cb70aaa4ba69e8b ]
 
-In adreno_request_fw() when debugging information is printed to the log
-after firmware load, an incorrect filename is printed. 'newname' is used
-instead of 'fwname', so prefix "qcom/" is being added to filename.
-Looks like "copy-paste" mistake.
+Driver is leaking OF node reference on memory allocation failure.
+Acquire the OF node reference after memory allocation to fix this and
+keep it simple.
 
-Fix this mistake by replacing 'newname' with 'fwname'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602382/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: aed6f3cadc86 ("reset: berlin: convert to a platform driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-1-03f6d834f8c0@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/reset/reset-berlin.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 6f83253a8c585..3edecd4fc8f60 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -247,7 +247,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
- 		ret = request_firmware_direct(&fw, fwname, drm->dev);
- 		if (!ret) {
- 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
--				newname);
-+				fwname);
- 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
- 			goto out;
- 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
+diff --git a/drivers/reset/reset-berlin.c b/drivers/reset/reset-berlin.c
+index 371197bbd0556..542d32719b8ae 100644
+--- a/drivers/reset/reset-berlin.c
++++ b/drivers/reset/reset-berlin.c
+@@ -68,13 +68,14 @@ static int berlin_reset_xlate(struct reset_controller_dev *rcdev,
+ 
+ static int berlin2_reset_probe(struct platform_device *pdev)
+ {
+-	struct device_node *parent_np = of_get_parent(pdev->dev.of_node);
++	struct device_node *parent_np;
+ 	struct berlin_reset_priv *priv;
+ 
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	parent_np = of_get_parent(pdev->dev.of_node);
+ 	priv->regmap = syscon_node_to_regmap(parent_np);
+ 	of_node_put(parent_np);
+ 	if (IS_ERR(priv->regmap))
 -- 
 2.43.0
 
