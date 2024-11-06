@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D86F9BEC18
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67389BE875
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D442B21811
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7791F2417C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11EA1FAEE8;
-	Wed,  6 Nov 2024 12:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3AC1DFE37;
+	Wed,  6 Nov 2024 12:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBrKnJWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL9utSqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7291FAEE3;
-	Wed,  6 Nov 2024 12:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE641DFD84;
+	Wed,  6 Nov 2024 12:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897518; cv=none; b=UHOLdjSAGvj4xiiIrQXCIxX6t4Hu61ln7rEisEzBPMyq2lqCK1V75PdJCJP/XG+E+JJAiiRmlXnmQfTCPN+V1hBNpimqoIi5h/tvMuk3bT0ytdl3x72HSYmDQygP6HgTTJmBIB5bG+SIE+qdJWQmsTDeE3jov9m3xhOGJeWrYS4=
+	t=1730895854; cv=none; b=Kqi4IQT7LxeIPvgE/tYzXsd/00umwmSphgUCKzOfAykmOtf4YQJmQ/XcWfgZVooL+eg0QC2YWY3UwjDKKtQcyXiQC2RGB+0HmRRw/Xb0TidJ2G2muDfYdLeao3vP41fkhf5OoA8m5SLMpf7HvfqTJWguB9Se5dOK12OBkodeTWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897518; c=relaxed/simple;
-	bh=TusA2tcn/P/W9OaVQDs8NryzY7kRpxuuBZE+d7cY588=;
+	s=arc-20240116; t=1730895854; c=relaxed/simple;
+	bh=jMGysyijyD33upc99PUJAw31VB6N/oh6K6y3oIZWlVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGDBznsfa0qkFCH0lacBIz+/rzzFk6Lac9fEIm8mmt5yIvRHsnw1dTfNAY7f/X7JiBWEwJZI2PReexihAHk7TmBaHP3VxHI/wJ/TrxaNpFEJCQHAyd5UrURzvst2z/4F/K4eouwJhscCd4Bx6ktGz47AD6dHTv+6UCE5rcQT4yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBrKnJWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D4DC4CED3;
-	Wed,  6 Nov 2024 12:51:57 +0000 (UTC)
+	 MIME-Version; b=sf/nIK/HNxJQ0vK4CsFpUIduj5I0fuXCRfxHljmghIbcYfNRWvz+tPHy4evuQ5/HaFTwrarDDlwE2xN0dUvbaG+mAk2x2gWVG3Gy3cYn45Dbq6UDjNDUAwySbHObgbIDeEloEsiRGHj2k9vfXHVSlCbkXgp5iwQjw4YEXns0LJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL9utSqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F0BC4CECD;
+	Wed,  6 Nov 2024 12:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897518;
-	bh=TusA2tcn/P/W9OaVQDs8NryzY7kRpxuuBZE+d7cY588=;
+	s=korg; t=1730895853;
+	bh=jMGysyijyD33upc99PUJAw31VB6N/oh6K6y3oIZWlVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBrKnJWANsROGq2zTVQNZ7wDfcjH25jUmt+v1j+lRz8cu7vq14vCxjfRXyrWiVMFI
-	 Xs9bScqGOHMIPMA2Q8NaGPsnwlRVRZHaX3w2cEB+1s98Y/sEmCGxcJrqGeA4VCPj/1
-	 gC2INEJM8143DtBp/+rkq81l/WC/FA0Hgw8wUKR4=
+	b=tL9utSqIyfzSKrtLoX5tdG1FBXLmPFaRpqKFYNQOYuDIdHmpkTuALblTu5p5AKrm+
+	 c4HG9XF9cUtaFMKEbj/xjQo0EQ1lnhgtJFJa+IHAHS1qDeLXj5RtxqBqjXHRPFz49U
+	 Wa/GYTgC1kdU/MddL0b+E+CSFQke91GtahtltsGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcello Sylvester Bauer <marcello.bauer@9elements.com>,
-	Marcello Sylvester Bauer <sylv@sylv.io>,
+	Alexander Duyck <alexander.duyck@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/151] usb: gadget: dummy_hcd: Set transfer interval to 1 microframe
+Subject: [PATCH 4.19 333/350] net: support ip generic csum processing in skb_csum_hwoffload_help
 Date: Wed,  6 Nov 2024 13:04:21 +0100
-Message-ID: <20241106120310.858725062@linuxfoundation.org>
+Message-ID: <20241106120328.943258143@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcello Sylvester Bauer <sylv@sylv.io>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 0a723ed3baa941ca4f51d87bab00661f41142835 ]
+[ Upstream commit 62fafcd63139920eb25b3fbf154177ce3e6f3232 ]
 
-Currently, the transfer polling interval is set to 1ms, which is the
-frame rate of full-speed and low-speed USB. The USB 2.0 specification
-introduces microframes (125 microseconds) to improve the timing
-precision of data transfers.
+NETIF_F_IP|IPV6_CSUM feature flag indicates UDP and TCP csum offload
+while NETIF_F_HW_CSUM feature flag indicates ip generic csum offload
+for HW, which includes not only for TCP/UDP csum, but also for other
+protocols' csum like GRE's.
 
-Reducing the transfer interval to 1 microframe increases data throughput
-for high-speed and super-speed USB communication
+However, in skb_csum_hwoffload_help() it only checks features against
+NETIF_F_CSUM_MASK(NETIF_F_HW|IP|IPV6_CSUM). So if it's a non TCP/UDP
+packet and the features doesn't support NETIF_F_HW_CSUM, but supports
+NETIF_F_IP|IPV6_CSUM only, it would still return 0 and leave the HW
+to do csum.
 
-Signed-off-by: Marcello Sylvester Bauer <marcello.bauer@9elements.com>
-Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
-Link: https://lore.kernel.org/r/6295dbb84ca76884551df9eb157cce569377a22c.1712843963.git.sylv@sylv.io
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch is to support ip generic csum processing by checking
+NETIF_F_HW_CSUM for all protocols, and check (NETIF_F_IP_CSUM |
+NETIF_F_IPV6_CSUM) only for TCP and UDP.
+
+Note that we're using skb->csum_offset to check if it's a TCP/UDP
+proctol, this might be fragile. However, as Alex said, for now we
+only have a few L4 protocols that are requesting Tx csum offload,
+we'd better fix this until a new protocol comes with a same csum
+offset.
+
+v1->v2:
+  - not extend skb->csum_not_inet, but use skb->csum_offset to tell
+    if it's an UDP/TCP csum packet.
+v2->v3:
+  - add a note in the changelog, as Willem suggested.
+
+Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/dev.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index dab559d8ee8ca..f37b0d8386c1a 100644
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -50,6 +50,8 @@
- #define POWER_BUDGET	500	/* in mA; use 8 for low-power port testing */
- #define POWER_BUDGET_3	900	/* in mA */
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0409c051ed5d4..fb48a6b1301fb 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3323,7 +3323,18 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		return !!(features & NETIF_F_SCTP_CRC) ? 0 :
+ 			skb_crc32c_csum_help(skb);
  
-+#define DUMMY_TIMER_INT_NSECS	125000 /* 1 microframe */
+-	return !!(features & NETIF_F_CSUM_MASK) ? 0 : skb_checksum_help(skb);
++	if (features & NETIF_F_HW_CSUM)
++		return 0;
 +
- static const char	driver_name[] = "dummy_hcd";
- static const char	driver_desc[] = "USB Host+Gadget Emulator";
++	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
++		switch (skb->csum_offset) {
++		case offsetof(struct tcphdr, check):
++		case offsetof(struct udphdr, check):
++			return 0;
++		}
++	}
++
++	return skb_checksum_help(skb);
+ }
+ EXPORT_SYMBOL(skb_csum_hwoffload_help);
  
-@@ -1302,7 +1304,7 @@ static int dummy_urb_enqueue(
- 
- 	/* kick the scheduler, it'll do the rest */
- 	if (!hrtimer_active(&dum_hcd->timer))
--		hrtimer_start(&dum_hcd->timer, ms_to_ktime(1), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
- 
-  done:
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1993,7 +1995,7 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 		dum_hcd->udev = NULL;
- 	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
- 		/* want a 1 msec delay here */
--		hrtimer_start(&dum_hcd->timer, ms_to_ktime(1), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
- 	}
- 
- 	spin_unlock_irqrestore(&dum->lock, flags);
 -- 
 2.43.0
 
