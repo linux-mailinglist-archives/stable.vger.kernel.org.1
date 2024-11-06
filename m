@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CB79BE834
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0069BEB60
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67F8284EE0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BC1CB225E6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578D21DF74E;
-	Wed,  6 Nov 2024 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8B11F76B4;
+	Wed,  6 Nov 2024 12:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFepUazx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xThr3np"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136941DF726;
-	Wed,  6 Nov 2024 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA8B1F76AD;
+	Wed,  6 Nov 2024 12:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895736; cv=none; b=AqP8DYTSQ8spTvRMJicIoLiwuTFE072nlvXk7SG83ecXVYpE2UGLKKZy5xxJM5dccGRopzn4wyikr42e6DIw4IhyDcSdWvUM4VuagDkjnw7m4GshHSmWyOQItxNCUjQ6Mq2hU/WdKQu2HERGz0PPLIwXzd4ATbF6gGxY9hXtDbU=
+	t=1730897032; cv=none; b=sBNUWCmUJM9hdk8GxzJQn06/OTvjw5JdVGDFVGAnIkroGNIlm9jYIxKJjfoh6iSCqLHdRO8F4tWLxTuc4oJlYHW/i8Yc1fcHx07OHgiFbDD/lCv/3VbWMSQDqyN78ODk64MuG4jvp8u2BP2vimYgaln+ngLyEK3ZVMZrC/hhfjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895736; c=relaxed/simple;
-	bh=bnueWQi6aRinWlTh4inG235QBtP/TT9LbFZ7Jr6w0+w=;
+	s=arc-20240116; t=1730897032; c=relaxed/simple;
+	bh=bolEM6u1OYbYW7F7uY4lLki8qDACiQ5UqOza+fQiBVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9BKh2zaFHTQPIzoUv6GZbuwHB0Bn4PSQUkIprCjr4xCtEk1AEaXv0pyYYhfnDUK0HdKteZa1PqsGvlWhN+oNt5xcVgCq91QfDTt77fT1yowh9w8TjjJf5gvezwYOUMvdbOfPwMEq7AueWQ9KbCoX4ROq7c9jSbkdOxtbribk7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFepUazx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F875C4CECD;
-	Wed,  6 Nov 2024 12:22:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K4P5NME6k078zi5t5LMuOg/4cf9PVScqHCNCurEQMR0IoXcc2840ywF21e5BM++8ou8wdUigdz3BPg6M+M4y0h5q65JW0bo+Eb6XCF0tJCo2upqDf6DmqLYz4GUYEFYpKKoCNDsxIgXdQ/bA43cIdP/2dGDHAC7iBuj7i4t7WPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xThr3np; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31208C4CECD;
+	Wed,  6 Nov 2024 12:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895736;
-	bh=bnueWQi6aRinWlTh4inG235QBtP/TT9LbFZ7Jr6w0+w=;
+	s=korg; t=1730897032;
+	bh=bolEM6u1OYbYW7F7uY4lLki8qDACiQ5UqOza+fQiBVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFepUazxeeVE5bXylZ9+jZZw9RB1bLGJLYAuWDY9MfIPfI0mfBO3d5ZOqIxTLSLoJ
-	 WCXko9b3vSaVZtIa2lZIUjNitDaWN6TioCg7BBNybxEHNRVz55Kjsuv6BT1cuTpNL+
-	 0NvZRG8QJprTbXwu3e7KJmG+vWAriCeWHPuhiwus=
+	b=0xThr3np4Yg0udjmzObzAzB5TDI4NR8M5ChWbZNNekp4j8Hi2BCysW83TPiR/Lc1a
+	 YJOshvtDmuRQhqGXtzKZg1j5F7M9NrUeEDW0ZgdY3TuZQF/LGWXKcu//XwOe4kPXin
+	 8q6CNlul4tPnXBhPIX26Smxz2AGU76Q5TCjbB2Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Panwar <shubiisp8@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 4.19 317/350] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
+	kernel test robot <lkp@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 044/126] iomap: turn iomap_want_unshare_iter into an inline function
 Date: Wed,  6 Nov 2024 13:04:05 +0100
-Message-ID: <20241106120328.587696856@linuxfoundation.org>
+Message-ID: <20241106120307.299570471@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +62,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubham Panwar <shubiisp8@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
+[ Upstream commit 6db388585e486c0261aeef55f8bc63a9b45756c0 ]
 
-Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
-detection issue.
+iomap_want_unshare_iter currently sits in fs/iomap/buffered-io.c, which
+depends on CONFIG_BLOCK.  It is also in used in fs/dax.c whіch has no
+such dependency.  Given that it is a trivial check turn it into an inline
+in include/linux/iomap.h to fix the DAX && !BLOCK build.
 
-The _LID device incorrectly returns the lid status as "closed" during
-boot, causing the system to enter a suspend loop right after booting.
-
-The quirk ensures that the correct lid state is reported initially,
-preventing the system from immediately suspending after startup.  It
-only addresses the initial lid state detection and ensures proper
-system behavior upon boot.
-
-Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
-Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
-[ rjw: Changelog edits ]
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ef6a0e821d3 ("iomap: share iomap_unshare_iter predicate code with fsdax")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241015041350.118403-1-hch@lst.de
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/button.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/iomap/buffered-io.c | 17 -----------------
+ include/linux/iomap.h  | 20 +++++++++++++++++++-
+ 2 files changed, 19 insertions(+), 18 deletions(-)
 
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -124,6 +124,17 @@ static const struct dmi_system_id lid_bl
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
- 	},
-+	{
-+		/*
-+		 * Samsung galaxybook2 ,initial _LID device notification returns
-+		 * lid closed.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-+	},
- 	{}
- };
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 876273db711d1..47f44b02c17de 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1084,23 +1084,6 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+ }
+ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
  
+-bool iomap_want_unshare_iter(const struct iomap_iter *iter)
+-{
+-	/*
+-	 * Don't bother with blocks that are not shared to start with; or
+-	 * mappings that cannot be shared, such as inline data, delalloc
+-	 * reservations, holes or unwritten extents.
+-	 *
+-	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+-	 * unsharing requires providing a separate source map, and the presence
+-	 * of one is a good indicator that unsharing is needed, unlike
+-	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
+-	 * fork for XFS.
+-	 */
+-	return (iter->iomap.flags & IOMAP_F_SHARED) &&
+-		iter->srcmap.type == IOMAP_MAPPED;
+-}
+-
+ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ {
+ 	struct iomap *iomap = &iter->iomap;
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 0a37b54e24926..1de65d5d79d4d 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -251,6 +251,25 @@ static inline const struct iomap *iomap_iter_srcmap(const struct iomap_iter *i)
+ 	return &i->iomap;
+ }
+ 
++/*
++ * Check if the range needs to be unshared for a FALLOC_FL_UNSHARE_RANGE
++ * operation.
++ *
++ * Don't bother with blocks that are not shared to start with; or mappings that
++ * cannot be shared, such as inline data, delalloc reservations, holes or
++ * unwritten extents.
++ *
++ * Note that we use srcmap directly instead of iomap_iter_srcmap as unsharing
++ * requires providing a separate source map, and the presence of one is a good
++ * indicator that unsharing is needed, unlike IOMAP_F_SHARED which can be set
++ * for any data that goes into the COW fork for XFS.
++ */
++static inline bool iomap_want_unshare_iter(const struct iomap_iter *iter)
++{
++	return (iter->iomap.flags & IOMAP_F_SHARED) &&
++		iter->srcmap.type == IOMAP_MAPPED;
++}
++
+ ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
+ 		const struct iomap_ops *ops);
+ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+@@ -264,7 +283,6 @@ bool iomap_release_folio(struct folio *folio, gfp_t gfp_flags);
+ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
+ int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 		const struct iomap_ops *ops);
+-bool iomap_want_unshare_iter(const struct iomap_iter *iter);
+ int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
+ 		bool *did_zero, const struct iomap_ops *ops);
+ int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
+-- 
+2.43.0
+
 
 
 
