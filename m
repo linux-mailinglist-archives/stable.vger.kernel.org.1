@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-90352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9FE9BE7E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045199BE91C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 174E1B2535D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36BD21C2180E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D301DF257;
-	Wed,  6 Nov 2024 12:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3214D1DE3B8;
+	Wed,  6 Nov 2024 12:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPmOOEMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byaocdBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF001DED49;
-	Wed,  6 Nov 2024 12:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4582198E96;
+	Wed,  6 Nov 2024 12:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895517; cv=none; b=LtlLWeRvDpVh4G1vM8xqSBOkeb0UTwxR29M/r2rwez5qcNkgUvNYDr4Ee5wPpwN3BYS8COpHTqSd9+bvt8gjei3JqNgNUQHAC8Z0oAF85LhaVh6YA21lmzjtNfbUusiFi63dvP92Ttdf0TSgojkT63zTWYKhx1MLQRbb733r7IU=
+	t=1730896236; cv=none; b=MmDGdx299ZTCJ+eOKHq/LJrQh+s4Oap0DDLW7DbdvKZskHfH0bDxSjBYJhYrX78fdUYC0pfppxarH9tZRnUguNz1C8n6VzVc8dTE0RNOO4ohkNLCSC6u4nHbVeOG44eCjVdE3UXSf+/dhgVS4TpJhUIh3oAOJfPiNWLmqnEQP8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895517; c=relaxed/simple;
-	bh=GmmL+9Qb9fKSeJKovpJxELbrLGtqO3uabcXZVryclB0=;
+	s=arc-20240116; t=1730896236; c=relaxed/simple;
+	bh=ItySo/jevHd2cXBAkifpr4rtkU9vA1p7lMnvRhP+FTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vta+B/DZlYo7OfD6BtPGnsx5K4hMlaMb8zoTlnSWUz6/qklHI2D3skgWjVRNDw0OYcqB1/IUdMoYERcSUB/0GsQNA5EOBGLup9Dy2OnWuBEfFExONo2nV2m/rSyn6HdK+ovFHpVHLabJ7nOzgqtpc8YzKS/kxyXHcDUjPorugpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPmOOEMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77EFC4CECD;
-	Wed,  6 Nov 2024 12:18:36 +0000 (UTC)
+	 MIME-Version; b=g6d093Ep2uHsRUIUpi+B+AGxe1OoI4OtGVQ7N5qkM5khVMIAc/GVY/msggw2ZN6Zge9GWbIwRa0KxKRh1z8YIdTVr1w6k0pHjZO5i7gCVcnUI1nNLMiS0c4XQUkP8Qj5qmjS25oTZY9Z3gGwmEHoA5NkgLh6FF1KDjjSXaOacX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byaocdBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A03C4CECD;
+	Wed,  6 Nov 2024 12:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895517;
-	bh=GmmL+9Qb9fKSeJKovpJxELbrLGtqO3uabcXZVryclB0=;
+	s=korg; t=1730896235;
+	bh=ItySo/jevHd2cXBAkifpr4rtkU9vA1p7lMnvRhP+FTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPmOOEMJXYsa20Oy8wSMKn/Fl2cqfcPfLlI4aIpDH2rjBMyVMMx+5apA8N+fCX3dF
-	 h7dYZB62ymDkCiCyFrB6iEqkOYMLDvlq/ky/lau6pF8WPDONe8AX7pu5ew2v/0se5Z
-	 Fz3J6+oVvXfpNXamOkDCZ77MaXRgZ77bKxLj7D3g=
+	b=byaocdBJvcXdl5576I9s7LFcAZkyArXSPOxOmWyUr/lG/BvHnJOxJTFdINV08iZtn
+	 7U6oQwa3CTjATFykFeVqFUlnfIZ3M1nL2ZJ+sGPm8xWzuq2mi0GIfmyZvm76N+2z+x
+	 YLDO7EOaAiC2kwerqvvD1aAzaMMJDsppegcTN+vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunke Cao <yunkec@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 243/350] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
+	stable <stable@kernel.org>,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.11 118/245] Revert "driver core: Fix uevent_show() vs driver detach race"
 Date: Wed,  6 Nov 2024 13:02:51 +0100
-Message-ID: <20241106120326.941436343@linuxfoundation.org>
+Message-ID: <20241106120322.125064437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunke Cao <yunkec@chromium.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
+commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
 
-Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
-including bytesused, length, fd and data_offset.
+This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
 
-Remove the duplicated code in __prepare_dmabuf().
+This commit causes a regression, so revert it for now until it can come
+back in a way that works for everyone.
 
-Signed-off-by: Yunke Cao <yunkec@chromium.org>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
+Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+Cc: stable <stable@kernel.org>
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/base/core.c   |   13 +++++--------
+ drivers/base/module.c |    4 ----
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index 50015a2ea5ce0..98719aa986bb9 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -281,6 +281,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
- 	p->mem_priv = NULL;
- 	p->dbuf = NULL;
- 	p->dbuf_mapped = 0;
-+	p->bytesused = 0;
-+	p->length = 0;
-+	p->m.fd = 0;
-+	p->data_offset = 0;
- }
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,7 +25,6 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
+-#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/string_helpers.h>
+@@ -2641,7 +2640,6 @@ static const char *dev_uevent_name(const
+ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+ {
+ 	const struct device *dev = kobj_to_dev(kobj);
+-	struct device_driver *driver;
+ 	int retval = 0;
  
- /*
-@@ -1169,10 +1173,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb, const void *pb)
+ 	/* add device node properties if present */
+@@ -2670,12 +2668,8 @@ static int dev_uevent(const struct kobje
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
  
- 		/* Release previously acquired memory if present */
- 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
--		vb->planes[plane].bytesused = 0;
--		vb->planes[plane].length = 0;
--		vb->planes[plane].m.fd = 0;
--		vb->planes[plane].data_offset = 0;
+-	/* Synchronize with module_remove_driver() */
+-	rcu_read_lock();
+-	driver = READ_ONCE(dev->driver);
+-	if (driver)
+-		add_uevent_var(env, "DRIVER=%s", driver->name);
+-	rcu_read_unlock();
++	if (dev->driver)
++		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
  
- 		/* Acquire each plane's memory */
- 		mem_priv = call_ptr_memop(vb, attach_dmabuf,
--- 
-2.43.0
-
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2745,8 +2739,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
+ 
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,7 +7,6 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+-#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(const struct device_driver *drv)
+@@ -102,9 +101,6 @@ void module_remove_driver(const struct d
+ 	if (!drv)
+ 		return;
+ 
+-	/* Synchronize with dev_uevent() */
+-	synchronize_rcu();
+-
+ 	sysfs_remove_link(&drv->p->kobj, "module");
+ 
+ 	if (drv->owner)
 
 
 
