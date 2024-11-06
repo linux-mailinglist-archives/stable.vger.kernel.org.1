@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757069BE967
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9C69BEA45
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CCEA1F232E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 232391F246E1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9184B1DF974;
-	Wed,  6 Nov 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBB61F8198;
+	Wed,  6 Nov 2024 12:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqB1UXPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+i6A35R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D214198E96;
-	Wed,  6 Nov 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D641F8190;
+	Wed,  6 Nov 2024 12:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896427; cv=none; b=hxXGiMcu3jeqPJWh4C4CTpXdgmi3pGLgSKqe7dVx5FyVu/kTPAJYABbvYWiBR0AuY2VPJitGc7gxRGgIbx39ez1tWBHARriVIO+f4SUXwcYNnHqKt6VjrAo2Ps9R/tOLK8u6pTtfoIzVI0/ZodkbrUkEp4fOEACGrdmuVwbil5U=
+	t=1730896670; cv=none; b=I8o3TtzwGnecfUFqvivaiqIdhamtcJMzv/y7BaWsxZYh7JdvrWBkiRZnzP58sZjP4kOCqYY3CBGavg1uTmlmHvdr41NNYx5tsr14yZtfwApocfPnFOtmEF2ZveO7ssjdagFoEQp9nWFFXCohCor3JzCwvJSB3HX1uj/rNOd+Hck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896427; c=relaxed/simple;
-	bh=4OG3QqFtdzhKGCexZt/gZXUjzQdX7lPlUiGOAPEtkgg=;
+	s=arc-20240116; t=1730896670; c=relaxed/simple;
+	bh=aR028k7KNWlFU4DKi30QXcjFI76W0dO6AIu82tujIUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0YUjhxQZv5p5L2BR3N4FEG1bgFVIUK3uc0F/kIUJgvVL9cCcqLHhRL4qDPKnlG4VFoEPwStNw/wxJSDarGYkEf4v7wyccI9fzNmqLTJO6Snv2q/LKGQONS7C/pyiaNTveKv1ZpA0EUhGrLocSglomM7bOne41boYjK1Cd1WiJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqB1UXPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7921C4CECD;
-	Wed,  6 Nov 2024 12:33:46 +0000 (UTC)
+	 MIME-Version; b=cidnnq/eaZsIifHYYg7UdfObyzkZFPlZW2S1tgaLQMAVMKdLEdGbtAR39Pn2F1F16g/iRI3i5aTLe7NMRqMlg3MiLwQh+EFmEVVcYIqjUdBkBlHL/6u9anqIcWS/QUckUTK6z3fgIomffs1YqeF7ww+dJtJx8ejibTmi+dDXTxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+i6A35R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5557DC4CEDC;
+	Wed,  6 Nov 2024 12:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896427;
-	bh=4OG3QqFtdzhKGCexZt/gZXUjzQdX7lPlUiGOAPEtkgg=;
+	s=korg; t=1730896669;
+	bh=aR028k7KNWlFU4DKi30QXcjFI76W0dO6AIu82tujIUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqB1UXPRi7qBuWvTQVBAOzD/pnWYXOInF1TI4WWQouILbhllrFQUdHVCIl4vCvqnd
-	 nkZZn3D1ttzkU6o4Sipyrg/4I0/sv21eYjnD7ihaALGf7PjqXoZji1BW7rIrYnC/mV
-	 tmMx0YF6wMd2mqKQKT1WFGzy5J1oNk9MCVuPOKrk=
+	b=i+i6A35RVi40OXmY0vCXBE/auzMwIgOPwcILVgGXceVTtrztSENKwskzHARTGXzXw
+	 XqYQ40QrRsymRP8lPtNcdhSmA9/8bFhvxjIKYS0/g0xk8xbAbNPZUvHEG3pc2D50sN
+	 9qk2g/gnkLJtO8FK59smH2IjARRhy6T803DXxuro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 161/245] scsi: ufs: core: Fix another deadlock during RTC update
-Date: Wed,  6 Nov 2024 13:03:34 +0100
-Message-ID: <20241106120323.199405208@linuxfoundation.org>
+Subject: [PATCH 5.10 009/110] macsec: dont increment counters for an unrelated SA
+Date: Wed,  6 Nov 2024 13:03:35 +0100
+Message-ID: <20241106120303.410154807@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit cb7e509c4e0197f63717fee54fb41c4990ba8d3a ]
+[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
 
-If ufshcd_rtc_work calls ufshcd_rpm_put_sync() and the pm's usage_count
-is 0, we will enter the runtime suspend callback.  However, the runtime
-suspend callback will wait to flush ufshcd_rtc_work, causing a deadlock.
+On RX, we shouldn't be incrementing the stats for an arbitrary SA in
+case the actual SA hasn't been set up. Those counters are intended to
+track packets for their respective AN when the SA isn't currently
+configured. Due to the way MACsec is implemented, we don't keep
+counters unless the SA is configured, so we can't track those packets,
+and those counters will remain at 0.
 
-Replace ufshcd_rpm_put_sync() with ufshcd_rpm_put() to avoid the
-deadlock.
+The RXSC's stats keeps track of those packets without telling us which
+AN they belonged to. We could add counters for non-existent SAs, and
+then find a way to integrate them in the dump to userspace, but I
+don't think it's worth the effort.
 
-Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-Cc: stable@vger.kernel.org #6.11.x
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20241024015453.21684-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/macsec.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 09408642a6efb..83567388a7b58 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8224,7 +8224,7 @@ static void ufshcd_update_rtc(struct ufs_hba *hba)
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 83b02dc7dfd2d..5e30fd017b3ac 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -159,19 +159,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
+ 	return sa;
+ }
  
- 	err = ufshcd_query_attr(hba, UPIU_QUERY_OPCODE_WRITE_ATTR, QUERY_ATTR_IDN_SECONDS_PASSED,
- 				0, 0, &val);
--	ufshcd_rpm_put_sync(hba);
-+	ufshcd_rpm_put(hba);
+-static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
+-{
+-	struct macsec_rx_sa *sa = NULL;
+-	int an;
+-
+-	for (an = 0; an < MACSEC_NUM_AN; an++)	{
+-		sa = macsec_rxsa_get(rx_sc->sa[an]);
+-		if (sa)
+-			break;
+-	}
+-	return sa;
+-}
+-
+ static void free_rx_sc_rcu(struct rcu_head *head)
+ {
+ 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
+@@ -1196,15 +1183,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 		/* If validateFrames is Strict or the C bit in the
+ 		 * SecTAG is set, discard
+ 		 */
+-		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
+ 		if (hdr->tci_an & MACSEC_TCI_C ||
+ 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
+ 			u64_stats_update_begin(&rxsc_stats->syncp);
+ 			rxsc_stats->stats.InPktsNotUsingSA++;
+ 			u64_stats_update_end(&rxsc_stats->syncp);
+ 			DEV_STATS_INC(secy->netdev, rx_errors);
+-			if (active_rx_sa)
+-				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
+ 			goto drop_nosa;
+ 		}
  
- 	if (err)
- 		dev_err(hba->dev, "%s: Failed to update rtc %d\n", __func__, err);
+@@ -1214,8 +1198,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 		u64_stats_update_begin(&rxsc_stats->syncp);
+ 		rxsc_stats->stats.InPktsUnusedSA++;
+ 		u64_stats_update_end(&rxsc_stats->syncp);
+-		if (active_rx_sa)
+-			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
+ 		goto deliver;
+ 	}
+ 
 -- 
 2.43.0
 
