@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2109BECB3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E999BE6F9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F1C1F24854
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5D1281F10
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE531EABB3;
-	Wed,  6 Nov 2024 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813A21DF24E;
+	Wed,  6 Nov 2024 12:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NERIGj+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8G/qUnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D19A1E104A;
-	Wed,  6 Nov 2024 12:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B28B1DEFF4;
+	Wed,  6 Nov 2024 12:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897880; cv=none; b=DbalM1eWjkg7BOKxAogQjIuicA+pB6FV8f9A1JVgBcy2sJrRXqXMw1gk7aSqkOfTQvYcuU1VmsaAvjVwMA8rto/FQ1wsRmviJC/Fdmv6V2WsWu2esfeApD4ZxIOIkxON0NYF0UnMBcEROU8rzWUI35TFIpBWIoUq2oaZA1Q+6aE=
+	t=1730894945; cv=none; b=cQJdQII3bWQgztfuiP+DRDIDstgMRtEGbs+y4MTkh5+tJ2zKHPXTNqLCKcXWvdcyfjBD92e1EKsyzX9NUubenmZpyrs+A4wTWIQ0wRMR7eg6ctfL/IekP1a1jEd6V3Igdj+8iVA2a8AdTSgwTkPCjvBnkbotqWbPs+VGwT1C4dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897880; c=relaxed/simple;
-	bh=R2i6p2XahVSlvrws8WOA2JpLDeoRSwYvQJpFczdwyr0=;
+	s=arc-20240116; t=1730894945; c=relaxed/simple;
+	bh=/71qhSYi7rYutApy6drycimdqiKyn69kZN7uowmcx4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYQCJBjeiOECroyNYDdnoC/RU/wqfNlaaWYEKeTVXD/TLEELD/x72uzDSJs3eo7tjP5tTETPUCjj0FSAqN7AHTTqUj9OmhMujafsxKS8unlNl+sxwQIhOJ1prWUBi3hHPJvinFN/2wYDCMhUO1NtHm7VPD+YuzcRpIfQNRrnpqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NERIGj+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74B9C4CECD;
-	Wed,  6 Nov 2024 12:57:59 +0000 (UTC)
+	 MIME-Version; b=Hh5FfG2HychZTszI5Dlu0+lEbmv+Z8nRbf0/iDJvM0R82AT0VCHiED/TFnPX3LF7WDqiRHpKmJNUuKHnZqpdwrBxniP0Ds5Yr+HEHhbccljxDX/Wq8kCedS6hcYZSPPg6r+jBkfjrseE8CYJD+upVm6396xrTVY1ptpjb17eXgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8G/qUnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D126C4CECD;
+	Wed,  6 Nov 2024 12:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897880;
-	bh=R2i6p2XahVSlvrws8WOA2JpLDeoRSwYvQJpFczdwyr0=;
+	s=korg; t=1730894944;
+	bh=/71qhSYi7rYutApy6drycimdqiKyn69kZN7uowmcx4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NERIGj+JYsMpvNjE9Bmx+us4yBFQm9vUrvOJd81WqhW3A5bHRCEgwB3hzz7n3wNkg
-	 PgaowhrXRuVe44jHZpfph5aYU9fr6dWYGHJoXQyXves0U2eZMqdLZ5WZ3wHhE4pkf7
-	 YQbapgaaXHg+SUOuUIQ5wDJpWDr+E2Jm0OoXS0Gw=
+	b=e8G/qUnjktNAFCpcMWHq9+ojDW32Wde4SipKie6LalRI2EDKv+LX09qybKgHvyR2k
+	 2df4RXp+kOKwj1oEcjiRZoF6J8yvDzlz9wRYaZr79VzXm0RcFeldHtHNkCsNvbVNM4
+	 KAbzJLpu+8XuPWgIsFJ2QGhgt2nmMtFUWLqQWix8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Kiran K <kiran.k@intel.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 050/462] Bluetooth: btusb: Fix not handling ZPL/short-transfer
+Subject: [PATCH 4.19 015/350] ASoC: allow module autoloading for table db1200_pids
 Date: Wed,  6 Nov 2024 12:59:03 +0100
-Message-ID: <20241106120332.754607522@linuxfoundation.org>
+Message-ID: <20241106120321.249146740@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
+[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
 
-Requesting transfers of the exact same size of wMaxPacketSize may result
-in ZPL/short-transfer since the USB stack cannot handle it as we are
-limiting the buffer size to be the same as wMaxPacketSize.
+Add MODULE_DEVICE_TABLE(), so modules could be properly
+autoloaded based on the alias from platform_device_id table.
 
-Also, in terms of throughput this change has the same effect to
-interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
-by increasing the frame size" had for the bulk endpoint, so users of the
-advertisement bearer (e.g. BT Mesh) may benefit from this change.
-
-Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/au1x/db1200.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index b9752625c88b4..87392ceee3dba 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -834,7 +834,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
- 	if (!urb)
- 		return -ENOMEM;
+diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
+index 301e1fc9a3773..24d16e6bf7501 100644
+--- a/sound/soc/au1x/db1200.c
++++ b/sound/soc/au1x/db1200.c
+@@ -43,6 +43,7 @@ static const struct platform_device_id db1200_pids[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(platform, db1200_pids);
  
--	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
-+	/* Use maximum HCI Event size so the USB stack handles
-+	 * ZPL/short-transfer automatically.
-+	 */
-+	size = HCI_MAX_EVENT_SIZE;
+ /*-------------------------  AC97 PART  ---------------------------*/
  
- 	buf = kmalloc(size, mem_flags);
- 	if (!buf) {
 -- 
 2.43.0
 
