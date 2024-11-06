@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC16C9BE93F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE699BE9D7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718B52849C6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776F01F226FC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0EB1DED58;
-	Wed,  6 Nov 2024 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09D91DFE31;
+	Wed,  6 Nov 2024 12:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CpE2vUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7lXJjej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0216088F;
-	Wed,  6 Nov 2024 12:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C231E0096;
+	Wed,  6 Nov 2024 12:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896321; cv=none; b=mjcFTErsgxirM2wBTrQI97T2BN8evKldxlV7RiNckgUDfPvXqQVtbYwU8BggVVM8tt7d6FEJzChk3pR1uV3xtRC6o3rkqMg7clNxFXnd/lPHr9HavLNhYudCKIGLzGUFGJe4SgoEz2exAHW3XjQdQg7YkYZcumVwy5vT9QD/VIo=
+	t=1730896604; cv=none; b=cl5NZ0woko+Q0OZpuqyJPY0/cuvUiRoPneUFE7byGDFWGVYJOH4KRJZ55GI7hhb4x2nU4zhv5mmmCeLlmuao0swPiIUxzk89PbrOS1iyVC5FEry2UZhmzCcnZIJQE+agRfCCWRlAnYuKxdW7zWqNbEA9aJSLWG/1NmlMnGBjsVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896321; c=relaxed/simple;
-	bh=32Xkm0kEa02eyNZOR08qX0HpV2RVP7W2Srr1PieYNMo=;
+	s=arc-20240116; t=1730896604; c=relaxed/simple;
+	bh=BKFWdbU3IDY78AN+sCSoUm3zasgw852+HBuCjowMnvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8quDqqAaFTo5nHV4XTbWVX/nQjFLDbBuaOPhd2ixSa9j8O6rhJOX/aF9m5Ol0MAc7DEKF922sOZfttkkhnq21h+5bmqoba6oflPvYpTddxMPWogue93df6WkPAHDkswgtYd6967kMDOW+QNBRS3pQV9ujktobH4e1GEckvEWPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CpE2vUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448DDC4CECD;
-	Wed,  6 Nov 2024 12:32:01 +0000 (UTC)
+	 MIME-Version; b=BH3jnLfW2RSwOhU1Fdl+AKXahKuJbTAcj/YQIM/fMLy3gfNTDTbPrPsu+tZ2mRdgq5bJ5MN6ADZQf+1ZRrAvnZPgSnVSmwkYufNlzqeJeu5rObOgzBf55wQ2/VUKwmX/OdbicQlsglUEYMPP2FzSyuXmUHDCYNh5EplU09JfM98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7lXJjej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12D4C4CED5;
+	Wed,  6 Nov 2024 12:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896321;
-	bh=32Xkm0kEa02eyNZOR08qX0HpV2RVP7W2Srr1PieYNMo=;
+	s=korg; t=1730896604;
+	bh=BKFWdbU3IDY78AN+sCSoUm3zasgw852+HBuCjowMnvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CpE2vUb58Ypx1ZKo6ZiTFFYONm5I+0CcC/OsIfngMHx/63GjgpH2g1RvZIxUpakY
-	 UXdCoKo4Km6xLDt7N+nQmM6VTX+CR6pG3zr6J6qQXH6yhdx06v0Iq2Ud3cVFUPjVsi
-	 Dkb9M3IqTJDSWWvkG7utoxKeLrFPpmypqQcWgK8k=
+	b=C7lXJjejkEGgBOlbjYmVWVimCRvn4cOm8E/nnf8k3DmPasjLOnstPADGF672bu72q
+	 RTNmZh6O0PBIHokUMQuRn+2YDdqOl0qMQR3W3Cs6siU/s3nGrT7Jt/27bt2d12QH2z
+	 5pKmE0isEFw9wEYLR/L33OJJwMSmgFgDikG3lzv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Segall <bsegall@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 165/245] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+Subject: [PATCH 5.10 012/110] net: systemport: fix potential memory leak in bcm_sysport_xmit()
 Date: Wed,  6 Nov 2024 13:03:38 +0100
-Message-ID: <20241106120323.298359694@linuxfoundation.org>
+Message-ID: <20241106120303.494246649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Segall <bsegall@google.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit b5413156bad91dc2995a5c4eab1b05e56914638a ]
+[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
+in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
-
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
-
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
-
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 72744638c5b0f..99c9c5a7252aa 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 6b97fb2ac4af5..dbf3c5d81df3b 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -104,6 +104,7 @@
- #include <linux/rseq.h>
- #include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
-+#include <linux/tick.h>
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 82d369d9f7a50..ae1cf2ead9a96 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1343,6 +1343,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
+ 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
+ 			  skb->data, skb_len);
+ 		ret = NETDEV_TX_OK;
++		dev_kfree_skb_any(skb);
+ 		goto out;
+ 	}
  
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2290,6 +2291,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
- 
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
- 
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
 -- 
 2.43.0
 
