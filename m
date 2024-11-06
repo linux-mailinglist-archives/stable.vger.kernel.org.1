@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6199BE909
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8A19BE7DA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 740BDB23253
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603201C21C63
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85121DF98C;
-	Wed,  6 Nov 2024 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3331DF737;
+	Wed,  6 Nov 2024 12:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnY47MHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAmPaOxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714B71DF726;
-	Wed,  6 Nov 2024 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D51DF26B;
+	Wed,  6 Nov 2024 12:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896194; cv=none; b=laaTtC68pHXlcaVKjT4gcQI7FsZ3pIzAdRT54156eYlBFuN5+6H9usukMQvhxu50jGbIeT2EMv0Tgu2HccV33Cz07uYBIo4aqz10onPKjs0KLzjdcGpVyUqYBOzUdzVWUXTYI/M6JuskJvkIxBDHtrAq+7r6EZYUKZtKGO2u4uY=
+	t=1730895496; cv=none; b=Hclni6/Qb7ItFzb7c5S/VauaXbm1tKf48bg0Nb06lSVfyE5NsGNezqTmX8VcMQeOczQODyPz4ttpeL2oIHMFDCF6jSyXGu/eD2Jxv8VZR0viPf/jxl3Zhb+v/0MastOlz8WSivvlxaoApNs8679dPBuS6Udha+it3maWXoeAMyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896194; c=relaxed/simple;
-	bh=3aXg0tvF3C0VJ6IGHr1wv4p/RYBFgBm4FOUloIXb50o=;
+	s=arc-20240116; t=1730895496; c=relaxed/simple;
+	bh=+bC58XwPsgNLZw729qNnECxDmU5Eev6pMVUXq+YxS+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9hxPxKe0t8XRfpH65yTczLscfny/ukyzInwa/L09FyfLr2ihFaCQ5epEOiRCgfS1ybfECqL6pYHg8o04Klj/TSYkLPshfEOuJDCXcM3bfVO7ikchL3RfPIMGvongSPcujYvCRZED3l6GyLFFCPg1o9F7PKuRrvfNznWLWY9IUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnY47MHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE80CC4CED4;
-	Wed,  6 Nov 2024 12:29:53 +0000 (UTC)
+	 MIME-Version; b=cCWrviVL3k6s/MQe2KfL18aTIB5fiTyw6FrFweGccbg12kSOh9OTWmrRZ6FaeIHKZ5kLrOpcMM2UojhNW9T9IL6/JW0Rimki3qGSElEikZK39MrIVRl0l/XN1EOXD3Ybk+mpBgLwZTRJQF8Kz1lIMUDdtcBDbA3q9zkBJD3LBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAmPaOxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E5EC4CECD;
+	Wed,  6 Nov 2024 12:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896194;
-	bh=3aXg0tvF3C0VJ6IGHr1wv4p/RYBFgBm4FOUloIXb50o=;
+	s=korg; t=1730895496;
+	bh=+bC58XwPsgNLZw729qNnECxDmU5Eev6pMVUXq+YxS+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnY47MHZqbY+whQwFQ4vdEVGNCWeIVumUrP9PIMSO4iAVGs4HUHBptlNnNJ621zjI
-	 clmn0B8xREUkdIy/LZiLrXi6+cg4Hn9NMFLQI+ooSJ8vW7HX66TFFSrB/ycLMlbWtu
-	 xishdQte6aX/1c7KsNKbOXaugCmboYkrAo0b9P4E=
+	b=NAmPaOxk/hY8DVkEgAttTfb2HTQ3lwcK55V6hChGlY3rWHNt0JEHSwWf+tU6k25pI
+	 bn9Eh/Sg/eHbbFnM+5hSQCSXSI5ebKsw1iANNK/b0HKDznl4Vwf+ONov0b9pwLzY1X
+	 inEoil6Vc35cABAz7K3yoRpvHsGZzgiFNgL69AEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 085/245] fs/ntfs3: Stale inode instead of bad
+	Alfred Agrell <blubban@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 4.19 210/350] tomoyo: fallback to realpath if symlinks pathname does not exist
 Date: Wed,  6 Nov 2024 13:02:18 +0100
-Message-ID: <20241106120321.298756961@linuxfoundation.org>
+Message-ID: <20241106120326.177404036@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 1fd21919de6de245b63066b8ee3cfba92e36f0e9 ]
+commit ada1986d07976d60bed5017aa38b7f7cf27883f7 upstream.
 
-Fixed the logic of processing inode with wrong sequence number.
+Alfred Agrell found that TOMOYO cannot handle execveat(AT_EMPTY_PATH)
+inside chroot environment where /dev and /proc are not mounted, for
+commit 51f39a1f0cea ("syscalls: implement execveat() system call") missed
+that TOMOYO tries to canonicalize argv[0] when the filename fed to the
+executed program as argv[0] is supplied using potentially nonexistent
+pathname.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since "/dev/fd/<fd>" already lost symlink information used for obtaining
+that <fd>, it is too late to reconstruct symlink's pathname. Although
+<filename> part of "/dev/fd/<fd>/<filename>" might not be canonicalized,
+TOMOYO cannot use tomoyo_realpath_nofollow() when /dev or /proc is not
+mounted. Therefore, fallback to tomoyo_realpath_from_path() when
+tomoyo_realpath_nofollow() failed.
+
+Reported-by: Alfred Agrell <blubban@gmail.com>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1082001
+Fixes: 51f39a1f0cea ("syscalls: implement execveat() system call")
+Cc: stable@vger.kernel.org # v3.19+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/inode.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ security/tomoyo/domain.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 6b0bdc474e763..56b6c4c6f528f 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -536,11 +536,15 @@ struct inode *ntfs_iget5(struct super_block *sb, const struct MFT_REF *ref,
- 	if (inode->i_state & I_NEW)
- 		inode = ntfs_read_mft(inode, name, ref);
- 	else if (ref->seq != ntfs_i(inode)->mi.mrec->seq) {
--		/* Inode overlaps? */
--		_ntfs_bad_inode(inode);
-+		/*
-+		 * Sequence number is not expected.
-+		 * Looks like inode was reused but caller uses the old reference
-+		 */
-+		iput(inode);
-+		inode = ERR_PTR(-ESTALE);
- 	}
- 
--	if (IS_ERR(inode) && name)
-+	if (IS_ERR(inode))
- 		ntfs_set_state(sb->s_fs_info, NTFS_DIRTY_ERROR);
- 
- 	return inode;
--- 
-2.43.0
-
+--- a/security/tomoyo/domain.c
++++ b/security/tomoyo/domain.c
+@@ -701,10 +701,13 @@ int tomoyo_find_next_domain(struct linux
+ 	ee->r.obj = &ee->obj;
+ 	ee->obj.path1 = bprm->file->f_path;
+ 	/* Get symlink's pathname of program. */
+-	retval = -ENOENT;
+ 	exename.name = tomoyo_realpath_nofollow(original_name);
+-	if (!exename.name)
+-		goto out;
++	if (!exename.name) {
++		/* Fallback to realpath if symlink's pathname does not exist. */
++		exename.name = tomoyo_realpath_from_path(&bprm->file->f_path);
++		if (!exename.name)
++			goto out;
++	}
+ 	tomoyo_fill_path_info(&exename);
+ retry:
+ 	/* Check 'aggregator' directive. */
 
 
 
