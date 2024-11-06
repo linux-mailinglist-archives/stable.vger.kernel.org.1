@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-90014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBED69BDC90
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:25:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350499BDC94
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A31280F02
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1D181F291D3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73D81F4294;
-	Wed,  6 Nov 2024 02:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B621F757B;
+	Wed,  6 Nov 2024 02:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NutuQfXG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRO21QH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6030E1D27BE;
-	Wed,  6 Nov 2024 02:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB71F7574;
+	Wed,  6 Nov 2024 02:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859186; cv=none; b=IZ9qJ+dB8PceUF7EJyLInM6ZwFC6wcOlg4+vXzMd52+2/GQbKZShq3qwYp828NOOIhLBgtLm3P9SVoeU3ahFJ0474ynDxWVnlZBHd050o/PDkDmWuESox/nZHSH9vDztsaKvffqjLwGIK9rPKReHWS8XO6udCf6OmAyV5XrmLUU=
+	t=1730859189; cv=none; b=ommP849U5jtpgezomRUJuTw9DknPJ+Um7hXpbmGF/p5ki7Ga1fZ1WAX69rCgaXi/LeDAaGSRJTPWoCP5y7y1E026Rbj5zyRRKvQ5vYGO7UlPui/iGWjPmn2FO9vjM/c58t57suHhfAakP2N1vu2mL1/MW2jafJis30id6MGtOQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859186; c=relaxed/simple;
-	bh=8A+xwRYV8w2bO7e1YA6Gj/62ESsKxVSjlFT0mV8BIVw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TkclbWRv2RdC55/Kh6gecPBlcu4GuOkXIZdDgC7lG9Yl1Eav75ywBkzzhKR87Dgv/VnbXFKwc/KUmVqKW3W49OkpW76LtWv+R2j9A+ZOIqZZqAoJ49phzdsKK5GFckA+HEQNaP4ogSgML5tEaRzNtvSso48VRKdso2Fgnyhk9Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NutuQfXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAECAC4CECF;
-	Wed,  6 Nov 2024 02:13:04 +0000 (UTC)
+	s=arc-20240116; t=1730859189; c=relaxed/simple;
+	bh=LK8O32ryrR36QBqT2i4Q5Z4wfcG6NDPXs6IKa66b5+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GtAukmG5MTjACCijmnnDbGzVwTClX+9Blnn7Zmc0FXMuwJ8WZk22B8UJqeq3VhysmsrK22SQGe3547LrdnW9cYJW88slVMOF7TD+vhGQ0Xi2Tx+0xzio7iRtPm9uKQF1ZfQwm93TwilkVJ81+kBjXf3nNbkdu+dmlHqbgI1E+Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRO21QH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93676C4CECF;
+	Wed,  6 Nov 2024 02:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859186;
-	bh=8A+xwRYV8w2bO7e1YA6Gj/62ESsKxVSjlFT0mV8BIVw=;
+	s=k20201202; t=1730859189;
+	bh=LK8O32ryrR36QBqT2i4Q5Z4wfcG6NDPXs6IKa66b5+I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=NutuQfXGkHKbadHKjr/95kvs2OtmuIiLbZbGs+Q2vULFyEL0CrspeoP6AOjmrBcwj
-	 7Pz6Lb6wlS0iXFwCx+2Sc4ENkTyZneD/YQTTAB1yyqzwXEAcWSsr7r+FrlNwoU0SN1
-	 VFfsYiHQZ7ObD7pbK0onJXOJjm5pZr93w/+EHOiEQP36Y1pUOaI3AY020HhCLJ8cu2
-	 4wkOBHlmBlFfbsZW0bw3WFvS1e4TLMUDLYODSr1/dQ/SgGZsgbb2CA9R8/rSwllndn
-	 6WxbFWYy6s0QnCE53E92GsvsmsJSDMd2IMcQfa2vsFpoq3Ghi4P03StTvfgI2funX7
-	 WjEKjSpWVyE0Q==
+	b=rRO21QH0xfFTeP7bYnslEKVBxjjIJoiDbFByTo/ukFj3zOIDYV3VhH2fIUdyV91xn
+	 7qyPJhk+lv4XIe5tw/Vq7fMkcppN1H8mWBg1C7TvkCqApLMcONQiIiQnCjwqNL7xFJ
+	 VyFqj/dysm8MJpBQd+D4wmZyiRvUMv6yHGCbR+KNqJavpeIKwA2DoJmakBkHBIKu8M
+	 wIVoiN5yI5onXOqO4Rv4pooegBe2vbsiCRpYlJcMUNOW99jQsEsjiuHBE2DhVK9hZk
+	 WdSjpCYHxEajXQVZb1b1WwE+qgSYi8LerR2v7reVYV0BXBuLkD6gzWG1pkrnDf8+OE
+	 +KjuYy6rjY+KQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	gil.fine@linux.intel.com
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-usb@vger.kernel.org,
+	axboe@kernel.dk
+Cc: Peter Mann <peter.mann@sh.cz>,
+	io-uring@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "thunderbolt: Honor TMU requirements in the domain when setting TMU mode" failed to apply to v5.10-stable tree
-Date: Tue,  5 Nov 2024 21:13:02 -0500
-Message-ID: <20241106021302.183334-1-sashal@kernel.org>
+Subject: FAILED: Patch "io_uring/rw: fix missing NOWAIT check for O_DIRECT start write" failed to apply to v5.10-stable tree
+Date: Tue,  5 Nov 2024 21:13:06 -0500
+Message-ID: <20241106021306.183371-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,121 +70,120 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3cea8af2d1a9ae5869b47c3dabe3b20f331f3bbd Mon Sep 17 00:00:00 2001
-From: Gil Fine <gil.fine@linux.intel.com>
-Date: Thu, 10 Oct 2024 17:29:42 +0300
-Subject: [PATCH] thunderbolt: Honor TMU requirements in the domain when
- setting TMU mode
+From 1d60d74e852647255bd8e76f5a22dc42531e4389 Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Thu, 31 Oct 2024 08:05:44 -0600
+Subject: [PATCH] io_uring/rw: fix missing NOWAIT check for O_DIRECT start
+ write
 
-Currently, when configuring TMU (Time Management Unit) mode of a given
-router, we take into account only its own TMU requirements ignoring
-other routers in the domain. This is problematic if the router we are
-configuring has lower TMU requirements than what is already configured
-in the domain.
+When io_uring starts a write, it'll call kiocb_start_write() to bump the
+super block rwsem, preventing any freezes from happening while that
+write is in-flight. The freeze side will grab that rwsem for writing,
+excluding any new writers from happening and waiting for existing writes
+to finish. But io_uring unconditionally uses kiocb_start_write(), which
+will block if someone is currently attempting to freeze the mount point.
+This causes a deadlock where freeze is waiting for previous writes to
+complete, but the previous writes cannot complete, as the task that is
+supposed to complete them is blocked waiting on starting a new write.
+This results in the following stuck trace showing that dependency with
+the write blocked starting a new write:
 
-In the scenario below, we have a host router with two USB4 ports: A and
-B. Port A connected to device router #1 (which supports CL states) and
-existing DisplayPort tunnel, thus, the TMU mode is HiFi uni-directional.
+task:fio             state:D stack:0     pid:886   tgid:886   ppid:876
+Call trace:
+ __switch_to+0x1d8/0x348
+ __schedule+0x8e8/0x2248
+ schedule+0x110/0x3f0
+ percpu_rwsem_wait+0x1e8/0x3f8
+ __percpu_down_read+0xe8/0x500
+ io_write+0xbb8/0xff8
+ io_issue_sqe+0x10c/0x1020
+ io_submit_sqes+0x614/0x2110
+ __arm64_sys_io_uring_enter+0x524/0x1038
+ invoke_syscall+0x74/0x268
+ el0_svc_common.constprop.0+0x160/0x238
+ do_el0_svc+0x44/0x60
+ el0_svc+0x44/0xb0
+ el0t_64_sync_handler+0x118/0x128
+ el0t_64_sync+0x168/0x170
+INFO: task fsfreeze:7364 blocked for more than 15 seconds.
+      Not tainted 6.12.0-rc5-00063-g76aaf945701c #7963
 
-1. Initial topology
+with the attempting freezer stuck trying to grab the rwsem:
 
-          [Host]
-         A/
-         /
- [Device #1]
-   /
-Monitor
+task:fsfreeze        state:D stack:0     pid:7364  tgid:7364  ppid:995
+Call trace:
+ __switch_to+0x1d8/0x348
+ __schedule+0x8e8/0x2248
+ schedule+0x110/0x3f0
+ percpu_down_write+0x2b0/0x680
+ freeze_super+0x248/0x8a8
+ do_vfs_ioctl+0x149c/0x1b18
+ __arm64_sys_ioctl+0xd0/0x1a0
+ invoke_syscall+0x74/0x268
+ el0_svc_common.constprop.0+0x160/0x238
+ do_el0_svc+0x44/0x60
+ el0_svc+0x44/0xb0
+ el0t_64_sync_handler+0x118/0x128
+ el0t_64_sync+0x168/0x170
 
-2. Plug in device #2 (that supports CL states) to downstream port B of
-   the host router
+Fix this by having the io_uring side honor IOCB_NOWAIT, and only attempt a
+blocking grab of the super block rwsem if it isn't set. For normal issue
+where IOCB_NOWAIT would always be set, this returns -EAGAIN which will
+have io_uring core issue a blocking attempt of the write. That will in
+turn also get completions run, ensuring forward progress.
 
-         [Host]
-        A/    B\
-        /       \
- [Device #1]    [Device #2]
-   /
-Monitor
+Since freezing requires CAP_SYS_ADMIN in the first place, this isn't
+something that can be triggered by a regular user.
 
-The TMU mode on port B and port A will be configured to LowRes which is
-not what we want and will cause monitor to start flickering.
-
-To address this we first scan the domain and search for any router
-configured to HiFi uni-directional mode, and if found, configure TMU
-mode of the given router to HiFi uni-directional as well.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # 5.10+
+Reported-by: Peter Mann <peter.mann@sh.cz>
+Link: https://lore.kernel.org/io-uring/38c94aec-81c9-4f62-b44e-1d87f5597644@sh.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- drivers/thunderbolt/tb.c | 48 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ io_uring/rw.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index 10e719dd837ce..4f777788e9179 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -288,6 +288,24 @@ static void tb_increase_tmu_accuracy(struct tb_tunnel *tunnel)
- 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 354c4e175654c..155938f100931 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -1014,6 +1014,25 @@ int io_read_mshot(struct io_kiocb *req, unsigned int issue_flags)
+ 	return IOU_OK;
  }
  
-+static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
++static bool io_kiocb_start_write(struct io_kiocb *req, struct kiocb *kiocb)
 +{
-+	struct tb_switch *sw = tb_to_switch(dev);
++	struct inode *inode;
++	bool ret;
 +
-+	if (sw && tb_switch_tmu_is_enabled(sw) &&
-+	    tb_switch_tmu_is_configured(sw, TB_SWITCH_TMU_MODE_HIFI_UNI))
-+		return 1;
++	if (!(req->flags & REQ_F_ISREG))
++		return true;
++	if (!(kiocb->ki_flags & IOCB_NOWAIT)) {
++		kiocb_start_write(kiocb);
++		return true;
++	}
 +
-+	return device_for_each_child(dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required);
++	inode = file_inode(kiocb->ki_filp);
++	ret = sb_start_write_trylock(inode->i_sb);
++	if (ret)
++		__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
++	return ret;
 +}
 +
-+static bool tb_tmu_hifi_uni_required(struct tb *tb)
-+{
-+	return device_for_each_child(&tb->dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required) == 1;
-+}
-+
- static int tb_enable_tmu(struct tb_switch *sw)
+ int io_write(struct io_kiocb *req, unsigned int issue_flags)
  {
- 	int ret;
-@@ -302,12 +320,30 @@ static int tb_enable_tmu(struct tb_switch *sw)
- 	ret = tb_switch_tmu_configure(sw,
- 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
- 	if (ret == -EOPNOTSUPP) {
--		if (tb_switch_clx_is_enabled(sw, TB_CL1))
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_LOWRES);
--		else
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_HIFI_BI);
-+		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
-+			/*
-+			 * Figure out uni-directional HiFi TMU requirements
-+			 * currently in the domain. If there are no
-+			 * uni-directional HiFi requirements we can put the TMU
-+			 * into LowRes mode.
-+			 *
-+			 * Deliberately skip bi-directional HiFi links
-+			 * as these work independently of other links
-+			 * (and they do not allow any CL states anyway).
-+			 */
-+			if (tb_tmu_hifi_uni_required(sw->tb))
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_HIFI_UNI);
-+			else
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_LOWRES);
-+		} else {
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
-+		}
-+
-+		/* If not supported, fallback to bi-directional HiFi */
-+		if (ret == -EOPNOTSUPP)
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
- 	}
- 	if (ret)
+ 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
+@@ -1051,8 +1070,8 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 	if (unlikely(ret))
  		return ret;
+ 
+-	if (req->flags & REQ_F_ISREG)
+-		kiocb_start_write(kiocb);
++	if (unlikely(!io_kiocb_start_write(req, kiocb)))
++		return -EAGAIN;
+ 	kiocb->ki_flags |= IOCB_WRITE;
+ 
+ 	if (likely(req->file->f_op->write_iter))
 -- 
 2.43.0
 
