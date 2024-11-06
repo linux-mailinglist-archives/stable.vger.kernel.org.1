@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244639BE7F1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FBF9BE918
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06EB1F217CD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ADCDB23C31
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E891DF961;
-	Wed,  6 Nov 2024 12:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1E1198E96;
+	Wed,  6 Nov 2024 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKmccZ3q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJPfED4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB7A1DF721;
-	Wed,  6 Nov 2024 12:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A65171C9;
+	Wed,  6 Nov 2024 12:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895552; cv=none; b=g4W84UyX+/4sxiQc6VwqHIgRKzn+KW3q6anccXXa9hY1VUw3BZieQXiQ2HKBp2jB2kIhX9aqA6L+LuGLCT0f6mHzYk5fO8+CGNXBp4e1Cn8KXrgh3fPEvlxF6L9sJia0i3B0TdcY6YoXBVuNbC9YjpuzBFUdV96dDCVMDbTpKeI=
+	t=1730896224; cv=none; b=bH+zl9/TMvuNzbdZxuZvgjm7iIo4/JUujHYmY1aXWzReNb3J52kqs9g9N/ovzpuzGdtRetVrXRpp8mzfKYumCXwr491yd1WmLhtnND3PioywI2Qjec1Z4k/f1md2pn3EgY3EiDQaabDepvfxjynTfqz1GIkcPHt4crqzPMR+BuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895552; c=relaxed/simple;
-	bh=yWzjQjS5YNTSJuT/+R8V/Vr9fr3X/2qi4cpsNkk3gJ0=;
+	s=arc-20240116; t=1730896224; c=relaxed/simple;
+	bh=B+oik3HFPrNJ6S+WUpRCDQu+QFD91F3+0f79UgdJTew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxBTKw6Qci2DoI8nawixFNJzfyBlKfF/cGfXz/jctVmXPh4lx4i08WTxDJRaQU8vtAS9fqm8ENpx7EJDujCeE5oLNKafyj9cxK0JjoT3o62aw9+s1dfbA93Q2g+rRJq7rQsDkIM8e6523UeePb8Ow3a7ShYtz1rq5jALS5Uu3CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKmccZ3q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DE8C4CECD;
-	Wed,  6 Nov 2024 12:19:12 +0000 (UTC)
+	 MIME-Version; b=bA96UJn2jgQUg8rBvKAxV8eBq1KHr9dr5MRdUbKUADyUVb268uWlXJPGsNqfTtAsNaZd7Hv4PsOwtpjStTNXSPCSJ0qZTqDG46gFVlKw5SMm6/gp5yhVjOCYEpbYyTaKCE9Y5xJENZlxQWw3CFdzFGxDMJyF9/Iy0609lpVL9t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJPfED4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE02C4CED4;
+	Wed,  6 Nov 2024 12:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895552;
-	bh=yWzjQjS5YNTSJuT/+R8V/Vr9fr3X/2qi4cpsNkk3gJ0=;
+	s=korg; t=1730896223;
+	bh=B+oik3HFPrNJ6S+WUpRCDQu+QFD91F3+0f79UgdJTew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKmccZ3qhAaj8UZ+EAV8WGLjbkX8dOLMLzJFreIcFIuAWBqIIlEcTBvXAA1/eUUD8
-	 /DsI6f76cAFgT9i8maYUzLYzR/4WrUYUdwa5zoBHKfMHfJfn/HHzpuP13Y9edIRuMY
-	 JrYCzpCOYebhJ48hXUAlFSiSmW/e56ZaVw7Sj5Sw=
+	b=sJPfED4YwIUQuVUqmxWwKnQdRtijN0v9lwPH1qK3PQYc16g2aUYIHSyYvyrErEedV
+	 yFEKD6BF+nFPiu22NZJFY4UprMa5o1YPDMYsR09x+z1ErXiWEr4THPPZDURrrQLdYy
+	 AJFrsClI3ZDn9LHrkOM66aJ6ErM6gXapJcBBODRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 257/350] gpio: aspeed: Use devm_clk api to manage clock source
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 132/245] iio: light: veml6030: fix microlux value calculation
 Date: Wed,  6 Nov 2024 13:03:05 +0100
-Message-ID: <20241106120327.259205812@linuxfoundation.org>
+Message-ID: <20241106120322.474939736@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
+commit 63dd163cd61dda6f38343776b42331cc6b7e56e0 upstream.
 
-Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
+The raw value conversion to obtain a measurement in lux as
+INT_PLUS_MICRO does not calculate the decimal part properly to display
+it as micro (in this case microlux). It only calculates the module to
+obtain the decimal part from a resolution that is 10000 times the
+provided in the datasheet (0.5376 lux/cnt for the veml6030). The
+resulting value must still be multiplied by 100 to make it micro.
 
-Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug was introduced with the original implementation of the driver.
+
+Only the illuminance channel is fixed becuase the scale is non sensical
+for the intensity channels anyway.
+
+Cc: stable@vger.kernel.org
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-aspeed.c | 2 +-
+ drivers/iio/light/veml6030.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
-index 5cc80678ac352..cab3d9a4018ab 100644
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -1176,7 +1176,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
- 	if (!gpio_id)
- 		return -EINVAL;
- 
--	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
-+	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(gpio->clk)) {
- 		dev_warn(&pdev->dev,
- 				"Failed to get clock from devicetree, debouncing disabled\n");
--- 
-2.43.0
-
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -522,7 +522,7 @@ static int veml6030_read_raw(struct iio_
+ 			}
+ 			if (mask == IIO_CHAN_INFO_PROCESSED) {
+ 				*val = (reg * data->cur_resolution) / 10000;
+-				*val2 = (reg * data->cur_resolution) % 10000;
++				*val2 = (reg * data->cur_resolution) % 10000 * 100;
+ 				return IIO_VAL_INT_PLUS_MICRO;
+ 			}
+ 			*val = reg;
 
 
 
