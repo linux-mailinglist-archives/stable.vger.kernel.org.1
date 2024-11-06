@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0679BEE78
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EFF9BEEBC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA4F01F259C8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D801C248E2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678EC1DF995;
-	Wed,  6 Nov 2024 13:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C13A1E103C;
+	Wed,  6 Nov 2024 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXDh2503"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlZPo0n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256EE1D86E8;
-	Wed,  6 Nov 2024 13:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335FB1E00AF;
+	Wed,  6 Nov 2024 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899056; cv=none; b=FUquDZBpqYYdbMU+IHHYezMkA/wMKMXpA5w/goOajC4wp5Htm7S0VnjGEDATicpFzqqaD9NirxOCEqUGShizFV1uoX7S1OrXhtIFSdGCpnSAju2sFgsMASeG9VoO0OrfWXTPJY/AHLPxHFIFyY62+OME9u72mFMEb8qTxYcaaUc=
+	t=1730899210; cv=none; b=pwPRspe/yuKba+6OWkbWIdGBgELTCNBi8NAFLihyeiaH/ceTFVTl7jJEmyj/e2wb4j5LId9hqNlD2/kzOrAyvN20AdTPnQO46x0kmUlmYaIT0EJqEmyr9Nu6gJH4sX1/iyKGQxxOGpr7keSSDUdCgkJv7TYM1Fl00wuOguFglPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899056; c=relaxed/simple;
-	bh=tYwvO7a4NSZvbZGVjgN85sE9uPCuoDS1AkGcYIoHlKc=;
+	s=arc-20240116; t=1730899210; c=relaxed/simple;
+	bh=V3om6d2SJwIv0DgUzsV1wWdM2ozpDoxIF1lTkk3gOcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqwWp1OhBL1ZMGSXW1tDt+mw+2d2D0CoMTp+l+ArJ4OOykLG7VSSSAiqiv6yY9C1QbDrrlq2HxEOT8IPLWrUkaDhC7XbGTNeBTW4eK5oZePjrHjYtr5X5QMljTPEUyjyzT+bnyJ+7yc0pigTWoJqwRf8gwj632oRau59wJhUNkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXDh2503; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24AAC4CED5;
-	Wed,  6 Nov 2024 13:17:35 +0000 (UTC)
+	 MIME-Version; b=popfkZxKtLInjPlxYfNQDbQiRNMChI1eK33W+v/BIBATVkF0jRID9ltUWDEL7a7//isXB1ggZK8B2cxd0nCGBIoRTuu9AkA0PZoWSBMyByXmwAK4mGtdid1TABOzMkw0AHaKpjRE9bUYSSiMX2eS14lf4znA8cy0tMwzJV63qII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlZPo0n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F31C4CECD;
+	Wed,  6 Nov 2024 13:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899056;
-	bh=tYwvO7a4NSZvbZGVjgN85sE9uPCuoDS1AkGcYIoHlKc=;
+	s=korg; t=1730899210;
+	bh=V3om6d2SJwIv0DgUzsV1wWdM2ozpDoxIF1lTkk3gOcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXDh2503j4x755Ra/ttfpX0Hr00iXoH2Kjl1OGdDFMFJHEcgwWOVfjQdZibgJkIT4
-	 NyDtJt8+eeukuEv8v1qw/DQcj/F0dr6ilLOklvRb1FJmr+PCvPqJ9G4A9iBQSeEsHL
-	 9U9Onbpx+vi9ZjY7RFsH2GN6CFeC7bm8rXoZv5CI=
+	b=AlZPo0n0IYHoeLaFn712ptGN8EDU2gS14rTx40fb8DUhVZk/J6HGqzwfuNSq4kO+w
+	 /I7n3UtiUqO0SAUzpQlRRScBmHrPO78jc+DBtPQrEB0TgXUWFuyyJFrt3x8s60+cxB
+	 mzG5GogsCLqFgpurTJ4eNrehQvTg2A+TNXu2ZnGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongren Zheng <i@zenithal.me>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [PATCH 5.4 446/462] usbip: tools: Fix detach_port() invalid port error path
+	Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/73] net: amd: mvme147: Fix probe banner message
 Date: Wed,  6 Nov 2024 13:05:39 +0100
-Message-ID: <20241106120342.517793064@linuxfoundation.org>
+Message-ID: <20241106120301.014090613@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+From: Daniel Palmer <daniel@0x0f.com>
 
-commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-The detach_port() doesn't return error
-when detach is attempted on an invalid port.
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongren Zheng <i@zenithal.me>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
-Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
+
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/usb/usbip/src/usbip_detach.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/tools/usb/usbip/src/usbip_detach.c
-+++ b/tools/usb/usbip/src/usbip_detach.c
-@@ -68,6 +68,7 @@ static int detach_port(char *port)
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index da97fccea9ea6..769355824b7e1 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -103,10 +103,6 @@ static struct net_device * __init mvme147lance_probe(void)
+ 	address = address >> 8;
+ 	dev->dev_addr[3] = address&0xff;
+ 
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -136,6 +132,9 @@ static struct net_device * __init mvme147lance_probe(void)
+ 		return ERR_PTR(err);
  	}
  
- 	if (!found) {
-+		ret = -1;
- 		err("Invalid port %s > maxports %d",
- 			port, vhci_driver->nports);
- 		goto call_driver_close;
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
