@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-91294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE179BED5C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA419BED67
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8841285B6F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC6601F251F3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176B41F9A82;
-	Wed,  6 Nov 2024 13:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB351F5822;
+	Wed,  6 Nov 2024 13:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjyNQ+B6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t13WJVOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B031F9412;
-	Wed,  6 Nov 2024 13:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5E31F4FCE;
+	Wed,  6 Nov 2024 13:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898310; cv=none; b=qeasUy3N0H4liDfq7/Pcm0l40Tm3qEJZbY4Ef+O6YiHYyfClOQtWmjTKDPSPmjZDDsrE7hJebR0JCy9PWrFYwHX8yYfeFi6vJUt8+HJxjoLd4H3v5Ts+mVwpGTDsr/hJzKHqJKnId6y+hzavQ7kMkTt5k195gNMxN9rpWFDLy6A=
+	t=1730898343; cv=none; b=kRnhVJL1C6kk7+mtqabWOR8f/aBp+I2Sv1Uu2zApsQ9JuwlGapmhI37xJt7yPyvpABU9xudPhIOLXf01G6hxRw2bjwvCcWxAMtxqRY+mtQx4g5AO6B+VaXUkGztSwaa0L7JU20yzPsY+MDgAoC5NOYrQWmbImZrAhuKRDc8MLgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898310; c=relaxed/simple;
-	bh=HC7wsrGdwXKZjuuppx6E/hQROvSyDie3LURBkNhBt8I=;
+	s=arc-20240116; t=1730898343; c=relaxed/simple;
+	bh=zUVhxGhuNWTRBNluesvZi4v9UBBktpsqenrefDCAkLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbvlaVTU7011jjJK+ruNwVo+7Pwof53dFLSW/Ie7AL8z4kbg2nPppr1Q+vG3HKwHAhsm6Ll9DKs6C5XNfmQmQrDjqdbr3Mf+tbk2uR8YDGY3NthRY8fJA60FfErtO/3LVh3WqC+4kL1NcHp3lvjXQQq/OGBN3+WzAgxK6lhHcMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjyNQ+B6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5274C4CECD;
-	Wed,  6 Nov 2024 13:05:09 +0000 (UTC)
+	 MIME-Version; b=ck9gHHlkNQojzTvK4PmomeJhgc5EXeF6NWkb0fi02M9nv0GIg3M2Fy3AnCHccxsjoqOVHttUWsQGbV+V45DgibUFdHM4t9r6bbQL9nvodzGGLy/zdr9w8Iz/E35hfTNCRzmSq6VRwWr/NYQtHY+qnbSW/rZz0+F/FIUYpa1tt5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t13WJVOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA72EC4CECD;
+	Wed,  6 Nov 2024 13:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898310;
-	bh=HC7wsrGdwXKZjuuppx6E/hQROvSyDie3LURBkNhBt8I=;
+	s=korg; t=1730898343;
+	bh=zUVhxGhuNWTRBNluesvZi4v9UBBktpsqenrefDCAkLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjyNQ+B6z3tMhomnxS75cQaaxc/Ig0YfXykqU1TcVmrRpp3TF332//0V8g9lHVlqo
-	 W9ajC05GJmspcviRd5V5OVP4stvR50F1JWF8wBI/T13+3hdy5gSmC1E61zFpGFvZsx
-	 pghvJPK++0YLdfhqD9j1G9iRMog1DREGrsnpDOLQ=
+	b=t13WJVOcDPE8ypM/3nc+x7Ee4YDY0ItZHLVEhm8CKSMtfml3m6jg2HubN+F4sdiem
+	 91ycC31Vq7TBBaZ0TU9n0RRyIWqgb/zA59lm/8HKWBzatLXM2zIWj6QIkBLHQeKkRo
+	 KhJ9FYiWwaPAlp9nO2Ee6eL13ffDsKN1jQjIDN2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Danilov <littlesmilingcloud@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 188/462] ipv4: ip_gre: Fix drops of small packets in ipgre_xmit
-Date: Wed,  6 Nov 2024 13:01:21 +0100
-Message-ID: <20241106120336.158124649@linuxfoundation.org>
+Subject: [PATCH 5.4 189/462] sctp: set sk_state back to CLOSED if autobind fails in sctp_listen_start
+Date: Wed,  6 Nov 2024 13:01:22 +0100
+Message-ID: <20241106120336.183076985@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,87 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Danilov <littlesmilingcloud@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit c4a14f6d9d17ad1e41a36182dd3b8a5fd91efbd7 ]
+[ Upstream commit 8beee4d8dee76b67c75dc91fd8185d91e845c160 ]
 
-Regression Description:
+In sctp_listen_start() invoked by sctp_inet_listen(), it should set the
+sk_state back to CLOSED if sctp_autobind() fails due to whatever reason.
 
-Depending on the options specified for the GRE tunnel device, small
-packets may be dropped. This occurs because the pskb_network_may_pull
-function fails due to the packet's insufficient length.
+Otherwise, next time when calling sctp_inet_listen(), if sctp_sk(sk)->reuse
+is already set via setsockopt(SCTP_REUSE_PORT), sctp_sk(sk)->bind_hash will
+be dereferenced as sk_state is LISTENING, which causes a crash as bind_hash
+is NULL.
 
-For example, if only the okey option is specified for the tunnel device,
-original (before encapsulation) packets smaller than 28 bytes (including
-the IPv4 header) will be dropped. This happens because the required
-length is calculated relative to the network header, not the skb->head.
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: 0010:sctp_inet_listen+0x7f0/0xa20 net/sctp/socket.c:8617
+  Call Trace:
+   <TASK>
+   __sys_listen_socket net/socket.c:1883 [inline]
+   __sys_listen+0x1b7/0x230 net/socket.c:1894
+   __do_sys_listen net/socket.c:1902 [inline]
 
-Here is how the required length is computed and checked:
-
-* The pull_len variable is set to 28 bytes, consisting of:
-  * IPv4 header: 20 bytes
-  * GRE header with Key field: 8 bytes
-
-* The pskb_network_may_pull function adds the network offset, shifting
-the checkable space further to the beginning of the network header and
-extending it to the beginning of the packet. As a result, the end of
-the checkable space occurs beyond the actual end of the packet.
-
-Instead of ensuring that 28 bytes are present in skb->head, the function
-is requesting these 28 bytes starting from the network header. For small
-packets, this requested length exceeds the actual packet size, causing
-the check to fail and the packets to be dropped.
-
-This issue affects both locally originated and forwarded packets in
-DMVPN-like setups.
-
-How to reproduce (for local originated packets):
-
-  ip link add dev gre1 type gre ikey 1.9.8.4 okey 1.9.8.4 \
-          local <your-ip> remote 0.0.0.0
-
-  ip link set mtu 1400 dev gre1
-  ip link set up dev gre1
-  ip address add 192.168.13.1/24 dev gre1
-  ip neighbor add 192.168.13.2 lladdr <remote-ip> dev gre1
-  ping -s 1374 -c 10 192.168.13.2
-  tcpdump -vni gre1
-  tcpdump -vni <your-ext-iface> 'ip proto 47'
-  ip -s -s -d link show dev gre1
-
-Solution:
-
-Use the pskb_may_pull function instead the pskb_network_may_pull.
-
-Fixes: 80d875cfc9d3 ("ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()")
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240924235158.106062-1-littlesmilingcloud@gmail.com
+Fixes: 5e8f3f703ae4 ("sctp: simplify sctp listening code")
+Reported-by: syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/a93e655b3c153dc8945d7a812e6d8ab0d52b7aa0.1727729391.git.lucien.xin@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sctp/socket.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 3aae46b845775..09e9e46259f70 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -635,11 +635,11 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		if (skb_cow_head(skb, 0))
- 			goto free_skb;
- 
--		tnl_params = (const struct iphdr *)skb->data;
--
--		if (!pskb_network_may_pull(skb, pull_len))
-+		if (!pskb_may_pull(skb, pull_len))
- 			goto free_skb;
- 
-+		tnl_params = (const struct iphdr *)skb->data;
-+
- 		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
- 		skb_pull(skb, pull_len);
- 		skb_reset_mac_header(skb);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 614130ff6ba06..eef807edd61da 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -8396,8 +8396,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+ 	 */
+ 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
+ 	if (!ep->base.bind_addr.port) {
+-		if (sctp_autobind(sk))
++		if (sctp_autobind(sk)) {
++			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+ 			return -EAGAIN;
++		}
+ 	} else {
+ 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
+ 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
 -- 
 2.43.0
 
