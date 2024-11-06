@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CFF9BE886
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8299BE767
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066252843E6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5451C21BB7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFA81DFE10;
-	Wed,  6 Nov 2024 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621311DF24E;
+	Wed,  6 Nov 2024 12:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXHduDmD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRDxmZBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093981DF978;
-	Wed,  6 Nov 2024 12:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7D81D416E;
+	Wed,  6 Nov 2024 12:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895904; cv=none; b=Ztq/4oGGfLS4IWHT+b7v0KJAnIPf3pkIymVUwFNoktDmsurPz3H1SZbhm7askgD2HMr62CcJeOW22ePZQMLfCUzyy41dFyY0tqpA84tEUrOu6xEzm3a++lFZ0LsgZ/AL206QbbnTLm8qQMfjWe2cNI1+mud1FmFWgcGqHurULSw=
+	t=1730895235; cv=none; b=CRZHoISHtAWtZPRp4MAtOrH6m5xGtpbPlqPHNlgCA67psHGnd2WOKkOzON27GdE69kbcEj3U71pmH18OmGJ2SVpftN4vBHjunsKtIIpULcA4e0JksbpFaKLvgUp02JhTKHXRsJn+dCNPASnUqQl15BKoIHe86MynqKL24KWHHss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895904; c=relaxed/simple;
-	bh=4l15eMwk3dncQ1XJHzVO3R2jDPL7ZsZ5UnL2JjszJLM=;
+	s=arc-20240116; t=1730895235; c=relaxed/simple;
+	bh=olfnTvCBj/Nhh48VkPiXrHa/OdsVu9nlVQYinC0phww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fr4MX/Tu/o4R0/W5RiYPfmT48Y2qr0T5Ffloca/J7pooBCIcHCIeyg4zmABMA6Lm/uycYQL6kHLQVWSMt2cM0mkWcRsoRkJoms4I81vTFska2CHjqxQJGMBk7MkOUFim7sKagUla6LsnzV1BYlPnJNFJVW1jvKSJcBOn4vXQMlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXHduDmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B830C4CED3;
-	Wed,  6 Nov 2024 12:25:03 +0000 (UTC)
+	 MIME-Version; b=tNRXYpuRQVuy8MRhymkYHjfm8+QrVFUxo6CyuE1k5kIgQBTNPRQxw5gLjVdk7BpSufHxxnyUAD7mmGXTaYGXkTrmHldjgJnNICcBiY5nVJm73gZYI2tn5fkMmhmJFiWppaahu0q9Vza9mFXhLFNxrqKtT+20H0oMIHGpEfuYh84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRDxmZBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961BC4CECD;
+	Wed,  6 Nov 2024 12:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895903;
-	bh=4l15eMwk3dncQ1XJHzVO3R2jDPL7ZsZ5UnL2JjszJLM=;
+	s=korg; t=1730895235;
+	bh=olfnTvCBj/Nhh48VkPiXrHa/OdsVu9nlVQYinC0phww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXHduDmD1UqsHtyFLst9ETYmal7l6TrgUGZEeJZpuy+n9FWIxUXXP6zMaFRskudgi
-	 F6PyThazTTkwznbmuxTJFiAkBMuVeWjF1/iY5O0QIq/yHY7d6bPl/ZgpLBcQNPMgk5
-	 Q5u5xOqVEtswA5Zczh4kGDYqBOvGjIbvgaznVN3I=
+	b=cRDxmZBHd8KvaoIO9vWBzAQ6ojaKAIFhre2XDp5C8VRmW3aALhLqF0PgZehm+MYa5
+	 cHajg6GbLWQflyRU5FaybMIFTqDh39ZXAIwtM3YTczIe6TnyRXpgUeLVj+ROVB9vVT
+	 Si/DVA5JC2WnQk03tqrVXPHTBs4znekuan+X7vC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 023/245] Revert "wifi: iwlwifi: remove retry loops in start"
-Date: Wed,  6 Nov 2024 13:01:16 +0100
-Message-ID: <20241106120319.805249955@linuxfoundation.org>
+Subject: [PATCH 4.19 149/350] net: hisilicon: hns_dsaf_mac: fix OF node leak in hns_mac_get_info()
+Date: Wed,  6 Nov 2024 13:01:17 +0100
+Message-ID: <20241106120324.596441563@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit bfc0ed73e095cc3858d35731f191fa6e3d813262 ]
+[ Upstream commit 5680cf8d34e1552df987e2f4bb1bff0b2a8c8b11 ]
 
-Revert commit dfdfe4be183b ("wifi: iwlwifi: remove retry loops in
-start"), it turns out that there's an issue with the PNVM load
-notification from firmware not getting processed, that this patch
-has been somewhat successfully papering over. Since this is being
-reported, revert the loop removal for now.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in hns_mac_get_info().
 
-We will later at least clean this up to only attempt to retry if
-there was a timeout, but currently we don't even bubble up the
-failure reason to the correct layer, only returning NULL.
-
-Fixes: dfdfe4be183b ("wifi: iwlwifi: remove retry loops in start")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20241022092212.4aa82a558a00.Ibdeff9c8f0d608bc97fc42024392ae763b6937b7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 28 +++++++++++++------
- drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  3 ++
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 ++++++-
- 3 files changed, 31 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index aaaabd67f9593..3709039a294d8 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1413,25 +1413,35 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
- 	const struct iwl_op_mode_ops *ops = op->ops;
- 	struct dentry *dbgfs_dir = NULL;
- 	struct iwl_op_mode *op_mode = NULL;
-+	int retry, max_retry = !!iwlwifi_mod_params.fw_restart * IWL_MAX_INIT_RETRY;
- 
- 	/* also protects start/stop from racing against each other */
- 	lockdep_assert_held(&iwlwifi_opmode_table_mtx);
- 
-+	for (retry = 0; retry <= max_retry; retry++) {
-+
- #ifdef CONFIG_IWLWIFI_DEBUGFS
--	drv->dbgfs_op_mode = debugfs_create_dir(op->name,
--						drv->dbgfs_drv);
--	dbgfs_dir = drv->dbgfs_op_mode;
-+		drv->dbgfs_op_mode = debugfs_create_dir(op->name,
-+							drv->dbgfs_drv);
-+		dbgfs_dir = drv->dbgfs_op_mode;
- #endif
- 
--	op_mode = ops->start(drv->trans, drv->trans->cfg,
--			     &drv->fw, dbgfs_dir);
--	if (op_mode)
--		return op_mode;
-+		op_mode = ops->start(drv->trans, drv->trans->cfg,
-+				     &drv->fw, dbgfs_dir);
-+
-+		if (op_mode)
-+			return op_mode;
-+
-+		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
-+			break;
-+
-+		IWL_ERR(drv, "retry init count %d\n", retry);
- 
- #ifdef CONFIG_IWLWIFI_DEBUGFS
--	debugfs_remove_recursive(drv->dbgfs_op_mode);
--	drv->dbgfs_op_mode = NULL;
-+		debugfs_remove_recursive(drv->dbgfs_op_mode);
-+		drv->dbgfs_op_mode = NULL;
- #endif
-+	}
- 
- 	return NULL;
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
-index 1549ff4295497..6a1d31892417b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
-@@ -98,6 +98,9 @@ void iwl_drv_stop(struct iwl_drv *drv);
- #define VISIBLE_IF_IWLWIFI_KUNIT static
- #endif
- 
-+/* max retry for init flow */
-+#define IWL_MAX_INIT_RETRY 2
-+
- #define FW_NAME_PRE_BUFSIZE	64
- struct iwl_trans;
- const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index e38cff6176dd3..63b2c6fe3f8ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1292,12 +1292,14 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
- {
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
- 	int ret;
-+	int retry, max_retry = 0;
- 
- 	mutex_lock(&mvm->mutex);
- 
- 	/* we are starting the mac not in error flow, and restart is enabled */
- 	if (!test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status) &&
- 	    iwlwifi_mod_params.fw_restart) {
-+		max_retry = IWL_MAX_INIT_RETRY;
- 		/*
- 		 * This will prevent mac80211 recovery flows to trigger during
- 		 * init failures
-@@ -1305,7 +1307,13 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
- 		set_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
- 	}
- 
--	ret = __iwl_mvm_mac_start(mvm);
-+	for (retry = 0; retry <= max_retry; retry++) {
-+		ret = __iwl_mvm_mac_start(mvm);
-+		if (!ret)
-+			break;
-+
-+		IWL_ERR(mvm, "mac start retry %d\n", retry);
-+	}
- 	clear_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
- 
- 	mutex_unlock(&mvm->mutex);
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
+index d2791bcff5d49..5ee4317e5a524 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
+@@ -937,6 +937,7 @@ static int hns_mac_get_info(struct hns_mac_cb *mac_cb)
+ 			mac_cb->cpld_ctrl = NULL;
+ 		} else {
+ 			syscon = syscon_node_to_regmap(cpld_args.np);
++			of_node_put(cpld_args.np);
+ 			if (IS_ERR_OR_NULL(syscon)) {
+ 				dev_dbg(mac_cb->dev, "no cpld-syscon found!\n");
+ 				mac_cb->cpld_ctrl = NULL;
 -- 
 2.43.0
 
