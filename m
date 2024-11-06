@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-90309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893559BE7AB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119F79BE8D1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC1E1C23662
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1951F22329
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7A31DF254;
-	Wed,  6 Nov 2024 12:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0650C1DFD83;
+	Wed,  6 Nov 2024 12:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ET4UgRX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYsCinod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF3E1DE8B4;
-	Wed,  6 Nov 2024 12:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A3C1DF98C;
+	Wed,  6 Nov 2024 12:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895391; cv=none; b=J9nJ3HJgf8u6e3kubb0jUoV2iAmrj/wAfDaDqC7pqAf20xgn/wfXVcyAuAUSZnVkl9BVz5XiFWCLXJbZkz3p+pZ+RoG3J+tQ899TD8i+xco/bL/emYbY4zwnD0jbG0hnoZZjGgMzEefuXGyWw9cNcEht3yt8Q6fngWP3BKRVVko=
+	t=1730896062; cv=none; b=FV77jo7VPxujq3cOSD7zG8sEyBeMmnk0FngDNW2SXWknAO3B+3gf5uJRNJG9+uvCNnNXyZD/LGMbpUgJPoM86UzBPBvR14ZLb5jzEjFnL4PbRb91KA6bjJfAVfIUoEulqyzbHd0rf4BVQVFD1e1VPrTGeb2q5Oa0PNMcSkjkLIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895391; c=relaxed/simple;
-	bh=ZMm8FcFFpmhGuX47Yl+WUd/8Fee6YzMCCMaJZLf3RV4=;
+	s=arc-20240116; t=1730896062; c=relaxed/simple;
+	bh=jYMTNPdOLn5aXr2eyjZuu8oFF/IyLttDXMYHpXDqepk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olh1FmGjwVXG73bwFH0A8GeB87VOA4QDhAcic9K2fUqHxa0t5tyyAJBshmmGfOCHAH9Oc5Mq6nOR/GzOBvV9p8/DaI7BRX530f5n1OZRoxXyL1nveeT394LcKDaZIll8Ack56BGDvFDcMIgvLEiZLW2itFfjLefT7XbYEMwbjis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ET4UgRX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172B2C4CECD;
-	Wed,  6 Nov 2024 12:16:31 +0000 (UTC)
+	 MIME-Version; b=auIoiGBQtyVqkm11x10I8ZX8exeCqoL11vmsbvEzWXdD7RtsTvgigQIZGB9Ak5zM7MIty01FbBpjHb8b0f2M9LW+AoepLAahBnkysSm1yJsA1MVA7lkD0R+rrtSsr4UteCBSYx0er8UFpzB0ZBxH+WU/OAl4ygRWkwnHcMzDQh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYsCinod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE28C4CECD;
+	Wed,  6 Nov 2024 12:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895391;
-	bh=ZMm8FcFFpmhGuX47Yl+WUd/8Fee6YzMCCMaJZLf3RV4=;
+	s=korg; t=1730896062;
+	bh=jYMTNPdOLn5aXr2eyjZuu8oFF/IyLttDXMYHpXDqepk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ET4UgRX/V0nQYeT1OmRBiIkQNXrCcoMGULcqmCk+MZvl6n+Qr9x2bOi5moKHd/I5b
-	 OGntqgTFDSiMY0iGgwTXb+ixKECGIPaV5O+cRXDxIB5eys8+ZSQpxlOyxHJMjRtx2Q
-	 ovrFRY7HZrJkWnTrN4hfhDvWLH6wijfUhRty3rNM=
+	b=ZYsCinodqh8k8ihdgdQBWyYt8nlBQM8Wk7Ny6WSLQU+IgEU13yH5xSFy9h+WaeUG3
+	 YceImW+55ygtdHoZj4hZaq2wPV/sbnPE2CO0Q26Mt8xMmB6GYVbaDnspvVKP/Q2liA
+	 TfT5WWQ7vHFSjx0tNi4R3NoJhM5RbVwWqsPas57w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 201/350] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
+	Shiju Jose <shiju.jose@huawei.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 076/245] cxl/events: Fix Trace DRAM Event Record
 Date: Wed,  6 Nov 2024 13:02:09 +0100
-Message-ID: <20241106120325.939199226@linuxfoundation.org>
+Message-ID: <20241106120321.076394320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
+[ Upstream commit 53ab8678e7180834be29cf56cd52825fc3427c02 ]
 
-Patch series "Misc fixes for ocfs2_read_blocks", v5.
+CXL spec rev 3.0 section 8.2.9.2.1.2 defines the DRAM Event Record.
 
-This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
-the issue reported by syzbot, which detects bad unlock balance in
-ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
-Zhao when reviewing above fix.
+Fix decode memory event type field of DRAM Event Record.
+For e.g. if value is 0x1 it will be reported as an Invalid Address
+(General Media Event Record - Memory Event Type) instead of Scrub Media
+ECC Error (DRAM Event Record - Memory Event Type) and so on.
 
-
-This patch (of 2):
-
-There was a lock release before exiting, so remove the unreasonable unlock.
-
-Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
-Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
-Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
-Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>	[4.20+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d6c1e6d60ba ("cxl/mem: Trace DRAM Event Record")
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+Link: https://patch.msgid.link/20241014143003.1170-1-shiju.jose@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/buffer_head_io.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/cxl/core/trace.h | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/fs/ocfs2/buffer_head_io.c
-+++ b/fs/ocfs2/buffer_head_io.c
-@@ -251,7 +251,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
- 		if (bhs[i] == NULL) {
- 			bhs[i] = sb_getblk(sb, block++);
- 			if (bhs[i] == NULL) {
--				ocfs2_metadata_cache_io_unlock(ci);
- 				status = -ENOMEM;
- 				mlog_errno(status);
- 				/* Don't forget to put previous bh! */
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index 9167cfba7f592..cdffebcf20a4d 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -279,7 +279,7 @@ TRACE_EVENT(cxl_generic_event,
+ #define CXL_GMER_MEM_EVT_TYPE_ECC_ERROR			0x00
+ #define CXL_GMER_MEM_EVT_TYPE_INV_ADDR			0x01
+ #define CXL_GMER_MEM_EVT_TYPE_DATA_PATH_ERROR		0x02
+-#define show_mem_event_type(type)	__print_symbolic(type,			\
++#define show_gmer_mem_event_type(type)	__print_symbolic(type,			\
+ 	{ CXL_GMER_MEM_EVT_TYPE_ECC_ERROR,		"ECC Error" },		\
+ 	{ CXL_GMER_MEM_EVT_TYPE_INV_ADDR,		"Invalid Address" },	\
+ 	{ CXL_GMER_MEM_EVT_TYPE_DATA_PATH_ERROR,	"Data Path Error" }	\
+@@ -373,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
+ 		"hpa=%llx region=%s region_uuid=%pUb",
+ 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+ 		show_event_desc_flags(__entry->descriptor),
+-		show_mem_event_type(__entry->type),
++		show_gmer_mem_event_type(__entry->type),
+ 		show_trans_type(__entry->transaction_type),
+ 		__entry->channel, __entry->rank, __entry->device,
+ 		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
+@@ -391,6 +391,17 @@ TRACE_EVENT(cxl_general_media,
+  * DRAM Event Record defines many fields the same as the General Media Event
+  * Record.  Reuse those definitions as appropriate.
+  */
++#define CXL_DER_MEM_EVT_TYPE_ECC_ERROR			0x00
++#define CXL_DER_MEM_EVT_TYPE_SCRUB_MEDIA_ECC_ERROR	0x01
++#define CXL_DER_MEM_EVT_TYPE_INV_ADDR			0x02
++#define CXL_DER_MEM_EVT_TYPE_DATA_PATH_ERROR		0x03
++#define show_dram_mem_event_type(type)  __print_symbolic(type,				\
++	{ CXL_DER_MEM_EVT_TYPE_ECC_ERROR,		"ECC Error" },			\
++	{ CXL_DER_MEM_EVT_TYPE_SCRUB_MEDIA_ECC_ERROR,	"Scrub Media ECC Error" },	\
++	{ CXL_DER_MEM_EVT_TYPE_INV_ADDR,		"Invalid Address" },		\
++	{ CXL_DER_MEM_EVT_TYPE_DATA_PATH_ERROR,		"Data Path Error" }		\
++)
++
+ #define CXL_DER_VALID_CHANNEL				BIT(0)
+ #define CXL_DER_VALID_RANK				BIT(1)
+ #define CXL_DER_VALID_NIBBLE				BIT(2)
+@@ -477,7 +488,7 @@ TRACE_EVENT(cxl_dram,
+ 		"hpa=%llx region=%s region_uuid=%pUb",
+ 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
+ 		show_event_desc_flags(__entry->descriptor),
+-		show_mem_event_type(__entry->type),
++		show_dram_mem_event_type(__entry->type),
+ 		show_trans_type(__entry->transaction_type),
+ 		__entry->channel, __entry->rank, __entry->nibble_mask,
+ 		__entry->bank_group, __entry->bank,
+-- 
+2.43.0
+
 
 
 
