@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-89954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7FF9BDBE8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:10:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A829BDBE9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89262B2327B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:10:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D9E1F254B9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3681922C6;
-	Wed,  6 Nov 2024 02:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C67818FC74;
+	Wed,  6 Nov 2024 02:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp/6OczF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEo45/US"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C34418FDD2;
-	Wed,  6 Nov 2024 02:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231A018C903;
+	Wed,  6 Nov 2024 02:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858948; cv=none; b=LyHuWPK1wdzH+/QYFcWfKH/8z7ZVbj2jBhbsaeYX0oFMiWocklWcBrXlLyKcMgJpVw5JaxTdwTE2uIGsVknB5fHC51QmyUrfqNm70joSkarMHcw6wTKYGYwoQpZmmq7XAJRg+KH2fnqKqx0wLCFmzPzco3WU7lC/pA8Xn9Vo+ng=
+	t=1730858959; cv=none; b=BzzWfYd72W6QsCl1hxzjm8KB6NRQGPMQzN2SbyqoEMf2S1DUQbolXQDyecSGCB0X0RnuU75ak/hjGggBSI0pouDFctiwzIXGkMhpi3nxoTQfrkXq7ayudZbTyytkLQtYY1VERr1f1pxTX9TPXeDrwNe6X5ttDzshL9t+fbyQUwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858948; c=relaxed/simple;
-	bh=B6UfHUEIWaWEcRpuQYHyphb64JFnYui36KlElCdvEMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QLW4cCuJJ3XGEf8rkdV8KKaXVmWTmluiXADjEdQWONHG3HNc5j0m0gTWpWgDD262h+uU4m3t/+7IgnOzlhtEajtGaHWbSHeKHqbKhl2GULh9/eGTL4zjwBCfG6iFQRMk/GYw6edRk0s9+XVwtoU6ptixRo+O3TT4AxA4l7DM/PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pp/6OczF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC2DC4CECF;
-	Wed,  6 Nov 2024 02:09:06 +0000 (UTC)
+	s=arc-20240116; t=1730858959; c=relaxed/simple;
+	bh=vcHW4zb5mHSmpp1M0GN/JROYRE9JSKUDQjBUxrcnaFQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NSZ8PstWl6YZnRmjowFb7GN2uOOsp+IIv8IHfFqOkG7tpC8Z0DZTZAJleUv96eTfBJFhMBMQ/skqWoY/JzPhrM8UGItKZHbr/lEVvbHESl8jg6X4REGq+s2l7BVB9Cf2yF753z7YAp9ojUIFNoSWUv8ZNAYV9G/iDgNem9VIRZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEo45/US; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE80CC4CECF;
+	Wed,  6 Nov 2024 02:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858947;
-	bh=B6UfHUEIWaWEcRpuQYHyphb64JFnYui36KlElCdvEMI=;
+	s=k20201202; t=1730858958;
+	bh=vcHW4zb5mHSmpp1M0GN/JROYRE9JSKUDQjBUxrcnaFQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pp/6OczFTLqCbavqo5uroOck8H6ydjhl7AT2DlOHW2E3WqKmDVsAtMgYcxE7V/aJN
-	 LKKjhETSZ+55SPsE31ftzGwTPmxlDxLOjlHPNX6UaMabxT+0oGkMBgFT+xD/zQgagu
-	 x/4PaQve54ASACcSFg6VBqk1kNqDImCMVHNvgDv1eEt4vAVJadYFXoIM8KZjeuWwK6
-	 /RcpiTOTxfB9tAkQ+CBYZw3yX+I6OhbveqlbYHM8hlfIODOfOO64IOVfIBtuZu2lhQ
-	 Bc9zAAuxHNIhoCxUB/0u5ZNv5LVz3U8yLB5Z4lTYfu8zUKyt+hqYlOi/34+W1237UG
-	 URAaJsSu3MMzw==
+	b=LEo45/US1z11nH98f5D+xa2GVGhY9xskdMDOyrtZLTYhiOsQq2jNf5FdsypBVP6GL
+	 NyVTU5ANMvSpA5GnW1t4Eu1sS9QdnNajKgZKHqpjiYwlNgWdWICjNztOdTCYOdqwQM
+	 t/PnaRQSUDrT67JIznrF8f8e6QUJdw+TpYBhuY4JLd+XeqoR/BtnQsSMUVbxKNcyXU
+	 TLw1P+IEIc5dAQYj76TFPz/N5U3ExvyGtTiJdpKM7z5ZPRFhwKHT2GhVd64xV5Kfis
+	 7Z3g5mYx2reyrDxZmQ2fs2fIDVfAgDIuGBbwn+QB1m/scXqwjCx9ilimI5SJzhm0w3
+	 ubl4ruLwtD71A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alexghiti@rivosinc.com
-Cc: Jason Montleon <jmontleo@redhat.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: FAILED: Patch "riscv: Do not use fortify in early code" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:04 -0500
-Message-ID: <20241106020905.164658-1-sashal@kernel.org>
+	chengzhihao1@huawei.com
+Cc: David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: FAILED: Patch "btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:08 -0500
+Message-ID: <20241106020914.164736-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,6 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the v6.6-stable tree.
@@ -72,83 +71,76 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From afedc3126e11ff1404b32e538657b68022e933ca Mon Sep 17 00:00:00 2001
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 9 Oct 2024 09:27:49 +0200
-Subject: [PATCH] riscv: Do not use fortify in early code
+From aec8e6bf839101784f3ef037dcdb9432c3f32343 Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Mon, 21 Oct 2024 22:02:15 +0800
+Subject: [PATCH] btrfs: fix use-after-free of block device file in
+ __btrfs_free_extra_devids()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Early code designates the code executed when the MMU is not yet enabled,
-and this comes with some limitations (see
-Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
+Mounting btrfs from two images (which have the same one fsid and two
+different dev_uuids) in certain executing order may trigger an UAF for
+variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
+following are the details:
 
-FORTIFY_SOURCE must be disabled then since it can trigger kernel panics
-as reported in [1].
+1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
+   devices by ioctl(BTRFS_IOC_SCAN_DEV):
 
-Reported-by: Jason Montleon <jmontleo@redhat.com>
-Closes: https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9HFkSCoaZjk-qCT2NGS7Q9HODg@mail.gmail.com/ [1]
-Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
-Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20241009072749.45006-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+             /  btrfs_device_1 → loop0
+   fs_device
+             \  btrfs_device_2 → loop1
+2. mount /dev/loop0 /mnt
+   btrfs_open_devices
+    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     fail: btrfs_close_devices // -ENOMEM
+	    btrfs_close_bdev(btrfs_device_1)
+             fput(btrfs_device_1->bdev_file)
+	      // btrfs_device_1->bdev_file is freed
+	    btrfs_close_bdev(btrfs_device_2)
+             fput(btrfs_device_2->bdev_file)
+
+3. mount /dev/loop1 /mnt
+   btrfs_open_devices
+    btrfs_get_bdev_and_sb(&bdev_file)
+     // EIO, btrfs_device_1->bdev_file is not assigned,
+     // which points to a freed memory area
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     btrfs_free_extra_devids
+      if (btrfs_device_1->bdev_file)
+       fput(btrfs_device_1->bdev_file) // UAF !
+
+Fix it by setting 'device->bdev_file' as 'NULL' after closing the
+btrfs_device in btrfs_close_one_device().
+
+Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
+CC: stable@vger.kernel.org # 4.19+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- arch/riscv/errata/Makefile    | 6 ++++++
- arch/riscv/kernel/Makefile    | 5 +++++
- arch/riscv/kernel/pi/Makefile | 6 +++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
-index 8a27394851233..f0da9d7b39c37 100644
---- a/arch/riscv/errata/Makefile
-+++ b/arch/riscv/errata/Makefile
-@@ -2,6 +2,12 @@ ifdef CONFIG_RELOCATABLE
- KBUILD_CFLAGS += -fno-pie
- endif
- 
-+ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
-+ifdef CONFIG_FORTIFY_SOURCE
-+KBUILD_CFLAGS += -D__NO_FORTIFY
-+endif
-+endif
-+
- obj-$(CONFIG_ERRATA_ANDES) += andes/
- obj-$(CONFIG_ERRATA_SIFIVE) += sifive/
- obj-$(CONFIG_ERRATA_THEAD) += thead/
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index 7f88cc4931f5c..69dc8aaab3fb3 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -36,6 +36,11 @@ KASAN_SANITIZE_alternative.o := n
- KASAN_SANITIZE_cpufeature.o := n
- KASAN_SANITIZE_sbi_ecall.o := n
- endif
-+ifdef CONFIG_FORTIFY_SOURCE
-+CFLAGS_alternative.o += -D__NO_FORTIFY
-+CFLAGS_cpufeature.o += -D__NO_FORTIFY
-+CFLAGS_sbi_ecall.o += -D__NO_FORTIFY
-+endif
- endif
- 
- extra-y += vmlinux.lds
-diff --git a/arch/riscv/kernel/pi/Makefile b/arch/riscv/kernel/pi/Makefile
-index d5bf1bc7de62e..81d69d45c06c3 100644
---- a/arch/riscv/kernel/pi/Makefile
-+++ b/arch/riscv/kernel/pi/Makefile
-@@ -16,8 +16,12 @@ KBUILD_CFLAGS	:= $(filter-out $(CC_FLAGS_LTO), $(KBUILD_CFLAGS))
- KBUILD_CFLAGS	+= -mcmodel=medany
- 
- CFLAGS_cmdline_early.o += -D__NO_FORTIFY
--CFLAGS_lib-fdt_ro.o += -D__NO_FORTIFY
- CFLAGS_fdt_early.o += -D__NO_FORTIFY
-+# lib/string.c already defines __NO_FORTIFY
-+CFLAGS_ctype.o += -D__NO_FORTIFY
-+CFLAGS_lib-fdt.o += -D__NO_FORTIFY
-+CFLAGS_lib-fdt_ro.o += -D__NO_FORTIFY
-+CFLAGS_archrandom_early.o += -D__NO_FORTIFY
- 
- $(obj)/%.pi.o: OBJCOPYFLAGS := --prefix-symbols=__pi_ \
- 			       --remove-section=.note.gnu.property \
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 8f340ad1d9384..eb51b609190fb 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1105,6 +1105,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
+ 	if (device->bdev) {
+ 		fs_devices->open_devices--;
+ 		device->bdev = NULL;
++		device->bdev_file = NULL;
+ 	}
+ 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+ 	btrfs_destroy_dev_zone_info(device);
 -- 
 2.43.0
 
