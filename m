@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFE49BEE9F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DBA9BEE57
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521151F25C04
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9E31F24D9E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CD21DED7C;
-	Wed,  6 Nov 2024 13:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDDE1E0090;
+	Wed,  6 Nov 2024 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVe5HVuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kL7py2c0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22937646;
-	Wed,  6 Nov 2024 13:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E089554765;
+	Wed,  6 Nov 2024 13:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899147; cv=none; b=AL9pvE5aK1gyRpimNOIz9UxnmnQlfVI1WGB0j9P+SqD/hL2BCi+rPWzmJIVrmlJX7Wsa6/5W1yHkQysquhNaAObStf6enp28Rj8Y+oF+Y6dxvj+PUwoa8Dpt2+pzLrHeapl6/euZ+kfRyUpCTLfUoVQ5A08CeRbjK9eja37j4QY=
+	t=1730898968; cv=none; b=CDUN6t3lesz8jwElCLLfgSgjPJxrs12D9jLG/XoASxP/w5a/sDObFj6YDVDKCWTp3+dJSn3ORFh41XYqRJowA33hYieJFi6t7N71CsYLH4855uxoAJwikqARPBRI6gXjt3NbNRYx0Wn5OCwgE+NGLw9Ifwpc3S4LymxPMUoQwM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899147; c=relaxed/simple;
-	bh=qNdO55ow33wwP//Vff6YvUCFA0US1ZpZJlPX6UCmlDU=;
+	s=arc-20240116; t=1730898968; c=relaxed/simple;
+	bh=yVNDwk8p4nvkUAUtGGUYmJDFUtXDS68vwkdgv/YmTLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcXp9dU0nd/4bvDLIp/2OclhPEaqYQ2pgwXIoHTl+kCkzzcasS291QH8Hem4onLOWnMyl9NM09MPBA+VxfzE8MNSl05l+Lb4lXzdhj+EnVCf3iXlNW97bOYPnLTHbpAfCTUYUtrGHxvmc/wdF1dXexXawBS5pUWNC5nb12om9Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVe5HVuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9432DC4CECD;
-	Wed,  6 Nov 2024 13:19:06 +0000 (UTC)
+	 MIME-Version; b=S03XOGIZOg4KSUhAB+b75a024VG/rylgCKfw7NCeDyVkpllrO5UPY0tiSRXDgsg8m1SmnEgTI5mmC7LtwJrcUVcru5Opkq9BePBu7Oi0t35X7pkUnRfCmIWVj4KQ5i2/WljiEeRoVmzCfIeQexJaEiYtWrakZUnQHtxQsUCGJl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kL7py2c0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68332C4CECD;
+	Wed,  6 Nov 2024 13:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899147;
-	bh=qNdO55ow33wwP//Vff6YvUCFA0US1ZpZJlPX6UCmlDU=;
+	s=korg; t=1730898967;
+	bh=yVNDwk8p4nvkUAUtGGUYmJDFUtXDS68vwkdgv/YmTLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVe5HVuo3AyY6/ubnjT2bJd2kk1anIFITQ9Ed1QkX/aizED2CcVu02a9F1kD8f+py
-	 s8v7XFI0htkpSh4FhTgKHMgg55kGlZWEScgMnMgc82z7s348y7d3vuTPiAoiUFulpt
-	 +xEUDQgsKSq6c8RSHd4qvJU948rjkYJC/EyleYFY=
+	b=kL7py2c0rfy9dH8/ZVYdQWVDxhSxkvLPlgVyMKav9+e8FhlXR4dx37wnH6bdP6onx
+	 XddUmqXyfxbelS9gtVj1qSfX19U4DtgwufatUE7ar6p4HOqUmCjjN3TKeQSi23A/0B
+	 go7jFtb3wkuKclIZW+RfqBolBSNruLfsLajZfhp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aubrey Li <aubrey.li@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/73] ACPI: PRM: Remove unnecessary blank lines
-Date: Wed,  6 Nov 2024 13:05:07 +0100
-Message-ID: <20241106120300.061745108@linuxfoundation.org>
+Subject: [PATCH 5.4 415/462] ALSA: firewire-lib: Avoid division by zero in apply_constraint_to_size()
+Date: Wed,  6 Nov 2024 13:05:08 +0100
+Message-ID: <20241106120341.768115237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aubrey Li <aubrey.li@intel.com>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-[ Upstream commit caa2bd07f5c5f09acf62072906daeaa667e2b645 ]
+[ Upstream commit 72cafe63b35d06b5cfbaf807e90ae657907858da ]
 
-Just remove unnecessary blank lines, no other code changes
+The step variable is initialized to zero. It is changed in the loop,
+but if it's not changed it will remain zero. Add a variable check
+before the division.
 
-Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+The observed behavior was introduced by commit 826b5de90c0b
+("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size"),
+and it is difficult to show that any of the interval parameters will
+satisfy the snd_interval_test() condition with data from the
+amdtp_rate_table[] table.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 826b5de90c0b ("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size")
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20241018060018.1189537-1-shum.sdl@nppct.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/prmt.c | 4 ----
- 1 file changed, 4 deletions(-)
+ sound/firewire/amdtp-stream.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 09c0af8a46f0a..8d876bdb08f68 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -49,7 +49,6 @@ struct prm_context_buffer {
- };
- #pragma pack()
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index 07e58dcad4afc..14a4905a777e1 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -164,6 +164,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
+ 			step = max(step, amdtp_syt_intervals[i]);
+ 	}
  
--
- static LIST_HEAD(prm_module_list);
- 
- struct prm_handler_info {
-@@ -73,7 +72,6 @@ struct prm_module_info {
- 	struct prm_handler_info handlers[];
- };
- 
--
- static u64 efi_pa_va_lookup(u64 pa)
- {
- 	efi_memory_desc_t *md;
-@@ -88,7 +86,6 @@ static u64 efi_pa_va_lookup(u64 pa)
- 	return 0;
- }
- 
--
- #define get_first_handler(a) ((struct acpi_prmt_handler_info *) ((char *) (a) + a->handler_info_offset))
- #define get_next_handler(a) ((struct acpi_prmt_handler_info *) (sizeof(struct acpi_prmt_handler_info) + (char *) a))
- 
-@@ -171,7 +168,6 @@ static void *find_guid_info(const guid_t *guid, u8 mode)
- 	return NULL;
- }
- 
--
- static struct prm_module_info *find_prm_module(const guid_t *guid)
- {
- 	return (struct prm_module_info *)find_guid_info(guid, GET_MODULE);
++	if (step == 0)
++		return -EINVAL;
++
+ 	t.min = roundup(s->min, step);
+ 	t.max = rounddown(s->max, step);
+ 	t.integer = 1;
 -- 
 2.43.0
 
