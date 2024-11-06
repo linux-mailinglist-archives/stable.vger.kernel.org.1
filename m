@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-90584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6911F9BE912
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 537979BE814
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DBA5283A77
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F731C23287
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD41DFDB3;
-	Wed,  6 Nov 2024 12:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B81DF73B;
+	Wed,  6 Nov 2024 12:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lw2INMBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuiit2vE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851AA6088F;
-	Wed,  6 Nov 2024 12:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABF81D173F;
+	Wed,  6 Nov 2024 12:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896206; cv=none; b=ssSXg6CPAIfUj9g2AvqFyhcPdWTqrw85qgcZPKkR4DJbn5Y0zbj4kMkIXU5KjnoREUP+UZIb3pDxC0YUtm1D0Gq4uyGYRuZRI0Z4JajkL/Cy2DGgF/yLmYjBsO4TBoiND6Z9AGOM7L59ySkbIm3tm+g+01Qopd23HALzkmG1fQI=
+	t=1730895644; cv=none; b=jv7U8HqY6ZRWdVLOeuEO2jrDpahPQjZtz713FJE/XhWv5SZjhsfcGag08UYSjQx3tHIQib5MSuq4enIS0MhTnKC/QVuBVChfo+mE3vQeAonlktRbqJx7jrlcxkbzmNT8cZxfWq+wksFKKyhszx8yMezq9zSpqOpKBK8mPGgwrJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896206; c=relaxed/simple;
-	bh=7Hno4yU4rf8cfCtFHPXYTzaoT7q93ccF494RNYs6XN4=;
+	s=arc-20240116; t=1730895644; c=relaxed/simple;
+	bh=X6GH1xi3XLqquZpfHulBjIinlwHYrOr1J8bNR0zcAGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQtvd3x/XNztAeF4D77/O/6s51Bg7WAQBPC0ILR7NQJpYP1uHH0HMP7V8VaXy1lRYuiTrZiEfPa7fOgrGfDu7hDdK4UoBPBawmqKPfEXlgro2tWBiPrC0TOtFwlpFvsy/xCDVl3j75itaST49OStIkdeViVF0dlowGneu9SgCns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lw2INMBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D44C4CECD;
-	Wed,  6 Nov 2024 12:30:05 +0000 (UTC)
+	 MIME-Version; b=RQkAwU+6wJJFRlWEQdmXfIr/4jDKFTS8zPfZ+DZLsuevUClbAtuZR814A0V+/q1BNYOwRlKdxtI33+tqftwewAlG9YSnmVHpXyYShNdOjQnoDi7LgRJB9ycYb6l2gOr6/v4PkhI5SjdCnWz3GjLT7PIknAnb6ko8wo4ioY8YIuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuiit2vE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214F3C4CECD;
+	Wed,  6 Nov 2024 12:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896206;
-	bh=7Hno4yU4rf8cfCtFHPXYTzaoT7q93ccF494RNYs6XN4=;
+	s=korg; t=1730895644;
+	bh=X6GH1xi3XLqquZpfHulBjIinlwHYrOr1J8bNR0zcAGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lw2INMBGFX5ZDFeffkbhupByMC4DmjbUp7RHRlPctBc6im1cO4TOI/aGZhqOaYD3Y
-	 rT5OMCcitMTV1kTtL6SD+9CYS2aZMIMdtMfOUAFnVTAwpKDtCOTofoL5A09wBPASjG
-	 gTR49wdIMORmx9Vip4x2AjyryHpEL/sDncQ47a3U=
+	b=wuiit2vETDme1glYo/5tpBRpn1mDdeIdLzioKusmFS++8Vqcswy3rh0jF49hRQrIB
+	 sS//zEYjaDQR6QaCx8crixrwR4as0UKZAx3KeKDlPYEGyBU3Yq4RHAHGvh1Puwatgr
+	 SOnUKWnlNETIYbtbLQ7/bC0NgTK7s6pfirNwP64A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.11 126/245] wifi: iwlwifi: mvm: fix 6 GHz scan construction
+	Ido Schimmel <idosch@nvidia.com>,
+	Andy Roulin <aroulin@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 251/350] netfilter: br_netfilter: fix panic with metadata_dst skb
 Date: Wed,  6 Nov 2024 13:02:59 +0100
-Message-ID: <20241106120322.324642756@linuxfoundation.org>
+Message-ID: <20241106120327.118433367@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +64,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andy Roulin <aroulin@nvidia.com>
 
-commit 7245012f0f496162dd95d888ed2ceb5a35170f1a upstream.
+[ Upstream commit f9ff7665cd128012868098bbd07e28993e314fdb ]
 
-If more than 255 colocated APs exist for the set of all
-APs found during 2.4/5 GHz scanning, then the 6 GHz scan
-construction will loop forever since the loop variable
-has type u8, which can never reach the number found when
-that's bigger than 255, and is stored in a u32 variable.
-Also move it into the loops to have a smaller scope.
+Fix a kernel panic in the br_netfilter module when sending untagged
+traffic via a VxLAN device.
+This happens during the check for fragmentation in br_nf_dev_queue_xmit.
 
-Using a u32 there is fine, we limit the number of APs in
-the scan list and each has a limit on the number of RNR
-entries due to the frame size. With a limit of 1000 scan
-results, a frame size upper bound of 4096 (really it's
-more like ~2300) and a TBTT entry size of at least 11,
-we get an upper bound for the number of ~372k, well in
-the bounds of a u32.
+It is dependent on:
+1) the br_netfilter module being loaded;
+2) net.bridge.bridge-nf-call-iptables set to 1;
+3) a bridge with a VxLAN (single-vxlan-device) netdevice as a bridge port;
+4) untagged frames with size higher than the VxLAN MTU forwarded/flooded
 
-Cc: stable@vger.kernel.org
-Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
-Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When forwarding the untagged packet to the VxLAN bridge port, before
+the netfilter hooks are called, br_handle_egress_vlan_tunnel is called and
+changes the skb_dst to the tunnel dst. The tunnel_dst is a metadata type
+of dst, i.e., skb_valid_dst(skb) is false, and metadata->dst.dev is NULL.
+
+Then in the br_netfilter hooks, in br_nf_dev_queue_xmit, there's a check
+for frames that needs to be fragmented: frames with higher MTU than the
+VxLAN device end up calling br_nf_ip_fragment, which in turns call
+ip_skb_dst_mtu.
+
+The ip_dst_mtu tries to use the skb_dst(skb) as if it was a valid dst
+with valid dst->dev, thus the crash.
+
+This case was never supported in the first place, so drop the packet
+instead.
+
+PING 10.0.0.2 (10.0.0.2) from 0.0.0.0 h1-eth0: 2000(2028) bytes of data.
+[  176.291791] Unable to handle kernel NULL pointer dereference at
+virtual address 0000000000000110
+[  176.292101] Mem abort info:
+[  176.292184]   ESR = 0x0000000096000004
+[  176.292322]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  176.292530]   SET = 0, FnV = 0
+[  176.292709]   EA = 0, S1PTW = 0
+[  176.292862]   FSC = 0x04: level 0 translation fault
+[  176.293013] Data abort info:
+[  176.293104]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[  176.293488]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  176.293787]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  176.293995] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000043ef5000
+[  176.294166] [0000000000000110] pgd=0000000000000000,
+p4d=0000000000000000
+[  176.294827] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[  176.295252] Modules linked in: vxlan ip6_udp_tunnel udp_tunnel veth
+br_netfilter bridge stp llc ipv6 crct10dif_ce
+[  176.295923] CPU: 0 PID: 188 Comm: ping Not tainted
+6.8.0-rc3-g5b3fbd61b9d1 #2
+[  176.296314] Hardware name: linux,dummy-virt (DT)
+[  176.296535] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS
+BTYPE=--)
+[  176.296808] pc : br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
+[  176.297382] lr : br_nf_dev_queue_xmit+0x2ac/0x4ec [br_netfilter]
+[  176.297636] sp : ffff800080003630
+[  176.297743] x29: ffff800080003630 x28: 0000000000000008 x27:
+ffff6828c49ad9f8
+[  176.298093] x26: ffff6828c49ad000 x25: 0000000000000000 x24:
+00000000000003e8
+[  176.298430] x23: 0000000000000000 x22: ffff6828c4960b40 x21:
+ffff6828c3b16d28
+[  176.298652] x20: ffff6828c3167048 x19: ffff6828c3b16d00 x18:
+0000000000000014
+[  176.298926] x17: ffffb0476322f000 x16: ffffb7e164023730 x15:
+0000000095744632
+[  176.299296] x14: ffff6828c3f1c880 x13: 0000000000000002 x12:
+ffffb7e137926a70
+[  176.299574] x11: 0000000000000001 x10: ffff6828c3f1c898 x9 :
+0000000000000000
+[  176.300049] x8 : ffff6828c49bf070 x7 : 0008460f18d5f20e x6 :
+f20e0100bebafeca
+[  176.300302] x5 : ffff6828c7f918fe x4 : ffff6828c49bf070 x3 :
+0000000000000000
+[  176.300586] x2 : 0000000000000000 x1 : ffff6828c3c7ad00 x0 :
+ffff6828c7f918f0
+[  176.300889] Call trace:
+[  176.301123]  br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
+[  176.301411]  br_nf_post_routing+0x2a8/0x3e4 [br_netfilter]
+[  176.301703]  nf_hook_slow+0x48/0x124
+[  176.302060]  br_forward_finish+0xc8/0xe8 [bridge]
+[  176.302371]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
+[  176.302605]  br_nf_forward_finish+0x118/0x22c [br_netfilter]
+[  176.302824]  br_nf_forward_ip.part.0+0x264/0x290 [br_netfilter]
+[  176.303136]  br_nf_forward+0x2b8/0x4e0 [br_netfilter]
+[  176.303359]  nf_hook_slow+0x48/0x124
+[  176.303803]  __br_forward+0xc4/0x194 [bridge]
+[  176.304013]  br_flood+0xd4/0x168 [bridge]
+[  176.304300]  br_handle_frame_finish+0x1d4/0x5c4 [bridge]
+[  176.304536]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
+[  176.304978]  br_nf_pre_routing_finish+0x29c/0x494 [br_netfilter]
+[  176.305188]  br_nf_pre_routing+0x250/0x524 [br_netfilter]
+[  176.305428]  br_handle_frame+0x244/0x3cc [bridge]
+[  176.305695]  __netif_receive_skb_core.constprop.0+0x33c/0xecc
+[  176.306080]  __netif_receive_skb_one_core+0x40/0x8c
+[  176.306197]  __netif_receive_skb+0x18/0x64
+[  176.306369]  process_backlog+0x80/0x124
+[  176.306540]  __napi_poll+0x38/0x17c
+[  176.306636]  net_rx_action+0x124/0x26c
+[  176.306758]  __do_softirq+0x100/0x26c
+[  176.307051]  ____do_softirq+0x10/0x1c
+[  176.307162]  call_on_irq_stack+0x24/0x4c
+[  176.307289]  do_softirq_own_stack+0x1c/0x2c
+[  176.307396]  do_softirq+0x54/0x6c
+[  176.307485]  __local_bh_enable_ip+0x8c/0x98
+[  176.307637]  __dev_queue_xmit+0x22c/0xd28
+[  176.307775]  neigh_resolve_output+0xf4/0x1a0
+[  176.308018]  ip_finish_output2+0x1c8/0x628
+[  176.308137]  ip_do_fragment+0x5b4/0x658
+[  176.308279]  ip_fragment.constprop.0+0x48/0xec
+[  176.308420]  __ip_finish_output+0xa4/0x254
+[  176.308593]  ip_finish_output+0x34/0x130
+[  176.308814]  ip_output+0x6c/0x108
+[  176.308929]  ip_send_skb+0x50/0xf0
+[  176.309095]  ip_push_pending_frames+0x30/0x54
+[  176.309254]  raw_sendmsg+0x758/0xaec
+[  176.309568]  inet_sendmsg+0x44/0x70
+[  176.309667]  __sys_sendto+0x110/0x178
+[  176.309758]  __arm64_sys_sendto+0x28/0x38
+[  176.309918]  invoke_syscall+0x48/0x110
+[  176.310211]  el0_svc_common.constprop.0+0x40/0xe0
+[  176.310353]  do_el0_svc+0x1c/0x28
+[  176.310434]  el0_svc+0x34/0xb4
+[  176.310551]  el0t_64_sync_handler+0x120/0x12c
+[  176.310690]  el0t_64_sync+0x190/0x194
+[  176.311066] Code: f9402e61 79402aa2 927ff821 f9400023 (f9408860)
+[  176.315743] ---[ end trace 0000000000000000 ]---
+[  176.316060] Kernel panic - not syncing: Oops: Fatal exception in
+interrupt
+[  176.316371] Kernel Offset: 0x37e0e3000000 from 0xffff800080000000
+[  176.316564] PHYS_OFFSET: 0xffff97d780000000
+[  176.316782] CPU features: 0x0,88000203,3c020000,0100421b
+[  176.317210] Memory Limit: none
+[  176.317527] ---[ end Kernel panic - not syncing: Oops: Fatal
+Exception in interrupt ]---\
+
+Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20241001154400.22787-2-aroulin@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bridge/br_netfilter_hooks.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
- 			&cp->channel_config[ch_cnt];
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 35642dc96852a..75e35fae6f244 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -37,6 +37,7 @@
+ #include <net/ip.h>
+ #include <net/ipv6.h>
+ #include <net/addrconf.h>
++#include <net/dst_metadata.h>
+ #include <net/route.h>
+ #include <net/netfilter/br_netfilter.h>
+ #include <net/netns/generic.h>
+@@ -737,6 +738,10 @@ static int br_nf_dev_queue_xmit(struct net *net, struct sock *sk, struct sk_buff
+ 		return br_dev_queue_push_xmit(net, sk, skb);
+ 	}
  
- 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
--		u8 j, k, n_s_ssids = 0, n_bssids = 0;
-+		u8 k, n_s_ssids = 0, n_bssids = 0;
- 		u8 max_s_ssids, max_bssids;
- 		bool force_passive = false, found = false, allow_passive = true,
- 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
-@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
- 		cfg->v5.iter_count = 1;
- 		cfg->v5.iter_interval = 0;
- 
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			s8 tmp_psd_20;
- 
- 			if (!(scan_6ghz_params[j].channel_idx == i))
-@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
- 		 * SSID.
- 		 * TODO: improve this logic
- 		 */
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			if (!(scan_6ghz_params[j].channel_idx == i))
- 				continue;
- 
++	/* Fragmentation on metadata/template dst is not supported */
++	if (unlikely(!skb_valid_dst(skb)))
++		goto drop;
++
+ 	/* This is wrong! We should preserve the original fragment
+ 	 * boundaries by preserving frag_list rather than refragmenting.
+ 	 */
+-- 
+2.43.0
+
 
 
 
