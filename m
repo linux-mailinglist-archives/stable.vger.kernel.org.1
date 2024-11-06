@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4B19BE944
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1179BEBFB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C292AB23E7E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35151C2131A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202EC1DF251;
-	Wed,  6 Nov 2024 12:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0781F12F1;
+	Wed,  6 Nov 2024 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBlo4Ftd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxVbpYe6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00247DA7F;
-	Wed,  6 Nov 2024 12:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791331DE3B5;
+	Wed,  6 Nov 2024 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896337; cv=none; b=JOMtQtq9hmr2mN3gmYIp2wqI7SXR6RzQ/Njcfgd9668LgmtkkbohCH3pwXv9U91shkLPAkke1T08yyA+nvvcRB1L9OsrziMr1qd14v3iTCNsAR8IQfFVPG6qYfNsXjTvn6Z+Ko4wfn2p9+HuyxCyL6KPvxbxN77XgiiKLxHm/j4=
+	t=1730897432; cv=none; b=VWJu1enczC0xuXc5JT6Nc5XSpC5fk/6z+8zmgQ545CV1wUQkHVe7MJdr08cTtusK/jJoe+jIaLgQJPaVrvworL1GPDlljoZnvNhtFBHXs+OSCkTuh+uxYfrSPZbC95ZIRzx7disU5JVzoshm8iAceuLXoRCm7rbezJkyptjp2qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896337; c=relaxed/simple;
-	bh=DECrBzWsF4vKzcWiyciks4IpkztX/1bqL5A3jFaapYs=;
+	s=arc-20240116; t=1730897432; c=relaxed/simple;
+	bh=ohtfN00Whm0YWCJcZKOiavRVJH+nVkFAZJXxf15sYoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwUwXmLxZ9vWai72hCYP5rSOVQpfy8R2ZkcvOx25yYopT2p+Nw5gM7s6kO2PFFjZ2CMhVXjkt8xVaEj24GRriayRn2ECmeFNCns/VCtKl5Xedpj2bfjdI7/KbWvKBaDKpTWJL3nZevLHuYjV2OxoDTVLkWo3GSYWQA26hMxASLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBlo4Ftd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DF4C4CECD;
-	Wed,  6 Nov 2024 12:32:17 +0000 (UTC)
+	 MIME-Version; b=tNKf/Znvr5Tb555tG31LhH7LPnxPCwB2WFnM594ytYMNpUQ7GJWKPc9Kwi3s848pkGJ7dDsRWC/fIslIjx/E5+j77ldmxbCyQ/FmuNsuygih8+FY86AfhhsqJDoAV3Z7GDmI0ZOYj3UI5A2uJzLosJQ7ojOizWAiJwsFuRuDKaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxVbpYe6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000CAC4CECD;
+	Wed,  6 Nov 2024 12:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896337;
-	bh=DECrBzWsF4vKzcWiyciks4IpkztX/1bqL5A3jFaapYs=;
+	s=korg; t=1730897432;
+	bh=ohtfN00Whm0YWCJcZKOiavRVJH+nVkFAZJXxf15sYoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBlo4Ftdyz6tV8ZaP325bYgqipHQ1EyrUDNAh3HnSC5IxSd1/iBEUvfTacGjmTIoY
-	 fR2AoiTLra10jNhEVLUSLO/n7RVpD3YepGumi3q0+9W2kQRQgae115NBY7hZWjPmGN
-	 kO9i60dqvPl712cLvMDtf2o1vWVZjHgnb/PyPH3s=
+	b=kxVbpYe6AcHKdM6OfT05iqW0OWvx3aCYWWN2bvGp/tRr0ABut+Ce4TD6bO5rGbDP1
+	 qMSefkH/PUsxuAZnPDsIc+kJGyVHjid4/yTBNHYFcgkN9MS1mcTe8Rzylw7qJl8E3q
+	 dNSRCzc842UvRlrpJjExWjHSd7jGLo7wSYx7Da9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Evan Quan <evan.quan@amd.com>,
-	Wenyou Yang <WenYou.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 169/245] drm/amd/pm: Vangogh: Fix kernel memory out of bounds write
+Subject: [PATCH 6.6 034/151] netfilter: nf_reject_ipv6: fix potential crash in nf_send_reset6()
 Date: Wed,  6 Nov 2024 13:03:42 +0100
-Message-ID: <20241106120323.399300536@linuxfoundation.org>
+Message-ID: <20241106120309.774381273@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4aa923a6e6406b43566ef6ac35a3d9a3197fa3e8 ]
+[ Upstream commit 4ed234fe793f27a3b151c43d2106df2ff0d81aac ]
 
-KASAN reports that the GPU metrics table allocated in
-vangogh_tables_init() is not large enough for the memset done in
-smu_cmn_init_soft_gpu_metrics(). Condensed report follows:
+I got a syzbot report without a repro [1] crashing in nf_send_reset6()
 
-[   33.861314] BUG: KASAN: slab-out-of-bounds in smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu]
-[   33.861799] Write of size 168 at addr ffff888129f59500 by task mangoapp/1067
-...
-[   33.861808] CPU: 6 UID: 1000 PID: 1067 Comm: mangoapp Tainted: G        W          6.12.0-rc4 #356 1a56f59a8b5182eeaf67eb7cb8b13594dd23b544
-[   33.861816] Tainted: [W]=WARN
-[   33.861818] Hardware name: Valve Galileo/Galileo, BIOS F7G0107 12/01/2023
-[   33.861822] Call Trace:
-[   33.861826]  <TASK>
-[   33.861829]  dump_stack_lvl+0x66/0x90
-[   33.861838]  print_report+0xce/0x620
-[   33.861853]  kasan_report+0xda/0x110
-[   33.862794]  kasan_check_range+0xfd/0x1a0
-[   33.862799]  __asan_memset+0x23/0x40
-[   33.862803]  smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.863306]  vangogh_get_gpu_metrics_v2_4+0x123/0xad0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.864257]  vangogh_common_get_gpu_metrics+0xb0c/0xbc0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.865682]  amdgpu_dpm_get_gpu_metrics+0xcc/0x110 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.866160]  amdgpu_get_gpu_metrics+0x154/0x2d0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.867135]  dev_attr_show+0x43/0xc0
-[   33.867147]  sysfs_kf_seq_show+0x1f1/0x3b0
-[   33.867155]  seq_read_iter+0x3f8/0x1140
-[   33.867173]  vfs_read+0x76c/0xc50
-[   33.867198]  ksys_read+0xfb/0x1d0
-[   33.867214]  do_syscall_64+0x90/0x160
-...
-[   33.867353] Allocated by task 378 on cpu 7 at 22.794876s:
-[   33.867358]  kasan_save_stack+0x33/0x50
-[   33.867364]  kasan_save_track+0x17/0x60
-[   33.867367]  __kasan_kmalloc+0x87/0x90
-[   33.867371]  vangogh_init_smc_tables+0x3f9/0x840 [amdgpu]
-[   33.867835]  smu_sw_init+0xa32/0x1850 [amdgpu]
-[   33.868299]  amdgpu_device_init+0x467b/0x8d90 [amdgpu]
-[   33.868733]  amdgpu_driver_load_kms+0x19/0xf0 [amdgpu]
-[   33.869167]  amdgpu_pci_probe+0x2d6/0xcd0 [amdgpu]
-[   33.869608]  local_pci_probe+0xda/0x180
-[   33.869614]  pci_device_probe+0x43f/0x6b0
+I think the issue is that dev->hard_header_len is zero, and we attempt
+later to push an Ethernet header.
 
-Empirically we can confirm that the former allocates 152 bytes for the
-table, while the latter memsets the 168 large block.
+Use LL_MAX_HEADER, as other functions in net/ipv6/netfilter/nf_reject_ipv6.c.
 
-Root cause appears that when GPU metrics tables for v2_4 parts were added
-it was not considered to enlarge the table to fit.
+[1]
 
-The fix in this patch is rather "brute force" and perhaps later should be
-done in a smarter way, by extracting and consolidating the part version to
-size logic to a common helper, instead of brute forcing the largest
-possible allocation. Nevertheless, for now this works and fixes the out of
-bounds write.
+skbuff: skb_under_panic: text:ffffffff89b1d008 len:74 put:14 head:ffff88803123aa00 data:ffff88803123a9f2 tail:0x3c end:0x140 dev:syz_tun
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 7373 Comm: syz.1.568 Not tainted 6.12.0-rc2-syzkaller-00631-g6d858708d465 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0d 8d 48 c7 c6 60 a6 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 ba 30 38 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc900045269b0 EFLAGS: 00010282
+RAX: 0000000000000088 RBX: dffffc0000000000 RCX: cd66dacdc5d8e800
+RDX: 0000000000000000 RSI: 0000000000000200 RDI: 0000000000000000
+RBP: ffff88802d39a3d0 R08: ffffffff8174afec R09: 1ffff920008a4ccc
+R10: dffffc0000000000 R11: fffff520008a4ccd R12: 0000000000000140
+R13: ffff88803123aa00 R14: ffff88803123a9f2 R15: 000000000000003c
+FS:  00007fdbee5ff6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000005d322000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  eth_header+0x38/0x1f0 net/ethernet/eth.c:83
+  dev_hard_header include/linux/netdevice.h:3208 [inline]
+  nf_send_reset6+0xce6/0x1270 net/ipv6/netfilter/nf_reject_ipv6.c:358
+  nft_reject_inet_eval+0x3b9/0x690 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  br_nf_pre_routing_ipv6+0x63e/0x770 net/bridge/br_netfilter_ipv6.c:184
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_bridge_pre net/bridge/br_input.c:277 [inline]
+  br_handle_frame+0x9fd/0x1530 net/bridge/br_input.c:424
+  __netif_receive_skb_core+0x13e8/0x4570 net/core/dev.c:5562
+  __netif_receive_skb_one_core net/core/dev.c:5666 [inline]
+  __netif_receive_skb+0x12f/0x650 net/core/dev.c:5781
+  netif_receive_skb_internal net/core/dev.c:5867 [inline]
+  netif_receive_skb+0x1e8/0x890 net/core/dev.c:5926
+  tun_rx_batched+0x1b7/0x8f0 drivers/net/tun.c:1550
+  tun_get_user+0x3056/0x47e0 drivers/net/tun.c:2007
+  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2053
+  new_sync_write fs/read_write.c:590 [inline]
+  vfs_write+0xa6d/0xc90 fs/read_write.c:683
+  ksys_write+0x183/0x2b0 fs/read_write.c:736
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdbeeb7d1ff
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 c9 8d 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 1c 8e 02 00 48
+RSP: 002b:00007fdbee5ff000 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fdbeed36058 RCX: 00007fdbeeb7d1ff
+RDX: 000000000000008e RSI: 0000000020000040 RDI: 00000000000000c8
+RBP: 00007fdbeebf12be R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000008e R11: 0000000000000293 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fdbeed36058 R15: 00007ffc38de06e8
+ </TASK>
 
-v2:
- * Drop impossible v3_0 case. (Mario)
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 41cec40bc9ba ("drm/amd/pm: Vangogh: Add new gpu_metrics_v2_4 to acquire gpu_metrics")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Evan Quan <evan.quan@amd.com>
-Cc: Wenyou Yang <WenYou.Yang@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241025145639.19124-1-tursulin@igalia.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0880f58f9609f0200483a49429af0f050d281703)
-Cc: stable@vger.kernel.org # v6.6+
+Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/netfilter/nf_reject_ipv6.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-index 22737b11b1bfb..1fe020f1f4dbe 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -242,7 +242,9 @@ static int vangogh_tables_init(struct smu_context *smu)
- 		goto err0_out;
- 	smu_table->metrics_time = 0;
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 4e0976534648c..e4776bd2ed89b 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -268,12 +268,12 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
+ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		    int hook)
+ {
+-	struct sk_buff *nskb;
+-	struct tcphdr _otcph;
+-	const struct tcphdr *otcph;
+-	unsigned int otcplen, hh_len;
+ 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
+ 	struct dst_entry *dst = NULL;
++	const struct tcphdr *otcph;
++	struct sk_buff *nskb;
++	struct tcphdr _otcph;
++	unsigned int otcplen;
+ 	struct flowi6 fl6;
  
--	smu_table->gpu_metrics_table_size = max(sizeof(struct gpu_metrics_v2_3), sizeof(struct gpu_metrics_v2_2));
-+	smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_2);
-+	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_3));
-+	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_4));
- 	smu_table->gpu_metrics_table = kzalloc(smu_table->gpu_metrics_table_size, GFP_KERNEL);
- 	if (!smu_table->gpu_metrics_table)
- 		goto err1_out;
+ 	if ((!(ipv6_addr_type(&oip6h->saddr) & IPV6_ADDR_UNICAST)) ||
+@@ -312,9 +312,8 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (IS_ERR(dst))
+ 		return;
+ 
+-	hh_len = (dst->dev->hard_header_len + 15)&~15;
+-	nskb = alloc_skb(hh_len + 15 + dst->header_len + sizeof(struct ipv6hdr)
+-			 + sizeof(struct tcphdr) + dst->trailer_len,
++	nskb = alloc_skb(LL_MAX_HEADER + sizeof(struct ipv6hdr) +
++			 sizeof(struct tcphdr) + dst->trailer_len,
+ 			 GFP_ATOMIC);
+ 
+ 	if (!nskb) {
+@@ -327,7 +326,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 
+ 	nskb->mark = fl6.flowi6_mark;
+ 
+-	skb_reserve(nskb, hh_len + dst->header_len);
++	skb_reserve(nskb, LL_MAX_HEADER);
+ 	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
+ 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
+ 
 -- 
 2.43.0
 
