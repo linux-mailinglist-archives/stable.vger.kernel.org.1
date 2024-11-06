@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053959BE6FA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2109BECB3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70432B20DE7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F1C1F24854
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525291DF736;
-	Wed,  6 Nov 2024 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE531EABB3;
+	Wed,  6 Nov 2024 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvlhDkp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NERIGj+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6C01DF260;
-	Wed,  6 Nov 2024 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D19A1E104A;
+	Wed,  6 Nov 2024 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894942; cv=none; b=aMGRmp4awoKBsg3CwPc0/qLvIqspjCiOYzJv5ZUhd3BchlLnNZXmpuqWUG53IHoGjUjZPUZc0giCAXNNi+3Fsi2Rj3s+KmZuzYPXvUkqYlwOewgRYCI3Hq3MlXLmYkaqLWY11EnbLcHLKT1W8fc4ZqYoMDsPjZqnFHdewHnEaIM=
+	t=1730897880; cv=none; b=DbalM1eWjkg7BOKxAogQjIuicA+pB6FV8f9A1JVgBcy2sJrRXqXMw1gk7aSqkOfTQvYcuU1VmsaAvjVwMA8rto/FQ1wsRmviJC/Fdmv6V2WsWu2esfeApD4ZxIOIkxON0NYF0UnMBcEROU8rzWUI35TFIpBWIoUq2oaZA1Q+6aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894942; c=relaxed/simple;
-	bh=9RG1DfPkzY7ZMGdjg/W+dkBiVg0x1NpXlwKxOuhV68A=;
+	s=arc-20240116; t=1730897880; c=relaxed/simple;
+	bh=R2i6p2XahVSlvrws8WOA2JpLDeoRSwYvQJpFczdwyr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReaCs5Ir8DREqXAmTlhIRakT2AdV1wx5fVJ6GKzhsc9rHkjKAp6H1j+RcVVEEi/CBuizePn48ELvX+sgelOsv5VWO4ZjZ5H7tj07PvJumjclopiC+QuyX+QO0LVVfG+1deRNXfdB3PA32IgLrPj8ReTEBKOYrPlTpbkOj5C/S+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvlhDkp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6F3C4CECD;
-	Wed,  6 Nov 2024 12:09:01 +0000 (UTC)
+	 MIME-Version; b=gYQCJBjeiOECroyNYDdnoC/RU/wqfNlaaWYEKeTVXD/TLEELD/x72uzDSJs3eo7tjP5tTETPUCjj0FSAqN7AHTTqUj9OmhMujafsxKS8unlNl+sxwQIhOJ1prWUBi3hHPJvinFN/2wYDCMhUO1NtHm7VPD+YuzcRpIfQNRrnpqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NERIGj+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74B9C4CECD;
+	Wed,  6 Nov 2024 12:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894941;
-	bh=9RG1DfPkzY7ZMGdjg/W+dkBiVg0x1NpXlwKxOuhV68A=;
+	s=korg; t=1730897880;
+	bh=R2i6p2XahVSlvrws8WOA2JpLDeoRSwYvQJpFczdwyr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvlhDkp8q/Qhq+41XNeu7npQgJB/mrBye0uqWyZMLYwq5ZHoMJhR1vuzOcOWZokdK
-	 YF294ZQ1AFqhLWVcLuGpsL3lIczsSLymf8SruYCjQnF7Qs2qHyHBYLUOTZOO7bYumk
-	 bdPiPvo8XTs+pMBbjyPUzaocun1rHM9HEdI+XZ+0=
+	b=NERIGj+JYsMpvNjE9Bmx+us4yBFQm9vUrvOJd81WqhW3A5bHRCEgwB3hzz7n3wNkg
+	 PgaowhrXRuVe44jHZpfph5aYU9fr6dWYGHJoXQyXves0U2eZMqdLZ5WZ3wHhE4pkf7
+	 YQbapgaaXHg+SUOuUIQ5wDJpWDr+E2Jm0OoXS0Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Subject: [PATCH 4.19 014/350] selftests/kcmp: remove call to ksft_set_plan()
-Date: Wed,  6 Nov 2024 12:59:02 +0100
-Message-ID: <20241106120321.222151058@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/462] Bluetooth: btusb: Fix not handling ZPL/short-transfer
+Date: Wed,  6 Nov 2024 12:59:03 +0100
+Message-ID: <20241106120332.754607522@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,34 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-The function definition for ksft_set_plan() is not present in linux-4.19.y.
-kcmp_test selftest fails to compile because of this.
+[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
 
-Fixes: 32b0469d13eb ("selftests/kcmp: Make the test output consistent and clear")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Requesting transfers of the exact same size of wMaxPacketSize may result
+in ZPL/short-transfer since the USB stack cannot handle it as we are
+limiting the buffer size to be the same as wMaxPacketSize.
+
+Also, in terms of throughput this change has the same effect to
+interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
+by increasing the frame size" had for the bulk endpoint, so users of the
+advertisement bearer (e.g. BT Mesh) may benefit from this change.
+
+Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -89,7 +89,6 @@ int main(int argc, char **argv)
- 		int ret;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index b9752625c88b4..87392ceee3dba 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -834,7 +834,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
+ 	if (!urb)
+ 		return -ENOMEM;
  
- 		ksft_print_header();
--		ksft_set_plan(3);
+-	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	/* Use maximum HCI Event size so the USB stack handles
++	 * ZPL/short-transfer automatically.
++	 */
++	size = HCI_MAX_EVENT_SIZE;
  
- 		fd2 = open(kpath, O_RDWR);
- 		if (fd2 < 0) {
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
+-- 
+2.43.0
+
 
 
 
