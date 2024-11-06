@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1799BE902
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91849BE7DD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90D891C21430
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EAC528496B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031501DF726;
-	Wed,  6 Nov 2024 12:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C834D1DFD9A;
+	Wed,  6 Nov 2024 12:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPLM51JY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3J2udE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43891D2784;
-	Wed,  6 Nov 2024 12:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837EB1DFD8C;
+	Wed,  6 Nov 2024 12:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896173; cv=none; b=PBYWfgDwvbom7ykU64YHRzuMPiLUiquh3SR4xLgfL1xby6NX3QiFrCgSrjRWWieAkK7tzO2IaJDxxX5VUUpOcHY/3Vg7ybomPCUxkAN4fqar4Uxr09V7KZHI/mVdi06mns+nQj5kv6KrIRoYawLnLMSUYYgVA+J4OrvibmwxxdI=
+	t=1730895502; cv=none; b=abCLp/hu207C+F+DLxP4X1v4Nc6/7d7Yqt+odbOGrTWVEWlaP8taBgGC2g9Xl+FyB9NvRaeOdqZfuB4PkoBWMVTg3F6i20uKPMS5VYf/xzlDcw6WQGj2U1r9J+TskB+Pt8wh+s6RcQEXeIo3450ZNp5TyO8P9FnadsC0PtyzRF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896173; c=relaxed/simple;
-	bh=hdjDZlcaEPia/3IDtb2+EkHpQEuqc6DAgIU48/oHiFU=;
+	s=arc-20240116; t=1730895502; c=relaxed/simple;
+	bh=ykagLwHJ/1mabuCUqAaRemqjl6u9kR5lnuVj0N9FPt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dt5TafNgojS1JossMqXtdEcxHGeXgDql2TD8Q3LdFZbzru+EW//6Y7NYvJNorfhrzQYNLwRoBNPCKJokHCGtRmJTZU8SqB+6wdtgp/DHPpDkCIITLK6N9a0atzmPVsNWj1etmwHfs/cI1lXMHR7fwm7uGoYKEW3lwT117kL3hVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPLM51JY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A16DC4CECD;
-	Wed,  6 Nov 2024 12:29:33 +0000 (UTC)
+	 MIME-Version; b=bl7eEvNzGAqAZuArvxzDNqA6Q0n5jCgNsniNFoxPcetminZFtFrXuIjE65eyUj1/9lFYtR7ZgZh9Ki+u68Mwg9zNldEFaJ+4D3Ay34HfCnMYTAkYjzwhV4nLkTE9N/M1aj25780vhWj+DQqZcWmJeO+udxzFPYAnsnLSHxa5f0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3J2udE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076BDC4CED9;
+	Wed,  6 Nov 2024 12:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896173;
-	bh=hdjDZlcaEPia/3IDtb2+EkHpQEuqc6DAgIU48/oHiFU=;
+	s=korg; t=1730895502;
+	bh=ykagLwHJ/1mabuCUqAaRemqjl6u9kR5lnuVj0N9FPt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPLM51JYZfFGuwH557LGSqJy44AQZGmiv0z9uL8PttbESjGq7MHRZTUnyKsYy814I
-	 RMEA8/PHnrYM6V4nk/1wvlSu6TZfG/m7XJIU8rqZxM6MpG2VhBkTISC55M27oAHyU5
-	 JI5PUesE6+HArZrUAqUfv5KwXQJW1jV1HK1JLRMM=
+	b=T3J2udE6HpTK8loI2zVywhM6VWjauKrAYbVLzO5Ra0d1r9Rsqed2t+bja/uW22/0X
+	 o91vmffu3jqfH8ceniUkRrEhoG9nNvt8lAy9MNrXOAWBNV8c78sKyIvP4VJgiRkb9l
+	 sQHLXoaUWDp+LLy+Bnq890hiYSBCCTSp0Wpd55PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.11 113/245] phy: qcom: qmp-usb: fix NULL-deref on runtime suspend
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 238/350] s390/cpum_sf: Remove WARN_ON_ONCE statements
 Date: Wed,  6 Nov 2024 13:02:46 +0100
-Message-ID: <20241106120322.001123184@linuxfoundation.org>
+Message-ID: <20241106120326.832464591@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit bd9e4d4a3b127686efc60096271b0a44c3100061 upstream.
+[ Upstream commit b495e710157606889f2d8bdc62aebf2aa02f67a7 ]
 
-Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-removed most users of the platform device driver data, but mistakenly
-also removed the initialisation despite the data still being used in the
-runtime PM callbacks.
+Remove WARN_ON_ONCE statements. These have not triggered in the
+past.
 
-Restore the driver data initialisation at probe to avoid a NULL-pointer
-dereference on runtime suspend.
-
-Apparently no one uses runtime PM, which currently needs to be enabled
-manually through sysfs, with this driver.
-
-Fixes: 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-Cc: stable@vger.kernel.org	# 6.2
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240911115253.10920-2-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/kernel/perf_cpum_sf.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -2179,6 +2179,7 @@ static int qmp_usb_probe(struct platform
- 		return -ENOMEM;
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index c8e1e325215b8..c7f94b5d93968 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1360,7 +1360,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
+ 	unsigned long head, base, offset;
+ 	struct hws_trailer_entry *te;
  
- 	qmp->dev = dev;
-+	dev_set_drvdata(dev, qmp);
+-	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
++	if (handle->head & ~PAGE_MASK)
+ 		return -EINVAL;
  
- 	qmp->cfg = of_device_get_match_data(dev);
- 	if (!qmp->cfg)
+ 	aux->head = handle->head >> PAGE_SHIFT;
+@@ -1528,7 +1528,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
+ 	unsigned long num_sdb;
+ 
+ 	aux = perf_get_aux(handle);
+-	if (WARN_ON_ONCE(!aux))
++	if (!aux)
+ 		return;
+ 
+ 	/* Inform user space new data arrived */
+@@ -1547,7 +1547,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
+ 			debug_sprintf_event(sfdbg, 1, "AUX buffer used up\n");
+ 			break;
+ 		}
+-		if (WARN_ON_ONCE(!aux))
++		if (!aux)
+ 			return;
+ 
+ 		/* Update head and alert_mark to new position */
+@@ -1746,12 +1746,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
+ {
+ 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
+ 
+-	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
++	if (!(event->hw.state & PERF_HES_STOPPED))
+ 		return;
+-
+-	if (flags & PERF_EF_RELOAD)
+-		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
+-
+ 	perf_pmu_disable(event->pmu);
+ 	event->hw.state = 0;
+ 	cpuhw->lsctl.cs = 1;
+-- 
+2.43.0
+
 
 
 
