@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1829F9BE996
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7809BEC26
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14BA2811E5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF33E1C238C1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60051DFE3B;
-	Wed,  6 Nov 2024 12:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726D91F1313;
+	Wed,  6 Nov 2024 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m732c/uo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeQJU5Kn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910621E0488;
-	Wed,  6 Nov 2024 12:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3142D1E0DFD;
+	Wed,  6 Nov 2024 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896516; cv=none; b=YS8Cb/eLcXIec81VgHRpEuU/k5fHVYHMiTbKVCkPperM/l3J6/5IsuWyZXSFGguNFX/pd/sXLSYHGPDcvWxIUrzOSryDt8VpYju8nei7NrqVyWc03mHhP69qSDe2XYFpnktAyBK9h0OBh3sF/l4OXmwVjzftGCQmXuU85kaHP8s=
+	t=1730897554; cv=none; b=si+RTyhGcog9KNx8PiMtz4S4jAPd4qCUOVYe/Nsb6KICIV52efqB+sIoGg5uv1Oyy7yNE0dQ3/O1FWgLWwdfMbFH8q58LrTSFEosMy/SXHAbbZ3OtRxy4o5JprX1qWVb6/fHdqlb0L6ZEVEal59ZHpK6JS85IzVovthIfM1Csy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896516; c=relaxed/simple;
-	bh=VGONr6K9TmGbiXtr9hfpI9Lyz+sNywJh0EkSBZJGsEU=;
+	s=arc-20240116; t=1730897554; c=relaxed/simple;
+	bh=kJHikDqhhaCCj/IgrlKO9JlYNAeA8AUl7u11kPAWOo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTe2+5npmJjp+z903vSi4otmDVY0K9KnNCw8rVf6wXLqeqxDjW1StBJQhP+dkKITBosCUimeVEMifL7KqCaHKQyfXNWKOlSwrg0i9iW5ZOPctLwT5W+jfxXpz0/qDaoYiL854AUU+cd9IUwJrKY32FyRZ7ZpOE81w5pLedPKYY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m732c/uo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185E1C4CECD;
-	Wed,  6 Nov 2024 12:35:15 +0000 (UTC)
+	 MIME-Version; b=BUcUe5UjpAE61lm90SnRQ0yJK77Td1epmJVvTlt+FulhgOKHSdCM1NWLFRzTxEJUNONjrZAPuRJFyO1F9avQXfzSXlcUP5k6JtaHoUkfOppBQ5oZT5GS0GVRvowwYmFerodydqLHbYTq1yi+2fZhLLkpsE/X7NK6JADoWPg1lfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeQJU5Kn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3330C4CECD;
+	Wed,  6 Nov 2024 12:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896516;
-	bh=VGONr6K9TmGbiXtr9hfpI9Lyz+sNywJh0EkSBZJGsEU=;
+	s=korg; t=1730897554;
+	bh=kJHikDqhhaCCj/IgrlKO9JlYNAeA8AUl7u11kPAWOo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m732c/uoYhNWREknvcrpLA0hFZwtM56heJEidj/CSFXavof03ef6LwRHqIpt073ur
-	 XDjkHyrd45D9YGCkhkb1tWRy2dEPmFzGsrcwNM3Yh/+DnVnbVvzi3PwGr1Ho3qxp5M
-	 SfHuYZ3FrVbvqCq9otkH43io5E9r3IzlyO0+pxy8=
+	b=SeQJU5KnpTpjmpUjN//v8FPkRTrSp/BNiRyEF7Xzrsr8gAk9VXCzhtQR2UOqfAGaR
+	 zyKYUJOJ3pPDO/p+lgfX/kJXxHGYuwF2bPFXyZ0Q858m5h0iQPUOrX5ik4SxwG2tAG
+	 zUZyaEucIEPwd3fOpBtiuwr0K/N6gE9NzDyCq0iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 227/245] drm/i915/dp: Clear VSC SDP during post ddi disable routine
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 092/151] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
 Date: Wed,  6 Nov 2024 13:04:40 +0100
-Message-ID: <20241106120324.849059030@linuxfoundation.org>
+Message-ID: <20241106120311.403468652@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Kandpal <suraj.kandpal@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 3e307d6c28e7bc7d94b5699d0ed7fe07df6db094 upstream.
+commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
 
-Clear VSC SDP if intel_dp_set_infoframes is called from post ddi disable
-routine i.e with the variable of enable as false. This is to avoid
-an infoframes.enable mismatch issue which is caused when pipe is
-connected to eDp which has psr then connected to DPMST. In this case
-eDp's post ddi disable routine does not clear infoframes.enable VSC
-for the given pipe and DPMST does not recompute VSC SDP and write
-infoframes.enable which causes a mismatch.
+Avoid potentially crashing in the driver because of uninitialized private data
 
---v2
--Make the comment match the code [Jani]
-
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240724163743.3668407-1-suraj.kandpal@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -4393,8 +4393,11 @@ void intel_dp_set_infoframes(struct inte
- 	if (!enable && HAS_DSC(dev_priv))
- 		val &= ~VDIP_ENABLE_PPS;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3115,7 +3115,8 @@ static int ieee80211_get_tx_power(struct
+ 	struct ieee80211_local *local = wiphy_priv(wiphy);
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
--	/* When PSR is enabled, this routine doesn't disable VSC DIP */
--	if (!crtc_state->has_psr)
-+	/*
-+	 * This routine disables VSC DIP if the function is called
-+	 * to disable SDP or if it does not have PSR
-+	 */
-+	if (!enable || !crtc_state->has_psr)
- 		val &= ~VIDEO_DIP_ENABLE_VSC_HSW;
+-	if (local->ops->get_txpower)
++	if (local->ops->get_txpower &&
++	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 		return drv_get_txpower(local, sdata, dbm);
  
- 	intel_de_write(dev_priv, reg, val);
+ 	if (!local->use_chanctx)
 
 
 
