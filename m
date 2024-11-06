@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-90509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EE29BE8A7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77749BE7B7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C02C1F20594
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD872839E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112C51DFD9D;
-	Wed,  6 Nov 2024 12:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FED1DF267;
+	Wed,  6 Nov 2024 12:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flZtMdF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgliCFoa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B041DF736;
-	Wed,  6 Nov 2024 12:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22E21DE8B4;
+	Wed,  6 Nov 2024 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895983; cv=none; b=ZhfIs2RDPlSYqdSKQZgHuovhDPDXRrmAIRji2PTBvO4I+syNbHJX5FJ4UjUbHgR4DWFVzhvWhSIQw3LAPyMa8Q+WtMrQ0CNFVen+273KAxz7XT/cqu1SDSSbtcVoUTLKHrsYSoMErxfDQ71xPZEcNN+ED2MtRRSum2mwiQqNyOs=
+	t=1730895421; cv=none; b=In1QchVa6XhzB2LHG05HBgYDrjVK9Mj2YLPUa83pVT5vv4a+a8LcQUkv1/LmAhA3cJlM4YaHUfcTuRj5QA0+HMFYogV2B7IoVE2h/LO/cduGIIaOsrrkk7nvVSqK05djsj+mJKMf+0G1P4vd0muUDPFcwI2L4L9RJibZkpuAMRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895983; c=relaxed/simple;
-	bh=+hPWS5KaV7wyFKV3CRc8n866FeZd0goqdsnpSiRLMjc=;
+	s=arc-20240116; t=1730895421; c=relaxed/simple;
+	bh=BYQUKSimcMVtuYaBR33o3NVMMRQtRfeDQ+9MnxC7h2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqPdBhVRL/hzCZO/r6VrDouDTWTWsXX3Dma2+T3QUUXUQDPxG32dSQ8cInnrU8r24qKBJYcotUQwMUnVXA4gszuYAn/gb92M174p40wJUvsYafNaavozU1/Cc2/cRZ7LQ4ERXu0rGdCrZ/VbocY/Jf2Hd8x3kD+ftcGu8SUXz9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flZtMdF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0776EC4CECD;
-	Wed,  6 Nov 2024 12:26:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GT+A//wmJAtYO2bl8SU58gENWqwx8EA8zX+1gTelmDQvvzYWk2SBmey9gSjZQ6igN7E9vdGTFRwmqf9I7OXo/2lCZu9tqM1mnqZJYhnqXQx1/j/dE1opxZUqyD6otXZXlhhhNjdtUKrMRSTbJR5quYLlTYDXWIodJTUSabdaftg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgliCFoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E384C4CECD;
+	Wed,  6 Nov 2024 12:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895983;
-	bh=+hPWS5KaV7wyFKV3CRc8n866FeZd0goqdsnpSiRLMjc=;
+	s=korg; t=1730895421;
+	bh=BYQUKSimcMVtuYaBR33o3NVMMRQtRfeDQ+9MnxC7h2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flZtMdF9lg4XP0a4DGngZunfnpVPOgEM7vihQhpYgi8jkPqO+MY92KnT0BQHg9V1f
-	 DKwVt2e+iwqc80Yts2oG9ESu3AATwmx4y9IOEVByOZqE9ajQDPcocjj/GpiNfnVSDB
-	 vkadSGSP02Hb7bqYNacf7chzLP6Co4JDs4sZaxeg=
+	b=cgliCFoaJAsIvLdUCkTTU00sX0pOfiaTz64FmVIFS9RQIly4GaPlXnrrGf6AI6YI8
+	 slnxhXN2LIW5PXqQMpKIwc2WF3NFfQkS63mtgM76ip662tPmVznpfBUfPgxKAynATG
+	 AqpoLPP3biGYiSPKLgVmnPwAfWwQ8ymlItpiogr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 051/245] mlxsw: pci: Sync Rx buffers for CPU
+Subject: [PATCH 4.19 176/350] drm/radeon/r100: Handle unknown family in r100_cp_init_microcode()
 Date: Wed,  6 Nov 2024 13:01:44 +0100
-Message-ID: <20241106120320.477596438@linuxfoundation.org>
+Message-ID: <20241106120325.277344930@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +60,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 15f73e601a9c67aa83bde92b2d940a6532d8614d ]
+[ Upstream commit c6dbab46324b1742b50dc2fb5c1fee2c28129439 ]
 
-When Rx packet is received, drivers should sync the pages for CPU, to
-ensure the CPU reads the data written by the device and not stale
-data from its cache.
+With -Werror:
 
-Add the missing sync call in Rx path, sync the actual length of data for
-each fragment.
+    In function ‘r100_cp_init_microcode’,
+	inlined from ‘r100_cp_init’ at drivers/gpu/drm/radeon/r100.c:1136:7:
+    include/linux/printk.h:465:44: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
+      465 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+	  |                                            ^
+    include/linux/printk.h:437:17: note: in definition of macro ‘printk_index_wrap’
+      437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+	  |                 ^~~~~~~
+    include/linux/printk.h:508:9: note: in expansion of macro ‘printk’
+      508 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
+	  |         ^~~~~~
+    drivers/gpu/drm/radeon/r100.c:1062:17: note: in expansion of macro ‘pr_err’
+     1062 |                 pr_err("radeon_cp: Failed to load firmware \"%s\"\n", fw_name);
+	  |                 ^~~~~~
 
-Cc: Jiri Pirko <jiri@resnulli.us>
-Fixes: b5b60bb491b2 ("mlxsw: pci: Use page pool for Rx buffers allocation")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/461486fac91755ca4e04c2068c102250026dcd0b.1729866134.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by converting the if/else if/... construct into a proper
+switch() statement with a default to handle the error case.
+
+As a bonus, the generated code is ca. 100 bytes smaller (with gcc 11.4.0
+targeting arm32).
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/pci.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/radeon/r100.c | 70 ++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
-index 060e5b9392114..2320a5f323b45 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
-@@ -389,15 +389,27 @@ static void mlxsw_pci_wqe_frag_unmap(struct mlxsw_pci *mlxsw_pci, char *wqe,
- 	dma_unmap_single(&pdev->dev, mapaddr, frag_len, direction);
- }
+diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
+index 15241b80e9d21..444a135158bdc 100644
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
+@@ -999,45 +999,65 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
  
--static struct sk_buff *mlxsw_pci_rdq_build_skb(struct page *pages[],
-+static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
-+					       struct page *pages[],
- 					       u16 byte_count)
- {
-+	struct mlxsw_pci_queue *cq = q->u.rdq.cq;
- 	unsigned int linear_data_size;
-+	struct page_pool *page_pool;
- 	struct sk_buff *skb;
- 	int page_index = 0;
- 	bool linear_only;
- 	void *data;
+ 	DRM_DEBUG_KMS("\n");
  
-+	linear_only = byte_count + MLXSW_PCI_RX_BUF_SW_OVERHEAD <= PAGE_SIZE;
-+	linear_data_size = linear_only ? byte_count :
-+					 PAGE_SIZE -
-+					 MLXSW_PCI_RX_BUF_SW_OVERHEAD;
+-	if ((rdev->family == CHIP_R100) || (rdev->family == CHIP_RV100) ||
+-	    (rdev->family == CHIP_RV200) || (rdev->family == CHIP_RS100) ||
+-	    (rdev->family == CHIP_RS200)) {
++	switch (rdev->family) {
++	case CHIP_R100:
++	case CHIP_RV100:
++	case CHIP_RV200:
++	case CHIP_RS100:
++	case CHIP_RS200:
+ 		DRM_INFO("Loading R100 Microcode\n");
+ 		fw_name = FIRMWARE_R100;
+-	} else if ((rdev->family == CHIP_R200) ||
+-		   (rdev->family == CHIP_RV250) ||
+-		   (rdev->family == CHIP_RV280) ||
+-		   (rdev->family == CHIP_RS300)) {
++		break;
 +
-+	page_pool = cq->u.cq.page_pool;
-+	page_pool_dma_sync_for_cpu(page_pool, pages[page_index],
-+				   MLXSW_PCI_SKB_HEADROOM, linear_data_size);
++	case CHIP_R200:
++	case CHIP_RV250:
++	case CHIP_RV280:
++	case CHIP_RS300:
+ 		DRM_INFO("Loading R200 Microcode\n");
+ 		fw_name = FIRMWARE_R200;
+-	} else if ((rdev->family == CHIP_R300) ||
+-		   (rdev->family == CHIP_R350) ||
+-		   (rdev->family == CHIP_RV350) ||
+-		   (rdev->family == CHIP_RV380) ||
+-		   (rdev->family == CHIP_RS400) ||
+-		   (rdev->family == CHIP_RS480)) {
++		break;
 +
- 	data = page_address(pages[page_index]);
- 	net_prefetch(data);
++	case CHIP_R300:
++	case CHIP_R350:
++	case CHIP_RV350:
++	case CHIP_RV380:
++	case CHIP_RS400:
++	case CHIP_RS480:
+ 		DRM_INFO("Loading R300 Microcode\n");
+ 		fw_name = FIRMWARE_R300;
+-	} else if ((rdev->family == CHIP_R420) ||
+-		   (rdev->family == CHIP_R423) ||
+-		   (rdev->family == CHIP_RV410)) {
++		break;
++
++	case CHIP_R420:
++	case CHIP_R423:
++	case CHIP_RV410:
+ 		DRM_INFO("Loading R400 Microcode\n");
+ 		fw_name = FIRMWARE_R420;
+-	} else if ((rdev->family == CHIP_RS690) ||
+-		   (rdev->family == CHIP_RS740)) {
++		break;
++
++	case CHIP_RS690:
++	case CHIP_RS740:
+ 		DRM_INFO("Loading RS690/RS740 Microcode\n");
+ 		fw_name = FIRMWARE_RS690;
+-	} else if (rdev->family == CHIP_RS600) {
++		break;
++
++	case CHIP_RS600:
+ 		DRM_INFO("Loading RS600 Microcode\n");
+ 		fw_name = FIRMWARE_RS600;
+-	} else if ((rdev->family == CHIP_RV515) ||
+-		   (rdev->family == CHIP_R520) ||
+-		   (rdev->family == CHIP_RV530) ||
+-		   (rdev->family == CHIP_R580) ||
+-		   (rdev->family == CHIP_RV560) ||
+-		   (rdev->family == CHIP_RV570)) {
++		break;
++
++	case CHIP_RV515:
++	case CHIP_R520:
++	case CHIP_RV530:
++	case CHIP_R580:
++	case CHIP_RV560:
++	case CHIP_RV570:
+ 		DRM_INFO("Loading R500 Microcode\n");
+ 		fw_name = FIRMWARE_R520;
++		break;
++
++	default:
++		DRM_ERROR("Unsupported Radeon family %u\n", rdev->family);
++		return -EINVAL;
+ 	}
  
-@@ -405,11 +417,6 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct page *pages[],
- 	if (unlikely(!skb))
- 		return ERR_PTR(-ENOMEM);
- 
--	linear_only = byte_count + MLXSW_PCI_RX_BUF_SW_OVERHEAD <= PAGE_SIZE;
--	linear_data_size = linear_only ? byte_count :
--					 PAGE_SIZE -
--					 MLXSW_PCI_RX_BUF_SW_OVERHEAD;
--
- 	skb_reserve(skb, MLXSW_PCI_SKB_HEADROOM);
- 	skb_put(skb, linear_data_size);
- 
-@@ -425,6 +432,7 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct page *pages[],
- 
- 		page = pages[page_index];
- 		frag_size = min(byte_count, PAGE_SIZE);
-+		page_pool_dma_sync_for_cpu(page_pool, page, 0, frag_size);
- 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
- 				page, 0, frag_size, PAGE_SIZE);
- 		byte_count -= frag_size;
-@@ -760,7 +768,7 @@ static void mlxsw_pci_cqe_rdq_handle(struct mlxsw_pci *mlxsw_pci,
- 	if (err)
- 		goto out;
- 
--	skb = mlxsw_pci_rdq_build_skb(pages, byte_count);
-+	skb = mlxsw_pci_rdq_build_skb(q, pages, byte_count);
- 	if (IS_ERR(skb)) {
- 		dev_err_ratelimited(&pdev->dev, "Failed to build skb for RDQ\n");
- 		mlxsw_pci_rdq_pages_recycle(q, pages, num_sg_entries);
+ 	err = request_firmware(&rdev->me_fw, fw_name, rdev->dev);
 -- 
 2.43.0
 
