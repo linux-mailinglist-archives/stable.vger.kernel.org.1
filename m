@@ -1,86 +1,159 @@
-Return-Path: <stable+bounces-90067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E892E9BDEE6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:34:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A058D9BDEEA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F17F1C21C60
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:34:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2184D1F23E94
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B7A1922F9;
-	Wed,  6 Nov 2024 06:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAF7191F9C;
+	Wed,  6 Nov 2024 06:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7u49xqi"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jMt3Jere"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4AB191F89;
-	Wed,  6 Nov 2024 06:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB83191494;
+	Wed,  6 Nov 2024 06:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730874876; cv=none; b=n4Ka3mt0W8QTt41b2KL+tZUrGXLbIxZvfScQynGAzqdfxD32jsNgoDk+jzIuSF/0vlLvq1cA2iL+4xuX/ktggoGIKQrsmBNK0RQhP3TsBJqXy+M1f83sVB0Sfq3wBsxrNHbnH3a/c8fyvDiqhorP4oWCKuUoz8fk+8XSeUt2I/0=
+	t=1730874903; cv=none; b=HKhKJ5YF7ugK6m2/qhKNFQe2HdoOYitPnSC6FeuJ+g6AvR612CuEakf1vSaWyRoYHOUoMFEm9XRTFP0t5pDjf+AS4HMVnQSkhWYKRDZNPZAjKWoG0Dev3+nWvW88qA78zk3v8OyqHEg4sV1FO2Ox3u6nopcKbi5+6DJG+v7Ef00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730874876; c=relaxed/simple;
-	bh=aiIt6g4a5lyagB3+YDLezIbtzJW/GBeS2kN7mBoFm0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lMBwwpZWcYgqK1ZzwpMrUJE8kNkqpInvcu71CX3TVZLD3JlPdV+xcVcY0Rbds3w24UhHpqcSk2vQFbzxaSk3cMLLg8/vg4xNBpC7yw46DrL6xlUobbfLU8wgUdxoj7Ynjs1sGRsXNCpSD4NZeFqWi5RiYzu6B3COJwgLS99RJXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7u49xqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1836CC4CECD;
-	Wed,  6 Nov 2024 06:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730874875;
-	bh=aiIt6g4a5lyagB3+YDLezIbtzJW/GBeS2kN7mBoFm0I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k7u49xqiYIRCopmZcuBXZMaHrimeqvjznh1apHCnuHJz0w3JJfbHYYX64Fy6zuavi
-	 WTle0LKvDCGgdbwcGYCxnafpf3D4QERV0NjDmSAPDmGxmi+z88Sc+Z96pTAmEtm64T
-	 0RBR69741bf6n/PbeC8TKpo199+Qndg+RVh60IDk=
-Date: Wed, 6 Nov 2024 07:34:17 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-nilfs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of
- checked flag" failed to apply to v6.6-stable tree
-Message-ID: <2024110608-shut-strenuous-04c8@gregkh>
-References: <20241106020945.172057-1-sashal@kernel.org>
- <CAKFNMomd0cxe-hP0CoNH7ERvrPCDhz22sRs=8086-j3H=OqOxg@mail.gmail.com>
+	s=arc-20240116; t=1730874903; c=relaxed/simple;
+	bh=BzN2knYSgbHzfeWdJ+ZbB9Ms4i/Hh9lzx9vsSMJpDYs=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=gR3oWoduYv4h/fqoUAy2QA5rq/bssqhoQlF3mwPNPEYTdqSPwu4oBdDy0yS1g0uMV0ZVDqPSlzrlLJy/Z6RleMxRRfFrbv+YTgCGorLjWBJN+cEPIuvCIh2vinafxN4TIi73jKSikPKpwac5XKsDgXsK4Eyko7Kt6PlYJh4pzyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jMt3Jere; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A66YWOS02316527, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1730874872; bh=BzN2knYSgbHzfeWdJ+ZbB9Ms4i/Hh9lzx9vsSMJpDYs=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=jMt3JereZu0/HVpz0Ncw4fDMoE+qxuF7dMaJsLoidQdxC3CeoJvPyCjf2cYfiAdRE
+	 EjrLUyUCcia4T2RDeuqvJIl2aviF630WWjGF1vWi8UP+I0SwE0+eOoU44dOnaNd2UI
+	 VbVwts63aaDqC0FhsiEBfodOSg02vGHN6/Ij3rzdn7vjMuw3S1uS6+YRVot6k9CoJ5
+	 D+Hm+DFpaB33QnU09XejO64x5YcQFsoxxZeDVJsEahE/kteB1Fmrti2Xyrmw3LE4+/
+	 AQUzPauWhtpepB1OtgJ4xjn4vS/6NJ3OpWlJpbMqZpEAuVHaa3D63hF/l4Pz+/i6G3
+	 olncdaAqFtmhA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A66YWOS02316527
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 Nov 2024 14:34:32 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 6 Nov 2024 14:34:32 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Nov
+ 2024 14:34:32 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, <pkshih@realtek.com>,
+        <linux-wireless@vger.kernel.org>
+CC: <kvalo@kernel.org>, <linux-kernel@vger.kernel.org>, <kernel@gpiccoli.net>,
+        <kernel-dev@igalia.com>, <rtl8821cerfe2@gmail.com>,
+        "Guilherme G. Piccoli"
+	<gpiccoli@igalia.com>,
+        <stable@vger.kernel.org>,
+        <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
+Subject: Re: [PATCH V4] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
+In-Reply-To: <20241101193412.1390391-1-gpiccoli@igalia.com>
+References: <20241101193412.1390391-1-gpiccoli@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKFNMomd0cxe-hP0CoNH7ERvrPCDhz22sRs=8086-j3H=OqOxg@mail.gmail.com>
+Content-Type: text/plain
+Message-ID: <bcd236f2-ba8b-4515-8dca-b4b803ee91d2@RTEXMBS04.realtek.com.tw>
+Date: Wed, 6 Nov 2024 14:34:32 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Wed, Nov 06, 2024 at 03:21:39PM +0900, Ryusuke Konishi wrote:
-> Hi Sasha
-> 
-> About 6 hours ago, I posted an adjusted patch to the list (and to
-> Greg) that allows for backporting of this patch to 6.6-stable and
-> earlier.
-> 
-> The patch is titled  "[PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix
-> kernel bug due to missing clearing of checked flag".
-> 
-> (or https://lkml.kernel.org/r/20241105235654.15044-1-konishi.ryusuke@gmail.com )
-> 
-> Normally, Greg would pick up the adjusted patch and apply it, and it
-> would be backported without any problems, but if the backport of the
-> adjusted patch I requested has been rejected, I would like to ask for
-> your confirmation.
-> 
-> If it is a misunderstanding, I will wait for Greg's work, but is the
-> process different from usual?
+"Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 
-I got it now, thanks!
+> Syzkaller reported a hung task with uevent_show() on stack trace. That
+> specific issue was addressed by another commit [0], but even with that
+> fix applied (for example, running v6.12-rc5) we face another type of hung
+> task that comes from the same reproducer [1]. By investigating that, we
+> could narrow it to the following path:
+> 
+> (a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
+> dummy_hcd infrastructure.
+> 
+> (b) During the probe of rtl8192cu, the driver ends-up performing an efuse
+> read procedure (which is related to EEPROM load IIUC), and here lies the
+> issue: the function read_efuse() calls read_efuse_byte() many times, as
+> loop iterations depending on the efuse size (in our example, 512 in total).
+> 
+> This procedure for reading efuse bytes relies in a loop that performs an
+> I/O read up to *10k* times in case of failures. We measured the time of
+> the loop inside read_efuse_byte() alone, and in this reproducer (which
+> involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
+> consequence, we have the driver stuck in its probe routine for big time,
+> exposing a stack trace like below if we attempt to reboot the system, for
+> example:
+> 
+> task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
+> Workqueue: usb_hub_wq hub_event
+> Call Trace:
+>  __schedule+0xe22/0xeb6
+>  schedule_timeout+0xe7/0x132
+>  __wait_for_common+0xb5/0x12e
+>  usb_start_wait_urb+0xc5/0x1ef
+>  ? usb_alloc_urb+0x95/0xa4
+>  usb_control_msg+0xff/0x184
+>  _usbctrl_vendorreq_sync+0xa0/0x161
+>  _usb_read_sync+0xb3/0xc5
+>  read_efuse_byte+0x13c/0x146
+>  read_efuse+0x351/0x5f0
+>  efuse_read_all_map+0x42/0x52
+>  rtl_efuse_shadow_map_update+0x60/0xef
+>  rtl_get_hwinfo+0x5d/0x1c2
+>  rtl92cu_read_eeprom_info+0x10a/0x8d5
+>  ? rtl92c_read_chip_version+0x14f/0x17e
+>  rtl_usb_probe+0x323/0x851
+>  usb_probe_interface+0x278/0x34b
+>  really_probe+0x202/0x4a4
+>  __driver_probe_device+0x166/0x1b2
+>  driver_probe_device+0x2f/0xd8
+>  [...]
+> 
+> We propose hereby to drastically reduce the attempts of doing the I/O
+> reads in case of failures, restricted to USB devices (given that
+> they're inherently slower than PCIe ones). By retrying up to 10 times
+> (instead of 10000), we got reponsiveness in the reproducer, while seems
+> reasonable to believe that there's no sane USB device implementation in
+> the field requiring this amount of retries at every I/O read in order
+> to properly work. Based on that assumption, it'd be good to have it
+> backported to stable but maybe not since driver implementation (the 10k
+> number comes from day 0), perhaps up to 6.x series makes sense.
+> 
+> [0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+> 
+> [1] A note about that: this syzkaller report presents multiple reproducers
+> that differs by the type of emulated USB device. For this specific case,
+> check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
+> is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+> 
+> Cc: stable@vger.kernel.org # v6.1+
+> Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+> Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-greg k-h
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+5c1b54456300 wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
+
+---
+https://github.com/pkshih/rtw.git
+
 
