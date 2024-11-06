@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F1D9BECD0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017B79BE6F4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94EA01C23E21
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE4F2285A31
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E211F7064;
-	Wed,  6 Nov 2024 12:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952461DF24E;
+	Wed,  6 Nov 2024 12:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gt4hsNjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuL02C0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2311E04BA;
-	Wed,  6 Nov 2024 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532FF1DF24A;
+	Wed,  6 Nov 2024 12:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897967; cv=none; b=OUXS6E5kv4DLCIIbvurlt9gtHjhjT8meuBmnPRk1yR0RzRF03i8nY5lKyajPiKrSinR4xwkbl6/a5IonTfe3hpcK0pOEQLzl7c4avjJHc6N9GFj2+UD3tpBAHik9OtUdhLuKYn4cH7KHOaFmRTjTModI+2GyfLwIUdJHTEFfFNQ=
+	t=1730894927; cv=none; b=gfsewO8xh3C4DPsfRexFi66pZpfI2Q0fLjutpMviCELRlvWY5rlsVhRH4IKtJqD+9TAHDHjYIFkhJ9zToG8yaY7t9YsxwM2jFGl0mgE110pxbp8a4lJgI7RGRzso2MJ/wruEpX063Y1gBiRONpsB3gTKUMuycCBLWlfGDMOW1G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897967; c=relaxed/simple;
-	bh=87E4acf6bLKF0YHcJiTWMgdhav9iBnKlTfqxzlgsaJo=;
+	s=arc-20240116; t=1730894927; c=relaxed/simple;
+	bh=znSDnmbugVFr0l67EtSQRHLO1Gxn7ln8XyibqDXR1EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XiD+ZDJvs4fBOSyNDXhFJyT3rZeHUPAPefOHFqUnjq8qVe+eNnWngZdRQQxbi9NRQUFh1PNZywcIbdsR4U4Zve+T3uFqKIi5kmEJ+0V/TsPLxMLkxRWn2v+zyZjoo64GB6SZea8JRwgpzf0BkAfgDcgIrC0QBjxVpzb3ogQiwpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gt4hsNjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F50EC4CECD;
-	Wed,  6 Nov 2024 12:59:27 +0000 (UTC)
+	 MIME-Version; b=QGiAd+gYrit4UXChUGud8hjbva2gJCeInTmTri5L8yMx93DGUbhLeEt7is0VUFlzkpSioDiN2/9Wy0vDXllF58ze6wLBYrmCF/EteFqEbPsANCkPkgSmvixVqQ8qyx6U8tE9bCFlLwFnxfI0ylWh9sVqkKK+2kE2IhQ77ANCMBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuL02C0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF4FC4CECD;
+	Wed,  6 Nov 2024 12:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897967;
-	bh=87E4acf6bLKF0YHcJiTWMgdhav9iBnKlTfqxzlgsaJo=;
+	s=korg; t=1730894927;
+	bh=znSDnmbugVFr0l67EtSQRHLO1Gxn7ln8XyibqDXR1EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gt4hsNjnGvObVnclxlDFPvrKuj47D+NSqZkVtLESRioIdVTuha1AmgHQ4iG/YsR+A
-	 uZJCyqAy+UWvV3/K2mFBzztN8bkItRj5hQSj8+Lxk8tTsIgDhr+hvmIObu5x82xWf6
-	 3SKqbeMhI05nDZOSLUMf1+QdmjS+qbHELgECzLhA=
+	b=DuL02C0eqYZAg3ZpaxmeFS5HxEA34XLaGAYrUFOM78ooHKPPfPUv2o8v/FgJ8wIOi
+	 ntJbPtDgyHto064NtV6pqgkwTDtMikRw7V7E6pXACH4QEYxCY/CSDW3oJAJ5celZ+N
+	 kZe0qkVzlsfo39JQhAG7locAvy7gwlnYhms4bP4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/462] drm/msm/a5xx: properly clear preemption records on resume
+Subject: [PATCH 4.19 045/350] hwmon: (max16065) Fix overflows seen when writing limits
 Date: Wed,  6 Nov 2024 12:59:33 +0100
-Message-ID: <20241106120333.483915998@linuxfoundation.org>
+Message-ID: <20241106120322.000154345@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 64fd6d01a52904bdbda0ce810a45a428c995a4ca ]
+[ Upstream commit 744ec4477b11c42e2c8de9eb8364675ae7a0bd81 ]
 
-Two fields of preempt_record which are used by CP aren't reset on
-resume: "data" and "info". This is the reason behind faults which happen
-when we try to switch to the ring that was active last before suspend.
-In addition those faults can't be recovered from because we use suspend
-and resume to do so (keeping values of those fields again).
+Writing large limits resulted in overflows as reported by module tests.
 
-Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/612043/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+in0_lcrit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_crit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_min: Suspected overflow: [max=5538, read 0, written 2147483647]
+
+Fix the problem by clamping prior to multiplications and the use of
+DIV_ROUND_CLOSEST, and by using consistent variable types.
+
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/max16065.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-index 9cf9353a7ff11..0a892f4f59d1d 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-@@ -207,6 +207,8 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
- 		return;
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 162401aaef71b..3015dd1a75141 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -117,9 +117,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
+ 	return limit * range / 256;
+ }
  
- 	for (i = 0; i < gpu->nr_rings; i++) {
-+		a5xx_gpu->preempt[i]->data = 0;
-+		a5xx_gpu->preempt[i]->info = 0;
- 		a5xx_gpu->preempt[i]->wptr = 0;
- 		a5xx_gpu->preempt[i]->rptr = 0;
- 		a5xx_gpu->preempt[i]->rbase = gpu->rb[i]->iova;
+-static inline int MV_TO_LIMIT(int mv, int range)
++static inline int MV_TO_LIMIT(unsigned long mv, int range)
+ {
+-	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
++	mv = clamp_val(mv, 0, ULONG_MAX / 256);
++	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
+ }
+ 
+ static inline int ADC_TO_CURR(int adc, int gain)
 -- 
 2.43.0
 
