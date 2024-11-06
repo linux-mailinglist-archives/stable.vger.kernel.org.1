@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9990F9BE921
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585769BE7FB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51D161F21FD1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1CA284D20
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC7F1DE4F6;
-	Wed,  6 Nov 2024 12:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC00E1DF73B;
+	Wed,  6 Nov 2024 12:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbhmFI23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU7DUVR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00D4207F;
-	Wed,  6 Nov 2024 12:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D7A1DF25E;
+	Wed,  6 Nov 2024 12:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896247; cv=none; b=JxxcnqW5XHytU6GXZycZOnGpcbSC/fbkzMb4MbVlGkfzndoJ4Vx3zBW/LQETElTLXacs0HrGzVt/4aqpeVWN8huan2cowMrpzt44Yppp6CKra3YFLpL+QGwXi6uRgNSwIIgNW7EAEJxp16at68pfFfRHK2z6wy+AOZQNyQZPA1E=
+	t=1730895573; cv=none; b=f1DT8v+ShKWwgoFBvsrPqejM8P8XY8fF4O7jV+z4tKsGxIPs+gUpzub0EbzJcfgGKunqCTRgXokk9TSAhmm2d0sgVtcMqFgzamjnVxUkr0FJ0RX3mQ9i/QduSHv/QKl4qKRwM60Gpa/aIVJlCO75gzLePJYGYjG3RoYph0HaC7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896247; c=relaxed/simple;
-	bh=gTCireRxPQphKzdKqHf1iPFJJ8j9OpnxsfTbnofzX6s=;
+	s=arc-20240116; t=1730895573; c=relaxed/simple;
+	bh=fSXyV27UBmr2iWXva1/6uhPygbdz5QsI6wvQkpYvkoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYvu0WTqmm78+EK/PH8G/BccSrlXNpiWo9VMc3vNKIT8/WxxCFQiH1ss21nW0v7EYy0n6MBaqtyBXOJp1lefIHMdcTKk3F4G19+lvUyoe+2X+3j3f1mihxuI5cdiZuERLI9DKVMEkyNx/Tnr1AqkaXC/1KbRIgFWlbi5vl1OA+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbhmFI23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE4C4CECD;
-	Wed,  6 Nov 2024 12:30:46 +0000 (UTC)
+	 MIME-Version; b=iqE6vlL3ua2zhJcUTk+H3kV6HoeCU4sulqSr3zYaFbLA2g2fJTrZ02ukDFkH7gN0SGGjCaHeC1mRsCRvBfygh5fwfrSBKB7UqBd5xTz8VOkmlcAazkyobnwpEsFMFJNzSNW4aRB8SFmxPF2vS6hQ3P+OkbNsF/vEm435MdVfrgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU7DUVR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E58EC4CECD;
+	Wed,  6 Nov 2024 12:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896247;
-	bh=gTCireRxPQphKzdKqHf1iPFJJ8j9OpnxsfTbnofzX6s=;
+	s=korg; t=1730895573;
+	bh=fSXyV27UBmr2iWXva1/6uhPygbdz5QsI6wvQkpYvkoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbhmFI23LB/HfNEE9nY9/wuAj4c9aMS5sdV3AEC9GyLczfGVsCT40cSmwbJnxX62W
-	 EVlnI1PDOVKMHGlrwQ1O5JGJyp9mKGmDuPUkfTa23kthjD1oQKxTRCpnSfd8AdaZi4
-	 dQZZ/boBE3Y9FKfgMjK8g2flSO8CyeRUcYM/66pU=
+	b=zU7DUVR3mxJ8KpIMx7112cMB+jYrF+Uc94b8ArjreYFLTwcmlJVhw5Ugece2FIPPw
+	 5Mc5IbyQrKu1bi2PQDL26BHn8I0LTzBDtbncc/sUOZs8rBMqhft6BvOIjhAwCH0De7
+	 WTx2nbi36nOz0Y+zE50knU0GP9+fI4UtvcgoL4H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Gibbons <jamie.gibbons@microchip.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.11 139/245] firmware: microchip: auto-update: fix poll_complete() to not report spurious timeout errors
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 4.19 264/350] Revert "usb: yurex: Replace snprintf() with the safer scnprintf() variant"
 Date: Wed,  6 Nov 2024 13:03:12 +0100
-Message-ID: <20241106120322.652137414@linuxfoundation.org>
+Message-ID: <20241106120327.419408451@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 83beece5aff75879bdfc6df8ba84ea88fd93050e upstream.
+commit 71c717cd8a2e180126932cc6851ff21c1d04d69a upstream.
 
-fw_upload's poll_complete() is really intended for use with
-asynchronous write() implementations - or at least those where the
-write() loop may terminate without the kernel yet being aware of whether
-or not the firmware upload has succeeded. For auto-update, write() is
-only ever called once and will only return when uploading has completed,
-be that by passing or failing. The core fw_upload code only calls
-poll_complete() after the final call to write() has returned.
+This reverts commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035.
 
-However, the poll_complete() implementation in the auto-update driver
-was written to expect poll_complete() to be called from another context,
-and it waits for a completion signalled from write(). Since
-poll_complete() is actually called from the same context, after the
-write() loop has terminated, wait_for_completion() never sees the
-completion get signalled and always times out, causing programming to
-always report a failing.
+This patch leads to passing 0 to simple_read_from_buffer()
+as a fifth argument, turning the read method into a nop.
+The change is fundamentally flawed, as it breaks the driver.
 
-Since write() is full synchronous, and its return value will indicate
-whether or not programming passed or failed, poll_complete() serves no
-purpose and can be cut down to simply return FW_UPLOAD_ERR_NONE.
-
-Cc: stable@vger.kernel.org
-Fixes: ec5b0f1193ad4 ("firmware: microchip: add PolarFire SoC Auto Update support")
-Reported-by: Jamie Gibbons <jamie.gibbons@microchip.com>
-Tested-by: Jamie Gibbons <jamie.gibbons@microchip.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241007094004.242122-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/microchip/mpfs-auto-update.c |   42 ++++----------------------
- 1 file changed, 7 insertions(+), 35 deletions(-)
+ drivers/usb/misc/yurex.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/drivers/firmware/microchip/mpfs-auto-update.c
-+++ b/drivers/firmware/microchip/mpfs-auto-update.c
-@@ -76,14 +76,11 @@
- #define AUTO_UPDATE_INFO_SIZE		SZ_1M
- #define AUTO_UPDATE_BITSTREAM_BASE	(AUTO_UPDATE_DIRECTORY_SIZE + AUTO_UPDATE_INFO_SIZE)
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -34,8 +34,6 @@
+ #define YUREX_BUF_SIZE		8
+ #define YUREX_WRITE_TIMEOUT	(HZ*2)
  
--#define AUTO_UPDATE_TIMEOUT_MS		60000
+-#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
 -
- struct mpfs_auto_update_priv {
- 	struct mpfs_sys_controller *sys_controller;
- 	struct device *dev;
- 	struct mtd_info *flash;
- 	struct fw_upload *fw_uploader;
--	struct completion programming_complete;
- 	size_t size_per_bitstream;
- 	bool cancel_request;
- };
-@@ -156,19 +153,6 @@ static void mpfs_auto_update_cancel(stru
- 
- static enum fw_upload_err mpfs_auto_update_poll_complete(struct fw_upload *fw_uploader)
+ /* table of devices that work with this driver */
+ static struct usb_device_id yurex_table[] = {
+ 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
+@@ -404,7 +402,8 @@ static ssize_t yurex_read(struct file *f
  {
--	struct mpfs_auto_update_priv *priv = fw_uploader->dd_handle;
--	int ret;
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+-	char in_buffer[MAX_S64_STRLEN];
++	char in_buffer[20];
++	unsigned long flags;
+ 
+ 	dev = file->private_data;
+ 
+@@ -414,16 +413,14 @@ static ssize_t yurex_read(struct file *f
+ 		return -ENODEV;
+ 	}
+ 
+-	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
+-		mutex_unlock(&dev->io_mutex);
+-		return -EIO;
+-	}
 -
--	/*
--	 * There is no meaningful way to get the status of the programming while
--	 * it is in progress, so attempting anything other than waiting for it
--	 * to complete would be misplaced.
--	 */
--	ret = wait_for_completion_timeout(&priv->programming_complete,
--					  msecs_to_jiffies(AUTO_UPDATE_TIMEOUT_MS));
--	if (!ret)
--		return FW_UPLOAD_ERR_TIMEOUT;
--
- 	return FW_UPLOAD_ERR_NONE;
+-	spin_lock_irq(&dev->lock);
+-	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+-	spin_unlock_irq(&dev->lock);
++	spin_lock_irqsave(&dev->lock, flags);
++	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
++	spin_unlock_irqrestore(&dev->lock, flags);
+ 	mutex_unlock(&dev->io_mutex);
+ 
++	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
++		return -EIO;
++
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
  }
  
-@@ -349,33 +333,23 @@ static enum fw_upload_err mpfs_auto_upda
- 						 u32 offset, u32 size, u32 *written)
- {
- 	struct mpfs_auto_update_priv *priv = fw_uploader->dd_handle;
--	enum fw_upload_err err = FW_UPLOAD_ERR_NONE;
- 	int ret;
- 
--	reinit_completion(&priv->programming_complete);
--
- 	ret = mpfs_auto_update_write_bitstream(fw_uploader, data, offset, size, written);
--	if (ret) {
--		err = FW_UPLOAD_ERR_RW_ERROR;
--		goto out;
--	}
-+	if (ret)
-+		return FW_UPLOAD_ERR_RW_ERROR;
- 
--	if (priv->cancel_request) {
--		err = FW_UPLOAD_ERR_CANCELED;
--		goto out;
--	}
-+	if (priv->cancel_request)
-+		return FW_UPLOAD_ERR_CANCELED;
- 
- 	if (mpfs_auto_update_is_bitstream_info(data, size))
--		goto out;
-+		return FW_UPLOAD_ERR_NONE;
- 
- 	ret = mpfs_auto_update_verify_image(fw_uploader);
- 	if (ret)
--		err = FW_UPLOAD_ERR_FW_INVALID;
-+		return FW_UPLOAD_ERR_FW_INVALID;
- 
--out:
--	complete(&priv->programming_complete);
--
--	return err;
-+	return FW_UPLOAD_ERR_NONE;
- }
- 
- static const struct fw_upload_ops mpfs_auto_update_ops = {
-@@ -461,8 +435,6 @@ static int mpfs_auto_update_probe(struct
- 		return dev_err_probe(dev, ret,
- 				     "The current bitstream does not support auto-update\n");
- 
--	init_completion(&priv->programming_complete);
--
- 	fw_uploader = firmware_upload_register(THIS_MODULE, dev, "mpfs-auto-update",
- 					       &mpfs_auto_update_ops, priv);
- 	if (IS_ERR(fw_uploader))
 
 
 
