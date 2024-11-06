@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880A89BEEB9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2359BEE8F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19166B2287D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C99286ACB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F12C1DFE27;
-	Wed,  6 Nov 2024 13:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84571DF278;
+	Wed,  6 Nov 2024 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKPwV+Yi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbe+UnxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4181DFD9D;
-	Wed,  6 Nov 2024 13:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59811CB310;
+	Wed,  6 Nov 2024 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899204; cv=none; b=Vv7eTHFPtr71bWgmeh76Z72oFXO7suSCa2d46aZOUUvLfpTmbZzFTawsR28lREqnhzCo05tc3nlFcMSTKIoqVUlLS9eKSWecmul/sfnIim/HA3KBbbLYPExi9qLahnoGhtbdxkV+NzQf23mTWFl9VePIwiPDuuozErHVGO7wBvo=
+	t=1730899105; cv=none; b=MYtAt15zNzvHCqTQZE1Yp27wq6bT8+R6kfysOUG1tHC1FnD1SUE0cQxxskVXJCzNVSM1uTJKDQRgoe2IVhbQqoEziEX77Co8JpVDG0+eR/EYN1AXWAJfKGXuJ9pmdgHZqlbafWDlkJ5AkGS1p7MytydYy+a9qgjWwID7ENGbzqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899204; c=relaxed/simple;
-	bh=W+Ty6Fu6HbT9/mpnvPO1w9QJba6gysS4CBXv8RsT/wo=;
+	s=arc-20240116; t=1730899105; c=relaxed/simple;
+	bh=rJF7bRM4yefRi3xYzi6F5gGE5xemJjTn9t+l+Y5WIro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFlUd38is++gSJLZPHdM/vl1/3H8eL55IGWqjtF1DPLkqXTulrZ9JUU9qw0R3dxkXu/H/LNpgXPvllmQitlIUKcSxE+OrmpAqtq6P25mMNP9VJTDBald4lcPaHZEKspoo/vdsTjT9eij8L9cZ7z50ma755i+lV9wsD5a+Gvpiig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKPwV+Yi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B99C4CED3;
-	Wed,  6 Nov 2024 13:20:03 +0000 (UTC)
+	 MIME-Version; b=B3RMwAsJCUYuY3Xl2hMqH6+3YKTkNaGOH4XYMqX+8qjXZUEL+G9NUvyRjU5a0BqHhbsFKOJ7SY4u7OVRr3aJcXX4BABBKUBAjCZaAM2vQF9uXj5i8f38Ul+zHqvXAtNFt3GjA+cpVLwBFBRuSaNVkANx7H0BmeF2ny8+SdFil3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbe+UnxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E242C4CECD;
+	Wed,  6 Nov 2024 13:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899204;
-	bh=W+Ty6Fu6HbT9/mpnvPO1w9QJba6gysS4CBXv8RsT/wo=;
+	s=korg; t=1730899105;
+	bh=rJF7bRM4yefRi3xYzi6F5gGE5xemJjTn9t+l+Y5WIro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKPwV+Yih1Vr0Z+tIHlIpOUsT/dFp9pXeAUzoMhmtylvYdyLMepgg/biM1BIV+Iuc
-	 mjHx0rrMy6dBaYMh8RSq5rplRYJkPzkyse1Ec0hE7A8k1ZiU6Zsq6m4UfOlxa81XCT
-	 2rMi+5K1sxLo1zpwAqIP4DQXASnb8oDlX8rYEeLw=
+	b=Wbe+UnxPUZkB6ZkqiB+nUS0Kivke7pDH+lc4ZjuByqlurxPdjIpdJRYGbbn67U5sA
+	 mnVPcdIuX4mAlQgJW4ljAdtg06c5ezMtT6iIBvqaSvWyJTE8VnZxNZn9l0EXD37j+z
+	 7dRogvx9ISdgEr1Erb/jYf3bi5HUhIbcc9XRvfa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/73] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+Subject: [PATCH 5.4 427/462] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
 Date: Wed,  6 Nov 2024 13:05:20 +0100
-Message-ID: <20241106120300.449077405@linuxfoundation.org>
+Message-ID: <20241106120342.059303391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+Sync iterator conditions with ieee80211_iter_keys_rcu.
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
-
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
+Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 62f16966899eb..3009fff9086f5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1282,8 +1282,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 1be9cd265c727..5889a590b3edd 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -883,6 +883,26 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&sdata->local->key_mtx);
+ }
  
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1291,7 +1291,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1311,7 +1310,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
++static void
++ieee80211_key_iter(struct ieee80211_hw *hw,
++		   struct ieee80211_vif *vif,
++		   struct ieee80211_key *key,
++		   void (*iter)(struct ieee80211_hw *hw,
++				struct ieee80211_vif *vif,
++				struct ieee80211_sta *sta,
++				struct ieee80211_key_conf *key,
++				void *data),
++		   void *iter_data)
++{
++	/* skip keys of station in removal process */
++	if (key->sta && key->sta->removed)
++		return;
++	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
++		return;
++	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
++	     &key->conf, iter_data);
++}
++
+ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 			 struct ieee80211_vif *vif,
+ 			 void (*iter)(struct ieee80211_hw *hw,
+@@ -902,16 +922,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
+-			iter(hw, &sdata->vif,
+-			     key->sta ? &key->sta->sta : NULL,
+-			     &key->conf, iter_data);
++			ieee80211_key_iter(hw, vif, key, iter, iter_data);
+ 	} else {
+ 		list_for_each_entry(sdata, &local->interfaces, list)
+ 			list_for_each_entry_safe(key, tmp,
+ 						 &sdata->key_list, list)
+-				iter(hw, &sdata->vif,
+-				     key->sta ? &key->sta->sta : NULL,
+-				     &key->conf, iter_data);
++				ieee80211_key_iter(hw, &sdata->vif, key,
++						   iter, iter_data);
  	}
+ 	mutex_unlock(&local->key_mtx);
+ }
+@@ -929,17 +946,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+ {
+ 	struct ieee80211_key *key;
  
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
+-	list_for_each_entry_rcu(key, &sdata->key_list, list) {
+-		/* skip keys of station in removal process */
+-		if (key->sta && key->sta->removed)
+-			continue;
+-		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+-			continue;
+-
+-		iter(hw, &sdata->vif,
+-		     key->sta ? &key->sta->sta : NULL,
+-		     &key->conf, iter_data);
+-	}
++	list_for_each_entry_rcu(key, &sdata->key_list, list)
++		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
+ }
  
-@@ -1322,11 +1321,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
+ void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
