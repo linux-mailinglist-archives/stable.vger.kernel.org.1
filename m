@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-91251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B659BED20
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:09:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553089BECFA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F609285FFD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8798B1C23D1D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E591F8197;
-	Wed,  6 Nov 2024 13:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676261EF089;
+	Wed,  6 Nov 2024 13:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouKsxdri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDZhoVP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56B41F8190;
-	Wed,  6 Nov 2024 13:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D721E0DB6;
+	Wed,  6 Nov 2024 13:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898185; cv=none; b=Xj9ZXa2vQ8k+s2S0DXiA/xLml9FzhAKyzBHxWiMmlGet/lSmT/rIF6/vOPa2rnlEjT3k29ElbFMntV79+N9kZK+yQ7IowLZ/fB5fCqWs4UVlJp0AnosSxFegtRjDreIcCVtSVuDHatiG9shj0WUDPG3WTkZ+gas8w5UvNphcLUI=
+	t=1730898077; cv=none; b=IMeYuxdO5RqafzCI7kSYpRFo8dU9xF0PqdTLsFk1WjxJ5TnUfa0Wx3b9hGIG41AyDyTXOjSvd2z3Og1JnJycnw8cJOPR6nLUz/q8ll5a++MnaoNBmC0d01c0jEJ4y+7yrEwCzSx01l81umhs1iouLBu8vVfqZuRJTh6SBNV0vGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898185; c=relaxed/simple;
-	bh=DyhRqVHzrJnKc94Qx+BZ0tvn6R1/5Mxm/n2k9PL71B4=;
+	s=arc-20240116; t=1730898077; c=relaxed/simple;
+	bh=smuHritx4oY06AG6B9YBPasz5Q4hjPQJpsoaYYWCcb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUGKqftt08uB/s8G83qbR9SdFOaLpuMT5yW1BN3wkPOyy/ZeBc1p+u2PD9QBlOX08Rkm/2BBvRF7H0pGo8B1tAcnonPDUWBGUBkT0+pbTu19bT8CEIY+PhoshgOBIvHt7MQuesdtbwnUpYSS0EWgeqnjtfwjsHuHgrPzhWQy3So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouKsxdri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAFEC4CECD;
-	Wed,  6 Nov 2024 13:03:05 +0000 (UTC)
+	 MIME-Version; b=SJccJazj7s4+yFCkBP/SBGw0eaKnyBwZmEOsVJTOpxVEGl+0UnZVW0xpckp7mVUoWT2cTtlLuF+y/sPR3CoHqr0Y+vQU23+Oea8/tMQ2TQ/8TwQorUg2XDyhn+XF8g7xizBzIyALJQZZu4VJVHmjI3/p2S27RiGQV9iULgeee2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDZhoVP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAFFC4CECD;
+	Wed,  6 Nov 2024 13:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898185;
-	bh=DyhRqVHzrJnKc94Qx+BZ0tvn6R1/5Mxm/n2k9PL71B4=;
+	s=korg; t=1730898077;
+	bh=smuHritx4oY06AG6B9YBPasz5Q4hjPQJpsoaYYWCcb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouKsxdriknPIxec/DsfYXrm0x9p6ksh/3x2O1J+24SsnSlGSNNvN6qeFuVg6klizT
-	 kX7ZuEao0BFtPInPT91KdFN3cwWJ4bSyNZPgqku1WkyIgN/Dgf0dB/NVwff0Hmn3R9
-	 LaMi4VkffUA8wOcTqeYgXeYf1U9keDHyFX536Uy4=
+	b=HDZhoVP/Cppzje/KR+R9V+gSddx5o+oqX6H2SX/BZue73W1cZEPI9s5DNC5OKSatm
+	 6lyrHuTieb4LwpDAhsk3aKW3YpruEPTnpP+DUq4BnP/Atlcm7UXU//XD7GVklz6kZl
+	 NxkWamgpHkWmcFp6RiCKlj3E2PnZqhVPyySewO/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangtao Li <frank.li@vivo.com>,
+	Wang Jianzheng <wangjianzheng@vivo.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 116/462] pinctrl: mvebu: Use devm_platform_get_and_ioremap_resource()
-Date: Wed,  6 Nov 2024 13:00:09 +0100
-Message-ID: <20241106120334.371754206@linuxfoundation.org>
+Subject: [PATCH 5.4 117/462] pinctrl: mvebu: Fix devinit_dove_pinctrl_probe function
+Date: Wed,  6 Nov 2024 13:00:10 +0100
+Message-ID: <20241106120334.397510345@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,37 +66,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Wang Jianzheng <wangjianzheng@vivo.com>
 
-[ Upstream commit 2d357f25663ddfef47ffe26da21155302153d168 ]
+[ Upstream commit c25478419f6fd3f74c324a21ec007cf14f2688d7 ]
 
-Convert platform_get_resource(), devm_ioremap_resource() to a single
-call to devm_platform_get_and_ioremap_resource(), as this is exactly
-what this function does.
+When an error occurs during the execution of the function
+__devinit_dove_pinctrl_probe, the clk is not properly disabled.
 
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Link: https://lore.kernel.org/r/20230704124742.9596-2-frank.li@vivo.com
+Fix this by calling clk_disable_unprepare before return.
+
+Fixes: ba607b6238a1 ("pinctrl: mvebu: make pdma clock on dove mandatory")
+Signed-off-by: Wang Jianzheng <wangjianzheng@vivo.com>
+Link: https://lore.kernel.org/20240829064823.19808-1-wangjianzheng@vivo.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: c25478419f6f ("pinctrl: mvebu: Fix devinit_dove_pinctrl_probe function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-dove.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-dove.c | 42 +++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/pinctrl/mvebu/pinctrl-dove.c b/drivers/pinctrl/mvebu/pinctrl-dove.c
-index 545486d98532d..bd74daa9ed666 100644
+index bd74daa9ed666..c84326dfe371c 100644
 --- a/drivers/pinctrl/mvebu/pinctrl-dove.c
 +++ b/drivers/pinctrl/mvebu/pinctrl-dove.c
-@@ -784,8 +784,7 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 	}
+@@ -769,7 +769,7 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 		of_match_device(dove_pinctrl_of_match, &pdev->dev);
+ 	struct mvebu_mpp_ctrl_data *mpp_data;
+ 	void __iomem *base;
+-	int i;
++	int i, ret;
+ 
+ 	pdev->dev.platform_data = (void *)match->data;
+ 
+@@ -785,13 +785,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
  	clk_prepare_enable(clk);
  
--	mpp_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, mpp_res);
-+	base = devm_platform_get_and_ioremap_resource(pdev, 0, &mpp_res);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+ 	base = devm_platform_get_and_ioremap_resource(pdev, 0, &mpp_res);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
++	if (IS_ERR(base)) {
++		ret = PTR_ERR(base);
++		goto err_probe;
++	}
  
+ 	mpp_data = devm_kcalloc(&pdev->dev, dove_pinctrl_info.ncontrols,
+ 				sizeof(*mpp_data), GFP_KERNEL);
+-	if (!mpp_data)
+-		return -ENOMEM;
++	if (!mpp_data) {
++		ret = -ENOMEM;
++		goto err_probe;
++	}
+ 
+ 	dove_pinctrl_info.control_data = mpp_data;
+ 	for (i = 0; i < ARRAY_SIZE(dove_mpp_controls); i++)
+@@ -810,8 +814,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mpp4_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(mpp4_base))
+-		return PTR_ERR(mpp4_base);
++	if (IS_ERR(mpp4_base)) {
++		ret = PTR_ERR(mpp4_base);
++		goto err_probe;
++	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
+ 	if (!res) {
+@@ -822,8 +828,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	pmu_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(pmu_base))
+-		return PTR_ERR(pmu_base);
++	if (IS_ERR(pmu_base)) {
++		ret = PTR_ERR(pmu_base);
++		goto err_probe;
++	}
+ 
+ 	gconfmap = syscon_regmap_lookup_by_compatible("marvell,dove-global-config");
+ 	if (IS_ERR(gconfmap)) {
+@@ -833,12 +841,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 		adjust_resource(&fb_res,
+ 			(mpp_res->start & INT_REGS_MASK) + GC_REGS_OFFS, 0x14);
+ 		gc_base = devm_ioremap_resource(&pdev->dev, &fb_res);
+-		if (IS_ERR(gc_base))
+-			return PTR_ERR(gc_base);
++		if (IS_ERR(gc_base)) {
++			ret = PTR_ERR(gc_base);
++			goto err_probe;
++		}
++
+ 		gconfmap = devm_regmap_init_mmio(&pdev->dev,
+ 						 gc_base, &gc_regmap_config);
+-		if (IS_ERR(gconfmap))
+-			return PTR_ERR(gconfmap);
++		if (IS_ERR(gconfmap)) {
++			ret = PTR_ERR(gconfmap);
++			goto err_probe;
++		}
+ 	}
+ 
+ 	/* Warn on any missing DT resource */
+@@ -846,6 +859,9 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 		dev_warn(&pdev->dev, FW_BUG "Missing pinctrl regs in DTB. Please update your firmware.\n");
+ 
+ 	return mvebu_pinctrl_probe(pdev);
++err_probe:
++	clk_disable_unprepare(clk);
++	return ret;
+ }
+ 
+ static struct platform_driver dove_pinctrl_driver = {
 -- 
 2.43.0
 
