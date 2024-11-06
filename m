@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-91192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1659BECE0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D4D9BE701
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1781C20865
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 384B4B2504D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580621DF995;
-	Wed,  6 Nov 2024 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83DD1DF736;
+	Wed,  6 Nov 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUCXERIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIaPwcLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151DD1D2F42;
-	Wed,  6 Nov 2024 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DED1DE3B8;
+	Wed,  6 Nov 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898012; cv=none; b=QIgaI76Bta0wlelsK//5EGzwnkzFvzzf73Fin7l7SG6yBK6qz7rw/DSkbInmLXesZkCKvVDIVXo77OzQPF0V8v92HArf7AFVEyht8jZ0Cmdlgvrw8qcVpaDbTyWG6T+FJQRzErljDRPkc1Pq03Zp9xnzVGOoXCx8IjuqcHpaE9E=
+	t=1730894962; cv=none; b=YgnSZCWWTu7iu82/Xh9KdveWIOcvmJC5WRuGQWPLqtCijhcm6g2mmy84mpYYh8z9OCoWfTq/glFVEKiSqu8yVTV5wkkl3XSYusuFYj0wbZqS+JPU0c7tD6XzPkGiuSXR8LtwtFE69YUy28LLDCdAT5CQeuK2uetGk5No9F1FWSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898012; c=relaxed/simple;
-	bh=1zVV/vFJEsHPe2ETR8tghE8+B9UBT4nf4F9FdLFmvd0=;
+	s=arc-20240116; t=1730894962; c=relaxed/simple;
+	bh=K1oa1jjuCT+wgXBIlSfA7zuNPvdfMn6ABuM0Skg3kb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=goL4iRUm4OPZf/Mk6nU99waB1nWsJZN+gkBihSKj/SxpsIO+wYdS2Xdc0aEGpSlN1cUzwLfnWJFL13VBC/hTAbvAyzfnldpyuPpK1a/b5IxCnclbwZZzHpAoRvIfzGz0XyClTD6ngRNHm7riNLdEjWSmjSxujNubMXEvKgNt1wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUCXERIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B32C4CECD;
-	Wed,  6 Nov 2024 13:00:11 +0000 (UTC)
+	 MIME-Version; b=cL/mCmJNeeh64JGg7pTm4PvK5pVTp2cMqtAHufgCR4rxX3GHFzFG8ESxSi7FA1NEP9EeFUErfYSA+eXDcnz+Bk/0RAE4Ygpr4Vsk+dhe23F8hmS7ckovq3E0JYQbVscQ2Yr9Zxj3m0Cp7PG4nT78InOU34RyZAvh++Y+S3WwlWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIaPwcLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F011C4CECD;
+	Wed,  6 Nov 2024 12:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898012;
-	bh=1zVV/vFJEsHPe2ETR8tghE8+B9UBT4nf4F9FdLFmvd0=;
+	s=korg; t=1730894962;
+	bh=K1oa1jjuCT+wgXBIlSfA7zuNPvdfMn6ABuM0Skg3kb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUCXERIjz+zCx+SOfKZawlVqF6sR8yAE9J3z+107uwRqMjoI6kFLS3U7PmnvvkM3b
-	 i/mI1Kul383o8IfyN1C8oeDdq707cnD4leRoBHYUS0xw6nGgF8BLdlodi17dCP7lzl
-	 3Eq6lSL0QO6yk+6M8Osst4Dv1n+6yZsu4are3LkQ=
+	b=eIaPwcLDuEKIjAlnVGyRA2Id4tTwAJudFgWASkozPDeE42I46ieMCnD3ZVL3dJALY
+	 THQ00F8W7qg1kn4hV/tgclCuqkHZ10xeRXmho62V8VvJrUjQY/0Ii3+4OS8trcxEz0
+	 LjZojeeM+gL9gsNn030lEdGO3bJjzHIDt+tvHzpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Tejun Heo <tj@kernel.org>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/462] kthread: fix task state in kthread worker if being frozen
+Subject: [PATCH 4.19 059/350] drm/msm/a5xx: properly clear preemption records on resume
 Date: Wed,  6 Nov 2024 12:59:47 +0100
-Message-ID: <20241106120333.831042693@linuxfoundation.org>
+Message-ID: <20241106120322.348673745@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit e16c7b07784f3fb03025939c4590b9a7c64970a7 ]
+[ Upstream commit 64fd6d01a52904bdbda0ce810a45a428c995a4ca ]
 
-When analyzing a kernel waring message, Peter pointed out that there is a
-race condition when the kworker is being frozen and falls into
-try_to_freeze() with TASK_INTERRUPTIBLE, which could trigger a
-might_sleep() warning in try_to_freeze().  Although the root cause is not
-related to freeze()[1], it is still worthy to fix this issue ahead.
+Two fields of preempt_record which are used by CP aren't reset on
+resume: "data" and "info". This is the reason behind faults which happen
+when we try to switch to the ring that was active last before suspend.
+In addition those faults can't be recovered from because we use suspend
+and resume to do so (keeping values of those fields again).
 
-One possible race scenario:
-
-        CPU 0                                           CPU 1
-        -----                                           -----
-
-        // kthread_worker_fn
-        set_current_state(TASK_INTERRUPTIBLE);
-                                                       suspend_freeze_processes()
-                                                         freeze_processes
-                                                           static_branch_inc(&freezer_active);
-                                                         freeze_kernel_threads
-                                                           pm_nosig_freezing = true;
-        if (work) { //false
-          __set_current_state(TASK_RUNNING);
-
-        } else if (!freezing(current)) //false, been frozen
-
-                      freezing():
-                      if (static_branch_unlikely(&freezer_active))
-                        if (pm_nosig_freezing)
-                          return true;
-          schedule()
-	}
-
-        // state is still TASK_INTERRUPTIBLE
-        try_to_freeze()
-          might_sleep() <--- warning
-
-Fix this by explicitly set the TASK_RUNNING before entering
-try_to_freeze().
-
-Link: https://lore.kernel.org/lkml/Zs2ZoAcUsZMX2B%2FI@chenyu5-mobl2/ [1]
-Link: https://lkml.kernel.org/r/20240827112308.181081-1-yu.c.chen@intel.com
-Fixes: b56c0d8937e6 ("kthread: implement kthread_worker")
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mickaël Salaün <mic@digikod.net>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/612043/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kthread.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index eb2b54ae93ee6..2423ae25b5666 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -734,8 +734,16 @@ int kthread_worker_fn(void *worker_ptr)
- 		 * event only cares about the address.
- 		 */
- 		trace_sched_kthread_work_execute_end(work, func);
--	} else if (!freezing(current))
-+	} else if (!freezing(current)) {
- 		schedule();
-+	} else {
-+		/*
-+		 * Handle the case where the current remains
-+		 * TASK_INTERRUPTIBLE. try_to_freeze() expects
-+		 * the current to be TASK_RUNNING.
-+		 */
-+		__set_current_state(TASK_RUNNING);
-+	}
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+index 970c7963ae29b..d6dc4168558e0 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+@@ -209,6 +209,8 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
+ 	int i;
  
- 	try_to_freeze();
- 	cond_resched();
+ 	for (i = 0; i < gpu->nr_rings; i++) {
++		a5xx_gpu->preempt[i]->data = 0;
++		a5xx_gpu->preempt[i]->info = 0;
+ 		a5xx_gpu->preempt[i]->wptr = 0;
+ 		a5xx_gpu->preempt[i]->rptr = 0;
+ 		a5xx_gpu->preempt[i]->rbase = gpu->rb[i]->iova;
 -- 
 2.43.0
 
