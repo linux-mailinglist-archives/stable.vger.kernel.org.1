@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-90804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EB09BEB22
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BCE9BEBA8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF6D1C21B85
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4351F24F69
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204971F6664;
-	Wed,  6 Nov 2024 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F31F8F0C;
+	Wed,  6 Nov 2024 12:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOfegCuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRreTlBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C31E230E;
-	Wed,  6 Nov 2024 12:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED601E0B62;
+	Wed,  6 Nov 2024 12:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896862; cv=none; b=jdqzx3doGxjyBZf8vgeJRHb7cZQVHG4pTV0Uvt5ZTXLnTj0x6OcwjGOGuRR26kuLISCA11ZfkgO+dZ4WsBF/k/uDJpF10cGh6/gNtwEITBmVy+aLElLEMr4hLqrNpmHRg6PH3TDULy7YNbzU0LGxa5BrnpTt9Jowq1Of+tc1d/I=
+	t=1730897206; cv=none; b=jZzrZWf6oBLYUwuNRDrtQr3vL6MS9EBzfB2ITVL0HZ4riQEJhlNzIWo7wkfcL7pyz7FPpBEWh7ORd9uqVo6vJ1xWpIr/kPusY6b+Fw94sP/w3AgTbZnEr0cMF+Zowp9NxUYjOaV0vV5kip9sg0+dmE8zgnJd0UzrAiceqZyFMrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896862; c=relaxed/simple;
-	bh=RDCKZv/pVr5oqH1xDwv6aB4rlQUcSTzcxS9uINkx9as=;
+	s=arc-20240116; t=1730897206; c=relaxed/simple;
+	bh=gIMbGBLefe0rwIWuSwndeUQn8xKv22G7im0RxukLmWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2BTs7cFBINfNP5klaaqzOQ4AlmmWC/N00Bqh/fBN3prO3dCVJyIN3n1vph9LQUHK54hzg41XA+wr1YGFKRxiwZUUKf4cQHNesVnV/Am7wGNyAFRINeYlyCQ/zOMFq7SHt7LIFqY7cCNhIj8T5ANSp59DVE4DNV0b7RcJpaRaGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOfegCuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C75C4CECD;
-	Wed,  6 Nov 2024 12:41:02 +0000 (UTC)
+	 MIME-Version; b=ianiFuexlpbfp4bD7hxL9Fm2RoW52N9NBWto7PtYTU1FIwTMKIkfb791/730gjOiLNeVRRjpZZAU0bWnMpc9oHu2ftzFKkhG6w/aZCXAFYm4s4488hHgydiDxJegh/tuRLqQ9RtAxO30hrviKFU2QJ8x3LFbzbEue4wK9YlANck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRreTlBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8673C4CECD;
+	Wed,  6 Nov 2024 12:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896862;
-	bh=RDCKZv/pVr5oqH1xDwv6aB4rlQUcSTzcxS9uINkx9as=;
+	s=korg; t=1730897206;
+	bh=gIMbGBLefe0rwIWuSwndeUQn8xKv22G7im0RxukLmWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOfegCuSpNDSezzwTzaSjRp3Rq++dbaNeG/OnTGG49nCvvCn8LJIHAl0zu7yY3C92
-	 byaK42mHTeTtcha6Pn9mLtnKX7ES7LECdu3DvC/wKTxdHVZFjFuRuZTdvXECbMM3rQ
-	 tgiXGvq9kMVAIz+9Hn0lNGf59gXj+yBqflptTH/A=
+	b=lRreTlBqr4u6es+MsDOXmhpENz73qo7li7E5lBDLsA67zplNl+7vjc0k7WHViIRs7
+	 UHauDLBXJ3W4yanSYerii2ydKgLMtW1SDHVEAbX2xXGUP8oys1LAJiHzYJ6pKGGULw
+	 YEq5A4F0unmhVuHO4hoMn5mS9As4MKDtoSAs82gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.10 096/110] mm: add remap_pfn_range_notrack
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 101/126] io_uring: rename kiocb_end_write() local helper
 Date: Wed,  6 Nov 2024 13:05:02 +0100
-Message-ID: <20241106120305.832960601@linuxfoundation.org>
+Message-ID: <20241106120308.792473139@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,142 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 74ffa5a3e68504dd289135b1cf0422c19ffb3f2e upstream.
+[ Upstream commit a370167fe526123637965f60859a9f1f3e1a58b7 ]
 
-Patch series "add remap_pfn_range_notrack instead of reinventing it in i915", v2.
+This helper does not take a kiocb as input and we want to create a
+common helper by that name that takes a kiocb as input.
 
-i915 has some reason to want to avoid the track_pfn_remap overhead in
-remap_pfn_range.  Add a function to the core VM to do just that rather
-than reinventing the functionality poorly in the driver.
-
-Note that the remap_io_sg path does get exercises when using Xorg on my
-Thinkpad X1, so this should be considered lightly tested, I've not managed
-to hit the remap_io_mapping path at all.
-
-This patch (of 4):
-
-Add a version of remap_pfn_range that does not call track_pfn_range.  This
-will be used to fix horrible abuses of VM internals in the i915 driver.
-
-Link: https://lkml.kernel.org/r/20210326055505.1424432-1-hch@lst.de
-Link: https://lkml.kernel.org/r/20210326055505.1424432-2-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Message-Id: <20230817141337.1025891-2-amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 1d60d74e8526 ("io_uring/rw: fix missing NOWAIT check for O_DIRECT start write")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h |    2 ++
- mm/memory.c        |   51 +++++++++++++++++++++++++++++++--------------------
- 2 files changed, 33 insertions(+), 20 deletions(-)
+ io_uring/rw.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2749,6 +2749,8 @@ unsigned long change_prot_numa(struct vm
- struct vm_area_struct *find_extend_vma(struct mm_struct *, unsigned long addr);
- int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
- 			unsigned long pfn, unsigned long size, pgprot_t);
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot);
- int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
- int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
- 			struct page **pages, unsigned long *num);
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2290,26 +2290,17 @@ static inline int remap_p4d_range(struct
- 	return 0;
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 038e6b13a7496..4eb42fc29c151 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -220,7 +220,7 @@ static bool io_rw_should_reissue(struct io_kiocb *req)
  }
+ #endif
  
--/**
-- * remap_pfn_range - remap kernel memory to userspace
-- * @vma: user vma to map to
-- * @addr: target page aligned user address to start at
-- * @pfn: page frame number of kernel physical memory address
-- * @size: size of mapping area
-- * @prot: page protection flags for this mapping
-- *
-- * Note: this is only safe if the mm semaphore is held when called.
-- *
-- * Return: %0 on success, negative error code otherwise.
-+/*
-+ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-+ * must have pre-validated the caching bits of the pgprot_t.
-  */
--int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
--		    unsigned long pfn, unsigned long size, pgprot_t prot)
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot)
+-static void kiocb_end_write(struct io_kiocb *req)
++static void io_req_end_write(struct io_kiocb *req)
  {
- 	pgd_t *pgd;
- 	unsigned long next;
- 	unsigned long end = addr + PAGE_ALIGN(size);
- 	struct mm_struct *mm = vma->vm_mm;
--	unsigned long remap_pfn = pfn;
- 	int err;
+ 	/*
+ 	 * Tell lockdep we inherited freeze protection from submission
+@@ -243,7 +243,7 @@ static void io_req_io_end(struct io_kiocb *req)
+ 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
  
- 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
-@@ -2339,10 +2330,6 @@ int remap_pfn_range(struct vm_area_struc
- 		vma->vm_pgoff = pfn;
- 	}
+ 	if (rw->kiocb.ki_flags & IOCB_WRITE) {
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 		fsnotify_modify(req->file);
+ 	} else {
+ 		fsnotify_access(req->file);
+@@ -307,7 +307,7 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
+ 	struct io_kiocb *req = cmd_to_io_kiocb(rw);
  
--	err = track_pfn_remap(vma, &prot, remap_pfn, addr, PAGE_ALIGN(size));
--	if (err)
--		return -EINVAL;
--
- 	vma->vm_flags |= VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 	if (unlikely(res != req->cqe.res)) {
+ 		if (res == -EAGAIN && io_rw_should_reissue(req)) {
+ 			req->flags |= REQ_F_REISSUE | REQ_F_PARTIAL_IO;
+@@ -956,7 +956,7 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 				io->bytes_done += ret2;
  
- 	BUG_ON(addr >= end);
-@@ -2354,12 +2341,36 @@ int remap_pfn_range(struct vm_area_struc
- 		err = remap_p4d_range(mm, pgd, addr, next,
- 				pfn + (addr >> PAGE_SHIFT), prot);
- 		if (err)
--			break;
-+			return err;
- 	} while (pgd++, addr = next, addr != end);
- 
-+	return 0;
-+}
-+
-+/**
-+ * remap_pfn_range - remap kernel memory to userspace
-+ * @vma: user vma to map to
-+ * @addr: target page aligned user address to start at
-+ * @pfn: page frame number of kernel physical memory address
-+ * @size: size of mapping area
-+ * @prot: page protection flags for this mapping
-+ *
-+ * Note: this is only safe if the mm semaphore is held when called.
-+ *
-+ * Return: %0 on success, negative error code otherwise.
-+ */
-+int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
-+		    unsigned long pfn, unsigned long size, pgprot_t prot)
-+{
-+	int err;
-+
-+	err = track_pfn_remap(vma, &prot, pfn, addr, PAGE_ALIGN(size));
- 	if (err)
--		untrack_pfn(vma, remap_pfn, PAGE_ALIGN(size));
-+		return -EINVAL;
- 
-+	err = remap_pfn_range_notrack(vma, addr, pfn, size, prot);
-+	if (err)
-+		untrack_pfn(vma, pfn, PAGE_ALIGN(size));
- 	return err;
- }
- EXPORT_SYMBOL(remap_pfn_range);
+ 			if (kiocb->ki_flags & IOCB_WRITE)
+-				kiocb_end_write(req);
++				io_req_end_write(req);
+ 			return ret ? ret : -EAGAIN;
+ 		}
+ done:
+@@ -967,7 +967,7 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 		ret = io_setup_async_rw(req, iovec, s, false);
+ 		if (!ret) {
+ 			if (kiocb->ki_flags & IOCB_WRITE)
+-				kiocb_end_write(req);
++				io_req_end_write(req);
+ 			return -EAGAIN;
+ 		}
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
