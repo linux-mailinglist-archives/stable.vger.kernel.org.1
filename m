@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643529BE7A2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2859BE8BE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CCEB24585
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEFD2846D2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB6F1DF24A;
-	Wed,  6 Nov 2024 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB811DF992;
+	Wed,  6 Nov 2024 12:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHUSf+fL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCY/j2uU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0911922DB;
-	Wed,  6 Nov 2024 12:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE9C1D2784;
+	Wed,  6 Nov 2024 12:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895365; cv=none; b=N5n9hRSdNm7//m5llYP59tLCdcUygR6MUnZ818PdrDVC4bn4ACUxG7wB0/32nLzxbAVQg21UxOoQDfLUVc9yBjZsNnWbpRgha/h3TktogvvHOq+PIUUkISP3UE1MQqpkBu8Kzt7rze7WZCwzGmzA8J3QdxP1cUmgIo8ki8bjQGk=
+	t=1730896042; cv=none; b=XIZl+KIB2vatsfMSLDQqfBkz8yt4q/Eye6XJOIU8/2zIOZbII7dxqLWGZRjR7sddlYq8I4mfQwfPpDQQgoNj6n//bKN5W4Wg8qofHPL5qi44l+f4PghXyljD4rIEwR9zRzwSEhL962K9lwmLOn+OO4oR3jKPEVrAfmzLvsGxu2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895365; c=relaxed/simple;
-	bh=eU0moRQxwSZtItIvJf0eILBZJCEEVh6iCER+hp251kg=;
+	s=arc-20240116; t=1730896042; c=relaxed/simple;
+	bh=EQ1DJBTe8MB56YaVGBtrEAe1UGlYlW5HDGK5+Dm71D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hyh+iEbGmzdfdtmhvTuM8fLG6/VTNjK9VGhBoVQsqZ9k16CYZQDpjQVwYKAhsJz4W2BWAXF12y7CoLTmBf13yuxnnvfoGHezElzvkhwYsR+fyIhlE8tNkwNGH0L/lgyDkNgqMOpS99i9QbxgT8wfC5C31C8L36H7fX3OmkNJ4qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHUSf+fL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F462C4CECD;
-	Wed,  6 Nov 2024 12:16:04 +0000 (UTC)
+	 MIME-Version; b=PRk9mbYmDHTySvvJrFdx00YjHVYNhR+YWQIWCocmhYgWGXu8MJDEmOoMxa66cNjFbYeeWjFvsMZr6XfuOPNI3guA7uSPx5tctb9e/JLxNI9sNkmp/gHInO9aZ7fUMZp3rxODWx9QlKa3O+KlazA+RgolEMBIIJlWaoRQn6Motrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCY/j2uU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9881DC4CECD;
+	Wed,  6 Nov 2024 12:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895365;
-	bh=eU0moRQxwSZtItIvJf0eILBZJCEEVh6iCER+hp251kg=;
+	s=korg; t=1730896042;
+	bh=EQ1DJBTe8MB56YaVGBtrEAe1UGlYlW5HDGK5+Dm71D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHUSf+fLCXHl/fIuPjw6fpEW5s+Gzbu3N3aBZraiQbF0AlHesrHikqA6/Cx8EaucZ
-	 tFX8O0SQD0YCrTd2CzJcvb0hnlvwqC3lCQHqtcK2hPomE+BXv3Klt3EajhvSbRCqXn
-	 8tUtftrhc7dilixqjqYn9Ezv3hpzU3xrsddJPnU0=
+	b=cCY/j2uUEP8IMwEFcnHlFmA2nzSHAMr3NiSQ6/RDH78zLvvo2GFjp3PyPLQU6wHjW
+	 aTcghPtNwgQ7b5FqaekqKrZnZARNsKLtXR6I4fgZ4tT0AsnupMCIa/HJETVFoqUg8U
+	 RYWCVKUV3U8D6dLDdrE1xIQb8/qIpIWE5V57f2I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 4.19 193/350] ext4: fix incorrect tid assumption in ext4_wait_for_tail_page_commit()
-Date: Wed,  6 Nov 2024 13:02:01 +0100
-Message-ID: <20241106120325.731764532@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 069/245] smb: client: set correct device number on nfs reparse points
+Date: Wed,  6 Nov 2024 13:02:02 +0100
+Message-ID: <20241106120320.903333201@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit dd589b0f1445e1ea1085b98edca6e4d5dedb98d0 upstream.
+[ Upstream commit a9de67336a4aa3ff2e706ba023fb5f7ff681a954 ]
 
-Function ext4_wait_for_tail_page_commit() assumes that '0' is not a valid
-value for transaction IDs, which is incorrect.  Don't assume that and invoke
-jbd2_log_wait_commit() if the journal had a committing transaction instead.
+Fix major and minor numbers set on special files created with NFS
+reparse points.
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-2-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/smb/client/reparse.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5545,8 +5545,9 @@ static void ext4_wait_for_tail_page_comm
- 	struct page *page;
- 	unsigned offset;
- 	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
--	tid_t commit_tid = 0;
-+	tid_t commit_tid;
- 	int ret;
-+	bool has_transaction;
- 
- 	offset = inode->i_size & (PAGE_SIZE - 1);
- 	/*
-@@ -5571,12 +5572,14 @@ static void ext4_wait_for_tail_page_comm
- 		put_page(page);
- 		if (ret != -EBUSY)
- 			return;
--		commit_tid = 0;
-+		has_transaction = false;
- 		read_lock(&journal->j_state_lock);
--		if (journal->j_committing_transaction)
-+		if (journal->j_committing_transaction) {
- 			commit_tid = journal->j_committing_transaction->t_tid;
-+			has_transaction = true;
-+		}
- 		read_unlock(&journal->j_state_lock);
--		if (commit_tid)
-+		if (has_transaction)
- 			jbd2_log_wait_commit(journal, commit_tid);
- 	}
- }
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index a4e25b99411ec..c848b5e88d32f 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -108,8 +108,8 @@ static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
+ 	buf->InodeType = cpu_to_le64(type);
+ 	buf->ReparseDataLength = cpu_to_le16(len + dlen -
+ 					     sizeof(struct reparse_data_buffer));
+-	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MAJOR(dev) << 32) |
+-						 MINOR(dev));
++	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MINOR(dev) << 32) |
++						 MAJOR(dev));
+ 	iov->iov_base = buf;
+ 	iov->iov_len = len + dlen;
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
