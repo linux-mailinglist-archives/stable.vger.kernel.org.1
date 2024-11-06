@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BF69BE9E6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:38:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825DD9BEBEF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B045E2821C4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B408D1C237BD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB861EE01A;
-	Wed,  6 Nov 2024 12:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E88D1EF941;
+	Wed,  6 Nov 2024 12:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBP4pDgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8rR5LGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01A61E008C;
-	Wed,  6 Nov 2024 12:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3B21F9ED3;
+	Wed,  6 Nov 2024 12:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896613; cv=none; b=bxOPrA+YSegvMVK4XPAHU4l8kCl7v9YOenzN7k3jBB2PCNzPcSSBF0+4ZQqhiUGpvv5FUNqSkp7Fx3852TeZbcmYKJRoablMWDCXsdNczoFaW5sDxKI/LJm1dTbKPVONyCADckuYi+L6ohyV/0ngDv2BnyYndlT4wOD3PgfVXOU=
+	t=1730897400; cv=none; b=XL6iv3GHnI65+DIFNRSD5XjRq/fjiMiacE3sK8Hk2Z5qPvBEv3KeYhvUB/O5Ebd6ClIA02QTYJ64ZQILN6OoGoSXG0bxoQx4lE9b1Le1OEK/lEq8b3JdTU/aAQrRcKh9TWfnKN3Nml3CvW/6mbWGnAkxvJgmhgPvXUAuNMs7iac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896613; c=relaxed/simple;
-	bh=RNOF8zo7DZNa6kN1Sq64Cz3KYEQW91eB5EHmSd3iHqY=;
+	s=arc-20240116; t=1730897400; c=relaxed/simple;
+	bh=mfWiPRX70Hlecz5wui/6sFpwYGiRwwted69AYVYmoTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlEfn8Qy9rvvcLB1V80AcSrWgspMAwsSYF/x8mv1kTmqiXpty9JW79rAn9q9Ko5JUkH9hsjU5KMpjvLsfeLHUSwa6VfBkZWdLMR1B6ZsJUi7zJ2xqE2xchgBUfSbTewvGge27Edlo/pv3J2+byTnLTBRZn8I80FR3AI4g82pHS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBP4pDgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD223C4CED5;
-	Wed,  6 Nov 2024 12:36:52 +0000 (UTC)
+	 MIME-Version; b=tMuUF1RDMhQ/HXtxaPsirkQTymBbVIc9J8E5louCjPL+Q9HZvyOJn96mGIAi5xc9r+aulALpXTOlW1KySqszJUWe4uJMJeruVo+OWBJjKBhDB8vsq38AVa2XFoBRKmcog9jSZ6L8KgI0Pak8VO1AuCidN3GR51i9io6tzOZLJUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8rR5LGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9314DC4CECD;
+	Wed,  6 Nov 2024 12:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896613;
-	bh=RNOF8zo7DZNa6kN1Sq64Cz3KYEQW91eB5EHmSd3iHqY=;
+	s=korg; t=1730897400;
+	bh=mfWiPRX70Hlecz5wui/6sFpwYGiRwwted69AYVYmoTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBP4pDgWKg9aMEvifZ2FvEpkd9O6pY3DLYfa5r25DHf+ccnSM7VWXmmODyQ6unhkK
-	 WW6+CpRJMr4lzOmrXDaUBebbWniRzpoVsClP/tUBytmakFgzk0L/wMPERpTFxh9BBh
-	 qMEV4zrjEi+hTC05ck3CkBNAvnWRA+r/jkFR5NHM=
+	b=Z8rR5LGdw6h0STbX3dQbqbV53kAu6j8cYTp1VpgBqFC2ML0Fs+9mMU2wq86ZsvwvN
+	 RUKIr8WCcHXNz1Q5Eff+dVZpiareSwmLgOclaBDM4skdMh2c6K4uJDgFTx3haNZZCq
+	 yjqqMsQmKotNX68Pj/GLH7lkazDO9qPpmcunhypE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/110] smb: client: fix OOBs when building SMB2_IOCTL request
+Subject: [PATCH 6.6 033/151] netfilter: Fix use-after-free in get_info()
 Date: Wed,  6 Nov 2024 13:03:41 +0100
-Message-ID: <20241106120303.580130128@linuxfoundation.org>
+Message-ID: <20241106120309.748614448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit 1ab60323c5201bef25f2a3dc0ccc404d9aca77f1 ]
+[ Upstream commit f48d258f0ac540f00fa617dac496c4c18b5dc2fa ]
 
-When using encryption, either enforced by the server or when using
-'seal' mount option, the client will squash all compound request buffers
-down for encryption into a single iov in smb2_set_next_command().
+ip6table_nat module unload has refcnt warning for UAF. call trace is:
 
-SMB2_ioctl_init() allocates a small buffer (448 bytes) to hold the
-SMB2_IOCTL request in the first iov, and if the user passes an input
-buffer that is greater than 328 bytes, smb2_set_next_command() will
-end up writing off the end of @rqst->iov[0].iov_base as shown below:
+WARNING: CPU: 1 PID: 379 at kernel/module/main.c:853 module_put+0x6f/0x80
+Modules linked in: ip6table_nat(-)
+CPU: 1 UID: 0 PID: 379 Comm: ip6tables Not tainted 6.12.0-rc4-00047-gc2ee9f594da8-dirty #205
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:module_put+0x6f/0x80
+Call Trace:
+ <TASK>
+ get_info+0x128/0x180
+ do_ip6t_get_ctl+0x6a/0x430
+ nf_getsockopt+0x46/0x80
+ ipv6_getsockopt+0xb9/0x100
+ rawv6_getsockopt+0x42/0x190
+ do_sock_getsockopt+0xaa/0x180
+ __sys_getsockopt+0x70/0xc0
+ __x64_sys_getsockopt+0x20/0x30
+ do_syscall_64+0xa2/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-  mount.cifs //srv/share /mnt -o ...,seal
-  ln -s $(perl -e "print('a')for 1..1024") /mnt/link
+Concurrent execution of module unload and get_info() trigered the warning.
+The root cause is as follows:
 
-  BUG: KASAN: slab-out-of-bounds in
-  smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-  Write of size 4116 at addr ffff8881148fcab8 by task ln/859
+cpu0				      cpu1
+module_exit
+//mod->state = MODULE_STATE_GOING
+  ip6table_nat_exit
+    xt_unregister_template
+	kfree(t)
+	//removed from templ_list
+				      getinfo()
+					  t = xt_find_table_lock
+						list_for_each_entry(tmpl, &xt_templates[af]...)
+							if (strcmp(tmpl->name, name))
+								continue;  //table not found
+							try_module_get
+						list_for_each_entry(t, &xt_net->tables[af]...)
+							return t;  //not get refcnt
+					  module_put(t->me) //uaf
+    unregister_pernet_subsys
+    //remove table from xt_net list
 
-  CPU: 1 UID: 0 PID: 859 Comm: ln Not tainted 6.12.0-rc3 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  1.16.3-2.fc40 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   print_report+0x156/0x4d9
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   ? __virt_addr_valid+0x145/0x310
-   ? __phys_addr+0x46/0x90
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   kasan_report+0xda/0x110
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   kasan_check_range+0x10f/0x1f0
-   __asan_memcpy+0x3c/0x60
-   smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   smb2_compound_op+0x238c/0x3840 [cifs]
-   ? kasan_save_track+0x14/0x30
-   ? kasan_save_free_info+0x3b/0x70
-   ? vfs_symlink+0x1a1/0x2c0
-   ? do_symlinkat+0x108/0x1c0
-   ? __pfx_smb2_compound_op+0x10/0x10 [cifs]
-   ? kmem_cache_free+0x118/0x3e0
-   ? cifs_get_writable_path+0xeb/0x1a0 [cifs]
-   smb2_get_reparse_inode+0x423/0x540 [cifs]
-   ? __pfx_smb2_get_reparse_inode+0x10/0x10 [cifs]
-   ? rcu_is_watching+0x20/0x50
-   ? __kmalloc_noprof+0x37c/0x480
-   ? smb2_create_reparse_symlink+0x257/0x490 [cifs]
-   ? smb2_create_reparse_symlink+0x38f/0x490 [cifs]
-   smb2_create_reparse_symlink+0x38f/0x490 [cifs]
-   ? __pfx_smb2_create_reparse_symlink+0x10/0x10 [cifs]
-   ? find_held_lock+0x8a/0xa0
-   ? hlock_class+0x32/0xb0
-   ? __build_path_from_dentry_optional_prefix+0x19d/0x2e0 [cifs]
-   cifs_symlink+0x24f/0x960 [cifs]
-   ? __pfx_make_vfsuid+0x10/0x10
-   ? __pfx_cifs_symlink+0x10/0x10 [cifs]
-   ? make_vfsgid+0x6b/0xc0
-   ? generic_permission+0x96/0x2d0
-   vfs_symlink+0x1a1/0x2c0
-   do_symlinkat+0x108/0x1c0
-   ? __pfx_do_symlinkat+0x10/0x10
-   ? strncpy_from_user+0xaa/0x160
-   __x64_sys_symlinkat+0xb9/0xf0
-   do_syscall_64+0xbb/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f08d75c13bb
+While xt_table module was going away and has been removed from
+xt_templates list, we couldnt get refcnt of xt_table->me. Check
+module in xt_net->tables list re-traversal to fix it.
 
-Reported-by: David Howells <dhowells@redhat.com>
-Fixes: e77fe73c7e38 ("cifs: we can not use small padding iovs together with encryption")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2pdu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/netfilter/x_tables.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index aa3211d8cce3b..03651cc6b7a5b 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -2961,6 +2961,15 @@ SMB2_ioctl_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
- 		return rc;
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index 21624d68314f9..e50c23b9c9c41 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1268,7 +1268,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
  
- 	if (indatalen) {
-+		unsigned int len;
-+
-+		if (WARN_ON_ONCE(smb3_encryption_required(tcon) &&
-+				 (check_add_overflow(total_len - 1,
-+						     ALIGN(indatalen, 8), &len) ||
-+				  len > MAX_CIFS_SMALL_BUFFER_SIZE))) {
-+			cifs_small_buf_release(req);
-+			return -EIO;
-+		}
- 		/*
- 		 * indatalen is usually small at a couple of bytes max, so
- 		 * just allocate through generic pool
+ 	/* and once again: */
+ 	list_for_each_entry(t, &xt_net->tables[af], list)
+-		if (strcmp(t->name, name) == 0)
++		if (strcmp(t->name, name) == 0 && owner == t->me)
+ 			return t;
+ 
+ 	module_put(owner);
 -- 
 2.43.0
 
