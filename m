@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-91245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E509BED1A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:09:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F239BED5B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B8D628622C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6932E1F24E68
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801761F8188;
-	Wed,  6 Nov 2024 13:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D2B1F943A;
+	Wed,  6 Nov 2024 13:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7nuDmQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKgr1BYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD631DFDB3;
-	Wed,  6 Nov 2024 13:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127D1F9422;
+	Wed,  6 Nov 2024 13:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898168; cv=none; b=C00//KjHFRx0e5aSovas/SKEkv6i8DvmaDjFiSF26KvHo7aaWYwuZ7LQD0XxkyWoR3TMeCXGYHkC74+ZsY2vd2aThuWd9bZOArRg4uM0EX8pHyMMJNxVe7WI64IOPpT6ZGJRXX/5E2b7LwvhNph6YO/LCZ8bEwfpPrvPaXn0AWA=
+	t=1730898307; cv=none; b=jr5dLEbz0f8+oY6lPCnvTLGlc92RoD9AT68kCe9lqx6kSnHXYpaDm4ogXWyfwtTF+EGT6YuF3wPe+zu0zkdLu7NJofXDiJpWElDfGVPtcwsDxxEVOAKSgWMWi7PmI5dabPZCjEIcfVrGh6hB05wmmFwUVuPH5FqTVDqHpim7kNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898168; c=relaxed/simple;
-	bh=Xr0oogi400ciQc6EJ0kfcMAukdSHUTpkY5lcBa/2kMM=;
+	s=arc-20240116; t=1730898307; c=relaxed/simple;
+	bh=PbAQ502crNQxzM1H5eMmCnKhj6fnco+pzhKzLFBvQE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeCwi0GXIDIQ26B3QCtiuZQ+Zjr3GZlfRO1LW7kUrP6Dxw+/ZXSsheUJDl4qMeMqHolw1eMSbDY09Xvw1LLzThlPWQJQlKlsThtqlWxJqU5VxHXJwEnjFfJCXb1ILmwUx6Fq++3lImStlb7owUBA53b4qM2lpTAjZJnYYP2Wtvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7nuDmQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC96DC4CECD;
-	Wed,  6 Nov 2024 13:02:47 +0000 (UTC)
+	 MIME-Version; b=YNWWx7zdDpaYfTENvMOTuH8PL9TZT+sWynJbSavvBboSLp+m3nx/QuP9zJU0fSmY5KtpYrOusxQBrqhZqaOB2FCS1GrIJ/oGOpr2su3NJBQ3SVvTGVTD/jdV7aaO4a6F7LOqwJ7RXJE0wCO4jMyZ3uRF1N93pJSnv4ut1K8A5RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKgr1BYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E074C4CECD;
+	Wed,  6 Nov 2024 13:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898168;
-	bh=Xr0oogi400ciQc6EJ0kfcMAukdSHUTpkY5lcBa/2kMM=;
+	s=korg; t=1730898307;
+	bh=PbAQ502crNQxzM1H5eMmCnKhj6fnco+pzhKzLFBvQE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7nuDmQ93tSJiwjRSNQx2tO+7Giw5aYbf3BVFTMwYAsnEZfTEpGuvky3LuYUh5T9O
-	 HKrSRY2hHPhBACYmbcEltV82AAkX/A2XT46XduKOpIEs1IBMT3pR8vFm3kLyMd+vMz
-	 Rild2SSRQQX5r54PIBq41Zqi3csPaB6qiFWSeJV8=
+	b=gKgr1BYFhEc9KIq0FPKdpbfa+b1t1RsnTfb6QN7Vq9WPk0miNUpeOWGlfi9+2p7wY
+	 8Qy+F8JNXpnBXMlm/rWQRVP/+hzq4HGCOiM3xz7HxuJfG7CAwa4NBt5oFBqBhX1/G/
+	 h00jhRe0vFm4oWezCA7wEWLCXXYG706gAc5W/p1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.4 146/462] tty: rp2: Fix reset with non forgiving PCIe host bridges
-Date: Wed,  6 Nov 2024 13:00:39 +0100
-Message-ID: <20241106120335.118346236@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Philipp Reisner <philipp.reisner@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 147/462] drbd: Fix atomicity violation in drbd_uuid_set_bm()
+Date: Wed,  6 Nov 2024 13:00:40 +0100
+Message-ID: <20241106120335.142812965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,45 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit f16dd10ba342c429b1e36ada545fb36d4d1f0e63 upstream.
+commit 2f02b5af3a4482b216e6a466edecf6ba8450fa45 upstream.
 
-The write to RP2_GLOBAL_CMD followed by an immediate read of
-RP2_GLOBAL_CMD in rp2_reset_asic() is intented to flush out the write,
-however by then the device is already in reset and cannot respond to a
-memory cycle access.
+The violation of atomicity occurs when the drbd_uuid_set_bm function is
+executed simultaneously with modifying the value of
+device->ldev->md.uuid[UI_BITMAP]. Consider a scenario where, while
+device->ldev->md.uuid[UI_BITMAP] passes the validity check when its
+value is not zero, the value of device->ldev->md.uuid[UI_BITMAP] is
+written to zero. In this case, the check in drbd_uuid_set_bm might refer
+to the old value of device->ldev->md.uuid[UI_BITMAP] (before locking),
+which allows an invalid value to pass the validity check, resulting in
+inconsistency.
 
-On platforms such as the Raspberry Pi 4 and others using the
-pcie-brcmstb.c driver, any memory access to a device that cannot respond
-is met with a fatal system error, rather than being substituted with all
-1s as is usually the case on PC platforms.
+To address this issue, it is recommended to include the data validity
+check within the locked section of the function. This modification
+ensures that the value of device->ldev->md.uuid[UI_BITMAP] does not
+change during the validation process, thereby maintaining its integrity.
 
-Swapping the delay and the read ensures that the device has finished
-resetting before we attempt to read from it.
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency
+bugs including data races and atomicity violations.
 
-Fixes: 7d9f49afa451 ("serial: rp2: New driver for Comtrol RocketPort 2 cards")
-Cc: stable <stable@kernel.org>
-Suggested-by: Jim Quinlan <james.quinlan@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240906225435.707837-1-florian.fainelli@broadcom.com
+Fixes: 9f2247bb9b75 ("drbd: Protect accesses to the uuid set with a spinlock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Philipp Reisner <philipp.reisner@linbit.com>
+Link: https://lore.kernel.org/r/20240913083504.10549-1-chenqiuji666@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/rp2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/drbd/drbd_main.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/rp2.c
-+++ b/drivers/tty/serial/rp2.c
-@@ -600,8 +600,8 @@ static void rp2_reset_asic(struct rp2_ca
- 	u32 clk_cfg;
+--- a/drivers/block/drbd/drbd_main.c
++++ b/drivers/block/drbd/drbd_main.c
+@@ -3509,10 +3509,12 @@ void drbd_uuid_new_current(struct drbd_d
+ void drbd_uuid_set_bm(struct drbd_device *device, u64 val) __must_hold(local)
+ {
+ 	unsigned long flags;
+-	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0)
++	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
++	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0) {
++		spin_unlock_irqrestore(&device->ldev->md.uuid_lock, flags);
+ 		return;
++	}
  
- 	writew(1, base + RP2_GLOBAL_CMD);
--	readw(base + RP2_GLOBAL_CMD);
- 	msleep(100);
-+	readw(base + RP2_GLOBAL_CMD);
- 	writel(0, base + RP2_CLK_PRESCALER);
- 
- 	/* TDM clock configuration */
+-	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
+ 	if (val == 0) {
+ 		drbd_uuid_move_history(device);
+ 		device->ldev->md.uuid[UI_HISTORY_START] = device->ldev->md.uuid[UI_BITMAP];
 
 
 
