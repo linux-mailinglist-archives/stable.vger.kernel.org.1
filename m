@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFD69BEBA5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDE59BEC81
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2C4F1F24E0F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6628B23DBF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E6F1F8F01;
-	Wed,  6 Nov 2024 12:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488351FC7F5;
+	Wed,  6 Nov 2024 12:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bu4bUjF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCsKG79p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721DD1EE004;
-	Wed,  6 Nov 2024 12:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039A71E0E13;
+	Wed,  6 Nov 2024 12:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897194; cv=none; b=Qfkeh8KgbYXSpF9rLlkpoVx5lMJoNvbQO47r7iz5RjO4yD2Gp7ONtLqBDETwd+7Gg9mMdLIPf24C1/paSsWaKvL5K0BFwylKzxTwTmvCOxX9rqWirSPGB1eX8iw43NpcxPgSpy8Nyu5cQAhGWUgFocwynbge+bG++TbDzDzSYNg=
+	t=1730897750; cv=none; b=GePGBLvxxgcHKjiAz6Go5KOmDuAO9RVPdhZwvRMvqxhn/NkvBfzoFDREGZPtsJ6PDbZ5M3fkYyVTulO7zVyrVnmhdiA+9eOKALLbl2LgeNvAbkA8aoZPjISpU/120QJclies7Cm4zSaH7RM9dFXNg5fB0j+KaFTvATwxCm1lASk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897194; c=relaxed/simple;
-	bh=+qH9YaIAhESJLjQt9RblCloqBxmD+s+7EqS/xfdqZRY=;
+	s=arc-20240116; t=1730897750; c=relaxed/simple;
+	bh=OQ3q+FKfHM6ecbavXnHAn6isvT1kHWVnieuyf+hry7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQeVBJUqF+DswfZmCVnZZ2m4ojmhkbmPRj7wOiNt6CcplaASPHpWN9ruHMawQF+KtthWmAJqG/a92hGxwqhIzGxNhAMYcu7TkkfIDdaUUt0UqFQ4uTpYCFbDSeUua/MVoxDMx+k39y+v2c03ov6wAEspHSZrOL0VIxS8qhVHTQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bu4bUjF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87A3C4CECD;
-	Wed,  6 Nov 2024 12:46:33 +0000 (UTC)
+	 MIME-Version; b=e6KPEWDNvSOx7wKnaEXLJXOz4VtWYB0eWROrvXKbbt1F62pKiB6T6430fYceoqdoXv9BjlQZoCRAowGL3AX8xMfgZQaQsokfhTpKs6nbbytBF1xtDrSy7POjPQBFIs0NI8e/bG4mPgr6B9Tbv6/KNOvsti8llOjc1onrpjERmSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCsKG79p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE4EC4CECD;
+	Wed,  6 Nov 2024 12:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897194;
-	bh=+qH9YaIAhESJLjQt9RblCloqBxmD+s+7EqS/xfdqZRY=;
+	s=korg; t=1730897749;
+	bh=OQ3q+FKfHM6ecbavXnHAn6isvT1kHWVnieuyf+hry7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bu4bUjF9yzX4jnQuvCiKjffpb2dPkQxvsWgoOVInUkhNPpw6LQbeyhpMvbs3U5rxM
-	 zCsy6b+iLqY8/GJUST4wa08I4dwyOqGgs0KMXMu5sBsLJAJDWfAPXh4kzUq5VrAUrq
-	 ltYoxQBdYWVUT0FCN0aqt1sU1ut2fVfrcqkPkWWo=
+	b=UCsKG79pU3nFSHnoMMv57WzP1wMsRrKwIdEbcWOQdISCo8pmTFnjUbNNHha7r3pE9
+	 WJyYtcl/aP2E2ML9iBRS2wC3Pe1EZEk6p7Irv5u41jzaGuDvBGOmk0hPlPCe2aMZz3
+	 14rXEEQO1Bo9tsVYeuiYOQrBxmXRVVRpCh9q1NN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/126] ALSA: hda/realtek: Fix headset mic on TUXEDO Stellaris 16 Gen6 mb1
+Subject: [PATCH 6.6 111/151] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
 Date: Wed,  6 Nov 2024 13:04:59 +0100
-Message-ID: <20241106120308.713088950@linuxfoundation.org>
+Message-ID: <20241106120311.923588789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit e49370d769e71456db3fbd982e95bab8c69f73e8 ]
+[ Upstream commit f89263b69731e0144d275fff777ee0dd92069200 ]
 
-Quirk is needed to enable headset microphone on missing pin 0x19.
+When enable initcall_debug together with higher debug level below.
+CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
+CONFIG_CONSOLE_LOGLEVEL_QUIET=9
+CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241029151653.80726-2-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
+To fix this issue, adjust the sequence of the resets refer to the power
+up sequence listed below.
+
+i.MX8MP PCIe PHY power up sequence:
+                          /---------------------------------------------
+1.8v supply     ---------/
+                    /---------------------------------------------------
+0.8v supply     ---/
+
+                ---\ /--------------------------------------------------
+                    X        REFCLK Valid
+Reference Clock ---/ \--------------------------------------------------
+                             -------------------------------------------
+                             |
+i_init_restn    --------------
+                                    ------------------------------------
+                                    |
+i_cmn_rstn      ---------------------
+                                         -------------------------------
+                                         |
+o_pll_lock_done --------------------------
+
+Logs:
+imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000
+imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000
+probe of clk_imx8mp_audiomix.reset.0 returned 0 after 1052 usecs
+probe of 30e20000.clock-controller returned 0 after 32971 usecs
+phy phy-32f00000.pcie-phy.4: phy poweron failed --> -110
+probe of 30e10000.dma-controller returned 0 after 10235 usecs
+imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+
+Fixes: dce9edff16ee ("phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+v2 changes:
+- Rebase to latest fixes branch of linux-phy git repo.
+- Richard's environment have problem and can't sent out patch. So I help
+post this fix patch.
+
+Link: https://lore.kernel.org/r/20241021155241.943665-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3cbd9cf80be96..d750c6e6eb984 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10214,6 +10214,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 11fcb1867118c..e98361dcdeadf 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -141,11 +141,6 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
+ 	usleep_range(100, 200);
+ 
+-	/* Do the PHY common block reset */
+-	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
+-			   IMX8MM_GPR_PCIE_CMN_RST,
+-			   IMX8MM_GPR_PCIE_CMN_RST);
+-
+ 	switch (imx8_phy->drvdata->variant) {
+ 	case IMX8MP:
+ 		reset_control_deassert(imx8_phy->perst);
+@@ -156,6 +151,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 		break;
+ 	}
+ 
++	/* Do the PHY common block reset */
++	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
++			   IMX8MM_GPR_PCIE_CMN_RST,
++			   IMX8MM_GPR_PCIE_CMN_RST);
++
+ 	/* Polling to check the phy is ready or not. */
+ 	ret = readl_poll_timeout(imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG075,
+ 				 val, val == ANA_PLL_DONE, 10, 20000);
 -- 
 2.43.0
 
