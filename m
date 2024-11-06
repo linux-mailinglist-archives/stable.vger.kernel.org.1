@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-90918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B5A9BEBA9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2639BEC50
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D5B5B247B7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D42B8285B96
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AD91F8F0A;
-	Wed,  6 Nov 2024 12:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA461FB89B;
+	Wed,  6 Nov 2024 12:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEoO7SLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POMvG06a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB7E1EE004;
-	Wed,  6 Nov 2024 12:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465D21F4733;
+	Wed,  6 Nov 2024 12:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897200; cv=none; b=M713T0KbBcudxgi6c70sTsYnvMiwx9mQPB7KIDpOdavT+B/GWtpMP+ILl5lPLtbPLA3dqIZoxXTg+rXwgKOHLjAcFfxDDSl4bkuZDulsP4OcptWodmfBbAkXee1UTLWY8EeE6gsr+QbIX92PAfD1yPW1pPpLN3hrpsvdYuNFbR4=
+	t=1730897667; cv=none; b=dJ+I48JaIOU9CEiYJc2bsGSCMMAdy+7rtWBN7KxKBbPvsLEgtL6+IFeRz3C8+t1TNW79jKUxAqifykYgGuQmC0NOePnqqY5f20aYMaoUWIzn5PBQIqroxokJKDD0wbzF4QA/VhkhkuHvjZXZohNHjUcj21WucT3vbQ8k0MM5Ebs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897200; c=relaxed/simple;
-	bh=kVVgSZFfmIaR07UR2S+oCL7D/shoE07My4gmBbIuZ8M=;
+	s=arc-20240116; t=1730897667; c=relaxed/simple;
+	bh=Tqheekx0SFn4/eMGzOJoesEQg3IFI/WsS4Vsr+gkyI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btuPCcF7wqRJp/xEWzaeD7liyLz0KYjXlUuy6T1K+9UwLzCDSwIhMqaetqMa0ZRuUYuBIc+SlnkkBGDNvm8DQIMZy5w7VNWG4sU0hwfm5AUwe5+CXnt7o/rRvJQIUoc7wrWzWLCFGTTzhpzqtAhYtwqgxcNGIVRexfK36FpR32E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEoO7SLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75EC4CECD;
-	Wed,  6 Nov 2024 12:46:39 +0000 (UTC)
+	 MIME-Version; b=lCF9BHvolhTk9s2HpAAU+k3XxKD+8/08dDzzAKrPsuNdTHioIhf+0dZlWYSuz2ZWFUyYmQjj1lmUjrSVkp7qMg4hUbtbTR1pqzJxYSow5idH/lS7FD6jP2TDK3ldur53oZUdy1e/q88ROzTCF5nNjkR4qcu5BtbZuNYo6rzWtu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POMvG06a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1604C4CED4;
+	Wed,  6 Nov 2024 12:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897200;
-	bh=kVVgSZFfmIaR07UR2S+oCL7D/shoE07My4gmBbIuZ8M=;
+	s=korg; t=1730897667;
+	bh=Tqheekx0SFn4/eMGzOJoesEQg3IFI/WsS4Vsr+gkyI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xEoO7SLBrXPasJvIVQn72gcEy6Uu/4Ek2XvyPUOHrc8Vv2uamzPWOY9JrC/NSvBYV
-	 Q1f+aKSiBZSNaVOtdZVsYiHBP9s5Qw8/k8QwPkZSYBAJnTG34mJC8zA+i91Oy0ZCRJ
-	 wMpak0H+H3RNyhCVY/wLgOA05ibUUxwXX3xC386Y=
+	b=POMvG06aa51iExHCPk3jVUm20udYfIvgyhP/k6NcbO/yyLq2c5+rEF8mM2C5LEHKP
+	 ITp1r/KmncTcwNeLusYsOf4H2BkpRLMf/pKOLdENdHRqTzS+eRUXfa/U8gWSS31xU7
+	 ovrBViglk34efPcHNx1WX5VMc9CBk4MnmTEqV64I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/126] kasan: remove vmalloc_percpu test
+Subject: [PATCH 6.6 113/151] riscv: vdso: Prevent the compiler from inserting calls to memset()
 Date: Wed,  6 Nov 2024 13:05:01 +0100
-Message-ID: <20241106120308.765735102@linuxfoundation.org>
+Message-ID: <20241106120311.977949405@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 330d8df81f3673d6fb74550bbc9bb159d81b35f7 ]
+[ Upstream commit bf40167d54d55d4b54d0103713d86a8638fb9290 ]
 
-Commit 1a2473f0cbc0 ("kasan: improve vmalloc tests") added the
-vmalloc_percpu KASAN test with the assumption that __alloc_percpu always
-uses vmalloc internally, which is tagged by KASAN.
+The compiler is smart enough to insert a call to memset() in
+riscv_vdso_get_cpus(), which generates a dynamic relocation.
 
-However, __alloc_percpu might allocate memory from the first per-CPU
-chunk, which is not allocated via vmalloc().  As a result, the test might
-fail.
+So prevent this by using -fno-builtin option.
 
-Remove the test until proper KASAN annotation for the per-CPU allocated
-are added; tracked in https://bugzilla.kernel.org/show_bug.cgi?id=215019.
-
-Link: https://lkml.kernel.org/r/20241022160706.38943-1-andrey.konovalov@linux.dev
-Fixes: 1a2473f0cbc0 ("kasan: improve vmalloc tests")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/all/4a245fff-cc46-44d1-a5f9-fd2f1c3764ae@sifive.com/
-Reported-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Link: https://lore.kernel.org/all/CACzwLxiWzNqPBp4C1VkaXZ2wDwvY3yZeetCi1TLGFipKW77drA@mail.gmail.com/
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kasan/kasan_test.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+ arch/riscv/kernel/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
-index cef683a2e0d2e..df9658299a08a 100644
---- a/mm/kasan/kasan_test.c
-+++ b/mm/kasan/kasan_test.c
-@@ -1260,32 +1260,6 @@ static void vm_map_ram_tags(struct kunit *test)
- 	free_pages((unsigned long)p_ptr, 1);
- }
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index e8aa7c3800075..d58f32a2035b1 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
  
--static void vmalloc_percpu(struct kunit *test)
--{
--	char __percpu *ptr;
--	int cpu;
--
--	/*
--	 * This test is specifically crafted for the software tag-based mode,
--	 * the only tag-based mode that poisons percpu mappings.
--	 */
--	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_SW_TAGS);
--
--	ptr = __alloc_percpu(PAGE_SIZE, PAGE_SIZE);
--
--	for_each_possible_cpu(cpu) {
--		char *c_ptr = per_cpu_ptr(ptr, cpu);
--
--		KUNIT_EXPECT_GE(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_MIN);
--		KUNIT_EXPECT_LT(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_KERNEL);
--
--		/* Make sure that in-bounds accesses don't crash the kernel. */
--		*c_ptr = 0;
--	}
--
--	free_percpu(ptr);
--}
--
- /*
-  * Check that the assigned pointer tag falls within the [KASAN_TAG_MIN,
-  * KASAN_TAG_KERNEL) range (note: excluding the match-all tag) for tag-based
-@@ -1439,7 +1413,6 @@ static struct kunit_case kasan_kunit_test_cases[] = {
- 	KUNIT_CASE(vmalloc_oob),
- 	KUNIT_CASE(vmap_tags),
- 	KUNIT_CASE(vm_map_ram_tags),
--	KUNIT_CASE(vmalloc_percpu),
- 	KUNIT_CASE(match_all_not_assigned),
- 	KUNIT_CASE(match_all_ptr_tag),
- 	KUNIT_CASE(match_all_mem_tag),
+ ccflags-y := -fno-stack-protector
+ ccflags-y += -DDISABLE_BRANCH_PROFILING
++ccflags-y += -fno-builtin
+ 
+ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
 -- 
 2.43.0
 
