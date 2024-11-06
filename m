@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-90242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854889BE757
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D5C9BE729
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4876A28338B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15931280C99
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74AD1DF722;
-	Wed,  6 Nov 2024 12:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5151DF252;
+	Wed,  6 Nov 2024 12:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mckB83Xj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFjS/UYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938761DF24E;
-	Wed,  6 Nov 2024 12:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3991D5AD7;
+	Wed,  6 Nov 2024 12:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895193; cv=none; b=RrXG6EyTJlpnF4vqnV63GL//AWC5q8eUaCzwJ4yNvXG2iZdkcRTwUTT6GN0pBwZ7M+XHv2JttTAmqrW6Bt0UNyZv/HzpE8bsxun3pic1cNDu5XQe2+yUgzOrIOZX2pSERkkIVr17c2in8ZQ3cw/ZA0gli/8RMhZllqQlthneJCk=
+	t=1730895074; cv=none; b=YY04nJTB3SjnZwYiI5XPVJ5R1yHfs754Bt68dqcCwcFqDulpEdBVr5BBlLCTewj3XJHhOplRWeuB6QCjhIysaPfrWzeJ+67R7MMMeJMP+4CC/HkB1tHibEBokZ6XAe8hVZXW6tgUbZ9EevnwvxT2InN8chEofnMp60Hv0qkdP9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895193; c=relaxed/simple;
-	bh=vWILMgTlg1g10ZoDqF9FL/04UaAc2aVo0MdJ8c79U80=;
+	s=arc-20240116; t=1730895074; c=relaxed/simple;
+	bh=FV5oE3pqwXBcgKHZKy4NJw3Yns9bL1VwvTKyCaQcRks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgGNtKXA1TgDX2Ifpmmpknp3SymZPRtDJgoBBp60K4Glq7sYDziAWqunTE5wSNC18B8yIumV1qBRJoLRJWHDoQB6dT9SpA5yGSLK+oqm8oDjgLH7hB1h48Sja5e+pXaiDlubGvXn9zsJVUkskltA2XetcInrMw6CWqpr31K52/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mckB83Xj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171C2C4CECD;
-	Wed,  6 Nov 2024 12:13:12 +0000 (UTC)
+	 MIME-Version; b=q5qypEgK3dRqNMnWvKWw8XX2wAMr5T0ucaVz7oaVXAxm5DkVxygpQHxSxOb+x9UZuE8dp2lzeVDkUsYt1MNUyI/fWbKJkWu1jlJ6cZXKHdbe8f5YkYNteOFB4kFykAYGTN7Y8wZA1ESZXRpV61ppWMp7TUlwJOz3WYbwsXhfbfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFjS/UYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0402DC4CECD;
+	Wed,  6 Nov 2024 12:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895193;
-	bh=vWILMgTlg1g10ZoDqF9FL/04UaAc2aVo0MdJ8c79U80=;
+	s=korg; t=1730895074;
+	bh=FV5oE3pqwXBcgKHZKy4NJw3Yns9bL1VwvTKyCaQcRks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mckB83XjgqC+KqA+Wg6nxOTJbTrBe0mzigzKRpygpywmXHq9zmuLUqkVLJU7P1XvZ
-	 D+eNVdjb8ykaubVsor7crB10Vi2FqpiMnq7N6moNivRENe0jgqcMgQUtQ+luxA21nD
-	 DGkT/BPr4p8UciJYxilIoLxdX3DjQtwdEads4QXg=
+	b=hFjS/UYL5CdhXn9hyTkyguDkn/HHic22xp8NrHNlLMd1DdYYH/EUMnUEZqD2Rp/BD
+	 I1ZZ3BoSoWX8rGy0xzDQeBxSPkH8FxTGOtOd7VfszxKbytw1BdJUBtwVaeqYaJB04q
+	 w3E+7Mq2niK48OfJjKbExS4ArGLjyOwKViyNhVHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Yangtao Li <frank.li@vivo.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 088/350] clk: ti: dra7-atl: Fix leak of of_nodes
-Date: Wed,  6 Nov 2024 13:00:16 +0100
-Message-ID: <20241106120323.070835852@linuxfoundation.org>
+Subject: [PATCH 4.19 089/350] pinctrl: mvebu: Use devm_platform_get_and_ioremap_resource()
+Date: Wed,  6 Nov 2024 13:00:17 +0100
+Message-ID: <20241106120323.098217407@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,37 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 9d6e9f10e2e031fb7bfb3030a7d1afc561a28fea ]
+[ Upstream commit 2d357f25663ddfef47ffe26da21155302153d168 ]
 
-This fix leaking the of_node references in of_dra7_atl_clk_probe().
+Convert platform_get_resource(), devm_ioremap_resource() to a single
+call to devm_platform_get_and_ioremap_resource(), as this is exactly
+what this function does.
 
-The docs for of_parse_phandle_with_args() say that the caller must call
-of_node_put() on the returned node. This adds the missing of_node_put()
-to fix the leak.
-
-Fixes: 9ac33b0ce81f ("CLK: TI: Driver for DRA7 ATL (Audio Tracking Logic)")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240826-clk-fix-leak-v1-1-f55418a13aa6@baylibre.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Link: https://lore.kernel.org/r/20230704124742.9596-2-frank.li@vivo.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: c25478419f6f ("pinctrl: mvebu: Fix devinit_dove_pinctrl_probe function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-dra7-atl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/mvebu/pinctrl-dove.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
-index a4b6f3ac2d34a..afd71c894150b 100644
---- a/drivers/clk/ti/clk-dra7-atl.c
-+++ b/drivers/clk/ti/clk-dra7-atl.c
-@@ -257,6 +257,7 @@ static int of_dra7_atl_clk_probe(struct platform_device *pdev)
- 		}
+diff --git a/drivers/pinctrl/mvebu/pinctrl-dove.c b/drivers/pinctrl/mvebu/pinctrl-dove.c
+index 8472f61f2bbe7..2c5032d0def52 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-dove.c
++++ b/drivers/pinctrl/mvebu/pinctrl-dove.c
+@@ -788,8 +788,7 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 	clk_prepare_enable(clk);
  
- 		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(clk)) {
- 			pr_err("%s: failed to get atl clock %d from provider\n",
- 			       __func__, i);
+-	mpp_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	base = devm_ioremap_resource(&pdev->dev, mpp_res);
++	base = devm_platform_get_and_ioremap_resource(pdev, 0, &mpp_res);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+ 
 -- 
 2.43.0
 
