@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-90594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045199BE91C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B9C9BE7E2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36BD21C2180E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A05C2846EF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3214D1DE3B8;
-	Wed,  6 Nov 2024 12:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993EE1DED49;
+	Wed,  6 Nov 2024 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byaocdBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5SWMZe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4582198E96;
-	Wed,  6 Nov 2024 12:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565491DF252;
+	Wed,  6 Nov 2024 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896236; cv=none; b=MmDGdx299ZTCJ+eOKHq/LJrQh+s4Oap0DDLW7DbdvKZskHfH0bDxSjBYJhYrX78fdUYC0pfppxarH9tZRnUguNz1C8n6VzVc8dTE0RNOO4ohkNLCSC6u4nHbVeOG44eCjVdE3UXSf+/dhgVS4TpJhUIh3oAOJfPiNWLmqnEQP8E=
+	t=1730895520; cv=none; b=XUFFu4MnAIOb8FmGkzSIahx0gUJvNYPNDIh8lRnML8oCJI/8rcrMVfwio552/l6rxoyXRu7EM5Fs0JooaHDG6vUwA8f9nQrmopfwUQlPjViJEkV6QlRq4Malj8weRzkt8dtYQUMntmhSBwELO6jvKmh6bhapxbYNw55//Nf75rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896236; c=relaxed/simple;
-	bh=ItySo/jevHd2cXBAkifpr4rtkU9vA1p7lMnvRhP+FTM=;
+	s=arc-20240116; t=1730895520; c=relaxed/simple;
+	bh=FlnCQIWeZjufZDG7AyQqAjIuajUmeIEFR5/kpPyrjiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6d093Ep2uHsRUIUpi+B+AGxe1OoI4OtGVQ7N5qkM5khVMIAc/GVY/msggw2ZN6Zge9GWbIwRa0KxKRh1z8YIdTVr1w6k0pHjZO5i7gCVcnUI1nNLMiS0c4XQUkP8Qj5qmjS25oTZY9Z3gGwmEHoA5NkgLh6FF1KDjjSXaOacX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byaocdBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A03C4CECD;
-	Wed,  6 Nov 2024 12:30:35 +0000 (UTC)
+	 MIME-Version; b=pG4Rn8pfmU7A/0wK2VC+d39O1T+x3E5zGOkrQGMeCZP+rIuuJTua6kBiWpwjTCClOxrJMtG/s/gS5KMPQkNvZDXkAM8gYXgwz5hkJW/hzLptCo1vJ5CUCmHMRra5v6l78AdGbPpoi2FPkHWy/5M9lvUXAInqZ5wbTarp39rlYP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5SWMZe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4661C4CECD;
+	Wed,  6 Nov 2024 12:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896235;
-	bh=ItySo/jevHd2cXBAkifpr4rtkU9vA1p7lMnvRhP+FTM=;
+	s=korg; t=1730895520;
+	bh=FlnCQIWeZjufZDG7AyQqAjIuajUmeIEFR5/kpPyrjiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byaocdBJvcXdl5576I9s7LFcAZkyArXSPOxOmWyUr/lG/BvHnJOxJTFdINV08iZtn
-	 7U6oQwa3CTjATFykFeVqFUlnfIZ3M1nL2ZJ+sGPm8xWzuq2mi0GIfmyZvm76N+2z+x
-	 YLDO7EOaAiC2kwerqvvD1aAzaMMJDsppegcTN+vQ=
+	b=h5SWMZe5EyHDYsVUp3XaJGAVrEv/OeXI4E9E94w6ircG5xYBRHIH1eFly0poMozAk
+	 +c+eAXuQ8RbGhixXtyZ5g0muqX8iwqUsf/r2nY3V8R60Lnge7LA/KAMBdtALKzjcnE
+	 AHYNcpgGPgOPSSZ7eDoIfFcpZuP+WRYQ9Snh0Wwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.11 118/245] Revert "driver core: Fix uevent_show() vs driver detach race"
-Date: Wed,  6 Nov 2024 13:02:51 +0100
-Message-ID: <20241106120322.125064437@linuxfoundation.org>
+	Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 244/350] usb: chipidea: udc: enable suspend interrupt after usb reset
+Date: Wed,  6 Nov 2024 13:02:52 +0100
+Message-ID: <20241106120326.964236100@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
+[ Upstream commit e4fdcc10092fb244218013bfe8ff01c55d54e8e4 ]
 
-This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
+Currently, suspend interrupt is enabled before pullup enable operation.
+This will cause a suspend interrupt assert right after pullup DP. This
+suspend interrupt is meaningless, so this will ignore such interrupt
+by enable it after usb reset completed.
 
-This commit causes a regression, so revert it for now until it can come
-back in a way that works for everyone.
-
-Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
-Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
-Cc: stable <stable@kernel.org>
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240823073832.1702135-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c   |   13 +++++--------
- drivers/base/module.c |    4 ----
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ drivers/usb/chipidea/udc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -25,7 +25,6 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
--#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sched/mm.h>
- #include <linux/string_helpers.h>
-@@ -2641,7 +2640,6 @@ static const char *dev_uevent_name(const
- static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 3bda856ff2cab..6a626f41cded1 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -81,7 +81,7 @@ static int hw_device_state(struct ci_hdrc *ci, u32 dma)
+ 		hw_write(ci, OP_ENDPTLISTADDR, ~0, dma);
+ 		/* interrupt, error, port change, reset, sleep/suspend */
+ 		hw_write(ci, OP_USBINTR, ~0,
+-			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI|USBi_SLI);
++			     USBi_UI|USBi_UEI|USBi_PCI|USBi_URI);
+ 	} else {
+ 		hw_write(ci, OP_USBINTR, ~0, 0);
+ 	}
+@@ -748,6 +748,7 @@ __releases(ci->lock)
+ __acquires(ci->lock)
  {
- 	const struct device *dev = kobj_to_dev(kobj);
--	struct device_driver *driver;
- 	int retval = 0;
+ 	int retval;
++	u32 intr;
  
- 	/* add device node properties if present */
-@@ -2670,12 +2668,8 @@ static int dev_uevent(const struct kobje
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
- 
--	/* Synchronize with module_remove_driver() */
--	rcu_read_lock();
--	driver = READ_ONCE(dev->driver);
--	if (driver)
--		add_uevent_var(env, "DRIVER=%s", driver->name);
--	rcu_read_unlock();
-+	if (dev->driver)
-+		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
- 
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -2745,8 +2739,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
- 
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
-+	device_unlock(dev);
+ 	spin_unlock(&ci->lock);
+ 	if (ci->gadget.speed != USB_SPEED_UNKNOWN)
+@@ -761,6 +762,11 @@ __acquires(ci->lock)
  	if (retval)
- 		goto out;
+ 		goto done;
  
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,7 +7,6 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/rcupdate.h>
- #include "base.h"
- 
- static char *make_driver_name(const struct device_driver *drv)
-@@ -102,9 +101,6 @@ void module_remove_driver(const struct d
- 	if (!drv)
- 		return;
- 
--	/* Synchronize with dev_uevent() */
--	synchronize_rcu();
--
- 	sysfs_remove_link(&drv->p->kobj, "module");
- 
- 	if (drv->owner)
++	/* clear SLI */
++	hw_write(ci, OP_USBSTS, USBi_SLI, USBi_SLI);
++	intr = hw_read(ci, OP_USBINTR, ~0);
++	hw_write(ci, OP_USBINTR, ~0, intr | USBi_SLI);
++
+ 	ci->status = usb_ep_alloc_request(&ci->ep0in->ep, GFP_ATOMIC);
+ 	if (ci->status == NULL)
+ 		retval = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
