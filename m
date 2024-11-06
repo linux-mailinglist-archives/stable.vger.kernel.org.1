@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156429BEC7A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B849BEB27
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C05D41F24E44
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67DD8B2426D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4C71FC7E0;
-	Wed,  6 Nov 2024 12:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E911F1F582B;
+	Wed,  6 Nov 2024 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud6VGV7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF4KTZpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD881FC7DA;
-	Wed,  6 Nov 2024 12:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64F51E22EF;
+	Wed,  6 Nov 2024 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897735; cv=none; b=Ekwn6qkEMtf6tDMSi2H0WCMj+3FtNMvsAO5iCNodMMxWqXsHYpLnsWwgQ0ossBm3tKZWvHtCFtszB3OV8mBS6BcexYoFPzxAkbUUt9ncUl0wdUTN/yKvdQvq0279SGN/2J1WHqIOuzaryJHbxzuAg0lPisjjYmbk3yH18WBpQ9Q=
+	t=1730896871; cv=none; b=u9LPAb+2G2x1qdCiB71w1TNNWpgWCzXe70zxW8mac+4ZORoUsmN/uixk2SClYAIclxs4nOE3N+1Ml94KB4xgkyCICC3pg738yyPzchMAqoPrXTGx/kS1DUXEUftpKro7az1YoNyaX2gx/mxM8dJ/AP1Rn2dA/JC1CMuadMwS51E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897735; c=relaxed/simple;
-	bh=TMUggIWQG66uPpO7d1uynyRpfdSJSTtncwvw4ZrPjjg=;
+	s=arc-20240116; t=1730896871; c=relaxed/simple;
+	bh=5UIJYUIiIJTuUKP9Z/ll7blic3+N1wRbSRxo1kx5kKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VF53Li63OpVk1nZ4UV48p0fw3QrQ5TkrhUYG1eA49v3Pp/vPbWTh5wVTJgXgLuC+46rGAMgUu01H/t8qLWmD+9n9Q7XhxxxP/br7gnj+3dLub3w55zdibHxB9DDDgeqwrQLWA7oVtTitXgR9ZLX9dJHXujYoWhPeXKvNkUPzmlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud6VGV7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC47C4CEF0;
-	Wed,  6 Nov 2024 12:55:34 +0000 (UTC)
+	 MIME-Version; b=nEn1KFlzdDoFp38/QUFmJt5OsXgUN8w9UuPyIzDZTUygMhuN4qpB4GbPHEvhLLKsuwmQ4DZp5xeCTUq0X7kugsOpkQ0lXo6+nFKSMTgwqLt3E6VUPmoOSoBnJP/ZyOvsDZl+xokrmE9HqKi8Hx3XYrmM3T+wpKdRGVFk5u6cpOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF4KTZpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EBCC4CECD;
+	Wed,  6 Nov 2024 12:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897735;
-	bh=TMUggIWQG66uPpO7d1uynyRpfdSJSTtncwvw4ZrPjjg=;
+	s=korg; t=1730896871;
+	bh=5UIJYUIiIJTuUKP9Z/ll7blic3+N1wRbSRxo1kx5kKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ud6VGV7HSOL6iLK8hlJSrBO7n3HrRnjpRdQaS2DEwyD1gqpmeINenmzSylem2vr/3
-	 hdRFHnpaeFk1sKt6fWh3XrlXYZ4wPbfCssrm2neYy2oYWPuYc/igKgEXcbOVbpP2fL
-	 C7A72qZQUDLkUXMpdcGF/vQBr9VCr/8Y20sFkqf0=
+	b=JF4KTZpX+gZyUgYxRFJCEA2jfk3++7iY+dMZ/p1Ma/o/iXqk6RpEv5q6v3AoXQC2G
+	 7UK9YhaH34I9Hx4hqZ7WW/AGjsTN7/VZrpE9sOvodQBAbl9Lcs9ESfocBa7MQrY8jm
+	 vJdUpK5+4mveai/dB9bOzlhuMzSu7/J0/5+uhzkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/151] riscv: efi: Set NX compat flag in PE/COFF header
-Date: Wed,  6 Nov 2024 13:05:04 +0100
-Message-ID: <20241106120312.059423246@linuxfoundation.org>
+Subject: [PATCH 5.10 099/110] riscv: efi: Set NX compat flag in PE/COFF header
+Date: Wed,  6 Nov 2024 13:05:05 +0100
+Message-ID: <20241106120305.912545445@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,10 +96,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-index 515b2dfbca75b..c5f17c2710b58 100644
+index 8e733aa48ba6c..c306f3a6a800e 100644
 --- a/arch/riscv/kernel/efi-header.S
 +++ b/arch/riscv/kernel/efi-header.S
-@@ -64,7 +64,7 @@ extra_header_fields:
+@@ -59,7 +59,7 @@ extra_header_fields:
  	.long	efi_header_end - _start			// SizeOfHeaders
  	.long	0					// CheckSum
  	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
