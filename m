@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F11F9BE7C7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AEE9BE8F3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D81A0B2194E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A1221C21793
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399B51DED49;
-	Wed,  6 Nov 2024 12:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A2018C00E;
+	Wed,  6 Nov 2024 12:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKxgs+Af"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9wZT8XV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0BF1DF252;
-	Wed,  6 Nov 2024 12:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7F71D2784;
+	Wed,  6 Nov 2024 12:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895457; cv=none; b=cDh0c4UC6dhTkb4QZ92Ncvy1Tf6dgykTfEBTZYeqWD9yWDhtiQB6IhacsAeYIoolEiMKVAWvatZKTNVBSz+s2JPnwgoesAPiCEPQZYYXawoikGgzdyXULSuvTxmhjmddn0jul1CYroQA7nyjhQCcUu7cC55xiw7a4JxaPM3YlN0=
+	t=1730896132; cv=none; b=fihaADfL8MVcMiQkRcWtiARq7nblCbBhB9ZHAwApwn/UtF+8Ecvn/Zesz/NG85ok38XZKlQZi2y5wQxuKOR7T8fIDsMa8FXTlZod/CP1dTH1WWjGf+3v2LRqZb9wFb/lr9Sx4OreExy6Bv51eS7l020pHRWIf+qjj8xGQhP06zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895457; c=relaxed/simple;
-	bh=YUcax+c7OSxpd+bFmEOpc8bX7LAQ7dXo8BjkdccrH6k=;
+	s=arc-20240116; t=1730896132; c=relaxed/simple;
+	bh=P7gBiccvTBlpeqELr6QM89967xwontVDO4SbP3GkGkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IciWYEhCzhxR7wjAgP/oWmXtlgr5W2iD8CSN+2zGHl6Bp3gertKck2RfoI4xIsZTgiVWv8yhnkdPO6/i1XP2PHKjM1k0bc+o1c+vBQz0iFQXgVt4AGDuOsrDkdqBdJFCT9c3ZOWyXpuBxLf/JsNnmEV291jkEH06w6GLkowMZic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKxgs+Af; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB62C4CECD;
-	Wed,  6 Nov 2024 12:17:36 +0000 (UTC)
+	 MIME-Version; b=OA8c11/XW8fw902GVgnNuITUnGG7THI+NDbPSmMVWBBg6XVld5csEnMHaVfAmsmJXmpWwSmJW7k3y4PafqnYwBzBZIpOw4SlpNh/rgWIE1HGyIy/dh1nXh2mSFIXnVVAMeTT1jhT7f6xm2r9jOTHPes1N7jHbF/94fNAlRsykws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9wZT8XV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E7CC4CECD;
+	Wed,  6 Nov 2024 12:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895456;
-	bh=YUcax+c7OSxpd+bFmEOpc8bX7LAQ7dXo8BjkdccrH6k=;
+	s=korg; t=1730896132;
+	bh=P7gBiccvTBlpeqELr6QM89967xwontVDO4SbP3GkGkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKxgs+AfyuUmN5wVqeAkVAypglM9RJZBP/0zVxp1PTlFj/dSVBZGmiAm5nZMLs9eQ
-	 XB6/vO7qJyOsRU4hBkiu6vGQIhMT2bS3KJIOKogmlfPw+upAzEClyXhz0JY/1ZlJ6j
-	 Lui2fzUXFXxQtG7ZTYJcAeo+b1V+CJWfYapR67gA=
+	b=V9wZT8XVslvJkbICR/p/GFsO5Yqyn5iUSW8TZNqZUL4wTpnZ5NKIgq2700IdD70qF
+	 ghQ6XeFGBSRcuAynV44Wawq+2g+HW6Bucak5KtMiWVNbacMeAVGBZdTRDCebBxR/oU
+	 O+XNKQ0Df9c3jU67m3CLRUN5n8/rBXYogsn7IrZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 225/350] ACPI: battery: Simplify battery hook locking
+Subject: [PATCH 6.11 100/245] NFS: remove revoked delegation from servers delegation list
 Date: Wed,  6 Nov 2024 13:02:33 +0100
-Message-ID: <20241106120326.550783162@linuxfoundation.org>
+Message-ID: <20241106120321.673689078@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 86309cbed26139e1caae7629dcca1027d9a28e75 ]
+[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
 
-Move the conditional locking from __battery_hook_unregister()
-into battery_hook_unregister() and rename the low-level function
-to simplify the locking during battery hook removal.
+After the delegation is returned to the NFS server remove it
+from the server's delegations list to reduce the time it takes
+to scan this list.
 
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20241001212835.341788-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 76959aff14a0 ("ACPI: battery: Fix possible crash when unregistering a battery hook")
+Network trace captured while running the below script shows the
+time taken to service the CB_RECALL increases gradually due to
+the overhead of traversing the delegation list in
+nfs_delegation_find_inode_server.
+
+The NFS server in this test is a Solaris server which issues
+CB_RECALL when receiving the all-zero stateid in the SETATTR.
+
+mount=/mnt/data
+for i in $(seq 1 20)
+do
+   echo $i
+   mkdir $mount/testtarfile$i
+   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
+done
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/nfs/delegation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 88f4040d6c1f2..b741ed87ab3db 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -713,27 +713,27 @@ static LIST_HEAD(acpi_battery_list);
- static LIST_HEAD(battery_hook_list);
- static DEFINE_MUTEX(hook_mutex);
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 20cb2008f9e46..035ba52742a50 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -1001,6 +1001,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
+ 	}
  
--static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
-+static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- {
- 	struct acpi_battery *battery;
-+
- 	/*
- 	 * In order to remove a hook, we first need to
- 	 * de-register all the batteries that are registered.
- 	 */
--	if (lock)
--		mutex_lock(&hook_mutex);
- 	list_for_each_entry(battery, &acpi_battery_list, list) {
- 		hook->remove_battery(battery->bat);
- 	}
- 	list_del(&hook->list);
--	if (lock)
--		mutex_unlock(&hook_mutex);
-+
- 	pr_info("extension unregistered: %s\n", hook->name);
- }
+ 	nfs_mark_delegation_revoked(delegation);
++	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
++	spin_unlock(&delegation->lock);
++	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
++		nfs_put_delegation(delegation);
++	goto out_rcu_unlock;
  
- void battery_hook_unregister(struct acpi_battery_hook *hook)
- {
--	__battery_hook_unregister(hook, 1);
-+	mutex_lock(&hook_mutex);
-+	battery_hook_unregister_unlocked(hook);
-+	mutex_unlock(&hook_mutex);
- }
- EXPORT_SYMBOL_GPL(battery_hook_unregister);
- 
-@@ -759,7 +759,7 @@ void battery_hook_register(struct acpi_battery_hook *hook)
- 			 * hooks.
- 			 */
- 			pr_err("extension failed to load: %s", hook->name);
--			__battery_hook_unregister(hook, 0);
-+			battery_hook_unregister_unlocked(hook);
- 			goto end;
- 		}
- 	}
-@@ -796,7 +796,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
- 			 */
- 			pr_err("error in extension, unloading: %s",
- 					hook_node->name);
--			__battery_hook_unregister(hook_node, 0);
-+			battery_hook_unregister_unlocked(hook_node);
- 		}
- 	}
- 	mutex_unlock(&hook_mutex);
-@@ -829,7 +829,7 @@ static void __exit battery_hook_exit(void)
- 	 * need to remove the hooks.
- 	 */
- 	list_for_each_entry_safe(hook, ptr, &battery_hook_list, list) {
--		__battery_hook_unregister(hook, 1);
-+		battery_hook_unregister(hook);
- 	}
- 	mutex_destroy(&hook_mutex);
- }
+ out_clear_returning:
+ 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
 -- 
 2.43.0
 
