@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D479BEA2B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:41:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6CF9BEB59
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A481C24048
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:41:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E7F1F274CA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73591F755F;
-	Wed,  6 Nov 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29591E6DC1;
+	Wed,  6 Nov 2024 12:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpvCjbkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ew9GboXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCFC1F7557;
-	Wed,  6 Nov 2024 12:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAC41F7558;
+	Wed,  6 Nov 2024 12:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896655; cv=none; b=CyeABljWvvfpiTzLtDUcNmkfDcBybipgO6SBHsQ7NiMMd1qfb3ojtbdeZzR7+xGVjHxK8sFb5T2s+aXnYPg7tVYZWcAOtFRuNtu/jVXUiYKLKx8x8CGBOiQX4vNqz/M/YpTGS/t9xAxZUBDGeWGcajVppSsP5H3I5ko6r49ibMw=
+	t=1730897016; cv=none; b=RyZ1mlSP9vObasXOJOj4WlSAt6N4kfgP/duga+rDHNSV27H0zbJesANSnuWlt60b5IyvauPfdMeh0o2+huV2ymd9zgdPKqsHxAC8Wwi3mBG7tn53SFITTAZIgOenDMkheIVIvk6a8F1m3pIgMnRb9if259wMU1gAcKLVjGAAI8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896655; c=relaxed/simple;
-	bh=Lai4ug7+ApBJwMQyz6YfBB4AmqP/K0lsocz2Q9Y4i+k=;
+	s=arc-20240116; t=1730897016; c=relaxed/simple;
+	bh=f6nMTBPrv7dR79CX45tG9dmwwZk7XVereCjocqO/y58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otDUzlfmo/YiejK39YeKsi+puqMIsUoTi1RsqjvaWGJkmnZqtKrbH6a7F7n+yq9CF01obvNRlHYkvzfVWVeoUSuy4q/pmcXrSX473/EZyNCbziST5vkLmPCsOeAxtEVMuRWxf4KaPDuFQ7BK//9F/C9fNy9D8ukmlcF8R9Q1FJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpvCjbkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D5EC4CECD;
-	Wed,  6 Nov 2024 12:37:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=svW0jV+bXXc+6Z5VGv+xC7y08UiGx+PQuPRZ/f3p4XwY9g0l6Et48dXezRkEd9k0l/U5TUcFYME0Sv01d/QEfqRtYxFOUSABfpZMU/uw5k0MENz9eD7OKkrSAWokVS/85LRFevQ00hpv37Wz0I9ir78FDBnbg669qxRfV2nbICo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ew9GboXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234CCC4CED4;
+	Wed,  6 Nov 2024 12:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896654;
-	bh=Lai4ug7+ApBJwMQyz6YfBB4AmqP/K0lsocz2Q9Y4i+k=;
+	s=korg; t=1730897016;
+	bh=f6nMTBPrv7dR79CX45tG9dmwwZk7XVereCjocqO/y58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpvCjbkN08avFYLXNZrLfchASFfWgnrM4JMCTcru9tcjvy5O1JJtAwwFytc+LKsfu
-	 5+YlD5Lr7pr/6ApeX7h38Z2Cfb4PhSrWz73e09BICTAg2qj3E6AJ+dljjcDiDs+5Nn
-	 ZBu0DxyLXP99fxvMig576rnsxuST8ocDBeJfUcDw=
+	b=Ew9GboXNI6og8UDPGcYgl4nG85ZrRH78L+ZTbUliye/k0bcbgCXjtJlBbqamNOz0f
+	 U+gAPeEEvSB//Z07lAc91Xu/kzcNtcUHevkpmBvl9prH/ADXR5S/oXD5uU2rtbPm40
+	 h1hRsx2mNopa4RJuv6wNjxU6sTDLIrS/Qv/g5m4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/110] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
+Subject: [PATCH 6.1 009/126] cgroup: Fix potential overflow issue when checking max_depth
 Date: Wed,  6 Nov 2024 13:03:30 +0100
-Message-ID: <20241106120303.267008946@linuxfoundation.org>
+Message-ID: <20241106120306.322196642@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
+[ Upstream commit 3cc4e13bb1617f6a13e5e6882465984148743cf4 ]
 
-ip_dev_find() always returns real net_device address, whether traffic is
-running on a vlan or real device, if traffic is over vlan, filling
-endpoint struture with real ndev and an attempt to send a connect request
-will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
-issue by using vlan_dev_real_dev().
+cgroup.max.depth is the maximum allowed descent depth below the current
+cgroup. If the actual descent depth is equal or larger, an attempt to
+create a new child cgroup will fail. However due to the cgroup->max_depth
+is of int type and having the default value INT_MAX, the condition
+'level > cgroup->max_depth' will never be satisfied, and it will cause
+an overflow of the level after it reaches to INT_MAX.
 
-Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
-Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fix it by starting the level from 0 and using '>=' instead.
+
+It's worth mentioning that this issue is unlikely to occur in reality,
+as it's impossible to have a depth of INT_MAX hierarchy, but should be
+be avoided logically.
+
+Fixes: 1a926e0bbab8 ("cgroup: implement hierarchy limits")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
-index 95300b2e1ffe9..b607c17827382 100644
---- a/drivers/infiniband/hw/cxgb4/cm.c
-+++ b/drivers/infiniband/hw/cxgb4/cm.c
-@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 	err = -ENOMEM;
- 	if (n->dev->flags & IFF_LOOPBACK) {
- 		if (iptype == 4)
--			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
-+			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
- 		else if (IS_ENABLED(CONFIG_IPV6))
- 			for_each_netdev(&init_net, pdev) {
- 				if (ipv6_chk_addr(&init_net,
-@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 			err = -ENODEV;
- 			goto out;
- 		}
-+		if (is_vlan_dev(pdev))
-+			pdev = vlan_dev_real_dev(pdev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
- 					n, pdev, rt_tos2priority(tos));
--		if (!ep->l2t) {
--			dev_put(pdev);
-+		if (!ep->l2t)
- 			goto out;
--		}
- 		ep->mtu = pdev->mtu;
- 		ep->tx_chan = cxgb4_port_chan(pdev);
- 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
-@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
- 			cxgb4_port_idx(pdev) * step];
- 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
--		dev_put(pdev);
- 	} else {
- 		pdev = get_real_dev(n->dev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index f6656fd410d0f..2ca4aeb21a440 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -5707,7 +5707,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
+ {
+ 	struct cgroup *cgroup;
+ 	int ret = false;
+-	int level = 1;
++	int level = 0;
+ 
+ 	lockdep_assert_held(&cgroup_mutex);
+ 
+@@ -5715,7 +5715,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
+ 		if (cgroup->nr_descendants >= cgroup->max_descendants)
+ 			goto fail;
+ 
+-		if (level > cgroup->max_depth)
++		if (level >= cgroup->max_depth)
+ 			goto fail;
+ 
+ 		level++;
 -- 
 2.43.0
 
