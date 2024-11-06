@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8A19BE7DA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EBB9BE90A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603201C21C63
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7146B1F21A2D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3331DF737;
-	Wed,  6 Nov 2024 12:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2491DF98D;
+	Wed,  6 Nov 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAmPaOxk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FH6XMIu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D51DF26B;
-	Wed,  6 Nov 2024 12:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B731DDA15;
+	Wed,  6 Nov 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895496; cv=none; b=Hclni6/Qb7ItFzb7c5S/VauaXbm1tKf48bg0Nb06lSVfyE5NsGNezqTmX8VcMQeOczQODyPz4ttpeL2oIHMFDCF6jSyXGu/eD2Jxv8VZR0viPf/jxl3Zhb+v/0MastOlz8WSivvlxaoApNs8679dPBuS6Udha+it3maWXoeAMyM=
+	t=1730896197; cv=none; b=mzn2xMY0+BKOXhwnU1cfGg+eBze278o9E6bjTIevO44iEod6WpA8gtr0aexWL/s8BSfsoR4PbV2hEiLRxNkBddbweDnPQWsCNt67uPju4sFJFnpKVsyWSEk3/6H3Gw3GuzCINNN00x6RRasYMTsFbnYhCJULmhcE411DY3HdAFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895496; c=relaxed/simple;
-	bh=+bC58XwPsgNLZw729qNnECxDmU5Eev6pMVUXq+YxS+Y=;
+	s=arc-20240116; t=1730896197; c=relaxed/simple;
+	bh=7PvsKCtGy96VDMNVmB/xfHtjU58J8oLfuCcFAOISvQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCWrviVL3k6s/MQe2KfL18aTIB5fiTyw6FrFweGccbg12kSOh9OTWmrRZ6FaeIHKZ5kLrOpcMM2UojhNW9T9IL6/JW0Rimki3qGSElEikZK39MrIVRl0l/XN1EOXD3Ybk+mpBgLwZTRJQF8Kz1lIMUDdtcBDbA3q9zkBJD3LBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAmPaOxk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E5EC4CECD;
-	Wed,  6 Nov 2024 12:18:15 +0000 (UTC)
+	 MIME-Version; b=L8GtRzCiKdvdHl/PVWRqsolGcxZcIZ4h3eMBp0iSw31UsCvZymlUFqoFj9p5pmU37Hghobqm7lf8N71b07jbooOYkbef8a8sZqHJUZAU9HrayinQ1sTKp9JW7KjNX+qdxwOQ8I1RD9F9aGNpBotOfyUc4vHboXjCgtMZlpRfkno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FH6XMIu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2930C4CED3;
+	Wed,  6 Nov 2024 12:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895496;
-	bh=+bC58XwPsgNLZw729qNnECxDmU5Eev6pMVUXq+YxS+Y=;
+	s=korg; t=1730896197;
+	bh=7PvsKCtGy96VDMNVmB/xfHtjU58J8oLfuCcFAOISvQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAmPaOxk/hY8DVkEgAttTfb2HTQ3lwcK55V6hChGlY3rWHNt0JEHSwWf+tU6k25pI
-	 bn9Eh/Sg/eHbbFnM+5hSQCSXSI5ebKsw1iANNK/b0HKDznl4Vwf+ONov0b9pwLzY1X
-	 inEoil6Vc35cABAz7K3yoRpvHsGZzgiFNgL69AEw=
+	b=FH6XMIu89e2zYWng+C4EbSe3LPLn7MLKYB4vaMDtUfxjlVs75I9KWT4BpMKg13Hvq
+	 BzD8mNiHeP0Zc1Z/MwmP0jMXDUUoCn1KElVCWWmTHCM+/1Kgg8OmzFw2ZqtP6kkkQu
+	 YyDumRACQszTMWMl9g1gsdlHGWLRHKAaNhtMVNDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alfred Agrell <blubban@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH 4.19 210/350] tomoyo: fallback to realpath if symlinks pathname does not exist
-Date: Wed,  6 Nov 2024 13:02:18 +0100
-Message-ID: <20241106120326.177404036@linuxfoundation.org>
+	syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 086/245] fs/ntfs3: Add rough attr alloc_size check
+Date: Wed,  6 Nov 2024 13:02:19 +0100
+Message-ID: <20241106120321.323349544@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit ada1986d07976d60bed5017aa38b7f7cf27883f7 upstream.
+[ Upstream commit c4a8ba334262e9a5c158d618a4820e1b9c12495c ]
 
-Alfred Agrell found that TOMOYO cannot handle execveat(AT_EMPTY_PATH)
-inside chroot environment where /dev and /proc are not mounted, for
-commit 51f39a1f0cea ("syscalls: implement execveat() system call") missed
-that TOMOYO tries to canonicalize argv[0] when the filename fed to the
-executed program as argv[0] is supplied using potentially nonexistent
-pathname.
-
-Since "/dev/fd/<fd>" already lost symlink information used for obtaining
-that <fd>, it is too late to reconstruct symlink's pathname. Although
-<filename> part of "/dev/fd/<fd>/<filename>" might not be canonicalized,
-TOMOYO cannot use tomoyo_realpath_nofollow() when /dev or /proc is not
-mounted. Therefore, fallback to tomoyo_realpath_from_path() when
-tomoyo_realpath_nofollow() failed.
-
-Reported-by: Alfred Agrell <blubban@gmail.com>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1082001
-Fixes: 51f39a1f0cea ("syscalls: implement execveat() system call")
-Cc: stable@vger.kernel.org # v3.19+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+c6d94bedd910a8216d25@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/tomoyo/domain.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/ntfs3/record.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/security/tomoyo/domain.c
-+++ b/security/tomoyo/domain.c
-@@ -701,10 +701,13 @@ int tomoyo_find_next_domain(struct linux
- 	ee->r.obj = &ee->obj;
- 	ee->obj.path1 = bprm->file->f_path;
- 	/* Get symlink's pathname of program. */
--	retval = -ENOENT;
- 	exename.name = tomoyo_realpath_nofollow(original_name);
--	if (!exename.name)
--		goto out;
-+	if (!exename.name) {
-+		/* Fallback to realpath if symlink's pathname does not exist. */
-+		exename.name = tomoyo_realpath_from_path(&bprm->file->f_path);
-+		if (!exename.name)
-+			goto out;
-+	}
- 	tomoyo_fill_path_info(&exename);
- retry:
- 	/* Check 'aggregator' directive. */
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 2a375247b3c09..427c71be0f087 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -331,6 +331,9 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 
+ 		if (attr->nres.c_unit)
+ 			return NULL;
++
++		if (alloc_size > mi->sbi->volume.size)
++			return NULL;
+ 	}
+ 
+ 	return attr;
+-- 
+2.43.0
+
 
 
 
