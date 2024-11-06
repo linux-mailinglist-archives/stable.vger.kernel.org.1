@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58D39BE88B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDEC9BE88E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6533F283ED3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F192844ED
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD611DF98C;
-	Wed,  6 Nov 2024 12:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB41DF969;
+	Wed,  6 Nov 2024 12:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2Z+lsz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj/Hie5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDD11DED58;
-	Wed,  6 Nov 2024 12:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74B61DED58;
+	Wed,  6 Nov 2024 12:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895922; cv=none; b=Dk7oitLE2bEKYXVHckxOUF3ohtC6aLOba4cH7EG7YLqZfSq8R3KFP7AkTqK491woAfX0VdffZBwADtMeFNbAJB/ribmrZjd+ovfp8hb1TIHHjWc80KZrTC+5N3+P4fWQShAd28QSFt9pfoBqcj98mvKD/MP/RB4VJVeEt9t1M38=
+	t=1730895927; cv=none; b=ek75j3N4TUl8dmj0oyClEAfMAqEA38dGkU6tRv4NDagXvyHFX/5+tlfPlU6KVIPh8YUj3CAjJRwtZFgC7svuKFrl0FVOxbASb+sxuowpI1mbT+Ltf7/wIrscb84F7XV5TKyKmIomekfXJaV4N6CWjKIhyA+ShdSULDOTTvdYK9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895922; c=relaxed/simple;
-	bh=PFqrgztoZvKhNZWiPu4spzZhkfalEhwX2bGIHTIO+KA=;
+	s=arc-20240116; t=1730895927; c=relaxed/simple;
+	bh=7oznihawD9c5e+4wOcQPLTJVy10phO5BJ7Lo/9USejU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qf9mltr83USPJxyqjKsrt01jwCCEezHyjEqbxAiDaFruMFGeCfLahvRDv3RTno7o+dUmM26rXDVm01rqUFAqVI92v+BWPio7a80dHUV5B73rn7zetPIbrY4x5poKG1DZOkMeUJrmB34ldn4lBuaD9DF4XZScVxo748Gx+G6ICAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2Z+lsz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18318C4CECD;
-	Wed,  6 Nov 2024 12:25:20 +0000 (UTC)
+	 MIME-Version; b=ZmYUSbWUSnhJwBihqqXOBe6JFS0wVVoR35VzJT/Xjp9iyof0sNQKNd9eGoTIEZBWgDU3e1HmMIeRwwQpO7zDfllk+lWXZf4UOiVjlIuQ/iIyg/MAbNXjb+x8vfv/0HIVn3hM8ZBHCL9iBsWGjXzXpuksQ2xmAmzr/f+MR0P3QUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj/Hie5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7517C4CECD;
+	Wed,  6 Nov 2024 12:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895921;
-	bh=PFqrgztoZvKhNZWiPu4spzZhkfalEhwX2bGIHTIO+KA=;
+	s=korg; t=1730895927;
+	bh=7oznihawD9c5e+4wOcQPLTJVy10phO5BJ7Lo/9USejU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2Z+lsz+J6SOL848wS01yDeimIdqdRspcX49SUKgGol8JF4lnHG4wjJtzPdobxJ0b
-	 kb7vC1s+T9V6GbY7WRW1Kexh5GjP+XBuQEEMOtGCsyo9AeaV8Vy84r2KPlvx75kyE2
-	 gdTHYE4rpBE2ZH4+dK+vCI5INzWPXxr9KpNlCZe0=
+	b=gj/Hie5Lf70lqFlm8So4BEjNBnk+kwa7dvLO7NVor8omWNHXy19ME4iqWRDjWRbl9
+	 N2nFioVzDSg3CqU/p29ktlEMNQgDNojOP3YIwKCxMiV1g3SY9T/xCV6h8PZL+9A+Kl
+	 7DgHL7oI386xoQ2W8qMJRsc0VojU8xG9TPOzU9Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Jaiswal <quic_jsuraj@quicinc.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Yuying Ma <yuma@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 029/245] net: stmmac: TSO: Fix unbalanced DMA map/unmap for non-paged SKB data
-Date: Wed,  6 Nov 2024 13:01:22 +0100
-Message-ID: <20241106120319.947727365@linuxfoundation.org>
+Subject: [PATCH 6.11 030/245] igb: Disable threaded IRQ for igb_msix_other
+Date: Wed,  6 Nov 2024 13:01:23 +0100
+Message-ID: <20241106120319.970840571@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
 References: <20241106120319.234238499@linuxfoundation.org>
@@ -69,112 +71,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 66600fac7a984dea4ae095411f644770b2561ede ]
+[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
 
-In case the non-paged data of a SKB carries protocol header and protocol
-payload to be transmitted on a certain platform that the DMA AXI address
-width is configured to 40-bit/48-bit, or the size of the non-paged data
-is bigger than TSO_MAX_BUFF_SIZE on a certain platform that the DMA AXI
-address width is configured to 32-bit, then this SKB requires at least
-two DMA transmit descriptors to serve it.
+During testing of SR-IOV, Red Hat QE encountered an issue where the
+ip link up command intermittently fails for the igbvf interfaces when
+using the PREEMPT_RT variant. Investigation revealed that
+e1000_write_posted_mbx returns an error due to the lack of an ACK
+from e1000_poll_for_ack.
 
-For example, three descriptors are allocated to split one DMA buffer
-mapped from one piece of non-paged data:
-    dma_desc[N + 0],
-    dma_desc[N + 1],
-    dma_desc[N + 2].
-Then three elements of tx_q->tx_skbuff_dma[] will be allocated to hold
-extra information to be reused in stmmac_tx_clean():
-    tx_q->tx_skbuff_dma[N + 0],
-    tx_q->tx_skbuff_dma[N + 1],
-    tx_q->tx_skbuff_dma[N + 2].
-Now we focus on tx_q->tx_skbuff_dma[entry].buf, which is the DMA buffer
-address returned by DMA mapping call. stmmac_tx_clean() will try to
-unmap the DMA buffer _ONLY_IF_ tx_q->tx_skbuff_dma[entry].buf
-is a valid buffer address.
+The underlying issue arises from the fact that IRQs are threaded by
+default under PREEMPT_RT. While the exact hardware details are not
+available, it appears that the IRQ handled by igb_msix_other must
+be processed before e1000_poll_for_ack times out. However,
+e1000_write_posted_mbx is called with preemption disabled, leading
+to a scenario where the IRQ is serviced only after the failure of
+e1000_write_posted_mbx.
 
-The expected behavior that saves DMA buffer address of this non-paged
-data to tx_q->tx_skbuff_dma[entry].buf is:
-    tx_q->tx_skbuff_dma[N + 0].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = dma_map_single();
-Unfortunately, the current code misbehaves like this:
-    tx_q->tx_skbuff_dma[N + 0].buf = dma_map_single();
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = NULL;
+To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
+ensuring that the kernel handles it immediately, thereby preventing
+the aforementioned error.
 
-On the stmmac_tx_clean() side, when dma_desc[N + 0] is closed by the
-DMA engine, tx_q->tx_skbuff_dma[N + 0].buf is a valid buffer address
-obviously, then the DMA buffer will be unmapped immediately.
-There may be a rare case that the DMA engine does not finish the
-pending dma_desc[N + 1], dma_desc[N + 2] yet. Now things will go
-horribly wrong, DMA is going to access a unmapped/unreferenced memory
-region, corrupted data will be transmited or iommu fault will be
-triggered :(
+Reproducer:
 
-In contrast, the for-loop that maps SKB fragments behaves perfectly
-as expected, and that is how the driver should do for both non-paged
-data and paged frags actually.
+    #!/bin/bash
 
-This patch corrects DMA map/unmap sequences by fixing the array index
-for tx_q->tx_skbuff_dma[entry].buf when assigning DMA buffer address.
+    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
+    ipaddr_vlan=3
+    nic_test=ens14f0
+    vf=${nic_test}v0
 
-Tested and verified on DWXGMAC CORE 3.20a
+    while true; do
+	    ip link set ${nic_test} mtu 1500
+	    ip link set ${vf} mtu 1500
+	    ip link set $vf up
+	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
+	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
+	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
+	    if ! ip link show $vf | grep 'state UP'; then
+		    echo 'Error found'
+		    break
+	    fi
+	    ip link set $vf down
+    done
 
-Reported-by: Suraj Jaiswal <quic_jsuraj@quicinc.com>
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Reported-by: Yuying Ma <yuma@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021061023.2162701-1-0x1207@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 22 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f3a1b179aaeac..02368917efb4a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4330,11 +4330,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (dma_mapping_error(priv->device, des))
- 		goto dma_map_err;
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index f1d0881687233..b83df5f94b1f5 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -907,7 +907,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
+ 	int i, err = 0, vector = 0, free_vector = 0;
  
--	tx_q->tx_skbuff_dma[first_entry].buf = des;
--	tx_q->tx_skbuff_dma[first_entry].len = skb_headlen(skb);
--	tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
--	tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
--
- 	if (priv->dma_cap.addr64 <= 32) {
- 		first->des0 = cpu_to_le32(des);
+ 	err = request_irq(adapter->msix_entries[vector].vector,
+-			  igb_msix_other, 0, netdev->name, adapter);
++			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
+ 	if (err)
+ 		goto err_out;
  
-@@ -4353,6 +4348,23 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
- 
-+	/* In case two or more DMA transmit descriptors are allocated for this
-+	 * non-paged SKB data, the DMA buffer address should be saved to
-+	 * tx_q->tx_skbuff_dma[].buf corresponding to the last descriptor,
-+	 * and leave the other tx_q->tx_skbuff_dma[].buf as NULL to guarantee
-+	 * that stmmac_tx_clean() does not unmap the entire DMA buffer too early
-+	 * since the tail areas of the DMA buffer can be accessed by DMA engine
-+	 * sooner or later.
-+	 * By saving the DMA buffer address to tx_q->tx_skbuff_dma[].buf
-+	 * corresponding to the last descriptor, stmmac_tx_clean() will unmap
-+	 * this DMA buffer right after the DMA engine completely finishes the
-+	 * full buffer transmission.
-+	 */
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-+
- 	/* Prepare fragments */
- 	for (i = 0; i < nfrags; i++) {
- 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
 -- 
 2.43.0
 
