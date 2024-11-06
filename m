@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-91522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D496D9BEE5B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917CF9BEEA9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126361C247BF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429071F25C09
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFF31EE00A;
-	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3141E230D;
+	Wed,  6 Nov 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1QJcSAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT+/RleN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A770754765;
-	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5AC1E048E;
+	Wed,  6 Nov 2024 13:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898979; cv=none; b=LxrpNSAKp3qNa/FCO9sBZILegkLrVqtDmGgwZXO8ylJVm5tj9STmj+I1E0idf1520EfExFW1VjlKQxsTqHiLSFZe6IZeyaDddQiU8m3ae/8B/g6CifZswhRvrRd6qcv1zw25gm5C1wRCs/NjNWSqaB8Vv6ww6TKmxT7TzodJPb4=
+	t=1730899164; cv=none; b=gnZDxH8uWETOgOq4Gk0aKF4k2KEa8Zhf1zkxRZJQNuHdS+XHuE2n50P9YjlBs2IQxbXm6nj+m6RsAe2qHzZDMVPLHWj2lIrR96+l7lMyLVT2VtKi/aiwCoT4NYuhMTMw0tcYn1FfbXS9ppgfZsI8hBdVz+cL1zI3Wt4JbOZ8FrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898979; c=relaxed/simple;
-	bh=yeqCz5wXm9U1ygrKYdJqtpi+Tyd0IilpoCN5BYcqAH0=;
+	s=arc-20240116; t=1730899164; c=relaxed/simple;
+	bh=sBqWhvb5NpfxxTJj0ljzc2anXJo/173n19xQQ7Rd6ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6aun7mYKDd4Dm96zjcAd61zk00177CsSK7bKWXVsded+PUT1++QSh8EAy7cKsQ/Xt6/5BNC06AnkOYnlhnwRMRoe14PNsYUBX+Q15a6W7r9DpDHNOGJHUEWD4L3gwvHY90UaWCpIYOFUIYSqc6KpCBbZeUuPQvlVJvq4luJ8Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1QJcSAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F35C4CECD;
-	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
+	 MIME-Version; b=PrutEW+mBEvwXCWaCN5NA461Bo0zsXgkqG1APkWhSSo7DHyJfG17b6vbfBoCkKMvFfRXHSS1FY9K9hgJP/rwwt8yQvmTIgjGW+y5dflwrfpg34ChRsJa5SXeGDSwcOq09lUTheX769zWnTIQiVE+wufcNv7Axvkol1vVtmpkOY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT+/RleN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4125DC4CECD;
+	Wed,  6 Nov 2024 13:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898979;
-	bh=yeqCz5wXm9U1ygrKYdJqtpi+Tyd0IilpoCN5BYcqAH0=;
+	s=korg; t=1730899164;
+	bh=sBqWhvb5NpfxxTJj0ljzc2anXJo/173n19xQQ7Rd6ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1QJcSApTaotVhKIxJTYjOWtSgsNpYZq93G9PwqdfpQ/xBm1huzQmfESUVMg9KLbW
-	 o+lnthAf3mnZ4uX1nDLHUpXad18kQsIe+391srWLuHSyaqfy18Z9bAeqh9XrbewiKE
-	 G4kdUvatMRZuKoDBhlL6XoUOGsis2btASKRHGIMs=
+	b=bT+/RleNXkSgrI++luGU8YH+1USfr71DOBgWKyaSHOKQqUm10M2Tzd3YMYy415eIn
+	 dtO1Eqq1qegW3aEzbbDK67PWnLfHHrQxWe+cWy7D3m3P+jqT4mlfHzF0Ip+f3hDHsL
+	 vtbdhMHilN3+HLTmoLDi2vtg/SP9HdLw/b5zdpSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Panwar <shubiisp8@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 419/462] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
-Date: Wed,  6 Nov 2024 13:05:12 +0100
-Message-ID: <20241106120341.864273627@linuxfoundation.org>
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 09/73] wifi: brcm80211: BRCM_TRACING should depend on TRACING
+Date: Wed,  6 Nov 2024 13:05:13 +0100
+Message-ID: <20241106120300.242985549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubham Panwar <shubiisp8@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
+[ Upstream commit b73b2069528f90ec49d5fa1010a759baa2c2be05 ]
 
-Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
-detection issue.
+When tracing is disabled, there is no point in asking the user about
+enabling Broadcom wireless device tracing.
 
-The _LID device incorrectly returns the lid status as "closed" during
-boot, causing the system to enter a suspend loop right after booting.
-
-The quirk ensures that the correct lid state is reported initially,
-preventing the system from immediately suspending after startup.  It
-only addresses the initial lid state detection and ensures proper
-system behavior upon boot.
-
-Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
-Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
-[ rjw: Changelog edits ]
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be enabled separately from debug")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/button.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -111,6 +111,17 @@ static const struct dmi_system_id lid_bl
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
- 	},
-+	{
-+		/*
-+		 * Samsung galaxybook2 ,initial _LID device notification returns
-+		 * lid closed.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-+	},
- 	{}
- };
- 
+diff --git a/drivers/net/wireless/broadcom/brcm80211/Kconfig b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+index 5bf2318763c55..8f51099e15c90 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/Kconfig
++++ b/drivers/net/wireless/broadcom/brcm80211/Kconfig
+@@ -23,6 +23,7 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
+ config BRCM_TRACING
+ 	bool "Broadcom device tracing"
+ 	depends on BRCMSMAC || BRCMFMAC
++	depends on TRACING
+ 	help
+ 	  If you say Y here, the Broadcom wireless drivers will register
+ 	  with ftrace to dump event information into the trace ringbuffer.
+-- 
+2.43.0
+
 
 
 
