@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F352E9BE962
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CB79BE834
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC2301F239E3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67F8284EE0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5944F1DF986;
-	Wed,  6 Nov 2024 12:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578D21DF74E;
+	Wed,  6 Nov 2024 12:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ7P8Hn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFepUazx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AF61DF974;
-	Wed,  6 Nov 2024 12:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136941DF726;
+	Wed,  6 Nov 2024 12:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896412; cv=none; b=SXcfeSPaB0JvNtCReYtGE8H7AOQiidiW00FW/GMMrITuAHhS6rJY1hadOZ6ZfvggtBp9LJb2qQSQe/2tdB9e6pqQt9qeD5WSlz27TB6IoPdBZWi45QI2Wrm8mY+YffmOZWolURKzeJxmHSe7jDjgHruxS9hTKEuzDbMo7trWqOs=
+	t=1730895736; cv=none; b=AqP8DYTSQ8spTvRMJicIoLiwuTFE072nlvXk7SG83ecXVYpE2UGLKKZy5xxJM5dccGRopzn4wyikr42e6DIw4IhyDcSdWvUM4VuagDkjnw7m4GshHSmWyOQItxNCUjQ6Mq2hU/WdKQu2HERGz0PPLIwXzd4ATbF6gGxY9hXtDbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896412; c=relaxed/simple;
-	bh=zyapEtjt+3MRk6BcKnSUfU9Dl3zfB3LoDkG0GzLK2vw=;
+	s=arc-20240116; t=1730895736; c=relaxed/simple;
+	bh=bnueWQi6aRinWlTh4inG235QBtP/TT9LbFZ7Jr6w0+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFoU4KI8LdfoA04uCwijzNoqzVM6N1q7qmu5XhxZ/9IuTmoMG1M4nZV1EYqczFsDXw3C8yv4rge2etkcPTaVEAvgJ8XRHjrOFHC9pQB7An1RCjycVLha697YnHXI1pJeHqH/xXJn33EFy+sI1v7MBiT/mPs5PCoKsc3NAE4zQUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ7P8Hn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751DFC4CECD;
-	Wed,  6 Nov 2024 12:33:31 +0000 (UTC)
+	 MIME-Version; b=c9BKh2zaFHTQPIzoUv6GZbuwHB0Bn4PSQUkIprCjr4xCtEk1AEaXv0pyYYhfnDUK0HdKteZa1PqsGvlWhN+oNt5xcVgCq91QfDTt77fT1yowh9w8TjjJf5gvezwYOUMvdbOfPwMEq7AueWQ9KbCoX4ROq7c9jSbkdOxtbribk7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFepUazx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F875C4CECD;
+	Wed,  6 Nov 2024 12:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896412;
-	bh=zyapEtjt+3MRk6BcKnSUfU9Dl3zfB3LoDkG0GzLK2vw=;
+	s=korg; t=1730895736;
+	bh=bnueWQi6aRinWlTh4inG235QBtP/TT9LbFZ7Jr6w0+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQ7P8Hn7xhH080wTB1G9UxGmzi22v8o+BLF/YYmgSP0fclw4zsdtwINVXK1gytgTS
-	 SGLvbPJkTbw7aroyVx/IXxE2IwblOCeAnsRFhNXtvdSuo2HVYbPDE9fh7GOUosnq10
-	 8uom46BJV36tt5QRExq7p/nrTiBVe+dT6dDVF8LI=
+	b=XFepUazxeeVE5bXylZ9+jZZw9RB1bLGJLYAuWDY9MfIPfI0mfBO3d5ZOqIxTLSLoJ
+	 WCXko9b3vSaVZtIa2lZIUjNitDaWN6TioCg7BBNybxEHNRVz55Kjsuv6BT1cuTpNL+
+	 0NvZRG8QJprTbXwu3e7KJmG+vWAriCeWHPuhiwus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 192/245] drm/tests: hdmi: Fix memory leaks in drm_display_mode_from_cea_vic()
+	Shubham Panwar <shubiisp8@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 4.19 317/350] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
 Date: Wed,  6 Nov 2024 13:04:05 +0100
-Message-ID: <20241106120323.972015771@linuxfoundation.org>
+Message-ID: <20241106120328.587696856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Shubham Panwar <shubiisp8@gmail.com>
 
-[ Upstream commit add4163aca0d4a86e9fe4aa513865e4237db8aef ]
+commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
 
-modprobe drm_hdmi_state_helper_test and then rmmod it, the following
-memory leak occurs.
+Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
+detection issue.
 
-The `mode` allocated in drm_mode_duplicate() called by
-drm_display_mode_from_cea_vic() is not freed, which cause the memory leak:
+The _LID device incorrectly returns the lid status as "closed" during
+boot, causing the system to enter a suspend loop right after booting.
 
-	unreferenced object 0xffffff80ccd18100 (size 128):
-	  comm "kunit_try_catch", pid 1851, jiffies 4295059695
-	  hex dump (first 32 bytes):
-	    57 62 00 00 80 02 90 02 f0 02 20 03 00 00 e0 01  Wb........ .....
-	    ea 01 ec 01 0d 02 00 00 0a 00 00 00 00 00 00 00  ................
-	  backtrace (crc c2f1aa95):
-	    [<000000000f10b11b>] kmemleak_alloc+0x34/0x40
-	    [<000000001cd4cf73>] __kmalloc_cache_noprof+0x26c/0x2f4
-	    [<00000000f1f3cffa>] drm_mode_duplicate+0x44/0x19c
-	    [<000000008cbeef13>] drm_display_mode_from_cea_vic+0x88/0x98
-	    [<0000000019daaacf>] 0xffffffedc11ae69c
-	    [<000000000aad0f85>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000a9210bac>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<000000000a0b2e9e>] kthread+0x2e8/0x374
-	    [<00000000bd668858>] ret_from_fork+0x10/0x20
-	......
+The quirk ensures that the correct lid state is reported initially,
+preventing the system from immediately suspending after startup.  It
+only addresses the initial lid state detection and ensures proper
+system behavior upon boot.
 
-Free `mode` by using drm_kunit_display_mode_from_cea_vic()
-to fix it.
-
-Cc: stable@vger.kernel.org
-Fixes: 4af70f19e559 ("drm/tests: Add RGB Quantization tests")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-4-ruanjinjie@huawei.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
+Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
+[ rjw: Changelog edits ]
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/button.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-index 34ee95d41f296..294773342e710 100644
---- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-@@ -441,7 +441,7 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -124,6 +124,17 @@ static const struct dmi_system_id lid_bl
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Samsung galaxybook2 ,initial _LID device notification returns
++		 * lid closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
  
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	drm = &priv->drm;
-@@ -555,7 +555,7 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
- 
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	drm = &priv->drm;
-@@ -671,7 +671,7 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
- 
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	drm = &priv->drm;
-@@ -1263,7 +1263,7 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
- 
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	/*
--- 
-2.43.0
-
 
 
 
