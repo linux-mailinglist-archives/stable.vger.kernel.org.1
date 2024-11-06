@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FD29BE93E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B711F9BEB58
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B4C1F229E6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E96EA1C22436
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163331DF251;
-	Wed,  6 Nov 2024 12:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7D11F7559;
+	Wed,  6 Nov 2024 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7oSzN4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw6PCFUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90F61DE3B8;
-	Wed,  6 Nov 2024 12:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F121D1E909B;
+	Wed,  6 Nov 2024 12:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896318; cv=none; b=asop3O1q6ic5X/3atqmZpm1F1Gj7CuqO2nnSEN/kj0BQw3xKXgfU5iw9/Np08sMKM2rcRvvBzksiSINguPBx/ktIYbqZzXZ0M32h7yH0JkH23YPcDueWkxQOyZu6DWhnGRYcIU0vU6+50HHqcPdCh8qbSN0rexYAOjN1RiIxlcs=
+	t=1730897014; cv=none; b=UMYe7gJw10Zv2G/VFgg3+plkfhiko1V95s07k6tz8ogZ2oSI65ugCrifK+dlLCk2PYD6bfIksITR72y/LDC+RXqqSHTazmo4TLDzfX3oxKkYXZG20jeTM8V2WKjbvw1uHucfVAf21dMzTYEKumlfpXXvlsh1pymHa/lHx4sEbaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896318; c=relaxed/simple;
-	bh=hROys7sl4KMGKt1GuuyyHmTEtQ3lBRqPBiRNilE73I4=;
+	s=arc-20240116; t=1730897014; c=relaxed/simple;
+	bh=VxIUSFcd+iEZBrjcSYFDjSRpLwGEkhRMgnFTfT4CwXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvcqORv026+kU/G/44P7/eJCauwK33AJLN44FuzscozwniPUCwFxjzbe1YQy+BWWFbq18km0JIDHnXm4M3DvZKj4kjNOlcvYvIlM4+u4OVNF64jbaXYbj799q9xxkdizQ8u2os9zTFHvOnviQVxKVQ4+aIbVD3GZskWt97U6ZlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7oSzN4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E06AC4CECD;
-	Wed,  6 Nov 2024 12:31:58 +0000 (UTC)
+	 MIME-Version; b=Wi3v3WQiJATuaTKNvES969RmVB1ZPLR+LX6kgHfFtYxJJ1V7Ivc/6hbGB/7sBhANGrlXzxgUft2mZ1WASf2Sp04Agx1XvKVWBwH3pDjnaAGRFvHEBvz9yyGnmn1MoVf++qxqS8+vr+AvFesfk28qxeEJUqX0088bHCjtBNJBj3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw6PCFUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34904C4CED3;
+	Wed,  6 Nov 2024 12:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896318;
-	bh=hROys7sl4KMGKt1GuuyyHmTEtQ3lBRqPBiRNilE73I4=;
+	s=korg; t=1730897013;
+	bh=VxIUSFcd+iEZBrjcSYFDjSRpLwGEkhRMgnFTfT4CwXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7oSzN4IwItbXoK3J7yGmN6xn7QZyFrf3om4tIPb9CssZqaxP3+2fKlkITgdhX2Uy
-	 IX6g26wMqRfiWPrVmq/Fg15PTHX7a+CmElwo4N634le2goymI9vQeWpu+5WPA/0p8o
-	 YPnul6VqBciYhdvYz038kW0/5p5o9oz+SKtiYot4=
+	b=Dw6PCFUx0mSQiPLEaRlkoRhzlG5vAMOBUkmuNr8AiorbhC+O9KrKqWEcrYYolA1wU
+	 NTxp8ETJ0m7oovaFH8wMAmEeYDc4SFuTcerD23KpkJQ1/Sb8VA89cO9f7E/HOenzPM
+	 rFuVlcWH5am40+q0Zn0WA1AjavartO9YjrGKjys8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 156/245] riscv: efi: Set NX compat flag in PE/COFF header
+Subject: [PATCH 6.1 008/126] fs/proc/kcore.c: allow translation of physical memory addresses
 Date: Wed,  6 Nov 2024 13:03:29 +0100
-Message-ID: <20241106120323.070242201@linuxfoundation.org>
+Message-ID: <20241106120306.292454731@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit d41373a4b910961df5a5e3527d7bde6ad45ca438 ]
+[ Upstream commit 3d5854d75e3187147613130561b58f0b06166172 ]
 
-The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
-EFI binary does not rely on pages that are both executable and
-writable.
+When /proc/kcore is read an attempt to read the first two pages results in
+HW-specific page swap on s390 and another (so called prefix) pages are
+accessed instead.  That leads to a wrong read.
 
-The flag is used by some distro versions of GRUB to decide if the EFI
-binary may be executed.
+Allow architecture-specific translation of memory addresses using
+kc_xlate_dev_mem_ptr() and kc_unxlate_dev_mem_ptr() callbacks similarily
+to /dev/mem xlate_dev_mem_ptr() and unxlate_dev_mem_ptr() callbacks.  That
+way an architecture can deal with specific physical memory ranges.
 
-As the Linux kernel neither has RWX sections nor needs RWX pages for
-relocation we should set the flag.
+Re-use the existing /dev/mem callback implementation on s390, which
+handles the described prefix pages swapping correctly.
 
-Cc: Ard Biesheuvel <ardb@kernel.org>
+For other architectures the default callback is basically NOP.  It is
+expected the condition (vaddr == __va(__pa(vaddr))) always holds true for
+KCORE_RAM memory type.
+
+Link: https://lkml.kernel.org/r/20240930122119.1651546-1-agordeev@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Suggested-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240929140233.211800-1-heinrich.schuchardt@canonical.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/efi-header.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/io.h |  2 ++
+ fs/proc/kcore.c            | 36 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-index 515b2dfbca75b..c5f17c2710b58 100644
---- a/arch/riscv/kernel/efi-header.S
-+++ b/arch/riscv/kernel/efi-header.S
-@@ -64,7 +64,7 @@ extra_header_fields:
- 	.long	efi_header_end - _start			// SizeOfHeaders
- 	.long	0					// CheckSum
- 	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
--	.short	0					// DllCharacteristics
-+	.short	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	// DllCharacteristics
- 	.quad	0					// SizeOfStackReserve
- 	.quad	0					// SizeOfStackCommit
- 	.quad	0					// SizeOfHeapReserve
+diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
+index e3882b012bfa4..70e679d87984b 100644
+--- a/arch/s390/include/asm/io.h
++++ b/arch/s390/include/asm/io.h
+@@ -16,8 +16,10 @@
+ #include <asm/pci_io.h>
+ 
+ #define xlate_dev_mem_ptr xlate_dev_mem_ptr
++#define kc_xlate_dev_mem_ptr xlate_dev_mem_ptr
+ void *xlate_dev_mem_ptr(phys_addr_t phys);
+ #define unxlate_dev_mem_ptr unxlate_dev_mem_ptr
++#define kc_unxlate_dev_mem_ptr unxlate_dev_mem_ptr
+ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
+ 
+ #define IO_SPACE_LIMIT 0
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 87a46f2d84195..a2d430549012f 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -51,6 +51,20 @@ static struct proc_dir_entry *proc_root_kcore;
+ #define	kc_offset_to_vaddr(o) ((o) + PAGE_OFFSET)
+ #endif
+ 
++#ifndef kc_xlate_dev_mem_ptr
++#define kc_xlate_dev_mem_ptr kc_xlate_dev_mem_ptr
++static inline void *kc_xlate_dev_mem_ptr(phys_addr_t phys)
++{
++	return __va(phys);
++}
++#endif
++#ifndef kc_unxlate_dev_mem_ptr
++#define kc_unxlate_dev_mem_ptr kc_unxlate_dev_mem_ptr
++static inline void kc_unxlate_dev_mem_ptr(phys_addr_t phys, void *virt)
++{
++}
++#endif
++
+ static LIST_HEAD(kclist_head);
+ static DECLARE_RWSEM(kclist_lock);
+ static int kcore_need_update = 1;
+@@ -474,6 +488,8 @@ read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	while (buflen) {
+ 		struct page *page;
+ 		unsigned long pfn;
++		phys_addr_t phys;
++		void *__start;
+ 
+ 		/*
+ 		 * If this is the first iteration or the address is not within
+@@ -523,7 +539,8 @@ read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 			}
+ 			break;
+ 		case KCORE_RAM:
+-			pfn = __pa(start) >> PAGE_SHIFT;
++			phys = __pa(start);
++			pfn =  phys >> PAGE_SHIFT;
+ 			page = pfn_to_online_page(pfn);
+ 
+ 			/*
+@@ -542,13 +559,28 @@ read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 			fallthrough;
+ 		case KCORE_VMEMMAP:
+ 		case KCORE_TEXT:
++			if (m->type == KCORE_RAM) {
++				__start = kc_xlate_dev_mem_ptr(phys);
++				if (!__start) {
++					ret = -ENOMEM;
++					if (iov_iter_zero(tsz, iter) != tsz)
++						ret = -EFAULT;
++					goto out;
++				}
++			} else {
++				__start = (void *)start;
++			}
++
+ 			/*
+ 			 * Sadly we must use a bounce buffer here to be able to
+ 			 * make use of copy_from_kernel_nofault(), as these
+ 			 * memory regions might not always be mapped on all
+ 			 * architectures.
+ 			 */
+-			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
++			ret = copy_from_kernel_nofault(buf, __start, tsz);
++			if (m->type == KCORE_RAM)
++				kc_unxlate_dev_mem_ptr(phys, __start);
++			if (ret) {
+ 				if (iov_iter_zero(tsz, iter) != tsz) {
+ 					ret = -EFAULT;
+ 					goto out;
 -- 
 2.43.0
 
