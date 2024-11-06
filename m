@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113B79BEBC4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9559BEB36
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425E11C23781
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FDA31C20C49
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B9C1F9A8C;
-	Wed,  6 Nov 2024 12:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543A11F666A;
+	Wed,  6 Nov 2024 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGY8hdcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp9WCeug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318BB1F9A86;
-	Wed,  6 Nov 2024 12:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD801E103C;
+	Wed,  6 Nov 2024 12:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897280; cv=none; b=kOFg76NpNMruMQ/7ntrEGtCzEf6Rbvtvu0R77jCBbsV9ITPA2Tf32l9wuAITM0dDzwI/6f4uFmg9Tq895k8m1z6Fj8Gk3yERu4cOkiKach1bCP0YeWS46VWibSsyC76v+lytNY2mCsy/kUKI9v5ak9av5dZIOrUp2rhJot1k1zg=
+	t=1730896919; cv=none; b=fREChC/biOUOpT7Dx1DK0ymWFb5+DFCd++LJ5IO3EVd7ArrcOz9MVrr57hrF5GwB1Q9MTkSVpvEO3G7PpEsRUh8UAXwEMWU2cakMN72CnkFZOArLxkJyiK1R8IwQxPvzkxgXH5AU/kAsUs2/TXYaKUzaWL+xWOLrvitEGLGxtZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897280; c=relaxed/simple;
-	bh=ECruLPH+vgsi1dNZHVSx69mXL7yTe/5l3AbNLxhpDwE=;
+	s=arc-20240116; t=1730896919; c=relaxed/simple;
+	bh=QkR0aqquTWBx21Gjz94942pWOE7B1qLJS/tm7cAgoFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNGIFC6SYG9iux+ytoGkDV6+3OSybXHioxtlTmQ1Feyb/J0bi62eE5ocWolOUkPcOPeynP5ZEvti+69OpNs83bY25yk2lgir6Fv4cDotDzGiBQALwxGoHG2TY+HJ19V5eGt3jcycRDurreZ36MCyUNF9+6S/KVwrfQIW6iEP8Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGY8hdcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59F8C4CECD;
-	Wed,  6 Nov 2024 12:47:59 +0000 (UTC)
+	 MIME-Version; b=KPY7qbzfGX93S/i2NA9icxspLwm/UglP0btZ9DAmRTyRgZnTo2jOjsij7U1yXJIi9OzAgCecholfNPgoXNh3jCxKSikvnwlnFnIW/VdKQ1ibxL5UmoT8uzvES/ue5EjRCwUxpQ+nAaVtzC/ROKO4dFiAWxaOwu8v83tEOTLl6vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp9WCeug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B64DC4CECD;
+	Wed,  6 Nov 2024 12:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897280;
-	bh=ECruLPH+vgsi1dNZHVSx69mXL7yTe/5l3AbNLxhpDwE=;
+	s=korg; t=1730896918;
+	bh=QkR0aqquTWBx21Gjz94942pWOE7B1qLJS/tm7cAgoFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGY8hdcJiTEOfuq+aWRdFCdqNxP28HuSoC9+sXgXWLhCr80a362vuB4UquRsAlqpa
-	 8YHuGqY0MUPmsVbEoFx6aO1X+ojaoGr5/GWfRQVPbByzaWkPIUobHCtCPDRFjlbsA2
-	 2YvMZFVWb9ySrS16RbMd8tkbTYJHOY3yY3JeYy3Y=
+	b=Gp9WCeugcdmiLxmy+ATV5YkhuVbgr0jsJms+YN2P2itRGh7563NqHGWGeGP4HaYHJ
+	 SFKW3DUO+8xr527/n7YXmPDKJYIwuF7I70DY07RpH5onnfnDh2JKkGvXmlU/Ddflo8
+	 ywYoM0IHkj+3IAHIYpf6D9MUDEH9y3cTiWhFIMq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 114/126] io_uring: always lock __io_cqring_overflow_flush
+	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 5.10 109/110] vt: prevent kernel-infoleak in con_font_get()
 Date: Wed,  6 Nov 2024 13:05:15 +0100
-Message-ID: <20241106120309.139145097@linuxfoundation.org>
+Message-ID: <20241106120306.187887869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-Commit 8d09a88ef9d3cb7d21d45c39b7b7c31298d23998 upstream.
+commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
 
-Conditional locking is never great, in case of
-__io_cqring_overflow_flush(), which is a slow path, it's not justified.
-Don't handle IOPOLL separately, always grab uring_lock for overflow
-flushing.
+font.data may not initialize all memory spaces depending on the implementation
+of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
+is safest to modify it to initialize the allocated memory space to 0, and it
+generally does not affect the overall performance of the system.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/162947df299aa12693ac4b305dacedab32ec7976.1712708261.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
+Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -593,6 +593,8 @@ static bool __io_cqring_overflow_flush(s
- 	bool all_flushed;
- 	size_t cqe_size = sizeof(struct io_uring_cqe);
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4603,7 +4603,7 @@ static int con_font_get(struct vc_data *
+ 	int c;
  
-+	lockdep_assert_held(&ctx->uring_lock);
-+
- 	if (!force && __io_cqring_events(ctx) == ctx->cq_entries)
- 		return false;
- 
-@@ -647,12 +649,9 @@ static bool io_cqring_overflow_flush(str
- 	bool ret = true;
- 
- 	if (test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)) {
--		/* iopoll syncs against uring_lock, not completion_lock */
--		if (ctx->flags & IORING_SETUP_IOPOLL)
--			mutex_lock(&ctx->uring_lock);
-+		mutex_lock(&ctx->uring_lock);
- 		ret = __io_cqring_overflow_flush(ctx, false);
--		if (ctx->flags & IORING_SETUP_IOPOLL)
--			mutex_unlock(&ctx->uring_lock);
-+		mutex_unlock(&ctx->uring_lock);
- 	}
- 
- 	return ret;
-@@ -1405,6 +1404,8 @@ static int io_iopoll_check(struct io_rin
- 	int ret = 0;
- 	unsigned long check_cq;
- 
-+	lockdep_assert_held(&ctx->uring_lock);
-+
- 	if (!io_allowed_run_tw(ctx))
- 		return -EEXIST;
- 
+ 	if (op->data) {
+-		font.data = kmalloc(max_font_size, GFP_KERNEL);
++		font.data = kzalloc(max_font_size, GFP_KERNEL);
+ 		if (!font.data)
+ 			return -ENOMEM;
+ 	} else
 
 
 
