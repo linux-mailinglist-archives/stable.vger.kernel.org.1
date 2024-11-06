@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EB49BEB43
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617FF9BE942
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9A11C22136
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0947CB234A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF751F7075;
-	Wed,  6 Nov 2024 12:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0446E1DF726;
+	Wed,  6 Nov 2024 12:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaX4YaSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMzQkJCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA4F1F7072;
-	Wed,  6 Nov 2024 12:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60D7198E96;
+	Wed,  6 Nov 2024 12:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896956; cv=none; b=RPurY2NYI2dLm1myCewzdcXwMSKXlMeYjrpk4PyXn4D9qO6SYF0zwmnoQSEAf9gHVq7hpnWyljewmMTNr3LCUOgzhqP91I9/HwPKl2RpxhdYO80+w6soX8e+f4AHzk5v/dSasr9nUtWg6JY+H1uRiLq23T8J7rSBe3LDLWMXDLk=
+	t=1730896327; cv=none; b=aLfAG2EnZ3lD92G5phvTZcjZ+ZgNVIv5lbFGCIJno753v9KwFw9e22N1KlgvRf3Qahu1evPVGs4gd+iqy5vzt1/eQ+xWiG5gJGzKBtTmYlhVYr1DUmCiYsORDNFA1FCUQFVz50oxxIGT/oqcORy/DMVsLZHlzPFlkuetPD+Y6h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896956; c=relaxed/simple;
-	bh=Ax0vzl8Z8H0YeFkaldTWY0AMFMKbW/txvfalNIz4/ho=;
+	s=arc-20240116; t=1730896327; c=relaxed/simple;
+	bh=ikr/4SULpgYzJyHzm3LA8byPZ5RfXIe7wguxK8oBORM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+VrhIQ++X8RcHHrAk5b2Ush0TQTXXlJoYUDT0rYQub7mw4TVq/jX21XX4ia7986XzWgfMfz1soJWvgijOF6E+mB9tetYVV+oyMzPrPKZaWatLSfH+6uEFsejTmFaC4t7rnBS8UjBLbBNwotGvMQ4yZV+HFXeQ/IkrA3Gpkds+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaX4YaSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501A9C4CED4;
-	Wed,  6 Nov 2024 12:42:36 +0000 (UTC)
+	 MIME-Version; b=k3WJ5tki2Dh/e/jwK1aX0pA9+escgfBtSn/huo71s269za5Xc7qKSXumz9xXrDmV+tUCdvr9yD2Z/mNg9zUtaG9DES73heHIopR3qFtqnuQM5Ke9zvC7NeqEVqNaGMhLRnu+2EhCnszqbELCbohY+K4wEmWjATm8MKpFkWhtGRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMzQkJCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B3EC4CECD;
+	Wed,  6 Nov 2024 12:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896956;
-	bh=Ax0vzl8Z8H0YeFkaldTWY0AMFMKbW/txvfalNIz4/ho=;
+	s=korg; t=1730896327;
+	bh=ikr/4SULpgYzJyHzm3LA8byPZ5RfXIe7wguxK8oBORM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaX4YaSgx2EeIrD7fCIxfjvEmj+yjjTnDEJGwhb9HRYrV7sIZf4RBCghX5W6nAAsV
-	 lQyQRpvSavHEnfS7x5Ut7xO1LO+JBqc/tTlpfOmh+FrlHA7OYbk+C5NKB+Y1j1L0lZ
-	 TxHAZ74aTRl4QSNbeKafREpK0gU88fwYGmYhizAM=
+	b=ZMzQkJCTqfT8IR/RubFjdaQiadxGLRaykwKlCXTLz3yd6DyZ3gPmU+TJo/60HlxnR
+	 Ih9WcG+VXgxAGIF9pptFCc26oCz7X6UfwV8L/xQQO/cqn4Rd5mT2tMbRQhHtUnqmvb
+	 li9Maog5zDtIeIzJ9zV34ttNcs26E1wwmrX2wQNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/126] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+Subject: [PATCH 6.11 167/245] tpm: Return tpm2_sessions_init() when null key creation fails
 Date: Wed,  6 Nov 2024 13:03:40 +0100
-Message-ID: <20241106120306.615730906@linuxfoundation.org>
+Message-ID: <20241106120323.349514594@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+[ Upstream commit d658d59471ed80c4a8aaf082ccc3e83cdf5ae4c1 ]
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+Do not continue tpm2_sessions_init() further if the null key pair creation
+fails.
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
-
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index bf305f1e3ea1d..4706df3ae81bb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1358,8 +1358,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index 44f60730cff44..9551eeca6d691 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1347,14 +1347,21 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
+  *
+  * Derive and context save the null primary and allocate memory in the
+  * struct tpm_chip for the authorizations.
++ *
++ * Return:
++ * * 0		- OK
++ * * -errno	- A system error
++ * * TPM_RC	- A TPM error
+  */
+ int tpm2_sessions_init(struct tpm_chip *chip)
  {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
+ 	int rc;
  
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1367,7 +1367,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1387,7 +1386,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
- 	}
+ 	rc = tpm2_create_null_primary(chip);
+-	if (rc)
+-		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
++	if (rc) {
++		dev_err(&chip->dev, "null key creation failed with %d\n", rc);
++		return rc;
++	}
  
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
- 
-@@ -1398,11 +1397,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
+ 	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+ 	if (!chip->auth)
 -- 
 2.43.0
 
