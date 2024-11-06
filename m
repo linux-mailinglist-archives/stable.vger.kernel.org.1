@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-90641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D60C9BE951
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CA39BEBF5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA253B22571
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813AC1F24796
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519A41DF726;
-	Wed,  6 Nov 2024 12:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588E31DE3B9;
+	Wed,  6 Nov 2024 12:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTZFWben"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RetZyt1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7081DE3B8;
-	Wed,  6 Nov 2024 12:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D291E008B;
+	Wed,  6 Nov 2024 12:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896376; cv=none; b=eMrC468PrmjIgsJZ78anngx/d2FmknXFembqhWan7dzPdzZysVrwQSgWv0Gbc4ZgncN7LL8zu0Fkd0TPqaPIlI0bpkDZhag20DlTReMtxgl+xwi9UOK1eJfUcb0kB+/vhxrNXL59EMrcYIrOZsrhO2rl8raXrYoLRpJIuDI7gWQ=
+	t=1730897418; cv=none; b=XZlPEk1lnpks5pG/AoIwwXdRQol9GUtinK02wKeazakVzc4UeRptjglgoCdONvfDPZHZEkuvBm195hcWWwsX5VaCBKY2YIdKnrMgr/7sswN0fez8/AR69H2N5XLOb+dhD9M0rMsOdiRTEaucrtZwGeGUYdxQyZo9n8xTQSkwg28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896376; c=relaxed/simple;
-	bh=W8VCOSJpp21VMG53nEPsjHDd1LQzVAjn7L6XfYHCR7c=;
+	s=arc-20240116; t=1730897418; c=relaxed/simple;
+	bh=rN11O6qlghfNjhL4WiS7dav9eQR0vMRPGqZ5MvadziY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZ2cXjKIh/EdCcq6nO56Yixe7/9WRrUrazUZiXgAkqbmjnr1IEjKlIsGVjUaE6qSKf2KSnsCuznLQUVdAh2BR/QykVOSXzRODqi0OeyF8OWZDY17sDFeNCaWz73bhtykVrCXETS1twLzJb9DLgMUtg2hn2D1jn4MXmCj/SPez4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTZFWben; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848ADC4CED4;
-	Wed,  6 Nov 2024 12:32:55 +0000 (UTC)
+	 MIME-Version; b=nk1zzSvcozGIy9lLKU1lcttt89HN5Fx6+n8bFYYI45jC7owAkuOtT0uijhUqjWXff6Wm/5lOgWp5rMvSpIJ+eCfsCVE48j4afHLAMmIn54fCju+G8uwHiTs3rBRvmXGyY/cUSJ8xuuP/Orxs8HLsAAS6HNthv8GSD4VLTDm0mos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RetZyt1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB79C4CED4;
+	Wed,  6 Nov 2024 12:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896375;
-	bh=W8VCOSJpp21VMG53nEPsjHDd1LQzVAjn7L6XfYHCR7c=;
+	s=korg; t=1730897417;
+	bh=rN11O6qlghfNjhL4WiS7dav9eQR0vMRPGqZ5MvadziY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTZFWbenX/1ZjhJEPqqQBG6kW6+fwRZSYHyNcqmSth2MDJpQn2kUP53xHoq5zKSsI
-	 zcZW8bRQE2ToWcjmPjBx8cvtVoSRQJV1A6DDzQIM1+NcW05Ll1IwfXnarHAjR6LxoF
-	 cvT4pc5IBrpmkmG+VOoSSq8O/4eZLzx2IjY9ZNAE=
+	b=RetZyt1gYJtjp6uszk+T2fjsQfMNvKD9qE0ZRG8byMYW2hrPXlIYpIragEAxkGl5I
+	 SumNtMti41T+1hDIXCFcjzx8FT1woqc9TdJjxn19qIvTVslShARPKNQFXjkLSp7wrV
+	 HKLkaOfDEefKpKcwFZTp4TinlhlMD1fc2oyEJoNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dung Cao <dung@os.amperecomputing.com>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+908886656a02769af987@syzkaller.appspotmail.com,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrew Pinski <pinskia@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marco Elver <elver@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 181/245] mctp i2c: handle NULL header address
-Date: Wed,  6 Nov 2024 13:03:54 +0100
-Message-ID: <20241106120323.692854983@linuxfoundation.org>
+Subject: [PATCH 6.6 047/151] kasan: Fix Software Tag-Based KASAN with GCC
+Date: Wed,  6 Nov 2024 13:03:55 +0100
+Message-ID: <20241106120310.128091557@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit 01e215975fd80af81b5b79f009d49ddd35976c13 ]
+[ Upstream commit 894b00a3350c560990638bdf89bdf1f3d5491950 ]
 
-daddr can be NULL if there is no neighbour table entry present,
-in that case the tx packet should be dropped.
+Per [1], -fsanitize=kernel-hwaddress with GCC currently does not disable
+instrumentation in functions with __attribute__((no_sanitize_address)).
 
-saddr will usually be set by MCTP core, but check for NULL in case a
-packet is transmitted by a different protocol.
+However, __attribute__((no_sanitize("hwaddress"))) does correctly
+disable instrumentation. Use it instead.
 
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Cc: stable@vger.kernel.org
-Reported-by: Dung Cao <dung@os.amperecomputing.com>
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117196 [1]
+Link: https://lore.kernel.org/r/000000000000f362e80620e27859@google.com
+Link: https://lore.kernel.org/r/ZvFGwKfoC4yVjN_X@J2N7QTR9R3
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218854
+Reported-by: syzbot+908886656a02769af987@syzkaller.appspotmail.com
+Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrew Pinski <pinskia@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Marco Elver <elver@google.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Fixes: 7b861a53e46b ("kasan: Bump required compiler version")
+Link: https://lore.kernel.org/r/20241021120013.3209481-1-elver@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/compiler-gcc.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index 4dc057c121f5d..e70fb66879941 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -588,6 +588,9 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
- 	if (len > MCTP_I2C_MAXMTU)
- 		return -EMSGSIZE;
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 8c9a095c17571..9e6961078c2aa 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -102,7 +102,11 @@
+ #define __noscs __attribute__((__no_sanitize__("shadow-call-stack")))
+ #endif
  
-+	if (!daddr || !saddr)
-+		return -EINVAL;
-+
- 	lldst = *((u8 *)daddr);
- 	llsrc = *((u8 *)saddr);
++#ifdef __SANITIZE_HWADDRESS__
++#define __no_sanitize_address __attribute__((__no_sanitize__("hwaddress")))
++#else
+ #define __no_sanitize_address __attribute__((__no_sanitize_address__))
++#endif
  
+ #if defined(__SANITIZE_THREAD__)
+ #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
 -- 
 2.43.0
 
