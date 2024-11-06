@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-90817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26469BEB30
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF389BEBB7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D3D1C212B1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6F11F25310
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8440A1E048E;
-	Wed,  6 Nov 2024 12:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F8E1F9419;
+	Wed,  6 Nov 2024 12:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdLOmniT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gagWKh1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438931E103C;
-	Wed,  6 Nov 2024 12:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380541F8F11;
+	Wed,  6 Nov 2024 12:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896901; cv=none; b=u2igq7cZOCE+fTz6551xYpvV7lGPfnTAzoXqxjsa03ET+hWQ8zwe3B+E1PiDtKPSd9HqYsok4fq3T1+NH6ItjlW+jEVFliyBz6kc1PAf3X6LiGElLdjAUed3z2bwkrU+ViWr/Gn+ioK1uISJf5HT4OwpFTmcDdQ5zkeecFrPdrM=
+	t=1730897245; cv=none; b=BlHhHnxokWi+ko2rwC0SWWeP8g8dkCIAuwperk2tj7JNAjzyCw6gXaMrLY6rV4HnmUl/8NOF7WEMHHdgq+EfINF7iMb9No79EIqbueT3TLdskHP2rzYQBrhbM/zBkFSLkQnqAhYbGLhh8YP7dHSun3OdRAdR0gY6DPNmO9yMoZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896901; c=relaxed/simple;
-	bh=uCD8tOlCH/r2ly1FymiAioBZAP4PQX3c990RvrZz1Zk=;
+	s=arc-20240116; t=1730897245; c=relaxed/simple;
+	bh=yN9L43B7hiE0Ez3YZoHBVQZbecXrfibceZCVtuPc+a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJIfGIrgKrCbfbAxt/ztQfX4h9amGRXliGF/1lfZQMtnhF5MHj5nqx/9F+bPBN6x5CTg0NEbF+qHZyFiPbTXHw23r5YEtMPQMATo4H+7M2Sn4goYpnXtF5Y4XuKn/LlLzEHm0R6eKUMdVh9ux045J2cLqgJRtxW8uVfHlnd2Cq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdLOmniT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD792C4CECD;
-	Wed,  6 Nov 2024 12:41:40 +0000 (UTC)
+	 MIME-Version; b=YnsNLWlR06SWJakl0Nc0Gf7iHidjWENMa5G1InKAKgDTieO5XdJNC5PGrH/rnNH1xD/Nv+DiXnG97uMMmrVPigcTBa00JUkiL8qaOwJvCG9fStCDfOD/K/Q5LiMyPJTlcEn+ZHO1aSZlLzAMtQ2/9bfz23YqfrytMzmXT6HxuH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gagWKh1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56021C4CECD;
+	Wed,  6 Nov 2024 12:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896901;
-	bh=uCD8tOlCH/r2ly1FymiAioBZAP4PQX3c990RvrZz1Zk=;
+	s=korg; t=1730897244;
+	bh=yN9L43B7hiE0Ez3YZoHBVQZbecXrfibceZCVtuPc+a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdLOmniTIkNdvldHUiTpItS8qlJOlcmjLTw6/zyAc7zs6vOS8dhBZJwOyMJ462ozv
-	 3Exc3nDKcBZDEIdz7uEdCd55zcMDCReFB2YgeSpzDFhipZX7TcIWjTwi7MGJNjRCsa
-	 legUH1af3JVmxoYkorLsl/4E07WrgM/+Ivs8AgL0=
+	b=gagWKh1RaP302XW7JA+m8SKhwfiA33Ld/gE6A1u7S/cedkTYCKUoYmYz51wIw6Ejw
+	 457rM+FvbbuhiscTAscQ+M5HHvZYK3/u4E90uq7byWRLskFHW99qRMrsmjBYGmWATu
+	 82gVYcVM6dDRwXECiP4mcly1Z+1MDmC5OGgmNF0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/110] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 078/126] iio: light: veml6030: fix microlux value calculation
 Date: Wed,  6 Nov 2024 13:04:39 +0100
-Message-ID: <20241106120305.203608693@linuxfoundation.org>
+Message-ID: <20241106120308.191625975@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 2e95c4384438adeaa772caa560244b1a2efef816 ]
+commit 63dd163cd61dda6f38343776b42331cc6b7e56e0 upstream.
 
-In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
-to be either root or ingress. This assumption is bogus since it's valid
-to create egress qdiscs with major handle ffff:
-Budimir Markovic found that for qdiscs like DRR that maintain an active
-class list, it will cause a UAF with a dangling class pointer.
+The raw value conversion to obtain a measurement in lux as
+INT_PLUS_MICRO does not calculate the decimal part properly to display
+it as micro (in this case microlux). It only calculates the module to
+obtain the decimal part from a resolution that is 10000 times the
+provided in the datasheet (0.5376 lux/cnt for the veml6030). The
+resulting value must still be multiplied by 100 to make it micro.
 
-In 066a3b5b2346, the concern was to avoid iterating over the ingress
-qdisc since its parent is itself. The proper fix is to stop when parent
-TC_H_ROOT is reached because the only way to retrieve ingress is when a
-hierarchy which does not contain a ffff: major handle call into
-qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
+This bug was introduced with the original implementation of the driver.
 
-In the scenario where major ffff: is an egress qdisc in any of the tree
-levels, the updates will also propagate to TC_H_ROOT, which then the
-iteration must stop.
+Only the illuminance channel is fixed becuase the scale is non sensical
+for the intensity channels anyway.
 
-Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-
- net/sched/sch_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-Link: https://patch.msgid.link/20241024165547.418570-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 2 +-
+ drivers/iio/light/veml6030.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index d0e4845ea7018..b4e405676600f 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -780,7 +780,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
--		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
-+		if (parentid == TC_H_ROOT)
- 			break;
- 
- 		if (sch->flags & TCQ_F_NOPARENT)
--- 
-2.43.0
-
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -522,7 +522,7 @@ static int veml6030_read_raw(struct iio_
+ 			}
+ 			if (mask == IIO_CHAN_INFO_PROCESSED) {
+ 				*val = (reg * data->cur_resolution) / 10000;
+-				*val2 = (reg * data->cur_resolution) % 10000;
++				*val2 = (reg * data->cur_resolution) % 10000 * 100;
+ 				return IIO_VAL_INT_PLUS_MICRO;
+ 			}
+ 			*val = reg;
 
 
 
