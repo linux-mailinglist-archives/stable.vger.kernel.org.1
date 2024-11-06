@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854009BEA88
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:47:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A8D9BE86F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5D2281461
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5709F1C20B12
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD661EE023;
-	Wed,  6 Nov 2024 12:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D91DF969;
+	Wed,  6 Nov 2024 12:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="np+dvDTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZDoELmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C211FB3EC;
-	Wed,  6 Nov 2024 12:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024751DF992;
+	Wed,  6 Nov 2024 12:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896714; cv=none; b=odQY/Y0WL17sQgFMW0YTozEBPwSSQCSQ9npqz4t9jqcFiy6oIipZmJ4OtwPfUcN4pkjkT3PAHAoJL7swCuxg3fnZR85E3Hdqj8ijmKvaqwk7ujEZx9Ei8q5KsKSaoFMC8qe1cjY7m47bKPWZcMwqTRCjuejt+yiNjZX2R4fT9sc=
+	t=1730895836; cv=none; b=j/7+7mcbTAwSoMHo7O75EnaWPqM028rOyUYbDv7cwZs9SFLdZ2nViWRk0RvNAEtLr7txgsd32TUI7DRzjoICayHS4G85CZWzpx0AdYUpYgKbMgGNd1XcnamfHTOrUbNPzc/x1SeI4u1FHsLu8rM5ftg1iIzWqxt95iEsj6ru/Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896714; c=relaxed/simple;
-	bh=Eh1ygb2QOP89KLcmWAG6G2WLDfNkHCU3A45e4SK2Cpc=;
+	s=arc-20240116; t=1730895836; c=relaxed/simple;
+	bh=Tq4Ze5icao/nDFokhyGb2R3CDxVC5US75BU4+4FQcbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6OHChZbcOANPaN9na65dy9FzLMsa/g49u+pvZpoQe5MHO4kBQMbDTqDVdeKq3mLeIEmzod+q3h5zyhUyxj0Csm/403eYjL0/NoebnqQsKSf/aoY9lsXV5h5u4MKaN83MGGW+JvsgKvS8VB5aYgj2eNNjPsfILfS0ExQ8+ZHSWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=np+dvDTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18F0C4CED3;
-	Wed,  6 Nov 2024 12:38:33 +0000 (UTC)
+	 MIME-Version; b=k6Q7zp/0O2LmdUKRprJaCMkvr7eALcN4BTl4BF/Bub6OlyHF4Vp+udJeUhDARkWzzvjuPKObZQHhqJg0M4cXzWNAFWGJmcvYhr6obNmkFZHwy7Lb44tuwsKCcHY4N16kGR7k4Kj2QQtrdcK/IM4ZgQGwFMh2ebMiqXDViQedHW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZDoELmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503D3C4CECD;
+	Wed,  6 Nov 2024 12:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896714;
-	bh=Eh1ygb2QOP89KLcmWAG6G2WLDfNkHCU3A45e4SK2Cpc=;
+	s=korg; t=1730895835;
+	bh=Tq4Ze5icao/nDFokhyGb2R3CDxVC5US75BU4+4FQcbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=np+dvDTocJCeF2htSOtBWOGAsmO2gqtM6n6Ybc1Inl56nOtYdNtQGBjErcedrj74F
-	 h/AeYuopVjE6aQWTZwCFaRbicg3rZQW7krfQK8zal0OKgPj1OnVGKhKxl8JC3fhLHl
-	 Mns2ZtQCnrXNqEYucl/RzeRihoI3pk/CSWQce53w=
+	b=sZDoELmgC65YreV367vB8VtHKdiMLEsDKPsmI6VlIkBdX2FUi7SlWpjficOjBCyMm
+	 wnbjandkMImVMLZiwd5+PS+nE4EZzV8TKiHNAsHicSyL6kYdkmCqyNboqyiv+yTH9j
+	 QSAgfRJkh4aXKAkHB40qCanVHaf20r66FO/aJoKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kirk Swidowski <swidowski@google.com>,
-	Andy Nguyen <theflow@google.com>,
-	3pvd <3pvd@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 048/110] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory
-Date: Wed,  6 Nov 2024 13:04:14 +0100
-Message-ID: <20241106120304.529873068@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 327/350] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
+Date: Wed,  6 Nov 2024 13:04:15 +0100
+Message-ID: <20241106120328.808609801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit f559b2e9c5c5308850544ab59396b7d53cfc67bd upstream.
+[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
 
-Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits
-4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn't
-enforce 32-byte alignment of nCR3.
+Sync iterator conditions with ieee80211_iter_keys_rcu.
 
-In the absolute worst case scenario, failure to ignore bits 4:0 can result
-in an out-of-bounds read, e.g. if the target page is at the end of a
-memslot, and the VMM isn't using guard pages.
-
-Per the APM:
-
-  The CR3 register points to the base address of the page-directory-pointer
-  table. The page-directory-pointer table is aligned on a 32-byte boundary,
-  with the low 5 address bits 4:0 assumed to be 0.
-
-And the SDM's much more explicit:
-
-  4:0    Ignored
-
-Note, KVM gets this right when loading PDPTRs, it's only the nSVM flow
-that is broken.
-
-Fixes: e4e517b4be01 ("KVM: MMU: Do not unconditionally read PDPTE from guest memory")
-Reported-by: Kirk Swidowski <swidowski@google.com>
-Cc: Andy Nguyen <theflow@google.com>
-Cc: 3pvd <3pvd@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20241009140838.1036226-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -75,8 +75,12 @@ static u64 nested_svm_get_tdp_pdptr(stru
- 	u64 pdpte;
- 	int ret;
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 7fc55177db847..bb09a1ec258d8 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -777,6 +777,26 @@ void ieee80211_reset_crypto_tx_tailroom(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&sdata->local->key_mtx);
+ }
  
-+	/*
-+	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
-+	 * nCR3[4:0] when loading PDPTEs from memory.
-+	 */
- 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
--				       offset_in_page(cr3) + index * 8, 8);
-+				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
- 	if (ret)
- 		return 0;
- 	return pdpte;
++static void
++ieee80211_key_iter(struct ieee80211_hw *hw,
++		   struct ieee80211_vif *vif,
++		   struct ieee80211_key *key,
++		   void (*iter)(struct ieee80211_hw *hw,
++				struct ieee80211_vif *vif,
++				struct ieee80211_sta *sta,
++				struct ieee80211_key_conf *key,
++				void *data),
++		   void *iter_data)
++{
++	/* skip keys of station in removal process */
++	if (key->sta && key->sta->removed)
++		return;
++	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
++		return;
++	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
++	     &key->conf, iter_data);
++}
++
+ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 			 struct ieee80211_vif *vif,
+ 			 void (*iter)(struct ieee80211_hw *hw,
+@@ -796,16 +816,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
+-			iter(hw, &sdata->vif,
+-			     key->sta ? &key->sta->sta : NULL,
+-			     &key->conf, iter_data);
++			ieee80211_key_iter(hw, vif, key, iter, iter_data);
+ 	} else {
+ 		list_for_each_entry(sdata, &local->interfaces, list)
+ 			list_for_each_entry_safe(key, tmp,
+ 						 &sdata->key_list, list)
+-				iter(hw, &sdata->vif,
+-				     key->sta ? &key->sta->sta : NULL,
+-				     &key->conf, iter_data);
++				ieee80211_key_iter(hw, &sdata->vif, key,
++						   iter, iter_data);
+ 	}
+ 	mutex_unlock(&local->key_mtx);
+ }
+@@ -823,17 +840,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+ {
+ 	struct ieee80211_key *key;
+ 
+-	list_for_each_entry_rcu(key, &sdata->key_list, list) {
+-		/* skip keys of station in removal process */
+-		if (key->sta && key->sta->removed)
+-			continue;
+-		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+-			continue;
+-
+-		iter(hw, &sdata->vif,
+-		     key->sta ? &key->sta->sta : NULL,
+-		     &key->conf, iter_data);
+-	}
++	list_for_each_entry_rcu(key, &sdata->key_list, list)
++		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
+ }
+ 
+ void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+-- 
+2.43.0
+
 
 
 
