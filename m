@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DAF9BEE71
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630769BEEB5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E171C23F13
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264BC283B73
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C351E00AF;
-	Wed,  6 Nov 2024 13:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1BA1DE2CF;
+	Wed,  6 Nov 2024 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wHvc+aU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjHOa3rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FA71DED63;
-	Wed,  6 Nov 2024 13:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848F01E048E;
+	Wed,  6 Nov 2024 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899038; cv=none; b=Y15AIexs7BmbCqmOmas/WElVSZlN+N3/uEYLCP5jU9LvS9AmM3WpmW8K+2N6LLc1R5GB+ZnjblOSkUc0ZPMsYpOHNKVvNBZsWSKaV4sluqOWm9dmpoyGN/Ycy5qMYYOoNayjDVtqze8+/tuLLaNNij65T5PcnG6gQUEfUPXF/fI=
+	t=1730899192; cv=none; b=HiIpxklDQ1kdfJm527wGquVz/C8mjCDy5eaepYHvrOf5FPBUtnzYAdnftgBVnaKPxWjAFH30oYL6dmNnSK8/c53rJ5kNIf+w/ilgDpz0L1Tw9/3yezplr1VyEJsPryCU97+/zz7HpkuGiVWt/6nYhbJ/iphaXpysNfVP9sHsVbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899038; c=relaxed/simple;
-	bh=n9yt6dsnqTctP1RY5YNp/K+Uk5rbIBMF666gGtG7nM8=;
+	s=arc-20240116; t=1730899192; c=relaxed/simple;
+	bh=/UYgAEfSePERiUGMoObSQUqp2jiHpbb0vXKTJPjwndg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBLHF2PK6+QXA6Hl9z2PCaauFC6lQ7zGga3N0VIZdY07yOLpxB4UkLx7AZv2uA71vNfCQyZRiOHi+uGFDSuMnIU3HTJ7SUuUFa3fbw1UXnUgs5k8tPdWylcYS7JXRnQxxOTveVoBZubDpU501TTulc3Z51TCrEL8hpM7iW/dX6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wHvc+aU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BDBC4CED7;
-	Wed,  6 Nov 2024 13:17:17 +0000 (UTC)
+	 MIME-Version; b=ba8iakbPwwHRpKtIf/hBGJpBpmGl+LUFJZ5DhuMNu27gTXnGVyVDCma8ayUnDMdjG5pXt1HzOtwF5PdujPZbrgFyynIboBAOO0hUGkdSjzLHnAOT25dI3oVDxggBMP9KMKJSWszdvEOUNvfpbx9yuH29BICRKDCrL6DlvaQjLSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjHOa3rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D35FC4CECD;
+	Wed,  6 Nov 2024 13:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899038;
-	bh=n9yt6dsnqTctP1RY5YNp/K+Uk5rbIBMF666gGtG7nM8=;
+	s=korg; t=1730899192;
+	bh=/UYgAEfSePERiUGMoObSQUqp2jiHpbb0vXKTJPjwndg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2wHvc+aUyWRBkk9ddBMoEOFLI/u0R9kstsuJI2lQCGUDFFnEHiGylpbRPIEaNq6Vt
-	 wpDTpZM44cjaBMkvaI9ZydnuIK7DkcUQW+T3J2d9ILVfipeBIXc/Jk9iY66vxyaqZI
-	 +/cP6RJN/PEPjYRsEl8zM+SuvWROoKLR64WM2Iu4=
+	b=sjHOa3rnXJPDuGFrVWK90XYfn19Zzqgc6+bR8q2ouBNYm5UtPbZ2qtWGF/l4gyRUF
+	 TDMvgfEiUEXn9W+vbYGFWNBqzhS+kNBLXYSuFQyWMHDhbwRgZFV0dozE5FKqFJi7tM
+	 0RgPZ1gq+Ap1KZx2FF2Lfzw6fhrEjboPn5o9BGCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin-ayu@qq.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 441/462] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
+Subject: [PATCH 5.15 30/73] fs/ntfs3: Check if more than chunk-size bytes are written
 Date: Wed,  6 Nov 2024 13:05:34 +0100
-Message-ID: <20241106120342.393784134@linuxfoundation.org>
+Message-ID: <20241106120300.862962521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andrew Ballance <andrewjballance@gmail.com>
 
-[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
+[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
 
-If access to offset + length is larger than the skbuff length, then
-skb_checksum() triggers BUG_ON().
+A incorrectly formatted chunk may decompress into
+more than LZNT_CHUNK_SIZE bytes and a index out of bounds
+will occur in s_max_off.
 
-skb_checksum() internally subtracts the length parameter while iterating
-over skbuff, BUG_ON(len) at the end of it checks that the expected
-length to be included in the checksum calculation is fully consumed.
-
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Reported-by: Slavin Liu <slavin-ayu@qq.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 3 +++
+ fs/ntfs3/lznt.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index a4f9a150812a3..e40948b508588 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -532,6 +532,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
- 	if ((priv->csum_type == NFT_PAYLOAD_CSUM_INET || priv->csum_flags) &&
- 	    (priv->base != NFT_PAYLOAD_TRANSPORT_HEADER ||
- 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
-+		if (offset + priv->len > skb->len)
-+			goto err;
-+
- 		fsum = skb_checksum(skb, offset, priv->len, 0);
- 		tsum = csum_partial(src, priv->len, 0);
+diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
+index 28f654561f279..09db01c1098cd 100644
+--- a/fs/ntfs3/lznt.c
++++ b/fs/ntfs3/lznt.c
+@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
  
+ 	/* Do decompression until pointers are inside range. */
+ 	while (up < unc_end && cmpr < cmpr_end) {
++		// return err if more than LZNT_CHUNK_SIZE bytes are written
++		if (up - unc > LZNT_CHUNK_SIZE)
++			return -EINVAL;
+ 		/* Correct index */
+ 		while (unc + s_max_off[index] < up)
+ 			index += 1;
 -- 
 2.43.0
 
