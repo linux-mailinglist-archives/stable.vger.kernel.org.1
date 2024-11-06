@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-91201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C889A9BECEC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE729BE708
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54C09B236BB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F08A71C23406
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDA01EE00C;
-	Wed,  6 Nov 2024 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4558C1DF257;
+	Wed,  6 Nov 2024 12:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jV488KLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtRExnr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B45646;
-	Wed,  6 Nov 2024 13:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021A21D5AD7;
+	Wed,  6 Nov 2024 12:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898040; cv=none; b=HnZF/sewuNpXodR92bXuc7Ag8P7FhBo6vBoff35cDcEGriwfZpFQuJPJWqrUZ/QWGPjAjWVZrHkg/teKNHCWhPlVr1gh2eEzjquq2dEesJIQ7BqQkS14q24MUdELIwjB3be1gSFRM7n4mySMwDZlIGrA+NYpvkrasEtD1CTF4wU=
+	t=1730894986; cv=none; b=mvUK4p4y+bAuiVqbSK3MakzisVuX3qxiSxKEsSrWC9vQuE6LA8QwRcaY/zJYpOa7bQZt0aLvtQUXGi0Ed6/HUbl7/aVZr6xe/zGyvmko8SHOJVWV20n246jaWDalkSnbZVpmyjd6yRkhvldwAow8RZ2JehEN0YbUng4aBTJl+lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898040; c=relaxed/simple;
-	bh=ws58NmmqC6vWhO19gBd7BTvXgi7GV2QZmqTjd4XIiDI=;
+	s=arc-20240116; t=1730894986; c=relaxed/simple;
+	bh=IirKlUUeRxuYlm/STaM39ao2Gla5gBCAW8G+meF2yAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/HfI/nuWKdL11HYbznIcQ/Suwms8yl2RFrRSHdCITJ+bxSI/EVp+bRlAQvDkSfxWa3/NlqUUkWG5gsSbaylsUyBJS60NHiy7IjAs7/aeqMNfdWlkcDtJduGkMVQkzl2nCOvHDarKbzqkFaYMzj3o+8zKsznjnB3xnhXYmnWMks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jV488KLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F932C4CECD;
-	Wed,  6 Nov 2024 13:00:38 +0000 (UTC)
+	 MIME-Version; b=YCNjh33SLVsfgwcMUuMlCjdfQ2a97PG09CCqX038mMM+du/s5qI/heR1vp/hcCrlyq7j8dEm2ByJOlieTuBxIlk1Cifj4nBpZ0bPMjB7sBtJsc2lPuBQO0a/aTrQ9vqjrhz868WZBELpKOVCHk3KtRJMkSp+8u4qNNKduoUodMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtRExnr6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541D4C4CECD;
+	Wed,  6 Nov 2024 12:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898038;
-	bh=ws58NmmqC6vWhO19gBd7BTvXgi7GV2QZmqTjd4XIiDI=;
+	s=korg; t=1730894985;
+	bh=IirKlUUeRxuYlm/STaM39ao2Gla5gBCAW8G+meF2yAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jV488KLRn9ztD4Ga7eDLnf5ZIfOc4tDZhxpjaCKtY0oHGuWkh1F7MlhiCn+LFXhBQ
-	 sRxJI+g2/82wLzGtmCBp25KdntBrAvTa/ermWeorml0Fbw+evu0iMYwHpiBPooeLIt
-	 ca50HWYtISpkdum0DHQfkSS2UqremMJJiRr66LEY=
+	b=AtRExnr6nYS9LyyIhqSI/IROlI7xuHCuQoTvUDbTw14rrRPMkwlHNE4sUitQ6vJd2
+	 uKlmtr0WGptj/CnZNZ6w6AgFX/BNc1wAbh5AoSb8iWr5uTevm6fi1J2eOpLP+mtBul
+	 ZskQlB2/w84CsTvLOotXE/CnneHA5CTfaSi2qMgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
+	Lasse Collin <lasse.collin@tukaani.org>,
+	Sam James <sam@gentoo.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joel Stanley <joel@jms.id.au>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jubin Zhong <zhongjubin@huawei.com>,
+	Jules Maselbas <jmaselbas@zdiv.net>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rui Li <me@lirui.org>,
+	Simon Glass <sjg@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 102/462] nilfs2: determine empty node blocks as corrupted
+	Sasha Levin <sashal@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 4.19 067/350] xz: cleanup CRC32 edits from 2018
 Date: Wed,  6 Nov 2024 12:59:55 +0100
-Message-ID: <20241106120334.025370762@linuxfoundation.org>
+Message-ID: <20241106120322.550795264@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +80,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Lasse Collin <lasse.collin@tukaani.org>
 
-[ Upstream commit 111b812d3662f3a1b831d19208f83aa711583fe6 ]
+[ Upstream commit 2ee96abef214550d9e92f5143ee3ac1fd1323e67 ]
 
-Due to the nature of b-trees, nilfs2 itself and admin tools such as
-mkfs.nilfs2 will never create an intermediate b-tree node block with 0
-child nodes, nor will they delete (key, pointer)-entries that would result
-in such a state.  However, it is possible that a b-tree node block is
-corrupted on the backing device and is read with 0 child nodes.
+In 2018, a dependency on <linux/crc32poly.h> was added to avoid
+duplicating the same constant in multiple files.  Two months later it was
+found to be a bad idea and the definition of CRC32_POLY_LE macro was moved
+into xz_private.h to avoid including <linux/crc32poly.h>.
 
-Because operation is not guaranteed if the number of child nodes is 0 for
-intermediate node blocks other than the root node, modify
-nilfs_btree_node_broken(), which performs sanity checks when reading a
-b-tree node block, so that such cases will be judged as metadata
-corruption.
+xz_private.h is a wrong place for it too.  Revert back to the upstream
+version which has the poly in xz_crc32_init() in xz_crc32.c.
 
-Link: https://lkml.kernel.org/r/20240904081401.16682-3-konishi.ryusuke@gmail.com
-Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://lkml.kernel.org/r/20240721133633.47721-10-lasse.collin@tukaani.org
+Fixes: faa16bc404d7 ("lib: Use existing define with polynomial")
+Fixes: 242cdad873a7 ("lib/xz: Put CRC32_POLY_LE in xz_private.h")
+Signed-off-by: Lasse Collin <lasse.collin@tukaani.org>
+Reviewed-by: Sam James <sam@gentoo.org>
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jubin Zhong <zhongjubin@huawei.com>
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Rui Li <me@lirui.org>
+Cc: Simon Glass <sjg@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/xz/xz_crc32.c   | 2 +-
+ lib/xz/xz_private.h | 4 ----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index c2aca9cd78644..7cfff27b4b4a5 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -350,7 +350,7 @@ static int nilfs_btree_node_broken(const struct nilfs_btree_node *node,
- 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
- 		     level >= NILFS_BTREE_LEVEL_MAX ||
- 		     (flags & NILFS_BTREE_NODE_ROOT) ||
--		     nchildren < 0 ||
-+		     nchildren <= 0 ||
- 		     nchildren > NILFS_BTREE_NODE_NCHILDREN_MAX(size))) {
- 		nilfs_crit(inode->i_sb,
- 			   "bad btree node (ino=%lu, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
+diff --git a/lib/xz/xz_crc32.c b/lib/xz/xz_crc32.c
+index 912aae5fa09e1..34532d14fd4c2 100644
+--- a/lib/xz/xz_crc32.c
++++ b/lib/xz/xz_crc32.c
+@@ -29,7 +29,7 @@ STATIC_RW_DATA uint32_t xz_crc32_table[256];
+ 
+ XZ_EXTERN void xz_crc32_init(void)
+ {
+-	const uint32_t poly = CRC32_POLY_LE;
++	const uint32_t poly = 0xEDB88320;
+ 
+ 	uint32_t i;
+ 	uint32_t j;
+diff --git a/lib/xz/xz_private.h b/lib/xz/xz_private.h
+index 09360ebb510ef..482b90f363fe3 100644
+--- a/lib/xz/xz_private.h
++++ b/lib/xz/xz_private.h
+@@ -102,10 +102,6 @@
+ #	endif
+ #endif
+ 
+-#ifndef CRC32_POLY_LE
+-#define CRC32_POLY_LE 0xedb88320
+-#endif
+-
+ /*
+  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
+  * before calling xz_dec_lzma2_run().
 -- 
 2.43.0
 
