@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF8F9BE7C5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F18C9BE8F2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9D21F21ED9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7153E1C220AA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426261DF272;
-	Wed,  6 Nov 2024 12:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9BF1DFD87;
+	Wed,  6 Nov 2024 12:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiXK0jrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BURpzhw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23BE1DED58;
-	Wed,  6 Nov 2024 12:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF6B1DE4EA;
+	Wed,  6 Nov 2024 12:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895454; cv=none; b=rE6dCHnZZ6jvktwzUZLrOFFP291i7CHFrcARe169vkhKPjku+2RXdX3DPfyklmYzesE1IykWYdjIzgG/nKrP+HbRlR83dxXF/ngjLIYc3D+klRrSA2X4njmycvp3gHPhbfA/O2ptBWWkyhwlzFvkWlbgB2h/9sAMEfeL/OsLQSI=
+	t=1730896129; cv=none; b=bo/RKvVC0MU4QJNFgXlmX03ne5ZGSBGHXlM4FsOE1XfQXcRCVlQfbG0M0KPrfZbMNCgceeUgIQ7UJeEkArPmy9kqDimV0ikcdlMbglx1zyBbdSQtXnvEJe0aTrDr9jjEHi1W66/+rHyy8BqjimZO+pyEST9T/c0tUNiFjhDP/dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895454; c=relaxed/simple;
-	bh=gXxxpkYm18NJ1xC4sFbtKdcE08DOPPlGuLvY7Ib0MMc=;
+	s=arc-20240116; t=1730896129; c=relaxed/simple;
+	bh=Hpwi6f5mOlnOZbx55bYLTVnD06hRAqBxXQFcBMWAb5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRDL8FaMfY6g5AsYGWOZkQDQcU/iJvz7vTAIkfOhVhRKorPfgTihq7kdjgt9RzmWf3Qbc0rwd+gaMkeNLLQrlARQt5jPkdZCgQiCzev76yUjKgl/jwOj9UuZk9+yvJPuvKdBeT8riUWQjrM/Z7xdfIFyHq8phw3EbQc4Y0UaJts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiXK0jrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D8BC4CECD;
-	Wed,  6 Nov 2024 12:17:33 +0000 (UTC)
+	 MIME-Version; b=CTL7vPq1OhTyw0bghqn2v4Arx8AMBvtKSeWv5gsgNGqQ4NFRg3mDrtaXnrmVr53ZF2cS8rDzrOADPBceCuweZvIi+zle55OdhUQhi78Ep6sh97fSD134Tj7nqygmNV6Qq4TKUjS5uKkAAYaA0RxLE5zpweTImlz12hy66LGJ4bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BURpzhw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EB2C4CECD;
+	Wed,  6 Nov 2024 12:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895453;
-	bh=gXxxpkYm18NJ1xC4sFbtKdcE08DOPPlGuLvY7Ib0MMc=;
+	s=korg; t=1730896129;
+	bh=Hpwi6f5mOlnOZbx55bYLTVnD06hRAqBxXQFcBMWAb5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiXK0jrsLFkJB5o7PjJ9a+PHYWzYDk9JiTxWsT7M5Y/1ZNqK2QPofLL5vuK+qa6Gs
-	 CSXTpzDfvgjbkGx8/gnmS2bhjjHrKrJLJRkPsigKKM7O5sOsVzLUZ5p5EPuX+Av12e
-	 N6Id+3HIr63WgebPy9/b/E5pD9fMbdJU64i2QAyg=
+	b=BURpzhw/quyUSrJZLOZesyxDhhRzkN76nv2rwRExujIQReBS2SM3SbX1OTaLtQX0Y
+	 3BjQgLp0QfzvD9rx6kIJ+85wX6CxZcxr2ckk5TRS4F2CCUH2ChWcAn/YSjCnSJH9rz
+	 9AD0WRaFE6Ez3ueNyBwdcOTv/gR5qAQwENJkSdco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 224/350] rtc: at91sam9: fix OF node leak in probe() error path
+Subject: [PATCH 6.11 099/245] net: amd: mvme147: Fix probe banner message
 Date: Wed,  6 Nov 2024 13:02:32 +0100
-Message-ID: <20241106120326.529063849@linuxfoundation.org>
+Message-ID: <20241106120321.648266570@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 73580e2ee6adfb40276bd420da3bb1abae204e10 ]
+[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
 
-Driver is leaking an OF node reference obtained from
-of_parse_phandle_with_fixed_args().
+Currently this driver prints this line with what looks like
+a rogue format specifier when the device is probed:
+[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
 
-Fixes: 43e112bb3dea ("rtc: at91sam9: make use of syscon/regmap to access GPBR registers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240825183103.102904-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Change the printk() for netdev_info() and move it after the
+registration has completed so it prints out the name of the
+interface properly.
+
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-at91sam9.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/mvme147.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-at91sam9.c b/drivers/rtc/rtc-at91sam9.c
-index 1c8bdf77f6edd..4672dde68c782 100644
---- a/drivers/rtc/rtc-at91sam9.c
-+++ b/drivers/rtc/rtc-at91sam9.c
-@@ -391,6 +391,7 @@ static int at91_rtc_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
+index c156566c09064..f19b04b92fa9f 100644
+--- a/drivers/net/ethernet/amd/mvme147.c
++++ b/drivers/net/ethernet/amd/mvme147.c
+@@ -105,10 +105,6 @@ static struct net_device * __init mvme147lance_probe(void)
+ 	macaddr[3] = address&0xff;
+ 	eth_hw_addr_set(dev, macaddr);
  
- 	rtc->gpbr = syscon_node_to_regmap(args.np);
-+	of_node_put(args.np);
- 	rtc->gpbr_offset = args.args[0];
- 	if (IS_ERR(rtc->gpbr)) {
- 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");
+-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
+-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
+-	       dev->dev_addr);
+-
+ 	lp = netdev_priv(dev);
+ 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
+ 	if (!lp->ram) {
+@@ -138,6 +134,9 @@ static struct net_device * __init mvme147lance_probe(void)
+ 		return ERR_PTR(err);
+ 	}
+ 
++	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
++		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
++
+ 	return dev;
+ }
+ 
 -- 
 2.43.0
 
