@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35159BEB14
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9AF9BE869
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB711F267E9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2856D1C21B7C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C1020604F;
-	Wed,  6 Nov 2024 12:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E011E5718;
+	Wed,  6 Nov 2024 12:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgkB04Ji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsUC3jRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12661F4FDC;
-	Wed,  6 Nov 2024 12:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D01DFE0E;
+	Wed,  6 Nov 2024 12:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896828; cv=none; b=b5XC6ktFuXZ/ykAnQuPyS3b0dRiEhCNZ5oQdEeFZrOszvlqrKm9e7PzPGrMIwc+M/yWV+TMivt5mhfQ5sC3P2X4jQQcQ/U+ZA9XtBV7kZ8NhZ1U9HDfFUd1Z6Eg6+V6HCzGm3qRXCsPzXTtGHLN35XJwjSm11F6aZeYIGnPXNoY=
+	t=1730895821; cv=none; b=bTeXYeth+HlmiYgBRirCuN9Nx4Rv5UWQy6mHffAzFB2Es++/60r7R+FK1FfqrNcTwiUI1cbLoh5bo7hCzh1XZqnyXykR1qVaiHZ1GVzisLWMAn+iq70oY8LdoXbSASKqhXovwDPN/I62DlRbj7Sos6mn8h9Yq/6FpwrAYQGAQ9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896828; c=relaxed/simple;
-	bh=Fpg/jbVvD6UMp77hz9/78o9+L8J9Yvt6wvpGSoGei6U=;
+	s=arc-20240116; t=1730895821; c=relaxed/simple;
+	bh=Kv/gyRKfIwjWg26Vud+U43WDnKPeNIwmBb+Oxinz4AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTwVFCDW32pLLdjQaRoWSH/iItM1pANpZmISDCRUb5/MtrjrPr6rJlj+EhLZHuH+M2ro3WmT6VkzlT6ikPpjN1siW791EHw/IMPC+yenXinoEik+wT+43tdRvNdGH3ugsgSNkIvePHjVNNs6gd3LjhEDsDm/+sVX64kUDe2dmJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgkB04Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953CC4CECD;
-	Wed,  6 Nov 2024 12:40:26 +0000 (UTC)
+	 MIME-Version; b=QtY1GK8vRzb3C5IN3EIOHa6MduazXtwHJyqnm6npJlOOWRXiI6j9g+OFaTg1SkrogTFRKkwyjA3VEQDb72bsZwhuL6xrCa7WdwCy57xPoNey1MMSJBILxxsxLk7WkM2uW/BVtpLq4UcDXFYRMbUDhrfp1WXf+CAGJ6HrdUMa640=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsUC3jRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A4EC4CECD;
+	Wed,  6 Nov 2024 12:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896827;
-	bh=Fpg/jbVvD6UMp77hz9/78o9+L8J9Yvt6wvpGSoGei6U=;
+	s=korg; t=1730895821;
+	bh=Kv/gyRKfIwjWg26Vud+U43WDnKPeNIwmBb+Oxinz4AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgkB04JiubcCUeNmWTCgeuV1ikmO2yjYfvwV9C1AkziM5saddRVdc6/aS7n9C0hJw
-	 DdeLZWRib0GH9H7VYcsiX79z4x1zUTeSDs7GF/NG/wmnhS9giK7j+MKRUjmn6710Rh
-	 Gw6GeN613qzvdJkdleBbPn+3qboxXkAna93E5jWk=
+	b=jsUC3jRdaYymuM+WEU/JcDLQvhW9+4JtmUiv0Eb82+Ov0y3bD73P65hmkQIspOalG
+	 l2mIhddGkhh9e3DtCrK2X/3QcRDMdpZZ/D9E+AOy7W2HqlWaF90Q4Y7wgnQ2BvKEID
+	 y/57RVsRYjSM/79hASGUHpNsnzeO1VYCB8AFJRrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/110] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 346/350] nilfs2: fix potential deadlock with newly created symlinks
 Date: Wed,  6 Nov 2024 13:04:34 +0100
-Message-ID: <20241106120305.067593767@linuxfoundation.org>
+Message-ID: <20241106120329.232432634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
+memory reclamation involving the filesystem layer, which can result in
+circular lock dependencies among the reader/writer semaphore
+nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
+fs_reclaim pseudo lock.
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
+This is because after commit 21fc61c73c39 ("don't put symlink bodies in
+pagecache into highmem"), the gfp flags of the page cache for symbolic
+links are overwritten to GFP_KERNEL via inode_nohighmem().
 
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is not a problem for symlinks read from the backing device, because
+the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
+when a new symlink is created with nilfs_symlink(), the gfp flags remain
+overwritten to GFP_KERNEL.  Then, memory allocation called from
+page_symlink() etc.  triggers memory reclamation including the FS layer,
+which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
+cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+
+Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
+of newly created symlinks in the same way that nilfs_new_inode() and
+__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
+scope consistently or improve the locking constraints.
+
+Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
+Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
+Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/nilfs2/namei.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 594c88a9ac496..553117e8fdd90 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1261,8 +1261,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
- 
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1270,7 +1270,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1290,7 +1289,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
- 	}
- 
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
- 
-@@ -1301,11 +1300,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
--- 
-2.43.0
-
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -156,6 +156,9 @@ static int nilfs_symlink(struct inode *d
+ 	/* slow symlink */
+ 	inode->i_op = &nilfs_symlink_inode_operations;
+ 	inode_nohighmem(inode);
++	mapping_set_gfp_mask(inode->i_mapping,
++			     mapping_gfp_constraint(inode->i_mapping,
++						    ~__GFP_FS));
+ 	inode->i_mapping->a_ops = &nilfs_aops;
+ 	err = page_symlink(inode, symname, l);
+ 	if (err)
 
 
 
