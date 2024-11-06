@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-91200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF429BECE9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5E99BE707
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152741F21C77
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D661D1F280CC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC5B1F76AA;
-	Wed,  6 Nov 2024 13:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C7F1DF24E;
+	Wed,  6 Nov 2024 12:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTA2x4rE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OePwHzvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1E21EE00C;
-	Wed,  6 Nov 2024 13:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237FD1D5AD7;
+	Wed,  6 Nov 2024 12:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898035; cv=none; b=eF6JnNbmTJTd/0IWwEFsRQVoO/Msd45TyFOuuNYGQImRftdpYdZDsZBewKcwPXApz+PZjiuo4JMxavz1R2Z2PlM1bILLAsl9rMHGB0JeGHqZEErCWa3LGgb3x6oKC4kpDakPoTxc4mNvDY5IoXieKJboM6ggEpSSwmLY3U2t/W4=
+	t=1730894983; cv=none; b=IhbKozHmdNtpWLr0GpdUnfNBlMy1O34/UGEtU82au3WhLOXTba4kfL85+GqQapeO9JI/xErgFSxyO8OGY3K+G0uJPvrl7LpLaxBGwyWD5gojT+cevqbeuaM++rWdZYn95gyCnSRvnfRQfVlQGslcyaN2aI4sG1h8MPCs2oVfL/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898035; c=relaxed/simple;
-	bh=8RSrMPxP3ufDcRvBiRXkH4yXd+xkI8zBKtzcz9tOjJ0=;
+	s=arc-20240116; t=1730894983; c=relaxed/simple;
+	bh=3gjhrw4eR8C281VqHqIz1cViHRRLmjQmDa2PI0oOJ5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOrOKYG449lrrIV7RLxeIhj/eRAN+Abzp86c1YbKzYq2GKbDzZS7sKiFCVWlWNuFi7yF1/Dw0dYH7oJKTx52Q+Tr5ux+TX4xdTsWMQ1Y4y/X9dxcG8RGGcIOtJZvtZoflWb5egCkCsWlbqPA2ANjJFLRY9hnrSK1qu1FdJc7/qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTA2x4rE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5216CC4CECD;
-	Wed,  6 Nov 2024 13:00:35 +0000 (UTC)
+	 MIME-Version; b=hzYzOqneF8zNHYG3dGxs3zFkM8/Ep3rsv9eDJ49nEtRyjlX1HiY8WTLKIB8f+N2yhwr2C868hurbzTMHFGRmmxp3PhGo0ABOxCxXQ6lHljKBzfQ0QQ64Wq+L1kSIiwG90FP4M4DtYKtr50MJ/1ony+nIrkDUBrIyjj1C0GQb7SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OePwHzvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8C4C4CECD;
+	Wed,  6 Nov 2024 12:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898035;
-	bh=8RSrMPxP3ufDcRvBiRXkH4yXd+xkI8zBKtzcz9tOjJ0=;
+	s=korg; t=1730894983;
+	bh=3gjhrw4eR8C281VqHqIz1cViHRRLmjQmDa2PI0oOJ5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTA2x4rEdk5hlC2ypPeZJccgi8Lo6t9AOgr4GpkhCfg1yvc29UsrrZN5EnVU2Up2E
-	 73mG/P1nIQXYzsnNCSkfJcJfCadQmvJiQOFA2xqJ5ACT2ezfKBC42plnShnPq60CA0
-	 13gDs5CbjxC49PxgPiaDouVWnmEuR12GCuA1OT1c=
+	b=OePwHzvvtFfS0IejV38x7RuqgOXkwAoLu9E85et3JnSM6q92YFLcUl5piwFEiLxog
+	 PIkeN3sGcROBNGgbWjWFuZs9YOlo77WPpol+lhsc14LLOXYLDs6jYqE2HILk4yrdi5
+	 Pitzs2qCTo6OkaujIDIjMlhlwTRRHU2yVFWUpvq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/462] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
+Subject: [PATCH 4.19 066/350] selftests/bpf: Fix error compiling test_lru_map.c
 Date: Wed,  6 Nov 2024 12:59:54 +0100
-Message-ID: <20241106120334.000541906@linuxfoundation.org>
+Message-ID: <20241106120322.524969074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
+[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
 
-Patch series "nilfs2: fix potential issues with empty b-tree nodes".
+Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
+the sequencing can raise compile errors, so move the increment outside the
+macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
 
-This series addresses three potential issues with empty b-tree nodes that
-can occur with corrupted filesystem images, including one recently
-discovered by syzbot.
+  In file included from test_lru_map.c:11:
+  test_lru_map.c: In function 'sched_next_online':
+  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
+    129 |                 CPU_SET(next++, &cpuset);
+        |                             ^
+  cc1: all warnings being treated as errors
 
-This patch (of 3):
-
-If a b-tree is broken on the device, and the b-tree height is greater than
-2 (the level of the root node is greater than 1) even if the number of
-child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
-nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
-
-This is because, when the number of child nodes of the b-tree root is 0,
-nilfs_btree_do_lookup() does not set the block buffer head in any of
-path[x].bp_bh, leaving it as the initial value of NULL, but if the level
-of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
-which accesses the buffer memory of path[x].bp_bh, is called.
-
-Fix this issue by adding a check to nilfs_btree_root_broken(), which
-performs sanity checks when reading the root node from the device, to
-detect this inconsistency.
-
-Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
-early on.
-
-Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
-Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
-Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 3 ++-
+ tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index a426e4e2acdac..c2aca9cd78644 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
- 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
- 		     level >= NILFS_BTREE_LEVEL_MAX ||
- 		     nchildren < 0 ||
--		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
-+		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
-+		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
- 		nilfs_crit(inode->i_sb,
- 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
- 			   inode->i_ino, level, flags, nchildren);
+diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
+index 781c7de343be0..a9ed4b58c0879 100644
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -76,7 +76,8 @@ static int sched_next_online(int pid, int *next_to_try)
+ 
+ 	while (next < nr_cpus) {
+ 		CPU_ZERO(&cpuset);
+-		CPU_SET(next++, &cpuset);
++		CPU_SET(next, &cpuset);
++		next++;
+ 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
+ 			ret = 0;
+ 			break;
 -- 
 2.43.0
 
