@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D979BEB67
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961B09BEA7D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F1201F279C4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AFA12820A2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFB61F76C9;
-	Wed,  6 Nov 2024 12:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B831FAF06;
+	Wed,  6 Nov 2024 12:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH4W9gAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uz+35DCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEEB1EABC7;
-	Wed,  6 Nov 2024 12:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3C41FAEF9;
+	Wed,  6 Nov 2024 12:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897053; cv=none; b=EFGG1mqdRUzrUe/PUKkUUNlUJhPeahCzPFSTIR49ppyvp2wgoli/dmYm/dc/zR05asAerSQwsCxiXDJXmQ7lnE/7XyRD5AY+YlslUBmdM8zC1qfqxSvC42Fx/FWXiiFcphjLSN7vCMUCJFQBnQwXR1gpVAhtumaRS75MkOMnDbk=
+	t=1730896705; cv=none; b=P2hvPa5A4DJWFaz9UlEatdbBMzorSmM+ijMh0WujI3ItelWeLb6jJcrRigWaaERsDhF5XBStG3xwSV0w59YvAn0TxwWHpxuLZqqpuULbMi76wNr22hnwzB2TTCIxEIP++CWwAR0kwRn+Iaor90pUWtkKt1syCRJ3y4U7wdjQfOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897053; c=relaxed/simple;
-	bh=vjTN/w+rP9Z/jE602V2ZW4Pe0CQPoliOxkd+gAUv7P4=;
+	s=arc-20240116; t=1730896705; c=relaxed/simple;
+	bh=3zz6SYNG3td+q5uuu+rSZn8A2X/Ybza0p7RyOkveuCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBPihuH/URGedPFr8vYP4/eBgvCgFoJAsf/7d01ZtYd5iMeKrjMp3gsRp2qS/KH0IeQ+UNQJ+NnGFHvzMZWGoY64gAKW213v9ZJTDtsZgw19ZbxLvjMprzytk8++QRkwo+t5pcgR8sJ74yvm6KWndo6Ia3gBqMakip7hfqsoGyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH4W9gAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AE8C4CECD;
-	Wed,  6 Nov 2024 12:44:12 +0000 (UTC)
+	 MIME-Version; b=P4vS09vC3Z/Z4m83jRM+afB9LziWtZ1hlHC3SYn37fHoKOoWTaL0cdMj9W2f2NoBWLFDRYrV6oaRvnM3ZlChi9ke5cdswQI7RaGFNEueNUoUREC3+KX3mE+DZIem+o7ohF90O8JX2atQxbY4x4NjRJ9gAopKSACHS/rXyVBoQBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uz+35DCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F74C4CED8;
+	Wed,  6 Nov 2024 12:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897053;
-	bh=vjTN/w+rP9Z/jE602V2ZW4Pe0CQPoliOxkd+gAUv7P4=;
+	s=korg; t=1730896705;
+	bh=3zz6SYNG3td+q5uuu+rSZn8A2X/Ybza0p7RyOkveuCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH4W9gAm5C0ZbGp8ExyoOA9zrNeCZxyuRs4SIYPnJ45AaHBpdPVPmk0pXJVSUfd6/
-	 iv91rNDJXWhmLhK3szlWbiQgi3kezasuyBHNqy9D7OVazGkUGOqZQZXxE+4MS0nVqN
-	 079bMDYP5olUNicCej18TqQYFOMDeoZhajG9E9Is=
+	b=uz+35DCuen7uPAN09i+ABm0sXsL9tL/692v6hyGdLiAQAHg10eXuJyAt5F8CfaGr1
+	 i1EgDkND4YdQdDxSNGAnCKFhhqPFF7qIepjY0w1j6o5NmdNIEnln4NhI9zVbC+9OeM
+	 5wPJOz1gOLiqcgz5AgX2drWajNK5ectSH4TPExJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/126] ACPI: CPPC: Make rmw_lock a raw_spin_lock
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 046/110] nilfs2: fix kernel bug due to missing clearing of buffer delay flag
 Date: Wed,  6 Nov 2024 13:04:12 +0100
-Message-ID: <20241106120307.482388836@linuxfoundation.org>
+Message-ID: <20241106120304.475196630@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 1c10941e34c5fdc0357e46a25bd130d9cf40b925 ]
+commit 6ed469df0bfbef3e4b44fca954a781919db9f7ab upstream.
 
-The following BUG was triggered:
+Syzbot reported that after nilfs2 reads a corrupted file system image
+and degrades to read-only, the BUG_ON check for the buffer delay flag
+in submit_bh_wbc() may fail, causing a kernel bug.
 
-=============================
-[ BUG: Invalid wait context ]
-6.12.0-rc2-XXX #406 Not tainted
------------------------------
-kworker/1:1/62 is trying to lock:
-ffffff8801593030 (&cpc_ptr->rmw_lock){+.+.}-{3:3}, at: cpc_write+0xcc/0x370
-other info that might help us debug this:
-context-{5:5}
-2 locks held by kworker/1:1/62:
-  #0: ffffff897ef5ec98 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x2c/0x50
-  #1: ffffff880154e238 (&sg_policy->update_lock){....}-{2:2}, at: sugov_update_shared+0x3c/0x280
-stack backtrace:
-CPU: 1 UID: 0 PID: 62 Comm: kworker/1:1 Not tainted 6.12.0-rc2-g9654bd3e8806 #406
-Workqueue:  0x0 (events)
-Call trace:
-  dump_backtrace+0xa4/0x130
-  show_stack+0x20/0x38
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x28
-  __lock_acquire+0x480/0x1ad8
-  lock_acquire+0x114/0x310
-  _raw_spin_lock+0x50/0x70
-  cpc_write+0xcc/0x370
-  cppc_set_perf+0xa0/0x3a8
-  cppc_cpufreq_fast_switch+0x40/0xc0
-  cpufreq_driver_fast_switch+0x4c/0x218
-  sugov_update_shared+0x234/0x280
-  update_load_avg+0x6ec/0x7b8
-  dequeue_entities+0x108/0x830
-  dequeue_task_fair+0x58/0x408
-  __schedule+0x4f0/0x1070
-  schedule+0x54/0x130
-  worker_thread+0xc0/0x2e8
-  kthread+0x130/0x148
-  ret_from_fork+0x10/0x20
+This is because the buffer delay flag is not cleared when clearing the
+buffer state flags to discard a page/folio or a buffer head. So, fix
+this.
 
-sugov_update_shared() locks a raw_spinlock while cpc_write() locks a
-spinlock.
+This became necessary when the use of nilfs2's own page clear routine
+was expanded.  This state inconsistency does not occur if the buffer
+is written normally by log writing.
 
-To have a correct wait-type order, update rmw_lock to a raw spinlock and
-ensure that interrupts will be disabled on the CPU holding it.
-
-Fixes: 60949b7b8054 ("ACPI: CPPC: Fix MASK_VAL() usage")
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://patch.msgid.link/20241028125657.1271512-1-pierre.gondois@arm.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Link: https://lore.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 9 +++++----
- include/acpi/cppc_acpi.h | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ fs/nilfs2/page.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 3d9326172af49..31ea76b6fa045 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -857,7 +857,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -77,7 +77,8 @@ void nilfs_forget_buffer(struct buffer_h
+ 	const unsigned long clear_bits =
+ 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++		 BIT(BH_Delay));
  
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
--	spin_lock_init(&cpc_ptr->rmw_lock);
-+	raw_spin_lock_init(&cpc_ptr->rmw_lock);
+ 	lock_buffer(bh);
+ 	set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -409,7 +410,8 @@ void nilfs_clear_dirty_page(struct page
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++			 BIT(BH_Delay));
  
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1077,6 +1077,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 	struct cpc_desc *cpc_desc;
-+	unsigned long flags;
- 
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1116,7 +1117,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			return -ENODEV;
- 		}
- 
--		spin_lock(&cpc_desc->rmw_lock);
-+		raw_spin_lock_irqsave(&cpc_desc->rmw_lock, flags);
- 		switch (size) {
- 		case 8:
- 			prev_val = readb_relaxed(vaddr);
-@@ -1131,7 +1132,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			prev_val = readq_relaxed(vaddr);
- 			break;
- 		default:
--			spin_unlock(&cpc_desc->rmw_lock);
-+			raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 			return -EFAULT;
- 		}
- 		val = MASK_VAL_WRITE(reg, prev_val, val);
-@@ -1164,7 +1165,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	}
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		spin_unlock(&cpc_desc->rmw_lock);
-+		raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 
- 	return ret_val;
- }
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 2d1ec0e6ee018..de3bda334abfc 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -65,7 +65,7 @@ struct cpc_desc {
- 	int write_cmd_status;
- 	int write_cmd_id;
- 	/* Lock used for RMW operations in cpc_write() */
--	spinlock_t rmw_lock;
-+	raw_spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
--- 
-2.43.0
-
+ 		bh = head = page_buffers(page);
+ 		do {
 
 
 
