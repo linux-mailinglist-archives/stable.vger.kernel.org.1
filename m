@@ -1,170 +1,86 @@
-Return-Path: <stable+bounces-90066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCEB9BDEE2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:31:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E892E9BDEE6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9826B1F23503
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:31:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F17F1C21C60
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9C01925AF;
-	Wed,  6 Nov 2024 06:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B7A1922F9;
+	Wed,  6 Nov 2024 06:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="LpiVX1//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7u49xqi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BD318FDC2;
-	Wed,  6 Nov 2024 06:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4AB191F89;
+	Wed,  6 Nov 2024 06:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730874707; cv=none; b=A6yrpt72kD91Y2Gmzytuh5zbTPpJPpvS0exBkF6GXw474frqHUIvbrR5nDeufupudq+R7Sj6EUwwBZSj+FXga2e4oaWADRzto4JdgRqWNcplGBrLwPeWBi3u3kNGH2ttUUp/2CgGLfzNEg4a1OpgRcexOB0HnH+ZeTjN+7VMxtg=
+	t=1730874876; cv=none; b=n4Ka3mt0W8QTt41b2KL+tZUrGXLbIxZvfScQynGAzqdfxD32jsNgoDk+jzIuSF/0vlLvq1cA2iL+4xuX/ktggoGIKQrsmBNK0RQhP3TsBJqXy+M1f83sVB0Sfq3wBsxrNHbnH3a/c8fyvDiqhorP4oWCKuUoz8fk+8XSeUt2I/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730874707; c=relaxed/simple;
-	bh=uP83JGONHOznuvXu3f4CH5ZvbbRdfVx2cuonvBPTYuM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=GrjqmkvZ//xzpp3MtRIAviboOzaU0cuOqlP7WL+tTFiRncwt/nAp5RFPHnztmPpFDUIX+Y+4yPw0B497b28OnWKTg8muifOmcA6jlBOnqWb7GGURa+BnmIED+7BkQNyiEsF685zuYbYHBd/wPa6AgQSeMukTzEznUkJIO0JsAfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=LpiVX1//; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1730874876; c=relaxed/simple;
+	bh=aiIt6g4a5lyagB3+YDLezIbtzJW/GBeS2kN7mBoFm0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lMBwwpZWcYgqK1ZzwpMrUJE8kNkqpInvcu71CX3TVZLD3JlPdV+xcVcY0Rbds3w24UhHpqcSk2vQFbzxaSk3cMLLg8/vg4xNBpC7yw46DrL6xlUobbfLU8wgUdxoj7Ynjs1sGRsXNCpSD4NZeFqWi5RiYzu6B3COJwgLS99RJXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7u49xqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1836CC4CECD;
+	Wed,  6 Nov 2024 06:34:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730874875;
+	bh=aiIt6g4a5lyagB3+YDLezIbtzJW/GBeS2kN7mBoFm0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k7u49xqiYIRCopmZcuBXZMaHrimeqvjznh1apHCnuHJz0w3JJfbHYYX64Fy6zuavi
+	 WTle0LKvDCGgdbwcGYCxnafpf3D4QERV0NjDmSAPDmGxmi+z88Sc+Z96pTAmEtm64T
+	 0RBR69741bf6n/PbeC8TKpo199+Qndg+RVh60IDk=
+Date: Wed, 6 Nov 2024 07:34:17 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-nilfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of
+ checked flag" failed to apply to v6.6-stable tree
+Message-ID: <2024110608-shut-strenuous-04c8@gregkh>
+References: <20241106020945.172057-1-sashal@kernel.org>
+ <CAKFNMomd0cxe-hP0CoNH7ERvrPCDhz22sRs=8086-j3H=OqOxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1730874703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qxP9YcwVFKAJicqzFTfLQT+JXkODjBQKlOQxaMRpKVM=;
-	b=LpiVX1//YTrlPkWN11MudX8FgoByS4d0xmlSxUWXzk7vnHOKtecxfFdOQ/nLZXERk6rSah
-	PEpjEY8lMRy+e13zIylC0H26XRIKNyY2HwOE+HFrudIHgc21PpI/RhBgNx0cckXEorEEzp
-	+gPx1m6fjgyAP01xz4lqx6JviRMUX6LQm/xNzyRv1E9NBQkjzZuShNfJPQ2xTmS/KGQw8M
-	aLroN0McUq7y1yE1lwHhGlbR+yqAYHPUVKsIH8W/GzN8KVp0m0MPd5PbgiVP0IhqE3PZKe
-	49is7ozXfnr/DE8t94Rh7Ie8F3F8ZDSPnB82bjcyKNkTIGEjaPS2Pc9sQZ3+1A==
-Date: Wed, 06 Nov 2024 07:31:41 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: wens@csie.org
-Cc: linux-sunxi@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, jernej.skrabec@gmail.com, samuel@sholland.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Ondrej Jirman
- <megi@xff.cz>, Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Subject: Re: [PATCH] arm64: dts: allwinner: pinephone: Add mount matrix to
- accelerometer
-In-Reply-To: <CAGb2v67fLPf-yKObuds3LC77gT_W_OmgSK5y2KotRC-Zn9aL7w@mail.gmail.com>
-References: <129f0c754d071cca1db5d207d9d4a7bd9831dff7.1726773282.git.dsimic@manjaro.org>
- <bef0570137358c6c4a55f59e7a4977c4@manjaro.org>
- <CAGb2v66aody60h=Bpk49pxogq93FekmO48uThPET2RKxvx=OGw@mail.gmail.com>
- <cfc090cb87a8b926116d1a436694d17d@manjaro.org>
- <CAGb2v67fLPf-yKObuds3LC77gT_W_OmgSK5y2KotRC-Zn9aL7w@mail.gmail.com>
-Message-ID: <6f2c860c442838bd9892d5861b82e73e@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKFNMomd0cxe-hP0CoNH7ERvrPCDhz22sRs=8086-j3H=OqOxg@mail.gmail.com>
 
-Hello Chen-Yu,
-
-On 2024-11-06 03:19, Chen-Yu Tsai wrote:
-> On Sat, Oct 26, 2024 at 12:11 AM Dragan Simic <dsimic@manjaro.org> 
-> wrote:
->> On 2024-10-25 16:47, Chen-Yu Tsai wrote:
->> > On Wed, Oct 23, 2024 at 5:11 AM Dragan Simic <dsimic@manjaro.org>
->> > wrote:
->> >> On 2024-09-19 21:15, Dragan Simic wrote:
->> >> > The way InvenSense MPU-6050 accelerometer is mounted on the user-facing
->> >> > side
->> >> > of the Pine64 PinePhone mainboard, which makes it rotated 90 degrees
->> >> > counter-
->> >> > clockwise, [1] requires the accelerometer's x- and y-axis to be
->> >> > swapped, and
->> >> > the direction of the accelerometer's y-axis to be inverted.
->> >> >
->> >> > Rectify this by adding a mount-matrix to the accelerometer definition
->> >> > in the Pine64 PinePhone dtsi file.
->> >> >
->> >> > [1] https://files.pine64.org/doc/PinePhone/PinePhone%20mainboard%20bottom%20placement%20v1.1%2020191031.pdf
->> >> >
->> >> > Fixes: 91f480d40942 ("arm64: dts: allwinner: Add initial support for
->> >> > Pine64 PinePhone")
->> >> > Cc: stable@vger.kernel.org
->> >> > Helped-by: Ondrej Jirman <megi@xff.cz>
->> >> > Helped-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
->> >> > Signed-off-by: Dragan Simic <dsimic@manjaro.org>
->> >>
->> >> Just a brief reminder about this patch...  Please, let me know if some
->> >> further work is needed for it to become accepted.
->> >
->> > There's no "Helped-by" tag, and checkpatch would complain. The closest
->> > would be either Suggested-by or Co-developed-by, but with the latter
->> > you would also need their Signed-off-by.
->> 
->> Thanks for your response.  You're totally right about checkpatch.pl
->> not supporting Helped-by tags, but including neither Suggested-by
->> nor Co-developed-by would fit very well in this case, because the
->> associated level of credit falls right somewhere between what's
->> indicated by these two tags.
->> 
->> > I can change it to Suggested-by if that's OK with you.
->> 
->> I've created and submitted a patch [*] that adds support for Helped-by
->> tags to checkpatch.pl.  Let's see what kind of feedback that patch
->> will receive, and then we'll be able to move forward accordingly.
+On Wed, Nov 06, 2024 at 03:21:39PM +0900, Ryusuke Konishi wrote:
+> Hi Sasha
 > 
-> There doesn't seem to be any activity. Maybe also try adding it to the
+> About 6 hours ago, I posted an adjusted patch to the list (and to
+> Greg) that allows for backporting of this patch to 6.6-stable and
+> earlier.
 > 
->     Documentation/process/submitting-patches.rst
+> The patch is titled  "[PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix
+> kernel bug due to missing clearing of checked flag".
 > 
-> document?
+> (or https://lkml.kernel.org/r/20241105235654.15044-1-konishi.ryusuke@gmail.com )
+> 
+> Normally, Greg would pick up the adjusted patch and apply it, and it
+> would be backported without any problems, but if the backport of the
+> adjusted patch I requested has been rejected, I would like to ask for
+> your confirmation.
+> 
+> If it is a misunderstanding, I will wait for Greg's work, but is the
+> process different from usual?
 
-Good idea, thanks!  I've created and submitted the v2 [**] of my
-other patch, so it now also adds a description of the proposed
-Helped-by tag to Documentation/process/submitting-patches.rst.
-Let's see will that spark some interest.
+I got it now, thanks!
 
-[*] 
-https://lore.kernel.org/linux-kernel/0e1ef28710e3e49222c966f07958a9879fa4e903.1729871544.git.dsimic@manjaro.org/T/#u
-[**] 
-https://lore.kernel.org/linux-kernel/cover.1730874296.git.dsimic@manjaro.org/T/#u
-
->> >> > ---
->> >> >
->> >> > Notes:
->> >> >     See also the linux-sunxi thread [2] that has led to this patch,
->> >> > which
->> >> >     provides a rather detailed analysis with additional details and
->> >> > pictures.
->> >> >     This patch effectively replaces the patch submitted in that thread.
->> >> >
->> >> >     [2]
->> >> > https://lore.kernel.org/linux-sunxi/20240916204521.2033218-1-andrej.skvortzov@gmail.com/T/#u
->> >> >
->> >> >  arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 3 +++
->> >> >  1 file changed, 3 insertions(+)
->> >> >
->> >> > diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> >> > b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> >> > index 6eab61a12cd8..b844759f52c0 100644
->> >> > --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> >> > +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> >> > @@ -212,6 +212,9 @@ accelerometer@68 {
->> >> >               interrupts = <7 5 IRQ_TYPE_EDGE_RISING>; /* PH5 */
->> >> >               vdd-supply = <&reg_dldo1>;
->> >> >               vddio-supply = <&reg_dldo1>;
->> >> > +             mount-matrix = "0", "1", "0",
->> >> > +                            "-1", "0", "0",
->> >> > +                            "0", "0", "1";
->> >> >       };
->> >> >  };
->> >>
+greg k-h
 
