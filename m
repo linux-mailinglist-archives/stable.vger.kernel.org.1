@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-91343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833A19BED90
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF459BED8F
 	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17084B24D08
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113FD285EFB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA261DF278;
-	Wed,  6 Nov 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B2C18FDA7;
+	Wed,  6 Nov 2024 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6oOC+jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBeJ1i8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB621DFE31;
-	Wed,  6 Nov 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526951D86E8;
+	Wed,  6 Nov 2024 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898456; cv=none; b=NTogohX5MhFU99fN9GmgbbMSxSun/CpiEfQpzLl+yDzT/xlCuKJFyUH3DqOpTJI5Wz80qr6uR1nJqyV+mRssnU2uDgGOQU9DjGQO3fq0ErYKBw0md9cPIxJxHttGqQdfbLQB+W/6BL8oW1CcGEir7XM2/J8DMEnIfI2U2U/7nJw=
+	t=1730898462; cv=none; b=N4EAY+VAryv5UGu3uXtnfzu/7Gj0UpAnrse0S5E/HIAnP7hXZSNFvxZhADGlJ1Qzy8DpQXAfx8cs7NQnVhH4jUUVhgR6Tff3f0ndE63unbNjp0UgnIaEsVecpH0DXTSKgJxArH1L7x9aphIlnimdNnV4NZ+UyOznj2C+k09MUBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898456; c=relaxed/simple;
-	bh=2EwuI7dNrf4qhbFCCSHywN/go1LrVUEaUkDeHawhYVk=;
+	s=arc-20240116; t=1730898462; c=relaxed/simple;
+	bh=rbye4YXE5j3ATjuRbJq2tNC4fjjxiCcaf7ZHLAtfiXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=giAN9JhWXkZZw2satVKWLlthKfVP/xCq+fP39Bwu2KRgz3/gpq7GZVkhPeDi2yBRVr/26KufFh9CZXrJ/piAx3LqBXczK6RiAhQjh9bVDikh0563rUGHFR2bNuiM3eEyA5/zoNRNOdRPBHCMZ7dsraKfpWeqXxHDCS+E5nbuL/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6oOC+jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97B1C4CECD;
-	Wed,  6 Nov 2024 13:07:35 +0000 (UTC)
+	 MIME-Version; b=hDnm1z0zDJBIhQjWmAeYg4N3gI5tvYXNU9nZ2I4wTbm2u/ix1xB3tU0rlnEac1YuHdmqIIUb0FvPq2a7CHYSYZPxBGATrq6jVUJpgKIPVAeF01BN/oPRy1qMOwNwOCyoPWhVh8axcfbLSAeHVANF05/JxR+ZwI43pN3W3HFJVMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBeJ1i8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5A5C4CECD;
+	Wed,  6 Nov 2024 13:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898456;
-	bh=2EwuI7dNrf4qhbFCCSHywN/go1LrVUEaUkDeHawhYVk=;
+	s=korg; t=1730898462;
+	bh=rbye4YXE5j3ATjuRbJq2tNC4fjjxiCcaf7ZHLAtfiXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6oOC+jHEPAmFTgFVjFMdMGSf04SBNox+EduiXHCkZYXrgLGS+M6iNP9SMUfG9tH4
-	 B2uP+YdiFpM5RP/dVsuw6723beeuIiYzhOB+LNwpAPi7+8CvxKfeiiZyslsew6U+vW
-	 USjDzkG0YouoQIqfJT4SCD/9inCxMUE8Xge9Zfss=
+	b=mBeJ1i8B6lYC5Gkko0kzqaeKInvWQqq9R+3OU2SejfalBqoi9GUNt6nxyFm/dUexQ
+	 9LLU0SnagZqk4CaDL+dWtPcSU/xudWQJjlLfzjHVvoqzLh561YdQVCtV/tGbgD3kef
+	 t0fBOTck7ZUYzpdj0k2zq5lbwWK/29Iu2tvQeWTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 245/462] ALSA: core: add isascii() check to card ID generator
-Date: Wed,  6 Nov 2024 13:02:18 +0100
-Message-ID: <20241106120337.577545206@linuxfoundation.org>
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.4 246/462] ext4: no need to continue when the number of entries is 1
+Date: Wed,  6 Nov 2024 13:02:19 +0100
+Message-ID: <20241106120337.602147288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -60,79 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit d278a9de5e1837edbe57b2f1f95a104ff6c84846 upstream.
+commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
 
-The card identifier should contain only safe ASCII characters. The isalnum()
-returns true also for characters for non-ASCII characters.
-
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4135
-Link: https://lore.kernel.org/linux-sound/yk3WTvKkwheOon_LzZlJ43PPInz6byYfBzpKkbasww1yzuiMRqn7n6Y8vZcXB-xwFCu_vb8hoNjv7DTNwH5TWjpEuiVsyn9HPCEXqwF4120=@protonmail.com/
-Cc: stable@vger.kernel.org
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20241002194649.1944696-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/init.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -527,13 +527,19 @@ int snd_card_free(struct snd_card *card)
- }
- EXPORT_SYMBOL(snd_card_free);
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1924,7 +1924,7 @@ static struct ext4_dir_entry_2 *do_split
+ 		split = count/2;
  
-+/* check, if the character is in the valid ASCII range */
-+static inline bool safe_ascii_char(char c)
-+{
-+	return isascii(c) && isalnum(c);
-+}
-+
- /* retrieve the last word of shortname or longname */
- static const char *retrieve_id_from_card_name(const char *name)
- {
- 	const char *spos = name;
- 
- 	while (*name) {
--		if (isspace(*name) && isalnum(name[1]))
-+		if (isspace(*name) && safe_ascii_char(name[1]))
- 			spos = name + 1;
- 		name++;
- 	}
-@@ -560,12 +566,12 @@ static void copy_valid_id_string(struct
- {
- 	char *id = card->id;
- 
--	while (*nid && !isalnum(*nid))
-+	while (*nid && !safe_ascii_char(*nid))
- 		nid++;
- 	if (isdigit(*nid))
- 		*id++ = isalpha(*src) ? *src : 'D';
- 	while (*nid && (size_t)(id - card->id) < sizeof(card->id) - 1) {
--		if (isalnum(*nid))
-+		if (safe_ascii_char(*nid))
- 			*id++ = *nid;
- 		nid++;
- 	}
-@@ -663,7 +669,7 @@ card_id_store_attr(struct device *dev, s
- 
- 	for (idx = 0; idx < copy; idx++) {
- 		c = buf[idx];
--		if (!isalnum(c) && c != '_' && c != '-')
-+		if (!safe_ascii_char(c) && c != '_' && c != '-')
- 			return -EINVAL;
- 	}
- 	memcpy(buf1, buf, copy);
+ 	hash2 = map[split].hash;
+-	continued = hash2 == map[split - 1].hash;
++	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
+ 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
+ 			(unsigned long)dx_get_block(frame->at),
+ 					hash2, split, count-split));
 
 
 
