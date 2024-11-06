@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-90928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECFD9BEBB2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D264A9BEC46
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9150BB2493B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9741A2857BC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CD21F8F1C;
-	Wed,  6 Nov 2024 12:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1601F4264;
+	Wed,  6 Nov 2024 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hf7BB8Ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCXfMQTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79131E0B62;
-	Wed,  6 Nov 2024 12:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F901F4708;
+	Wed,  6 Nov 2024 12:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897229; cv=none; b=f3SrYP1pJ33hm8BsZ9HT1nLZ9rv7CyH4jLrYIfbliDJPLjcWrA+uN727GoRUVmo0CjELFMlqNyE37iCXV4/UPuXMjeVdw4YrmaqjH9OOcn2iYqq5vDTJqtjr9zyhheUcrw6TF68UWfjJoaqmn8BZnlBIi1mLAPOgmSKDjfWZk6k=
+	t=1730897644; cv=none; b=T3XxhIf2Pu6AQCR23DibZ5T9rZh6d7SS0BRrV5U77mOAwyV/gxHbMB1CqXp0q8PJ+qK9Uxx3Qy2hCg7KRKRXE9EoH0hLRqdtvaek2+jpmzDbiQrJ45WcsRfnS9vQYTQj6GOaOSynQNy+ZOn0Jwh6TaMqVFJ1GyryDpUfgekDuqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897229; c=relaxed/simple;
-	bh=kxYX+p16lqJYNgWMcPvgP/Yzcc9NmqpQsq32keG6t9A=;
+	s=arc-20240116; t=1730897644; c=relaxed/simple;
+	bh=qbFPHYFPAK14Rj8LuFImtwjZmXKiX6ModhTIKpDZ0OA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfN4d6R0hJ05pvybwkowuDtKkH1/9rQh2dor7iSvRaUT9mwhMaQ5HntDAz6Q6+Oi4gec7kZLcu6CoWVxYigVxNZauhFBSwxLyuPNxOl5V4J86IGbzDqD1zvOv3/vmSB0Vv/g/8SkvDhGFgbMj8RELXjG5qAmNq+QcZSaRKWHn44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hf7BB8Ff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDC6C4CECD;
-	Wed,  6 Nov 2024 12:47:09 +0000 (UTC)
+	 MIME-Version; b=szbvYzq/qf3R+id/xLaViNSIYqiBSQ2fawSktu6gblWT4gvEO4+mQUsN2UZZMzg0YnClJvZ//OOI66kfb9V84/iMrvU56E4luuucLEDbTWYlDW2SIG3PaVYQznXREDT+zY88NOhbdQwC+b/N4nqulhXAg0tO3gwjQc+zuC7dd4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCXfMQTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EA5C4CECD;
+	Wed,  6 Nov 2024 12:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897229;
-	bh=kxYX+p16lqJYNgWMcPvgP/Yzcc9NmqpQsq32keG6t9A=;
+	s=korg; t=1730897643;
+	bh=qbFPHYFPAK14Rj8LuFImtwjZmXKiX6ModhTIKpDZ0OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hf7BB8Ff2tXiNFSws3HlJJ1sxFit5LK/lDFWvBPD5pLyJoqOK/SrmXaQeQsZlq3Gg
-	 1SGvIhm8cPAVLANV5Q4bdb4sPyROFyfpmiUhY6bE1tAdwIlFaaOxWsrWXQy1Qf8ZA7
-	 F87fIuISABwjVmzolGO0PI+XrOMVqe19d4dGLCho=
+	b=HCXfMQTAArEj/YIeuGwbxN17/DJOQiMo9oTSzWhr/KLxAi6xcktjf+xnquugO9v5j
+	 Tsdhl3zhdB72hcdEXPk3Ifq05ffQZRU4/TNt9arBmjQ0s9MeAcpceB1SsRPfL6E2DH
+	 ALzegXqMtDnfa7K4zUAbBWIE5baI7aMxxt8DYeZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Xin Hao <xhao@linux.alibaba.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bharata B Rao <bharata@amd.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/126] migrate_pages: organize stats with struct migrate_pages_stats
-Date: Wed,  6 Nov 2024 13:05:10 +0100
-Message-ID: <20241106120309.004895689@linuxfoundation.org>
+Subject: [PATCH 6.6 123/151] iov_iter: fix copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP
+Date: Wed,  6 Nov 2024 13:05:11 +0100
+Message-ID: <20241106120312.250634648@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,262 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@intel.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 5b855937096aea7f81e73ad6d40d433c9dd49577 ]
+[ Upstream commit c749d9b7ebbc5716af7a95f7768634b30d9446ec ]
 
-Patch series "migrate_pages(): batch TLB flushing", v5.
+generic/077 on x86_32 CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP=y with highmem,
+on huge=always tmpfs, issues a warning and then hangs (interruptibly):
 
-Now, migrate_pages() migrates folios one by one, like the fake code as
-follows,
+WARNING: CPU: 5 PID: 3517 at mm/highmem.c:622 kunmap_local_indexed+0x62/0xc9
+CPU: 5 UID: 0 PID: 3517 Comm: cp Not tainted 6.12.0-rc4 #2
+...
+copy_page_from_iter_atomic+0xa6/0x5ec
+generic_perform_write+0xf6/0x1b4
+shmem_file_write_iter+0x54/0x67
 
-  for each folio
-    unmap
-    flush TLB
-    copy
-    restore map
+Fix copy_page_from_iter_atomic() by limiting it in that case
+(include/linux/skbuff.h skb_frag_must_loop() does similar).
 
-If multiple folios are passed to migrate_pages(), there are opportunities
-to batch the TLB flushing and copying.  That is, we can change the code to
-something as follows,
+But going forward, perhaps CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP is too
+surprising, has outlived its usefulness, and should just be removed?
 
-  for each folio
-    unmap
-  for each folio
-    flush TLB
-  for each folio
-    copy
-  for each folio
-    restore map
-
-The total number of TLB flushing IPI can be reduced considerably.  And we
-may use some hardware accelerator such as DSA to accelerate the folio
-copying.
-
-So in this patch, we refactor the migrate_pages() implementation and
-implement the TLB flushing batching.  Base on this, hardware accelerated
-folio copying can be implemented.
-
-If too many folios are passed to migrate_pages(), in the naive batched
-implementation, we may unmap too many folios at the same time.  The
-possibility for a task to wait for the migrated folios to be mapped again
-increases.  So the latency may be hurt.  To deal with this issue, the max
-number of folios be unmapped in batch is restricted to no more than
-HPAGE_PMD_NR in the unit of page.  That is, the influence is at the same
-level of THP migration.
-
-We use the following test to measure the performance impact of the
-patchset,
-
-On a 2-socket Intel server,
-
- - Run pmbench memory accessing benchmark
-
- - Run `migratepages` to migrate pages of pmbench between node 0 and
-   node 1 back and forth.
-
-With the patch, the TLB flushing IPI reduces 99.1% during the test and
-the number of pages migrated successfully per second increases 291.7%.
-
-Xin Hao helped to test the patchset on an ARM64 server with 128 cores,
-2 NUMA nodes.  Test results show that the page migration performance
-increases up to 78%.
-
-This patch (of 9):
-
-Define struct migrate_pages_stats to organize the various statistics in
-migrate_pages().  This makes it easier to collect and consume the
-statistics in multiple functions.  This will be needed in the following
-patches in the series.
-
-Link: https://lkml.kernel.org/r/20230213123444.155149-1-ying.huang@intel.com
-Link: https://lkml.kernel.org/r/20230213123444.155149-2-ying.huang@intel.com
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Xin Hao <xhao@linux.alibaba.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Bharata B Rao <bharata@amd.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 35e41024c4c2 ("vmscan,migrate: fix page count imbalance on node stats when demoting pages")
+Fixes: 908a1ad89466 ("iov_iter: Handle compound highmem pages in copy_page_from_iter_atomic()")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Link: https://lore.kernel.org/r/dd5f0c89-186e-18e1-4f43-19a60f5a9774@google.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c | 60 +++++++++++++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 26 deletions(-)
+ lib/iov_iter.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 81444abf54dba..b7596a0b4445f 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1398,6 +1398,16 @@ static inline int try_split_folio(struct folio *folio, struct list_head *split_f
- 	return rc;
- }
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 27234a820eeb3..a4bb47efafe37 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -570,6 +570,8 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		size_t bytes, struct iov_iter *i)
+ {
+ 	size_t n, copied = 0;
++	bool uses_kmap = IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
++			 PageHighMem(page);
  
-+struct migrate_pages_stats {
-+	int nr_succeeded;	/* Normal and large folios migrated successfully, in
-+				   units of base pages */
-+	int nr_failed_pages;	/* Normal and large folios failed to be migrated, in
-+				   units of base pages.  Untried folios aren't counted */
-+	int nr_thp_succeeded;	/* THP migrated successfully */
-+	int nr_thp_failed;	/* THP failed to be migrated */
-+	int nr_thp_split;	/* THP split before migrating */
-+};
-+
- /*
-  * migrate_pages - migrate the folios specified in a list, to the free folios
-  *		   supplied as the target for the page migration
-@@ -1432,13 +1442,8 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 	int large_retry = 1;
- 	int thp_retry = 1;
- 	int nr_failed = 0;
--	int nr_failed_pages = 0;
- 	int nr_retry_pages = 0;
--	int nr_succeeded = 0;
--	int nr_thp_succeeded = 0;
- 	int nr_large_failed = 0;
--	int nr_thp_failed = 0;
--	int nr_thp_split = 0;
- 	int pass = 0;
- 	bool is_large = false;
- 	bool is_thp = false;
-@@ -1448,9 +1453,11 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 	LIST_HEAD(split_folios);
- 	bool nosplit = (reason == MR_NUMA_MISPLACED);
- 	bool no_split_folio_counting = false;
-+	struct migrate_pages_stats stats;
+ 	if (!page_copy_sane(page, offset, bytes))
+ 		return 0;
+@@ -580,7 +582,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		char *p;
  
- 	trace_mm_migrate_pages_start(mode, reason);
+ 		n = bytes - copied;
+-		if (PageHighMem(page)) {
++		if (uses_kmap) {
+ 			page += offset / PAGE_SIZE;
+ 			offset %= PAGE_SIZE;
+ 			n = min_t(size_t, n, PAGE_SIZE - offset);
+@@ -594,7 +596,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		kunmap_atomic(p);
+ 		copied += n;
+ 		offset += n;
+-	} while (PageHighMem(page) && copied != bytes && n > 0);
++	} while (uses_kmap && copied != bytes && n > 0);
  
-+	memset(&stats, 0, sizeof(stats));
- split_folio_migration:
- 	for (pass = 0; pass < 10 && (retry || large_retry); pass++) {
- 		retry = 0;
-@@ -1504,9 +1511,9 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 				/* Large folio migration is unsupported */
- 				if (is_large) {
- 					nr_large_failed++;
--					nr_thp_failed += is_thp;
-+					stats.nr_thp_failed += is_thp;
- 					if (!try_split_folio(folio, &split_folios)) {
--						nr_thp_split += is_thp;
-+						stats.nr_thp_split += is_thp;
- 						break;
- 					}
- 				/* Hugetlb migration is unsupported */
-@@ -1514,7 +1521,7 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 					nr_failed++;
- 				}
- 
--				nr_failed_pages += nr_pages;
-+				stats.nr_failed_pages += nr_pages;
- 				list_move_tail(&folio->lru, &ret_folios);
- 				break;
- 			case -ENOMEM:
-@@ -1524,13 +1531,13 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 				 */
- 				if (is_large) {
- 					nr_large_failed++;
--					nr_thp_failed += is_thp;
-+					stats.nr_thp_failed += is_thp;
- 					/* Large folio NUMA faulting doesn't split to retry. */
- 					if (!nosplit) {
- 						int ret = try_split_folio(folio, &split_folios);
- 
- 						if (!ret) {
--							nr_thp_split += is_thp;
-+							stats.nr_thp_split += is_thp;
- 							break;
- 						} else if (reason == MR_LONGTERM_PIN &&
- 							   ret == -EAGAIN) {
-@@ -1548,7 +1555,7 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 					nr_failed++;
- 				}
- 
--				nr_failed_pages += nr_pages + nr_retry_pages;
-+				stats.nr_failed_pages += nr_pages + nr_retry_pages;
- 				/*
- 				 * There might be some split folios of fail-to-migrate large
- 				 * folios left in split_folios list. Move them back to migration
-@@ -1558,7 +1565,7 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 				list_splice_init(&split_folios, from);
- 				/* nr_failed isn't updated for not used */
- 				nr_large_failed += large_retry;
--				nr_thp_failed += thp_retry;
-+				stats.nr_thp_failed += thp_retry;
- 				goto out;
- 			case -EAGAIN:
- 				if (is_large) {
-@@ -1570,8 +1577,8 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 				nr_retry_pages += nr_pages;
- 				break;
- 			case MIGRATEPAGE_SUCCESS:
--				nr_succeeded += nr_pages;
--				nr_thp_succeeded += is_thp;
-+				stats.nr_succeeded += nr_pages;
-+				stats.nr_thp_succeeded += is_thp;
- 				break;
- 			default:
- 				/*
-@@ -1582,20 +1589,20 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 				 */
- 				if (is_large) {
- 					nr_large_failed++;
--					nr_thp_failed += is_thp;
-+					stats.nr_thp_failed += is_thp;
- 				} else if (!no_split_folio_counting) {
- 					nr_failed++;
- 				}
- 
--				nr_failed_pages += nr_pages;
-+				stats.nr_failed_pages += nr_pages;
- 				break;
- 			}
- 		}
- 	}
- 	nr_failed += retry;
- 	nr_large_failed += large_retry;
--	nr_thp_failed += thp_retry;
--	nr_failed_pages += nr_retry_pages;
-+	stats.nr_thp_failed += thp_retry;
-+	stats.nr_failed_pages += nr_retry_pages;
- 	/*
- 	 * Try to migrate split folios of fail-to-migrate large folios, no
- 	 * nr_failed counting in this round, since all split folios of a
-@@ -1628,16 +1635,17 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
- 	if (list_empty(from))
- 		rc = 0;
- 
--	count_vm_events(PGMIGRATE_SUCCESS, nr_succeeded);
--	count_vm_events(PGMIGRATE_FAIL, nr_failed_pages);
--	count_vm_events(THP_MIGRATION_SUCCESS, nr_thp_succeeded);
--	count_vm_events(THP_MIGRATION_FAIL, nr_thp_failed);
--	count_vm_events(THP_MIGRATION_SPLIT, nr_thp_split);
--	trace_mm_migrate_pages(nr_succeeded, nr_failed_pages, nr_thp_succeeded,
--			       nr_thp_failed, nr_thp_split, mode, reason);
-+	count_vm_events(PGMIGRATE_SUCCESS, stats.nr_succeeded);
-+	count_vm_events(PGMIGRATE_FAIL, stats.nr_failed_pages);
-+	count_vm_events(THP_MIGRATION_SUCCESS, stats.nr_thp_succeeded);
-+	count_vm_events(THP_MIGRATION_FAIL, stats.nr_thp_failed);
-+	count_vm_events(THP_MIGRATION_SPLIT, stats.nr_thp_split);
-+	trace_mm_migrate_pages(stats.nr_succeeded, stats.nr_failed_pages,
-+			       stats.nr_thp_succeeded, stats.nr_thp_failed,
-+			       stats.nr_thp_split, mode, reason);
- 
- 	if (ret_succeeded)
--		*ret_succeeded = nr_succeeded;
-+		*ret_succeeded = stats.nr_succeeded;
- 
- 	return rc;
+ 	return copied;
  }
 -- 
 2.43.0
