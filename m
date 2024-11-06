@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-91043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A219BEC2F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D7A9BEB8E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AD61B25117
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2088DB21DAA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB231FB3D4;
-	Wed,  6 Nov 2024 12:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996111F81AA;
+	Wed,  6 Nov 2024 12:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xellU3Ca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coO7Izbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2071FB3D0;
-	Wed,  6 Nov 2024 12:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564461DFE3B;
+	Wed,  6 Nov 2024 12:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897571; cv=none; b=TXNYTusOUuHEpvzw9KuWO+C8bQbhMNUDkAIDJ6Z8AYmlW+cZEvIX06dsSHefI01CAkPfs2MU3Nqueutnf9zU/pKQaUc12PyL5VVtzAw/nf9yLLIF0E/1B2rw6TyXOABNlTdAky361VSCuJ1NcGQrr44KR71iD8hZJsCD2XO7sL0=
+	t=1730897153; cv=none; b=aP3oc/C8OuMarFqTLO+xhRLX+RM3FA9hZEIMmOFujWffI7Phlz3RDWjIjp8OLXF3bsy5XXSqMhBndEyEqAfu6DynsEaMpG81AfdWYBSjk8F20kr/l5gK+tPfO3GGb/jYit4v5HeMYufe+PUTdffRwcJOiTcREu5MNrHkSKzJ4qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897571; c=relaxed/simple;
-	bh=bO9ZslLvoT9Iimbl532a11Z7AU5UzQMxx9I5qsIGdyg=;
+	s=arc-20240116; t=1730897153; c=relaxed/simple;
+	bh=+pdeKJdhpjJeDNLzzOj2exJrMBoUDTsiiH45BSuKOdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VorMdXg6CkWhZcRuXD9uKG/I4HjTKPQX5g2zQfpotLI5a0f99lRkm2H3KQMisxP/LEgteDgWn2pX+gZKqNmth5N8oKevetHEfJYa5/KbwX5fzrPN/w6pqvo4MBfrkfNVIUbQeCpECBvP2O4i2oiwUe+RKt0PqeyZSvKgnjsqKbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xellU3Ca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416B0C4CECD;
-	Wed,  6 Nov 2024 12:52:51 +0000 (UTC)
+	 MIME-Version; b=AxYrvjr2nokeuAoN7Nih197e2aw1hjKDqo3hbLm9+3hRLIAzY6wZMMaHQwmZdpAW5M0dsMbqdgbH2e1zpOKXLEI++Op7cguR82LrLypgS6AUX4l5bmBVtD1zkHFkQw1Xk+2yvEf+HGkFuwHurFEgpn6JKU2c4aOlW4VBKQaKXOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coO7Izbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83FCC4CECD;
+	Wed,  6 Nov 2024 12:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897571;
-	bh=bO9ZslLvoT9Iimbl532a11Z7AU5UzQMxx9I5qsIGdyg=;
+	s=korg; t=1730897153;
+	bh=+pdeKJdhpjJeDNLzzOj2exJrMBoUDTsiiH45BSuKOdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xellU3CaxJWS6dJux0BQSgReFgmk/SKcU6ih8zQWkm3Z3jSfosJKsJcXjmctMAHfD
-	 CtVAcAj7VrlotfIOMYvmOkSZayM+eRHkMfxPvs4Gubswyujh2IKgnTolLJj9B43PQR
-	 2yYt3UTKhTdGRW/ze7wPTRWTn9ImrTTwKF4N3ww8=
+	b=coO7IzbxQNh1iLp2vv9ghOn2lkVquCPUQaxpEmuS+0qCz6nEjVkEiJikKctq7epiM
+	 OPBdDb5SEOZzW3a/KuGIwWxG5Fyzsn88ia8Dyp1ariDkNqhtkiE3cVmyfENlEeOURN
+	 ZwpVJlaz/C6gr6FwcLwsZ+q5BmJiy9DrSXYKqNEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 098/151] iio: gts-helper: Fix memory leaks for the error path of iio_gts_build_avail_scale_table()
+	Wentao Guan <guanwentao@uniontech.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	WangYuli <wangyuli@uniontech.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/126] riscv: Use %u to format the output of cpu
 Date: Wed,  6 Nov 2024 13:04:46 +0100
-Message-ID: <20241106120311.570759484@linuxfoundation.org>
+Message-ID: <20241106120308.372175406@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 369f05688911b05216cfcd6ca74473bec87948d7 upstream.
+[ Upstream commit e0872ab72630dada3ae055bfa410bf463ff1d1e0 ]
 
-If per_time_scales[i] or per_time_gains[i] kcalloc fails in the for loop
-of iio_gts_build_avail_scale_table(), the err_free_out will fail to call
-kfree() each time when i is reduced to 0, so all the per_time_scales[0]
-and per_time_gains[0] will not be freed, which will cause memory leaks.
+'cpu' is an unsigned integer, so its conversion specifier should
+be %u, not %d.
 
-Fix it by checking if i >= 0.
-
+Suggested-by: Wentao Guan <guanwentao@uniontech.com>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Link: https://lore.kernel.org/all/alpine.DEB.2.21.2409122309090.40372@angie.orcam.me.uk/
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Fixes: f1e58583b9c7 ("RISC-V: Support cpu hotplug")
 Cc: stable@vger.kernel.org
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20241016012453.2013302-1-ruanjinjie@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/4C127DEECDA287C8+20241017032010.96772-1-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-gts-helper.c |    2 +-
+ arch/riscv/kernel/cpu-hotplug.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -313,7 +313,7 @@ static int iio_gts_build_avail_scale_tab
- 	return 0;
+diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
+index f7a832e3a1d1d..462b3631663f9 100644
+--- a/arch/riscv/kernel/cpu-hotplug.c
++++ b/arch/riscv/kernel/cpu-hotplug.c
+@@ -65,7 +65,7 @@ void __cpu_die(unsigned int cpu)
+ 	if (cpu_ops[cpu]->cpu_is_stopped)
+ 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
+ 	if (ret)
+-		pr_warn("CPU%d may not have stopped: %d\n", cpu, ret);
++		pr_warn("CPU%u may not have stopped: %d\n", cpu, ret);
+ }
  
- err_free_out:
--	for (i--; i; i--) {
-+	for (i--; i >= 0; i--) {
- 		kfree(per_time_scales[i]);
- 		kfree(per_time_gains[i]);
- 	}
+ /*
+-- 
+2.43.0
+
 
 
 
