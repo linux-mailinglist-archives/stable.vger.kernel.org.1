@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1669BEEA1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056759BEE5A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90DF51F25C33
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14451F2549F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FEA1DFDB3;
-	Wed,  6 Nov 2024 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2EA1EE00D;
+	Wed,  6 Nov 2024 13:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEfkLsKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6RrWny5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32192646;
-	Wed,  6 Nov 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ECF54765;
+	Wed,  6 Nov 2024 13:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899156; cv=none; b=CGWI4bkIwuD2J/nf5sEFIRiJIQBWTk0V74unfeW6D9OSKqEVTWfgWUcC4TIvjcTy9RoLDSbmDJMwlzOzuAZK4yxWt8d7EW+PsWKLlr6C/dj1T9NkIxmNkb7zmxe6BcxYxLuSiHfBPLjScWVH3yT/UBjfsIM4MuKhwXZS+RaZDHw=
+	t=1730898977; cv=none; b=emNyVdxy8kTLOc1qybcBIzIp/6LexnJyzJ2qm5KucKfi33VAkjKKRAI5ODemmIcFZj0EVz7HcWfo/E9sa5dvRZ/3H/TpQ+mv4lStf8xMbQhTtLFtktOXGx7rmNCrs84wOJmv2zNK7kLhorChWXgNe2lnWuoFMhaYZh5ulCeiHC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899156; c=relaxed/simple;
-	bh=8VutXE4AAgYqbBgfgnnFzVsE9KMB2ABlvTOTSVdng9g=;
+	s=arc-20240116; t=1730898977; c=relaxed/simple;
+	bh=SAB3BMMm2pqvkH4i3LHyj21eE9Gk+l5SF3K2j14YYxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rS53hqmVmiRzsn6G982tRq6tXVeyFfFN+PNLFlrmz0Powx5o4CLG00leNVNPB6IDGK9thtA3WjGoAA2u7nIfIfP7UHSNtvs9aDcoVtYiU3eA7QqoP2Umxt00ra3imykcm+/sK/1PYMsa6tMxTMpi74PccXA6UsKPKnSxTlUda4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEfkLsKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74840C4CECD;
-	Wed,  6 Nov 2024 13:19:15 +0000 (UTC)
+	 MIME-Version; b=i8K6ghP33Ce2DYf5sVDm+oFRi/k9XKInkXi0/PEjDo+QRtftYRKFWtV+4I+eQx7AkcB10a1bdllx35JLVDxtrM6waHCOg2rvnHkIugau9FpC71H6Lb+6hPaDsUlk00q6V/yX7a3yZU73tu5y60z52HWopijjMJqnjcsP1FCnaFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6RrWny5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFB4C4CED3;
+	Wed,  6 Nov 2024 13:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899155;
-	bh=8VutXE4AAgYqbBgfgnnFzVsE9KMB2ABlvTOTSVdng9g=;
+	s=korg; t=1730898976;
+	bh=SAB3BMMm2pqvkH4i3LHyj21eE9Gk+l5SF3K2j14YYxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEfkLsKU4C/Ce3xM/hjf6L6EmlXNAIbZKeDED+t4N9S3cfpenEcA+nMHln8GQm4rF
-	 R+3WfeZjsN8zE8wVO4CdqnLEB8am65xbjScA9PGRwPlXoBEaj+y0PQ2V+pwZbKcXhL
-	 QmpdXoTRgVjgZmsyw37Hkpik9Eg6mVN86BO2LoOs=
+	b=Z6RrWny5zSaPmZIetBKiqUan1R+5YPRlPAuDBqp4uUjq0/grkKnG79eytECFcEQBb
+	 beIq976rHCQm2ha1uS+myh8zDMxilhAImxLJ3OfTb5oQFMcd05B5u6Q1qFQGLgzaAj
+	 xibL4rcswmQkzVOpxKd30QLYRIY0Dycur5lV6C7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/73] cgroup: Fix potential overflow issue when checking max_depth
-Date: Wed,  6 Nov 2024 13:05:10 +0100
-Message-ID: <20241106120300.154571929@linuxfoundation.org>
+	Dirk Holten <dirk.holten@gmx.de>,
+	Christian Heusel <christian@heusel.eu>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 418/462] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
+Date: Wed,  6 Nov 2024 13:05:11 +0100
+Message-ID: <20241106120341.840122720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Christian Heusel <christian@heusel.eu>
 
-[ Upstream commit 3cc4e13bb1617f6a13e5e6882465984148743cf4 ]
+commit 53f1a907d36fb3aa02a4d34073bcec25823a6c74 upstream.
 
-cgroup.max.depth is the maximum allowed descent depth below the current
-cgroup. If the actual descent depth is equal or larger, an attempt to
-create a new child cgroup will fail. However due to the cgroup->max_depth
-is of int type and having the default value INT_MAX, the condition
-'level > cgroup->max_depth' will never be satisfied, and it will cause
-an overflow of the level after it reaches to INT_MAX.
+The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Fix it by starting the level from 0 and using '>=' instead.
+Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-It's worth mentioning that this issue is unlikely to occur in reality,
-as it's impossible to have a depth of INT_MAX hierarchy, but should be
-be avoided logically.
-
-Fixes: 1a926e0bbab8 ("cgroup: implement hierarchy limits")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dirk Holten <dirk.holten@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219382
+Cc: All applicable <stable@vger.kernel.org>
+Suggested-by: Dirk Holten <dirk.holten@gmx.de>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://patch.msgid.link/20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 999fef6d12282..9ba87c5de1a87 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5527,7 +5527,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
- {
- 	struct cgroup *cgroup;
- 	int ret = false;
--	int level = 1;
-+	int level = 0;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -507,6 +507,13 @@ static const struct dmi_system_id asus_l
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/* LG Electronics 16T90SP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
++			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
++		},
++	},
+ 	{ }
+ };
  
- 	lockdep_assert_held(&cgroup_mutex);
- 
-@@ -5535,7 +5535,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
- 		if (cgroup->nr_descendants >= cgroup->max_descendants)
- 			goto fail;
- 
--		if (level > cgroup->max_depth)
-+		if (level >= cgroup->max_depth)
- 			goto fail;
- 
- 		level++;
--- 
-2.43.0
-
 
 
 
