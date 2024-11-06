@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-91018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7A59BEC11
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0E79BE947
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7B91C21289
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C12301C21690
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FC51F4269;
-	Wed,  6 Nov 2024 12:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD9D1DED4F;
+	Wed,  6 Nov 2024 12:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0/4bFqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znscjzMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F46A1F1318;
-	Wed,  6 Nov 2024 12:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3F1DE3B8;
+	Wed,  6 Nov 2024 12:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897497; cv=none; b=P5DC5fLjUo37zQAylEOI4LpPpjQusNtoDEHEos0G9WOvarfhl34+mMdTMKnpS9ISSknEsITBQ62skx1wKHwYFQhwJe5dvXM14sNZmOkn1Y09pMEWJsOPFQKbVXP0kk8HVBfsOni2gpFM/7Nxulal7UUXrPArdZYCyvYfoFslqzw=
+	t=1730896346; cv=none; b=DzouP7NKNWMnyqChLo2dWE91pm72ojPkuSgKXnM+eY6PbCFG2iT0rHFDTcvps6QkQZ5fghjv0McharcZdPpUz3t6FElAvNe4b494NmHWit1fSuPbjZ0kseOeXhtVgSUQFNj/DeG06Eq25wAhKf8uX2iLnHdgGyLxxvOkuWBtayA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897497; c=relaxed/simple;
-	bh=D7ky12v+gfgsh7yeT+BD69zMUO5ZhFQsmeeUb8zvSkI=;
+	s=arc-20240116; t=1730896346; c=relaxed/simple;
+	bh=UeZrigwor1AVJXJn68Y8/b57siSAy7+pEkKdN0MNTB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chvvyVVcwNGaWCr5a9MHQ5ruHbNZXgDlsCMBvnw4uKjjg6ZAXAGEN3Fhda9GcMF1AIjNk4Ndj8yDXfS9b2gk0iq1mK01m2MZczI6jHh+QFA+UOE544YxQzJayWpxzUOuVkzAhAtsjY2UiqLi0l4ezTh38pAuM082SlYmmRBk5qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0/4bFqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E73C4CECD;
-	Wed,  6 Nov 2024 12:51:36 +0000 (UTC)
+	 MIME-Version; b=uzdtBAQNXetLZfctARopDf5iuNg6G1Gt7eo7L0HPq1cofVn4FcZYS6j6UN8wbFDYBrepj6MscTZKhx1lmFnCCGgaf+AYBHaBTXG0JOSX8HHcxwGdg5/B0DG4KS56CRJz+Rhhs5Vb8WNYgdxdyX5ONBJjb5Mym9YLShrK6QBPRvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znscjzMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254F6C4CECD;
+	Wed,  6 Nov 2024 12:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897497;
-	bh=D7ky12v+gfgsh7yeT+BD69zMUO5ZhFQsmeeUb8zvSkI=;
+	s=korg; t=1730896346;
+	bh=UeZrigwor1AVJXJn68Y8/b57siSAy7+pEkKdN0MNTB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0/4bFqK95CgMQgnvbQvUkcWg9Dnjqt31sdFnh72Xa3tjmhgEPxWXa8pYPYVOQ6pp
-	 e0P0FIrpHzNJS4Iq68If2BpIZdgFsUjAXu99xc7RY/gliLagebiOavcb79SvUqkup5
-	 lSl5RN9eUH58DizVribk9/RKWfXGc18Qe8KYCb6c=
+	b=znscjzMPfgISyFZkahipfZxa3yafJq6sQMIBEbb7bWR9N+1C5Yth/kW8bWJE6Ffi1
+	 kG/ocD9mtfTnkFPohFnbJ8wrP8bhTbfEV2QI5ypI7vqRlSCru9uLArEEVgklSjhM4x
+	 5WlMfPx8KgU/9QM/7lQzjNVf88ihOq+g0YT8FCUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Willem de Bruijn <willemb@google.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/151] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
-Date: Wed,  6 Nov 2024 13:03:44 +0100
-Message-ID: <20241106120309.827249450@linuxfoundation.org>
+Subject: [PATCH 6.11 172/245] mptcp: init: protect sched with rcu_read_lock
+Date: Wed,  6 Nov 2024 13:03:45 +0100
+Message-ID: <20241106120323.472489384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
+[ Upstream commit 3deb12c788c385e17142ce6ec50f769852fcec65 ]
 
-As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
-can only checksum TCP and UDP over IPv6 if the IP header does not
-contains extension.
+Enabling CONFIG_PROVE_RCU_LIST with its dependence CONFIG_RCU_EXPERT
+creates this splat when an MPTCP socket is created:
 
-This is enforced for UDP packets emitted from user-space to an IPv6
-address as they go through ip6_make_skb(), which calls
-__ip6_append_data() where a check is done on the header size before
-setting CHECKSUM_PARTIAL.
+  =============================
+  WARNING: suspicious RCU usage
+  6.12.0-rc2+ #11 Not tainted
+  -----------------------------
+  net/mptcp/sched.c:44 RCU-list traversed in non-reader section!!
 
-But the introduction of UDP encapsulation with fou6 added a code-path
-where it is possible to get an skb with a partial UDP checksum and an
-IPv6 header with extension:
-* fou6 adds a UDP header with a partial checksum if the inner packet
-does not contains a valid checksum.
-* ip6_tunnel adds an IPv6 header with a destination option extension
-header if encap_limit is non-zero (the default value is 4).
+  other info that might help us debug this:
 
-The thread linked below describes in more details how to reproduce the
-problem with GRE-in-UDP tunnel.
+  rcu_scheduler_active = 2, debug_locks = 1
+  no locks held by mptcp_connect/176.
 
-Add a check on the network header size in skb_csum_hwoffload_help() to
-make sure no IPv6 packet with extension header is handed to a network
-device with NETIF_F_IPV6_CSUM capability.
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 176 Comm: mptcp_connect Not tainted 6.12.0-rc2+ #11
+  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+  Call Trace:
+   <TASK>
+   dump_stack_lvl (lib/dump_stack.c:123)
+   lockdep_rcu_suspicious (kernel/locking/lockdep.c:6822)
+   mptcp_sched_find (net/mptcp/sched.c:44 (discriminator 7))
+   mptcp_init_sock (net/mptcp/protocol.c:2867 (discriminator 1))
+   ? sock_init_data_uid (arch/x86/include/asm/atomic.h:28)
+   inet_create.part.0.constprop.0 (net/ipv4/af_inet.c:386)
+   ? __sock_create (include/linux/rcupdate.h:347 (discriminator 1))
+   __sock_create (net/socket.c:1576)
+   __sys_socket (net/socket.c:1671)
+   ? __pfx___sys_socket (net/socket.c:1712)
+   ? do_user_addr_fault (arch/x86/mm/fault.c:1419 (discriminator 1))
+   __x64_sys_socket (net/socket.c:1728)
+   do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1))
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
-Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
+That's because when the socket is initialised, rcu_read_lock() is not
+used despite the explicit comment written above the declaration of
+mptcp_sched_find() in sched.c. Adding the missing lock/unlock avoids the
+warning.
+
+Fixes: 1730b2b2c5a5 ("mptcp: add sched in mptcp_sock")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/523
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241021-net-mptcp-sched-lock-v1-1-637759cf061c@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mptcp/protocol.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 70f757707f1a2..4beb9acf2c183 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3627,6 +3627,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return 0;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index d4b3bc46cdaaf..ec87b36f0d451 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2864,8 +2864,10 @@ static int mptcp_init_sock(struct sock *sk)
+ 	if (unlikely(!net->mib.mptcp_statistics) && !mptcp_mib_alloc(net))
+ 		return -ENOMEM;
  
- 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-+		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+			goto sw_checksum;
- 		switch (skb->csum_offset) {
- 		case offsetof(struct tcphdr, check):
- 		case offsetof(struct udphdr, check):
-@@ -3634,6 +3637,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		}
- 	}
++	rcu_read_lock();
+ 	ret = mptcp_init_sched(mptcp_sk(sk),
+ 			       mptcp_sched_find(mptcp_get_scheduler(net)));
++	rcu_read_unlock();
+ 	if (ret)
+ 		return ret;
  
-+sw_checksum:
- 	return skb_checksum_help(skb);
- }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
 -- 
 2.43.0
 
