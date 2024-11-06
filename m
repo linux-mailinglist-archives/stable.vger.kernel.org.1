@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-91372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB969BEDAD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B824B9BED85
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 159741F2561B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8A81F25385
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887321EF93B;
-	Wed,  6 Nov 2024 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46491E906F;
+	Wed,  6 Nov 2024 13:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYR+xGPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeGhjxV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461541E0B84;
-	Wed,  6 Nov 2024 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D66F1E8825;
+	Wed,  6 Nov 2024 13:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898539; cv=none; b=gPBX9d6yIdo3UEQcdCYW5rXyCxQqoZJ6JT8XxwPTQzdIoDslK0oPcHDka5mJdaF8zGUmIAAGVa/i5IuNWP1ZwsfiVnaWGuVycsnMsWsaCnUPr0Gauj8ENbevYBJUn7EvVkhJOkqd9JSC38VDNnKMcvGGr0DTnu0XcSUVDPhPKQM=
+	t=1730898429; cv=none; b=HwPt430mn1LWSrQOc7duPqpeD0sOZ0zRfvHp8f6uNegsz026sHOxSx5UFe90+cGiQR4TwPRf7sGDscWASpQ6LAyCji0ljNBKmRjXTcQFYXv/23K6th7HefhUroLOuQXAc+2LTxmAmBadOFedbKOIJrkI9by5C7oLO7sQ1lB+ysY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898539; c=relaxed/simple;
-	bh=kipuqxhVe2lwQ+jlsPlLRUSXszzXXydufFsXfNtLi2Q=;
+	s=arc-20240116; t=1730898429; c=relaxed/simple;
+	bh=Cc8ipor4UzGBWEHe/89VmV4ADdy7w0mXc/2wvxwDvbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWe16yZeft2kzp7lfXBXobfC8FWUSZ9X2L61gK13OSRl2t3XxSejrM8oqV3WXHdFGVys8fEQqz+YDEWAZ4O0JgB9/BxdSTSmlHswtkDZPteaayHQ98bCe0NGrQRVJ+8DLfVoPXHo1BXi4lIyE8H2Tr62vohuwF7Hh+04ops7OJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYR+xGPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC858C4CED3;
-	Wed,  6 Nov 2024 13:08:58 +0000 (UTC)
+	 MIME-Version; b=mc/T/Io041kK7jmtlRo/NVYEoIoqZCJRSIdLp7I/xr3D0f+Z11i5slVnSOWJzyInrOnEKU1oUn+Rn58tD3uwiQ4dgwkIZC0iitU9EwnKGCniDQWLoJBK+J/xTM0orKfi7S1d8Gvf0MDxeC5ckv4FhAycoVJFFzwX3UxQaxYJuUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeGhjxV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D2C4CECD;
+	Wed,  6 Nov 2024 13:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898539;
-	bh=kipuqxhVe2lwQ+jlsPlLRUSXszzXXydufFsXfNtLi2Q=;
+	s=korg; t=1730898429;
+	bh=Cc8ipor4UzGBWEHe/89VmV4ADdy7w0mXc/2wvxwDvbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYR+xGPhchnM9ZlH1cDdpJVowe6kQciPGuUm8sW1dm3u9Vhv0WV23Pjt/se0T+/Hj
-	 mgm1FPAOOeE8ZyZcB7r9KSS9x8TXtKM1qBi4BnlZMC0OOd0JBn09fnzvc38qqk23Sz
-	 q9c/DWhjsxhSf4DdULJH3uV9v5DeebMXqQ+zjCU8=
+	b=zeGhjxV0upOKbiJMSZySGoHKi231PUAB7ZHDgO5Kc6StGLNCnDhIhEFJMDnMF/JOk
+	 RD4sDRMMNf2UBHB1SjtRsrucP3LP2MTYzBGU/UgczvGwBQUz5xThy/zl8NLIOcOFGh
+	 U0yectflDmQEL7EShzJbBZZWlMJexBns3awU4FzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Sinadin Shan <sinadin.shan@oracle.com>,
+	Yifei Liu <yifei.l.liu@oracle.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 235/462] spi: s3c64xx: fix timeout counters in flush_fifo
-Date: Wed,  6 Nov 2024 13:02:08 +0100
-Message-ID: <20241106120337.328103772@linuxfoundation.org>
+Subject: [PATCH 5.4 236/462] selftests: breakpoints: use remaining time to check if suspend succeed
+Date: Wed,  6 Nov 2024 13:02:09 +0100
+Message-ID: <20241106120337.351625409@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,47 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Yifei Liu <yifei.l.liu@oracle.com>
 
-[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
+[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
 
-In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
-in the do { } while(test && loops--) condition. This means the loops is
-left at the unsigned equivalent of -1 if the loop times out. The test
-after will never pass as if tests for loops == 0.
+step_after_suspend_test fails with device busy error while
+writing to /sys/power/state to start suspend. The test believes
+it failed to enter suspend state with
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
-Signed-off-by: Mark Brown <broonie@kernel.org>
+$ sudo ./step_after_suspend_test
+TAP version 13
+Bail out! Failed to enter Suspend state
+
+However, in the kernel message, I indeed see the system get
+suspended and then wake up later.
+
+[611172.033108] PM: suspend entry (s2idle)
+[611172.044940] Filesystems sync: 0.006 seconds
+[611172.052254] Freezing user space processes
+[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
+[611172.067920] OOM killer disabled.
+[611172.072465] Freezing remaining freezable tasks
+[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
+[611172.117126] serial 00:03: disabled
+some other hardware get reconnected
+[611203.136277] OOM killer enabled.
+[611203.140637] Restarting tasks ...
+[611203.141135] usb 1-8.1: USB disconnect, device number 7
+[611203.141755] done.
+[611203.155268] random: crng reseeded on system resumption
+[611203.162059] PM: suspend exit
+
+After investigation, I noticed that for the code block
+if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
+	ksft_exit_fail_msg("Failed to enter Suspend state\n");
+
+The write will return -1 and errno is set to 16 (device busy).
+It should be caused by the write function is not successfully returned
+before the system suspend and the return value get messed when waking up.
+As a result, It may be better to check the time passed of those few
+instructions to determine whether the suspend is executed correctly for
+it is pretty hard to execute those few lines for 5 seconds.
+
+The timer to wake up the system is set to expire after 5 seconds and
+no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
+it means the timer expired and wake the system up. Otherwise, the system
+could be considered to enter the suspend state failed if there is any
+remaining time.
+
+After appling this patch, the test would not fail for it believes the
+system does not go to suspend by mistake. It now could continue to the
+rest part of the test after suspend.
+
+Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
+Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index d9420561236c2..108a087a2777c 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -211,7 +211,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 	loops = msecs_to_loops(1);
- 	do {
- 		val = readl(regs + S3C64XX_SPI_STATUS);
--	} while (TX_FIFO_LVL(val, sdd) && loops--);
-+	} while (TX_FIFO_LVL(val, sdd) && --loops);
+diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+index b3ead29c60894..bff81d95a0319 100644
+--- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
++++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+@@ -152,7 +152,10 @@ void suspend(void)
+ 	if (err < 0)
+ 		ksft_exit_fail_msg("timerfd_settime() failed\n");
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
-@@ -224,7 +224,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 			readl(regs + S3C64XX_SPI_RX_DATA);
- 		else
- 			break;
--	} while (loops--);
-+	} while (--loops);
+-	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
++	system("(echo mem > /sys/power/state) 2> /dev/null");
++
++	timerfd_gettime(timerfd, &spec);
++	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
+ 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
+ 	close(timerfd);
 -- 
 2.43.0
 
