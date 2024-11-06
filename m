@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1AE9BEEB3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A681D9BEE70
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 804EB285A6F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53901C247D2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43281DF98F;
-	Wed,  6 Nov 2024 13:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14811E0DC4;
+	Wed,  6 Nov 2024 13:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5hSy3NM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxunuMGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FE21CCB5F;
-	Wed,  6 Nov 2024 13:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE971DED63;
+	Wed,  6 Nov 2024 13:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899189; cv=none; b=GzDWlwBif2J7ARtpQjE/4wmI8GIb3hPz+L1qMFYt419jK26ap/VkLp/dx/oiyX+mAPIjkt/K3/xZJwt9w6F8xLpc3ChWFjU2R8+dIUqBrF1reNwYktalI3OgIPhNM/yCib+IkyL3MVCtVU6JQV6iAfkdSh6cUzSvI9RPXViPMFg=
+	t=1730899035; cv=none; b=Lz2tPqc1r+TLLca9dF53tzBba/yc2b+Zr+SuubpuU1f/19XEHp4OIVGBRS3uhM4TqfRiHZQIerOmrwbb+UZ+fo+a5E9kSKXGHy7qRX6NbEr1bcq/5vY/O7+Yrh/MUgnbFXTM8v49LsGWOBDvb3hrrXivz3Kjam4tMy4joahdE0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899189; c=relaxed/simple;
-	bh=B5+XzVY2mRVkOjTAB9EMMcyHrcJb3Qy/EP43H0Jsd4k=;
+	s=arc-20240116; t=1730899035; c=relaxed/simple;
+	bh=usGgYjs5oF5lV5eW/ltjnt4N5OFZyCE76iWKZHHAc9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdV67BBWq2XdQGIfs442YvADrhcpOK3QMXQtrW9pI9OC8+qWrUu7VNwjcvcEzmoL2hppxKlyTCmd7ve+CzH5/cBNKnHukOn5OhpLyViAr40s/3vXf37Vr154lo98uM1EDdXld+ylD1+8FBrZQxmUkOgDpROyVMy8qzzpdGMlcoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5hSy3NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262E0C4CED4;
-	Wed,  6 Nov 2024 13:19:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jNuDs1z/w/T0aA2gpdV7FzxGtqjY6rDJhN39C4gjKX81/pD7uIs5Z1BqLa7FBQjDeFPCg0gQ1Lx4TcucJtfBh6aPJP1OZpUT8aBQTErB1c2rr3px3oDE/FuyES6eoC54Q6ZwVWnFHwcPZ3yuu/iWc/vP/7cl5cfyLSVkjsEdyrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxunuMGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCB1C4CED7;
+	Wed,  6 Nov 2024 13:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899189;
-	bh=B5+XzVY2mRVkOjTAB9EMMcyHrcJb3Qy/EP43H0Jsd4k=;
+	s=korg; t=1730899035;
+	bh=usGgYjs5oF5lV5eW/ltjnt4N5OFZyCE76iWKZHHAc9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5hSy3NMsWIa3F/qPVKsP4wuJNsPeGmjMKvQnm6iCrWebcg8/EEukRmsBtJlIFG08
-	 zSGUHsd/HWc0x4GpXzQG/qnlJtdHlitSpHU2sdWXn5w3xgLamgwiNOERTW0l6ZJskF
-	 hXaWAQ4hmojz6w/18qt/E4noPMOV48sUqHW3Ferc=
+	b=IxunuMGT77AaQ/o5cdx3Lyy0UhGLas5FHTomBszjAKwzigR4VjVyq0w6kw0iha78y
+	 cJqninCRQrqpLVbyDF7KZagn5rpAcc28EY5SSQSgkyJ1Ip2VFCaa7yqFjqbBagDAmO
+	 QxZOwn+N4SWg7WS2GcZTnwiURo+0FdkhPxkd35TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/73] ACPI: CPPC: Make rmw_lock a raw_spin_lock
+Subject: [PATCH 5.4 440/462] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
 Date: Wed,  6 Nov 2024 13:05:33 +0100
-Message-ID: <20241106120300.830650101@linuxfoundation.org>
+Message-ID: <20241106120342.368364001@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,132 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit 1c10941e34c5fdc0357e46a25bd130d9cf40b925 ]
+[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
 
-The following BUG was triggered:
+As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
+can only checksum TCP and UDP over IPv6 if the IP header does not
+contains extension.
 
-=============================
-[ BUG: Invalid wait context ]
-6.12.0-rc2-XXX #406 Not tainted
------------------------------
-kworker/1:1/62 is trying to lock:
-ffffff8801593030 (&cpc_ptr->rmw_lock){+.+.}-{3:3}, at: cpc_write+0xcc/0x370
-other info that might help us debug this:
-context-{5:5}
-2 locks held by kworker/1:1/62:
-  #0: ffffff897ef5ec98 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x2c/0x50
-  #1: ffffff880154e238 (&sg_policy->update_lock){....}-{2:2}, at: sugov_update_shared+0x3c/0x280
-stack backtrace:
-CPU: 1 UID: 0 PID: 62 Comm: kworker/1:1 Not tainted 6.12.0-rc2-g9654bd3e8806 #406
-Workqueue:  0x0 (events)
-Call trace:
-  dump_backtrace+0xa4/0x130
-  show_stack+0x20/0x38
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x28
-  __lock_acquire+0x480/0x1ad8
-  lock_acquire+0x114/0x310
-  _raw_spin_lock+0x50/0x70
-  cpc_write+0xcc/0x370
-  cppc_set_perf+0xa0/0x3a8
-  cppc_cpufreq_fast_switch+0x40/0xc0
-  cpufreq_driver_fast_switch+0x4c/0x218
-  sugov_update_shared+0x234/0x280
-  update_load_avg+0x6ec/0x7b8
-  dequeue_entities+0x108/0x830
-  dequeue_task_fair+0x58/0x408
-  __schedule+0x4f0/0x1070
-  schedule+0x54/0x130
-  worker_thread+0xc0/0x2e8
-  kthread+0x130/0x148
-  ret_from_fork+0x10/0x20
+This is enforced for UDP packets emitted from user-space to an IPv6
+address as they go through ip6_make_skb(), which calls
+__ip6_append_data() where a check is done on the header size before
+setting CHECKSUM_PARTIAL.
 
-sugov_update_shared() locks a raw_spinlock while cpc_write() locks a
-spinlock.
+But the introduction of UDP encapsulation with fou6 added a code-path
+where it is possible to get an skb with a partial UDP checksum and an
+IPv6 header with extension:
+* fou6 adds a UDP header with a partial checksum if the inner packet
+does not contains a valid checksum.
+* ip6_tunnel adds an IPv6 header with a destination option extension
+header if encap_limit is non-zero (the default value is 4).
 
-To have a correct wait-type order, update rmw_lock to a raw spinlock and
-ensure that interrupts will be disabled on the CPU holding it.
+The thread linked below describes in more details how to reproduce the
+problem with GRE-in-UDP tunnel.
 
-Fixes: 60949b7b8054 ("ACPI: CPPC: Fix MASK_VAL() usage")
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://patch.msgid.link/20241028125657.1271512-1-pierre.gondois@arm.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add a check on the network header size in skb_csum_hwoffload_help() to
+make sure no IPv6 packet with extension header is handed to a network
+device with NETIF_F_IPV6_CSUM capability.
+
+Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
+Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 9 +++++----
- include/acpi/cppc_acpi.h | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 8d14e6c705357..0e9ccedb08dab 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -813,7 +813,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ff62b0027d600..b75c9bebd5c6e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3267,6 +3267,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		return 0;
  
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
--	spin_lock_init(&cpc_ptr->rmw_lock);
-+	raw_spin_lock_init(&cpc_ptr->rmw_lock);
- 
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1020,6 +1020,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 	struct cpc_desc *cpc_desc;
-+	unsigned long flags;
- 
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1047,7 +1048,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			return -ENODEV;
+ 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
++		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
++		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
++			goto sw_checksum;
+ 		switch (skb->csum_offset) {
+ 		case offsetof(struct tcphdr, check):
+ 		case offsetof(struct udphdr, check):
+@@ -3274,6 +3277,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
  		}
- 
--		spin_lock(&cpc_desc->rmw_lock);
-+		raw_spin_lock_irqsave(&cpc_desc->rmw_lock, flags);
- 		switch (size) {
- 		case 8:
- 			prev_val = readb_relaxed(vaddr);
-@@ -1062,7 +1063,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			prev_val = readq_relaxed(vaddr);
- 			break;
- 		default:
--			spin_unlock(&cpc_desc->rmw_lock);
-+			raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 			return -EFAULT;
- 		}
- 		val = MASK_VAL_WRITE(reg, prev_val, val);
-@@ -1095,7 +1096,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
  	}
  
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		spin_unlock(&cpc_desc->rmw_lock);
-+		raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 
- 	return ret_val;
++sw_checksum:
+ 	return skb_checksum_help(skb);
  }
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 0fed87e2a8959..28179bb794b2f 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -65,7 +65,7 @@ struct cpc_desc {
- 	int write_cmd_status;
- 	int write_cmd_id;
- 	/* Lock used for RMW operations in cpc_write() */
--	spinlock_t rmw_lock;
-+	raw_spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
+ EXPORT_SYMBOL(skb_csum_hwoffload_help);
 -- 
 2.43.0
 
