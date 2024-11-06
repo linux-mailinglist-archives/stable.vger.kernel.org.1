@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED1B9BEABA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:50:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0BA9BE84C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A11A61C2138F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:50:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D55285017
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB041E0B7C;
-	Wed,  6 Nov 2024 12:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A0B1DFD83;
+	Wed,  6 Nov 2024 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLnu9Edi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R94aWU83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12BA1F12F1;
-	Wed,  6 Nov 2024 12:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762EF1DED58;
+	Wed,  6 Nov 2024 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896755; cv=none; b=QE40IGnMq0Z6l+71P34PDLn1f3kBVJTRzYV9EC5mN26WYKnmY9ME4UO9L5PhenVVdu1gxZtCPGbn4UF4/ck/Og2zuY/296QP5mCeEF6SuLeyjkE47GdeG23S5eH/ekY00FpbT69e5dvWMGLizWzWFGvhkp1r3fbrSKwPN10+4JE=
+	t=1730895792; cv=none; b=od1QQcnDJ+znBVHnhzdCj8W820rWRLft+uQohTs1zP5ngRPegpsoNGyTaqCrKdYWXZByLbFPz6Uhkt2cUA0ar6MKDhTyZB75eFqKDz/iKQUW3DFgPtF8BKtKlPTr63syjJMCbxASX5kBmWYcucc0C+88zuWu6eRausowtiCj1BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896755; c=relaxed/simple;
-	bh=ExFwaZGuI2iOtVlfnAOVI0zpdOE81GT1ki6Gl+cq0oc=;
+	s=arc-20240116; t=1730895792; c=relaxed/simple;
+	bh=ze5ixjwogLy4SCOM4US4DeGipTrhkI4zu3nBnLvMn9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9KKGgsuy6R8wbp12pDwsYZrxq9uh7nlR5VW8Z67gxWT3NcAzseonsH3485iEwV12RLcJoXHwDV0DFPcqMV9uI7NWK5uq3aZtfQOcD1D/rWi0WdfKgarmslbk7C3SGvx3ZRMj9yeuTOeaLzdDcQyr4dPyB7w6+a3sFTkVbSBaA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLnu9Edi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2466C4CECD;
-	Wed,  6 Nov 2024 12:39:13 +0000 (UTC)
+	 MIME-Version; b=Gb3UlfOEYY+V55IZAyqbhfxCSq59vlHSStClSdBVh3z6TTivNVfA8je8dqTOvZF65Lbi7F8RBWFOvbw5DJn2NKGu51PBCXxgzH7HXEiqwSKulzoH24DI+WZIes/DAjORavgIMMkLksjQDNxORrqjsWJU5Y931TezJSW0/hiP9/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R94aWU83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FBCC4CECD;
+	Wed,  6 Nov 2024 12:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896754;
-	bh=ExFwaZGuI2iOtVlfnAOVI0zpdOE81GT1ki6Gl+cq0oc=;
+	s=korg; t=1730895792;
+	bh=ze5ixjwogLy4SCOM4US4DeGipTrhkI4zu3nBnLvMn9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLnu9Ediq9e/yQyvw1IldUDRNgPVecadSYHC+acUGGgdQndeZ09FfLphyzbdsw4t0
-	 3fqD65t0J7XUpOVjjEk3Ag5jE+6BCDfmDUSEa9Nq1IYcQis4zD/0a8TS89G5wVCSEq
-	 QL0tW+deD2qlbJE9dn/ZkprpJGPyNjkWzGpPQxF0=
+	b=R94aWU83pPLQb7BWUxZ23vJFjR2OkBM2Q6p7F0/0QEhlPJphYngSFddGcK4KPt8ZZ
+	 wj6duWucAAH+p8AnHuNYdJyBzQtPNXK3CDGmYXe2RMsgotONrkYls7Y9IFtvHDatI8
+	 z26kroIb2xVMAd33VToLI3XJsVSjxd4YSuTTXs1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dimitri Sivanich <sivanich@hpe.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/110] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
+Subject: [PATCH 4.19 338/350] misc: sgi-gru: Dont disable preemption in GRU driver
 Date: Wed,  6 Nov 2024 13:04:26 +0100
-Message-ID: <20241106120304.854197630@linuxfoundation.org>
+Message-ID: <20241106120329.054277990@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Dimitri Sivanich <sivanich@hpe.com>
 
-[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
+[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
 
-Sync iterator conditions with ieee80211_iter_keys_rcu.
+Disabling preemption in the GRU driver is unnecessary, and clashes with
+sleeping locks in several code paths.  Remove preempt_disable and
+preempt_enable from the GRU driver.
 
-Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ drivers/misc/sgi-gru/grukservices.c | 2 --
+ drivers/misc/sgi-gru/grumain.c      | 4 ----
+ drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
+ 3 files changed, 8 deletions(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 6b089594a9f3f..3df4695caef6c 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -918,6 +918,26 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->key_mtx);
- }
+diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
+index 030769018461b..256be2e12faa1 100644
+--- a/drivers/misc/sgi-gru/grukservices.c
++++ b/drivers/misc/sgi-gru/grukservices.c
+@@ -270,7 +270,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
+ 	int lcpu;
  
-+static void
-+ieee80211_key_iter(struct ieee80211_hw *hw,
-+		   struct ieee80211_vif *vif,
-+		   struct ieee80211_key *key,
-+		   void (*iter)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				struct ieee80211_key_conf *key,
-+				void *data),
-+		   void *iter_data)
-+{
-+	/* skip keys of station in removal process */
-+	if (key->sta && key->sta->removed)
-+		return;
-+	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
-+		return;
-+	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
-+	     &key->conf, iter_data);
-+}
-+
- void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 			 struct ieee80211_vif *vif,
- 			 void (*iter)(struct ieee80211_hw *hw,
-@@ -937,16 +957,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
--			iter(hw, &sdata->vif,
--			     key->sta ? &key->sta->sta : NULL,
--			     &key->conf, iter_data);
-+			ieee80211_key_iter(hw, vif, key, iter, iter_data);
- 	} else {
- 		list_for_each_entry(sdata, &local->interfaces, list)
- 			list_for_each_entry_safe(key, tmp,
- 						 &sdata->key_list, list)
--				iter(hw, &sdata->vif,
--				     key->sta ? &key->sta->sta : NULL,
--				     &key->conf, iter_data);
-+				ieee80211_key_iter(hw, &sdata->vif, key,
-+						   iter, iter_data);
- 	}
- 	mutex_unlock(&local->key_mtx);
- }
-@@ -964,17 +981,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+ 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
+-	preempt_disable();
+ 	bs = gru_lock_kernel_context(-1);
+ 	lcpu = uv_blade_processor_id();
+ 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
+@@ -284,7 +283,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
+ static void gru_free_cpu_resources(void *cb, void *dsr)
  {
- 	struct ieee80211_key *key;
- 
--	list_for_each_entry_rcu(key, &sdata->key_list, list) {
--		/* skip keys of station in removal process */
--		if (key->sta && key->sta->removed)
--			continue;
--		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
--			continue;
--
--		iter(hw, &sdata->vif,
--		     key->sta ? &key->sta->sta : NULL,
--		     &key->conf, iter_data);
--	}
-+	list_for_each_entry_rcu(key, &sdata->key_list, list)
-+		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
+ 	gru_unlock_kernel_context(uv_numa_blade_id());
+-	preempt_enable();
  }
  
- void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+ /*
+diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
+index 8c3e0317c115b..cb4c97210ec36 100644
+--- a/drivers/misc/sgi-gru/grumain.c
++++ b/drivers/misc/sgi-gru/grumain.c
+@@ -954,10 +954,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 
+ again:
+ 	mutex_lock(&gts->ts_ctxlock);
+-	preempt_disable();
+ 
+ 	if (gru_check_context_placement(gts)) {
+-		preempt_enable();
+ 		mutex_unlock(&gts->ts_ctxlock);
+ 		gru_unload_context(gts, 1);
+ 		return VM_FAULT_NOPAGE;
+@@ -966,7 +964,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 	if (!gts->ts_gru) {
+ 		STAT(load_user_context);
+ 		if (!gru_assign_gru_context(gts)) {
+-			preempt_enable();
+ 			mutex_unlock(&gts->ts_ctxlock);
+ 			set_current_state(TASK_INTERRUPTIBLE);
+ 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
+@@ -982,7 +979,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
+ 				vma->vm_page_prot);
+ 	}
+ 
+-	preempt_enable();
+ 	mutex_unlock(&gts->ts_ctxlock);
+ 
+ 	return VM_FAULT_NOPAGE;
+diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
+index be28f05bfafa9..0f837cc3a417b 100644
+--- a/drivers/misc/sgi-gru/grutlbpurge.c
++++ b/drivers/misc/sgi-gru/grutlbpurge.c
+@@ -78,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
+ 	struct gru_tlb_global_handle *tgh;
+ 	int n;
+ 
+-	preempt_disable();
+ 	if (uv_numa_blade_id() == gru->gs_blade_id)
+ 		n = get_on_blade_tgh(gru);
+ 	else
+@@ -92,7 +91,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
+ static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
+ {
+ 	unlock_tgh_handle(tgh);
+-	preempt_enable();
+ }
+ 
+ /*
 -- 
 2.43.0
 
