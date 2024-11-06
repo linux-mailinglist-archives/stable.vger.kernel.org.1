@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A88A9BE728
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE729BECD4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5C21C234A3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55E31F219E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA081DF24E;
-	Wed,  6 Nov 2024 12:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6871F7074;
+	Wed,  6 Nov 2024 12:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSItzI+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uyw9Rbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B4E1D5AD7;
-	Wed,  6 Nov 2024 12:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEF01F7069;
+	Wed,  6 Nov 2024 12:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895071; cv=none; b=rYVAw8zAYlyRS3MoaBtc8J9o2xnnqjZg05KbWk7mBavLeeYIZUG7M1gjNdPwlk0Zz7yJj66xA13/neoAAu1k+LesJhRmePpSYOenXrcv/hizm/g4nkqxd6JGUK4Ab/DBmyjXYSgR+rHHkPJ5lgvkfaXcNF/oeqVrnje2Nwe58X0=
+	t=1730897979; cv=none; b=gi9wt4vJIEaPAvMHx2AlVr1M+k1y2p6PfYZXFlzb06ndcWzAvD3kt1ZaWKugyowAywZmzusxEUwTe4v4a4l13O90AM8GyET/MveMaTOA33YuwZ9lPSLBiOoRMR5UBfEh/Ya49l2ke0TNw2WkOWArqZiW/DnyNaa4+Iry7aRXrHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895071; c=relaxed/simple;
-	bh=dmJHD/KF/m6L9oxSsxE9KNp555yshKvoStopIJhp65E=;
+	s=arc-20240116; t=1730897979; c=relaxed/simple;
+	bh=B82LKUZqoSG+mMRJBZzWNsOUuIJ0pfJMc1/iKbay3/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0bkm6Bm0ivvs98tYm+bosos2TvfiP6jv402PVYqygGj14uUc27H7w1ungxYFCI/xQ6j6AYUPk51diphipkNm3z3jjC3Bn+FfAdTouKZc74i30PKVDS0Vu8VKPGZv9fh59rZ4Lm3nt8uhUacKjFIKpWUpliW2EmV6wuzFIW8odE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSItzI+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD4DC4CECD;
-	Wed,  6 Nov 2024 12:11:10 +0000 (UTC)
+	 MIME-Version; b=FQL5QHvPNzQEASkoBnbRSykKaAxi/QINOUn6L1cUWanQsjmKKW+pJpUditLsaFjhLrtZC+CYU7TznuNWC1t9+FSV243ulIqqM5socFYqvHAYN+mqRKt8qYj3ScHtA6CZ+S1yaW1MmdITBVejEVQ8++NCI5vNhYC4RphOOJIcpkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uyw9Rbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF62C4CED3;
+	Wed,  6 Nov 2024 12:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895071;
-	bh=dmJHD/KF/m6L9oxSsxE9KNp555yshKvoStopIJhp65E=;
+	s=korg; t=1730897979;
+	bh=B82LKUZqoSG+mMRJBZzWNsOUuIJ0pfJMc1/iKbay3/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSItzI+gtiVYg0dlYDujrMzWIfX1gZUY7HlIY1cACS5atA+wNj6bL1AsEh5oVnb7O
-	 gcy+Q9uM2oyjTuQDvEx0oSIlDU9dYro1VYBHemfFs0QvQV5bdnEABRiFlioRuD4san
-	 /741sO5ng1oAwUtyT1VRPhB+s6Eupav88eywDiJQ=
+	b=2uyw9Rbrti6/6cpLKnVzKi0Z25toJ19Urez5st3Cw/b/BV3+0EQYhTK5+UjfrBQQV
+	 GQOaq3hQct0D3PDB+wfaHNiASpC9i0rqiTBHl5qgxq+6+/LHPbp/fdxOIzn/tPrRaw
+	 dYFgQeKZ4BvF1FX9aeaCznZaogcVgY2Pv5m8sPnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Helge Deller <deller@gmx.de>,
+	Yuesong Li <liyuesong@vivo.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 049/350] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
+Subject: [PATCH 5.4 084/462] drivers:drm:exynos_drm_gsc:Fix wrong assignment in gsc_bind()
 Date: Wed,  6 Nov 2024 12:59:37 +0100
-Message-ID: <20241106120322.102180381@linuxfoundation.org>
+Message-ID: <20241106120333.581850592@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Yuesong Li <liyuesong@vivo.com>
 
-[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
+[ Upstream commit 94ebc3d3235c5c516f67315059ce657e5090e94b ]
 
-If an error occurs after request_mem_region(), a corresponding
-release_mem_region() should be called, as already done in the remove
-function.
+cocci reported a double assignment problem. Upon reviewing previous
+commits, it appears this may actually be an incorrect assignment.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 8b9550344d39 ("drm/ipp: clean up debug messages")
+Signed-off-by: Yuesong Li <liyuesong@vivo.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hpfb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
-index 9230db9ea94b7..47ec02a38f76c 100644
---- a/drivers/video/fbdev/hpfb.c
-+++ b/drivers/video/fbdev/hpfb.c
-@@ -343,6 +343,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
- 	if (hpfb_init_one(paddr, vaddr)) {
- 		if (d->scode >= DIOII_SCBASE)
- 			iounmap((void *)vaddr);
-+		release_mem_region(d->resource.start, resource_size(&d->resource));
- 		return -ENOMEM;
- 	}
- 	return 0;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+index bcf830c5b8ea9..1bc2afcf9f088 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+@@ -1169,7 +1169,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
+ 	struct exynos_drm_ipp *ipp = &ctx->ipp;
+ 
+ 	ctx->drm_dev = drm_dev;
+-	ctx->drm_dev = drm_dev;
++	ipp->drm_dev = drm_dev;
+ 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
+ 
+ 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,
 -- 
 2.43.0
 
