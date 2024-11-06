@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DF39BE6C7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901819BECA7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 116ADB22719
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55821285D54
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554BE1DF249;
-	Wed,  6 Nov 2024 12:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F06D1F6662;
+	Wed,  6 Nov 2024 12:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="su65ojQF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKzqaVzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE41DF24C;
-	Wed,  6 Nov 2024 12:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14551F585A;
+	Wed,  6 Nov 2024 12:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894819; cv=none; b=SaSBRBbrJAF23pM+OT6uAP3jJRJEPgGb21Q+L5vUzJW9sMPlwYHt1l5UFxuSovYgt9+Y/6jUmYTRVAYosoLyvatq4cVUTlaaZ9A1dmZnI0HlIEvfQTxkUch9fSrZrEzJJMeFWcU5bcDuc9lWd/cYxdIXDeKlETN6cSKizrZhxb0=
+	t=1730897844; cv=none; b=Y84sg0YSFsziLuVWbLtXtVxWKkcZsmaXlMjBni87NbQR2L31lP7jOoUHmIFO6npUZRLGenLmgWxxl7nXG2CzaPqqoXkIcyxL1evXxhZQCBa+0codYawMZB2qwAT7l50vgJG8ms4oSU+sohlfZCTNw5rtbnwksBXJn2ksGk5ec3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894819; c=relaxed/simple;
-	bh=rmjTWp5nKqx4/qbbum5o3KE3M/YC87u9xLEHvhMJSSg=;
+	s=arc-20240116; t=1730897844; c=relaxed/simple;
+	bh=+uq8T4+TLs2NZ3uEzZhhmt8c5JYQ3TIPQmjla3MSHgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro+6C0nhQcq3a4uoKvqQwTAY9zBgpSklYAXGbjmiBcHELosoL7RuQ2mPl51R3ik/Km4YQX3I9o12mJS0/RbWcPtPCreGDziuhnim9+hxFKPkG9Nvz60IwGDLwgIQqckdXf/SoxyzVSrPcNqxB5zkEpfo/pnv8v9ZHIjCKIP/gUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=su65ojQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F96EC4CECD;
-	Wed,  6 Nov 2024 12:06:58 +0000 (UTC)
+	 MIME-Version; b=GKD7q/S2o/5p69q2llp5wZ2q8hjDcJTVEY0ksrBRSTnbiLD8s1ns57ovZp6SlXvUI6ns+qFG9ix0zrCZodm7TZbtmINua8fWd8KoF6OXi3yh1IHrzLC7iLnNXcf+oEaazg76pFfSab3Wn2ro0NhZtSHOcS/m6eoodSNOjZCpaeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKzqaVzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5577EC4CED3;
+	Wed,  6 Nov 2024 12:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894818;
-	bh=rmjTWp5nKqx4/qbbum5o3KE3M/YC87u9xLEHvhMJSSg=;
+	s=korg; t=1730897844;
+	bh=+uq8T4+TLs2NZ3uEzZhhmt8c5JYQ3TIPQmjla3MSHgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=su65ojQFABFl5wTmZQHH4CfVb0k2w+mxALO/mwHTRiDqYXZSi6hy/itgQ0EsMfMKS
-	 IT2HrM777u//znjTtKlSIe/FtDLdCJCM9aBaBNRaU+esIEtMrFZFXq3yHoujEaRndX
-	 pmIPRvbbQDCZ0eyEbfL+W0uzKD/GNTYCG3b/JUwY=
+	b=NKzqaVzGHRhQjqmyIqxRvjOJdfrtphiae4PI9fpFQ6soyowQfNgWr54MntexNdH+k
+	 LAU3Ggv2VQ4VVOfR7vVt8NhXqaBLWAsl/tXNU0WUGQ1LxDWdr5lWWtb2MXXbY8dBQR
+	 2jjYijZYA6JjDm7PZe9hYnU98GB8gxswnbrRqEr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zhang Changzhong <zhangchangzhong@huawei.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 003/350] staging: iio: frequency: ad9834: Validate frequency parameter value
-Date: Wed,  6 Nov 2024 12:58:51 +0100
-Message-ID: <20241106120320.952383016@linuxfoundation.org>
+Subject: [PATCH 5.4 039/462] can: j1939: use correct function name in comment
+Date: Wed,  6 Nov 2024 12:58:52 +0100
+Message-ID: <20241106120332.488059442@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Zhang Changzhong <zhangchangzhong@huawei.com>
 
-[ Upstream commit b48aa991758999d4e8f9296c5bbe388f293ef465 ]
+[ Upstream commit dc2ddcd136fe9b6196a7dd01f75f824beb02d43f ]
 
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
+The function j1939_cancel_all_active_sessions() was renamed to
+j1939_cancel_active_session() but name in comment wasn't updated.
 
-Modify parameters checking.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Link: https://patch.msgid.link/1724935703-44621-1-git-send-email-zhangchangzhong@huawei.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/j1939/transport.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index 5e98ee5dfbdc..3eb089dc220e 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -116,7 +116,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
- 
- 	clk_freq = clk_get_rate(st->mclk);
- 
--	if (fout > (clk_freq / 2))
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 009c5a67cfbdc..1d926a0372e61 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1171,10 +1171,10 @@ static enum hrtimer_restart j1939_tp_txtimer(struct hrtimer *hrtimer)
+ 		break;
+ 	case -ENETDOWN:
+ 		/* In this case we should get a netdev_event(), all active
+-		 * sessions will be cleared by
+-		 * j1939_cancel_all_active_sessions(). So handle this as an
+-		 * error, but let j1939_cancel_all_active_sessions() do the
+-		 * cleanup including propagation of the error to user space.
++		 * sessions will be cleared by j1939_cancel_active_session().
++		 * So handle this as an error, but let
++		 * j1939_cancel_active_session() do the cleanup including
++		 * propagation of the error to user space.
+ 		 */
+ 		break;
+ 	case -EOVERFLOW:
 -- 
 2.43.0
 
