@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-91325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22C09BED7B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596569BEDAE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0731F219A6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F3EC2862F0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2241E103C;
-	Wed,  6 Nov 2024 13:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858B51EF938;
+	Wed,  6 Nov 2024 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTrTHTi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDDVD276"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B01E1A25;
-	Wed,  6 Nov 2024 13:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE31E0B84;
+	Wed,  6 Nov 2024 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898402; cv=none; b=sgFrOgQjhsx5XkXFo/fzAbgI98kmrq1CXlgba8dK9UJIYR1o54drjim+wyuEHe6UfENdVkoOQnOEbv9SffHMO0CrFt/5tvLNtSmpCTySRNLdycch0LuaU+Jmmxg58M0KhuxNucI2+E3nHMEjnw9JP6B9Ao7mT4Mvp0KwD5zMtK0=
+	t=1730898542; cv=none; b=Dk7WzQnyf58oyykPXDW3roC/7jnHuzfSL8gpQZ2n2Uw6SeeI63bCJyFtHg+Pc7fvONOUzsh0NZP7JwbCGy54c94y+BDWQ6/7INLkvDKqY82H9YqqQG3sJ6iqGFEmzzo3iABq3RI9nqyyk2yRQn8uiVZfC9uZnbitbaxJcVvuPRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898402; c=relaxed/simple;
-	bh=b2vVDA7m37YMNeTWlv/bYw2QmT5XM2Ed2RE70Lr3YSI=;
+	s=arc-20240116; t=1730898542; c=relaxed/simple;
+	bh=WjhvC65vtgyja0bzu5MikGHgiw89ac/I8LMKsBRKnt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVNCUNexvols34UrnIOz8Ccgy8+P9R2HOpf3YmsNzS1L1K1PVny7IeYyYUfnvZ21N+syOCs5leLmJq4g6gItHBgPt7+kkzlq3muPl5D2MxbDzRaZqeNasDIGTIQshxKDnmGJc44E1OLsn7yuGHvS5C4km5U4yisZBnSzulf13pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTrTHTi3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E20C4CECD;
-	Wed,  6 Nov 2024 13:06:41 +0000 (UTC)
+	 MIME-Version; b=Br5tgMyG6o4WNgRL9KTiBJU0O4uwzA1cEjt160dhBO6V9GmQJXKE66n4TBqUcgfVkyWkf6YTBx+a8U7A/ehydCy4sWN3GFZUmKAbLNGnRSOe6HqO2HjJCO05MiuWURNNvKyX91VYRRtEJdZgjrDiPwcN/YNXMR0D47NkOSE/OOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDDVD276; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA648C4CED3;
+	Wed,  6 Nov 2024 13:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898402;
-	bh=b2vVDA7m37YMNeTWlv/bYw2QmT5XM2Ed2RE70Lr3YSI=;
+	s=korg; t=1730898542;
+	bh=WjhvC65vtgyja0bzu5MikGHgiw89ac/I8LMKsBRKnt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTrTHTi3b2HPKfx5XfQA1xl2wCPEmmX+001+ZQa1RYQYN+mivavwJZAeRnDpcCHTp
-	 mbECf1W3PaPov/x35naahIxlMhgOBHMzXfhkvnJTxDvig2PcDkFhcc2v+smtMnTtI1
-	 bMpzJ278R2eB/ug9H1CB0EtfjamBOd7/L928zqVc=
+	b=iDDVD276ukp917dtb0Opm//VLuEwEUIdB1xfzHLaSlu/lvtQLACPkJ1UrQEC5Ptp+
+	 ywVoIM04TN0yRVnzyBrAJCoNF2MddBOQ7S2Xts92sa40BvVczlgbs1tG/PPJmKoIBG
+	 KoE5aYCUH9jlcRbD0UIcVVuGEiadyMr7SjqbxtC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 225/462] jfs: Fix uninit-value access of new_ea in ea_buffer
-Date: Wed,  6 Nov 2024 13:01:58 +0100
-Message-ID: <20241106120337.078524611@linuxfoundation.org>
+Subject: [PATCH 5.4 226/462] drm/amd/display: Check stream before comparing them
+Date: Wed,  6 Nov 2024 13:01:59 +0100
+Message-ID: <20241106120337.103314286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,55 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
+[ Upstream commit 35ff747c86767937ee1e0ca987545b7eed7a0810 ]
 
-syzbot reports that lzo1x_1_do_compress is using uninit-value:
+[WHAT & HOW]
+amdgpu_dm can pass a null stream to dc_is_stream_unchanged. It is
+necessary to check for null before dereferencing them.
 
-=====================================================
-BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
+This fixes 1 FORWARD_NULL issue reported by Coverity.
 
-...
-
-Uninit was stored to memory at:
- ea_put fs/jfs/xattr.c:639 [inline]
-
-...
-
-Local variable ea_buf created at:
- __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
- __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
-
-=====================================================
-
-The reason is ea_buf->new_ea is not initialized properly.
-
-Fix this by using memset to empty its content at the beginning
-in ea_get().
-
-Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index aea5531559c06..4ebee6e4dc1f9 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
- 	int rc;
- 	int quota_allocation = 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 2f56684780eb5..b498f2f485820 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1542,6 +1542,8 @@ static bool are_stream_backends_same(
+ bool dc_is_stream_unchanged(
+ 	struct dc_stream_state *old_stream, struct dc_stream_state *stream)
+ {
++	if (!old_stream || !stream)
++		return false;
  
-+	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
-+
- 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
- 	if (ji->ea.flag == 0)
- 		ea_size = 0;
+ 	if (!are_stream_backends_same(old_stream, stream))
+ 		return false;
 -- 
 2.43.0
 
