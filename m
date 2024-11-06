@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF2E9BE963
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BBC9BE836
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BAC1C22148
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 255A91C20B8A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55311DF99A;
-	Wed,  6 Nov 2024 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DB31DF740;
+	Wed,  6 Nov 2024 12:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfM5Uwb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sKITsTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213F198E96;
-	Wed,  6 Nov 2024 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BAC1DF726;
+	Wed,  6 Nov 2024 12:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896418; cv=none; b=R2wgCSFU+oQe/3u3vJb9rCjWl8wOLGjr5PiudKHRKc9WAJ6LCZYyr9Azm7a235MxLTs4ft6H3+UnfavkKM/ilW9nOOscKBATvwI6TUeSrvKZZNh2cwJ/CNhQ3V9AEqvSTyl6rAxsTNU9DwVwvE1TUXWszuseNvEmFkvpXYiOE1o=
+	t=1730895742; cv=none; b=tkR6kXjZsCj9tj7VAh3FC5cHwT0nI0fEGdrG6YlFcveWl92ogwDZcHuzoVvKWXufi2mOwpP4E7HyOOv9NwxEI6rlfNDD4bOuZq3rH5xR9Kp/mndVkq+hk+E1NSYBjQrKR6hJLqF8Hrw5K25V77RewD1PFr9REVumo2EO/bM91ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896418; c=relaxed/simple;
-	bh=pBYWOSBjPbFG6BVZ97ldA1kYRxxx7sN93b8QUOIR86g=;
+	s=arc-20240116; t=1730895742; c=relaxed/simple;
+	bh=0i+RItifkWfm7cGWqiXz3ykTNHafLwr7lxziLwJuFZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oIMGpducblpGY2oat+com0u/xr9N6oYFUc/OmaQDAYmlCMw5wSWf1aPBYqPt9jxFit+E27wpLSE/6yGP7HIFY/E2dNQJHNci3A7m5DsNtBGtpXzNO+WVkFr2xGt3tjGCqcS2XLLkSOA7WsusDARtSL5DwrXkmb2uV5ydYdRgdgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfM5Uwb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063E1C4CECD;
-	Wed,  6 Nov 2024 12:33:37 +0000 (UTC)
+	 MIME-Version; b=qdZzT/z2gRkkChcAjdIKBjIE7JQTH0iGCYc7aHlPyse336WPTI+Bvwf1hAl4q+mpRnpNEDpKZdycRUnmZfWh76g4/XhMdIeJenhMMi+YZyfqFmgW+I8li+Llw7MACaCgMwfmfBJaN2haqH0deJQxMeewAb3sFiwI+X1+dveMeeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sKITsTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767B9C4CED8;
+	Wed,  6 Nov 2024 12:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896418;
-	bh=pBYWOSBjPbFG6BVZ97ldA1kYRxxx7sN93b8QUOIR86g=;
+	s=korg; t=1730895742;
+	bh=0i+RItifkWfm7cGWqiXz3ykTNHafLwr7lxziLwJuFZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfM5Uwb8Kl03RIhH0/cuvhKfmnk9ApMt8v1d2ql5Nnw5Io6BW4a2ILYcYx2EMvFw+
-	 MwDjzbxc04HiOX+k8KEOfnBgxdXOTNm2mi1m+ZLQuvQAIpTLg4jmq0seHuI5exlM8J
-	 ELTqL3fTy9cf6rpWcEC3k40cfghDAv1TInAoDnr0=
+	b=2sKITsTwimKsSkYNpSOrdDWC/JbESlQJohw+u6ZkLGme0nWYsPeHo/tR5fLCA3UYU
+	 xe8pJnCCCnwutvnzaBJ+z/GiwxGyzRbNIl5M1BPSyjfZrvdul6/WgGNwePAJE6dROd
+	 imGGcGbsYEme6XRtRaBY12i4MM1xaYIGepPWJJuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 194/245] drm/xe: Kill regs/xe_sriov_regs.h
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 4.19 319/350] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
 Date: Wed,  6 Nov 2024 13:04:07 +0100
-Message-ID: <20241106120324.018793089@linuxfoundation.org>
+Message-ID: <20241106120328.632846383@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,155 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 466a6c3855cf00653c14a92a6e9f8ae50077b77d ]
+commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
 
-There is no real benefit to maintain a separate file. The register
-definitions related to SR-IOV can be placed in existing headers.
+The existing code moves VF to the same namespace as the synthetic NIC
+during netvsc_register_vf(). But, if the synthetic device is moved to a
+new namespace after the VF registration, the VF won't be moved together.
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240702183704.1022-3-michal.wajdeczko@intel.com
-Stable-dep-of: 993ca0eccec6 ("drm/xe: Add mmio read before GGTT invalidate")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To make the behavior more consistent, add a namespace check for synthetic
+NIC's NETDEV_REGISTER event (generated during its move), and move the VF
+if it is not in the same namespace.
+
+Cc: stable@vger.kernel.org
+Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
+Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h    |  6 ++++++
- drivers/gpu/drm/xe/regs/xe_regs.h       |  6 ++++++
- drivers/gpu/drm/xe/regs/xe_sriov_regs.h | 23 -----------------------
- drivers/gpu/drm/xe/xe_gt_sriov_pf.c     |  2 +-
- drivers/gpu/drm/xe/xe_lmtt.c            |  2 +-
- drivers/gpu/drm/xe/xe_sriov.c           |  2 +-
- 6 files changed, 15 insertions(+), 26 deletions(-)
- delete mode 100644 drivers/gpu/drm/xe/regs/xe_sriov_regs.h
+ drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-index 3c28650400586..a8c4998384d68 100644
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -91,6 +91,8 @@
- #define VE1_AUX_INV				XE_REG(0x42b8)
- #define   AUX_INV				REG_BIT(0)
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2526,6 +2526,31 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
  
-+#define XE2_LMEM_CFG				XE_REG(0x48b0)
++/* Set VF's namespace same as the synthetic NIC */
++static void netvsc_event_set_vf_ns(struct net_device *ndev)
++{
++	struct net_device_context *ndev_ctx = netdev_priv(ndev);
++	struct net_device *vf_netdev;
++	int ret;
 +
- #define XEHP_TILE_ADDR_RANGE(_idx)		XE_REG_MCR(0x4900 + (_idx) * 4)
- #define XEHP_FLAT_CCS_BASE_ADDR			XE_REG_MCR(0x4910)
- #define XEHP_FLAT_CCS_PTR			REG_GENMASK(31, 8)
-@@ -403,6 +405,10 @@
- #define   INVALIDATION_BROADCAST_MODE_DIS	REG_BIT(12)
- #define   GLOBAL_INVALIDATION_MODE		REG_BIT(2)
- 
-+#define LMEM_CFG				XE_REG(0xcf58)
-+#define   LMEM_EN				REG_BIT(31)
-+#define   LMTT_DIR_PTR				REG_GENMASK(30, 0) /* in multiples of 64KB */
++	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
++	if (!vf_netdev)
++		return;
 +
- #define HALF_SLICE_CHICKEN5			XE_REG_MCR(0xe188, XE_REG_OPTION_MASKED)
- #define   DISABLE_SAMPLE_G_PERFORMANCE		REG_BIT(0)
- 
-diff --git a/drivers/gpu/drm/xe/regs/xe_regs.h b/drivers/gpu/drm/xe/regs/xe_regs.h
-index 23ecba38ed419..55bf47c990169 100644
---- a/drivers/gpu/drm/xe/regs/xe_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_regs.h
-@@ -30,6 +30,9 @@
- #define GU_DEBUG				XE_REG(0x101018)
- #define   DRIVERFLR_STATUS			REG_BIT(31)
- 
-+#define VIRTUAL_CTRL_REG			XE_REG(0x10108c)
-+#define   GUEST_GTT_UPDATE_EN			REG_BIT(8)
++	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
++		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
++					       "eth%d");
++		if (ret)
++			netdev_err(vf_netdev,
++				   "Cannot move to same namespace as %s: %d\n",
++				   ndev->name, ret);
++		else
++			netdev_info(vf_netdev,
++				    "Moved VF to namespace with: %s\n",
++				    ndev->name);
++	}
++}
 +
- #define XEHP_MTCFG_ADDR				XE_REG(0x101800)
- #define   TILE_COUNT				REG_GENMASK(15, 8)
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2538,6 +2563,11 @@ static int netvsc_netdev_event(struct no
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
  
-@@ -66,6 +69,9 @@
- #define   DISPLAY_IRQ				REG_BIT(16)
- #define   GT_DW_IRQ(x)				REG_BIT(x)
- 
-+#define VF_CAP_REG				XE_REG(0x1901f8, XE_REG_OPTION_VF)
-+#define   VF_CAP				REG_BIT(0)
++	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
++		netvsc_event_set_vf_ns(event_dev);
++		return NOTIFY_DONE;
++	}
 +
- #define PVC_RP_STATE_CAP			XE_REG(0x281014)
- 
- #endif
-diff --git a/drivers/gpu/drm/xe/regs/xe_sriov_regs.h b/drivers/gpu/drm/xe/regs/xe_sriov_regs.h
-deleted file mode 100644
-index 017b4ddd1ecf4..0000000000000
---- a/drivers/gpu/drm/xe/regs/xe_sriov_regs.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Copyright © 2023 Intel Corporation
-- */
--
--#ifndef _REGS_XE_SRIOV_REGS_H_
--#define _REGS_XE_SRIOV_REGS_H_
--
--#include "regs/xe_reg_defs.h"
--
--#define XE2_LMEM_CFG			XE_REG(0x48b0)
--
--#define LMEM_CFG			XE_REG(0xcf58)
--#define   LMEM_EN			REG_BIT(31)
--#define   LMTT_DIR_PTR			REG_GENMASK(30, 0) /* in multiples of 64KB */
--
--#define VIRTUAL_CTRL_REG		XE_REG(0x10108c)
--#define   GUEST_GTT_UPDATE_EN		REG_BIT(8)
--
--#define VF_CAP_REG			XE_REG(0x1901f8, XE_REG_OPTION_VF)
--#define   VF_CAP			REG_BIT(0)
--
--#endif
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-index 9dbba9ab7a9ab..ef239440963ce 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
-@@ -5,7 +5,7 @@
- 
- #include <drm/drm_managed.h>
- 
--#include "regs/xe_sriov_regs.h"
-+#include "regs/xe_regs.h"
- 
- #include "xe_gt_sriov_pf.h"
- #include "xe_gt_sriov_pf_config.h"
-diff --git a/drivers/gpu/drm/xe/xe_lmtt.c b/drivers/gpu/drm/xe/xe_lmtt.c
-index 418661a889183..c5fdb36b6d336 100644
---- a/drivers/gpu/drm/xe/xe_lmtt.c
-+++ b/drivers/gpu/drm/xe/xe_lmtt.c
-@@ -7,7 +7,7 @@
- 
- #include <drm/drm_managed.h>
- 
--#include "regs/xe_sriov_regs.h"
-+#include "regs/xe_gt_regs.h"
- 
- #include "xe_assert.h"
- #include "xe_bo.h"
-diff --git a/drivers/gpu/drm/xe/xe_sriov.c b/drivers/gpu/drm/xe/xe_sriov.c
-index a274a5fb14018..5a1d65e4f19f2 100644
---- a/drivers/gpu/drm/xe/xe_sriov.c
-+++ b/drivers/gpu/drm/xe/xe_sriov.c
-@@ -5,7 +5,7 @@
- 
- #include <drm/drm_managed.h>
- 
--#include "regs/xe_sriov_regs.h"
-+#include "regs/xe_regs.h"
- 
- #include "xe_assert.h"
- #include "xe_device.h"
--- 
-2.43.0
-
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 
 
 
