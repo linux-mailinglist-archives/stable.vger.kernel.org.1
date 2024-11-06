@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC609BE7F8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAEC9BE91D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C5D1F23404
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94765284428
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7331DFD89;
-	Wed,  6 Nov 2024 12:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B24198E96;
+	Wed,  6 Nov 2024 12:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7HV+UdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqKzbdfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1A11DF72F;
-	Wed,  6 Nov 2024 12:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B604207F;
+	Wed,  6 Nov 2024 12:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895564; cv=none; b=mBJ3LwDNAUgouEUfMNNvoivWBB1y9X/wkYdeb1xDJvAeu4W0hzXpDxluI4OhFOmv+MAtMj3Nt/9JXp1p1L33UeMkM8sl1wgG454DPGlREulcNKtrCijVqMKKglX33OMfJVo/AcirZUBHsiia0ER9tvyL7vYxIscT+23ZPFmoogE=
+	t=1730896238; cv=none; b=Fga6RlbEA/Sj2BDtPeJ3w5s22qJQuq2ypa35xkAhNYyHa4ldR/qQelKF52PwK4p3dkovNTqFb1NGkFYngXw2LIaC7iLSKz3tpWdmcg0onvB/EPOfQ/z2R3WR1fggCNrCnDnELD6OYoiBp79OgLhOLCmYgcMBulAnLnq7TSLHeUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895564; c=relaxed/simple;
-	bh=ST86yPLu9pBZXPiG1S+ifwx06SrCvFBdX324CZf9XyI=;
+	s=arc-20240116; t=1730896238; c=relaxed/simple;
+	bh=nZozHv7ZeYkCMCrf/wXTZ45bUEw43D83rwfTypTstIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGAVD6fk5p2KT60lUFFQcs4LZPgD3joT6mxkLkVAqSP79vjtpf3DohvioplIEn+Zkry090o9lfYNRxd85CEWpYQR2rOJbR57pVSNMhI4UpuucHf4b2a3RqEbwReXP9lGyzfd5I7r5PJ2XhmKnn0CCNZmbrXWjtCbhYxe0q9hvfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7HV+UdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C8C4CECD;
-	Wed,  6 Nov 2024 12:19:24 +0000 (UTC)
+	 MIME-Version; b=fDRMII7MkGWJO18YrxXHYSKJocQH6EcpJ9TMCpPiS3b2GY1XjvG4tUV6v137gBJ7+4v89UmDJzUowEFvmSN7XJKcGd/I8pGK+6Ss7Z3wIoln1+ib7DKdsBMEf2pmZ4pyi2p74asehEDGyIpobGpiJ+FR8hIMY0m7DE0dAYdF/oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqKzbdfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EB4C4CECD;
+	Wed,  6 Nov 2024 12:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895564;
-	bh=ST86yPLu9pBZXPiG1S+ifwx06SrCvFBdX324CZf9XyI=;
+	s=korg; t=1730896238;
+	bh=nZozHv7ZeYkCMCrf/wXTZ45bUEw43D83rwfTypTstIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7HV+UdRBDCQbLkxQ8drsslnVX0FZDY8JE5s2lWGJDUo5vZBAvBqAN8NMXcH+JS0S
-	 lw/q+p7bWCZwTnlLf9FcKJBiLrmRxHDjOs5n7ENL8qQKCRZE+JtnKguqhXeQ+UkrKj
-	 jfvVamoQ0MmZOFiJeDYvNZW2WZuakRBx9ibk49KY=
+	b=qqKzbdfqqY4qyUNt25fHhdPWpnPB+2GB8g1kRIioWdgd4AkFC403syb7Lwzf6lH5u
+	 u1QrnZtYAgUAdxpdbx/2FBJM8S+XbaiJScusaOZDwLEh27X1SbwsQzeffkbiJE4HDY
+	 DAPtkH6K9L9T2z4E0c6RPHLIdGYwH0jfKV+fZsio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Nixdorf <j.nixdorf@avm.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bruno VERNAY <bruno.vernay@se.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 4.19 261/350] net: ipv6: ensure we call ipv6_mc_down() at most once
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot <syzkaller@googlegroup.com>,
+	Hugh Dickins <hughd@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 136/245] mm: shmem: fix data-race in shmem_getattr()
 Date: Wed,  6 Nov 2024 13:03:09 +0100
-Message-ID: <20241106120327.351789236@linuxfoundation.org>
+Message-ID: <20241106120322.576608394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: j.nixdorf@avm.de <j.nixdorf@avm.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 9995b408f17ff8c7f11bc725c8aa225ba3a63b1c upstream.
+commit d949d1d14fa281ace388b1de978e8f2cd52875cf upstream.
 
-There are two reasons for addrconf_notify() to be called with NETDEV_DOWN:
-either the network device is actually going down, or IPv6 was disabled
-on the interface.
+I got the following KCSAN report during syzbot testing:
 
-If either of them stays down while the other is toggled, we repeatedly
-call the code for NETDEV_DOWN, including ipv6_mc_down(), while never
-calling the corresponding ipv6_mc_up() in between. This will cause a
-new entry in idev->mc_tomb to be allocated for each multicast group
-the interface is subscribed to, which in turn leaks one struct ifmcaddr6
-per nontrivial multicast group the interface is subscribed to.
+==================================================================
+BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
 
-The following reproducer will leak at least $n objects:
+write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
+ inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
+ inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
+ shmem_mknod+0x117/0x180 mm/shmem.c:3443
+ shmem_create+0x34/0x40 mm/shmem.c:3497
+ lookup_open fs/namei.c:3578 [inline]
+ open_last_lookups fs/namei.c:3647 [inline]
+ path_openat+0xdbc/0x1f00 fs/namei.c:3883
+ do_filp_open+0xf7/0x200 fs/namei.c:3913
+ do_sys_openat2+0xab/0x120 fs/open.c:1416
+ do_sys_open fs/open.c:1431 [inline]
+ __do_sys_openat fs/open.c:1447 [inline]
+ __se_sys_openat fs/open.c:1442 [inline]
+ __x64_sys_openat+0xf3/0x120 fs/open.c:1442
+ x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-ip addr add ff2e::4242/32 dev eth0 autojoin
-sysctl -w net.ipv6.conf.eth0.disable_ipv6=1
-for i in $(seq 1 $n); do
-	ip link set up eth0; ip link set down eth0
-done
+read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
+ inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
+ inode_get_ctime include/linux/fs.h:1629 [inline]
+ generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
+ shmem_getattr+0x17b/0x200 mm/shmem.c:1157
+ vfs_getattr_nosec fs/stat.c:166 [inline]
+ vfs_getattr+0x19b/0x1e0 fs/stat.c:207
+ vfs_statx_path fs/stat.c:251 [inline]
+ vfs_statx+0x134/0x2f0 fs/stat.c:315
+ vfs_fstatat+0xec/0x110 fs/stat.c:341
+ __do_sys_newfstatat fs/stat.c:505 [inline]
+ __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
+ __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
+ x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Joining groups with IPV6_ADD_MEMBERSHIP (unprivileged) or setting the
-sysctl net.ipv6.conf.eth0.forwarding to 1 (=> subscribing to ff02::2)
-can also be used to create a nontrivial idev->mc_list, which will the
-leak objects with the right up-down-sequence.
+value changed: 0x2755ae53 -> 0x27ee44d3
 
-Based on both sources for NETDEV_DOWN events the interface IPv6 state
-should be considered:
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+==================================================================
 
- - not ready if the network interface is not ready OR IPv6 is disabled
-   for it
- - ready if the network interface is ready AND IPv6 is enabled for it
+When calling generic_fillattr(), if you don't hold read lock, data-race
+will occur in inode member variables, which can cause unexpected
+behavior.
 
-The functions ipv6_mc_up() and ipv6_down() should only be run when this
-state changes.
+Since there is no special protection when shmem_getattr() calls
+generic_fillattr(), data-race occurs by functions such as shmem_unlink()
+or shmem_mknod(). This can cause unexpected results, so commenting it out
+is not enough.
 
-Implement this by remembering when the IPv6 state is ready, and only
-run ipv6_mc_down() if it actually changed from ready to not ready.
+Therefore, when calling generic_fillattr() from shmem_getattr(), it is
+appropriate to protect the inode using inode_lock_shared() and
+inode_unlock_shared() to prevent data-race.
 
-The other direction (not ready -> ready) already works correctly, as:
-
- - the interface notification triggered codepath for NETDEV_UP /
-   NETDEV_CHANGE returns early if ipv6 is disabled, and
- - the disable_ipv6=0 triggered codepath skips fully initializing the
-   interface as long as addrconf_link_ready(dev) returns false
- - calling ipv6_mc_up() repeatedly does not leak anything
-
-Fixes: 3ce62a84d53c ("ipv6: exit early in addrconf_notify() if IPv6 is disabled")
-Signed-off-by: Johannes Nixdorf <j.nixdorf@avm.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
+Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot <syzkaller@googlegroup.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/shmem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3679,6 +3679,7 @@ static int addrconf_ifdown(struct net_de
- 	struct inet6_ifaddr *ifa;
- 	LIST_HEAD(tmp_addr_list);
- 	bool keep_addr = false;
-+	bool was_ready;
- 	int state, i;
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1163,7 +1163,9 @@ static int shmem_getattr(struct mnt_idma
+ 	stat->attributes_mask |= (STATX_ATTR_APPEND |
+ 			STATX_ATTR_IMMUTABLE |
+ 			STATX_ATTR_NODUMP);
++	inode_lock_shared(inode);
+ 	generic_fillattr(idmap, request_mask, inode, stat);
++	inode_unlock_shared(inode);
  
- 	ASSERT_RTNL();
-@@ -3744,7 +3745,10 @@ restart:
- 
- 	addrconf_del_rs_timer(idev);
- 
--	/* Step 2: clear flags for stateless addrconf */
-+	/* Step 2: clear flags for stateless addrconf, repeated down
-+	 *         detection
-+	 */
-+	was_ready = idev->if_flags & IF_READY;
- 	if (!how)
- 		idev->if_flags &= ~(IF_RS_SENT|IF_RA_RCVD|IF_READY);
- 
-@@ -3824,7 +3828,7 @@ restart:
- 	if (how) {
- 		ipv6_ac_destroy_dev(idev);
- 		ipv6_mc_destroy_dev(idev);
--	} else {
-+	} else if (was_ready) {
- 		ipv6_mc_down(idev);
- 	}
- 
+ 	if (shmem_huge_global_enabled(inode, 0, false, NULL, 0))
+ 		stat->blksize = HPAGE_PMD_SIZE;
 
 
 
