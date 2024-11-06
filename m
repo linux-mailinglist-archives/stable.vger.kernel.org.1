@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539C89BEC1F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C459BE990
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867641C237B7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727421C23321
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B80C1E0DBB;
-	Wed,  6 Nov 2024 12:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC421E22E2;
+	Wed,  6 Nov 2024 12:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnCiV9xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxOwAMVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566281F428D;
-	Wed,  6 Nov 2024 12:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A06D1E1C38;
+	Wed,  6 Nov 2024 12:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897533; cv=none; b=jflcTaMY6z+87Pscq+P5KYlJ1gt2YrFFePAlrvnio5/LaVuMr5Ap7JyYV0y23gQYmk72az/fgu4f8/Vp2vilzglgcsuaD3mW6mct2TKseroKeKX8e8vuV6Ep84BNel+8GH9KXrUAIzuPASI7zaOhv7Oi9nZ/UFCy0vtRS2GUeuo=
+	t=1730896495; cv=none; b=E9LLERbIPoWcJjn8pMAG688iSt5QcddjuDa8XqW/EhE0m1kWs0EUtctv/uT5jIXUVgllrTjb2oa/YW4q3aydX1GDcr+biDi2n7iazQspKO4eoIQA28d8CbE2+5ZorMmPS3bc4Atq1iytyhIfB5pJQAo/fpdSAo8e/kA5FwA9NyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897533; c=relaxed/simple;
-	bh=cNK793dmOY6FQdl1X4WH/Pae/4HulG4Uo2iPpqMxZqM=;
+	s=arc-20240116; t=1730896495; c=relaxed/simple;
+	bh=2YKgCrolF694gS/++uu+pY3cuhE28nf+YMHW/+h7ABE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qInm135hsk9bh0iLYcch9AN+Ot85fElncLDTMqt7+0LMRNtwczNpmE4+QUiRtKKmEwqh5KlaP11nPts2s5BcS1SbeJXkuOIVJ/De4VlJZv1clBCMc11w8A/AwGuuwp4iN8AuNckbUcB6YBtNeafPXx44PDJs0ofI77bykPtVrYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnCiV9xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FC7C4CECD;
-	Wed,  6 Nov 2024 12:52:12 +0000 (UTC)
+	 MIME-Version; b=h4DKeXCpVnQaKnT88RyGFbN0RrLSnCu/ARlSngPVwQix5HuGOsJK2yVkArwafWAiiRZX5Q78nR3Q16aja34kXI55v0hmjKfM12T8aqbrLRUzqAPVP9E4FrVqj6G8UKfF37XRgx+trcx/EqTQtd/Zvmrp4wfknCbFFClIJi5IYj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxOwAMVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24FAC4CED4;
+	Wed,  6 Nov 2024 12:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897533;
-	bh=cNK793dmOY6FQdl1X4WH/Pae/4HulG4Uo2iPpqMxZqM=;
+	s=korg; t=1730896495;
+	bh=2YKgCrolF694gS/++uu+pY3cuhE28nf+YMHW/+h7ABE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnCiV9xuCgaZBLWK7+UlC6O0+nicpRCzjhNoIrLdg9yCVNqKy6S8eoazrAZyvjqH0
-	 tXrhX11lyMyfVGbOvDdHTrnidKOziWLKR6b9k1Mt1nzvig261bkeEnvhhImv4eflOd
-	 /hEGGWC+IVGn3VBoGFi3kt+2pBNxZy2TXRmV8lv0=
+	b=KxOwAMVnszuHzJVDNgVvUTEHWB1U30TSG5+6VJMlOp7reTAgvVtX7UJ8pqWEoc/tX
+	 xq4HHFFWrgiYboi30ctPiTPGN+2p6pESTe9fljoqkqZUV/HJntcW5/T+01/4e5wVGu
+	 9Je9Psh0qAD0kQ4hu8CK1RhRBOsP/vcLeMxK8edU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 086/151] phy: qcom: qmp-usb-legacy: fix NULL-deref on runtime suspend
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 221/245] drm/i915: Skip programming FIA link enable bits for MTL+
 Date: Wed,  6 Nov 2024 13:04:34 +0100
-Message-ID: <20241106120311.230415845@linuxfoundation.org>
+Message-ID: <20241106120324.697082018@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-commit 29240130ab77c80bea1464317ae2a5fd29c16a0c upstream.
+commit 9fc97277eb2d17492de636b68cf7d2f5c4f15c1b upstream.
 
-Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-removed most users of the platform device driver data from the
-qcom-qmp-usb driver, but mistakenly also removed the initialisation
-despite the data still being used in the runtime PM callbacks. This bug
-was later reproduced when the driver was copied to create the
-qmp-usb-legacy driver.
+Starting with Xe_LPD+, although FIA is still used to readout Type-C pin
+assignment, part of Type-C support is moved to PICA and programming
+PORT_TX_DFLEXDPMLE1(*) registers is not applicable anymore like it was
+for previous display IPs (e.g. see BSpec 49190).
 
-Restore the driver data initialisation at probe to avoid a NULL-pointer
-dereference on runtime suspend.
+v2:
+  - Mention Bspec 49190 as a reference of instructions for previous
+    IPs. (Shekhar Chauhan)
+  - s/Xe_LPDP/Xe_LPD+/ in the commit message. (Matt Roper)
+  - Update commit message to be more accurate to the changes in the IP.
+    (Imre Deak)
 
-Apparently no one uses runtime PM, which currently needs to be enabled
-manually through sysfs, with these drivers.
-
-Fixes: e464a3180a43 ("phy: qcom-qmp-usb: split off the legacy USB+dp_com support")
-Cc: stable@vger.kernel.org	# 6.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240911115253.10920-3-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Bspec: 65750, 65448
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240625202652.315936-1-gustavo.sousa@intel.com
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_tc.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c
-@@ -1302,6 +1302,7 @@ static int qmp_usb_legacy_probe(struct p
- 		return -ENOMEM;
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -393,6 +393,9 @@ void intel_tc_port_set_fia_lane_count(st
+ 	bool lane_reversal = dig_port->saved_port_bits & DDI_BUF_PORT_REVERSAL;
+ 	u32 val;
  
- 	qmp->dev = dev;
-+	dev_set_drvdata(dev, qmp);
++	if (DISPLAY_VER(i915) >= 14)
++		return;
++
+ 	drm_WARN_ON(&i915->drm,
+ 		    lane_reversal && tc->mode != TC_PORT_LEGACY);
  
- 	qmp->cfg = of_device_get_match_data(dev);
- 	if (!qmp->cfg)
 
 
 
