@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F59BE7C2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293DC9BE8F0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CD131C20D0D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5BE61F21B80
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F1F1DF722;
-	Wed,  6 Nov 2024 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7B01DF756;
+	Wed,  6 Nov 2024 12:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGda0+gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zhm4RNCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204471DED62;
-	Wed,  6 Nov 2024 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD7018C00E;
+	Wed,  6 Nov 2024 12:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895448; cv=none; b=ciwxYIbE0iq1VXya1xd3tjM94J1VtzgbHjzPf6Aj/05A41GWMeWIvDDCPuSPkPMMkp9tZAWByJnJjS09q7gh0MEKEAP3dFM5NUinPVonXIYVPDoUfFwzsQ5BiCrOP/hVddKMNJGfLtUwK7C7XlV60JUzN8Y6RLXq2aZda/ucxAQ=
+	t=1730896124; cv=none; b=WE+d0/hELWKVLwFbdbsodk2wXYlGwyZih+8qesRfj7vy+Xe8dXwuO5xiPqIZPY+GyZWm6cMbYSHwd++SFVN+kTtlyOnUowdxOE5luE6R+Fe+pTtcyLnxXkFFVU07kfJfLc+D1hUrjxaovtDhHeTdDot2N53VlqoEPaTYqKeDsQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895448; c=relaxed/simple;
-	bh=r+0WCy0PpVE6x/GhOtRPfxNgxSUHih4UlfL2ei40qw4=;
+	s=arc-20240116; t=1730896124; c=relaxed/simple;
+	bh=kzlOw3RJhUGWAmluQMgsVGt+Hctb8cvukIrwTgTNBTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxXUgmcj1fsyU5V8x8NhQfn9WEHtkY96+D4RywLMmsbNs3DSgwzmQWBxBO5bhr64U4V3udYNdsOrVvvISNFpJ+UA0lxP+k1dgeFDhr1mRYNMDxKr2rojQ76IBDdY2d9rDiz6UZMytvFbI9rlTYB2gctmOaCZ8E38RAVM6uF+LdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGda0+gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E17C4CED2;
-	Wed,  6 Nov 2024 12:17:27 +0000 (UTC)
+	 MIME-Version; b=GYwN/rcDawahqayLV69K7IGnVJ+A5vxb5yeAdyf/zC2BVR53nTugvlEi4n9W67mM8+YCy3V14GwZlx55CYoCjG+e9GYqCgOpgrvAt/w8loEsa+r/u/Lji4DOPji3htycPWuRebwTmu1e23lQ3M3wSbRtnLFg0jB3mk2AlEIEgJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zhm4RNCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6199BC4CECD;
+	Wed,  6 Nov 2024 12:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895448;
-	bh=r+0WCy0PpVE6x/GhOtRPfxNgxSUHih4UlfL2ei40qw4=;
+	s=korg; t=1730896123;
+	bh=kzlOw3RJhUGWAmluQMgsVGt+Hctb8cvukIrwTgTNBTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGda0+gc5Nd75cE58BYIXs/UnpRrftr5bx0mSGPQ51Fs8J1BWCTvhX0an++yuhuEq
-	 CujQ5GRtpRlQFS1AXVlnrVD4EH+D+W/oBpfzg3qDvH/z5QWg+WpHrh8FzMrGB+rPyl
-	 DIS+nXqB/Ozfac4lr1ISCK4Z7Up+4AWrXs8Kfvsg=
+	b=Zhm4RNCLYMWk3B/BvfZZi9dGUCAjgTNA56CH2C2wc0f3yuBzj1JNaIxhag7/bVOwv
+	 cfaXqmsAfE7Dmue981aK/Wp25gG3KzB/PePxOgwTW04JgojG8u4sUGjJbPAFORBjFt
+	 i3TRCiKNg6gbbSCf3+IFNre1DyIC5EKkSHSliMQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 222/350] nfsd: fix delegation_blocked() to block correctly for at least 30 seconds
+Subject: [PATCH 6.11 097/245] thermal: intel: int340x: processor: Remove MMIO RAPL CPU hotplug support
 Date: Wed,  6 Nov 2024 13:02:30 +0100
-Message-ID: <20241106120326.482542988@linuxfoundation.org>
+Message-ID: <20241106120321.598003334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 45bb63ed20e02ae146336412889fe5450316a84f ]
+[ Upstream commit bfc6819e4bf56a55df6178f93241b5845ad672eb ]
 
-The pair of bloom filtered used by delegation_blocked() was intended to
-block delegations on given filehandles for between 30 and 60 seconds.  A
-new filehandle would be recorded in the "new" bit set.  That would then
-be switch to the "old" bit set between 0 and 30 seconds later, and it
-would remain as the "old" bit set for 30 seconds.
+CPU0/package0 is always online and the MMIO RAPL driver runs on single
+package systems only, so there is no need to handle CPU hotplug in it.
 
-Unfortunately the code intended to clear the old bit set once it reached
-30 seconds old, preparing it to be the next new bit set, instead cleared
-the *new* bit set before switching it to be the old bit set.  This means
-that the "old" bit set is always empty and delegations are blocked
-between 0 and 30 seconds.
+Always register a RAPL package device for package 0 and remove the
+unnecessary CPU hotplug support.
 
-This patch updates bd->new before clearing the set with that index,
-instead of afterwards.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: 6282cd565553 ("NFSD: Don't hand out delegations for 30 seconds after recalling them.")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20240930081801.28502-6-rui.zhang@intel.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../int340x_thermal/processor_thermal_rapl.c  | 66 +++++++------------
+ 1 file changed, 22 insertions(+), 44 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index acb43210d2dc5..061694c405ac3 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -743,7 +743,8 @@ static void nfs4_free_deleg(struct nfs4_stid *stid)
-  * When a delegation is recalled, the filehandle is stored in the "new"
-  * filter.
-  * Every 30 seconds we swap the filters and clear the "new" one,
-- * unless both are empty of course.
-+ * unless both are empty of course.  This results in delegations for a
-+ * given filehandle being blocked for between 30 and 60 seconds.
-  *
-  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
-  * low 3 bytes as hash-table indices.
-@@ -772,9 +773,9 @@ static int delegation_blocked(struct knfsd_fh *fh)
- 		if (ktime_get_seconds() - bd->swap_time > 30) {
- 			bd->entries -= bd->old_entries;
- 			bd->old_entries = bd->entries;
-+			bd->new = 1-bd->new;
- 			memset(bd->set[bd->new], 0,
- 			       sizeof(bd->set[0]));
--			bd->new = 1-bd->new;
- 			bd->swap_time = ktime_get_seconds();
- 		}
- 		spin_unlock(&blocked_delegations_lock);
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
+index e9aa9e23aab9e..769510e748c0b 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
+@@ -19,42 +19,6 @@ static const struct rapl_mmio_regs rapl_mmio_default = {
+ 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
+ };
+ 
+-static int rapl_mmio_cpu_online(unsigned int cpu)
+-{
+-	struct rapl_package *rp;
+-
+-	/* mmio rapl supports package 0 only for now */
+-	if (topology_physical_package_id(cpu))
+-		return 0;
+-
+-	rp = rapl_find_package_domain_cpuslocked(cpu, &rapl_mmio_priv, true);
+-	if (!rp) {
+-		rp = rapl_add_package_cpuslocked(cpu, &rapl_mmio_priv, true);
+-		if (IS_ERR(rp))
+-			return PTR_ERR(rp);
+-	}
+-	cpumask_set_cpu(cpu, &rp->cpumask);
+-	return 0;
+-}
+-
+-static int rapl_mmio_cpu_down_prep(unsigned int cpu)
+-{
+-	struct rapl_package *rp;
+-	int lead_cpu;
+-
+-	rp = rapl_find_package_domain_cpuslocked(cpu, &rapl_mmio_priv, true);
+-	if (!rp)
+-		return 0;
+-
+-	cpumask_clear_cpu(cpu, &rp->cpumask);
+-	lead_cpu = cpumask_first(&rp->cpumask);
+-	if (lead_cpu >= nr_cpu_ids)
+-		rapl_remove_package_cpuslocked(rp);
+-	else if (rp->lead_cpu == cpu)
+-		rp->lead_cpu = lead_cpu;
+-	return 0;
+-}
+-
+ static int rapl_mmio_read_raw(int cpu, struct reg_action *ra)
+ {
+ 	if (!ra->reg.mmio)
+@@ -82,6 +46,7 @@ static int rapl_mmio_write_raw(int cpu, struct reg_action *ra)
+ int proc_thermal_rapl_add(struct pci_dev *pdev, struct proc_thermal_device *proc_priv)
+ {
+ 	const struct rapl_mmio_regs *rapl_regs = &rapl_mmio_default;
++	struct rapl_package *rp;
+ 	enum rapl_domain_reg_id reg;
+ 	enum rapl_domain_type domain;
+ 	int ret;
+@@ -109,25 +74,38 @@ int proc_thermal_rapl_add(struct pci_dev *pdev, struct proc_thermal_device *proc
+ 		return PTR_ERR(rapl_mmio_priv.control_type);
+ 	}
+ 
+-	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "powercap/rapl:online",
+-				rapl_mmio_cpu_online, rapl_mmio_cpu_down_prep);
+-	if (ret < 0) {
+-		powercap_unregister_control_type(rapl_mmio_priv.control_type);
+-		rapl_mmio_priv.control_type = NULL;
+-		return ret;
++	/* Register a RAPL package device for package 0 which is always online */
++	rp = rapl_find_package_domain(0, &rapl_mmio_priv, false);
++	if (rp) {
++		ret = -EEXIST;
++		goto err;
++	}
++
++	rp = rapl_add_package(0, &rapl_mmio_priv, false);
++	if (IS_ERR(rp)) {
++		ret = PTR_ERR(rp);
++		goto err;
+ 	}
+-	rapl_mmio_priv.pcap_rapl_online = ret;
+ 
+ 	return 0;
++
++err:
++	powercap_unregister_control_type(rapl_mmio_priv.control_type);
++	rapl_mmio_priv.control_type = NULL;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(proc_thermal_rapl_add);
+ 
+ void proc_thermal_rapl_remove(void)
+ {
++	struct rapl_package *rp;
++
+ 	if (IS_ERR_OR_NULL(rapl_mmio_priv.control_type))
+ 		return;
+ 
+-	cpuhp_remove_state(rapl_mmio_priv.pcap_rapl_online);
++	rp = rapl_find_package_domain(0, &rapl_mmio_priv, false);
++	if (rp)
++		rapl_remove_package(rp);
+ 	powercap_unregister_control_type(rapl_mmio_priv.control_type);
+ }
+ EXPORT_SYMBOL_GPL(proc_thermal_rapl_remove);
 -- 
 2.43.0
 
