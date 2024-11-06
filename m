@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80D09BE78F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9619BE8AF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DEED1F24E0C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9059B21C1E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4607E1922DB;
-	Wed,  6 Nov 2024 12:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E00E1DF986;
+	Wed,  6 Nov 2024 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0/MdqeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJ8CaZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019FB1D416E;
-	Wed,  6 Nov 2024 12:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D391DF251;
+	Wed,  6 Nov 2024 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895330; cv=none; b=fyvg1s4HyxuBIXhVZd/9I5pnJ9R1WbajO8dLz/oW35AJBJxZYUg08zopDg92fSi5bG8CHoEPRI8nJIOSfUi7OOFdRUCN7+QnvW3fAXobhDKe9tcMdL8/SWnF6aIhsLDmpuVkkg7Yoq4CuDDPPWM03XjBL+bFvCFD/cMGSUd9Mv8=
+	t=1730896001; cv=none; b=fEqRe1T2rU5I1YRUGvFdN5ZZ1ztHwXxtUix68daY56068qSxZutWzOqls4btjOJi9mnHSrisiZlJSO73AeD9ESetkXwUm5yZdtELFb8YiUPiBNuqlQBkPHttiTVEiaGN/v1T4oIBfc+j8qvCVpHcOe63J+1paaSQ6mA6x62HVjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895330; c=relaxed/simple;
-	bh=BaFfI2b+Y34jl6+QTSee7XhNv9usAXdenjKkARFLI0I=;
+	s=arc-20240116; t=1730896001; c=relaxed/simple;
+	bh=EvGonwRU37Y0J6Si/LPiMpwPrTjwLnAlSl/fa3V6WMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aakgw/Amlsx3CkRo6JbiDscjSC+OesKQOumMH02qBRciNpbbMlD4Mz9jf3cf9Q1i1qPUSHXXZTdMt2lI0cy72ZZk7ShCL+28H/UaMTKXtyXyxNt4xELr3+UsKIM9/jeQvwJKBOvvVYlVHbcybi7ICJwa6AJWC7g2swf47FBjBSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0/MdqeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3490DC4CED4;
-	Wed,  6 Nov 2024 12:15:29 +0000 (UTC)
+	 MIME-Version; b=gNMqs5j/fmj+YdE/WDEfR3HDoq8dfKsmPWZWlzz7kZNNpCTCQ889UlOWRYpst30vLTUpqdRpADyViVsr29oBILx1Ab1694vLkNqeEz29g9sICBEpb/ZEKZ5YdIDFes+KXFU0KbaVcmnjZZbR6IrfvGVYyEhf+hwN1xAE4UNTVVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJ8CaZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A301FC4CECD;
+	Wed,  6 Nov 2024 12:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895329;
-	bh=BaFfI2b+Y34jl6+QTSee7XhNv9usAXdenjKkARFLI0I=;
+	s=korg; t=1730896001;
+	bh=EvGonwRU37Y0J6Si/LPiMpwPrTjwLnAlSl/fa3V6WMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0/MdqeW2gIIEgaDl3BhYEnrydgmDYOoMuLTvzeugN6VtRtaw1MH7qdF5DfmBc9oU
-	 bAs9t7D6lxPsGscQjHEGV3mFFcyXFAFeUPoZvH0LNFovn2kj8aShJWGv4x3VK2oDad
-	 XrICM+cXP0NCPQ3LtE5FkcbSQNG2BUpT2iPNf7xg=
+	b=WJJ8CaZDQq9Rz0W4pw2JgKt21m/C4ggXZOh8voObBNN6eaO+uzV641TKo7x3tOGZ7
+	 U3wSyCRhdCLOKAY7QfifkqNMAjIypG2ta9AIhxNOR5ATyh5ZjdJhCAYU1mrJfBWuiA
+	 kDxnkUnvLTiZr2/HPr4/i+8AV2ZOVarbGjin1o0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 182/350] selftests: vDSO: fix vDSO symbols lookup for powerpc64
+Subject: [PATCH 6.11 057/245] iomap: improve shared block detection in iomap_unshare_iter
 Date: Wed,  6 Nov 2024 13:01:50 +0100
-Message-ID: <20241106120325.438309817@linuxfoundation.org>
+Message-ID: <20241106120320.616048895@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
+[ Upstream commit b53fdb215d13f8e9c29541434bf2d14dac8bcbdc ]
 
-On powerpc64, following tests fail locating vDSO functions:
+Currently iomap_unshare_iter relies on the IOMAP_F_SHARED flag to detect
+blocks to unshare.  This is reasonable, but IOMAP_F_SHARED is also useful
+for the file system to do internal book keeping for out of place writes.
+XFS used to that, until it got removed in commit 72a048c1056a
+("xfs: only set IOMAP_F_SHARED when providing a srcmap to a write")
+because unshare for incorrectly unshare such blocks.
 
-  ~ # ./vdso_test_abi
-  TAP version 13
-  1..16
-  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
-  # Couldn't find __kernel_gettimeofday
-  ok 1 # SKIP __kernel_gettimeofday
-  # clock_id: CLOCK_REALTIME
-  # Couldn't find __kernel_clock_gettime
-  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
-  # Couldn't find __kernel_clock_getres
-  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
-  ...
-  # Couldn't find __kernel_time
-  ok 16 # SKIP __kernel_time
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
+Add an extra safeguard by checking the explicitly provided srcmap instead
+of the fallback to the iomap for valid data, as that catches the case
+where we'd just copy from the same place we'd write to easily, allowing
+to reinstate setting IOMAP_F_SHARED for all XFS writes that go to the
+COW fork.
 
-  ~ # ./vdso_test_getrandom
-  __kernel_getrandom is missing!
-
-  ~ # ./vdso_test_gettimeofday
-  Could not find __kernel_gettimeofday
-
-  ~ # ./vdso_test_getcpu
-  Could not find __kernel_getcpu
-
-On powerpc64, as shown below by readelf, vDSO functions symbols have
-type NOTYPE, so also accept that type when looking for symbols.
-
-$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-ELF Header:
-  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-...
-
-Symbol table '.dynsym' contains 12 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
-     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-
-Symbol table '.symtab' contains 56 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
-    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
-    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
-    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
-    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
-    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
-    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
-    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
-    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
-    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
-
-Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-3-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 9ef3ad3789c17..540f9a284e9f0 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -238,7 +238,8 @@ void *vdso_sym(const char *version, const char *name)
- 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 8e6edb6628183..d38e52a645888 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1337,16 +1337,25 @@ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ {
+ 	struct iomap *iomap = &iter->iomap;
+-	const struct iomap *srcmap = iomap_iter_srcmap(iter);
+ 	loff_t pos = iter->pos;
+ 	loff_t length = iomap_length(iter);
+ 	loff_t written = 0;
  
- 		/* Check for a defined global or weak function w/ right name. */
--		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
-+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
-+		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
- 			continue;
- 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
- 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+-	/* don't bother with blocks that are not shared to start with */
++	/* Don't bother with blocks that are not shared to start with. */
+ 	if (!(iomap->flags & IOMAP_F_SHARED))
+ 		return length;
+-	/* don't bother with holes or unwritten extents */
+-	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
++
++	/*
++	 * Don't bother with holes or unwritten extents.
++	 *
++	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
++	 * unsharing requires providing a separate source map, and the presence
++	 * of one is a good indicator that unsharing is needed, unlike
++	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
++	 * fork for XFS.
++	 */
++	if (iter->srcmap.type == IOMAP_HOLE ||
++	    iter->srcmap.type == IOMAP_UNWRITTEN)
+ 		return length;
+ 
+ 	do {
 -- 
 2.43.0
 
