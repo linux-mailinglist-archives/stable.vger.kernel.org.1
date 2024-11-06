@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47249BE7BB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B539BE907
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F591C21A44
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E15B22867
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B841DED58;
-	Wed,  6 Nov 2024 12:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48521DF251;
+	Wed,  6 Nov 2024 12:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8YF8bx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLPo9vRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEBA1DF254;
-	Wed,  6 Nov 2024 12:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB31DDA15;
+	Wed,  6 Nov 2024 12:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895430; cv=none; b=d06U/vB148B7fwn5wUXaM7x0TMUkHcGIQej0ed/VwFx6RQWw+QoFe2kSBh7+8Tj5ncf+PV6HHOgWusf5MLXdGwjyyhcvSyZ/gMubYr6s7Cpm/jIaUsw4zEKnEaRgmhsWxkwd5w/rDkgUuevaUrGLKAudPFoywDhXC7k8fezHt5s=
+	t=1730896188; cv=none; b=PR56Cob5hnVAL65O3VMqXlHuQizkzRxs1EL01IHXBgNgxUa4PEzmHEqw4GXKZdm7XDLWMDBUW8u8kovpKSozGxbBElt8/vvUY/u33M6WfyIiXxH7fJZAmpZJXgg64b4fyzyILBhnsPx3PmEZrvBVdi6BymPt89/2lhPRyO6rT4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895430; c=relaxed/simple;
-	bh=7zKF38gBuyE29DEL1siYIxeN5EtNrKVh8/t7nARVPwQ=;
+	s=arc-20240116; t=1730896188; c=relaxed/simple;
+	bh=ODpBx5dwom3v1c1djb9e8CV/vQMFvxajqfsEGJjENnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbIGLUrMuxIXz7YHQQKBqNc6dSuXEwAEmYbnZFUU3QNiGB411zYcxjiRhHM2La78KdoEhkfZOa8IpHIgtsG4Y8rbSoBNsKDUQAPN1zvUXoI6SAzX+eZi/HCTvEoyrghvSjXfd/+r2QoEbSy+zyFHP3EDNbrCtgxnfZwoQnn5fDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8YF8bx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1055BC4CECD;
-	Wed,  6 Nov 2024 12:17:09 +0000 (UTC)
+	 MIME-Version; b=NOgs4MhXECS+toZuJbQe+U4szx99TtMYy+AHoCy+E78vy9RdQjFdz9T2ZZT6kajgtjp3pOWsHx5bBB9PhrUo5GOWevKM6a3CtFoVKEIT9kLdk4ecQzi+Y9TfOgo+HoxkRNzkCZHvkg6ILZCAmJbjcfxOn2QwAsMHxCXOQSNcUCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLPo9vRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC66C4CECD;
+	Wed,  6 Nov 2024 12:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895430;
-	bh=7zKF38gBuyE29DEL1siYIxeN5EtNrKVh8/t7nARVPwQ=;
+	s=korg; t=1730896188;
+	bh=ODpBx5dwom3v1c1djb9e8CV/vQMFvxajqfsEGJjENnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8YF8bx05KeSzt4KYW1Lyx1qdB6DjOrHbpSFbFFsyjbV7kgbmDTmzlM/EBeu7rYV/
-	 CnYATNU1tyQKgJozOOlV/I2e6ZrGl9j/e4EqUs/NEeTx/b++snuiLPFnY6+b1Y66Bb
-	 E09KBLgfgg71DYn5b54S4UDJ/QDBmzPmhkhVGkd8=
+	b=dLPo9vRLBeNGXBQVVGbUDrcAe2WNgdQeBVpYdAM+nT0lt9I+HsESgGIagUoU3dTa/
+	 pspb31wnSQIqV1LOKo7xCCgUt+5fcJHAcXW+cd/NX1VUDEoFbD+ucmUNr4IgiuMv4n
+	 fb3i6jGQATaHnejkr5lRkwzJUXvANkl8bM97NOWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 4.19 208/350] media: venus: fix use after free bug in venus_remove due to race condition
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 083/245] fs/ntfs3: Check if more than chunk-size bytes are written
 Date: Wed,  6 Nov 2024 13:02:16 +0100
-Message-ID: <20241106120326.124322145@linuxfoundation.org>
+Message-ID: <20241106120321.247702981@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Andrew Ballance <andrewjballance@gmail.com>
 
-commit c5a85ed88e043474161bbfe54002c89c1cb50ee2 upstream.
+[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
 
-in venus_probe, core->work is bound with venus_sys_error_handler, which is
-used to handle error. The code use core->sys_err_done to make sync work.
-The core->work is started in venus_event_notify.
+A incorrectly formatted chunk may decompress into
+more than LZNT_CHUNK_SIZE bytes and a index out of bounds
+will occur in s_max_off.
 
-If we call venus_remove, there might be an unfished work. The possible
-sequence is as follows:
-
-CPU0                  CPU1
-
-                     |venus_sys_error_handler
-venus_remove         |
-hfi_destroy	 		 |
-venus_hfi_destroy	 |
-kfree(hdev);	     |
-                     |hfi_reinit
-					 |venus_hfi_queues_reinit
-                     |//use hdev
-
-Fix it by canceling the work in venus_remove.
-
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/lznt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -348,6 +348,7 @@ static int venus_remove(struct platform_
- 	struct device *dev = core->dev;
- 	int ret;
+diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
+index 4aae598d6d884..fdc9b2ebf3410 100644
+--- a/fs/ntfs3/lznt.c
++++ b/fs/ntfs3/lznt.c
+@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
  
-+	cancel_delayed_work_sync(&core->work);
- 	ret = pm_runtime_get_sync(dev);
- 	WARN_ON(ret < 0);
- 
+ 	/* Do decompression until pointers are inside range. */
+ 	while (up < unc_end && cmpr < cmpr_end) {
++		// return err if more than LZNT_CHUNK_SIZE bytes are written
++		if (up - unc > LZNT_CHUNK_SIZE)
++			return -EINVAL;
+ 		/* Correct index */
+ 		while (unc + s_max_off[index] < up)
+ 			index += 1;
+-- 
+2.43.0
+
 
 
 
