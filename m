@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF179BE80D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE839BE935
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F0E282562
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F03831C20D04
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB371DED49;
-	Wed,  6 Nov 2024 12:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A680E7DA7F;
+	Wed,  6 Nov 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAFtHFmo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0TxX51r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE9F1DF26B;
-	Wed,  6 Nov 2024 12:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6456F1DE3B8;
+	Wed,  6 Nov 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895624; cv=none; b=CmWX0nquScbO+pSeH2rlT3BFHR8YfTBU8fIG0uq3GlTEWZ0VJ69liL03KXKgC8eC+QjQmwmdgKjkOZx1fiJcnFVHaFeoYGDTFdMXlydGsE5qHjIcqTqXnIiUp7eDdzfawXlHZOZ3PxFB0hg+EBxpvItVmyfNL64bLa5BJ3/nDNE=
+	t=1730896295; cv=none; b=Eo9IBZ/5BAB7MRn1toVVOlM8ZcMKK1AixLiF3d1AzR/cQyYM4A5MjE3JjlbQaFjJc5UgpqZ3nANBQLlltIr71F7Lq1EmhTN0LUTxWEbT44G1kB+O+gqtr5w8aBAcIO0D6BL/liJ8nyRZQ4hfgsk+1y6LriqrF6IvrGeQPTENfaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895624; c=relaxed/simple;
-	bh=uNgoudwHQ5cakiMOGIvFqvaOIX7UEsbLPw9xG3HDhCo=;
+	s=arc-20240116; t=1730896295; c=relaxed/simple;
+	bh=XnQjWmapWaqkaE1405LZEGPD5IIXpf7Dx6vkwwUNLdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXhQ+AjdSx7vFAqVdLjvmoeLz8kVzQ+Z0QESh9/7ncA1xTFW/WjjRPjMnC+S8acoOULlST8QLTkoAhJ2EzfkLQhBgR/pTdaWoOHqlAByLyJAZDBCyLknAGTOKBCsSdck8kZ57b74BFezvHdv+ITcMj0TD00KQWLuNRnvk74iIO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAFtHFmo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646AFC4CECD;
-	Wed,  6 Nov 2024 12:20:23 +0000 (UTC)
+	 MIME-Version; b=DLIBjM+st9N+387jn02OiLSNgzLEu9lALjz4Mq/Wl5gp7JneeZVXnIocxoUcnj2PKaAlI+ufIvynngf0Zc+JgV6DpJnxdmTdKO1KinzpBQo82nkXh5yLgiulnVZVFDOdHliVjEY00ylXYwJKx+uEHpLYVEpSH9N6sd87x4Q/01w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0TxX51r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AE5C4CECD;
+	Wed,  6 Nov 2024 12:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895623;
-	bh=uNgoudwHQ5cakiMOGIvFqvaOIX7UEsbLPw9xG3HDhCo=;
+	s=korg; t=1730896295;
+	bh=XnQjWmapWaqkaE1405LZEGPD5IIXpf7Dx6vkwwUNLdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAFtHFmosAkapEQFEht4f2G79j/EIZslh9TXT2K5+hW+ZbDrC/eePRYfLC56T1dCP
-	 ekvXNzw7QWzCg2UBJN1CRV62ckiZZjY4JZtPHwcXCDG5zKShoJehUmXmlEHEDV5bWV
-	 qpeOen/Pvyi4s5naGOGEfF8ZoyhaifxML6Kn6Ryg=
+	b=H0TxX51rQSmvr7d4JrIhd9WKUUUnmcMx8fQpOEaG6rXgw3uAqmUaBIE9wHL9+8Hu5
+	 O1KBqFNDeMxasvfWqloDe4/KMXFtx5AiDAM2ENuZu5VD30ONvy4hB7zHFFR16/99FI
+	 jg2a6ikLIWhUG/VMmOib4qtzsO97gHDzDrA+/RI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 279/350] iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
+	Li Zetao <lizetao1@huawei.com>,
+	Oliver Graute <oliver.graute@kococonnector.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 154/245] Input: edt-ft5x06 - fix regmap leak when probe fails
 Date: Wed,  6 Nov 2024 13:03:27 +0100
-Message-ID: <20241106120327.753474825@linuxfoundation.org>
+Message-ID: <20241106120323.020045453@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 27b6aa68a68105086aef9f0cb541cd688e5edea8 upstream.
+[ Upstream commit bffdf9d7e51a7be8eeaac2ccf9e54a5fde01ff65 ]
 
-This driver makes use of regmap_mmio, but does not select the required
-module.
-Add the missing 'select REGMAP_MMIO'.
+The driver neglects to free the instance of I2C regmap constructed at
+the beginning of the edt_ft5x06_ts_probe() method when probe fails.
+Additionally edt_ft5x06_ts_remove() is freeing the regmap too early,
+before the rest of the device resources that are managed by devm are
+released.
 
-Fixes: 4d4b30526eb8 ("iio: dac: add support for stm32 DAC")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-8-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by installing a custom devm action that will ensure that the
+regmap is released at the right time during normal teardown as well as
+in case of probe failure.
+
+Note that devm_regmap_init_i2c() could not be used because the driver
+may replace the original regmap with a regmap specific for M06 devices
+in the middle of the probe, and using devm_regmap_init_i2c() would
+result in releasing the M06 regmap too early.
+
+Reported-by: Li Zetao <lizetao1@huawei.com>
+Fixes: 9dfd9708ffba ("Input: edt-ft5x06 - convert to use regmap API")
+Cc: stable@vger.kernel.org
+Reviewed-by: Oliver Graute <oliver.graute@kococonnector.com>
+Link: https://lore.kernel.org/r/ZxL6rIlVlgsAu-Jv@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/touchscreen/edt-ft5x06.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -335,6 +335,7 @@ config STM32_DAC
+diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
+index e70415f189a55..126b0ed85aa50 100644
+--- a/drivers/input/touchscreen/edt-ft5x06.c
++++ b/drivers/input/touchscreen/edt-ft5x06.c
+@@ -1121,6 +1121,14 @@ static void edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
+ 	}
+ }
  
- config STM32_DAC_CORE
- 	tristate
-+	select REGMAP_MMIO
++static void edt_ft5x06_exit_regmap(void *arg)
++{
++	struct edt_ft5x06_ts_data *data = arg;
++
++	if (!IS_ERR_OR_NULL(data->regmap))
++		regmap_exit(data->regmap);
++}
++
+ static void edt_ft5x06_disable_regulators(void *arg)
+ {
+ 	struct edt_ft5x06_ts_data *data = arg;
+@@ -1154,6 +1162,16 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
+ 		return PTR_ERR(tsdata->regmap);
+ 	}
  
- config TI_DAC082S085
- 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
++	/*
++	 * We are not using devm_regmap_init_i2c() and instead install a
++	 * custom action because we may replace regmap with M06-specific one
++	 * and we need to make sure that it will not be released too early.
++	 */
++	error = devm_add_action_or_reset(&client->dev, edt_ft5x06_exit_regmap,
++					 tsdata);
++	if (error)
++		return error;
++
+ 	chip_data = device_get_match_data(&client->dev);
+ 	if (!chip_data)
+ 		chip_data = (const struct edt_i2c_chip_data *)id->driver_data;
+@@ -1347,7 +1365,6 @@ static void edt_ft5x06_ts_remove(struct i2c_client *client)
+ 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(client);
+ 
+ 	edt_ft5x06_ts_teardown_debugfs(tsdata);
+-	regmap_exit(tsdata->regmap);
+ }
+ 
+ static int edt_ft5x06_ts_suspend(struct device *dev)
+-- 
+2.43.0
+
 
 
 
