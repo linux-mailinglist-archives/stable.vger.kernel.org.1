@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602D79BE90B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B24F9BE8DF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FC01C21B74
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0411C21793
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70591DF98D;
-	Wed,  6 Nov 2024 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13751DF726;
+	Wed,  6 Nov 2024 12:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVIT6IAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWW5Wux3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660DE1DFD87;
-	Wed,  6 Nov 2024 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF551DE4EA;
+	Wed,  6 Nov 2024 12:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896200; cv=none; b=BSz8yr9LOuPD+EQEXPcMYjFY2iDvp58EsphCjLMiNvd+Quh248C38qnrj+aJe0iK1FaZRLjyj0qQEBpSufJ0dGVWI1rBmNRevhfVAoWq7jWpdlbupF/izB9E/bzq9r0fcLvS6psLyCfSD1D7fALyd6yd5FbqZ9JFIFSpRpntshE=
+	t=1730896086; cv=none; b=BxSonCA+fb47xcUl8lqJWHDfSa3gZUypbHbbFNYBnlppMoqyvwfsYgoU7xsTs2toqqcTq40unF1BPVFtiN7CFbLXEIRaIth9vhC92+MsZhKW+nEGLSon4cAAtoMMG1+/n58fVfoBSCylVbq1q5bBkKY5fU3r5ECYqA0Qi/SEtXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896200; c=relaxed/simple;
-	bh=xseTxG3eapKC3XIJxrMfemVLr+3+V8g0FpgqnwP1ZCc=;
+	s=arc-20240116; t=1730896086; c=relaxed/simple;
+	bh=aaRRHUaCIns7h7Kihf4fNwcC+0PTMnxhmuTsObfJmbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEdGa9KzjCrolcY2g+zvllHgC7qFvTA3WspKaHZW+RviXOg92mIMZLT6+vSpgEybLKcyORUFvPE+pbY2RNKWd7/sYbaW3tYyLnBcqRg0aY6bsSSbmfxhM6QmSN1jUYWB1g671jccTLB0eugYzMOWaII5CRHg8jqH1/eHAMdZu4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVIT6IAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD74BC4CED3;
-	Wed,  6 Nov 2024 12:29:59 +0000 (UTC)
+	 MIME-Version; b=rTzl8FEylARQWX4JTqXprLxrsJXmnXzA8V0Lz1uQUHNMPyczxWdbABiQxxFjCe/KxQPO26m58M9l33WRXou1jITzyF/vXfFh7GRc4NlojdTbpHZey01gIas0RavHMbNuyuQwcPGQpJoqRb8xT61Fs1/nxZL1jhdcEXohk9jVbi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWW5Wux3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16D1C4CED3;
+	Wed,  6 Nov 2024 12:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896200;
-	bh=xseTxG3eapKC3XIJxrMfemVLr+3+V8g0FpgqnwP1ZCc=;
+	s=korg; t=1730896086;
+	bh=aaRRHUaCIns7h7Kihf4fNwcC+0PTMnxhmuTsObfJmbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVIT6IABzRrBEn/1w/8Bll4yaPwScD8Q4MA97YSuwyP6mdJc/2AVFrWkuPz1/NA1T
-	 H+VOiaaIfbHHtlvhjLMItK5K2lvIU3TJfMnW6yFJj4/SO1BW+wHLfPlZDwqczFxdh4
-	 hhZIOlxD6WYw6IYBBgXpyv3LQ41eBZfIAE6D0bdE=
+	b=pWW5Wux3lt+tHbqTlEmt516Y5YWkse5RcCXQec2IWm2/RlD2TZzs4Bx6Mk22+EDgm
+	 a/q6cTRElc2tm2VEAymoKYqOaoSL5C8oEJ1ZaABMcppi4O0pl2ucifdxjkhygZWtLg
+	 LwM2RpQLVCh+zFqCg31WjV4KQu4JKSiUfRPrt0to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Steffen Dirkwinkel <me@steffen.cc>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	David Wei <dw@davidwei.uk>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 077/245] PCI: Fix pci_enable_acs() support for the ACS quirks
-Date: Wed,  6 Nov 2024 13:02:10 +0100
-Message-ID: <20241106120321.100375443@linuxfoundation.org>
+Subject: [PATCH 6.11 078/245] nvme: module parameter to disable pi with offsets
+Date: Wed,  6 Nov 2024 13:02:11 +0100
+Message-ID: <20241106120321.126249125@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
 References: <20241106120319.234238499@linuxfoundation.org>
@@ -68,69 +69,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit f3c3ccc4fe49dbc560b01d16bebd1b116c46c2b4 ]
+[ Upstream commit 42ab37eaad17aee458489c553a367621ee04e0bc ]
 
-There are ACS quirks that hijack the normal ACS processing and deliver to
-to special quirk code. The enable path needs to call
-pci_dev_specific_enable_acs() and then pci_dev_specific_acs_enabled() will
-report the hidden ACS state controlled by the quirk.
+A recent commit enables integrity checks for formats the previous kernel
+versions registered with the "nop" integrity profile. This means
+namespaces using that format become unreadable when upgrading the kernel
+past that commit.
 
-The recent rework got this out of order and we should try to call
-pci_dev_specific_enable_acs() regardless of any actual ACS support in the
-device.
+Introduce a module parameter to restore the "nop" integrity profile so
+that storage can be readable once again. This could be a boot device, so
+the setting needs to happen at module load time.
 
-As before command line parameters that effect standard PCI ACS don't
-interact with the quirk versions, including the new config_acs= option.
-
-Link: https://lore.kernel.org/r/0-v1-f96b686c625b+124-pci_acs_quirk_fix_jgg@nvidia.com
-Fixes: 47c8846a49ba ("PCI: Extend ACS configurability")
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://lore.kernel.org/all/e89107da-ac99-4d3a-9527-a4df9986e120@kernel.org
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1229019
-Tested-by: Steffen Dirkwinkel <me@steffen.cc>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 921e81db524d17 ("nvme: allow integrity when PI is not in first bytes")
+Reported-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/nvme/host/core.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 85ced6958d6d1..51407c376a222 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1067,8 +1067,15 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
- static void pci_enable_acs(struct pci_dev *dev)
- {
- 	struct pci_acs caps;
-+	bool enable_acs = false;
- 	int pos;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index a6fb1359a7e14..89ad4217f8606 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -90,6 +90,17 @@ module_param(apst_secondary_latency_tol_us, ulong, 0644);
+ MODULE_PARM_DESC(apst_secondary_latency_tol_us,
+ 	"secondary APST latency tolerance in us");
  
-+	/* If an iommu is present we start with kernel default caps */
-+	if (pci_acs_enable) {
-+		if (pci_dev_specific_enable_acs(dev))
-+			enable_acs = true;
-+	}
++/*
++ * Older kernels didn't enable protection information if it was at an offset.
++ * Newer kernels do, so it breaks reads on the upgrade if such formats were
++ * used in prior kernels since the metadata written did not contain a valid
++ * checksum.
++ */
++static bool disable_pi_offsets = false;
++module_param(disable_pi_offsets, bool, 0444);
++MODULE_PARM_DESC(disable_pi_offsets,
++	"disable protection information if it has an offset");
 +
- 	pos = dev->acs_cap;
- 	if (!pos)
- 		return;
-@@ -1077,11 +1084,8 @@ static void pci_enable_acs(struct pci_dev *dev)
- 	pci_read_config_word(dev, pos + PCI_ACS_CTRL, &caps.ctrl);
- 	caps.fw_ctrl = caps.ctrl;
+ /*
+  * nvme_wq - hosts nvme related works that are not reset or delete
+  * nvme_reset_wq - hosts nvme reset works
+@@ -1921,8 +1932,12 @@ static void nvme_configure_metadata(struct nvme_ctrl *ctrl,
  
--	/* If an iommu is present we start with kernel default caps */
--	if (pci_acs_enable) {
--		if (pci_dev_specific_enable_acs(dev))
--			pci_std_enable_acs(dev, &caps);
--	}
-+	if (enable_acs)
-+		pci_std_enable_acs(dev, &caps);
+ 	if (head->pi_size && head->ms >= head->pi_size)
+ 		head->pi_type = id->dps & NVME_NS_DPS_PI_MASK;
+-	if (!(id->dps & NVME_NS_DPS_PI_FIRST))
+-		info->pi_offset = head->ms - head->pi_size;
++	if (!(id->dps & NVME_NS_DPS_PI_FIRST)) {
++		if (disable_pi_offsets)
++			head->pi_type = 0;
++		else
++			info->pi_offset = head->ms - head->pi_size;
++	}
  
- 	/*
- 	 * Always apply caps from the command line, even if there is no iommu.
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		/*
 -- 
 2.43.0
 
