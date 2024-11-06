@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29279BE820
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841D69BEA0B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AEB5B22669
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7FEF1F23AD8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5241F1DF74E;
-	Wed,  6 Nov 2024 12:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54C91F4FBD;
+	Wed,  6 Nov 2024 12:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o33oKpYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rn3LVZpA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7371DF726;
-	Wed,  6 Nov 2024 12:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ABF1F4FAE;
+	Wed,  6 Nov 2024 12:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895674; cv=none; b=MA4NkeHpS3aFACiqPcShd3XAMg/aJlti4MCV0hjL/tNvE8AKbK8hOiTOdiGV0wrATjMy3WciymolY4kxj8MXGX77JI3d8y2p4s6a7U/RJZIPkImyCHfUY2TY430LsjpJ1jRTOHnHyRCyzV1qR/WCKSwgsqV//uFDTK1GE+3zjq0=
+	t=1730896631; cv=none; b=X9gj9KQvQdJg9wDHw44FtOGY50M1nE4kz9EdbqHFIU/TkQmpt8vVlju9ShvU8xa37bD9iAYit72U4u/fw3EZhtE6StaHAZ9W3GtLcpvQiPyZzv26nLdB7asrK2xj1C3gN7B1LOyuk5hET7C5csDnod5inVT5Oe8SrUX26IqPd+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895674; c=relaxed/simple;
-	bh=2KA22ImCm2U9VN/Ak1p3kjFs6ioyL6iUV4e9XgqfzoU=;
+	s=arc-20240116; t=1730896631; c=relaxed/simple;
+	bh=0J/qc3NLIvDzOjJVY0FX13USk75SB02lb42nPNuRt1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpjORwXjw3yhF4iSK1jybFP4BDW6jzqeO0buvroms2eODvj/Cbvro54cjVweIOvV2Z+4z3id4TGILqCPG+2+j9VgajNlQXgZUqAyL+GexcPqjyO3YqBy27Bq0KYE5O/NnFJBOVKeBC9XyQEbFoUJRCk0pKyazApkhgcWn6rb2a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o33oKpYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C38C4CECD;
-	Wed,  6 Nov 2024 12:21:13 +0000 (UTC)
+	 MIME-Version; b=Qp5D3RgQA0pEvh+mCijt71Zv/jLomvHr3eo4H6+n2cysHWJ+mNrokzhOEXlLxuzn205c6XAFTvFKJo3b0vTL6QmhdQ3pbebDastiz48dWl0ZdC/ppzW75rsHhXq92aRupe5HG4ohxqfrGaaQddXRXZqoDlg+l8oSTQX3VhaDbYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rn3LVZpA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79102C4CECD;
+	Wed,  6 Nov 2024 12:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895673;
-	bh=2KA22ImCm2U9VN/Ak1p3kjFs6ioyL6iUV4e9XgqfzoU=;
+	s=korg; t=1730896630;
+	bh=0J/qc3NLIvDzOjJVY0FX13USk75SB02lb42nPNuRt1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o33oKpYXnC0FGjnSWLGh7m4Fkn3Pe4EQupN4J55bncZ2zmCJEP8jSOYOF3OxJpqJC
-	 D86BrFmJVmPQQlVirMrvxP7Ju9czlAK4iEp2g5oiaJL8DJEmi93+Ibst+PwBgIEnsk
-	 4ckOWzlmJw/JiSrQPnM1XwFbB/KLTSMhQ7kePgeo=
+	b=Rn3LVZpADnaERIzO0nuWSibPLCiv1WrIQ+RmNWoBxNIY0uHAj54020Ex8j/cDco0l
+	 4gV9T1N+T66qOWILMTKY1qTIkUjxw072Jg7JJFBspIBF4QrkYnVWbxuc17+6PoWY3H
+	 343PE8+BhxMyao4pfpjdqhpkZBVysox24IVk5Gqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 298/350] net: ethernet: aeroflex: fix potential memory leak in greth_start_xmit_gbit()
+Subject: [PATCH 5.10 020/110] arm64: probes: Fix uprobes for big-endian kernels
 Date: Wed,  6 Nov 2024 13:03:46 +0100
-Message-ID: <20241106120328.169457904@linuxfoundation.org>
+Message-ID: <20241106120303.721705189@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit cf57b5d7a2aad456719152ecd12007fe031628a3 ]
+[ Upstream commit 13f8f1e05f1dc36dbba6cba0ae03354c0dafcde7 ]
 
-The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb() to fix it.
+The arm64 uprobes code is broken for big-endian kernels as it doesn't
+convert the in-memory instruction encoding (which is always
+little-endian) into the kernel's native endianness before analyzing and
+simulating instructions. This may result in a few distinct problems:
 
-Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet MAC driver")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20241012110434.49265-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+* The kernel may may erroneously reject probing an instruction which can
+  safely be probed.
+
+* The kernel may erroneously erroneously permit stepping an
+  instruction out-of-line when that instruction cannot be stepped
+  out-of-line safely.
+
+* The kernel may erroneously simulate instruction incorrectly dur to
+  interpretting the byte-swapped encoding.
+
+The endianness mismatch isn't caught by the compiler or sparse because:
+
+* The arch_uprobe::{insn,ixol} fields are encoded as arrays of u8, so
+  the compiler and sparse have no idea these contain a little-endian
+  32-bit value. The core uprobes code populates these with a memcpy()
+  which similarly does not handle endianness.
+
+* While the uprobe_opcode_t type is an alias for __le32, both
+  arch_uprobe_analyze_insn() and arch_uprobe_skip_sstep() cast from u8[]
+  to the similarly-named probe_opcode_t, which is an alias for u32.
+  Hence there is no endianness conversion warning.
+
+Fix this by changing the arch_uprobe::{insn,ixol} fields to __le32 and
+adding the appropriate __le32_to_cpu() conversions prior to consuming
+the instruction encoding. The core uprobes copies these fields as opaque
+ranges of bytes, and so is unaffected by this change.
+
+At the same time, remove MAX_UINSN_BYTES and consistently use
+AARCH64_INSN_SIZE for clarity.
+
+Tested with the following:
+
+| #include <stdio.h>
+| #include <stdbool.h>
+|
+| #define noinline __attribute__((noinline))
+|
+| static noinline void *adrp_self(void)
+| {
+|         void *addr;
+|
+|         asm volatile(
+|         "       adrp    %x0, adrp_self\n"
+|         "       add     %x0, %x0, :lo12:adrp_self\n"
+|         : "=r" (addr));
+| }
+|
+|
+| int main(int argc, char *argv)
+| {
+|         void *ptr = adrp_self();
+|         bool equal = (ptr == adrp_self);
+|
+|         printf("adrp_self   => %p\n"
+|                "adrp_self() => %p\n"
+|                "%s\n",
+|                adrp_self, ptr, equal ? "EQUAL" : "NOT EQUAL");
+|
+|         return 0;
+| }
+
+.... where the adrp_self() function was compiled to:
+
+| 00000000004007e0 <adrp_self>:
+|   4007e0:       90000000        adrp    x0, 400000 <__ehdr_start>
+|   4007e4:       911f8000        add     x0, x0, #0x7e0
+|   4007e8:       d65f03c0        ret
+
+Before this patch, the ADRP is not recognized, and is assumed to be
+steppable, resulting in corruption of the result:
+
+| # ./adrp-self
+| adrp_self   => 0x4007e0
+| adrp_self() => 0x4007e0
+| EQUAL
+| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
+| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
+| # ./adrp-self
+| adrp_self   => 0x4007e0
+| adrp_self() => 0xffffffffff7e0
+| NOT EQUAL
+
+After this patch, the ADRP is correctly recognized and simulated:
+
+| # ./adrp-self
+| adrp_self   => 0x4007e0
+| adrp_self() => 0x4007e0
+| EQUAL
+| #
+| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
+| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
+| # ./adrp-self
+| adrp_self   => 0x4007e0
+| adrp_self() => 0x4007e0
+| EQUAL
+
+Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-4-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/aeroflex/greth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/uprobes.h   | 8 +++-----
+ arch/arm64/kernel/probes/uprobes.c | 4 ++--
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/aeroflex/greth.c b/drivers/net/ethernet/aeroflex/greth.c
-index 4df8da8f5e7e3..59690330d81ca 100644
---- a/drivers/net/ethernet/aeroflex/greth.c
-+++ b/drivers/net/ethernet/aeroflex/greth.c
-@@ -488,7 +488,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
+index ba4bff5ca6749..98f29a43bfe89 100644
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -10,11 +10,9 @@
+ #include <asm/insn.h>
+ #include <asm/probes.h>
  
- 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
- 		dev->stats.tx_errors++;
--		goto out;
-+		goto len_error;
- 	}
+-#define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
+-
+ #define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
+ #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
+-#define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
++#define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
  
- 	/* Save skb pointer. */
-@@ -579,6 +579,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
- map_error:
- 	if (net_ratelimit())
- 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
-+len_error:
- 	dev_kfree_skb(skb);
- out:
- 	return err;
+ typedef u32 uprobe_opcode_t;
+ 
+@@ -23,8 +21,8 @@ struct arch_uprobe_task {
+ 
+ struct arch_uprobe {
+ 	union {
+-		u8 insn[MAX_UINSN_BYTES];
+-		u8 ixol[MAX_UINSN_BYTES];
++		__le32 insn;
++		__le32 ixol;
+ 	};
+ 	struct arch_probe_insn api;
+ 	bool simulate;
+diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
+index 2c247634552b1..8a02c549e57fd 100644
+--- a/arch/arm64/kernel/probes/uprobes.c
++++ b/arch/arm64/kernel/probes/uprobes.c
+@@ -42,7 +42,7 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
+ 	else if (!IS_ALIGNED(addr, AARCH64_INSN_SIZE))
+ 		return -EINVAL;
+ 
+-	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
++	insn = le32_to_cpu(auprobe->insn);
+ 
+ 	switch (arm_probe_decode_insn(insn, &auprobe->api)) {
+ 	case INSN_REJECTED:
+@@ -108,7 +108,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	if (!auprobe->simulate)
+ 		return false;
+ 
+-	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
++	insn = le32_to_cpu(auprobe->insn);
+ 	addr = instruction_pointer(regs);
+ 
+ 	if (auprobe->api.handler)
 -- 
 2.43.0
 
