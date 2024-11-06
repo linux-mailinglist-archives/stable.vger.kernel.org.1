@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2249BECD9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FF59BE722
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2661C23D56
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B9D9281B16
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE9D1F7080;
-	Wed,  6 Nov 2024 12:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3421DF25D;
+	Wed,  6 Nov 2024 12:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlfPN18X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cPUpjjY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10E81D86E8;
-	Wed,  6 Nov 2024 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2091DF24A;
+	Wed,  6 Nov 2024 12:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897994; cv=none; b=D3nxVqVtcIx0z9Z7YRCGEpXflrcm+R46fRyPdZuc/K6opFFKtv2Tas4Rbbcnbdbd3Xcy76+7xvpFsHNkN7Wo87hXaEAeO2zPCxHVT/fvPOG1jdVecVr6FvwBbK0d1grC6SMxeykUPrwd4N/AgGqv7/YAEcZJ4YWy8v4MR7CtUe0=
+	t=1730895053; cv=none; b=BIO5SYbJ6FwYtzXVeZmhUmABE3WOiknm4lemxUj8yJNCWVssNcosbzKWccOf4J0W9bqkFl4Vbzg/VOps2di+ChMO04nhH3PiA4R3vSXLp9wlPkDeHcqzUiv1Vxq5g1qfKtnBkVOaC/SQJJ1hHksdQgzE7oqehpmT4Bfi+yh81Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897994; c=relaxed/simple;
-	bh=OJ6PSCcEw4E8K+gMaj8lYQqbbshLJXA+k+1djIKzXiU=;
+	s=arc-20240116; t=1730895053; c=relaxed/simple;
+	bh=8P9/0hM8fz8HmQnfrlWrT1T9ccHEHpQMLKpEyTxE/eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUsl0Lktv9emBQXJSDC8G9JcpejphjhimgUS/iEHhIWSHQCWlcY4ZgIbTQ8Ib7gBrYiQUYCumd2P488rJkEOZwZNrUNMoVkIrHyWkqDm8V32xRAgQOfvB/ojjU9eh6bmy8FBn/G3O/B4215WgwWyJsTZrJy4NRsrQ9/528x6ddA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlfPN18X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7695C4CECD;
-	Wed,  6 Nov 2024 12:59:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bccBm8OYuCpzXU3+f4H+OkJXU2O3bxyaBwkD2yN9lwwsMwjSfNR0AnvVYwbXWcAZ8cC9cQd4ycmHstdkzGXxcfTFfBUX2Ylq8NDhuvuOkFXitHd+NKb5SUHmfetQIipLAjOhhnYShNe81sCSEmGwjqT2+7/YAJvABpUABcvfMMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cPUpjjY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5DC4CECD;
+	Wed,  6 Nov 2024 12:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897994;
-	bh=OJ6PSCcEw4E8K+gMaj8lYQqbbshLJXA+k+1djIKzXiU=;
+	s=korg; t=1730895053;
+	bh=8P9/0hM8fz8HmQnfrlWrT1T9ccHEHpQMLKpEyTxE/eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlfPN18XPAivLcxEPDlM6NHtz0GENEvnP+BGJ28txPO+stZJbyW96dSQdJ2Q3WmWf
-	 xigowq56OGk5GCfnMvK4OYNI1yurV6KQgmHXoMpZ/beTxU2QHp1vB+WVWWQ0nojiM4
-	 S3hNOHc88y865a5vSMHa6FaR8JbfBZqZ5TlIhGkw=
+	b=0cPUpjjYCpcVHlCkv+xg8bszMhNYjx8Q4MNE+FjQHUNbPd4Cz+NbItMhrOr03YltZ
+	 AVCvMd5hUey03wmnQbeKpPpHCbM0Sv+pbO28ORRcJpVP9AcIFVS529zcaDXR367A/n
+	 VJFLTCZ7iMDTmj/awlQMiKaOak4zHQumxzUOOa50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/462] selftests/bpf: Fix compile error from rlim_t in sk_storage_map.c
+Subject: [PATCH 4.19 053/350] drm/amdgpu: properly handle vbios fake edid sizing
 Date: Wed,  6 Nov 2024 12:59:41 +0100
-Message-ID: <20241106120333.679068055@linuxfoundation.org>
+Message-ID: <20241106120322.201641845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit d393f9479d4aaab0fa4c3caf513f28685e831f13 ]
+[ Upstream commit 8155566a26b8d6c1dd914f06a0c652e4e2f2adf1 ]
 
-Cast 'rlim_t' argument to match expected type of printf() format and avoid
-compile errors seen building for mips64el/musl-libc:
+The comment in the vbios structure says:
+// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
 
-  In file included from map_tests/sk_storage_map.c:20:
-  map_tests/sk_storage_map.c: In function 'test_sk_storage_map_stress_free':
-  map_tests/sk_storage_map.c:414:56: error: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'rlim_t' {aka 'long long unsigned int'} [-Werror=format=]
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                        ^~~~~~~~~~~~~~~~~~~~~~~
-    415 |                       rlim_new.rlim_cur, errno);
-        |                       ~~~~~~~~~~~~~~~~~
-        |                               |
-        |                               rlim_t {aka long long unsigned int}
-  ./test_maps.h:12:24: note: in definition of macro 'CHECK'
-     12 |                 printf(format);                                         \
-        |                        ^~~~~~
-  map_tests/sk_storage_map.c:414:68: note: format string is defined here
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                                  ~~^
-        |                                                                    |
-        |                                                                    long unsigned int
-        |                                                                  %llu
-  cc1: all warnings being treated as errors
+This fake edid struct has not been used in a long time, so I'm
+not sure if there were actually any boards out there with a non-128 byte
+EDID, but align the code with the comment.
 
-Fixes: 51a0e301a563 ("bpf: Add BPF_MAP_TYPE_SK_STORAGE test to test_maps")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/1e00a1fa7acf91b4ca135c4102dc796d518bad86.1721713597.git.tony.ambardar@gmail.com
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/map_tests/sk_storage_map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 29 ++++++++++---------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-index e569edc679d88..9228e33cc0db7 100644
---- a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-+++ b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-@@ -416,7 +416,7 @@ static void test_sk_storage_map_stress_free(void)
- 		rlim_new.rlim_max = rlim_new.rlim_cur + 128;
- 		err = setrlimit(RLIMIT_NOFILE, &rlim_new);
- 		CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
--		      rlim_new.rlim_cur, errno);
-+		      (unsigned long) rlim_new.rlim_cur, errno);
- 	}
- 
- 	err = do_sk_storage_map_stress_free();
+diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+index 9de266a1bfbe0..251975697d69d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
++++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+@@ -2095,26 +2095,29 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
+ 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
+ 					if (fake_edid_record->ucFakeEDIDLength) {
+ 						struct edid *edid;
+-						int edid_size =
+-							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
+-						edid = kmalloc(edid_size, GFP_KERNEL);
++						int edid_size;
++
++						if (fake_edid_record->ucFakeEDIDLength == 128)
++							edid_size = fake_edid_record->ucFakeEDIDLength;
++						else
++							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
++						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
++							       edid_size, GFP_KERNEL);
+ 						if (edid) {
+-							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
+-							       fake_edid_record->ucFakeEDIDLength);
+-
+ 							if (drm_edid_is_valid(edid)) {
+ 								adev->mode_info.bios_hardcoded_edid = edid;
+ 								adev->mode_info.bios_hardcoded_edid_size = edid_size;
+-							} else
++							} else {
+ 								kfree(edid);
++							}
+ 						}
++						record += struct_size(fake_edid_record,
++								      ucFakeEDIDString,
++								      edid_size);
++					} else {
++						/* empty fake edid record must be 3 bytes long */
++						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					}
+-					record += fake_edid_record->ucFakeEDIDLength ?
+-						  struct_size(fake_edid_record,
+-							      ucFakeEDIDString,
+-							      fake_edid_record->ucFakeEDIDLength) :
+-						  /* empty fake edid record must be 3 bytes long */
+-						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					break;
+ 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
+ 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
 -- 
 2.43.0
 
