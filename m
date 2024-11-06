@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0838E9BE7A0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F047E9BE8BD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C14A328345E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7FFF1F2269B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5611DF25D;
-	Wed,  6 Nov 2024 12:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748361DF756;
+	Wed,  6 Nov 2024 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Huaj4lGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To/5HS90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C861922DB;
-	Wed,  6 Nov 2024 12:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3196018C00E;
+	Wed,  6 Nov 2024 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895362; cv=none; b=N8PD3R71zxncu6lMOxtqIrdQCw9Hh4wo1t39xx2jT4Kvehb+nQfWKpiijtg+F46BiTy+jj1+JnSX3IbiiGDaO6DQpW9bYysiQloiHebajjvENPI48VdASL7dKvmBnWOiWa/pLVCPIfeqqJPRWfOYsD5bnI57xM2ctA3NOqkj81M=
+	t=1730896039; cv=none; b=EN3ujn/IrlIDVpJWnn0z+tfvP0qFof4EgcYHdonYGqJVjssEB1TwEobWx4568iLYSlwc/9e3mHzzxhiw/6Oae4iS3ZJ8b2C6mADztr0PzNl36/eUsgHD+YygLEyZpK16u38Kng1/w8j3Ju9jUQchk1Q+mXC6xBJ3j5FZIhm5LIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895362; c=relaxed/simple;
-	bh=jMWLQW+XifrbpnP33FLZCwL6eLVG+fARakUy3gs6cvo=;
+	s=arc-20240116; t=1730896039; c=relaxed/simple;
+	bh=pV/fp3eXixlYQmCBcbqyfulmE1ZwveJvTErODiawG1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I30p89ct1KFOZctE11zLpRezf8VeLoucVHgx2nSP2PtZLJGfHh9UISBUq+6PL1Is1b5eyGj5pcyjqhTisDNpsWLMhWev9AnF7blv3g5hmdnzzZNa0eWH6EjPXg6cuHMnS4enfeqHNkcd+axJoLUbQlqADi1WGLvZCmAvCZpFcVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Huaj4lGU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7751C4CECD;
-	Wed,  6 Nov 2024 12:16:01 +0000 (UTC)
+	 MIME-Version; b=kMj8q0HjSapmu+dDN1kuHVNVIXhGTIZfBnVxzJKnEOo68l3JPktDoCDSOzENmTj0prrBvlBo8RooBZ4LppVdJZynaACRhEZ71y401B72V6mDCe759y0Gy/EZnSYd2qXxSp2S9Mlea/D79dWsx70uwHvWv/6vy3L5OPSf7sZjcYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To/5HS90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC35EC4CECD;
+	Wed,  6 Nov 2024 12:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895362;
-	bh=jMWLQW+XifrbpnP33FLZCwL6eLVG+fARakUy3gs6cvo=;
+	s=korg; t=1730896039;
+	bh=pV/fp3eXixlYQmCBcbqyfulmE1ZwveJvTErODiawG1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Huaj4lGUj22JDYk80ZI68JXaqnff69U3bAR6Wpq2kqrPs2NJG5966PzRvcBX1UCsf
-	 /imycJmPS1OHC4xML0U2ErVIB08Jm9abidLrqt+gZkoiwp+eJ6rmo90fAbnX+xAUJ/
-	 k1XDKHJdEJpHv8ST/+Gp5iuu/48n1GJLbv9961gY=
+	b=To/5HS90zzzXceI65vFUep7CkKBAbfGgq9tjYH45lI77dtr6ftaxPcs/uy4gh0ucL
+	 FbZ57UljXhaNVJXpEGFw6TiCxp4BKVfFZS3EN8gJzsC1r1FBi+Q0LEr6LIm7Daslu4
+	 t3cofZ8RoDvlBlqA3iIk9BKPfG6w2ApoiE4HfCN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 192/350] ext4: fix double brelse() the buffer of the extents path
-Date: Wed,  6 Nov 2024 13:02:00 +0100
-Message-ID: <20241106120325.705320945@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 068/245] smb: client: fix parsing of device numbers
+Date: Wed,  6 Nov 2024 13:02:01 +0100
+Message-ID: <20241106120320.879494555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit dcaa6c31134c0f515600111c38ed7750003e1b9c upstream.
+[ Upstream commit 663f295e35594f4c2584fc68c28546b747b637cd ]
 
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
-released, otherwise it may be released twice. An example of what triggers
-this is as follows:
+Report correct major and minor numbers from special files created with
+NFS reparse points.
 
-  split2    map    split1
-|--------|-------|--------|
-
-ext4_ext_map_blocks
- ext4_ext_handle_unwritten_extents
-  ext4_split_convert_extents
-   // path->p_depth == 0
-   ext4_split_extent
-     // 1. do split1
-     ext4_split_extent_at
-       |ext4_ext_insert_extent
-       |  ext4_ext_create_new_leaf
-       |    ext4_ext_grow_indepth
-       |      le16_add_cpu(&neh->eh_depth, 1)
-       |    ext4_find_extent
-       |      // return -ENOMEM
-       |// get error and try zeroout
-       |path = ext4_find_extent
-       |  path->p_depth = 1
-       |ext4_ext_try_to_merge
-       |  ext4_ext_try_to_merge_up
-       |    path->p_depth = 0
-       |    brelse(path[1].p_bh)  ---> not set to NULL here
-       |// zeroout success
-     // 2. update path
-     ext4_find_extent
-     // 3. do split2
-     ext4_split_extent_at
-       ext4_ext_insert_extent
-         ext4_ext_create_new_leaf
-           ext4_ext_grow_indepth
-             le16_add_cpu(&neh->eh_depth, 1)
-           ext4_find_extent
-             path[0].p_bh = NULL;
-             path->p_depth = 1
-             read_extent_tree_block  ---> return err
-             // path[1].p_bh is still the old value
-             ext4_free_ext_path
-               ext4_ext_drop_refs
-                 // path->p_depth == 1
-                 brelse(path[1].p_bh)  ---> brelse a buffer twice
-
-Finally got the following WARRNING when removing the buffer from lru:
-
-============================================
-VFS: brelse: Trying to free free buffer
-WARNING: CPU: 2 PID: 72 at fs/buffer.c:1241 __brelse+0x58/0x90
-CPU: 2 PID: 72 Comm: kworker/u19:1 Not tainted 6.9.0-dirty #716
-RIP: 0010:__brelse+0x58/0x90
-Call Trace:
- <TASK>
- __find_get_block+0x6e7/0x810
- bdev_getblk+0x2b/0x480
- __ext4_get_inode_loc+0x48a/0x1240
- ext4_get_inode_loc+0xb2/0x150
- ext4_reserve_inode_write+0xb7/0x230
- __ext4_mark_inode_dirty+0x144/0x6a0
- ext4_ext_insert_extent+0x9c8/0x3230
- ext4_ext_map_blocks+0xf45/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
-============================================
-
-Fixes: ecb94f5fdf4b ("ext4: collapse a single extent tree block into the inode if possible")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-9-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/reparse.c | 6 +++---
+ fs/smb/client/reparse.h | 9 +--------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1872,6 +1872,7 @@ static void ext4_ext_try_to_merge_up(han
- 	path[0].p_hdr->eh_max = cpu_to_le16(max_root);
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index 7429b96a6ae5e..a4e25b99411ec 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -497,7 +497,7 @@ static void wsl_to_fattr(struct cifs_open_info_data *data,
+ 		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen))
+ 			fattr->cf_mode = (umode_t)le32_to_cpu(*(__le32 *)v);
+ 		else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen))
+-			fattr->cf_rdev = wsl_mkdev(v);
++			fattr->cf_rdev = reparse_mkdev(v);
+ 	} while (next);
+ out:
+ 	fattr->cf_dtype = S_DT(fattr->cf_mode);
+@@ -518,13 +518,13 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+ 				return false;
+ 			fattr->cf_mode |= S_IFCHR;
+-			fattr->cf_rdev = reparse_nfs_mkdev(buf);
++			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+ 			break;
+ 		case NFS_SPECFILE_BLK:
+ 			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+ 				return false;
+ 			fattr->cf_mode |= S_IFBLK;
+-			fattr->cf_rdev = reparse_nfs_mkdev(buf);
++			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+ 			break;
+ 		case NFS_SPECFILE_FIFO:
+ 			fattr->cf_mode |= S_IFIFO;
+diff --git a/fs/smb/client/reparse.h b/fs/smb/client/reparse.h
+index 2c0644bc4e65a..158e7b7aae646 100644
+--- a/fs/smb/client/reparse.h
++++ b/fs/smb/client/reparse.h
+@@ -18,14 +18,7 @@
+  */
+ #define IO_REPARSE_TAG_INTERNAL ((__u32)~0U)
  
- 	brelse(path[1].p_bh);
-+	path[1].p_bh = NULL;
- 	ext4_free_blocks(handle, inode, NULL, blk, 1,
- 			 EXT4_FREE_BLOCKS_METADATA | EXT4_FREE_BLOCKS_FORGET);
- }
+-static inline dev_t reparse_nfs_mkdev(struct reparse_posix_data *buf)
+-{
+-	u64 v = le64_to_cpu(*(__le64 *)buf->DataBuffer);
+-
+-	return MKDEV(v >> 32, v & 0xffffffff);
+-}
+-
+-static inline dev_t wsl_mkdev(void *ptr)
++static inline dev_t reparse_mkdev(void *ptr)
+ {
+ 	u64 v = le64_to_cpu(*(__le64 *)ptr);
+ 
+-- 
+2.43.0
+
 
 
 
