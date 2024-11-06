@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93259BECDB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D5F9BE724
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 900AB1F24A64
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85687B25B89
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931071F708F;
-	Wed,  6 Nov 2024 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F691DF25D;
+	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCJgc+Am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMVzaXbs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503CE1DFE3B;
-	Wed,  6 Nov 2024 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DED1DEFD3;
+	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898000; cv=none; b=kSpPwp0T5O2METIzPu10JSGxHKDqG57lXj6OVRq2jgE/yUQ+VCF6mrF6n9bUeIOuas6wMzz8SuLbbukTqhWA5AAlZXpm8lLcLxDu3bQDzHbozQ/MIhI9tu/rFa4ALLb5iv7qdw6Pg7b+fND4KaJMuo3PLhjz65ew7USLxJ74hw0=
+	t=1730895059; cv=none; b=ofaE+mv1MxZGOBx54nSECFPVIOQ0LqSD196I8fv8BgVkKRCQ/S/+OAAmSkTLIq0yNcwQXW7C//zsA2CrECNAIjKj1pldID7qM6WTXcwiqdCcTlhikMFZi/bXTx42N8AEg01snZfcHMfp0TwKlrPTCWsaIROv9WC/DYuJ8n/EaFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898000; c=relaxed/simple;
-	bh=J5BqvNC/5vbytBy9G51P1Bh2Kjt6iAgzzx5aH4cng94=;
+	s=arc-20240116; t=1730895059; c=relaxed/simple;
+	bh=5UyWsTtuSpXq1KXKUCnRr9NQQy1wKXOQdzdxHOWSkrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JM+GZZhKyOGpErGtYkx46+jbMK8q6PA03ihEHmwFb0FkNKmB/tsSCG7bJ2i/PVE3PvSW6p3uvBs/TWpbtNeirRpdZXT11Db33jWKv8Gpe0JP8DEk3krtg4Rt3YyeO5UbKejaH0IlfOxtdAvB1n/7ndMlvSjIVV3eDpJAk7IwoHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCJgc+Am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7199C4CECD;
-	Wed,  6 Nov 2024 12:59:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZQogJq3kpKVEhP6f2QlV01Zvlw2H/v9RmM9AuANMAxlVb+bSOdQDULE5rbmP6FKY4Dfc7OtevWSLW+e4ORSCgTNjMBxk0Evh/dqmMvQfXt7k/N4RkAV5MCEFw+/tFsIeO8rrs1oGBTrOkHPoJkkhjEmh+1uq3TMQGd1b/TzkUdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMVzaXbs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371CBC4CED2;
+	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898000;
-	bh=J5BqvNC/5vbytBy9G51P1Bh2Kjt6iAgzzx5aH4cng94=;
+	s=korg; t=1730895059;
+	bh=5UyWsTtuSpXq1KXKUCnRr9NQQy1wKXOQdzdxHOWSkrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCJgc+AmndYfA+tPyKVcqcbql+Mfhkj+IbOmJVs50HhOiZb12PpAgOEXTiNvwviCk
-	 dt3+Q+EWnMOlTT1liZ2hR9rKkMcyyeA3DoXOkXdy+AsXdnx74nWlKKJ3Sw7To5i681
-	 KmjxA8AFugvDkEtr8why1pKYVtvPhjx6WUkA+SeQ=
+	b=CMVzaXbsp/9oM5Yp0MVq46qQUARhjFemcm/PPaGFY8jdnBrufgXCF/fOEfitNNiOS
+	 w7NC6cOmC+VwaPDd4uV+aCoN6P5kAc+3u0dUYSibYdARMqsKHVulyPXsThZTPwTCTh
+	 lMVYdUdaZhuc3JwdBN+cj+eUbDDZ7K1iq/NJu+H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/462] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
+Subject: [PATCH 4.19 055/350] drm/radeon: properly handle vbios fake edid sizing
 Date: Wed,  6 Nov 2024 12:59:43 +0100
-Message-ID: <20241106120333.728864682@linuxfoundation.org>
+Message-ID: <20241106120322.248344364@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
+[ Upstream commit 17c6baff3d5f65c8da164137a58742541a060b2f ]
 
-The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
-musl headers unless _GNU_SOURCE is defined.
+The comment in the vbios structure says:
+// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
+This fake edid struct has not been used in a long time, so I'm
+not sure if there were actually any boards out there with a non-128 byte
+EDID, but align the code with the comment.
 
-  tcp_rtt.c: In function 'wait_for_ack':
-  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
-     24 |         struct tcp_info info;
-        |                         ^~~~
-  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
-  cc1: all warnings being treated as errors
-
-Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
+Fixes: c324acd5032f ("drm/radeon/kms: parse the extended LCD info block")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/radeon_atombios.c | 29 +++++++++++++-----------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-index f4cd60d6fba2e..ef052f7845b67 100644
---- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include "cgroup_helpers.h"
- 
+diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
+index 0d11d6d1f5f0a..317843bd67d93 100644
+--- a/drivers/gpu/drm/radeon/radeon_atombios.c
++++ b/drivers/gpu/drm/radeon/radeon_atombios.c
+@@ -1727,26 +1727,29 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
+ 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
+ 					if (fake_edid_record->ucFakeEDIDLength) {
+ 						struct edid *edid;
+-						int edid_size =
+-							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
+-						edid = kmalloc(edid_size, GFP_KERNEL);
++						int edid_size;
++
++						if (fake_edid_record->ucFakeEDIDLength == 128)
++							edid_size = fake_edid_record->ucFakeEDIDLength;
++						else
++							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
++						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
++							       edid_size, GFP_KERNEL);
+ 						if (edid) {
+-							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
+-							       fake_edid_record->ucFakeEDIDLength);
+-
+ 							if (drm_edid_is_valid(edid)) {
+ 								rdev->mode_info.bios_hardcoded_edid = edid;
+ 								rdev->mode_info.bios_hardcoded_edid_size = edid_size;
+-							} else
++							} else {
+ 								kfree(edid);
++							}
+ 						}
++						record += struct_size(fake_edid_record,
++								      ucFakeEDIDString,
++								      edid_size);
++					} else {
++						/* empty fake edid record must be 3 bytes long */
++						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					}
+-					record += fake_edid_record->ucFakeEDIDLength ?
+-						  struct_size(fake_edid_record,
+-							      ucFakeEDIDString,
+-							      fake_edid_record->ucFakeEDIDLength) :
+-						  /* empty fake edid record must be 3 bytes long */
+-						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					break;
+ 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
+ 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
 -- 
 2.43.0
 
