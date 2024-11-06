@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A559BE9AC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9029BEB17
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26EAD1C232CE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF311F268AD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6EC18C00E;
-	Wed,  6 Nov 2024 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCD31F5832;
+	Wed,  6 Nov 2024 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayzDY8ZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFinDaJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE331DFE3A;
-	Wed,  6 Nov 2024 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B81F582A;
+	Wed,  6 Nov 2024 12:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896580; cv=none; b=jcWJhXwKNI66/BaDKyklk8umPlzMtbHt1j1vCZto1lKfZ8FDXXHjLsPzWeiHyESvlDDNUQ+7Zp0p7XGOSCDY/JGOaRAGdIUURu/wNxxY5grY8bJ5d1B50a2c8lNNTQKxNSlM8XWEzt+c3BvHsW3FV1JkVC9cpiC32rOxgEYR8KQ=
+	t=1730896834; cv=none; b=KIWhAaDyfFIeH2ndUrxMXi0EuMYr87hl2UpSJ9shspNaDOFv8qBxsWJ7qZ66Uo/33tuvErbw/KV/xYcNzfwzDB0mS5rpv0dMMz0+yEITrCLwdnITKlyOaGIZBPZdTd5ucd1jvafvF/B+QndCQzW7IPc0Gwo3ao64s14z3EtWqes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896580; c=relaxed/simple;
-	bh=tK71Lua8EwJZ/SSvHR3BmLOP99HLLKm3lLOv1mrx5E8=;
+	s=arc-20240116; t=1730896834; c=relaxed/simple;
+	bh=QNOjQSmVQKBEJufq+zElo3UtBFIVSBDX9IR2nYYUdRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/R+QvKEYO3gST8ayuaJWVQGrW5swkmotI6kN08xzRT2CfZXY6D67rz30VsicYGtv1oTNvMhAdkcWGCu004thsvrSEmoxAqfX3qgq0TKKTmFolUG09TBCtyvoh3Q3mgxp4W+ZgEbpRozVeubso7geSZHxbxTz24oO0khPU+WLoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayzDY8ZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9118C4CECD;
-	Wed,  6 Nov 2024 12:36:19 +0000 (UTC)
+	 MIME-Version; b=a1rgTiWjJ6T5O7n/27yjDX+XIRD6IV7nKZzWSvAwO6rcgtchSvkpwnjotdSKUJZcOgeINDKWpo9ZSN9GSW0ymNypfYkWEbRRYLNASr91/0A/nzGUbGZtW6bPzECHp7yua1DKiwob9k9FGvP2EKq2s9dd4skGXZVhISb+zXU8BJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFinDaJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34DFC4CECD;
+	Wed,  6 Nov 2024 12:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896580;
-	bh=tK71Lua8EwJZ/SSvHR3BmLOP99HLLKm3lLOv1mrx5E8=;
+	s=korg; t=1730896833;
+	bh=QNOjQSmVQKBEJufq+zElo3UtBFIVSBDX9IR2nYYUdRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayzDY8ZA2PhSSZ0gDv3VLdvPqef0IVFdsNG+DMr/A3pmbTiA6XBfgoqBn3JSMxM5r
-	 pNhSDm5OaIvP52S/Xw+DlGq9RWen6obNHDNzWyUBgpuvS+lD8UdmwV+q31YDVYI+ZR
-	 sLmfVr9/DT+C5ublcGdOnf9duZqQjCepejzei2OM=
+	b=eFinDaJXYfoQdVltt8a4CSyHthKNfUIasOfmytNyi0iTyRCPyuWOE6UwgqpFGVlpZ
+	 b2Y9/jksn7npYaqBQb4g+BXXfZEjcCe0LCTVHS/q49p4gIuPiUCVn0kgb6AtF6PsNC
+	 XJz/pDBFDEowBWCownm+rmJqpPkOarHvH8AULyhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Shekhar Chauhan <shekhar.chauhan@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 240/245] drm/xe: Define STATELESS_COMPRESSION_CTRL as mcr register
+	Faisal Hassan <quic_faisalh@quicinc.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 087/110] xhci: Fix Link TRB DMA in command ring stopped completion event
 Date: Wed,  6 Nov 2024 13:04:53 +0100
-Message-ID: <20241106120325.177239949@linuxfoundation.org>
+Message-ID: <20241106120305.592682763@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Faisal Hassan <quic_faisalh@quicinc.com>
 
-commit 4551d60299b5ddc2655b6b365a4b92634e14e04f upstream.
+commit 075919f6df5dd82ad0b1894898b315fbb3c29b84 upstream.
 
-Register STATELESS_COMPRESSION_CTRL should be considered
-mcr register which should write to all slices as per
-documentation.
+During the aborting of a command, the software receives a command
+completion event for the command ring stopped, with the TRB pointing
+to the next TRB after the aborted command.
 
-Bspec: 71185
-Fixes: ecabb5e6ce54 ("drm/xe/xe2: Add performance turning changes")
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240814095614.909774-4-tejas.upadhyay@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+If the command we abort is located just before the Link TRB in the
+command ring, then during the 'command ring stopped' completion event,
+the xHC gives the Link TRB in the event's cmd DMA, which causes a
+mismatch in handling command completion event.
+
+To address this situation, move the 'command ring stopped' completion
+event check slightly earlier, since the specific command it stopped
+on isn't of significant concern.
+
+Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241022155631.1185-1-quic_faisalh@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -80,7 +80,7 @@
- #define   LE_CACHEABILITY_MASK			REG_GENMASK(1, 0)
- #define   LE_CACHEABILITY(value)		REG_FIELD_PREP(LE_CACHEABILITY_MASK, value)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1582,6 +1582,14 @@ static void handle_cmd_completion(struct
  
--#define STATELESS_COMPRESSION_CTRL		XE_REG(0x4148)
-+#define STATELESS_COMPRESSION_CTRL		XE_REG_MCR(0x4148)
- #define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
+ 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
  
- #define XE2_GAMREQSTRM_CTRL			XE_REG(0x4194)
++	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
++
++	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
++	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
++		complete_all(&xhci->cmd_ring_stop_completion);
++		return;
++	}
++
+ 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
+ 			cmd_trb);
+ 	/*
+@@ -1598,14 +1606,6 @@ static void handle_cmd_completion(struct
+ 
+ 	cancel_delayed_work(&xhci->cmd_timer);
+ 
+-	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
+-
+-	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
+-	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
+-		complete_all(&xhci->cmd_ring_stop_completion);
+-		return;
+-	}
+-
+ 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
+ 		xhci_err(xhci,
+ 			 "Command completion event does not match command\n");
 
 
 
