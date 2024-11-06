@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015149BE806
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F269BE930
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B4D1C20D0D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D8C284BB5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FE11DF72E;
-	Wed,  6 Nov 2024 12:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2A51E008D;
+	Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX3U6cz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTRi1H1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3779F1DF24A;
-	Wed,  6 Nov 2024 12:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96BC1DF756;
+	Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895606; cv=none; b=ftAK8E7HQjtRye7JxqoUnpc5cR+WQ6PAckDAD9XG5mGX5pYMP2yHCbZs+a0ylAVzCryvlIZpv5T23GPx+f91H+4fkBMhyYeRmVZ39eevf3XAvv5SnrY2Or8/T6CFzjCLtzmZPsZsjEMvtlF3LKMZlePfPcoMp0GeSHAB7j+0LrQ=
+	t=1730896280; cv=none; b=to78LBwa//kNdhYoyz4EvsY0ZYH1NuVQkd5b3FCcIy+wIRYFU0Kz8rlNXDUjOhTsTxTjWNrfpgszF36MPxpbRhPuP/87JYW5TMfRC3YUftwsFgQLwjpF8IB0w2VY07RUV0CXdKJS2FFFpjAUy+tvuWONDM/3M+QfF7YMhJvMS2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895606; c=relaxed/simple;
-	bh=J3wAds+0M4hgUMg4EfKqHRavPoii5ZG1MbCkNcNWYyI=;
+	s=arc-20240116; t=1730896280; c=relaxed/simple;
+	bh=zuYmduM1Ykx6cGJPYhmry3cw9seGSUrOArDwwJvwzZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txuITSYFQgMY8V5DmvB72zHuBE7O8g7mD494IyLgszyLESt5omFL/KMD2nrcWNU/RL5Q7BlSwtHEFlPtafYmh5sPzpsOLLlhga76QbcqwTdPb3rKulD6/8KgnTAT5sjAzccMhQBae8ka+Ncsq4KXiWtq4Dcy9Cv8yAroXAQQFKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX3U6cz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2840C4CECD;
-	Wed,  6 Nov 2024 12:20:05 +0000 (UTC)
+	 MIME-Version; b=ZHC5lQnLlrRwtiql+ScfgHuNGirX+Lj4GC5+zyLGqQ1YW8ceNK9NiiYjcXhmLsZTK5nIyHYqiuCCXfqE0/hI/C0lRmTF2z+wBcT5Q4PQ/z2LMYQHrE80m7i8WCDHnQrBkgzj59GJYQSBqe74mSjcNAF0qUxAGxt+C3q64OVBa0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTRi1H1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2D0C4CECD;
+	Wed,  6 Nov 2024 12:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895606;
-	bh=J3wAds+0M4hgUMg4EfKqHRavPoii5ZG1MbCkNcNWYyI=;
+	s=korg; t=1730896280;
+	bh=zuYmduM1Ykx6cGJPYhmry3cw9seGSUrOArDwwJvwzZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pX3U6cz15oaSSUOTiem9DhsAyXSWJSwx/PgoK0PTWBCBP+3AoCm9IsSV2z2DslIrD
-	 UW7yudGsXWTKTPeGMrD9u8aYE+EWrku8+/QLPHLLzKeInRKKMHrUxxeJgzVwMd2UBt
-	 Gnc9651nUbZWCyvi9bf5916ummYPw05pAqJ2LOjk=
+	b=cTRi1H1mNlLoveCmSA4djnJNn6orK4DHLXJ9mzqrPGr6DESyCbAF/0rLDgPT3rv1I
+	 zAItfn3JZU/nACoNSVZcI01CH6wIhl7XFRVmXxfg2Tuj0jqu6IfCiqk/dXVTTWQzqQ
+	 ox1FRxrEfvGKeCFYZWHlqgewM5KXQPxTXZM7Ntgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bruno VERNAY <bruno.vernay@se.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 4.19 274/350] net: dsa: mv88e6xxx: Fix out-of-bound access
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 149/245] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
 Date: Wed,  6 Nov 2024 13:03:22 +0100
-Message-ID: <20241106120327.643219600@linuxfoundation.org>
+Message-ID: <20241106120322.897880403@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-commit 528876d867a23b5198022baf2e388052ca67c952 upstream.
+[ Upstream commit f89263b69731e0144d275fff777ee0dd92069200 ]
 
-If an ATU violation was caused by a CPU Load operation, the SPID could
-be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
+When enable initcall_debug together with higher debug level below.
+CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
+CONFIG_CONSOLE_LOGLEVEL_QUIET=9
+CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
 
-Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
+To fix this issue, adjust the sequence of the resets refer to the power
+up sequence listed below.
+
+i.MX8MP PCIe PHY power up sequence:
+                          /---------------------------------------------
+1.8v supply     ---------/
+                    /---------------------------------------------------
+0.8v supply     ---/
+
+                ---\ /--------------------------------------------------
+                    X        REFCLK Valid
+Reference Clock ---/ \--------------------------------------------------
+                             -------------------------------------------
+                             |
+i_init_restn    --------------
+                                    ------------------------------------
+                                    |
+i_cmn_rstn      ---------------------
+                                         -------------------------------
+                                         |
+o_pll_lock_done --------------------------
+
+Logs:
+imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000
+imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000
+probe of clk_imx8mp_audiomix.reset.0 returned 0 after 1052 usecs
+probe of 30e20000.clock-controller returned 0 after 32971 usecs
+phy phy-32f00000.pcie-phy.4: phy poweron failed --> -110
+probe of 30e10000.dma-controller returned 0 after 10235 usecs
+imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+
+Fixes: dce9edff16ee ("phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+v2 changes:
+- Rebase to latest fixes branch of linux-phy git repo.
+- Richard's environment have problem and can't sent out patch. So I help
+post this fix patch.
+
+Link: https://lore.kernel.org/r/20241021155241.943665-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/global1_atu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -363,7 +363,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob
- 		dev_err_ratelimited(chip->dev,
- 				    "ATU full violation for %pM portvec %x spid %d\n",
- 				    entry.mac, entry.portvec, spid);
--		chip->ports[spid].atu_full_violation++;
-+		if (spid < ARRAY_SIZE(chip->ports))
-+			chip->ports[spid].atu_full_violation++;
- 	}
- 	mutex_unlock(&chip->reg_lock);
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 11fcb1867118c..e98361dcdeadf 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -141,11 +141,6 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
+ 	usleep_range(100, 200);
  
+-	/* Do the PHY common block reset */
+-	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
+-			   IMX8MM_GPR_PCIE_CMN_RST,
+-			   IMX8MM_GPR_PCIE_CMN_RST);
+-
+ 	switch (imx8_phy->drvdata->variant) {
+ 	case IMX8MP:
+ 		reset_control_deassert(imx8_phy->perst);
+@@ -156,6 +151,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 		break;
+ 	}
+ 
++	/* Do the PHY common block reset */
++	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
++			   IMX8MM_GPR_PCIE_CMN_RST,
++			   IMX8MM_GPR_PCIE_CMN_RST);
++
+ 	/* Polling to check the phy is ready or not. */
+ 	ret = readl_poll_timeout(imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG075,
+ 				 val, val == ANA_PLL_DONE, 10, 20000);
+-- 
+2.43.0
+
 
 
 
