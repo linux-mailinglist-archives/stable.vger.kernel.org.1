@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-89956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF8A9BDBEC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:11:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94C79BDBF2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3B7728468F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38F51281F4E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399711922E9;
-	Wed,  6 Nov 2024 02:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DEB192B86;
+	Wed,  6 Nov 2024 02:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbzRWRYu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfaJ/vJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E527619006B;
-	Wed,  6 Nov 2024 02:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B226718FC84;
+	Wed,  6 Nov 2024 02:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858964; cv=none; b=oNMZQ57trMztOOJRkKrQBUg2ti6vgWjiNyLbb+xyNCJ/g+3NNAbzjwTeQ2BkRHKpzBPaqpepgPOiXZjPtAN1ABw2JFNcapzwXS1K8A68EjEUx5+z/AFTmF4HniRvQ21oEwefZOYmb8NBDuQMYbtCJ2+6N0wMT5pc3vwiS3omS5M=
+	t=1730858969; cv=none; b=gBetxuC1+4hqDQbsRFwDnOk3U/1ztNVGc1yayGbqN9t/7+yr1rDfehxqjIdsq2ugrng/AtoNqKz5cOHml2uauSzaexKCSBrHrH0Z+I/S+/ojPhJfJEFCPb0hc0k/bUgt1xKQX0dFw8QRn57A0FxH8m1soQ4bwlKVfNG6qELyANE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858964; c=relaxed/simple;
-	bh=msElaN0h388wkDiBJ7aFMbSNP21TiZEWT0zi+8xApAA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n/ZqZzFKpW/7dosci9gO91z4MZHItVDKMCrkVpvTXkDS/PTnrKO/sRuhj0DBCJIpfuAwoejP7IDAbHVwcq2eEpIi+bLpNib1CIpV/YH7bqiesqvBIWFfo6zTRW6m7ywmq+x6y/WuezybCd7UmujLmxAU1/lenUC3k0iAeFZb28Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbzRWRYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFA9C4CECF;
-	Wed,  6 Nov 2024 02:09:22 +0000 (UTC)
+	s=arc-20240116; t=1730858969; c=relaxed/simple;
+	bh=pzPy2AymgTet41TuBvckhGh6NcwJxAzsOOgSMIQvJg4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tQsAdCRFfyGeFL/pN9h687rfxl8KhfP9YFN99RwO86vfPTmHetyDSg0F/kGz4xo1GzPlTOHWuMZRO3zTaI8Rapwgm03xeu7iWbV+dyrMOr+6L7pYKYu3V/k/hbnG4H7ifBAGoSk3rhdpbRv2Rg692JIn9dRYyC78yFDt8TLZVG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfaJ/vJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E1DC4CECF;
+	Wed,  6 Nov 2024 02:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858963;
-	bh=msElaN0h388wkDiBJ7aFMbSNP21TiZEWT0zi+8xApAA=;
+	s=k20201202; t=1730858969;
+	bh=pzPy2AymgTet41TuBvckhGh6NcwJxAzsOOgSMIQvJg4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TbzRWRYu91vy5SFK8q66MgFGXV70xxOD2qRLYgfuey3vVsNZbTj8ZuqRzjHPLhAm7
-	 33SPQLI8yZNMRV/RyVHeNQBiQ/tqhkv9UTtmZuksCnL8WwiPKpmioDOHnVggK3ZdAX
-	 HK8KC7VPqX9TMmT14yp6JdgeFn9X7IWP22/XR0wgV8g/fxOYQxlpRi7EQVwwhy48gh
-	 zSuVzSBppaOl7UvgBSJLT33WgWIphyQMIFGSCJla0rtOPOS/DrkLORdk/q93B5e7Xo
-	 xYWgyGs5gOnsiczDMMDhmLoPM9Jjx8n1nxAXPBrgfOjEJyxJX4HOSpLU5A3T/ajBk8
-	 rWKY+N3OuwDGQ==
+	b=DfaJ/vJ56ECR1EP2rM/YnkiadQjHdUsZeOiZZ5wVnKWXjj4irIDon9bF2rYcx/oyo
+	 DElo5wsJGMGlEHRyWk/fC1jtmBLoLTwCyte8/BClhcRVis+UkmBskynrzHNcwBcwqW
+	 pjxmJG855nV8/p2ZzibTpuNV4HgGE4d3bU255UF6phphxx0SF8kwWm30e8IaUlxFeB
+	 yvlmYTgldEUj/XFEvW3AOJ66ZwsWahK0BNdwdOh1uU7e7iZ9eJ2gGBbtvZj3C0/LG4
+	 DDfkP9VU6GkA8vbZKdGAHNTkVbOcvzSDwvdLiQScYOWC2SPjICfHNI4Sb1wcNdamBY
+	 5d8KGFiQVBQwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	fdmanana@suse.com
-Cc: Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org,
+	johannes.berg@intel.com
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "btrfs: fix extent map merging not happening for adjacent extents" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:19 -0500
-Message-ID: <20241106020921.164780-1-sashal@kernel.org>
+Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:24 -0500
+Message-ID: <20241106020927.164821-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,108 +69,66 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From a0f0625390858321525c2a8d04e174a546bd19b3 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Mon, 28 Oct 2024 16:23:00 +0000
-Subject: [PATCH] btrfs: fix extent map merging not happening for adjacent
- extents
+From 7245012f0f496162dd95d888ed2ceb5a35170f1a Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Wed, 23 Oct 2024 09:17:44 +0200
+Subject: [PATCH] wifi: iwlwifi: mvm: fix 6 GHz scan construction
 
-If we have 3 or more adjacent extents in a file, that is, consecutive file
-extent items pointing to adjacent extents, within a contiguous file range
-and compatible flags, we end up not merging all the extents into a single
-extent map.
+If more than 255 colocated APs exist for the set of all
+APs found during 2.4/5 GHz scanning, then the 6 GHz scan
+construction will loop forever since the loop variable
+has type u8, which can never reach the number found when
+that's bigger than 255, and is stored in a u32 variable.
+Also move it into the loops to have a smaller scope.
 
-For example:
+Using a u32 there is fine, we limit the number of APs in
+the scan list and each has a limit on the number of RNR
+entries due to the frame size. With a limit of 1000 scan
+results, a frame size upper bound of 4096 (really it's
+more like ~2300) and a TBTT entry size of at least 11,
+we get an upper bound for the number of ~372k, well in
+the bounds of a u32.
 
-  $ mkfs.btrfs -f /dev/sdc
-  $ mount /dev/sdc /mnt/sdc
-
-  $ xfs_io -f -d -c "pwrite -b 64K 0 64K" \
-                 -c "pwrite -b 64K 64K 64K" \
-                 -c "pwrite -b 64K 128K 64K" \
-                 -c "pwrite -b 64K 192K 64K" \
-                 /mnt/sdc/foo
-
-After all the ordered extents complete we unpin the extent maps and try
-to merge them, but instead of getting a single extent map we get two
-because:
-
-1) When the first ordered extent completes (file range [0, 64K)) we
-   unpin its extent map and attempt to merge it with the extent map for
-   the range [64K, 128K), but we can't because that extent map is still
-   pinned;
-
-2) When the second ordered extent completes (file range [64K, 128K)), we
-   unpin its extent map and merge it with the previous extent map, for
-   file range [0, 64K), but we can't merge with the next extent map, for
-   the file range [128K, 192K), because this one is still pinned.
-
-   The merged extent map for the file range [0, 128K) gets the flag
-   EXTENT_MAP_MERGED set;
-
-3) When the third ordered extent completes (file range [128K, 192K)), we
-   unpin its extent map and attempt to merge it with the previous extent
-   map, for file range [0, 128K), but we can't because that extent map
-   has the flag EXTENT_MAP_MERGED set (mergeable_maps() returns false
-   due to different flags) while the extent map for the range [128K, 192K)
-   doesn't have that flag set.
-
-   We also can't merge it with the next extent map, for file range
-   [192K, 256K), because that one is still pinned.
-
-   At this moment we have 3 extent maps:
-
-   One for file range [0, 128K), with the flag EXTENT_MAP_MERGED set.
-   One for file range [128K, 192K).
-   One for file range [192K, 256K) which is still pinned;
-
-4) When the fourth and final extent completes (file range [192K, 256K)),
-   we unpin its extent map and attempt to merge it with the previous
-   extent map, for file range [128K, 192K), which succeeds since none
-   of these extent maps have the EXTENT_MAP_MERGED flag set.
-
-   So we end up with 2 extent maps:
-
-   One for file range [0, 128K), with the flag EXTENT_MAP_MERGED set.
-   One for file range [128K, 256K), with the flag EXTENT_MAP_MERGED set.
-
-   Since after merging extent maps we don't attempt to merge again, that
-   is, merge the resulting extent map with the one that is now preceding
-   it (and the one following it), we end up with those two extent maps,
-   when we could have had a single extent map to represent the whole file.
-
-Fix this by making mergeable_maps() ignore the EXTENT_MAP_MERGED flag.
-While this doesn't present any functional issue, it prevents the merging
-of extent maps which allows to save memory, and can make defrag not
-merging extents too (that will be addressed in the next patch).
-
-Fixes: 199257a78bb0 ("btrfs: defrag: don't use merged extent map for their generation check")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
+Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- fs/btrfs/extent_map.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 668c617444a50..1d93e1202c339 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -230,7 +230,12 @@ static bool mergeable_maps(const struct extent_map *prev, const struct extent_ma
- 	if (extent_map_end(prev) != next->start)
- 		return false;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 3ce9150213a74..ddcbd80a49fb2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 			&cp->channel_config[ch_cnt];
  
--	if (prev->flags != next->flags)
-+	/*
-+	 * The merged flag is not an on-disk flag, it just indicates we had the
-+	 * extent maps of 2 (or more) adjacent extents merged, so factor it out.
-+	 */
-+	if ((prev->flags & ~EXTENT_FLAG_MERGED) !=
-+	    (next->flags & ~EXTENT_FLAG_MERGED))
- 		return false;
+ 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
+-		u8 j, k, n_s_ssids = 0, n_bssids = 0;
++		u8 k, n_s_ssids = 0, n_bssids = 0;
+ 		u8 max_s_ssids, max_bssids;
+ 		bool force_passive = false, found = false, allow_passive = true,
+ 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
+@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		cfg->v5.iter_count = 1;
+ 		cfg->v5.iter_interval = 0;
  
- 	if (next->disk_bytenr < EXTENT_MAP_LAST_BYTE - 1)
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			s8 tmp_psd_20;
+ 
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		 * SSID.
+ 		 * TODO: improve this logic
+ 		 */
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+ 				continue;
+ 
 -- 
 2.43.0
 
