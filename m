@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA5E9BEA0D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:40:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F719BE81F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0A931C235CC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:40:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B514D282B6B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB5F1F4FC4;
-	Wed,  6 Nov 2024 12:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419861DF73E;
+	Wed,  6 Nov 2024 12:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0I0S2oA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0p/9wkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0EB1E133E;
-	Wed,  6 Nov 2024 12:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002971DF26B;
+	Wed,  6 Nov 2024 12:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896633; cv=none; b=YHZ1SoqFGpQXoLcCRxr49/K8OGoi/zNqs5a1nobCcT0Qw5gtzL51Bp0GAbCSSocJ8CAfoiiDHH4x1+b8Uvnw0nOhZCoGsT0DRu6oooTSGOEGUlacGjggVcOxU6FLx4d/V9IfzlM+AE2tpfWw/mj7mo7flRbZwAl51W1paftEmtY=
+	t=1730895677; cv=none; b=XexfOCsFlfWxp3+2LkXVcg7b4XYPbURnGwiXllhUZtXF7gLxHux1N7nAsJUNzBFfZtDPoIUcAa4UmTdXCW4DAaMNCSnY8N+cCKdTugI8LSf7Ewb+qu4NlN1D9NmsERR0Rkb8he1+7Lll/wfdHkF7vDIkK91pwC6C+7KDuBsxbyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896633; c=relaxed/simple;
-	bh=BSGwTLx23B6IqesDbg3VRO4Fcwdl8oXWrXE0yk43HeA=;
+	s=arc-20240116; t=1730895677; c=relaxed/simple;
+	bh=hHRDggXq1b3euCUuuIozaOmvkN05MVJVfmIQ5T0zy+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlTDHrPQmQtSFR9U6PQxZ/FjxHVvfot/VESqjbFKqucbafGjxCxInSDAspi44jXW2mYQ9HqiOqXqNTGRbAKE0Sw1vK+vDTYFZ4u24N+FGUheupcr3LcUZkWeYhoEPq0E0/+RyCP0QeBU5GSOF6tjNYu0tPIEZLzDKX24P+90Jy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0I0S2oA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647E0C4CECD;
-	Wed,  6 Nov 2024 12:37:13 +0000 (UTC)
+	 MIME-Version; b=ZUSvwZJ6H4ZR+V/CZom+y/GJWxUNM+5IWyHuZRDoV7UTbTH5+vaChUxGtHHkI1KWMw2G7740H2DmPwaJ+gBFhboU+5f/fLr+i5GuhiyiDucldkzIPVnvC69z5BVhdVVedMCgyYZMPDc5Uj9LnbJSryVPDAegNfQZZbyh9CSMpG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0p/9wkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A127C4CECD;
+	Wed,  6 Nov 2024 12:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896633;
-	bh=BSGwTLx23B6IqesDbg3VRO4Fcwdl8oXWrXE0yk43HeA=;
+	s=korg; t=1730895676;
+	bh=hHRDggXq1b3euCUuuIozaOmvkN05MVJVfmIQ5T0zy+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0I0S2oA0u3hz1BAtwWvrCvpizIHuRFoaMK1ls2Fnxg2C+ZOsgOBRrM9AqX6/mcjf
-	 AuOAWxKM9szLC+kCMXaMIlA7aePd5bdpRymSLW30V8iSBvQQ5KOZBQ+ui3YN4BWFwG
-	 3Yomtt14OTIPxG4xcSPRGFk9sLViGrZj+ND22KwQ=
+	b=W0p/9wkHPa0MnccOUBPHrtqPVu5qnJlQ4kohfvooh+dOXi5/Z6wAhGkN88BppTaES
+	 WyEEDzA7t7Yc+x1AbLt6eD34KIdh7jv3P3nv2cfA1h/EgKRtHyf8Gsn5OZn/OjRRi7
+	 EaTljBJ7jxjSWcfUy3Sq7QnxWTYNlYTGTP1vV0bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/110] KVM: s390: gaccess: Refactor gpa and length calculation
+Subject: [PATCH 4.19 299/350] net: systemport: fix potential memory leak in bcm_sysport_xmit()
 Date: Wed,  6 Nov 2024 13:03:47 +0100
-Message-ID: <20241106120303.747210808@linuxfoundation.org>
+Message-ID: <20241106120328.191659261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 416e7f0c9d613bf84e182eba9547ae8f9f5bfa4c ]
+[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
 
-Improve readability by renaming the length variable and
-not calculating the offset manually.
+The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
+in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
 
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-2-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index b9f85b2dc053f..9f80d95a43770 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -831,8 +831,9 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
- 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
--	unsigned long _len, nr_pages, gpa, idx;
-+	unsigned long nr_pages, gpa, idx;
- 	unsigned long pages_array[2];
-+	unsigned int fragment_len;
- 	unsigned long *pages;
- 	int need_ipte_lock;
- 	union asce asce;
-@@ -855,15 +856,15 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		ipte_lock(vcpu);
- 	rc = guest_page_range(vcpu, ga, ar, pages, nr_pages, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
--		gpa = *(pages + idx) + (ga & ~PAGE_MASK);
--		_len = min(PAGE_SIZE - (gpa & ~PAGE_MASK), len);
-+		gpa = pages[idx] + offset_in_page(ga);
-+		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
- 		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpa, data, _len);
-+			rc = kvm_write_guest(vcpu->kvm, gpa, data, fragment_len);
- 		else
--			rc = kvm_read_guest(vcpu->kvm, gpa, data, _len);
--		len -= _len;
--		ga += _len;
--		data += _len;
-+			rc = kvm_read_guest(vcpu->kvm, gpa, data, fragment_len);
-+		len -= fragment_len;
-+		ga += fragment_len;
-+		data += fragment_len;
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index b3fc8745b5807..55b869f5c8255 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1319,6 +1319,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
+ 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
+ 			  skb->data, skb_len);
+ 		ret = NETDEV_TX_OK;
++		dev_kfree_skb_any(skb);
+ 		goto out;
  	}
- 	if (need_ipte_lock)
- 		ipte_unlock(vcpu);
-@@ -875,19 +876,20 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 		      void *data, unsigned long len, enum gacc_mode mode)
- {
--	unsigned long _len, gpa;
-+	unsigned int fragment_len;
-+	unsigned long gpa;
- 	int rc = 0;
  
- 	while (len && !rc) {
- 		gpa = kvm_s390_real_to_abs(vcpu, gra);
--		_len = min(PAGE_SIZE - (gpa & ~PAGE_MASK), len);
-+		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
- 		if (mode)
--			rc = write_guest_abs(vcpu, gpa, data, _len);
-+			rc = write_guest_abs(vcpu, gpa, data, fragment_len);
- 		else
--			rc = read_guest_abs(vcpu, gpa, data, _len);
--		len -= _len;
--		gra += _len;
--		data += _len;
-+			rc = read_guest_abs(vcpu, gpa, data, fragment_len);
-+		len -= fragment_len;
-+		gra += fragment_len;
-+		data += fragment_len;
- 	}
- 	return rc;
- }
 -- 
 2.43.0
 
