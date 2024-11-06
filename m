@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-90979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3369BEBE8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DCB9BE922
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E85382825F3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EB51C21D78
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C0E1F9EC0;
-	Wed,  6 Nov 2024 12:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CB11DE3B8;
+	Wed,  6 Nov 2024 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9quAnOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAL1BbZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345DD1EF928;
-	Wed,  6 Nov 2024 12:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A8A171C9;
+	Wed,  6 Nov 2024 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897382; cv=none; b=AbtD32i1Xtd/1BPNesA8MUH/lf3EqR11pqdznN+E2SzMYn2biXIhMP071pQOJ51n4ODUdAo0Y+MkP/qsLnNUGghgB1Z1oL4EFoHQe+adHfVWW5JlsHr1XyG+4CHa9w0naN3ZovQfTmS14+cL773nYxwlEklng3E7/8CSdajrgek=
+	t=1730896250; cv=none; b=rx5wxNQVRStUGaCe/ZYAdaB9bki8xEIIdCvIYIwWKxob23f+4k8K3IsxdK5e1dqHrJMVwvle1gpY1Tniw03lI9ObSu6NCM6eqURRSi/hHNmEaeFL+Kj/K554sk3fe6hYjcT5rDgLUN/MLZcOVMsTysUyNz8pu3BofNwCMyPhhGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897382; c=relaxed/simple;
-	bh=oQPiGRFExUfLTVGEiXyfE5Hg9e112sxj582g4wpUVKw=;
+	s=arc-20240116; t=1730896250; c=relaxed/simple;
+	bh=dxMYw/poP/TwVUCMsRwea+jLu/fgaP5h862LJokD8Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qpwu8iL3nbIH/s5S9AIIM0DSKazrhZNS8Mkpqz1uxPhAI08zHWdgGt/+fTY6BjPKi4GcvSAnsnbEREtNjqYk5YIeMpJ0uhnYHiOuCZ/NnR27rZ0hhkBxlgYJcunnvj5fYlxdWmuLNM9ODMD4558yoN1QjxGH3jrXfisjlNdFVF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9quAnOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC631C4CECD;
-	Wed,  6 Nov 2024 12:49:41 +0000 (UTC)
+	 MIME-Version; b=AFw11bk/9LIe78pcx9FbKdwkfnE55IeI1Q5QVXBrBxiaolgNMdn0qiosaX7ipnyQAIDg7jKjmg0Qff+9U/Le8z5MyOXT1pmrrDlgpTDqch/en1r4EoKKhknWsSYGHk04AVtQD5V5x75zWdBrPy5WShLdZtwxePfZvc6sMzn0iiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAL1BbZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB65AC4CECD;
+	Wed,  6 Nov 2024 12:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897382;
-	bh=oQPiGRFExUfLTVGEiXyfE5Hg9e112sxj582g4wpUVKw=;
+	s=korg; t=1730896250;
+	bh=dxMYw/poP/TwVUCMsRwea+jLu/fgaP5h862LJokD8Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9quAnOCIMwnvHzQQfcshAEGC46/KcL2tc/Blsch5ZwfhiMpOI1ELeoDW1tA8aXFE
-	 xY4xaPYwMEGvPRET0HRLKACm+sMY78h44E7R6IMl25c3xjFhLZwluCBO177DOR8Tlo
-	 qSIGlfkS+pGZiB3e+UPSJyoRNSphlr+ooY+9Or1Y=
+	b=EAL1BbZkkz3j3xp0odB42cHaRsfB8piyR5twAxN/CV1MA36IrcX33WP2AqM1LLUKH
+	 SWT9CIjenWgoD8u1GBS2241H9yvQ9O/hKtIh0b6VdyoKoB+HXVSPkkx4+8Kq0T/ANK
+	 PlTkCOiFnhGvYp52Y5vIQw5EbbdXhrbAo+VRS+JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/151] Input: xpad - add support for 8BitDo Ultimate 2C Wireless Controller
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.11 140/245] thunderbolt: Fix KASAN reported stack out-of-bounds read in tb_retimer_scan()
 Date: Wed,  6 Nov 2024 13:03:13 +0100
-Message-ID: <20241106120308.989334911@linuxfoundation.org>
+Message-ID: <20241106120322.676472353@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit ea330429a04b383bd319c66261a5eca4798801e4 ]
+commit e9e1b20fae7de06ba36dd3f8dba858157bad233d upstream.
 
-This XBOX360 compatible gamepad uses the new product id 0x310a under the
-8BitDo's vendor id 0x2dc8. The change was tested using the gamepad in a
-wired and wireless dongle configuration.
+KASAN reported following issue:
 
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Link: https://lore.kernel.org/r/20241015-8bitdo_2c_ultimate_wireless-v1-1-9c9f9db2e995@pengutronix.de
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ BUG: KASAN: stack-out-of-bounds in tb_retimer_scan+0xffe/0x1550 [thunderbolt]
+ Read of size 4 at addr ffff88810111fc1c by task kworker/u56:0/11
+ CPU: 0 UID: 0 PID: 11 Comm: kworker/u56:0 Tainted: G     U             6.11.0+ #1387
+ Tainted: [U]=USER
+ Workqueue: thunderbolt0 tb_handle_hotplug [thunderbolt]
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x6c/0x90
+  print_report+0xd1/0x630
+  kasan_report+0xdb/0x110
+  __asan_report_load4_noabort+0x14/0x20
+  tb_retimer_scan+0xffe/0x1550 [thunderbolt]
+  tb_scan_port+0xa6f/0x2060 [thunderbolt]
+  tb_handle_hotplug+0x17b1/0x3080 [thunderbolt]
+  process_one_work+0x626/0x1100
+  worker_thread+0x6c8/0xfa0
+  kthread+0x2c8/0x3a0
+  ret_from_fork+0x3a/0x80
+  ret_from_fork_asm+0x1a/0x30
+
+This happens because the loop variable still gets incremented by one so
+max becomes 3 instead of 2, and this makes the second loop read past the
+the array declared on the stack.
+
+Fix this by assigning to max directly in the loop body.
+
+Fixes: ff6ab055e070 ("thunderbolt: Add receiver lane margining support for retimers")
+CC: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/thunderbolt/retimer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index ebe243b79d819..0cfcad8348a6d 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -373,6 +373,7 @@ static const struct xpad_device {
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
-+	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
--- 
-2.43.0
-
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -516,7 +516,7 @@ int tb_retimer_scan(struct tb_port *port
+ 	 */
+ 	tb_retimer_set_inbound_sbtx(port);
+ 
+-	for (i = 1; i <= TB_MAX_RETIMER_INDEX; i++) {
++	for (max = 1, i = 1; i <= TB_MAX_RETIMER_INDEX; i++) {
+ 		/*
+ 		 * Last retimer is true only for the last on-board
+ 		 * retimer (the one connected directly to the Type-C
+@@ -527,9 +527,10 @@ int tb_retimer_scan(struct tb_port *port
+ 			last_idx = i;
+ 		else if (ret < 0)
+ 			break;
++
++		max = i;
+ 	}
+ 
+-	max = i;
+ 	ret = 0;
+ 
+ 	/* Add retimers if they do not exist already */
 
 
 
