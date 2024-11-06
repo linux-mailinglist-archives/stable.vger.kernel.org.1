@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150359BE884
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6779BE762
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEB37283AC8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027481F24535
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420E21DFE12;
-	Wed,  6 Nov 2024 12:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905D71DEFF5;
+	Wed,  6 Nov 2024 12:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wfvo0YX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJIJJ5eL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECCD1DF251;
-	Wed,  6 Nov 2024 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6771D416E;
+	Wed,  6 Nov 2024 12:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895898; cv=none; b=gP8H9ugAcCxXgAjYc7/u6zFAu+bd4TBTtx0FWm/EN0eAufnNWnVnl9nszp4Gme13EKsjxjVi+fJ8ZQxiKxwzoX34nl7i1+EnPRLK57ZxpV7bZkLImvfXqCWZEN5bNq3nHx04sweDBabkS2cnMqJW4KBpRSkvv5AcWDY03nno3T0=
+	t=1730895223; cv=none; b=Pr31D+8EJUfTunShuhK/sV0F4NmU3fHACV0IeaCIBNqL4yCZyCwvZpKDPnjq+6DX8S6pvGm4lsMPxO4f79dc5zP2pp2P8Vd9I/dRu9snbi2LnKzxYUyvGPE9GQryGVTvAuptmeCAwLDJbvqCYWjr84xZ7Olg+IAAvOZpB66Zbl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895898; c=relaxed/simple;
-	bh=wj/+qySyanLy6ddt8HlNHf60eXWA+r/a725TN7diphw=;
+	s=arc-20240116; t=1730895223; c=relaxed/simple;
+	bh=2iI13+C5Y0D5ONrUJNs1a3EG+tqX9huIxsPOc8fPmG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ud27xJ/71lppRukvHYvrYokNMmxgjintFNtOfo1pw7bNhU/bc1ja6z1Gnnltrs5am5/32ZZBj6yIhUHNf8hSnb2xlgEMDw5+ZLR5qMowyYKFebY/EzDDrbFfKjWtAIBTMm1k27j07x57PEVX7Eout7nM1a15YZyq1Q03eCn8NtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wfvo0YX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C5BC4CED3;
-	Wed,  6 Nov 2024 12:24:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cBnlAA5t43ulz35jZ45Y2HZVZcAZcHzOq5OyHXieBY3O+VDp/Ytgw4+zIvgowqWCBZptLmwhKE8o0aEQpMpRYq3gljA3AfVK96YC6DxkPHAHXe6Pxw1pmyP19ZMiSwhMlA222amsCJX3a/X76vxZj/gOD6BMBbDiO+tfp6ZbNg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJIJJ5eL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73FDC4CED6;
+	Wed,  6 Nov 2024 12:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895897;
-	bh=wj/+qySyanLy6ddt8HlNHf60eXWA+r/a725TN7diphw=;
+	s=korg; t=1730895223;
+	bh=2iI13+C5Y0D5ONrUJNs1a3EG+tqX9huIxsPOc8fPmG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wfvo0YX53EhIk/Ru9HruuT1btoG/jiEXCL6nyUwLA3TDKEBtitz+Jl75BsJp7QZtF
-	 l0mzeQME57DpTP+kB4gHGp/y6KsEM28sVlGIwe1nV4EtjVSOQooDjDm2+8WN2234Oh
-	 Tt15BPhMsx1RqhheqLh0X/oeUahpRmv8jdSmmye8=
+	b=OJIJJ5eLjjvg1ZjXcDnaMrRl/U+a76hJZJsjtl1pSR1arQ/MFMrlo07nB22AYXaOg
+	 3EWhbxdsmAbL7XcR5HJA2oRUHrylRpZ8NTuXJDXRt1tk6R3pxy5iPNR6D/JU8iQFgT
+	 ePTpQadAyJ4M8Nzs3g9zkJ5FRc4JYKyxMTilvvbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 021/245] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+Subject: [PATCH 4.19 146/350] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
 Date: Wed,  6 Nov 2024 13:01:14 +0100
-Message-ID: <20241106120319.757515672@linuxfoundation.org>
+Message-ID: <20241106120324.520954098@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
+to avoid possible integer overflow. Compile tested only.
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 08c4898c8f1a3..49d5278d078a5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1288,8 +1288,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index 9440d6bfea922..c89f89f553e60 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1329,11 +1329,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
+ 	struct ath_softc *sc = hw->priv;
+ 	int i = 0;
  
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1297,7 +1297,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1317,7 +1316,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
- 	}
- 
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
- 
-@@ -1328,11 +1327,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
 -- 
 2.43.0
 
