@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8209BEB21
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3469BEBA7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736741F268E9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413481F24C22
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB6D1F5854;
-	Wed,  6 Nov 2024 12:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C573D1EE005;
+	Wed,  6 Nov 2024 12:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLaNjMLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivsKakg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF19C1E0480;
-	Wed,  6 Nov 2024 12:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837DB1E0B62;
+	Wed,  6 Nov 2024 12:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896860; cv=none; b=QP7NBlVm1VWbVF2rqRuu2YQ32fkKCT88N4cfpXXQLFaw0dTkNdpDMV3qX3HJeoKJVF6647sdrqKgN2eFcrlRHbMJVhsCUVwJmTLkkfupYXTQjmw720tYMV/73o0kRGVW/s/pt6hkIdpYYAslm/4TpaaK2nMDVc2Qw7SqWknRecM=
+	t=1730897203; cv=none; b=qM7WOeg+nq+DIUTuTbff/rSuTh5Gf68xYd0Kv2QyD6+HbLxB5M8LZsXbmvRXhwNcwGzn1KM2WlEryD0N3mNy6mEgBfQBlJYAA8n+W8tvkhAxoxY/b0w79ND643+hlqnkXHXiffO7WipwasAq01HIlSLaTdOplnDOx2lIgHkuyu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896860; c=relaxed/simple;
-	bh=iPhQwMJTxNXtgpb8sL7e1ewRZia2BP+TjAN3VetyUEc=;
+	s=arc-20240116; t=1730897203; c=relaxed/simple;
+	bh=iFGmRQX3shr0BiZVMOHwZlH5HsR4dgClNwSjQvuxo4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fo77QSPuMfYFnqA2MwEpdYla/WXMGETsJNhVvfAqUe8mjYPnp07tywqw3Yy52SVGE+ichUL8rCFTcCQLOStDsjuPbvhRx1f7n5PuxUywhNj8dVjvA7Y4KAgj0jk4KxsS+zwn6SwDAzC06hXrSRWV5GaoA547r0YUpEVDOjvmwlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLaNjMLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579CCC4CED3;
-	Wed,  6 Nov 2024 12:40:59 +0000 (UTC)
+	 MIME-Version; b=SbYWh6n9tMz1VDsg2HH2fmcGdhgP7W9KnjgacqekXASG+2fTMj17Tw7XQ3DIxV6oM1B2cqbMB2Gt/xUQzx1ItZDsjrWZ3yCmuUI0x+T9XUaudFienwMfbJep8MKBznpBLJSEt7I7Ww/ttdqdDP7UQu7BlAltjgt5aYXDGV+R7d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivsKakg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA670C4CECD;
+	Wed,  6 Nov 2024 12:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896859;
-	bh=iPhQwMJTxNXtgpb8sL7e1ewRZia2BP+TjAN3VetyUEc=;
+	s=korg; t=1730897203;
+	bh=iFGmRQX3shr0BiZVMOHwZlH5HsR4dgClNwSjQvuxo4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLaNjMLILx88ynVYVR9Bb1nI8F/4uVSOsg/g82AjV/i+kzsNrNE9lHqfmqe2hI45f
-	 mEM6e/ArY5HQVzU1znh0LglwdrwewNdTEmR9ACIJi7A2Xv0+LJc8lKbQKG/VURxZ1Z
-	 8z1psXZMf5Pn3J9oD7b35SX4wm5e2Pk0jYjhkifs=
+	b=bivsKakg356D9pVjm8R85T9+/Z/+nCrDiX4Dz4jXv2X/f1ApGbOF40Cywro8GXCUx
+	 UqNPcS/bIYgsulKcUSVBt74J4rIGcaz0CuHuprxjvOxUfKgqIzFLU9tqwNwTAxln7N
+	 Ifxf36uFVhl5lqUFHq4PNPa8MqWez2FiUfUldMNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 069/110] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
+	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 074/126] wifi: cfg80211: clear wdev->cqm_config pointer on free
 Date: Wed,  6 Nov 2024 13:04:35 +0100
-Message-ID: <20241106120305.093928123@linuxfoundation.org>
+Message-ID: <20241106120308.089856396@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
+commit d5fee261dfd9e17b08b1df8471ac5d5736070917 upstream.
 
-If devm_gpiod_get_optional() fails, we need to disable previously enabled
-regulators, as done in the other error handling path of the function.
+When we free wdev->cqm_config when unregistering, we also
+need to clear out the pointer since the same wdev/netdev
+may get re-registered in another network namespace, then
+destroyed later, running this code again, which results in
+a double-free.
 
-Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
-potential gpiod_set_value_cansleep(, 0).
-If the "reset" gpio is not defined, this additional call is just a no-op.
-
-This behavior is the same as the one already in the .remove() function.
-
-Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l51.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
-index 4b026e1c3fe3e..09445db29aa1f 100644
---- a/sound/soc/codecs/cs42l51.c
-+++ b/sound/soc/codecs/cs42l51.c
-@@ -754,8 +754,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1230,6 +1230,7 @@ static void _cfg80211_unregister_wdev(st
+ 	/* deleted from the list, so can't be found from nl80211 any more */
+ 	cqm_config = rcu_access_pointer(wdev->cqm_config);
+ 	kfree_rcu(cqm_config, rcu_head);
++	RCU_INIT_POINTER(wdev->cqm_config, NULL);
  
- 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
- 						      GPIOD_OUT_LOW);
--	if (IS_ERR(cs42l51->reset_gpio))
--		return PTR_ERR(cs42l51->reset_gpio);
-+	if (IS_ERR(cs42l51->reset_gpio)) {
-+		ret = PTR_ERR(cs42l51->reset_gpio);
-+		goto error;
-+	}
- 
- 	if (cs42l51->reset_gpio) {
- 		dev_dbg(dev, "Release reset gpio\n");
-@@ -787,6 +789,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
- 	return 0;
- 
- error:
-+	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
- 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
- 			       cs42l51->supplies);
- 	return ret;
--- 
-2.43.0
-
+ 	/*
+ 	 * Ensure that all events have been processed and
 
 
 
