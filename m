@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9249BE7E8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F909BE8E2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5D01F24D67
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43FB11C21835
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED941DF72E;
-	Wed,  6 Nov 2024 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818061DF726;
+	Wed,  6 Nov 2024 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3A80jnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OszJNiTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CADA1DED49;
-	Wed,  6 Nov 2024 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F99E18C00E;
+	Wed,  6 Nov 2024 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895535; cv=none; b=CNO9oPsdYbLFg3+7dXcTjFKfuZ9ejBhmzW0hE6BWTl8dCtV/inFO9tB2KxZFZ/xDrVpPaKtTjRkTjNwNw1RVJ++dl6/6TBrcSgNis0/6Esqk/zXUzYixzZlyHTQgCJwBquJuXbRr6BmvLLbuMBjjPbVENIDipzJDuEhJadtdd/M=
+	t=1730896095; cv=none; b=LmbE0877wUj1leXr/o5zSUfE7MQRw//UAciitZEd8is45v2XCAc938edIk0X+5GlB4b2++0VmYnXb1NT1BmQb3/BNAz8rUZCHYn5CPMhPvqM78v8E1mwWz2xyZ6aRaKhNwVqB2Iss0UGQK3aI4DKSq+a7LnuU44pR2rIJVmTspg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895535; c=relaxed/simple;
-	bh=XJeb3K9aUpSYPqvgWrt6mlwnZb0JZbahgR01EcETt3E=;
+	s=arc-20240116; t=1730896095; c=relaxed/simple;
+	bh=7hBObZ2L52trQVD0htV3zSZ5OxzpzUeNUhYwIg5gOJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVcwTn5D0j/H9Qv4xcDIO9wDsdWISJ0g+cwLtih8mByWzisNae1i43T7lcnxcfAtuVnjARNU0CV/BvL5qzMpUWfXtgNr6JCRlcHAb7S5S67/vkVZoIJeYqEmFAisKADevddOVHBR+4+cN+U4NF2LXvcu5EkWKbgF1O7cAvaw8v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3A80jnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87922C4CECD;
-	Wed,  6 Nov 2024 12:18:54 +0000 (UTC)
+	 MIME-Version; b=ZmTRdYDcEaRGrAZ+qjv6M2DQGwMWCRSjgk/CbOZo+DfL1kXMlZY4qb1oTkSE0LeawxyjZ4hiuhBlxBwuOI20hnrt1ownW5SGE4bzOoVEIQiP5axivlYmqaSqUCOQ0fwAXhX+asnjoA34NMxcCtHcm77Km9W6t51OEbJ7jKTbXxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OszJNiTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A63C4CECD;
+	Wed,  6 Nov 2024 12:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895534;
-	bh=XJeb3K9aUpSYPqvgWrt6mlwnZb0JZbahgR01EcETt3E=;
+	s=korg; t=1730896095;
+	bh=7hBObZ2L52trQVD0htV3zSZ5OxzpzUeNUhYwIg5gOJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3A80jnbM652rhD0U+x1/B2p47f/5D1H9zO9TKobsqkk6a9Hmz8CcalPTlPXlE8oM
-	 wymuWBetjg9UWMmhFbLJbjapt/plnUUTcw3J3lODiMZQYSeflpkQujRqSqsBkThEkD
-	 dFjRSqCnkWj9MJDBfJAjiaKzweQB1yAo3T7ITlGk=
+	b=OszJNiTqslZa+iK26zYqHfOH/ebiqwq21X6Jm46YKZIjLXvgltoDDdo/+cwdW21nl
+	 lUv06hWebQSDdIyEFMX+HeOEb6+9vSHhBYoho64QXPp4T6s2Drb3Wkjn/XF7xuLKBC
+	 bG8tYqxqcuSEUQGIjGc7Tr2rhU/3174V6c9F1rsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>,
-	Anna Pendleton <pendleton@google.com>,
-	Harshad Shirwadkar <harshadshirwadkar@gmail.com>,
+	syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 214/350] ext4: avoid ext4_error()s caused by ENOMEM in the truncate path
+Subject: [PATCH 6.11 089/245] fs/ntfs3: Fix general protection fault in run_is_mapped_full
 Date: Wed,  6 Nov 2024 13:02:22 +0100
-Message-ID: <20241106120326.283576130@linuxfoundation.org>
+Message-ID: <20241106120321.399742920@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 73c384c0cdaa8ea9ca9ef2d0cff6a25930f1648e ]
+[ Upstream commit a33fb016e49e37aafab18dc3c8314d6399cb4727 ]
 
-We can't fail in the truncate path without requiring an fsck.
-Add work around for this by using a combination of retry loops
-and the __GFP_NOFAIL flag.
+Fixed deleating of a non-resident attribute in ntfs_create_inode()
+rollback.
 
-From: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Anna Pendleton <pendleton@google.com>
-Reviewed-by: Harshad Shirwadkar <harshadshirwadkar@gmail.com>
-Link: https://lore.kernel.org/r/20200507175028.15061-1-pendleton@google.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: c26ab35702f8 ("ext4: fix slab-use-after-free in ext4_split_extent_at()")
+Reported-by: syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |  1 +
- fs/ext4/extents.c | 43 +++++++++++++++++++++++++++++++++----------
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ fs/ntfs3/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index fa2579abea7df..3871df6b67322 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -629,6 +629,7 @@ enum {
-  */
- #define EXT4_EX_NOCACHE				0x40000000
- #define EXT4_EX_FORCE_CACHE			0x20000000
-+#define EXT4_EX_NOFAIL				0x10000000
- 
- /*
-  * Flags used by ext4_free_blocks
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 1762a6330a53c..080a7a401a4e1 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -290,11 +290,14 @@ ext4_force_split_extent_at(handle_t *handle, struct inode *inode,
- {
- 	struct ext4_ext_path *path = *ppath;
- 	int unwritten = ext4_ext_is_unwritten(path[path->p_depth].p_ext);
-+	int flags = EXT4_EX_NOCACHE | EXT4_GET_BLOCKS_PRE_IO;
-+
-+	if (nofail)
-+		flags |= EXT4_GET_BLOCKS_METADATA_NOFAIL | EXT4_EX_NOFAIL;
- 
- 	return ext4_split_extent_at(handle, inode, ppath, lblk, unwritten ?
- 			EXT4_EXT_MARK_UNWRIT1|EXT4_EXT_MARK_UNWRIT2 : 0,
--			EXT4_EX_NOCACHE | EXT4_GET_BLOCKS_PRE_IO |
--			(nofail ? EXT4_GET_BLOCKS_METADATA_NOFAIL:0));
-+			flags);
- }
- 
- /*
-@@ -536,8 +539,12 @@ __read_extent_tree_block(const char *function, unsigned int line,
- {
- 	struct buffer_head		*bh;
- 	int				err;
-+	gfp_t				gfp_flags = __GFP_MOVABLE | GFP_NOFS;
-+
-+	if (flags & EXT4_EX_NOFAIL)
-+		gfp_flags |= __GFP_NOFAIL;
- 
--	bh = sb_getblk_gfp(inode->i_sb, pblk, __GFP_MOVABLE | GFP_NOFS);
-+	bh = sb_getblk_gfp(inode->i_sb, pblk, gfp_flags);
- 	if (unlikely(!bh))
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -879,6 +886,10 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
- 	struct ext4_ext_path *path = orig_path ? *orig_path : NULL;
- 	short int depth, i, ppos = 0;
- 	int ret;
-+	gfp_t gfp_flags = GFP_NOFS;
-+
-+	if (flags & EXT4_EX_NOFAIL)
-+		gfp_flags |= __GFP_NOFAIL;
- 
- 	eh = ext_inode_hdr(inode);
- 	depth = ext_depth(inode);
-@@ -899,7 +910,7 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
- 	if (!path) {
- 		/* account possible depth increase */
- 		path = kcalloc(depth + 2, sizeof(struct ext4_ext_path),
--				GFP_NOFS);
-+				gfp_flags);
- 		if (unlikely(!path))
- 			return ERR_PTR(-ENOMEM);
- 		path[0].p_maxdepth = depth + 1;
-@@ -1049,9 +1060,13 @@ static int ext4_ext_split(handle_t *handle, struct inode *inode,
- 	ext4_fsblk_t newblock, oldblock;
- 	__le32 border;
- 	ext4_fsblk_t *ablocks = NULL; /* array of allocated blocks */
-+	gfp_t gfp_flags = GFP_NOFS;
- 	int err = 0;
- 	size_t ext_size = 0;
- 
-+	if (flags & EXT4_EX_NOFAIL)
-+		gfp_flags |= __GFP_NOFAIL;
-+
- 	/* make decision: where to split? */
- 	/* FIXME: now decision is simplest: at current extent */
- 
-@@ -1085,7 +1100,7 @@ static int ext4_ext_split(handle_t *handle, struct inode *inode,
- 	 * We need this to handle errors and free blocks
- 	 * upon them.
- 	 */
--	ablocks = kcalloc(depth, sizeof(ext4_fsblk_t), GFP_NOFS);
-+	ablocks = kcalloc(depth, sizeof(ext4_fsblk_t), gfp_flags);
- 	if (!ablocks)
- 		return -ENOMEM;
- 
-@@ -2075,7 +2090,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 	if (next != EXT_MAX_BLOCKS) {
- 		ext_debug("next leaf block - %u\n", next);
- 		BUG_ON(npath != NULL);
--		npath = ext4_find_extent(inode, next, NULL, 0);
-+		npath = ext4_find_extent(inode, next, NULL, gb_flags);
- 		if (IS_ERR(npath))
- 			return PTR_ERR(npath);
- 		BUG_ON(npath->p_depth != path->p_depth);
-@@ -2878,7 +2893,8 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 		ext4_fsblk_t pblk;
- 
- 		/* find extent for or closest extent to this block */
--		path = ext4_find_extent(inode, end, NULL, EXT4_EX_NOCACHE);
-+		path = ext4_find_extent(inode, end, NULL,
-+					EXT4_EX_NOCACHE | EXT4_EX_NOFAIL);
- 		if (IS_ERR(path)) {
- 			ext4_journal_stop(handle);
- 			return PTR_ERR(path);
-@@ -2960,7 +2976,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 				le16_to_cpu(path[k].p_hdr->eh_entries)+1;
- 	} else {
- 		path = kcalloc(depth + 1, sizeof(struct ext4_ext_path),
--			       GFP_NOFS);
-+			       GFP_NOFS | __GFP_NOFAIL);
- 		if (path == NULL) {
- 			ext4_journal_stop(handle);
- 			return -ENOMEM;
-@@ -3382,7 +3398,7 @@ static int ext4_split_extent(handle_t *handle,
- 	 * Update path is required because previous ext4_split_extent_at() may
- 	 * result in split of original leaf or extent zeroout.
- 	 */
--	path = ext4_find_extent(inode, map->m_lblk, ppath, 0);
-+	path = ext4_find_extent(inode, map->m_lblk, ppath, flags);
- 	if (IS_ERR(path))
- 		return PTR_ERR(path);
- 	depth = ext_depth(inode);
-@@ -4677,7 +4693,14 @@ int ext4_ext_truncate(handle_t *handle, struct inode *inode)
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 56b6c4c6f528f..4804eb9628bb2 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1717,7 +1717,10 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
+ 	if (attr && attr->non_res) {
+ 		/* Delete ATTR_EA, if non-resident. */
+-		attr_set_size(ni, ATTR_EA, NULL, 0, NULL, 0, NULL, false, NULL);
++		struct runs_tree run;
++		run_init(&run);
++		attr_set_size(ni, ATTR_EA, NULL, 0, &run, 0, NULL, false, NULL);
++		run_close(&run);
  	}
- 	if (err)
- 		return err;
--	return ext4_ext_remove_space(inode, last_block, EXT_MAX_BLOCKS - 1);
-+retry_remove_space:
-+	err = ext4_ext_remove_space(inode, last_block, EXT_MAX_BLOCKS - 1);
-+	if (err == -ENOMEM) {
-+		cond_resched();
-+		congestion_wait(BLK_RW_ASYNC, HZ/50);
-+		goto retry_remove_space;
-+	}
-+	return err;
- }
  
- static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
+ 	if (rp_inserted)
 -- 
 2.43.0
 
