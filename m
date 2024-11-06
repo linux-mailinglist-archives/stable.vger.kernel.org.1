@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2F69BEBE6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8E69BE940
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A16AB281F5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FF19283A87
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E861F9EB4;
-	Wed,  6 Nov 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B011DED48;
+	Wed,  6 Nov 2024 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8fe+68C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vomwRn9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EA91E008B;
-	Wed,  6 Nov 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B970A6088F;
+	Wed,  6 Nov 2024 12:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897376; cv=none; b=Sp9WXnmv0+Z1xFamxh59GgqYMsxOJZlGYdTdJT0z4R0rRh78S4AFDRSDLDSCwfZLHEWwYM5O2BKpJ1XoQT91jwWadlix46Qi+URqTXKcPFLjuY6BsgU1YayXRUQNNrp17JFzXNxL2fe2ooFknKtHa1W0K6U/p9+wulECKglh5FU=
+	t=1730896324; cv=none; b=V3lz9Hbq9cbkmFhi1TD9wHXo+/FnGBUUoozY+v279DQl+n29JqtRv79iaieeHwgM0ukVmbMIet6DTdiK1zSy+4OJuGWF+aLXLZvkP//9oZKkq2+hu3aEhKJ5Kk2LLukyMcuicrFHz9ctWYhqZZLDhtWIZ4rwgm50WqvHCHLql2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897376; c=relaxed/simple;
-	bh=bHuyH6LdK209xOYfQeKUwzEk812+hoGN5Wcziom3X4c=;
+	s=arc-20240116; t=1730896324; c=relaxed/simple;
+	bh=r/cmbpsgHmAN08/LNey/peE0xEzDmx5Ka+cFpZtug/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aizMz9AQ/hSBtp07NLleRcNn2clpc+ZXyqDcQQKgRXva5BC7vcUBeWMmUmJ3eY6NMwzdm0hTtb7aOvndbpl87BLvrYaJkd/q8iaHlKsRVzEXptMyR1y9s34gHTvuVq0SGk1xbPTrAz42vO4auIu2/VftxM9huc/dNQ4OH6/HOOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8fe+68C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23FAC4CECD;
-	Wed,  6 Nov 2024 12:49:35 +0000 (UTC)
+	 MIME-Version; b=IvMUufBGSBZt9/m/ELavpgUEZ5uxcB3AqntbTv7DgsWqQCKtmGbyihatmgaE3toei1uDuTkoHAYwex9eFS0gLcLVBS+ieZXiD72b1wbvwXWqQbjDUTnBT1OViTM91FoJHDWZMgJwwUfD+H3ZuQJ+k6TUSZjmOYOjlfEq2Ov96l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vomwRn9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BB5C4CECD;
+	Wed,  6 Nov 2024 12:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897376;
-	bh=bHuyH6LdK209xOYfQeKUwzEk812+hoGN5Wcziom3X4c=;
+	s=korg; t=1730896324;
+	bh=r/cmbpsgHmAN08/LNey/peE0xEzDmx5Ka+cFpZtug/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8fe+68C5MKuDebG0Vtf5PJ+xXcF0KnE1zxIcPhqc2b3Vsk/p7zStUjOhMVxmrN8z
-	 V3dA6qTDMCuQn9Ia8aadHQPwoXSlBQ6TUF/C3KkSeeXpCvOoUUqt00kcOQ5NmdOv7K
-	 fRtrGUpyfdJR0nCsRGIMGR3O3QRZWQKxnfGxIgQQ=
+	b=vomwRn9rhJuVnWr9gLPU9DbG2yaOQzjZBzh/La/teqUvBeh2HNeSUoCetwJt0US17
+	 cOwYwpLJpqTRwREP94NU+tTKKYIQ0lYYqY2UkodaeqlitzvO2XYxwNq+2sWPVWLU/h
+	 uRmAFYNDiFCD05RMiMEfPVYmn2Mfgnq8EMMTlaRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byeonguk Jeong <jungbu2855@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/151] bpf: Fix out-of-bounds write in trie_get_next_key()
+Subject: [PATCH 6.11 166/245] iov_iter: fix copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP
 Date: Wed,  6 Nov 2024 13:03:39 +0100
-Message-ID: <20241106120309.694468735@linuxfoundation.org>
+Message-ID: <20241106120323.323872436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byeonguk Jeong <jungbu2855@gmail.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
+[ Upstream commit c749d9b7ebbc5716af7a95f7768634b30d9446ec ]
 
-trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
-while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
-full paths from the root to leaves. For example, consider a trie with
-max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
-0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
-.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
+generic/077 on x86_32 CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP=y with highmem,
+on huge=always tmpfs, issues a warning and then hangs (interruptibly):
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Tested-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+WARNING: CPU: 5 PID: 3517 at mm/highmem.c:622 kunmap_local_indexed+0x62/0xc9
+CPU: 5 UID: 0 PID: 3517 Comm: cp Not tainted 6.12.0-rc4 #2
+...
+copy_page_from_iter_atomic+0xa6/0x5ec
+generic_perform_write+0xf6/0x1b4
+shmem_file_write_iter+0x54/0x67
+
+Fix copy_page_from_iter_atomic() by limiting it in that case
+(include/linux/skbuff.h skb_frag_must_loop() does similar).
+
+But going forward, perhaps CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP is too
+surprising, has outlived its usefulness, and should just be removed?
+
+Fixes: 908a1ad89466 ("iov_iter: Handle compound highmem pages in copy_page_from_iter_atomic()")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Link: https://lore.kernel.org/r/dd5f0c89-186e-18e1-4f43-19a60f5a9774@google.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/iov_iter.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index d0febf07051ed..daf8ffcfcdac4 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -647,7 +647,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	if (!key || key->prefixlen > trie->max_prefixlen)
- 		goto find_leftmost;
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 4a6a9f419bd7e..b892894228b03 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -461,6 +461,8 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		size_t bytes, struct iov_iter *i)
+ {
+ 	size_t n, copied = 0;
++	bool uses_kmap = IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
++			 PageHighMem(page);
  
--	node_stack = kmalloc_array(trie->max_prefixlen,
-+	node_stack = kmalloc_array(trie->max_prefixlen + 1,
- 				   sizeof(struct lpm_trie_node *),
- 				   GFP_ATOMIC | __GFP_NOWARN);
- 	if (!node_stack)
+ 	if (!page_copy_sane(page, offset, bytes))
+ 		return 0;
+@@ -471,7 +473,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		char *p;
+ 
+ 		n = bytes - copied;
+-		if (PageHighMem(page)) {
++		if (uses_kmap) {
+ 			page += offset / PAGE_SIZE;
+ 			offset %= PAGE_SIZE;
+ 			n = min_t(size_t, n, PAGE_SIZE - offset);
+@@ -482,7 +484,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		kunmap_atomic(p);
+ 		copied += n;
+ 		offset += n;
+-	} while (PageHighMem(page) && copied != bytes && n > 0);
++	} while (uses_kmap && copied != bytes && n > 0);
+ 
+ 	return copied;
+ }
 -- 
 2.43.0
 
