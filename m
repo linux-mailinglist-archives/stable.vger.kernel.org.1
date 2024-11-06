@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-90024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCA19BDCA9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087029BDCAC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204472860C9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03D91F2977E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669FA2170A5;
-	Wed,  6 Nov 2024 02:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033BD2170C8;
+	Wed,  6 Nov 2024 02:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uiRbEPeG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqxYXinI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECE01D4333;
-	Wed,  6 Nov 2024 02:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B911D4333;
+	Wed,  6 Nov 2024 02:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859220; cv=none; b=qUJR5GsCCBHI9vd1tmi9WuCkPQNvDZp7upyDfciyFnaqR2MF0iVuS11FjXfd3AfIsqSxhTqDSntNKNIx70AXEFsDfxGndaxgyHx7q1ELWhNHvEOeCErV0SumAQDeyC2HGXdCdHZ5Z1rZ/uH8Pf8Bexlub7FDfH7Xy/FCii80x9g=
+	t=1730859224; cv=none; b=Jv8MatwnJ3ovcY1U2fMKyeVF9PY+8eRehZ0CAZnIZNFrlflLBDsNMGtSNqOOpwo8w832X4v7NIUjMpi/QFWI1gyE8H3HnkLq0hkCv+KzhUxy4aLUwAEE8Hni66HPd9yDiUTUj2fX8dyLt5DI12yo7Q/5nPI0oeT4NYh9JfdMQAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859220; c=relaxed/simple;
-	bh=9xPYQUIvKJnSIYRFHO4FVbG4gj4oYOOGX0EnLmJpXIk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BlTVWIvohQb27nCXoAFx4DJopUTs20BLW6W63QQlyCHyzEQ3wm2qO3vd21EtxaIMfa7xJvh1BG78nFcHGtoVDGpDQn2hVUzTktasEJxzYcNVqmWJqc8DClz+8TGIlfd+vgzpppfNMa9w2BgRct/qm+CQKqx1jWwRLUQXTekJRmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uiRbEPeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE398C4CECF;
-	Wed,  6 Nov 2024 02:13:38 +0000 (UTC)
+	s=arc-20240116; t=1730859224; c=relaxed/simple;
+	bh=fvlNTyDTP3UD755VShR9WxYxXdttjUDV+RDgu8Agd4M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HPu3wwegEBn0jixODr9Oi8yuZM+JC4ZVmEHIchEADPH2OitFDVLZQ3vAEZSfzshcscVSSv7LOEcZm1XbsAQMD32xvlvoRw6MOJhAVpDf1zGTGARhS7GtnNun9+2Ne6ydQL+0SVRbKCLBcsDvejCVZYHJUio4Jk58vhBUq77ik98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqxYXinI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CB6C4CECF;
+	Wed,  6 Nov 2024 02:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859220;
-	bh=9xPYQUIvKJnSIYRFHO4FVbG4gj4oYOOGX0EnLmJpXIk=;
+	s=k20201202; t=1730859224;
+	bh=fvlNTyDTP3UD755VShR9WxYxXdttjUDV+RDgu8Agd4M=;
 	h=From:To:Cc:Subject:Date:From;
-	b=uiRbEPeGSQ6MsLg5Zttd1/iWEx0NtYgjKkOhbTf/MurKBsbDkLsdyfzVGZCtZfqf4
-	 A9aMkuGf3btMlsmGb6toL5PEVliXlTTuhzxi26sUDvtEV9Y5jiugYSmIdlKtVISiyD
-	 zBovvKWHguaHU3PY4WWFYlR8yQCYjL2qujlfxikY+wNcUEyoLVjHPdanF8pS/ouncR
-	 pgEv7oZSURl5SV/yJDWvAnbGn/EUNffW3XPPm+bmVG6SGS8aoTP06QKE5i6wG0PcLX
-	 rbjvx50k1B0wdA1uSByS5DPs7tqSSjHCJCpI0XeS9nUcYZeIoHibgA79B03nELr91n
-	 K16vUJl/Hqudg==
+	b=mqxYXinIrs31/f9PqWpN4fwBSVdcFY7qjtQvzgHlQjMb7Y+0YUfyaQG2iTIY4QcXE
+	 fFxw47OVcunVWQ8WgzAXqU+N8a0OO4IMbctX1ETzEa1dcudcIo+Chtia1XDf1qssBz
+	 +WqyREiGUfrGXVx9j+jOopDT+mwptCHQuqKfplsAWg1feNpKZPHBCxYP6bwi79uPvo
+	 b0N7xr8W6kBj/STbFAecEz2yw/hlu1w36gqLiIfOzo58botR5aaBTcs86cX0/q88VD
+	 0sXGLSmNJl4kIyxHHqYHIiYVng3DuCXpsNYNRmB1wSrCioqFG57XIRgQcZCqaumedX
+	 OLYHHWBA5OLwA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chenridong@huawei.com
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>,
-	Tejun Heo <tj@kernel.org>,
-	bpf@vger.kernel.org,
+	kailang@realtek.com
+Cc: Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "cgroup/bpf: use a dedicated workqueue for cgroup bpf destruction" failed to apply to v5.4-stable tree
-Date: Tue,  5 Nov 2024 21:13:36 -0500
-Message-ID: <20241106021337.183724-1-sashal@kernel.org>
+Subject: FAILED: Patch "ALSA: hda/realtek: Limit internal Mic boost on Dell platform" failed to apply to v5.4-stable tree
+Date: Tue,  5 Nov 2024 21:13:40 -0500
+Message-ID: <20241106021340.183765-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,153 +70,95 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 117932eea99b729ee5d12783601a4f7f5fd58a23 Mon Sep 17 00:00:00 2001
-From: Chen Ridong <chenridong@huawei.com>
-Date: Tue, 8 Oct 2024 11:24:56 +0000
-Subject: [PATCH] cgroup/bpf: use a dedicated workqueue for cgroup bpf
- destruction
+From 78e7be018784934081afec77f96d49a2483f9188 Mon Sep 17 00:00:00 2001
+From: Kailang Yang <kailang@realtek.com>
+Date: Fri, 18 Oct 2024 13:53:24 +0800
+Subject: [PATCH] ALSA: hda/realtek: Limit internal Mic boost on Dell platform
 
-A hung_task problem shown below was found:
+Dell want to limit internal Mic boost on all Dell platform.
 
-INFO: task kworker/0:0:8 blocked for more than 327 seconds.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-Workqueue: events cgroup_bpf_release
-Call Trace:
- <TASK>
- __schedule+0x5a2/0x2050
- ? find_held_lock+0x33/0x100
- ? wq_worker_sleeping+0x9e/0xe0
- schedule+0x9f/0x180
- schedule_preempt_disabled+0x25/0x50
- __mutex_lock+0x512/0x740
- ? cgroup_bpf_release+0x1e/0x4d0
- ? cgroup_bpf_release+0xcf/0x4d0
- ? process_scheduled_works+0x161/0x8a0
- ? cgroup_bpf_release+0x1e/0x4d0
- ? mutex_lock_nested+0x2b/0x40
- ? __pfx_delay_tsc+0x10/0x10
- mutex_lock_nested+0x2b/0x40
- cgroup_bpf_release+0xcf/0x4d0
- ? process_scheduled_works+0x161/0x8a0
- ? trace_event_raw_event_workqueue_execute_start+0x64/0xd0
- ? process_scheduled_works+0x161/0x8a0
- process_scheduled_works+0x23a/0x8a0
- worker_thread+0x231/0x5b0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x14d/0x1c0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x59/0x70
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
-
-This issue can be reproduced by the following pressuse test:
-1. A large number of cpuset cgroups are deleted.
-2. Set cpu on and off repeatly.
-3. Set watchdog_thresh repeatly.
-The scripts can be obtained at LINK mentioned above the signature.
-
-The reason for this issue is cgroup_mutex and cpu_hotplug_lock are
-acquired in different tasks, which may lead to deadlock.
-It can lead to a deadlock through the following steps:
-1. A large number of cpusets are deleted asynchronously, which puts a
-   large number of cgroup_bpf_release works into system_wq. The max_active
-   of system_wq is WQ_DFL_ACTIVE(256). Consequently, all active works are
-   cgroup_bpf_release works, and many cgroup_bpf_release works will be put
-   into inactive queue. As illustrated in the diagram, there are 256 (in
-   the acvtive queue) + n (in the inactive queue) works.
-2. Setting watchdog_thresh will hold cpu_hotplug_lock.read and put
-   smp_call_on_cpu work into system_wq. However step 1 has already filled
-   system_wq, 'sscs.work' is put into inactive queue. 'sscs.work' has
-   to wait until the works that were put into the inacvtive queue earlier
-   have executed (n cgroup_bpf_release), so it will be blocked for a while.
-3. Cpu offline requires cpu_hotplug_lock.write, which is blocked by step 2.
-4. Cpusets that were deleted at step 1 put cgroup_release works into
-   cgroup_destroy_wq. They are competing to get cgroup_mutex all the time.
-   When cgroup_metux is acqured by work at css_killed_work_fn, it will
-   call cpuset_css_offline, which needs to acqure cpu_hotplug_lock.read.
-   However, cpuset_css_offline will be blocked for step 3.
-5. At this moment, there are 256 works in active queue that are
-   cgroup_bpf_release, they are attempting to acquire cgroup_mutex, and as
-   a result, all of them are blocked. Consequently, sscs.work can not be
-   executed. Ultimately, this situation leads to four processes being
-   blocked, forming a deadlock.
-
-system_wq(step1)		WatchDog(step2)			cpu offline(step3)	cgroup_destroy_wq(step4)
-...
-2000+ cgroups deleted asyn
-256 actives + n inactives
-				__lockup_detector_reconfigure
-				P(cpu_hotplug_lock.read)
-				put sscs.work into system_wq
-256 + n + 1(sscs.work)
-sscs.work wait to be executed
-				warting sscs.work finish
-								percpu_down_write
-								P(cpu_hotplug_lock.write)
-								...blocking...
-											css_killed_work_fn
-											P(cgroup_mutex)
-											cpuset_css_offline
-											P(cpu_hotplug_lock.read)
-											...blocking...
-256 cgroup_bpf_release
-mutex_lock(&cgroup_mutex);
-..blocking...
-
-To fix the problem, place cgroup_bpf_release works on a dedicated
-workqueue which can break the loop and solve the problem. System wqs are
-for misc things which shouldn't create a large number of concurrent work
-items. If something is going to generate >WQ_DFL_ACTIVE(256) concurrent
-work items, it should use its own dedicated workqueue.
-
-Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
-Cc: stable@vger.kernel.org # v5.3+
-Link: https://lore.kernel.org/cgroups/e90c32d2-2a85-4f28-9154-09c7d320cb60@huawei.com/T/#t
-Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/561fc5f5eff04b6cbd79ed173cd1c1db@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- kernel/bpf/cgroup.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index e7113d700b878..025d7e2214aeb 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -24,6 +24,23 @@
- DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_ATTACH_TYPE);
- EXPORT_SYMBOL(cgroup_bpf_enabled_key);
- 
-+/*
-+ * cgroup bpf destruction makes heavy use of work items and there can be a lot
-+ * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
-+ * destruction work items don't end up filling up max_active of system_wq
-+ * which may lead to deadlock.
-+ */
-+static struct workqueue_struct *cgroup_bpf_destroy_wq;
-+
-+static int __init cgroup_bpf_wq_init(void)
-+{
-+	cgroup_bpf_destroy_wq = alloc_workqueue("cgroup_bpf_destroy", 0, 1);
-+	if (!cgroup_bpf_destroy_wq)
-+		panic("Failed to alloc workqueue for cgroup bpf destroy.\n");
-+	return 0;
-+}
-+core_initcall(cgroup_bpf_wq_init);
-+
- /* __always_inline is necessary to prevent indirect call through run_prog
-  * function pointer.
-  */
-@@ -334,7 +351,7 @@ static void cgroup_bpf_release_fn(struct percpu_ref *ref)
- 	struct cgroup *cgrp = container_of(ref, struct cgroup, bpf.refcnt);
- 
- 	INIT_WORK(&cgrp->bpf.release_work, cgroup_bpf_release);
--	queue_work(system_wq, &cgrp->bpf.release_work);
-+	queue_work(cgroup_bpf_destroy_wq, &cgrp->bpf.release_work);
- }
- 
- /* Get underlying bpf_prog of bpf_prog_list entry, regardless if it's through
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3567b14b52b7c..784ac058418fc 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7521,6 +7521,7 @@ enum {
+ 	ALC286_FIXUP_SONY_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_PINCFG_NO_HP_TO_LINEOUT,
+ 	ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
++	ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 	ALC269_FIXUP_DELL2_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_DELL3_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+@@ -7555,6 +7556,7 @@ enum {
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
++	ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 	ALC255_FIXUP_DELL2_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_HEADSET_MODE,
+ 	ALC255_FIXUP_HEADSET_MODE_NO_HP_MIC,
+@@ -8114,6 +8116,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_HEADSET_MODE
+ 	},
++	[ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_limit_int_mic_boost,
++		.chained = true,
++		.chain_id = ALC269_FIXUP_DELL1_MIC_NO_PRESENCE
++	},
+ 	[ALC269_FIXUP_DELL2_MIC_NO_PRESENCE] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -8394,6 +8402,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC255_FIXUP_HEADSET_MODE
+ 	},
++	[ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_limit_int_mic_boost,
++		.chained = true,
++		.chain_id = ALC255_FIXUP_DELL1_MIC_NO_PRESENCE
++	},
+ 	[ALC255_FIXUP_DELL2_MIC_NO_PRESENCE] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -11076,6 +11090,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC269_FIXUP_DELL2_MIC_NO_PRESENCE, .name = "dell-headset-dock"},
+ 	{.id = ALC269_FIXUP_DELL3_MIC_NO_PRESENCE, .name = "dell-headset3"},
+ 	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE, .name = "dell-headset4"},
++	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET, .name = "dell-headset4-quiet"},
+ 	{.id = ALC283_FIXUP_CHROME_BOOK, .name = "alc283-dac-wcaps"},
+ 	{.id = ALC283_FIXUP_SENSE_COMBO_JACK, .name = "alc283-sense-combo"},
+ 	{.id = ALC292_FIXUP_TPT440_DOCK, .name = "tpt440-dock"},
+@@ -11630,16 +11645,16 @@ static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
+ 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
++	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
++	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB,
++	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
 -- 
 2.43.0
 
