@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D0C9BEE74
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52B59BEEB8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AA21C23758
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA1D1282390
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991E81E103C;
-	Wed,  6 Nov 2024 13:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A30F1CCB5F;
+	Wed,  6 Nov 2024 13:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2d+VFiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndqigeGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5628F1DFE10;
-	Wed,  6 Nov 2024 13:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2451CC89D;
+	Wed,  6 Nov 2024 13:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899047; cv=none; b=XSKSWOmwNEo/YIxHoNL/S2T9Nlyo+vSTujazBLNSfZGOGvxIPQzahMTGWtjoHPI8kcRgGxDdI4kw+MSGnzlpoZmKIXFkQd24++6CEFEgXceQ6w7CLJC3wBwMZsKA/ttuKGtN9ibk02sB7Grh/2x0jmH+dFPMsHKG+WxExZxgK1c=
+	t=1730899201; cv=none; b=YOd8ntfRC9icUAeaFe4sAe6dPcerdGmilJc6mji6gm45a8jaQ6DS20U3NZyPvqGHULZHF7a0enlb5hyV1vOm/8nSYTu7woIzEH0RQJglx143AFwqMtspHxoLm7MDkYBt0RChUm2/UNaDfdv+Sx351dZ28igb/PcoBvQky9ioEUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899047; c=relaxed/simple;
-	bh=AHyamoGx3f8ih55HiyiAYD+ENVevOpxYD4bO5JnP01k=;
+	s=arc-20240116; t=1730899201; c=relaxed/simple;
+	bh=prfTi89xlTG5pIBfRRQRORGJ8b6iZlb4ZnRZ01YcO4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuLf56nhYfDhtmTaXtdg7cbOjJP8c0Tbrram6zJiEDDsX7HwI7WjsepFS3zvFm5dzRyeW3aFwo/uxM9eZlRyayaIzGzTvMLcJEHQ4H0PPfao5WNcswoGvbawGHYfO8KtQb60avuMLLmoBr51r1a9DwUbEZ0nNiidUlv5rpmCDpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2d+VFiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4145C4CED3;
-	Wed,  6 Nov 2024 13:17:26 +0000 (UTC)
+	 MIME-Version; b=ranutM/Db6oj67tNXRqnc/cB1bTvK/oDQSGKhAvbb4879EGptMr8UsURewDWUmYak+127Hj92BCYABUup7N3WYNKSfNJZXt/CwmAeRcKxKkycTM5uIkHJICGTrq7ll9kCu2+j0OY2n2YT3tOhuHNaV6/CgrOrCLSbrQECmqwe94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndqigeGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C70C4CECD;
+	Wed,  6 Nov 2024 13:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899047;
-	bh=AHyamoGx3f8ih55HiyiAYD+ENVevOpxYD4bO5JnP01k=;
+	s=korg; t=1730899201;
+	bh=prfTi89xlTG5pIBfRRQRORGJ8b6iZlb4ZnRZ01YcO4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2d+VFiANMW6W9p5GsMw/VvaZ2h3B9otmXK0dVttEdF/EfZ4NP5aCQoXofO9kGDLD
-	 LaNt36YXH6SZd+OwhMvM8qzMC6E4rVbyQ0SQ4aLOKylYFZ04YA1fG7q3FGWgoypkGR
-	 NJqTy3PDvD/NKx71PXbMAxTB0myzLzvNIhNlu+1M=
+	b=ndqigeGWSvfcXSrWkQadhhusSEI296AehUPnA8sRSJygxFmw+/MOwazpZsPwZbjJp
+	 H2RUUyYqemw1AVoruspmWSucsFyi7k5rS8dc3w5ceJXZSg7cLDv3+Ju4nrVSAToLXK
+	 JxdnIntVaiRDd0kr+twtf2XCQzxmj8E7L40AAkWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 443/462] firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()
-Date: Wed,  6 Nov 2024 13:05:36 +0100
-Message-ID: <20241106120342.444855923@linuxfoundation.org>
+Subject: [PATCH 5.15 33/73] fs/ntfs3: Additional check in ni_clear()
+Date: Wed,  6 Nov 2024 13:05:37 +0100
+Message-ID: <20241106120300.953599958@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit c83212d79be2c9886d3e6039759ecd388fd5fed1 ]
+[ Upstream commit d178944db36b3369b78a08ba520de109b89bf2a9 ]
 
-In sdei_device_freeze(), the input parameter of cpuhp_remove_state() is
-passed as 'sdei_entry_point' by mistake. Change it to 'sdei_hp_state'.
+Checking of NTFS_FLAGS_LOG_REPLAYING added to prevent access to
+uninitialized bitmap during replay process.
 
-Fixes: d2c48b2387eb ("firmware: arm_sdei: Fix sleep from invalid context BUG")
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20241016084740.183353-1-wangxiongfeng2@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Reported-by: syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_sdei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/frecord.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index b0e8752174c6f..f6627ccbc2d81 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -802,7 +802,7 @@ static int sdei_device_freeze(struct device *dev)
- 	int err;
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 7a1f57dc58dfc..a74bbfec8e3ac 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -101,7 +101,9 @@ void ni_clear(struct ntfs_inode *ni)
+ {
+ 	struct rb_node *node;
  
- 	/* unregister private events */
--	cpuhp_remove_state(sdei_entry_point);
-+	cpuhp_remove_state(sdei_hp_state);
+-	if (!ni->vfs_inode.i_nlink && ni->mi.mrec && is_rec_inuse(ni->mi.mrec))
++	if (!ni->vfs_inode.i_nlink && ni->mi.mrec &&
++	    is_rec_inuse(ni->mi.mrec) &&
++	    !(ni->mi.sbi->flags & NTFS_FLAGS_LOG_REPLAYING))
+ 		ni_delete_all(ni);
  
- 	err = sdei_unregister_shared();
- 	if (err)
+ 	al_destroy(ni);
 -- 
 2.43.0
 
