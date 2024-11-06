@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8016E9BE792
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F599BE8B0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08D37B2427D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 253971C233FF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB281D416E;
-	Wed,  6 Nov 2024 12:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7D11D2784;
+	Wed,  6 Nov 2024 12:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5iYgHXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI7JGCQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F4F1DE4FC;
-	Wed,  6 Nov 2024 12:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA161DF251;
+	Wed,  6 Nov 2024 12:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895335; cv=none; b=pczdB/kSRSJrKD2Bm88Ii7kHVFN/rWhgt2zE5hB05D66RcHeNPzWIcdyAgBUS9ASH09S3CfFYSzvdj0fTKKPZxQQkrnske3BTi2gxVyAx5WwIHzpjrSGKHm9O0PwjLLqRuuUkJZZWKXICgjuaR9pSXiAEVnRj3U2VQEYeNaKYQc=
+	t=1730896010; cv=none; b=Hjaw1irqIOJ19sgc874+Rp87lNvNkzVChz55SxAMC0W+HfJnx+Ya2n4dVHvZtt/ApyFwYSuj5GPIcrK1WdII7rlazLCuWpxTjYwnEOnQB6MvW6YgqAs1rsCuSlOSrK5fCf1Ebch77ghC+x8oARr6LxztO2PVlpXzrgGO1S/B5jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895335; c=relaxed/simple;
-	bh=h16Gz3SbG9TRbU/mmdjcZWGU9dh9wCV+N64z3ff1KGU=;
+	s=arc-20240116; t=1730896010; c=relaxed/simple;
+	bh=kKtyG5LgA56Zzo/KDIPE+AuaAmXZpSpeppDHiGUlTF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RICKioIfcZSB9fE6a33xdb/k8k1+eTb6gbsbg9prVWUv1no1GQ9H30Hbli5bAz8wOie9w+cqfa0LdcaJ+VNetHggge0Gcnm+Wicb8zLZE4L6wNvHl8vdBhXrqZN9CLeeJkslh5T1Cs2Ysc/FFLReRWDfTkMRi83RPDd9wqWvPLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5iYgHXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11897C4CECD;
-	Wed,  6 Nov 2024 12:15:34 +0000 (UTC)
+	 MIME-Version; b=dcKihtEC6HncxnWD552eceFKbDWjjtQgqaEtKrpStU1MleXpVEf0JCPglLEQusDshFU6AmCnBihaIAVetg8pNVE2rPRMhPavhU2UvKPIW86pUAA6mX9OCdnEFBkdNQviFa9wMv2EglYoadL9a7Zu6wQFEXZgDaHXD1pmNtapFcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI7JGCQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A2C4CECD;
+	Wed,  6 Nov 2024 12:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895335;
-	bh=h16Gz3SbG9TRbU/mmdjcZWGU9dh9wCV+N64z3ff1KGU=;
+	s=korg; t=1730896009;
+	bh=kKtyG5LgA56Zzo/KDIPE+AuaAmXZpSpeppDHiGUlTF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5iYgHXNHmqz1vgpsvzXwQj5HKTfOhcxnDKIhOQk1kzLWXxx/tu6FnxioOOYoOveU
-	 NXwhNKr5JN5npF0L+yfHFfvTWcX4cGR0V5YK3SlCgaOzy6z2Bh8I4W1zK+74BgQ8zW
-	 51YHgkEfqufPt9hCq/a0qVNJo2vMxCV2qBZT2HEA=
+	b=YI7JGCQz3VpxITbtbHYKPh6X10gtFzwpDMOZy3/styoLW4jd6qS0J1mDZsMHEWjwa
+	 1XUhU2JWygxDuFoaJxbD8M3UQ6Uy0Tj7nzaLV9bOLNyvFil7l+jhMy20jreX5FwHAe
+	 oKGNNGH/mdsaAURrHblXfg1eJOFAP+PLwMyiRzwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.19 184/350] spi: bcm63xx: Fix module autoloading
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 059/245] iomap: share iomap_unshare_iter predicate code with fsdax
 Date: Wed,  6 Nov 2024 13:01:52 +0100
-Message-ID: <20241106120325.491007023@linuxfoundation.org>
+Message-ID: <20241106120320.662042594@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 909f34f2462a99bf876f64c5c61c653213e32fce upstream.
+[ Upstream commit 6ef6a0e821d3dad6bf8a5d5508762dba9042c84b ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from platform_device_id table.
+The predicate code that iomap_unshare_iter uses to decide if it's really
+needs to unshare a file range mapping should be shared with the fsdax
+version, because right now they're opencoded and inconsistent.
 
-Fixes: 44d8fb30941d ("spi/bcm63xx: move register definitions into the driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that we simplify the predicate logic a bit -- we no longer allow
+unsharing of inline data mappings, but there aren't any filesystems that
+allow shared inline data currently.
+
+This is a fix in the sense that it should have been ported to fsdax.
+
+Fixes: b53fdb215d13 ("iomap: improve shared block detection in iomap_unshare_iter")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/172796813294.1131942.15762084021076932620.stgit@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/dax.c               |  3 +--
+ fs/iomap/buffered-io.c | 30 ++++++++++++++++--------------
+ include/linux/iomap.h  |  1 +
+ 3 files changed, 18 insertions(+), 16 deletions(-)
 
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -484,6 +484,7 @@ static const struct platform_device_id b
- 	{
- 	},
- };
-+MODULE_DEVICE_TABLE(platform, bcm63xx_spi_dev_match);
+diff --git a/fs/dax.c b/fs/dax.c
+index c62acd2812f8d..5064eefb1c1e4 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1268,8 +1268,7 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
+ 	s64 ret = 0;
+ 	void *daddr = NULL, *saddr = NULL;
  
- static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
+-	/* don't bother with blocks that are not shared to start with */
+-	if (!(iomap->flags & IOMAP_F_SHARED))
++	if (!iomap_want_unshare_iter(iter))
+ 		return length;
+ 
+ 	id = dax_read_lock();
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 8167714af5cba..db8061b1a0821 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1334,19 +1334,12 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+ }
+ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+ 
+-static loff_t iomap_unshare_iter(struct iomap_iter *iter)
++bool iomap_want_unshare_iter(const struct iomap_iter *iter)
+ {
+-	struct iomap *iomap = &iter->iomap;
+-	loff_t pos = iter->pos;
+-	loff_t length = iomap_length(iter);
+-	loff_t written = 0;
+-
+-	/* Don't bother with blocks that are not shared to start with. */
+-	if (!(iomap->flags & IOMAP_F_SHARED))
+-		return length;
+-
+ 	/*
+-	 * Don't bother with delalloc reservations, holes or unwritten extents.
++	 * Don't bother with blocks that are not shared to start with; or
++	 * mappings that cannot be shared, such as inline data, delalloc
++	 * reservations, holes or unwritten extents.
+ 	 *
+ 	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+ 	 * unsharing requires providing a separate source map, and the presence
+@@ -1354,9 +1347,18 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
+ 	 * fork for XFS.
+ 	 */
+-	if (iter->srcmap.type == IOMAP_HOLE ||
+-	    iter->srcmap.type == IOMAP_DELALLOC ||
+-	    iter->srcmap.type == IOMAP_UNWRITTEN)
++	return (iter->iomap.flags & IOMAP_F_SHARED) &&
++		iter->srcmap.type == IOMAP_MAPPED;
++}
++
++static loff_t iomap_unshare_iter(struct iomap_iter *iter)
++{
++	struct iomap *iomap = &iter->iomap;
++	loff_t pos = iter->pos;
++	loff_t length = iomap_length(iter);
++	loff_t written = 0;
++
++	if (!iomap_want_unshare_iter(iter))
+ 		return length;
+ 
+ 	do {
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 6fc1c858013d1..634f5746ae7bb 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -271,6 +271,7 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
+ bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio);
+ int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 		const struct iomap_ops *ops);
++bool iomap_want_unshare_iter(const struct iomap_iter *iter);
+ int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
+ 		bool *did_zero, const struct iomap_ops *ops);
+ int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
+-- 
+2.43.0
+
 
 
 
