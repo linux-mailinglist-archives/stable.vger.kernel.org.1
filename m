@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-90822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3522A9BEB35
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D553E9BEC4C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC4E11F26EC2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CD6DB221B8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1821F668C;
-	Wed,  6 Nov 2024 12:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4431FB887;
+	Wed,  6 Nov 2024 12:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqL2qifA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5ObnN9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED711F668B;
-	Wed,  6 Nov 2024 12:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDE1E0090;
+	Wed,  6 Nov 2024 12:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896915; cv=none; b=kwJxVu1pjhynidjByAiju1pVvHPqTJZAvti+afzaeXn59rXtbQBl67J/Eheo1JlWf5a5RXU2jIRzhg6dBLJdr/9U8FOaVidhslRPWsW2SGZdKO8hQbBNtOtK3s7CGGh49giw7af1EF2PHsUnYqiKJPNWVPzJEjHORyrhim0qGFw=
+	t=1730897655; cv=none; b=iFrApzTv6KiGt7LBVl8HX4RSsZKu+mm3NcBIe9jTefNbEEthV9fgC7hIrunK74/Cz5/ZOxdmEuIS4Oc8d0wIkTNmTZhSZ8OllIJdITOwcz1D7ro7+GX+agFdzc67O222XE5PzEkDUpaBobUe2lIC/+XQPtV3JwNboVW/aaS/nbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896915; c=relaxed/simple;
-	bh=E1NCKsHxS4/6m6q++bQlHDZJ2yo1eXhJuWu7df64KWw=;
+	s=arc-20240116; t=1730897655; c=relaxed/simple;
+	bh=lV8KfkMb0K966rCyNCPDKDfnywgyBwEdghSGwuHJtnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gQLoIxv7uLg8qRtAMFy9zbfNdhRDVsyx0iAeCZo6h8RLzU5kEYveu7aJmDy/TdPoQ6txL1fvX8uis6EHxf35YJ9oisbfq2oyBq1OX0OJy6jI5g4NM4VKRsaLFFmC8oAGbRM7e2AAVyxQOYjhORFKqmdkF5K9eyd2u1L3MM+6VZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqL2qifA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241B2C4CECD;
-	Wed,  6 Nov 2024 12:41:55 +0000 (UTC)
+	 MIME-Version; b=hyAZ77ZgrBTTd5KlzkwjJ3tWco8CBqF5JRbMvqMwph9ZmtKy/wPaLRTRTRbRKAH2OOMR0O1fqvClt6G4dKT4Ffm8dvny+U+RQtklQt29tzvauxoO6mbxBAN5ibzPqRN5ZLZZx0sJe1RZGQAbF+w/Hw/r6YkW1SIIV3zVj2zVyhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5ObnN9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9E4C4CECD;
+	Wed,  6 Nov 2024 12:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896915;
-	bh=E1NCKsHxS4/6m6q++bQlHDZJ2yo1eXhJuWu7df64KWw=;
+	s=korg; t=1730897655;
+	bh=lV8KfkMb0K966rCyNCPDKDfnywgyBwEdghSGwuHJtnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqL2qifARG3MCas9FjetkQvmLPtE6Yxow/RCNNWKQf+1ZlqHC7zQjjoJc53B5XSHM
-	 ByIMaiiVi5nBceyKuSAFqVK9JWe5az1NcJqn3zenFQ0UJHlhHTgHaA90Y5dG8BjymV
-	 mFEs5s0m6FT0BEKmlTtq4MqG8vDmF/sFy/UVn80U=
+	b=a5ObnN9NI1N5677iKrBGRNQqD6juzZZcqUiTdJ/xsxZQFsMLA3+CUlf4rVyss6O0H
+	 CPtGaO4qlE8FRHQrWAsw5oW9ZzxUCPBI0baspKDyh0h0999WvHMvU2efpc+v3fSn+x
+	 smEWfm/rmFSW5kvfQySsDx5xAshvwhBpLgvT7L4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Eric Anholt <eric@anholt.net>,
-	Rob Herring <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Artem Sdvizhkov <raclesdv@gmail.com>
-Subject: [PATCH 5.10 108/110] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
-Date: Wed,  6 Nov 2024 13:05:14 +0100
-Message-ID: <20241106120306.155669246@linuxfoundation.org>
+	Gatlin Newhouse <gatlin.newhouse@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 127/151] x86/traps: Enable UBSAN traps on x86
+Date: Wed,  6 Nov 2024 13:05:15 +0100
+Message-ID: <20241106120312.358605504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,73 +62,202 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Gatlin Newhouse <gatlin.newhouse@gmail.com>
 
-commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
+[ Upstream commit 7424fc6b86c8980a87169e005f5cd4438d18efe6 ]
 
-Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+Currently ARM64 extracts which specific sanitizer has caused a trap via
+encoded data in the trap instruction. Clang on x86 currently encodes the
+same data in the UD1 instruction but x86 handle_bug() and
+is_valid_bugaddr() currently only look at UD2.
 
-Return -EINVAL early if COW mapping is detected.
+Bring x86 to parity with ARM64, similar to commit 25b84002afb9 ("arm64:
+Support Clang UBSAN trap codes for better reporting"). See the llvm
+links for information about the code generation.
 
-This bug affects all drm drivers using default shmem helpers.
-It can be reproduced by this simple example:
-void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-ptr[0] = 0;
+Enable the reporting of UBSAN sanitizer details on x86 compiled with clang
+when CONFIG_UBSAN_TRAP=y by analysing UD1 and retrieving the type immediate
+which is encoded by the compiler after the UD1.
 
-Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
-[ Artem: bp to fix CVE-2024-39497, in order to adapt this patch to branch 5.10
-  add header file mm/internal.h]
-Signed-off-by: Artem Sdvizhkov <raclesdv@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ tglx: Simplified it by moving the printk() into handle_bug() ]
+
+Signed-off-by: Gatlin Newhouse <gatlin.newhouse@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/all/20240724000206.451425-1-gatlin.newhouse@gmail.com
+Link: https://github.com/llvm/llvm-project/commit/c5978f42ec8e9#diff-bb68d7cd885f41cfc35843998b0f9f534adb60b415f647109e597ce448e92d9f
+Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/X86/X86InstrSystem.td#L27
+Stable-dep-of: 1db272864ff2 ("x86/traps: move kmsan check after instrumentation_begin")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/include/asm/bug.h | 12 ++++++++
+ arch/x86/kernel/traps.c    | 59 ++++++++++++++++++++++++++++++++++----
+ include/linux/ubsan.h      |  5 ++++
+ lib/Kconfig.ubsan          |  4 +--
+ 4 files changed, 73 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -17,6 +17,8 @@
- #include <drm/drm_prime.h>
- #include <drm/drm_print.h>
+diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
+index a3ec87d198ac8..806649c7f23dc 100644
+--- a/arch/x86/include/asm/bug.h
++++ b/arch/x86/include/asm/bug.h
+@@ -13,6 +13,18 @@
+ #define INSN_UD2	0x0b0f
+ #define LEN_UD2		2
  
-+#include "../../../mm/internal.h"   /* is_cow_mapping() */
++/*
++ * In clang we have UD1s reporting UBSAN failures on X86, 64 and 32bit.
++ */
++#define INSN_ASOP		0x67
++#define OPCODE_ESCAPE		0x0f
++#define SECOND_BYTE_OPCODE_UD1	0xb9
++#define SECOND_BYTE_OPCODE_UD2	0x0b
 +
- /**
-  * DOC: overview
-  *
-@@ -630,6 +632,9 @@ int drm_gem_shmem_mmap(struct drm_gem_ob
- 		return ret;
++#define BUG_NONE		0xffff
++#define BUG_UD1			0xfffe
++#define BUG_UD2			0xfffd
++
+ #ifdef CONFIG_GENERIC_BUG
+ 
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index c876f1d36a81a..840a3b2d24779 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -41,6 +41,7 @@
+ #include <linux/hardirq.h>
+ #include <linux/atomic.h>
+ #include <linux/iommu.h>
++#include <linux/ubsan.h>
+ 
+ #include <asm/stacktrace.h>
+ #include <asm/processor.h>
+@@ -89,6 +90,47 @@ __always_inline int is_valid_bugaddr(unsigned long addr)
+ 	return *(unsigned short *)addr == INSN_UD2;
+ }
+ 
++/*
++ * Check for UD1 or UD2, accounting for Address Size Override Prefixes.
++ * If it's a UD1, get the ModRM byte to pass along to UBSan.
++ */
++__always_inline int decode_bug(unsigned long addr, u32 *imm)
++{
++	u8 v;
++
++	if (addr < TASK_SIZE_MAX)
++		return BUG_NONE;
++
++	v = *(u8 *)(addr++);
++	if (v == INSN_ASOP)
++		v = *(u8 *)(addr++);
++	if (v != OPCODE_ESCAPE)
++		return BUG_NONE;
++
++	v = *(u8 *)(addr++);
++	if (v == SECOND_BYTE_OPCODE_UD2)
++		return BUG_UD2;
++
++	if (!IS_ENABLED(CONFIG_UBSAN_TRAP) || v != SECOND_BYTE_OPCODE_UD1)
++		return BUG_NONE;
++
++	/* Retrieve the immediate (type value) for the UBSAN UD1 */
++	v = *(u8 *)(addr++);
++	if (X86_MODRM_RM(v) == 4)
++		addr++;
++
++	*imm = 0;
++	if (X86_MODRM_MOD(v) == 1)
++		*imm = *(u8 *)addr;
++	else if (X86_MODRM_MOD(v) == 2)
++		*imm = *(u32 *)addr;
++	else
++		WARN_ONCE(1, "Unexpected MODRM_MOD: %u\n", X86_MODRM_MOD(v));
++
++	return BUG_UD1;
++}
++
++
+ static nokprobe_inline int
+ do_trap_no_signal(struct task_struct *tsk, int trapnr, const char *str,
+ 		  struct pt_regs *regs,	long error_code)
+@@ -214,6 +256,8 @@ static inline void handle_invalid_op(struct pt_regs *regs)
+ static noinstr bool handle_bug(struct pt_regs *regs)
+ {
+ 	bool handled = false;
++	int ud_type;
++	u32 imm;
+ 
+ 	/*
+ 	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
+@@ -221,7 +265,8 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	 * irqentry_enter().
+ 	 */
+ 	kmsan_unpoison_entry_regs(regs);
+-	if (!is_valid_bugaddr(regs->ip))
++	ud_type = decode_bug(regs->ip, &imm);
++	if (ud_type == BUG_NONE)
+ 		return handled;
+ 
+ 	/*
+@@ -234,10 +279,14 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	 */
+ 	if (regs->flags & X86_EFLAGS_IF)
+ 		raw_local_irq_enable();
+-	if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
+-	    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
+-		regs->ip += LEN_UD2;
+-		handled = true;
++	if (ud_type == BUG_UD2) {
++		if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
++		    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
++			regs->ip += LEN_UD2;
++			handled = true;
++		}
++	} else if (IS_ENABLED(CONFIG_UBSAN_TRAP)) {
++		pr_crit("%s at %pS\n", report_ubsan_failure(regs, imm), (void *)regs->ip);
  	}
+ 	if (regs->flags & X86_EFLAGS_IF)
+ 		raw_local_irq_disable();
+diff --git a/include/linux/ubsan.h b/include/linux/ubsan.h
+index bff7445498ded..d8219cbe09ff8 100644
+--- a/include/linux/ubsan.h
++++ b/include/linux/ubsan.h
+@@ -4,6 +4,11 @@
  
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
-+
- 	shmem = to_drm_gem_shmem_obj(obj);
+ #ifdef CONFIG_UBSAN_TRAP
+ const char *report_ubsan_failure(struct pt_regs *regs, u32 check_type);
++#else
++static inline const char *report_ubsan_failure(struct pt_regs *regs, u32 check_type)
++{
++	return NULL;
++}
+ #endif
  
- 	ret = drm_gem_shmem_get_pages(shmem);
+ #endif
+diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
+index 59e21bfec188c..f43bcac47c0ab 100644
+--- a/lib/Kconfig.ubsan
++++ b/lib/Kconfig.ubsan
+@@ -28,8 +28,8 @@ config UBSAN_TRAP
+ 
+ 	  Also note that selecting Y will cause your kernel to Oops
+ 	  with an "illegal instruction" error with no further details
+-	  when a UBSAN violation occurs. (Except on arm64, which will
+-	  report which Sanitizer failed.) This may make it hard to
++	  when a UBSAN violation occurs. (Except on arm64 and x86, which
++	  will report which Sanitizer failed.) This may make it hard to
+ 	  determine whether an Oops was caused by UBSAN or to figure
+ 	  out the details of a UBSAN violation. It makes the kernel log
+ 	  output less useful for bug reports.
+-- 
+2.43.0
+
 
 
 
