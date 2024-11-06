@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-90310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EA49BE7AD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602D79BE90B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71F35B2497B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FC01C21B74
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24991DF252;
-	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70591DF98D;
+	Wed,  6 Nov 2024 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ8O9dKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVIT6IAB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF54C1DE8B4;
-	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660DE1DFD87;
+	Wed,  6 Nov 2024 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895394; cv=none; b=JzcyrKkYmSjspzWzgLs5uwd0VKr7kHL4R32UjuOGN+9EYlxoY0jxUHGuqzDp0e0pP6RkXlal9WytjpsWgRd4hjxDuvFPbozjwpr7Dncla2YVmAR7M6zQ/TkQomwvfCSheepe7WXQ4dVWo/omRY5Mw912b9LQ7jMx3HqIMCQGrcA=
+	t=1730896200; cv=none; b=BSz8yr9LOuPD+EQEXPcMYjFY2iDvp58EsphCjLMiNvd+Quh248C38qnrj+aJe0iK1FaZRLjyj0qQEBpSufJ0dGVWI1rBmNRevhfVAoWq7jWpdlbupF/izB9E/bzq9r0fcLvS6psLyCfSD1D7fALyd6yd5FbqZ9JFIFSpRpntshE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895394; c=relaxed/simple;
-	bh=IsZtY2uP4SbZGxtvd9dFGXskmdg0j8Kj0BO9R2Xk15w=;
+	s=arc-20240116; t=1730896200; c=relaxed/simple;
+	bh=xseTxG3eapKC3XIJxrMfemVLr+3+V8g0FpgqnwP1ZCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6+yI0HUuoSgv1fBeMQ+ymJCCHVLzvQiq3R86wPx80GVLLZG0CHAo1bUjVj8vy//WlmDy4CDwOTuQ7Fura4s39AK0vIvlNfJXYE7fzeFeLsimKrarCqBamAbKXtfAnpxY60tLIphPS7LiELMePV6m4dmT2R+gF4YvxHEn1xHldQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQ8O9dKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C658C4CECD;
-	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
+	 MIME-Version; b=WEdGa9KzjCrolcY2g+zvllHgC7qFvTA3WspKaHZW+RviXOg92mIMZLT6+vSpgEybLKcyORUFvPE+pbY2RNKWd7/sYbaW3tYyLnBcqRg0aY6bsSSbmfxhM6QmSN1jUYWB1g671jccTLB0eugYzMOWaII5CRHg8jqH1/eHAMdZu4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVIT6IAB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD74BC4CED3;
+	Wed,  6 Nov 2024 12:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895394;
-	bh=IsZtY2uP4SbZGxtvd9dFGXskmdg0j8Kj0BO9R2Xk15w=;
+	s=korg; t=1730896200;
+	bh=xseTxG3eapKC3XIJxrMfemVLr+3+V8g0FpgqnwP1ZCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQ8O9dKBAEyO0WqSEL+fmVeDaXrpLcorwXDtYoiXWvadpJBpyokpyaawki3BYdh8Q
-	 1pl+46+vBWWYR0s8Er93k1vp2HypxPKi/bRFWABtRQcA6paE3Es5PJsxkYVJUaLKOf
-	 nsxkWWkxL0DQTx+2Q/RRb6BszZblqRILAkZehL6o=
+	b=BVIT6IABzRrBEn/1w/8Bll4yaPwScD8Q4MA97YSuwyP6mdJc/2AVFrWkuPz1/NA1T
+	 H+VOiaaIfbHHtlvhjLMItK5K2lvIU3TJfMnW6yFJj4/SO1BW+wHLfPlZDwqczFxdh4
+	 hhZIOlxD6WYw6IYBBgXpyv3LQ41eBZfIAE6D0bdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 202/350] ocfs2: fix null-ptr-deref when journal load failed.
+	Jiri Slaby <jirislaby@kernel.org>,
+	Steffen Dirkwinkel <me@steffen.cc>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 077/245] PCI: Fix pci_enable_acs() support for the ACS quirks
 Date: Wed,  6 Nov 2024 13:02:10 +0100
-Message-ID: <20241106120325.967448699@linuxfoundation.org>
+Message-ID: <20241106120321.100375443@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao2870@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 5784d9fcfd43bd853654bb80c87ef293b9e8e80a upstream.
+[ Upstream commit f3c3ccc4fe49dbc560b01d16bebd1b116c46c2b4 ]
 
-During the mounting process, if journal_reset() fails because of too short
-journal, then lead to jbd2_journal_load() fails with NULL j_sb_buffer.
-Subsequently, ocfs2_journal_shutdown() calls
-jbd2_journal_flush()->jbd2_cleanup_journal_tail()->
-__jbd2_update_log_tail()->jbd2_journal_update_sb_log_tail()
-->lock_buffer(journal->j_sb_buffer), resulting in a null-pointer
-dereference error.
+There are ACS quirks that hijack the normal ACS processing and deliver to
+to special quirk code. The enable path needs to call
+pci_dev_specific_enable_acs() and then pci_dev_specific_acs_enabled() will
+report the hidden ACS state controlled by the quirk.
 
-To resolve this issue, we should check the JBD2_LOADED flag to ensure the
-journal was properly loaded.  Additionally, use journal instead of
-osb->journal directly to simplify the code.
+The recent rework got this out of order and we should try to call
+pci_dev_specific_enable_acs() regardless of any actual ACS support in the
+device.
 
-Link: https://syzkaller.appspot.com/bug?extid=05b9b39d8bdfe1a0861f
-Link: https://lkml.kernel.org/r/20240902030844.422725-1-sunjunchao2870@gmail.com
-Fixes: f6f50e28f0cb ("jbd2: Fail to load a journal if it is too short")
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-Reported-by: syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As before command line parameters that effect standard PCI ACS don't
+interact with the quirk versions, including the new config_acs= option.
+
+Link: https://lore.kernel.org/r/0-v1-f96b686c625b+124-pci_acs_quirk_fix_jgg@nvidia.com
+Fixes: 47c8846a49ba ("PCI: Extend ACS configurability")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/e89107da-ac99-4d3a-9527-a4df9986e120@kernel.org
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1229019
+Tested-by: Steffen Dirkwinkel <me@steffen.cc>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/journal.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/pci.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -989,7 +989,7 @@ void ocfs2_journal_shutdown(struct ocfs2
- 	if (!igrab(inode))
- 		BUG();
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 85ced6958d6d1..51407c376a222 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1067,8 +1067,15 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
+ static void pci_enable_acs(struct pci_dev *dev)
+ {
+ 	struct pci_acs caps;
++	bool enable_acs = false;
+ 	int pos;
  
--	num_running_trans = atomic_read(&(osb->journal->j_num_trans));
-+	num_running_trans = atomic_read(&(journal->j_num_trans));
- 	trace_ocfs2_journal_shutdown(num_running_trans);
++	/* If an iommu is present we start with kernel default caps */
++	if (pci_acs_enable) {
++		if (pci_dev_specific_enable_acs(dev))
++			enable_acs = true;
++	}
++
+ 	pos = dev->acs_cap;
+ 	if (!pos)
+ 		return;
+@@ -1077,11 +1084,8 @@ static void pci_enable_acs(struct pci_dev *dev)
+ 	pci_read_config_word(dev, pos + PCI_ACS_CTRL, &caps.ctrl);
+ 	caps.fw_ctrl = caps.ctrl;
  
- 	/* Do a commit_cache here. It will flush our journal, *and*
-@@ -1008,9 +1008,10 @@ void ocfs2_journal_shutdown(struct ocfs2
- 		osb->commit_task = NULL;
- 	}
+-	/* If an iommu is present we start with kernel default caps */
+-	if (pci_acs_enable) {
+-		if (pci_dev_specific_enable_acs(dev))
+-			pci_std_enable_acs(dev, &caps);
+-	}
++	if (enable_acs)
++		pci_std_enable_acs(dev, &caps);
  
--	BUG_ON(atomic_read(&(osb->journal->j_num_trans)) != 0);
-+	BUG_ON(atomic_read(&(journal->j_num_trans)) != 0);
- 
--	if (ocfs2_mount_local(osb)) {
-+	if (ocfs2_mount_local(osb) &&
-+	    (journal->j_journal->j_flags & JBD2_LOADED)) {
- 		jbd2_journal_lock_updates(journal->j_journal);
- 		status = jbd2_journal_flush(journal->j_journal);
- 		jbd2_journal_unlock_updates(journal->j_journal);
+ 	/*
+ 	 * Always apply caps from the command line, even if there is no iommu.
+-- 
+2.43.0
+
 
 
 
