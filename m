@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-90287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5489BE78C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C539BE8AC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A6B1F24D33
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A02A28436C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F661DED40;
-	Wed,  6 Nov 2024 12:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8ED1DF992;
+	Wed,  6 Nov 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6eQpzIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6suKDDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33511DD0C8;
-	Wed,  6 Nov 2024 12:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D05B1DF756;
+	Wed,  6 Nov 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895326; cv=none; b=dC5mdT4HPBF2LQdVvNKlOLW4+rLSKEwbILo8UjvXHDAxMr73zwZivQRCWDfFIoy2417WDtwNGllXlRhevD4GaSjkf9IExhsh/QC/CXcH+ZB9GNjs4MJG20eq7PgDocy2yc0KqM/Q5jaLXQg45E5ZJSjrnwCfwndJ0sB/7T64eiI=
+	t=1730895998; cv=none; b=PRos8BHNaZQIkXdy23vbCyUi1wUuJu2WUiJjHPvi/dsYQ+52DzgijJ6HyeGnkiVW24q/Iq7vl8mYNBVPG8EOVStnlYZjBNfGsaBi4ZwcWtXL2dWcapHWgopDq7eLJoDEGj2Q0IafdNDQJZWztz+GSjg1TJOXPyaKyIWQWxrrDPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895326; c=relaxed/simple;
-	bh=WSxNaOkKGepFnJRNgstK5TTmIIzUpaYO+F/jE6Id9KY=;
+	s=arc-20240116; t=1730895998; c=relaxed/simple;
+	bh=rh9eS6AEbIRn3xFZfamEP9GXih31orkJJH+zy4YBrMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5dPzJfIoIhimKrx9kgjYrwK+47jb+NlSoT8QBqudy+9F3SWuOy61MJ+26wj691S97GYfLLQ+U+VXKbABJt7tbHyZ1Rjebu9U5C+M47LObGhRfTdk21nnEmHSdBpKq1STkm7dXgDaBQ64l4xzkvcmyrQs6EceWFyrXdiCe3biZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6eQpzIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FFDC4CECD;
-	Wed,  6 Nov 2024 12:15:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jTZmVpQriNyI2P3/Bx5EWQEQBgcD6mKDk/esLkZ3pmyrYzEaSicBBJPH3HjkDzURyEQVMtjpa88SLDycEQeJrcTXOEMy22SZMV5pzhooFL+wkY0AKTTtWuu+GhdaBJI7IvSd2JnDSGwhBdVQvNt4tQUjBQK83WPCCT0k3xEO+/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6suKDDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C2DC4CECD;
+	Wed,  6 Nov 2024 12:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895326;
-	bh=WSxNaOkKGepFnJRNgstK5TTmIIzUpaYO+F/jE6Id9KY=;
+	s=korg; t=1730895998;
+	bh=rh9eS6AEbIRn3xFZfamEP9GXih31orkJJH+zy4YBrMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6eQpzIJfRlhCc4wjHqX4UCHqGZelMpdg8cQTef3fCW3iFYLvUodV+QcsA6yCpFVT
-	 Iu40CCk/bUktLJtpyovIatm6RSfrQ75ocqxZlw7CPuitKt1MO1InKzIyctOaDMFtmq
-	 Or6YT+erPhx3d+W9w9vHpuBvqd8u8ttfaSabS0Fw=
+	b=Y6suKDDYK4Vfn1AZq5442p9yX7U55xsEoY0CrJtwIo3vkSbBJOCCA7gXoPW5B123+
+	 NabgVD46qg0A0ECHBgpnclMKLRlp/vgts25kkOfIbkajYOu6YENGt5mA2Uop4TN9DH
+	 X1ZNjCTK2xPN1IMslyGIhRGd7YUyztmGG+GIasfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinadin Shan <sinadin.shan@oracle.com>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	syzbot+d121e098da06af416d23@syzkaller.appspotmail.com,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 181/350] selftests: breakpoints: use remaining time to check if suspend succeed
+Subject: [PATCH 6.11 056/245] bpf, test_run: Fix LIVE_FRAME frame update after a page has been recycled
 Date: Wed,  6 Nov 2024 13:01:49 +0100
-Message-ID: <20241106120325.410352421@linuxfoundation.org>
+Message-ID: <20241106120320.593132782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifei Liu <yifei.l.liu@oracle.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
+[ Upstream commit c40dd8c4732551605712985bc5b7045094c6458d ]
 
-step_after_suspend_test fails with device busy error while
-writing to /sys/power/state to start suspend. The test believes
-it failed to enter suspend state with
+The test_run code detects whether a page has been modified and
+re-initialises the xdp_frame structure if it has, using
+xdp_update_frame_from_buff(). However, xdp_update_frame_from_buff()
+doesn't touch frame->mem, so that wasn't correctly re-initialised, which
+led to the pages from page_pool not being returned correctly. Syzbot
+noticed this as a memory leak.
 
-$ sudo ./step_after_suspend_test
-TAP version 13
-Bail out! Failed to enter Suspend state
+Fix this by also copying the frame->mem structure when re-initialising
+the frame, like we do on initialisation of a new page from page_pool.
 
-However, in the kernel message, I indeed see the system get
-suspended and then wake up later.
-
-[611172.033108] PM: suspend entry (s2idle)
-[611172.044940] Filesystems sync: 0.006 seconds
-[611172.052254] Freezing user space processes
-[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
-[611172.067920] OOM killer disabled.
-[611172.072465] Freezing remaining freezable tasks
-[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
-[611172.117126] serial 00:03: disabled
-some other hardware get reconnected
-[611203.136277] OOM killer enabled.
-[611203.140637] Restarting tasks ...
-[611203.141135] usb 1-8.1: USB disconnect, device number 7
-[611203.141755] done.
-[611203.155268] random: crng reseeded on system resumption
-[611203.162059] PM: suspend exit
-
-After investigation, I noticed that for the code block
-if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-	ksft_exit_fail_msg("Failed to enter Suspend state\n");
-
-The write will return -1 and errno is set to 16 (device busy).
-It should be caused by the write function is not successfully returned
-before the system suspend and the return value get messed when waking up.
-As a result, It may be better to check the time passed of those few
-instructions to determine whether the suspend is executed correctly for
-it is pretty hard to execute those few lines for 5 seconds.
-
-The timer to wake up the system is set to expire after 5 seconds and
-no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
-it means the timer expired and wake the system up. Otherwise, the system
-could be considered to enter the suspend state failed if there is any
-remaining time.
-
-After appling this patch, the test would not fail for it believes the
-system does not go to suspend by mistake. It now could continue to the
-rest part of the test after suspend.
-
-Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
-Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: e5995bc7e2ba ("bpf, test_run: fix crashes due to XDP frame overwriting/corruption")
+Fixes: b530e9e1063e ("bpf: Add "live packet" mode for XDP in BPF_PROG_RUN")
+Reported-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/bpf/20241030-test-run-mem-fix-v1-1-41e88e8cae43@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bpf/test_run.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-index f82dcc1f8841e..67a2aaf1f9d94 100644
---- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-+++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
-@@ -161,7 +161,10 @@ void suspend(void)
- 	if (err < 0)
- 		ksft_exit_fail_msg("timerfd_settime() failed\n");
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 6d7a442ceb89b..501ec4249fedc 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -246,6 +246,7 @@ static void reset_ctx(struct xdp_page_head *head)
+ 	head->ctx.data_meta = head->orig_ctx.data_meta;
+ 	head->ctx.data_end = head->orig_ctx.data_end;
+ 	xdp_update_frame_from_buff(&head->ctx, head->frame);
++	head->frame->mem = head->orig_ctx.rxq->mem;
+ }
  
--	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
-+	system("(echo mem > /sys/power/state) 2> /dev/null");
-+
-+	timerfd_gettime(timerfd, &spec);
-+	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
- 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
- 
- 	close(timerfd);
+ static int xdp_recv_frames(struct xdp_frame **frames, int nframes,
 -- 
 2.43.0
 
