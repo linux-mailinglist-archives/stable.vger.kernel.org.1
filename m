@@ -1,128 +1,176 @@
-Return-Path: <stable+bounces-90092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE3B9BE278
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:26:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332EA9BE24C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F29DB23217
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 09:26:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC932286BBE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 09:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFC01D95A1;
-	Wed,  6 Nov 2024 09:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF2B1DA10B;
+	Wed,  6 Nov 2024 09:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="N1/VoIaH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MObBbPf9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pWmh/UVn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2111D90C5;
-	Wed,  6 Nov 2024 09:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E0B1D9668;
+	Wed,  6 Nov 2024 09:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730885162; cv=none; b=CZsUgNqnYmkjr2A6Hce4ptc8IEYxjfg0KSDFujY44FaHtHzsr6ztbvHDgTO2XPTLiPkip2HGEtuYpyQ+95eddXvnYp5lZZ3H2o7LvGDYNdLlzskzKyvKoVy9oYMNI5n6S5XaY6cOuMUy+LGEorymwBLmxIgF7fC4gjDpjZ9bQcI=
+	t=1730884956; cv=none; b=UdRxXBxIlrftePpsSwin0Z0Z1Fy+YtdVPY1yCBQUpj7gtmD+wp1W4ySjeHLO4jIMqgbWE0s77yBY9St5WJvi62tePUUXlCA8emErU4pVPaWQp9dBw8o8TW1r/s7lGTSMfLXbXodqvAKeysiSZ28JTpIj79NPi25F+Yp9nH0Jkcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730885162; c=relaxed/simple;
-	bh=VdbBfWIYI0EyhZExXWJk0pgkTnAE2gEFUzidGt1wsBM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mWnvYCcVajbGZ3rdB8iaZVmaSvgNdJTyLvFECXjKMUyLn90ozARPhjALAkcDeDDEn7L96hwRzu6JU2G9Nb4kmhAe4INvAq7VqvDypfEKEklX2OqN3JJaA9UNeZXEWzHgEDtl4/HVlm0rjfwT3xvxDYiceXh5Juc9yIVXCOBhxXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=N1/VoIaH; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from [192.168.42.96] (p5de457db.dip0.t-ipconnect.de [93.228.87.219])
-	(Authenticated sender: wse@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 32ED72FC004D;
-	Wed,  6 Nov 2024 10:19:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1730884760;
+	s=arc-20240116; t=1730884956; c=relaxed/simple;
+	bh=9dvyDZDuzFgzVdh1Sna0suVR+NmThMTgtfsCk+jg5HQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kRps1L8m/S3PIuemO3AsxHfy8/E008+BVosTOYTwO5juFAOooaLfvV07DpikfiGcokZv0Vx39QZiYE5IhKlqf4FHOkVkzEPBPJf/Cu4cEoEkVlRUr129pt5KH5HqKWyCDeIU+wSvhcRuyCZBlkp9nmOUswqWnnhNk+2PQGrfWuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MObBbPf9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pWmh/UVn; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730884953;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0hKykF9KmzmeBtNlfxbKqI/JDOAvSBg8cwAFUqKJaDA=;
-	b=N1/VoIaHnDmXUlvX91xO2L6K57fRc8RjbFDr3nj6SBDCOTjCzRQy5b6YlKar3oZXdxft6F
-	JIZ2XVQzSo8kRhe1o1hJgLMa7O7gdMGD+X+PRt+Hq1uk0bb8Ih0VtqYoTMyyQ7TWw9Jthl
-	fxafx3W1i/4c61LQVgY3DXMVdu9+OJk=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-Message-ID: <dc0af563-59d2-4176-ad15-fa93cf5c99d2@tuxedocomputers.com>
-Date: Wed, 6 Nov 2024 10:19:19 +0100
+	bh=P8oBmdWzEG5uKEf7eXEXq4AParcdRSRipW4U/BCZKfQ=;
+	b=MObBbPf9pftiMail7/CM1jJESKDTea6PRR2e/LndqzfMa0RHFrsiPg88o/YrcuQqC6jBK8
+	c7o4+L5WhkrAgLNl21sw40kJNI3RmF91754ZcRj3jUQ8T/8bmpVuY2cnTPcATZFoHImd7w
+	C6x+nW/EgEMMENBC6OmeyFWlKdRfd0XtdOfXeTDowbSVyURRnWO3DjGR3xoNYRd4fi0/tI
+	RoH/86Km33+LNy+nM4+e9mlRGkhtbrL46e8Cq1gldbXSskfdljxTKIdThhYuwXjVj7DOhK
+	HbirB+po9XIYaH7NX1oenkRbkFtyAaIf2x3FpdC9rmxiRW+iDGaNhTefvv3qOw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730884953;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P8oBmdWzEG5uKEf7eXEXq4AParcdRSRipW4U/BCZKfQ=;
+	b=pWmh/UVnZtabwAb4lrcxkMNxl6uVJmgzXC9t/GFHd9v+Krx09n9kC5KHzm8kH6ZtTB571U
+	RQ3Yl6N2YiRVOrBQ==
+To: Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] fs/proc: do_task_stat: Fix ESP not readable during coredump
+Date: Wed,  6 Nov 2024 10:22:15 +0100
+Message-Id: <11e1777296b7d06085c9fd341bafc4b9d82e6e4e.1730883229.git.namcao@linutronix.de>
+In-Reply-To: <cover.1730883229.git.namcao@linutronix.de>
+References: <cover.1730883229.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "ALSA: hda/realtek: Fix headset mic on TUXEDO
- Gemini 17 Gen3" failed to apply to v6.1-stable tree
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, cs@tuxedo.de
-Cc: Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241106021124.182205-1-sashal@kernel.org>
-Content-Language: en-US
-From: Werner Sembach <wse@tuxedocomputers.com>
-In-Reply-To: <20241106021124.182205-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Commit 0a1eb2d474ed ("fs/proc: Stop reporting eip and esp in
+/proc/PID/stat") disabled stack pointer reading, because it is generally
+dangerous to do so.
 
-Am 06.11.24 um 03:11 schrieb Sasha Levin:
-> The patch below does not apply to the v6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+Commit fd7d56270b52 ("fs/proc: Report eip/esp in /prod/PID/stat for
+coredumping") made an exception for coredumping thread, because for this
+case it is safe.
 
-Applying 33affa7fb46c0c07f6c49d4ddac9dd436715064c (ALSA: hda/realtek: Add quirks 
-for some Clevo laptops) first and then 0b04fbe886b4274c8e5855011233aaa69fec6e75 
-(ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3) and 
-e49370d769e71456db3fbd982e95bab8c69f73e8 (ALSA: hda/realtek: Fix headset mic on 
-TUXEDO Stellaris 16 Gen6 mb1) makes everything work without alteration.
+The exception was later extended to all threads in a coredumping process by
+commit cb8f381f1613 ("fs/proc/array.c: allow reporting eip/esp for all
+coredumping threads").
 
-The first one is just missing the cc stable tag, probably by accident.
+The above two commits determine if a task is core dumping by checking the
+PF_EXITING and PF_DUMPCORE flags.
 
-Should I alter the 2nd and 3rd commit or should I send a patchset that includes 
-the first one?
+However, commit 92307383082d ("coredump:  Don't perform any cleanups before
+dumping core") moved coredump to happen earlier and before PF_EXITING is
+set. Thus, the check of the PF_EXITING flag no longer works.
 
-Kind regards,
+Instead, use task->signal->core_state to determine if coredump is
+happening. This pointer is set at the beginning of coredump and is cleared
+once coredump is done. Thus, while this pointer is not NULL, it is safe to
+read ESP.
 
-Werner Sembach
+Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping =
+core")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+---
+ fs/proc/array.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
->
-> Thanks,
-> Sasha
->
-> ------------------ original commit in Linus's tree ------------------
->
->  From 0b04fbe886b4274c8e5855011233aaa69fec6e75 Mon Sep 17 00:00:00 2001
-> From: Christoffer Sandberg <cs@tuxedo.de>
-> Date: Tue, 29 Oct 2024 16:16:52 +0100
-> Subject: [PATCH] ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3
->
-> Quirk is needed to enable headset microphone on missing pin 0x19.
->
-> Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-> Cc: <stable@vger.kernel.org>
-> Link: https://patch.msgid.link/20241029151653.80726-1-wse@tuxedocomputers.com
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> ---
->   sound/pci/hda/patch_realtek.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-> index 7f4926194e50f..e06a6fdc0bab7 100644
-> --- a/sound/pci/hda/patch_realtek.c
-> +++ b/sound/pci/hda/patch_realtek.c
-> @@ -10750,6 +10750,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
->   	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
->   	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
->   	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
-> +	SND_PCI_QUIRK(0x1558, 0x28c1, "Clevo V370VND", ALC2XX_FIXUP_HEADSET_MIC),
->   	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
->   	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
->   	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index 34a47fb0c57f..2f1dbfcf143d 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -489,25 +489,8 @@ static int do_task_stat(struct seq_file *m, struct pid=
+_namespace *ns,
+ 	vsize =3D eip =3D esp =3D 0;
+ 	permitted =3D ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS | PTRACE_M=
+ODE_NOAUDIT);
+ 	mm =3D get_task_mm(task);
+-	if (mm) {
++	if (mm)
+ 		vsize =3D task_vsize(mm);
+-		/*
+-		 * esp and eip are intentionally zeroed out.  There is no
+-		 * non-racy way to read them without freezing the task.
+-		 * Programs that need reliable values can use ptrace(2).
+-		 *
+-		 * The only exception is if the task is core dumping because
+-		 * a program is not able to use ptrace(2) in that case. It is
+-		 * safe because the task has stopped executing permanently.
+-		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
+-			if (try_get_task_stack(task)) {
+-				eip =3D KSTK_EIP(task);
+-				esp =3D KSTK_ESP(task);
+-				put_task_stack(task);
+-			}
+-		}
+-	}
+=20
+ 	sigemptyset(&sigign);
+ 	sigemptyset(&sigcatch);
+@@ -534,6 +517,23 @@ static int do_task_stat(struct seq_file *m, struct pid=
+_namespace *ns,
+ 		ppid =3D task_tgid_nr_ns(task->real_parent, ns);
+ 		pgid =3D task_pgrp_nr_ns(task, ns);
+=20
++		/*
++		 * esp and eip are intentionally zeroed out.  There is no
++		 * non-racy way to read them without freezing the task.
++		 * Programs that need reliable values can use ptrace(2).
++		 *
++		 * The only exception is if the task is core dumping because
++		 * a program is not able to use ptrace(2) in that case. It is
++		 * safe because the task has stopped executing permanently.
++		 */
++		if (permitted && task->signal->core_state) {
++			if (try_get_task_stack(task)) {
++				eip =3D KSTK_EIP(task);
++				esp =3D KSTK_ESP(task);
++				put_task_stack(task);
++			}
++		}
++
+ 		unlock_task_sighand(task, &flags);
+ 	}
+=20
+--=20
+2.39.5
+
 
