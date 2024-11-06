@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-90640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F989BE950
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BF59BEBF4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA2AC28528C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1CF1F23152
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC011DF251;
-	Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C22F1FA256;
+	Wed,  6 Nov 2024 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPx2IVGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+Kppahc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1822C1DE3B8;
-	Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40E1E0DC4;
+	Wed,  6 Nov 2024 12:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896373; cv=none; b=LV4g+30iJ5GVlmgCdsLDBkMZW/ynnT3ekrxKD51taQPcnw7fiwa3ctP01DiWzIwUR802bezp1A2/CBErHSa08JmB5wp592VJ3E51KiBQ2hCFCg83F0lBG1EBx+ff5sbDkRkDR+q8Lfnhi8a2AtNAbuIhFmTIUWkcHxIbVtNKago=
+	t=1730897415; cv=none; b=NSbbbFMqhhb4nw3WPxntZHtLmv10J7BwmSfE2H9EyDDf8qH6ph7nPoSXbBG03QXtdDcoG/g7XVVdcoAWJoyEfZTj7E241Mw+1mF2fvNqALhKDEVOESrHHp/GJZex/cbhBA3BuK/DO0BLB3xTN9VPrXEqHwVdN7ujpG0lFMT9/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896373; c=relaxed/simple;
-	bh=XK/MXnSqlYrlBhr0evEVNBb1Q76H+3LLeD7i7rLO+8w=;
+	s=arc-20240116; t=1730897415; c=relaxed/simple;
+	bh=NFaE16E1guKeUEKrxGuF2Ang1dW4sK04BlPwm/1DVcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HLWxvTueO3k7ITQeBsLICyWF1QXuk10KvgNyDgXQdi/4aRpaxr74hh26bXTEWz1jMCaACtlwAS8ByqkArmDtzPmmh37bCUF/Q0yC3T8QgwYps5yZKWzQ8BYXpjh8lU8OriLQMz1xa3xyD+tsqfUTv1SHXX0eGW85hhFCzPMRsCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPx2IVGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618CAC4CECD;
-	Wed,  6 Nov 2024 12:32:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aGfykdI/VblAi9FOvBxgMwSt2ecjuGBHO0bDRaDS1bQtCXAwb+guMmrqyO4VmL6JWbl/cPUSz/C5EJ6LHuEt7QtEzH+oDsm5Cktv+J3SsfJcyR7W1l2cyiTu0O3Uk+68t9PW+Kqda+jqClfy/oH3bhk52MyW/hPUUOWIzShqh/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+Kppahc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0A4C4CECD;
+	Wed,  6 Nov 2024 12:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896373;
-	bh=XK/MXnSqlYrlBhr0evEVNBb1Q76H+3LLeD7i7rLO+8w=;
+	s=korg; t=1730897414;
+	bh=NFaE16E1guKeUEKrxGuF2Ang1dW4sK04BlPwm/1DVcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPx2IVGS5Un4qdYL46sAL2irwuFKGmBr69BGlv6JQqV8p5ed2Yw92V+Y4ptl5QUS1
-	 qBPkA9rpUYzq00zVe5VDYaawcmo8D5UYkBj11ZU29Fy80rw/HpTBE0a/XDHzdOWNnM
-	 qlsl8/aGNpZ6KApkAyCXZYZ90C5c5PP/WaPQmxJw=
+	b=X+Kppahcbf863HLpm8MsvT3uIQJ++HrD93UafNYXAvI2gBW7KxFbOyeiI2VSXL2Mj
+	 N6E6uKSQJn6irIqt6YWANH7RWu3u8yeytjvm4zy1MdsImAtCQ6K0DE72RJNWFNLIhH
+	 HLi06RoizxwfSwZpPxJ5s0+KqUNbqRz3dFoKlen4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	AKASHI Takahiro <takahiro.akashi@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	kernel test robot <lkp@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 180/245] resource,kexec: walk_system_ram_res_rev must retain resource flags
-Date: Wed,  6 Nov 2024 13:03:53 +0100
-Message-ID: <20241106120323.667789854@linuxfoundation.org>
+Subject: [PATCH 6.6 046/151] iomap: turn iomap_want_unshare_iter into an inline function
+Date: Wed,  6 Nov 2024 13:03:54 +0100
+Message-ID: <20241106120310.101316713@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +65,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit b125a0def25a082ae944c9615208bf359abdb61c ]
+[ Upstream commit 6db388585e486c0261aeef55f8bc63a9b45756c0 ]
 
-walk_system_ram_res_rev() erroneously discards resource flags when passing
-the information to the callback.
+iomap_want_unshare_iter currently sits in fs/iomap/buffered-io.c, which
+depends on CONFIG_BLOCK.  It is also in used in fs/dax.c whіch has no
+such dependency.  Given that it is a trivial check turn it into an inline
+in include/linux/iomap.h to fix the DAX && !BLOCK build.
 
-This causes systems with IORESOURCE_SYSRAM_DRIVER_MANAGED memory to have
-these resources selected during kexec to store kexec buffers if that
-memory happens to be at placed above normal system ram.
-
-This leads to undefined behavior after reboot.  If the kexec buffer is
-never touched, nothing happens.  If the kexec buffer is touched, it could
-lead to a crash (like below) or undefined behavior.
-
-Tested on a system with CXL memory expanders with driver managed memory,
-TPM enabled, and CONFIG_IMA_KEXEC=y.  Adding printk's showed the flags
-were being discarded and as a result the check for
-IORESOURCE_SYSRAM_DRIVER_MANAGED passes.
-
-find_next_iomem_res: name(System RAM (kmem))
-		     start(10000000000)
-		     end(1034fffffff)
-		     flags(83000200)
-
-locate_mem_hole_top_down: start(10000000000) end(1034fffffff) flags(0)
-
-[.] BUG: unable to handle page fault for address: ffff89834ffff000
-[.] #PF: supervisor read access in kernel mode
-[.] #PF: error_code(0x0000) - not-present page
-[.] PGD c04c8bf067 P4D c04c8bf067 PUD c04c8be067 PMD 0
-[.] Oops: 0000 [#1] SMP
-[.] RIP: 0010:ima_restore_measurement_list+0x95/0x4b0
-[.] RSP: 0018:ffffc900000d3a80 EFLAGS: 00010286
-[.] RAX: 0000000000001000 RBX: 0000000000000000 RCX: ffff89834ffff000
-[.] RDX: 0000000000000018 RSI: ffff89834ffff000 RDI: ffff89834ffff018
-[.] RBP: ffffc900000d3ba0 R08: 0000000000000020 R09: ffff888132b8a900
-[.] R10: 4000000000000000 R11: 000000003a616d69 R12: 0000000000000000
-[.] R13: ffffffff8404ac28 R14: 0000000000000000 R15: ffff89834ffff000
-[.] FS:  0000000000000000(0000) GS:ffff893d44640000(0000) knlGS:0000000000000000
-[.] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[.] ata5: SATA link down (SStatus 0 SControl 300)
-[.] CR2: ffff89834ffff000 CR3: 000001034d00f001 CR4: 0000000000770ef0
-[.] PKRU: 55555554
-[.] Call Trace:
-[.]  <TASK>
-[.]  ? __die+0x78/0xc0
-[.]  ? page_fault_oops+0x2a8/0x3a0
-[.]  ? exc_page_fault+0x84/0x130
-[.]  ? asm_exc_page_fault+0x22/0x30
-[.]  ? ima_restore_measurement_list+0x95/0x4b0
-[.]  ? template_desc_init_fields+0x317/0x410
-[.]  ? crypto_alloc_tfm_node+0x9c/0xc0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  ima_load_kexec_buffer+0x72/0xa0
-[.]  ima_init+0x44/0xa0
-[.]  __initstub__kmod_ima__373_1201_init_ima7+0x1e/0xb0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  do_one_initcall+0xad/0x200
-[.]  ? idr_alloc_cyclic+0xaa/0x110
-[.]  ? new_slab+0x12c/0x420
-[.]  ? new_slab+0x12c/0x420
-[.]  ? number+0x12a/0x430
-[.]  ? sysvec_apic_timer_interrupt+0xa/0x80
-[.]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-[.]  ? parse_args+0xd4/0x380
-[.]  ? parse_args+0x14b/0x380
-[.]  kernel_init_freeable+0x1c1/0x2b0
-[.]  ? rest_init+0xb0/0xb0
-[.]  kernel_init+0x16/0x1a0
-[.]  ret_from_fork+0x2f/0x40
-[.]  ? rest_init+0xb0/0xb0
-[.]  ret_from_fork_asm+0x11/0x20
-[.]  </TASK>
-
-Link: https://lore.kernel.org/all/20231114091658.228030-1-bhe@redhat.com/
-Link: https://lkml.kernel.org/r/20241017190347.5578-1-gourry@gourry.net
-Fixes: 7acf164b259d ("resource: add walk_system_ram_res_rev()")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6ef6a0e821d3 ("iomap: share iomap_unshare_iter predicate code with fsdax")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241015041350.118403-1-hch@lst.de
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/iomap/buffered-io.c | 17 -----------------
+ include/linux/iomap.h  | 20 +++++++++++++++++++-
+ 2 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 1681ab5012e12..4f3df25176caa 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -460,9 +460,7 @@ int walk_system_ram_res_rev(u64 start, u64 end, void *arg,
- 			rams_size += 16;
- 		}
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 55619cce05422..a05ee2cbb7793 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1270,23 +1270,6 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+ }
+ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
  
--		rams[i].start = res.start;
--		rams[i++].end = res.end;
+-bool iomap_want_unshare_iter(const struct iomap_iter *iter)
+-{
+-	/*
+-	 * Don't bother with blocks that are not shared to start with; or
+-	 * mappings that cannot be shared, such as inline data, delalloc
+-	 * reservations, holes or unwritten extents.
+-	 *
+-	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+-	 * unsharing requires providing a separate source map, and the presence
+-	 * of one is a good indicator that unsharing is needed, unlike
+-	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
+-	 * fork for XFS.
+-	 */
+-	return (iter->iomap.flags & IOMAP_F_SHARED) &&
+-		iter->srcmap.type == IOMAP_MAPPED;
+-}
 -
-+		rams[i++] = res;
- 		start = res.end + 1;
- 	}
+ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ {
+ 	struct iomap *iomap = &iter->iomap;
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 846cd2f1454c7..47b81ebf6e598 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -256,6 +256,25 @@ static inline const struct iomap *iomap_iter_srcmap(const struct iomap_iter *i)
+ 	return &i->iomap;
+ }
  
++/*
++ * Check if the range needs to be unshared for a FALLOC_FL_UNSHARE_RANGE
++ * operation.
++ *
++ * Don't bother with blocks that are not shared to start with; or mappings that
++ * cannot be shared, such as inline data, delalloc reservations, holes or
++ * unwritten extents.
++ *
++ * Note that we use srcmap directly instead of iomap_iter_srcmap as unsharing
++ * requires providing a separate source map, and the presence of one is a good
++ * indicator that unsharing is needed, unlike IOMAP_F_SHARED which can be set
++ * for any data that goes into the COW fork for XFS.
++ */
++static inline bool iomap_want_unshare_iter(const struct iomap_iter *iter)
++{
++	return (iter->iomap.flags & IOMAP_F_SHARED) &&
++		iter->srcmap.type == IOMAP_MAPPED;
++}
++
+ ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
+ 		const struct iomap_ops *ops);
+ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+@@ -271,7 +290,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
+ bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio);
+ int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 		const struct iomap_ops *ops);
+-bool iomap_want_unshare_iter(const struct iomap_iter *iter);
+ int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
+ 		bool *did_zero, const struct iomap_ops *ops);
+ int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
 -- 
 2.43.0
 
