@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E67E9BEC17
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BF69BE9E6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:38:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D82F0B263B8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B045E2821C4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23521FAC5E;
-	Wed,  6 Nov 2024 12:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB861EE01A;
+	Wed,  6 Nov 2024 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsnHD0HY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBP4pDgW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0911EF93D;
-	Wed,  6 Nov 2024 12:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01A61E008C;
+	Wed,  6 Nov 2024 12:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897515; cv=none; b=KqQID7o/6yiNgcVxzaWsbz16GLDfMjK4OGEQS2Uee7NYxgb7PMQD0X86oKNarnaDwWYvM1hMB0e/5iGnI5eqMbtzz+mjAbeD0mrqRxZYmYkXMBoeh3zhxtSO+qawCteGyOu4dQ8VBBd3DPjjZ6PBx5pbpsR3W2PioioLcjY03U4=
+	t=1730896613; cv=none; b=bxOPrA+YSegvMVK4XPAHU4l8kCl7v9YOenzN7k3jBB2PCNzPcSSBF0+4ZQqhiUGpvv5FUNqSkp7Fx3852TeZbcmYKJRoablMWDCXsdNczoFaW5sDxKI/LJm1dTbKPVONyCADckuYi+L6ohyV/0ngDv2BnyYndlT4wOD3PgfVXOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897515; c=relaxed/simple;
-	bh=zy/DBtbCej+GH6CJnXF1wJ29iVdH6EYD37/UupkIJXg=;
+	s=arc-20240116; t=1730896613; c=relaxed/simple;
+	bh=RNOF8zo7DZNa6kN1Sq64Cz3KYEQW91eB5EHmSd3iHqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ls8I/+xCvmj/mGf/NDgXx50w3msAwoFKXCGXjw2Q14efMq0Gpy4vUJ5P9HM0tNJaqO9tPrQo5OCMr+pVF88B+QEG8bZRIboW1CnREo1toG6y9GJUdsuGYjuOpISGcb+8JlDYjA7zG2HNUT53hstyG83fiDvz7tB9IJzMZjTNgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsnHD0HY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09382C4CECD;
-	Wed,  6 Nov 2024 12:51:54 +0000 (UTC)
+	 MIME-Version; b=AlEfn8Qy9rvvcLB1V80AcSrWgspMAwsSYF/x8mv1kTmqiXpty9JW79rAn9q9Ko5JUkH9hsjU5KMpjvLsfeLHUSwa6VfBkZWdLMR1B6ZsJUi7zJ2xqE2xchgBUfSbTewvGge27Edlo/pv3J2+byTnLTBRZn8I80FR3AI4g82pHS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBP4pDgW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD223C4CED5;
+	Wed,  6 Nov 2024 12:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897515;
-	bh=zy/DBtbCej+GH6CJnXF1wJ29iVdH6EYD37/UupkIJXg=;
+	s=korg; t=1730896613;
+	bh=RNOF8zo7DZNa6kN1Sq64Cz3KYEQW91eB5EHmSd3iHqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsnHD0HYbFUCS+TnvoOoVIhvNVSeDLH/K4e1WwEEYA7pcXYEsne6xWerLQKjT5X5+
-	 g1YCgZCC+Op3EA/Qn6yGFOjp3KUdZtB9CWX/JQ7o2pTWmAIPNZ/W9gr5X8ez9FxoGp
-	 2skefN+n8rQ+sHKEktJF3aEaZZ/bLEBKFnPl6hPI=
+	b=RBP4pDgWKg9aMEvifZ2FvEpkd9O6pY3DLYfa5r25DHf+ccnSM7VWXmmODyQ6unhkK
+	 WW6+CpRJMr4lzOmrXDaUBebbWniRzpoVsClP/tUBytmakFgzk0L/wMPERpTFxh9BBh
+	 qMEV4zrjEi+hTC05ck3CkBNAvnWRA+r/jkFR5NHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/151] net: fix crash when config small gso_max_size/gso_ipv4_max_size
-Date: Wed,  6 Nov 2024 13:03:40 +0100
-Message-ID: <20241106120309.722217166@linuxfoundation.org>
+Subject: [PATCH 5.10 015/110] smb: client: fix OOBs when building SMB2_IOCTL request
+Date: Wed,  6 Nov 2024 13:03:41 +0100
+Message-ID: <20241106120303.580130128@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
+[ Upstream commit 1ab60323c5201bef25f2a3dc0ccc404d9aca77f1 ]
 
-Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
-in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
-because sk->sk_gso_max_size would be much bigger than device limits.
-Call Trace:
-tcp_write_xmit
-    tso_segs = tcp_init_tso_segs(skb, mss_now);
-        tcp_set_skb_tso_segs
-            tcp_skb_pcount_set
-                // skb->len = 524288, mss_now = 8
-                // u16 tso_segs = 524288/8 = 65535 -> 0
-                tso_segs = DIV_ROUND_UP(skb->len, mss_now)
-    BUG_ON(!tso_segs)
-Add check for the minimum value of gso_max_size and gso_ipv4_max_size.
+When using encryption, either enforced by the server or when using
+'seal' mount option, the client will squash all compound request buffers
+down for encryption into a single iov in smb2_set_next_command().
 
-Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
-Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+SMB2_ioctl_init() allocates a small buffer (448 bytes) to hold the
+SMB2_IOCTL request in the first iov, and if the user passes an input
+buffer that is greater than 328 bytes, smb2_set_next_command() will
+end up writing off the end of @rqst->iov[0].iov_base as shown below:
+
+  mount.cifs //srv/share /mnt -o ...,seal
+  ln -s $(perl -e "print('a')for 1..1024") /mnt/link
+
+  BUG: KASAN: slab-out-of-bounds in
+  smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+  Write of size 4116 at addr ffff8881148fcab8 by task ln/859
+
+  CPU: 1 UID: 0 PID: 859 Comm: ln Not tainted 6.12.0-rc3 #1
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  1.16.3-2.fc40 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   print_report+0x156/0x4d9
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   ? __virt_addr_valid+0x145/0x310
+   ? __phys_addr+0x46/0x90
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   kasan_report+0xda/0x110
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   kasan_check_range+0x10f/0x1f0
+   __asan_memcpy+0x3c/0x60
+   smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   smb2_compound_op+0x238c/0x3840 [cifs]
+   ? kasan_save_track+0x14/0x30
+   ? kasan_save_free_info+0x3b/0x70
+   ? vfs_symlink+0x1a1/0x2c0
+   ? do_symlinkat+0x108/0x1c0
+   ? __pfx_smb2_compound_op+0x10/0x10 [cifs]
+   ? kmem_cache_free+0x118/0x3e0
+   ? cifs_get_writable_path+0xeb/0x1a0 [cifs]
+   smb2_get_reparse_inode+0x423/0x540 [cifs]
+   ? __pfx_smb2_get_reparse_inode+0x10/0x10 [cifs]
+   ? rcu_is_watching+0x20/0x50
+   ? __kmalloc_noprof+0x37c/0x480
+   ? smb2_create_reparse_symlink+0x257/0x490 [cifs]
+   ? smb2_create_reparse_symlink+0x38f/0x490 [cifs]
+   smb2_create_reparse_symlink+0x38f/0x490 [cifs]
+   ? __pfx_smb2_create_reparse_symlink+0x10/0x10 [cifs]
+   ? find_held_lock+0x8a/0xa0
+   ? hlock_class+0x32/0xb0
+   ? __build_path_from_dentry_optional_prefix+0x19d/0x2e0 [cifs]
+   cifs_symlink+0x24f/0x960 [cifs]
+   ? __pfx_make_vfsuid+0x10/0x10
+   ? __pfx_cifs_symlink+0x10/0x10 [cifs]
+   ? make_vfsgid+0x6b/0xc0
+   ? generic_permission+0x96/0x2d0
+   vfs_symlink+0x1a1/0x2c0
+   do_symlinkat+0x108/0x1c0
+   ? __pfx_do_symlinkat+0x10/0x10
+   ? strncpy_from_user+0xaa/0x160
+   __x64_sys_symlinkat+0xb9/0xf0
+   do_syscall_64+0xbb/0x1d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f08d75c13bb
+
+Reported-by: David Howells <dhowells@redhat.com>
+Fixes: e77fe73c7e38 ("cifs: we can not use small padding iovs together with encryption")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cifs/smb2pdu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index c76c54879fddd..4acde7067519e 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1984,7 +1984,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
--	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
- 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
- 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
-@@ -2009,7 +2009,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_TSO_MAX_SIZE]	= { .type = NLA_REJECT },
- 	[IFLA_TSO_MAX_SEGS]	= { .type = NLA_REJECT },
- 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
--	[IFLA_GSO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
- };
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index aa3211d8cce3b..03651cc6b7a5b 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -2961,6 +2961,15 @@ SMB2_ioctl_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+ 		return rc;
  
+ 	if (indatalen) {
++		unsigned int len;
++
++		if (WARN_ON_ONCE(smb3_encryption_required(tcon) &&
++				 (check_add_overflow(total_len - 1,
++						     ALIGN(indatalen, 8), &len) ||
++				  len > MAX_CIFS_SMALL_BUFFER_SIZE))) {
++			cifs_small_buf_release(req);
++			return -EIO;
++		}
+ 		/*
+ 		 * indatalen is usually small at a couple of bytes max, so
+ 		 * just allocate through generic pool
 -- 
 2.43.0
 
