@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-90506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF989BE8A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBB99BE7B5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFBCA1C22C68
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2851F21696
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490D01DFE3B;
-	Wed,  6 Nov 2024 12:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068CA1DF741;
+	Wed,  6 Nov 2024 12:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSMKNxBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2QoyqAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F121D2784;
-	Wed,  6 Nov 2024 12:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74061DF737;
+	Wed,  6 Nov 2024 12:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895975; cv=none; b=HSID/sKSc06Q34i6jtMT573guy6Ki3x3BbGQapbSEX5O9GVYnrienV/ywu1wyL+qzbSY5PW9DXkmjQJgJuDCTd+ZQuylGBU4OKGhDFClghcRfmCWdrOFouIyj6xJU5gybHY20iki+iNwei56cb5hLhTJgAjuWoDet9lzvCkDwns=
+	t=1730895412; cv=none; b=fi3qJJ3H53feu6/FQZIWECA9sn1Vgbye+3vU7k3gthlIL6Y/lhYE3Ue8TBp1vAWmlz2hq+6os8GkbPiJabpk5GDuq4QviK9ufvY0lpqEqMnOZPxdPCqQGKA01qwWtwXfu2SKdQV6N3UXiBy6cxB/ShnC9M3MG+jV1uhcmwAOMrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895975; c=relaxed/simple;
-	bh=T8P1nV03xQnsRRgr29o3Pvu3byEb3YZCoWDgFZrU8oc=;
+	s=arc-20240116; t=1730895412; c=relaxed/simple;
+	bh=koGCBV2mZCi8Dm23ziEP1INuRViYi1RGwRZNEL5xyKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbWQSRfNGTj+OniIgXLem5Dm4K7fnO7rSAP6nejIYfP7T5EmKENBNQ2ugRqvIYe4hD9+LS21D3hhAFZ8xVJB5mtk92sGfGUMv4wdZN4bhxr8YJyuPbNRtuti2yals3gBDXYOObxHl5YlkaGpTtFg8Z7aBBWEVqRU84sAENJKAnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSMKNxBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B81CC4CED4;
-	Wed,  6 Nov 2024 12:26:14 +0000 (UTC)
+	 MIME-Version; b=lGM+eV42gbobiFZkUgpgQ0/7O9kblCjkS2qrh0GenbtM/qdFnt6Y/fg87tXzrCBg8Y93MTuw10/Zq7MnxYIsYNDdDRf8NpzD7Uc+rTzFFCaHjz4Tn/eeyl18+o6axcZnQFXI/DopbaKL+bLRTyfCIudiEpf7jxM4RKwRv0pZtM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2QoyqAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE14C4CED7;
+	Wed,  6 Nov 2024 12:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895974;
-	bh=T8P1nV03xQnsRRgr29o3Pvu3byEb3YZCoWDgFZrU8oc=;
+	s=korg; t=1730895412;
+	bh=koGCBV2mZCi8Dm23ziEP1INuRViYi1RGwRZNEL5xyKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSMKNxBsSdnHAL05QLlfYbJXAnp6+SPmmqFe1h/WuxE37SwvkGTOJFherctO51Kas
-	 c7QoDiFF9ZyyiYaPCNdG67u7se3MK9NlpiZUTwQ1z6tqpedtCXDpKKnpF1GsEXoevQ
-	 UnCPi7y5lIWj+upqkf07qpJLXmDsPsh3CyezoXdk=
+	b=j2QoyqAK7WQfpSKuhvCj+Qlk/z5vOQ8lkbsqlDbkT8YrMEbSp5dHM6gR2VwmPdBC2
+	 eJWbZVgUW+J4j/dSeNpTyjmyHlNtcLPLfp+iwhG2+4ar0Vb+pcb8AVL9QOy6EjhkWC
+	 E6SydfgtbENlUZejNT00i4uuvVCsUb74jmEu2yrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 048/245] bpf: Check the validity of nr_words in bpf_iter_bits_new()
+Subject: [PATCH 4.19 173/350] drm/amd/display: Fix index out of bounds in degamma hardware format translation
 Date: Wed,  6 Nov 2024 13:01:41 +0100
-Message-ID: <20241106120320.406644466@linuxfoundation.org>
+Message-ID: <20241106120325.202016564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +69,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 393397fbdcad7396639d7077c33f86169184ba99 ]
+[ Upstream commit b7e99058eb2e86aabd7a10761e76cae33d22b49f ]
 
-Check the validity of nr_words in bpf_iter_bits_new(). Without this
-check, when multiplication overflow occurs for nr_bits (e.g., when
-nr_words = 0x0400-0001, nr_bits becomes 64), stack corruption may occur
-due to bpf_probe_read_kernel_common(..., nr_bytes = 0x2000-0008).
+Fixes index out of bounds issue in
+`cm_helper_translate_curve_to_degamma_hw_format` function. The issue
+could occur when the index 'i' exceeds the number of transfer function
+points (TRANSFER_FUNC_POINTS).
 
-Fix it by limiting the maximum value of nr_words to 511. The value is
-derived from the current implementation of BPF memory allocator. To
-ensure compatibility if the BPF memory allocator's size limitation
-changes in the future, use the helper bpf_mem_alloc_check_size() to
-check whether nr_bytes is too larger. And return -E2BIG instead of
--ENOMEM for oversized nr_bytes.
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds the function returns
+false to indicate an error.
 
-Fixes: 4665415975b0 ("bpf: Add bits iterator")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241030100516.3633640-4-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:594 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:595 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:596 cm_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index a4521d2606b6b..8419de44c5174 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2830,6 +2830,8 @@ struct bpf_iter_bits {
- 	__u64 __opaque[2];
- } __aligned(8);
- 
-+#define BITS_ITER_NR_WORDS_MAX 511
-+
- struct bpf_iter_bits_kern {
- 	union {
- 		unsigned long *bits;
-@@ -2844,7 +2846,8 @@ struct bpf_iter_bits_kern {
-  * @it: The new bpf_iter_bits to be created
-  * @unsafe_ptr__ign: A pointer pointing to a memory area to be iterated over
-  * @nr_words: The size of the specified memory area, measured in 8-byte units.
-- * Due to the limitation of memalloc, it can't be greater than 512.
-+ * The maximum value of @nr_words is @BITS_ITER_NR_WORDS_MAX. This limit may be
-+ * further reduced by the BPF memory allocator implementation.
-  *
-  * This function initializes a new bpf_iter_bits structure for iterating over
-  * a memory area which is specified by the @unsafe_ptr__ign and @nr_words. It
-@@ -2871,6 +2874,8 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
- 
- 	if (!unsafe_ptr__ign || !nr_words)
- 		return -EINVAL;
-+	if (nr_words > BITS_ITER_NR_WORDS_MAX)
-+		return -E2BIG;
- 
- 	/* Optimization for u64 mask */
- 	if (nr_bits == 64) {
-@@ -2882,6 +2887,9 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
- 		return 0;
- 	}
- 
-+	if (bpf_mem_alloc_check_size(false, nr_bytes))
-+		return -E2BIG;
-+
- 	/* Fallback to memalloc */
- 	kit->bits = bpf_mem_alloc(&bpf_global_ma, nr_bytes);
- 	if (!kit->bits)
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+index 67a3ba49234ee..ad42470613441 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
+@@ -482,6 +482,8 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
