@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF329BEBCD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC609BE7F8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63D22B24DE0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C5D1F23404
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526E81F9A9B;
-	Wed,  6 Nov 2024 12:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7331DFD89;
+	Wed,  6 Nov 2024 12:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9xRcKaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7HV+UdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB9F1EF08E;
-	Wed,  6 Nov 2024 12:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1A11DF72F;
+	Wed,  6 Nov 2024 12:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897304; cv=none; b=GBS10i0lwBohZ/sQxh24m5hHgW7imR7hfTP9sE3El6RHY34mSkqzHqcSlY6NkOo70eBCV6b1Q0R/WEJJW8YAy5fB/00FTQcZYtaCVIovvnBWoi4LLum2cv4aQ7LzmCFNVHmiqEJMweKSpF7nH0vZXXV2D8xwhRP9hPL0ZgRjJFQ=
+	t=1730895564; cv=none; b=mBJ3LwDNAUgouEUfMNNvoivWBB1y9X/wkYdeb1xDJvAeu4W0hzXpDxluI4OhFOmv+MAtMj3Nt/9JXp1p1L33UeMkM8sl1wgG454DPGlREulcNKtrCijVqMKKglX33OMfJVo/AcirZUBHsiia0ER9tvyL7vYxIscT+23ZPFmoogE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897304; c=relaxed/simple;
-	bh=DHTxNp4sCUiU9l4pkrouOboEbHb81B/vVvBThnEUuDQ=;
+	s=arc-20240116; t=1730895564; c=relaxed/simple;
+	bh=ST86yPLu9pBZXPiG1S+ifwx06SrCvFBdX324CZf9XyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCSrRBoo5RrqUluwSmR9bzbuM82/ycANnSsUMWsRmPFsD0Y82972GXrivLpXl3Hy56/WCUfqoFS2WOAfXVhJCCxLBj4KhtZR1SAOp/QaFaYPwALtgt6ABx4AMBkWiL0zaXmSCQ4beEKnW80nrw2xGGDl86zGiW860UrYjBo258Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9xRcKaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C99C4CECD;
-	Wed,  6 Nov 2024 12:48:23 +0000 (UTC)
+	 MIME-Version; b=UGAVD6fk5p2KT60lUFFQcs4LZPgD3joT6mxkLkVAqSP79vjtpf3DohvioplIEn+Zkry090o9lfYNRxd85CEWpYQR2rOJbR57pVSNMhI4UpuucHf4b2a3RqEbwReXP9lGyzfd5I7r5PJ2XhmKnn0CCNZmbrXWjtCbhYxe0q9hvfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7HV+UdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C8C4CECD;
+	Wed,  6 Nov 2024 12:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897303;
-	bh=DHTxNp4sCUiU9l4pkrouOboEbHb81B/vVvBThnEUuDQ=;
+	s=korg; t=1730895564;
+	bh=ST86yPLu9pBZXPiG1S+ifwx06SrCvFBdX324CZf9XyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9xRcKaIB2DsYdtqkTMlynZB3JlGtD98FXVYwBynxIGqqfIj2Z4vFJtW+BTQ7D+Px
-	 513lUvqsJvjefcXxDygZ+YkI46nC2QFQtnv8/qbBhmm467a2+zvNdmNstd6NLoa1vO
-	 8Q8tyiwlhlFwDywa/EnPBYHE2iQsqC3ylQH7FRQ8=
+	b=K7HV+UdRBDCQbLkxQ8drsslnVX0FZDY8JE5s2lWGJDUo5vZBAvBqAN8NMXcH+JS0S
+	 lw/q+p7bWCZwTnlLf9FcKJBiLrmRxHDjOs5n7ENL8qQKCRZE+JtnKguqhXeQ+UkrKj
+	 jfvVamoQ0MmZOFiJeDYvNZW2WZuakRBx9ibk49KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>
-Subject: [PATCH 6.6 001/151] thermal: core: Make thermal_zone_device_unregister() return after freeing the zone
+	Johannes Nixdorf <j.nixdorf@avm.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 4.19 261/350] net: ipv6: ensure we call ipv6_mc_down() at most once
 Date: Wed,  6 Nov 2024 13:03:09 +0100
-Message-ID: <20241106120308.881358118@linuxfoundation.org>
+Message-ID: <20241106120327.351789236@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: j.nixdorf@avm.de <j.nixdorf@avm.de>
 
-[ Upstream commit 4649620d9404d3aceb25891c24bab77143e3f21c ]
+commit 9995b408f17ff8c7f11bc725c8aa225ba3a63b1c upstream.
 
-Make thermal_zone_device_unregister() wait until all of the references
-to the given thermal zone object have been dropped and free it before
-returning.
+There are two reasons for addrconf_notify() to be called with NETDEV_DOWN:
+either the network device is actually going down, or IPv6 was disabled
+on the interface.
 
-This guarantees that when thermal_zone_device_unregister() returns,
-there is no leftover activity regarding the thermal zone in question
-which is required by some of its callers (for instance, modular driver
-code that wants to know when it is safe to let the module go away).
+If either of them stays down while the other is toggled, we repeatedly
+call the code for NETDEV_DOWN, including ipv6_mc_down(), while never
+calling the corresponding ipv6_mc_up() in between. This will cause a
+new entry in idev->mc_tomb to be allocated for each multicast group
+the interface is subscribed to, which in turn leaks one struct ifmcaddr6
+per nontrivial multicast group the interface is subscribed to.
 
-Subsequently, this will allow some confusing device_is_registered()
-checks to be dropped from the thermal sysfs and core code.
+The following reproducer will leak at least $n objects:
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-and-tested-by: Lukasz Luba <lukasz.luba@arm.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Stable-dep-of: 827a07525c09 ("thermal: core: Free tzp copy along with the thermal zone")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ip addr add ff2e::4242/32 dev eth0 autojoin
+sysctl -w net.ipv6.conf.eth0.disable_ipv6=1
+for i in $(seq 1 $n); do
+	ip link set up eth0; ip link set down eth0
+done
+
+Joining groups with IPV6_ADD_MEMBERSHIP (unprivileged) or setting the
+sysctl net.ipv6.conf.eth0.forwarding to 1 (=> subscribing to ff02::2)
+can also be used to create a nontrivial idev->mc_list, which will the
+leak objects with the right up-down-sequence.
+
+Based on both sources for NETDEV_DOWN events the interface IPv6 state
+should be considered:
+
+ - not ready if the network interface is not ready OR IPv6 is disabled
+   for it
+ - ready if the network interface is ready AND IPv6 is enabled for it
+
+The functions ipv6_mc_up() and ipv6_down() should only be run when this
+state changes.
+
+Implement this by remembering when the IPv6 state is ready, and only
+run ipv6_mc_down() if it actually changed from ready to not ready.
+
+The other direction (not ready -> ready) already works correctly, as:
+
+ - the interface notification triggered codepath for NETDEV_UP /
+   NETDEV_CHANGE returns early if ipv6 is disabled, and
+ - the disable_ipv6=0 triggered codepath skips fully initializing the
+   interface as long as addrconf_link_ready(dev) returns false
+ - calling ipv6_mc_up() repeatedly does not leak anything
+
+Fixes: 3ce62a84d53c ("ipv6: exit early in addrconf_notify() if IPv6 is disabled")
+Signed-off-by: Johannes Nixdorf <j.nixdorf@avm.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_core.c | 6 +++++-
- include/linux/thermal.h        | 2 ++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index dee3022539cf7..5a9068e8f050d 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -800,7 +800,7 @@ static void thermal_release(struct device *dev)
- 		tz = to_thermal_zone(dev);
- 		thermal_zone_destroy_device_groups(tz);
- 		mutex_destroy(&tz->lock);
--		kfree(tz);
-+		complete(&tz->removal);
- 	} else if (!strncmp(dev_name(dev), "cooling_device",
- 			    sizeof("cooling_device") - 1)) {
- 		cdev = to_cooling_device(dev);
-@@ -1294,6 +1294,7 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
- 	INIT_LIST_HEAD(&tz->thermal_instances);
- 	ida_init(&tz->ida);
- 	mutex_init(&tz->lock);
-+	init_completion(&tz->removal);
- 	id = ida_alloc(&thermal_tz_ida, GFP_KERNEL);
- 	if (id < 0) {
- 		result = id;
-@@ -1480,6 +1481,9 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
- 	put_device(&tz->device);
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3679,6 +3679,7 @@ static int addrconf_ifdown(struct net_de
+ 	struct inet6_ifaddr *ifa;
+ 	LIST_HEAD(tmp_addr_list);
+ 	bool keep_addr = false;
++	bool was_ready;
+ 	int state, i;
  
- 	thermal_notify_tz_delete(tz_id);
-+
-+	wait_for_completion(&tz->removal);
-+	kfree(tz);
- }
- EXPORT_SYMBOL_GPL(thermal_zone_device_unregister);
+ 	ASSERT_RTNL();
+@@ -3744,7 +3745,10 @@ restart:
  
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index 4012f440bfdcc..2e9d18ba46531 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -115,6 +115,7 @@ struct thermal_cooling_device {
-  * @id:		unique id number for each thermal zone
-  * @type:	the thermal zone device type
-  * @device:	&struct device for this thermal zone
-+ * @removal:	removal completion
-  * @trip_temp_attrs:	attributes for trip points for sysfs: trip temperature
-  * @trip_type_attrs:	attributes for trip points for sysfs: trip type
-  * @trip_hyst_attrs:	attributes for trip points for sysfs: trip hysteresis
-@@ -156,6 +157,7 @@ struct thermal_zone_device {
- 	int id;
- 	char type[THERMAL_NAME_LENGTH];
- 	struct device device;
-+	struct completion removal;
- 	struct attribute_group trips_attribute_group;
- 	struct thermal_attr *trip_temp_attrs;
- 	struct thermal_attr *trip_type_attrs;
--- 
-2.43.0
-
+ 	addrconf_del_rs_timer(idev);
+ 
+-	/* Step 2: clear flags for stateless addrconf */
++	/* Step 2: clear flags for stateless addrconf, repeated down
++	 *         detection
++	 */
++	was_ready = idev->if_flags & IF_READY;
+ 	if (!how)
+ 		idev->if_flags &= ~(IF_RS_SENT|IF_RA_RCVD|IF_READY);
+ 
+@@ -3824,7 +3828,7 @@ restart:
+ 	if (how) {
+ 		ipv6_ac_destroy_dev(idev);
+ 		ipv6_mc_destroy_dev(idev);
+-	} else {
++	} else if (was_ready) {
+ 		ipv6_mc_down(idev);
+ 	}
+ 
 
 
 
