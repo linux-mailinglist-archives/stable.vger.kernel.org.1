@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE90B9BE723
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72D99BECDA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9707B1F255EE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D847286027
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA451DF24E;
-	Wed,  6 Nov 2024 12:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D71B1D86E8;
+	Wed,  6 Nov 2024 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQLEJMIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ1kSzUz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFAE1DEFD3;
-	Wed,  6 Nov 2024 12:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D0E1DED6C;
+	Wed,  6 Nov 2024 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895056; cv=none; b=sFPSVcLAZrG/7pvfpaISUrvOPGmdGFx9zLnV2pCJbCBecb91GFnbI5nL8z7iNWy8swaB8HIIKfoL7zWJL1wPyRQbcq1C/b/zVANptVggD0ylFsim14WM+KL/IpHAbX1cB94FjRObk+1w1ZDKV4Mh/Wl1hZsbF/DswP1Yzx4AfYY=
+	t=1730897997; cv=none; b=B77BwoebcbLyzAOh7XhdRlvUJBu011fEP0NvRlPZEUMbXFJULb9U5DN3CJ+oujbPZi0HO7BGSstUZZmkkL0a/aBPfO2eEQ1vijoH04aCUA6dS0rN1Q362m6M/YpTNwwx72oiPDgwGpQGyukRJLcaXIWwmFWjwoTLlRWtg+0cA+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895056; c=relaxed/simple;
-	bh=6B8WnafIq5uJ0jMiCkOGP1vbgT22g8qxqxjCk+SP4Js=;
+	s=arc-20240116; t=1730897997; c=relaxed/simple;
+	bh=XRxFgwo07paz6uNcL5EMjpEhiue1f6JcoLBg91Fr524=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6N9bLS/RHFdHd78L5WZHY8g11DQKFbvhS2++Y+mYxJkJNlrubB6hmxou4QEUu/dIRDz+BaBdqRVqOybdS+1pOQufUjk/+35pk0n2jCIgcCr4HlQxy1AWleR8dKqbYUBTfZ1Rrgw4f3JbgiMNVH0z6sHS4ONq9OE1aIUKaUbG1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQLEJMIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE6CC4CECD;
-	Wed,  6 Nov 2024 12:10:56 +0000 (UTC)
+	 MIME-Version; b=oOxOBVHMgcyhxRpuJiWgtejuLAmARJ68ajhIZ+4nfPZlq3LHtsqs5D0TRKDmbMAyyWlM6h84tUxUtXL3A3AzZfSuGKIdkk1VyI/ZF1ZnTRkgz+hyIRXW25hs2bqc5WaesXZTIs8dre3Whf5zSCeV1mlfyvdHlW3nLLQeOrilZN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ1kSzUz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D394DC4CECD;
+	Wed,  6 Nov 2024 12:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895056;
-	bh=6B8WnafIq5uJ0jMiCkOGP1vbgT22g8qxqxjCk+SP4Js=;
+	s=korg; t=1730897997;
+	bh=XRxFgwo07paz6uNcL5EMjpEhiue1f6JcoLBg91Fr524=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQLEJMIE0nU1GqcEmC7ri1uWIPRu8VVBpNqP97uCgP7zzXSUN+JmV3ZBZEHGm0cpE
-	 f7NCGBHNinPCBL1wKxXQM/BWTJ8JwZcdvhohmCBdQFTslofDIbfH0yZzLH+0Tiak5G
-	 vLKdC0RSYydkG0NMPQRg80nwQYrXRXqA5F4V/2bQ=
+	b=LZ1kSzUzIGSmCNcWCsW7MfonKs/Urbo7ExHGOBFbSTWJHYN7r7m2rPYognnzfc0Qc
+	 NCgmTro53pV9ZQmw0je6RYhE3BOAMB6LyVWauVfp4BRYz451AnjJvL1ACAoA5JSG7p
+	 CcCUrV0TeTw5bgWFdlz3h3sKAYzLzJbr448v6wkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 054/350] drm/radeon: Replace one-element array with flexible-array member
+Subject: [PATCH 5.4 089/462] selftests/bpf: Fix compiling flow_dissector.c with musl-libc
 Date: Wed,  6 Nov 2024 12:59:42 +0100
-Message-ID: <20241106120322.225283400@linuxfoundation.org>
+Message-ID: <20241106120333.703823299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit c81c5bd5cf2f428867e0bcfcccd4e4d2f8c68f51 ]
+[ Upstream commit 5e4c43bcb85973243d7274e0058b6e8f5810e4f7 ]
 
-One-element arrays are deprecated, and we are replacing them with
-flexible array members instead. So, replace one-element array with
-flexible-array member in struct _ATOM_FAKE_EDID_PATCH_RECORD and
-refactor the rest of the code accordingly.
+The GNU version of 'struct tcphdr' has members 'doff', 'source' and 'dest',
+which are not exposed by musl libc headers unless _GNU_SOURCE is defined.
 
-It's worth mentioning that doing a build before/after this patch results
-in no binary output differences.
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
 
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -fstrict-flex-arrays=3 [1].
+  flow_dissector.c:118:30: error: 'struct tcphdr' has no member named 'doff'
+    118 |                         .tcp.doff = 5,
+        |                              ^~~~
+  flow_dissector.c:119:30: error: 'struct tcphdr' has no member named 'source'
+    119 |                         .tcp.source = 80,
+        |                              ^~~~~~
+  flow_dissector.c:120:30: error: 'struct tcphdr' has no member named 'dest'
+    120 |                         .tcp.dest = 8080,
+        |                              ^~~~
 
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/239
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101836 [1]
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 17c6baff3d5f ("drm/radeon: properly handle vbios fake edid sizing")
+Fixes: ae173a915785 ("selftests/bpf: support BPF_FLOW_DISSECTOR_F_PARSE_1ST_FRAG")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/8f7ab21a73f678f9cebd32b26c444a686e57414d.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/atombios.h        | 2 +-
- drivers/gpu/drm/radeon/radeon_atombios.c | 7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/radeon/atombios.h b/drivers/gpu/drm/radeon/atombios.h
-index 4b86e8b450090..e3f4964647641 100644
---- a/drivers/gpu/drm/radeon/atombios.h
-+++ b/drivers/gpu/drm/radeon/atombios.h
-@@ -3615,7 +3615,7 @@ typedef struct _ATOM_FAKE_EDID_PATCH_RECORD
- {
-   UCHAR ucRecordType;
-   UCHAR ucFakeEDIDLength;
--  UCHAR ucFakeEDIDString[1];    // This actually has ucFakeEdidLength elements.
-+  UCHAR ucFakeEDIDString[];    // This actually has ucFakeEdidLength elements.
- } ATOM_FAKE_EDID_PATCH_RECORD;
- 
- typedef struct  _ATOM_PANEL_RESOLUTION_PATCH_RECORD
-diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
-index 821b03d6142b0..0d11d6d1f5f0a 100644
---- a/drivers/gpu/drm/radeon/radeon_atombios.c
-+++ b/drivers/gpu/drm/radeon/radeon_atombios.c
-@@ -1742,8 +1742,11 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
- 						}
- 					}
- 					record += fake_edid_record->ucFakeEDIDLength ?
--						fake_edid_record->ucFakeEDIDLength + 2 :
--						sizeof(ATOM_FAKE_EDID_PATCH_RECORD);
-+						  struct_size(fake_edid_record,
-+							      ucFakeEDIDString,
-+							      fake_edid_record->ucFakeEDIDLength) :
-+						  /* empty fake edid record must be 3 bytes long */
-+						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
+diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+index 9f3634c9971d0..8a921686d304f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
++++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <error.h>
+ #include <linux/if.h>
 -- 
 2.43.0
 
