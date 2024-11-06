@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-90022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCEE9BDCA4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904059BDCA7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93DAB20B75
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5195F285D30
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014F6216DE3;
-	Wed,  6 Nov 2024 02:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245FB216DF9;
+	Wed,  6 Nov 2024 02:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9Un1h73"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJcPt2Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6B5216A0A;
-	Wed,  6 Nov 2024 02:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33161D4333;
+	Wed,  6 Nov 2024 02:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859212; cv=none; b=nyf5A3keXZovE22azHSyvDNRlwMh1sZf3ntGIgmu70/2wGPrCipipeBDjzHnhSG+Hh2gqemJL8BMdfNiG3C5sxrwDX+cF7tJawySzBM9AEZ1/vPmmNe5wtHY/Zzre0N/PW3UvN5oU/5ID6k3gatsYgIqyrQ/454rxC7B+LVnq2I=
+	t=1730859216; cv=none; b=QVL5G7PHccolV5Qjmw0lvg6OOeZr58y258oNon4N1n8xUD96zDcoig0uxDMnAKPkscxch12gTu+8VQfzfBOmHQWJm9b7gXF57NH810NFQBBLJ5wHfDLzqsjEDaSF8ZQ0IMZzvn5dgd2/oaRYEumfu8bMPoiupTX1E+IE3JppOYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859212; c=relaxed/simple;
-	bh=qmziZDX0+N0h9dvCzzQjgrIngSrcENn+XwUBGzXpEoM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OnMsmxoy66F+DiEpPCK+mn8y5dCSwe5F3LAVKjsJFGP3ILoRxBa7pBCmJ+CXXHhH+dj1B5H0XO5VlcYxn4IEk2DSb4ca1t7XZzuBPvqk0Zf6mv/nqynjdg8lkZV4/3Wwr/3NlA5jQPlwcDc4w+zhQmlNUqTM3hFRNwu9iXHREUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9Un1h73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD965C4CECF;
-	Wed,  6 Nov 2024 02:13:31 +0000 (UTC)
+	s=arc-20240116; t=1730859216; c=relaxed/simple;
+	bh=IOT1pSeyuOjzNCFAwrsmZToV84opzasfWPk0Fhgd31Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e+7jWzqLGrxM4WuvMixNM1Wzn24G4iGYzR5lyZ/ai8LTk0V5+HqUZ1JyUsyNk+SbrPHvyXuXxD2hWIgCB3M/Q/lIwEYdZRILPp5r0V8KeA8a3nA0oHUluEN8+4J6rVwEfuABXD9o0mzHuIXk5oKLHQcjgC46trWzxUEAgdnYFXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJcPt2Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DD7C4CECF;
+	Wed,  6 Nov 2024 02:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859212;
-	bh=qmziZDX0+N0h9dvCzzQjgrIngSrcENn+XwUBGzXpEoM=;
+	s=k20201202; t=1730859216;
+	bh=IOT1pSeyuOjzNCFAwrsmZToV84opzasfWPk0Fhgd31Q=;
 	h=From:To:Cc:Subject:Date:From;
-	b=u9Un1h73tLazkVGhgCDNMbZJL5R51WF7Hfm+JfVSpSLYTNNDONzAhpXBz9Wqffq0x
-	 AmE+avDs/RUHOY8Op81neGsMLIyJhFRmAHAnRU+ve5lPKagi5ug/eJRRKu74VZXWdP
-	 hruvWiSN1CbYah1OfdRYPuZMHWVVkSWIqT9VlOASt6LFBPtqk/S9hOtqK6cTtiwBUn
-	 tAWqnw/8C7GuFyZgFJ4Afz2vqU9f/a1Rp/etbctzkFVZa9/zqFdSHV7iHSlAy/59ix
-	 YkGtWl/nMgPHlMpxQg21rC2yJHH/Rs3YxBDAcmmrLRf8rupvTJ2RVLWgSHH6B9TxFj
-	 VKVKN0iCW4/ag==
+	b=dJcPt2FeUAdREw3gHbfYLcgIIHbWb3ixvZQxo179Yz8Ki8SZ+iVI5iMH2HQ5I7qDj
+	 m/jSkLmxE/8tWsGlXo5lCkWarQsSoSKZhlcj4v7h9y1EElY0DpnvVDx9cPe9UXOlZY
+	 Z4NdV94rNLvzKABaocXxXh0aJiek4fu5o+4fI7OgtegoVlZNl1++aCc9AV46KcVB6r
+	 1N+VAS82uAj82NGSJ4s57eOwBSgnSbfKEqqARiGv0P0QuJjz1KM7ZCNrnS6/OPLIBI
+	 u2OJF+9+0iIU4pcaX2vx9IgVZ2lUEB0/oHnB0ycBKK/+gh6RdGPxRl1WMgTwSULj3x
+	 /oTdy5TBzDVPg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chengzhihao1@huawei.com
-Cc: David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org,
+	jan@jschaer.ch
+Cc: Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()" failed to apply to v5.4-stable tree
-Date: Tue,  5 Nov 2024 21:13:29 -0500
-Message-ID: <20241106021330.183642-1-sashal@kernel.org>
+Subject: FAILED: Patch "ALSA: usb-audio: Add quirks for Dell WD19 dock" failed to apply to v5.4-stable tree
+Date: Tue,  5 Nov 2024 21:13:32 -0500
+Message-ID: <20241106021333.183685-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,76 +71,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From aec8e6bf839101784f3ef037dcdb9432c3f32343 Mon Sep 17 00:00:00 2001
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Date: Mon, 21 Oct 2024 22:02:15 +0800
-Subject: [PATCH] btrfs: fix use-after-free of block device file in
- __btrfs_free_extra_devids()
+From 4413665dd6c528b31284119e3571c25f371e1c36 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>
+Date: Tue, 29 Oct 2024 23:12:49 +0100
+Subject: [PATCH] ALSA: usb-audio: Add quirks for Dell WD19 dock
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Mounting btrfs from two images (which have the same one fsid and two
-different dev_uuids) in certain executing order may trigger an UAF for
-variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
-following are the details:
+The WD19 family of docks has the same audio chipset as the WD15. This
+change enables jack detection on the WD19.
 
-1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
-   devices by ioctl(BTRFS_IOC_SCAN_DEV):
+We don't need the dell_dock_mixer_init quirk for the WD19. It is only
+needed because of the dell_alc4020_map quirk for the WD15 in
+mixer_maps.c, which disables the volume controls. Even for the WD15,
+this quirk was apparently only needed when the dock firmware was not
+updated.
 
-             /  btrfs_device_1 → loop0
-   fs_device
-             \  btrfs_device_2 → loop1
-2. mount /dev/loop0 /mnt
-   btrfs_open_devices
-    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     fail: btrfs_close_devices // -ENOMEM
-	    btrfs_close_bdev(btrfs_device_1)
-             fput(btrfs_device_1->bdev_file)
-	      // btrfs_device_1->bdev_file is freed
-	    btrfs_close_bdev(btrfs_device_2)
-             fput(btrfs_device_2->bdev_file)
-
-3. mount /dev/loop1 /mnt
-   btrfs_open_devices
-    btrfs_get_bdev_and_sb(&bdev_file)
-     // EIO, btrfs_device_1->bdev_file is not assigned,
-     // which points to a freed memory area
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     btrfs_free_extra_devids
-      if (btrfs_device_1->bdev_file)
-       fput(btrfs_device_1->bdev_file) // UAF !
-
-Fix it by setting 'device->bdev_file' as 'NULL' after closing the
-btrfs_device in btrfs_close_one_device().
-
-Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
-CC: stable@vger.kernel.org # 4.19+
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- fs/btrfs/volumes.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/mixer_quirks.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 8f340ad1d9384..eb51b609190fb 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1105,6 +1105,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
- 	if (device->bdev) {
- 		fs_devices->open_devices--;
- 		device->bdev = NULL;
-+		device->bdev_file = NULL;
- 	}
- 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
- 	btrfs_destroy_dev_zone_info(device);
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 2a9594f34dac6..6456e87e2f397 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -4042,6 +4042,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
++	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
++		err = dell_dock_mixer_create(mixer);
++		break;
+ 
+ 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
+ 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
 -- 
 2.43.0
 
