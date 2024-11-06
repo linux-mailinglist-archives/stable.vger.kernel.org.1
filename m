@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6E69BE775
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64D99BE895
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B316C1F24B66
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF11B24B90
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0A21DF267;
-	Wed,  6 Nov 2024 12:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BFF1E0096;
+	Wed,  6 Nov 2024 12:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YozLy0Mt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6ge5/2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0171D416E;
-	Wed,  6 Nov 2024 12:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338D71E0091;
+	Wed,  6 Nov 2024 12:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895267; cv=none; b=lq7VSKgT0WlpPjJ/uJU5eYzR5BHN03BiHFBQT0p/EkjxOs+UxZ6QL8bJ2eWVVRPEOdfMrvxWCUy/rutMmMaOMjcV/JK1ZtWZH5g8a/dzTqdCS229dX6GrDiwECyfgoH9g6wJsJsYH/1zJu28K8Po7BJmstm7mEkNvEjIzdlXisM=
+	t=1730895939; cv=none; b=TPzjtmOPultJfVMn2d6wzyz0VNySskMzgYLeZv6wUpY2jF+dMvG33jemzYb5P1lLhlYZSBADC9ldKy/vMIiTgj2OSAolL52WhkAns/BEwg7ZpOq0+YtpKN/XWMv6pIoNkyGEy32Clq1DpcKl6zuyPtoejxNw1FE6FiWWLoOHgvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895267; c=relaxed/simple;
-	bh=a4LMURbjLYVlYSlLbhSFJsbb9naZxJKzjtzbz9jKl90=;
+	s=arc-20240116; t=1730895939; c=relaxed/simple;
+	bh=jTsI71qFIjpYODNyqXNRVy6XesB/fd78E6sH5n8i0FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k58Ek0jrIXW/IRj/hGGleBikwA5q2r578lAtwsbRJB7GhS0TouRp3kntWh67tSPeAubY0ZsjuoQe0q0mh+KZlr+sWw6+TSd+Z4HmlrturW0QLFvfNWh/CgCqkxNOUFsq7nDyjKcDUrP6UyE1YexMaRtezXFgwKb0W8AgT1tZT38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YozLy0Mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4193FC4CED2;
-	Wed,  6 Nov 2024 12:14:27 +0000 (UTC)
+	 MIME-Version; b=pzQmQj7ZXk/NfKDzcIo6Uhyuj0aqX38ca2E038NDEvs3bXVCjDYuStAqgjfcovR9o5l3P+zBLpp0apnqe5dle/W1mV9GUGGywyppkX17glF5i5Ti83ObY11cwAloWD422ib29cwbO0YEQMHLYIOt+TdkiYXIeWt40Ab8OQSU2UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6ge5/2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD38CC4CECD;
+	Wed,  6 Nov 2024 12:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895267;
-	bh=a4LMURbjLYVlYSlLbhSFJsbb9naZxJKzjtzbz9jKl90=;
+	s=korg; t=1730895939;
+	bh=jTsI71qFIjpYODNyqXNRVy6XesB/fd78E6sH5n8i0FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YozLy0Mt7WbXJLZ26sPmsdbubcSVFabLjanRRniM7ezFGOLkyjCbSe7eqQK1l1ALa
-	 5qLRGNBqtGZjz7FUnm60FXsX1uokIigZ1+RtqOsqzsrV3Nxz53QEeUwD3eGMm3D0lh
-	 FT70aX6mCJzzKu//16vEzAZ9zPbBkEr4fmPsE+/k=
+	b=R6ge5/2u2dCy/cuvMkGhs/996EX0RsfgcTssuQ10gTHl9i3nCIbg1T0O00p/bSh4O
+	 Fyw1YfV8ysE4BDiLwuMh3Y9QZxUz+tMU+XeIOc5FxSRZx4po5ae63f+QJc38TtFJRC
+	 WdOCRGB62Vjx/WgfkpzxpxKkmjx4koNH5EVEy71g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jade Dong <jadedong@tencent.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 159/350] tcp: avoid reusing FIN_WAIT2 when trying to find port in connect() process
+Subject: [PATCH 6.11 034/245] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
 Date: Wed,  6 Nov 2024 13:01:27 +0100
-Message-ID: <20241106120324.847956026@linuxfoundation.org>
+Message-ID: <20241106120320.066089488@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 0d9e5df4a257afc3a471a82961ace9a22b88295a ]
+[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
 
-We found that one close-wait socket was reset by the other side
-due to a new connection reusing the same port which is beyond our
-expectation, so we have to investigate the underlying reason.
+There are code paths from which the function is called without holding
+the RCU read lock, resulting in a suspicious RCU usage warning [1].
 
-The following experiment is conducted in the test environment. We
-limit the port range from 40000 to 40010 and delay the time to close()
-after receiving a fin from the active close side, which can help us
-easily reproduce like what happened in production.
+Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
+the RCU read lock before calling
+l3mdev_master_upper_ifindex_by_index_rcu().
 
-Here are three connections captured by tcpdump:
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965525191
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 2769915070
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [F.], seq 1, ack 1
-// a few seconds later, within 60 seconds
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [.], ack 2
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [R], seq 2965525193
-// later, very quickly
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 3120990805
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
+[1]
+WARNING: suspicious RCU usage
+6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
+-----------------------------
+net/core/dev.c:876 RCU-list traversed in non-reader section!!
 
-As we can see, the first flow is reset because:
-1) client starts a new connection, I mean, the second one
-2) client tries to find a suitable port which is a timewait socket
-   (its state is timewait, substate is fin_wait2)
-3) client occupies that timewait port to send a SYN
-4) server finds a corresponding close-wait socket in ehash table,
-   then replies with a challenge ack
-5) client sends an RST to terminate this old close-wait socket.
+other info that might help us debug this:
 
-I don't think the port selection algo can choose a FIN_WAIT2 socket
-when we turn on tcp_tw_reuse because on the server side there
-remain unread data. In some cases, if one side haven't call close() yet,
-we should not consider it as expendable and treat it at will.
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by ip/361:
+ #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
 
-Even though, sometimes, the server isn't able to call close() as soon
-as possible like what we expect, it can not be terminated easily,
-especially due to a second unrelated connection happening.
+stack backtrace:
+CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
+Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ lockdep_rcu_suspicious.cold+0x4f/0xd6
+ dev_get_by_index_rcu+0x1d3/0x210
+ l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
+ ip_tunnel_bind_dev+0x72f/0xa00
+ ip_tunnel_newlink+0x368/0x7a0
+ ipgre_newlink+0x14c/0x170
+ __rtnl_newlink+0x1173/0x19c0
+ rtnl_newlink+0x6c/0xa0
+ rtnetlink_rcv_msg+0x3cc/0xf60
+ netlink_rcv_skb+0x171/0x450
+ netlink_unicast+0x539/0x7f0
+ netlink_sendmsg+0x8c1/0xd80
+ ____sys_sendmsg+0x8f9/0xc20
+ ___sys_sendmsg+0x197/0x1e0
+ __sys_sendmsg+0x122/0x1f0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-After this patch, we can see the expected failure if we start a
-connection when all the ports are occupied in fin_wait2 state:
-"Ncat: Cannot assign requested address."
-
-Reported-by: Jade Dong <jadedong@tencent.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240823001152.31004-1-kerneljasonxing@gmail.com
+Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/net/ip_tunnels.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index d08e9d33e4d79..1bf315e83d7b9 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -115,6 +115,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
- 	struct tcp_sock *tp = tcp_sk(sk);
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 1db2417b8ff52..35d1e09940b27 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -354,7 +354,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
+ 	memset(fl4, 0, sizeof(*fl4));
  
-+	if (tw->tw_substate == TCP_FIN_WAIT2)
-+		reuse = 0;
-+
- 	if (reuse == 2) {
- 		/* Still does not detect *everything* that goes through
- 		 * lo, since we require a loopback src or dst address
+ 	if (oif) {
+-		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
++		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
+ 		/* Legacy VRF/l3mdev use case */
+ 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
+ 	}
 -- 
 2.43.0
 
