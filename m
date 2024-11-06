@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572C89BEB42
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E0C9BE83E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1091F271AC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81EF284FD0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995701F706E;
-	Wed,  6 Nov 2024 12:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B0F1DF991;
+	Wed,  6 Nov 2024 12:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTdRMBpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPxfRCB/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424E1F706C;
-	Wed,  6 Nov 2024 12:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69841DF97D;
+	Wed,  6 Nov 2024 12:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896951; cv=none; b=J4k18wFKCnmLMATtiI3WsIxx2Kn62UJCJTo31tX6O2u4fQuJ+Z8GaQBgHdQjuYyY7LyDmc7woORz4fXIZKmyMbo30I4VsrLnYmaE9CV+kEUAhbq+qT/4ZMnmOJnDqcpo64X1dB5WsCbAljEO49CqEU9LKq6CCwWbHlJiWGRnOgM=
+	t=1730895762; cv=none; b=DOykNhVwAHz2l5LQhQQbbXMGVAma6R24OqodEvVjW+BeeO3rbShaUjCE94/bMpaPiOqei+ojq2k0l+TupwScKNvowFJbmQs31qfaT34NlNo62of6MWCaSO5hyjk25IMZNh4OMEVph4HbgBNrzawFx1553WSYBm21sI1Xp4qqC8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896951; c=relaxed/simple;
-	bh=gUhEgbuGjpzntOJw2NCVezWUnWOysn/4/CmP7NxynE0=;
+	s=arc-20240116; t=1730895762; c=relaxed/simple;
+	bh=Nc+iGaeNRpJ992JRh1mM4qxA2P6ifloFVMyrQr9ALb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAL/B1Q9vVQm9Dnw2/BX+JEBGWahuaxuDTAFE7l6DoQWjqdEGUURq37bSk1YNVXgXCzJHpXvGKVCxwF/Mkc8IJq+Ow8AtWwDENHsROsntNm8kWDoP1l1a95rn8MoIPMB86TgGyL3WO2LW2PzZirPGSMr4psl+b1SYYReNFYy66w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTdRMBpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABC7C4CED3;
-	Wed,  6 Nov 2024 12:42:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QOTvjzKRww14i80PFoN0qFtd2G/hlMrQXqL6/LoGt2OLIPC1DYKkvCyOZy7s6RuDTSWKDDBIt6dByTph7Rp+Yiw73iP7vcN+8mgj9Q+nEGbdFnqK2SZ94CeLHV+YJPWhkbXeWG8ykPDtKE060l11Rt6zLGXgzw4OE0ChIW48edk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPxfRCB/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47794C4CECD;
+	Wed,  6 Nov 2024 12:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896950;
-	bh=gUhEgbuGjpzntOJw2NCVezWUnWOysn/4/CmP7NxynE0=;
+	s=korg; t=1730895762;
+	bh=Nc+iGaeNRpJ992JRh1mM4qxA2P6ifloFVMyrQr9ALb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTdRMBpLkP4YaJqVodLZhUyVS6JLUIUvol3/sPIdY0u5Y5CrrzjhZNCmRYD2hVnoY
-	 EoIpPQYdUWfSRymAFm0BxXzX95uvbLOtYb8jpWPc0DnnuDbcBm4AZgy+SMCi6p6wa8
-	 OnDHq43zfh6waspz9EeifcjYGl7mj7T0tOjS8eug=
+	b=hPxfRCB/9/C5NcosHbXRpuO/T5KXjP8TAjaFPwtwz3joA5NALeJC+d63DCubnyHSt
+	 SxBpPJCibgH6yvls5kY3tcjdakABp7o+qW+ym2MyOMw4/gSPxIuDD3kamo6CZ7fUDq
+	 +84OmXUiJveH3VvJI46WfzuKY22gwTl/18g2OSHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/126] RDMA/bnxt_re: synchronize the qp-handle table array
-Date: Wed,  6 Nov 2024 13:03:38 +0100
-Message-ID: <20241106120306.553765622@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 4.19 291/350] clk: Fix pointer casting to prevent oops in devm_clk_release()
+Date: Wed,  6 Nov 2024 13:03:39 +0100
+Message-ID: <20241106120328.019276092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 76d3ddff7153cc0bcc14a63798d19f5d0693ea71 ]
+commit 8b3d743fc9e2542822826890b482afabf0e7522a upstream.
 
-There is a race between the CREQ tasklet and destroy qp when accessing the
-qp-handle table. There is a chance of reading a valid qp-handle in the
-CREQ tasklet handler while the QP is already moving ahead with the
-destruction.
+The release function is called with a pointer to the memory returned by
+devres_alloc(). I was confused about that by the code before the
+generalization that used a struct clk **ptr.
 
-Fixing this race by implementing a table-lock to synchronize the access.
-
-Fixes: f218d67ef004 ("RDMA/bnxt_re: Allow posting when QPs are in error")
-Fixes: 84cf229f4001 ("RDMA/bnxt_re: Fix the qp table indexing")
-Link: https://patch.msgid.link/r/1728912975-19346-3-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20220620171815.114212-1-u.kleine-koenig@pengutronix.de
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c   |  4 ++++
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 13 +++++++++----
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.h |  2 ++
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/clk/clk-devres.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 1011293547ef7..3a5c58694e075 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1496,9 +1496,11 @@ int bnxt_qplib_destroy_qp(struct bnxt_qplib_res *res,
- 	u32 tbl_indx;
- 	int rc;
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -16,7 +16,7 @@ struct devm_clk_state {
  
-+	spin_lock_bh(&rcfw->tbl_lock);
- 	tbl_indx = map_qp_id_to_tbl_indx(qp->id, rcfw);
- 	rcfw->qp_tbl[tbl_indx].qp_id = BNXT_QPLIB_QP_ID_INVALID;
- 	rcfw->qp_tbl[tbl_indx].qp_handle = NULL;
-+	spin_unlock_bh(&rcfw->tbl_lock);
+ static void devm_clk_release(struct device *dev, void *res)
+ {
+-	struct devm_clk_state *state = *(struct devm_clk_state **)res;
++	struct devm_clk_state *state = res;
  
- 	RCFW_CMD_PREP(req, DESTROY_QP, cmd_flags);
- 
-@@ -1506,8 +1508,10 @@ int bnxt_qplib_destroy_qp(struct bnxt_qplib_res *res,
- 	rc = bnxt_qplib_rcfw_send_message(rcfw, (void *)&req,
- 					  (void *)&resp, NULL, 0);
- 	if (rc) {
-+		spin_lock_bh(&rcfw->tbl_lock);
- 		rcfw->qp_tbl[tbl_indx].qp_id = qp->id;
- 		rcfw->qp_tbl[tbl_indx].qp_handle = qp;
-+		spin_unlock_bh(&rcfw->tbl_lock);
- 		return rc;
- 	}
- 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 14c9af41faa67..c03475b9fa288 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -320,17 +320,21 @@ static int bnxt_qplib_process_qp_event(struct bnxt_qplib_rcfw *rcfw,
- 	case CREQ_QP_EVENT_EVENT_QP_ERROR_NOTIFICATION:
- 		err_event = (struct creq_qp_error_notification *)qp_event;
- 		qp_id = le32_to_cpu(err_event->xid);
-+		spin_lock(&rcfw->tbl_lock);
- 		tbl_indx = map_qp_id_to_tbl_indx(qp_id, rcfw);
- 		qp = rcfw->qp_tbl[tbl_indx].qp_handle;
-+		if (!qp) {
-+			spin_unlock(&rcfw->tbl_lock);
-+			break;
-+		}
-+		bnxt_qplib_mark_qp_error(qp);
-+		rc = rcfw->creq.aeq_handler(rcfw, qp_event, qp);
-+		spin_unlock(&rcfw->tbl_lock);
- 		dev_dbg(&pdev->dev, "Received QP error notification\n");
- 		dev_dbg(&pdev->dev,
- 			"qpid 0x%x, req_err=0x%x, resp_err=0x%x\n",
- 			qp_id, err_event->req_err_state_reason,
- 			err_event->res_err_state_reason);
--		if (!qp)
--			break;
--		bnxt_qplib_mark_qp_error(qp);
--		rc = rcfw->creq.aeq_handler(rcfw, qp_event, qp);
- 		break;
- 	default:
- 		/*
-@@ -629,6 +633,7 @@ int bnxt_qplib_alloc_rcfw_channel(struct bnxt_qplib_res *res,
- 			       GFP_KERNEL);
- 	if (!rcfw->qp_tbl)
- 		goto fail;
-+	spin_lock_init(&rcfw->tbl_lock);
- 
- 	return 0;
- 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-index b887e7fbad9ef..9c28f4625c920 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-@@ -186,6 +186,8 @@ struct bnxt_qplib_rcfw {
- 	struct bnxt_qplib_crsqe		*crsqe_tbl;
- 	int qp_tbl_size;
- 	struct bnxt_qplib_qp_node *qp_tbl;
-+	/* To synchronize the qp-handle hash table */
-+	spinlock_t			tbl_lock;
- 	u64 oos_prev;
- 	u32 init_oos_stats;
- 	u32 cmdq_depth;
--- 
-2.43.0
-
+ 	if (state->exit)
+ 		state->exit(state->clk);
 
 
 
