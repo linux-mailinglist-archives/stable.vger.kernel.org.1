@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8299BE767
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FC99BE887
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5451C21BB7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 465031C22FB8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621311DF24E;
-	Wed,  6 Nov 2024 12:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC531DFDAA;
+	Wed,  6 Nov 2024 12:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRDxmZBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuKVpKS6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7D81D416E;
-	Wed,  6 Nov 2024 12:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC19E1DF24B;
+	Wed,  6 Nov 2024 12:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895235; cv=none; b=CRZHoISHtAWtZPRp4MAtOrH6m5xGtpbPlqPHNlgCA67psHGnd2WOKkOzON27GdE69kbcEj3U71pmH18OmGJ2SVpftN4vBHjunsKtIIpULcA4e0JksbpFaKLvgUp02JhTKHXRsJn+dCNPASnUqQl15BKoIHe86MynqKL24KWHHss=
+	t=1730895906; cv=none; b=gXJdGmpPlng/LPYqq9mucJmJqqDTN7H8dc598+UZzI1cVdSEIk8KOazP9zGBT1E+OEgoPQfX3TfrJXJUsgOnDvz1MmuHjA/bq3Rp2Bp8km9HTkNZWk2v60wxUK7mGKMclpDBeTx4BxWjpArysKbkziLc2Bs1GJmT8828p5sOfu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895235; c=relaxed/simple;
-	bh=olfnTvCBj/Nhh48VkPiXrHa/OdsVu9nlVQYinC0phww=;
+	s=arc-20240116; t=1730895906; c=relaxed/simple;
+	bh=PtxPCPjyrpoNOHowtQvpd1IXXcBBFKnHauL1q/ExP4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNRXYpuRQVuy8MRhymkYHjfm8+QrVFUxo6CyuE1k5kIgQBTNPRQxw5gLjVdk7BpSufHxxnyUAD7mmGXTaYGXkTrmHldjgJnNICcBiY5nVJm73gZYI2tn5fkMmhmJFiWppaahu0q9Vza9mFXhLFNxrqKtT+20H0oMIHGpEfuYh84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRDxmZBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961BC4CECD;
-	Wed,  6 Nov 2024 12:13:54 +0000 (UTC)
+	 MIME-Version; b=rxKihFisSNxQCzoqB0ZhUex8XVQV0n6igPKqxC5O5lvDh5h9QZ8Ak+MVAm/N4h01jaDYUHPYy9aUcqBoXLGph8hd9HT7MenUtGVRCRqb4PH/isYuU7Jy35lzEZ1uO0T3ZG29WllrlUKy2+dRfP+tw5bXcmc2+zoLbiVPllQvDrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuKVpKS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F4EC4CECD;
+	Wed,  6 Nov 2024 12:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895235;
-	bh=olfnTvCBj/Nhh48VkPiXrHa/OdsVu9nlVQYinC0phww=;
+	s=korg; t=1730895906;
+	bh=PtxPCPjyrpoNOHowtQvpd1IXXcBBFKnHauL1q/ExP4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRDxmZBHd8KvaoIO9vWBzAQ6ojaKAIFhre2XDp5C8VRmW3aALhLqF0PgZehm+MYa5
-	 cHajg6GbLWQflyRU5FaybMIFTqDh39ZXAIwtM3YTczIe6TnyRXpgUeLVj+ROVB9vVT
-	 Si/DVA5JC2WnQk03tqrVXPHTBs4znekuan+X7vC8=
+	b=iuKVpKS6cwPxvV/H7aytLXdD5CbhNyDJVRozr2S+a2mOTELt+6s8WPdTp/eIa9myg
+	 jYT7aJtDFbPt8KjfZbVWHR3iTbNb6o6yuBypaiEPNo+gr/jnn+UYszEVsG2vg2fyuE
+	 ZqqY1fdmzx+zFHBf8z421nJVtAuRjXO3GqA3YTBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 149/350] net: hisilicon: hns_dsaf_mac: fix OF node leak in hns_mac_get_info()
+Subject: [PATCH 6.11 024/245] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
 Date: Wed,  6 Nov 2024 13:01:17 +0100
-Message-ID: <20241106120324.596441563@linuxfoundation.org>
+Message-ID: <20241106120319.829174088@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5680cf8d34e1552df987e2f4bb1bff0b2a8c8b11 ]
+[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in hns_mac_get_info().
+If devm_gpiod_get_optional() fails, we need to disable previously enabled
+regulators, as done in the other error handling path of the function.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
+potential gpiod_set_value_cansleep(, 0).
+If the "reset" gpio is not defined, this additional call is just a no-op.
+
+This behavior is the same as the one already in the .remove() function.
+
+Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/cs42l51.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index d2791bcff5d49..5ee4317e5a524 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -937,6 +937,7 @@ static int hns_mac_get_info(struct hns_mac_cb *mac_cb)
- 			mac_cb->cpld_ctrl = NULL;
- 		} else {
- 			syscon = syscon_node_to_regmap(cpld_args.np);
-+			of_node_put(cpld_args.np);
- 			if (IS_ERR_OR_NULL(syscon)) {
- 				dev_dbg(mac_cb->dev, "no cpld-syscon found!\n");
- 				mac_cb->cpld_ctrl = NULL;
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index e4827b8c2bde4..6e51954bdb1ec 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -747,8 +747,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 
+ 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						      GPIOD_OUT_LOW);
+-	if (IS_ERR(cs42l51->reset_gpio))
+-		return PTR_ERR(cs42l51->reset_gpio);
++	if (IS_ERR(cs42l51->reset_gpio)) {
++		ret = PTR_ERR(cs42l51->reset_gpio);
++		goto error;
++	}
+ 
+ 	if (cs42l51->reset_gpio) {
+ 		dev_dbg(dev, "Release reset gpio\n");
+@@ -780,6 +782,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 	return 0;
+ 
+ error:
++	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
+ 			       cs42l51->supplies);
+ 	return ret;
 -- 
 2.43.0
 
