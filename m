@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-89990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4609BDC52
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:19:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2439BDC56
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5B61C2089D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:19:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 638461F24661
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DE51DE4EC;
-	Wed,  6 Nov 2024 02:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42391DE8A5;
+	Wed,  6 Nov 2024 02:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3MPQCwy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hkZAwCCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF901991C3;
-	Wed,  6 Nov 2024 02:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986BF199FB0;
+	Wed,  6 Nov 2024 02:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859103; cv=none; b=DfiKn2q8Edp8mrOIbOoleT22b1VtiIb7Q4I4HjSqFQ6w6s14jsSxAxnmsjWgqZXnw7Qw1ZIimPjRDqjNFd1SkjamIAl8zahkD86C/d3UpDuAsVtC5LJ5SvIbXHdQn1aJeeN6qq5FplgY2DIjeG81Vc3u64mhwg2YCDnIzRbrqMM=
+	t=1730859106; cv=none; b=Xa4EIbASfpsSGOlvvZdHw3p0gs27Ol8r3R20s4xt55FZLC0MVZgI29dFzd9vTB3iVL+XqRS5q5TXXiAiz9J6qT8gw6sVS5nYkD5Kv5HaFo1Fs0Tf9+qP7J2SeDPx/vhW0xPEdWKe+DHd48CLEmIsmnISx7uztlvK9RKw1z4CNek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859103; c=relaxed/simple;
-	bh=dArZ5O3BV7Wmscyd9tx3w06lMeP5aBch2T1dtyCoZO8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DbPe8HXzoG3m5FZ/3omP6rwbhW3WAMY/0PMV0lsD1RTAXm4Ws+8T7R9MUfknejq3zD8TJ2Gy8Fvf9ZlLNIqiqjvImkU4jDT0EVl0Ann5KqBKRJ0REY+1fIz30vxrqmA0X//vCxJJrdGan5AJqss+N7mAojmt8TAvqMNCRWMHyo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3MPQCwy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B259C4CECF;
-	Wed,  6 Nov 2024 02:11:42 +0000 (UTC)
+	s=arc-20240116; t=1730859106; c=relaxed/simple;
+	bh=arQC7q9bUgHeGWGwoLFQu8c6GIZavFEEYy4zji7l768=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cvO6LPcjtE5JCfQp6vDUCNIN8z7E3Rqmcf4E7cCh5GASudaWUMMX1/hD9HS9DTeEtZNIHXxJxw7pGMhcGiCkyeYiBacY5hwyn0lU+vBc0hRX/FWNjRM8Y+6VWNy5ED61IoJ9wPsVRFA1RT/vsVd9c0HLkddKfV92OEU69gq5ing=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hkZAwCCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8360DC4CECF;
+	Wed,  6 Nov 2024 02:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859103;
-	bh=dArZ5O3BV7Wmscyd9tx3w06lMeP5aBch2T1dtyCoZO8=;
+	s=k20201202; t=1730859106;
+	bh=arQC7q9bUgHeGWGwoLFQu8c6GIZavFEEYy4zji7l768=;
 	h=From:To:Cc:Subject:Date:From;
-	b=X3MPQCwy+oDgyt3+eByV9OxzGbtaXob1yXD1Rmt+KrE5znE8LUsOdCRzwbdmkAhDS
-	 2iuDt86zlkmHl/dSU1YIpW+X11/rfeuPYJ4N29RA4/l76KPBhUj2EXSxJqD9UwxOus
-	 8YVYcwM7h5YCtnb1lmNvyb7TIN8T+uk3Es75p4d6DorhYQ8KOCTikzAdziutn6zO8/
-	 AuPfRWChf5GeA5bYVOnfMOu7OTo/Uq/aGhNmprYvgnd+4aOgSR8rl+qBk8Lei7c6/t
-	 ++oXaVZ9A2XKP4BR3xx21EyBzs1kQt9KWwDqHMticF9dyB+jPGDKCEgVDwfLtt8emu
-	 vDSI3Y161+RtQ==
+	b=hkZAwCCE/pxdmjkEWp4hwArUQAHf8Du33X/JycIgIdCg5l2wXpGrkdb4JjAlKPNuk
+	 MVbOSjel9ekIeqqS80n+W2HpyV5PDVdJXzm4Ke/ayVTCbvSXG0fpdOvXwXbeyBzqCV
+	 v97xMnie3U2e7xEYpec+2r4WVoctaYGfUVzToZj/XpraCofnlhJQKRJcIhYpdlrzlv
+	 4dkreHrGnHU3qw/drGQ5W4y/gk0gJilPuJlALof/VpdjV4/xrC4FaOO369+0eFDicV
+	 NkoIP5VJHvmoi919A+IPk83ySxQ27QpKm/cpg6G9t6gvfDg7gP9ta1eU5JH28uUImh
+	 md+GjUNhjSE7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chengzhihao1@huawei.com
-Cc: David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org,
+	johannes.berg@intel.com
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()" failed to apply to v5.15-stable tree
-Date: Tue,  5 Nov 2024 21:11:39 -0500
-Message-ID: <20241106021140.182370-1-sashal@kernel.org>
+Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v5.15-stable tree
+Date: Tue,  5 Nov 2024 21:11:43 -0500
+Message-ID: <20241106021144.182416-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,7 +57,6 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the v5.15-stable tree.
@@ -71,76 +69,66 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From aec8e6bf839101784f3ef037dcdb9432c3f32343 Mon Sep 17 00:00:00 2001
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Date: Mon, 21 Oct 2024 22:02:15 +0800
-Subject: [PATCH] btrfs: fix use-after-free of block device file in
- __btrfs_free_extra_devids()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 7245012f0f496162dd95d888ed2ceb5a35170f1a Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Wed, 23 Oct 2024 09:17:44 +0200
+Subject: [PATCH] wifi: iwlwifi: mvm: fix 6 GHz scan construction
 
-Mounting btrfs from two images (which have the same one fsid and two
-different dev_uuids) in certain executing order may trigger an UAF for
-variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
-following are the details:
+If more than 255 colocated APs exist for the set of all
+APs found during 2.4/5 GHz scanning, then the 6 GHz scan
+construction will loop forever since the loop variable
+has type u8, which can never reach the number found when
+that's bigger than 255, and is stored in a u32 variable.
+Also move it into the loops to have a smaller scope.
 
-1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
-   devices by ioctl(BTRFS_IOC_SCAN_DEV):
+Using a u32 there is fine, we limit the number of APs in
+the scan list and each has a limit on the number of RNR
+entries due to the frame size. With a limit of 1000 scan
+results, a frame size upper bound of 4096 (really it's
+more like ~2300) and a TBTT entry size of at least 11,
+we get an upper bound for the number of ~372k, well in
+the bounds of a u32.
 
-             /  btrfs_device_1 → loop0
-   fs_device
-             \  btrfs_device_2 → loop1
-2. mount /dev/loop0 /mnt
-   btrfs_open_devices
-    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     fail: btrfs_close_devices // -ENOMEM
-	    btrfs_close_bdev(btrfs_device_1)
-             fput(btrfs_device_1->bdev_file)
-	      // btrfs_device_1->bdev_file is freed
-	    btrfs_close_bdev(btrfs_device_2)
-             fput(btrfs_device_2->bdev_file)
-
-3. mount /dev/loop1 /mnt
-   btrfs_open_devices
-    btrfs_get_bdev_and_sb(&bdev_file)
-     // EIO, btrfs_device_1->bdev_file is not assigned,
-     // which points to a freed memory area
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     btrfs_free_extra_devids
-      if (btrfs_device_1->bdev_file)
-       fput(btrfs_device_1->bdev_file) // UAF !
-
-Fix it by setting 'device->bdev_file' as 'NULL' after closing the
-btrfs_device in btrfs_close_one_device().
-
-Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
-CC: stable@vger.kernel.org # 4.19+
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
+Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- fs/btrfs/volumes.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 8f340ad1d9384..eb51b609190fb 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1105,6 +1105,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
- 	if (device->bdev) {
- 		fs_devices->open_devices--;
- 		device->bdev = NULL;
-+		device->bdev_file = NULL;
- 	}
- 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
- 	btrfs_destroy_dev_zone_info(device);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 3ce9150213a74..ddcbd80a49fb2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 			&cp->channel_config[ch_cnt];
+ 
+ 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
+-		u8 j, k, n_s_ssids = 0, n_bssids = 0;
++		u8 k, n_s_ssids = 0, n_bssids = 0;
+ 		u8 max_s_ssids, max_bssids;
+ 		bool force_passive = false, found = false, allow_passive = true,
+ 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
+@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		cfg->v5.iter_count = 1;
+ 		cfg->v5.iter_interval = 0;
+ 
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			s8 tmp_psd_20;
+ 
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		 * SSID.
+ 		 * TODO: improve this logic
+ 		 */
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+ 				continue;
+ 
 -- 
 2.43.0
 
