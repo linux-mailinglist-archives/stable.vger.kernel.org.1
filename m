@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266829BEBC9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9E49BEC54
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CED781F249AD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E61B0285B8C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389D11EF087;
-	Wed,  6 Nov 2024 12:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED7B1FB8BA;
+	Wed,  6 Nov 2024 12:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amIX3Tvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS8Nrpkb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C771E0488;
-	Wed,  6 Nov 2024 12:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE1A1FB8AC;
+	Wed,  6 Nov 2024 12:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897295; cv=none; b=CUN+n5yB5soJ/DKw0Jz5KWy2tJraJTHW+ncCI3zH8YC9P12vCDJ4QAE/l7MSjBITr8xVcU9M6xBW7z1Mwv1NpGJU74lMBYOHoDYsEkUFTvNa+AkMoBcLe8sqsMklOF6uMS7K3x21UseJoReOjty0qGslzScH3huF/lebYNZQ8LQ=
+	t=1730897673; cv=none; b=BJDs6Q04cQAWNyDL0UVOljoUmuvUeznSh33jUvAUT9ovvPYl3fG5jJiSL2rgqdRUXLvBdNdo+/jOMAFhxEhUNRlY4rWGmceV/s0GTj6d2UHmB4dfI6kxRjRSf6SlIteiKQfRKBpQazhSMWYycDCWI2GlGPYY8Ev1HAM35+faB/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897295; c=relaxed/simple;
-	bh=NdAWSfFHuiaJWlO9hKMEsd+ifZtzhZDOJGO1Uvc1Atk=;
+	s=arc-20240116; t=1730897673; c=relaxed/simple;
+	bh=Gu9F7QdrogzVBlJjzV+q31vUX4S4gFSSGo7JXusqIgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVeQ6ibcfspA8bREMaZ7PFPnYvpu0whU9fRq/pBNjjCtwkFTxUsNtlJgLcIXp0u+SrwTMXmb7r1m9fkW+/rWR1lL+TUz0MLKxk5M/dq/HUBqoPr4ZhH3pur4+wv5oWf4mfqkaxHGUDYRLP6nI/5WAVRIKFWyz3hVMbJFT8hLuXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amIX3Tvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6F1C4CECD;
-	Wed,  6 Nov 2024 12:48:14 +0000 (UTC)
+	 MIME-Version; b=A4B3Jflmt6QvqTpxUIS+YGCtprUl5SJCrM0MpT46I0ODmmSzvMazfZcsY0vpjotJN+6eJEwsBBfulFQOEpnUwXZKvLVQQW5pC6CzM8UIGtb6yjwsCkC9uQHFRe0MqKA+cSmYbE0kFJfu/Judx2XtjfLD2PjqvJgYrcmVmZzBhho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS8Nrpkb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A707BC4CECD;
+	Wed,  6 Nov 2024 12:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897294;
-	bh=NdAWSfFHuiaJWlO9hKMEsd+ifZtzhZDOJGO1Uvc1Atk=;
+	s=korg; t=1730897673;
+	bh=Gu9F7QdrogzVBlJjzV+q31vUX4S4gFSSGo7JXusqIgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amIX3Tvx4Y2y7FfZ2+Ib8K1myzTHhLfNzCFrU3bULF0SP6fcV7nQ50pxJWD9/NuBQ
-	 7i2Xgri0TEIFBgJpIjT82jMpaAZLZNI1mF1UI66zDU4KqCQLDFDKF3KorU/wQnQZEU
-	 YG8kcsPeOhiA29ygU31pP/lODCZYHZS9OmIfCHEk=
+	b=yS8NrpkbMR3nBAwk1vn6PzSZKJzmlHN4Div1chLP63qvEQvIRv9Imf1HMMNVXOM4+
+	 YxeIlSEVEZKI0qXVbmdO5LrfRO4DBFRpO6FceH/A7KxR3v4ukXcQpgjc0RYd9e8kck
+	 +0eAknTZeuzyvpV3T3JnPMeIKVCELPEV2U0tifc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot <syzkaller@googlegroup.com>,
-	Hugh Dickins <hughd@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 119/126] mm: shmem: fix data-race in shmem_getattr()
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 132/151] ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3
 Date: Wed,  6 Nov 2024 13:05:20 +0100
-Message-ID: <20241106120309.275493655@linuxfoundation.org>
+Message-ID: <20241106120312.491630804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit d949d1d14fa281ace388b1de978e8f2cd52875cf upstream.
+[ Upstream commit 0b04fbe886b4274c8e5855011233aaa69fec6e75 ]
 
-I got the following KCSAN report during syzbot testing:
+Quirk is needed to enable headset microphone on missing pin 0x19.
 
-==================================================================
-BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
-
-write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
- inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
- inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
- shmem_mknod+0x117/0x180 mm/shmem.c:3443
- shmem_create+0x34/0x40 mm/shmem.c:3497
- lookup_open fs/namei.c:3578 [inline]
- open_last_lookups fs/namei.c:3647 [inline]
- path_openat+0xdbc/0x1f00 fs/namei.c:3883
- do_filp_open+0xf7/0x200 fs/namei.c:3913
- do_sys_openat2+0xab/0x120 fs/open.c:1416
- do_sys_open fs/open.c:1431 [inline]
- __do_sys_openat fs/open.c:1447 [inline]
- __se_sys_openat fs/open.c:1442 [inline]
- __x64_sys_openat+0xf3/0x120 fs/open.c:1442
- x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
- inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
- inode_get_ctime include/linux/fs.h:1629 [inline]
- generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
- shmem_getattr+0x17b/0x200 mm/shmem.c:1157
- vfs_getattr_nosec fs/stat.c:166 [inline]
- vfs_getattr+0x19b/0x1e0 fs/stat.c:207
- vfs_statx_path fs/stat.c:251 [inline]
- vfs_statx+0x134/0x2f0 fs/stat.c:315
- vfs_fstatat+0xec/0x110 fs/stat.c:341
- __do_sys_newfstatat fs/stat.c:505 [inline]
- __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
- __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
- x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-value changed: 0x2755ae53 -> 0x27ee44d3
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-==================================================================
-
-When calling generic_fillattr(), if you don't hold read lock, data-race
-will occur in inode member variables, which can cause unexpected
-behavior.
-
-Since there is no special protection when shmem_getattr() calls
-generic_fillattr(), data-race occurs by functions such as shmem_unlink()
-or shmem_mknod(). This can cause unexpected results, so commenting it out
-is not enough.
-
-Therefore, when calling generic_fillattr() from shmem_getattr(), it is
-appropriate to protect the inode using inode_lock_shared() and
-inode_unlock_shared() to prevent data-race.
-
-Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
-Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot <syzkaller@googlegroup.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20241029151653.80726-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1086,7 +1086,9 @@ static int shmem_getattr(struct user_nam
- 	stat->attributes_mask |= (STATX_ATTR_APPEND |
- 			STATX_ATTR_IMMUTABLE |
- 			STATX_ATTR_NODUMP);
-+	inode_lock_shared(inode);
- 	generic_fillattr(&init_user_ns, inode, stat);
-+	inode_unlock_shared(inode);
- 
- 	if (shmem_is_huge(NULL, inode, 0, false))
- 		stat->blksize = HPAGE_PMD_SIZE;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index bf504744ae2a3..62747d77cd9ab 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10182,6 +10182,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x28c1, "Clevo V370VND", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+-- 
+2.43.0
+
 
 
 
