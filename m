@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261479BE7E1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9359BE93D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B046FB25459
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A3041C232CE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0D21DF991;
-	Wed,  6 Nov 2024 12:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699171DED4F;
+	Wed,  6 Nov 2024 12:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2/mwYp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vq0NS2sg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD961DF738;
-	Wed,  6 Nov 2024 12:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24855171C9;
+	Wed,  6 Nov 2024 12:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895508; cv=none; b=BNtW7vgyaD8pTIkEXhHMrCidsZUEoM2tQ2GryFa8xc4Vm7wZCvmjgP5eVaDA/eeATaTd3S33Br/1z7wmSTOKnDL+P6oPnBzPJ6MghoyiSzwNNLMflki5cxX5Fj8mDbSJWRlxMwlsPdRfzb4RfGMQBU4/bFxW5DhVGlVRwq48MgI=
+	t=1730896316; cv=none; b=t1DLJX/6II8WZEsHCnQqQyh7ZukcX5taWHa4NJjg88TBprmIEJ9FcI2BKvFYmKxEiWUR/JI2U0XHPYqIi9vW3QkcA/AwLizEDHcG9ddtJLSRQ1ptuDlk49eMBeLm8WTno+NlFfBwQ9PevvF1VU2wZB00VoA/jxxdrW1o+8rlfHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895508; c=relaxed/simple;
-	bh=QdzHY29gaoVRB6/WK4hdp7st9Qzhgm/HoR+d8i9uQlU=;
+	s=arc-20240116; t=1730896316; c=relaxed/simple;
+	bh=gna4QCP5O/0HWCtHsoFYRuNWJvpFevwwoxnkvaywOxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7VE2b3MwLMent3UutU9S6yEA1U9KVtGLLa4aovQUZxKCPwngjeNAYIMhko1ctHWZmWdlMhJx2MvH9csq7g1OA1D8frJzMkXaAzHdPfxfrykGkapqXrlpOgV2Z+4rEMkrDZt2djio7Ik7eQtlD+NDME2/3gJ9VYv4sSY4yogCz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2/mwYp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4603C4CECD;
-	Wed,  6 Nov 2024 12:18:27 +0000 (UTC)
+	 MIME-Version; b=Zn/3VIudZYNa5vatoceJOOi+a7lOkJCzlzpah66M1CahbDtYN8BS0J2WSAevxt+ju6TAzjqcw5V1DxHpZrp8q+TvI2i2OUDlGWNATWEqgdeByzjLcK1V6vTgLOGkCSWv7+5qtpv7Vc2koVPyQDL4V8jikr8z0GoWbmGJT8wuTyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vq0NS2sg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55236C4CED3;
+	Wed,  6 Nov 2024 12:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895508;
-	bh=QdzHY29gaoVRB6/WK4hdp7st9Qzhgm/HoR+d8i9uQlU=;
+	s=korg; t=1730896315;
+	bh=gna4QCP5O/0HWCtHsoFYRuNWJvpFevwwoxnkvaywOxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2/mwYp298ryII5SRNHg5vkeIknLXoBx4OLPx7VMAntskHe5auF2ehqvktgcZzqaZ
-	 cB56SeE/Eh7Qr2l78ayHN8etDu16tgVc4hcgwaFQunkdbOQPshL49IGM8V5Iqr+idc
-	 h+cUbpONdSb++24SDHTJYbOEHWh7QgLLsnImJWpQ=
+	b=vq0NS2sgbNA9b49N2zWB7Dj8WwgXtZrckvH2mmQ7tAaTo8HLIMvtIAxpeeLQ66Jsm
+	 8s7f/i5jkxSn/b2AIlN84xjbFXjaoeZkeLtsNFIFmxPns/Rd3dUvUOqhA2Ml/RwyQ8
+	 Fq9AbgguEujlSmQoYmgxjVRdxsXPUsSQJfVetERs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 240/350] clk: bcm: bcm53573: fix OF node leak in init
-Date: Wed,  6 Nov 2024 13:02:48 +0100
-Message-ID: <20241106120326.876572855@linuxfoundation.org>
+	Faisal Hassan <quic_faisalh@quicinc.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.11 116/245] xhci: Fix Link TRB DMA in command ring stopped completion event
+Date: Wed,  6 Nov 2024 13:02:49 +0100
+Message-ID: <20241106120322.074365461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Faisal Hassan <quic_faisalh@quicinc.com>
 
-[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
+commit 075919f6df5dd82ad0b1894898b315fbb3c29b84 upstream.
 
-Driver code is leaking OF node reference from of_get_parent() in
-bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
-first place, because the parent node will not be freed while we are
-processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
-leak by accessing parent directly, instead of of_get_parent().
+During the aborting of a command, the software receives a command
+completion event for the command ring stopped, with the TRB pointing
+to the next TRB after the aborted command.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the command we abort is located just before the Link TRB in the
+command ring, then during the 'command ring stopped' completion event,
+the xHC gives the Link TRB in the event's cmd DMA, which causes a
+mismatch in handling command completion event.
+
+To address this situation, move the 'command ring stopped' completion
+event check slightly earlier, since the specific command it stopped
+on isn't of significant concern.
+
+Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241022155631.1185-1-quic_faisalh@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
-index 36eb3716ffb00..3bc6837f844db 100644
---- a/drivers/clk/bcm/clk-bcm53573-ilp.c
-+++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
-@@ -115,7 +115,7 @@ static void bcm53573_ilp_init(struct device_node *np)
- 		goto err_free_ilp;
- 	}
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1718,6 +1718,14 @@ static void handle_cmd_completion(struct
  
--	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
-+	ilp->regmap = syscon_node_to_regmap(np->parent);
- 	if (IS_ERR(ilp->regmap)) {
- 		err = PTR_ERR(ilp->regmap);
- 		goto err_free_ilp;
--- 
-2.43.0
-
+ 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
+ 
++	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
++
++	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
++	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
++		complete_all(&xhci->cmd_ring_stop_completion);
++		return;
++	}
++
+ 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
+ 			cmd_trb);
+ 	/*
+@@ -1734,14 +1742,6 @@ static void handle_cmd_completion(struct
+ 
+ 	cancel_delayed_work(&xhci->cmd_timer);
+ 
+-	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
+-
+-	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
+-	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
+-		complete_all(&xhci->cmd_ring_stop_completion);
+-		return;
+-	}
+-
+ 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
+ 		xhci_err(xhci,
+ 			 "Command completion event does not match command\n");
 
 
 
