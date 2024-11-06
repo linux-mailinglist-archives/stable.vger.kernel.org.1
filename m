@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823909BE8AB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0AC9BE78B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4E021C2347C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77AF28153C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49E71DFD84;
-	Wed,  6 Nov 2024 12:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C7F1DE4FC;
+	Wed,  6 Nov 2024 12:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8UL9YwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wc4aaoAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9352E1DFDB1;
-	Wed,  6 Nov 2024 12:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168C51D416E;
+	Wed,  6 Nov 2024 12:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895995; cv=none; b=V1fNtscwewWL8euFm6bfA//ZjMDDeuVMGbt1BZDJLW8g5MTcwBuMSUEAUr9VZt493aBjTkiS6T1Kr2xaYYYayAaIeYubdL3R96AqJflrZ9RGOkyidDM8oJ7gv8BlXHpfB07dIv1bMpcYhkRqq3Uw9Yugxccs/kTxnLhVfO76zMg=
+	t=1730895324; cv=none; b=Qcftmyzcu9r6kCvup3IzmMFUHKYjNCopCMmxDdHvgU7rJsZoUE6/fb4tlRb5Dl4CVGpa2o7zStb+s/7ADmOCZKv1eyLIGGMZHJydeeLLb3z27hsUT2S6zTKqYJ4eHm0F1RHmTWVlKmV1GgmjdvUZADXsDMj6BCzO1lyvnYMcSjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895995; c=relaxed/simple;
-	bh=8Xx0bz5aGTG9cykFWC4B62DQHTRD/H2hNwNoiG1xDgs=;
+	s=arc-20240116; t=1730895324; c=relaxed/simple;
+	bh=kpZkit8wV3IbUgzs4IWeMz7mTq+hhyssSsykMpq2y6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGGg5Qm0JpKzCTXsG2H9LgL82D/NPkhK90xHYt0CplDtrhweO3cb8mOK95lqQl6baiQrS3h6XX1wGrxJmAuRwUNkzVLkICyyTl2VwJhNd4foQa+ig/B30kYz2JoNgd5/VRLVO22BVty/TYHdZVz670jCcNXqPixgqsQ/ijJGxck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8UL9YwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BF4C4CECD;
-	Wed,  6 Nov 2024 12:26:34 +0000 (UTC)
+	 MIME-Version; b=lB/82fDdmbmQyK9QGbi0zrVPwReObGA6aHP5R+73IHWyRH1UuEcYCEqCMn8QLrufOnHoiMaclEkk9N6u9YtP4GWaLkmcRUZJoNbX0XG3na0bjF3vBOgy4DzJx26uR1Ruc1g7GMQduDk0DLngTMPRLMsU5o/39Gro4zbCzkQRvCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wc4aaoAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCCCC4CECD;
+	Wed,  6 Nov 2024 12:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895995;
-	bh=8Xx0bz5aGTG9cykFWC4B62DQHTRD/H2hNwNoiG1xDgs=;
+	s=korg; t=1730895323;
+	bh=kpZkit8wV3IbUgzs4IWeMz7mTq+hhyssSsykMpq2y6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8UL9YwV5AGowInNJ4qo/4nLaGXtu+XpPsLbUI3np6V+DaK6vw2Hkjak2X3ltthMC
-	 5eRQF2NHOJBOUbxFX6W89hJ8kJL6PaxDm0xrovWGY5NcgJTOejcwOSIrX24wO5zjlp
-	 xHTENT10LjqEX1rIA+RK27LaciStSuo/IGOc50CQ=
+	b=wc4aaoAiDBTdxFJtGSNQyJ6s8mz5dJWGaO5n421MDtB0vGV1Cki59kJhx50jWfWk/
+	 7h57rTAIOTN1+O0+aUXMGljzcheB/hpQ6TGnwalvnrXTYCb64bTuXQhhAtnLk98HDA
+	 G+MJSB88wVxOScQbP5KVTz8cIiQhrC059hipJ4Fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin-ayu@qq.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 055/245] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
+Subject: [PATCH 4.19 180/350] spi: s3c64xx: fix timeout counters in flush_fifo
 Date: Wed,  6 Nov 2024 13:01:48 +0100
-Message-ID: <20241106120320.570177488@linuxfoundation.org>
+Message-ID: <20241106120325.379499195@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
+[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
 
-If access to offset + length is larger than the skbuff length, then
-skb_checksum() triggers BUG_ON().
+In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
+in the do { } while(test && loops--) condition. This means the loops is
+left at the unsigned equivalent of -1 if the loop times out. The test
+after will never pass as if tests for loops == 0.
 
-skb_checksum() internally subtracts the length parameter while iterating
-over skbuff, BUG_ON(len) at the end of it checks that the expected
-length to be included in the checksum calculation is fully consumed.
-
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Reported-by: Slavin Liu <slavin-ayu@qq.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 50429cbd42da4..2db38c06bedeb 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -904,6 +904,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
- 	    ((priv->base != NFT_PAYLOAD_TRANSPORT_HEADER &&
- 	      priv->base != NFT_PAYLOAD_INNER_HEADER) ||
- 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
-+		if (offset + priv->len > skb->len)
-+			goto err;
-+
- 		fsum = skb_checksum(skb, offset, priv->len, 0);
- 		tsum = csum_partial(src, priv->len, 0);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index d9420561236c2..108a087a2777c 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -211,7 +211,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 	loops = msecs_to_loops(1);
+ 	do {
+ 		val = readl(regs + S3C64XX_SPI_STATUS);
+-	} while (TX_FIFO_LVL(val, sdd) && loops--);
++	} while (TX_FIFO_LVL(val, sdd) && --loops);
  
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
+@@ -224,7 +224,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 			readl(regs + S3C64XX_SPI_RX_DATA);
+ 		else
+ 			break;
+-	} while (loops--);
++	} while (--loops);
+ 
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
 -- 
 2.43.0
 
