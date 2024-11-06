@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-90123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2139BE6D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953A69BE6DE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EF621C233E5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3308DB25253
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31C1DF741;
-	Wed,  6 Nov 2024 12:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8851DF272;
+	Wed,  6 Nov 2024 12:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7ursI6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTNbpE11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081F41DF736;
-	Wed,  6 Nov 2024 12:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EBD1DE3B8;
+	Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894840; cv=none; b=YPn2CTfYN3Plwzq3f9RtgVHzie9WBuQN+rI1bVbm6Roc3y3JEHa/DRmsNgbWeAPLOW9gtKhiOPA+1PcF1gETA80pyQ9HApcgz2jE7sapSr4uvvXcfqx3zxo7KYkyrzSCOWJ4oins2zhGrEi241IzsvkH9QkI+0osT2VJuc+VBkY=
+	t=1730894872; cv=none; b=U8ZKUmEvyfCv2ISJWGTwN2kfSAXcaizs2T6WuY77jpQp655HfQ297SSH9/weE1FBUmoRXgFWeTVuYpi9APRVGdXkv2cFbjHe4479vZIXvS06WApoy6jZrUlQ/Hml8MyAh5H60VBF4VVnbp56mfzygS3XZtQggia86tv3vCFpVy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894840; c=relaxed/simple;
-	bh=Yd5YIghYxqMP9I2IKjKrI4RgLL9cX7zl05o/y0t6TDE=;
+	s=arc-20240116; t=1730894872; c=relaxed/simple;
+	bh=dDWtKp/UPtSje9wKd2IXi2VS3mmNUsVtHSB/7fiJG2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSZnkXhZ8Jz56SxK+w3DNchoKLGzagaGmzO6cV0xgtNhZHF0MOz7OQNibeLTHTUYKbKXql7DA4vH0NnCrKXvoVySajcT/azGWKSKN/cDGp9NwzWlN19xc+5frFswe9dWGuCLVP6iYqqPUhoZdqzm1jAzKPdz4QbhkIbhCbx0ILU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7ursI6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811BEC4AF09;
-	Wed,  6 Nov 2024 12:07:19 +0000 (UTC)
+	 MIME-Version; b=d7sJkvq+R/SjGa57G/8zanE/BNoqcEsbd6n7oD08gcxXZqenCKdKl53619kfyF5edFV2U0lhMKT0BAVWfkUKj7rmStLABbblAhKWgBtufJ0Axs/yUbPiIgwnpIcpm9Jg8h5HEwyVbrbj4S98Us550hy3SVUqKvfEn7t06lUIePI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTNbpE11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9AAC4CED2;
+	Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894839;
-	bh=Yd5YIghYxqMP9I2IKjKrI4RgLL9cX7zl05o/y0t6TDE=;
+	s=korg; t=1730894872;
+	bh=dDWtKp/UPtSje9wKd2IXi2VS3mmNUsVtHSB/7fiJG2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7ursI6jFa9TiihhIBOjJiRn97NeBswN6ShVgTAulteB1u2zvlYO62QKuadL1aOeJ
-	 f6L4GARIVt5IclBzs/kVHQJTgS+JQDnKM0Za/+CAIGtAvNvtdU8MGftBAvO4+5m3hU
-	 EHfBpa9tgM1KHsUn8pNFZ+6LgGDN67nWGy/jgUO8=
+	b=gTNbpE11QHfxV6zxMrHoM7rNGx1HCLTrlNRrGa73FB1XdvuVfl9jjmqOBbhXZVkjk
+	 5Y832ZqQ2QSm474I2Mzf8j8W7M9R/6JiDZv3uRfTAHy86O+cyox0GNVZYHnvXxnVb6
+	 wmXAfwJxwev/k4BH5kI7maimhm1EoBeUAyIrIb7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 010/350] net: ftgmac100: Enable TX interrupt to avoid TX timeout
-Date: Wed,  6 Nov 2024 12:58:58 +0100
-Message-ID: <20241106120321.125744522@linuxfoundation.org>
+Subject: [PATCH 4.19 011/350] net: dpaa: Pad packets to ETH_ZLEN
+Date: Wed,  6 Nov 2024 12:58:59 +0100
+Message-ID: <20241106120321.150592375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,70 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit fef2843bb49f414d1523ca007d088071dee0e055 ]
+[ Upstream commit cbd7ec083413c6a2e0c326d49e24ec7d12c7a9e0 ]
 
-Currently, the driver only enables RX interrupt to handle RX
-packets and TX resources. Sometimes there is not RX traffic,
-so the TX resource needs to wait for RX interrupt to free.
-This situation will toggle the TX timeout watchdog when the MAC
-TX ring has no more resources to transmit packets.
-Therefore, enable TX interrupt to release TX resources at any time.
+When sending packets under 60 bytes, up to three bytes of the buffer
+following the data may be leaked. Avoid this by extending all packets to
+ETH_ZLEN, ensuring nothing is leaked in the padding. This bug can be
+reproduced by running
 
-When I am verifying iperf3 over UDP, the network hangs.
-Like the log below.
+	$ ping -s 11 destination
 
-root# iperf3 -c 192.168.100.100 -i1 -t10 -u -b0
-Connecting to host 192.168.100.100, port 5201
-[  4] local 192.168.100.101 port 35773 connected to 192.168.100.100 port 5201
-[ ID] Interval           Transfer     Bandwidth       Total Datagrams
-[  4]   0.00-20.42  sec   160 KBytes  64.2 Kbits/sec  20
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval          Transfer    Bandwidth      Jitter   Lost/Total Datagrams
-[  4]   0.00-20.42  sec  160 KBytes 64.2 Kbits/sec 0.000 ms 0/20 (0%)
-[  4] Sent 20 datagrams
-iperf3: error - the server has terminated
-
-The network topology is FTGMAC connects directly to a PC.
-UDP does not need to wait for ACK, unlike TCP.
-Therefore, FTGMAC needs to enable TX interrupt to release TX resources instead
-of waiting for the RX interrupt.
-
-Fixes: 10cbd6407609 ("ftgmac100: Rework NAPI & interrupts handling")
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Link: https://patch.msgid.link/20240906062831.2243399-1-jacky_chou@aspeedtech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9ad1a3749333 ("dpaa_eth: add support for DPAA Ethernet")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240910143144.1439910-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
-index 0653d8176e6a..6349e7c7c074 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.h
-+++ b/drivers/net/ethernet/faraday/ftgmac100.h
-@@ -97,7 +97,7 @@
- 			    FTGMAC100_INT_RPKT_BUF)
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -2055,12 +2055,12 @@ static netdev_tx_t
+ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
+ {
+ 	const int queue_mapping = skb_get_queue_mapping(skb);
+-	bool nonlinear = skb_is_nonlinear(skb);
+ 	struct rtnl_link_stats64 *percpu_stats;
+ 	struct dpaa_percpu_priv *percpu_priv;
+ 	struct netdev_queue *txq;
+ 	struct dpaa_priv *priv;
+ 	struct qm_fd fd;
++	bool nonlinear;
+ 	int offset = 0;
+ 	int err = 0;
  
- /* All the interrupts we care about */
--#define FTGMAC100_INT_ALL (FTGMAC100_INT_RPKT_BUF  |  \
-+#define FTGMAC100_INT_ALL (FTGMAC100_INT_RXTX  |  \
- 			   FTGMAC100_INT_BAD)
+@@ -2070,6 +2070,13 @@ dpaa_start_xmit(struct sk_buff *skb, str
  
- /*
--- 
-2.43.0
-
+ 	qm_fd_clear_fd(&fd);
+ 
++	/* Packet data is always read as 32-bit words, so zero out any part of
++	 * the skb which might be sent if we have to pad the packet
++	 */
++	if (__skb_put_padto(skb, ETH_ZLEN, false))
++		goto enomem;
++
++	nonlinear = skb_is_nonlinear(skb);
+ 	if (!nonlinear) {
+ 		/* We're going to store the skb backpointer at the beginning
+ 		 * of the data buffer, so we need a privately owned skb
 
 
 
