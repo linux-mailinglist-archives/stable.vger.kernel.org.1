@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-91195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9059BECE3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49A09BECEF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40CDE28606F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D704C1C23DC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796761DB37C;
-	Wed,  6 Nov 2024 13:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22291EE00E;
+	Wed,  6 Nov 2024 13:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2VKybfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfWqjO4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F121CC14B;
-	Wed,  6 Nov 2024 13:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD6F1DFE38;
+	Wed,  6 Nov 2024 13:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898021; cv=none; b=Uf4VXpTCNQB4Mw01As+sQWcgTmzKtjqeXyHJxMTscHkB4S4PlIC29cEPROD9lu9CaKD1zqKoFDZC8db9tKH/Q4na/zUflBT0OYG2V/WkJX80WyNoNh+ovbaWIDwD6fm9bNuJAomQj84EkZlTJJTlOAqo8+EF+FT6cY3a9jOyUdM=
+	t=1730898053; cv=none; b=Y348r2FkBDAPxDbwWeNKzsI8O0BhOiOShIAymfyCuw8YsAN47i1MMD9/IVWkz1r56T5Ufo7ycdJQ06N6CgGkPCY0lSlwyX3/iUfcPxslR0CzYbaWZfGyjYU76bEs4Gsp7eU8a6DmY0ZETPmgVlglCUWmJZrZbONnYpdxZ0OXyZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898021; c=relaxed/simple;
-	bh=1AEXVHomUln2gKg8/ri/oxAFdORH7JQvt517gwRxhNo=;
+	s=arc-20240116; t=1730898053; c=relaxed/simple;
+	bh=JfgB4Ps+OKVRW3IoZhToaym4JY+ZbnXjMBoCsx4RHvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKpU1CaaLP516GkzXYRHU1+0RMyIr2hwgjeu3uQz8aCY2yFVKZ1ixTXAmAVjhcdaclsKfMYjz9lizGB4dLD6FVAhr0A9Vm98xHonfv71gQ5uG4fvzSQcblNdBqy69U61dWTJ9kwO1FQzQJcd26Sb6WM+3TLIDaKofdgXcXaWQws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2VKybfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669C2C4CECD;
-	Wed,  6 Nov 2024 13:00:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DE+Mt/26pZCJMWqVNpbXm7bbbZCuJyexhTc2MshMPKo1zXX5/sblMQluUUJ2Ofg5moNjeuOez4w/ageU53KS1tCZzn8oF6Hr8QM2j4dsySwqr3GO+FrnK5r44pmeDfZtmgZrVNP8nWolNrVlveRAGsor0N0Q0XgSC2MYCtdtkTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfWqjO4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CABC4CECD;
+	Wed,  6 Nov 2024 13:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898020;
-	bh=1AEXVHomUln2gKg8/ri/oxAFdORH7JQvt517gwRxhNo=;
+	s=korg; t=1730898053;
+	bh=JfgB4Ps+OKVRW3IoZhToaym4JY+ZbnXjMBoCsx4RHvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2VKybfQz1RPnGqySK3dxmssGO7XGuUZ5gPjGnlu3SEGvDJhYU3HNwQeBFiT2FcJs
-	 lgj8p4NuGTqjQbhXYZUDkeKSl1hPuVoPq73w5SlmAzDEH/H6yO1RD4AUFcWuD65gwV
-	 Hu4RHvGy895Z/MpDV7ln03QM/37WILKEGDd0+ti4=
+	b=xfWqjO4eHbNK6QosSJGXLTpEAdUU2iEpwrxnTo/uaxKrIJhZTDw9f0EBKjwVG4ruz
+	 +HSdj9hM63NPFBbKXCPhvhAzW3Lu7l8myH51F9fI0mreeCZWWoCHq7EkD6IDqYpSl0
+	 vFfxoUfxQYbMZOK7X8pBjlx4cnnI1xKgGdWZSmcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/462] drm/amdgpu: Replace one-element array with flexible-array member
-Date: Wed,  6 Nov 2024 12:59:23 +0100
-Message-ID: <20241106120333.238256120@linuxfoundation.org>
+Subject: [PATCH 5.4 071/462] drm/amdgpu: properly handle vbios fake edid sizing
+Date: Wed,  6 Nov 2024 12:59:24 +0100
+Message-ID: <20241106120333.263956456@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -60,72 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 320e2590e281d0a7865e861f50155b5b435e9813 ]
+[ Upstream commit 8155566a26b8d6c1dd914f06a0c652e4e2f2adf1 ]
 
-One-element arrays are deprecated, and we are replacing them with
-flexible array members instead. So, replace one-element array with
-flexible-array member in struct _ATOM_FAKE_EDID_PATCH_RECORD and
-refactor the rest of the code accordingly.
+The comment in the vbios structure says:
+// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
 
-Important to mention is that doing a build before/after this patch
-results in no binary output differences.
+This fake edid struct has not been used in a long time, so I'm
+not sure if there were actually any boards out there with a non-128 byte
+EDID, but align the code with the comment.
 
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -fstrict-flex-arrays=3 [1].
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/238
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101836 [1]
-
-Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 8155566a26b8 ("drm/amdgpu: properly handle vbios fake edid sizing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/atombios_encoders.c | 7 +++++--
- drivers/gpu/drm/amd/include/atombios.h         | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 29 ++++++++++---------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-index 1e94a9b652f70..754d1e1387155 100644
+index 754d1e1387155..74951666733a7 100644
 --- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
 +++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-@@ -2113,8 +2113,11 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
+@@ -2098,26 +2098,29 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
+ 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
+ 					if (fake_edid_record->ucFakeEDIDLength) {
+ 						struct edid *edid;
+-						int edid_size =
+-							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
+-						edid = kmalloc(edid_size, GFP_KERNEL);
++						int edid_size;
++
++						if (fake_edid_record->ucFakeEDIDLength == 128)
++							edid_size = fake_edid_record->ucFakeEDIDLength;
++						else
++							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
++						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
++							       edid_size, GFP_KERNEL);
+ 						if (edid) {
+-							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
+-							       fake_edid_record->ucFakeEDIDLength);
+-
+ 							if (drm_edid_is_valid(edid)) {
+ 								adev->mode_info.bios_hardcoded_edid = edid;
+ 								adev->mode_info.bios_hardcoded_edid_size = edid_size;
+-							} else
++							} else {
+ 								kfree(edid);
++							}
  						}
++						record += struct_size(fake_edid_record,
++								      ucFakeEDIDString,
++								      edid_size);
++					} else {
++						/* empty fake edid record must be 3 bytes long */
++						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
  					}
- 					record += fake_edid_record->ucFakeEDIDLength ?
--						fake_edid_record->ucFakeEDIDLength + 2 :
--						sizeof(ATOM_FAKE_EDID_PATCH_RECORD);
-+						  struct_size(fake_edid_record,
-+							      ucFakeEDIDString,
-+							      fake_edid_record->ucFakeEDIDLength) :
-+						  /* empty fake edid record must be 3 bytes long */
-+						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+-					record += fake_edid_record->ucFakeEDIDLength ?
+-						  struct_size(fake_edid_record,
+-							      ucFakeEDIDString,
+-							      fake_edid_record->ucFakeEDIDLength) :
+-						  /* empty fake edid record must be 3 bytes long */
+-						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
  					break;
  				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
  					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
-diff --git a/drivers/gpu/drm/amd/include/atombios.h b/drivers/gpu/drm/amd/include/atombios.h
-index 8ba21747b40a3..c9f70accd46d8 100644
---- a/drivers/gpu/drm/amd/include/atombios.h
-+++ b/drivers/gpu/drm/amd/include/atombios.h
-@@ -4107,7 +4107,7 @@ typedef struct _ATOM_FAKE_EDID_PATCH_RECORD
- {
-   UCHAR ucRecordType;
-   UCHAR ucFakeEDIDLength;       // = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
--  UCHAR ucFakeEDIDString[1];    // This actually has ucFakeEdidLength elements.
-+  UCHAR ucFakeEDIDString[];     // This actually has ucFakeEdidLength elements.
- } ATOM_FAKE_EDID_PATCH_RECORD;
- 
- typedef struct  _ATOM_PANEL_RESOLUTION_PATCH_RECORD
 -- 
 2.43.0
 
