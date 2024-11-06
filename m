@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601CF9BEC43
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C309BEB20
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 833D81C23A17
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365362819CF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330B01FB3FE;
-	Wed,  6 Nov 2024 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F231F585E;
+	Wed,  6 Nov 2024 12:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmJrh98E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQoPxyUa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F4D1F4293;
-	Wed,  6 Nov 2024 12:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DBF1E0480;
+	Wed,  6 Nov 2024 12:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897634; cv=none; b=BLk2eKa4tsfCO+m6crMR/WcsEWxuP3o2+tRIsR/LjpSswiL5fvw10nJMUUGgPk2iNXLQ+f9u6EFZB4Mke0LX+qGwyb8xiA4hu1mwPxsuTsdj8Cly5ROvKOCReVaDrOhNRMt2jqgzHJ5ze8yJBIdQBrmOn7dqv1+ck1xLwkqbWYw=
+	t=1730896857; cv=none; b=qaIU6f95JHwW0HjWsNUPkDlAOAVI1hge7lCXXPGIyEzyAUjo3uROz1Ii6HicfySy/okBggQYVQ+zKs8cNiXSo8MRPWNBRPOKkPObzxELZAmTqxcy01YfO3z+oI0OnKQe1Y2gX9s2bBbE/6hlTIwPRhQeR+5yB56jgddIB0NeEyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897634; c=relaxed/simple;
-	bh=ZqIO6nAWKxKLQKNiG7xmqvHcmAGh1iB0RdLzc/Ryae4=;
+	s=arc-20240116; t=1730896857; c=relaxed/simple;
+	bh=VstKwF9gCsr1xZQ4o1Q/VzcgZ4LBF/Cjy2+8smYkcPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0/FoZnP4d2JTYBROqdPgnbsSJ6Dtul9V9GZuGH4WenBixFQzb9fhSXlQxALl8tSOSC2769i5giFYQUGn0coVkBfFE1lK2qj8fyabf9skWw4HLMjF3f0Khh6R1coZpoHipUGZmjOs549yZ05MmwH6FkjGU6MoVSw6jPEKDc+EI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmJrh98E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33990C4CECD;
-	Wed,  6 Nov 2024 12:53:53 +0000 (UTC)
+	 MIME-Version; b=j+u22oYJ6AHgLfc3cn20M/tLsrqiXd/o3BTUzi0thFUP6hxh8hQLuFPLjps08uv6bQvjmzvII5bZRZ/bBpQ3LXmJDzTOMOyD9wrXnSASJGOxXSZdcQ6miiVSSy1+NZpbIm265rXPJYzHGpGQt9fkVRsoUaLUCPVsobpgbXP/E/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQoPxyUa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C8FC4CECD;
+	Wed,  6 Nov 2024 12:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897633;
-	bh=ZqIO6nAWKxKLQKNiG7xmqvHcmAGh1iB0RdLzc/Ryae4=;
+	s=korg; t=1730896856;
+	bh=VstKwF9gCsr1xZQ4o1Q/VzcgZ4LBF/Cjy2+8smYkcPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmJrh98Ec7GMRRrlj99vgGn857tb0VkiesH1qPm/dNxv/uFTMZUPDcR4aDf+qUgec
-	 vq/w4DORy7FVBXa2O7Yf87PbFZMd21NVM6p52mCFa5frcqsnUThW7j2FE7S96l7FJO
-	 xGwsyRc2cCTclDnYyfakUoD4vVkAjTmFSvMafoDs=
+	b=zQoPxyUaCwERVFPiYj4/ycDvPW+fXMTUx2pPAeP+uHuPkAkGEMmyHaO44AIAgl+7s
+	 wPWV+FsE9zox/FsswZ0ipAicP8JK1V1FkrNsybumogTlhTlWLOUbV0sNcv32bTspYW
+	 L60JGE+kqBGno2sLuYgS8bDUyKVLuDaLizkFgxSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/151] spi: spi-fsl-dspi: Fix crash when not using GPIO chip select
-Date: Wed,  6 Nov 2024 13:05:00 +0100
-Message-ID: <20241106120311.948475824@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 095/110] nilfs2: fix potential deadlock with newly created symlinks
+Date: Wed,  6 Nov 2024 13:05:01 +0100
+Message-ID: <20241106120305.807553529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 25f00a13dccf8e45441265768de46c8bf58e08f6 ]
+commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
 
-Add check for the return value of spi_get_csgpiod() to avoid passing a NULL
-pointer to gpiod_direction_output(), preventing a crash when GPIO chip
-select is not used.
+Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
+memory reclamation involving the filesystem layer, which can result in
+circular lock dependencies among the reader/writer semaphore
+nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
+fs_reclaim pseudo lock.
 
-Fix below crash:
-[    4.251960] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[    4.260762] Mem abort info:
-[    4.263556]   ESR = 0x0000000096000004
-[    4.267308]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    4.272624]   SET = 0, FnV = 0
-[    4.275681]   EA = 0, S1PTW = 0
-[    4.278822]   FSC = 0x04: level 0 translation fault
-[    4.283704] Data abort info:
-[    4.286583]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[    4.292074]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    4.297130]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    4.302445] [0000000000000000] user address but active_mm is swapper
-[    4.308805] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[    4.315072] Modules linked in:
-[    4.318124] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc4-next-20241023-00008-ga20ec42c5fc1 #359
-[    4.328130] Hardware name: LS1046A QDS Board (DT)
-[    4.332832] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.339794] pc : gpiod_direction_output+0x34/0x5c
-[    4.344505] lr : gpiod_direction_output+0x18/0x5c
-[    4.349208] sp : ffff80008003b8f0
-[    4.352517] x29: ffff80008003b8f0 x28: 0000000000000000 x27: ffffc96bcc7e9068
-[    4.359659] x26: ffffc96bcc6e00b0 x25: ffffc96bcc598398 x24: ffff447400132810
-[    4.366800] x23: 0000000000000000 x22: 0000000011e1a300 x21: 0000000000020002
-[    4.373940] x20: 0000000000000000 x19: 0000000000000000 x18: ffffffffffffffff
-[    4.381081] x17: ffff44740016e600 x16: 0000000500000003 x15: 0000000000000007
-[    4.388221] x14: 0000000000989680 x13: 0000000000020000 x12: 000000000000001e
-[    4.395362] x11: 0044b82fa09b5a53 x10: 0000000000000019 x9 : 0000000000000008
-[    4.402502] x8 : 0000000000000002 x7 : 0000000000000007 x6 : 0000000000000000
-[    4.409641] x5 : 0000000000000200 x4 : 0000000002000000 x3 : 0000000000000000
-[    4.416781] x2 : 0000000000022202 x1 : 0000000000000000 x0 : 0000000000000000
-[    4.423921] Call trace:
-[    4.426362]  gpiod_direction_output+0x34/0x5c (P)
-[    4.431067]  gpiod_direction_output+0x18/0x5c (L)
-[    4.435771]  dspi_setup+0x220/0x334
+This is because after commit 21fc61c73c39 ("don't put symlink bodies in
+pagecache into highmem"), the gfp flags of the page cache for symbolic
+links are overwritten to GFP_KERNEL via inode_nohighmem().
 
-Fixes: 9e264f3f85a5 ("spi: Replace all spi->chip_select and spi->cs_gpiod references with function call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20241023203032.1388491-1-Frank.Li@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is not a problem for symlinks read from the backing device, because
+the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
+when a new symlink is created with nilfs_symlink(), the gfp flags remain
+overwritten to GFP_KERNEL.  Then, memory allocation called from
+page_symlink() etc.  triggers memory reclamation including the FS layer,
+which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
+cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+
+Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
+of newly created symlinks in the same way that nilfs_new_inode() and
+__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
+scope consistently or improve the locking constraints.
+
+Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
+Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
+Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/nilfs2/namei.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8318249f8a1f9..bcb0de864d34d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1008,6 +1008,7 @@ static int dspi_setup(struct spi_device *spi)
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-+	struct gpio_desc *gpio_cs;
- 	struct chip_data *chip;
- 	unsigned long clkrate;
- 	bool cs = true;
-@@ -1073,7 +1074,10 @@ static int dspi_setup(struct spi_device *spi)
- 			chip->ctar_val |= SPI_CTAR_LSBFE;
- 	}
- 
--	gpiod_direction_output(spi_get_csgpiod(spi, 0), false);
-+	gpio_cs = spi_get_csgpiod(spi, 0);
-+	if (gpio_cs)
-+		gpiod_direction_output(gpio_cs, false);
-+
- 	dspi_deassert_cs(spi, &cs);
- 
- 	spi_set_ctldata(spi, chip);
--- 
-2.43.0
-
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -156,6 +156,9 @@ static int nilfs_symlink(struct inode *d
+ 	/* slow symlink */
+ 	inode->i_op = &nilfs_symlink_inode_operations;
+ 	inode_nohighmem(inode);
++	mapping_set_gfp_mask(inode->i_mapping,
++			     mapping_gfp_constraint(inode->i_mapping,
++						    ~__GFP_FS));
+ 	inode->i_mapping->a_ops = &nilfs_aops;
+ 	err = page_symlink(inode, symname, l);
+ 	if (err)
 
 
 
