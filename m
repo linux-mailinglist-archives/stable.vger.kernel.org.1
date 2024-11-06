@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3909BEC33
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A559BE9AC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F221D285754
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26EAD1C232CE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99DC1F4296;
-	Wed,  6 Nov 2024 12:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6EC18C00E;
+	Wed,  6 Nov 2024 12:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9oc66HI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayzDY8ZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A651E1322;
-	Wed,  6 Nov 2024 12:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE331DFE3A;
+	Wed,  6 Nov 2024 12:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897592; cv=none; b=DyjMzGbZ1KzvLLWEw8Ogf3rxYmO3MLshhrgu7yl3H1JCGCOTwIlzBmByURVAl/9tKD5Zp2EUpIAqMQ3u3V+35y5CYVbqM4YjP0rCBIJO9+hmDjMkPQ0CSJJRK9zab8S2YZppFv5h3vQpWzc1ijd47DK8zETK+GeqfeVBqLOsdA8=
+	t=1730896580; cv=none; b=jcWJhXwKNI66/BaDKyklk8umPlzMtbHt1j1vCZto1lKfZ8FDXXHjLsPzWeiHyESvlDDNUQ+7Zp0p7XGOSCDY/JGOaRAGdIUURu/wNxxY5grY8bJ5d1B50a2c8lNNTQKxNSlM8XWEzt+c3BvHsW3FV1JkVC9cpiC32rOxgEYR8KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897592; c=relaxed/simple;
-	bh=I6CHDy2ARDx+FHmWLyoMnN6BQcfZkoaCmjRpzmlR12M=;
+	s=arc-20240116; t=1730896580; c=relaxed/simple;
+	bh=tK71Lua8EwJZ/SSvHR3BmLOP99HLLKm3lLOv1mrx5E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cfgKiIpiPgefujxkfZIbV49Dtqr+vwVnx3A4tJQI6vxClIE2RmsGoCy5M1YM0GReYJhCGMqwgVVW7rFKy9IeUvZV5/J6bMKDOuvs7wZEWTXh9ag40D0CwUJUcEhdYzsHvy43AStqgiFXsgW9IHS3jrGloMp+23+ZubhDYENYjlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9oc66HI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE451C4CECD;
-	Wed,  6 Nov 2024 12:53:11 +0000 (UTC)
+	 MIME-Version; b=D/R+QvKEYO3gST8ayuaJWVQGrW5swkmotI6kN08xzRT2CfZXY6D67rz30VsicYGtv1oTNvMhAdkcWGCu004thsvrSEmoxAqfX3qgq0TKKTmFolUG09TBCtyvoh3Q3mgxp4W+ZgEbpRozVeubso7geSZHxbxTz24oO0khPU+WLoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayzDY8ZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9118C4CECD;
+	Wed,  6 Nov 2024 12:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897592;
-	bh=I6CHDy2ARDx+FHmWLyoMnN6BQcfZkoaCmjRpzmlR12M=;
+	s=korg; t=1730896580;
+	bh=tK71Lua8EwJZ/SSvHR3BmLOP99HLLKm3lLOv1mrx5E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9oc66HItWzVDxDDawAflsMniKMDRsqg7ocmDezWypvtt893FQzqKhlG7entBp8jf
-	 S+MLy4e7NfqsZKswXHGBh1c3q3Iqeb309SQfZNAA6lkqh1v3OBzW39tQWPkdD54HFe
-	 qEqNmlkkV3FzFYhNt9rYVCKJMgKTCaaVvrG0gc8U=
+	b=ayzDY8ZA2PhSSZ0gDv3VLdvPqef0IVFdsNG+DMr/A3pmbTiA6XBfgoqBn3JSMxM5r
+	 pNhSDm5OaIvP52S/Xw+DlGq9RWen6obNHDNzWyUBgpuvS+lD8UdmwV+q31YDVYI+ZR
+	 sLmfVr9/DT+C5ublcGdOnf9duZqQjCepejzei2OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wladislav Wiebe <wladislav.kw@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Herton R. Krzesinski" <herton@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 104/151] tools/mm: -Werror fixes in page-types/slabinfo
-Date: Wed,  6 Nov 2024 13:04:52 +0100
-Message-ID: <20241106120311.736887947@linuxfoundation.org>
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 240/245] drm/xe: Define STATELESS_COMPRESSION_CTRL as mcr register
+Date: Wed,  6 Nov 2024 13:04:53 +0100
+Message-ID: <20241106120325.177239949@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wladislav Wiebe <wladislav.kw@gmail.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-commit ece5897e5a10fcd56a317e32f2dc7219f366a5a8 upstream.
+commit 4551d60299b5ddc2655b6b365a4b92634e14e04f upstream.
 
-Commit e6d2c436ff693 ("tools/mm: allow users to provide additional
-cflags/ldflags") passes now CFLAGS to Makefile.  With this, build systems
-with default -Werror enabled found:
+Register STATELESS_COMPRESSION_CTRL should be considered
+mcr register which should write to all slices as per
+documentation.
 
-slabinfo.c:1300:25: error: ignoring return value of 'chdir'
-declared with attribute 'warn_unused_result' [-Werror=unused-result]
-                         chdir("..");
-                         ^~~~~~~~~~~
-page-types.c:397:35: error: format '%lu' expects argument of type
-'long unsigned int', but argument 2 has type 'uint64_t'
-{aka 'long long unsigned int'} [-Werror=format=]
-                         printf("%lu\t", mapcnt0);
-                                 ~~^     ~~~~~~~
-..
-
-Fix page-types by using PRIu64 for uint64_t prints and check in slabinfo
-for return code on chdir("..").
-
-Link: https://lkml.kernel.org/r/c1ceb507-94bc-461c-934d-c19b77edd825@gmail.com
-Fixes: e6d2c436ff69 ("tools/mm: allow users to provide additional cflags/ldflags")
-Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Herton R. Krzesinski <herton@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Bspec: 71185
+Fixes: ecabb5e6ce54 ("drm/xe/xe2: Add performance turning changes")
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240814095614.909774-4-tejas.upadhyay@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/mm/page-types.c |    9 +++++----
- tools/mm/slabinfo.c   |    4 +++-
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/mm/page-types.c
-+++ b/tools/mm/page-types.c
-@@ -22,6 +22,7 @@
- #include <time.h>
- #include <setjmp.h>
- #include <signal.h>
-+#include <inttypes.h>
- #include <sys/types.h>
- #include <sys/errno.h>
- #include <sys/fcntl.h>
-@@ -392,9 +393,9 @@ static void show_page_range(unsigned lon
- 		if (opt_file)
- 			printf("%lx\t", voff);
- 		if (opt_list_cgroup)
--			printf("@%llu\t", (unsigned long long)cgroup0);
-+			printf("@%" PRIu64 "\t", cgroup0);
- 		if (opt_list_mapcnt)
--			printf("%lu\t", mapcnt0);
-+			printf("%" PRIu64 "\t", mapcnt0);
- 		printf("%lx\t%lx\t%s\n",
- 				index, count, page_flag_name(flags0));
- 	}
-@@ -420,9 +421,9 @@ static void show_page(unsigned long voff
- 	if (opt_file)
- 		printf("%lx\t", voffset);
- 	if (opt_list_cgroup)
--		printf("@%llu\t", (unsigned long long)cgroup);
-+		printf("@%" PRIu64 "\t", cgroup)
- 	if (opt_list_mapcnt)
--		printf("%lu\t", mapcnt);
-+		printf("%" PRIu64 "\t", mapcnt);
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -80,7 +80,7 @@
+ #define   LE_CACHEABILITY_MASK			REG_GENMASK(1, 0)
+ #define   LE_CACHEABILITY(value)		REG_FIELD_PREP(LE_CACHEABILITY_MASK, value)
  
- 	printf("%lx\t%s\n", offset, page_flag_name(flags));
- }
---- a/tools/mm/slabinfo.c
-+++ b/tools/mm/slabinfo.c
-@@ -1297,7 +1297,9 @@ static void read_slab_dir(void)
- 			slab->cpu_partial_free = get_obj("cpu_partial_free");
- 			slab->alloc_node_mismatch = get_obj("alloc_node_mismatch");
- 			slab->deactivate_bypass = get_obj("deactivate_bypass");
--			chdir("..");
-+			if (chdir(".."))
-+				fatal("Unable to chdir from slab ../%s\n",
-+				      slab->name);
- 			if (slab->name[0] == ':')
- 				alias_targets++;
- 			slab++;
+-#define STATELESS_COMPRESSION_CTRL		XE_REG(0x4148)
++#define STATELESS_COMPRESSION_CTRL		XE_REG_MCR(0x4148)
+ #define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
+ 
+ #define XE2_GAMREQSTRM_CTRL			XE_REG(0x4194)
 
 
 
