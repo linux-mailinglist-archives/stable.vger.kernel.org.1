@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CAD9BEA9C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:48:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDC89BEB71
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC981F249AD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1FE51C23533
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2611FBCBA;
-	Wed,  6 Nov 2024 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013441E0084;
+	Wed,  6 Nov 2024 12:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAsFIeNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q15rHRWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9D1FBCB0;
-	Wed,  6 Nov 2024 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AD61EABD0;
+	Wed,  6 Nov 2024 12:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896730; cv=none; b=APIK1ZOriK5J882/n5GoOnjK6kFzw3Ny/7Yd/Q9pfxtCQKDClKSEaYxs/o1IDYKz6LvxeAgF1Ximh9TCxd2DX5RBQKVqAjQMY5+lyfJ8irIabUcYZWG0GyN+xwLe3Nr2+ml4+x4tlcCxHOjSZ5CfGn3jE927bk55p8BvbU+/lB8=
+	t=1730897079; cv=none; b=HMswvN2urTBFvfE5/QeBcrE+ZD8yXUbr8t7Iea5u9I79REoioISPtHTCpz6kWnSdC8AHThUZgy2zPXSVQSjCTMK5F2NcTt4lxmRkUt2Rxjte12nIsRTniZDNyvgGaUAi8851E7W2tcpMu0eL1MnRe8CKM+C56n6efDRSi94pHao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896730; c=relaxed/simple;
-	bh=KC5wGcfmMcEfqP31vGEX2VkZb6f9OZ48c+dJSQUwfAU=;
+	s=arc-20240116; t=1730897079; c=relaxed/simple;
+	bh=jZqQq4nvDudpjhpHXbUgVMBUZg696ZDCRq10S+oEBJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBYeODKEPRVDMPqArQgW58RahW2wccaCGMAImNTv4TDGBP4MXIX9z8MwhtCV4G+20M8wmVh426PBHLxdchIUFY3irANrRTc0i3eKIiMm3kBHDEo8zFTyqfjq86L/P2YUiGDb0/t9JTUJJvmkkYAGmlsXIGvnMBV8g+nV7LU9MhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAsFIeNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C940C4CEE1;
-	Wed,  6 Nov 2024 12:38:49 +0000 (UTC)
+	 MIME-Version; b=h3pFzDnbG3fYAVrR8FIKX3c8wMtKfa20igkG0X7lP8zodX6Eg9hTApsdmKUoiv877vqsEo0b1yrpWsi9QWakMaXfst+SuM4IEDms/fZeW/R01vQGP45scJgHpuoQ/hYvcmbp4nu/3SXMOVMCP6xZNIq9P4VYHudNZ1JAcca+lac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q15rHRWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38753C4CECD;
+	Wed,  6 Nov 2024 12:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896730;
-	bh=KC5wGcfmMcEfqP31vGEX2VkZb6f9OZ48c+dJSQUwfAU=;
+	s=korg; t=1730897079;
+	bh=jZqQq4nvDudpjhpHXbUgVMBUZg696ZDCRq10S+oEBJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAsFIeNQ2J7ebrBm3dB5cpjx1Af9/7CLd9krEtUhdXwxsRMedtpWd5A97d8FuG6/V
-	 PaMn69OfgFchzpg09lXKUw66oclDt9tB0dW0E/vOjOoVghG2pg+OAiupIEfHEEBtc+
-	 PJGzlpyfbA/99U57DzONn+/UcG0NrLsSHRu5rOBk=
+	b=q15rHRWSshiQ5Z/6cyscoIvsd2S7XnNa/PtHsbnjBBOUgkXiYqpepFPewtpoyi6C8
+	 3jui9natnQ0JEkWzT15qiqoFLnhnLidbXtSoE5w7Z7wLbS3hKqDCMTDcNROu7saY0h
+	 n/x0N2RrfOGvBg0XdQxKVIF6kCNAhaEI4+GAfh1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Michel <alex.michel@wiedemann-group.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH 5.10 053/110] net: phy: dp83822: Fix reset pin definitions
-Date: Wed,  6 Nov 2024 13:04:19 +0100
-Message-ID: <20241106120304.668593855@linuxfoundation.org>
+	Dai Ngo <dai.ngo@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 059/126] NFS: remove revoked delegation from servers delegation list
+Date: Wed,  6 Nov 2024 13:04:20 +0100
+Message-ID: <20241106120307.691378896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Alex <Alex.Michel@wiedemann-group.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit de96f6a3003513c796bbe4e23210a446913f5c00 upstream.
+[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
 
-This change fixes a rare issue where the PHY fails to detect a link
-due to incorrect reset behavior.
+After the delegation is returned to the NFS server remove it
+from the server's delegations list to reduce the time it takes
+to scan this list.
 
-The SW_RESET definition was incorrectly assigned to bit 14, which is the
-Digital Restart bit according to the datasheet. This commit corrects
-SW_RESET to bit 15 and assigns DIG_RESTART to bit 14 as per the
-datasheet specifications.
+Network trace captured while running the below script shows the
+time taken to service the CB_RECALL increases gradually due to
+the overhead of traversing the delegation list in
+nfs_delegation_find_inode_server.
 
-The SW_RESET define is only used in the phy_reset function, which fully
-re-initializes the PHY after the reset is performed. The change in the
-bit definitions should not have any negative impact on the functionality
-of the PHY.
+The NFS server in this test is a Solaris server which issues
+CB_RECALL when receiving the all-zero stateid in the SETATTR.
 
-v2:
-- added Fixes tag
-- improved commit message
+mount=/mnt/data
+for i in $(seq 1 20)
+do
+   echo $i
+   mkdir $mount/testtarfile$i
+   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
+done
 
-Cc: stable@vger.kernel.org
-Fixes: 5dc39fd5ef35 ("net: phy: DP83822: Add ability to advertise Fiber connection")
-Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Message-ID: <AS1P250MB0608A798661549BF83C4B43EA9462@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83822.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/delegation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -40,8 +40,8 @@
- /* Control Register 2 bits */
- #define DP83822_FX_ENABLE	BIT(14)
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 2ba4d221bf9d5..39c697e100b1b 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -981,6 +981,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
+ 	}
  
--#define DP83822_HW_RESET	BIT(15)
--#define DP83822_SW_RESET	BIT(14)
-+#define DP83822_SW_RESET	BIT(15)
-+#define DP83822_DIG_RESTART	BIT(14)
+ 	nfs_mark_delegation_revoked(delegation);
++	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
++	spin_unlock(&delegation->lock);
++	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
++		nfs_put_delegation(delegation);
++	goto out_rcu_unlock;
  
- /* PHY STS bits */
- #define DP83822_PHYSTS_DUPLEX			BIT(2)
+ out_clear_returning:
+ 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
+-- 
+2.43.0
+
 
 
 
