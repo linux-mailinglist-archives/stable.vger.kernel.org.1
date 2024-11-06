@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-90241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EE89BE756
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA909BE72A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D3311F249C0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FE2F1C234A2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F1C1DF267;
-	Wed,  6 Nov 2024 12:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42801DF24E;
+	Wed,  6 Nov 2024 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mkhvfzsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNFOMsHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021B41DE3B8;
-	Wed,  6 Nov 2024 12:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724FC1D5AD7;
+	Wed,  6 Nov 2024 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895191; cv=none; b=djbOghiALbdiDhySJKqQk+9XUy78oepf53jefgRxS1a+kmrlYblwpwgaNlP0/86OEFHmbIp8Nzn7LzCnkuSoBX+xUFR80yXlkLFu+rNnPzW0bBhuXyqukJY1C3blOdUAnGo+6xlo1In9vONEMV7aJppzbWUjYi5HOVFazj7JNAU=
+	t=1730895077; cv=none; b=elzpEN+iE1Kx7Usl7D/3sietkz8RonuSEU9TeBC9aWO4deNT7HhrvNffs3izMTYOB6RyOkT8Vg8deRu9AKf1J3C9O660k9p4J9ksqFzp3a7/P5YU3Ee4ZK9Sk4kKUgMcmM5SoPDyGif+GtsHwNKgXyHeH/eG+nxvo27DoQvh+oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895191; c=relaxed/simple;
-	bh=mriAJ9Ou/EoDUeUkiuIjQyX36qnSF4BJH/m7h/gxPkQ=;
+	s=arc-20240116; t=1730895077; c=relaxed/simple;
+	bh=UuHmn5cRJTkD7Q5Q+5Y5m7Xh8LaEp2izUnvNwtavMuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pW66FR5HE5P7rZkVpTMuy04VmmzBpb7ct8S2+sFgHdlsjqeA+NoEhOhwavORw7GV4Egcnp3g4IoSKT4IGeP6CUexf9Fg5WpZzwfDEgbzMyvFernYRFUPWWPZdvPAoN4eQ61vWGZ5NBkmb/2daIoT3F74wwaGD9CgBnZ6lz7CVVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mkhvfzsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6677C4CECD;
-	Wed,  6 Nov 2024 12:13:09 +0000 (UTC)
+	 MIME-Version; b=Y732AkJyX5Z+y7IZ9cXIvXsXU3tuwTWOIiy9pxb3PDYp7Z/OCxZWOon0PJ8EIQyw7wYdS6+Csy175Vmdf3CGkkDUex+WuHXrkpN04oEE6zzX0yAvwiGHWn1CNbojbonir242qrnDP7DOPCd0n5Dda4Uz6sArq9hp+jnL0wmwY1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNFOMsHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC2AC4CECD;
+	Wed,  6 Nov 2024 12:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895190;
-	bh=mriAJ9Ou/EoDUeUkiuIjQyX36qnSF4BJH/m7h/gxPkQ=;
+	s=korg; t=1730895077;
+	bh=UuHmn5cRJTkD7Q5Q+5Y5m7Xh8LaEp2izUnvNwtavMuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MkhvfzsnP7b/0TpUAqfs9l/eIXOtBQ4hqTk6XAAOZqLZvKnRSFUyzzxBTRR4K/Vik
-	 tN0NMxTOOE9oaIKSTsYGYCi2wa6ELpOp7l5Uw1SPfGaG8mRWWBKgNIE94PlX8G38Vj
-	 3gBpuJJGyVTKwNR0fbpN91w9Uk0DOgyRxNpp+7AM=
+	b=SNFOMsHmfkZdKz6L8C9wmRFeYBxSEpuxDeAp670WHm50/UYkkrqKb+g81yqBuVmXO
+	 B0Hr8xMJradYgnZ1notsWuL8q7B/PkIELq54LW1v25Xhu44wACsF+14OXXAHGm851n
+	 AQFnn7WaUa9wMHsJ/bn70XezEj9dE1k8nIXCAga8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	wangzijie <wangzijie1@honor.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Yunlei He <heyunlei@hihonor.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/350] f2fs: remove unneeded check condition in __f2fs_setxattr()
-Date: Wed,  6 Nov 2024 13:00:25 +0100
-Message-ID: <20241106120323.298512856@linuxfoundation.org>
+Subject: [PATCH 4.19 098/350] f2fs: reduce expensive checkpoint trigger frequency
+Date: Wed,  6 Nov 2024 13:00:26 +0100
+Message-ID: <20241106120323.323924677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -68,32 +71,127 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit bc3994ffa4cf23f55171943c713366132c3ff45d ]
+[ Upstream commit aaf8c0b9ae042494cb4585883b15c1332de77840 ]
 
-It has checked return value of write_all_xattrs(), remove unneeded
-following check condition.
+We may trigger high frequent checkpoint for below case:
+1. mkdir /mnt/dir1; set dir1 encrypted
+2. touch /mnt/file1; fsync /mnt/file1
+3. mkdir /mnt/dir2; set dir2 encrypted
+4. touch /mnt/file2; fsync /mnt/file2
+...
 
+Although, newly created dir and file are not related, due to
+commit bbf156f7afa7 ("f2fs: fix lost xattrs of directories"), we will
+trigger checkpoint whenever fsync() comes after a new encrypted dir
+created.
+
+In order to avoid such performance regression issue, let's record an
+entry including directory's ino in global cache whenever we update
+directory's xattr data, and then triggerring checkpoint() only if
+xattr metadata of target file's parent was updated.
+
+This patch updates to cover below no encryption case as well:
+1) parent is checkpointed
+2) set_xattr(dir) w/ new xnid
+3) create(file)
+4) fsync(file)
+
+Fixes: bbf156f7afa7 ("f2fs: fix lost xattrs of directories")
+Reported-by: wangzijie <wangzijie1@honor.com>
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reported-by: Yunlei He <heyunlei@hihonor.com>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: aaf8c0b9ae04 ("f2fs: reduce expensive checkpoint trigger frequency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/f2fs.h              |  2 ++
+ fs/f2fs/file.c              |  3 +++
+ fs/f2fs/xattr.c             | 14 ++++++++++++--
+ include/trace/events/f2fs.h |  3 ++-
+ 4 files changed, 19 insertions(+), 3 deletions(-)
 
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 8126a82b4d26f..f90aaa16bdee6 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -214,6 +214,7 @@ enum {
+ 	APPEND_INO,		/* for append ino list */
+ 	UPDATE_INO,		/* for update ino list */
+ 	TRANS_DIR_INO,		/* for transactions dir ino list */
++	XATTR_DIR_INO,		/* for xattr updated dir ino list */
+ 	FLUSH_INO,		/* for multiple device flushing */
+ 	MAX_INO_ENTRY,		/* max. list */
+ };
+@@ -998,6 +999,7 @@ enum cp_reason_type {
+ 	CP_FASTBOOT_MODE,
+ 	CP_SPEC_LOG_NUM,
+ 	CP_RECOVER_DIR,
++	CP_XATTR_DIR,
+ };
+ 
+ enum iostat_type {
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index e44cb6bf68b9e..41eec5bfc7b31 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -170,6 +170,9 @@ static inline enum cp_reason_type need_do_checkpoint(struct inode *inode)
+ 		f2fs_exist_written_data(sbi, F2FS_I(inode)->i_pino,
+ 							TRANS_DIR_INO))
+ 		cp_reason = CP_RECOVER_DIR;
++	else if (f2fs_exist_written_data(sbi, F2FS_I(inode)->i_pino,
++							XATTR_DIR_INO))
++		cp_reason = CP_XATTR_DIR;
+ 
+ 	return cp_reason;
+ }
 diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index 00af34ba8561e..5b8ce9c7a5dc2 100644
+index 5b8ce9c7a5dc2..0b9568480d8f5 100644
 --- a/fs/f2fs/xattr.c
 +++ b/fs/f2fs/xattr.c
-@@ -732,7 +732,7 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+@@ -607,6 +607,7 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+ 			const char *name, const void *value, size_t size,
+ 			struct page *ipage, int flags)
+ {
++	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct f2fs_xattr_entry *here, *last;
+ 	void *base_addr, *last_base_addr;
+ 	nid_t xnid = F2FS_I(inode)->i_xattr_nid;
+@@ -732,9 +733,18 @@ static int __f2fs_setxattr(struct inode *inode, int index,
  	if (index == F2FS_XATTR_INDEX_ENCRYPTION &&
  			!strcmp(name, F2FS_XATTR_NAME_ENCRYPTION_CONTEXT))
  		f2fs_set_encrypted_inode(inode);
--	if (!error && S_ISDIR(inode->i_mode))
-+	if (S_ISDIR(inode->i_mode))
- 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_CP);
+-	if (S_ISDIR(inode->i_mode))
+-		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_CP);
  
++	if (!S_ISDIR(inode->i_mode))
++		goto same;
++	/*
++	 * In restrict mode, fsync() always try to trigger checkpoint for all
++	 * metadata consistency, in other mode, it triggers checkpoint when
++	 * parent's xattr metadata was updated.
++	 */
++	if (F2FS_OPTION(sbi).fsync_mode == FSYNC_MODE_STRICT)
++		set_sbi_flag(sbi, SBI_NEED_CP);
++	else
++		f2fs_add_ino_entry(sbi, inode->i_ino, XATTR_DIR_INO);
  same:
+ 	if (is_inode_flag_set(inode, FI_ACL_MODE)) {
+ 		inode->i_mode = F2FS_I(inode)->i_acl_mode;
+diff --git a/include/trace/events/f2fs.h b/include/trace/events/f2fs.h
+index 098d6dff20bef..abffe3a3f39e1 100644
+--- a/include/trace/events/f2fs.h
++++ b/include/trace/events/f2fs.h
+@@ -148,7 +148,8 @@ TRACE_DEFINE_ENUM(CP_TRIMMED);
+ 		{ CP_NODE_NEED_CP,	"node needs cp" },		\
+ 		{ CP_FASTBOOT_MODE,	"fastboot mode" },		\
+ 		{ CP_SPEC_LOG_NUM,	"log type is 2" },		\
+-		{ CP_RECOVER_DIR,	"dir needs recovery" })
++		{ CP_RECOVER_DIR,	"dir needs recovery" },		\
++		{ CP_XATTR_DIR,		"dir's xattr updated" })
+ 
+ struct victim_sel_policy;
+ struct f2fs_map_blocks;
 -- 
 2.43.0
 
