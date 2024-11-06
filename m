@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5A49BEB8B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA5F9BE99B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C7B284EF2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07261C234C5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CCC1F819A;
-	Wed,  6 Nov 2024 12:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A561DFE04;
+	Wed,  6 Nov 2024 12:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfcdPrlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkSSlvNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0E11E3786;
-	Wed,  6 Nov 2024 12:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6871E04B3;
+	Wed,  6 Nov 2024 12:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897147; cv=none; b=ndU/QCgnuUj4u56VkAJTF0VB4lRlDcubuwevJayLNxZideoP9YdTjVRG2G7WmlBwbVWEC9H9G4hnwvG8zXjcspaCRkqZ5IAqG3vOw4B7O9jawdLo/Nq8cl3cth/uLdaaS42Kgr9VX49aYgoJVZoZT/BTt6eVz5TE+CcQ8qOcmWs=
+	t=1730896528; cv=none; b=Hu6zcA+Qx7w1QSM6cOlTRHx9MYjKojI5JyUD5nMrbgRfXykkHAGo+kltKYthKZSpWVuI2/ve/KpTfQNepWMXVI9ZxkporwEnvl0S1grr+m8/KYbClcOxiba55pgjHVDGg0HEGOtfhI4erVxSx5+6nqFBfl2EOPevIOHkiJXn5xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897147; c=relaxed/simple;
-	bh=ZY6u/SJR1g1Yv7fv2E98WjoyRIqEd85j7w4V6jAvGcw=;
+	s=arc-20240116; t=1730896528; c=relaxed/simple;
+	bh=0lXNtmDJSvBelYjV9DHu5MC34k5IGXYuc6iQVJk8R04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=js0F0BFc15qAVxdtFeY3jqedrzQvHdhk2UcT1LyWCWzsOd0ME1/H14U1tTusHuV2GG2BLJ4krIwLyXgUDRBPgOerU5za4CQmkLy45NxuEtd5rjeCBV0ews1XYY1F/Jbll0DhnPaLUHlqXPSBEbJHsOdkGKoCuvodYconYBpUYtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfcdPrlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D083FC4CECD;
-	Wed,  6 Nov 2024 12:45:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Doc8m1PwjWkp6NBVV1cTtvpP1YDy0MLwlWnpxqI2WW9G3/YvkbwVjP12b1PGxn0q7RaYkAWFuDl+0sNfOJc3Hme5jpDsVQYrOkDXC6y8IKLaEzHCGPWdRzfK6ngGvel6uWXxTLDrnJ0aaQ3FUk4Vy0qY9NuQbNmqp35Y9dvemEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkSSlvNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34B5C4CED3;
+	Wed,  6 Nov 2024 12:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897147;
-	bh=ZY6u/SJR1g1Yv7fv2E98WjoyRIqEd85j7w4V6jAvGcw=;
+	s=korg; t=1730896528;
+	bh=0lXNtmDJSvBelYjV9DHu5MC34k5IGXYuc6iQVJk8R04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfcdPrlShzxyWczW/onhXInXQLd3WSun1aDwERx7Kac7ZKEXAursPa560kgscefJ8
-	 W4xzDttThgf7xEiutl0MpKQJxJSdgEVTiXwP4MEYXbPk/NejwLWq9eUcWWPmDVxgqh
-	 Fe9BJHcyfqpy86zRaQ+jig+hJVu0nlRz9NKkXz0w=
+	b=qkSSlvNjMHyR0z3PslruoYnO3HLzrRaqYY5rlv5BuDxfQVE+TCTx9FflXcORwCu6a
+	 JGac36sJkG4+DeH/OVDejlarlWVf8FFLn59CxUr70eD7OwI5jIF6cbUHp5uxhywjTa
+	 sxj6UGxXfxILy0SS8UGKjH8ca3w38nvNc8K2NtKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/126] ALSA: hda/realtek: Limit internal Mic boost on Dell platform
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 231/245] drm/xe/display: drop unused rawclk_freq and RUNTIME_INFO()
 Date: Wed,  6 Nov 2024 13:04:44 +0100
-Message-ID: <20241106120308.322219680@linuxfoundation.org>
+Message-ID: <20241106120324.948007579@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 78e7be018784934081afec77f96d49a2483f9188 ]
+commit f15e5587448989a55cf8b4feaad0df72ca3aa6a0 upstream.
 
-Dell want to limit internal Mic boost on all Dell platform.
+With rawclk_freq moved to display runtime info, xe has no users left for
+them.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/561fc5f5eff04b6cbd79ed173cd1c1db@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/9f09274bddc14f555c0102f37af6df23b4433102.1724144570.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h |    1 -
+ drivers/gpu/drm/xe/xe_device_types.h              |    6 ------
+ 2 files changed, 7 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a8bc95ffa41a3..3cbd9cf80be96 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7159,6 +7159,7 @@ enum {
- 	ALC286_FIXUP_SONY_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_PINCFG_NO_HP_TO_LINEOUT,
- 	ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 	ALC269_FIXUP_DELL2_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_DELL3_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-@@ -7193,6 +7194,7 @@ enum {
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 	ALC255_FIXUP_DELL2_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_HEADSET_MODE,
- 	ALC255_FIXUP_HEADSET_MODE_NO_HP_MIC,
-@@ -7658,6 +7660,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_HEADSET_MODE
- 	},
-+	[ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc269_fixup_limit_int_mic_boost,
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_DELL1_MIC_NO_PRESENCE
-+	},
- 	[ALC269_FIXUP_DELL2_MIC_NO_PRESENCE] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -7938,6 +7946,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC255_FIXUP_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc269_fixup_limit_int_mic_boost,
-+		.chained = true,
-+		.chain_id = ALC255_FIXUP_DELL1_MIC_NO_PRESENCE
-+	},
- 	[ALC255_FIXUP_DELL2_MIC_NO_PRESENCE] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -10294,6 +10308,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC269_FIXUP_DELL2_MIC_NO_PRESENCE, .name = "dell-headset-dock"},
- 	{.id = ALC269_FIXUP_DELL3_MIC_NO_PRESENCE, .name = "dell-headset3"},
- 	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE, .name = "dell-headset4"},
-+	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET, .name = "dell-headset4-quiet"},
- 	{.id = ALC283_FIXUP_CHROME_BOOK, .name = "alc283-dac-wcaps"},
- 	{.id = ALC283_FIXUP_SENSE_COMBO_JACK, .name = "alc283-sense-combo"},
- 	{.id = ALC292_FIXUP_TPT440_DOCK, .name = "tpt440-dock"},
-@@ -10841,16 +10856,16 @@ static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-+	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB,
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
++++ b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
+@@ -116,7 +116,6 @@ struct i915_sched_attr {
+ #define i915_gem_fence_wait_priority(fence, attr) do { (void) attr; } while (0)
+ 
+ #define pdev_to_i915 pdev_to_xe_device
+-#define RUNTIME_INFO(xe)		(&(xe)->info.i915_runtime)
+ 
+ #define FORCEWAKE_ALL XE_FORCEWAKE_ALL
+ 
+--- a/drivers/gpu/drm/xe/xe_device_types.h
++++ b/drivers/gpu/drm/xe/xe_device_types.h
+@@ -297,12 +297,6 @@ struct xe_device {
+ 		u8 has_atomic_enable_pte_bit:1;
+ 		/** @info.has_device_atomics_on_smem: Supports device atomics on SMEM */
+ 		u8 has_device_atomics_on_smem:1;
+-
+-#if IS_ENABLED(CONFIG_DRM_XE_DISPLAY)
+-		struct {
+-			u32 rawclk_freq;
+-		} i915_runtime;
+-#endif
+ 	} info;
+ 
+ 	/** @irq: device interrupt state */
 
 
 
