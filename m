@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-89961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2D49BDC01
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC2A9BDC02
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9335AB23310
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23AC61F26BEA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D181CF2AE;
-	Wed,  6 Nov 2024 02:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BED81D079F;
+	Wed,  6 Nov 2024 02:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qm+otMio"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1sX9AKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E691CF2A5;
-	Wed,  6 Nov 2024 02:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA16190676;
+	Wed,  6 Nov 2024 02:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858988; cv=none; b=K3o/gfvNEeDGsjemPQr1vgwWUnKLLcS8kPlp2SX2wnv6a8iFmy+8BgqslQLLVLzGc/0hcLjBe+KU+62VCW6fmk2hvTOcTKThFmrrZMD47/Ghw/whmqDVteJV5fSoeXnLl/iK9W9K1/0rA7L9r2s/+cnMcE7xx4HXdX2fRDr3AjY=
+	t=1730858993; cv=none; b=BWbtXYrPH/DdG0AkO3q5Es1GKMCEX+yJCgJwaQacbdHh0hHCezvEsUxRFt4XHQZxgAV0I7TJfMvNJP/XDAK7mmCI0PF9XNkHBO2D+JEpF6PmItoFljfJjEqMo/4sI5FMJR1ndnOXAgCVeGxZjvjfsVeEmOPRbt3Sw68UmO5G230=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858988; c=relaxed/simple;
-	bh=Ze3uZ+nIk5OMTMG/Q231NOFs4pQu+2SRKm8T9nCRF80=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syPmlZbJG3jlQdOXFkGhGEfoC+j+1W+7gyoYqpJ4IyBY59riiBjceQMFOe5TXn97khNbQ4jedtu6NLr+EVFj6Rv/t8uZNOuORH1hVt7iW+2sBA9q2d/xy2kCFzK5a524JrxGooe31ibCy2jEwfW2J6MZBxlIcRSSxay6vpA7OLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qm+otMio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E5C4CECF;
-	Wed,  6 Nov 2024 02:09:47 +0000 (UTC)
+	s=arc-20240116; t=1730858993; c=relaxed/simple;
+	bh=kV2fAIghnGPusjLtFBOK8Mq7voh7UMy0XjPiuOjfqxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HrzDKt+jGl+6gBE8T90eTZsWkfnnzMP0Kz20t1qGJWuW/+PIXFNOroVdgZw2Ec8ZtcQJP5ErpGj/7cJfGT9gJ4MdGlMDQdSsDidygd8k4tIdHElReO450PfX3LkqgZPaQJzdrHJZS5aeLvKnaFp9c00ecd+gcLBJM3Tw2DKozlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1sX9AKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009BBC4CECF;
+	Wed,  6 Nov 2024 02:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858988;
-	bh=Ze3uZ+nIk5OMTMG/Q231NOFs4pQu+2SRKm8T9nCRF80=;
+	s=k20201202; t=1730858992;
+	bh=kV2fAIghnGPusjLtFBOK8Mq7voh7UMy0XjPiuOjfqxA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=qm+otMioORvglZyvfAM7xxEejLhB09+arBTcHgKv6tcPZI1dX6p70N17dZcaAZTgR
-	 p8J3Y6rBAw4hfO77P5OTobKXdDDvQK2mlUw0TQgeesTSY59li0zDWEeQf7hNYJgADA
-	 jpn8Zjhusl+5iWSWDqAR1J3LLPkRtGWWtGHXoidQ/f2Jpvcgwti+dLMcsxXaAVEJtX
-	 yIuCIYoE0rDXtyqJrnYKD43E6wkzaIFM2UjQM0g19iWjTO+m7t9xZ3z7MpHpHRVZTc
-	 onyYHLUOsg3p7p5NFj2DS6fqgTGtvXy6OzSWsbLoj9umIrQCNtMB6Sw4Y99I99yOb8
-	 Hv7ouYnGbQYpA==
+	b=t1sX9AKJaAohFfzzOys5q67cFM4mKBUnw1428X65MqzJ2doIRj8H9bpL4lbQYIfyd
+	 0U2k/LGt1UuwWJ0y5g6yf0cMKUj2gfi8nFrYzpEhMh59tvh/sZWXAXRReYZqrQc8PX
+	 haGeMymGgN9TijsxGN8tYNYlkHYpgC+rE2JDtmzJ/i2fxrQIudC6ndg9uXu6I5CMwf
+	 iUNmsQ6jIF+ze6/G1mbM4qFVCJWUi+/zMdKfDjtaPuAPc8Ri4wp8owatiKheT2nm96
+	 ecHuliMwsRaboMPN3CCSsidXKesWQG10CkBXmcry+0APlUc+id+Q3nwsNY1uei37BR
+	 zOFkhazq9+NIA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	konishi.ryusuke@gmail.com
-Cc: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	yuzhao@google.com
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-nilfs@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of checked flag" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:45 -0500
-Message-ID: <20241106020945.172057-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm: allow set/clear page_type again" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:48 -0500
+Message-ID: <20241106020949.173366-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,49 +72,85 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Fri, 18 Oct 2024 04:33:10 +0900
-Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checked
- flag
+From 9d08ec41a0645283d79a2e642205d488feaceacf Mon Sep 17 00:00:00 2001
+From: Yu Zhao <yuzhao@google.com>
+Date: Sat, 19 Oct 2024 22:22:12 -0600
+Subject: [PATCH] mm: allow set/clear page_type again
 
-Syzbot reported that in directory operations after nilfs2 detects
-filesystem corruption and degrades to read-only,
-__block_write_begin_int(), which is called to prepare block writes, may
-fail the BUG_ON check for accesses exceeding the folio/page size,
-triggering a kernel bug.
+Some page flags (page->flags) were converted to page types
+(page->page_types).  A recent example is PG_hugetlb.
 
-This was found to be because the "checked" flag of a page/folio was not
-cleared when it was discarded by nilfs2's own routine, which causes the
-sanity check of directory entries to be skipped when the directory
-page/folio is reloaded.  So, fix that.
+From the exclusive writer's perspective, e.g., a thread doing
+__folio_set_hugetlb(), there is a difference between the page flag and
+type APIs: the former allows the same non-atomic operation to be repeated
+whereas the latter does not.  For example, calling __folio_set_hugetlb()
+twice triggers VM_BUG_ON_FOLIO(), since the second call expects the type
+(PG_hugetlb) not to be set previously.
 
-This was necessary when the use of nilfs2's own page discard routine was
-applied to more than just metadata files.
+Using add_hugetlb_folio() as an example, it calls __folio_set_hugetlb() in
+the following error-handling path.  And when that happens, it triggers the
+aforementioned VM_BUG_ON_FOLIO().
 
-Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+  if (folio_test_hugetlb(folio)) {
+    rc = hugetlb_vmemmap_restore_folio(h, folio);
+    if (rc) {
+      spin_lock_irq(&hugetlb_lock);
+      add_hugetlb_folio(h, folio, false);
+      ...
+
+It is possible to make hugeTLB comply with the new requirements from the
+page type API.  However, a straightforward fix would be to just allow the
+same page type to be set or cleared again inside the API, to avoid any
+changes to its callers.
+
+Link: https://lkml.kernel.org/r/20241020042212.296781-1-yuzhao@google.com
+Fixes: d99e3140a4d3 ("mm: turn folio_test_hugetlb into a PageType")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/nilfs2/page.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/page-flags.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 5436eb0424bd1..10def4b559956 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
- 
- 	folio_clear_uptodate(folio);
- 	folio_clear_mappedtodisk(folio);
-+	folio_clear_checked(folio);
- 
- 	head = folio_buffers(folio);
- 	if (head) {
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 1b3a767104878..cc839e4365c18 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -975,12 +975,16 @@ static __always_inline bool folio_test_##fname(const struct folio *folio) \
+ }									\
+ static __always_inline void __folio_set_##fname(struct folio *folio)	\
+ {									\
++	if (folio_test_##fname(folio))					\
++		return;							\
+ 	VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,	\
+ 			folio);						\
+ 	folio->page.page_type = (unsigned int)PGTY_##lname << 24;	\
+ }									\
+ static __always_inline void __folio_clear_##fname(struct folio *folio)	\
+ {									\
++	if (folio->page.page_type == UINT_MAX)				\
++		return;							\
+ 	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
+ 	folio->page.page_type = UINT_MAX;				\
+ }
+@@ -993,11 +997,15 @@ static __always_inline int Page##uname(const struct page *page)		\
+ }									\
+ static __always_inline void __SetPage##uname(struct page *page)		\
+ {									\
++	if (Page##uname(page))						\
++		return;							\
+ 	VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);	\
+ 	page->page_type = (unsigned int)PGTY_##lname << 24;		\
+ }									\
+ static __always_inline void __ClearPage##uname(struct page *page)	\
+ {									\
++	if (page->page_type == UINT_MAX)				\
++		return;							\
+ 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
+ 	page->page_type = UINT_MAX;					\
+ }
 -- 
 2.43.0
 
