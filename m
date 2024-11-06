@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-90467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCA19BE876
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1E29BE74C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A304D1F24D10
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC83283575
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4CA1E0499;
-	Wed,  6 Nov 2024 12:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ED61DEFD3;
+	Wed,  6 Nov 2024 12:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boW07J5N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3GfvZ7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED721DFD90;
-	Wed,  6 Nov 2024 12:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16041D416E;
+	Wed,  6 Nov 2024 12:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895859; cv=none; b=qDuEMpWghj5mli7JIHakI8jxQeD4PS8pphkrrSxGh9eNiuU+u64g0ptVVnELeFzs9hC1HPCNZHcP5yU9FQGImnP96hHICumhphGIxOjmHZZMP6vyTT/YzUTa6qnl3cl76MT4tY+0r6ThKMYAL37c/1RYYxh/VfIw3Mn6cf+3lOw=
+	t=1730895166; cv=none; b=GONCTwUnvlcBfQANyNTKfiilGT3VCuZgaZsSJP3hFlVdTNdrhImFpJnRlzbD34MPfOthPCg0mE0Sf8KfWAOspjp+Yi0BmlVu+2wGNQAwX04XDEcHgh9yzZfC9DW7H6kF1mH3rStFmULZLaO59FXr/Lzf9ON6dNtM0nd4rWpQ5zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895859; c=relaxed/simple;
-	bh=lUfEJ0K0h9GRd0xRTYUeYQ0Mg9yBaKNPE9UrzKFDeAA=;
+	s=arc-20240116; t=1730895166; c=relaxed/simple;
+	bh=5j0ehDtPUj9sM5nnKmdqnojeWAMl9cpRHtg5KuM9lBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2va8Aud1MIVtJ1QQZZ8jX+h96ou3Le9aa6GQNHbBd22LP2YWe6hNqv/cuFz9IcVu7/aSRePI6dFNsJBMbO2g0k3pF5OmTUavra8HGrwnjuDhxSJQFg+ZXwrwyWdtqnC+gyt9dhuK1nFerv9ByZHNF4i8ME7D/dn+aKesYwkZOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boW07J5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43ACEC4CECD;
-	Wed,  6 Nov 2024 12:24:19 +0000 (UTC)
+	 MIME-Version; b=lgZ0smKHfj+A7fXa1VsbRt7sLlJkaLC94cc1Rclibt2PgnzPTWIaIHES88ZEncGZE9Zm6OsaCAQ/+6no1MXaOGVbfq7jVnv5rQ5/34yYi0lIwNBzq+O2s5OSivscRQq/ehHt7cPxzLjQMuOw8HdOMtNhxD5G+Tdk/nj/dAowWl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3GfvZ7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FEC4CECD;
+	Wed,  6 Nov 2024 12:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895859;
-	bh=lUfEJ0K0h9GRd0xRTYUeYQ0Mg9yBaKNPE9UrzKFDeAA=;
+	s=korg; t=1730895166;
+	bh=5j0ehDtPUj9sM5nnKmdqnojeWAMl9cpRHtg5KuM9lBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boW07J5Nm1yZzDF59A5hVojjFVX/vwHXOHDtAgj9PGXrEofYsPdjMKEE2muglDnx/
-	 o0wU7BAG90mTPjFRxIpsFolhy1VYX6abrFKuweOP9KUCUazQM7L0dejw21FekrJiPz
-	 LdIN0Z1fUj9x+oRzdvkkVXAjE3mAsFxugBRUBb1E=
+	b=k3GfvZ7ZEI5FxkG/CMLmz7xJE32K1tG34yhBWDZogumMN0BSkwRyxYrOxbV2CQE6H
+	 wpdd89SEC8mPYEt0O4vM7pj2Fz6LssYAps6RSNkhrCMPizdl6eFIznOwbHtqRW4JEd
+	 efzwkPEdXUYzgFoYqDEo/p2HMcQ4350FrsgazUm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Ben Greear <greearb@candelatech.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 001/245] lib: alloc_tag_module_unload must wait for pending kfree_rcu calls
+Subject: [PATCH 4.19 126/350] USB: misc: yurex: fix race between read and write
 Date: Wed,  6 Nov 2024 13:00:54 +0100
-Message-ID: <20241106120319.274293314@linuxfoundation.org>
+Message-ID: <20241106120324.019632511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit dc783ba4b9df3fb3e76e968b2cbeb9960069263c ]
+[ Upstream commit 93907620b308609c72ba4b95b09a6aa2658bb553 ]
 
-Ben Greear reports following splat:
- ------------[ cut here ]------------
- net/netfilter/nf_nat_core.c:1114 module nf_nat func:nf_nat_register_fn has 256 allocated at module unload
- WARNING: CPU: 1 PID: 10421 at lib/alloc_tag.c:168 alloc_tag_module_unload+0x22b/0x3f0
- Modules linked in: nf_nat(-) btrfs ufs qnx4 hfsplus hfs minix vfat msdos fat
-...
- Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
- RIP: 0010:alloc_tag_module_unload+0x22b/0x3f0
-  codetag_unload_module+0x19b/0x2a0
-  ? codetag_load_module+0x80/0x80
+The write code path touches the bbu member in a non atomic manner
+without taking the spinlock. Fix it.
 
-nf_nat module exit calls kfree_rcu on those addresses, but the free
-operation is likely still pending by the time alloc_tag checks for leaks.
+The bug is as old as the driver.
 
-Wait for outstanding kfree_rcu operations to complete before checking
-resolves this warning.
-
-Reproducer:
-unshare -n iptables-nft -t nat -A PREROUTING -p tcp
-grep nf_nat /proc/allocinfo # will list 4 allocations
-rmmod nft_chain_nat
-rmmod nf_nat                # will WARN.
-
-[akpm@linux-foundation.org: add comment]
-Link: https://lkml.kernel.org/r/20241007205236.11847-1-fw@strlen.de
-Fixes: a473573964e5 ("lib: code tagging module support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reported-by: Ben Greear <greearb@candelatech.com>
-Closes: https://lore.kernel.org/netdev/bdaaef9d-4364-4171-b82b-bcfc12e207eb@candelatech.com/
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/codetag.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/misc/yurex.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/lib/codetag.c b/lib/codetag.c
-index afa8a2d4f3173..d1fbbb7c2ec3d 100644
---- a/lib/codetag.c
-+++ b/lib/codetag.c
-@@ -228,6 +228,9 @@ bool codetag_unload_module(struct module *mod)
- 	if (!mod)
- 		return true;
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index a85cc0f3e15c4..5f271d25b633d 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -405,7 +405,6 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+ 	char in_buffer[MAX_S64_STRLEN];
+-	unsigned long flags;
  
-+	/* await any module's kfree_rcu() operations to complete */
-+	kvfree_rcu_barrier();
-+
- 	mutex_lock(&codetag_lock);
- 	list_for_each_entry(cttype, &codetag_types, link) {
- 		struct codetag_module *found = NULL;
+ 	dev = file->private_data;
+ 
+@@ -418,9 +417,9 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
+ 		return -EIO;
+ 
+-	spin_lock_irqsave(&dev->lock, flags);
++	spin_lock_irq(&dev->lock);
+ 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+-	spin_unlock_irqrestore(&dev->lock, flags);
++	spin_unlock_irq(&dev->lock);
+ 	mutex_unlock(&dev->io_mutex);
+ 
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+@@ -510,8 +509,11 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 			__func__, retval);
+ 		goto error;
+ 	}
+-	if (set && timeout)
++	if (set && timeout) {
++		spin_lock_irq(&dev->lock);
+ 		dev->bbu = c2;
++		spin_unlock_irq(&dev->lock);
++	}
+ 	return timeout ? count : -EIO;
+ 
+ error:
 -- 
 2.43.0
 
