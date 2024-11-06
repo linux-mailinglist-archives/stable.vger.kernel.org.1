@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4BF9BE81B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A199BE938
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C4A0B21FE5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D1BEB21701
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9236D1DF74E;
-	Wed,  6 Nov 2024 12:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923461DF726;
+	Wed,  6 Nov 2024 12:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oiz8ZPZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7z+6JVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC421DF73E;
-	Wed,  6 Nov 2024 12:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509AD198E96;
+	Wed,  6 Nov 2024 12:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895659; cv=none; b=sbDN8yeJKiypJBx+8cLLhQmBVK3bFAu1BTyApBl3kfeczy/bDqXhrY2dsBIJhWxW/3HE/i/RHbVwMeu0pcOSXsQ7B1058tMhUKiRvtVpvR4tt41H7ECbhLLtNHfUzOXMxknBcIxraxPyQeNY1ZhBKW3ww6efOj7Bdk9Rw0qkxqE=
+	t=1730896304; cv=none; b=u+zSlKLBTRHWI9Uvgq7uz/wAUelFFgCy8NRoLxL7h8WnpaxknfDRYqAFDEDlBOZvIneoxxuSXhlYPPCdzt9rUI5tmRCgi/icjYyfN5B+20KqqhYgaNf7LvOblUxJjZwmpFoofsI8Lj5qtu4NzYC1WIqcTbWwISGziSBszP+6DDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895659; c=relaxed/simple;
-	bh=ciUnMmhgVbettT7JxVk8Y3WMcgHBaUGJwrprMT85Ddk=;
+	s=arc-20240116; t=1730896304; c=relaxed/simple;
+	bh=oTHhREzhJF2B3IEdlczyzRG8Suwr6xdpGcObvjdnCY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbU6UzfT3gOblMv3HKgJA1uQ3oibqQmhFtaa464M6q5j7LOSBKcIHmqOSCatxmt+dJQnO6OZ4s2I4x+ZHpFEYm7tgmcgC/fy5Tp4/IHm6RhTCffQDjC+MHDFKzVTbJ/tQvp9V0puN5UmEMnx6WyDiGo4wngOzJm32m5fdRS/uO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oiz8ZPZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FBCC4CECD;
-	Wed,  6 Nov 2024 12:20:58 +0000 (UTC)
+	 MIME-Version; b=pDmx8ikIAFU63pqc1rXA0YOBaLshr4ijv/Vz60p4mUrcUImXFhZ4/AYRAZhC1Z2+sMf3dCpByNH9uiK16pkjicVlsnYVRsYgENkUxw40bCOIu7LyfiZTS6eZK3kn77Rq2q8Vp1dui171ZKDAfjPOe4w48wf3yG9JVTM396JQgS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7z+6JVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F39AC4CECD;
+	Wed,  6 Nov 2024 12:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895659;
-	bh=ciUnMmhgVbettT7JxVk8Y3WMcgHBaUGJwrprMT85Ddk=;
+	s=korg; t=1730896304;
+	bh=oTHhREzhJF2B3IEdlczyzRG8Suwr6xdpGcObvjdnCY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oiz8ZPZZqDjeJ34gJhLVeRPo0F4jkEbuSLBlwmqHeBqmlw1GaSd4aaK3nyCTvRScX
-	 jkVwA5H0tOBOhc/FzhALu5lsKsfuNiFpA+KuP1Adl4eQfctSkM9FF/9SLIo4zN8M1/
-	 sImirJvnfOeC9sbyPpX+TdNBHGBXMevAe6netNlc=
+	b=J7z+6JVE3OAGCZwD9HZp0CZIfoBPfmBlJPnsM8CG7u/6EZjXfLBjmrsRwQyLpFRUK
+	 ehQD35xXYu32S1W/Y9x2QfQBVM9a6f1kHkRtapzwWdrlwgNi57OqmpmK6fdM8u6qIP
+	 J2UPu348PsdHrpIlb5ICAK0ZSLVjNrRAcweU29Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 246/350] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
-Date: Wed,  6 Nov 2024 13:02:54 +0100
-Message-ID: <20241106120327.008778917@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.11 122/245] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
+Date: Wed,  6 Nov 2024 13:02:55 +0100
+Message-ID: <20241106120322.225752384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
+commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
 
-Return -EIO instead of 0 for below erroneous bus attribute operations:
- - read a bus attribute without show().
- - write a bus attribute without store().
+Avoid potentially crashing in the driver because of uninitialized private data
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
+Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index e06a57936cc96..aad13af4175b8 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -103,7 +103,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for reading a bus attribute without show() */
-+	ssize_t ret = -EIO;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3138,7 +3138,8 @@ static int ieee80211_get_tx_power(struct
+ 	struct ieee80211_local *local = wiphy_priv(wiphy);
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
- 	if (bus_attr->show)
- 		ret = bus_attr->show(subsys_priv->bus, buf);
-@@ -115,7 +116,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for writing a bus attribute without store() */
-+	ssize_t ret = -EIO;
+-	if (local->ops->get_txpower)
++	if (local->ops->get_txpower &&
++	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 		return drv_get_txpower(local, sdata, dbm);
  
- 	if (bus_attr->store)
- 		ret = bus_attr->store(subsys_priv->bus, buf, count);
--- 
-2.43.0
-
+ 	if (local->emulate_chanctx)
 
 
 
