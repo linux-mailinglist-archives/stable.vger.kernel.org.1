@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-90455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14499BE86A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8209BEB21
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36871C20B12
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736741F268E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D401DFE3B;
-	Wed,  6 Nov 2024 12:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB6D1F5854;
+	Wed,  6 Nov 2024 12:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONCjWyTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLaNjMLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4421DFE25;
-	Wed,  6 Nov 2024 12:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF19C1E0480;
+	Wed,  6 Nov 2024 12:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895824; cv=none; b=dgqQUwqbgOCHxLpN8+lxWiif9hMIMZf5rbG7N4su20ALFEjdjwXcOV8J1gq8G7hVhVr1xGEqDEvDUz4AQwpeRrW3J73KAwU0+kiMn1gDTwFurOIM0pC8EmBFW7iFEcaUzynULBMgFuYB3twnHxdrIYSXtkJhSv68+qlRPgABKzI=
+	t=1730896860; cv=none; b=QP7NBlVm1VWbVF2rqRuu2YQ32fkKCT88N4cfpXXQLFaw0dTkNdpDMV3qX3HJeoKJVF6647sdrqKgN2eFcrlRHbMJVhsCUVwJmTLkkfupYXTQjmw720tYMV/73o0kRGVW/s/pt6hkIdpYYAslm/4TpaaK2nMDVc2Qw7SqWknRecM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895824; c=relaxed/simple;
-	bh=B9LP7jaKOsZn1RbCtZMwnAPg5rReo50vr8WXW0G3PHc=;
+	s=arc-20240116; t=1730896860; c=relaxed/simple;
+	bh=iPhQwMJTxNXtgpb8sL7e1ewRZia2BP+TjAN3VetyUEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3ZpQIygAfKZvsHo8M+t5YjhgMSyS2HV4iEtaD3xMNNtamv58rP6BvA4sfcjincOmIK/mXW05bUR5F8OT8qGGtPpUPg5TpdKhhOZjdlZ+x/0/iCtTo3kS+gz4Q8LdHrqQEyb/YRdo6ehggsvhtWTWcpYUEdxulGtM4XTj2dzUSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONCjWyTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B452C4CECD;
-	Wed,  6 Nov 2024 12:23:43 +0000 (UTC)
+	 MIME-Version; b=Fo77QSPuMfYFnqA2MwEpdYla/WXMGETsJNhVvfAqUe8mjYPnp07tywqw3Yy52SVGE+ichUL8rCFTcCQLOStDsjuPbvhRx1f7n5PuxUywhNj8dVjvA7Y4KAgj0jk4KxsS+zwn6SwDAzC06hXrSRWV5GaoA547r0YUpEVDOjvmwlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLaNjMLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579CCC4CED3;
+	Wed,  6 Nov 2024 12:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895823;
-	bh=B9LP7jaKOsZn1RbCtZMwnAPg5rReo50vr8WXW0G3PHc=;
+	s=korg; t=1730896859;
+	bh=iPhQwMJTxNXtgpb8sL7e1ewRZia2BP+TjAN3VetyUEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONCjWyTF+JZv0d8nDkq5Br7DLNGghr4fm3B3E9T2tUrK4SLYlZ+52uNL/hJBt7Dkm
-	 ahJuwRIXiHjbMi89fPvEUlafwx2tuk9WJnoFqXD3eHdcdvLaxi55l+Q06mNvaUw36P
-	 xgNHPM1W+HhpmjMQV2BNG0JDQn1o+Yz9sBpVjFtc=
+	b=jLaNjMLILx88ynVYVR9Bb1nI8F/4uVSOsg/g82AjV/i+kzsNrNE9lHqfmqe2hI45f
+	 mEM6e/ArY5HQVzU1znh0LglwdrwewNdTEmR9ACIJi7A2Xv0+LJc8lKbQKG/VURxZ1Z
+	 8z1psXZMf5Pn3J9oD7b35SX4wm5e2Pk0jYjhkifs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 347/350] ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
+Subject: [PATCH 5.10 069/110] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
 Date: Wed,  6 Nov 2024 13:04:35 +0100
-Message-ID: <20241106120329.254008283@linuxfoundation.org>
+Message-ID: <20241106120305.093928123@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,62 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit bc0a2f3a73fcdac651fca64df39306d1e5ebe3b0 ]
+[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
 
-Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two
-reasons for this: first, the parameter value passed is greater than
-ocfs2_max_inline_data_with_xattr, second, the start and end parameters of
-ocfs2_truncate_inline are "unsigned int".
+If devm_gpiod_get_optional() fails, we need to disable previously enabled
+regulators, as done in the other error handling path of the function.
 
-So, we need to add a sanity check for byte_start and byte_len right before
-ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater
-than ocfs2_max_inline_data_with_xattr return -EINVAL.
+Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
+potential gpiod_set_value_cansleep(, 0).
+If the "reset" gpio is not defined, this additional call is just a no-op.
 
-Link: https://lkml.kernel.org/r/tencent_D48DB5122ADDAEDDD11918CFB68D93258C07@qq.com
-Fixes: 1afc32b95233 ("ocfs2: Write support for inline data")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=81092778aac03460d6b7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This behavior is the same as the one already in the .remove() function.
+
+Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/soc/codecs/cs42l51.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index a6f486f4138f5..3c71c05a0581b 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1795,6 +1795,14 @@ int ocfs2_remove_inode_range(struct inode *inode,
- 		return 0;
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index 4b026e1c3fe3e..09445db29aa1f 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -754,8 +754,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
  
- 	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
-+		int id_count = ocfs2_max_inline_data_with_xattr(inode->i_sb, di);
-+
-+		if (byte_start > id_count || byte_start + byte_len > id_count) {
-+			ret = -EINVAL;
-+			mlog_errno(ret);
-+			goto out;
-+		}
-+
- 		ret = ocfs2_truncate_inline(inode, di_bh, byte_start,
- 					    byte_start + byte_len, 0);
- 		if (ret) {
+ 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						      GPIOD_OUT_LOW);
+-	if (IS_ERR(cs42l51->reset_gpio))
+-		return PTR_ERR(cs42l51->reset_gpio);
++	if (IS_ERR(cs42l51->reset_gpio)) {
++		ret = PTR_ERR(cs42l51->reset_gpio);
++		goto error;
++	}
+ 
+ 	if (cs42l51->reset_gpio) {
+ 		dev_dbg(dev, "Release reset gpio\n");
+@@ -787,6 +789,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 	return 0;
+ 
+ error:
++	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
+ 			       cs42l51->supplies);
+ 	return ret;
 -- 
 2.43.0
 
