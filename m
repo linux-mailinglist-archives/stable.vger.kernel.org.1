@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EABF9BEE6F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55289BEEB0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF6C1C2478A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3861F23185
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91041E0DB6;
-	Wed,  6 Nov 2024 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453591E00AF;
+	Wed,  6 Nov 2024 13:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIDjK9DL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nie2tWZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F2B1CC14B;
-	Wed,  6 Nov 2024 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F410A1DE2CF;
+	Wed,  6 Nov 2024 13:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899032; cv=none; b=mdMs1wlS1DBvh8fQkXXz3pnS60wEJmG7r5deGGPWpARzDJMYs/N0+ILicZkcd6nZb+PkYa5wiZxus1SsT6AOkrytSvzOoozzUCvoSA+BUn7XBhtOQcSwYGknghAi4LIHnvSUGmxB+t11duS4pCmagB03YzPq0YlEsc/akCnSic4=
+	t=1730899187; cv=none; b=OMdC0GGS1jWdYss8LP6uhwC9ZumB2xOfIMUjLqJMHVpzROGb6Z9Jd/Rw2fzamW8i6dO3B3xzkVSONFUp/GAMqb2uhF2v//vQqPkxAAgjQGiVjm3CUd0m5lqOz0tnNWEVnYq4Vv9WSVb8HDDm7vAPv5b77a1Ke2NMa3922oF0YrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899032; c=relaxed/simple;
-	bh=kyMlYqpn3UpKdPIUHidUZnTCx/D/+ras64opWFxCceM=;
+	s=arc-20240116; t=1730899187; c=relaxed/simple;
+	bh=aQFSvQ4Sk7jlyFs/hPyQ1NRMb049S6GUQ4J3Vjk8odM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E19ueLq8gAcwPbSkHptNRUgdgfHhRma6LLKNJnOCbcWukl30MYLICrLSZ8h8padOZFF3Ry3MzzOeAbcFzlS9QHGOj+DiPyoK+uQWeHpGdW1pgSmzJ4sFYbzm7lmqDXZue9YHNv72neW0w+qxKVosEW8hZ0JGW98XVF7Yg2W+WJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIDjK9DL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23A5C4CED4;
-	Wed,  6 Nov 2024 13:17:11 +0000 (UTC)
+	 MIME-Version; b=Awv2zzpkMVQKe5DY9qZHMV+kS06u1q9pKPxnorMPIJZYuxERfz7bS7H6/TPPSzOkjprTt6rkyCxMYWv06MrxrTEaUcjS9cYvu/c0prK3H4uwvybimN4JPN/IqOWZuk/mxmauro5lsSqU59D24joytX6qOoh9wDNKsgtJILR6VvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nie2tWZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DA5C4CECD;
+	Wed,  6 Nov 2024 13:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899032;
-	bh=kyMlYqpn3UpKdPIUHidUZnTCx/D/+ras64opWFxCceM=;
+	s=korg; t=1730899186;
+	bh=aQFSvQ4Sk7jlyFs/hPyQ1NRMb049S6GUQ4J3Vjk8odM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIDjK9DL0oW42+9ho/k8DeUhJnEe458b3LUxIl8ARQzXtWPSDazXi5MVlhgOuylqX
-	 jt8P7mUgu5yCny5JlUUZtq8Nr5iJtPygtNCCgF1+heX7DV2TyaxHrjgaj+ob3yGWDr
-	 mC1j3RnZt/Oeq2WRkgOfzxWpRjJmCs5flhnyFYtY=
+	b=nie2tWZjthQh2areH/35v4ITokZMpsyV+x6FqhvVnZNQuj9x3AgkOnl38rhp+7VJF
+	 ssAmbo07vD/YusQaUR96wY4bgf2XHk2VwWirKOnJCbhgSvPkYVSxf6CiK4DT8CP2+M
+	 uHl0j71yqJchE2riNFmLt/QAv9Zj82oUood1XpuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 439/462] net: support ip generic csum processing in skb_csum_hwoffload_help
+Subject: [PATCH 5.15 28/73] firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()
 Date: Wed,  6 Nov 2024 13:05:32 +0100
-Message-ID: <20241106120342.344708199@linuxfoundation.org>
+Message-ID: <20241106120300.803820641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-[ Upstream commit 62fafcd63139920eb25b3fbf154177ce3e6f3232 ]
+[ Upstream commit c83212d79be2c9886d3e6039759ecd388fd5fed1 ]
 
-NETIF_F_IP|IPV6_CSUM feature flag indicates UDP and TCP csum offload
-while NETIF_F_HW_CSUM feature flag indicates ip generic csum offload
-for HW, which includes not only for TCP/UDP csum, but also for other
-protocols' csum like GRE's.
+In sdei_device_freeze(), the input parameter of cpuhp_remove_state() is
+passed as 'sdei_entry_point' by mistake. Change it to 'sdei_hp_state'.
 
-However, in skb_csum_hwoffload_help() it only checks features against
-NETIF_F_CSUM_MASK(NETIF_F_HW|IP|IPV6_CSUM). So if it's a non TCP/UDP
-packet and the features doesn't support NETIF_F_HW_CSUM, but supports
-NETIF_F_IP|IPV6_CSUM only, it would still return 0 and leave the HW
-to do csum.
-
-This patch is to support ip generic csum processing by checking
-NETIF_F_HW_CSUM for all protocols, and check (NETIF_F_IP_CSUM |
-NETIF_F_IPV6_CSUM) only for TCP and UDP.
-
-Note that we're using skb->csum_offset to check if it's a TCP/UDP
-proctol, this might be fragile. However, as Alex said, for now we
-only have a few L4 protocols that are requesting Tx csum offload,
-we'd better fix this until a new protocol comes with a same csum
-offset.
-
-v1->v2:
-  - not extend skb->csum_not_inet, but use skb->csum_offset to tell
-    if it's an UDP/TCP csum packet.
-v2->v3:
-  - add a note in the changelog, as Willem suggested.
-
-Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
+Fixes: d2c48b2387eb ("firmware: arm_sdei: Fix sleep from invalid context BUG")
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20241016084740.183353-1-wangxiongfeng2@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_sdei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8f2f14df3610b..ff62b0027d600 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3263,7 +3263,18 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return !!(features & NETIF_F_SCTP_CRC) ? 0 :
- 			skb_crc32c_csum_help(skb);
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 285fe7ad490d1..3e8051fe82965 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -763,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
  
--	return !!(features & NETIF_F_CSUM_MASK) ? 0 : skb_checksum_help(skb);
-+	if (features & NETIF_F_HW_CSUM)
-+		return 0;
-+
-+	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		switch (skb->csum_offset) {
-+		case offsetof(struct tcphdr, check):
-+		case offsetof(struct udphdr, check):
-+			return 0;
-+		}
-+	}
-+
-+	return skb_checksum_help(skb);
- }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
+ 	/* unregister private events */
+-	cpuhp_remove_state(sdei_entry_point);
++	cpuhp_remove_state(sdei_hp_state);
  
+ 	err = sdei_unregister_shared();
+ 	if (err)
 -- 
 2.43.0
 
