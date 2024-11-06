@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-90550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B8F9BE8E5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749B79BE7BC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A937C1C20AFB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34CE72846CF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EF11DE4EA;
-	Wed,  6 Nov 2024 12:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B431DF25E;
+	Wed,  6 Nov 2024 12:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Nnmfmzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on/Ign6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FF618C00E;
-	Wed,  6 Nov 2024 12:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7587C1DF249;
+	Wed,  6 Nov 2024 12:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896104; cv=none; b=nK2mjdDqTyRiWEfFCN3idocbsIhnlt24/bDnbByM/SAXqfCgHRm/ZDYr139lY4+2imNh/VBFpnKBsw2AswNJzIXPm4CYGCFFkNKLvpTjilCnU2YXJzb0tkFLncgUCH9zZ9JAAfJYywe53PfGmXgvxRxEcP8xnAEJw/UPxvX/+9c=
+	t=1730895433; cv=none; b=QJpm6dWVV0gua8+0zNDBTnfllOtEPUMmk13x0IP7GzzQCdv4hAWDNqvijiH4dYPWdz8LSbEI0/yIG1Yf7hUTgXxxFado3WIAvc2iCTF/nlJScP0oZqjCbH7oWxcNOuV8E545XZVltLXYE5FYwgVrTb0OKkuSAQn7B4Gek/ZyVGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896104; c=relaxed/simple;
-	bh=vYNq2/a19aAUElB1u2muOe/8wIUWzf6oolp949gx2Xc=;
+	s=arc-20240116; t=1730895433; c=relaxed/simple;
+	bh=pJIrqatPnOw7XqObTRvFo0WUaSlOHeEOSZGEOHIsQJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSfxbkEwB0rBmJgrwRrrokO+nF15lnGL7fefleKf4wSLi+slTlGqKk0EVzsq/A2yg+6shJvPUuOcPElisIfW+9iNfEFJOEeV9uOYgnQy0PEMhNXdq7ZT+y5HmmtmOyyDNKZji2WCUBTJ+bIFRSDM3zN8LS7oNN9oxPpb5FjaV4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Nnmfmzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B721C4CECD;
-	Wed,  6 Nov 2024 12:28:23 +0000 (UTC)
+	 MIME-Version; b=MYwWLdCOuS4W+dN+CiLxUeh+bT6vyCcz6zMGZfa4/KlbXYDTN8HusLHA94CDcjuTEBcZMVbUvjps8xnfxrOeGuowgWtU1KwC60xfNAExVyAGMkNGJa1isgqVPO4ylnjioJAPw/D3KWWTDgDDumB7u68WF3tr++FiYYmXL0s/0g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on/Ign6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F19C4CECD;
+	Wed,  6 Nov 2024 12:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896104;
-	bh=vYNq2/a19aAUElB1u2muOe/8wIUWzf6oolp949gx2Xc=;
+	s=korg; t=1730895433;
+	bh=pJIrqatPnOw7XqObTRvFo0WUaSlOHeEOSZGEOHIsQJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Nnmfmzory4QZ5N9NDJ9qxyQXCAZ7mB4vo3jmqOZDH3+Lza+DZ+5JbrcwACZbTlJB
-	 l8/NHeTqLVA05PFzUkvYQzcFlk8CPw1cxIEnq34R4iEUmpQD4O528YeksHYbvwx4K1
-	 tGOTQpwVxAVdLwQX0BkLU2T1o8wtf+dW7AtEtED4=
+	b=on/Ign6v7qp3qcyA7qE6EPNBVX5EjVSgX9tiQl04bz2E5RTxCL3JArUntsjDo4TWl
+	 U3gsriO+FAMP2eYyv0opJUHnUNKeDB6iIE37SoWnQJCyo9BfNVIeC1jJmI+BQAABG8
+	 1Y3WEVLUOkvqPs+4WmZhFkaq9k4ni3+1MQiBRwnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Morse <james.morse@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 092/245] scsi: scsi_transport_fc: Allow setting rport state to current state
+Subject: [PATCH 4.19 217/350] arm64: Add Cortex-715 CPU part definition
 Date: Wed,  6 Nov 2024 13:02:25 +0100
-Message-ID: <20241106120321.473589534@linuxfoundation.org>
+Message-ID: <20241106120326.359631125@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +68,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit d539a871ae47a1f27a609a62e06093fa69d7ce99 ]
+[ Upstream commit 07e39e60bbf0ccd5f895568e1afca032193705c0 ]
 
-The only input fc_rport_set_marginal_state() currently accepts is
-"Marginal" when port_state is "Online", and "Online" when the port_state
-is "Marginal". It should also allow setting port_state to its current
-state, either "Marginal or "Online".
+Add the CPU Partnumbers for the new Arm designs.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Link: https://lore.kernel.org/r/20240917230643.966768-1-bmarzins@redhat.com
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20221116140915.356601-2-anshuman.khandual@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: Trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_fc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
-index 7d088b8da0757..2270732b353c8 100644
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -1255,7 +1255,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
- 		 */
- 		if (rport->port_state == FC_PORTSTATE_ONLINE)
- 			rport->port_state = port_state;
--		else
-+		else if (port_state != rport->port_state)
- 			return -EINVAL;
- 	} else if (port_state == FC_PORTSTATE_ONLINE) {
- 		/*
-@@ -1265,7 +1265,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
- 		 */
- 		if (rport->port_state == FC_PORTSTATE_MARGINAL)
- 			rport->port_state = port_state;
--		else
-+		else if (port_state != rport->port_state)
- 			return -EINVAL;
- 	} else
- 		return -EINVAL;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index f8be4d7ecde28..e3df8b0c067bf 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -86,6 +86,7 @@
+ #define ARM_CPU_PART_CORTEX_A78		0xD41
+ #define ARM_CPU_PART_CORTEX_X1		0xD44
+ #define ARM_CPU_PART_CORTEX_A710	0xD47
++#define ARM_CPU_PART_CORTEX_A715	0xD4D
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
+@@ -130,6 +131,7 @@
+ #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
+ #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
+ #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
++#define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
 -- 
 2.43.0
 
