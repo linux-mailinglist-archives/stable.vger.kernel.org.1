@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-91058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59DD9BEC3C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834749BEB78
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DDDD1F235D9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64971C23613
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F961FB3F2;
-	Wed,  6 Nov 2024 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD711EC014;
+	Wed,  6 Nov 2024 12:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TId8D0sr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaYMaXJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060571FB3F0;
-	Wed,  6 Nov 2024 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DFD1E009E;
+	Wed,  6 Nov 2024 12:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897616; cv=none; b=jCiM+rnT+B7kZN2grMWUMaL6ivouFD8XRxUJSdi4uhthftE6IwV9l529/LYSUpdghvDv3MnzY6v1J1w5I/va1XhFrHzyoIzgUisHtL6ITBd69tjWbdL51B7cxuwgmrlSqweKpfqk+a+MVT5UZfvnmgIijBoM0QB+VWsbhgGbNOM=
+	t=1730897100; cv=none; b=TIod9UPsXt7jSr7ZQ6OfY3C8npyjds+YecDhYYAb4f6v/sKZmB7h7szvKUiTNS08kszu4MnnlS18DJ1MIHjueleW2krXVQeil2v6VIgzmYM0T4YOuHPee+JolvT84ic9ksTDVFZWTr/cmHgU5xmy5E48H/rywwk9qwKNU81mPLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897616; c=relaxed/simple;
-	bh=kNTV8q8dnHhnUmprChwULAo+Z/YC0XeDG2klDh5PmoI=;
+	s=arc-20240116; t=1730897100; c=relaxed/simple;
+	bh=SgXf7W4ZGMQKUOBlEBULFVwr5TT9NyZg6RZgD5N+KSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MywPtNgpzIbdqOdmsDcDgGGWNEWx1DlbFcgiK4PiJUf9EtFFYXzEEfuKNHl9LWw9axuny0vUYroH9tpBL7nANyDj/vAzxImOpwubf099yCNA7xY4IfMMzrCldXd45DryhH4rFNVMhngooETvq/5YJIm3LUvnR+zuWHQetzqOqA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TId8D0sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D209C4CECD;
-	Wed,  6 Nov 2024 12:53:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TYsHWrsx3fTYcwxt82BQjUaWR3/Q+o7iK7LKqIZoDZmbfukIKwtlhBnyNWahmJqXE0DaA+yAZCDB17icvV5IfKPwOm3rNHpOI63w3JKSSh43hscH9CfAjtL/xgzzePWcQSUEWXNyett34UHH2RxMwby/4wZJ1ZWgDbtmLRAxa1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaYMaXJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D0FC4CECD;
+	Wed,  6 Nov 2024 12:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897615;
-	bh=kNTV8q8dnHhnUmprChwULAo+Z/YC0XeDG2klDh5PmoI=;
+	s=korg; t=1730897100;
+	bh=SgXf7W4ZGMQKUOBlEBULFVwr5TT9NyZg6RZgD5N+KSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TId8D0sr7F7C3UJJlI+nxREIgsY051xK79XfYz4zZ3/0FOCLZXkt1MHRnvXgtuBZL
-	 gAPtO9nmMI3cpZ7EqUo7t49zL2DePa3vGYzvt4TPW0ayYw6RZ/fbmQKXU6UO68dveh
-	 U7cXZ40MPouOZ6UH9keCKzszhkk7mGmwHcRJyB4U=
+	b=RaYMaXJ4v7p9TDDXAJfVzxUoZbPRSe+3DfXo4MDydd68AG2vtgfvx5fbuc6dehHNr
+	 mgU34DsVHn5BLW6nQosX48i6gYmFAuAf9M3MQE+CrrLvqjgt68VBuv7WKJEm/XETFI
+	 zehUfWJ60rxPp413L7+w58q7t7G3hNZbUxPlAwik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Zhongjin <chenzhongjin@huawei.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/151] rcu-tasks: Add data to eliminate RCU-tasks/do_exit() deadlocks
-Date: Wed,  6 Nov 2024 13:04:25 +0100
-Message-ID: <20241106120310.971166110@linuxfoundation.org>
+	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 065/126] ALSA: usb-audio: Add quirks for Dell WD19 dock
+Date: Wed,  6 Nov 2024 13:04:26 +0100
+Message-ID: <20241106120307.847460411@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Jan Schär <jan@jschaer.ch>
 
-[ Upstream commit bfe93930ea1ea3c6c115a7d44af6e4fea609067e ]
+commit 4413665dd6c528b31284119e3571c25f371e1c36 upstream.
 
-Holding a mutex across synchronize_rcu_tasks() and acquiring
-that same mutex in code called from do_exit() after its call to
-exit_tasks_rcu_start() but before its call to exit_tasks_rcu_stop()
-results in deadlock.  This is by design, because tasks that are far
-enough into do_exit() are no longer present on the tasks list, making
-it a bit difficult for RCU Tasks to find them, let alone wait on them
-to do a voluntary context switch.  However, such deadlocks are becoming
-more frequent.  In addition, lockdep currently does not detect such
-deadlocks and they can be difficult to reproduce.
+The WD19 family of docks has the same audio chipset as the WD15. This
+change enables jack detection on the WD19.
 
-In addition, if a task voluntarily context switches during that time
-(for example, if it blocks acquiring a mutex), then this task is in an
-RCU Tasks quiescent state.  And with some adjustments, RCU Tasks could
-just as well take advantage of that fact.
+We don't need the dell_dock_mixer_init quirk for the WD19. It is only
+needed because of the dell_alc4020_map quirk for the WD15 in
+mixer_maps.c, which disables the volume controls. Even for the WD15,
+this quirk was apparently only needed when the dock firmware was not
+updated.
 
-This commit therefore adds the data structures that will be needed
-to rely on these quiescent states and to eliminate these deadlocks.
-
-Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
-
-Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
-Reported-by: Yang Jihong <yangjihong1@huawei.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Yang Jihong <yangjihong1@huawei.com>
-Tested-by: Chen Zhongjin <chenzhongjin@huawei.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Stable-dep-of: fd70e9f1d85f ("rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h | 2 ++
- kernel/rcu/tasks.h    | 2 ++
- 2 files changed, 4 insertions(+)
+ sound/usb/mixer_quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 77f01ac385f7a..3d83cc397eac1 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -854,6 +854,8 @@ struct task_struct {
- 	u8				rcu_tasks_idx;
- 	int				rcu_tasks_idle_cpu;
- 	struct list_head		rcu_tasks_holdout_list;
-+	int				rcu_tasks_exit_cpu;
-+	struct list_head		rcu_tasks_exit_list;
- #endif /* #ifdef CONFIG_TASKS_RCU */
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3465,6 +3465,9 @@ int snd_usb_mixer_apply_create_quirk(str
+ 			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
++	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
++		err = dell_dock_mixer_create(mixer);
++		break;
  
- #ifdef CONFIG_TASKS_TRACE_RCU
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 90425d0ec09cf..7ac3c8af075fc 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -32,6 +32,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
-  * @rtp_irq_work: IRQ work queue for deferred wakeups.
-  * @barrier_q_head: RCU callback for barrier operation.
-  * @rtp_blkd_tasks: List of tasks blocked as readers.
-+ * @rtp_exit_list: List of tasks in the latter portion of do_exit().
-  * @cpu: CPU number corresponding to this entry.
-  * @rtpp: Pointer to the rcu_tasks structure.
-  */
-@@ -46,6 +47,7 @@ struct rcu_tasks_percpu {
- 	struct irq_work rtp_irq_work;
- 	struct rcu_head barrier_q_head;
- 	struct list_head rtp_blkd_tasks;
-+	struct list_head rtp_exit_list;
- 	int cpu;
- 	struct rcu_tasks *rtpp;
- };
--- 
-2.43.0
-
+ 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
+ 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
 
 
 
