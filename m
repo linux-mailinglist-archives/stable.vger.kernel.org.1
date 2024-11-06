@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-90946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94409BEBC5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4989BEC4A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1D01F2567B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F831F21E62
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED0A1F9A93;
-	Wed,  6 Nov 2024 12:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55B61FB88F;
+	Wed,  6 Nov 2024 12:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6libibw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ja/QFDLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3421F942D;
-	Wed,  6 Nov 2024 12:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628CE1F80C3;
+	Wed,  6 Nov 2024 12:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897283; cv=none; b=CKsPjHovi9wtoWkIBYExIPNrXs03LAvbjNsTQoNxzAupSy5U4NQOfJhiTjrSO2VBpOrc+zT5pY8djSBET2dD+CJf5IEnlIioeaR+nRg+0W+vKalVV9YP7ubltdOn2Owot0Tl+uC9aQZAj5Eglrm3Ehsywz3UQuBBfhQIFfDEUSM=
+	t=1730897658; cv=none; b=V5GBJulBi81r2P26l3mBp+0GLhZFImwqdcL2poipLdh+DMjdNmrirjweEzvw1o9iXPkITHyEXw5LbIiiTAk7rBEFado0eJ28AANU00ErKOEHcpwv7lJ1EX765PrlwrLa2A3+J8HGgMbyHov8DILsegCG0J23TLAiz83d5IP8Ckw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897283; c=relaxed/simple;
-	bh=7IpPHdrze9VdTkvlvngnj0YHac0TVXXOtf50/WEMFp8=;
+	s=arc-20240116; t=1730897658; c=relaxed/simple;
+	bh=8MwTmbHVkMhuTRCylbVq6mq+h6gjl06FaY7MFnND3PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aROagX5wW39kn8xwHPkBxszajBca0A7f+cRJwQHmKsqrjrUv8Ly6+JuK0kzonb/gUFszSQ3XpH8WN5YpK0wDw/mMOzh1+ZQK2j3Y870oaL+98oek2OlnUlhby8lXs5XjtUsmeL/onfaPhzpqdazMR+pC46OS0zbKZgWKvzhnqDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6libibw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F798C4CECD;
-	Wed,  6 Nov 2024 12:48:02 +0000 (UTC)
+	 MIME-Version; b=c0px6satyAyPHi74psSZEs3m5ePQ+Q2tfVxVAfkaagRqiLAEGbV9Rk9T7Y6RYU9vRBV8Umhz73g/90qqrot2tU7TMSTTrwV8IA6RYnzWLiNq9HzUoiv3VJG08/iwwGO1j9urbWEM/MtZbtZiQdeOsyQ1SphmhvbmV1t30aFK6is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ja/QFDLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0AAC4CECD;
+	Wed,  6 Nov 2024 12:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897283;
-	bh=7IpPHdrze9VdTkvlvngnj0YHac0TVXXOtf50/WEMFp8=;
+	s=korg; t=1730897658;
+	bh=8MwTmbHVkMhuTRCylbVq6mq+h6gjl06FaY7MFnND3PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6libibwnab7hpr2J5C4nUiQgfzJvOMvH0H/Uaya5NYdbh4vrfKRJOhe1ZBazJzLO
-	 nPA9kF4YSU+AfY99QvI3d5unXHqzPS4xnZ9ZhkPW5vfV5izJr86810iMd4ZlLjZYkO
-	 UzLizr/VmsRC81oyKXRLikiLczSWwNkbZ1szCJnU=
+	b=ja/QFDLMklXaMb/2Dnlk7vNYA/THsOZ/PE+rMmIHATFtXA5FXRmOLIRoa0gZWWX/g
+	 Ct5bd1Grd7M/NpdSU5xAcoU9IHvT1b0/cpQAiv8utafZi6fySI1u1WVeG0Ppv6YlD3
+	 Tfxd8LcIrYCr/OGnS2Cpi1bNrfipWJqRgMhGJn28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Gill <rtgill82@gmail.com>,
+	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 115/126] x86/bugs: Use code segment selector for VERW operand
+	Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/151] x86/traps: move kmsan check after instrumentation_begin
 Date: Wed,  6 Nov 2024 13:05:16 +0100
-Message-ID: <20241106120309.164236348@linuxfoundation.org>
+Message-ID: <20241106120312.385474145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +67,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 
-commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
+[ Upstream commit 1db272864ff250b5e607283eaec819e1186c8e26 ]
 
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
+During x86_64 kernel build with CONFIG_KMSAN, the objtool warns following:
 
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+vmlinux.o: warning: objtool: handle_bug+0x4: call to
+    kmsan_unpoison_entry_regs() leaves .noinstr.text section
+  OBJCOPY modules.builtin.modinfo
+  GEN     modules.builtin
+  MODPOST Module.symvers
+  CC      .vmlinux.export.o
 
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
+Moving kmsan_unpoison_entry_regs() _after_ instrumentation_begin() fixes
+the warning.
 
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
+There is decode_bug(regs->ip, &imm) is left before KMSAN unpoisoining, but
+it has the return condition and if we include it after
+instrumentation_begin() it results the warning "return with
+instrumentation enabled", hence, I'm concerned that regs will not be KMSAN
+unpoisoned if `ud_type == BUG_NONE` is true.
 
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
-
-[ mingo: Fixed the SOB chain. ]
-
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: stable@vger.kernel.org # 5.10+
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20241016152407.3149001-1-snovitoll@gmail.com
+Fixes: ba54d194f8da ("x86/traps: avoid KMSAN bugs originating from handle_bug()")
+Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kernel/traps.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -211,7 +211,16 @@
-  */
- .macro CLEAR_CPU_BUFFERS
- 	ALTERNATIVE "jmp .Lskip_verw_\@", "", X86_FEATURE_CLEAR_CPU_BUF
--	verw _ASM_RIP(mds_verw_sel)
-+#ifdef CONFIG_X86_64
-+	verw mds_verw_sel(%rip)
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	verw %cs:mds_verw_sel
-+#endif
- .Lskip_verw_\@:
- .endm
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 840a3b2d24779..37b8e20c03a9f 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -259,12 +259,6 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	int ud_type;
+ 	u32 imm;
  
+-	/*
+-	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
+-	 * is a rare case that uses @regs without passing them to
+-	 * irqentry_enter().
+-	 */
+-	kmsan_unpoison_entry_regs(regs);
+ 	ud_type = decode_bug(regs->ip, &imm);
+ 	if (ud_type == BUG_NONE)
+ 		return handled;
+@@ -273,6 +267,12 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	 * All lies, just get the WARN/BUG out.
+ 	 */
+ 	instrumentation_begin();
++	/*
++	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
++	 * is a rare case that uses @regs without passing them to
++	 * irqentry_enter().
++	 */
++	kmsan_unpoison_entry_regs(regs);
+ 	/*
+ 	 * Since we're emulating a CALL with exceptions, restore the interrupt
+ 	 * state to what it was at the exception site.
+-- 
+2.43.0
+
 
 
 
