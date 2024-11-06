@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE389BE86D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B45B9BE993
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4E41C20E5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 200072811E5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A53C1DFE27;
-	Wed,  6 Nov 2024 12:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4C41E0480;
+	Wed,  6 Nov 2024 12:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrtK6RNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSQbxje1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99571DF98C;
-	Wed,  6 Nov 2024 12:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7351E048E;
+	Wed,  6 Nov 2024 12:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895830; cv=none; b=R8qC6tdzU9HdHLDn0R7F7GNyx5g8EmuOiZGRxb3Uf9ezTqKEkFD+22+sdE0JTdHsw2jxcdoMzOqoM3AdVeyKheEucD7BH1a3ybUKCEwnruLS+pyLoIW0C6+XqQs2E3io02GCh5qoPlAvkhlMpvd5MPuOC7YQaqnLicFpvOc05AY=
+	t=1730896504; cv=none; b=NFIs0idLNkq6CE6VThJtmx/8QeKpqiY9JEZpDl9ceFr5tPIyQuaLiR9tnibKYQ6MNFT8Pwds3kzJnI+FJOV7dMbUEAyhT2UaRmRMsiDW5dVszuTQPjn4CAnJbIN8zWpgcLCbrb3jKp2hPrU148p725o5RKk+9LvyaANR5Tms9Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895830; c=relaxed/simple;
-	bh=bBXNyyDsaCk77zODsNcMvA1aDZs1SI4+7lwneiXm6n0=;
+	s=arc-20240116; t=1730896504; c=relaxed/simple;
+	bh=bu2dBFprwhnN0H1Eo+J04x8YPQS76XalEyg345nKgiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVKy8YNEEsqI+r/XPTdZYoXFS1bfzDiydh4WtN0U0F09rXtRQMdNNzWA4GGlKitQMgZ2EmkGcuwKMh74cAmPYABeXThApYa8Yz974/7xkqZAw4GJj9ygzBK1VA8uhsZXUFyhE/CwP28zJUhufeaTEkxW+BRWMfVx0VTEi9ZB49A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrtK6RNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F31C4CECD;
-	Wed,  6 Nov 2024 12:23:49 +0000 (UTC)
+	 MIME-Version; b=FQY0sloA4u8IJsSeT2yJuFJWF2sR+8TLJ3cUcnv9BJrtfRBzZvTyNPQjnAcWcmFPx6m6DUj3myeA5vRY6BwviF1WrhXe2O78hIQggUWCr3ggxoKWO407drkXaL8sdTgvyx4q8FzzQT69Zwb8cbv5yDvLDCjzmLqIaHuDEnVheAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSQbxje1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C05C4CECD;
+	Wed,  6 Nov 2024 12:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895829;
-	bh=bBXNyyDsaCk77zODsNcMvA1aDZs1SI4+7lwneiXm6n0=;
+	s=korg; t=1730896504;
+	bh=bu2dBFprwhnN0H1Eo+J04x8YPQS76XalEyg345nKgiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrtK6RNh/23qjy4Pg+GkwMSIZ3ylxZwtkBKzM1h61lH+QSvZR+npU+URRLPJwqWTy
-	 JjYbhutY/HOt9CS3dK+CW52KxWbal2gjBozrTfCrrGkC3VbBQiuGZEkp9mXVsFarmk
-	 KbuxtO04XPQzwPmr1/L9K3c9dZekeK8v9E4d3N10=
+	b=qSQbxje1VMN4NHPVOLpSy/XlWiJN8AwqDpEhZk7GpYSbqB8vUD31qPUnjTHUH+Yix
+	 sWDfro1PneVGDJ5yYWMdg16Vur+PelWr5JxErSjt5dWl0+6XAvYsL6v2ZCmX2Vb42Z
+	 R1X/AG6b+YTx+gtsXIqayH3fyLcmFHzduxm7mCMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot <syzkaller@googlegroup.com>,
-	Hugh Dickins <hughd@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 349/350] mm: shmem: fix data-race in shmem_getattr()
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Nemesa Garg <nemesa.garg@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 224/245] drm/i915/display: WA for Re-initialize dispcnlunitt1 xosc clock
 Date: Wed,  6 Nov 2024 13:04:37 +0100
-Message-ID: <20241106120329.300030478@linuxfoundation.org>
+Message-ID: <20241106120324.771903406@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 
-commit d949d1d14fa281ace388b1de978e8f2cd52875cf upstream.
+commit 7fbad577c82c5dd6db7217855c26f51554e53d85 upstream.
 
-I got the following KCSAN report during syzbot testing:
+The dispcnlunit1_cp_xosc_clk should be de-asserted in display off
+and only asserted in display on. As part of this workaround, Display
+driver shall execute set-reset sequence at the end of the initialize
+sequence to ensure clk does not remain active in display OFF.
 
-==================================================================
-BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
+--v2:
+- Rebase.
+--v3:
+- Correct HSD number in commit message.
+--v4:
+- Reformat commit message.
+- Use intel_de_rmw instead of intel_de_write
+--v5:
+- Build Fixes.
 
-write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
- inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
- inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
- shmem_mknod+0x117/0x180 mm/shmem.c:3443
- shmem_create+0x34/0x40 mm/shmem.c:3497
- lookup_open fs/namei.c:3578 [inline]
- open_last_lookups fs/namei.c:3647 [inline]
- path_openat+0xdbc/0x1f00 fs/namei.c:3883
- do_filp_open+0xf7/0x200 fs/namei.c:3913
- do_sys_openat2+0xab/0x120 fs/open.c:1416
- do_sys_open fs/open.c:1431 [inline]
- __do_sys_openat fs/open.c:1447 [inline]
- __se_sys_openat fs/open.c:1442 [inline]
- __x64_sys_openat+0xf3/0x120 fs/open.c:1442
- x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
- inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
- inode_get_ctime include/linux/fs.h:1629 [inline]
- generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
- shmem_getattr+0x17b/0x200 mm/shmem.c:1157
- vfs_getattr_nosec fs/stat.c:166 [inline]
- vfs_getattr+0x19b/0x1e0 fs/stat.c:207
- vfs_statx_path fs/stat.c:251 [inline]
- vfs_statx+0x134/0x2f0 fs/stat.c:315
- vfs_fstatat+0xec/0x110 fs/stat.c:341
- __do_sys_newfstatat fs/stat.c:505 [inline]
- __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
- __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
- x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-value changed: 0x2755ae53 -> 0x27ee44d3
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-==================================================================
-
-When calling generic_fillattr(), if you don't hold read lock, data-race
-will occur in inode member variables, which can cause unexpected
-behavior.
-
-Since there is no special protection when shmem_getattr() calls
-generic_fillattr(), data-race occurs by functions such as shmem_unlink()
-or shmem_mknod(). This can cause unexpected results, so commenting it out
-is not enough.
-
-Therefore, when calling generic_fillattr() from shmem_getattr(), it is
-appropriate to protect the inode using inode_lock_shared() and
-inode_unlock_shared() to prevent data-race.
-
-Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
-Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot <syzkaller@googlegroup.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+WA: 15013987218
+Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Reviewed-by: Nemesa Garg <nemesa.garg@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708083247.2611258-1-mitulkumar.ajitkumar.golani@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/display/intel_display_power.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1014,7 +1014,9 @@ static int shmem_getattr(const struct pa
- 		shmem_recalc_inode(inode);
- 		spin_unlock_irq(&info->lock);
- 	}
-+	inode_lock_shared(inode);
- 	generic_fillattr(inode, stat);
-+	inode_unlock_shared(inode);
+--- a/drivers/gpu/drm/i915/display/intel_display_power.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power.c
+@@ -1704,6 +1704,14 @@ static void icl_display_core_init(struct
+ 	/* Wa_14011503030:xelpd */
+ 	if (DISPLAY_VER(dev_priv) == 13)
+ 		intel_de_write(dev_priv, XELPD_DISPLAY_ERR_FATAL_MASK, ~0);
++
++	/* Wa_15013987218 */
++	if (DISPLAY_VER(dev_priv) == 20) {
++		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
++			     0, PCH_GMBUSUNIT_CLOCK_GATE_DISABLE);
++		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
++			     PCH_GMBUSUNIT_CLOCK_GATE_DISABLE, 0);
++	}
+ }
  
- 	if (is_huge_enabled(sb_info))
- 		stat->blksize = HPAGE_PMD_SIZE;
+ static void icl_display_core_uninit(struct drm_i915_private *dev_priv)
 
 
 
