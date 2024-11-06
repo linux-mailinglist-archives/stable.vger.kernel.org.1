@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B729BE838
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DE59BEC05
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8432283711
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6C59283ED6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0C21DF75A;
-	Wed,  6 Nov 2024 12:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2C71FAC2F;
+	Wed,  6 Nov 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7jv74m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQHhxxqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CC31DF740;
-	Wed,  6 Nov 2024 12:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30D1DE3B5;
+	Wed,  6 Nov 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895748; cv=none; b=Gcp3QnjXrM1Pe8ZdmgnErjjcrNXdYf/4ZWiqHyQh1IVe8DO9vwXn2gVSjfQp1u6936SyhBgilxaKMO4mrNlZTcqSZMzLM5ZWG5Q3MNIQ8Vdsb9RvVmC6q4VPFfd4Uqqp16HobDTLBhTkqiiFl7tJNc63K3dxEsQJIfL3fpsmDEE=
+	t=1730897462; cv=none; b=mNWONvxZ3152tubwhYvcVkGpEmRRw4yPu/2YP5Go1E8AhFcOcGyWF9xU8Iuj3c8kwa/EXJUPxnl9CD9NpTz2xSpsSKsgmorsxBlHm3NJCWGAO5l5BYCzV4BWba3jSx9iZ5UnLwQL3UbVrS7kQCalkRRonuMzkDlVxaC1bfKoodE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895748; c=relaxed/simple;
-	bh=xYpermFpmgWSwtG1urM2hnKREQbaU99gaH7EflsmcpM=;
+	s=arc-20240116; t=1730897462; c=relaxed/simple;
+	bh=sQz3FLUWwzrYNzNbsLlL2ZsDnyIZpCFi/cEvtBRdVHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkPcXMJTmwmekK1L5e5YEvRNFDi9nJxDI5jLpR3k5iJIwkRNtmRVlEmxfXrx7hAuyHhQRWskUc2AAMvvHP3bWTBP9loP4LZ02N69t2CSdtpcDt1vAk0+wXCGU+s7EnrgN1MOFJYL3o+c2NEznJKqyRy1o5/QFqOkNAF1kH8Y3l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7jv74m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F1EC4CECD;
-	Wed,  6 Nov 2024 12:22:27 +0000 (UTC)
+	 MIME-Version; b=u6ZdqnZJymAWLaKHODzHbmeHPtwISGhcGja+K97GFDejl86qxbEU2NnctG7mN97R2yFEbKThBlFmxGc8mP5s7QRFSZCqOArhR1+E/hNogeVmGQ2Rky7ZcqkbW6OkBGEAJJ3FFz+CY3wZUxsEJa6UCM6Mcwji2EXGlmLYXUAp16U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQHhxxqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975C4C4CECD;
+	Wed,  6 Nov 2024 12:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895748;
-	bh=xYpermFpmgWSwtG1urM2hnKREQbaU99gaH7EflsmcpM=;
+	s=korg; t=1730897462;
+	bh=sQz3FLUWwzrYNzNbsLlL2ZsDnyIZpCFi/cEvtBRdVHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR7jv74mbSRRyLbZ0WgpUAcG8Vhu9BtujprwP+P+lrxdM9z2gdXpxdrun6if6L1lr
-	 845Q8DokKPjy44iuoXIqq8pZQa+lit00yeo6M5oW+vuuTc0xE756XkpUV6sN7zRrZQ
-	 iD7sPFUOV9c8Q4IY3ksborHqBiWikwGhvzhFaVx0=
+	b=EQHhxxqfo+ZvK+ykn3C62c+D0gAgkmP5JnbdubhFbKCq2ZxdKsQuJmHUjgi5EZmT5
+	 LRXKfmaxsu7kF+2kurHjWdO/C986tEQ9bznEPoqeJ1Lfw+4qj6+R125/mCoodfl8N5
+	 /CuC3Qdh3yKyYBG0OVOZCYaDcY6fnGP2j9mSysiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	junhua huang <huang.junhua@zte.com.cn>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 4.19 321/350] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
+	syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 061/151] fs/ntfs3: Additional check in ni_clear()
 Date: Wed,  6 Nov 2024 13:04:09 +0100
-Message-ID: <20241106120328.676359809@linuxfoundation.org>
+Message-ID: <20241106120310.520471074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junhua huang <huang.junhua@zte.com.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
+[ Upstream commit d178944db36b3369b78a08ba520de109b89bf2a9 ]
 
-After we fixed the uprobe inst endian in aarch_be, the sparse check report
-the following warning info:
+Checking of NTFS_FLAGS_LOG_REPLAYING added to prevent access to
+uninitialized bitmap during replay process.
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
->> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
-@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
-   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
->> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
-@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
-   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
-
-use the __le32 to u32 for uprobe_opcode_t, to keep the same.
-
-Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
-Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/frecord.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -17,7 +17,7 @@
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
- #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 61055bcfe8277..12e03feb3074a 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -102,7 +102,9 @@ void ni_clear(struct ntfs_inode *ni)
+ {
+ 	struct rb_node *node;
  
--typedef u32 uprobe_opcode_t;
-+typedef __le32 uprobe_opcode_t;
+-	if (!ni->vfs_inode.i_nlink && ni->mi.mrec && is_rec_inuse(ni->mi.mrec))
++	if (!ni->vfs_inode.i_nlink && ni->mi.mrec &&
++	    is_rec_inuse(ni->mi.mrec) &&
++	    !(ni->mi.sbi->flags & NTFS_FLAGS_LOG_REPLAYING))
+ 		ni_delete_all(ni);
  
- struct arch_uprobe_task {
- };
+ 	al_destroy(ni);
+-- 
+2.43.0
+
 
 
 
