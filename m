@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-90862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201679BEB61
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03CB9BE964
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B29C6B227EC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEBAC1C21263
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31751F76AD;
-	Wed,  6 Nov 2024 12:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6A1DF974;
+	Wed,  6 Nov 2024 12:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/VQMr3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMpPEi01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6FD1EABA1;
-	Wed,  6 Nov 2024 12:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC235198E96;
+	Wed,  6 Nov 2024 12:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897035; cv=none; b=nR+JDgSMLmiAIr3PhK8kRriTNoIINutjL7JDXK2PqqOiejkY4mSlllvtj47/y/itya/SLbKY9ytTjusZrIf1M083sFHfJNbLY0yShaX2wdSKUWidbFPrJnZEOM5ZcfhLulmiqInH7rv9al7uhIvp/nAOTX2BBPuw2Ax4EYAo03A=
+	t=1730896416; cv=none; b=m8vxJePOEa0Ui16aKpJhRPSuZnvPD5Q4p70wcYmRts3QAtt25tlvh9+3XXMWHmn4T0iGzm8Prq3R/nrilRPFEG+c881vVgLorNPtSTlZZ3v2I2WnkzNEodZMo4Kz+Vb4huzRX8nIFO6gkLmAFQftHNfN17fhAS2zO4EYiValvGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897035; c=relaxed/simple;
-	bh=CcpT3ygnMOFoIn++BT0g8+IL11Pr7GjX44rahjfR0sw=;
+	s=arc-20240116; t=1730896416; c=relaxed/simple;
+	bh=K0kAEpU12/kiHZQqpwhf75xwBGaC4wjEmsi+TEAJsvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EU9nBNuqnB5mSKtE+iLCQYcUrhAC116+8+Cf6+sJNZNwobUKNPMPh14SY7Cp6XuB0YiQKOLmH1sHmgFYN0eknJVopSuy5BE/poQZhQ6ikWBD1nBbW6rKAIvVTLsfrMhybBlsTP2J+04DEMroWBQ/lSVU9tsXorTgGvgdBguyC2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/VQMr3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE618C4CECD;
-	Wed,  6 Nov 2024 12:43:54 +0000 (UTC)
+	 MIME-Version; b=SFtPkTw4ZCyeKZgnIjlsxyu52GxkFEg3Ni/kolfWSguaykxvQCP0dr5yS4/wc/7FCbb9PtfmtYdywLpExGUb3Zd+BKQXSGAjS9f74lzns2Bp2eH+EaqH6h1/bJdaO5QwXE/8y0s/DJ/uPKGKK8huhe2NZ2gGJDVSOnD9WzkHLVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMpPEi01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AAFC4CECD;
+	Wed,  6 Nov 2024 12:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897035;
-	bh=CcpT3ygnMOFoIn++BT0g8+IL11Pr7GjX44rahjfR0sw=;
+	s=korg; t=1730896415;
+	bh=K0kAEpU12/kiHZQqpwhf75xwBGaC4wjEmsi+TEAJsvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/VQMr3RpgCUhstjTMzrMjHwNItOL9d1OznQU09lNOBs3nWg6WE24Y1p52f3xHmS0
-	 XEGAX1sYZt2hzXUESsQ745/Y0jcwq+fGiox2VhlJz5LHpxeEGisP15HMwALX493CvE
-	 LilROGkbBH098+Xesrglfxz9+C1/gCHHZWGNFoHE=
+	b=BMpPEi01REyCciFqC6jQ/EboYfJ4/OgEr3F/fcXsVfvOLrL+Vclwx40KfZqcX5vCX
+	 UlBnmDTNwznum7S9keRKjdMAPVukxQbT8kByCp4i6Euo+I9V8m9DXoVkydb2OgMi3B
+	 8Ii0ccI7FwwAg1GaX1WCJ5SbBFxwfwSWiMb8fL7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Li <ashimida@linux.alibaba.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/126] compiler-gcc: be consistent with underscores use for `no_sanitize`
+Subject: [PATCH 6.11 193/245] drm/xe: Fix register definition order in xe_regs.h
 Date: Wed,  6 Nov 2024 13:04:06 +0100
-Message-ID: <20241106120307.325248248@linuxfoundation.org>
+Message-ID: <20241106120323.996636849@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,75 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 6e2be1f2ebcea42ed6044432f72f32434e60b34d ]
+[ Upstream commit 9dae9751c7b0086963f5cbb82424b5e4cf58f123 ]
 
-Patch series "compiler-gcc: be consistent with underscores use for
-`no_sanitize`".
+Swap XEHP_CLOCK_GATE_DIS(0x101014) with GU_DEBUG(x101018).
 
-This patch (of 5):
-
-Other macros that define shorthands for attributes in e.g.
-`compiler_attributes.h` and elsewhere use underscores.
-
-Link: https://lkml.kernel.org/r/20221021115956.9947-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Li <ashimida@linux.alibaba.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 894b00a3350c ("kasan: Fix Software Tag-Based KASAN with GCC")
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240702183704.1022-2-michal.wajdeczko@intel.com
+Stable-dep-of: 993ca0eccec6 ("drm/xe: Add mmio read before GGTT invalidate")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-gcc.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_regs.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index 149a520515e1d..e6474899250d5 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -103,25 +103,25 @@
- #endif
+diff --git a/drivers/gpu/drm/xe/regs/xe_regs.h b/drivers/gpu/drm/xe/regs/xe_regs.h
+index 23e33ec849022..23ecba38ed419 100644
+--- a/drivers/gpu/drm/xe/regs/xe_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_regs.h
+@@ -24,12 +24,12 @@
+ #define   LMEM_INIT				REG_BIT(7)
+ #define   DRIVERFLR				REG_BIT(31)
  
- #if __has_attribute(__no_sanitize_address__)
--#define __no_sanitize_address __attribute__((no_sanitize_address))
-+#define __no_sanitize_address __attribute__((__no_sanitize_address__))
- #else
- #define __no_sanitize_address
- #endif
+-#define GU_DEBUG				XE_REG(0x101018)
+-#define   DRIVERFLR_STATUS			REG_BIT(31)
+-
+ #define XEHP_CLOCK_GATE_DIS			XE_REG(0x101014)
+ #define   SGSI_SIDECLK_DIS			REG_BIT(17)
  
- #if defined(__SANITIZE_THREAD__) && __has_attribute(__no_sanitize_thread__)
--#define __no_sanitize_thread __attribute__((no_sanitize_thread))
-+#define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
- #else
- #define __no_sanitize_thread
- #endif
++#define GU_DEBUG				XE_REG(0x101018)
++#define   DRIVERFLR_STATUS			REG_BIT(31)
++
+ #define XEHP_MTCFG_ADDR				XE_REG(0x101800)
+ #define   TILE_COUNT				REG_GENMASK(15, 8)
  
- #if __has_attribute(__no_sanitize_undefined__)
--#define __no_sanitize_undefined __attribute__((no_sanitize_undefined))
-+#define __no_sanitize_undefined __attribute__((__no_sanitize_undefined__))
- #else
- #define __no_sanitize_undefined
- #endif
- 
- #if defined(CONFIG_KCOV) && __has_attribute(__no_sanitize_coverage__)
--#define __no_sanitize_coverage __attribute__((no_sanitize_coverage))
-+#define __no_sanitize_coverage __attribute__((__no_sanitize_coverage__))
- #else
- #define __no_sanitize_coverage
- #endif
 -- 
 2.43.0
 
