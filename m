@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-91203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6319BECEB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91909BE70B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F6AD1F21F70
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA50F282920
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB421EE00D;
-	Wed,  6 Nov 2024 13:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8ED1DF24C;
+	Wed,  6 Nov 2024 12:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huU+aQ2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkzZPBnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C111E04AD;
-	Wed,  6 Nov 2024 13:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9321D5AD7;
+	Wed,  6 Nov 2024 12:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898044; cv=none; b=BEnPHcmJ/jUGFB1VaNn/arXn98BNNu/AS+jfJNGA9/MzvZLPCQSKhjEOxqVAgT8owHxXOWKZm0AUBGJ6V0PxzVXLA4DZGNiNZuAvEQIdboOX4EoJLD5YcE7EIq7GSbIiEotCARFB73mFlC0oe6frhxFFpIprYe3anLVHpzHZu8U=
+	t=1730894995; cv=none; b=J2JO9PI6JgoE1YqmEUNOdjc7IhI6HhjhqlsCY7h6IVRqTMmgcXmrIWky3GIk+bXjXKWvZVVVgBE1Brlc0RPBDfI09ym+ZKV5AO3WnTYOPzZcQuFHbBDMWhYG2SVCJE4lZeNZWdPR0iMsL0ifadL2dm/hHX1JRid688CLPYF2ixo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898044; c=relaxed/simple;
-	bh=Pe2aeJNCv1XebVu5PlliUT04IP/enyNxr62zQ2znZ54=;
+	s=arc-20240116; t=1730894995; c=relaxed/simple;
+	bh=NxG7tT7/p1pk60GVjZ9QCdjhtH0Hm3dBUNvIRKmP6s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5avEfAvkzl73iWvegNiTr7oyjXJzi/eqNO/v554ANvC71/krkwjs1ERQRK0GlvIzRSdLOXh7p60cDvOnaL71Zap/YBWNQP9ufuGIGm/TlPjFN26kj+poKgzkaxRSiD+O2YVtSCmSG7QOuCT/q9VFhX9DmXjj3UQtkgyEvZnDds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huU+aQ2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E71CC4CECD;
-	Wed,  6 Nov 2024 13:00:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eLx5gQBsLDbICakn1R5a/9bzR/KdtbvG/q8gsu2Oxd41mpdcJ2OjFILceLc2YEYNk5OmIetZkv3u5Ahbi+bpz26YssgG8hOjqAQG5Y+i4G4AEjvkiX03sR0p3di2LrQzyroaV6XF1IxY9wb3ta5bMmXxJRA7xPJfCt3dW0Ip7Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkzZPBnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C73BC4CECD;
+	Wed,  6 Nov 2024 12:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898044;
-	bh=Pe2aeJNCv1XebVu5PlliUT04IP/enyNxr62zQ2znZ54=;
+	s=korg; t=1730894994;
+	bh=NxG7tT7/p1pk60GVjZ9QCdjhtH0Hm3dBUNvIRKmP6s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huU+aQ2ivzlNe6XOxSG/knqYCgMG8RzQhsVB1inx6xkleq+PaTAvgKJRhE1aUGMsp
-	 1BBkBIBzb6Ylz3xOk3E+shH46FbOK0Y+EyCBPleVs6l0jX94HUIGLTIMZskoDrJNl4
-	 onin/jbmFUriB4MUXlXog6i3b2UvbuQfKOfxhOkE=
+	b=KkzZPBnuyUjC4ph6jX/hk0XWrDXO7dRrdR4FTtgxkzEbIyVb/9G1L9TGovOttzHUH
+	 zPedr2kZmoHVx6bNqrJmPeO0K5KRAEfEU6pvkZdnDDbvSOY7fWi0zdb4msbByqft24
+	 CedSRwBqU77dFrZiTHOVwUN/UNvIQKY8apgoKFSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 104/462] bpf: Fix bpf_strtol and bpf_strtoul helpers for 32bit
+Subject: [PATCH 4.19 069/350] kthread: fix task state in kthread worker if being frozen
 Date: Wed,  6 Nov 2024 12:59:57 +0100
-Message-ID: <20241106120334.075776475@linuxfoundation.org>
+Message-ID: <20241106120322.600633447@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +66,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit cfe69c50b05510b24e26ccb427c7cc70beafd6c1 ]
+[ Upstream commit e16c7b07784f3fb03025939c4590b9a7c64970a7 ]
 
-The bpf_strtol() and bpf_strtoul() helpers are currently broken on 32bit:
+When analyzing a kernel waring message, Peter pointed out that there is a
+race condition when the kworker is being frozen and falls into
+try_to_freeze() with TASK_INTERRUPTIBLE, which could trigger a
+might_sleep() warning in try_to_freeze().  Although the root cause is not
+related to freeze()[1], it is still worthy to fix this issue ahead.
 
-The argument type ARG_PTR_TO_LONG is BPF-side "long", not kernel-side "long"
-and therefore always considered fixed 64bit no matter if 64 or 32bit underlying
-architecture.
+One possible race scenario:
 
-This contract breaks in case of the two mentioned helpers since their BPF_CALL
-definition for the helpers was added with {unsigned,}long *res. Meaning, the
-transition from BPF-side "long" (BPF program) to kernel-side "long" (BPF helper)
-breaks here.
+        CPU 0                                           CPU 1
+        -----                                           -----
 
-Both helpers call __bpf_strtoll() with "long long" correctly, but later assigning
-the result into 32-bit "*(long *)" on 32bit architectures. From a BPF program
-point of view, this means upper bits will be seen as uninitialised.
+        // kthread_worker_fn
+        set_current_state(TASK_INTERRUPTIBLE);
+                                                       suspend_freeze_processes()
+                                                         freeze_processes
+                                                           static_branch_inc(&freezer_active);
+                                                         freeze_kernel_threads
+                                                           pm_nosig_freezing = true;
+        if (work) { //false
+          __set_current_state(TASK_RUNNING);
 
-Therefore, fix both BPF_CALL signatures to {s,u}64 types to fix this situation.
+        } else if (!freezing(current)) //false, been frozen
 
-Now, changing also uapi/bpf.h helper documentation which generates bpf_helper_defs.h
-for BPF programs is tricky: Changing signatures there to __{s,u}64 would trigger
-compiler warnings (incompatible pointer types passing 'long *' to parameter of type
-'__s64 *' (aka 'long long *')) for existing BPF programs.
+                      freezing():
+                      if (static_branch_unlikely(&freezer_active))
+                        if (pm_nosig_freezing)
+                          return true;
+          schedule()
+	}
 
-Leaving the signatures as-is would be fine as from BPF program point of view it is
-still BPF-side "long" and thus equivalent to __{s,u}64 on 64 or 32bit underlying
-architectures.
+        // state is still TASK_INTERRUPTIBLE
+        try_to_freeze()
+          might_sleep() <--- warning
 
-Note that bpf_strtol() and bpf_strtoul() are the only helpers with this issue.
+Fix this by explicitly set the TASK_RUNNING before entering
+try_to_freeze().
 
-Fixes: d7a4cb9b6705 ("bpf: Introduce bpf_strtol and bpf_strtoul helpers")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/481fcec8-c12c-9abb-8ecb-76c71c009959@iogearbox.net
-Link: https://lore.kernel.org/r/20240913191754.13290-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/lkml/Zs2ZoAcUsZMX2B%2FI@chenyu5-mobl2/ [1]
+Link: https://lkml.kernel.org/r/20240827112308.181081-1-yu.c.chen@intel.com
+Fixes: b56c0d8937e6 ("kthread: implement kthread_worker")
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/kthread.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 9bfb4685d0684..a9708b4448148 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -445,7 +445,7 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
- }
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index f69aa5da3b53e..9c562b3b362ae 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -705,8 +705,16 @@ int kthread_worker_fn(void *worker_ptr)
+ 		 * event only cares about the address.
+ 		 */
+ 		trace_sched_kthread_work_execute_end(work, func);
+-	} else if (!freezing(current))
++	} else if (!freezing(current)) {
+ 		schedule();
++	} else {
++		/*
++		 * Handle the case where the current remains
++		 * TASK_INTERRUPTIBLE. try_to_freeze() expects
++		 * the current to be TASK_RUNNING.
++		 */
++		__set_current_state(TASK_RUNNING);
++	}
  
- BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
--	   long *, res)
-+	   s64 *, res)
- {
- 	long long _res;
- 	int err;
-@@ -470,7 +470,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
- };
- 
- BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
--	   unsigned long *, res)
-+	   u64 *, res)
- {
- 	unsigned long long _res;
- 	bool is_negative;
+ 	try_to_freeze();
+ 	cond_resched();
 -- 
 2.43.0
 
