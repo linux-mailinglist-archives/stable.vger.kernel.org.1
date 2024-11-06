@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-91079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E6E9BEC56
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846C59BEBBE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F861C23A4C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E78CEB24CB6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94CA1FB8BF;
-	Wed,  6 Nov 2024 12:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE08C1EE01C;
+	Wed,  6 Nov 2024 12:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKMcm7FC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQfGVOyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ACB1F4FC4;
-	Wed,  6 Nov 2024 12:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727321EE00E;
+	Wed,  6 Nov 2024 12:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897679; cv=none; b=V+6pTDTZcdQR1Mrxfj31LwKpcjQo09O/KqZ/adg8LGnZV1b8sLeWM0aIpyqFc7ZzhcbqiGC5iZjNKM6towPwSMzGCoNznARRHCS1Cd75K4R7ksSrhhA4BubqGLCfqHNVHjZ6Ya6HONVtGRCH37JTk4INYjVyfnD2vtU6dOlqAgY=
+	t=1730897259; cv=none; b=YCXZUBpII0jh28mf1SLFQomDh/vvtAKqbAAIjOVvzsCuZazp2lrqOco/hX8tGy4WSmBCmCqj5G3fNvW9yn1BAm4MoiWHxd6GZfunKPZB/d+JFu5anB4qetj9jPrRrwplOtnkJQfwPj6n6o452O4zxQnWdIuO/tjVNvmtsgXcX/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897679; c=relaxed/simple;
-	bh=pBLZwon3VTf454YYCbZ16MFhlW/5YUDmu7Au+/uPyS4=;
+	s=arc-20240116; t=1730897259; c=relaxed/simple;
+	bh=+xxo9Od+dRe7eVebTq01R/kJ5kEWJtqzvMwF9WKY+x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMQgo+JylPOLhCaL9DEwUwFrfbSPoX/+2EPI5IN3DTookiQDrb44SbTV8A7CEPUpQafZ6AZjgdVqJcf9miJHUx4iBERO6yHIdKb7vZ/bDbkJOyiv2d3n9FhJkOOQM2I9Cfgxsoks8FBhVWMIvN1QZFp6A6h2mcoMW9RMqW0mtcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKMcm7FC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86533C4CECD;
-	Wed,  6 Nov 2024 12:54:38 +0000 (UTC)
+	 MIME-Version; b=inUyzeyKWgzcH67m/0zJEiOFaLR1GgeTs4artvRZ7OqGAl69HLu/VxiPoj3p/rge87GF9fqX7JPzSPYRnWYwJQRIN8TMNQXl+omqufzZqBcDaoyhbU//bfGCejzpuBpjFVlRLKHDpRERPEQRQQfOMwU03fxK0s7LmEh0Q37O3A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQfGVOyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9324C4CECD;
+	Wed,  6 Nov 2024 12:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897678;
-	bh=pBLZwon3VTf454YYCbZ16MFhlW/5YUDmu7Au+/uPyS4=;
+	s=korg; t=1730897259;
+	bh=+xxo9Od+dRe7eVebTq01R/kJ5kEWJtqzvMwF9WKY+x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKMcm7FCVcecH60dweppGKHuV1hZCcJw5XUOi2iwaVpFBEge3iJz5kYUUZPiyYAZg
-	 UJQ+8vyJo43taynZu3vz2OCzhBugCPf4zfbbaOka8q7GgYP0RJKUSVjR+5T1uxoz/c
-	 mBdTVlHv/ghSG+ItG4CC+QbcUDTjV8B8NWrs6oF8=
+	b=YQfGVOyOr6d2/4owSzPjxpo7MGM8Xfk8LF573BNXiQ+JcDqU7qE03r0RQSANeGQ/x
+	 Kebn2l8iLVQ351GqOFeKad95o60EC3QcHqTyJrkd235FfKHfPzZMu6YONZxer2eEc3
+	 v/l0/xfvBptXDoqQm00Tqp1RQiNDEs53TLdBYuPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/151] nvmet-auth: assign dh_key to NULL after kfree_sensitive
+	Hartmut Birr <e9hack@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Esben Haabendal <esben@geanix.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.1 121/126] mtd: spi-nor: winbond: fix w25q128 regression
 Date: Wed,  6 Nov 2024 13:05:22 +0100
-Message-ID: <20241106120312.544703197@linuxfoundation.org>
+Message-ID: <20241106120309.326846835@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit d2f551b1f72b4c508ab9298419f6feadc3b5d791 ]
+commit d35df77707bf5ae1221b5ba1c8a88cf4fcdd4901 upstream.
 
-ctrl->dh_key might be used across multiple calls to nvmet_setup_dhgroup()
-for the same controller. So it's better to nullify it after release on
-error path in order to avoid double free later in nvmet_destroy_auth().
+Commit 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
+removed the flags for non-SFDP devices. It was assumed that it wasn't in
+use anymore. This wasn't true. Add the no_sfdp_flags as well as the size
+again.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+We add the additional flags for dual and quad read because they have
+been reported to work properly by Hartmut using both older and newer
+versions of this flash, the similar flashes with 64Mbit and 256Mbit
+already have these flags and because it will (luckily) trigger our
+legacy SFDP parsing, so newer versions with SFDP support will still get
+the parameters from the SFDP tables.
 
-Fixes: 7a277c37d352 ("nvmet-auth: Diffie-Hellman key exchange support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Hartmut Birr <e9hack@gmail.com>
+Closes: https://lore.kernel.org/r/CALxbwRo_-9CaJmt7r7ELgu+vOcgk=xZcGHobnKf=oT2=u4d4aA@mail.gmail.com/
+Fixes: 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Esben Haabendal <esben@geanix.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20240621120929.2670185-1-mwalle@kernel.org
+Link: https://lore.kernel.org/r/20240621120929.2670185-1-mwalle@kernel.org
+[Backported to v6.6 - vastly different due to upstream changes]
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/auth.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/spi-nor/winbond.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-index aacc05ec00c2b..74791078fdebc 100644
---- a/drivers/nvme/target/auth.c
-+++ b/drivers/nvme/target/auth.c
-@@ -101,6 +101,7 @@ int nvmet_setup_dhgroup(struct nvmet_ctrl *ctrl, u8 dhgroup_id)
- 			pr_debug("%s: ctrl %d failed to generate private key, err %d\n",
- 				 __func__, ctrl->cntlid, ret);
- 			kfree_sensitive(ctrl->dh_key);
-+			ctrl->dh_key = NULL;
- 			return ret;
- 		}
- 		ctrl->dh_keysize = crypto_kpp_maxsize(ctrl->dh_tfm);
--- 
-2.43.0
-
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -120,9 +120,10 @@ static const struct flash_info winbond_n
+ 		NO_SFDP_FLAGS(SECT_4K) },
+ 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16)
+ 		NO_SFDP_FLAGS(SECT_4K) },
+-	{ "w25q128", INFO(0xef4018, 0, 0, 0)
+-		PARSE_SFDP
+-		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB) },
++	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256)
++		FLAGS(SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB)
++		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ |
++			      SPI_NOR_QUAD_READ) },
+ 	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512)
+ 		NO_SFDP_FLAGS(SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
+ 		.fixups = &w25q256_fixups },
 
 
 
