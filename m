@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB369BEB31
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DB79BEBB8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C16F1C21064
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2F02836E8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C131F667E;
-	Wed,  6 Nov 2024 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD5D1EE00A;
+	Wed,  6 Nov 2024 12:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RInJiJux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QT2gtJhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE81E25F7;
-	Wed,  6 Nov 2024 12:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CAE1E04B5;
+	Wed,  6 Nov 2024 12:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896904; cv=none; b=nKiAaysAxzfuV017LheTgbpqq6cZJmLtzlY0+7+DQGPwORFWHNY/XESycU0tqUjeFpkpGZDCynqpfLO9qTQGX4jTqV5VYkDjEoaGVrdaaIXrRGWPZEQQhW2O5ryge6kfGYxOUoJ9mnqEasaX5xXzqZdmicpTDH4ENQ4H4Uc/wdM=
+	t=1730897247; cv=none; b=l+OOiL65lOrMuqFCIOBC4YDhiKLqENmM34OMPn1Pjc0HcuDAZgdQ3Bx89PhJE4hrZXc5GMPt7J3YK2fm7u1vFilf2xuZU8kkhAZzabvBbI3JZsGDTppPuS7yeDnOGymdvDLVa3aMcv8Josfoo0bhnzQ7swqrw4wGtgV74flf/qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896904; c=relaxed/simple;
-	bh=Vz2QSFuVaRx8lsSJ9B4L+2OWmKq88eNcz2S96bUYryA=;
+	s=arc-20240116; t=1730897247; c=relaxed/simple;
+	bh=Bjh/LNNMCXmrAGXSw9yMtn/Ux8Cgcg26Ftmhvq5nAyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZJcDMowMkYgStBPK4/M3+kPM6HsnQGHRZ1J+LaQ+cuAFPsLBRP2F93G3HQy5aaBNLeXxSl0mjuuFoGvYy8+pRTZunHu0bHtWqGwJuZLBUfIeyWzcJzXOjet0oAlC9ZOO/gmuUfM/lAoZD5glK7jmN/wkVSrO+x6qK0Uug1aKeYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RInJiJux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD61C4CECD;
-	Wed,  6 Nov 2024 12:41:43 +0000 (UTC)
+	 MIME-Version; b=haD/V2NX/qxEP/8QNJuePqENSq/Y9p8TSeuSYaEuc5Ck44VspJRQfg3f4wncMBxiTINjps/A9W9woK/PriDfzlajsQs1kLpyC7FyUHXXci+d3nvMU/2qzpny/4ZAK3iIUjpRz+eSQMGxOxOGAgFQv8pJb4xgWqe78dUyyxYGXBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QT2gtJhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423D1C4CED3;
+	Wed,  6 Nov 2024 12:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896904;
-	bh=Vz2QSFuVaRx8lsSJ9B4L+2OWmKq88eNcz2S96bUYryA=;
+	s=korg; t=1730897247;
+	bh=Bjh/LNNMCXmrAGXSw9yMtn/Ux8Cgcg26Ftmhvq5nAyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RInJiJuxMqGPt88ysZ70cLxGvZHm5K28RY13o/t39jSiu0CBglEppgVtZ31k4cslc
-	 MF1d61vHmXczPswqbzFJROU88MjRPipLD62d3sFX5ajn2MSLHRtuZEBSJNM5HWIATs
-	 /EE1MexNr5sOzBEo8ZiZVWg/b+Y+8ODisQb+TwlY=
+	b=QT2gtJhIBvK4LzxDU1HWkdETsHww5IjJUJMk1h+G24SNDhZqHmBfU6FNeHW0yTvjy
+	 229ZhRU2PhquLd2xEPiSKcw7o99/7P2QIjVUo04abQquGOStdTqtQgUNOz5no14iph
+	 JPX44p9wPIevE7l6wVEQrarh6jA4EATtYHEk7JsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byeonguk Jeong <jungbu2855@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 074/110] bpf: Fix out-of-bounds write in trie_get_next_key()
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 079/126] nilfs2: fix potential deadlock with newly created symlinks
 Date: Wed,  6 Nov 2024 13:04:40 +0100
-Message-ID: <20241106120305.232861437@linuxfoundation.org>
+Message-ID: <20241106120308.216554564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byeonguk Jeong <jungbu2855@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
+commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
 
-trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
-while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
-full paths from the root to leaves. For example, consider a trie with
-max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
-0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
-.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
+Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
+memory reclamation involving the filesystem layer, which can result in
+circular lock dependencies among the reader/writer semaphore
+nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
+fs_reclaim pseudo lock.
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Tested-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because after commit 21fc61c73c39 ("don't put symlink bodies in
+pagecache into highmem"), the gfp flags of the page cache for symbolic
+links are overwritten to GFP_KERNEL via inode_nohighmem().
+
+This is not a problem for symlinks read from the backing device, because
+the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
+when a new symlink is created with nilfs_symlink(), the gfp flags remain
+overwritten to GFP_KERNEL.  Then, memory allocation called from
+page_symlink() etc.  triggers memory reclamation including the FS layer,
+which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
+cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+
+Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
+of newly created symlinks in the same way that nilfs_new_inode() and
+__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
+scope consistently or improve the locking constraints.
+
+Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
+Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
+Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/lpm_trie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/namei.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 3c2d8722d45b3..8370b391f1d6c 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -655,7 +655,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	if (!key || key->prefixlen > trie->max_prefixlen)
- 		goto find_leftmost;
- 
--	node_stack = kmalloc_array(trie->max_prefixlen,
-+	node_stack = kmalloc_array(trie->max_prefixlen + 1,
- 				   sizeof(struct lpm_trie_node *),
- 				   GFP_ATOMIC | __GFP_NOWARN);
- 	if (!node_stack)
--- 
-2.43.0
-
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -157,6 +157,9 @@ static int nilfs_symlink(struct user_nam
+ 	/* slow symlink */
+ 	inode->i_op = &nilfs_symlink_inode_operations;
+ 	inode_nohighmem(inode);
++	mapping_set_gfp_mask(inode->i_mapping,
++			     mapping_gfp_constraint(inode->i_mapping,
++						    ~__GFP_FS));
+ 	inode->i_mapping->a_ops = &nilfs_aops;
+ 	err = page_symlink(inode, symname, l);
+ 	if (err)
 
 
 
