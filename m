@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA8E9BE75F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718689BE87E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1762A2835B9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95ECE1C21BB2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A463E1DF25D;
-	Wed,  6 Nov 2024 12:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C581E04B3;
+	Wed,  6 Nov 2024 12:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGqBXO0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YOrBQU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610AE1D416E;
-	Wed,  6 Nov 2024 12:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84D41DF986;
+	Wed,  6 Nov 2024 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895211; cv=none; b=HDqotEhujtbg4NQqRg2dHpvZ/d+wSy0neJh+Qr39fkZGDzojmREJRMDslOsMj+LyU2VeAUV64CmcNTR6MLKnEiLJjNAYqaG1RWC/6WKgCIYO8q/frwsWRLjoR3BJuCVYJZCh8uEu3xdIU04Xv7zdoQHj6SZULW7gc0XFsJnRD58=
+	t=1730895883; cv=none; b=kZFDM04U5g9Pjef8n40ZDPs2Tr2cQwsHdItcRRhM8wOB8tzsHEPHKczlRX7JRSfsIQfq7ClYbPLVuTS2BPe9zwCFc0e1pHMeMeycRA6r6XPvjkqa5R2K6vUO3Pp7cRJwVjhcr7G5qsW6GSKSt2YtcYp1QW1s5J3mNU3186JQn4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895211; c=relaxed/simple;
-	bh=U+6DIisSM1sPEluEoJ2TQeyi6Ck2owR7cpP1dMKaP7Q=;
+	s=arc-20240116; t=1730895883; c=relaxed/simple;
+	bh=8s3C2EM6EW0CjA5qBmQPxbYWxied/uDwGzlamxDF5J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=px2KlT1dZ0ADHmNXx+MsbauSyo2cl1eZc63PoYf/BQ096e4G2rUbYVO71FYNrUwi9Owv9aoAvmZz55BFHLS2xONsYDGKMipWBn4TlGH4xVfeAOjm2j7zFouCiAkBKhfmNpaxUqUNaV/eQeLVokM+vmRUhhW49sCgwrBZRxIeCwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGqBXO0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA153C4CECD;
-	Wed,  6 Nov 2024 12:13:30 +0000 (UTC)
+	 MIME-Version; b=CjeMstt2MpR/Td6UUqa7roS5cJTNrajy/HaRpjaCfxuHnEpL75fWO+9rhgwTJ8WcuI46x4nzPZQINnP9jj0yQUiEbvnEV2FwQtjs58msV3uFgtIhGt+fGrdMr0aezcJCdka0vM6IkqRvRn8/Ek/RAFz6s+LiDmRVDdgRlxgOKVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YOrBQU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FB3C4CECD;
+	Wed,  6 Nov 2024 12:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895211;
-	bh=U+6DIisSM1sPEluEoJ2TQeyi6Ck2owR7cpP1dMKaP7Q=;
+	s=korg; t=1730895882;
+	bh=8s3C2EM6EW0CjA5qBmQPxbYWxied/uDwGzlamxDF5J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGqBXO0Kpdv3xU52clEBpdXZEzdd5np64/l5DmjPZ9NbzVN+uNIGZg315I8T2puq0
-	 SuvhkE1ReYsNbvXZtebKMyXTsmyQ3oi652nxuXl0/dFjw9JPMfqcqX/h/EW0nupnXx
-	 hbciEQNv+9qf2RJHCwwSbAyWfPDvssZk0V3hWFbM=
+	b=1YOrBQU+VeQjZnDhVcKnI76AHBHRMf1R8WOPQqgWjRCvT0Kxrl1COs79g1jwFxWFR
+	 XwaQt+1eiaJHRLekie4FYALRsmLAloAj8y5nWe4VtgwNoi76m396Jb9ZK4tnLFVtMX
+	 REKEb3TPsNfa4ZUt7hZxIC9X7vVvnW/C6o4MiUFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 142/350] sctp: set sk_state back to CLOSED if autobind fails in sctp_listen_start
+Subject: [PATCH 6.11 017/245] RDMA/bnxt_re: Fix the usage of control path spin locks
 Date: Wed,  6 Nov 2024 13:01:10 +0100
-Message-ID: <20241106120324.422789168@linuxfoundation.org>
+Message-ID: <20241106120319.662840221@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 8beee4d8dee76b67c75dc91fd8185d91e845c160 ]
+[ Upstream commit d71f4acd584cc861f54b3cb3ac07875f06550a05 ]
 
-In sctp_listen_start() invoked by sctp_inet_listen(), it should set the
-sk_state back to CLOSED if sctp_autobind() fails due to whatever reason.
+Control path completion processing always runs in tasklet context. To
+synchronize with the posting thread, there is no need to use the irq
+variant of spin lock. Use spin_lock_bh instead.
 
-Otherwise, next time when calling sctp_inet_listen(), if sctp_sk(sk)->reuse
-is already set via setsockopt(SCTP_REUSE_PORT), sctp_sk(sk)->bind_hash will
-be dereferenced as sk_state is LISTENING, which causes a crash as bind_hash
-is NULL.
-
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  RIP: 0010:sctp_inet_listen+0x7f0/0xa20 net/sctp/socket.c:8617
-  Call Trace:
-   <TASK>
-   __sys_listen_socket net/socket.c:1883 [inline]
-   __sys_listen+0x1b7/0x230 net/socket.c:1894
-   __do_sys_listen net/socket.c:1902 [inline]
-
-Fixes: 5e8f3f703ae4 ("sctp: simplify sctp listening code")
-Reported-by: syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/a93e655b3c153dc8945d7a812e6d8ab0d52b7aa0.1727729391.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://patch.msgid.link/r/1728912975-19346-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 25 +++++++++-------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c429a1a2bfe23..421b0340b6310 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -7845,8 +7845,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 7294221b3316c..ca26b88a0a80f 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -290,7 +290,6 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	struct bnxt_qplib_hwq *hwq;
+ 	u32 sw_prod, cmdq_prod;
+ 	struct pci_dev *pdev;
+-	unsigned long flags;
+ 	u16 cookie;
+ 	u8 *preq;
+ 
+@@ -301,7 +300,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	/* Cmdq are in 16-byte units, each request can consume 1 or more
+ 	 * cmdqe
  	 */
- 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
- 	if (!ep->base.bind_addr.port) {
--		if (sctp_autobind(sk))
-+		if (sctp_autobind(sk)) {
-+			inet_sk_set_state(sk, SCTP_SS_CLOSED);
- 			return -EAGAIN;
-+		}
- 	} else {
- 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
- 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+-	spin_lock_irqsave(&hwq->lock, flags);
++	spin_lock_bh(&hwq->lock);
+ 	required_slots = bnxt_qplib_get_cmd_slots(msg->req);
+ 	free_slots = HWQ_FREE_SLOTS(hwq);
+ 	cookie = cmdq->seq_num & RCFW_MAX_COOKIE_VALUE;
+@@ -311,7 +310,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		dev_info_ratelimited(&pdev->dev,
+ 				     "CMDQ is full req/free %d/%d!",
+ 				     required_slots, free_slots);
+-		spin_unlock_irqrestore(&hwq->lock, flags);
++		spin_unlock_bh(&hwq->lock);
+ 		return -EAGAIN;
+ 	}
+ 	if (msg->block)
+@@ -367,7 +366,7 @@ static int __send_message(struct bnxt_qplib_rcfw *rcfw,
+ 	wmb();
+ 	writel(cmdq_prod, cmdq->cmdq_mbox.prod);
+ 	writel(RCFW_CMDQ_TRIG_VAL, cmdq->cmdq_mbox.db);
+-	spin_unlock_irqrestore(&hwq->lock, flags);
++	spin_unlock_bh(&hwq->lock);
+ 	/* Return the CREQ response pointer */
+ 	return 0;
+ }
+@@ -486,7 +485,6 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ {
+ 	struct creq_qp_event *evnt = (struct creq_qp_event *)msg->resp;
+ 	struct bnxt_qplib_crsqe *crsqe;
+-	unsigned long flags;
+ 	u16 cookie;
+ 	int rc;
+ 	u8 opcode;
+@@ -512,12 +510,12 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		rc = __poll_for_resp(rcfw, cookie);
+ 
+ 	if (rc) {
+-		spin_lock_irqsave(&rcfw->cmdq.hwq.lock, flags);
++		spin_lock_bh(&rcfw->cmdq.hwq.lock);
+ 		crsqe = &rcfw->crsqe_tbl[cookie];
+ 		crsqe->is_waiter_alive = false;
+ 		if (rc == -ENODEV)
+ 			set_bit(FIRMWARE_STALL_DETECTED, &rcfw->cmdq.flags);
+-		spin_unlock_irqrestore(&rcfw->cmdq.hwq.lock, flags);
++		spin_unlock_bh(&rcfw->cmdq.hwq.lock);
+ 		return -ETIMEDOUT;
+ 	}
+ 
+@@ -628,7 +626,6 @@ static int bnxt_qplib_process_qp_event(struct bnxt_qplib_rcfw *rcfw,
+ 	u16 cookie, blocked = 0;
+ 	bool is_waiter_alive;
+ 	struct pci_dev *pdev;
+-	unsigned long flags;
+ 	u32 wait_cmds = 0;
+ 	int rc = 0;
+ 
+@@ -659,8 +656,7 @@ static int bnxt_qplib_process_qp_event(struct bnxt_qplib_rcfw *rcfw,
+ 		 *
+ 		 */
+ 
+-		spin_lock_irqsave_nested(&hwq->lock, flags,
+-					 SINGLE_DEPTH_NESTING);
++		spin_lock_nested(&hwq->lock, SINGLE_DEPTH_NESTING);
+ 		cookie = le16_to_cpu(qp_event->cookie);
+ 		blocked = cookie & RCFW_CMD_IS_BLOCKING;
+ 		cookie &= RCFW_MAX_COOKIE_VALUE;
+@@ -672,7 +668,7 @@ static int bnxt_qplib_process_qp_event(struct bnxt_qplib_rcfw *rcfw,
+ 			dev_info(&pdev->dev,
+ 				 "rcfw timedout: cookie = %#x, free_slots = %d",
+ 				 cookie, crsqe->free_slots);
+-			spin_unlock_irqrestore(&hwq->lock, flags);
++			spin_unlock(&hwq->lock);
+ 			return rc;
+ 		}
+ 
+@@ -720,7 +716,7 @@ static int bnxt_qplib_process_qp_event(struct bnxt_qplib_rcfw *rcfw,
+ 			__destroy_timedout_ah(rcfw,
+ 					      (struct creq_create_ah_resp *)
+ 					      qp_event);
+-		spin_unlock_irqrestore(&hwq->lock, flags);
++		spin_unlock(&hwq->lock);
+ 	}
+ 	*num_wait += wait_cmds;
+ 	return rc;
+@@ -734,12 +730,11 @@ static void bnxt_qplib_service_creq(struct tasklet_struct *t)
+ 	u32 type, budget = CREQ_ENTRY_POLL_BUDGET;
+ 	struct bnxt_qplib_hwq *hwq = &creq->hwq;
+ 	struct creq_base *creqe;
+-	unsigned long flags;
+ 	u32 num_wakeup = 0;
+ 	u32 hw_polled = 0;
+ 
+ 	/* Service the CREQ until budget is over */
+-	spin_lock_irqsave(&hwq->lock, flags);
++	spin_lock_bh(&hwq->lock);
+ 	while (budget > 0) {
+ 		creqe = bnxt_qplib_get_qe(hwq, hwq->cons, NULL);
+ 		if (!CREQ_CMP_VALID(creqe, creq->creq_db.dbinfo.flags))
+@@ -782,7 +777,7 @@ static void bnxt_qplib_service_creq(struct tasklet_struct *t)
+ 	if (hw_polled)
+ 		bnxt_qplib_ring_nq_db(&creq->creq_db.dbinfo,
+ 				      rcfw->res->cctx, true);
+-	spin_unlock_irqrestore(&hwq->lock, flags);
++	spin_unlock_bh(&hwq->lock);
+ 	if (num_wakeup)
+ 		wake_up_nr(&rcfw->cmdq.waitq, num_wakeup);
+ }
 -- 
 2.43.0
 
