@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-91061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D4E9BEC41
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057B49BEB7B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02BD1B2544D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0202285037
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B211F4FA7;
-	Wed,  6 Nov 2024 12:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1241DF270;
+	Wed,  6 Nov 2024 12:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqOo+Dc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRuWveAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD3D1F4727;
-	Wed,  6 Nov 2024 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2EC1F80B2;
+	Wed,  6 Nov 2024 12:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897624; cv=none; b=aElayJgKkZhRWUgkUJul5elDi1yAkFyov8IaUH90ZpFc9AzcSBv+1kO3/O0IoFqYiT7ai4e+V4xYVXjrnbFTg6tBfVLHVSAISst44UnuOaldYDT96sEKtnRPcKC/TgsTq+7W8k/z1dxlHCJwqTXH503Weth811VOOCpfTP6QUXo=
+	t=1730897106; cv=none; b=hHnxbYhImBZDyNq5gKha7FlIYQtyeo5Xas9khmmECU0RXs5mz/2SZA2iWBISketIiQVcK5AFlOB2+Gq0w9Wemk0Z+HwmnF+0fUdUh+uFQnz8dMOs7AEfQNrNnw7rBY+BhHKZaE+kcqdqDwteXiEkflR0iOVnJqvtkAxFgX9E27o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897624; c=relaxed/simple;
-	bh=kxlhaeODGm+H4PevcX2/1CtR3T+NOQj7rM6YgaDWnwM=;
+	s=arc-20240116; t=1730897106; c=relaxed/simple;
+	bh=Db4+9+IYgjCallxSpYrdtOCYaD0xmXsEQI89OVRNZBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pZFpdDtJ8Iw66t7BeVizbVQljiB6UzdQ+ybsSPVGzB/t/lxnClWxIoYiFuBfIJbix8047Zk5D5XGXE33AD7uHSYPPMH7Bpc0SNQLCVAPkg3HYdXAyWTRgGjL7ySu0xc6n/tZKQa3WWv8zl4YhFp0IQo0WIHvYMBDUe9wSrOGLTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqOo+Dc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5447EC4CECD;
-	Wed,  6 Nov 2024 12:53:44 +0000 (UTC)
+	 MIME-Version; b=q2kfOk2FwjdohCEM3iCu02ai7unrV74dIr6mBRzzzZ9p5SfpTrfexS6hvh8fitOWmbHRgHvEDT0nECSIw1Ba+aPqi8Eh04OISMzg28L6L/p7Mzzc1TtfvAvZr1MUO6p65FypD56YHeg+4IE0+9crt/iBAJOh15XHKrmwziBdZKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRuWveAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A274CC4CECD;
+	Wed,  6 Nov 2024 12:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897624;
-	bh=kxlhaeODGm+H4PevcX2/1CtR3T+NOQj7rM6YgaDWnwM=;
+	s=korg; t=1730897106;
+	bh=Db4+9+IYgjCallxSpYrdtOCYaD0xmXsEQI89OVRNZBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqOo+Dc1L6pd4+XToSePcdg4NACjsoSIwXdsjnbHBXXyPdrEhrkIYQyaCJ8SwwyRx
-	 52TVEXyG35OuJ0c+H9N3f+EI98f0Ootf0OgQUsh4y3Zt7j5tilcI12cZn/TV2QPaai
-	 oEED9oHctWZR9KAdTL3Kqb9ys/F7rgToqi8LpOAs=
+	b=KRuWveAYku8qLFebGVwk0sf9cMJAUGh3DgnDMxCcG90Fe9D98gYHyFmZXDjX080Sc
+	 Bw/p9hdb3JnpsICPWL/4v9GKU9I7lEOYOUwh8qmnozrbB062yAiNMYgNshHLSnZKjA
+	 EP4j9Q+ddibgD8vCizqbLNjeljhg7egqi6z52Fmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 080/151] ALSA: usb-audio: Add quirks for Dell WD19 dock
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.1 067/126] usb: phy: Fix API devm_usb_put_phy() can not release the phy
 Date: Wed,  6 Nov 2024 13:04:28 +0100
-Message-ID: <20241106120311.057750098@linuxfoundation.org>
+Message-ID: <20241106120307.898183133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +58,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Schär <jan@jschaer.ch>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 4413665dd6c528b31284119e3571c25f371e1c36 upstream.
+commit fdce49b5da6e0fb6d077986dec3e90ef2b094b50 upstream.
 
-The WD19 family of docks has the same audio chipset as the WD15. This
-change enables jack detection on the WD19.
+For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
+to release the phy, but it does not do that actually, so it can not fully
+undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
+devres_release() instead of devres_destroy() within the API.
 
-We don't need the dell_dock_mixer_init quirk for the WD19. It is only
-needed because of the dell_alc4020_map quirk for the WD15 in
-mixer_maps.c, which disables the volume controls. Even for the WD15,
-this quirk was apparently only needed when the dock firmware was not
-updated.
-
-Signed-off-by: Jan Schär <jan@jschaer.ch>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/phy/phy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3465,6 +3465,9 @@ int snd_usb_mixer_apply_create_quirk(str
- 			break;
- 		err = dell_dock_mixer_init(mixer);
- 		break;
-+	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
-+		err = dell_dock_mixer_create(mixer);
-+		break;
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -628,7 +628,7 @@ void devm_usb_put_phy(struct device *dev
+ {
+ 	int r;
  
- 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
- 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
+-	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
++	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
+ }
+ EXPORT_SYMBOL_GPL(devm_usb_put_phy);
 
 
 
