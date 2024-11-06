@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-90254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1989BE765
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE759BE89C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C80472836C9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936071F227C8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6663B1DF24E;
-	Wed,  6 Nov 2024 12:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6911DF969;
+	Wed,  6 Nov 2024 12:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZMW0Z7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLV/N/aH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268D91D416E;
-	Wed,  6 Nov 2024 12:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173B1DED58;
+	Wed,  6 Nov 2024 12:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895229; cv=none; b=hzPPcj5ljpaNa2Mp0MXmAw3BkO/iniLGCSGag2AAwZGq51DX78Vt6cwC2dWL5XzsXDnOIt4nJEQLGjSVF1lcHOdkJ4q22OAH20s8/KabyZHGfDMTY9ucAoeV0NAcglWDCFoPishuiHLhhI5B7Zp7p+N4m9GssHB/j3mBB6gn9MM=
+	t=1730895957; cv=none; b=QjA7KGDeKK9knWqHmayE7kXGNVoHpW4g9UBIDL3osvJbEqfWwbcYXk2nQEKUBv1k4KVO5hES2NQszPwz52lN3FLKHMmDJZ2OYL1+g/FazYik/P22/GSC5/2lY9kpjzvTw+Aoa7FMwr3r4hepMQ5GsfSFg4logyCd9G//WPMr+vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895229; c=relaxed/simple;
-	bh=1KW9zv7vfIXWCwOrpio73Ope/KWmFMcLTUlXf9TDSG8=;
+	s=arc-20240116; t=1730895957; c=relaxed/simple;
+	bh=zHUjsY9f+bVuymnLtzpYTllfKiglAG4CcvU612ToRKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTJu3gBF89wuATUx4SGXCD2bH2x19SqjdIb5BVX+dh6zWhrS5B8Saki71LksR4d/g78ifGRJ38+qrgpqSjohaZNWFZlOImhMeqgkeY90iiSW/oNz0gx/QLd18/Dx76+UyskfuGgEezUR46RpBCVPvhEQF/zkjJOxKi/OH8vx2yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZMW0Z7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C49C4CECD;
-	Wed,  6 Nov 2024 12:13:48 +0000 (UTC)
+	 MIME-Version; b=lyFk1el+4ZdW9qjn9YJlXHNrOhq2LbLvTQ2Joy8f2WvsOWzz0hROOWGL9eEX127BAulj3JKY9KtaQD8N4c6SRJ2pztP1RG/RiHhil/L7JlnEY6qqhzXCzQWJoGT99fXUIyQq3NLnNFljE7HmqQ+NAnzKWREbC40xdSp30i76O1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLV/N/aH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6897BC4CECD;
+	Wed,  6 Nov 2024 12:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895229;
-	bh=1KW9zv7vfIXWCwOrpio73Ope/KWmFMcLTUlXf9TDSG8=;
+	s=korg; t=1730895956;
+	bh=zHUjsY9f+bVuymnLtzpYTllfKiglAG4CcvU612ToRKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZMW0Z7+M7F8d+QGNP1D4Pfz5igrrw47GLJKljQ0jBpIxppvTjJDphw50vecXU3Sh
-	 /nRe9q83MkwFSItsy5NoKCBE26HcKsVICUM9t7ryqsemXef+zr2SKwzX+PgSQp2ZGp
-	 x51PqwZmn0047woMiZub4e1Jj+oldinyY9vrUX8M=
+	b=pLV/N/aHSRaDCRzndnKHikWL2BIONilKPT4eUoqVyRCB//aBVYEtH7vhmydlXpnP/
+	 i+os+EsWrw/EemxCZXz0sN5cfF6bIH9D/TX+SZfDlNOaz3BWewZF27bKn8JNmJs4ZB
+	 V1MA08aWf2O6VbWDBu38z+2GOM05s+Rbt3yh1Jjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 4.19 130/350] i2c: isch: Add missed else
-Date: Wed,  6 Nov 2024 13:00:58 +0100
-Message-ID: <20241106120324.118565626@linuxfoundation.org>
+	Howard Chu <howardchu95@gmail.com>,
+	jslaby@suse.cz,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 006/245] perf trace: Fix non-listed archs in the syscalltbl routines
+Date: Wed,  6 Nov 2024 13:00:59 +0100
+Message-ID: <20241106120319.401530518@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +67,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jiri Slaby <jslaby@suse.cz>
 
-commit 1db4da55070d6a2754efeb3743f5312fc32f5961 upstream.
+[ Upstream commit 5d35634ecc2d2c3938bd7dc23df0ad046da1b303 ]
 
-In accordance with the existing comment and code analysis
-it is quite likely that there is a missed 'else' when adapter
-times out. Add it.
+This fixes a build breakage on 32-bit arm, where the
+syscalltbl__id_at_idx() function was missing.
 
-Fixes: 5bc1200852c3 ("i2c: Add Intel SCH SMBus support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v2.6.27+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Committer notes:
+
+Generating a proper syscall table from a copy of
+arch/arm/tools/syscall.tbl ends up being too big a patch for this rc
+stage, I started doing it but while testing noticed some other problems
+with using BPF to collect pointer args on arm7 (32-bit) will maybe
+continue trying to make it work on the next cycle...
+
+Fixes: 7a2fb5619cc1fb53 ("perf trace: Fix iteration of syscall ids in syscalltbl->entries")
+Suggested-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: <jslaby@suse.cz>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/lkml/3a592835-a14f-40be-8961-c0cee7720a94@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-isch.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/perf/util/syscalltbl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/i2c/busses/i2c-isch.c
-+++ b/drivers/i2c/busses/i2c-isch.c
-@@ -107,8 +107,7 @@ static int sch_transaction(void)
- 	if (retries > MAX_RETRIES) {
- 		dev_err(&sch_adapter.dev, "SMBus Timeout!\n");
- 		result = -ETIMEDOUT;
--	}
--	if (temp & 0x04) {
-+	} else if (temp & 0x04) {
- 		result = -EIO;
- 		dev_dbg(&sch_adapter.dev, "Bus collision! SMBus may be "
- 			"locked until next hard reset. (sorry!)\n");
+diff --git a/tools/perf/util/syscalltbl.c b/tools/perf/util/syscalltbl.c
+index 0dd26b991b3fb..351da249f1cc6 100644
+--- a/tools/perf/util/syscalltbl.c
++++ b/tools/perf/util/syscalltbl.c
+@@ -42,6 +42,11 @@ static const char *const *syscalltbl_native = syscalltbl_mips_n64;
+ #include <asm/syscalls.c>
+ const int syscalltbl_native_max_id = SYSCALLTBL_LOONGARCH_MAX_ID;
+ static const char *const *syscalltbl_native = syscalltbl_loongarch;
++#else
++const int syscalltbl_native_max_id = 0;
++static const char *const syscalltbl_native[] = {
++	[0] = "unknown",
++};
+ #endif
+ 
+ struct syscall {
+@@ -178,6 +183,11 @@ int syscalltbl__id(struct syscalltbl *tbl, const char *name)
+ 	return audit_name_to_syscall(name, tbl->audit_machine);
+ }
+ 
++int syscalltbl__id_at_idx(struct syscalltbl *tbl __maybe_unused, int idx)
++{
++	return idx;
++}
++
+ int syscalltbl__strglobmatch_next(struct syscalltbl *tbl __maybe_unused,
+ 				  const char *syscall_glob __maybe_unused, int *idx __maybe_unused)
+ {
+-- 
+2.43.0
+
 
 
 
