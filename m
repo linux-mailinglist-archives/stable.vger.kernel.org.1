@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31739BE928
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052CD9BE936
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DE14B21065
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F6D1C217E4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FA54207F;
-	Wed,  6 Nov 2024 12:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D31A1DED54;
+	Wed,  6 Nov 2024 12:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05DdTNeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJyDQeer"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0A7171C9;
-	Wed,  6 Nov 2024 12:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE251DDA15;
+	Wed,  6 Nov 2024 12:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896268; cv=none; b=JveCAgom9fJHgQMnXJfit6mH3zKXBheZGI+6CvjFOxSRwaupstrEdnD3884rSjbaSiI3ktAUfElFwTXsEZ4udDqqfh5nrSUMS4zA1eSQA3qsIfjckv3AogpWcJTAcw96O524Bo0QHuk37l5ewHIy9XCG/Qzlu2LrDebsO6kXri8=
+	t=1730896298; cv=none; b=dgS3IZSuhEnFUaRzvwPwvV48x0nch9qs79DmymK21KcCaWVoPZQbuNwg6tXuXQ3q2WuVk8gQMJUW1S0OpYpMMSdyQtO5jSCJ6QL+CQ2ej+OuRSv5cHf9QdGD1eKkgFVAUUwwcQCm59OBArcDtjZ9+PI/2yDIPiJyYSghPfTxdo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896268; c=relaxed/simple;
-	bh=sGQwq4iy8J8HsrDRjjp+8WHUygoE/sYSzoiSbZk9G9E=;
+	s=arc-20240116; t=1730896298; c=relaxed/simple;
+	bh=vDOK5SYWJONzcaG1mSJYuak3Ljzo0uFahVoljiDRcLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjfFLbwc+SAgdGz4chIfizk0Qp491XBf0TUUZFdIWUf2I5oerFCwzefcXmvo5A01cEJkljX3Tl/Vj2Z2wKaqpYloU3gaEizE1CGCWdF9LKNrjXbjsNM9zWkD1RaVpaoxGTH3Af4ugBaZOGELLLzg/B20zliwlROlsQD1iUrTd5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05DdTNeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED756C4CECD;
-	Wed,  6 Nov 2024 12:31:07 +0000 (UTC)
+	 MIME-Version; b=n9VVdXA7IhH+gq4RnOMLb8hkDssLrs342jV2lKLgiqR3tSlkuPssXfpGZKMdaf7GXbLE55gV28s3cKep/EmnYDecQohyjujhgI9azEtN6Cvz3dRMTBPlLlWTYiMjETH6y1PDeYif2Iv9RGrnlrk2StjiBXsZZnQszeyueKZq8A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJyDQeer; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A9FC4CECD;
+	Wed,  6 Nov 2024 12:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896268;
-	bh=sGQwq4iy8J8HsrDRjjp+8WHUygoE/sYSzoiSbZk9G9E=;
+	s=korg; t=1730896297;
+	bh=vDOK5SYWJONzcaG1mSJYuak3Ljzo0uFahVoljiDRcLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05DdTNeotQ3FuBHT111gKgXAoBeAmGgD8EFWw8mgVxR1K+nVX5gWeijb8yhSZRpMd
-	 rNlVcPl2Vol7YtCBocx4nRBtTHKcYPHtcV842Rjm+B/5GBD92fwpDtbcY6P2jd3UmM
-	 ziaSZUOIp0Z2hKJbCLn7vCRAshlfXmOxp1kGKIIM=
+	b=SJyDQeer4GzRRABpS+GniN0o4PhmQhmV4bBxyvciqxtBJMEbIHBZYZQuGQAvKBYEP
+	 XXJl1X+JnwZhTQPxy/xQisxneAFP8dR0fJFw2903bf2W7u4Dz+JzP7BRIQhwAPQpEV
+	 Ut+tq3zstXmaVGLPx6zEgc2UtFFLDu379+8Y/BLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ovidiu Bunea <Ovidiu.Bunea@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.11 119/245] Revert "drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35"
-Date: Wed,  6 Nov 2024 13:02:52 +0100
-Message-ID: <20241106120322.150339719@linuxfoundation.org>
+	Edward Liaw <edliaw@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 120/245] Revert "selftests/mm: fix deadlock for fork after pthread_create on ARM"
+Date: Wed,  6 Nov 2024 13:02:53 +0100
+Message-ID: <20241106120322.175711173@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
 References: <20241106120319.234238499@linuxfoundation.org>
@@ -69,43 +68,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+From: Edward Liaw <edliaw@google.com>
 
-commit 1b6063a57754eae5705753c01e78dc268b989038 upstream.
+commit 5bb1f4c9340e01003b00b94d539eadb0da88f48e upstream.
 
-This reverts
-commit 9dad21f910fc ("drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35")
+Patch series "selftests/mm: revert pthread_barrier change"
 
-[why & how]
-The offending commit exposes a hang with lid close/open behavior.
-Both issues seem to be related to ODM 2:1 mode switching, so there
-is another issue generic to that sequence that needs to be
-investigated.
+On Android arm, pthread_create followed by a fork caused a deadlock in
+the case where the fork required work to be completed by the created
+thread.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 68bf95317ebf2cfa7105251e4279e951daceefb7)
-Cc: stable@vger.kernel.org
+The previous patches incorrectly assumed that the parent would
+always initialize the pthread_barrier for the child thread.  This
+reverts the change and replaces the fix for wp-fork-with-event with the
+original use of atomic_bool.
+
+
+This patch (of 3):
+
+This reverts commit e142cc87ac4ec618f2ccf5f68aedcd6e28a59d9d.
+
+fork_event_consumer may be called by other tests that do not initialize
+the pthread_barrier, so this approach is not correct.  The subsequent
+patch will revert to using atomic_bool instead.
+
+Link: https://lkml.kernel.org/r/20241018171734.2315053-1-edliaw@google.com
+Link: https://lkml.kernel.org/r/20241018171734.2315053-2-edliaw@google.com
+Fixes: e142cc87ac4e ("fix deadlock for fork after pthread_create on ARM")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-@@ -303,6 +303,7 @@ void build_unoptimized_policy_settings(e
- 	if (project == dml_project_dcn35 ||
- 		project == dml_project_dcn351) {
- 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
-+		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
- 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
- 		policy->UseOnlyMaxPrefetchModes = 1;
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -241,9 +241,6 @@ static void *fork_event_consumer(void *d
+ 	fork_event_args *args = data;
+ 	struct uffd_msg msg = { 0 };
+ 
+-	/* Ready for parent thread to fork */
+-	pthread_barrier_wait(&ready_for_fork);
+-
+ 	/* Read until a full msg received */
+ 	while (uffd_read_msg(args->parent_uffd, &msg));
+ 
+@@ -311,12 +308,8 @@ static int pagemap_test_fork(int uffd, b
+ 
+ 	/* Prepare a thread to resolve EVENT_FORK */
+ 	if (with_event) {
+-		pthread_barrier_init(&ready_for_fork, NULL, 2);
+ 		if (pthread_create(&thread, NULL, fork_event_consumer, &args))
+ 			err("pthread_create()");
+-		/* Wait for child thread to start before forking */
+-		pthread_barrier_wait(&ready_for_fork);
+-		pthread_barrier_destroy(&ready_for_fork);
  	}
+ 
+ 	child = fork();
 
 
 
