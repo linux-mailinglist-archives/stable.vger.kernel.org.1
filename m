@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88C49BECD3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A88A9BE728
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B114285EBF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5C21C234A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029ED1F706C;
-	Wed,  6 Nov 2024 12:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA081DF24E;
+	Wed,  6 Nov 2024 12:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIhDs4NX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSItzI+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25441DFE3B;
-	Wed,  6 Nov 2024 12:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B4E1D5AD7;
+	Wed,  6 Nov 2024 12:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897976; cv=none; b=uFlMtkdqSJXcg8Fc4kSEfR/nTm8MRpXZ4cEEjbyejVxxFXkK4y1OhroJuUrxwqnthdewWuGy6LEYZlVWpevMtyeL34sz0Pns5qUcf6tI3WemkIEDiFrNjE6bqOxFMr7v2CiKOT/vSW/ENNykMZA8GERN2p0hifFg8NFbYfFXC90=
+	t=1730895071; cv=none; b=rYVAw8zAYlyRS3MoaBtc8J9o2xnnqjZg05KbWk7mBavLeeYIZUG7M1gjNdPwlk0Zz7yJj66xA13/neoAAu1k+LesJhRmePpSYOenXrcv/hizm/g4nkqxd6JGUK4Ab/DBmyjXYSgR+rHHkPJ5lgvkfaXcNF/oeqVrnje2Nwe58X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897976; c=relaxed/simple;
-	bh=xhR+pYITDjnLsk8+sr/LvJQrdmfgiEm8YfHRxg5QSoc=;
+	s=arc-20240116; t=1730895071; c=relaxed/simple;
+	bh=dmJHD/KF/m6L9oxSsxE9KNp555yshKvoStopIJhp65E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnf7slnnvsEHEaMUEalqRg4rwQqeklXuBUmhOA0ScpD28WQJnLykG+vZTevfo30BzklecLebmh1jqiarUv5qK3rkNocUU+tVPM8ZKtI7LY5lKU+zKhANNVE92Eh9KskSq0AWe+4pZxpFc7x3DM5WgFBJpceded29yHlmI6WXSsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIhDs4NX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35828C4CECD;
-	Wed,  6 Nov 2024 12:59:36 +0000 (UTC)
+	 MIME-Version; b=n0bkm6Bm0ivvs98tYm+bosos2TvfiP6jv402PVYqygGj14uUc27H7w1ungxYFCI/xQ6j6AYUPk51diphipkNm3z3jjC3Bn+FfAdTouKZc74i30PKVDS0Vu8VKPGZv9fh59rZ4Lm3nt8uhUacKjFIKpWUpliW2EmV6wuzFIW8odE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSItzI+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD4DC4CECD;
+	Wed,  6 Nov 2024 12:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897976;
-	bh=xhR+pYITDjnLsk8+sr/LvJQrdmfgiEm8YfHRxg5QSoc=;
+	s=korg; t=1730895071;
+	bh=dmJHD/KF/m6L9oxSsxE9KNp555yshKvoStopIJhp65E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIhDs4NXo8zD/UKTmE9Q8TWTBJPXDXTJX3iLy7r1IInicAsc/3dX4xSAp34d32k0f
-	 AJu4DxkTPkBezyEhjkcl4/knAbh8tX/24bjwk1rnvx0Su1axDotryX5TZO3Mn4r4KO
-	 N0ZIPojN6KSNhhDPhBbhwBA5pAoj6ZxBCqkyMQBA=
+	b=wSItzI+gtiVYg0dlYDujrMzWIfX1gZUY7HlIY1cACS5atA+wNj6bL1AsEh5oVnb7O
+	 gcy+Q9uM2oyjTuQDvEx0oSIlDU9dYro1VYBHemfFs0QvQV5bdnEABRiFlioRuD4san
+	 /741sO5ng1oAwUtyT1VRPhB+s6Eupav88eywDiJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Yang <sherry.yang@oracle.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 083/462] drm/msm: fix %s null argument error
-Date: Wed,  6 Nov 2024 12:59:36 +0100
-Message-ID: <20241106120333.557459850@linuxfoundation.org>
+Subject: [PATCH 4.19 049/350] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
+Date: Wed,  6 Nov 2024 12:59:37 +0100
+Message-ID: <20241106120322.102180381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Yang <sherry.yang@oracle.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
+[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
 
-The following build error was triggered because of NULL string argument:
+If an error occurs after request_mem_region(), a corresponding
+release_mem_region() should be called, as already done in the remove
+function.
 
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
-BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
-BUILDSTDERR:       |                                                   ^~
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
-
-This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
-warnings by default across the subsystem"). Using "(null)" instead
-to fix it.
-
-Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/611071/
-Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/hpfb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-index b31cfb554fa23..a1cc205192f34 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-@@ -358,7 +358,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p)
- 
- 			drm_printf(p, "%s:%d\t%d\t%s\n",
- 				pipe2name(pipe), j, inuse,
--				plane ? plane->name : NULL);
-+				plane ? plane->name : "(null)");
- 
- 			total += inuse;
- 		}
+diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
+index 9230db9ea94b7..47ec02a38f76c 100644
+--- a/drivers/video/fbdev/hpfb.c
++++ b/drivers/video/fbdev/hpfb.c
+@@ -343,6 +343,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
+ 	if (hpfb_init_one(paddr, vaddr)) {
+ 		if (d->scode >= DIOII_SCBASE)
+ 			iounmap((void *)vaddr);
++		release_mem_region(d->resource.start, resource_size(&d->resource));
+ 		return -ENOMEM;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
