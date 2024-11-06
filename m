@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4AAC9BE91A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005069BE7F6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 029B81C21EDD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA8C1F24BEC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6835C1DD55A;
-	Wed,  6 Nov 2024 12:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6261DF97D;
+	Wed,  6 Nov 2024 12:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHDHO3RD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BR9fx78A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C8B4207F;
-	Wed,  6 Nov 2024 12:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3E21DF75C;
+	Wed,  6 Nov 2024 12:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896230; cv=none; b=ajIjEFv/mSQvKyB7E7rGm+0HBqvixjPBVydRdo0q/b1VVRVaDetDTBPC8nINuC0iHAcX+L7WIf2Xrr5sJzmMpSEvqfniXxr3n8oVY6vJ/DahwS4RudeD/kYXenyqfdxL0wMmLJjL4tn+jPMIvLpZgh2zLpk5ci0KfCLOlCs0zaM=
+	t=1730895561; cv=none; b=ptoRJREaZ0uuCcgDf93aOYUqflYPEV+87zdibGAXHw33CoLFZy13pjs0G3pqw38KfQew6Jze3heKJRnPi/zeYCThpD1sCWyZO7R4jcSwDAgCRmLfKQXkoEZqzrcHQAAxur2ozeaajjdkM0lDpevPDc1p2o2dN2Ks8/Z4OnF2nYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896230; c=relaxed/simple;
-	bh=IEFylJUDy5p8xGaEQWdutj9voB7IxAmA/ROrs4hekQk=;
+	s=arc-20240116; t=1730895561; c=relaxed/simple;
+	bh=E/UNVJyjsl/VhsniNZklILcZM6WihF19/MuPRGU2cRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuT04SUT7/G+MeBebikedrrN4Go10rAmkEADyFwo1TPguk/beLBDNV+9kkd4p8T0VDdckXVz1eXvEZw/lYt7gbd+yMdIqQ/n2bfmfmitQVV5FwVWRJ5KIfNFTQhAgrjrrUxa/hms/Mo48KJqSn3XYxVNVqA0CgY2zgKukJtttKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHDHO3RD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A242C4CECD;
-	Wed,  6 Nov 2024 12:30:29 +0000 (UTC)
+	 MIME-Version; b=sTiXTSqMqgVpSHukxQ+ig6Ifkg3vOW0lURy1o4XKBZpS4Gi3KXCrhRVIjAZJjnG8pOJS+3IAAY4eLqdSv3Bt5QYb2dmrZC/raUxh9bw+cCROt4/G8ccusKbp2taHoadeXUvA7V3ONSUp31hVqEitTwf4krkCASgT/Q7mJpXlyz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR9fx78A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A52DC4AF0B;
+	Wed,  6 Nov 2024 12:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896229;
-	bh=IEFylJUDy5p8xGaEQWdutj9voB7IxAmA/ROrs4hekQk=;
+	s=korg; t=1730895561;
+	bh=E/UNVJyjsl/VhsniNZklILcZM6WihF19/MuPRGU2cRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHDHO3RD/s8bLOMLpAhV9v+mL+rRkY8azvD5XCwjzXtO7wGOuFk2Vl6vR4atyF1nZ
-	 ysWnD5I4zmtzziRPc9KI4R5qX3DTGFgBX1dedQX6QAxNABCuasQMpuU/5R6rSO7IrK
-	 0nSiWHx4d7ijJ3kjzFJudkbhtrELX6lkmdjw4mBg=
+	b=BR9fx78ARlGXGeYfL/txQhfoKgX1AJhQ0pITx6ni3IpgxdyMRafvP5pVMqEaYV68o
+	 g+hjdgGRUDuZnlb1pmPyVe5BBxityqfSsbDklgusqwL8otfewbPaxW6o+oLkslhYKL
+	 5IpV7tEXS6gEdMkMy7OTdBfsLug1qebEOYEQgdZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 134/245] nilfs2: fix potential deadlock with newly created symlinks
-Date: Wed,  6 Nov 2024 13:03:07 +0100
-Message-ID: <20241106120322.526142128@linuxfoundation.org>
+	syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 260/350] ppp: fix ppp_async_encode() illegal access
+Date: Wed,  6 Nov 2024 13:03:08 +0100
+Message-ID: <20241106120327.328361395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
+[ Upstream commit 40dddd4b8bd08a69471efd96107a4e1c73fabefc ]
 
-Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
-memory reclamation involving the filesystem layer, which can result in
-circular lock dependencies among the reader/writer semaphore
-nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
-fs_reclaim pseudo lock.
+syzbot reported an issue in ppp_async_encode() [1]
 
-This is because after commit 21fc61c73c39 ("don't put symlink bodies in
-pagecache into highmem"), the gfp flags of the page cache for symbolic
-links are overwritten to GFP_KERNEL via inode_nohighmem().
+In this case, pppoe_sendmsg() is called with a zero size.
+Then ppp_async_encode() is called with an empty skb.
 
-This is not a problem for symlinks read from the backing device, because
-the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
-when a new symlink is created with nilfs_symlink(), the gfp flags remain
-overwritten to GFP_KERNEL.  Then, memory allocation called from
-page_symlink() etc.  triggers memory reclamation including the FS layer,
-which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
-cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+BUG: KMSAN: uninit-value in ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
+ BUG: KMSAN: uninit-value in ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
+  ppp_async_encode drivers/net/ppp/ppp_async.c:545 [inline]
+  ppp_async_push+0xb4f/0x2660 drivers/net/ppp/ppp_async.c:675
+  ppp_async_send+0x130/0x1b0 drivers/net/ppp/ppp_async.c:634
+  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2280 [inline]
+  ppp_input+0x1f1/0xe60 drivers/net/ppp/ppp_generic.c:2304
+  pppoe_rcv_core+0x1d3/0x720 drivers/net/ppp/pppoe.c:379
+  sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1113
+  __release_sock+0x1da/0x330 net/core/sock.c:3072
+  release_sock+0x6b/0x250 net/core/sock.c:3626
+  pppoe_sendmsg+0x2b8/0xb90 drivers/net/ppp/pppoe.c:903
+  sock_sendmsg_nosec net/socket.c:729 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:744
+  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
+  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
+  __do_sys_sendmmsg net/socket.c:2771 [inline]
+  __se_sys_sendmmsg net/socket.c:2768 [inline]
+  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
+  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
-of newly created symlinks in the same way that nilfs_new_inode() and
-__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
-scope consistently or improve the locking constraints.
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4092 [inline]
+  slab_alloc_node mm/slub.c:4135 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4187
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
+  alloc_skb include/linux/skbuff.h:1322 [inline]
+  sock_wmalloc+0xfe/0x1a0 net/core/sock.c:2732
+  pppoe_sendmsg+0x3a7/0xb90 drivers/net/ppp/pppoe.c:867
+  sock_sendmsg_nosec net/socket.c:729 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:744
+  ____sys_sendmsg+0x903/0xb60 net/socket.c:2602
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2656
+  __sys_sendmmsg+0x3c1/0x960 net/socket.c:2742
+  __do_sys_sendmmsg net/socket.c:2771 [inline]
+  __se_sys_sendmmsg net/socket.c:2768 [inline]
+  __x64_sys_sendmmsg+0xbc/0x120 net/socket.c:2768
+  x64_sys_call+0xb6e/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:308
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
-Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
-Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 1 UID: 0 PID: 5411 Comm: syz.1.14 Not tainted 6.12.0-rc1-syzkaller-00165-g360c1f1f24c6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+1d121645899e7692f92a@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241009185802.3763282-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/namei.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ppp/ppp_async.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -157,6 +157,9 @@ static int nilfs_symlink(struct mnt_idma
- 	/* slow symlink */
- 	inode->i_op = &nilfs_symlink_inode_operations;
- 	inode_nohighmem(inode);
-+	mapping_set_gfp_mask(inode->i_mapping,
-+			     mapping_gfp_constraint(inode->i_mapping,
-+						    ~__GFP_FS));
- 	inode->i_mapping->a_ops = &nilfs_aops;
- 	err = page_symlink(inode, symname, l);
- 	if (err)
+diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
+index fb1e28a298929..14e8ad3f93544 100644
+--- a/drivers/net/ppp/ppp_async.c
++++ b/drivers/net/ppp/ppp_async.c
+@@ -555,7 +555,7 @@ ppp_async_encode(struct asyncppp *ap)
+ 	 * and 7 (code-reject) must be sent as though no options
+ 	 * had been negotiated.
+ 	 */
+-	islcp = proto == PPP_LCP && 1 <= data[2] && data[2] <= 7;
++	islcp = proto == PPP_LCP && count >= 3 && 1 <= data[2] && data[2] <= 7;
+ 
+ 	if (i == 0) {
+ 		if (islcp)
+-- 
+2.43.0
+
 
 
 
