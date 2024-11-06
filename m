@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-90682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128359BE991
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:35:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14499BE86A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76800B23ACF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:35:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36871C20B12
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEE61E25FC;
-	Wed,  6 Nov 2024 12:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D401DFE3B;
+	Wed,  6 Nov 2024 12:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGYdWW5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONCjWyTF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794551E008D;
-	Wed,  6 Nov 2024 12:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4421DFE25;
+	Wed,  6 Nov 2024 12:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896498; cv=none; b=kdPYYsPonUcj6Ujgq3evC1CJ5w1Dr74KxCwVRhyxLIdm9msZNxe1981b4qV6v7v5KgBvY12eDC3feR5bbTOCci5YkbjuKIBVXYHXUkO+k3cQeeDyF5TNfGybIEWi3IAsEGnZQVuJLiPdAaRPMERkVOjA4Ee1AF3ORbHA16vryMU=
+	t=1730895824; cv=none; b=dgqQUwqbgOCHxLpN8+lxWiif9hMIMZf5rbG7N4su20ALFEjdjwXcOV8J1gq8G7hVhVr1xGEqDEvDUz4AQwpeRrW3J73KAwU0+kiMn1gDTwFurOIM0pC8EmBFW7iFEcaUzynULBMgFuYB3twnHxdrIYSXtkJhSv68+qlRPgABKzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896498; c=relaxed/simple;
-	bh=P4D9jbE6az0PAp96YCbyqyptmaqQpMqyElymgNeHOas=;
+	s=arc-20240116; t=1730895824; c=relaxed/simple;
+	bh=B9LP7jaKOsZn1RbCtZMwnAPg5rReo50vr8WXW0G3PHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GZWsa9sBhz6A9syHMpc6SjftIsXI4BwBANQuFdJ/db9PIsoiaiBZ/INOhAqwfxJjTkDp5NBJW/oztbCc116cLWzkqYZ9kAE7CPQ4gB3y4F5I12Hi4QkvEc75AJGWcmdCdSi7qx1XELZT9gpztE2E3dNE/bWXMo04BThvERG97Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGYdWW5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C0EC4CECD;
-	Wed,  6 Nov 2024 12:34:57 +0000 (UTC)
+	 MIME-Version; b=D3ZpQIygAfKZvsHo8M+t5YjhgMSyS2HV4iEtaD3xMNNtamv58rP6BvA4sfcjincOmIK/mXW05bUR5F8OT8qGGtPpUPg5TpdKhhOZjdlZ+x/0/iCtTo3kS+gz4Q8LdHrqQEyb/YRdo6ehggsvhtWTWcpYUEdxulGtM4XTj2dzUSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONCjWyTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B452C4CECD;
+	Wed,  6 Nov 2024 12:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896498;
-	bh=P4D9jbE6az0PAp96YCbyqyptmaqQpMqyElymgNeHOas=;
+	s=korg; t=1730895823;
+	bh=B9LP7jaKOsZn1RbCtZMwnAPg5rReo50vr8WXW0G3PHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGYdWW5ziGjMPz94lAAUA9oUmOesYYyJe3X87GtICb8FbzODQX3uUDiCC/a5Rk4lx
-	 OJOLVtIlAOarXoOUNDwqtmis7lN1unN50s8D9pk3eNvT1O+K8dHWCliD+CJZJoVyei
-	 IlSUKhDNwBuyACCcyDeBM5AgMUYJ1Qn4L07/e5PM=
+	b=ONCjWyTF+JZv0d8nDkq5Br7DLNGghr4fm3B3E9T2tUrK4SLYlZ+52uNL/hJBt7Dkm
+	 ahJuwRIXiHjbMi89fPvEUlafwx2tuk9WJnoFqXD3eHdcdvLaxi55l+Q06mNvaUw36P
+	 xgNHPM1W+HhpmjMQV2BNG0JDQn1o+Yz9sBpVjFtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Vinod Govindapillai <vinod.govindapillai@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.11 222/245] drm/i915: disable fbc due to Wa_16023588340
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 347/350] ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
 Date: Wed,  6 Nov 2024 13:04:35 +0100
-Message-ID: <20241106120324.724549059@linuxfoundation.org>
+Message-ID: <20241106120329.254008283@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +68,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit c55f79f317ab428ae6d005965bc07e37496f209f upstream.
+[ Upstream commit bc0a2f3a73fcdac651fca64df39306d1e5ebe3b0 ]
 
-On BMG-G21 we need to disable fbc due to complications around the WA.
+Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two
+reasons for this: first, the parameter value passed is greater than
+ocfs2_max_inline_data_with_xattr, second, the start and end parameters of
+ocfs2_truncate_inline are "unsigned int".
 
-v2:
- - Try to handle with i915_drv.h and compat layer. (Rodrigo)
-v3:
- - For simplicity retreat back to the original design for now.
- - Drop the extra \ from the Makefile (Jani)
+So, we need to add a sanity check for byte_start and byte_len right before
+ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater
+than ocfs2_max_inline_data_with_xattr return -EINVAL.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: intel-gfx@lists.freedesktop.org
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240703124338.208220-4-matthew.auld@intel.com
-[ commit dc0f1644c47e ("drm/xe: Generate oob before compiling anything")
-  makes part of the change to the Makefile not needed.
-  Drop that to resolve conflict. ]
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/tencent_D48DB5122ADDAEDDD11918CFB68D93258C07@qq.com
+Fixes: 1afc32b95233 ("ocfs2: Write support for inline data")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=81092778aac03460d6b7
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_wa.h |    8 ++++++++
- drivers/gpu/drm/i915/display/intel_fbc.c        |    6 ++++++
- drivers/gpu/drm/xe/Makefile                     |    1 +
- drivers/gpu/drm/xe/display/xe_display_wa.c      |   16 ++++++++++++++++
- 4 files changed, 31 insertions(+)
- create mode 100644 drivers/gpu/drm/xe/display/xe_display_wa.c
+ fs/ocfs2/file.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_display_wa.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_wa.h
-@@ -6,8 +6,16 @@
- #ifndef __INTEL_DISPLAY_WA_H__
- #define __INTEL_DISPLAY_WA_H__
- 
-+#include <linux/types.h>
-+
- struct drm_i915_private;
- 
- void intel_display_wa_apply(struct drm_i915_private *i915);
- 
-+#ifdef I915
-+static inline bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915) { return false; }
-+#else
-+bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915);
-+#endif
-+
- #endif
---- a/drivers/gpu/drm/i915/display/intel_fbc.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbc.c
-@@ -56,6 +56,7 @@
- #include "intel_display_device.h"
- #include "intel_display_trace.h"
- #include "intel_display_types.h"
-+#include "intel_display_wa.h"
- #include "intel_fbc.h"
- #include "intel_fbc_regs.h"
- #include "intel_frontbuffer.h"
-@@ -1237,6 +1238,11 @@ static int intel_fbc_check_plane(struct
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index a6f486f4138f5..3c71c05a0581b 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1795,6 +1795,14 @@ int ocfs2_remove_inode_range(struct inode *inode,
  		return 0;
- 	}
  
-+	if (intel_display_needs_wa_16023588340(i915)) {
-+		plane_state->no_fbc_reason = "Wa_16023588340";
-+		return 0;
-+	}
+ 	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
++		int id_count = ocfs2_max_inline_data_with_xattr(inode->i_sb, di);
 +
- 	/* WaFbcTurnOffFbcWhenHyperVisorIsUsed:skl,bxt */
- 	if (i915_vtd_active(i915) && (IS_SKYLAKE(i915) || IS_BROXTON(i915))) {
- 		plane_state->no_fbc_reason = "VT-d enabled";
---- a/drivers/gpu/drm/xe/Makefile
-+++ b/drivers/gpu/drm/xe/Makefile
-@@ -175,6 +175,7 @@ xe-$(CONFIG_DRM_XE_DISPLAY) += \
- 	display/xe_display.o \
- 	display/xe_display_misc.o \
- 	display/xe_display_rps.o \
-+	display/xe_display_wa.o \
- 	display/xe_dsb_buffer.o \
- 	display/xe_fb_pin.o \
- 	display/xe_hdcp_gsc.o \
---- /dev/null
-+++ b/drivers/gpu/drm/xe/display/xe_display_wa.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
++		if (byte_start > id_count || byte_start + byte_len > id_count) {
++			ret = -EINVAL;
++			mlog_errno(ret);
++			goto out;
++		}
 +
-+#include "intel_display_wa.h"
-+
-+#include "xe_device.h"
-+#include "xe_wa.h"
-+
-+#include <generated/xe_wa_oob.h>
-+
-+bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915)
-+{
-+	return XE_WA(xe_root_mmio_gt(i915), 16023588340);
-+}
+ 		ret = ocfs2_truncate_inline(inode, di_bh, byte_start,
+ 					    byte_start + byte_len, 0);
+ 		if (ret) {
+-- 
+2.43.0
+
 
 
 
