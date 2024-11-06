@@ -1,167 +1,152 @@
-Return-Path: <stable+bounces-90072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01179BDF4E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:23:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2FE9BDF60
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 08:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38DEC284E6E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:23:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE33628420D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A271CC14B;
-	Wed,  6 Nov 2024 07:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0932D1CC88B;
+	Wed,  6 Nov 2024 07:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="a7eD+yFS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dznXUx5B"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D701C1AD2;
-	Wed,  6 Nov 2024 07:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBF3192580;
+	Wed,  6 Nov 2024 07:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730877811; cv=none; b=s4HTrnMTCyaHQn6EqlU8P09UC2EDXF9ibuyvXV0CGBZhjwyl084cgjZmjdmfHUOQrq3/mrNeZAOvqFnkmT+YpxWCuiFTIKLyuc87oCPMH5A12Cuyex6NLpfKjdXaoHaN0nVy5G0AUwFPxsnTnuefr2zwktC84GckHDTHfV353z4=
+	t=1730877921; cv=none; b=QDjJ/4ePZPXYL2vYFHM75Q4zkg7I69o1jdIn9xlFUjRg3irebzFqLE9zcm5IJOR1erjymZkXEt2EAP5jpSU6C190lupq9R1564FeniT/JBCvn66zFcf2eBdMLcFETFlfCDZ1biwm0dNoFad8Kyub4oVHgFOxq8Bb/qaIfqU0sX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730877811; c=relaxed/simple;
-	bh=ASAoilxWckc5MdLsdk/Gt9RrC2fpKKq3cQAY2tADBNM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XPBOTRtOmqMH7gGcWmasxzbPPBS0sgH8PLYVaS1zcfsmpVBesuvapoqMqBL7wSAYZv5uIgzhiYexwYfifFTNsXBlok2Sk6MdIo2j0mXBN/fNEb2muZUSxDNyqIV6CV2RassXfZmBmPjXFWsX74HKk5ePAJcPn6IMY5e5Ahp2elw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=a7eD+yFS; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=iw2rQVrHpSXDXT1BJhDIQjcX6rB+tehBnAF7Pn72/uM=; b=a7eD+yFS9smWNw5yfNxn+XkIL5
-	zXHU7pv/mNF4EvT3kkLKZGpuKfBy5CWj8Oi1EBXKuBuqfVMwzPzRqHwE9vUmZFxLxqUnUVgllPB6p
-	haEt5SeWYShbOGs7CTi1U5Y547w9k7b3+8e9Bh+Ig/e4b60sxNTkGDphibSFj5WQn72MiskcJJOJW
-	uhm7XI/p+qOI6n01NeF34WPvwoEAvp2PlzD8jLUCslFLWYhPdtASysVxsHD7gr0E7QRaGqxYo21Ed
-	kp4qXrukBC5MCm5fE7+m5ACTTY0c2h7HKFvi5V+b+PC94h05ivzMey6l5l+SLXmO1T44E2nW8TnJM
-	FSazKoaQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1t8aNq-00DlTP-89; Wed, 06 Nov 2024 07:23:18 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 00FA4BE2DE0; Wed, 06 Nov 2024 08:23:16 +0100 (CET)
-Date: Wed, 6 Nov 2024 08:23:16 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Mike <user.service2016@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy =?iso-8859-1?Q?Lain=E9?= <jeremy.laine@m4x.org>,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
-Message-ID: <ZysZZK8udCI1hNLs@eldamar.lan>
-References: <30f4b18f-4b96-403c-a0ab-d81809d9888a@gmail.com>
- <c09d4f5b-0c4b-4f57-8955-28a963cc7e16@leemhuis.info>
- <2024061258-boxy-plaster-7219@gregkh>
- <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
- <ZyMkvAkZXuoTHFtd@eldamar.lan>
- <ab5e25d8-3381-452e-ad13-5d65c0e12306@leemhuis.info>
- <CABBYNZKQAJGzA8th8A7Foiy7YaSFZDpLvLZqDFsVJ3Yzn8C_5g@mail.gmail.com>
- <Zypwz65wRM-FMXte@eldamar.lan>
+	s=arc-20240116; t=1730877921; c=relaxed/simple;
+	bh=h+xI1yT8ky/b19/GpzaLaSMrzWTHCXmCe32fyxlq3rw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NAgq7XqO0jLqRgW6MtYuZebT9Ra21CCBD+wn05AvP+R8Y7KaYLSCq7QP5OQSMtwjHto/CpOTnQypFegLLXn9ykPM1nzrbH4juy/IXCoS8p6CJAGa4KFe59V/TxB2b2M9KxbJ25yDat0tEOhNJ7/l4r0hoEiajMjcanwmEJVZv84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dznXUx5B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A632p7D002132;
+	Wed, 6 Nov 2024 07:25:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	frs4vFdaLlG0LWU4uuZE7Vj/cManDFo4GpodHieHqA0=; b=dznXUx5BD/LgZxyN
+	PvAZVmgqFnNM0yPAZQCQ6N/OjnfDGS55vBfUMifpZzT/LSloW8EF6OonAqBYZOaO
+	3KkKkVkqFHOpaD2nb1GqKgx5MvQU5fbpXx/+sOlxaK8WDpdYUBZkgg1jNA5g76vj
+	dphUjZj357FPRJ8j+HK7H/5wOj6Ezl2jqd+uF5akCgeI+JO45oCONuFnAx+MhJx+
+	vE934/KgActleiyiO+yodkR613JfRm/f1FD7l3pfJUS3A8tAJA8sCdHNpD7vAL9c
+	NH6pb3gW2XrAMEmcBzrR1cT3stW59PioJYYcQGsa/Jh5uesuoAF39p1Hnh6dG5xV
+	Z4y9ZA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42r072gjbj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 07:25:14 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A67PD9d026050
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Nov 2024 07:25:14 GMT
+Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 5 Nov 2024
+ 23:25:11 -0800
+Message-ID: <7f350d73-65dd-097e-8b4a-e9a23472aa28@quicinc.com>
+Date: Wed, 6 Nov 2024 12:55:08 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Content-Language: en-US
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+ <640fe933-078d-4bf5-815c-7db0eb8b9de4@linaro.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <640fe933-078d-4bf5-815c-7db0eb8b9de4@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zypwz65wRM-FMXte@eldamar.lan>
-X-Debian-User: carnil
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: lAKpfWxI9Ioun-drb3uv5PPw7371Dlk1
+X-Proofpoint-GUID: lAKpfWxI9Ioun-drb3uv5PPw7371Dlk1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
+ adultscore=0 malwarescore=0 phishscore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060059
 
-Hi Luiz,
 
-On Tue, Nov 05, 2024 at 08:23:59PM +0100, Salvatore Bonaccorso wrote:
-> Hi Luiz,
+On 11/5/2024 4:21 PM, Bryan O'Donoghue wrote:
+> On 05/11/2024 08:54, Vikash Garodia wrote:
+>> There is a possibility that init_codecs is invoked multiple times during
+>> manipulated payload from video firmware. In such case, if codecs_count
+>> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+>> access. Keep a check for max accessible memory before accessing it.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+>> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+>> ---
+>>   drivers/media/platform/qcom/venus/hfi_parser.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c
+>> b/drivers/media/platform/qcom/venus/hfi_parser.c
+>> index
+>> 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..27d0172294d5154f4839e8cef172f9a619dfa305 100644
+>> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
+>> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+>> @@ -23,6 +23,8 @@ static void init_codecs(struct venus_core *core)
+>>           return;
+>>         for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+>> +        if (core->codecs_count >= MAX_CODEC_NUM)
+>> +            return;
+>>           cap = &caps[core->codecs_count++];
+>>           cap->codec = BIT(bit);
+>>           cap->domain = VIDC_SESSION_TYPE_DEC;
+>> @@ -30,6 +32,8 @@ static void init_codecs(struct venus_core *core)
+>>       }
+>>         for_each_set_bit(bit, &core->enc_codecs, MAX_CODEC_NUM) {
+>> +        if (core->codecs_count >= MAX_CODEC_NUM)
+>> +            return;
+>>           cap = &caps[core->codecs_count++];
+>>           cap->codec = BIT(bit);
+>>           cap->domain = VIDC_SESSION_TYPE_ENC;
+>>
 > 
-> On Tue, Nov 05, 2024 at 12:53:50PM -0500, Luiz Augusto von Dentz wrote:
-> > Hi,
-> > 
-> > On Tue, Nov 5, 2024 at 12:29 PM Thorsten Leemhuis
-> > <regressions@leemhuis.info> wrote:
-> > >
-> > > On 31.10.24 07:33, Salvatore Bonaccorso wrote:
-> > > > On Tue, Jun 18, 2024 at 12:30:18PM +0200, Thorsten Leemhuis wrote:
-> > > >> On 12.06.24 14:04, Greg KH wrote:
-> > > >>> On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
-> > > >>>> On 03.06.24 22:03, Mike wrote:
-> > > >>>>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
-> > > >>>>> [...]
-> > > >>>>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
-> > > >>>>> time to be
-> > > >>>>> included in Debian stable, so having a patch for 6.1.x will be much
-> > > >>>>> appreciated.
-> > > >>>>> I do not have the time to follow the vanilla (latest) release as is
-> > > >>>>> likely the case for
-> > > >>>>> many other Linux users.
-> > > >>>>>
-> > > >>>> Still no reaction from the bluetooth developers. Guess they are busy
-> > > >>>> and/or do not care about 6.1.y. In that case:
-> > > >>>>
-> > > >>>> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
-> > > >>>> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
-> > > >>>> cause this or if it's missing some per-requisite? If not I wonder if
-> > > >>>> reverting that patch from 6.1.y might be the best move to resolve this
-> > > >>>> regression. Mike earlier in
-> > > >>>> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
-> > > >>>> confirmed that this fixed the problem in tests. Jeremy (who started the
-> > > >>>> thread and afaics has the same problem) did not reply.
-> > > >>>
-> > > >>> How was this reverted?  I get a bunch of conflicts as this commit was
-> > > >>> added as a dependency of a patch later in the series.
-> > > >>>
-> > > >>> So if this wants to be reverted from 6.1.y, can someone send me the
-> > > >>> revert that has been tested to work?
-> > > >>
-> > > >> Mike, can you help out here, as you apparently managed a revert earlier?
-> > > >> Without you or someone else submitting a revert I fear this won't be
-> > > >> resolved...
-> > > >
-> > > > Trying to reboostrap this, as people running 6.1.112 based kernel
-> > > > seems still hitting the issue, but have not asked yet if it happens as
-> > > > well for 6.114.
-> > > >
-> > > > https://bugs.debian.org/1086447
-> > > >
-> > > > Mike, since I guess you are still as well affected as well, does the
-> > > > issue trigger on 6.1.114 for you and does reverting changes from
-> > > > a13f316e90fdb1 still fix the issue? Can you send your
-> > > > backport/changes?
-> > >
-> > > Hmmm, no reply. Is there maybe someone in that bug that could create and
-> > > test a new revert to finally get this resolved upstream? Seem we
-> > > otherwise are kinda stuck here.
-> > 
-> > Looks like we didn't tag things like 5af1f84ed13a ("Bluetooth:
-> > hci_sync: Fix UAF on hci_abort_conn_sync") and a239110ee8e0
-> > ("Bluetooth: hci_sync: always check if connection is alive before
-> > deleting") that are actually fixes to a13f316e90fdb1.
-> 
-> Ah good I see :). None of those were yet applied to the 6.1.y series
-> were the issue is still presend. Would you be up to provide the needed
-> changes to the stable team?  That would be very much appreciated for
-> those affected running the 6.1.y series. 
-> 
-> Thanks a lot for pointing out the fixes!
-
-Tried to apply those fixes on top of 6.1.115, but they do not apply
-clearnly. Could you help to get those backported?
+> I don't see how codecs_count could be greater than the control, since you
+> increment by one on each loop but >= is fine too I suppose.
+Assume the payload from malicious firmware is packed like below
+HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+.....
+for 32 or more instances of above type
 
 Regards,
-Salvatore
+Vikash
+> 
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
