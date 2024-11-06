@@ -1,99 +1,88 @@
-Return-Path: <stable+bounces-91443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851B09BEDFE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:14:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C309BEF11
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CE021F25941
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A99C2858E5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBB11E5712;
-	Wed,  6 Nov 2024 13:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGmwz3OA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1141E1336;
+	Wed,  6 Nov 2024 13:30:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD181E04AD;
-	Wed,  6 Nov 2024 13:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655F51D356F;
+	Wed,  6 Nov 2024 13:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898748; cv=none; b=fAH9Ly+vjSFhE9LC1CSNHqVuejoEw2b5wx9udpwJODhoz6Q/XemdxKTKG16/sCbAjpzonh5h+Du6GWQnPbS2Gy6drBmx9tFsGnaGSgST+nELCL/LnzuyIFGNTtqJGmbt6zVISQW7sMB7evaSzsG+k6kECWDY5uOUazUchOVUAmM=
+	t=1730899839; cv=none; b=uyDCYm9adPM7dY82ljbCavowZSdHoxhqQ2HYAwqhVZQxIxdS4qmdIwuHhzFQtOZBAQ/gvY7XGzCDBV/ggkoQCqtP7oW1hpvojuN58G4ecqT873LIGWtWbJylF7Ge13wLOwf/wR0208XSsF0MS/4lwurlh0A7oD8vzXh85peSfiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898748; c=relaxed/simple;
-	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fGenyS9gPLtx7E6bODNeeZZ1/tPEJEKkj+J4+/XTZkcJPYSWn6uQWcm6BCDFIiFRAkL5j1sotrOTiaSCg+PyMx41lyM+YpaMufL1+abpqBQdrCJyRxT2vVBw5+11Ify9NVwF2YJtwBhmxSsnjU1hfVN17jLcZMU/yk76lDNu0oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGmwz3OA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AE1C4CED4;
-	Wed,  6 Nov 2024 13:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730898747;
-	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BGmwz3OAHtxzQimhPb+0ta8GU6ekMnC0Nr55rDVo5Z3eBQBSlzx2R0yCIlpqJTOug
-	 j2jouZOq2FDue45FB9L57askeLY0wQvdBhk/Gs0RrA+xfuh6r844UNGSxzP1OQXWIs
-	 WXhKJLIxD2erc+Tx9VY3wDSHDZY+JfqC87LI5/t4yCyTb2NIa+Jd6NPO6/Ndk+e/sn
-	 7wPD0pSWLEOAvVSYTLYShwVsWDCllhThbE4uSdrDpnIealbuz3ZctYPnh6JBIFnxXG
-	 77B/lfXugrwKHs9CL6LdpZVWzV+0Ah6f+DmjxZMCmxviBIoCDOqDZRF9mx6ufS7cB3
-	 YKiC40WL00LVg==
-Date: Wed, 6 Nov 2024 13:12:23 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, conor.dooley@microchip.com,
-	Jason Montleon <jmontleo@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: Re: FAILED: Patch "RISC-V: disallow gcc + rust builds" failed to
- apply to v6.11-stable tree
-Message-ID: <20241106-undead-cupbearer-a22f27c8b9e2@spud>
-References: <20241106020840.164364-1-sashal@kernel.org>
+	s=arc-20240116; t=1730899839; c=relaxed/simple;
+	bh=2EaEJLFlmJcjWsYlAVFTf3ZThy1dAY37f7G0UVb64dY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JwhRSsqZnGvsf2OHWnK2gIarn5LFZvA3h+p39e4PqUVgChiwAUWX+BM3077Wf7vX3pv00bcDt+UgKG7xiZjQTwUn81qhjtdGrN/vBHgR9i3CTO1w3dx5+bbys8+64aRLcZMdzWxnD9LcvGhBHMZYMuIHXVRG1LQ9oUNHEwgCKLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 6597424F9F;
+	Wed,  6 Nov 2024 16:24:47 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail05.astralinux.ru [10.177.185.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Wed,  6 Nov 2024 16:24:46 +0300 (MSK)
+Received: from MBP-Anastasia.DL (unknown [10.198.46.47])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Xk5XS5yTbz1c03C;
+	Wed,  6 Nov 2024 16:24:40 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	lvc-project@linuxtesting.org,
+	Huang Rui <ray.huang@amd.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1 0/1] cpufreq: amd-pstate: add check for cpufreq_cpu_get's return value
+Date: Wed,  6 Nov 2024 16:24:33 +0300
+Message-ID: <20241106132437.38024-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="T7IwLFePnUSWKnbZ"
-Content-Disposition: inline
-In-Reply-To: <20241106020840.164364-1-sashal@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 41 0.3.41 623e98d5198769c015c72f45fabbb9f77bdb702b, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 188994 [Nov 06 2024]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2024/11/06 08:16:00 #26825679
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
+NULL-dereference is possible in amd_pstate_adjust_perf in 6.1 stable
+release.
 
---T7IwLFePnUSWKnbZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The problem has been fixed by the following upstream patch that was adapted
+to 6.1. The patch couldn't be applied clearly but the changes made are 
+minor.
 
-On Tue, Nov 05, 2024 at 09:08:39PM -0500, Sasha Levin wrote:
-> The patch below does not apply to the v6.11-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-
-I sent 20241106-happily-unknotted-9984b07a414e@spud that should be a
-6.11 viable version of this change.
-
-Cheers,
-Conor.
-
---T7IwLFePnUSWKnbZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZytrNwAKCRB4tDGHoIJi
-0lrZAQDwZgrJpDCrMBOUflphmluD0ARCIvhYF9shsNzm9sAm5gEA4dQEww2rvB2W
-ETWhXsstVjfNvdt4kg8SZh+nFLTwKQc=
-=IEMP
------END PGP SIGNATURE-----
-
---T7IwLFePnUSWKnbZ--
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
