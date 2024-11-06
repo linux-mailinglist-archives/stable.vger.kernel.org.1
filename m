@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744299BEB18
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC859BE9AE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D1601F2686E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F6901C23410
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62E21F473B;
-	Wed,  6 Nov 2024 12:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AB61DFDB3;
+	Wed,  6 Nov 2024 12:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAVHBTbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuRaX15f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829661E048F;
-	Wed,  6 Nov 2024 12:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56C1DF738;
+	Wed,  6 Nov 2024 12:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896836; cv=none; b=NHfWDdfgT272sPipzc6SLPwi2HDLFVWygl65TUZdUy2upVJ+6Q0/PO+eYAGXZ+AL5D3h0v2BkfRagUIxquYQ8NfzP4FoQcwelr6ft/NYgyjiGETmatZXPnzu+ZFobY8G/SNjhLXMnjenlUlCORFmLKT2SI83rlKXAOxE9jsIz10=
+	t=1730896583; cv=none; b=P28UqjympPFSMIdJFLDAKAjagb0Fdb1oRxQ8Var2HMuABWPhtn1gW13SzwHbETRkqzLldMtkvB8D07vsbu0Ew2pw4mjcXg2MXRoGI4BPQnSTtw25eWRJg5JoXK6ZjDpIfFch6yDYequFoYbsLw0p1Q+fhDI6cNm4/CpGGNUke/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896836; c=relaxed/simple;
-	bh=hL/e20zQFdBu7F6otNOc3roN66k/6SHwggsa4lftdEU=;
+	s=arc-20240116; t=1730896583; c=relaxed/simple;
+	bh=IA/rbFDTpveoxA5vd7a4CiGeROb/F29HBkNNYedYMyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbW6Xj8UK8h4YjE598SPO74Vwo0KfydJQn0SulAH7FP1p4Kc1ZQSzdsQEjsb1RUEF5NJA8C+0JVCpqcO0vleSz1ZmVoPMMNg8COsqIwOekT0TPw8iU4E++J7CrukhdtygAah/PMJiW6qG8NBCDDyHDVh/ACYxmpEnXliC7N6mu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAVHBTbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C262CC4CECD;
-	Wed,  6 Nov 2024 12:40:35 +0000 (UTC)
+	 MIME-Version; b=k8Z03TD/Tg1dfuirnYMNuyTBH9NR2ts/JJ85kAediIOTJcCn4ATU4D0llrBdDaRWj4KFbm1duA1rFBw8pQ7H6RVvR4gSXYOl88uFg8yTiKEjmE+m4H9rnA6KmMMPs3CD7MX48xX+t4cnWf8321iqS2Hnoa20ntOsidAdii7CWZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuRaX15f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E6BC4CED4;
+	Wed,  6 Nov 2024 12:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896836;
-	bh=hL/e20zQFdBu7F6otNOc3roN66k/6SHwggsa4lftdEU=;
+	s=korg; t=1730896583;
+	bh=IA/rbFDTpveoxA5vd7a4CiGeROb/F29HBkNNYedYMyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAVHBTbPAmxh1XJPjs5lejEqmFxLmMvr+vCy3/0YMFrvSH3OC8S3JVDl2jK37hHvz
-	 4YKsuc9lA8BAfp2Kmbm7VvL7h2dVkHuWTG4TBx8wOO/EBtDpTlyiem+0ijjMNdNdBr
-	 QceGzf4sNGkZmNtX6QAHbNOu+FCYXPFaz/5m8u+M=
+	b=yuRaX15fgArxMV6diSrHpef2iyh0LfdQtSdK/xefy1/OcHwQgDIb61HPizR0JocxC
+	 KCRokiin9dAmamaATpxIIrtpNZE6QYBnHSIsznEyCAw9SAFDUhBTM8geF0qXHQ3PME
+	 dMqSLQUwPA9toJIOJ6n3/kF2DIvThf8qwYWYOlrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.10 088/110] xhci: Use pm_runtime_get to prevent RPM on unsupported systems
+	Matt Roper <matthew.d.roper@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 241/245] drm/xe: Write all slices if its mcr register
 Date: Wed,  6 Nov 2024 13:04:54 +0100
-Message-ID: <20241106120305.619701004@linuxfoundation.org>
+Message-ID: <20241106120325.202884482@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-commit 31004740e42846a6f0bb255e6348281df3eb8032 upstream.
+commit f0ffa657e9f3913c7921cbd4d876343401f15f52 upstream.
 
-Use pm_runtime_put in the remove function and pm_runtime_get to disable
-RPM on platforms that don't support runtime D3, as re-enabling it through
-sysfs auto power control may cause the controller to malfunction. This
-can lead to issues such as hotplug devices not being detected due to
-failed interrupt generation.
+Register GAMREQSTRM_CTRL should be considered mcr register
+which should write to all slices as per documentation.
 
-Fixes: a5d6264b638e ("xhci: Enable RPM on controllers that support low-power states")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241024133718.723846-1-Basavaraj.Natikar@amd.com
+Bspec: 71185
+Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240814095614.909774-3-tejas.upadhyay@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    2 +-
+ drivers/gpu/drm/xe/xe_gt.c           |    8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -516,7 +516,7 @@ static int xhci_pci_probe(struct pci_dev
- 	pm_runtime_put_noidle(&dev->dev);
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -83,7 +83,7 @@
+ #define STATELESS_COMPRESSION_CTRL		XE_REG_MCR(0x4148)
+ #define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
  
- 	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
--		pm_runtime_forbid(&dev->dev);
-+		pm_runtime_get(&dev->dev);
- 	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
- 		pm_runtime_allow(&dev->dev);
+-#define XE2_GAMREQSTRM_CTRL			XE_REG(0x4194)
++#define XE2_GAMREQSTRM_CTRL			XE_REG_MCR(0x4194)
+ #define   CG_DIS_CNTLBUS			REG_BIT(6)
  
-@@ -543,7 +543,9 @@ static void xhci_pci_remove(struct pci_d
+ #define CCS_AUX_INV				XE_REG(0x4208)
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -109,9 +109,9 @@ static void xe_gt_enable_host_l2_vram(st
  
- 	xhci->xhc_state |= XHCI_STATE_REMOVING;
+ 	if (!xe_gt_is_media_type(gt)) {
+ 		xe_mmio_write32(gt, SCRATCH1LPFC, EN_L3_RW_CCS_CACHE_FLUSH);
+-		reg = xe_mmio_read32(gt, XE2_GAMREQSTRM_CTRL);
++		reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
+ 		reg |= CG_DIS_CNTLBUS;
+-		xe_mmio_write32(gt, XE2_GAMREQSTRM_CTRL, reg);
++		xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
+ 	}
  
--	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
-+	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
-+		pm_runtime_put(&dev->dev);
-+	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
- 		pm_runtime_forbid(&dev->dev);
+ 	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0x3);
+@@ -133,9 +133,9 @@ static void xe_gt_disable_host_l2_vram(s
+ 	if (WARN_ON(err))
+ 		return;
  
- 	if (xhci->shared_hcd) {
+-	reg = xe_mmio_read32(gt, XE2_GAMREQSTRM_CTRL);
++	reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
+ 	reg &= ~CG_DIS_CNTLBUS;
+-	xe_mmio_write32(gt, XE2_GAMREQSTRM_CTRL, reg);
++	xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
+ 
+ 	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
+ }
 
 
 
