@@ -1,94 +1,87 @@
-Return-Path: <stable+bounces-89944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E87B9BDB3D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0E59BDB5A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD2A284632
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:33:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE00C1C22503
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492D517DFF2;
-	Wed,  6 Nov 2024 01:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4A218A6D5;
+	Wed,  6 Nov 2024 01:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lchHlTP9"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="H2wIXAy0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0B13D66
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 01:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0B017B50E;
+	Wed,  6 Nov 2024 01:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730856787; cv=none; b=qxIDehao3mxRd4DDTGs97b9NblfjNJgccZKCKH1HA/FgP7g1nJLjkav6rf8gyDGTkHRqzp4JN31aCVw8x6lYqZWgDqzzpueMmjOYMiUvNKjs9gmpW1218WdNVqsIIPWRIGQmtdnPfWnQ0VdXcq/iuGvoLakY7mjzQTpnYDNlk4k=
+	t=1730857467; cv=none; b=iNq8xknbdxkp9Sy+i3JdghIm6Ci/4MR+vmjrhwq22n8JnDrJBe+X0RmJRh3yJ1J+DhWHSJOSmeUoI1NL7DHDxq8eBbD00ddh5cxin2FZ/Hs+YCmfXGwFVKNvumtqMMBqQ04PuUKM5OnF7CE88+0qEL8K//i4VsZIIgQSf0wDz8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730856787; c=relaxed/simple;
-	bh=T8TSSH9vC+xuqwWLtvuSmsWAENczxGZF4Hk4GuT1PoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hDy1okOEx8tdS2eIy7UMPAgzGUsLG6r0KWxaFNhx2VHRRLxLwhJ+ZvD67DV+6bCPHeRoApW3BEytO1eG5vrGXVfvgWUQYxQDZCVY2jNAosImvi0K83m9SAMeTx1he0TeTKWBU6mfaFXysN+5hIrZMwM1ZwG5wmwFuvsrAqfmIAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lchHlTP9; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 6 Nov 2024 01:32:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730856781;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UXENiiBPrtKGHgokfuDpSrDdZeSnPcm0OZeF9aDTtlk=;
-	b=lchHlTP9AyPGZhl8bTdCCXBeyzBTnOI/tAYx3EnNg15TY7hLErpysQZpCplkXKcBkF+6on
-	sPJsLLggrc9CwFqVxmeBNF6u4BoqVKIFHBf0Cs76ZpAKBzf0xOZKY+SJHeR1uRCCO+USJ2
-	DpbgbDS3MsR+6eyUik+e6vOmE5BeTOw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
- free_pages_prepare()
-Message-ID: <ZyrHSfS8Ro0l5VCP@google.com>
-References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
- <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com>
- <ZxcK_Gkdn0fegRl6@google.com>
- <ZyrBuZPBjJi75gGU@google.com>
+	s=arc-20240116; t=1730857467; c=relaxed/simple;
+	bh=Ceb1e0csOYQPByEC5wuAEwTUQ//6cxjlD9QGkAOefi4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=eo+BWjpnm7qoXHR4bpW53b8qSb+ZNKPXnJUqFMd5La2Vv/oOqMCbDRUK2Cbrl/0TSuRb4+ZtQuNx21GbOcQNTBJZ0u/BZtkGeIJIEg1NAMcXcGRcle8QXpRhVd9evwgok+YzZWyxI/pJKRTk6ddC/CK9cliyFkECVt/S/LbzLnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=H2wIXAy0; arc=none smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5HshOA007640;
+	Wed, 6 Nov 2024 01:44:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pps0720; bh=Ceb1e0csOYQPB
+	yEC5wuAEwTUQ//6cxjlD9QGkAOefi4=; b=H2wIXAy0xd37lTh33ta4YxZGKIVBB
+	tEz9oUZftf9Fhm+92ZpBdedqG24Ge+J+AMiZqTikDBEJs/Y7Uj6Pc1iK3V2eyWpD
+	ig4WsXcLn/WTZB0ZnK8dyFEslry9BzT8nJCIaO1zPOWmx+emKFQSkeB1YwwHvJ+u
+	19MsX6WxRYWoEKA0+PSQZJelufaCR9zHFj0rg/8K/cc9/P5gWHMTkYlX51eb7t3Q
+	UBPe6+SiN9RJhYHHGP7vfqUb6o0N2mioaHE93UNToDIwpB1zBbPOB3PNv+xeLZP/
+	k5QoZAYrZRe6onI8dIUYbrzp2J8CsMFFvNEsmovQrhWqbMM2f01LhLLjw==
+Received: from p1lg14880.it.hpe.com ([16.230.97.201])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 42qr5xb5js-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 01:44:13 +0000 (GMT)
+Received: from localhost (unknown [192.58.206.38])
+	by p1lg14880.it.hpe.com (Postfix) with ESMTP id EE59C800192;
+	Wed,  6 Nov 2024 01:44:11 +0000 (UTC)
+From: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+To: nicolas.dichtel@6wind.com
+Cc: Matt.Muggeridge@hpe.com, davem@davemloft.net, dsahern@kernel.org,
+        edumazet@google.com, horms@kernel.org, kuba@kernel.org,
+        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default Routes
+Date: Tue,  5 Nov 2024 20:44:03 -0500
+Message-Id: <20241106014403.7044-1-Matt.Muggeridge@hpe.com>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <0a8d6565-fdc0-452f-b132-5d237a1b7dec@6wind.com>
+References: <0a8d6565-fdc0-452f-b132-5d237a1b7dec@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyrBuZPBjJi75gGU@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: M0lSQV5jiJjQ-LrNG9tV-8raFHcqeyZ4
+X-Proofpoint-GUID: M0lSQV5jiJjQ-LrNG9tV-8raFHcqeyZ4
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-05_02,2024-10-04_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ clxscore=1011 priorityscore=1501 bulkscore=0 mlxlogscore=594
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060012
 
-On Tue, Nov 05, 2024 at 05:09:13PM -0800, Sean Christopherson wrote:
-> On Tue, Oct 22, 2024, Roman Gushchin wrote:
-> > On Mon, Oct 21, 2024 at 12:49:28PM -0700, Hugh Dickins wrote:
-> > > On Mon, 21 Oct 2024, Roman Gushchin wrote:
-> > > I don't think there's any need to change your text, but
-> > > let me remind us that any "Bad page" report stops that page from being
-> > > allocated again (because it's in an undefined, potentially dangerous
-> > > state): so does amount to a small memory leak even if otherwise harmless.
-> > 
-> > It looks like I need to post v3 as soon as I get a publicly available
-> > syzkaller report, so I'll add this to the commit log.
-> 
-> Today is your lucky day :-)
+> Please, don't mix whitespace changes with the changes related to the new flag.
 
-I've been waiting for it for a long time :)
-Thanks for forwarding it my way!
-
-I'm still not sure what the conclusion of our discussion was. My understanding
-is that my fix is not that pretty, but there are no better immediate ideas, only
-long-term improvement projects. Does it matches everybody else's understanding?
-
-If so, I'll prepare a v3 with an updated link. Otherwise, please, let me know.
-
-Thanks!
+Thanks, Nicolas. I will revert the changes that tidied up trailing whitespace in the next version.
 
