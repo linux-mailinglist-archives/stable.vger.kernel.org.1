@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F269BE930
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FCF9BEBD1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D8C284BB5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C151F234CC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2A51E008D;
-	Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D071F9AAC;
+	Wed,  6 Nov 2024 12:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTRi1H1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYHVgx2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96BC1DF756;
-	Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87DA1F9AA7;
+	Wed,  6 Nov 2024 12:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896280; cv=none; b=to78LBwa//kNdhYoyz4EvsY0ZYH1NuVQkd5b3FCcIy+wIRYFU0Kz8rlNXDUjOhTsTxTjWNrfpgszF36MPxpbRhPuP/87JYW5TMfRC3YUftwsFgQLwjpF8IB0w2VY07RUV0CXdKJS2FFFpjAUy+tvuWONDM/3M+QfF7YMhJvMS2Y=
+	t=1730897318; cv=none; b=FEJPBYTjdNEwnAkP5pdcbKFREHK6H1qyc340faa+xR/h/thH6BC7DKDp/qhT57i9jfh2boIcZ1S+XgR9jajnqWT9nNMVbM/QAKHvQOnnCQD9PPLFkG+jqKm2R8uMGcIaG/21tGdEtKZM4hScUvPj+wG2FFcNDi8ayCa+pXQEptk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896280; c=relaxed/simple;
-	bh=zuYmduM1Ykx6cGJPYhmry3cw9seGSUrOArDwwJvwzZ8=;
+	s=arc-20240116; t=1730897318; c=relaxed/simple;
+	bh=SF94qhWKaRhgLCF8FJzvRsXAs5+40ppN7nzQtEqNclQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHC5lQnLlrRwtiql+ScfgHuNGirX+Lj4GC5+zyLGqQ1YW8ceNK9NiiYjcXhmLsZTK5nIyHYqiuCCXfqE0/hI/C0lRmTF2z+wBcT5Q4PQ/z2LMYQHrE80m7i8WCDHnQrBkgzj59GJYQSBqe74mSjcNAF0qUxAGxt+C3q64OVBa0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTRi1H1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2D0C4CECD;
-	Wed,  6 Nov 2024 12:31:19 +0000 (UTC)
+	 MIME-Version; b=gBYngDNFNHIhONh8XqL3cWxx1MFO2ask2VzC9d6dDZ+LdeiJ9srkcyMLiQY/vvppK4wYN+7LpWwwbh9TRPbBw5i25OQhGCcB8MAfU8Y1Ib3cHehelNABmy0KmkfYeN9QA24HmXkS/BqGPLc6AnflWVM9eNOhhehKM+waMbEZONg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYHVgx2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6DBC4CECD;
+	Wed,  6 Nov 2024 12:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896280;
-	bh=zuYmduM1Ykx6cGJPYhmry3cw9seGSUrOArDwwJvwzZ8=;
+	s=korg; t=1730897318;
+	bh=SF94qhWKaRhgLCF8FJzvRsXAs5+40ppN7nzQtEqNclQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTRi1H1mNlLoveCmSA4djnJNn6orK4DHLXJ9mzqrPGr6DESyCbAF/0rLDgPT3rv1I
-	 zAItfn3JZU/nACoNSVZcI01CH6wIhl7XFRVmXxfg2Tuj0jqu6IfCiqk/dXVTTWQzqQ
-	 ox1FRxrEfvGKeCFYZWHlqgewM5KXQPxTXZM7Ntgw=
+	b=zYHVgx2rIXquu6Q8id3rYV/R1LbL81HwM3binuiM/sR6FqhfRQa5KE2OUziNoc/BC
+	 w19UXCGvHTkqfdc06q7jmmKbVhiOLc++Ley/BMp7KKCO5omaZPHFJLBVOrugF0/aut
+	 r1SbY7rCR7KTs1jHSBsptnwIdZIt6CYrV9166lY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 149/245] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
+Subject: [PATCH 6.6 014/151] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
 Date: Wed,  6 Nov 2024 13:03:22 +0100
-Message-ID: <20241106120322.897880403@linuxfoundation.org>
+Message-ID: <20241106120309.229363416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit f89263b69731e0144d275fff777ee0dd92069200 ]
+[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
 
-When enable initcall_debug together with higher debug level below.
-CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
-CONFIG_CONSOLE_LOGLEVEL_QUIET=9
-CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
+After the cited commit below max_dest_rd_atomic and max_rd_atomic values
+are being rounded down to the next power of 2. As opposed to the old
+behavior and mlx4 driver where they used to be rounded up instead.
 
-The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
-To fix this issue, adjust the sequence of the resets refer to the power
-up sequence listed below.
+In order to stay consistent with older code and other drivers, revert to
+using fls round function which rounds up to the next power of 2.
 
-i.MX8MP PCIe PHY power up sequence:
-                          /---------------------------------------------
-1.8v supply     ---------/
-                    /---------------------------------------------------
-0.8v supply     ---/
-
-                ---\ /--------------------------------------------------
-                    X        REFCLK Valid
-Reference Clock ---/ \--------------------------------------------------
-                             -------------------------------------------
-                             |
-i_init_restn    --------------
-                                    ------------------------------------
-                                    |
-i_cmn_rstn      ---------------------
-                                         -------------------------------
-                                         |
-o_pll_lock_done --------------------------
-
-Logs:
-imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
-imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000
-imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000
-probe of clk_imx8mp_audiomix.reset.0 returned 0 after 1052 usecs
-probe of 30e20000.clock-controller returned 0 after 32971 usecs
-phy phy-32f00000.pcie-phy.4: phy poweron failed --> -110
-probe of 30e10000.dma-controller returned 0 after 10235 usecs
-imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
-dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
-imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
-
-Fixes: dce9edff16ee ("phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-v2 changes:
-- Rebase to latest fixes branch of linux-phy git repo.
-- Richard's environment have problem and can't sent out patch. So I help
-post this fix patch.
-
-Link: https://lore.kernel.org/r/20241021155241.943665-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
+Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/mlx5/qp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-index 11fcb1867118c..e98361dcdeadf 100644
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -141,11 +141,6 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
- 	usleep_range(100, 200);
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 2340baaba8e67..93d9b15cbbb98 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -4272,14 +4272,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
+ 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
  
--	/* Do the PHY common block reset */
--	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
--			   IMX8MM_GPR_PCIE_CMN_RST,
--			   IMX8MM_GPR_PCIE_CMN_RST);
--
- 	switch (imx8_phy->drvdata->variant) {
- 	case IMX8MP:
- 		reset_control_deassert(imx8_phy->perst);
-@@ -156,6 +151,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 		break;
- 	}
+ 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
+-		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
++		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
  
-+	/* Do the PHY common block reset */
-+	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
-+			   IMX8MM_GPR_PCIE_CMN_RST,
-+			   IMX8MM_GPR_PCIE_CMN_RST);
-+
- 	/* Polling to check the phy is ready or not. */
- 	ret = readl_poll_timeout(imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG075,
- 				 val, val == ANA_PLL_DONE, 10, 20000);
+ 	if (attr_mask & IB_QP_SQ_PSN)
+ 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
+ 
+ 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
+ 		MLX5_SET(qpc, qpc, log_rra_max,
+-			 ilog2(attr->max_dest_rd_atomic));
++			 fls(attr->max_dest_rd_atomic - 1));
+ 
+ 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
+ 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
 -- 
 2.43.0
 
