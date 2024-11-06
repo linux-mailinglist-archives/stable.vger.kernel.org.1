@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917CF9BEEA9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57739BEE5E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429071F25C09
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15CF9B2227C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3141E230D;
-	Wed,  6 Nov 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05641EE013;
+	Wed,  6 Nov 2024 13:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT+/RleN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0/EIYHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5AC1E048E;
-	Wed,  6 Nov 2024 13:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDF154765;
+	Wed,  6 Nov 2024 13:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899164; cv=none; b=gnZDxH8uWETOgOq4Gk0aKF4k2KEa8Zhf1zkxRZJQNuHdS+XHuE2n50P9YjlBs2IQxbXm6nj+m6RsAe2qHzZDMVPLHWj2lIrR96+l7lMyLVT2VtKi/aiwCoT4NYuhMTMw0tcYn1FfbXS9ppgfZsI8hBdVz+cL1zI3Wt4JbOZ8FrM=
+	t=1730898982; cv=none; b=R4nYuYgcwi/MFIr6mLq2DAadAl9+sLw9oSPu7UIHgvEY/EcIHFNa/+iis1p1TZpRxD74Rum1ITOQAx0tIK4CzXhFJl5xTv+P/Uhv/0+uQQGNCO+sZOtCNINs2FSGHjpnjgONwJiK4hP0ywWly3PyTD58q+UJIXXNteh+jfXlijc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899164; c=relaxed/simple;
-	bh=sBqWhvb5NpfxxTJj0ljzc2anXJo/173n19xQQ7Rd6ls=;
+	s=arc-20240116; t=1730898982; c=relaxed/simple;
+	bh=meTliNa0z++TCe4t3OBSoy1Bbu0v6FgyO1150xzl8FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrutEW+mBEvwXCWaCN5NA461Bo0zsXgkqG1APkWhSSo7DHyJfG17b6vbfBoCkKMvFfRXHSS1FY9K9hgJP/rwwt8yQvmTIgjGW+y5dflwrfpg34ChRsJa5SXeGDSwcOq09lUTheX769zWnTIQiVE+wufcNv7Axvkol1vVtmpkOY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT+/RleN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4125DC4CECD;
-	Wed,  6 Nov 2024 13:19:24 +0000 (UTC)
+	 MIME-Version; b=OiZnQ6zLzgQ+IHaHcRortlhYUdU4x9pswP10ueQG8+thXh13lXd0LBF2f+R+CdpSROfxjarCaeYKysCfl7rIsT072i9ZMla/CdNh1nFMlVfQ8iESZRQJIeioPBu1QJhmsgDZp93VlIGAYA/hjcn3ZB3sKrvvTmvTgcGwloRM1+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0/EIYHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17792C4CECD;
+	Wed,  6 Nov 2024 13:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899164;
-	bh=sBqWhvb5NpfxxTJj0ljzc2anXJo/173n19xQQ7Rd6ls=;
+	s=korg; t=1730898982;
+	bh=meTliNa0z++TCe4t3OBSoy1Bbu0v6FgyO1150xzl8FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bT+/RleNXkSgrI++luGU8YH+1USfr71DOBgWKyaSHOKQqUm10M2Tzd3YMYy415eIn
-	 dtO1Eqq1qegW3aEzbbDK67PWnLfHHrQxWe+cWy7D3m3P+jqT4mlfHzF0Ip+f3hDHsL
-	 vtbdhMHilN3+HLTmoLDi2vtg/SP9HdLw/b5zdpSs=
+	b=y0/EIYHsFx+soVxAXSrgbHZ0gXnLyy+RVkPNryB7l14XGZymIJW0JqUI4cDNncKyd
+	 QNU15OwYlzchLoT4gIuIfq4l/CDATNeFb6mOvPvB/aKijEzvw8dflHDb0UDfuIZur3
+	 9XDYOLKsXTC09ibLbPaY9gVDmRgWAqoGlZJmMBwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/73] wifi: brcm80211: BRCM_TRACING should depend on TRACING
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 420/462] nilfs2: fix kernel bug due to missing clearing of buffer delay flag
 Date: Wed,  6 Nov 2024 13:05:13 +0100
-Message-ID: <20241106120300.242985549@linuxfoundation.org>
+Message-ID: <20241106120341.889262769@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit b73b2069528f90ec49d5fa1010a759baa2c2be05 ]
+commit 6ed469df0bfbef3e4b44fca954a781919db9f7ab upstream.
 
-When tracing is disabled, there is no point in asking the user about
-enabling Broadcom wireless device tracing.
+Syzbot reported that after nilfs2 reads a corrupted file system image
+and degrades to read-only, the BUG_ON check for the buffer delay flag
+in submit_bh_wbc() may fail, causing a kernel bug.
 
-Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be enabled separately from debug")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because the buffer delay flag is not cleared when clearing the
+buffer state flags to discard a page/folio or a buffer head. So, fix
+this.
+
+This became necessary when the use of nilfs2's own page clear routine
+was expanded.  This state inconsistency does not occur if the buffer
+is written normally by log writing.
+
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Link: https://lore.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nilfs2/page.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/Kconfig b/drivers/net/wireless/broadcom/brcm80211/Kconfig
-index 5bf2318763c55..8f51099e15c90 100644
---- a/drivers/net/wireless/broadcom/brcm80211/Kconfig
-+++ b/drivers/net/wireless/broadcom/brcm80211/Kconfig
-@@ -23,6 +23,7 @@ source "drivers/net/wireless/broadcom/brcm80211/brcmfmac/Kconfig"
- config BRCM_TRACING
- 	bool "Broadcom device tracing"
- 	depends on BRCMSMAC || BRCMFMAC
-+	depends on TRACING
- 	help
- 	  If you say Y here, the Broadcom wireless drivers will register
- 	  with ftrace to dump event information into the trace ringbuffer.
--- 
-2.43.0
-
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -78,7 +78,8 @@ void nilfs_forget_buffer(struct buffer_h
+ 	const unsigned long clear_bits =
+ 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++		 BIT(BH_Delay));
+ 
+ 	lock_buffer(bh);
+ 	set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -410,7 +411,8 @@ void nilfs_clear_dirty_page(struct page
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++			 BIT(BH_Delay));
+ 
+ 		bh = head = page_buffers(page);
+ 		do {
 
 
 
