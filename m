@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345F69BEB7C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2B39BEAC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDDBC2847FB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1701C20A83
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628461F80BD;
-	Wed,  6 Nov 2024 12:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030421FF5F8;
+	Wed,  6 Nov 2024 12:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XO01i8Kx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogwcox5T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4BF1D86E8;
-	Wed,  6 Nov 2024 12:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF87C1F130F;
+	Wed,  6 Nov 2024 12:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897109; cv=none; b=Sm6FiLy09QMWr9nv/XBk8iPqbQgg4l66cj/4LGeZi4EQV03ia/fGYnzPwJ3qmn94LyOv4JWejxBojSSmpgB0fm+A40hlV6w8I95bIxGmq9CU0SgOdHGjbbkFCAl//DbbsZE/2lQjN0SQ1zdB8kJMC8MwW8HZzvoC5KPY8nl5jK0=
+	t=1730896763; cv=none; b=oBA5LhRFINHrAdUvXlQl4eO+oBKJAF8Ual1a9Jra6DVkoAcl69oTqIVVX6K1WAB95CDES4HuZP0DTS1wgVLVsox7mxC9pW9UKJZO/kv51oujPWZxVYJAPs6QuEianD5XBK98zJP4etwSR53y0tJc18bmHWDtm/zP4Lap6TC6jhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897109; c=relaxed/simple;
-	bh=qk24mQWAv4SnIlkEKnB/5nbUb5E84eRLGnYlw1MH+uc=;
+	s=arc-20240116; t=1730896763; c=relaxed/simple;
+	bh=dSLiZLGxjUMR6LMF/j1c33vZyfb8+ZM1i2JHwSzJB5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWQFi4f0vf2cSlTo1uF1+lsfBYJufL08ZGtVM8tbtWc9wCqwucGDQcFHZ9PCZREkPSDbcrsvM5gXvPe1kioRZr9MpH7RuhNQj1jmrH/3LTe+p7a/7+ym5FcB9LT4M2VH6h7jYh821xlT34oO1BYAtgKOMN3pTNZfex8+dtSv5KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XO01i8Kx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FC7C4CECD;
-	Wed,  6 Nov 2024 12:45:08 +0000 (UTC)
+	 MIME-Version; b=P3Ulzp7u7q9DtkV7gq2Cf+OttoemCI6vVQ+x6HGJvDhPscq0ZJ2GjcLaw0jokreMawcmAVxisyA0MsUD0Q2dN5LI7C15ktXoyUyaSLRnDxJ80olXpgzw7tt9DvSgmEfMkXjlfpCvJNz2Rymrt6+q6ggr8NN/rs/L2epAnHnHUA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogwcox5T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE70C4CED5;
+	Wed,  6 Nov 2024 12:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897109;
-	bh=qk24mQWAv4SnIlkEKnB/5nbUb5E84eRLGnYlw1MH+uc=;
+	s=korg; t=1730896763;
+	bh=dSLiZLGxjUMR6LMF/j1c33vZyfb8+ZM1i2JHwSzJB5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XO01i8KxH8RVjuBAixNABH7pJdNLH2XD7SFYoH5zA4Ejhu9G4VpwznCTW3F/hUVVp
-	 aksUkc5XQmU15l77BpHfM51LZLaQH4MeJO1xESa4DeSv1QQyNsglcTqC/Mq5+e2P2G
-	 PO+BplpBeUo2cdHSk1luDS00D/E6/oKzJF368Rzw=
+	b=ogwcox5TY5dPd3dCmIAAiy+Q1zJy2mI66rNxph4TMcAV740QLOI6JudGlKU9UepAc
+	 BMXWhr2RC09FtG9udFjLVJucxKRDWLYkUO0VlA2U5UgBqK7VOXKUrOPaNh4t4rwaIn
+	 m9yLQnlbqs5P8hUP1fyGoY7RZgwTu/0yGlglVZLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 6.1 068/126] usb: typec: fix unreleased fwnode_handle in typec_port_register_altmodes()
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 063/110] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
 Date: Wed,  6 Nov 2024 13:04:29 +0100
-Message-ID: <20241106120307.928768029@linuxfoundation.org>
+Message-ID: <20241106120304.936755477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 9581acb91eaf5bbe70086bbb6fca808220d358ba upstream.
+[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
 
-The 'altmodes_node' fwnode_handle is never released after it is no
-longer required, which leaks the resource.
+After the cited commit below max_dest_rd_atomic and max_rd_atomic values
+are being rounded down to the next power of 2. As opposed to the old
+behavior and mlx4 driver where they used to be rounded up instead.
 
-Add the required call to fwnode_handle_put() when 'altmodes_node' is no
-longer required.
+In order to stay consistent with older code and other drivers, revert to
+using fls round function which rounds up to the next power of 2.
 
-Cc: stable@vger.kernel.org
-Fixes: 7b458a4c5d73 ("usb: typec: Add typec_port_register_altmodes()")
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241021-typec-class-fwnode_handle_put-v2-1-3281225d3d27@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
+Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/mlx5/qp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -2165,6 +2165,7 @@ void typec_port_register_altmodes(struct
- 		altmodes[index] = alt;
- 		index++;
- 	}
-+	fwnode_handle_put(altmodes_node);
- }
- EXPORT_SYMBOL_GPL(typec_port_register_altmodes);
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index e3cc856e70e5d..e0db91d1e7492 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -3940,14 +3940,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
+ 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
  
+ 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
+-		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
++		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
+ 
+ 	if (attr_mask & IB_QP_SQ_PSN)
+ 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
+ 
+ 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
+ 		MLX5_SET(qpc, qpc, log_rra_max,
+-			 ilog2(attr->max_dest_rd_atomic));
++			 fls(attr->max_dest_rd_atomic - 1));
+ 
+ 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
+ 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
+-- 
+2.43.0
+
 
 
 
