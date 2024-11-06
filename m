@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-91568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EB69BEE92
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F99C9BEED2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 992C61F24394
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5240D1C249F7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74D81DF75A;
-	Wed,  6 Nov 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E86C1DF97A;
+	Wed,  6 Nov 2024 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BclIcQZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWpoZft1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B8A646;
-	Wed,  6 Nov 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025D9646;
+	Wed,  6 Nov 2024 13:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899114; cv=none; b=Rqlt+kJAY5ErO3yc/hP42DcsekNAgpXZwnV/iXyppNIJDVq49IHImFQ6HRdUX3kmZ6TeKP4T8clgxpVHY7uGy4poP3+CHTotrsg5H8WnwGJRt6WdkhkfVUK5qgRBDQTZsLB5iVVujG4MyMK1Zpbx4aWDiYOvovzh4wD16pla4Cs=
+	t=1730899272; cv=none; b=WWnwW5sCTO8l7GhSwHhNh7yZsw2TTi0vAi45hHQW5vocTvQDQ0EMIQKP0UPYoPHh4RdIOfONUw+DRx4QSGAA1/A7WPSx10WXr/Zm0+Q7b2TdXMypp8KHqrKb45kfC2s7uEHw3bVEDzXnkUY0KMuHGYRCO1iZeDuAi5bXsN55J4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899114; c=relaxed/simple;
-	bh=C0zbi2d3zJC1J+DsqrcrlQ72lZBK5kwAqCSAGw7ovSI=;
+	s=arc-20240116; t=1730899272; c=relaxed/simple;
+	bh=ZVsY64GMsWmST4zqkXJSlyHegOdTxjF/574iYcHbB+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YptNkIfppuAN5b6F3D5RpvSrYkatnrjrQTxuxlTpZkG8XGvd++zPvhMzwuK2iEGaZA50/FLbNQ6fL5bDDf4ij62GRSnUJO0pRzAHyhmDxNs4nvDuqi3G8rTGgEIyLFOEDHFR4QkfUhgER3a+3RAM+wLjDsdDaDF5/6VWKR4I7RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BclIcQZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D49C4CECD;
-	Wed,  6 Nov 2024 13:18:33 +0000 (UTC)
+	 MIME-Version; b=SvPF8/8w68uqKblTUKcgGITR6rUypPIrjTRXcD0dWCaf19Y9EgpTHm6tFtvXWXOKqsQy6QqXK2oAGhlnuv4hLUH1+tnc2Zx7yyvnj3xGZG6gZNHu33/dgwD32lLq7bzy2ZROc8dvFGH4hgSo2wXB0TBL9Wqtpn915rMeIib0fkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWpoZft1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3117DC4CECD;
+	Wed,  6 Nov 2024 13:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899114;
-	bh=C0zbi2d3zJC1J+DsqrcrlQ72lZBK5kwAqCSAGw7ovSI=;
+	s=korg; t=1730899271;
+	bh=ZVsY64GMsWmST4zqkXJSlyHegOdTxjF/574iYcHbB+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BclIcQZQ4pSTaMPbu4Fatu0/TyvR6d8Fe9/dHh/KMEyOoSB95JKMSTzOfXfbuOb1L
-	 oZrBzan4NPwRDiT6kXTpQ6yi3DFzD12ZmAKzntX07AD0U7UaCtvl660jAdV17goSQG
-	 oJ67oCNnHarigbX7fBLRgqPAShx6Tt+aO9anpQOU=
+	b=sWpoZft1dZVWNJH8W7FWCdJ9V2xvSPYgmv52hDJaAGAFLmI91uSmaaKHDpIkEpuut
+	 0KcCgi2HgC/EKYCzDJ6PizhvsFm/PkYR16q6wGgqU4lO1OE8+wPt+E3rp0q8OYhq3P
+	 13p49iYOPsmAKjTRXbzwGKkAYqd7u0x+rUPyabMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Yuying Ma <yuma@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 430/462] wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
+Subject: [PATCH 5.15 19/73] igb: Disable threaded IRQ for igb_msix_other
 Date: Wed,  6 Nov 2024 13:05:23 +0100
-Message-ID: <20241106120342.131148214@linuxfoundation.org>
+Message-ID: <20241106120300.537177578@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +67,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit e50a88e5cb8792cc416866496288c5f4d1eb4b1f ]
+[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
 
-This will allow to reconnect immediately instead of leaving the
-connection in a limbo state.
+During testing of SR-IOV, Red Hat QE encountered an issue where the
+ip link up command intermittently fails for the igbvf interfaces when
+using the PREEMPT_RT variant. Investigation revealed that
+e1000_write_posted_mbx returns an error due to the lack of an ACK
+from e1000_poll_for_ack.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.e90531cd3a36.Iebdc9483983c0d8497f9dcf9d79ec37332a5fdcc@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
+The underlying issue arises from the fact that IRQs are threaded by
+default under PREEMPT_RT. While the exact hardware details are not
+available, it appears that the IRQ handled by igb_msix_other must
+be processed before e1000_poll_for_ack times out. However,
+e1000_write_posted_mbx is called with preemption disabled, leading
+to a scenario where the IRQ is serviced only after the failure of
+e1000_write_posted_mbx.
+
+To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
+ensuring that the kernel handles it immediately, thereby preventing
+the aforementioned error.
+
+Reproducer:
+
+    #!/bin/bash
+
+    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
+    ipaddr_vlan=3
+    nic_test=ens14f0
+    vf=${nic_test}v0
+
+    while true; do
+	    ip link set ${nic_test} mtu 1500
+	    ip link set ${vf} mtu 1500
+	    ip link set $vf up
+	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
+	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
+	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
+	    if ! ip link show $vf | grep 'state UP'; then
+		    echo 'Error found'
+		    break
+	    fi
+	    ip link set $vf down
+    done
+
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Reported-by: Yuying Ma <yuma@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 27bd9ed48bec4..16bf070566e6c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1182,6 +1182,13 @@ static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
- }
- #endif /* CONFIG_ACPI */
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index f3a433b4c7cdb..7b4d04d33154a 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -937,7 +937,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
+ 	int i, err = 0, vector = 0, free_vector = 0;
  
-+static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
-+					struct ieee80211_vif *vif)
-+{
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		ieee80211_hw_restart_disconnect(vif);
-+}
-+
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-@@ -1226,10 +1233,15 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
- 		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp)
-+		if (resp) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
- 				resp);
-+
-+			ieee80211_iterate_interfaces(mvm->hw, 0,
-+						     iwl_mvm_disconnect_iterator,
-+						     mvm);
-+		}
- 	}
- }
+ 	err = request_irq(adapter->msix_entries[vector].vector,
+-			  igb_msix_other, 0, netdev->name, adapter);
++			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
+ 	if (err)
+ 		goto err_out;
  
 -- 
 2.43.0
