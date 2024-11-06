@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A1D9BE927
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81509BE802
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92881F22F39
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 674921F23F1D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A821DD55A;
-	Wed,  6 Nov 2024 12:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC071DF721;
+	Wed,  6 Nov 2024 12:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGIC96sT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsFptAin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42644207F;
-	Wed,  6 Nov 2024 12:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5271DF24A;
+	Wed,  6 Nov 2024 12:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896265; cv=none; b=drFwCRv00c9DRTWUTlYx5In5aeA7ZxBbLevVFS9tmV+VxQM3g37aKA/OQGD94g46zSBDwzz4AbxyVEFIZ0nxVt9PLg/KHVsX6VgdRD7SRgitrKswLT+NaaNeQXvYTaU441+39nWyuou1co03fs13H889MQ9N1j74UaXN8su7iEU=
+	t=1730895594; cv=none; b=PJvsS07IR7PsUzel/Gtr42gVtTV78JxFh2CIwJNuxWQPLJE8XVI9zHSZStg757NMWV7AvyhKxFQXFace3EemKSE/Bv7QYnpBt2vGtT/ksBK6cGAEJYGefYRHvI+A+lZUHk5J81LEaZNKST2z0TkBx+STP0b1jzmCCE4AEP8A8bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896265; c=relaxed/simple;
-	bh=DaNMUW5Ny6bFxEOPFb4y4xBWm/aTrXVDS/pABY1bXkk=;
+	s=arc-20240116; t=1730895594; c=relaxed/simple;
+	bh=miE8BaOh0c3aUp4FGKJ9zqHzFZJgQjYXtuNt60VC1ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVAfslFF9oAJxLAHuU0fNKXCcP5HP5/prNPWanFkz5sMzqKnV5kmhgVj4eH9rna5n1J7mGUH52q/avHc8wrhEXh1/4FSaUZyl/1+mQWACa4blt1FTfMRV9gJtBD1e0aecZqsjvgXAx/wyfx2J2R/1XB8P9YXtZcns2c+anfhMDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGIC96sT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F194EC4CECD;
-	Wed,  6 Nov 2024 12:31:04 +0000 (UTC)
+	 MIME-Version; b=H4o7TsgTIyUvXjLga66FCVwEr1uh3mm4SPkTLS7FJhcKWDEVFnjAgHgCsQwFLRNQMCxTu+sPVEcVn4BDspsrNn76iSyOemZ0aOENft8X8wcPP2LbqPwIdYJIFSjoqMi4baX/sTZlRuMUgWsGWNlJSLYbx4jPH5mVAbZUnlVBWug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsFptAin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14764C4CECD;
+	Wed,  6 Nov 2024 12:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896265;
-	bh=DaNMUW5Ny6bFxEOPFb4y4xBWm/aTrXVDS/pABY1bXkk=;
+	s=korg; t=1730895594;
+	bh=miE8BaOh0c3aUp4FGKJ9zqHzFZJgQjYXtuNt60VC1ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGIC96sTz42OBi0hKX8W75XTwY4z8/DQQJzx1hYNB1PiRvCYS9VcckRj5lGwxuoci
-	 zVkujXsYsy6N29gZzRELKDItdXQk1JQ0H0t0MkCbJfmXIYQF8J5aIsY8VLxjtnqd7L
-	 41u2GwE7YptNgatXDb9lbmSB/jm8qoLZH//Kv94w=
+	b=ZsFptAinO/CcDQ2VlSRCzhrF/Z9TbmHfqs1LxWy8xBgRa9FpEhMG6QpCRLD9V+33j
+	 BboC/DFLuqVtGnN07HD8C9RHmUOYXujPZWhqO/SPBEiO56f/3eYULgZOU2cVXWy0Un
+	 KDavs7Dm44UTIUSxiQJkA4ZG1xBcIEBQvl0pkpHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 145/245] mmc: sdhci-pci-gli: GL9767: Fix low power mode on the set clock function
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 4.19 270/350] arm64: probes: Fix simulate_ldr*_literal()
 Date: Wed,  6 Nov 2024 13:03:18 +0100
-Message-ID: <20241106120322.797621072@linuxfoundation.org>
+Message-ID: <20241106120327.559409149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 8c68b5656e55e9324875881f1000eb4ee3603a87 upstream.
+commit 50f813e57601c22b6f26ced3193b9b94d70a2640 upstream.
 
-On sdhci_gl9767_set_clock(), the vendor header space(VHS) is read-only
-after calling gl9767_disable_ssc_pll() and gl9767_set_ssc_pll_205mhz().
-So the low power negotiation mode cannot be enabled again.
-Introduce gl9767_set_low_power_negotiation() function to fix it.
+The simulate_ldr_literal() code always loads a 64-bit quantity, and when
+simulating a 32-bit load into a 'W' register, it discards the most
+significant 32 bits. For big-endian kernels this means that the relevant
+bits are discarded, and the value returned is the the subsequent 32 bits
+in memory (i.e. the value at addr + 4).
 
-The explanation process is as below.
+Additionally, simulate_ldr_literal() and simulate_ldrsw_literal() use a
+plain C load, which the compiler may tear or elide (e.g. if the target
+is the zero register). Today this doesn't happen to matter, but it may
+matter in future if trampoline code uses a LDR (literal) or LDRSW
+(literal).
 
-static void sdhci_gl9767_set_clock()
-{
-	...
-        gl9767_vhs_write();
-        ...
-	value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-        pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <--- (a)
+Update simulate_ldr_literal() and simulate_ldrsw_literal() to use an
+appropriately-sized READ_ONCE() to perform the access, which avoids
+these problems.
 
-        gl9767_disable_ssc_pll(); <--- (b)
-        sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-
-        if (clock == 0)
-                return;  <-- (I)
-
-	...
-        if (clock == 200000000 && ios->timing == MMC_TIMING_UHS_SDR104) {
-		...
-                gl9767_set_ssc_pll_205mhz(); <--- (c)
-        }
-	...
-	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-        pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <-- (II)
-        gl9767_vhs_read();
-}
-
-(a) disable low power negotiation mode. When return on (I), the low power
-mode is disabled.  After (b) and (c), VHS is read-only, the low power mode
-cannot be enabled on (II).
-
-Reported-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Fixes: d2754355512e ("mmc: sdhci-pci-gli: Set SDR104's clock to 205MHz and enable SSC for GL9767")
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Tested-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Fixes: 39a67d49ba35 ("arm64: kprobes instruction simulation support")
 Cc: stable@vger.kernel.org
-Message-ID: <20241025060017.1663697-1-benchuanggli@gmail.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-3-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ arch/arm64/kernel/probes/simulate-insn.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -892,28 +892,40 @@ static void gl9767_disable_ssc_pll(struc
- 	gl9767_vhs_read(pdev);
- }
- 
-+static void gl9767_set_low_power_negotiation(struct pci_dev *pdev, bool enable)
-+{
-+	u32 value;
-+
-+	gl9767_vhs_write(pdev);
-+
-+	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
-+	if (enable)
-+		value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	else
-+		value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
-+
-+	gl9767_vhs_read(pdev);
-+}
-+
- static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
+--- a/arch/arm64/kernel/probes/simulate-insn.c
++++ b/arch/arm64/kernel/probes/simulate-insn.c
+@@ -178,17 +178,15 @@ simulate_tbz_tbnz(u32 opcode, long addr,
+ void __kprobes
+ simulate_ldr_literal(u32 opcode, long addr, struct pt_regs *regs)
  {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct mmc_ios *ios = &host->mmc->ios;
- 	struct pci_dev *pdev;
--	u32 value;
- 	u16 clk;
+-	u64 *load_addr;
++	unsigned long load_addr;
+ 	int xn = opcode & 0x1f;
+-	int disp;
  
- 	pdev = slot->chip->pdev;
- 	host->mmc->actual_clock = 0;
+-	disp = ldr_displacement(opcode);
+-	load_addr = (u64 *) (addr + disp);
++	load_addr = addr + ldr_displacement(opcode);
  
--	gl9767_vhs_write(pdev);
--
--	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
--	value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
--	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
--
-+	gl9767_set_low_power_negotiation(pdev, false);
- 	gl9767_disable_ssc_pll(pdev);
- 	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 	if (opcode & (1 << 30))	/* x0-x30 */
+-		set_x_reg(regs, xn, *load_addr);
++		set_x_reg(regs, xn, READ_ONCE(*(u64 *)load_addr));
+ 	else			/* w0-w30 */
+-		set_w_reg(regs, xn, *load_addr);
++		set_w_reg(regs, xn, READ_ONCE(*(u32 *)load_addr));
  
--	if (clock == 0)
-+	if (clock == 0) {
-+		gl9767_set_low_power_negotiation(pdev, true);
- 		return;
-+	}
- 
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	if (clock == 200000000 && ios->timing == MMC_TIMING_UHS_SDR104) {
-@@ -922,12 +934,7 @@ static void sdhci_gl9767_set_clock(struc
- 	}
- 
- 	sdhci_enable_clk(host, clk);
--
--	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
--	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
--	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
--
--	gl9767_vhs_read(pdev);
-+	gl9767_set_low_power_negotiation(pdev, true);
+ 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
  }
+@@ -196,14 +194,12 @@ simulate_ldr_literal(u32 opcode, long ad
+ void __kprobes
+ simulate_ldrsw_literal(u32 opcode, long addr, struct pt_regs *regs)
+ {
+-	s32 *load_addr;
++	unsigned long load_addr;
+ 	int xn = opcode & 0x1f;
+-	int disp;
  
- static void gli_set_9767(struct sdhci_host *host)
+-	disp = ldr_displacement(opcode);
+-	load_addr = (s32 *) (addr + disp);
++	load_addr = addr + ldr_displacement(opcode);
+ 
+-	set_x_reg(regs, xn, *load_addr);
++	set_x_reg(regs, xn, READ_ONCE(*(s32 *)load_addr));
+ 
+ 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
+ }
 
 
 
