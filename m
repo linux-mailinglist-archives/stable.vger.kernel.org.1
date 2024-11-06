@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-90731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EA99BEA22
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:41:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4B79BE94E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124A31C23BF7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:41:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC38285278
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A41F669D;
-	Wed,  6 Nov 2024 12:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775701DED4F;
+	Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogOKzu29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBqkFXVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B6A1F667B;
-	Wed,  6 Nov 2024 12:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3357E7DA7F;
+	Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896646; cv=none; b=SsSPep04TJqAGKdpm0PbMsAiBT/E5da1ObruoeTlPNbiQoQIkbjjgKY7S1ZGx41c9qXdUGhsUzzdXtBUJDr5Vh5VLSpG7rDxxG4ZAa1aVYZJ5Uj3XVQAulz+VMcSkA/wK9nFbwOD+65g6VQGLOUcBw7M7KJIGcpsLGGY7M9doi4=
+	t=1730896367; cv=none; b=Hgy50A+xn+AvC2M6/7u5E4dtjUwZI1wIxJ4q+rpNnhmDWbpnm3XI7wpnXFboPOukgBYHoZwapXl4YSRH9yTwPVMqXeTpXlCTnzNsJwCbXomCBYnaupkP3Q+dEuhsw5+fkZUkhNCd45VW8SctThERm+tzFbC6oS/hTGw0aDli9ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896646; c=relaxed/simple;
-	bh=U7p9NqYk6eyBim1hd5Fg2AHCNh2EgeAPI/dY6dWzjdQ=;
+	s=arc-20240116; t=1730896367; c=relaxed/simple;
+	bh=bmfkuF8fZQ7rsTlFPJsNICL6ESpjuoxmJeQX77gnuZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Akf8TnBBWqpMavnRW1hOG8vb3xGmpIGpmnceedPPxDFklC1wr2olFSBZVOli1zYwv/Dj1WkGgHfuyQF5+woyJpKSAOOub67voTwRnTv3olIDbA1ROAHmWmmqh0X1ZAfbdxVRF+FmR2+gxdT0/IOWSPWRKM+7uBMiyrwhvJe5zEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogOKzu29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765DFC4CECD;
-	Wed,  6 Nov 2024 12:37:25 +0000 (UTC)
+	 MIME-Version; b=kkWB7exZY/XI+EcnYfn/s8inU/nP+Cr6zwKyiF84j3IfW8wfnkJTZRzBz4ExJdwU57X9b//MxMa6n/lFLxEN2N6kbbaxIhYnaHJXjpN2mG6MI2MBXaRIQcKzlkHRZw13P8lOp7TnU2rPga8/E08la6Pb37hCMR/8A0P6Lgtn0Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBqkFXVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB860C4CECD;
+	Wed,  6 Nov 2024 12:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896645;
-	bh=U7p9NqYk6eyBim1hd5Fg2AHCNh2EgeAPI/dY6dWzjdQ=;
+	s=korg; t=1730896367;
+	bh=bmfkuF8fZQ7rsTlFPJsNICL6ESpjuoxmJeQX77gnuZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogOKzu29A9Eh8iErJxZS7djA6iEyYU7GXADVvlt4kLq2Kolz1DeVfYMlBwXIlnfVG
-	 hLDlK5quOVd4MJ8GOVQB0B10Cqe0rRrcM9jVgvEPsuUdug+50J1LKuXkDX9zvNRteJ
-	 3xzMonqltvFGzVOZ3VnTvrnSlqBmVUxfe1ptTArA=
+	b=UBqkFXVZSOIqDxpTa3vY9LPiWpC2Yrill5zfNyi5JC7NWSrIHEKsp66eF7cgDORUd
+	 92k80vPAqoPTXnak8IPgjaYQJ1+ht8/dGBB4Vpo23xAX0WA7Hrxy1cvVbwTWOBR+x+
+	 4OVTXxhhjZ94WgftT4lSl7byecHGTejM1n4n6IME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/110] block, bfq: fix procress reference leakage for bfqq in merge chain
+Subject: [PATCH 6.11 178/245] x86/traps: move kmsan check after instrumentation_begin
 Date: Wed,  6 Nov 2024 13:03:51 +0100
-Message-ID: <20241106120303.861634649@linuxfoundation.org>
+Message-ID: <20241106120323.617976605@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,150 +65,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 
-[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
+[ Upstream commit 1db272864ff250b5e607283eaec819e1186c8e26 ]
 
-Original state:
+During x86_64 kernel build with CONFIG_KMSAN, the objtool warns following:
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \--------------\ \-------------\ \-------------\|
-                           V               V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               1               2               4
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+vmlinux.o: warning: objtool: handle_bug+0x4: call to
+    kmsan_unpoison_entry_regs() leaves .noinstr.text section
+  OBJCOPY modules.builtin.modinfo
+  GEN     modules.builtin
+  MODPOST Module.symvers
+  CC      .vmlinux.export.o
 
-After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
-chain in bfq_setup_cooperator()"), if P1 issues a new IO:
+Moving kmsan_unpoison_entry_regs() _after_ instrumentation_begin() fixes
+the warning.
 
-Without the patch:
+There is decode_bug(regs->ip, &imm) is left before KMSAN unpoisoining, but
+it has the return condition and if we include it after
+instrumentation_begin() it results the warning "return with
+instrumentation enabled", hence, I'm concerned that regs will not be KMSAN
+unpoisoned if `ud_type == BUG_NONE` is true.
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \------------------------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-bfqq3 will be used to handle IO from P1, this is not expected, IO
-should be redirected to bfqq4;
-
-With the patch:
-
-          -------------------------------------------
-          |                                         |
-        Process 1       Process 2       Process 3   |   Process 4
-         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
-                           |               |        |      |
-                            \-------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-IO is redirected to bfqq4, however, procress reference of bfqq3 is still
-2, while there is only P2 using it.
-
-Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
-chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
-code.
-
-Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20241016152407.3149001-1-snovitoll@gmail.com
+Fixes: ba54d194f8da ("x86/traps: avoid KMSAN bugs originating from handle_bug()")
+Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ arch/x86/kernel/traps.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 515e3c1a54759..c1600e3ac3339 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -2774,10 +2774,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
- 	bfq_put_queue(bfqq);
- }
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 415881607c5df..29ec49209ae01 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -261,12 +261,6 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	int ud_type;
+ 	u32 imm;
  
--static void
--bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
--		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
-+static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-+					 struct bfq_io_cq *bic,
-+					 struct bfq_queue *bfqq)
- {
-+	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
-+
- 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
- 		(unsigned long)new_bfqq->pid);
- 	/* Save weight raising and idle window of the merged queues */
-@@ -2845,6 +2847,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
- 	new_bfqq->pid = -1;
- 	bfqq->bic = NULL;
- 	bfq_release_process_ref(bfqd, bfqq);
-+
-+	return new_bfqq;
- }
- 
- static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
-@@ -2880,14 +2884,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
- 		 * fulfilled, i.e., bic can be redirected to new_bfqq
- 		 * and bfqq can be put.
- 		 */
--		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
--				new_bfqq);
--		/*
--		 * If we get here, bio will be queued into new_queue,
--		 * so use new_bfqq to decide whether bio and rq can be
--		 * merged.
--		 */
--		bfqq = new_bfqq;
-+		while (bfqq != new_bfqq)
-+			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
- 
- 		/*
- 		 * Change also bqfd->bio_bfqq, as
-@@ -5444,6 +5442,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 	bool waiting, idle_timer_disabled = false;
- 
- 	if (new_bfqq) {
-+		struct bfq_queue *old_bfqq = bfqq;
- 		/*
- 		 * Release the request's reference to the old bfqq
- 		 * and make sure one is taken to the shared queue.
-@@ -5459,18 +5458,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 		 * then complete the merge and redirect it to
- 		 * new_bfqq.
- 		 */
--		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq)
--			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
--					bfqq, new_bfqq);
-+		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq) {
-+			while (bfqq != new_bfqq)
-+				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
-+		}
- 
--		bfq_clear_bfqq_just_created(bfqq);
-+		bfq_clear_bfqq_just_created(old_bfqq);
- 		/*
- 		 * rq is about to be enqueued into new_bfqq,
- 		 * release rq reference on bfqq
- 		 */
--		bfq_put_queue(bfqq);
-+		bfq_put_queue(old_bfqq);
- 		rq->elv.priv[1] = new_bfqq;
--		bfqq = new_bfqq;
- 	}
- 
- 	bfq_update_io_thinktime(bfqd, bfqq);
+-	/*
+-	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
+-	 * is a rare case that uses @regs without passing them to
+-	 * irqentry_enter().
+-	 */
+-	kmsan_unpoison_entry_regs(regs);
+ 	ud_type = decode_bug(regs->ip, &imm);
+ 	if (ud_type == BUG_NONE)
+ 		return handled;
+@@ -275,6 +269,12 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ 	 * All lies, just get the WARN/BUG out.
+ 	 */
+ 	instrumentation_begin();
++	/*
++	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
++	 * is a rare case that uses @regs without passing them to
++	 * irqentry_enter().
++	 */
++	kmsan_unpoison_entry_regs(regs);
+ 	/*
+ 	 * Since we're emulating a CALL with exceptions, restore the interrupt
+ 	 * state to what it was at the exception site.
 -- 
 2.43.0
 
