@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-90224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F69D9BE742
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB779BE744
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 362551F22490
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:12:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB0F1C208F2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975F1DF25D;
-	Wed,  6 Nov 2024 12:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7581DF24A;
+	Wed,  6 Nov 2024 12:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zk3Vd3IF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV09sw4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EC31D416E;
-	Wed,  6 Nov 2024 12:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF26B1D416E;
+	Wed,  6 Nov 2024 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895136; cv=none; b=BoZGOKUpe3Yl+ycLMxbi5WsRhIGNTCcXsZ7RPAEliLh4NLbe3Yo9H/FBzLg0b3pbgbvmFHD54LEcZvmpGhp8F5bZTKTBZRfHhmLe6z0unjSCB39IlpcrJVrrPFIxf0MJS9JDmPWItkueICPCo4+H7GPocH2ofguQgsE8SKU0PJc=
+	t=1730895142; cv=none; b=mH3R48fzmHR8pKR2Odc8v3UGRv1d9EU8gIOJ9ngW/CY1GTAE69f1fsUePX5gEoVyDALNvTScVA6sOA2hM6QWSDPVb4VFdr4fDsmPXaMMfn7IBpT21XzbnYIHQ/KhvPmrqK5iU1DDqvVOy0CkT+X3OcFWHKralXhNTyTnwLhdaS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895136; c=relaxed/simple;
-	bh=IeWew+qQvgLVcBZWKph6PRVUfCZUPe14uvDLUMmwFj8=;
+	s=arc-20240116; t=1730895142; c=relaxed/simple;
+	bh=f7tu5ws+MwtGir73hC0DdVP+ByFH+pbauwxOfhrd6KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVMsMARb2Nox9iQk02p0DbNgcWCbbMXi9wXCQfnfKSmaSsNv78T994nLNyBYwWXABweLiJmhkBEu/i3loTv7fdeX39W+dslCFmZbhwANrXMRyyfOwvjKlXOTOUnd2zdNAYm+lpqR5Sm/b1HpjB8dj35T2aA6+O6Yoz6exbAcgVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zk3Vd3IF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00B2C4CECD;
-	Wed,  6 Nov 2024 12:12:15 +0000 (UTC)
+	 MIME-Version; b=azsSCIsJJ+gwjmr3saLYuUqy9JwtaXgFFvUNpEKL27j9EiNctHXlxX0u2CeWksKufgSOGECZOxMZTMZQ3DRWWMZdkkmDmsAIlfmIvEFgXWGghhiMzTRMhlWbIycFMQ9gH3JZjnIq4y+7Pecv/Mvd7/yq7irBtO9QuQulGRfkpKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV09sw4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D907C4CECD;
+	Wed,  6 Nov 2024 12:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895136;
-	bh=IeWew+qQvgLVcBZWKph6PRVUfCZUPe14uvDLUMmwFj8=;
+	s=korg; t=1730895142;
+	bh=f7tu5ws+MwtGir73hC0DdVP+ByFH+pbauwxOfhrd6KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zk3Vd3IF1bphXJgo2sx21bLahHePkJjkifavyY5FterFAfElmcMGZNXm/Vh0RFat0
-	 hD0Xco29yxdwdsuhpbSv/0uSlNfm/bl5V97pxe5CDU/L7JeVX4uwoxf2zS2FWSGo9X
-	 Z4mtnzTiOWX0j7LPGH3NEUAJjKBk4X7PLxmLuGsQ=
+	b=wV09sw4AwntbQZV3CcLspJrHKEr8FVv/OeQ/Vp3TMFprDXg7KjNAkhWJOohmnU9C4
+	 NPfwXlQwzM1nucH8a6u+bNpsyXUAzNYZCAvp9eoxTg27n3IneF/dNDr3yFMRimVE4f
+	 Y+VtBwRqn199QwxIyzrnRazP2FSajwnCkF9wgk2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 4.19 117/350] f2fs: avoid potential int overflow in sanity_check_area_boundary()
-Date: Wed,  6 Nov 2024 13:00:45 +0100
-Message-ID: <20241106120323.795025870@linuxfoundation.org>
+	syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com,
+	Julian Sun <sunjunchao2870@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 4.19 118/350] vfs: fix race between evice_inodes() and find_inode()&iput()
+Date: Wed,  6 Nov 2024 13:00:46 +0100
+Message-ID: <20241106120323.819094853@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,44 +67,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-commit 50438dbc483ca6a133d2bce9d5d6747bcee38371 upstream.
+commit 88b1afbf0f6b221f6c5bb66cc80cd3b38d696687 upstream.
 
-While calculating the end addresses of main area and segment 0, u32
-may be not enough to hold the result without the danger of int
-overflow.
+Hi, all
 
-Just in case, play it safe and cast one of the operands to a
-wider type (u64).
+Recently I noticed a bug[1] in btrfs, after digged it into
+and I believe it'a race in vfs.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Let's assume there's a inode (ie ino 261) with i_count 1 is
+called by iput(), and there's a concurrent thread calling
+generic_shutdown_super().
 
-Fixes: fd694733d523 ("f2fs: cover large section in sanity check of super")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+cpu0:                              cpu1:
+iput() // i_count is 1
+  ->spin_lock(inode)
+  ->dec i_count to 0
+  ->iput_final()                    generic_shutdown_super()
+    ->__inode_add_lru()               ->evict_inodes()
+      // cause some reason[2]           ->if (atomic_read(inode->i_count)) continue;
+      // return before                  // inode 261 passed the above check
+      // list_lru_add_obj()             // and then schedule out
+   ->spin_unlock()
+// note here: the inode 261
+// was still at sb list and hash list,
+// and I_FREEING|I_WILL_FREE was not been set
+
+btrfs_iget()
+  // after some function calls
+  ->find_inode()
+    // found the above inode 261
+    ->spin_lock(inode)
+   // check I_FREEING|I_WILL_FREE
+   // and passed
+      ->__iget()
+    ->spin_unlock(inode)                // schedule back
+                                        ->spin_lock(inode)
+                                        // check (I_NEW|I_FREEING|I_WILL_FREE) flags,
+                                        // passed and set I_FREEING
+iput()                                  ->spin_unlock(inode)
+  ->spin_lock(inode)			  ->evict()
+  // dec i_count to 0
+  ->iput_final()
+    ->spin_unlock()
+    ->evict()
+
+Now, we have two threads simultaneously evicting
+the same inode, which may trigger the BUG(inode->i_state & I_CLEAR)
+statement both within clear_inode() and iput().
+
+To fix the bug, recheck the inode->i_count after holding i_lock.
+Because in the most scenarios, the first check is valid, and
+the overhead of spin_lock() can be reduced.
+
+If there is any misunderstanding, please let me know, thanks.
+
+[1]: https://lore.kernel.org/linux-btrfs/000000000000eabe1d0619c48986@google.com/
+[2]: The reason might be 1. SB_ACTIVE was removed or 2. mapping_shrinkable()
+return false when I reproduced the bug.
+
+Reported-by: syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=67ba3c42bcbb4665d3ad
+CC: stable@vger.kernel.org
+Fixes: 63997e98a3be ("split invalidate_inodes()")
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Link: https://lore.kernel.org/r/20240823130730.658881-1-sunjunchao2870@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2116,9 +2116,9 @@ static inline bool sanity_check_area_bou
- 	u32 segment_count = le32_to_cpu(raw_super->segment_count);
- 	u32 log_blocks_per_seg = le32_to_cpu(raw_super->log_blocks_per_seg);
- 	u64 main_end_blkaddr = main_blkaddr +
--				(segment_count_main << log_blocks_per_seg);
-+				((u64)segment_count_main << log_blocks_per_seg);
- 	u64 seg_end_blkaddr = segment0_blkaddr +
--				(segment_count << log_blocks_per_seg);
-+				((u64)segment_count << log_blocks_per_seg);
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -616,6 +616,10 @@ again:
+ 			continue;
  
- 	if (segment0_blkaddr != cp_blkaddr) {
- 		f2fs_msg(sb, KERN_INFO,
+ 		spin_lock(&inode->i_lock);
++		if (atomic_read(&inode->i_count)) {
++			spin_unlock(&inode->i_lock);
++			continue;
++		}
+ 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
+ 			spin_unlock(&inode->i_lock);
+ 			continue;
 
 
 
