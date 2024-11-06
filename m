@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-91055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0E99BEC39
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DF39BEB1A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321A4285931
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2046281162
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEC91FB3EB;
-	Wed,  6 Nov 2024 12:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09D11F5838;
+	Wed,  6 Nov 2024 12:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTJETMQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZhn0Ebf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098DB1FB3E9;
-	Wed,  6 Nov 2024 12:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD471E32B5;
+	Wed,  6 Nov 2024 12:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897607; cv=none; b=qs2JZlVFfoEUDoLqR7aPwnXdn2YR/TFGVNoIPKPvPxhUjdboSUhfKqnQ850jdUeRpIU6uHBT5JSzGmWkLcprbQzjtKoE8uZOGrcVDwMx5npdPrGnT2QHnd/Y98QmatswnUa0cAFrzByW1R6QSKXbNg1lvpo1iflpZjY2iHHrPnY=
+	t=1730896845; cv=none; b=mKiQ+ZdFFBd86jT4Jk9xTKYPXEgq2rqPdBdKbOkNy0vEjFW6+tqib1HUv/JViquyKvAAtnMRNCmiIcYiWjJNSCf34d6mdx4kVcSRRDKs99foUFBldlEhBPMcuKELsGMJgon/7JogR3CVpHdwzENGfl2STQwWxnlIJCFs0eo5zh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897607; c=relaxed/simple;
-	bh=+215ncCYJYjmTo/poj4Eh3QYJB7TG+QZam3a8ljrLEM=;
+	s=arc-20240116; t=1730896845; c=relaxed/simple;
+	bh=fx6Do3Yq4dC4x4u2D1BkvCDY/VQqOkUX0+KXoXuZz4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D33sH8EonKc7QGvXYOz50T2qV0+AAdKKWs4rqWb5lmno9SEZIacSxG7gGIGNDheNIMXKIKZH12G4X5MfZttjnYdH4MwaWfQxFSa+TNjvq+ooBO6b2xEHIb/N4pkPX6z/l7nPKpTmes3A9EudXqHa6ZyUh+rOLsJcXWDsHLKyzh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTJETMQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82983C4CECD;
-	Wed,  6 Nov 2024 12:53:26 +0000 (UTC)
+	 MIME-Version; b=HYEiIkQr0MiEW2Hv5qP62gVMcvMG91hhwk/3j+EcF12WzL8yYitB2Xy1JwRilbgl55jdRJ7lVcjgiBk2Ny7Xk99qlmeX/YhMmYZq8JWBJEzmnWGghrg0Mo4xM4mm+HPXnahPDp2igvoDnuaSSDipw+F67f5s71bsjoaQkVOqmEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZhn0Ebf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E40C4CECD;
+	Wed,  6 Nov 2024 12:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897606;
-	bh=+215ncCYJYjmTo/poj4Eh3QYJB7TG+QZam3a8ljrLEM=;
+	s=korg; t=1730896845;
+	bh=fx6Do3Yq4dC4x4u2D1BkvCDY/VQqOkUX0+KXoXuZz4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTJETMQqX8mNOyrwos8bdx73cspqi5e9LegxyW2cTFEIw+xsMFnYCWh/1KePKuN95
-	 PQzgrReZwI7CoCjKrsopo+5ndrnmXBmP0GLrjoV4YH3/j+AdcOMjMgrxD5Uy/qiAxv
-	 T0EUzWzlvlOGN4WpOOd/cHb3x1WyapZ/sYpNiKj0=
+	b=jZhn0Ebfy//T9EMVJENISQARHBvJfogLrCPEj1sBW6zaOvu1H/1NAde1cvYs2ZNX3
+	 XniN9MBgQlf7f+0CIqhNCSgw7ASb4agACcGiLqN9ZdcXEPpQXE5BUyfh2R84/7wkXy
+	 6L9P9RPn/qgyEMkm6wJXV8kPTuqVWqgsnKacKz1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Zhang <xizhang@purestorage.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/151] block: fix sanity checks in blk_rq_map_user_bvec
+	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: [PATCH 5.10 091/110] wifi: ath10k: Fix memory leak in management tx
 Date: Wed,  6 Nov 2024 13:04:57 +0100
-Message-ID: <20241106120311.869383711@linuxfoundation.org>
+Message-ID: <20241106120305.698341942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Zhang <xizhang@purestorage.com>
+From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-[ Upstream commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd ]
+commit e15d84b3bba187aa372dff7c58ce1fd5cb48a076 upstream.
 
-blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
-causes unnecessary failures in NVMe passthrough I/O, reproducible as
-follows:
+In the current logic, memory is allocated for storing the MSDU context
+during management packet TX but this memory is not being freed during
+management TX completion. Similar leaks are seen in the management TX
+cleanup logic.
 
-- register a 2 page, page-aligned buffer against a ring
-- use that buffer to do a 1 page io_uring NVMe passthrough read
+Kmemleak reports this problem as below,
 
-The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
-then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
-the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
-fail. This failure is unnecessary, as when the check succeeds, it means
-we've checked the entire buffer that will be used by the request - i.e.
-blk_rq_map_user_bvec should complete successfully. Therefore, terminate
-the loop early and return successfully when the check bytes + bv->bv_len
-> nr_iter succeeds.
+unreferenced object 0xffffff80b64ed250 (size 16):
+  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
+  hex dump (first 16 bytes):
+    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
+  backtrace:
+    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
+    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
+    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
+    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
+    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
+    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
+    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
+    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
 
-While we're at it, also remove the check that all segments in the bvec
-are single-page. While this seems to be true for all users of the
-function, it doesn't appear to be required anywhere downstream.
+Free the memory during completion and cleanup to fix the leak.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-Co-developed-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
-Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Protect the mgmt_pending_tx idr_remove() operation in
+ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
+other instances.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+
+Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
+Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Link: https://patch.msgid.link/20241015064103.6060-1-quic_mpubbise@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-map.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c |    7 ++++++-
+ drivers/net/wireless/ath/ath10k/wmi.c     |    2 ++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 71210cdb34426..0aadbaf7a9ddd 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
- 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
- 			goto put_bio;
- 		if (bytes + bv->bv_len > nr_iter)
--			goto put_bio;
--		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
--			goto put_bio;
-+			break;
+--- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
++++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+@@ -3035,9 +3035,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(s
+ 				       struct sk_buff *msdu)
+ {
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
++	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
+ 	struct ath10k_wmi *wmi = &ar->wmi;
  
- 		nsegs++;
- 		bytes += bv->bv_len;
--- 
-2.43.0
-
+-	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_lock_bh(&ar->data_lock);
++	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_unlock_bh(&ar->data_lock);
++
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2440,6 +2440,7 @@ wmi_process_mgmt_tx_comp(struct ath10k *
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	info = IEEE80211_SKB_CB(msdu);
++	kfree(pkt_addr);
+ 
+ 	if (param->status) {
+ 		info->flags &= ~IEEE80211_TX_STAT_ACK;
+@@ -9581,6 +9582,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_p
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	ieee80211_free_txskb(ar->hw, msdu);
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
 
 
 
