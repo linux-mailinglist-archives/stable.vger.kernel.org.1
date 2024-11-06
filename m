@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCD79BEBCA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A709BEC55
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED141C23753
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DEB6285A61
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3181B1F942D;
-	Wed,  6 Nov 2024 12:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6269B1FB8AC;
+	Wed,  6 Nov 2024 12:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHuEjype"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcm0jjv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29F91EC017;
-	Wed,  6 Nov 2024 12:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8B51FB8B1;
+	Wed,  6 Nov 2024 12:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897298; cv=none; b=PWEIh9y4ACJprJmDUo9iScE0Jv71hPGgIAJbVYFDdK/XuZXZZuG6z3KxDz1HVqnsRGNhYTlPd4EPRAOOm6WUNFTXdtVa/cO+WxtS9T04Ryt1E+ShFm0RtVk4ri5i2UtCCBOTobBEhJbCB45zT9ikaYLhsiT3O2M3c8pFgtQ4EI8=
+	t=1730897676; cv=none; b=GjTtBNxmmDLAEJLHRdDtf4ObDc2ajwBbM1UU5Yv+UMzz89FWkoQNbuOSM+nC9RdfIXeXrLG/kJmTco/U8yzyI0iSgmQJ0ebsiSNgZVcEiPINEcLlecCbgF/ToXF8Dpml7NeBtE/cpWkGtdkG3cizKKEwF2BBXVDzOAMkmn875ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897298; c=relaxed/simple;
-	bh=lA1VQY6JIQioYis1GliW7hDTbLJ8sBvcEJT7C0n/0Ho=;
+	s=arc-20240116; t=1730897676; c=relaxed/simple;
+	bh=fT9luClZJO8VOzAKeoFzM0bFg9FJryw+q/RPtFpaPms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rv7AhaIRGI0Bden+Atv1Ib1F8oM4lSLIMJbU4u+2/w8sddGsFz7e4sq1KJzaB7s5OL/aA5ygSzDzroaLcXz991NE3VPnPeY7c/DzrzXgpvGi4xq/rMY29lFDuXIXv+KS/xV6ZGBcZv8tjE4/wKPm7ZsN+bL2MQvnmNZ90dk8Xok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHuEjype; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F78C4CED3;
-	Wed,  6 Nov 2024 12:48:17 +0000 (UTC)
+	 MIME-Version; b=qpsxpCb8DcvrwT/8sjm8y3rIAmQdlgmqLMAQjxHszAyc6HjGzd/0aj0q1hM0v/0PwDYzwsDsY6d/4RT+ubFuOI1fes14jCdgRHXZDwKltyj6AA/IcrEgVpBHe/HHL0JxDsi9PWX4kZrYt40ZyoCHviLV9WswgkIlzSarsMZQRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcm0jjv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9756CC4CECD;
+	Wed,  6 Nov 2024 12:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897297;
-	bh=lA1VQY6JIQioYis1GliW7hDTbLJ8sBvcEJT7C0n/0Ho=;
+	s=korg; t=1730897676;
+	bh=fT9luClZJO8VOzAKeoFzM0bFg9FJryw+q/RPtFpaPms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHuEjypenBws3kbBDFS92RDB1TKBUQc4yhMo9/kS6TXWHxwfpxe5zDiCWrXk7lPJT
-	 E/YX7DKUq5oVL8tMRbrTzsGdbzl7+nQQJA2heUa0SucF4ea0+KTAHbEdigTszKxG2r
-	 BtA3g+5iHPMDcxzy/nMgU5hJLzi/EKdA3jDffOc4=
+	b=mcm0jjv+uWJ6Y+PAKNFLSfAKLvs2fIdyp99kxCAELWbRwwgpQQ3DgEGJu61ySCzq8
+	 OpFftW7Nm615wf3O43AwDAuTthH7akGnjZOcRZjAPsaQsFc6cTugIduF7wTTEpggul
+	 nIgY9mPrBURL9req5VJmC5/Hrhkw8hNvmx7ZV7oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 120/126] LoongArch: Fix build errors due to backported TIMENS
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 133/151] ALSA: hda/realtek: Fix headset mic on TUXEDO Stellaris 16 Gen6 mb1
 Date: Wed,  6 Nov 2024 13:05:21 +0100
-Message-ID: <20241106120309.300720258@linuxfoundation.org>
+Message-ID: <20241106120312.520229344@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,97 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-Commit eb3710efffce1dcff83761db4615f91d93aabfcb ("LoongArch: Add support
-to clone a time namespace") backports the TIMENS support for LoongArch
-(corresponding upstream commit aa5e65dc0818bbf676bf06927368ec46867778fd)
-but causes build errors:
+[ Upstream commit e49370d769e71456db3fbd982e95bab8c69f73e8 ]
 
-  CC      arch/loongarch/kernel/vdso.o
-arch/loongarch/kernel/vdso.c: In function ‘vvar_fault’:
-arch/loongarch/kernel/vdso.c:54:36: error: implicit declaration of
-function ‘find_timens_vvar_page’ [-Werror=implicit-function-declaration]
-   54 |         struct page *timens_page = find_timens_vvar_page(vma);
-      |                                    ^~~~~~~~~~~~~~~~~~~~~
-arch/loongarch/kernel/vdso.c:54:36: warning: initialization of ‘struct
-page *’ from ‘int’ makes pointer from integer without a cast
-[-Wint-conversion]
-arch/loongarch/kernel/vdso.c: In function ‘vdso_join_timens’:
-arch/loongarch/kernel/vdso.c:143:25: error: implicit declaration of
-function ‘zap_vma_pages’; did you mean ‘zap_vma_ptes’?
-[-Werror=implicit-function-declaration]
-  143 |                         zap_vma_pages(vma);
-      |                         ^~~~~~~~~~~~~
-      |                         zap_vma_ptes
-cc1: some warnings being treated as errors
+Quirk is needed to enable headset microphone on missing pin 0x19.
 
-Because in 6.1.y we should define find_timens_vvar_page() by ourselves
-and use zap_page_range() instead of zap_vma_pages(), so fix it.
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029151653.80726-2-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/vdso.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/loongarch/kernel/vdso.c
-+++ b/arch/loongarch/kernel/vdso.c
-@@ -40,6 +40,8 @@ static struct page *vdso_pages[] = { NUL
- struct vdso_data *vdso_data = generic_vdso_data.data;
- struct vdso_pcpu_data *vdso_pdata = loongarch_vdso_data.vdata.pdata;
- 
-+static struct page *find_timens_vvar_page(struct vm_area_struct *vma);
-+
- static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
- {
- 	current->mm->context.vdso = (void *)(new_vma->vm_start);
-@@ -139,13 +141,37 @@ int vdso_join_timens(struct task_struct
- 
- 	mmap_read_lock(mm);
- 	for_each_vma(vmi, vma) {
-+		unsigned long size = vma->vm_end - vma->vm_start;
-+
- 		if (vma_is_special_mapping(vma, &vdso_info.data_mapping))
--			zap_vma_pages(vma);
-+			zap_page_range(vma, vma->vm_start, size);
- 	}
- 	mmap_read_unlock(mm);
- 
- 	return 0;
- }
-+
-+static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
-+{
-+	if (likely(vma->vm_mm == current->mm))
-+		return current->nsproxy->time_ns->vvar_page;
-+
-+	/*
-+	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
-+	 * through interfaces like /proc/$pid/mem or
-+	 * process_vm_{readv,writev}() as long as there's no .access()
-+	 * in special_mapping_vmops.
-+	 * For more details check_vma_flags() and __access_remote_vm()
-+	 */
-+	WARN(1, "vvar_page accessed remotely");
-+
-+	return NULL;
-+}
-+#else
-+static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
-+{
-+	return NULL;
-+}
- #endif
- 
- static unsigned long vdso_base(void)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 62747d77cd9ab..3c48036fdf0b0 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10403,6 +10403,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
+ 	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+-- 
+2.43.0
+
 
 
 
