@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9C69BEA45
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740489BE968
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 232391F246E1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3D71F22FCC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBB61F8198;
-	Wed,  6 Nov 2024 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36C31DFD90;
+	Wed,  6 Nov 2024 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+i6A35R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMOynjwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D641F8190;
-	Wed,  6 Nov 2024 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDFE198E96;
+	Wed,  6 Nov 2024 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896670; cv=none; b=I8o3TtzwGnecfUFqvivaiqIdhamtcJMzv/y7BaWsxZYh7JdvrWBkiRZnzP58sZjP4kOCqYY3CBGavg1uTmlmHvdr41NNYx5tsr14yZtfwApocfPnFOtmEF2ZveO7ssjdagFoEQp9nWFFXCohCor3JzCwvJSB3HX1uj/rNOd+Hck=
+	t=1730896430; cv=none; b=mvNj91xCZWodZACH7h0tH7XPJECFJTTQDEcrLvYpjjZVeb+2u7lcd6IgQNIAkdLrLCN8WgzfzH8gsAF8oaEqIJZFpjjZ4qEEroQnXRdsr6P8oVOiQFMHdKAMAUlt5KGEoosobvtyWXTly0OJyhWTIF5dJxjv3FqMfM+jvIua7LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896670; c=relaxed/simple;
-	bh=aR028k7KNWlFU4DKi30QXcjFI76W0dO6AIu82tujIUI=;
+	s=arc-20240116; t=1730896430; c=relaxed/simple;
+	bh=/9YKwSPT2PpRoHwCTdKnzdYO+0WLdUWuffRe91JCzjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cidnnq/eaZsIifHYYg7UdfObyzkZFPlZW2S1tgaLQMAVMKdLEdGbtAR39Pn2F1F16g/iRI3i5aTLe7NMRqMlg3MiLwQh+EFmEVVcYIqjUdBkBlHL/6u9anqIcWS/QUckUTK6z3fgIomffs1YqeF7ww+dJtJx8ejibTmi+dDXTxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+i6A35R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5557DC4CEDC;
-	Wed,  6 Nov 2024 12:37:49 +0000 (UTC)
+	 MIME-Version; b=gagkYoH16+YUhGijEW78y4tCpHAIUxpflL3kzsqpDrwlZmcp0+n4uLm5Hi6xHzSfcPlbDqnD1OyJ7KIlc5ICPz1covjhJVOFnF/UuKFGFEDluIrmUCgukV77oZgO97tzz5NP7ItjkM3Y3NHnZUCtX41evC+SonWgYN7mPA+GmNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMOynjwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4669C4CECD;
+	Wed,  6 Nov 2024 12:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896669;
-	bh=aR028k7KNWlFU4DKi30QXcjFI76W0dO6AIu82tujIUI=;
+	s=korg; t=1730896430;
+	bh=/9YKwSPT2PpRoHwCTdKnzdYO+0WLdUWuffRe91JCzjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+i6A35RVi40OXmY0vCXBE/auzMwIgOPwcILVgGXceVTtrztSENKwskzHARTGXzXw
-	 XqYQ40QrRsymRP8lPtNcdhSmA9/8bFhvxjIKYS0/g0xk8xbAbNPZUvHEG3pc2D50sN
-	 9qk2g/gnkLJtO8FK59smH2IjARRhy6T803DXxuro=
+	b=bMOynjwcQjAA5d+vMSvgFDIZefP2XkzPEnwKoM9bmoLxITrBImbmAo0/cDB24iJ1E
+	 6FnRIJA1TSl90Cf/m2KO5B6VHsVx2Ba7+XEc4HT6JmElXQL+QsE6kwsCX6F1LFPlfY
+	 rs752agZdMUH1S94NP5uzb/crzARRYYdVnNyG/Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/110] macsec: dont increment counters for an unrelated SA
+Subject: [PATCH 6.11 162/245] cxl/port: Fix cxl_bus_rescan() vs bus_rescan_devices()
 Date: Wed,  6 Nov 2024 13:03:35 +0100
-Message-ID: <20241106120303.410154807@linuxfoundation.org>
+Message-ID: <20241106120323.223459944@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
+[ Upstream commit 3d6ebf16438de5d712030fefbb4182b46373d677 ]
 
-On RX, we shouldn't be incrementing the stats for an arbitrary SA in
-case the actual SA hasn't been set up. Those counters are intended to
-track packets for their respective AN when the SA isn't currently
-configured. Due to the way MACsec is implemented, we don't keep
-counters unless the SA is configured, so we can't track those packets,
-and those counters will remain at 0.
+It turns out since its original introduction, pre-2.6.12,
+bus_rescan_devices() has skipped devices that might be in the process of
+attaching or detaching from their driver. For CXL this behavior is
+unwanted and expects that cxl_bus_rescan() is a probe barrier.
 
-The RXSC's stats keeps track of those packets without telling us which
-AN they belonged to. We could add counters for non-existent SAs, and
-then find a way to integrate them in the dump to userspace, but I
-don't think it's worth the effort.
+That behavior is simple enough to achieve with bus_for_each_dev() paired
+with call to device_attach(), and it is unclear why bus_rescan_devices()
+took the position of lockless consumption of dev->driver which is racy.
 
-Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
+is merely by inspection since the bug that triggered the discovery of
+this potential problem [1] is fixed by other means.  However, a stable
+backport should do no harm.
+
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
+Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Tested-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/172964781104.81806.4277549800082443769.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/cxl/core/port.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 83b02dc7dfd2d..5e30fd017b3ac 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -159,19 +159,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
- 	return sa;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 1d5007e3795a3..d3237346f6877 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -2088,11 +2088,18 @@ static void cxl_bus_remove(struct device *dev)
+ 
+ static struct workqueue_struct *cxl_bus_wq;
+ 
+-static void cxl_bus_rescan_queue(struct work_struct *w)
++static int cxl_rescan_attach(struct device *dev, void *data)
+ {
+-	int rc = bus_rescan_devices(&cxl_bus_type);
++	int rc = device_attach(dev);
++
++	dev_vdbg(dev, "rescan: %s\n", rc ? "attach" : "detached");
+ 
+-	pr_debug("CXL bus rescan result: %d\n", rc);
++	return 0;
++}
++
++static void cxl_bus_rescan_queue(struct work_struct *w)
++{
++	bus_for_each_dev(&cxl_bus_type, NULL, NULL, cxl_rescan_attach);
  }
  
--static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
--{
--	struct macsec_rx_sa *sa = NULL;
--	int an;
--
--	for (an = 0; an < MACSEC_NUM_AN; an++)	{
--		sa = macsec_rxsa_get(rx_sc->sa[an]);
--		if (sa)
--			break;
--	}
--	return sa;
--}
--
- static void free_rx_sc_rcu(struct rcu_head *head)
- {
- 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
-@@ -1196,15 +1183,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		/* If validateFrames is Strict or the C bit in the
- 		 * SecTAG is set, discard
- 		 */
--		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
- 		if (hdr->tci_an & MACSEC_TCI_C ||
- 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			DEV_STATS_INC(secy->netdev, rx_errors);
--			if (active_rx_sa)
--				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
- 		}
- 
-@@ -1214,8 +1198,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsUnusedSA++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		if (active_rx_sa)
--			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
- 		goto deliver;
- 	}
- 
+ void cxl_bus_rescan(void)
 -- 
 2.43.0
 
