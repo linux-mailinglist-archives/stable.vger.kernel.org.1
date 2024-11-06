@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804239BEED3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B630C9BEE94
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 440E1285AE3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B077286935
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94381DF75A;
-	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA0F40C03;
+	Wed,  6 Nov 2024 13:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY3v8p2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl49O8Tw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D0646;
-	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE2D1CC89D;
+	Wed,  6 Nov 2024 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899274; cv=none; b=hiMPvuBUBqd6AMiow4yu3gEKqVaaUr5kW9efpJ5Xqo+BVh8p3lnPFZpFvjR49J04zbO8LidWDHJCLcRHpGV99dbbi8G9X/UcS/3Zed0+oEAj2Qt6EB8qsnuxBu6NSEDJmv1pDiKnC1cVG2JdW9Q9LEFBQUj7xSp8h4NOBUybSA8=
+	t=1730899122; cv=none; b=Fb42d6zx85Izc6j1WzdLx6fkiAIn/E7gkstO1Ev5hhG0SZo6nFOT/JUiHAzvki1JZjGEjy+ggnNRwPxUmqAYVgwq32BaFNNEv81IEvKzOuq4IEU4tAJL03PExsqXOiud0NPO3z/rFI8jxDcTjizFZp5/yTTdfyTkBaejjN3hkNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899274; c=relaxed/simple;
-	bh=r9Tq24Ha+cyj7MWnF+UiXeWzNPClwbviADY0lpxZcuI=;
+	s=arc-20240116; t=1730899122; c=relaxed/simple;
+	bh=x9of6KxYTPzmdwtdYZH9TgbSUOmqczw4hoPWzRrh7BI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtkPdulOO0w5vc6K0KMs5gCd3QS57n5ds9m+1Qt82dUyp5dm/vQ5wgs6cwb/aqrxJdapqJ3ZiIZM6cEwRnkjGvhvkfpfncVsfund+VzQLoMI0eJAlWnF+5ifmns66t2MJLgQdDvGa/kHh9qBN6NvrxRwRFxfVchDCcC5JYef2U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY3v8p2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5FBC4CECD;
-	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
+	 MIME-Version; b=L6fPG/O9ZWL7sY48mBrCHW+kIRmyQuCDgUAwLX7r2MAlemVRQ8Lpe6RIPo0hCMCdqUy23VPP1JrZ/BS8neGJchd457WPL1uYY5jxqHj5/pNTo+tsO0PR5u8JFLqq5plXonheW3ozh4V9jr0oo53nd5lmyTF5foGohyoYJkGdl60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl49O8Tw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EEDC4CECD;
+	Wed,  6 Nov 2024 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899274;
-	bh=r9Tq24Ha+cyj7MWnF+UiXeWzNPClwbviADY0lpxZcuI=;
+	s=korg; t=1730899120;
+	bh=x9of6KxYTPzmdwtdYZH9TgbSUOmqczw4hoPWzRrh7BI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oY3v8p2p/Yx0ivu3EodPOHlR5kUPQTjBGCfxF94gxjN+74/OqwaLrTI9QCjWdh3mr
-	 GPK1onylmne4Ko3ZHOoKIH3hR4PkEUB4pcLUWfb0pf2XHxtqRueK/7IQFL1Cd+pzU0
-	 5r+8cIaLGgwU9TCjJ3gsv5xDzaQFd9PqCYTTLQZY=
+	b=bl49O8Tw21BE/1qzzOV+eEcXs/v9zke/RGG8uYVJyhvYgbLH6Sx8vwr+++ruCGAdC
+	 Nud2IFh+UrjU0TmhHEfnZTKP5kx2mjnBFzy9hVXzgsj+OJsX4A7D+ShuLRs/MRwv8y
+	 Zfo+gnvaNH+74m2w8xZMoOCbkB2O/22X44S5X1G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 20/73] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
-Date: Wed,  6 Nov 2024 13:05:24 +0100
-Message-ID: <20241106120300.565700130@linuxfoundation.org>
+Subject: [PATCH 5.4 432/462] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
+Date: Wed,  6 Nov 2024 13:05:25 +0100
+Message-ID: <20241106120342.179466650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
+[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
 
-There are code paths from which the function is called without holding
-the RCU read lock, resulting in a suspicious RCU usage warning [1].
+If devm_gpiod_get_optional() fails, we need to disable previously enabled
+regulators, as done in the other error handling path of the function.
 
-Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
-the RCU read lock before calling
-l3mdev_master_upper_ifindex_by_index_rcu().
+Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
+potential gpiod_set_value_cansleep(, 0).
+If the "reset" gpio is not defined, this additional call is just a no-op.
 
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
------------------------------
-net/core/dev.c:876 RCU-list traversed in non-reader section!!
+This behavior is the same as the one already in the .remove() function.
 
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/361:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- dev_get_by_index_rcu+0x1d3/0x210
- l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
- ip_tunnel_bind_dev+0x72f/0xa00
- ip_tunnel_newlink+0x368/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs42l51.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 0a0de98c0b7f2..d8b9942f1afd9 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -247,7 +247,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
- 	memset(fl4, 0, sizeof(*fl4));
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index 07371e32167c8..7fa0a849e65f4 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -740,8 +740,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
  
- 	if (oif) {
--		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
-+		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
- 		/* Legacy VRF/l3mdev use case */
- 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
- 	}
+ 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						      GPIOD_OUT_LOW);
+-	if (IS_ERR(cs42l51->reset_gpio))
+-		return PTR_ERR(cs42l51->reset_gpio);
++	if (IS_ERR(cs42l51->reset_gpio)) {
++		ret = PTR_ERR(cs42l51->reset_gpio);
++		goto error;
++	}
+ 
+ 	if (cs42l51->reset_gpio) {
+ 		dev_dbg(dev, "Release reset gpio\n");
+@@ -773,6 +775,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 	return 0;
+ 
+ error:
++	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
+ 			       cs42l51->supplies);
+ 	return ret;
 -- 
 2.43.0
 
