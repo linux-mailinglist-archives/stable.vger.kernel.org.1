@@ -1,97 +1,201 @@
-Return-Path: <stable+bounces-91682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5719BF2C1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:08:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6FB9BF2C3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0001C2680F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58AF7B2562F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472421DCB06;
-	Wed,  6 Nov 2024 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C82D204F94;
+	Wed,  6 Nov 2024 16:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVkglhNx"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVlxQEKN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TpiLxwRe";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVlxQEKN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TpiLxwRe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BA9203707
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 16:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17591203707;
+	Wed,  6 Nov 2024 16:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730909221; cv=none; b=l+lFwc4oNzT4cvmgv96WIO4fW09IRlg9I5gxZOqyGAYOpzG4t18aOhIsnk8TEfLZyAdEvFBkYOmNaTdqsngqkOOV8ukzqZDPph9ZCL5DegbwxWTZC6ZcLTlkWnmSKFmadxw7y3nJw8dAU1bLDMuWc/l/QZgXsKgKM2zHiksB2IQ=
+	t=1730909239; cv=none; b=BtzR9mdD4b+9TS6YiYApveTIa618ONN9Z+Aja0IlsbNqPaupQ3ACxfvR+G9XhiC5Jh9CBKfp4cXTXHpbeq4uFQrPSrSVWinnXV3l9K/8Y9gNJOEK4oN3McYYot4MRqOnwDv2jXHpzEghbElJvenaqQ3WKRfl9uEHn9Z/KFWV57I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730909221; c=relaxed/simple;
-	bh=pu0Wia3hlf/LB7O+kFXEPDBndKHemByXqXEUjPGYIYA=;
+	s=arc-20240116; t=1730909239; c=relaxed/simple;
+	bh=yrnpiJhy1J/7RqZ/+CyJugHSccwtATWWeukq81MaSCM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BwgsjKUZKFWj2c3tkgjiWrKeoVnsZPo7MFdKP5hMO6JxJeRlWkqWyryIXjkibsZ5DLbh33uDApapYMK2OEwJvZF3PqakZJliwXcFVdrVBb2jr9QCqBFoK1RRriNG0QOv04qlwoFUL0ER64FNlcMw3Zdz4mrB4thUlMyokop4uqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVkglhNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA84C4CEC6;
-	Wed,  6 Nov 2024 16:06:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730909220;
-	bh=pu0Wia3hlf/LB7O+kFXEPDBndKHemByXqXEUjPGYIYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dVkglhNxPwWrrGeFU4VfNT+N0/Fmws0dpjk4ycr9Mq6G78ioY1aIW24tNqbnn3k7g
-	 ZqOY6kyG1qsAXiVt0zd/6lBzOvO+fQ/YpdV71+Yv3MVA7F3ACuNH8euLTQTttlk+v9
-	 GDuxdlR7EHAVK1dYNZFD92hTGXB5Q+nJB5n3IvEMzW8oD3njFDej1V6HvBFKDBN2S2
-	 4f0YKkEaYSoHsX/j+FIYMmHf3WFBHfXlzANK5e3r99QxyQbdNrscxxnbsVFDcEm0C6
-	 gpreuk6DBqv2LY86M2eg+L7qOtJJiqSKQTjBBr89+jig7kTsavD686oQmTpWun13+R
-	 dZ8KDWyHrwi/w==
-Date: Wed, 6 Nov 2024 16:06:56 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, ardb@kernel.org,
-	catalin.marinas@arm.com, maz@kernel.org, stable@vger.kernel.org,
-	will@kernel.org
-Subject: Re: [PATCH] arm64: smccc: Remove broken support for SMCCCv1.3 SVE
- discard hint
-Message-ID: <81419669-73e4-45ac-bf41-34d6ba486f7b@sirena.org.uk>
-References: <20241106160448.2712997-1-mark.rutland@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nom28SspPsPRgQFo5vPiCghkuFbd+UQGcSN1pGv87/s342kDFdjswuUQcYbm4dvx5e+V+g7eoWlaozW/0GH/2u2JdBnlXvgTjdKGdjfUnsnJKZ7gvtZS0+1Ws7x4Jxg0xSsa115bMK47TWxF9+ET95xBHR0m8bOBKBZ0aPWFrhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVlxQEKN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TpiLxwRe; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVlxQEKN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TpiLxwRe; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 410DE1FD16;
+	Wed,  6 Nov 2024 16:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1730909234;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oFK4lU6B12gDl5NcQ8bStKX2YCBIjE84h/WDX0M3oX0=;
+	b=GVlxQEKN3N/ZUMBOshLxms6mGsMue3UYHWVi1mIDw1tBV2ZPdp8hmRhKTc2D2GXij2WUOv
+	t8Hq06BbIeQd3N/c/ocBmmwjaAH9JW/ey6GolnmYyvA6vQ9VC3MA2r5aCZITpotTGEitmz
+	224sR5GS3zq/J9+1J6kkSgt5kzEFNuI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1730909234;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oFK4lU6B12gDl5NcQ8bStKX2YCBIjE84h/WDX0M3oX0=;
+	b=TpiLxwReKDl7e0yEg9XXcp1Uuush7wNq9HBMtCqDXUg9gHoPtPNXBSUrQjivAzEFj/uHRG
+	7SDYa2bi1PlVhkDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GVlxQEKN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TpiLxwRe
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1730909234;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oFK4lU6B12gDl5NcQ8bStKX2YCBIjE84h/WDX0M3oX0=;
+	b=GVlxQEKN3N/ZUMBOshLxms6mGsMue3UYHWVi1mIDw1tBV2ZPdp8hmRhKTc2D2GXij2WUOv
+	t8Hq06BbIeQd3N/c/ocBmmwjaAH9JW/ey6GolnmYyvA6vQ9VC3MA2r5aCZITpotTGEitmz
+	224sR5GS3zq/J9+1J6kkSgt5kzEFNuI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1730909234;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oFK4lU6B12gDl5NcQ8bStKX2YCBIjE84h/WDX0M3oX0=;
+	b=TpiLxwReKDl7e0yEg9XXcp1Uuush7wNq9HBMtCqDXUg9gHoPtPNXBSUrQjivAzEFj/uHRG
+	7SDYa2bi1PlVhkDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0F49D137C4;
+	Wed,  6 Nov 2024 16:07:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DkGAAzKUK2dLWgAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Wed, 06 Nov 2024 16:07:14 +0000
+Date: Wed, 6 Nov 2024 17:07:08 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hagar@microsoft.com, broonie@kernel.org, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Linux btrfs <linux-btrfs@vger.kernel.org>,
+	linux-mips@vger.kernel.org
+Subject: Re: [PATCH 6.11 000/245] 6.11.7-rc1 review
+Message-ID: <20241106160708.GE31418@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <20241106120319.234238499@linuxfoundation.org>
+ <CA+G9fYtjpUJFFV=FdqvW+5K+JL5ZYN4sPfVDjQovqzd7cib39w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3zLnHeDXX/K5rPDI"
-Content-Disposition: inline
-In-Reply-To: <20241106160448.2712997-1-mark.rutland@arm.com>
-X-Cookie: Include me out.
-
-
---3zLnHeDXX/K5rPDI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CA+G9fYtjpUJFFV=FdqvW+5K+JL5ZYN4sPfVDjQovqzd7cib39w@mail.gmail.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Rspamd-Queue-Id: 410DE1FD16
+X-Spam-Score: -2.71
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.71 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de,microsoft.com,fb.com,toxicpanda.com,suse.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLe1zdo9uk7dz69twkrygihbgb)];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Wed, Nov 06, 2024 at 04:04:48PM +0000, Mark Rutland wrote:
-> SMCCCv1.3 added a hint bit which callers can set in an SMCCC function ID
-> (AKA "FID") to indicate that it is acceptable for the SMCCC
-> implementation to discard SVE and/or SME state over a specific SMCCC
-> call. The kernel support for using this hint is broken and SMCCC calls
-> may clobber the SVE and/or SME state of arbitrary tasks, though FPSIMD
-> state is unaffected.
+On Wed, Nov 06, 2024 at 03:12:46PM +0000, Naresh Kamboju wrote:
+> On Wed, 6 Nov 2024 at 12:26, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.11.7 release.
+> > There are 245 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.7-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> The mips gcc-12 allmodconfig build failed on the Linux stable-rc
+> linux-6.11.y branch.
+> 
+> 
+> First seen on Linux stable-rc v6.11.4-642-g0e21c72fc970
+> 
+>   Good: v6.11.4-397-g4ccf0b49d5b6
+>   Bad:   v6.11.4-642-g0e21c72fc970
+> 
+> mips:
+>   build:
+>     * gcc-12-allmodconfig
+> 
+> Build errors:
+> -------------
+> ERROR: modpost: "__cmpxchg_small" [fs/btrfs/btrfs.ko] undefined!
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
---3zLnHeDXX/K5rPDI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcrlB8ACgkQJNaLcl1U
-h9BqxAf9FJQETr3FKwFyRVvi66Y62WIGIGeFzckg32dx2UxLO8Yg1eRcUp7nB3jo
-qJ4pAmTrvh77Fddq0pv2C5CehTTI+Y3NmpkWTmcuejupSO7lOsH+Ysf8/b0aBE1Z
-r12WSzdvqj3t60quOmQ8h92vNwY6J9tuv9Iuwrj43tTrgB3C5EFXYQKx8ioCpyeA
-i4Z2kaFpJdTcAGtAumAfyUosK/FVE7DTmGTvKJtHvuuVjhNKS6GkW/9o/Mn6bbuB
-RElkfET7HuzX3oaWv5fAttzZXAIkQvD3tOMBy56pq0inUNxFNmynNxwBLraoe57k
-iX62RIodw2Kj2mDfAew15cQG6+Renw==
-=8QHA
------END PGP SIGNATURE-----
-
---3zLnHeDXX/K5rPDI--
+The patch "btrfs: fix error propagation of split bios" needs
+90a88784cdb7 ("MIPS: export __cmpxchg_small()")
 
