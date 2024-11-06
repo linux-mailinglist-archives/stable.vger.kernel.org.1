@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953A69BE6DE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20789BECAD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3308DB25253
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FB8285C3A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8851DF272;
-	Wed,  6 Nov 2024 12:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21561E7C14;
+	Wed,  6 Nov 2024 12:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTNbpE11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkTjf9m9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EBD1DE3B8;
-	Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6201DFE1E;
+	Wed,  6 Nov 2024 12:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894872; cv=none; b=U8ZKUmEvyfCv2ISJWGTwN2kfSAXcaizs2T6WuY77jpQp655HfQ297SSH9/weE1FBUmoRXgFWeTVuYpi9APRVGdXkv2cFbjHe4479vZIXvS06WApoy6jZrUlQ/Hml8MyAh5H60VBF4VVnbp56mfzygS3XZtQggia86tv3vCFpVy8=
+	t=1730897865; cv=none; b=W7KkIf9kl1u+F4YE1h+ycme3LIzpu6UFqfl4ah3NT1ixRAshp0pu2Q3jntIgEu5eDPf9dcSJfYmBIRR10h3NYNtiCQMos2HsghE0ira4QzAspB2TGaKEedrWVuiDl6dhFYASrdTXg7cBkBs05f9kX3Z5ym3psQerQXmI4jVS2lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894872; c=relaxed/simple;
-	bh=dDWtKp/UPtSje9wKd2IXi2VS3mmNUsVtHSB/7fiJG2I=;
+	s=arc-20240116; t=1730897865; c=relaxed/simple;
+	bh=VpN2QrVeWDa9RIJpG0JHm+1EZARgydhCOle2b15yS48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7sJkvq+R/SjGa57G/8zanE/BNoqcEsbd6n7oD08gcxXZqenCKdKl53619kfyF5edFV2U0lhMKT0BAVWfkUKj7rmStLABbblAhKWgBtufJ0Axs/yUbPiIgwnpIcpm9Jg8h5HEwyVbrbj4S98Us550hy3SVUqKvfEn7t06lUIePI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTNbpE11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9AAC4CED2;
-	Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
+	 MIME-Version; b=rANZLQuh7oD1+ROb9wkCBfYAwRLKHNxLX5o3hHno/2rp1ERT28clgboR72N6S/3h3ZoNZ/aDhJXfd+GiCPDFugYceax0nmq5b/xsxuFOQqRssf993HSwwR8HUaqbmaSTaNF9jxTzPwUlUXvHO9hDLD/yBZ7uxA1nnXLslNDCpC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkTjf9m9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4432C4CECD;
+	Wed,  6 Nov 2024 12:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894872;
-	bh=dDWtKp/UPtSje9wKd2IXi2VS3mmNUsVtHSB/7fiJG2I=;
+	s=korg; t=1730897865;
+	bh=VpN2QrVeWDa9RIJpG0JHm+1EZARgydhCOle2b15yS48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTNbpE11QHfxV6zxMrHoM7rNGx1HCLTrlNRrGa73FB1XdvuVfl9jjmqOBbhXZVkjk
-	 5Y832ZqQ2QSm474I2Mzf8j8W7M9R/6JiDZv3uRfTAHy86O+cyox0GNVZYHnvXxnVb6
-	 wmXAfwJxwev/k4BH5kI7maimhm1EoBeUAyIrIb7g=
+	b=XkTjf9m9lEnENEXXSuptBqV5KV4jEqeMBIYa5YutAUTi055Lq0sWHnsxKlYcNSqlQ
+	 3A7I7JdbRzK2pnF98ht/uPvnCaSgBlieH5dAEnn04LitFShZs3OpftN4ASNo+vAMM5
+	 vamwyfXPbDZQZNCPoKXYVCN8qjcDtpXDML25l6ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 011/350] net: dpaa: Pad packets to ETH_ZLEN
+Subject: [PATCH 5.4 046/462] wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()
 Date: Wed,  6 Nov 2024 12:58:59 +0100
-Message-ID: <20241106120321.150592375@linuxfoundation.org>
+Message-ID: <20241106120332.656377290@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit cbd7ec083413c6a2e0c326d49e24ec7d12c7a9e0 ]
+[ Upstream commit 9d301de12da6e1bb069a9835c38359b8e8135121 ]
 
-When sending packets under 60 bytes, up to three bytes of the buffer
-following the data may be leaked. Avoid this by extending all packets to
-ETH_ZLEN, ensuring nothing is leaked in the padding. This bug can be
-reproduced by running
+Since '__dev_queue_xmit()' should be called with interrupts enabled,
+the following backtrace:
 
-	$ ping -s 11 destination
+ieee80211_do_stop()
+ ...
+ spin_lock_irqsave(&local->queue_stop_reason_lock, flags)
+ ...
+ ieee80211_free_txskb()
+  ieee80211_report_used_skb()
+   ieee80211_report_ack_skb()
+    cfg80211_mgmt_tx_status_ext()
+     nl80211_frame_tx_status()
+      genlmsg_multicast_netns()
+       genlmsg_multicast_netns_filtered()
+        nlmsg_multicast_filtered()
+	 netlink_broadcast_filtered()
+	  do_one_broadcast()
+	   netlink_broadcast_deliver()
+	    __netlink_sendskb()
+	     netlink_deliver_tap()
+	      __netlink_deliver_tap_skb()
+	       dev_queue_xmit()
+	        __dev_queue_xmit() ; with IRQS disabled
+ ...
+ spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags)
 
-Fixes: 9ad1a3749333 ("dpaa_eth: add support for DPAA Ethernet")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240910143144.1439910-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+issues the warning (as reported by syzbot reproducer):
+
+WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120
+
+Fix this by implementing a two-phase skb reclamation in
+'ieee80211_do_stop()', where actual work is performed
+outside of a section with interrupts disabled.
+
+Fixes: 5061b0c2b906 ("mac80211: cooperate more with network namespaces")
+Reported-by: syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240906123151.351647-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/mac80211/iface.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -2055,12 +2055,12 @@ static netdev_tx_t
- dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 1f691180e13db..e49b80a9de520 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -795,6 +795,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
  {
- 	const int queue_mapping = skb_get_queue_mapping(skb);
--	bool nonlinear = skb_is_nonlinear(skb);
- 	struct rtnl_link_stats64 *percpu_stats;
- 	struct dpaa_percpu_priv *percpu_priv;
- 	struct netdev_queue *txq;
- 	struct dpaa_priv *priv;
- 	struct qm_fd fd;
-+	bool nonlinear;
- 	int offset = 0;
- 	int err = 0;
+ 	struct ieee80211_local *local = sdata->local;
+ 	unsigned long flags;
++	struct sk_buff_head freeq;
+ 	struct sk_buff *skb, *tmp;
+ 	u32 hw_reconf_flags = 0;
+ 	int i, flushed;
+@@ -993,18 +994,32 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
+ 		skb_queue_purge(&sdata->skb_queue);
+ 	}
  
-@@ -2070,6 +2070,13 @@ dpaa_start_xmit(struct sk_buff *skb, str
- 
- 	qm_fd_clear_fd(&fd);
- 
-+	/* Packet data is always read as 32-bit words, so zero out any part of
-+	 * the skb which might be sent if we have to pad the packet
++	/*
++	 * Since ieee80211_free_txskb() may issue __dev_queue_xmit()
++	 * which should be called with interrupts enabled, reclamation
++	 * is done in two phases:
 +	 */
-+	if (__skb_put_padto(skb, ETH_ZLEN, false))
-+		goto enomem;
++	__skb_queue_head_init(&freeq);
 +
-+	nonlinear = skb_is_nonlinear(skb);
- 	if (!nonlinear) {
- 		/* We're going to store the skb backpointer at the beginning
- 		 * of the data buffer, so we need a privately owned skb
++	/* unlink from local queues... */
+ 	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+ 	for (i = 0; i < IEEE80211_MAX_QUEUES; i++) {
+ 		skb_queue_walk_safe(&local->pending[i], skb, tmp) {
+ 			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 			if (info->control.vif == &sdata->vif) {
+ 				__skb_unlink(skb, &local->pending[i]);
+-				ieee80211_free_txskb(&local->hw, skb);
++				__skb_queue_tail(&freeq, skb);
+ 			}
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
+ 
++	/* ... and perform actual reclamation with interrupts enabled. */
++	skb_queue_walk_safe(&freeq, skb, tmp) {
++		__skb_unlink(skb, &freeq);
++		ieee80211_free_txskb(&local->hw, skb);
++	}
++
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		ieee80211_txq_remove_vlan(local, sdata);
+ 
+-- 
+2.43.0
+
 
 
 
