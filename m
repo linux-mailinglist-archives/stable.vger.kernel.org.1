@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64D89BE6DF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09EA9BECC5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77E842816C4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40BFBB211DA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4090C1DF24C;
-	Wed,  6 Nov 2024 12:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5A21EABD7;
+	Wed,  6 Nov 2024 12:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N76aPzCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwsmx2qi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF06C1D2784;
-	Wed,  6 Nov 2024 12:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8641E0084;
+	Wed,  6 Nov 2024 12:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894880; cv=none; b=rK1NlkBQ/SIcx33qXrXw/u8J/C9JlTN6JH5/bA45JkLm+s6HNdiUplNGd8YkAz/MehCm7NCghIK7TTOUgHGivLHNw5iZqKo2sICaBaEjUavsH1uDZQQZj4b+dPs1xeBupBnuRZz9aj7ckVSyHDjm6TH9SPPIERXWkKRHCqFS/q0=
+	t=1730897927; cv=none; b=ibB39SFCSZXCx0UFVyCLRr2cJEvLDpNnl/4zv4D370dTIibBEPj/hICM3c3HLYfr4Ooe2npMt7ozs+EqOlm4JRERl2iy2XF/b4CYA11Ch7S8uATyaghn7KxICXewkKtYGSMALyXlTVvLJe8sySf5Sza/OtJfGQTQAuIz2TDZ5o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894880; c=relaxed/simple;
-	bh=wpn3cJfL+NKY4LvYIci+NVimYVDyW3rS4WyK3lrplIc=;
+	s=arc-20240116; t=1730897927; c=relaxed/simple;
+	bh=mOs+oATkTkYHpoZcZPLh5i/gmmvpg5r/8LzFhANVTGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R7dcDdBHEGIqgBS2+lyrVo4Z6qvgSopYHTN9s0fOAh/LXzlJ/AhVczbq6dSMVKthgGGnt43/zNxJWwg6v2Jq6N5DEmegsxg3rkLAqCP9KuFk/Hpxz95k4FhKt/wYlSF0T2A+q0VW7p36eplE5bP5j5Db7X9IIywy4HTJmzWiNgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N76aPzCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69714C4CED2;
-	Wed,  6 Nov 2024 12:07:59 +0000 (UTC)
+	 MIME-Version; b=oIX5ZozA74tvyWGJQuwQnVO71RMk/v1+sSs8O9cdffMg0hzpiyfGZhDv5oj2IEU2knMCPLjhH2j+P/SLRlhdSwbokdcPDoIwYhF+E0yaZfBGfggd23gT/mrqIckl6VcuNPQFSrCNP+CaqBEda5ZIuh5z5WDM1xtMWnSYUH791VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwsmx2qi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42770C4CECD;
+	Wed,  6 Nov 2024 12:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894879;
-	bh=wpn3cJfL+NKY4LvYIci+NVimYVDyW3rS4WyK3lrplIc=;
+	s=korg; t=1730897927;
+	bh=mOs+oATkTkYHpoZcZPLh5i/gmmvpg5r/8LzFhANVTGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N76aPzCQ41IdCdG9x44johhh5/YaXCGPvq0F/sjg4/wZ7oVy86CY9hulZGJVNf6mb
-	 d3nqIJr8wUYSDA2Cpwt9tBNXsPVHHhz280Gz68VrWnXJtYxtxm1aTaRZEm8VQ6k+CK
-	 KKNZYxSCZ0MNZK7byQqpO1ZDNdq4tN0dzAmb68sQ=
+	b=rwsmx2qiMYA/LnzBNO+PmTgPKvBDw3nA+FlLfkOW6jDlOcr7ULlgHWspiXoMtSTdZ
+	 CxqDdyZwdoNKdpYmny5elT9iV/xDIwswoJNGFXEasFR01zcmW6AX/4DJKAITEej365
+	 cmvBLsHCVY746EYGeb5skBCWHYspdwCwyflX4iAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Tobias <dan.g.tob@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 030/350] wifi: ath9k: Remove error checks when creating debugfs entries
+Subject: [PATCH 5.4 065/462] power: supply: axp20x_battery: Remove design from min and max voltage
 Date: Wed,  6 Nov 2024 12:59:18 +0100
-Message-ID: <20241106120321.621996329@linuxfoundation.org>
+Message-ID: <20241106120333.117416099@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit f6ffe7f0184792c2f99aca6ae5b916683973d7d3 ]
+[ Upstream commit 61978807b00f8a1817b0e5580981af1cd2f428a5 ]
 
-We should not be checking the return values from debugfs creation at all: the
-debugfs functions are designed to handle errors of previously called functions
-and just transparently abort the creation of debugfs entries when debugfs is
-disabled. If we check the return value and abort driver initialisation, we break
-the driver if debugfs is disabled (such as when booting with debugfs=off).
+The POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN and
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN values should be immutable
+properties of the battery, but for this driver they are writable values
+and used as the minimum and maximum values for charging. Remove the
+DESIGN designation from these values.
 
-Earlier versions of ath9k accidentally did the right thing by checking the
-return value, but only for NULL, not for IS_ERR(). This was "fixed" by the two
-commits referenced below, breaking ath9k with debugfs=off starting from the 6.6
-kernel (as reported in the Bugzilla linked below).
-
-Restore functionality by just getting rid of the return value check entirely.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219122
-Fixes: 1e4134610d93 ("wifi: ath9k: use IS_ERR() with debugfs_create_dir()")
-Fixes: 6edb4ba6fb5b ("wifi: ath9k: fix parameter check in ath9k_init_debug()")
-Reported-by: Daniel Tobias <dan.g.tob@gmail.com>
-Tested-by: Daniel Tobias <dan.g.tob@gmail.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240805110225.19690-1-toke@toke.dk
+Fixes: 46c202b5f25f ("power: supply: add battery driver for AXP20X and AXP22X PMICs")
+Suggested-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240821215456.962564-3-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c         | 2 --
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
- 2 files changed, 4 deletions(-)
+ drivers/power/supply/axp20x_battery.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index 1700d23f0aa9e..9440d6bfea922 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1384,8 +1384,6 @@ int ath9k_init_debug(struct ath_hw *ah)
+diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
+index 335e12cc5e2f9..d62a249f65da0 100644
+--- a/drivers/power/supply/axp20x_battery.c
++++ b/drivers/power/supply/axp20x_battery.c
+@@ -304,11 +304,11 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
+ 		val->intval = reg & AXP209_FG_PERCENT;
+ 		break;
  
- 	sc->debug.debugfs_phy = debugfs_create_dir("ath9k",
- 						   sc->hw->wiphy->debugfsdir);
--	if (IS_ERR(sc->debug.debugfs_phy))
--		return -ENOMEM;
+-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+ 		return axp20x_batt->data->get_max_voltage(axp20x_batt,
+ 							  &val->intval);
  
- #ifdef CONFIG_ATH_DEBUG
- 	debugfs_create_file("debug", 0600, sc->debug.debugfs_phy,
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index e79bbcd3279af..81332086e2899 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -491,8 +491,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+ 		ret = regmap_read(axp20x_batt->regmap, AXP20X_V_OFF, &reg);
+ 		if (ret)
+ 			return ret;
+@@ -456,10 +456,10 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
+ 	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
  
- 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
- 					     priv->hw->wiphy->debugfsdir);
--	if (IS_ERR(priv->debug.debugfs_phy))
--		return -ENOMEM;
+ 	switch (psp) {
+-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+ 		return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
  
- 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
+-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+ 		return axp20x_batt->data->set_max_voltage(axp20x_batt, val->intval);
  
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+@@ -494,8 +494,8 @@ static enum power_supply_property axp20x_battery_props[] = {
+ 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+ 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+ 	POWER_SUPPLY_PROP_HEALTH,
+-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
++	POWER_SUPPLY_PROP_VOLTAGE_MAX,
++	POWER_SUPPLY_PROP_VOLTAGE_MIN,
+ 	POWER_SUPPLY_PROP_CAPACITY,
+ };
+ 
+@@ -503,8 +503,8 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
+ 					 enum power_supply_property psp)
+ {
+ 	return psp == POWER_SUPPLY_PROP_STATUS ||
+-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN ||
+-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN ||
++	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN ||
++	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX ||
+ 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
+ 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
+ }
 -- 
 2.43.0
 
