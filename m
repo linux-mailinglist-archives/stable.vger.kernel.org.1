@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A77E9BDCD6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:32:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDE09BDCD8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8B1289721
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:32:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 978841F24B6B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2BF218D71;
-	Wed,  6 Nov 2024 02:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4DD219480;
+	Wed,  6 Nov 2024 02:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hq7YYC6Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6RYVlk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069C81D7E31;
-	Wed,  6 Nov 2024 02:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75421D7E31;
+	Wed,  6 Nov 2024 02:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859280; cv=none; b=tPOIKOaKHjCuLYLmoZU4HWmju5HZGLJqccLFRVBOdjFzyyvQpAreQy6VE1W9xjU44WltCQp3jNnpHjA/VM5CCAmBjPGla0B3+IttoThQjhLISKQOuNc7GD3I1F3RK2ELpnpviRqz87CmGIUzycp+xFFmX1N+tqG8cOjYeEjFt6Y=
+	t=1730859283; cv=none; b=Gb8slbe59PICAh/ovQ5TgEZGDHaH3WqwYFsWmyIy64SlECZFzaJ1W5O62QQ6mvm9q9uJQgIEZLbjm4wCDFAYCeQsPfXU66OsYHzM0S/cV7N2em94x4TXbKPIhMAoZAKtIwuFccGdcdEyKmLbBnbHNXHpTtke3lqK2LQDo8/iUiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859280; c=relaxed/simple;
-	bh=UxVFzXr/qE1frcu5UBMHUfXOz9TbVqjaGtWgn2ulVbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gHCMY/AkcZdQDwmKakn+aLfkcQIkZQdZ9DcRGzVIfpLfbm1Be6J8bnzSF6pYhD1Ac7nVXHS2CDHTKFcznH7UMUmd8Vc6vD7gJsERlwT7vWa7NSHcHn09xkll6A6P4WkRkCWcqW+O794/FH7ObwoQRppNGG1LdDI1GuclH7y/I8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hq7YYC6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D15C4CECF;
-	Wed,  6 Nov 2024 02:14:38 +0000 (UTC)
+	s=arc-20240116; t=1730859283; c=relaxed/simple;
+	bh=a1fx9W5C2Y8DIeSPoUZDAcxu4n24EELzZtYvi7JTuWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rJd/vyEsz90A7QWluSiBGx/VQeJDs+6f/7krT28jC+eXLlQUf4gFQkP6wiPgQc9+h5HQKOdJF2NoZPGuqf35d1xrZI2F8kq+rpm8pVuLNXWx/N4L+WCW7nmD2pyuaRY6dJvR9qNgjtl5QudFTtDqZVgD/Tu34M1U7RRV3wSrVgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6RYVlk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D32C4CECF;
+	Wed,  6 Nov 2024 02:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859279;
-	bh=UxVFzXr/qE1frcu5UBMHUfXOz9TbVqjaGtWgn2ulVbc=;
+	s=k20201202; t=1730859283;
+	bh=a1fx9W5C2Y8DIeSPoUZDAcxu4n24EELzZtYvi7JTuWs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Hq7YYC6Z9uXjMLvpFzTvwROMr68dsjmju7rHqZKQKPKUqJ70PgOxMfpw3sfBJdZuO
-	 HIXlBLZqm1wtNqcrKBUp9Ea/Hn/1CmEaStBpqHH04XXvxabe1EIwuOSfLBBkHp306V
-	 vnpQKrhlPjZbcbmIP1exyYE//t6Q+AloNtKUODcaF7iAq7m2QdCLRN1RW/FlU6b8tO
-	 O1weRRzst0RuF/VDzWz73O+qOXmrl5ft0CIvkSWs08S3R2Ticg3hK5VYq6Pr8lCQ7V
-	 ewhhDu+haNibWpTVjcZ8uMlQs91bDgpJZyQric7E3PO7ia3333t4Xenz5dJ6j/DVhN
-	 v50vDw+YxtIHA==
+	b=G6RYVlk3mEPqkiUBh5Tc5XkG1RSYmsESh8UJiPbjpp5XXniTQrzmuRDj9dHFHZ+c4
+	 XYEgMnqoKTUsAiS+KjiZN4O6UKzBdNHEFr2qY+ldoZuAZkNcpE5bbZCS+gBLU5NgoC
+	 8Ajb0x3hWLG+Ae2RT2HSE7b308S8zHwlqxFxXUKAhprjV6DZKgQt0hWc54vaaOP518
+	 iEqwvIv60NeVbo1N/m0KFyd6sEObE9dG+Uw8TF0WQFrItc3AeTsVOPEfhxQ2rD4T+S
+	 vhI5zhJ/lniGb9TdflFuRdFT1d2VPFrKHD5K7BwaP3db+3oO3WPQXGmzT23gz49xsy
+	 yBsXwFz6ra4lw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alexander.usyskin@intel.com
-Cc: stable <stable@kernel.org>,
-	Rohit Agarwal <rohiagar@chromium.org>,
-	Brian Geffon <bgeffon@google.com>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	johan+linaro@kernel.org
+Cc: Thierry Reding <treding@nvidia.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "mei: use kvmalloc for read buffer" failed to apply to v4.19-stable tree
-Date: Tue,  5 Nov 2024 21:14:36 -0500
-Message-ID: <20241106021437.184398-1-sashal@kernel.org>
+Subject: FAILED: Patch "gpiolib: fix debugfs newline separators" failed to apply to v4.19-stable tree
+Date: Tue,  5 Nov 2024 21:14:40 -0500
+Message-ID: <20241106021440.184439-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,53 +71,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4adf613e01bf99e1739f6ff3e162ad5b7d578d1a Mon Sep 17 00:00:00 2001
-From: Alexander Usyskin <alexander.usyskin@intel.com>
-Date: Tue, 15 Oct 2024 15:31:57 +0300
-Subject: [PATCH] mei: use kvmalloc for read buffer
+From 3e8b7238b427e05498034c240451af5f5495afda Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Mon, 28 Oct 2024 13:49:58 +0100
+Subject: [PATCH] gpiolib: fix debugfs newline separators
 
-Read buffer is allocated according to max message size, reported by
-the firmware and may reach 64K in systems with pxp client.
-Contiguous 64k allocation may fail under memory pressure.
-Read buffer is used as in-driver message storage and not required
-to be contiguous.
-Use kvmalloc to allow kernel to allocate non-contiguous memory.
+The gpiolib debugfs interface exports a list of all gpio chips in a
+system and the state of their pins.
 
-Fixes: 3030dc056459 ("mei: add wrapper for queuing control commands.")
-Cc: stable <stable@kernel.org>
-Reported-by: Rohit Agarwal <rohiagar@chromium.org>
-Closes: https://lore.kernel.org/all/20240813084542.2921300-1-rohiagar@chromium.org/
-Tested-by: Brian Geffon <bgeffon@google.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Acked-by: Tomas Winkler <tomasw@gmail.com>
-Link: https://lore.kernel.org/r/20241015123157.2337026-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The gpio chip sections are supposed to be separated by a newline
+character, but a long-standing bug prevents the separator from
+being included when output is generated in multiple sessions, making the
+output inconsistent and hard to read.
+
+Make sure to only suppress the newline separator at the beginning of the
+file as intended.
+
+Fixes: f9c4a31f6150 ("gpiolib: Use seq_file's iterator interface")
+Cc: stable@vger.kernel.org	# 3.7
+Cc: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241028125000.24051-2-johan+linaro@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/misc/mei/client.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
-index 9d090fa07516f..be011cef12e5d 100644
---- a/drivers/misc/mei/client.c
-+++ b/drivers/misc/mei/client.c
-@@ -321,7 +321,7 @@ void mei_io_cb_free(struct mei_cl_cb *cb)
- 		return;
- 
- 	list_del(&cb->list);
--	kfree(cb->buf.data);
-+	kvfree(cb->buf.data);
- 	kfree(cb->ext_hdr);
- 	kfree(cb);
- }
-@@ -497,7 +497,7 @@ struct mei_cl_cb *mei_cl_alloc_cb(struct mei_cl *cl, size_t length,
- 	if (length == 0)
- 		return cb;
- 
--	cb->buf.data = kmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
-+	cb->buf.data = kvmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
- 	if (!cb->buf.data) {
- 		mei_io_cb_free(cb);
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index d5952ab7752c2..e27488a90bc97 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -4926,6 +4926,8 @@ static void *gpiolib_seq_start(struct seq_file *s, loff_t *pos)
  		return NULL;
+ 
+ 	s->private = priv;
++	if (*pos > 0)
++		priv->newline = true;
+ 	priv->idx = srcu_read_lock(&gpio_devices_srcu);
+ 
+ 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
 -- 
 2.43.0
 
