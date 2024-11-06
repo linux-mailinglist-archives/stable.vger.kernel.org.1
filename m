@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-89953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304EA9BDBE5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:10:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7FF9BDBE8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE2A281CBA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:10:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89262B2327B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929D51917F0;
-	Wed,  6 Nov 2024 02:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3681922C6;
+	Wed,  6 Nov 2024 02:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="stcnGwYV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp/6OczF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7A01917E8;
-	Wed,  6 Nov 2024 02:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C34418FDD2;
+	Wed,  6 Nov 2024 02:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858944; cv=none; b=Wczkarah2ZFC1PjVE3/TK0aDsjqMDrdyNu0NrzEFMwRb/4wvMK+4UtriRP90+7qgHulxJGhMBVeo/O5SCcqfm95yR8YBCErRqmlU1DWk7SEGtu5Kl3cBVhKWmA1ts7CW3X4+FG770LXU6g13IooFgnIEeNi0JnORWjWKbNZqnEs=
+	t=1730858948; cv=none; b=LyHuWPK1wdzH+/QYFcWfKH/8z7ZVbj2jBhbsaeYX0oFMiWocklWcBrXlLyKcMgJpVw5JaxTdwTE2uIGsVknB5fHC51QmyUrfqNm70joSkarMHcw6wTKYGYwoQpZmmq7XAJRg+KH2fnqKqx0wLCFmzPzco3WU7lC/pA8Xn9Vo+ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858944; c=relaxed/simple;
-	bh=t0Q+l6u/ZIBDqTwNRkaIzXYXs58wTFX0suOXd2kqCIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V+fYPDqIPfauZa40rjdbuhKFdtH+zyBEeduxnK7jb1dBn8s5CzlI3Pu0+CN/PAjRMq4jrlsUbPlsqPfQgvPNCXJrgYoGW21dBq7YkfOco3uJqO6Der5PiZA3wdstMd/s2mdeyCrAUtTE58bA/PnO0QfODETIyhzGZ2ed6z9WvVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=stcnGwYV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3D7C4CECF;
-	Wed,  6 Nov 2024 02:09:03 +0000 (UTC)
+	s=arc-20240116; t=1730858948; c=relaxed/simple;
+	bh=B6UfHUEIWaWEcRpuQYHyphb64JFnYui36KlElCdvEMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QLW4cCuJJ3XGEf8rkdV8KKaXVmWTmluiXADjEdQWONHG3HNc5j0m0gTWpWgDD262h+uU4m3t/+7IgnOzlhtEajtGaHWbSHeKHqbKhl2GULh9/eGTL4zjwBCfG6iFQRMk/GYw6edRk0s9+XVwtoU6ptixRo+O3TT4AxA4l7DM/PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pp/6OczF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC2DC4CECF;
+	Wed,  6 Nov 2024 02:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858944;
-	bh=t0Q+l6u/ZIBDqTwNRkaIzXYXs58wTFX0suOXd2kqCIQ=;
+	s=k20201202; t=1730858947;
+	bh=B6UfHUEIWaWEcRpuQYHyphb64JFnYui36KlElCdvEMI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=stcnGwYVqXv1Je9bQsguWylgvCJOhfh0vy3RZdXIVaaj/TfnNi21YeLBlk30WpKMC
-	 K8QnxNyMjey9UJTn31E82WRU8iosEpHdef6zffKUbAYmCFKohBE8sljKMo43GGEHb2
-	 Dl0L6zd3bG8aqLJyjkQlA7MxYDICP8I6wg6S2h7yXui9KL0ijNSxglLI8BSFbuQLNz
-	 wAxd0X0+qudxmFgBgOC37XdVQ+Zq3JjlQomm3DuLd7RMmrgkonXM1/AQjTWqiZ/KDD
-	 RR0aIdrWm4BS7FcbiG14KwLb3oXsDBAypOoSy2of/su5S3/nW/4pVyvITXuSHZ3AbW
-	 D2h7ckpMTIukg==
+	b=pp/6OczFTLqCbavqo5uroOck8H6ydjhl7AT2DlOHW2E3WqKmDVsAtMgYcxE7V/aJN
+	 LKKjhETSZ+55SPsE31ftzGwTPmxlDxLOjlHPNX6UaMabxT+0oGkMBgFT+xD/zQgagu
+	 x/4PaQve54ASACcSFg6VBqk1kNqDImCMVHNvgDv1eEt4vAVJadYFXoIM8KZjeuWwK6
+	 /RcpiTOTxfB9tAkQ+CBYZw3yX+I6OhbveqlbYHM8hlfIODOfOO64IOVfIBtuZu2lhQ
+	 Bc9zAAuxHNIhoCxUB/0u5ZNv5LVz3U8yLB5Z4lTYfu8zUKyt+hqYlOi/34+W1237UG
+	 URAaJsSu3MMzw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	bsegall@google.com
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:00 -0500
-Message-ID: <20241106020901.164614-1-sashal@kernel.org>
+	alexghiti@rivosinc.com
+Cc: Jason Montleon <jmontleo@redhat.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: FAILED: Patch "riscv: Do not use fortify in early code" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:04 -0500
+Message-ID: <20241106020905.164658-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,90 +72,83 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b5413156bad91dc2995a5c4eab1b05e56914638a Mon Sep 17 00:00:00 2001
-From: Benjamin Segall <bsegall@google.com>
-Date: Fri, 25 Oct 2024 18:35:35 -0700
-Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+From afedc3126e11ff1404b32e538657b68022e933ca Mon Sep 17 00:00:00 2001
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+Date: Wed, 9 Oct 2024 09:27:49 +0200
+Subject: [PATCH] riscv: Do not use fortify in early code
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+Early code designates the code executed when the MMU is not yet enabled,
+and this comes with some limitations (see
+Documentation/arch/riscv/boot.rst, section "Pre-MMU execution").
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
+FORTIFY_SOURCE must be disabled then since it can trigger kernel panics
+as reported in [1].
 
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
-
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
-
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reported-by: Jason Montleon <jmontleo@redhat.com>
+Closes: https://lore.kernel.org/linux-riscv/CAJD_bPJes4QhmXY5f63GHV9B9HFkSCoaZjk-qCT2NGS7Q9HODg@mail.gmail.com/ [1]
+Fixes: a35707c3d850 ("riscv: add memory-type errata for T-Head")
+Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20241009072749.45006-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ arch/riscv/errata/Makefile    | 6 ++++++
+ arch/riscv/kernel/Makefile    | 5 +++++
+ arch/riscv/kernel/pi/Makefile | 6 +++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 72744638c5b0f..99c9c5a7252aa 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 89ceb4a68af25..6fa9fe62e01e3 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -105,6 +105,7 @@
- #include <linux/rseq.h>
- #include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
-+#include <linux/tick.h>
+diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
+index 8a27394851233..f0da9d7b39c37 100644
+--- a/arch/riscv/errata/Makefile
++++ b/arch/riscv/errata/Makefile
+@@ -2,6 +2,12 @@ ifdef CONFIG_RELOCATABLE
+ KBUILD_CFLAGS += -fno-pie
+ endif
  
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2292,6 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
++ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
++ifdef CONFIG_FORTIFY_SOURCE
++KBUILD_CFLAGS += -D__NO_FORTIFY
++endif
++endif
++
+ obj-$(CONFIG_ERRATA_ANDES) += andes/
+ obj-$(CONFIG_ERRATA_SIFIVE) += sifive/
+ obj-$(CONFIG_ERRATA_THEAD) += thead/
+diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+index 7f88cc4931f5c..69dc8aaab3fb3 100644
+--- a/arch/riscv/kernel/Makefile
++++ b/arch/riscv/kernel/Makefile
+@@ -36,6 +36,11 @@ KASAN_SANITIZE_alternative.o := n
+ KASAN_SANITIZE_cpufeature.o := n
+ KASAN_SANITIZE_sbi_ecall.o := n
+ endif
++ifdef CONFIG_FORTIFY_SOURCE
++CFLAGS_alternative.o += -D__NO_FORTIFY
++CFLAGS_cpufeature.o += -D__NO_FORTIFY
++CFLAGS_sbi_ecall.o += -D__NO_FORTIFY
++endif
+ endif
  
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
+ extra-y += vmlinux.lds
+diff --git a/arch/riscv/kernel/pi/Makefile b/arch/riscv/kernel/pi/Makefile
+index d5bf1bc7de62e..81d69d45c06c3 100644
+--- a/arch/riscv/kernel/pi/Makefile
++++ b/arch/riscv/kernel/pi/Makefile
+@@ -16,8 +16,12 @@ KBUILD_CFLAGS	:= $(filter-out $(CC_FLAGS_LTO), $(KBUILD_CFLAGS))
+ KBUILD_CFLAGS	+= -mcmodel=medany
  
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
+ CFLAGS_cmdline_early.o += -D__NO_FORTIFY
+-CFLAGS_lib-fdt_ro.o += -D__NO_FORTIFY
+ CFLAGS_fdt_early.o += -D__NO_FORTIFY
++# lib/string.c already defines __NO_FORTIFY
++CFLAGS_ctype.o += -D__NO_FORTIFY
++CFLAGS_lib-fdt.o += -D__NO_FORTIFY
++CFLAGS_lib-fdt_ro.o += -D__NO_FORTIFY
++CFLAGS_archrandom_early.o += -D__NO_FORTIFY
+ 
+ $(obj)/%.pi.o: OBJCOPYFLAGS := --prefix-symbols=__pi_ \
+ 			       --remove-section=.note.gnu.property \
 -- 
 2.43.0
 
