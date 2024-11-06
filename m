@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-91253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE189BED21
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:09:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853B59BED31
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99BDF1C23F64
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BAB61F22D42
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6904C1F819E;
-	Wed,  6 Nov 2024 13:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63901E1328;
+	Wed,  6 Nov 2024 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWjt46t1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyZ4yXpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2361C1F1318;
-	Wed,  6 Nov 2024 13:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839221F4296;
+	Wed,  6 Nov 2024 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898192; cv=none; b=tosNhLI1PKt8BX3fYjAc2zWlZ8lRCsZ0I06HdrO17aSMlLCrC8ud8fMWZM9UQtdp9T00WqnQZAuFKVhG8SYk/swOR0vfCTUnwyiFGwC9awkCP5PuwroMRrBpGbVtFdzKKncJBwWyNk9uW9rx1VgK552RcGsGXPKEZsQjF9496qI=
+	t=1730898224; cv=none; b=OI3DY7BqWCT6xSEm6D7oIREW50CIGU1z/1c1N9OEmblyuJINB6qLHKXk4QNag9EsqEl3UBReMwzrR62ODbgNNqPE/28ybWTSQLz1JUXVXalRs9vcah05oWaQI3QDUiOcdS6R3ikvVBPueQ3QwH7lgi26qBb0b1rn9AkhjtteQ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898192; c=relaxed/simple;
-	bh=3jebAbuE+DO8dLxQzvQzTT7O4Ycs5Yec6VK5ZX2EpLk=;
+	s=arc-20240116; t=1730898224; c=relaxed/simple;
+	bh=fKPuP9k2fY4WQ0a5Lb/wEuU6CL35bp+0A4wzWm6Ib/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuO1mf4ilFc2QCLRUgJfnYo9Wwta7yM8Xi3j5THyotI5OlN3Y7EkhxoejvoYA9Y9oLvYtHzqEG0sKi8DtnkO0boDVJO4Gt98Mk0CkEv2cTgJeqQzWfL6ji+MxAqxKOE5uFfA9X22xPVx1FuaOK1f6d41PsqPjFMZNJqMScky7SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWjt46t1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB37C4CECD;
-	Wed,  6 Nov 2024 13:03:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WZ+ojZU6jBQrx2vnOKWp3pO2IS6o338OYATnoRQHoTQXiujhCir8oqkx/NWf6gD6vFEkwgf+WX3hFb13WuWKlo1QSRsVKqw4s6p5h5MhjawyY0My5FnXsI8MdXGwEz6nAoX79R1AlmmR5E3mphe8Fy8i/Tc9+olrAzziru30qmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyZ4yXpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0CEC4CECD;
+	Wed,  6 Nov 2024 13:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898192;
-	bh=3jebAbuE+DO8dLxQzvQzTT7O4Ycs5Yec6VK5ZX2EpLk=;
+	s=korg; t=1730898224;
+	bh=fKPuP9k2fY4WQ0a5Lb/wEuU6CL35bp+0A4wzWm6Ib/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWjt46t1MklfXwXXbOaOn9lGpth6mhTU19pwamyiSfy+YDPA6tyt4CrrnJq6D7VSG
-	 UaBPvZKK/Cbhx34fzfJYoZrRtQvvU6IFvGrprhYzO/xjvemjlb2zczlO4qTXwA/2ry
-	 HVgRgTBiKp73rqcjgRT9mo+TYZO/fs8/XziNHZIY=
+	b=HyZ4yXpRXrSGR6xoXOn1D7RAIAFTB+y9C/JtAYPfEHmVOEE9i+Iet/mZ4SGbR6ygd
+	 M1Y7lDlYs38gh4AiMaPFO3EDlOWV7bXMq2mhWLycbYeZemNO74T6/7Af/r4TdAAdUt
+	 F577GFhOiewTNIi9v8iSkjeljE9UbhhhNw14CYqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 148/462] drbd: Add NULL check for net_conf to prevent dereference in state validation
-Date: Wed,  6 Nov 2024 13:00:41 +0100
-Message-ID: <20241106120335.166426025@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 149/462] ACPI: sysfs: validate return type of _STR method
+Date: Wed,  6 Nov 2024 13:00:42 +0100
+Message-ID: <20241106120335.191894837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -59,43 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit a5e61b50c9f44c5edb6e134ede6fee8806ffafa9 upstream.
+commit 4bb1e7d027413835b086aed35bc3f0713bc0f72b upstream.
 
-If the net_conf pointer is NULL and the code attempts to access its
-fields without a check, it will lead to a null pointer dereference.
-Add a NULL check before dereferencing the pointer.
+Only buffer objects are valid return values of _STR.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+If something else is returned description_show() will access invalid
+memory.
 
-Fixes: 44ed167da748 ("drbd: rcu_read_lock() and rcu_dereference() for tconn->net_conf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Link: https://lore.kernel.org/r/20240909133740.84297-1-m.lobanov@rosalinux.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/drbd/drbd_state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/device_sysfs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/block/drbd/drbd_state.c
-+++ b/drivers/block/drbd/drbd_state.c
-@@ -876,7 +876,7 @@ is_valid_state(struct drbd_device *devic
- 		  ns.disk == D_OUTDATED)
- 		rv = SS_CONNECTED_OUTDATES;
- 
--	else if ((ns.conn == C_VERIFY_S || ns.conn == C_VERIFY_T) &&
-+	else if (nc && (ns.conn == C_VERIFY_S || ns.conn == C_VERIFY_T) &&
- 		 (nc->verify_alg[0] == 0))
- 		rv = SS_NO_VERIFY_ALG;
- 
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -533,8 +533,9 @@ int acpi_device_setup_files(struct acpi_
+ 	 * If device has _STR, 'description' file is created
+ 	 */
+ 	if (acpi_has_method(dev->handle, "_STR")) {
+-		status = acpi_evaluate_object(dev->handle, "_STR",
+-					NULL, &buffer);
++		status = acpi_evaluate_object_typed(dev->handle, "_STR",
++						    NULL, &buffer,
++						    ACPI_TYPE_BUFFER);
+ 		if (ACPI_FAILURE(status))
+ 			buffer.pointer = NULL;
+ 		dev->pnp.str_obj = buffer.pointer;
 
 
 
