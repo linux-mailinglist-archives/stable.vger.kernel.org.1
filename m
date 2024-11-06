@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361889BECD6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C579BE6E3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68F621C23D71
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BEA1F28090
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282891F7078;
-	Wed,  6 Nov 2024 12:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A3F1DEFF4;
+	Wed,  6 Nov 2024 12:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9/Lasl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGHfJ/Ge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93691DFE3B;
-	Wed,  6 Nov 2024 12:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B151DF24E;
+	Wed,  6 Nov 2024 12:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897988; cv=none; b=rUeQ8ayshWoVlimCYx2uimxqxUDy20fd4K4j1cXV2fl6ujQy077Z8L+IMQMbDfN2as7QcC56QdfPCS9yG1Wn4l5gncMVA0OhPz5a2zAabd1nVfWwVktcv6RaS7DzX8BtukqQEvLG9fVAfrJ6w05sFnDVpcHDCzeaxSjQXrODGm4=
+	t=1730894892; cv=none; b=DpF5e7xHk5b4XhmABrz0I1MdrcHpbW3kArvoIInesMqiSeg2XQAE59XhSoA/YHkaGXKAFYC2f/DPRk269zCSVCPpt6pVks8/qTPvI9hXOwFos6/HkbUz3QOADKPQ0wsE+rIPLRI0taP1kq9+WnkaDe7o2Wl4V8iyAxCrIoI2t60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897988; c=relaxed/simple;
-	bh=I6miTwGcIe/uNCGpOQCF1rqlWCLzlvFGhw6LcZhBESA=;
+	s=arc-20240116; t=1730894892; c=relaxed/simple;
+	bh=1j0FbNtYGZic4dXTBRjkpMoON2cm8L1VZXjvaDjs9k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/QvzpMkgfgQvxbUl6dEzeTAC0/4QvuZKKAMt3En85upIyLRHxBehdKjKhdJ4Hndf0HbYLKBYq/hQjow1ZakGrvCPmFUWwBiwAT5A6WniatwxvO0UupZlH2JyGbpLtKP+oAGcd/A+J68Lc86F4fRJ08DGmokKvb8PAX5oqDxZFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9/Lasl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05459C4CECD;
-	Wed,  6 Nov 2024 12:59:47 +0000 (UTC)
+	 MIME-Version; b=pumOzF2mqfk5L2qKQxfUNubP18+vzumLv7xEkRPKZNSGosX4JnYY5VXoqK8upG0xL4VZwU4g9nAt1/oa6uM7ManWt5Vwtmwk/pXoZbVCrUmREE5tp6DMJuWWc+Z2p0TSZ57a04Q9+Lh7MsC6rB+FubjIxsy6gcqwTeN5F7TpIN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGHfJ/Ge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B08C4CECD;
+	Wed,  6 Nov 2024 12:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897988;
-	bh=I6miTwGcIe/uNCGpOQCF1rqlWCLzlvFGhw6LcZhBESA=;
+	s=korg; t=1730894891;
+	bh=1j0FbNtYGZic4dXTBRjkpMoON2cm8L1VZXjvaDjs9k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9/Lasl4ghmVqtM82hk+I6Bj0Lw1AyC73Jjs0i+bSmGkU/ambpantsb+kw9b3RbUU
-	 K06KQIesgHkDcxL4dOVF3VLSVdoiKQTe0Dr0OrmKBLOp7EedN9oQ9unt8hWaBbcWwV
-	 t3LYJzYQ2mKBRZIbEBjAjBriXFDkpc0n2UkoULHI=
+	b=EGHfJ/Ge0cyTlkEBDhP18Q2t9YbvTdPoFVrdomygZ3WPUTxXXpvka3to7IIDZ12Ys
+	 QaAj/lIZEnf2F1G0Sd6wod9poYzAedofZEZtq7xyeoLe7HQxfT0X0uLRy9I0QrLxW9
+	 2NAw4M96z3Zjz1oEVyvJzNXIDlkoaqFWtABb3J9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/462] drm/stm: Fix an error handling path in stm_drm_platform_probe()
+Subject: [PATCH 4.19 034/350] wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()
 Date: Wed,  6 Nov 2024 12:59:22 +0100
-Message-ID: <20241106120333.213766832@linuxfoundation.org>
+Message-ID: <20241106120321.724391616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit ce7c90bfda2656418c69ba0dd8f8a7536b8928d4 ]
+[ Upstream commit 9d301de12da6e1bb069a9835c38359b8e8135121 ]
 
-If drm_dev_register() fails, a call to drv_load() must be undone, as
-already done in the remove function.
+Since '__dev_queue_xmit()' should be called with interrupts enabled,
+the following backtrace:
 
-Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20fff7f853f20a48a96db8ff186124470ec4d976.1704560028.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+ieee80211_do_stop()
+ ...
+ spin_lock_irqsave(&local->queue_stop_reason_lock, flags)
+ ...
+ ieee80211_free_txskb()
+  ieee80211_report_used_skb()
+   ieee80211_report_ack_skb()
+    cfg80211_mgmt_tx_status_ext()
+     nl80211_frame_tx_status()
+      genlmsg_multicast_netns()
+       genlmsg_multicast_netns_filtered()
+        nlmsg_multicast_filtered()
+	 netlink_broadcast_filtered()
+	  do_one_broadcast()
+	   netlink_broadcast_deliver()
+	    __netlink_sendskb()
+	     netlink_deliver_tap()
+	      __netlink_deliver_tap_skb()
+	       dev_queue_xmit()
+	        __dev_queue_xmit() ; with IRQS disabled
+ ...
+ spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags)
+
+issues the warning (as reported by syzbot reproducer):
+
+WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120
+
+Fix this by implementing a two-phase skb reclamation in
+'ieee80211_do_stop()', where actual work is performed
+outside of a section with interrupts disabled.
+
+Fixes: 5061b0c2b906 ("mac80211: cooperate more with network namespaces")
+Reported-by: syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240906123151.351647-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/iface.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
-index 5a9f9aca8bc24..c7203fd7c85ec 100644
---- a/drivers/gpu/drm/stm/drv.c
-+++ b/drivers/gpu/drm/stm/drv.c
-@@ -208,12 +208,14 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 358028a09ce4d..433083cc15331 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -798,6 +798,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	unsigned long flags;
++	struct sk_buff_head freeq;
+ 	struct sk_buff *skb, *tmp;
+ 	u32 hw_reconf_flags = 0;
+ 	int i, flushed;
+@@ -996,18 +997,32 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata,
+ 		skb_queue_purge(&sdata->skb_queue);
+ 	}
  
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto err_put;
-+		goto err_unload;
++	/*
++	 * Since ieee80211_free_txskb() may issue __dev_queue_xmit()
++	 * which should be called with interrupts enabled, reclamation
++	 * is done in two phases:
++	 */
++	__skb_queue_head_init(&freeq);
++
++	/* unlink from local queues... */
+ 	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+ 	for (i = 0; i < IEEE80211_MAX_QUEUES; i++) {
+ 		skb_queue_walk_safe(&local->pending[i], skb, tmp) {
+ 			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 			if (info->control.vif == &sdata->vif) {
+ 				__skb_unlink(skb, &local->pending[i]);
+-				ieee80211_free_txskb(&local->hw, skb);
++				__skb_queue_tail(&freeq, skb);
+ 			}
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
  
- 	drm_fbdev_generic_setup(ddev, 16);
- 
- 	return 0;
- 
-+err_unload:
-+	drv_unload(ddev);
- err_put:
- 	drm_dev_put(ddev);
++	/* ... and perform actual reclamation with interrupts enabled. */
++	skb_queue_walk_safe(&freeq, skb, tmp) {
++		__skb_unlink(skb, &freeq);
++		ieee80211_free_txskb(&local->hw, skb);
++	}
++
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		ieee80211_txq_remove_vlan(local, sdata);
  
 -- 
 2.43.0
