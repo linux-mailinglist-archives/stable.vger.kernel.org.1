@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385BD9BEA58
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8378D9BEC01
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB5E01F246A0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4898D2823BE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14811F8909;
-	Wed,  6 Nov 2024 12:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECD11FAC2B;
+	Wed,  6 Nov 2024 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtmSWc8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSJGxd42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBE21E3786;
-	Wed,  6 Nov 2024 12:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D59B1DE3B5;
+	Wed,  6 Nov 2024 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896684; cv=none; b=DUj/jxGA2rpU0b0pdl4yoPd2aFSqVrf6ranSj9e8xhIq7Qs5375dO4pNEh5ReFc06lMVk1ksnESMkiLy+P7hyc0HurzS70MP5MbbpVcT5axlENH62VQ1XmhjO/RWg0SRFpkRNYeqBquoHVRinE/aszJ0zezuf2X2zGvfa88rXS4=
+	t=1730897450; cv=none; b=WLHtpbMWoZ7/YB2L4LtWOPZflOu3iGsuipyyzRjsF9BsMGPN09MltpRiFl0LVX3guFJnpDo4lXD+wDpGgCjtIo4ykEOjnYicDjsFPHc4qzly8sEANHv5HKLFjscvebwAoG4RXelWG5DwXjQIo0COje2QO/3nR6dORxgULMVYA8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896684; c=relaxed/simple;
-	bh=nLGuUCja0+7EUQaxM7/I0+dwwEIru5pQ9obFYdqJIP4=;
+	s=arc-20240116; t=1730897450; c=relaxed/simple;
+	bh=YLAZ416mAebthCPIolGLvYWrXc9mhQzz0QG6cE5YONw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBzJERpjX82reUIhhpuRBpngL8hjHNg9WHI95kxgaqnYYOg3H5KHcOHbV2Y5dlBOXRdaAer1eDHu1s+4bUuB8qpk2vVmdXoWAkJ8FUTYgsDQ+CIGpexjJP1e5yepQZ5cXh/IyWEKLFWmN07djkI/Fd+keCbNY3P5DFQO4SP0R7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtmSWc8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3117AC4CED4;
-	Wed,  6 Nov 2024 12:38:04 +0000 (UTC)
+	 MIME-Version; b=n1Om1GhDdgW46lP2fNLS90+KQb2liMASMzxOLrDPmpxXfWOhU+Ik5nWA0lirlE6zu/75Y1p51hEYkHqHonh7OWgC8UZ5a9vlVfW6L/ZHwWqamyrLt37dWaeUjpxnvGrSKdck5uENnei2xyZ5ALNxFaoz4aPadwCqi7LR9yf+Fdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSJGxd42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C1CC4CECD;
+	Wed,  6 Nov 2024 12:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896684;
-	bh=nLGuUCja0+7EUQaxM7/I0+dwwEIru5pQ9obFYdqJIP4=;
+	s=korg; t=1730897450;
+	bh=YLAZ416mAebthCPIolGLvYWrXc9mhQzz0QG6cE5YONw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtmSWc8waLk0uF7y2+cfH6lWOSCPqqTumD5dBsCBwG44yir71tHo/pzmdqWsUCwpn
-	 oUkoFwTlL5OEFGyacmmyPtCeqgV27DNlpR7QivUGJXULw7gDSq/wxv4UJnLou/b4aX
-	 qbSsm3vjbCVecIQHpYfrJoaY+q2b/Tmv6HNFjKIk=
+	b=VSJGxd42Gh08GETUigXmEFxvwLHHHGJ3YTk/cWrYg9OYXQCXicNlX4HbfsQJdW7IA
+	 Cq/VNjtBh2rnVz8dm2bDKYXLTV0jcWEcr2LDM/j0ksc1wrJudh1ZX/0FcLHsgxeSss
+	 WpIL2PC9NuEhy+nX0TfNEcjk6uPVuv3KpSG8zXyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atlas Yu <atlas.yu@canonical.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/110] r8169: avoid unsolicited interrupts
+Subject: [PATCH 6.6 057/151] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
 Date: Wed,  6 Nov 2024 13:04:05 +0100
-Message-ID: <20241106120304.278055842@linuxfoundation.org>
+Message-ID: <20241106120310.406556585@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
+[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
 
-It was reported that after resume from suspend a PCI error is logged
-and connectivity is broken. Error message is:
-PCI error (cmd = 0x0407, status_errs = 0x0000)
-The message seems to be a red herring as none of the error bits is set,
-and the PCI command register value also is normal. Exception handling
-for a PCI error includes a chip reset what apparently brakes connectivity
-here. The interrupt status bit triggering the PCI error handling isn't
-actually used on PCIe chip versions, so it's not clear why this bit is
-set by the chip. Fix this by ignoring this bit on PCIe chip versions.
+Use non-zero subkey to skip analyzer warnings.
 
-Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
-Tested-by: Atlas Yu <atlas.yu@canonical.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index e9296d63450d8..3aa1dda3406cd 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4650,7 +4650,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
- 		return IRQ_NONE;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 28788cf6ba407..cfe9d3bf07f91 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -334,7 +334,7 @@ struct mft_inode {
  
--	if (unlikely(status & SYSErr)) {
-+	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
-+	if (unlikely(status & SYSErr &&
-+	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
- 		rtl8169_pcierr_interrupt(tp->dev);
- 		goto out;
- 	}
+ /* Nested class for ntfs_inode::ni_lock. */
+ enum ntfs_inode_mutex_lock_class {
+-	NTFS_INODE_MUTEX_DIRTY,
++	NTFS_INODE_MUTEX_DIRTY = 1,
+ 	NTFS_INODE_MUTEX_SECURITY,
+ 	NTFS_INODE_MUTEX_OBJID,
+ 	NTFS_INODE_MUTEX_REPARSE,
 -- 
 2.43.0
 
