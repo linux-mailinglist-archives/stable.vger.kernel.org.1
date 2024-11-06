@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9799F9BEB49
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F9C9BE81C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F0A1F271D4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5C528338B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C301D1F707A;
-	Wed,  6 Nov 2024 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0DD1DF74E;
+	Wed,  6 Nov 2024 12:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="st2LfaJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5DiDFsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C8E1E25F8;
-	Wed,  6 Nov 2024 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBCB1DF26B;
+	Wed,  6 Nov 2024 12:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896968; cv=none; b=liUVOSAXL9cBupFKantEFa3oA8IhvsU0LvAUoJWxwkcsiEljxk2dIOAkI/UosKC/mepzw306ii93Ku7wdXSiLNLClbMzBJyJDEgIEcC6hOAVk8imTCcsCYrnVxVtVaQN1y1lW5abXwDLUtlszv3FZXPTAApBDA5XyXP1b3yTO0k=
+	t=1730895668; cv=none; b=g5n9RIFI9pxkSgwxtKn7UAK84eZ9pxsfrGCEcPwVZNTwfRJy/Acwq3s9sgdu5GW5u3o0UT5ilY4Kzlg6d1u7BObxjGnXeAhcoutekbO7rr1OYd703OZEZQI12CUhxiGkN/1HCSN08EQ0YKpEI/hf5LA0h6AJtCYJIMFTFbBcmt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896968; c=relaxed/simple;
-	bh=HS6+UJ4aHwUjwZE9j/9tAMsV1BfBDJAbNnlSH/hvnng=;
+	s=arc-20240116; t=1730895668; c=relaxed/simple;
+	bh=za4hLLcq5kRj/fHnVm21o8n8iYDMCQcribV/yVi6KQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKcfJCtILicfG5pJ7CIvoyk1gTaTG8vmG66GYMa99JxFZilTuIO9jx6lBdWdIGsVSnt2gzHIoGV4FoOEXveVR2m/uSjvYxdoYlW4dhe6bhWhuC9jkcvsR8s/H+OuWdfz+atCRpmv4uYYrGbphmOKTypUwIufXAACLZGBR62OBbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=st2LfaJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEBDC4CED4;
-	Wed,  6 Nov 2024 12:42:47 +0000 (UTC)
+	 MIME-Version; b=Pj+vey2Vb5CGn3wtLNU7Qc1CGyC1qg1UjTtNr8FT7vFOUKnqexC2eyE80NcJCWKnrqmN6Uxfa1qHkGCoZ8TEDuJJw95GU3+xLhpVtLt5q9BVLvol0/Yk9YRJznIwQdRVHjcycajhjxWRSpObeZgBdwX7Oje6L9KGAoQBgseymxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5DiDFsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9659AC4CECD;
+	Wed,  6 Nov 2024 12:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896968;
-	bh=HS6+UJ4aHwUjwZE9j/9tAMsV1BfBDJAbNnlSH/hvnng=;
+	s=korg; t=1730895668;
+	bh=za4hLLcq5kRj/fHnVm21o8n8iYDMCQcribV/yVi6KQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=st2LfaJ9/tIdOcnytRMVzujWf686uFFhehj3YHzNAU0NWCvYDqUWj2HJOakwoS21v
-	 NrAGM72qd6DvS5+SFK225qwleeoOtnfXAoMm1VhkGY5V9vPAU3KqFe7TqJDELiCnic
-	 MmuB/iru02ovjwA+Ek2x8NGtE7t3CrMpAU3NR/UQ=
+	b=z5DiDFsHoZ/qlb1ipTEyjPRotFfmr4TceazOzatbswpEkLpeFbHbX//l2ZxB/CK/8
+	 Do8dZ/z9NFXrR+Alf87pmCuYGemXJX8tT5P+8EOC4tlBO4gxsFKqEw0T9LjbQSq0sw
+	 aZA2NoMPpnzLsE5mOtZ3604ucIzkIR6Q0nXx3OnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Jaiswal <quic_jsuraj@quicinc.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/126] net: stmmac: TSO: Fix unbalanced DMA map/unmap for non-paged SKB data
-Date: Wed,  6 Nov 2024 13:03:43 +0100
-Message-ID: <20241106120306.695722994@linuxfoundation.org>
+Subject: [PATCH 4.19 296/350] drm/msm/dsi: fix 32-bit signed integer extension in pclk_rate calculation
+Date: Wed,  6 Nov 2024 13:03:44 +0100
+Message-ID: <20241106120328.125042129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 66600fac7a984dea4ae095411f644770b2561ede ]
+[ Upstream commit 358b762400bd94db2a14a72dfcef74c7da6bd845 ]
 
-In case the non-paged data of a SKB carries protocol header and protocol
-payload to be transmitted on a certain platform that the DMA AXI address
-width is configured to 40-bit/48-bit, or the size of the non-paged data
-is bigger than TSO_MAX_BUFF_SIZE on a certain platform that the DMA AXI
-address width is configured to 32-bit, then this SKB requires at least
-two DMA transmit descriptors to serve it.
+When (mode->clock * 1000) is larger than (1<<31), int to unsigned long
+conversion will sign extend the int to 64 bits and the pclk_rate value
+will be incorrect.
 
-For example, three descriptors are allocated to split one DMA buffer
-mapped from one piece of non-paged data:
-    dma_desc[N + 0],
-    dma_desc[N + 1],
-    dma_desc[N + 2].
-Then three elements of tx_q->tx_skbuff_dma[] will be allocated to hold
-extra information to be reused in stmmac_tx_clean():
-    tx_q->tx_skbuff_dma[N + 0],
-    tx_q->tx_skbuff_dma[N + 1],
-    tx_q->tx_skbuff_dma[N + 2].
-Now we focus on tx_q->tx_skbuff_dma[entry].buf, which is the DMA buffer
-address returned by DMA mapping call. stmmac_tx_clean() will try to
-unmap the DMA buffer _ONLY_IF_ tx_q->tx_skbuff_dma[entry].buf
-is a valid buffer address.
+Fix this by making the result of the multiplication unsigned.
 
-The expected behavior that saves DMA buffer address of this non-paged
-data to tx_q->tx_skbuff_dma[entry].buf is:
-    tx_q->tx_skbuff_dma[N + 0].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = dma_map_single();
-Unfortunately, the current code misbehaves like this:
-    tx_q->tx_skbuff_dma[N + 0].buf = dma_map_single();
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = NULL;
+Note that above (1<<32) would still be broken and require more changes, but
+its unlikely anyone will need that anytime soon.
 
-On the stmmac_tx_clean() side, when dma_desc[N + 0] is closed by the
-DMA engine, tx_q->tx_skbuff_dma[N + 0].buf is a valid buffer address
-obviously, then the DMA buffer will be unmapped immediately.
-There may be a rare case that the DMA engine does not finish the
-pending dma_desc[N + 1], dma_desc[N + 2] yet. Now things will go
-horribly wrong, DMA is going to access a unmapped/unreferenced memory
-region, corrupted data will be transmited or iommu fault will be
-triggered :(
-
-In contrast, the for-loop that maps SKB fragments behaves perfectly
-as expected, and that is how the driver should do for both non-paged
-data and paged frags actually.
-
-This patch corrects DMA map/unmap sequences by fixing the array index
-for tx_q->tx_skbuff_dma[entry].buf when assigning DMA buffer address.
-
-Tested and verified on DWXGMAC CORE 3.20a
-
-Reported-by: Suraj Jaiswal <quic_jsuraj@quicinc.com>
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021061023.2162701-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c4d8cfe516dc ("drm/msm/dsi: add implementation for helper functions")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/618434/
+Link: https://lore.kernel.org/r/20241007050157.26855-2-jonathan@marek.ca
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 22 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 93630840309e7..045e57c444fd7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4183,11 +4183,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (dma_mapping_error(priv->device, des))
- 		goto dma_map_err;
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 5f4dd3659bf96..137c0ec1b5772 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -671,7 +671,7 @@ static u32 dsi_get_pclk_rate(struct msm_dsi_host *msm_host, bool is_dual_dsi)
+ 	struct drm_display_mode *mode = msm_host->mode;
+ 	u32 pclk_rate;
  
--	tx_q->tx_skbuff_dma[first_entry].buf = des;
--	tx_q->tx_skbuff_dma[first_entry].len = skb_headlen(skb);
--	tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
--	tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
--
- 	if (priv->dma_cap.addr64 <= 32) {
- 		first->des0 = cpu_to_le32(des);
+-	pclk_rate = mode->clock * 1000;
++	pclk_rate = mode->clock * 1000u;
  
-@@ -4206,6 +4201,23 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
- 
-+	/* In case two or more DMA transmit descriptors are allocated for this
-+	 * non-paged SKB data, the DMA buffer address should be saved to
-+	 * tx_q->tx_skbuff_dma[].buf corresponding to the last descriptor,
-+	 * and leave the other tx_q->tx_skbuff_dma[].buf as NULL to guarantee
-+	 * that stmmac_tx_clean() does not unmap the entire DMA buffer too early
-+	 * since the tail areas of the DMA buffer can be accessed by DMA engine
-+	 * sooner or later.
-+	 * By saving the DMA buffer address to tx_q->tx_skbuff_dma[].buf
-+	 * corresponding to the last descriptor, stmmac_tx_clean() will unmap
-+	 * this DMA buffer right after the DMA engine completely finishes the
-+	 * full buffer transmission.
-+	 */
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-+
- 	/* Prepare fragments */
- 	for (i = 0; i < nfrags; i++) {
- 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+ 	/*
+ 	 * For dual DSI mode, the current DRM mode has the complete width of the
 -- 
 2.43.0
 
