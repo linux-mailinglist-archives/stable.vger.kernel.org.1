@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAB39BEB03
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:55:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D429BE9A5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D870028135D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:55:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46BC1C23403
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD642038D8;
-	Wed,  6 Nov 2024 12:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8665E1DFE37;
+	Wed,  6 Nov 2024 12:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvRzNdC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZejQgO9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9809D203718;
-	Wed,  6 Nov 2024 12:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3671B1E00AB;
+	Wed,  6 Nov 2024 12:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896812; cv=none; b=CNHfqqJqDxpHGGYfLd9EZm71aUCQ1dYXXcHbF9njivvLc0WK7u0jV9AqlLA5PKAXwGUFsNhdso1TQTTR20aIuOyxVQZZC0LaauPaRwdH9KXlxYbkM9dlpPz8xVEhrjSKymEdR9xjlpV2Z6nELDzXJIPIchjkTXHUnnCX0oDSVPc=
+	t=1730896558; cv=none; b=B/nST8N3I66QJoF7jJyQKrXGVhLmgWmAE2HD/WdVDl3bSyMwt/dEiUqOfjhwbqLnJvpDZ1AIH4oqF8cVMNnHrPaKewTCfi0MONJxnElfrlPHjCyBI/OA1ZHuKdFVuibKUccYYtF7b6aTUvdOjPt/6p2+io6YyTjvwg/OIYq6AwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896812; c=relaxed/simple;
-	bh=vfFhaFuza0PYC8rQWNhp5BVvoHqi1fvncbDVq5AlHn8=;
+	s=arc-20240116; t=1730896558; c=relaxed/simple;
+	bh=SdQvoHtm5R4AWqwW4HLUHLiUgzKZj+2/2lls0f7VXbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCpTrPYeabPH0bOPiwGqAGC9PCWWutIvpDd9iSu1I5V9KoTWGPnZtXy+jeBqd1rePHEHCl+MV4YgkJDNNIqXN09na3eucWgnTA+jNnmCzs0KEOTXBJcCsAEVF1w8cxmj5ToI2TjIyOE/sf6feE6XKqh79WgEZueoeY2Tve+yCOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvRzNdC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6D9C4CECD;
-	Wed,  6 Nov 2024 12:40:11 +0000 (UTC)
+	 MIME-Version; b=uldREQ7X/F3hpXYyogZCFk8gHTL2p0jxCuih5KvLkXHXSn+Nb7JXr6xSohhxYa2jUCsDgrPM7olR93XSMieMuD0ez5y11a/Yxb3BMybYgPCLbh0/8GnVhJzTM/U5L4CwUMHO7BbPcvQIb0g3HJ9V4Pm21C6jBg+dDiGCEKlXJz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZejQgO9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BD6C4CECD;
+	Wed,  6 Nov 2024 12:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896812;
-	bh=vfFhaFuza0PYC8rQWNhp5BVvoHqi1fvncbDVq5AlHn8=;
+	s=korg; t=1730896558;
+	bh=SdQvoHtm5R4AWqwW4HLUHLiUgzKZj+2/2lls0f7VXbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvRzNdC20/ZcnZMOnPMVs4hIRgK+EVHvrNgcRsLMXN1+RBUkdNPdLgTkx18nXbGch
-	 y9ZxpP9fMkuqQeSNE/3sGmtfIlTzXinagYicLrD7gu4NAKyvQa3o+GN+ciWyDK3Ey8
-	 KEGeXXA4BiNppai5QnKet5FRlhKK4HrMQxE+FvTk=
+	b=ZejQgO9YCaK7qvbPn7jQN7igWYkHzYTLHtcPMM1Wz1okoBYGtdX7fhp/ZRqguMk2L
+	 qT2Omq64zvQyWo2Ehix1I7Au9N4Wq9ed4cpyAqzTiRw2TIbQNhIypNM6UcCwc7jd+W
+	 iL/rIEPKvTgDlDEWKUuRszyVogkbKJxQMD065StA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/110] firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()
-Date: Wed,  6 Nov 2024 13:04:47 +0100
-Message-ID: <20241106120305.425806299@linuxfoundation.org>
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 235/245] drm/xe/xe2hpg: Add Wa_15016589081
+Date: Wed,  6 Nov 2024 13:04:48 +0100
+Message-ID: <20241106120325.050802987@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-[ Upstream commit c83212d79be2c9886d3e6039759ecd388fd5fed1 ]
+commit da9a73b7b25eab574cb9c984fcce0b5e240bdd2c upstream.
 
-In sdei_device_freeze(), the input parameter of cpuhp_remove_state() is
-passed as 'sdei_entry_point' by mistake. Change it to 'sdei_hp_state'.
+Wa_15016589081 applies to xe2_hpg renderCS
 
-Fixes: d2c48b2387eb ("firmware: arm_sdei: Fix sleep from invalid context BUG")
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20241016084740.183353-1-wangxiongfeng2@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+V2(Gustavo)
+  - rename bit macro
+
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240904101333.2049655-1-tejas.upadhyay@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+(cherry picked from commit 9db969b36b2fbca13ad4088aff725ebd5e8142f5)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_sdei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    1 +
+ drivers/gpu/drm/xe/xe_wa.c           |    4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 68e55ca7491e5..b160851c524cf 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -764,7 +764,7 @@ static int sdei_device_freeze(struct device *dev)
- 	int err;
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -102,6 +102,7 @@
  
- 	/* unregister private events */
--	cpuhp_remove_state(sdei_entry_point);
-+	cpuhp_remove_state(sdei_hp_state);
+ #define CHICKEN_RASTER_1			XE_REG_MCR(0x6204, XE_REG_OPTION_MASKED)
+ #define   DIS_SF_ROUND_NEAREST_EVEN		REG_BIT(8)
++#define   DIS_CLIP_NEGATIVE_BOUNDING_BOX	REG_BIT(6)
  
- 	err = sdei_unregister_shared();
- 	if (err)
--- 
-2.43.0
-
+ #define CHICKEN_RASTER_2			XE_REG_MCR(0x6208, XE_REG_OPTION_MASKED)
+ #define   TBIMR_FAST_CLIP			REG_BIT(5)
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -733,6 +733,10 @@ static const struct xe_rtp_entry_sr lrc_
+ 			     DIS_PARTIAL_AUTOSTRIP |
+ 			     DIS_AUTOSTRIP))
+ 	},
++	{ XE_RTP_NAME("15016589081"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
++	},
+ 
+ 	{}
+ };
 
 
 
