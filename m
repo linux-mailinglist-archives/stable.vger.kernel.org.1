@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7C79BE906
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47249BE7BB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E29C1C214C8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F591C21A44
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F29A1DF726;
-	Wed,  6 Nov 2024 12:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B841DED58;
+	Wed,  6 Nov 2024 12:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbIykjgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8YF8bx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E85C1D2784;
-	Wed,  6 Nov 2024 12:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEBA1DF254;
+	Wed,  6 Nov 2024 12:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896185; cv=none; b=jiyXMgnBp7IbUErogsUGvu7jMKHDg/Qwvw2jgdMRO0w4BViKiceKn9KZFoQthMy5DAkM4V749gU4Aw6UQxTbpJZYHa5iXhDbjZWspKhR8r4olnzsNZwXiNfwow966Oe5p2D3TWiGumMf2WiS67KZ9D+FKBTPUfJP2m3kuD5RGCY=
+	t=1730895430; cv=none; b=d06U/vB148B7fwn5wUXaM7x0TMUkHcGIQej0ed/VwFx6RQWw+QoFe2kSBh7+8Tj5ncf+PV6HHOgWusf5MLXdGwjyyhcvSyZ/gMubYr6s7Cpm/jIaUsw4zEKnEaRgmhsWxkwd5w/rDkgUuevaUrGLKAudPFoywDhXC7k8fezHt5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896185; c=relaxed/simple;
-	bh=YNDd2DxFb6VKmRRwzwJJS857J5cF3KLYWGy5/vprxl0=;
+	s=arc-20240116; t=1730895430; c=relaxed/simple;
+	bh=7zKF38gBuyE29DEL1siYIxeN5EtNrKVh8/t7nARVPwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2hRMj3rl6YqDmaJHP+eDQ2ecaLEKi/5ymZdc41O+KKVeAET7ZowS1+OE2AhBlhFBz5zzAy45gK5On8Dt9rLaFnA06rTwgcRA4Zt7j3xY5+gy6nEvewZ9Pp+vjTjkqRnYYnPRI01zj6i2cnIEQoVYPGP/5OCCJXcltsTOU85s80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbIykjgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC567C4CECD;
-	Wed,  6 Nov 2024 12:29:44 +0000 (UTC)
+	 MIME-Version; b=HbIGLUrMuxIXz7YHQQKBqNc6dSuXEwAEmYbnZFUU3QNiGB411zYcxjiRhHM2La78KdoEhkfZOa8IpHIgtsG4Y8rbSoBNsKDUQAPN1zvUXoI6SAzX+eZi/HCTvEoyrghvSjXfd/+r2QoEbSy+zyFHP3EDNbrCtgxnfZwoQnn5fDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8YF8bx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1055BC4CECD;
+	Wed,  6 Nov 2024 12:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896185;
-	bh=YNDd2DxFb6VKmRRwzwJJS857J5cF3KLYWGy5/vprxl0=;
+	s=korg; t=1730895430;
+	bh=7zKF38gBuyE29DEL1siYIxeN5EtNrKVh8/t7nARVPwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbIykjgR7xnvwIz82S5WEY8kvPvqtw9gkW+x7pwYE/o6Ly2iErIZIwx61wHc43DGv
-	 d0UdBz98VmJXr9GST5J8LRaLyLsosSS8ssVGCJGEjgp+x5yc/7TvqPtDD2a6XnFWze
-	 S/4xqTcecSqhBiL+vFr6RukfLKhS4maSJAoiOUYE=
+	b=N8YF8bx05KeSzt4KYW1Lyx1qdB6DjOrHbpSFbFFsyjbV7kgbmDTmzlM/EBeu7rYV/
+	 CnYATNU1tyQKgJozOOlV/I2e6ZrGl9j/e4EqUs/NEeTx/b++snuiLPFnY6+b1Y66Bb
+	 E09KBLgfgg71DYn5b54S4UDJ/QDBmzPmhkhVGkd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 082/245] ntfs3: Add bounds checking to mi_enum_attr()
-Date: Wed,  6 Nov 2024 13:02:15 +0100
-Message-ID: <20241106120321.222056074@linuxfoundation.org>
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 4.19 208/350] media: venus: fix use after free bug in venus_remove due to race condition
+Date: Wed,  6 Nov 2024 13:02:16 +0100
+Message-ID: <20241106120326.124322145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 556bdf27c2dd5c74a9caacbe524b943a6cd42d99 ]
+commit c5a85ed88e043474161bbfe54002c89c1cb50ee2 upstream.
 
-Added bounds checking to make sure that every attr don't stray beyond
-valid memory region.
+in venus_probe, core->work is bound with venus_sys_error_handler, which is
+used to handle error. The code use core->sys_err_done to make sync work.
+The core->work is started in venus_event_notify.
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we call venus_remove, there might be an unfished work. The possible
+sequence is as follows:
+
+CPU0                  CPU1
+
+                     |venus_sys_error_handler
+venus_remove         |
+hfi_destroy	 		 |
+venus_hfi_destroy	 |
+kfree(hdev);	     |
+                     |hfi_reinit
+					 |venus_hfi_queues_reinit
+                     |//use hdev
+
+Fix it by canceling the work in venus_remove.
+
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/record.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index 6c76503edc200..2a375247b3c09 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -223,28 +223,19 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		prev_type = 0;
- 		attr = Add2Ptr(rec, off);
- 	} else {
--		/* Check if input attr inside record. */
-+		/*
-+		 * We don't need to check previous attr here. There is
-+		 * a bounds checking in the previous round.
-+		 */
- 		off = PtrOffset(rec, attr);
--		if (off >= used)
--			return NULL;
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -348,6 +348,7 @@ static int venus_remove(struct platform_
+ 	struct device *dev = core->dev;
+ 	int ret;
  
- 		asize = le32_to_cpu(attr->size);
--		if (asize < SIZEOF_RESIDENT) {
--			/* Impossible 'cause we should not return such attribute. */
--			return NULL;
--		}
--
--		/* Overflow check. */
--		if (off + asize < off)
--			return NULL;
++	cancel_delayed_work_sync(&core->work);
+ 	ret = pm_runtime_get_sync(dev);
+ 	WARN_ON(ret < 0);
  
- 		prev_type = le32_to_cpu(attr->type);
- 		attr = Add2Ptr(attr, asize);
- 		off += asize;
- 	}
- 
--	asize = le32_to_cpu(attr->size);
--
- 	/* Can we use the first field (attr->type). */
- 	if (off + 8 > used) {
- 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
-@@ -265,6 +256,12 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 	if (t32 < prev_type)
- 		return NULL;
- 
-+	asize = le32_to_cpu(attr->size);
-+	if (asize < SIZEOF_RESIDENT) {
-+		/* Impossible 'cause we should not return such attribute. */
-+		return NULL;
-+	}
-+
- 	/* Check overflow and boundary. */
- 	if (off + asize < off || off + asize > used)
- 		return NULL;
--- 
-2.43.0
-
 
 
 
