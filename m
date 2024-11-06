@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-89996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2862A9BDC63
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F129BDC65
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DB91C21189
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731ED1C22FC0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915081DF257;
-	Wed,  6 Nov 2024 02:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D22B1DD0E1;
+	Wed,  6 Nov 2024 02:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Re+NKPPn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2uOBv1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA119049B;
-	Wed,  6 Nov 2024 02:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2CE18FC7E;
+	Wed,  6 Nov 2024 02:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859123; cv=none; b=VbTJON+0lvgy7UlWpc4JvhnkZFGeFTFFlxD/BcNqYdW9z4aaUW+2V/qhaD73S3gSBGxYoGo/y9es3SK1Xp7qGGtS8rB2CzTDpNmL1V/cvEaTjDyrZjbMlur4SXx5OLx9diqwjqNfno5gxj59B1BYtCN8fCfMdbahdHoMKwFEsK0=
+	t=1730859128; cv=none; b=EZnK4FbiTyYJvyYOhxGxYeYV5+a4QC/iEmAPFfgF1H8gqf2uGsByEuEZ41iAbRWZewkX6qIq3n70SDqaW0EKnJohFriIoEpbm2R0ukZI8U5ugoXKvwP98rvv4uIY02ry2s5oW2S2tuha43e3oLVoSc/tXGN62+cyCwvZvzHWriA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859123; c=relaxed/simple;
-	bh=s5pww47MAPQozDd3hmUkgIR6Hr/gQ7mIcYl+0/uI4GI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iNlut+iKy8rZ4q7vTYSafAbCTKhuG2s5SvCaDEoQVJo6AlUf7R+GfhLDVK9kXHkkMEoW6ov+MgOigqFl8uGwsCESFWrJXo/8FLkOka4hw54U6LpRGsrlnGG7HRpS7jOUgIPQHODmWOlKZi4XiD3c2enJ/dewd06Sxg3CLenb0o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Re+NKPPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76676C4CECF;
-	Wed,  6 Nov 2024 02:12:01 +0000 (UTC)
+	s=arc-20240116; t=1730859128; c=relaxed/simple;
+	bh=KleIl4yJ8yfZ62BodLKA6r11H/0Q0ZkqPjQZhhON9TM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OLx5QOOJdbqvY9riNwCtlflyc54UTRKcP+V+JMvh37gfnIM82QyP2LN81vC2u18TWQiNKI0js6BSKTuiHBhaAE40xkcJBMXQ5ZF7SWbN3CoEPd2nJKJYpwhEUY3egRqC4KWlBn6Nnu0nkLycfWIPy7qQ/ikhuqL3njRD3nxnWMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2uOBv1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06605C4CECF;
+	Wed,  6 Nov 2024 02:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859123;
-	bh=s5pww47MAPQozDd3hmUkgIR6Hr/gQ7mIcYl+0/uI4GI=;
+	s=k20201202; t=1730859127;
+	bh=KleIl4yJ8yfZ62BodLKA6r11H/0Q0ZkqPjQZhhON9TM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Re+NKPPnxVkQ8Sg8s8amQSLcBf+uJuStJvg83w5z26BoYEEzFF2y2W/ejIbXikUlq
-	 iXyLw7PgKI/8kfHa26udxWaWd4htAh6LeXPsGQNBsC+y/zR47i9Cra/JFcmZ1tJkCw
-	 7daCJEyHN0Xn0878mDqdHgKqVGk6Sk19xTZFDmA4NmDO9CWsVmMjo2R8/8Hvfn7Ple
-	 ad53oQEYdsOuM0ci6a5pFWjOrIYGB0gMZbARMnC6MPZKLkOE+hPrAyyz9vrduC+udi
-	 EyQSfhBGl4nQ+18EdwXPaVDXKRmRpv46DVAaRQnwdarkWcu8CK10GRUDAxElvmBE3q
-	 D6p4HlZdzJb7A==
+	b=I2uOBv1M2+zRa4lLww8g5dX6//iA6Ox/VvB9lMCGt0XoAouKXDjMwAh1m4GngYEW+
+	 T2/zkaKe+TWRUwaQ0mEB19SWmN8NRrClL4vBGwoeYMMnf40/z27mUBoiYLPvfh1M3j
+	 gBJ7LZxP31X5VvnEfZT8fYSEdY4+X92ThLq8GLG093A54hLRzaWszSpQax09YT1Swv
+	 nrhDELgQOZtcmyvDsipXbuTMDQ9s2S6DbUwtQn8U7xqMpKkrz95yRxoKfu28txJ8PG
+	 b71bZNJ0hXpYaYsVx/gLuK2kow8o0xv7iZEhYLoHtbD3uqEgMFsAvP8NrgJjJ1tmHf
+	 G4VOKKkVNIT0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	gourry@gourry.net
-Cc: Yang Shi <shy828301@gmail.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Wei Xu <weixugc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
+	alexander.usyskin@intel.com
+Cc: stable <stable@kernel.org>,
+	Rohit Agarwal <rohiagar@chromium.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "vmscan,migrate: fix page count imbalance on node stats when demoting pages" failed to apply to v5.15-stable tree
-Date: Tue,  5 Nov 2024 21:11:59 -0500
-Message-ID: <20241106021159.182619-1-sashal@kernel.org>
+Subject: FAILED: Patch "mei: use kvmalloc for read buffer" failed to apply to v5.15-stable tree
+Date: Tue,  5 Nov 2024 21:12:03 -0500
+Message-ID: <20241106021203.182660-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,73 +73,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 35e41024c4c2b02ef8207f61b9004f6956cf037b Mon Sep 17 00:00:00 2001
-From: Gregory Price <gourry@gourry.net>
-Date: Fri, 25 Oct 2024 10:17:24 -0400
-Subject: [PATCH] vmscan,migrate: fix page count imbalance on node stats when
- demoting pages
+From 4adf613e01bf99e1739f6ff3e162ad5b7d578d1a Mon Sep 17 00:00:00 2001
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+Date: Tue, 15 Oct 2024 15:31:57 +0300
+Subject: [PATCH] mei: use kvmalloc for read buffer
 
-When numa balancing is enabled with demotion, vmscan will call
-migrate_pages when shrinking LRUs.  migrate_pages will decrement the
-the node's isolated page count, leading to an imbalanced count when
-invoked from (MG)LRU code.
+Read buffer is allocated according to max message size, reported by
+the firmware and may reach 64K in systems with pxp client.
+Contiguous 64k allocation may fail under memory pressure.
+Read buffer is used as in-driver message storage and not required
+to be contiguous.
+Use kvmalloc to allow kernel to allocate non-contiguous memory.
 
-The result is dmesg output like such:
-
-$ cat /proc/sys/vm/stat_refresh
-
-[77383.088417] vmstat_refresh: nr_isolated_anon -103212
-[77383.088417] vmstat_refresh: nr_isolated_file -899642
-
-This negative value may impact compaction and reclaim throttling.
-
-The following path produces the decrement:
-
-shrink_folio_list
-  demote_folio_list
-    migrate_pages
-      migrate_pages_batch
-        migrate_folio_move
-          migrate_folio_done
-            mod_node_page_state(-ve) <- decrement
-
-This path happens for SUCCESSFUL migrations, not failures.  Typically
-callers to migrate_pages are required to handle putback/accounting for
-failures, but this is already handled in the shrink code.
-
-When accounting for migrations, instead do not decrement the count when
-the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
-is the only source of MR_DEMOTION.
-
-Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
-Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3030dc056459 ("mei: add wrapper for queuing control commands.")
+Cc: stable <stable@kernel.org>
+Reported-by: Rohit Agarwal <rohiagar@chromium.org>
+Closes: https://lore.kernel.org/all/20240813084542.2921300-1-rohiagar@chromium.org/
+Tested-by: Brian Geffon <bgeffon@google.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Acked-by: Tomas Winkler <tomasw@gmail.com>
+Link: https://lore.kernel.org/r/20241015123157.2337026-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/mei/client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 7e520562d421a..fab84a7760889 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1178,7 +1178,7 @@ static void migrate_folio_done(struct folio *src,
- 	 * not accounted to NR_ISOLATED_*. They can be recognized
- 	 * as __folio_test_movable
- 	 */
--	if (likely(!__folio_test_movable(src)))
-+	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
- 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
- 				    folio_is_file_lru(src), -folio_nr_pages(src));
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 9d090fa07516f..be011cef12e5d 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -321,7 +321,7 @@ void mei_io_cb_free(struct mei_cl_cb *cb)
+ 		return;
  
+ 	list_del(&cb->list);
+-	kfree(cb->buf.data);
++	kvfree(cb->buf.data);
+ 	kfree(cb->ext_hdr);
+ 	kfree(cb);
+ }
+@@ -497,7 +497,7 @@ struct mei_cl_cb *mei_cl_alloc_cb(struct mei_cl *cl, size_t length,
+ 	if (length == 0)
+ 		return cb;
+ 
+-	cb->buf.data = kmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
++	cb->buf.data = kvmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
+ 	if (!cb->buf.data) {
+ 		mei_io_cb_free(cb);
+ 		return NULL;
 -- 
 2.43.0
 
