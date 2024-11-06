@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-91074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99C99BEC4E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35389BEBC7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8009A1F21253
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3E2928166C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9442E1E0DB1;
-	Wed,  6 Nov 2024 12:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3871F9A96;
+	Wed,  6 Nov 2024 12:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0Yce1zH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAhui8Fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512E91DF738;
-	Wed,  6 Nov 2024 12:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177961EF08E;
+	Wed,  6 Nov 2024 12:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897664; cv=none; b=fh/9Sh+jhW9oZPJhXevxMbuVlc+1uOUOq/9xn3TyERP1yDU/TEbxMjJuhYvauDmuzxG1ysBBUEjyIyA28HHuI2fsnFaJeHSwFqK8k2omqwD0HtETLBoRmwSW4S7jvyTuW6zxkDM4P9WfCD34uq5p9yD6vY524x0wl1UsshMAFVE=
+	t=1730897289; cv=none; b=EaYLo+q9J87hHFDjBPKcXeZgBtSmBEFK80uRdXpZsSw6juhuomFkLjWH3Gs1bo/fsZ5J2AtGvKbDeBg2ZOy6gjpkbxfserUsG/xzcXLZ4yxIVnJfND82wLUqVl3Qewnrvxteq89aSDxnwai7bAdgcXNpTgvNcHTFqXE0VF/BvVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897664; c=relaxed/simple;
-	bh=HCpSsB2seNVdNDMZCuiSioulxMlEQ3E+R9OJv35KNpo=;
+	s=arc-20240116; t=1730897289; c=relaxed/simple;
+	bh=FA3hKEGDHm2bQZVkqlzigMcrEB55zYHm8EKkiJsRbrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlS+GDar0begM+8fYRhL/if+PBwfyRnPJ8kf7AEVkNBSYGDiWJz6gIpJPg7kcEeaCVmwVliXe8GGno+b64sIGqvEgR7u608SwhY8pR92qty71azgXeJmTmYFqpOeWn6kZbo54/vKzZ/GyAMMBGiIcDHABAY4B9FkME0TZ5PMgKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0Yce1zH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA466C4CECD;
-	Wed,  6 Nov 2024 12:54:23 +0000 (UTC)
+	 MIME-Version; b=p6iDSXSDj4fHCqfGhSdGHRw9qIY5AlWbKgrZ5d49LRj9ZLoXkQU4XvYlpVMA2jio5GwOZzO2r+E4l7s5T9UVbb7aH0a7sOrn47upST8pua+aE3PCmb5JJk5SWRYbmEaxA5Duc4ph2HPufU5T3cCnQm3mD3iJ2YmZGANM379ReYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAhui8Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95535C4CED3;
+	Wed,  6 Nov 2024 12:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897664;
-	bh=HCpSsB2seNVdNDMZCuiSioulxMlEQ3E+R9OJv35KNpo=;
+	s=korg; t=1730897289;
+	bh=FA3hKEGDHm2bQZVkqlzigMcrEB55zYHm8EKkiJsRbrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0Yce1zHfGBn/jAJuiBiBxQ/MgCz93dyfbFnAlCgLJ+4I6WUYx5Hka5BxVTG9t+ef
-	 z1+OP1IMT5Zz4ZkUUTITNU4+LqMTwRInoRU2V7MfuJQasExb1JH/TZFPc/dOMz6DgD
-	 NkP6YFPWIuaGtbiwVSNv1Uy5nU/MpDcrKbSNYzXw=
+	b=IAhui8Fkl26UC8inedAXXn3gFJG/x2dLB4q2lXTYy3ToNhuiCswxA+mjjtmQzF3dx
+	 ZVVFyQEJICIT+O8d2e9IqRfAGXonUT/iiO4GpAuWtQ4pu5qdulO1u7C4MywFJmF5/w
+	 3jhVyWJ3eyxC/K9WlkCVtMJqLBuCJC4rt6QZr7j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dung Cao <dung@os.amperecomputing.com>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/151] mctp i2c: handle NULL header address
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 117/126] nilfs2: fix kernel bug due to missing clearing of checked flag
 Date: Wed,  6 Nov 2024 13:05:18 +0100
-Message-ID: <20241106120312.440467592@linuxfoundation.org>
+Message-ID: <20241106120309.220148767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 01e215975fd80af81b5b79f009d49ddd35976c13 ]
+commit 41e192ad2779cae0102879612dfe46726e4396aa upstream.
 
-daddr can be NULL if there is no neighbour table entry present,
-in that case the tx packet should be dropped.
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-saddr will usually be set by MCTP core, but check for NULL in case a
-packet is transmitted by a different protocol.
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
 
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Cc: stable@vger.kernel.org
-Reported-by: Dung Cao <dung@os.amperecomputing.com>
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
+
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/page.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index b37a9e4bade4a..20b8d7d528baf 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -547,6 +547,9 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
- 	if (len > MCTP_I2C_MAXMTU)
- 		return -EMSGSIZE;
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -404,6 +404,7 @@ void nilfs_clear_dirty_page(struct page
  
-+	if (!daddr || !saddr)
-+		return -EINVAL;
-+
- 	lldst = *((u8 *)daddr);
- 	llsrc = *((u8 *)saddr);
+ 	ClearPageUptodate(page);
+ 	ClearPageMappedToDisk(page);
++	ClearPageChecked(page);
  
--- 
-2.43.0
-
+ 	if (page_has_buffers(page)) {
+ 		struct buffer_head *bh, *head;
 
 
 
