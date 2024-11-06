@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F259BEA19
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:40:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FF99BEB4F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2771C23611
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:40:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88056283E30
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5151F5831;
-	Wed,  6 Nov 2024 12:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744931F7541;
+	Wed,  6 Nov 2024 12:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGSttAfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLAFDXT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5037A1F4FC1;
-	Wed,  6 Nov 2024 12:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC491F709C;
+	Wed,  6 Nov 2024 12:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896640; cv=none; b=LyI82NtJPQnZhhp5bPHGB+9u3z6fixNQqBEKa/TLnKsJI4dR58NZjV8XLp7P9ey9O+ygWFDB2c0f14qUNxPmthIN813AumKop0XHExDPtZ35j02l/qd7r31KnRrZc4T+WmqrTNrB07KxY5cDCtew8fJ1TgZ9oA0NEqciKew/W1Q=
+	t=1730896989; cv=none; b=aCD6zinZzGALviHjgoc10sDVYosT3GETLDV/jEy4NwXubCKL57mCOurnbyjvrfwgVHqjWfJYH5Oik7lTquwJldF0DikjUrNRe37L82PRb3Fycpz6SOdmnumIZZB4Yzo5O2KfxqZSHsNcHGdpHSftB5GvYhIAd/7hwSUbG3ZJLBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896640; c=relaxed/simple;
-	bh=VucHVD9rMEvQG0+MSBVQcc3i0BNyUvOktS67JdgMe5M=;
+	s=arc-20240116; t=1730896989; c=relaxed/simple;
+	bh=bJhsPZ9xVKC3PWn7ERqBXUteyaW9U7KAgBZwfMn528U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ial3aQmTRKRRggxhr6eyk5KuGZMwMCMstvWDFw26GZSHHblIpTXi0vDyO3F3XcMuXQPxROtFEDVyFhmzFaH+qUIUAcjJy8jUSXLkuFOxzWWbswn3V5U9bhfAKuDMY+T6pZLr62Pl8Jd8zGokmo6NDSJkiGywQrU7NvZMobPbHLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGSttAfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731EEC4CED4;
-	Wed,  6 Nov 2024 12:37:19 +0000 (UTC)
+	 MIME-Version; b=pFGbtan4L9GQ2bfibaS8x85DlEq4BsK0+Sm82EHSv0AEYF4kYCLTNS7WbRKS48lZBmtMHVoFYI/rO9KhVpkGRNb9KjpjBMHQTqSHoNNAXdRrSPNxG3QodjjA4/vh/lhQUTsWzVvvNSerxRQwxIEpYLlcCAL8Qxvsi4fy4dOH95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLAFDXT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F92C4CECD;
+	Wed,  6 Nov 2024 12:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896639;
-	bh=VucHVD9rMEvQG0+MSBVQcc3i0BNyUvOktS67JdgMe5M=;
+	s=korg; t=1730896989;
+	bh=bJhsPZ9xVKC3PWn7ERqBXUteyaW9U7KAgBZwfMn528U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGSttAfDGx/e3HqY3ILzXJbdfhgKzipY5jOpXtJD4O8Ib1R3qwVacjioPn0oSJDX2
-	 O2ut47OAExFYPvNrh3Mtty3/gtwE/xQz5114hpJkivsltFmOLjL4hghemy+HXAL28H
-	 rNQA1NwhjuN7IptZVADZt6CmexTTvVhZxZ240xkM=
+	b=KLAFDXT80UTlNMzEC0UXqiLVu4T/B+hC3OCvCisIaIFbryt+qi3LfFRrZJrh5Hbti
+	 8VDZFl4Ima9PnCFGg+yaUyu5R4yrwW+3MA7aL9ZqBIu6VLtqAt46CairD2mdjWLGA6
+	 dyUDc9LdQgTW4atjx/8ZNMLQy7O+GUWw2KAHnB0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/110] KVM: s390: gaccess: Cleanup access to guest pages
-Date: Wed,  6 Nov 2024 13:03:49 +0100
-Message-ID: <20241106120303.804178738@linuxfoundation.org>
+Subject: [PATCH 6.1 029/126] netfilter: Fix use-after-free in get_info()
+Date: Wed,  6 Nov 2024 13:03:50 +0100
+Message-ID: <20241106120306.891148130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit bad13799e0305deb258372b7298a86be4c78aaba ]
+[ Upstream commit f48d258f0ac540f00fa617dac496c4c18b5dc2fa ]
 
-Introduce a helper function for guest frame access.
+ip6table_nat module unload has refcnt warning for UAF. call trace is:
 
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-4-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+WARNING: CPU: 1 PID: 379 at kernel/module/main.c:853 module_put+0x6f/0x80
+Modules linked in: ip6table_nat(-)
+CPU: 1 UID: 0 PID: 379 Comm: ip6tables Not tainted 6.12.0-rc4-00047-gc2ee9f594da8-dirty #205
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:module_put+0x6f/0x80
+Call Trace:
+ <TASK>
+ get_info+0x128/0x180
+ do_ip6t_get_ctl+0x6a/0x430
+ nf_getsockopt+0x46/0x80
+ ipv6_getsockopt+0xb9/0x100
+ rawv6_getsockopt+0x42/0x190
+ do_sock_getsockopt+0xaa/0x180
+ __sys_getsockopt+0x70/0xc0
+ __x64_sys_getsockopt+0x20/0x30
+ do_syscall_64+0xa2/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Concurrent execution of module unload and get_info() trigered the warning.
+The root cause is as follows:
+
+cpu0				      cpu1
+module_exit
+//mod->state = MODULE_STATE_GOING
+  ip6table_nat_exit
+    xt_unregister_template
+	kfree(t)
+	//removed from templ_list
+				      getinfo()
+					  t = xt_find_table_lock
+						list_for_each_entry(tmpl, &xt_templates[af]...)
+							if (strcmp(tmpl->name, name))
+								continue;  //table not found
+							try_module_get
+						list_for_each_entry(t, &xt_net->tables[af]...)
+							return t;  //not get refcnt
+					  module_put(t->me) //uaf
+    unregister_pernet_subsys
+    //remove table from xt_net list
+
+While xt_table module was going away and has been removed from
+xt_templates list, we couldnt get refcnt of xt_table->me. Check
+module in xt_net->tables list re-traversal to fix it.
+
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ net/netfilter/x_tables.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 9b9bfc333e62d..164f96ba61dd2 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -866,6 +866,20 @@ static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
- 	return 0;
- }
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index 470282cf3fae6..e8cc8eef0ab65 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1268,7 +1268,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
  
-+static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
-+			     void *data, unsigned int len)
-+{
-+	const unsigned int offset = offset_in_page(gpa);
-+	const gfn_t gfn = gpa_to_gfn(gpa);
-+	int rc;
-+
-+	if (mode == GACC_STORE)
-+		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
-+	else
-+		rc = kvm_read_guest_page(kvm, gfn, data, offset, len);
-+	return rc;
-+}
-+
- int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
-@@ -896,10 +910,7 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
--		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
--		else
--			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpas[idx], data, fragment_len);
- 		len -= fragment_len;
- 		data += fragment_len;
- 	}
-@@ -920,10 +931,7 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 	while (len && !rc) {
- 		gpa = kvm_s390_real_to_abs(vcpu, gra);
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
--		if (mode)
--			rc = write_guest_abs(vcpu, gpa, data, fragment_len);
--		else
--			rc = read_guest_abs(vcpu, gpa, data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpa, data, fragment_len);
- 		len -= fragment_len;
- 		gra += fragment_len;
- 		data += fragment_len;
+ 	/* and once again: */
+ 	list_for_each_entry(t, &xt_net->tables[af], list)
+-		if (strcmp(t->name, name) == 0)
++		if (strcmp(t->name, name) == 0 && owner == t->me)
+ 			return t;
+ 
+ 	module_put(owner);
 -- 
 2.43.0
 
