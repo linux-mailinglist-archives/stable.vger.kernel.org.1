@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-90909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F24E9BEB9B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3909BEC33
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E39285002
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F221D285754
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414201F892E;
-	Wed,  6 Nov 2024 12:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99DC1F4296;
+	Wed,  6 Nov 2024 12:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFkzuESp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9oc66HI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BEB1EE000;
-	Wed,  6 Nov 2024 12:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A651E1322;
+	Wed,  6 Nov 2024 12:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897174; cv=none; b=mJIxhj7O0LymUMXdg3GhAnuNc48IldzAYzAJKjMaFz1wmBDouYVnKT7/V1BCColedWK12CiuCL18wQanQvL0M1zKs2FDCDilcmQk+CWacDV1oRcpAe2VOuNqOyG8w0pIZx42IZgIvRkcnfAQBdm3KNo1hTgCrbDzl0wDq4YZD5I=
+	t=1730897592; cv=none; b=DyjMzGbZ1KzvLLWEw8Ogf3rxYmO3MLshhrgu7yl3H1JCGCOTwIlzBmByURVAl/9tKD5Zp2EUpIAqMQ3u3V+35y5CYVbqM4YjP0rCBIJO9+hmDjMkPQ0CSJJRK9zab8S2YZppFv5h3vQpWzc1ijd47DK8zETK+GeqfeVBqLOsdA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897174; c=relaxed/simple;
-	bh=2NtUrv9ChmTUalaRZQl7vpGktFezvnbqoD41Q5OWFK0=;
+	s=arc-20240116; t=1730897592; c=relaxed/simple;
+	bh=I6CHDy2ARDx+FHmWLyoMnN6BQcfZkoaCmjRpzmlR12M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnu0Y2uHPAjH5t30Mn8tFIth9NCDZ/Y63gqngLzrtTBBZzC3hTdI+meltgXIVpR1PQRYk0SR/cAM10nenexj75Il4ifZYAuvES0w3ARcmYRGQTA3wIlFw9F04Z5MQfFBOGvklU3EiB/s/KDVHFzZhv+k8x4aC++753xmiI14EBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFkzuESp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76114C4CECD;
-	Wed,  6 Nov 2024 12:46:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cfgKiIpiPgefujxkfZIbV49Dtqr+vwVnx3A4tJQI6vxClIE2RmsGoCy5M1YM0GReYJhCGMqwgVVW7rFKy9IeUvZV5/J6bMKDOuvs7wZEWTXh9ag40D0CwUJUcEhdYzsHvy43AStqgiFXsgW9IHS3jrGloMp+23+ZubhDYENYjlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9oc66HI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE451C4CECD;
+	Wed,  6 Nov 2024 12:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897173;
-	bh=2NtUrv9ChmTUalaRZQl7vpGktFezvnbqoD41Q5OWFK0=;
+	s=korg; t=1730897592;
+	bh=I6CHDy2ARDx+FHmWLyoMnN6BQcfZkoaCmjRpzmlR12M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFkzuESpUkY4Y6NTcXe3Ld+cLKrD8CNO/pkX2o7T5621+EzGQVlEixGC5fLhQsBJ6
-	 1ukzsEni0nyjneUXnohhfEA73M6Zc2JxZRWQeip/uAGtD5LJna80C7at/iitDg9NlC
-	 1PHGOkKxFapGBnTWNInRAUHTKuivTtBnrBMKwysk=
+	b=v9oc66HItWzVDxDDawAflsMniKMDRsqg7ocmDezWypvtt893FQzqKhlG7entBp8jf
+	 S+MLy4e7NfqsZKswXHGBh1c3q3Iqeb309SQfZNAA6lkqh1v3OBzW39tQWPkdD54HFe
+	 qEqNmlkkV3FzFYhNt9rYVCKJMgKTCaaVvrG0gc8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mel Gorman <mgorman@techsingularity.net>,
+	Wladislav Wiebe <wladislav.kw@gmail.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	NeilBrown <neilb@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/126] mm/page_alloc: treat RT tasks similar to __GFP_HIGH
+	"Herton R. Krzesinski" <herton@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 104/151] tools/mm: -Werror fixes in page-types/slabinfo
 Date: Wed,  6 Nov 2024 13:04:52 +0100
-Message-ID: <20241106120308.530528229@linuxfoundation.org>
+Message-ID: <20241106120311.736887947@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mel Gorman <mgorman@techsingularity.net>
+From: Wladislav Wiebe <wladislav.kw@gmail.com>
 
-[ Upstream commit c988dcbecf3fd5430921eaa3fe9054754f76d185 ]
+commit ece5897e5a10fcd56a317e32f2dc7219f366a5a8 upstream.
 
-RT tasks are allowed to dip below the min reserve but ALLOC_HARDER is
-typically combined with ALLOC_MIN_RESERVE so RT tasks are a little
-unusual.  While there is some justification for allowing RT tasks access
-to memory reserves, there is a strong chance that a RT task that is also
-under memory pressure is at risk of missing deadlines anyway.  Relax how
-much reserves an RT task can access by treating it the same as __GFP_HIGH
-allocations.
+Commit e6d2c436ff693 ("tools/mm: allow users to provide additional
+cflags/ldflags") passes now CFLAGS to Makefile.  With this, build systems
+with default -Werror enabled found:
 
-Note that in a future kernel release that the RT special casing will be
-removed.  Hard realtime tasks should be locking down resources in advance
-and ensuring enough memory is available.  Even a soft-realtime task like
-audio or video live decoding which cannot jitter should be allocating both
-memory and any disk space required up-front before the recording starts
-instead of relying on reserves.  At best, reserve access will only delay
-the problem by a very short interval.
+slabinfo.c:1300:25: error: ignoring return value of 'chdir'
+declared with attribute 'warn_unused_result' [-Werror=unused-result]
+                         chdir("..");
+                         ^~~~~~~~~~~
+page-types.c:397:35: error: format '%lu' expects argument of type
+'long unsigned int', but argument 2 has type 'uint64_t'
+{aka 'long long unsigned int'} [-Werror=format=]
+                         printf("%lu\t", mapcnt0);
+                                 ~~^     ~~~~~~~
+..
 
-Link: https://lkml.kernel.org/r/20230113111217.14134-3-mgorman@techsingularity.net
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: NeilBrown <neilb@suse.de>
-Cc: Thierry Reding <thierry.reding@gmail.com>
+Fix page-types by using PRIu64 for uint64_t prints and check in slabinfo
+for return code on chdir("..").
+
+Link: https://lkml.kernel.org/r/c1ceb507-94bc-461c-934d-c19b77edd825@gmail.com
+Fixes: e6d2c436ff69 ("tools/mm: allow users to provide additional cflags/ldflags")
+Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Herton R. Krzesinski <herton@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/mm/page-types.c |    9 +++++----
+ tools/mm/slabinfo.c   |    4 +++-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index f5b870780d3fd..e78ab23eb1743 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4854,7 +4854,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask)
- 		 */
- 		alloc_flags &= ~ALLOC_CPUSET;
- 	} else if (unlikely(rt_task(current)) && in_task())
--		alloc_flags |= ALLOC_HARDER;
-+		alloc_flags |= ALLOC_MIN_RESERVE;
+--- a/tools/mm/page-types.c
++++ b/tools/mm/page-types.c
+@@ -22,6 +22,7 @@
+ #include <time.h>
+ #include <setjmp.h>
+ #include <signal.h>
++#include <inttypes.h>
+ #include <sys/types.h>
+ #include <sys/errno.h>
+ #include <sys/fcntl.h>
+@@ -392,9 +393,9 @@ static void show_page_range(unsigned lon
+ 		if (opt_file)
+ 			printf("%lx\t", voff);
+ 		if (opt_list_cgroup)
+-			printf("@%llu\t", (unsigned long long)cgroup0);
++			printf("@%" PRIu64 "\t", cgroup0);
+ 		if (opt_list_mapcnt)
+-			printf("%lu\t", mapcnt0);
++			printf("%" PRIu64 "\t", mapcnt0);
+ 		printf("%lx\t%lx\t%s\n",
+ 				index, count, page_flag_name(flags0));
+ 	}
+@@ -420,9 +421,9 @@ static void show_page(unsigned long voff
+ 	if (opt_file)
+ 		printf("%lx\t", voffset);
+ 	if (opt_list_cgroup)
+-		printf("@%llu\t", (unsigned long long)cgroup);
++		printf("@%" PRIu64 "\t", cgroup)
+ 	if (opt_list_mapcnt)
+-		printf("%lu\t", mapcnt);
++		printf("%" PRIu64 "\t", mapcnt);
  
- 	alloc_flags = gfp_to_alloc_flags_cma(gfp_mask, alloc_flags);
- 
--- 
-2.43.0
-
+ 	printf("%lx\t%s\n", offset, page_flag_name(flags));
+ }
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -1297,7 +1297,9 @@ static void read_slab_dir(void)
+ 			slab->cpu_partial_free = get_obj("cpu_partial_free");
+ 			slab->alloc_node_mismatch = get_obj("alloc_node_mismatch");
+ 			slab->deactivate_bypass = get_obj("deactivate_bypass");
+-			chdir("..");
++			if (chdir(".."))
++				fatal("Unable to chdir from slab ../%s\n",
++				      slab->name);
+ 			if (slab->name[0] == ':')
+ 				alias_targets++;
+ 			slab++;
 
 
 
