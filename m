@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CEDB9BE878
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA4B9BE99E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9354BB2491D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A232811B1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FE21E0491;
-	Wed,  6 Nov 2024 12:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6761DFD9D;
+	Wed,  6 Nov 2024 12:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Azrmhwvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgeXJ4zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91831DFD84;
-	Wed,  6 Nov 2024 12:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B751DFE27;
+	Wed,  6 Nov 2024 12:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895856; cv=none; b=TeJlBxtjN+RC2izlKWqrUNgbkF6LZMSly3c77gF/tPsgXYpI6eAm8WbDpWKIewRa775sNgSS0taIifdyHdEaHZbf4q2SapgR/ZeSn8X+KerTxp8yTzyEJH5FLwcUgbhCHpxwkrndNLlA9ssZpo+KEu+x3hMeJya6yJ+FxmuMWaE=
+	t=1730896537; cv=none; b=m5W5cLJzxLuqLYlKVAu138j36uvEpkJzI8TJ9/SP8Nj/C0td0Bhs4enjq7IHjgVHdLuxdgNJjLNXa3vsqkS8tsEkKYuWK02srlxMqwITMmcKX/WbwE2uiSzuVmSRiK2v7XKQ7mZusOEKVX1AHy4tzyQf59QIKnfHjxvnJaDbIkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895856; c=relaxed/simple;
-	bh=l/dwoTyEOKCG+1nReCHGo7vz71m9aC6+lii934tBczU=;
+	s=arc-20240116; t=1730896537; c=relaxed/simple;
+	bh=VUqj7FqhSFCJshF03GbNyvrsEdQOhkq6VB2dcBIF6KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUxS5GYSidkomRtm5pCrb4LrP/TIKVJi0437pGiEDUsWUJw2nLu/ZT624oCbkHFk1Y6tdWrFRPYaAxo5bzObwZdmiw5FthzVzlo97Zzc3IfGoKRl5bNRWM8+/0m+R4WbQ2kbpEaAYM6felJjPFpIG1DikqwW76xnCWVNI0gGBOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Azrmhwvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50341C4CECD;
-	Wed,  6 Nov 2024 12:24:16 +0000 (UTC)
+	 MIME-Version; b=CPsLLnC2y41z4CGDPQi1FHubDyBIs6RIBkHE2xmTv/YqN/ENnJf8D8uNjj5sbWuLMrxW79YXqv4ul26xHEHxHGyV5fpUthbZzm+n+qUfyed9hqrGBU+bhc7LvE22mafkdHJOFkcI74m6ssKvzKs4WJhpcdCZv6VcxHI6r3HWRnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgeXJ4zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8394C4CED6;
+	Wed,  6 Nov 2024 12:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895856;
-	bh=l/dwoTyEOKCG+1nReCHGo7vz71m9aC6+lii934tBczU=;
+	s=korg; t=1730896537;
+	bh=VUqj7FqhSFCJshF03GbNyvrsEdQOhkq6VB2dcBIF6KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzrmhwvoYk6g66YNBK+M/ArISNbLuZLFvBPyb/5RsD/j+Hm5qDGCO9YMKwkOMmvt2
-	 r074MlT47YhZuJQGHPBHDSumwiBXcI4f+iHZR5v6+VhRebhHxD4N68EyRHNjgbFJ8z
-	 LjM7pQA1YLQCpTIQRYnfqf5+U7G0GPubBdTt/1pA=
+	b=IgeXJ4zkAsdtoqlL/HwXCBNBmsG7wiBTpB11vFneIuMNEpiZ2UR35kkHa4QJMmGVx
+	 FiJa7F6zT88moa0HVHtFwLzhISxH+OMM9t0It+eAD9khUHnuf6k/DYh9atUiYKkFvD
+	 zl/YiUFZyOxjMBLNNodDZFq0XlaKUIih1QJuMonI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Chen <chenyu56@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Felipe Balbi <balbi@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 324/350] usb: dwc3: Add splitdisable quirk for Hisilicon Kirin Soc
+Subject: [PATCH 6.11 199/245] btrfs: fix defrag not merging contiguous extents due to merged extent maps
 Date: Wed,  6 Nov 2024 13:04:12 +0100
-Message-ID: <20241106120328.742650434@linuxfoundation.org>
+Message-ID: <20241106120324.142570495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Chen <chenyu56@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f580170f135af14e287560d94045624d4242d712 ]
+[ Upstream commit 77b0d113eec49a7390ff1a08ca1923e89f5f86c6 ]
 
-SPLIT_BOUNDARY_DISABLE should be set for DesignWare USB3 DRD Core
-of Hisilicon Kirin Soc when dwc3 core act as host.
+When running defrag (manual defrag) against a file that has extents that
+are contiguous and we already have the respective extent maps loaded and
+merged, we end up not defragging the range covered by those contiguous
+extents. This happens when we have an extent map that was the result of
+merging multiple extent maps for contiguous extents and the length of the
+merged extent map is greater than or equals to the defrag threshold
+length.
 
-[mchehab: dropped a dev_dbg() as only traces are now allowwed on this driver]
+The script below reproduces this scenario:
 
-Signed-off-by: Yu Chen <chenyu56@huawei.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Felipe Balbi <balbi@kernel.org>
-Stable-dep-of: 0d410e8913f5 ("usb: dwc3: core: Stop processing of pending events if controller is halted")
+   $ cat test.sh
+   #!/bin/bash
+
+   DEV=/dev/sdi
+   MNT=/mnt/sdi
+
+   mkfs.btrfs -f $DEV
+   mount $DEV $MNT
+
+   # Create a 256K file with 4 extents of 64K each.
+   xfs_io -f -c "falloc 0 64K" \
+             -c "pwrite 0 64K" \
+             -c "falloc 64K 64K" \
+             -c "pwrite 64K 64K" \
+             -c "falloc 128K 64K" \
+             -c "pwrite 128K 64K" \
+             -c "falloc 192K 64K" \
+             -c "pwrite 192K 64K" \
+             $MNT/foo
+
+   umount $MNT
+   echo -n "Initial number of file extent items: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+   mount $DEV $MNT
+   # Read the whole file in order to load and merge extent maps.
+   cat $MNT/foo > /dev/null
+
+   btrfs filesystem defragment -t 128K $MNT/foo
+   umount $MNT
+   echo -n "Number of file extent items after defrag with 128K threshold: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+   mount $DEV $MNT
+   # Read the whole file in order to load and merge extent maps.
+   cat $MNT/foo > /dev/null
+
+   btrfs filesystem defragment -t 256K $MNT/foo
+   umount $MNT
+   echo -n "Number of file extent items after defrag with 256K threshold: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+Running it:
+
+   $ ./test.sh
+   Initial number of file extent items: 4
+   Number of file extent items after defrag with 128K threshold: 4
+   Number of file extent items after defrag with 256K threshold: 4
+
+The 4 extents don't get merged because we have an extent map with a size
+of 256K that is the result of merging the individual extent maps for each
+of the four 64K extents and at defrag_lookup_extent() we have a value of
+zero for the generation threshold ('newer_than' argument) since this is a
+manual defrag. As a consequence we don't call defrag_get_extent() to get
+an extent map representing a single file extent item in the inode's
+subvolume tree, so we end up using the merged extent map at
+defrag_collect_targets() and decide not to defrag.
+
+Fix this by updating defrag_lookup_extent() to always discard extent maps
+that were merged and call defrag_get_extent() regardless of the minimum
+generation threshold ('newer_than' argument).
+
+A test case for fstests will be sent along soon.
+
+CC: stable@vger.kernel.org # 6.1+
+Fixes: 199257a78bb0 ("btrfs: defrag: don't use merged extent map for their generation check")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 25 +++++++++++++++++++++++++
- drivers/usb/dwc3/core.h |  7 +++++++
- 2 files changed, 32 insertions(+)
+ fs/btrfs/defrag.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 259eeb2f6ad53..f50b8bf22356b 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -116,6 +116,7 @@ static void __dwc3_set_mode(struct work_struct *work)
- 	struct dwc3 *dwc = work_to_dwc(work);
- 	unsigned long flags;
- 	int ret;
-+	u32 reg;
- 
- 	if (dwc->dr_mode != USB_DR_MODE_OTG)
- 		return;
-@@ -167,6 +168,11 @@ static void __dwc3_set_mode(struct work_struct *work)
- 				otg_set_vbus(dwc->usb2_phy->otg, true);
- 			phy_set_mode(dwc->usb2_generic_phy, PHY_MODE_USB_HOST);
- 			phy_set_mode(dwc->usb3_generic_phy, PHY_MODE_USB_HOST);
-+			if (dwc->dis_split_quirk) {
-+				reg = dwc3_readl(dwc->regs, DWC3_GUCTL3);
-+				reg |= DWC3_GUCTL3_SPLITDISABLE;
-+				dwc3_writel(dwc->regs, DWC3_GUCTL3, reg);
-+			}
- 		}
- 		break;
- 	case DWC3_GCTL_PRTCAP_DEVICE:
-@@ -1314,6 +1320,9 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	dwc->dis_metastability_quirk = device_property_read_bool(dev,
- 				"snps,dis_metastability_quirk");
- 
-+	dwc->dis_split_quirk = device_property_read_bool(dev,
-+				"snps,dis-split-quirk");
-+
- 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
- 	dwc->tx_de_emphasis = tx_de_emphasis;
- 
-@@ -1850,10 +1859,26 @@ static int dwc3_resume(struct device *dev)
- 
- 	return 0;
- }
-+
-+static void dwc3_complete(struct device *dev)
-+{
-+	struct dwc3	*dwc = dev_get_drvdata(dev);
-+	u32		reg;
-+
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST &&
-+			dwc->dis_split_quirk) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUCTL3);
-+		reg |= DWC3_GUCTL3_SPLITDISABLE;
-+		dwc3_writel(dwc->regs, DWC3_GUCTL3, reg);
-+	}
-+}
-+#else
-+#define dwc3_complete NULL
- #endif /* CONFIG_PM_SLEEP */
- 
- static const struct dev_pm_ops dwc3_dev_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
-+	.complete = dwc3_complete,
- 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
- 			dwc3_runtime_idle)
- };
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index a1d65e36a4d41..7f8804e9e74c3 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -135,6 +135,7 @@
- #define DWC3_GEVNTCOUNT(n)	(0xc40c + ((n) * 0x10))
- 
- #define DWC3_GHWPARAMS8		0xc600
-+#define DWC3_GUCTL3		0xc60c
- #define DWC3_GFLADJ		0xc630
- 
- /* Device Registers */
-@@ -362,6 +363,9 @@
- /* Global User Control Register 2 */
- #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
- 
-+/* Global User Control Register 3 */
-+#define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
-+
- /* Device Configuration Register */
- #define DWC3_DCFG_DEVADDR(addr)	((addr) << 3)
- #define DWC3_DCFG_DEVADDR_MASK	DWC3_DCFG_DEVADDR(0x7f)
-@@ -1004,6 +1008,7 @@ struct dwc3_scratchpad_array {
-  * 	2	- No de-emphasis
-  * 	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-+ * @dis_split_quirk: set to disable split boundary.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-  *                 increments or 0 to disable.
-  */
-@@ -1175,6 +1180,8 @@ struct dwc3 {
- 
- 	unsigned		dis_metastability_quirk:1;
- 
-+	unsigned		dis_split_quirk:1;
-+
- 	u16			imod_interval;
- };
- 
+diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
+index f6dbda37a3615..990ef97accec4 100644
+--- a/fs/btrfs/defrag.c
++++ b/fs/btrfs/defrag.c
+@@ -772,12 +772,12 @@ static struct extent_map *defrag_lookup_extent(struct inode *inode, u64 start,
+ 	 * We can get a merged extent, in that case, we need to re-search
+ 	 * tree to get the original em for defrag.
+ 	 *
+-	 * If @newer_than is 0 or em::generation < newer_than, we can trust
+-	 * this em, as either we don't care about the generation, or the
+-	 * merged extent map will be rejected anyway.
++	 * This is because even if we have adjacent extents that are contiguous
++	 * and compatible (same type and flags), we still want to defrag them
++	 * so that we use less metadata (extent items in the extent tree and
++	 * file extent items in the inode's subvolume tree).
+ 	 */
+-	if (em && (em->flags & EXTENT_FLAG_MERGED) &&
+-	    newer_than && em->generation >= newer_than) {
++	if (em && (em->flags & EXTENT_FLAG_MERGED)) {
+ 		free_extent_map(em);
+ 		em = NULL;
+ 	}
 -- 
 2.43.0
 
