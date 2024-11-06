@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03CB9BE964
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716DE9BEA59
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEBAC1C21263
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C88A1C255D1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6A1DF974;
-	Wed,  6 Nov 2024 12:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A9F1EBFF4;
+	Wed,  6 Nov 2024 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMpPEi01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdlD5a9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC235198E96;
-	Wed,  6 Nov 2024 12:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81AF1E0084;
+	Wed,  6 Nov 2024 12:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896416; cv=none; b=m8vxJePOEa0Ui16aKpJhRPSuZnvPD5Q4p70wcYmRts3QAtt25tlvh9+3XXMWHmn4T0iGzm8Prq3R/nrilRPFEG+c881vVgLorNPtSTlZZ3v2I2WnkzNEodZMo4Kz+Vb4huzRX8nIFO6gkLmAFQftHNfN17fhAS2zO4EYiValvGU=
+	t=1730896687; cv=none; b=gRXfzj6P2Psm9nkDKnUX+9MUHiMISHo/pxEcWi3NL+TJN89XQHDq7FoEVOrixGm+WQXbOYPum2dDTBx8zckxj3m6PQHl1nyPNYgjOePyH93LCsT0tQCT1+eYbiQipUr3bXLezVkeE7uszrmKcfEnoRJEUsyAj4apyefH2A90kjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896416; c=relaxed/simple;
-	bh=K0kAEpU12/kiHZQqpwhf75xwBGaC4wjEmsi+TEAJsvc=;
+	s=arc-20240116; t=1730896687; c=relaxed/simple;
+	bh=Xflp0jSJdLU01o8pew/1Jdppq6xfEHgsQ1G1r9amHFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFtPkTw4ZCyeKZgnIjlsxyu52GxkFEg3Ni/kolfWSguaykxvQCP0dr5yS4/wc/7FCbb9PtfmtYdywLpExGUb3Zd+BKQXSGAjS9f74lzns2Bp2eH+EaqH6h1/bJdaO5QwXE/8y0s/DJ/uPKGKK8huhe2NZ2gGJDVSOnD9WzkHLVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMpPEi01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AAFC4CECD;
-	Wed,  6 Nov 2024 12:33:34 +0000 (UTC)
+	 MIME-Version; b=BcKJo6LHIF5q5SstQ9ae8ATBYu2W9BaAgS0q1nQoZp+RoNa2h/rfKoAAxtM7ifrOTwWKSDoiV2wAfP/bg2cy0ttHOkR9KLPIPLfS5iY458UNl3oQ18VYz3RAzIp/cA/1gDFLOvIY6YUpiJl0oqivxJZY4XzVf/sT2OtPNz/6+WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdlD5a9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E524C4CECD;
+	Wed,  6 Nov 2024 12:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896415;
-	bh=K0kAEpU12/kiHZQqpwhf75xwBGaC4wjEmsi+TEAJsvc=;
+	s=korg; t=1730896687;
+	bh=Xflp0jSJdLU01o8pew/1Jdppq6xfEHgsQ1G1r9amHFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMpPEi01REyCciFqC6jQ/EboYfJ4/OgEr3F/fcXsVfvOLrL+Vclwx40KfZqcX5vCX
-	 UlBnmDTNwznum7S9keRKjdMAPVukxQbT8kByCp4i6Euo+I9V8m9DXoVkydb2OgMi3B
-	 8Ii0ccI7FwwAg1GaX1WCJ5SbBFxwfwSWiMb8fL7o=
+	b=cdlD5a9on9qWdl8kIEbaTVr9H+ipxIRfqhwKjtWWWX24Eh1YrO6vVJG3aidR8vZRk
+	 tw5TxfidZxa/GoUn64XUlvOeHbW9FPy3mByOC5qCc3/tVILAiosqLa0f6R5KoERJ/x
+	 lIKhBWiSB7TNMBcKZHNQZQpa3N3bCj/gp4+ftMBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 193/245] drm/xe: Fix register definition order in xe_regs.h
+Subject: [PATCH 5.10 040/110] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
 Date: Wed,  6 Nov 2024 13:04:06 +0100
-Message-ID: <20241106120323.996636849@linuxfoundation.org>
+Message-ID: <20241106120304.307654090@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 9dae9751c7b0086963f5cbb82424b5e4cf58f123 ]
+[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
 
-Swap XEHP_CLOCK_GATE_DIS(0x101014) with GU_DEBUG(x101018).
+If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
+and get the clk->rwsem read lock, so the error path should release
+the lock to make the lock balance and fput the clockid's fd to make
+the refcount balance and release the fd related resource.
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240702183704.1022-2-michal.wajdeczko@intel.com
-Stable-dep-of: 993ca0eccec6 ("drm/xe: Add mmio read before GGTT invalidate")
+However the below commit left the error path locked behind resulting in
+unbalanced locking. Check timespec64_valid_strict() before
+get_clock_desc() to fix it, because the "ts" is not changed
+after that.
+
+Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+[pabeni@redhat.com: fixed commit message typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/regs/xe_regs.h | 6 +++---
+ kernel/time/posix-clock.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_regs.h b/drivers/gpu/drm/xe/regs/xe_regs.h
-index 23e33ec849022..23ecba38ed419 100644
---- a/drivers/gpu/drm/xe/regs/xe_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_regs.h
-@@ -24,12 +24,12 @@
- #define   LMEM_INIT				REG_BIT(7)
- #define   DRIVERFLR				REG_BIT(31)
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 8127673bfc45e..05e73d209aa87 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 	struct posix_clock_desc cd;
+ 	int err;
  
--#define GU_DEBUG				XE_REG(0x101018)
--#define   DRIVERFLR_STATUS			REG_BIT(31)
--
- #define XEHP_CLOCK_GATE_DIS			XE_REG(0x101014)
- #define   SGSI_SIDECLK_DIS			REG_BIT(17)
- 
-+#define GU_DEBUG				XE_REG(0x101018)
-+#define   DRIVERFLR_STATUS			REG_BIT(31)
++	if (!timespec64_valid_strict(ts))
++		return -EINVAL;
 +
- #define XEHP_MTCFG_ADDR				XE_REG(0x101800)
- #define   TILE_COUNT				REG_GENMASK(15, 8)
+ 	err = get_clock_desc(id, &cd);
+ 	if (err)
+ 		return err;
+@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 		goto out;
+ 	}
  
+-	if (!timespec64_valid_strict(ts))
+-		return -EINVAL;
+-
+ 	if (cd.clk->ops.clock_settime)
+ 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+ 	else
 -- 
 2.43.0
 
