@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5C59BE809
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FA19BE939
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3C2E282290
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876552851EE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3CE1DF72E;
-	Wed,  6 Nov 2024 12:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF341DED54;
+	Wed,  6 Nov 2024 12:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJRD6oKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tu0FKUd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD041DF721;
-	Wed,  6 Nov 2024 12:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB667171C9;
+	Wed,  6 Nov 2024 12:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895612; cv=none; b=lCpFYTI7BlV6LeezMV2Jj0yfKfdtD0GbnEPIj4cYCY0SCefk1HUml6ZmRqYtqoQB8wvPTf+Z2PNH1/IpGVvgK5WvmH/CfvGRJ2QH3+7K3ufZ1nufPMpzDwacVjtRoqdAw0g2qFtxAUxCowlCekODrb/LQQ7chydn8DvGnra96hU=
+	t=1730896310; cv=none; b=KXS86k24JCq3RQGM6WH7qzn/fdJk8FkSjrOrl8UOUfAvsmQs5qNoPRFd8PjNxVVpK/L5/0Irb8j8xjhHmmNKi1GUXzIKBKhkJpR0vxiLPCbZbOjrkb2pdSMAoM+gCwP2O29FOEl3VIlPSG5Cj/aOWvf3pdrW+T8ufCYimAIF+7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895612; c=relaxed/simple;
-	bh=TECVM5jZ8Yvyoy+N7oaFx3FlU7wgfV28zMIy8fW0J/g=;
+	s=arc-20240116; t=1730896310; c=relaxed/simple;
+	bh=QK6c3hnYlHJ+0s9pthi6a5z+SMCgWJLRWwVEeVKC3oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+81kc4vXGpUGOA7iIbLaLBq3OFQ7ohoHkHMV7VhQyzkLtbZC6LK3uqIOx6XwkhSHOZIM+SF6bCwPh4WxHVzV9uUCcFcXhYbEwS6mTBM/9HXNE65esBZw5nXbNbkkMQEBBEzZR5hXo7MLYER8zUeXo/J1e4qs199bN1kOiM/Nkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJRD6oKa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D31C4CED6;
-	Wed,  6 Nov 2024 12:20:11 +0000 (UTC)
+	 MIME-Version; b=s+CWqRQeYWjGkO4nTdE5tcMSirFi95vqA+h5l1zjgGDvlzcBGctzGQMNLFa222twgxcNRpbyOXDcHG+sBBuzw2T0xS8h7dzNT3IUPUs6qqFsxWRwtJ5R+1PV3j8EZz43WQeMfO9QJr/lRkCVpH4NOr7+aAl3j+SGCsLyvoEmFeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tu0FKUd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7052EC4CECD;
+	Wed,  6 Nov 2024 12:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895612;
-	bh=TECVM5jZ8Yvyoy+N7oaFx3FlU7wgfV28zMIy8fW0J/g=;
+	s=korg; t=1730896309;
+	bh=QK6c3hnYlHJ+0s9pthi6a5z+SMCgWJLRWwVEeVKC3oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJRD6oKaUfFY3ehXAvWC7QjKJRFcQSzpvFPFLrWWY38BYkWe3PLLD6EDFnS5wcieS
-	 O2gmwxSLRODeTdqBFGfUmI8+UDpWZVBK6YU+srn7J7ALK43KXh8Qn9REnaPvlcnhc1
-	 7RW2rRqJaAF6Kqc4sZ1vcUHjtRd3WKF98Ib31V1I=
+	b=tu0FKUd2uc2nVN+xPm3TCRu2/S07qx49yDCtWgO44RddG7R7+pamj5RllOEW+g2Fd
+	 BX8iS7gTuf5l0zEjVSIxRUPiIyGpIKeNTcd7JsdK+WFTDr8lqrquR4QW5vP2X54pbH
+	 kAYqZxUeYwyK4xxVeiGI2HeSDgPUW+v/ASnwxjOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 249/350] SUNRPC: Fix integer overflow in decode_rc_list()
+	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.11 124/245] wifi: cfg80211: clear wdev->cqm_config pointer on free
 Date: Wed,  6 Nov 2024 13:02:57 +0100
-Message-ID: <20241106120327.075095662@linuxfoundation.org>
+Message-ID: <20241106120322.276028681@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6dbf1f341b6b35bcc20ff95b6b315e509f6c5369 ]
+commit d5fee261dfd9e17b08b1df8471ac5d5736070917 upstream.
 
-The math in "rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t)" could have an
-integer overflow.  Add bounds checking on rc_list->rcl_nrefcalls to fix
-that.
+When we free wdev->cqm_config when unregistering, we also
+need to clear out the pointer since the same wdev/netdev
+may get re-registered in another network namespace, then
+destroyed later, running this code again, which results in
+a double-free.
 
-Fixes: 4aece6a19cf7 ("nfs41: cb_sequence xdr implementation")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/callback_xdr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/callback_xdr.c b/fs/nfs/callback_xdr.c
-index 38dc33c537ab6..8f8b3a7868e8d 100644
---- a/fs/nfs/callback_xdr.c
-+++ b/fs/nfs/callback_xdr.c
-@@ -372,6 +372,8 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1236,6 +1236,7 @@ static void _cfg80211_unregister_wdev(st
+ 	/* deleted from the list, so can't be found from nl80211 any more */
+ 	cqm_config = rcu_access_pointer(wdev->cqm_config);
+ 	kfree_rcu(cqm_config, rcu_head);
++	RCU_INIT_POINTER(wdev->cqm_config, NULL);
  
- 	rc_list->rcl_nrefcalls = ntohl(*p++);
- 	if (rc_list->rcl_nrefcalls) {
-+		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
-+			goto out;
- 		p = xdr_inline_decode(xdr,
- 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
- 		if (unlikely(p == NULL))
--- 
-2.43.0
-
+ 	/*
+ 	 * Ensure that all events have been processed and
 
 
 
