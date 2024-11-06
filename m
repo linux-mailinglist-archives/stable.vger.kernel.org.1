@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-91626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD6F9BEED8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ED39BEE72
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A6D0B23377
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE5D8284968
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E101DF97A;
-	Wed,  6 Nov 2024 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABEF1E0DF0;
+	Wed,  6 Nov 2024 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbXtIX6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFfZa4D0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7123C646;
-	Wed,  6 Nov 2024 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784751DFE10;
+	Wed,  6 Nov 2024 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899286; cv=none; b=KYFmMIQK7GM0rLhg+JDqzPJEOf+LjQwWdrQ/6/yM50+d3fhhAZFVG4yIuMonViZvR6ERT01sZDF0ppS5sdNahy7OaPKwPRurISr90QFuI9s/jsGD+YUGnFlcBSH1NoU75QczHTyMUQDB+bBPQULI/hnN8TTMbj0X+tp4icvlC58=
+	t=1730899044; cv=none; b=SAbCWrUuSQom2YGbzS8Si44uFHfyyyhgyXGGEnX4pif8IyfZ44bzapNgHBcqVl5VXKI4mB0mnrek9aKDMc2jyZUpJGtG7tq7KA96WFncl5HnW8gf7Mud6B+2w8/J6bvVST8nB0enHqp05PoDeKeUCKaLNVqbi7156WapjMXdopo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899286; c=relaxed/simple;
-	bh=6sjTAHEz/AQKrJ4sSfFvjcN7NSRhS3rNWzpkac8kdcs=;
+	s=arc-20240116; t=1730899044; c=relaxed/simple;
+	bh=sH2LbOe9g0Wp3cdzdoF6EpRPbjVWIMprlZO2fdLg3cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBDh8CW3vLljEVmYjEkL6ldse5c+aIXdnRseHdA/qSR4sTFGTZsr7TkxHnjKlLPshHriuYw0IpfqOWNDGpDbUTPJhtk4KYzUtZwF5xLQxDBZ51zEBPQ+zgHItSKUC/u8Vwjm3PB/5r3HvV0ILjPN4OfLL+W4UnJ9FyJ/1v/dX7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbXtIX6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7DDC4CECD;
-	Wed,  6 Nov 2024 13:21:25 +0000 (UTC)
+	 MIME-Version; b=MX0dGMBSplwSCqV8BOEyVgqc63gGH7SvimVNXIqaX4w+yd6J6BS7e1z8GXZOKUYn3aKea5W2I9MbMYBgs8JdjxemmIsJeYzT2b03FLGzMFZSWfV9tnzopcwcwvcRDO8gst0NvGXf147w2fNO/qjYCofDN4sSMso0ZZnKxRVZahk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFfZa4D0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22FFC4CECD;
+	Wed,  6 Nov 2024 13:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899286;
-	bh=6sjTAHEz/AQKrJ4sSfFvjcN7NSRhS3rNWzpkac8kdcs=;
+	s=korg; t=1730899044;
+	bh=sH2LbOe9g0Wp3cdzdoF6EpRPbjVWIMprlZO2fdLg3cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbXtIX6J/1p4J6pQJUXlpLpi4Lvze4VIBbJHHsP6nCu0Chv7SKn1xD1ZqPcja/CJp
-	 EeQCe1Hs/aSPuKClMdRqhy24g8ANVYpynQ9+SrMIPx0LR7wQpVg+km4vRKuDSukgRY
-	 pEYsp4Mvr/P6PSat7Lm3GpdVJjkyzTFxt5Z7ODqg=
+	b=WFfZa4D0AqEMz+NvZXWxaXX98Xk1GSbLIvF/wQCggSNdBzY5OiSyRgCrvZlNQqPyB
+	 euvh/nqCqzSvi/3R6eTZJLEf1TFICG2lZjgUSfSK2vtjxaSBLFYprLsY2U5gNrDueZ
+	 xQ42a42jPlfDqF/v5OQ0Kl6bXFDIB4817ozaRTKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youghandhar Chintala <youghand@codeaurora.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+cc39f136925517aed571@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Antony Antony <antony.antony@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/73] mac80211: Add support to trigger sta disconnect on hardware restart
+Subject: [PATCH 5.4 425/462] xfrm: validate new SAs prefixlen using SA family when sel.family is unset
 Date: Wed,  6 Nov 2024 13:05:18 +0100
-Message-ID: <20241106120300.388166445@linuxfoundation.org>
+Message-ID: <20241106120342.011211730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youghandhar Chintala <youghand@codeaurora.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 7d352ccf1e9935b5222ca84e8baeb07a0c8f94b9 ]
+[ Upstream commit 3f0ab59e6537c6a8f9e1b355b48f9c05a76e8563 ]
 
-Currently in case of target hardware restart, we just reconfig and
-re-enable the security keys and enable the network queues to start
-data traffic back from where it was interrupted.
+This expands the validation introduced in commit 07bf7908950a ("xfrm:
+Validate address prefix lengths in the xfrm selector.")
 
-Many ath10k wifi chipsets have sequence numbers for the data
-packets assigned by firmware and the mac sequence number will
-restart from zero after target hardware restart leading to mismatch
-in the sequence number expected by the remote peer vs the sequence
-number of the frame sent by the target firmware.
+syzbot created an SA with
+    usersa.sel.family = AF_UNSPEC
+    usersa.sel.prefixlen_s = 128
+    usersa.family = AF_INET
 
-This mismatch in sequence number will cause out-of-order packets
-on the remote peer and all the frames sent by the device are dropped
-until we reach the sequence number which was sent before we restarted
-the target hardware
+Because of the AF_UNSPEC selector, verify_newsa_info doesn't put
+limits on prefixlen_{s,d}. But then copy_from_user_state sets
+x->sel.family to usersa.family (AF_INET). Do the same conversion in
+verify_newsa_info before validating prefixlen_{s,d}, since that's how
+prefixlen is going to be used later on.
 
-In order to fix this, we trigger a sta disconnect, in case of target
-hw restart. After this there will be a fresh connection and thereby
-avoiding the dropping of frames by remote peer.
-
-The right fix would be to pull the entire data path into the host
-which is not feasible or would need lots of complex changes and
-will still be inefficient.
-
-Tested on ath10k using WCN3990, QCA6174
-
-Signed-off-by: Youghandhar Chintala <youghand@codeaurora.org>
-Link: https://lore.kernel.org/r/20220308115325.5246-2-youghand@codeaurora.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
+Reported-by: syzbot+cc39f136925517aed571@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h     | 10 ++++++++++
- net/mac80211/ieee80211_i.h |  3 +++
- net/mac80211/mlme.c        | 12 ++++++++++++
- net/mac80211/util.c        | 33 ++++++++++++++++++++++++++++++---
- 4 files changed, 55 insertions(+), 3 deletions(-)
+ net/xfrm/xfrm_user.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 618d1f427cb27..c713edfbe2b65 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6009,6 +6009,16 @@ void ieee80211_disconnect(struct ieee80211_vif *vif, bool reconnect);
-  */
- void ieee80211_resume_disconnect(struct ieee80211_vif *vif);
- 
-+/**
-+ * ieee80211_hw_restart_disconnect - disconnect from AP after
-+ * hardware restart
-+ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ *
-+ * Instructs mac80211 to disconnect from the AP after
-+ * hardware restart.
-+ */
-+void ieee80211_hw_restart_disconnect(struct ieee80211_vif *vif);
-+
- /**
-  * ieee80211_cqm_rssi_notify - inform a configured connection quality monitoring
-  *	rssi threshold triggered
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 03c238e68038b..3b5350cfc0eec 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -765,6 +765,8 @@ struct ieee80211_if_mesh {
-  *	back to wireless media and to the local net stack.
-  * @IEEE80211_SDATA_DISCONNECT_RESUME: Disconnect after resume.
-  * @IEEE80211_SDATA_IN_DRIVER: indicates interface was added to driver
-+ * @IEEE80211_SDATA_DISCONNECT_HW_RESTART: Disconnect after hardware restart
-+ *  recovery
-  */
- enum ieee80211_sub_if_data_flags {
- 	IEEE80211_SDATA_ALLMULTI		= BIT(0),
-@@ -772,6 +774,7 @@ enum ieee80211_sub_if_data_flags {
- 	IEEE80211_SDATA_DONT_BRIDGE_PACKETS	= BIT(3),
- 	IEEE80211_SDATA_DISCONNECT_RESUME	= BIT(4),
- 	IEEE80211_SDATA_IN_DRIVER		= BIT(5),
-+	IEEE80211_SDATA_DISCONNECT_HW_RESTART	= BIT(6),
- };
- 
- /**
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5da0c2a2e293e..29c136abaee26 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4853,6 +4853,18 @@ void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata)
- 		sdata_unlock(sdata);
- 		return;
- 	}
-+
-+	if (sdata->flags & IEEE80211_SDATA_DISCONNECT_HW_RESTART) {
-+		sdata->flags &= ~IEEE80211_SDATA_DISCONNECT_HW_RESTART;
-+		mlme_dbg(sdata, "driver requested disconnect after hardware restart\n");
-+		ieee80211_sta_connection_lost(sdata,
-+					      ifmgd->associated->bssid,
-+					      WLAN_REASON_UNSPECIFIED,
-+					      true);
-+		sdata_unlock(sdata);
-+		return;
-+	}
-+
- 	sdata_unlock(sdata);
- }
- #endif
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 28676a305916c..85d3d2034d437 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2313,6 +2313,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 	struct cfg80211_sched_scan_request *sched_scan_req;
- 	bool sched_scan_stopped = false;
- 	bool suspended = local->suspended;
-+	bool in_reconfig = false;
- 
- 	/* nothing to do if HW shouldn't run */
- 	if (!local->open_count)
-@@ -2664,6 +2665,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		drv_reconfig_complete(local, IEEE80211_RECONFIG_TYPE_RESTART);
- 
- 	if (local->in_reconfig) {
-+		in_reconfig = local->in_reconfig;
- 		local->in_reconfig = false;
- 		barrier();
- 
-@@ -2681,6 +2683,15 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 					IEEE80211_QUEUE_STOP_REASON_SUSPEND,
- 					false);
- 
-+	if (in_reconfig) {
-+		list_for_each_entry(sdata, &local->interfaces, list) {
-+			if (!ieee80211_sdata_running(sdata))
-+				continue;
-+			if (sdata->vif.type == NL80211_IFTYPE_STATION)
-+				ieee80211_sta_restart(sdata);
-+		}
-+	}
-+
- 	if (!suspended)
- 		return 0;
- 
-@@ -2710,7 +2721,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 	return 0;
- }
- 
--void ieee80211_resume_disconnect(struct ieee80211_vif *vif)
-+static void ieee80211_reconfig_disconnect(struct ieee80211_vif *vif, u8 flag)
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index f76033d1898a5..d9a32b13032a7 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -149,6 +149,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
+ 			     struct nlattr **attrs)
  {
- 	struct ieee80211_sub_if_data *sdata;
- 	struct ieee80211_local *local;
-@@ -2722,19 +2733,35 @@ void ieee80211_resume_disconnect(struct ieee80211_vif *vif)
- 	sdata = vif_to_sdata(vif);
- 	local = sdata->local;
+ 	int err;
++	u16 family = p->sel.family;
  
--	if (WARN_ON(!local->resuming))
-+	if (WARN_ON(flag & IEEE80211_SDATA_DISCONNECT_RESUME &&
-+		    !local->resuming))
-+		return;
+ 	err = -EINVAL;
+ 	switch (p->family) {
+@@ -167,7 +168,10 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
+ 		goto out;
+ 	}
+ 
+-	switch (p->sel.family) {
++	if (!family && !(p->flags & XFRM_STATE_AF_UNSPEC))
++		family = p->family;
 +
-+	if (WARN_ON(flag & IEEE80211_SDATA_DISCONNECT_HW_RESTART &&
-+		    !local->in_reconfig))
- 		return;
++	switch (family) {
+ 	case AF_UNSPEC:
+ 		break;
  
- 	if (WARN_ON(vif->type != NL80211_IFTYPE_STATION))
- 		return;
- 
--	sdata->flags |= IEEE80211_SDATA_DISCONNECT_RESUME;
-+	sdata->flags |= flag;
- 
- 	mutex_lock(&local->key_mtx);
- 	list_for_each_entry(key, &sdata->key_list, list)
- 		key->flags |= KEY_FLAG_TAINTED;
- 	mutex_unlock(&local->key_mtx);
- }
-+
-+void ieee80211_hw_restart_disconnect(struct ieee80211_vif *vif)
-+{
-+	ieee80211_reconfig_disconnect(vif, IEEE80211_SDATA_DISCONNECT_HW_RESTART);
-+}
-+EXPORT_SYMBOL_GPL(ieee80211_hw_restart_disconnect);
-+
-+void ieee80211_resume_disconnect(struct ieee80211_vif *vif)
-+{
-+	ieee80211_reconfig_disconnect(vif, IEEE80211_SDATA_DISCONNECT_RESUME);
-+}
- EXPORT_SYMBOL_GPL(ieee80211_resume_disconnect);
- 
- void ieee80211_recalc_smps(struct ieee80211_sub_if_data *sdata)
 -- 
 2.43.0
 
