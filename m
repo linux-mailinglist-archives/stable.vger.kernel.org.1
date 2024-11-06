@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-91539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9869BEE6D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09C59BEEB4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56DA01F258C9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2B4B23FEF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01881E0B7A;
-	Wed,  6 Nov 2024 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130691DFE1E;
+	Wed,  6 Nov 2024 13:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxMT7NRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzHAzNJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D83C1CC14B;
-	Wed,  6 Nov 2024 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322E1CCB5F;
+	Wed,  6 Nov 2024 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899029; cv=none; b=O7NN+8DN6pP4NftmOUJbY6PUrLg2PKk7RVsrePn/XLS3qBAlj+cbgfVe+P7WH5scuwO6kn590AMAIdkLYKrpBG7Z3Clw1buFBA/yHHBtWqb1VO7rIR747X2ur2rBYUcknaVSn+ggz5Q/U2/BIXVL5ecTpRnnusS1RAI30WJoJZw=
+	t=1730899183; cv=none; b=tkzvEvBM9Ho44AwX3H3KmlrPSxKaUJoYBPB7JI8zMLODrrADDs4QfAxMYfU1eUcKn9W8FO2gTkw5u9kPyB38sURdNW/R/3TTTMb+AreUZD8nKCpXW+041Ec/0gJDgGX9kaA8FDQ/oswQ0tTDDsOAHxDGTUeGoYX/jzgRzEYu954=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899029; c=relaxed/simple;
-	bh=0mIu4kgkp69UPuIt94r8PFY6DT8fTxjTiB2pfVQfvyY=;
+	s=arc-20240116; t=1730899183; c=relaxed/simple;
+	bh=6ISEkHdkZMWRGz4q8aF1a6aDlVt46VLcIEGPk6r8n4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KIhmsY2F5X29Bbzd1fUUHGvBqQ+aSWLhDT0ww4bZnSCdJSxGwA5CL57HgcZwrEghbX1Bfv6X0p5h9XN7wPMVAWC5qcBUQP6ozjy324lLH3vg7Zah+9DeLbxSQ8LwURG08ABuaIX14Ixo/kYb8D3JGaLbNqE99cH6WsWcw2ifsMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxMT7NRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F79C4CED5;
-	Wed,  6 Nov 2024 13:17:08 +0000 (UTC)
+	 MIME-Version; b=W37BeZatDJxva8xIsgRV4d5O0E4bQMul5/h9UXrsHfW3t31qXFQQZqmdlUA+JvtEFm+JHakJ8HpHFquC6Oa0Ny5EFwWeJOvBFf1IVezPvrVNh9GRlHrkxOX6WfHgVetB1vjVfOrlKORbNwizjZNO5AVKnDlSOFoNGQsklWuYa40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzHAzNJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45487C4CECD;
+	Wed,  6 Nov 2024 13:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899029;
-	bh=0mIu4kgkp69UPuIt94r8PFY6DT8fTxjTiB2pfVQfvyY=;
+	s=korg; t=1730899183;
+	bh=6ISEkHdkZMWRGz4q8aF1a6aDlVt46VLcIEGPk6r8n4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxMT7NRhYFp89WPF21SJ+WiNYhQAza51nUh4ba456tREQJqybIjyYpDj9dllNIRgf
-	 COD8ZiSiXeXGEX8XCHSwUfMIcNUJD9dA6qtxLvC9lNGCUS35avKaMkhKUCzPbJd3Hr
-	 eDeZ2yET9FYhiZUUYcjMcP+ChtZRS6LlR4WEGVxY=
+	b=rzHAzNJjmy5Q9B/WwEBa2IJ90Y9GIdsV2rngmU1YrHDczhGvTNN0Ybk1uSg9DIxAQ
+	 dnDW/QsMWb1JH0wJXuyr7/Kl4ndIqTxfAZd+gWCMdRCfp2xDBkh9H9FnlKYI6UQXME
+	 3pdM0DBeCvP64Bou0i+/pGlPwYiq3dtrGZ81mjTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byeonguk Jeong <jungbu2855@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Slavin Liu <slavin-ayu@qq.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 438/462] bpf: Fix out-of-bounds write in trie_get_next_key()
+Subject: [PATCH 5.15 27/73] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
 Date: Wed,  6 Nov 2024 13:05:31 +0100
-Message-ID: <20241106120342.320705705@linuxfoundation.org>
+Message-ID: <20241106120300.776266927@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byeonguk Jeong <jungbu2855@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
+[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
 
-trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
-while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
-full paths from the root to leaves. For example, consider a trie with
-max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
-0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
-.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
+If access to offset + length is larger than the skbuff length, then
+skb_checksum() triggers BUG_ON().
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Tested-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+skb_checksum() internally subtracts the length parameter while iterating
+over skbuff, BUG_ON(len) at the end of it checks that the expected
+length to be included in the checksum calculation is fully consumed.
+
+Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
+Reported-by: Slavin Liu <slavin-ayu@qq.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_payload.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index d78c1afe12737..c372be6df264e 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -660,7 +660,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	if (!key || key->prefixlen > trie->max_prefixlen)
- 		goto find_leftmost;
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index 55237d8a3d882..49a1cf53064fe 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -749,6 +749,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
+ 	    ((priv->base != NFT_PAYLOAD_TRANSPORT_HEADER &&
+ 	      priv->base != NFT_PAYLOAD_INNER_HEADER) ||
+ 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
++		if (offset + priv->len > skb->len)
++			goto err;
++
+ 		fsum = skb_checksum(skb, offset, priv->len, 0);
+ 		tsum = csum_partial(src, priv->len, 0);
  
--	node_stack = kmalloc_array(trie->max_prefixlen,
-+	node_stack = kmalloc_array(trie->max_prefixlen + 1,
- 				   sizeof(struct lpm_trie_node *),
- 				   GFP_ATOMIC | __GFP_NOWARN);
- 	if (!node_stack)
 -- 
 2.43.0
 
