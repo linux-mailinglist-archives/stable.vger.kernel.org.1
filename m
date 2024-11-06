@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-91445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C04B9BEE02
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:15:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB019BEE3B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6C72866FB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088191C245B3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11601EABCD;
-	Wed,  6 Nov 2024 13:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C71C1E04A8;
+	Wed,  6 Nov 2024 13:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9/oZL3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFIe8g1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF14F1E907E;
-	Wed,  6 Nov 2024 13:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BB51DFE33;
+	Wed,  6 Nov 2024 13:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898751; cv=none; b=CP/8yJWSK2bYtwgQtyTYovDAZ0nSadyxuNJ8DF4jzryaN+wym6TB5fSXBL3lAgjXbgCxkEI+nIdzDiLbWG6grP5/C2xWL6VX+JR1RwqYEmK5uyvFpWEMlKcUSftYxtxIdA9n/In6WXK0zKqUGH3kUah31UluQoAZ+ck99AMzJ5s=
+	t=1730898891; cv=none; b=qKXuDdBtawi9u8RZw8ZNq2c7SzDIZQjqj8uTZpi2Mu6KTZBT2BZQ0W3ZEV3jUA5JcWGBAm+qtTYrwSDOYbXYK3IM8eTy5JVrqhdrmVCwkfxKehcLpIGZ1HQlWzu89GHbRxw5rvjm3ECkxFp81z9MwUNhjkH+7vDlVA3bvqia1Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898751; c=relaxed/simple;
-	bh=sdeRm8rF5yGsz7ELa+M1j6SogmGx43dIOhqi8INAbNg=;
+	s=arc-20240116; t=1730898891; c=relaxed/simple;
+	bh=Zu+nTqfZXABYJPOelE5+72bWzRM2p0Yv5N+PpGg4p6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFk9bd0NSusy+L3tYPPWMFIGH5fUjrGiBtYo6XW+SMT3Y+0ZyX53W00nPH0QFGjNrCEuPEtHIUHEcSD58hAAVcTpdAQJMXsrg1b4gpJJF1I2bqByToyxCQAvbvECKdVuJ7bOGRWLgf29ccfhkaHadI0GPNDuzlHMNzodFhJszcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9/oZL3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C350C4CECD;
-	Wed,  6 Nov 2024 13:12:31 +0000 (UTC)
+	 MIME-Version; b=Xfi4rfF+4UEnUsflwwrn6dGQDlABIL9prPzaYZ1ivAmPoQesKGsABkpZxg1uILhOl4XcA/3NXvoG+KYxPjIb3J1mG16aCdkznGVxvIbGeW6o9+cb7miz7/iG30HfhGPgmCJfqNRCr5D3hu3TiuCVJHM/B++O/qYh98pNnPi0ch4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFIe8g1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE72C4CED3;
+	Wed,  6 Nov 2024 13:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898751;
-	bh=sdeRm8rF5yGsz7ELa+M1j6SogmGx43dIOhqi8INAbNg=;
+	s=korg; t=1730898890;
+	bh=Zu+nTqfZXABYJPOelE5+72bWzRM2p0Yv5N+PpGg4p6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9/oZL3s+jV+A9vzV73nJyaXdOnI+kxnrnhOz4pY8uEEJcEm6dWybZCGxW/TInnMM
-	 MzyEeTP1hc4N29yaB78G4ENx/uI2uvHde/GQHGLek4ucpMlgKQAfYNOBW64Cvv0v3e
-	 Gw8BJULn6nmza1fQptwSPolr1tz0hdzAnd8oXHa8=
+	b=qFIe8g1IWCmFSS/L05bvZq+qQT8xdS7f6MNFT6AD/vluW0ioPHyDIZBgonGS/AgwG
+	 EiyL68T4iC6Aa++6yhRELfxJaDyRW6rMe0TDFU69BifTnYF9cAIa3IsDGzAOvxhoGC
+	 DuTDYr31vvsuDBZHwvAiTJCYEhxN/CkjtpK++ow4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Baoquan He <bhe@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 342/462] resource: fix region_intersects() vs add_memory_driver_managed()
-Date: Wed,  6 Nov 2024 13:03:55 +0100
-Message-ID: <20241106120339.972937388@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.4 343/462] CDC-NCM: avoid overflow in sanity checking
+Date: Wed,  6 Nov 2024 13:03:56 +0100
+Message-ID: <20241106120339.996824714@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -77,176 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huang Ying <ying.huang@intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit b4afe4183ec77f230851ea139d91e5cf2644c68b upstream.
+commit 8d2b1a1ec9f559d30b724877da4ce592edc41fdc upstream.
 
-On a system with CXL memory, the resource tree (/proc/iomem) related to
-CXL memory may look like something as follows.
+A broken device may give an extreme offset like 0xFFF0
+and a reasonable length for a fragment. In the sanity
+check as formulated now, this will create an integer
+overflow, defeating the sanity check. Both offset
+and offset + len need to be checked in such a manner
+that no overflow can occur.
+And those quantities should be unsigned.
 
-490000000-50fffffff : CXL Window 0
-  490000000-50fffffff : region0
-    490000000-50fffffff : dax0.0
-      490000000-50fffffff : System RAM (kmem)
-
-Because drivers/dax/kmem.c calls add_memory_driver_managed() during
-onlining CXL memory, which makes "System RAM (kmem)" a descendant of "CXL
-Window X".  This confuses region_intersects(), which expects all "System
-RAM" resources to be at the top level of iomem_resource.  This can lead to
-bugs.
-
-For example, when the following command line is executed to write some
-memory in CXL memory range via /dev/mem,
-
- $ dd if=data of=/dev/mem bs=$((1 << 10)) seek=$((0x490000000 >> 10)) count=1
- dd: error writing '/dev/mem': Bad address
- 1+0 records in
- 0+0 records out
- 0 bytes copied, 0.0283507 s, 0.0 kB/s
-
-the command fails as expected.  However, the error code is wrong.  It
-should be "Operation not permitted" instead of "Bad address".  More
-seriously, the /dev/mem permission checking in devmem_is_allowed() passes
-incorrectly.  Although the accessing is prevented later because ioremap()
-isn't allowed to map system RAM, it is a potential security issue.  During
-command executing, the following warning is reported in the kernel log for
-calling ioremap() on system RAM.
-
- ioremap on RAM at 0x0000000490000000 - 0x0000000490000fff
- WARNING: CPU: 2 PID: 416 at arch/x86/mm/ioremap.c:216 __ioremap_caller.constprop.0+0x131/0x35d
- Call Trace:
-  memremap+0xcb/0x184
-  xlate_dev_mem_ptr+0x25/0x2f
-  write_mem+0x94/0xfb
-  vfs_write+0x128/0x26d
-  ksys_write+0xac/0xfe
-  do_syscall_64+0x9a/0xfd
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The details of command execution process are as follows.  In the above
-resource tree, "System RAM" is a descendant of "CXL Window 0" instead of a
-top level resource.  So, region_intersects() will report no System RAM
-resources in the CXL memory region incorrectly, because it only checks the
-top level resources.  Consequently, devmem_is_allowed() will return 1
-(allow access via /dev/mem) for CXL memory region incorrectly.
-Fortunately, ioremap() doesn't allow to map System RAM and reject the
-access.
-
-So, region_intersects() needs to be fixed to work correctly with the
-resource tree with "System RAM" not at top level as above.  To fix it, if
-we found a unmatched resource in the top level, we will continue to search
-matched resources in its descendant resources.  So, we will not miss any
-matched resources in resource tree anymore.
-
-In the new implementation, an example resource tree
-
-|------------- "CXL Window 0" ------------|
-|-- "System RAM" --|
-
-will behave similar as the following fake resource tree for
-region_intersects(, IORESOURCE_SYSTEM_RAM, ),
-
-|-- "System RAM" --||-- "CXL Window 0a" --|
-
-Where "CXL Window 0a" is part of the original "CXL Window 0" that
-isn't covered by "System RAM".
-
-Link: https://lkml.kernel.org/r/20240906030713.204292-2-ying.huang@intel.com
-Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use like normal RAM")
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/resource.c |   58 ++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 50 insertions(+), 8 deletions(-)
+ drivers/net/usb/cdc_ncm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -536,21 +536,63 @@ EXPORT_SYMBOL_GPL(page_is_ram);
- int region_intersects(resource_size_t start, size_t size, unsigned long flags,
- 		      unsigned long desc)
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1707,10 +1707,10 @@ int cdc_ncm_rx_fixup(struct usbnet *dev,
  {
--	struct resource res;
-+	resource_size_t ostart, oend;
- 	int type = 0; int other = 0;
--	struct resource *p;
-+	struct resource *p, *dp;
-+	bool is_type, covered;
-+	struct resource res;
+ 	struct sk_buff *skb;
+ 	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
+-	int len;
++	unsigned int len;
+ 	int nframes;
+ 	int x;
+-	int offset;
++	unsigned int offset;
+ 	union {
+ 		struct usb_cdc_ncm_ndp16 *ndp16;
+ 		struct usb_cdc_ncm_ndp32 *ndp32;
+@@ -1782,8 +1782,8 @@ next_ndp:
+ 			break;
+ 		}
  
- 	res.start = start;
- 	res.end = start + size - 1;
- 
- 	read_lock(&resource_lock);
- 	for (p = iomem_resource.child; p ; p = p->sibling) {
--		bool is_type = (((p->flags & flags) == flags) &&
--				((desc == IORES_DESC_NONE) ||
--				 (desc == p->desc)));
--
--		if (resource_overlaps(p, &res))
--			is_type ? type++ : other++;
-+		if (!resource_overlaps(p, &res))
-+			continue;
-+		is_type = (p->flags & flags) == flags &&
-+			(desc == IORES_DESC_NONE || desc == p->desc);
-+		if (is_type) {
-+			type++;
-+			continue;
-+		}
-+		/*
-+		 * Continue to search in descendant resources as if the
-+		 * matched descendant resources cover some ranges of 'p'.
-+		 *
-+		 * |------------- "CXL Window 0" ------------|
-+		 * |-- "System RAM" --|
-+		 *
-+		 * will behave similar as the following fake resource
-+		 * tree when searching "System RAM".
-+		 *
-+		 * |-- "System RAM" --||-- "CXL Window 0a" --|
-+		 */
-+		covered = false;
-+		ostart = max(res.start, p->start);
-+		oend = min(res.end, p->end);
-+		for (dp = p->child; dp; dp = next_resource(dp, false)) {
-+			if (!resource_overlaps(dp, &res))
-+				continue;
-+			is_type = (dp->flags & flags) == flags &&
-+				(desc == IORES_DESC_NONE || desc == dp->desc);
-+			if (is_type) {
-+				type++;
-+				/*
-+				 * Range from 'ostart' to 'dp->start'
-+				 * isn't covered by matched resource.
-+				 */
-+				if (dp->start > ostart)
-+					break;
-+				if (dp->end >= oend) {
-+					covered = true;
-+					break;
-+				}
-+				/* Remove covered range */
-+				ostart = max(ostart, dp->end + 1);
-+			}
-+		}
-+		if (!covered)
-+			other++;
- 	}
- 	read_unlock(&resource_lock);
- 
+-		/* sanity checking */
+-		if (((offset + len) > skb_in->len) ||
++		/* sanity checking - watch out for integer wrap*/
++		if ((offset > skb_in->len) || (len > skb_in->len - offset) ||
+ 				(len > ctx->rx_max) || (len < ETH_HLEN)) {
+ 			netif_dbg(dev, rx_err, dev->net,
+ 				  "invalid frame detected (ignored) offset[%u]=%u, length=%u, skb=%p\n",
 
 
 
