@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-91410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17C99BEDDA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:14:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A9B9BEDB0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEAD1C242A7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6ED1F255E5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D281F7081;
-	Wed,  6 Nov 2024 13:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CB71F12FB;
+	Wed,  6 Nov 2024 13:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFHtKyIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApsHF9Gz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052C01F4FD4;
-	Wed,  6 Nov 2024 13:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456991E0B84;
+	Wed,  6 Nov 2024 13:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898654; cv=none; b=g2H8RMM0o30Stq4Vr7H5M9OMUI+7QNbvMIKe5t5A+9ZC14I4mpfQjOv++0wZBptMt5GsD/7MVehTCJywStPrbwbgSOSKtcVw8UTaFb0GM8gdgMSnGBKzlgCeudi4rtFqOv3Q0aZ/OS6cyByXEdXRcUkg5D6QuR4un9phIi1k3f8=
+	t=1730898548; cv=none; b=onTcK28Ye4tTWhrgIzkAkbizPDQTXt0VikSe+V/5XE93mcpttBJEhW1OCO/TeQEk4l8N2dM4dNeDVDd17WFh0rq5RG6QgH6zvQsFhZl8l4FMJpiKmIV6n3t2qkmb1Xp6609nkNt7+0K2DfoAd21PQxeCDFrv/jJp9BLne0AxthU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898654; c=relaxed/simple;
-	bh=8v3UEVbsAXkRsHJ5uu+TPxEcfo/PcY0p0WQYo4Nn4VE=;
+	s=arc-20240116; t=1730898548; c=relaxed/simple;
+	bh=899Atn33pVJHEskxn4LZcwDt3Kj4B/GH15s5dX9sKGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jW5b5JOV3R/k4MVcCvduIZuUl3+0guHde0GpAHFI7lXPoVJ4iiPFkTHyXYcLanereA0vxFwYEPAppa54IwZOEBsdPTwHIC2WU/lnrMdtO2W6lC6dDHR9RpeFTK5w3eRY+RF5X8S5WbSsRQVx4wcSzomBmSpRuUF2+B9/0zw3NxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFHtKyIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F744C4CECD;
-	Wed,  6 Nov 2024 13:10:53 +0000 (UTC)
+	 MIME-Version; b=dcAqhHkRVcRuA0fwUPlvj31QiU+4l5CAr5blWfeyRkXbMGMpumZrA9nho3NPm/WL4MMe2xQO5VlZRjx9eyLWtrcIsIynIT/EC2LsjMLgZVnCz1OEzzMKBONx27goCryLysvhwyOQcbtoCXe6ElZAdQtHjZGOML0gkX1EJJVNZ84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApsHF9Gz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6132C4CED3;
+	Wed,  6 Nov 2024 13:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898653;
-	bh=8v3UEVbsAXkRsHJ5uu+TPxEcfo/PcY0p0WQYo4Nn4VE=;
+	s=korg; t=1730898548;
+	bh=899Atn33pVJHEskxn4LZcwDt3Kj4B/GH15s5dX9sKGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFHtKyIa/3aRfeUwLwpoStUYYYNay1gE8lG1EcszXH7NL/uy7pyrq18SIeeUjhW4L
-	 dQq+ylDtZic5zETOo29Kby0MGWQ6DAx4XYLHiwOd71wTEw0/hCt9/Ekyk9em760t+L
-	 n0vteA0Q30k1VyWD1pTUvkXwc5MstIOUey3CjW4g=
+	b=ApsHF9Gz8QsHBsnDY40my5ryqzDpfVJ6L7f2e90RHMloBxHFHnZMT9wjFV1xxqXLO
+	 0fNxv0uo/3quR3VSDank3pcz0ZFswjHZLmQcUHnR4b/1YzLUVZwRLEnEWKlGMZrbfk
+	 R+j5y7Fhyry3HyFcckDrDUmKLavQ+xaawuk6tL54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lamome Julien <julien.lamome@wanadoo.fr>,
 	Hans de Goede <hdegoede@redhat.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 275/462] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
-Date: Wed,  6 Nov 2024 13:02:48 +0100
-Message-ID: <20241106120338.319224181@linuxfoundation.org>
+Subject: [PATCH 5.4 276/462] ACPI: resource: Add Asus ExpertBook B2502CVA to irq1_level_low_skip_override[]
+Date: Wed,  6 Nov 2024 13:02:49 +0100
+Message-ID: <20241106120338.342944098@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -68,21 +67,19 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
+commit 056301e7c7c886f96d799edd36f3406cc30e1822 upstream.
 
-Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
+Like other Asus ExpertBook models the B2502CVA has its keybopard IRQ (1)
 described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
 which breaks the keyboard.
 
-Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
+Add the B2502CVA to the irq1_level_low_skip_override[] quirk table to fix
 this.
 
-Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
-Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217760
 Cc: All applicable <stable@vger.kernel.org>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
+Link: https://patch.msgid.link/20240927141606.66826-4-hdegoede@redhat.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -91,20 +88,20 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -443,6 +443,13 @@ static const struct dmi_system_id asus_l
+@@ -495,6 +495,13 @@ static const struct dmi_system_id asus_l
  		},
  	},
  	{
-+		/* Asus Vivobook X1704VAP */
++		/* Asus ExpertBook B2502CVA */
 +		.matches = {
 +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CVA"),
 +		},
 +	},
 +	{
- 		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
+ 		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
  		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
 
 
 
