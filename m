@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522549BE79F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF419BE8B9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A3A1F21440
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1061283F67
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DFA1DEFF5;
-	Wed,  6 Nov 2024 12:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22581DF995;
+	Wed,  6 Nov 2024 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRX23/vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzTWFKRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6547B1922DB;
-	Wed,  6 Nov 2024 12:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC601DED58;
+	Wed,  6 Nov 2024 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895359; cv=none; b=bDXRS/9Wf9GvXQfSVj/IzJs9R46cW9ThApgFQAiuf0yTWlI87spkpQX8w7BenIdF1L3qXqLA6k1KbBZVoKTc68OUlqMIsGTt1bZo5kr15+9lDzPicrN+Tp0+lcVdjLoFvvzEg7bC9zdks4PRWJt6qqbtnaqwz5IQo/ohKPof09M=
+	t=1730896033; cv=none; b=J7saQ6ehG9BCjnnk1V+M5CKcqhutaRByWwKvVybJ8/jztssZVKUbA1WRCBp6bPrWFitdWeK0aIT4Wm7FJLj0b/Qix5oQqIzh1AhW/XHbQrxTj4enNO1+tQL5Oe6nWUJ20jaaZakLA3MOzcs1OaD9rr6yV55XthhV5UOSor0dXnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895359; c=relaxed/simple;
-	bh=K28JGaKCgzSTdcTzisCw7nq/fPurKga+utzu26L0d1o=;
+	s=arc-20240116; t=1730896033; c=relaxed/simple;
+	bh=EiYADMrWp0EBzf+Z5Nocq/ohorrjBqJ5KkCLmJgvZx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yix237Whh7PRxBC5sZPCDBHVW7daM6csx7R/LTQY2ZIKNanTWWuXCa6krsu8HFRKMxUqPftzuyDZ7xZXMnoe9c2DouYpcFk55S+DzphzP9Uo8lK6huxF2rD9q0Kg+gGM2+f/XEfIYqOEF9hpxDWvTYiu/bnPTRfkvXKjczMmNHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRX23/vm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4FDC4CECD;
-	Wed,  6 Nov 2024 12:15:58 +0000 (UTC)
+	 MIME-Version; b=CAm6WH/KVe1G1+l49QjZPfStWe3Y+FltES3ty2/A3hSEs5mYu/VPZQlYw9rsw801hHoHz2Uw/hsiA/+Je3hjgi48xXK0FQBtgcAqKrwhJ2vWYCkD1Ps3JeMpFZ0SltR9q+jwmH78KMXsnz7f4JKXs5ROYNz31tb+1QwUILv+eh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzTWFKRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD894C4CECD;
+	Wed,  6 Nov 2024 12:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895359;
-	bh=K28JGaKCgzSTdcTzisCw7nq/fPurKga+utzu26L0d1o=;
+	s=korg; t=1730896033;
+	bh=EiYADMrWp0EBzf+Z5Nocq/ohorrjBqJ5KkCLmJgvZx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRX23/vmaAN1m9s7oVDDzt7LiImQFZ+4OGlBStyp/Ly037aNJOouegiHnETIbK9Dd
-	 Np27oF8Ooy98OXiYf/1IthFs805minJN3EbKEa9zJJX6hgCjUjjgo+CexN7bh7SD95
-	 iqghca3HmGGsTlOtjcnTJ5yxn0Zhp+XR6FzPxC04=
+	b=WzTWFKRy05T0wYSNVFHwb2fte7qreZwAang1pT6m8btTSniZw0s0CkyQzo4SZQnqR
+	 TURbIKHpBh98Kgl3vJAQ5rTj2YHszKRvPqCCIeVouugvsLhVhRY59tLyvte8ikfweF
+	 +gLdMHnX+P3FCJOOwfr7AzcfBtJxs6/ZxaEl6LZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 191/350] ext4: aovid use-after-free in ext4_ext_insert_extent()
-Date: Wed,  6 Nov 2024 13:01:59 +0100
-Message-ID: <20241106120325.679275104@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 067/245] gpio: sloppy-logic-analyzer: Check for error code from devm_mutex_init() call
+Date: Wed,  6 Nov 2024 13:02:00 +0100
+Message-ID: <20241106120320.856680549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit a164f3a432aae62ca23d03e6d926b122ee5b860d upstream.
+[ Upstream commit 90bad749858cf88d80af7c2b23f86db4f7ad61c2 ]
 
-As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is
-reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and
-cause UAF. Below is a sample trace with dummy values:
+Even if it's not critical, the avoidance of checking the error code
+from devm_mutex_init() call today diminishes the point of using devm
+variant of it. Tomorrow it may even leak something. Add the missed
+check.
 
-ext4_ext_insert_extent
-  path = *ppath = 2000
-  ext4_ext_create_new_leaf(ppath)
-    ext4_find_extent(ppath)
-      path = *ppath = 2000
-      if (depth > path[0].p_maxdepth)
-            kfree(path = 2000);
-            *ppath = path = NULL;
-      path = kcalloc() = 3000
-      *ppath = 3000;
-      return path;
-  /* here path is still 2000, UAF! */
-  eh = path[depth].p_hdr
-
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_ext_insert_extent+0x26d4/0x3330
-Read of size 8 at addr ffff8881027bf7d0 by task kworker/u36:1/179
-CPU: 3 UID: 0 PID: 179 Comm: kworker/u6:1 Not tainted 6.11.0-rc2-dirty #866
-Call Trace:
- <TASK>
- ext4_ext_insert_extent+0x26d4/0x3330
- ext4_ext_map_blocks+0xe22/0x2d40
- ext4_map_blocks+0x71e/0x1700
- ext4_do_writepages+0x1290/0x2800
-[...]
-
-Allocated by task 179:
- ext4_find_extent+0x81c/0x1f70
- ext4_ext_map_blocks+0x146/0x2d40
- ext4_map_blocks+0x71e/0x1700
- ext4_do_writepages+0x1290/0x2800
- ext4_writepages+0x26d/0x4e0
- do_writepages+0x175/0x700
-[...]
-
-Freed by task 179:
- kfree+0xcb/0x240
- ext4_find_extent+0x7c0/0x1f70
- ext4_ext_insert_extent+0xa26/0x3330
- ext4_ext_map_blocks+0xe22/0x2d40
- ext4_map_blocks+0x71e/0x1700
- ext4_do_writepages+0x1290/0x2800
- ext4_writepages+0x26d/0x4e0
- do_writepages+0x175/0x700
-[...]
-==================================================================
-
-So use *ppath to update the path to avoid the above problem.
-
-Reported-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Closes: https://lore.kernel.org/r/ZqyL6rmtwl6N4MWR@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
-Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240822023545.1994557-7-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7828b7bbbf20 ("gpio: add sloppy logic analyzer using polling")
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241030174132.2113286-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-sloppy-logic-analyzer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2099,6 +2099,7 @@ prepend:
- 				       ppath, newext);
- 	if (err)
- 		goto cleanup;
-+	path = *ppath;
- 	depth = ext_depth(inode);
- 	eh = path[depth].p_hdr;
+diff --git a/drivers/gpio/gpio-sloppy-logic-analyzer.c b/drivers/gpio/gpio-sloppy-logic-analyzer.c
+index aed6d1f6cfc30..6440d55bf2e1f 100644
+--- a/drivers/gpio/gpio-sloppy-logic-analyzer.c
++++ b/drivers/gpio/gpio-sloppy-logic-analyzer.c
+@@ -235,7 +235,9 @@ static int gpio_la_poll_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
  
+-	devm_mutex_init(dev, &priv->blob_lock);
++	ret = devm_mutex_init(dev, &priv->blob_lock);
++	if (ret)
++		return ret;
+ 
+ 	fops_buf_size_set(priv, GPIO_LA_DEFAULT_BUF_SIZE);
+ 
+-- 
+2.43.0
+
 
 
 
