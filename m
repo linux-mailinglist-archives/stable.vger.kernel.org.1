@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8B79BEBCF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B619BE929
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8BAEB24A23
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60161F2234E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D41E1EF09E;
-	Wed,  6 Nov 2024 12:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEF71DE3B8;
+	Wed,  6 Nov 2024 12:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdrzcIIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoCUyC9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F281EF092;
-	Wed,  6 Nov 2024 12:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD985198E96;
+	Wed,  6 Nov 2024 12:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897307; cv=none; b=fFQsSnUUBviWRA9FrWkKzsqWpfND5HVdwG2uR2/PoXKOqq6JCbba4mj8EDO41Rh8uVXQA0UK72dR/lDc7QSB1aKqIy2mtUJCDd4y20CB3djUym2jNkyf+HTYYq3HusXOHVAvM7ZZ48x6UdbhWJUuslVNBtRNAFaW4Qv97Tbc2KQ=
+	t=1730896271; cv=none; b=HoxfehV1YYCUriEaGujmVfTMtb9dxA7tnb3N6bMRRYifTNtq7ZXfaBYelDc523Ey/CYMBr/lyK8XoaaytversCZX5sq/oZDu/9FJ7GPjjiRLznvwjMom0vldsZXyIbAZtoSqNMMycX+voIaaSY4g4DWB1EFdkOh+gUhuOaFF4AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897307; c=relaxed/simple;
-	bh=w38eJx8AUCs9VMu6dTxHt6pj/H93b5RjIbz9Wr5390s=;
+	s=arc-20240116; t=1730896271; c=relaxed/simple;
+	bh=3xgvypl63aFfPZJFs2006wfYdCWtDhBmsnL/lMMn2aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx/53eevKA7YO4wOxr6ZUr/DqMCa7thF9767RneSTRvPUPENYz9Ob8xCTIiibppjhfZflo/jvmh/Fej7SchU7JNWMUTMWZw/1TmtxWmnt1NZniuyo9hOdMkq/NCiaNXqMPskhI7fQlQlCloIdfBxT73WtyA+4dZIhn+2FRylSYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdrzcIIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79332C4CECD;
-	Wed,  6 Nov 2024 12:48:26 +0000 (UTC)
+	 MIME-Version; b=jCdgJto7VZCdXZwW3ab/K8nZw7cUe1BSmCjUq1OSXL376Ks0iC+EeodL5D5v3QvduF/V52TkfIsg2MuJpuW8UBuHBGlsQm/sw82mtpTPNYJCwh/JEglQKjLZnfzDVGRrV3wByuPLyxI2ttjNN3CUOJlGllZwEy5BMmirL7Md7Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoCUyC9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA95C4CECD;
+	Wed,  6 Nov 2024 12:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897306;
-	bh=w38eJx8AUCs9VMu6dTxHt6pj/H93b5RjIbz9Wr5390s=;
+	s=korg; t=1730896271;
+	bh=3xgvypl63aFfPZJFs2006wfYdCWtDhBmsnL/lMMn2aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdrzcIIbZo9+cYZbOR1+yfQkENmu3cNBA90tay45Q5karg01o4evcMCl4Ha6gS58J
-	 XYBlumtRleTa93YSkS2jAPbr2boXBTmhj2Q8M3xjkDJwfLm2HTqy4knWFleoAF42HN
-	 OUoEDAQK0ZnsnTROy2vYkaFe1d8/70xQq3kYNSHY=
+	b=VoCUyC9UxiH5yDa7ogEyw+sHUUQjMiXp5xXdeTMKj45PlH/O8BArkYJfCRkXn1omT
+	 mg8IAbNoiJSZjKi+VYDuQHcjyj+e68tsMDpWK5arN5hzJV2kSEtUDCsUFE6pecxV2I
+	 fTe9NYsPFFBh0R/LfWxM+PS75gp8o9hBq7EIWMt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/151] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
-Date: Wed,  6 Nov 2024 13:03:18 +0100
-Message-ID: <20241106120309.123402662@linuxfoundation.org>
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.11 146/245] mmc: sdhci-pci-gli: GL9767: Fix low power mode in the SD Express process
+Date: Wed,  6 Nov 2024 13:03:19 +0100
+Message-ID: <20241106120322.820943243@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
+commit c4dedaaeb3f78d3718e9c1b1e4d972a6b99073cd upstream.
 
-Sync iterator conditions with ieee80211_iter_keys_rcu.
+When starting the SD Express process, the low power negotiation mode will
+be disabled, so we need to re-enable it after switching back to SD mode.
 
-Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e92aec2efa0 ("mmc: sdhci-pci-gli: Add support SD Express card for GL9767")
+Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Cc: stable@vger.kernel.org
+Message-ID: <20241025060017.1663697-2-benchuanggli@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index a2db0585dce0d..f5f1eb87797a4 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -989,6 +989,26 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->key_mtx);
- }
- 
-+static void
-+ieee80211_key_iter(struct ieee80211_hw *hw,
-+		   struct ieee80211_vif *vif,
-+		   struct ieee80211_key *key,
-+		   void (*iter)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				struct ieee80211_key_conf *key,
-+				void *data),
-+		   void *iter_data)
-+{
-+	/* skip keys of station in removal process */
-+	if (key->sta && key->sta->removed)
-+		return;
-+	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
-+		return;
-+	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
-+	     &key->conf, iter_data);
-+}
-+
- void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 			 struct ieee80211_vif *vif,
- 			 void (*iter)(struct ieee80211_hw *hw,
-@@ -1008,16 +1028,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
--			iter(hw, &sdata->vif,
--			     key->sta ? &key->sta->sta : NULL,
--			     &key->conf, iter_data);
-+			ieee80211_key_iter(hw, vif, key, iter, iter_data);
- 	} else {
- 		list_for_each_entry(sdata, &local->interfaces, list)
- 			list_for_each_entry_safe(key, tmp,
- 						 &sdata->key_list, list)
--				iter(hw, &sdata->vif,
--				     key->sta ? &key->sta->sta : NULL,
--				     &key->conf, iter_data);
-+				ieee80211_key_iter(hw, &sdata->vif, key,
-+						   iter, iter_data);
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -1068,6 +1068,9 @@ static int gl9767_init_sd_express(struct
+ 		sdhci_writew(host, value, SDHCI_CLOCK_CONTROL);
  	}
- 	mutex_unlock(&local->key_mtx);
- }
-@@ -1035,17 +1052,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
- {
- 	struct ieee80211_key *key;
  
--	list_for_each_entry_rcu(key, &sdata->key_list, list) {
--		/* skip keys of station in removal process */
--		if (key->sta && key->sta->removed)
--			continue;
--		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
--			continue;
--
--		iter(hw, &sdata->vif,
--		     key->sta ? &key->sta->sta : NULL,
--		     &key->conf, iter_data);
--	}
-+	list_for_each_entry_rcu(key, &sdata->key_list, list)
-+		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
- }
++	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
++	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
+ 	gl9767_vhs_read(pdev);
  
- void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
--- 
-2.43.0
-
+ 	return 0;
 
 
 
