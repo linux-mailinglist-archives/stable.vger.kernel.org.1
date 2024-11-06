@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-90940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8749BEBBD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2949BEC59
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13AB728513C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89FD1B253EF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA041EE026;
-	Wed,  6 Nov 2024 12:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368071F4FC4;
+	Wed,  6 Nov 2024 12:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbBYDLpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYRlR3ho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A88A1DFE38;
-	Wed,  6 Nov 2024 12:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F0F1FB883;
+	Wed,  6 Nov 2024 12:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897265; cv=none; b=HPMQWf6zYfMOh6sFzpJQKaAuMSzMU2mnuMi6sAJH1CzniebJbpcNgqAt9zeQ/aN50r8pUmoh+4DhAVtT8cV4gzCyAkPjYdeRg+yGmP99Yqxke91TusCu2X+ZAM8lhtKOZ7k7ODYZkiWcBhfkNBDLxglUM7nq8U6s/SK1U/yE37s=
+	t=1730897685; cv=none; b=IVSESM2Y8V8EkjJ+5gEMQK3A+bnjWgG7NzqYXRW3KWxgzd4uttMOPLagSaCibFAqkpmyWRYeiWKFnsRM6adhVcOisOvgq8McYrhlrnL79o9c7st0mBECrEEshBLXLa/w4HNPei3j/OM3eUWdxcDMRnDW6nuP3MkIGjdy+umzXZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897265; c=relaxed/simple;
-	bh=kNsFbjvm/pOIOeCtdQEavRI0qEQSwkpsH20uK7RXBlk=;
+	s=arc-20240116; t=1730897685; c=relaxed/simple;
+	bh=YjNjddJDYBVJ2J75LflDE0bJJxrCmmh1HdaeAoYFVW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOt2/56iW+wwpjA88FisefbWgyHDNeqF5TWezoALIWiNS87EUBiEMCDjH5G3tKJRo4r7nj8PyeEOgnWLw+UzVdKmlSf+HcxeuSDGfel1Ouypm7G+KMsgsCJOA6U0/lXsVWAhjF8gBlz9dzc2ULtQrsRC9GxDA1ctGl+ZjT4Wjxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbBYDLpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BD8C4CECD;
-	Wed,  6 Nov 2024 12:47:44 +0000 (UTC)
+	 MIME-Version; b=cLsnjCk/s1CkYPUOUCcAtkam+NYqNr2HHw8TU0GtCz+Yn1BlkXkuIqXpr6WIU/xFpvTfh7LlLMY5pz5pUO/lNQ7S6aQs3VpjtLWBzQLxJVz2xKpkzqlPH+Qun+6glzrOKxHQFakCL+eQ1UvXnYTefBYAl5fbFk7zT/hfsGTXp4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYRlR3ho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE7CC4CECD;
+	Wed,  6 Nov 2024 12:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897265;
-	bh=kNsFbjvm/pOIOeCtdQEavRI0qEQSwkpsH20uK7RXBlk=;
+	s=korg; t=1730897684;
+	bh=YjNjddJDYBVJ2J75LflDE0bJJxrCmmh1HdaeAoYFVW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbBYDLpw7OOCJ7SegO2Hl5SE73cMt5jl55+HBXedTdXlErBTTze2eJsljSAc2tpag
-	 E1AIQ7GHFq3UiWA9vR4B0WBea0Oy1M6DRVl8InAOjRVNVx/MM2Gjr40MarwExPTnDD
-	 0y+mmVHd5tQX7HLTbPAug2/l4rfQlWPJJJF1YgJc=
+	b=VYRlR3hog7j5ivnqOeKLnZJAOf8Cd6Zme+NF41YA2d9FWCmoOsDJa9VS2cordO3i1
+	 2i7RUkKIGwPkRtAOiBlO8Kv0bqJgP6eOj3QXBOV+P6n4pKB9ujPyax5LBzdGzjSBTO
+	 ZX6uMWKFysCcQnz00hpeiTEBqRCin7mr3Chnhc6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 123/126] drm/amd/display: Skip on writeback when its not applicable
+	Peter Mann <peter.mann@sh.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 136/151] io_uring/rw: fix missing NOWAIT check for O_DIRECT start write
 Date: Wed,  6 Nov 2024 13:05:24 +0100
-Message-ID: <20241106120309.381491216@linuxfoundation.org>
+Message-ID: <20241106120312.598770549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ecedd99a9369fb5cde601ae9abd58bca2739f1ae upstream.
+[ Upstream commit 1d60d74e852647255bd8e76f5a22dc42531e4389 ]
 
-[WHY]
-dynamic memory safety error detector (KASAN) catches and generates error
-messages "BUG: KASAN: slab-out-of-bounds" as writeback connector does not
-support certain features which are not initialized.
+When io_uring starts a write, it'll call kiocb_start_write() to bump the
+super block rwsem, preventing any freezes from happening while that
+write is in-flight. The freeze side will grab that rwsem for writing,
+excluding any new writers from happening and waiting for existing writes
+to finish. But io_uring unconditionally uses kiocb_start_write(), which
+will block if someone is currently attempting to freeze the mount point.
+This causes a deadlock where freeze is waiting for previous writes to
+complete, but the previous writes cannot complete, as the task that is
+supposed to complete them is blocked waiting on starting a new write.
+This results in the following stuck trace showing that dependency with
+the write blocked starting a new write:
 
-[HOW]
-Skip them when connector type is DRM_MODE_CONNECTOR_WRITEBACK.
+task:fio             state:D stack:0     pid:886   tgid:886   ppid:876
+Call trace:
+ __switch_to+0x1d8/0x348
+ __schedule+0x8e8/0x2248
+ schedule+0x110/0x3f0
+ percpu_rwsem_wait+0x1e8/0x3f8
+ __percpu_down_read+0xe8/0x500
+ io_write+0xbb8/0xff8
+ io_issue_sqe+0x10c/0x1020
+ io_submit_sqes+0x614/0x2110
+ __arm64_sys_io_uring_enter+0x524/0x1038
+ invoke_syscall+0x74/0x268
+ el0_svc_common.constprop.0+0x160/0x238
+ do_el0_svc+0x44/0x60
+ el0_svc+0x44/0xb0
+ el0t_64_sync_handler+0x118/0x128
+ el0t_64_sync+0x168/0x170
+INFO: task fsfreeze:7364 blocked for more than 15 seconds.
+      Not tainted 6.12.0-rc5-00063-g76aaf945701c #7963
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3199
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+with the attempting freezer stuck trying to grab the rwsem:
+
+task:fsfreeze        state:D stack:0     pid:7364  tgid:7364  ppid:995
+Call trace:
+ __switch_to+0x1d8/0x348
+ __schedule+0x8e8/0x2248
+ schedule+0x110/0x3f0
+ percpu_down_write+0x2b0/0x680
+ freeze_super+0x248/0x8a8
+ do_vfs_ioctl+0x149c/0x1b18
+ __arm64_sys_ioctl+0xd0/0x1a0
+ invoke_syscall+0x74/0x268
+ el0_svc_common.constprop.0+0x160/0x238
+ do_el0_svc+0x44/0x60
+ el0_svc+0x44/0xb0
+ el0t_64_sync_handler+0x118/0x128
+ el0t_64_sync+0x168/0x170
+
+Fix this by having the io_uring side honor IOCB_NOWAIT, and only attempt a
+blocking grab of the super block rwsem if it isn't set. For normal issue
+where IOCB_NOWAIT would always be set, this returns -EAGAIN which will
+have io_uring core issue a blocking attempt of the write. That will in
+turn also get completions run, ensuring forward progress.
+
+Since freezing requires CAP_SYS_ADMIN in the first place, this isn't
+something that can be triggered by a regular user.
+
+Cc: stable@vger.kernel.org # 5.10+
+Reported-by: Peter Mann <peter.mann@sh.cz>
+Link: https://lore.kernel.org/io-uring/38c94aec-81c9-4f62-b44e-1d87f5597644@sh.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ io_uring/rw.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2990,6 +2990,10 @@ static int dm_resume(void *handle)
- 	/* Do mst topology probing after resuming cached state*/
- 	drm_connector_list_iter_begin(ddev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-+
-+		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+			continue;
-+
- 		aconnector = to_amdgpu_dm_connector(connector);
- 		if (aconnector->dc_link->type != dc_connection_mst_branch ||
- 		    aconnector->mst_port)
-@@ -5722,6 +5726,9 @@ get_highest_refresh_rate_mode(struct amd
- 		&aconnector->base.probed_modes :
- 		&aconnector->base.modes;
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 0a0c1c9db0f90..e90404c812fa2 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -860,6 +860,25 @@ int io_read(struct io_kiocb *req, unsigned int issue_flags)
+ 	return kiocb_done(req, ret, issue_flags);
+ }
  
-+	if (aconnector->base.connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+		return NULL;
++static bool io_kiocb_start_write(struct io_kiocb *req, struct kiocb *kiocb)
++{
++	struct inode *inode;
++	bool ret;
 +
- 	if (aconnector->freesync_vid_base.clock != 0)
- 		return &aconnector->freesync_vid_base;
- 
-@@ -8242,6 +8249,9 @@ static void amdgpu_dm_commit_audio(struc
- 			continue;
- 
- 	notify:
-+		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+			continue;
++	if (!(req->flags & REQ_F_ISREG))
++		return true;
++	if (!(kiocb->ki_flags & IOCB_NOWAIT)) {
++		kiocb_start_write(kiocb);
++		return true;
++	}
 +
- 		aconnector = to_amdgpu_dm_connector(connector);
++	inode = file_inode(kiocb->ki_filp);
++	ret = sb_start_write_trylock(inode->i_sb);
++	if (ret)
++		__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
++	return ret;
++}
++
+ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ {
+ 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
+@@ -913,8 +932,8 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 		return ret;
+ 	}
  
- 		mutex_lock(&adev->dm.audio_lock);
+-	if (req->flags & REQ_F_ISREG)
+-		kiocb_start_write(kiocb);
++	if (unlikely(!io_kiocb_start_write(req, kiocb)))
++		return -EAGAIN;
+ 	kiocb->ki_flags |= IOCB_WRITE;
+ 
+ 	if (likely(req->file->f_op->write_iter))
+-- 
+2.43.0
+
 
 
 
