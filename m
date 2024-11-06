@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECD89BE828
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D60C9BE951
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63ABF284C30
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA253B22571
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E221DF73E;
-	Wed,  6 Nov 2024 12:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519A41DF726;
+	Wed,  6 Nov 2024 12:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZLlQrt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTZFWben"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44D81DF726;
-	Wed,  6 Nov 2024 12:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7081DE3B8;
+	Wed,  6 Nov 2024 12:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895700; cv=none; b=TOLgJtm9k8Fv7V+9bim9eXxwBhExYZrAP46mXiDMfT10g7Cca7EfBc6EwIyGHZx6+9psCV21NUr3fj7z7HqcGeDVO4n4Bgn2WaWl6ybTCd0Po4LglKtpoOOet/YXnOoHPAeRnXPIaqnAg4nDwAENxtaqn41LEQYtLVrW23pHxrk=
+	t=1730896376; cv=none; b=eMrC468PrmjIgsJZ78anngx/d2FmknXFembqhWan7dzPdzZysVrwQSgWv0Gbc4ZgncN7LL8zu0Fkd0TPqaPIlI0bpkDZhag20DlTReMtxgl+xwi9UOK1eJfUcb0kB+/vhxrNXL59EMrcYIrOZsrhO2rl8raXrYoLRpJIuDI7gWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895700; c=relaxed/simple;
-	bh=m37pfgZv7fQgq/egABhUI3SeSzNcTXUhlnJWrYWsrLY=;
+	s=arc-20240116; t=1730896376; c=relaxed/simple;
+	bh=W8VCOSJpp21VMG53nEPsjHDd1LQzVAjn7L6XfYHCR7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSFPRGPkEOeCjhJXeQEoSuMb0el6noyRuAdvjForC/PAH4puFsMekYpwahAJNWZuMjEyb47dXPKKDHi9qRDGqFF8uuKQ0NsuuheIb/NiIJZTkxKYKL2Kp9RNZ9Jlhr58GTP1gL9rZ1vrhgdGFpGA0nKAyNOKTGmcObYAFxDtgcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZLlQrt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4661BC4CECD;
-	Wed,  6 Nov 2024 12:21:40 +0000 (UTC)
+	 MIME-Version; b=hZ2cXjKIh/EdCcq6nO56Yixe7/9WRrUrazUZiXgAkqbmjnr1IEjKlIsGVjUaE6qSKf2KSnsCuznLQUVdAh2BR/QykVOSXzRODqi0OeyF8OWZDY17sDFeNCaWz73bhtykVrCXETS1twLzJb9DLgMUtg2hn2D1jn4MXmCj/SPez4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTZFWben; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848ADC4CED4;
+	Wed,  6 Nov 2024 12:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895700;
-	bh=m37pfgZv7fQgq/egABhUI3SeSzNcTXUhlnJWrYWsrLY=;
+	s=korg; t=1730896375;
+	bh=W8VCOSJpp21VMG53nEPsjHDd1LQzVAjn7L6XfYHCR7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZLlQrt2gOOw7HVt37eifulzzFTrGGhEW52JL1a/gKU7yZt37cPanmEibl6EGnI1D
-	 b8ujxxpzutYaatKWZHgw0CkKPt1JOeGo62Z3p+wC5U/j4VBDvmlzGPBCOlZ3KA+DYs
-	 GQwqJthrUslytR/25tS9rQC9jHVCQPjJvGxnKreM=
+	b=YTZFWbenX/1ZjhJEPqqQBG6kW6+fwRZSYHyNcqmSth2MDJpQn2kUP53xHoq5zKSsI
+	 zcZW8bRQE2ToWcjmPjBx8cvtVoSRQJV1A6DDzQIM1+NcW05Ll1IwfXnarHAjR6LxoF
+	 cvT4pc5IBrpmkmG+VOoSSq8O/4eZLzx2IjY9ZNAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dung Cao <dung@os.amperecomputing.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 306/350] KVM: s390: gaccess: Cleanup access to guest pages
+Subject: [PATCH 6.11 181/245] mctp i2c: handle NULL header address
 Date: Wed,  6 Nov 2024 13:03:54 +0100
-Message-ID: <20241106120328.346229341@linuxfoundation.org>
+Message-ID: <20241106120323.692854983@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit bad13799e0305deb258372b7298a86be4c78aaba ]
+[ Upstream commit 01e215975fd80af81b5b79f009d49ddd35976c13 ]
 
-Introduce a helper function for guest frame access.
+daddr can be NULL if there is no neighbour table entry present,
+in that case the tx packet should be dropped.
 
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-4-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+saddr will usually be set by MCTP core, but check for NULL in case a
+packet is transmitted by a different protocol.
+
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dung Cao <dung@os.amperecomputing.com>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/net/mctp/mctp-i2c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index d4fe5db5984dd..6ba82fe0776f8 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -866,6 +866,20 @@ static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
- 	return 0;
- }
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 4dc057c121f5d..e70fb66879941 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -588,6 +588,9 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	if (len > MCTP_I2C_MAXMTU)
+ 		return -EMSGSIZE;
  
-+static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
-+			     void *data, unsigned int len)
-+{
-+	const unsigned int offset = offset_in_page(gpa);
-+	const gfn_t gfn = gpa_to_gfn(gpa);
-+	int rc;
++	if (!daddr || !saddr)
++		return -EINVAL;
 +
-+	if (mode == GACC_STORE)
-+		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
-+	else
-+		rc = kvm_read_guest_page(kvm, gfn, data, offset, len);
-+	return rc;
-+}
-+
- int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
-@@ -896,10 +910,7 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
--		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
--		else
--			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpas[idx], data, fragment_len);
- 		len -= fragment_len;
- 		data += fragment_len;
- 	}
-@@ -920,10 +931,7 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 	while (len && !rc) {
- 		gpa = kvm_s390_real_to_abs(vcpu, gra);
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
--		if (mode)
--			rc = write_guest_abs(vcpu, gpa, data, fragment_len);
--		else
--			rc = read_guest_abs(vcpu, gpa, data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpa, data, fragment_len);
- 		len -= fragment_len;
- 		gra += fragment_len;
- 		data += fragment_len;
+ 	lldst = *((u8 *)daddr);
+ 	llsrc = *((u8 *)saddr);
+ 
 -- 
 2.43.0
 
