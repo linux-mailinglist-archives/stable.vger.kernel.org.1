@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA4F9BE96D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A789E9BEB72
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7FEE1F23651
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D364B2331D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662FE1DFD90;
-	Wed,  6 Nov 2024 12:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CC91F76D9;
+	Wed,  6 Nov 2024 12:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bmF5CyV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIFGVNNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223A81DF98C;
-	Wed,  6 Nov 2024 12:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28281E04A8;
+	Wed,  6 Nov 2024 12:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896445; cv=none; b=a42OzaRKIRm36a66xJlf+cTipMtgxOfd6Htcdw4V0dkjcjPwp8Sl7KQ8yMoBfM8mDVuCK+NfplGnNE4h2N1u79PA9a875lM2Fo6kbPfIciQ6P/bx4bR+tS0MJDg2mXjO9qGNFJnRqNHv1CNqbdGVSumoWMcGTUV9djVGndwhXRY=
+	t=1730897073; cv=none; b=CI5Cwjjg+1UHNwpSTPgIgTLuZoWsbZJwnNKzQ29ZRxBtm6COWKr3SVmKdoxgVBa5gZVkdsDbL22JS8++Q98LwIulZ1kw1EFIlbRlEb5y3sB8ycVWcUA/DfQe+Ce10ekr1KUi/PfeZ4lKDR3MaQ3Os3CPNrk/I3eHKk19iuOsqy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896445; c=relaxed/simple;
-	bh=28DNzc9ndE7w33c6uknGSzl5A9ikmllB2d8S+a25Bp8=;
+	s=arc-20240116; t=1730897073; c=relaxed/simple;
+	bh=WAkKt4QbBtD/zk+NgXalnvUKrHp+d3yDRab/V/bBc7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIY+gdYgU+OFBro3rAHp7SRnV+VkXp+Wj3Ftwa8p9SNiDDwI3WIdOQp/tOoZurH3mBslfogORpYuCBbW7qx88K3bzT6c266T8EzRm9g7oXh1xv2ofNQyjdEOAAOAIFSMYRN9Dxx5HQIpSm/KLFJXWLUY7wpiRmjeguJ0R5Qj8wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bmF5CyV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DD6C4CED4;
-	Wed,  6 Nov 2024 12:34:04 +0000 (UTC)
+	 MIME-Version; b=m3N6imANBfP7+tFtS9NClcyMxLW50V5/IPdlin1BCPjMtMr4yjQSFlST8aJMgL9qot9o2IMRAqUrhrVLlDKgt+5toYo9ADDUw1sf8IUc4BlNa1JrVakrQO2MktdE5KmFUNp8DxpN79NqiqqGeIJmf7mg85mM12cj/AjV+7sfyRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIFGVNNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A540C4CED6;
+	Wed,  6 Nov 2024 12:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896445;
-	bh=28DNzc9ndE7w33c6uknGSzl5A9ikmllB2d8S+a25Bp8=;
+	s=korg; t=1730897073;
+	bh=WAkKt4QbBtD/zk+NgXalnvUKrHp+d3yDRab/V/bBc7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bmF5CyVnRaKJd0AkdObhfgcJnvEG3SjlNcGU8EYDtS57zN4xIwV7Dbmx70y2ddg0
-	 Yom8mp0whbmxZHy0GIZtucx8J/5HWnqSbmaDxPrH9BpyBN4FEUcIYC72c0QAHW+jz4
-	 c4w9CbkHsTZBgjNHuHS7aOYooKsND0alqsN8xxXo=
+	b=GIFGVNNrZNyUcVdvo+/BgTK0woa88JC1CH3g+w7bCjlJcAZewSKNNkRKu3myW86Bx
+	 Z6vpyE158RljbGqCcti4JfXFxTsr7fgIoHxB8TA5FHq7aK8P6OO6XXLYuPZEnDgOKw
+	 QK08K7Vi8T/24jiVh4ua01tg0NrJpF74LIbsLezc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanchu Xie <yuanchu@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 205/245] mm: multi-gen LRU: ignore non-leaf pmd_young for force_scan=true
+Subject: [PATCH 6.1 057/126] scsi: scsi_transport_fc: Allow setting rport state to current state
 Date: Wed,  6 Nov 2024 13:04:18 +0100
-Message-ID: <20241106120324.291084148@linuxfoundation.org>
+Message-ID: <20241106120307.638966643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanchu Xie <yuanchu@google.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit bceeeaed4817ba7ad9013b4116c97220a60fcf7c ]
+[ Upstream commit d539a871ae47a1f27a609a62e06093fa69d7ce99 ]
 
-When non-leaf pmd accessed bits are available, MGLRU page table walks can
-clear the non-leaf pmd accessed bit and ignore the accessed bit on the pte
-if it's on a different node, skipping a generation update as well.  If
-another scan occurs on the same node as said skipped pte.
+The only input fc_rport_set_marginal_state() currently accepts is
+"Marginal" when port_state is "Online", and "Online" when the port_state
+is "Marginal". It should also allow setting port_state to its current
+state, either "Marginal or "Online".
 
-The non-leaf pmd accessed bit might remain cleared and the pte accessed
-bits won't be checked.  While this is sufficient for reclaim-driven aging,
-where the goal is to select a reasonably cold page, the access can be
-missed when aging proactively for workingset estimation of a node/memcg.
-
-In more detail, get_pfn_folio returns NULL if the folio's nid != node
-under scanning, so the page table walk skips processing of said pte.  Now
-the pmd_young flag on this pmd is cleared, and if none of the pte's are
-accessed before another scan occurs on the folio's node, the pmd_young
-check fails and the pte accessed bit is skipped.
-
-Since force_scan disables various other optimizations, we check force_scan
-to ignore the non-leaf pmd accessed bit.
-
-Link: https://lkml.kernel.org/r/20240813163759.742675-1-yuanchu@google.com
-Signed-off-by: Yuanchu Xie <yuanchu@google.com>
-Acked-by: Yu Zhao <yuzhao@google.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ddd6d8e975b1 ("mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Link: https://lore.kernel.org/r/20240917230643.966768-1-bmarzins@redhat.com
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c | 4 ++--
+ drivers/scsi/scsi_transport_fc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 128f307da6eea..b1f88638c5ab4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3456,7 +3456,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 			goto next;
- 
- 		if (!pmd_trans_huge(pmd[i])) {
--			if (should_clear_pmd_young())
-+			if (!walk->force_scan && should_clear_pmd_young())
- 				pmdp_test_and_clear_young(vma, addr, pmd + i);
- 			goto next;
- 		}
-@@ -3543,7 +3543,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 
- 		walk->mm_stats[MM_NONLEAF_TOTAL]++;
- 
--		if (should_clear_pmd_young()) {
-+		if (!walk->force_scan && should_clear_pmd_young()) {
- 			if (!pmd_young(val))
- 				continue;
- 
+diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
+index 8934160c4a33b..1aaeb0ead7a71 100644
+--- a/drivers/scsi/scsi_transport_fc.c
++++ b/drivers/scsi/scsi_transport_fc.c
+@@ -1252,7 +1252,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_ONLINE)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else if (port_state == FC_PORTSTATE_ONLINE) {
+ 		/*
+@@ -1262,7 +1262,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_MARGINAL)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else
+ 		return -EINVAL;
 -- 
 2.43.0
 
