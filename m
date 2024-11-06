@@ -1,155 +1,145 @@
-Return-Path: <stable+bounces-91732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F8D9BF9E1
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:21:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00D59BFA34
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F06B2283C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 23:21:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1D5A1C21CC9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 23:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A128520D4EB;
-	Wed,  6 Nov 2024 23:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D610620F5AD;
+	Wed,  6 Nov 2024 23:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N22rTv7T"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gwkM79MK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5/6VAXcf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE920CCFA;
-	Wed,  6 Nov 2024 23:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163EA20EA31;
+	Wed,  6 Nov 2024 23:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730935275; cv=none; b=EQJr8DizO5pfEoouNoylLFz/iSF+eZiOAoNQgCl6vX84QWjDwBtnl50bnLt2qoXtE+4/ea+OkOJX9FTqri7/6FVUTA3O6btuaecRs3scyRTg/v7oCJiVmW65xC1jfH8PJYxGZN5gNWoaYyFAsf7HvzMv3ZDLgPSjc9odU26sisI=
+	t=1730935960; cv=none; b=amcrqzXFZ298eRFplSM6YPOlcqLz1sODdx8RkrmBgL87ChAMl2mkxV8zFnrit4TW6CV+xGcIACxaHY5HMMlaM2hkhLePGzRfye9A95/BzF1b/C7o0ZPYhVepfWZoQA7rA6N2HZueDXQwv8yvaJB3E3Ty/paNvywjS7HmWcFiabw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730935275; c=relaxed/simple;
-	bh=v0JKX5IwqEZCely79v6+Qi7NArjB8yIgCjKT3A9QR1k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=j7KNs/+mjsF9f5mhgvTgxluo003nol5LMKU08bcYQLNpd6j2ZBWqYZT4IKArvkvt3ZGTkRY8COVldQfSI/hqKR2x3A2nlNd0jxEL3Fujb0p4KvkLlkhrxcr5rav768JhA98mv7jPzmSgksBlZlFGuBD11NxRBPLoYW1LY2eAz04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N22rTv7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ED4C4CEC6;
-	Wed,  6 Nov 2024 23:21:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730935275;
-	bh=v0JKX5IwqEZCely79v6+Qi7NArjB8yIgCjKT3A9QR1k=;
-	h=From:Date:Subject:To:Cc:From;
-	b=N22rTv7T/f4RrX2t/6HrlOb2N4tQnSUrWrVk5du6PWBKvzPkXPRDe37t1H9QObFFx
-	 9EfFX629HsCAD3tgbqdJIRYQvG8KMP7Xa1hOhbiywzjVyMmjRwqa3+dazq9juoMPbm
-	 evR50FHrXoQS/1XBPLLapkPjd7YHNaIebzcTQmzvkBdomrmO3QLT4EhcbkSlR7wOfN
-	 IC8rE25y/VUOj/23gQB7942qUF9bXk+sJQUdyebJfSxuwoS+ngFDPWkINlXVQaI8xl
-	 qHLO3N6BA6ZdMYfhjdwe6WFdUPTcqorbgCkDii9OFMFLKL86POKdMPtlhOEBqS8WG8
-	 E5RW9fy5h6soQ==
-From: Mark Brown <broonie@kernel.org>
-Date: Wed, 06 Nov 2024 23:20:51 +0000
-Subject: [PATCH] arm64/ptrace: Zero FPMR on streaming mode entry/exit
+	s=arc-20240116; t=1730935960; c=relaxed/simple;
+	bh=+0hMoP1d8drFu4O0+wfQAWCu49MAdfS5kBK+nDBnbsc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=GpgTRjwpRXJECxQYzPFZUs2VYHhSQKroswG2F7tuSfa9fLlNhm35/Q5OgtgBkxO8hgFfycVHeeOFRe/rm/4+YMH5Q4+0HAJInzp1h3fg/h6DGlaCn3PMXk2fXMrn/nMZ1IIFwwFP4478Hao4zdITmUMBDEF9ewfycrMsKUkGBvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gwkM79MK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5/6VAXcf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 06 Nov 2024 23:32:36 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730935956;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oj3SAikcWcuQ63vnkIoJT043v/MwegATbAZ7Yz6/vOQ=;
+	b=gwkM79MKdDZldeJnNidxzgyS6fuEjzjyQAy1c4QxGEw4Z6TIkc18m6tMLwbIhr2Cb6CpaZ
+	mCg93ZR1ZXFm2qeKtpKZ2eCVoEosDIiCgxZhghVLrnp6Al9fLoeFi9Lqq1TPHac1Al6RQb
+	fYVnX+fJN96shg7SDY01ooQOtcMsyCKrlsHQ376NeCAxQ9GRY0J7U7NX2Zw21EXUkUmOdL
+	QDMaMExpvuSS1Y661g/8ntZDbXSdCJn/aG1CEmeHPgOnrwT79sKkOnyXXw16cQz3X3iakv
+	SRdKgMOArVhzu5FSpygZnmnbACgDPigxVtqW6wFhnhUGlbhb4lDqarHIqESlaA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730935956;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oj3SAikcWcuQ63vnkIoJT043v/MwegATbAZ7Yz6/vOQ=;
+	b=5/6VAXcfrEAfXtlI79nVWvnF7i9Opo7V9wTxayfc6vtdctPLH4BX12nNW1nLtSSWqLzU71
+	wOMRj7IIrQbKF4DQ==
+From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/gic-v3: Force propagation of the active
+ state with a read-back
+Cc: Christoffer Dall <christoffer.dall@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241106084418.3794612-1-maz@kernel.org>
+References: <20241106084418.3794612-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <173093595604.32228.1931318188286510625.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241106-arm64-ptrace-fpmr-sm-v1-1-c28429da37d3@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANL5K2cC/x3MQQqAIBBA0avErBtQ06KuEi2kxpqFJWNEEN09a
- fkW/z+QSZgyDNUDQhdnPvYCXVcwb35fCXkpBqOM1Vq16CW2FtMpfiYMKQrmiNY1vQquN66zUNI
- kFPj+t+P0vh8eFvILZgAAAA==
-X-Change-ID: 20241106-arm64-ptrace-fpmr-sm-45390f592574
-To: Oleg Nesterov <oleg@redhat.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-9b746
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2693; i=broonie@kernel.org;
- h=from:subject:message-id; bh=v0JKX5IwqEZCely79v6+Qi7NArjB8yIgCjKT3A9QR1k=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnK/noo9Br3v5fpH+eL1u9o3cQlJbT9iDlag0KwZOR
- R35tWkGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZyv56AAKCRAk1otyXVSH0E4CB/
- 4u6knMTpqMANM3wlZLlyF8m0EYBuUKsqbjIW1dOZvoyucLPD8RIJkp2R6i9yboXiF44MNw2IjzS7HT
- El/BRvtJ7W1dPFFpK+erZXzEuN5LI6jD069NUhbXicIuov/h+6fhn21j/Wrgih/2/iCVRdtLdsYAnU
- gfkN7602fme2WAoxTe6Yz8lO5mt+MSTR3fNl/4Ru8FKUMkDiam3SiauQ3fKMIj2XL1PowIbygRu5wQ
- N3L0DerTy9vBQlXQOrfY9/PXmzFE830FGtRtOdkxM8NiXecqUceyU1Sw/OkJYvD64hhPB3bI4v9ief
- OhI1R0cO03MFxOnjufdIXKygDddcee
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-When FPMR and SME are both present then entering and exiting streaming mode
-clears FPMR in the same manner as it clears the V/Z and P registers.
-Since entering and exiting streaming mode via ptrace is expected to have
-the same effect as doing so via SMSTART/SMSTOP it should clear FPMR too
-but this was missed when FPMR support was added. Add the required reset
-of FPMR.
+The following commit has been merged into the irq/urgent branch of tip:
 
-Since changing the vector length resets SVCR a SME vector length change
-implemented via a write to ZA can trigger an exit of streaming mode and
-we need to check when writing to ZA as well.
+Commit-ID:     464cb98f1c07298c4c10e714ae0c36338d18d316
+Gitweb:        https://git.kernel.org/tip/464cb98f1c07298c4c10e714ae0c36338d18d316
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Wed, 06 Nov 2024 08:44:18 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 07 Nov 2024 00:22:44 +01:00
 
-Fixes: 4035c22ef7d4 ("arm64/ptrace: Expose FPMR via ptrace")
-Signed-off-by: Mark Brown <broonie@kernel.org>
+irqchip/gic-v3: Force propagation of the active state with a read-back
+
+Christoffer reports that on some implementations, writing to
+GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
+issuing a deactivation of that interrupt via the system register interface.
+
+There are multiple reasons to this:
+
+ - this uses an early write-acknoledgement memory type (nGnRE), meaning
+   that the write may only have made it as far as some interconnect
+   by the time the store is considered "done"
+
+ - the GIC itself is allowed to buffer the write until it decides to
+   take it into account (as long as it is in finite time)
+
+The effects are that the activation may not have taken effect by the time
+the kernel enters the guest, forcing an immediate exit, or that a guest
+deactivation occurs before the interrupt is active, doing nothing.
+
+In order to guarantee that the write to the ISACTIVER register has taken
+effect, read back from it, forcing the interconnect to propagate the write,
+and the GIC to process the write before returning the read.
+
+Reported-by: Christoffer Dall <christoffer.dall@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Christoffer Dall <christoffer.dall@arm.com>
 Cc: stable@vger.kernel.org
----
- arch/arm64/kernel/ptrace.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index b756578aeaeea1d3250276734520e3eaae8a671d..f242df53de2992bf8a3fd51710d6653fe82f7779 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -876,6 +876,7 @@ static int sve_set_common(struct task_struct *target,
- 			  const void *kbuf, const void __user *ubuf,
- 			  enum vec_type type)
- {
-+	u64 old_svcr = target->thread.svcr;
- 	int ret;
- 	struct user_sve_header header;
- 	unsigned int vq;
-@@ -903,8 +904,6 @@ static int sve_set_common(struct task_struct *target,
- 
- 	/* Enter/exit streaming mode */
- 	if (system_supports_sme()) {
--		u64 old_svcr = target->thread.svcr;
--
- 		switch (type) {
- 		case ARM64_VEC_SVE:
- 			target->thread.svcr &= ~SVCR_SM_MASK;
-@@ -1003,6 +1002,10 @@ static int sve_set_common(struct task_struct *target,
- 				 start, end);
- 
- out:
-+	/* If we entered or exited streaming mode then reset FPMR */
-+	if ((target->thread.svcr & SVCR_SM) != (old_svcr & SVCR_SM))
-+		target->thread.uw.fpmr = 0;
-+
- 	fpsimd_flush_task_state(target);
- 	return ret;
- }
-@@ -1099,6 +1102,7 @@ static int za_set(struct task_struct *target,
- 		  unsigned int pos, unsigned int count,
- 		  const void *kbuf, const void __user *ubuf)
- {
-+	u64 old_svcr = target->thread.svcr;
- 	int ret;
- 	struct user_za_header header;
- 	unsigned int vq;
-@@ -1175,6 +1179,10 @@ static int za_set(struct task_struct *target,
- 	target->thread.svcr |= SVCR_ZA_MASK;
- 
- out:
-+	/* If we entered or exited streaming mode then reset FPMR */
-+	if ((target->thread.svcr & SVCR_SM) != (old_svcr & SVCR_SM))
-+		target->thread.uw.fpmr = 0;
-+
- 	fpsimd_flush_task_state(target);
- 	return ret;
- }
+Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
 
 ---
-base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-change-id: 20241106-arm64-ptrace-fpmr-sm-45390f592574
+ drivers/irqchip/irq-gic-v3.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Best regards,
--- 
-Mark Brown <broonie@kernel.org>
-
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index ce87205..8b6159f 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -524,6 +524,13 @@ static int gic_irq_set_irqchip_state(struct irq_data *d,
+ 	}
+ 
+ 	gic_poke_irq(d, reg);
++
++	/*
++	 * Force read-back to guarantee that the active state has taken
++	 * effect, and won't race with a guest-driven deactivation.
++	 */
++	if (reg == GICD_ISACTIVER)
++		gic_peek_irq(d, reg);
+ 	return 0;
+ }
+ 
 
