@@ -1,149 +1,110 @@
-Return-Path: <stable+bounces-90050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B3C9BDD49
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:51:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0CF9BDD98
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 04:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4C531F218FC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:51:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3A8BB2350D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1922E18FDC6;
-	Wed,  6 Nov 2024 02:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC1519007D;
+	Wed,  6 Nov 2024 03:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="CPSIO1oh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TlxPspo5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1CA18B47E;
-	Wed,  6 Nov 2024 02:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818A2190068
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 03:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730861497; cv=none; b=ROVQ/qtfrvNphFKiEHad7q6J+5sdrG+BTKSIcNg/kkmla7WuR1LVveTLnaodGRYhTornxW6gwxDpLZB0Fy/T2iFPi7U5fRfy/lZ0coWHtZfUBMR72jm4VuQT0sD/QSBoR0gDNVymAsmLUcdeNc+IkxCQrCUQhpqA2oAD9NO5OGs=
+	t=1730863756; cv=none; b=LFVgI7QFoeeBksupUA/PVUc+8kfrFqBW5M6vdrM4SYvKMT9Ekh3lbUMMKYFavY6J8UUl771EZbTZWVTwFxWLvsaPJQhjQ6zORuni44xi3PWLhCP4WYB27P5eOuPQCAVE1sgpK9TzNbrI4Q3UsAhiubxqt+Pfq7vz2oSIKZDxuh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730861497; c=relaxed/simple;
-	bh=zGklckDW0yAzRpIHB36p0nroZKUlM400pZk1ZhfMExw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AbytIZeBm+umqHYNtfIA6gDoRzFsJt+lXzKrSvvLn55T3uKcAzUj0XsOj/9R0ck5mgLIr8t5W/2DDGpxDVkWkDTkabmO7pnj0ocCTJuFRxdJd661xaC7jCs93UwzqyLrMgx0dQpAPAbx1j7/dKiR4iaiivm6Wah2CaKTezUx50s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=CPSIO1oh; arc=none smtp.client-ip=148.163.143.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A61igiP017650;
-	Wed, 6 Nov 2024 02:51:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pps0720; bh=fIau/TGBK/Y6E
-	JZSH4sYAY5qCp0ClLkPwdbVUgJbvDw=; b=CPSIO1oh/jpKfndIGm14Np1CbjWQg
-	hyuP8zyjECZjObh4jNnoKW9STq4jgktvUNUridmLgkdl1T1XQUPF9J+pgOTelhtD
-	Jw0ceWFgjylRafJJ4RAhdzY+McmPuCf8aktwkiBrZrroObZLp4pH14eIeY9fyFac
-	CkNlF8txzjfXhAwGYE5RoWBzs1UFfAMCPlCP3Eiihth1zZk9o8HQ9zoGo9nCtB4g
-	F02PPqPE2L4DVX0pj4TpjGK9uPeubyfVLPILUP70O0Lko3B986J2jx382AJnnHOl
-	GRrygh/GJiiuPCSeAQSkanOEGcx+ixFNhEcKIMXUFqK+qne0OdYLMpZYg==
-Received: from p1lg14881.it.hpe.com ([16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 42qqxw3nj1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Nov 2024 02:51:04 +0000 (GMT)
-Received: from localhost (unknown [192.58.206.35])
-	by p1lg14881.it.hpe.com (Postfix) with ESMTP id A0FE0806B3F;
-	Wed,  6 Nov 2024 02:51:02 +0000 (UTC)
-From: Matt Muggeridge <Matt.Muggeridge@hpe.com>
-To: idosch@idosch.org
-Cc: Matt.Muggeridge@hpe.com, davem@davemloft.net, dsahern@kernel.org,
-        edumazet@google.com, horms@kernel.org, kuba@kernel.org,
-        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default Routes
-Date: Tue,  5 Nov 2024 21:50:56 -0500
-Message-Id: <20241106025056.11241-1-Matt.Muggeridge@hpe.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <Zypgu5l7F1FpIpqo@shredder>
-References: <Zypgu5l7F1FpIpqo@shredder>
+	s=arc-20240116; t=1730863756; c=relaxed/simple;
+	bh=4nr36i8ncn5QgwCNYzUTwS3T0ZF0gZikBgpziVS7RTA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sMzehf8hRlp+dsdYQkgyHPGhacOjd9RKVdG2hrOyK+IwfD/EnvqWR4BsNgpDHywZnouATfErYDd6CmTWD4qxV3VkPzw41b3+MEvSXAhpnXQZ2WN77gEUzNJcI4BK3VZqCvaJsYSCygaZ1/F3k2cMmQBwZEcHP2tPx4BEKhlEajY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TlxPspo5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730863753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4nr36i8ncn5QgwCNYzUTwS3T0ZF0gZikBgpziVS7RTA=;
+	b=TlxPspo5t4LqbSEECOEVfG5QXE3ImxWyLseUtUqy1uYxho8Coi9hSQjoggCZwTdi9e8wYs
+	4JOtCOVXqwjSYqSJpjpdjBEv28ru6oC40rDZUYxr7dm/oDBlV/tEFqe+RFYHkeE6cLBqz+
+	3AR24KYu92HHloVtxdzuuZ66KGvdN9k=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-PadIAJubM52i8x5p6s0dLQ-1; Tue, 05 Nov 2024 22:29:12 -0500
+X-MC-Unique: PadIAJubM52i8x5p6s0dLQ-1
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7202dfaa53fso8849379b3a.0
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 19:29:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730863751; x=1731468551;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4nr36i8ncn5QgwCNYzUTwS3T0ZF0gZikBgpziVS7RTA=;
+        b=h/TOe+gEwH/JmzAPKnndYTNjcsVr4KvUNjtbbeflZmkxJ95Jr2bd0+lSf9LVan1W3Q
+         oK3mBunqVU7n33KJSyHZ8sD2y7IEftyiVwRVrS/ZjSxX6ViHdScSPuB10dpalLNs5ROz
+         lqgAB5ujgqmtJQ0bSSx0Ot1x6pM/u5oSCPr2KvAVaFiJvJvcdF+iP11LXr2588OemwRB
+         WFuDxqnYc+c+ztbYFwRkeyE7YnhpflHlmP6ZVMRKlM2/6FxcyIKTlq5h2e+xHUEcIbpv
+         xVSjYysaBqADpNa8xk8tnadRJIjxPHSumHBiq5ddUXqJtIKYjsaPKtVYTd4ISVeVnI7d
+         i7qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZDloAbzLHhDokrvXD9raoX4BtAVw0+o5KS6klz5vhKTZlFUS+GKhy5nQIV7kM4VjSj2sy9O4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmGJWN/z8O8zwaEccGxUUXL0XQc3BX0XRoKn9/eSH42Ej73vSi
+	hd4kSWUOnM/teZ0ahNnR+KtvBdMqUCAf4Iszlomb3f6lIHge3iI7krPg9R9vPiVbTEyfV4YtE7I
+	mp4lyw2zJr5YqO21mSMJFPe36Jrp8SkrjCcCaGLrolpPcT0M2SZw1qJh76RRJ1nuf1UZ+n0uiRF
+	dNvTj5tBtan9X7FTK332Yq+BPLGqFD
+X-Received: by 2002:a05:6a21:6d95:b0:1db:e0d7:675c with SMTP id adf61e73a8af0-1dbe0d7d5a5mr11226474637.13.1730863751262;
+        Tue, 05 Nov 2024 19:29:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHx61FBBG5j53znRiOsXbThjFE8yVx8cJX3fGJ5TJniNqc/KssM4f1OUImXXv2t+j7CgZ/mWxaKbxS+WYdiaFY=
+X-Received: by 2002:a05:6a21:6d95:b0:1db:e0d7:675c with SMTP id
+ adf61e73a8af0-1dbe0d7d5a5mr11226463637.13.1730863750851; Tue, 05 Nov 2024
+ 19:29:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: IQacsdKuxoAHBraaf122jx6QcKWt9S9_
-X-Proofpoint-ORIG-GUID: IQacsdKuxoAHBraaf122jx6QcKWt9S9_
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_02,2024-10-04_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 mlxlogscore=866 spamscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411060020
+References: <20241105133518.1494-1-lege.wang@jaguarmicro.com>
+In-Reply-To: <20241105133518.1494-1-lege.wang@jaguarmicro.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 6 Nov 2024 11:28:59 +0800
+Message-ID: <CACGkMEuYswywBX6P9GQEd4nz179RoCn6TZCseiCprm5iqRW3XQ@mail.gmail.com>
+Subject: Re: [PATCH V3] vp_vdpa: fix id_table array not null terminated error
+To: Xiaoguang Wang <lege.wang@jaguarmicro.com>
+Cc: virtualization@lists.linux.dev, stable@vger.kernel.org, mst@redhat.com, 
+	parav@nvidia.com, Angus Chen <angus.chen@jaguarmicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your review and feedback, Ido.
-
->> Without this flag, when there are mutliple default routers, the kernel
->> coalesces multiple default routes into an ECMP route. The ECMP route
->> ignores per-route REACHABILITY information. If one of the default
->> routers is unresponsive, with a Neighbor Cache entry of INCOMPLETE, then
->> it can still be selected as the nexthop for outgoing packets. This
->> results in an inability to communicate with remote hosts, even though
->> one of the default routers remains REACHABLE. This violates RFC4861
->> section 6.3.6, bullet 1.
+On Tue, Nov 5, 2024 at 9:35=E2=80=AFPM Xiaoguang Wang <lege.wang@jaguarmicr=
+o.com> wrote:
 >
->Do you have forwarding disabled (it causes RT6_LOOKUP_F_REACHABLE to be
->set)?
+> Allocate one extra virtio_device_id as null terminator, otherwise
+> vdpa_mgmtdev_get_classes() may iterate multiple times and visit
+> undefined memory.
+>
+> Fixes: ffbda8e9df10 ("vdpa/vp_vdpa : add vdpa tool support in vp_vdpa")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Parav Pandit <parav@nvidia.com>
+> Signed-off-by: Angus Chen <angus.chen@jaguarmicro.com>
+> Signed-off-by: Xiaoguang Wang <lege.wang@jaguarmicro.com>
+> ---
 
-Yes, forwarding is disabled on our embedded system. Though, this needs to
-work on systems regardless of the state of forwarding.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
->  Is the problem that fib6_table_lookup() chooses a reachable
->nexthop and then fib6_select_path() overrides it with an unreachable
->one?
+Thanks
 
-I'm afraid I don't know.
-
-The objective is to allow IPv6 Netlink clients to be able to create default
-routes from RAs in the same way the kernel creates default routes from RAs.
-Essentially, I'm trying to have Netlink and Kernel behaviors match.
-
-My analysis led me to the need for Netlink clients to set the kernel's
-fib6_config flags RTF_RA_ROUTER, where:
-
-    #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
-
->> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
->> +		cfg->fc_flags |= RTF_RA_ROUTER;
->> +
-> 
-> It is possible there are user space programs out there that set this bit
-> (knowingly or not) when sending requests to the kernel and this change
-> will result in a behavior change for them. So, if we were to continue in
-> this path, this would need to be converted to a new netlink attribute to
-> avoid such potential problems.
-> 
-
-Is this a mandated approach to implementing unspecified bits in a flag?
-
-I'm a little surprised by this consideration. If we account for poorly
-written buggy user-programs, doesn't this open any API to an explosion
-of new attributes or other odd extensions? I'd imagine the same argument
-would be applicable to ioctl flags, socket flags, and so on. Why would we
-treat implementing unspecified Netlink bits differently to implementing
-unspecified ioctl bits, etc.
-
-Naturally, if this is the mandated approach, then I'll reimplement it with
-a new Netlink attribute. I'm just trying to understand what is the
-Linux-lore, here?
-
-> BTW, you can avoid the coalescing problem by using the nexthop API (man
-> ip-nexthop).
-
-I'm not sure how that would help in this case. We need the nexthop to be
-determined according to its REACHABILITY and other considerations described
-in RFC4861.
-
-Kind regards,
-Matt.
 
