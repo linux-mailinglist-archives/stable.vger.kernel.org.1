@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-90043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8417C9BDCDB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:33:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3300E9BDCDE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0849C28931D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF981288967
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4154321949D;
-	Wed,  6 Nov 2024 02:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C21D86FB;
+	Wed,  6 Nov 2024 02:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nO9n2cDy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyyoZYPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78A51D86C9;
-	Wed,  6 Nov 2024 02:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CCA1D86E4;
+	Wed,  6 Nov 2024 02:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859287; cv=none; b=mBoKvLI9X8XNt/qDKL37vmbWGyUv5XDHzPnF5jXQ8gpdW5icqX3NU8Me67pqsIRCH5DX6b0Ik2N/UExwd0nvW/TfODzEzznlNa7MZ/+EQB7bhYHPrBPFWtdAdwV4UpyrhEhVt+AqJ1envaBGz3oyCsx68ecMQDzodGytiNaPzaw=
+	t=1730859291; cv=none; b=N40xyjKpTcmz3mm3M1oQDKXeoHEsUCdUvqmE5+aFfFTSpY4SAfvXaNg/Ov3SM0d9plHy5z4T3+0kOyaYaVpGRj16MhfwaB9kbrtUBMm0gGhkbK25Xcd/J1YfjBGYCJL5Qb7gPVV3ye1I7OdkHXlSG8LbZiOExdBLkYErhF/X84E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859287; c=relaxed/simple;
-	bh=JyPJGtsm3K6JU32Nz/iopXhqEVlPNysU3RBw17FVilc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iFRAffa6O2t3gR1LyugU4QD7HM3NKdkI9V01L8ZAUSvnf8xlRtspV2H77+WRRIa/hUeohXXw6I7RF7Uv1H5kKzQjyXmtj+9A0bhcym81yaV0vwC70rV/UYhbae4+LdaFJcGLH8VOifrRknwhb/mIGIMtl6pK9KW6NraXT9z8ywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nO9n2cDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F88C4CECF;
-	Wed,  6 Nov 2024 02:14:45 +0000 (UTC)
+	s=arc-20240116; t=1730859291; c=relaxed/simple;
+	bh=P2id+Gw2WOcfKdVpLPLdbz2/z6zU4UVmt7vCNRcdu5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X7W5jTiwpy6w/e519d8ElPcpwh0+R64T4UNPbU67Fbj8rrfmzyQUuqREkbZkgr4/Yn3JSDZWp+9FJgERMK8GbtBh6KwtuqmV2aMYR6gWnR/PFigJFsWaXWeDhexpvmMsIc0woFnhfwIwk7ZEakC4Dpy6ahR8prfMigMbCzErE18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyyoZYPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2516DC4CECF;
+	Wed,  6 Nov 2024 02:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859286;
-	bh=JyPJGtsm3K6JU32Nz/iopXhqEVlPNysU3RBw17FVilc=;
+	s=k20201202; t=1730859290;
+	bh=P2id+Gw2WOcfKdVpLPLdbz2/z6zU4UVmt7vCNRcdu5Y=;
 	h=From:To:Cc:Subject:Date:From;
-	b=nO9n2cDy4CLNx+EX4Zmsxf8FZyiuKHxz5VoZi4tQXlEGmmKl5yOpEGI60uUeHBkT1
-	 Yukp8Tb6dgy1ltoHvY5KnzTUSmTGiuh7evRLKPzpnDdAua3c7VINfot1WzyUi8VQVV
-	 6Q9IOzlWYKvud1rnhcwBOkWpO0MsW9XM40hqjMMIhkpORJkvTdbZF9/IhfhbW2R0l7
-	 xvMuXVFKTDjPnYcdmYLU9yzbySzboE6g3rZlsg+y4Zb1eDJ5qD08uRuvicI4F/OyWu
-	 WacVGFZF/j2PuyzmGnNK7U1WjzRXV9VcNCsP9VyHa/TGSmsjU/7UWvMW3eqnUohffd
-	 1Pmag3ke3A5+A==
+	b=DyyoZYPFweVzH6gYO49j2bHiLQ6miHraSUZuy85KXX5UsELMxHMEpbh2pNJZTqnsD
+	 qV05dIosfL2kPNELivTElKdt5LfYq9l/Z75beFOPfIGRQyPvO3tK1OfEqoxd5Gn3o+
+	 9vQAi+LimbM5qaXMO6qRKRjsVVDblb7d1D+6v2a8AihEqyAOctHuoXZCAxmAX7T5sK
+	 8i3mVq4DRI+Uiaeu8ATetpIUh3I9zujyhAB7lBvOJt0JOqBIGNS5rtTA6emHT/KVaV
+	 EXpPxbBrzcKrhtc819Yt2BvwSU3u2FG6VRxe+YJdVLQOzmIDEr6AqogM1xc6CWcYxP
+	 Ret+wrakWr81Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	gil.fine@linux.intel.com
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-usb@vger.kernel.org,
+	Ovidiu.Bunea@amd.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "thunderbolt: Honor TMU requirements in the domain when setting TMU mode" failed to apply to v4.19-stable tree
-Date: Tue,  5 Nov 2024 21:14:43 -0500
-Message-ID: <20241106021444.184480-1-sashal@kernel.org>
+Subject: FAILED: Patch "Revert "drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35"" failed to apply to v4.19-stable tree
+Date: Tue,  5 Nov 2024 21:14:47 -0500
+Message-ID: <20241106021447.184517-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,121 +75,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3cea8af2d1a9ae5869b47c3dabe3b20f331f3bbd Mon Sep 17 00:00:00 2001
-From: Gil Fine <gil.fine@linux.intel.com>
-Date: Thu, 10 Oct 2024 17:29:42 +0300
-Subject: [PATCH] thunderbolt: Honor TMU requirements in the domain when
- setting TMU mode
+From 1b6063a57754eae5705753c01e78dc268b989038 Mon Sep 17 00:00:00 2001
+From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Date: Fri, 11 Oct 2024 11:12:19 -0400
+Subject: [PATCH] Revert "drm/amd/display: update DML2 policy
+ EnhancedPrefetchScheduleAccelerationFinal DCN35"
 
-Currently, when configuring TMU (Time Management Unit) mode of a given
-router, we take into account only its own TMU requirements ignoring
-other routers in the domain. This is problematic if the router we are
-configuring has lower TMU requirements than what is already configured
-in the domain.
+This reverts
+commit 9dad21f910fc ("drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35")
 
-In the scenario below, we have a host router with two USB4 ports: A and
-B. Port A connected to device router #1 (which supports CL states) and
-existing DisplayPort tunnel, thus, the TMU mode is HiFi uni-directional.
+[why & how]
+The offending commit exposes a hang with lid close/open behavior.
+Both issues seem to be related to ODM 2:1 mode switching, so there
+is another issue generic to that sequence that needs to be
+investigated.
 
-1. Initial topology
-
-          [Host]
-         A/
-         /
- [Device #1]
-   /
-Monitor
-
-2. Plug in device #2 (that supports CL states) to downstream port B of
-   the host router
-
-         [Host]
-        A/    B\
-        /       \
- [Device #1]    [Device #2]
-   /
-Monitor
-
-The TMU mode on port B and port A will be configured to LowRes which is
-not what we want and will cause monitor to start flickering.
-
-To address this we first scan the domain and search for any router
-configured to HiFi uni-directional mode, and if found, configure TMU
-mode of the given router to HiFi uni-directional as well.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 68bf95317ebf2cfa7105251e4279e951daceefb7)
 Cc: stable@vger.kernel.org
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/tb.c | 48 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index 10e719dd837ce..4f777788e9179 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -288,6 +288,24 @@ static void tb_increase_tmu_accuracy(struct tb_tunnel *tunnel)
- 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
- }
- 
-+static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
-+{
-+	struct tb_switch *sw = tb_to_switch(dev);
-+
-+	if (sw && tb_switch_tmu_is_enabled(sw) &&
-+	    tb_switch_tmu_is_configured(sw, TB_SWITCH_TMU_MODE_HIFI_UNI))
-+		return 1;
-+
-+	return device_for_each_child(dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required);
-+}
-+
-+static bool tb_tmu_hifi_uni_required(struct tb *tb)
-+{
-+	return device_for_each_child(&tb->dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required) == 1;
-+}
-+
- static int tb_enable_tmu(struct tb_switch *sw)
- {
- 	int ret;
-@@ -302,12 +320,30 @@ static int tb_enable_tmu(struct tb_switch *sw)
- 	ret = tb_switch_tmu_configure(sw,
- 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
- 	if (ret == -EOPNOTSUPP) {
--		if (tb_switch_clx_is_enabled(sw, TB_CL1))
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_LOWRES);
--		else
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_HIFI_BI);
-+		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
-+			/*
-+			 * Figure out uni-directional HiFi TMU requirements
-+			 * currently in the domain. If there are no
-+			 * uni-directional HiFi requirements we can put the TMU
-+			 * into LowRes mode.
-+			 *
-+			 * Deliberately skip bi-directional HiFi links
-+			 * as these work independently of other links
-+			 * (and they do not allow any CL states anyway).
-+			 */
-+			if (tb_tmu_hifi_uni_required(sw->tb))
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_HIFI_UNI);
-+			else
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_LOWRES);
-+		} else {
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
-+		}
-+
-+		/* If not supported, fallback to bi-directional HiFi */
-+		if (ret == -EOPNOTSUPP)
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+index 11c904ae29586..c4c52173ef224 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+@@ -303,6 +303,7 @@ void build_unoptimized_policy_settings(enum dml_project_id project, struct dml_m
+ 	if (project == dml_project_dcn35 ||
+ 		project == dml_project_dcn351) {
+ 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
++		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
+ 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
+ 		policy->UseOnlyMaxPrefetchModes = 1;
  	}
- 	if (ret)
- 		return ret;
 -- 
 2.43.0
 
