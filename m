@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-90393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DCE9BE812
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 999D69BE966
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE441F2182E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26B2AB21D42
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DCF1DF73B;
-	Wed,  6 Nov 2024 12:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C2B1DF99A;
+	Wed,  6 Nov 2024 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6z+Zr72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBuP3Nyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804811D173F;
-	Wed,  6 Nov 2024 12:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615D91DF756;
+	Wed,  6 Nov 2024 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895638; cv=none; b=U2sLt144KxcPbx/IoaTlwXEigMTIhpaisaD6z3MHGFXd5IV7HBBIfhzQpSiIZvgSkptOV9pCB7QJWkGBh6CZOc9I13L8Aleb2T9Kr9inqGKHYEnowgkUPPpM+tEThkvKD1NPFJD5QS6kl5rwdudLUxdSoqOSG4WRfB+vC5yD9dY=
+	t=1730896424; cv=none; b=OGOkPtfujqCOrrV9iop7w/PU1AH/LRCyNatKVQjku43LGUu8/KfVzBXJopSUD1dDr/vJoDKGy6MRIyW0baA1pTvh2eQAeDBPRBCyOgyVAsl4YkPgWKMjgheeh8vwCgojkQ5Dj6iBQYFRSuX+6JonYA0Tgv3IuhDgqoBVhnYrsTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895638; c=relaxed/simple;
-	bh=M9sLvhATp9GosYqJURjSX9T5UjysBlqwB7f8Nnq9bOQ=;
+	s=arc-20240116; t=1730896424; c=relaxed/simple;
+	bh=0tWiqgKWg1fGSBQ0YSWFigxSMuQAcRUsIpWvNVM+BMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rssIEhKpw+sopatIshpNPKi5e2oJWEZXCLwEcVDavzFu+AYXT4EJfCJvEXkoBG0gWrnVzR6QqsEci8+SKqZBDB5NtbXOdn8qXCZwMG8HlX00hT2Oufdwmasi5rY5ek0gHHGrJMUTQvAiVtIBwhZEXrTf/G0OX4Qprq5L0IsqPHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6z+Zr72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B1DC4CECD;
-	Wed,  6 Nov 2024 12:20:37 +0000 (UTC)
+	 MIME-Version; b=bncGlRDDkWa6GWazEU4EUAkqtx1FljNOLJH4JG67o5ZPF+Hc8xMPg07y81Uf2TQj48vv+pv2FWgf35hdvdKoGbNgVuu0+3BeOpGtLqHTfjGVCNfrjJX5yhSJGlOvA2LYZCzpH5EZCYF0RUw3lpWe3fZRtEdAPgLXrwPj0PhXbzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBuP3Nyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC182C4CECD;
+	Wed,  6 Nov 2024 12:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895638;
-	bh=M9sLvhATp9GosYqJURjSX9T5UjysBlqwB7f8Nnq9bOQ=;
+	s=korg; t=1730896424;
+	bh=0tWiqgKWg1fGSBQ0YSWFigxSMuQAcRUsIpWvNVM+BMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6z+Zr72Kka4q0n63RZpWEm22xpC0nnuWw3RE8cTf/INfEJ5nLExPnCir9QU1DbOc
-	 xcn41QkjxRQwSAk+QV0vq3itCNgT9M0KU1CvAdM6fRbKy/vuw9XiMWxOWL964wwZiO
-	 p9Ur6SXWweBHoGfmMR4esgRa+lYRQCLgl0wUo12Q=
+	b=pBuP3NybOBoTOwtng4GvrDt3LhcofDsv34MO5rJtkMI+LuGUwC7SHsoOmF/aKKiX/
+	 AiCMvVoKKqkOWQ2GQYisj3o7YISFlvus5AEh3PNkP71+pj5DpxlksECZfUlbBc7Jjw
+	 8g0sy4+UZ2ePz38pf0EFOU+K/vBhawBEx1hzNi8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 284/350] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
-Date: Wed,  6 Nov 2024 13:03:32 +0100
-Message-ID: <20241106120327.862701847@linuxfoundation.org>
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 160/245] riscv: Remove duplicated GET_RM
+Date: Wed,  6 Nov 2024 13:03:33 +0100
+Message-ID: <20241106120323.172727723@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,72 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 
-commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
+[ Upstream commit 164f66de6bb6ef454893f193c898dc8f1da6d18b ]
 
-Fake CSR controllers don't seem to handle short-transfer properly which
-cause command to time out:
+The macro GET_RM defined twice in this file, one can be removed.
 
-kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
-kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
-kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-kernel: usb 1-1: Product: BT DONGLE10
-...
-Bluetooth: hci1: Opcode 0x1004 failed: -110
-kernel: Bluetooth: hci1: command 0x1004 tx timeout
-
-According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
-Constraints a interrupt transfer is considered complete when the size is 0
-(ZPL) or < wMaxPacketSize:
-
- 'When an interrupt transfer involves more data than can fit in one
- data payload of the currently established maximum size, all data
- payloads are required to be maximum-sized except for the last data
- payload, which will contain the remaining data. An interrupt transfer
- is complete when the endpoint does one of the following:
-
- • Has transferred exactly the amount of data expected
- • Transfers a packet with a payload size less than wMaxPacketSize or
- transfers a zero-length packet'
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
-Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241008094141.549248-3-zhangchunyan@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ arch/riscv/kernel/traps_misaligned.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -743,10 +743,15 @@ static int btusb_submit_intr_urb(struct
- 	if (!urb)
- 		return -ENOMEM;
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index d4fd8af7aaf5a..1b9867136b610 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -136,8 +136,6 @@
+ #define REG_PTR(insn, pos, regs)	\
+ 	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
  
--	/* Use maximum HCI Event size so the USB stack handles
--	 * ZPL/short-transfer automatically.
--	 */
--	size = HCI_MAX_EVENT_SIZE;
-+	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
-+	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
-+		/* Fake CSR devices don't seem to support sort-transter */
-+		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
-+	else
-+		/* Use maximum HCI Event size so the USB stack handles
-+		 * ZPL/short-transfer automatically.
-+		 */
-+		size = HCI_MAX_EVENT_SIZE;
- 
- 	buf = kmalloc(size, mem_flags);
- 	if (!buf) {
+-#define GET_RM(insn)			(((insn) >> 12) & 7)
+-
+ #define GET_RS1(insn, regs)		(*REG_PTR(insn, SH_RS1, regs))
+ #define GET_RS2(insn, regs)		(*REG_PTR(insn, SH_RS2, regs))
+ #define GET_RS1S(insn, regs)		(*REG_PTR(RVC_RS1S(insn), 0, regs))
+-- 
+2.43.0
+
 
 
 
