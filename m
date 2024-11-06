@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5279BE9A9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB54C9BEC34
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC881C23479
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A246B24985
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925AB1DFE04;
-	Wed,  6 Nov 2024 12:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C522E1F4734;
+	Wed,  6 Nov 2024 12:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmceVlBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2ua8FUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5B818C00E;
-	Wed,  6 Nov 2024 12:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C011F1303;
+	Wed,  6 Nov 2024 12:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896571; cv=none; b=N4JgOQZU9he3jtDBgVb2LgKlo/fF/NgwYtsGOXZwwOFEGYI20mR3P8rbXg2wB367NOZ2DY0842xQgE27cUE9ab6cgAcrwHOKC/xbdfUl3xJl0bIfQ8fjl0vzUBMNIqu616ChOZvncIYODWZvS9a2CGdNQN+gK65pkUGF3R/9e+k=
+	t=1730897586; cv=none; b=U1U5GdGYi3kbvhcHjcZFcdAPjcQ6kYADjZBzvczM0gijelocCcjN+cSLD3IwE1cnq5+cQpexatnoUbDrngvtSWqRU38nNXHyMR69aMiP4PrORLmVaOl6vJPCpmC/fpqvMrqNQfsaUnpbRke+Sqf7+sKVZ+CgFeVqgFKpUJb2n48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896571; c=relaxed/simple;
-	bh=lPi+UEM6GGWJ/DKWYD0QItarQK7ZKkx1AthHertTUhI=;
+	s=arc-20240116; t=1730897586; c=relaxed/simple;
+	bh=k6UWyZ6eZGEipO04OngS/HQo6kvsP8Ezel0egGxEQYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFYLbZAJQUSBmiS/gVVA/3yK6Tf8UFiykab0pJVPVnFDMY6VbLlyNo46l4Oq5dNs1ixPSxvXiBz3Lm3qfUsH4aSC7UJj0om73PvmYBYMUnc8SnXYst6H3sfVWqvluUDdv7RR+UIyLTrKrcq4lk0qJ8K6hdhIhHuo2Ol3SJSfOwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmceVlBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BC3C4CECD;
-	Wed,  6 Nov 2024 12:36:10 +0000 (UTC)
+	 MIME-Version; b=EDkxrdbY6lAN9w07FtofohsVeE8qc5ULK6Us12t+6olN4tg4ghYWKlA+pXpB3OCdU1BsPakXXyHlRr5rLYrgb3IvLpakCTxh5zvhUwSU3AukmEhEUg5Rr3XCq/C8sV7DBoDBUqSw0XB1DX42CTF3i1joG7/AzaTvV2D/X72ob4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2ua8FUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08D4C4CECD;
+	Wed,  6 Nov 2024 12:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896571;
-	bh=lPi+UEM6GGWJ/DKWYD0QItarQK7ZKkx1AthHertTUhI=;
+	s=korg; t=1730897586;
+	bh=k6UWyZ6eZGEipO04OngS/HQo6kvsP8Ezel0egGxEQYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmceVlBqu1wwM/NjlLDhB75RZD4QGmouFmnTb/n3yAtHTfrerYd1FqfyhIufIfr4+
-	 /PX2aB2yNwusyFT33hCIjAYcORPsDh7fj4J41cbUW5WGurmFDKiIbQTq9ZBIwyPcPA
-	 kka64TYG6yWOB9SKas5HraWsMXbLpFPTvbEWxUzg=
+	b=J2ua8FUj0UvEoCC5FkSdrKJ9xnu0v5mRPOzCh6EdOPSiiPxPTGZebaFoVPdCOyCKO
+	 tSspq8Tv09BSsEb7xZ1YXBcdzdA/HsbzkOpv9ZoqMp66cymnwgPVNYUA7mL7Tl74Bz
+	 kfymfLl1oLtJOXzk+S1bjXfM+P/q/AH0gzWlv5Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 237/245] drm/xe/xe2hpg: Introduce performance tuning changes for Xe2_HPG
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 102/151] RISC-V: ACPI: fix early_ioremap to early_memremap
 Date: Wed,  6 Nov 2024 13:04:50 +0100
-Message-ID: <20241106120325.101340490@linuxfoundation.org>
+Message-ID: <20241106120311.683428494@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-commit e4ac526c440af8aa94d2bdfe6066339dd93b4db2 upstream.
+commit 1966db682f064172891275cb951aa8c98a0a809b upstream.
 
-Add performance tuning changes for Xe2_HPG
+When SVPBMT is enabled, __acpi_map_table() will directly access the
+data in DDR through the IO attribute, rather than through hardware
+cache consistency, resulting in incorrect data in the obtained ACPI
+table.
 
-Bspec: 72161
-Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240724121521.2347524-1-sai.teja.pottumuttu@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The log: ACPI: [ACPI:0x18] Invalid zero length.
+
+We do not assume whether the bootloader flushes or not. We should
+access in a cacheable way instead of maintaining cache consistency
+by software.
+
+Fixes: 3b426d4b5b14 ("RISC-V: ACPI : Fix for usage of pointers in different address space")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Link: https://lore.kernel.org/r/20241014130141.86426-1-cuiyunhui@bytedance.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h |    1 +
- drivers/gpu/drm/xe/xe_tuning.c       |    8 ++++++++
- 2 files changed, 9 insertions(+)
+ arch/riscv/kernel/acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -109,6 +109,7 @@
+--- a/arch/riscv/kernel/acpi.c
++++ b/arch/riscv/kernel/acpi.c
+@@ -204,7 +204,7 @@ void __init __iomem *__acpi_map_table(un
+ 	if (!size)
+ 		return NULL;
  
- #define FF_MODE					XE_REG_MCR(0x6210)
- #define   DIS_TE_AUTOSTRIP			REG_BIT(31)
-+#define   VS_HIT_MAX_VALUE_MASK			REG_GENMASK(25, 20)
- #define   DIS_MESH_PARTIAL_AUTOSTRIP		REG_BIT(16)
- #define   DIS_MESH_AUTOSTRIP			REG_BIT(15)
+-	return early_ioremap(phys, size);
++	return early_memremap(phys, size);
+ }
  
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -93,6 +93,14 @@ static const struct xe_rtp_entry_sr lrc_
- 				   REG_FIELD_PREP(L3_PWM_TIMER_INIT_VAL_MASK, 0x7f)))
- 	},
+ void __init __acpi_unmap_table(void __iomem *map, unsigned long size)
+@@ -212,7 +212,7 @@ void __init __acpi_unmap_table(void __io
+ 	if (!map || !size)
+ 		return;
  
-+	/* Xe2_HPG */
-+
-+	{ XE_RTP_NAME("Tuning: vs hit max value"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
-+	  XE_RTP_ACTIONS(FIELD_SET(FF_MODE, VS_HIT_MAX_VALUE_MASK,
-+				   REG_FIELD_PREP(VS_HIT_MAX_VALUE_MASK, 0x3f)))
-+	},
-+
- 	{}
- };
+-	early_iounmap(map, size);
++	early_memunmap(map, size);
+ }
  
+ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
 
 
 
