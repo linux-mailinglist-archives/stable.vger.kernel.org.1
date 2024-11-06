@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3599BE856
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFCA9BEC40
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B1D91F22C83
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371581C239B7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDEE1E008C;
-	Wed,  6 Nov 2024 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096FD1F472B;
+	Wed,  6 Nov 2024 12:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZsl4JL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYpPyiN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88731DFE3E;
-	Wed,  6 Nov 2024 12:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3561DFD9D;
+	Wed,  6 Nov 2024 12:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895803; cv=none; b=EZlk6ldHuBTU8h8TSbjHCPbE+KaRtTeyzYgGV7Elh4SZacnPJEXomBdH4g/v25KhafKSAH3EhCSt7uI10IHAZX6AA0kaOwNiVP6odQTX2RWhrJO70tF5kjWd5UdoNIiM0ssfdxT6wj4gCueLaRnSeJp04QUpvK0IBHF+lGHVqz8=
+	t=1730897627; cv=none; b=UhGKr1n0qaWKXgzQE+OeVKuyoRn9QmL6w42RtE9H9i+r1UI7u916lB70GAMUSikJCHPbgunXcEXKV6I2Qhd74q8g+/6iBl6qsVrA0hX/J/S1DO0dvYvccRHPFEsBUbcKpYjak07wRWRsB0i56Lv6kntaaW2qsMkIVA5t7YnSAWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895803; c=relaxed/simple;
-	bh=WXMa0RzL0Rri8LCwp+fwvWTy0MVfewrjBwnpNenz6S4=;
+	s=arc-20240116; t=1730897627; c=relaxed/simple;
+	bh=I2qdmVh5xwsd3/o9M04NFsEcXaSZ3oiszivz7QTScJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C58joEnwldAyz9WN5DntSgd2vmABs47eZjJvh2XOblwvKQKzLZ86bDgjEVA+gIx4wNWZGBsg/RRnXCQlPyqbVdbr34WpsH6G2h4jjkUDCaAQKCdJJ6R9itdUN4HS0U1X0lMIq178cmQoFYKdf+AMn7nkPPC2U2OeWHRL3bR7ERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZsl4JL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBABFC4CED3;
-	Wed,  6 Nov 2024 12:23:22 +0000 (UTC)
+	 MIME-Version; b=bYFwrdTNbKJ9+pCxpDu7THJX/XO+lmW3/snAN0isdn9TmO+d2SADPMJAW5fWnlCm5xAE2mEVOwlu339h1ahzB/uu/Xwg01jHvx67OXI7mLSRQRRpC3YL4CRQgxkxbXQyRRopg2xg/PcmJjzR7jvAsZUFaHtQsJqSJ20ZQLesfcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYpPyiN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE9AC4CECD;
+	Wed,  6 Nov 2024 12:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895803;
-	bh=WXMa0RzL0Rri8LCwp+fwvWTy0MVfewrjBwnpNenz6S4=;
+	s=korg; t=1730897627;
+	bh=I2qdmVh5xwsd3/o9M04NFsEcXaSZ3oiszivz7QTScJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZsl4JL0geYYfpzxsYD6DqC2XjgfOGbJoMZvTLBzgLjRSQ6+0rM4BuG+9w29HR67L
-	 3QSgA1r3wI6kwpujPzb/CoNNMa6NCEkageAT1VHU4Fooqw8cv+OTfOH9ZVE1ZcfsHV
-	 fXtIU2gLHvou9vxTc0gwINjSakld/0/TeRwcn3rE=
+	b=dYpPyiN9fJuEd75xjT/cx5omJHz3AGPYkRAber9HLim7fmn5KGbIiTfiYdbZ4J0yw
+	 fSXlkqgbPxz3yi6yU4ndc8GwglWqRkLPVDxln80Ja+yE+sisI/okH5R/kSmiOKfv+c
+	 +LPLhj2Y+rf93CY0y6pddAFaWzB6oxg5kTEGAsow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faisal Hassan <quic_faisalh@quicinc.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4.19 341/350] xhci: Fix Link TRB DMA in command ring stopped completion event
+	Hongren Zheng <i@zenithal.me>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH 6.6 081/151] usbip: tools: Fix detach_port() invalid port error path
 Date: Wed,  6 Nov 2024 13:04:29 +0100
-Message-ID: <20241106120329.120893935@linuxfoundation.org>
+Message-ID: <20241106120311.087106136@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faisal Hassan <quic_faisalh@quicinc.com>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-commit 075919f6df5dd82ad0b1894898b315fbb3c29b84 upstream.
+commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
 
-During the aborting of a command, the software receives a command
-completion event for the command ring stopped, with the TRB pointing
-to the next TRB after the aborted command.
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-If the command we abort is located just before the Link TRB in the
-command ring, then during the 'command ring stopped' completion event,
-the xHC gives the Link TRB in the event's cmd DMA, which causes a
-mismatch in handling command completion event.
-
-To address this situation, move the 'command ring stopped' completion
-event check slightly earlier, since the specific command it stopped
-on isn't of significant concern.
-
-Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
 Cc: stable@vger.kernel.org
-Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241022155631.1185-1-quic_faisalh@quicinc.com
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/usb/usbip/src/usbip_detach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1431,6 +1431,14 @@ static void handle_cmd_completion(struct
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
+ 	}
  
- 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
- 
-+	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
-+
-+	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
-+	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
-+		complete_all(&xhci->cmd_ring_stop_completion);
-+		return;
-+	}
-+
- 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
- 			cmd_trb);
- 	/*
-@@ -1447,14 +1455,6 @@ static void handle_cmd_completion(struct
- 
- 	cancel_delayed_work(&xhci->cmd_timer);
- 
--	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
--
--	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
--	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
--		complete_all(&xhci->cmd_ring_stop_completion);
--		return;
--	}
--
- 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
- 		xhci_err(xhci,
- 			 "Command completion event does not match command\n");
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 
 
 
