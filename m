@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-91169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901169BECC8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686DC9BE6C5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10C71C22FD7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA442B238FF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D5F1DF97A;
-	Wed,  6 Nov 2024 12:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E861DF24D;
+	Wed,  6 Nov 2024 12:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBJWK2ah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ8m6Fgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA4F1DE4CA;
-	Wed,  6 Nov 2024 12:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E701DEFF4;
+	Wed,  6 Nov 2024 12:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897943; cv=none; b=O0/HqrPVbbXT9fnSLeSmejX/SdhjnryUsHS5t3pIOlDXV84BFX/zQ39opMZMA56/ctZ83IG+38yYHvFAeSQxHlAYpWLJEYdvBewgS1r2C8A8LLFuYiRbp48fijk440/SwKTx8PBaT6oRAcM9q84QZYIP407s6mZ20STh+s4Oq9g=
+	t=1730894812; cv=none; b=lxm7JwrdJpJiM+nv2HKTQL8V3f+66959LUw4yjShbGHo/uebD5VO6OAoGu4Vbr/AFjf41gTGzJZTcML44CeKLMct34hKnyl65Gnc2TfQroTgMSSGgYxdpK3m1DTbiNeGz2IVZ6kdYRBbGI7p0tr7HcxqDlAEnLDA4C9HlIdxMVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897943; c=relaxed/simple;
-	bh=n/QNAnz1FQcSmi93Av0vUlfWIBPTX4ckwWJx6w7Pqzs=;
+	s=arc-20240116; t=1730894812; c=relaxed/simple;
+	bh=HOgOvCWXAACyuS2iSxOS3wm+74GE3vSf7jTlqppDZpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XN6mRdHUAu2QC1vTXwbJyi0huQqJygc+bKwAA7iO1Wm4YEFYsRgcZ2dPfnrrYOuxcEfcoOsZh0VyyrQoihK3yBfXpzZ23hpENYVy1DAS6drvPsShgDH71yR8lTVuOLBnrLfekVAWLT6fu75LEPVJyTp74/kwJ8nyB+xeInsfteA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBJWK2ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3451BC4CECD;
-	Wed,  6 Nov 2024 12:59:02 +0000 (UTC)
+	 MIME-Version; b=huGk2szS4li+eaiYeVLILfx1V469UvwcuybcwkN1SC0ZNOSDlrNNMW1o3gvwrEvKniCaUinZ2rDy9wsbnt0Gm1c4xuoUbAS7cgknZzT4ALstVJcFsq/G6mXD2lOYW6Wxoozi16v56Y7zuuAflfs25RlsnGpbDcTYKt9/uJ0FERk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ8m6Fgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D3C4CECD;
+	Wed,  6 Nov 2024 12:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897942;
-	bh=n/QNAnz1FQcSmi93Av0vUlfWIBPTX4ckwWJx6w7Pqzs=;
+	s=korg; t=1730894812;
+	bh=HOgOvCWXAACyuS2iSxOS3wm+74GE3vSf7jTlqppDZpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBJWK2ahrWPmoQuHsVPGwgieVRGo8x3MJ8n/XddE7arxhJuAyF9UDmyiBPCoOU+nR
-	 pQU4+2zGnhtlPG0B/JE0tV0QjFsvzGF8qlCLMgm91oH1euWo8dBisIh5d4AkU8NZBi
-	 Kq+q32ht1tsnBCo0U3AHMVUM8KreQQicJ8RuYzIA=
+	b=PJ8m6Fgl415x0Z+pD1qWMZr2//dAkWqng2TMYW11AuKcmenZi6d/QJfJvfui46jRt
+	 ID1O6jRXzqN8nZ4rw0grH1hwxbHl+UxIpVtS5Q1wOPNRxyF0yR2wpThfiEZ4g/oXDU
+	 JV0gFXrRmZMbkwMoiRG3Pt7xav/BrX8kwlS65dPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jan Kara <jack@suse.cz>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Beniamin Bia <beniamin.bia@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/462] fs: explicitly unregister per-superblock BDIs
-Date: Wed,  6 Nov 2024 12:58:48 +0100
-Message-ID: <20241106120332.387329940@linuxfoundation.org>
+Subject: [PATCH 4.19 001/350] staging: iio: frequency: ad9833: Get frequency value statically
+Date: Wed,  6 Nov 2024 12:58:49 +0100
+Message-ID: <20241106120320.904133443@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Beniamin Bia <biabeniamin@gmail.com>
 
-[ Upstream commit 0b3ea0926afb8dde70cfab00316ae0a70b93a7cc ]
+[ Upstream commit 80109c32348d7b2e85def9efc3f9524fb166569d ]
 
-Add a new SB_I_ flag to mark superblocks that have an ephemeral bdi
-associated with them, and unregister it when the superblock is shut
-down.
+The values from platform data were replaced by statically values.
+This was just a intermediate step of taking this driver out of staging and
+load data from device tree.
 
-Link: https://lkml.kernel.org/r/20211021124441.668816-4-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 4bcda1eaf184 ("mount: handle OOM on mnt_warn_timestamp_expiry")
+Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: b48aa9917589 ("staging: iio: frequency: ad9834: Validate frequency parameter value")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/super.c         | 3 +++
- include/linux/fs.h | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/staging/iio/frequency/ad9834.c | 21 +++++++------------
+ drivers/staging/iio/frequency/ad9834.h | 28 --------------------------
+ 2 files changed, 7 insertions(+), 42 deletions(-)
 
-diff --git a/fs/super.c b/fs/super.c
-index 47ca7dc0e6c3d..8edf44a2d3dcc 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -475,6 +475,8 @@ void generic_shutdown_super(struct super_block *sb)
- 	spin_unlock(&sb_lock);
- 	up_write(&sb->s_umount);
- 	if (sb->s_bdi != &noop_backing_dev_info) {
-+		if (sb->s_iflags & SB_I_PERSB_BDI)
-+			bdi_unregister(sb->s_bdi);
- 		bdi_put(sb->s_bdi);
- 		sb->s_bdi = &noop_backing_dev_info;
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index 4c6d4043903e..f6b36eedd48e 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -389,16 +389,11 @@ static const struct iio_info ad9833_info = {
+ 
+ static int ad9834_probe(struct spi_device *spi)
+ {
+-	struct ad9834_platform_data *pdata = dev_get_platdata(&spi->dev);
+ 	struct ad9834_state *st;
+ 	struct iio_dev *indio_dev;
+ 	struct regulator *reg;
+ 	int ret;
+ 
+-	if (!pdata) {
+-		dev_dbg(&spi->dev, "no platform data?\n");
+-		return -ENODEV;
+-	}
+ 
+ 	reg = devm_regulator_get(&spi->dev, "avdd");
+ 	if (IS_ERR(reg))
+@@ -418,7 +413,7 @@ static int ad9834_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, indio_dev);
+ 	st = iio_priv(indio_dev);
+ 	mutex_init(&st->lock);
+-	st->mclk = pdata->mclk;
++	st->mclk = 25000000;
+ 	st->spi = spi;
+ 	st->devid = spi_get_device_id(spi)->driver_data;
+ 	st->reg = reg;
+@@ -454,11 +449,9 @@ static int ad9834_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
+ 
+ 	st->control = AD9834_B28 | AD9834_RESET;
++	st->control |= AD9834_DIV2;
+ 
+-	if (!pdata->en_div2)
+-		st->control |= AD9834_DIV2;
+-
+-	if (!pdata->en_signbit_msb_out && (st->devid == ID_AD9834))
++	if (st->devid == ID_AD9834)
+ 		st->control |= AD9834_SIGN_PIB;
+ 
+ 	st->data = cpu_to_be16(AD9834_REG_CMD | st->control);
+@@ -468,19 +461,19 @@ static int ad9834_probe(struct spi_device *spi)
+ 		goto error_disable_reg;
  	}
-@@ -1622,6 +1624,7 @@ int super_setup_bdi_name(struct super_block *sb, char *fmt, ...)
- 	}
- 	WARN_ON(sb->s_bdi != &noop_backing_dev_info);
- 	sb->s_bdi = bdi;
-+	sb->s_iflags |= SB_I_PERSB_BDI;
  
- 	return 0;
- }
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index d4f5fcc60744d..b21fdce37c37a 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1407,6 +1407,7 @@ extern int send_sigurg(struct fown_struct *fown);
- #define SB_I_UNTRUSTED_MOUNTER		0x00000040
+-	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, pdata->freq0);
++	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, 1000000);
+ 	if (ret)
+ 		goto error_disable_reg;
  
- #define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
-+#define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
+-	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, pdata->freq1);
++	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, 5000000);
+ 	if (ret)
+ 		goto error_disable_reg;
  
- /* Possible states of 'frozen' field */
- enum {
+-	ret = ad9834_write_phase(st, AD9834_REG_PHASE0, pdata->phase0);
++	ret = ad9834_write_phase(st, AD9834_REG_PHASE0, 512);
+ 	if (ret)
+ 		goto error_disable_reg;
+ 
+-	ret = ad9834_write_phase(st, AD9834_REG_PHASE1, pdata->phase1);
++	ret = ad9834_write_phase(st, AD9834_REG_PHASE1, 1024);
+ 	if (ret)
+ 		goto error_disable_reg;
+ 
+diff --git a/drivers/staging/iio/frequency/ad9834.h b/drivers/staging/iio/frequency/ad9834.h
+index ae620f38eb49..da7e83ceedad 100644
+--- a/drivers/staging/iio/frequency/ad9834.h
++++ b/drivers/staging/iio/frequency/ad9834.h
+@@ -8,32 +8,4 @@
+ #ifndef IIO_DDS_AD9834_H_
+ #define IIO_DDS_AD9834_H_
+ 
+-/*
+- * TODO: struct ad7887_platform_data needs to go into include/linux/iio
+- */
+-
+-/**
+- * struct ad9834_platform_data - platform specific information
+- * @mclk:		master clock in Hz
+- * @freq0:		power up freq0 tuning word in Hz
+- * @freq1:		power up freq1 tuning word in Hz
+- * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
+- * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
+- * @en_div2:		digital output/2 is passed to the SIGN BIT OUT pin
+- * @en_signbit_msb_out:	the MSB (or MSB/2) of the DAC data is connected to the
+- *			SIGN BIT OUT pin. en_div2 controls whether it is the MSB
+- *			or MSB/2 that is output. if en_signbit_msb_out=false,
+- *			the on-board comparator is connected to SIGN BIT OUT
+- */
+-
+-struct ad9834_platform_data {
+-	unsigned int		mclk;
+-	unsigned int		freq0;
+-	unsigned int		freq1;
+-	unsigned short		phase0;
+-	unsigned short		phase1;
+-	bool			en_div2;
+-	bool			en_signbit_msb_out;
+-};
+-
+ #endif /* IIO_DDS_AD9834_H_ */
 -- 
 2.43.0
 
