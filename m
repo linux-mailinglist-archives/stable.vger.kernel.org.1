@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312F99BECCC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93469BE6EF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62F1A1C222E9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31EE3B25514
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D441F6697;
-	Wed,  6 Nov 2024 12:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06761DF24A;
+	Wed,  6 Nov 2024 12:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XliSq6lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiYGJcZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA21D1EC011;
-	Wed,  6 Nov 2024 12:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1D91DF249;
+	Wed,  6 Nov 2024 12:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897958; cv=none; b=C6Zwes51foNByAuKv1zxkRuSZRCLc7Gs2KJvmUq9T0fuCotPzJxCfQDiVXIRXY5In3hJYvKg3T5OdQxL7/NoSKCUvjYKi0kMbRuHmJIyO8cFMJbwpDK7YFhobJtvedCdNX/ykrqi+jPDpk93r8mHudeZJtYj95V7N52IjTfQR3s=
+	t=1730894918; cv=none; b=FZKx7kA5wqDjqDoZGkFm6VJvoXICV0Bg08xiq+TPQ9eKzr0FdvzZ5+82tPa8BwISPlfqUtNOwWkcJE/EbHjuE10hdSIgs7JDQmYl7Jq+Ok4Xeg1MheoDxPgDXMstIKp19WStaR81Pykkzp2yOk3g+B5itrHMleiAUslaBAhvV2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897958; c=relaxed/simple;
-	bh=TE+FDz3vMlbC3dpGqlO9D3fMh0qXJJq1Eahe6qqj/ic=;
+	s=arc-20240116; t=1730894918; c=relaxed/simple;
+	bh=UgJXE36GtBX7eCrhgQdQs8V3t5DV3EL4VP3Z58zzb68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpBcvQqMoxzy7RbOqnBfH7/fj2J3JQdgLklD/pHTKPNikjHI885WfTLP9wREkiBY2Ncq2hzQ8arpp6EgwjRTRXoH4Z8LeZLr4IyDWiEkUjiT5U83cqW3Cef/COqp416h7JHdNT8Z2HdTjPEWfD7/ydWaodjxCkrywz9rC7GWUMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XliSq6lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE78C4CECD;
-	Wed,  6 Nov 2024 12:59:18 +0000 (UTC)
+	 MIME-Version; b=DEp6tAjEiKD3hpPFfyQuwcpd5gcNiEIA6Vu5F9sgHOJ+L0kko9yfNqyUwZU0NYmVjR2YgEGO8GEVKrKxS5MqsCAfKE8TwwhTKM64j2pRMFeOo9sMouCYjQpHQ4EZ3xS4xz2HVIWyaeBB/61cSmg2qMCvFS5vpsxAFpqc/vDgM8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiYGJcZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41B4C4CECD;
+	Wed,  6 Nov 2024 12:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897958;
-	bh=TE+FDz3vMlbC3dpGqlO9D3fMh0qXJJq1Eahe6qqj/ic=;
+	s=korg; t=1730894918;
+	bh=UgJXE36GtBX7eCrhgQdQs8V3t5DV3EL4VP3Z58zzb68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XliSq6lc5QmovMFJzn4/n2qrNh/fGag4BoSJDspqNp08Js+0bLYNglFBgulSwMeiU
-	 Lj6qAa5A3HMOYbCq3PajRCNAPtjLHX4ryWgUdUz7VGlGnI1aTgvaNaPH/JIQgLSTxk
-	 cSs7vx5OMsN4FLVVFKXtJ+oYM6DEkxfNj/V1EtAc=
+	b=xiYGJcZjxtHQfD8XPzu0MOahMX4hs7VSTsm5i8YwR7g4OdiQN52fVPI+N3LzVE9bC
+	 I84RlvXLlvyyd8d3rPoJRKLQ9Oijup4/RO6MucvgfKiN5KaAcKFxAERKIOc+VW35ub
+	 Wn2CJhuXXoo03tK1xgg9s5TL947Yz3TGFfjGS3bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/462] jfs: fix out-of-bounds in dbNextAG() and diAlloc()
+Subject: [PATCH 4.19 042/350] ARM: versatile: fix OF node leak in CPUs prepare
 Date: Wed,  6 Nov 2024 12:59:30 +0100
-Message-ID: <20241106120333.409590902@linuxfoundation.org>
+Message-ID: <20241106120321.925110932@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e63866a475562810500ea7f784099bfe341e761a ]
+[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
 
-In dbNextAG() , there is no check for the case where bmp->db_numag is
-greater or same than MAXAG due to a polluted image, which causes an
-out-of-bounds. Therefore, a bounds check should be added in dbMount().
+Machine code is leaking OF node reference from of_find_matching_node()
+in realview_smp_prepare_cpus().
 
-And in dbNextAG(), a check for the case where agpref is greater than
-bmp->db_numag should be added, so an out-of-bounds exception should be
-prevented.
-
-Additionally, a check for the case where agno is greater or same than
-MAXAG should be added in diAlloc() to prevent out-of-bounds.
-
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++--
- fs/jfs/jfs_imap.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mach-realview/platsmp-dt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index deb54efb56013..fe0b5a91356c4 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
+diff --git a/arch/arm/mach-realview/platsmp-dt.c b/arch/arm/mach-realview/platsmp-dt.c
+index c242423bf8db5..66d6b11eda7bd 100644
+--- a/arch/arm/mach-realview/platsmp-dt.c
++++ b/arch/arm/mach-realview/platsmp-dt.c
+@@ -70,6 +70,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
+ 		return;
  	}
- 
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag) {
-+	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
-@@ -652,7 +652,7 @@ int dbNextAG(struct inode *ipbmap)
- 	 * average free space.
- 	 */
- 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
--		if (agpref == bmp->db_numag)
-+		if (agpref >= bmp->db_numag)
- 			agpref = 0;
- 
- 		if (atomic_read(&bmp->db_active[agpref]))
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 36ed756820648..da3a1c27d3498 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -1362,7 +1362,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
- 	/* get the ag number of this iag */
- 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
- 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
--	if (agno < 0 || agno > dn_numag)
-+	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
- 		return -EIO;
- 
- 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 	map = syscon_node_to_regmap(np);
++	of_node_put(np);
+ 	if (IS_ERR(map)) {
+ 		pr_err("PLATSMP: No syscon regmap\n");
+ 		return;
 -- 
 2.43.0
 
