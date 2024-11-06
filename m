@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-91034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1113D9BEC23
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2309BE86E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 438371C20B8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 401831C219A1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769101FAF18;
-	Wed,  6 Nov 2024 12:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DD81DFD82;
+	Wed,  6 Nov 2024 12:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Iy1fWnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOmgH8LA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A2C1EF080;
-	Wed,  6 Nov 2024 12:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A1F1DF98C;
+	Wed,  6 Nov 2024 12:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897545; cv=none; b=LkKW3M1jPLfL0BIgnMICXgm7TW8QxPM+J5Rs/dVoCODyorw8dGq+HgKiLvDwe6MS8FA2A5SdFswzIVZj6sin8HQ6LoTidA5w8fKLPrShK7mFdaIAAt/g9K6Vpl3b13fahC44APIj8RZsBiY4CeNxxhN8manher1Opk/T6glO81I=
+	t=1730895832; cv=none; b=hU+9zT+yNsYQixwdnaIX+l1e78uH4OIP4drA17pC3leoi2rCnoKa/MfHirH76blNYxUOgn/FZNfs3Eu1Dmk91CyFhQSwO8lY+9QvxOrqrBuwBUwdyMn/GhQMWz93lkbi387yC35xB44sLbXUHxwlze/tHIxfpmo4a2xWjE/vEL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897545; c=relaxed/simple;
-	bh=0kzl131ivLMwKJgew6enX+op9w6Z6h9p1IveNeNsfzY=;
+	s=arc-20240116; t=1730895832; c=relaxed/simple;
+	bh=j+bRRNwcSmCHLvYCpnDKSy+j945RA0mtWeh9ako53Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0Zqph3xoU5UZcaogNKuZ5jHyv02RPPb2rqJxwmjyGq5V1rqsp2OD9R7GjfwCvecy8zgu6W7f6q38jh57P/BV2NijcUFepBar2gBnHbQTV6/lai1Dk6ipqkv9WC3eZPoXFOJ+66ybHLas/GaplUTT5VWPpzJs5y0c/iYB+Fe/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Iy1fWnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE4BC4CECD;
-	Wed,  6 Nov 2024 12:52:24 +0000 (UTC)
+	 MIME-Version; b=L7TjYzoBz8fM9Jn2MGlTVJ2vdnr0NAGOzkv7mHXR+s4+bbxwRuaqkx1dajELLnURCCavxWZNqTX8To2k5LXj0AWc9OVbjqbpBCmd7C1q2QDTpJmjnqe3CRRrWDp2D7muQpqFuqzlZIB7BhJdBGrk7rPZ5USgTASuW8SH7AVjk0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOmgH8LA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF40C4CECD;
+	Wed,  6 Nov 2024 12:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897545;
-	bh=0kzl131ivLMwKJgew6enX+op9w6Z6h9p1IveNeNsfzY=;
+	s=korg; t=1730895832;
+	bh=j+bRRNwcSmCHLvYCpnDKSy+j945RA0mtWeh9ako53Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Iy1fWnnkwDLO4dAKgUC7/BoXNvUnxLnICn2B2l8n7FD/d6kH0nX1ENfHQUIV1vU/
-	 ChvR1X/CTFT0+ij5Nc1xkPpmmnr3QcMbQwX42irB7nJMVv4PW8B/o3D/NFazioYLxy
-	 16U68DOVbJuJTyRjmTJEZH3+e1lNVjBIEMrdkIF0=
+	b=WOmgH8LA4W6HvpHSKORs3rJ7GzQ55Nw7BKicNmESMpRTR+EKzKrFbEN4rHdIoKz8N
+	 pIUH/tlEIPVMXma2MA1PTEE4YpGsb6eJ5qaTnFvWXmewrBuybRGHdiahGb2wUBp7Fl
+	 x18uZ28ghxU7T3kdElX7SrNcDLXUzZx3sOHJCC/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Peter Xu <peterx@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 090/151] Revert "selftests/mm: fix deadlock for fork after pthread_create on ARM"
+	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 4.19 350/350] vt: prevent kernel-infoleak in con_font_get()
 Date: Wed,  6 Nov 2024 13:04:38 +0100
-Message-ID: <20241106120311.351226183@linuxfoundation.org>
+Message-ID: <20241106120329.321362730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 5bb1f4c9340e01003b00b94d539eadb0da88f48e upstream.
+commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
 
-Patch series "selftests/mm: revert pthread_barrier change"
+font.data may not initialize all memory spaces depending on the implementation
+of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
+is safest to modify it to initialize the allocated memory space to 0, and it
+generally does not affect the overall performance of the system.
 
-On Android arm, pthread_create followed by a fork caused a deadlock in
-the case where the fork required work to be completed by the created
-thread.
-
-The previous patches incorrectly assumed that the parent would
-always initialize the pthread_barrier for the child thread.  This
-reverts the change and replaces the fix for wp-fork-with-event with the
-original use of atomic_bool.
-
-
-This patch (of 3):
-
-This reverts commit e142cc87ac4ec618f2ccf5f68aedcd6e28a59d9d.
-
-fork_event_consumer may be called by other tests that do not initialize
-the pthread_barrier, so this approach is not correct.  The subsequent
-patch will revert to using atomic_bool instead.
-
-Link: https://lkml.kernel.org/r/20241018171734.2315053-1-edliaw@google.com
-Link: https://lkml.kernel.org/r/20241018171734.2315053-2-edliaw@google.com
-Fixes: e142cc87ac4e ("fix deadlock for fork after pthread_create on ARM")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
+Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/uffd-unit-tests.c |    7 -------
- 1 file changed, 7 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -237,9 +237,6 @@ static void *fork_event_consumer(void *d
- 	fork_event_args *args = data;
- 	struct uffd_msg msg = { 0 };
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4450,7 +4450,7 @@ static int con_font_get(struct vc_data *
+ 	int c;
  
--	/* Ready for parent thread to fork */
--	pthread_barrier_wait(&ready_for_fork);
--
- 	/* Read until a full msg received */
- 	while (uffd_read_msg(args->parent_uffd, &msg));
- 
-@@ -307,12 +304,8 @@ static int pagemap_test_fork(int uffd, b
- 
- 	/* Prepare a thread to resolve EVENT_FORK */
- 	if (with_event) {
--		pthread_barrier_init(&ready_for_fork, NULL, 2);
- 		if (pthread_create(&thread, NULL, fork_event_consumer, &args))
- 			err("pthread_create()");
--		/* Wait for child thread to start before forking */
--		pthread_barrier_wait(&ready_for_fork);
--		pthread_barrier_destroy(&ready_for_fork);
- 	}
- 
- 	child = fork();
+ 	if (op->data) {
+-		font.data = kmalloc(max_font_size, GFP_KERNEL);
++		font.data = kzalloc(max_font_size, GFP_KERNEL);
+ 		if (!font.data)
+ 			return -ENOMEM;
+ 	} else
 
 
 
