@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-91140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C7A9BECAC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10AC9BE6CC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DE0DB21617
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6A9128615C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95D11EF943;
-	Wed,  6 Nov 2024 12:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7865F1DF258;
+	Wed,  6 Nov 2024 12:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kebt1CS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XStW+VVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985771E00B1;
-	Wed,  6 Nov 2024 12:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B1F1DF24A;
+	Wed,  6 Nov 2024 12:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897856; cv=none; b=Hv7l2rdlE7IcOikynI4pQxx/l5ag9UK8sTdvbaq0ODPIOb8YTdC7wQvav6C2EtCScq71eVHN1xwBLJ7roppGaEQdfiBwUPdftZT8WU6OtGNnxu5Q/mMtI/jwl5/5UF168cWrEMs/jU6CepbzM4HB1QO92Oc1dgqcpGZM0tRozj0=
+	t=1730894834; cv=none; b=R16LSPb5Vr84/bW9bJgbQ7+soVGzlhUfjIVUNkSAwy9qyoUsM2JBo9DWf53yUxbPl85Wo38DaLaPrdWT17L5XSZP+ZV4Nmz7YxoT767skaJX6bobH0ba01rii7DWewPP4BGc0BVE+niymcCeYB4lf926IPW+CAwyvIFyvKh+wZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897856; c=relaxed/simple;
-	bh=vxkDU510VAtDEiATDBeWfOiBAp1cvsqIFvsSvyPxh30=;
+	s=arc-20240116; t=1730894834; c=relaxed/simple;
+	bh=/c77K0C+VMtSJAQnG5XjwVVod9hW1iI+Xmnbk7sdt50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9lad+IILuY08VWYCTBRfffX8aRDqDcgZsR2fLQJcIX+I7eLcch7yP+n2H1UMPEnErcB3MsHfS/E/wvrBFZBaleYbqxiAFjmqGpEtMx9q1c4Rk9ngMKozc1lQ6KZ9TlhT9dk4FUpyRnk2+6MOdnS8kVuXd/p2WinrbL8Es35uP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kebt1CS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217ABC4CECD;
-	Wed,  6 Nov 2024 12:57:35 +0000 (UTC)
+	 MIME-Version; b=oIPJKMlduk2LT5bstjyX+gSgR9yUKZveVTtbSruGB5oslvCa2s4RZIl7Yb2snH5SK5pcOk7rmHEO0MFpx+fcfO4CIHFTKsNdDm+EtYTxIN/mn5daXyVUF84e/huB4tRZmtaOWPP4z6OW46wjd6g5l38Lj0sVF4mEeyKcbJ3Ev7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XStW+VVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719BCC4CECD;
+	Wed,  6 Nov 2024 12:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897856;
-	bh=vxkDU510VAtDEiATDBeWfOiBAp1cvsqIFvsSvyPxh30=;
+	s=korg; t=1730894833;
+	bh=/c77K0C+VMtSJAQnG5XjwVVod9hW1iI+Xmnbk7sdt50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kebt1CS7lhGtLEhOpvcQngIt2wJcH8Bnc3CzaynFUvD1tMYqww2syvWjNWv+h/X+i
-	 Zjhqw7AHC8/roho/KaML82Mk3TJO3gkVlx0PPtjLyk/Il2PyS9RKp4GFTLg06ddlKP
-	 IgS4CAUgzaB52hNL0owV9jIiPObuGZ4Jj6v49BKo=
+	b=XStW+VVz4mE0EeOer+oWMgLC2MyNZo2i687NzZI21z5INbrwGkXcLtQWcSY/+lk/E
+	 E7j2L3dN2s/iPL4HrmnDEghPl89AN+Jj/1bVMMyyY5NMtLnR5fAtoGIE7GeXHp6ktM
+	 CKFL0Ywmjpa/ZSdYT7aO9YqtKbrK7syHWsSkOhgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <kees@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/462] wifi: cfg80211: fix UBSAN noise in cfg80211_wext_siwscan()
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 4.19 008/350] arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
 Date: Wed,  6 Nov 2024 12:58:56 +0100
-Message-ID: <20241106120332.582364454@linuxfoundation.org>
+Message-ID: <20241106120321.075880218@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit a26a5107bc52922cf5f67361e307ad66547b51c7 ]
+commit 741f5ba7ccba5d7ae796dd11c320e28045524771 upstream.
 
-Looking at https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-and running reproducer with CONFIG_UBSAN_BOUNDS, I've noticed the
-following:
+The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module eMMC
+and SPI flash powered-down initially (in fact it keeps the reset signal
+asserted). BIOS_DISABLE_OVERRIDE pin allows to override that signal so
+that eMMC and SPI can be used regardless of the state of the signal.
 
-[ T4985] UBSAN: array-index-out-of-bounds in net/wireless/scan.c:3479:25
-[ T4985] index 164 is out of range for type 'struct ieee80211_channel *[]'
-<...skipped...>
-[ T4985] Call Trace:
-[ T4985]  <TASK>
-[ T4985]  dump_stack_lvl+0x1c2/0x2a0
-[ T4985]  ? __pfx_dump_stack_lvl+0x10/0x10
-[ T4985]  ? __pfx__printk+0x10/0x10
-[ T4985]  __ubsan_handle_out_of_bounds+0x127/0x150
-[ T4985]  cfg80211_wext_siwscan+0x11a4/0x1260
-<...the rest is not too useful...>
+Let's make this GPIO a hog so that it's reserved and locked in the
+proper state.
 
-Even if we do 'creq->n_channels = n_channels' before 'creq->ssids =
-(void *)&creq->channels[n_channels]', UBSAN treats the latter as
-off-by-one error. Fix this by using pointer arithmetic rather than
-an expression with explicit array indexing and use convenient
-'struct_size()' to simplify the math here and in 'kzalloc()' above.
+At the same time, make sure the pin is reserved for the hog and cannot
+be requested by another node.
 
-Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20240905150400.126386-1-dmantipov@yandex.ru
-[fix coding style for multi-line calculation]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://lore.kernel.org/r/20240731-puma-emmc-6-v1-2-4e28eadf32d0@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index b28e652514e80..18398968b3ed7 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2243,8 +2243,8 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
- 	}
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -147,6 +147,22 @@
+ 	status = "okay";
+ };
  
--	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
--		       n_channels * sizeof(void *),
-+	creq = kzalloc(struct_size(creq, channels, n_channels) +
-+		       sizeof(struct cfg80211_ssid),
- 		       GFP_ATOMIC);
- 	if (!creq) {
- 		err = -ENOMEM;
-@@ -2254,7 +2254,7 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	creq->wiphy = wiphy;
- 	creq->wdev = dev->ieee80211_ptr;
- 	/* SSIDs come after channels */
--	creq->ssids = (void *)&creq->channels[n_channels];
-+	creq->ssids = (void *)creq + struct_size(creq, channels, n_channels);
- 	creq->n_channels = n_channels;
- 	creq->n_ssids = 1;
- 	creq->scan_start = jiffies;
--- 
-2.43.0
-
++&gpio3 {
++	/*
++	 * The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module
++	 * eMMC and SPI flash powered-down initially (in fact it keeps the
++	 * reset signal asserted). BIOS_DISABLE_OVERRIDE pin allows to override
++	 * that signal so that eMMC and SPI can be used regardless of the state
++	 * of the signal.
++	 */
++	bios-disable-override-hog {
++		gpios = <RK_PD5 GPIO_ACTIVE_LOW>;
++		gpio-hog;
++		line-name = "bios_disable_override";
++		output-high;
++	};
++};
++
+ &gmac {
+ 	assigned-clocks = <&cru SCLK_RMII_SRC>;
+ 	assigned-clock-parents = <&clkin_gmac>;
+@@ -433,9 +449,14 @@
+ 
+ &pinctrl {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&q7_thermal_pin>;
++	pinctrl-0 = <&q7_thermal_pin &bios_disable_override_hog_pin>;
+ 
+ 	gpios {
++		bios_disable_override_hog_pin: bios-disable-override-hog-pin {
++			rockchip,pins =
++				<3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
++
+ 		q7_thermal_pin: q7-thermal-pin {
+ 			rockchip,pins =
+ 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 
 
 
