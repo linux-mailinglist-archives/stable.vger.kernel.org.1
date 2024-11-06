@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-91557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE499BEE85
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94D59BEEC3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ED651C23DB1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172181C249C6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43B01E0DFD;
-	Wed,  6 Nov 2024 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462A31DFE1E;
+	Wed,  6 Nov 2024 13:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LH8quxK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHVxVPlA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CF21DF98F;
-	Wed,  6 Nov 2024 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB61DFDA4;
+	Wed,  6 Nov 2024 13:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899082; cv=none; b=uqmsos1ULJ3z6aibdQmYEfPn+h/eFq5O2DOCUZsqN+0C4VgkR1ZDcrow2lToyFlQH2rth3n3V3Ix1yYNFC2wlQRbpumVvI6o4WBPi/b3RbxsyVppI9fCivMVqtd2iw0K61H+pU5/zt/8/oadc4khp1WoEfZ8XBWDm5nS8ivdVg4=
+	t=1730899234; cv=none; b=L6QseFsWOeUvd25YZIAygFBn6K3IkwVYCzXamGz6vyb3DOqvpJPVVdnbQFO1RpBYlGKRfQJqw+8jBhcYFIrMIv93YZ6WlxhXsMRWzo0jb3/6GHjb/vFFC4zcFu6y98bvc6sNUb6qhpLVJBC9XXMdk/PBzlCuX0nCesEYfyqXLJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899082; c=relaxed/simple;
-	bh=UMfZtjnUMOUtJ4ddOJ1tKePWGVLUPUubR5F3m6y1cig=;
+	s=arc-20240116; t=1730899234; c=relaxed/simple;
+	bh=P9lsBEOLUwPtHiPfqNZRt8f34bKuoqxASOyNHtYrBns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phbHWuzqsWBHZXo+AbdQFfUOSHUZGNvqC7HtBvXDr59FTACYoO29VBfTxZWNJJk13zuRsGsy5OHXZFpBW7dSTxaXL37kGhtbDau9hDiPTz2GcGUecQNvK2WUHKEMptPq+ppNlFzhcEW/iBsxffCIj0kPcDgFqYuBPw49OAeuNi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LH8quxK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF460C4CECD;
-	Wed,  6 Nov 2024 13:18:01 +0000 (UTC)
+	 MIME-Version; b=JiyMOyv3amBA+bh2V/kxBUPitTFEtiHgEQk1pQ6T5mDMCpqPZFSPxRDXmIosLwiinKo1nnjJiqwFqkUROeFyclrNF7c8wPSZzMPYecRK4pQQJncOQaqxL7N1+1wuYkKx4aDga7he0UrWWsNrg54XbKp2dgJaXZgcPKGlEB5MFKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHVxVPlA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B307C4CECD;
+	Wed,  6 Nov 2024 13:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899082;
-	bh=UMfZtjnUMOUtJ4ddOJ1tKePWGVLUPUubR5F3m6y1cig=;
+	s=korg; t=1730899233;
+	bh=P9lsBEOLUwPtHiPfqNZRt8f34bKuoqxASOyNHtYrBns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LH8quxK8Q15wTyq9TE5ZtMNZBcKskpZLrTU1iBDKl0Hc6y16QqfkzkLkBAL5GAU46
-	 T39pAZb5FAkrglOGK94G/jSQPr6kbxxqGyD8dab/ls0woq8blA9p0kQOMk8LPUuRPv
-	 ppYdNH7F/F8YW/3a1aEGavMUE9ANO2BUah4WlQnk=
+	b=AHVxVPlAMj9IcwJCo2BSO3GO5255/jv50vn00+SuTKLz3NvsqOsMan4BL+J++bvdt
+	 iekeXY5NUG7Kfu3xwVrqkQVnajeP0cKIGZ5rwQllSh3RAygqS0wlYxpSRiKMxj++tt
+	 P0LBUeOEOkxGZ6RqCnDcg1juv+LrUZDvCJvQ2YxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 454/462] nilfs2: fix potential deadlock with newly created symlinks
+	stable <stable@kernel.org>,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 5.15 43/73] Revert "driver core: Fix uevent_show() vs driver detach race"
 Date: Wed,  6 Nov 2024 13:05:47 +0100
-Message-ID: <20241106120342.720540291@linuxfoundation.org>
+Message-ID: <20241106120301.251667340@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
+commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
 
-Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
-memory reclamation involving the filesystem layer, which can result in
-circular lock dependencies among the reader/writer semaphore
-nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
-fs_reclaim pseudo lock.
+This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
 
-This is because after commit 21fc61c73c39 ("don't put symlink bodies in
-pagecache into highmem"), the gfp flags of the page cache for symbolic
-links are overwritten to GFP_KERNEL via inode_nohighmem().
+This commit causes a regression, so revert it for now until it can come
+back in a way that works for everyone.
 
-This is not a problem for symlinks read from the backing device, because
-the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
-when a new symlink is created with nilfs_symlink(), the gfp flags remain
-overwritten to GFP_KERNEL.  Then, memory allocation called from
-page_symlink() etc.  triggers memory reclamation including the FS layer,
-which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
-cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
-
-Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
-of newly created symlinks in the same way that nilfs_new_inode() and
-__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
-scope consistently or improve the locking constraints.
-
-Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
-Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
-Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
+Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+Cc: stable <stable@kernel.org>
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/namei.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/core.c   |   13 +++++--------
+ drivers/base/module.c |    4 ----
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -156,6 +156,9 @@ static int nilfs_symlink(struct inode *d
- 	/* slow symlink */
- 	inode->i_op = &nilfs_symlink_inode_operations;
- 	inode_nohighmem(inode);
-+	mapping_set_gfp_mask(inode->i_mapping,
-+			     mapping_gfp_constraint(inode->i_mapping,
-+						    ~__GFP_FS));
- 	inode->i_mapping->a_ops = &nilfs_aops;
- 	err = page_symlink(inode, symname, l);
- 	if (err)
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,7 +25,6 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
+-#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/swiotlb.h>
+@@ -2306,7 +2305,6 @@ static int dev_uevent(struct kset *kset,
+ 		      struct kobj_uevent_env *env)
+ {
+ 	struct device *dev = kobj_to_dev(kobj);
+-	struct device_driver *driver;
+ 	int retval = 0;
+ 
+ 	/* add device node properties if present */
+@@ -2335,12 +2333,8 @@ static int dev_uevent(struct kset *kset,
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+ 
+-	/* Synchronize with module_remove_driver() */
+-	rcu_read_lock();
+-	driver = READ_ONCE(dev->driver);
+-	if (driver)
+-		add_uevent_var(env, "DRIVER=%s", driver->name);
+-	rcu_read_unlock();
++	if (dev->driver)
++		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+ 
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2410,8 +2404,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
+ 
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,7 +7,6 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+-#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(struct device_driver *drv)
+@@ -78,9 +77,6 @@ void module_remove_driver(struct device_
+ 	if (!drv)
+ 		return;
+ 
+-	/* Synchronize with dev_uevent() */
+-	synchronize_rcu();
+-
+ 	sysfs_remove_link(&drv->p->kobj, "module");
+ 
+ 	if (drv->owner)
 
 
 
