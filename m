@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A241E9BE9F1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:39:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0D89BE81D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04341B24F20
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:38:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D8BB21F78
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D268F1EF081;
-	Wed,  6 Nov 2024 12:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A4B1DF73B;
+	Wed,  6 Nov 2024 12:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+erRUAM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5bp+0Du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5231EF921;
-	Wed,  6 Nov 2024 12:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F941D173F;
+	Wed,  6 Nov 2024 12:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896616; cv=none; b=dJiaeZ7FMDDOi28dh7Zt+DSRfYXgDzQXRjeAu++5s6irgtPIAKVkJQqrHKzXoCHTQKkej9r3pBPTVSDU2LhfOvP/4mbUEA/2b23tNdpOED9P6ZU5aq9g2d5cy3g1Pe9x2D4TnYzAMNVlMfhJV0SUKD2nEqgbAKdoHNjapVZKZFM=
+	t=1730895665; cv=none; b=X1ME3w59GEwgDePoBFezbCjr2jdRRHAu7haNjcwPWjfJa04K1mC9ijSKkof+7ElBmFOpGEdQYq24L4sW74MVMXMrQX4OljrQkmmksW9IokOb7C+riSM5Xy0SE3S3cbNPkOueuL4O88zFQdaRZttxb7QFoA9xUp4Nk7WzADUNZFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896616; c=relaxed/simple;
-	bh=b55fsNhlKQCTiG9Rkz3qAqTBBDb0QyYLNhfahS5fT4E=;
+	s=arc-20240116; t=1730895665; c=relaxed/simple;
+	bh=2uIztKdyxXvUSkdytC4h6jnEOeGdTLWNTgXWdi+OzT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mf1sgwXwQNvVUrY0X+XqN0x6ub1mXkT+OQMjEDn4qsy65viO0lHWz8dLQ0SE4S+nri6stV2k1cN1y6LQo2ztFNzL4DlEyDYDdEoIDR5+h8kaadEAM4mo9IE0xnlICTqu2bpImgE2hewqJAIv32FH6/Os+Vd5yKg+lYdbNmcC5xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+erRUAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB44C4CED5;
-	Wed,  6 Nov 2024 12:36:55 +0000 (UTC)
+	 MIME-Version; b=lIH/V/Y7pYy5amHS/37rk8d6TQIe7X4NEAek3nKXykIZaNAxJEwYM2NCs1UybE5rOaB/2JCpjUi0ZipO/2wr54eDHWKcFl5Q+4jGihs4QLtJFP5GZwoucHQDBN5IlHOgb1k0utjHQY3ximlK4AGGR2fsDrbNvGb4Nh8lLrBLGj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5bp+0Du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D327C4CECD;
+	Wed,  6 Nov 2024 12:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896616;
-	bh=b55fsNhlKQCTiG9Rkz3qAqTBBDb0QyYLNhfahS5fT4E=;
+	s=korg; t=1730895665;
+	bh=2uIztKdyxXvUSkdytC4h6jnEOeGdTLWNTgXWdi+OzT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+erRUAMRVAaLA/CygkmhHowgMyzwgny5l/JhbAi3RPelN2deESWLO/0/fgzFzuXy
-	 GyjbIUQt8Lqlwpfg5EJuj8nPoM9GYZ1igRTSOsdAKmGw0N0FVdzuAob7WimTTNk1EH
-	 BMegqKOic7W8ZUb2cJEeVPgxjOty5tIFapwBFjeE=
+	b=L5bp+0Du3tbRvvCEnjeSGWAksLRLdc0TrBbXSJkpABRx9hXp7/drbm74jylqL7DUh
+	 ic+v3HGupoFaiB2lZ3xLaYBTOJLWdKJMAHFe6XAFxdVu8/mdWp7NoOmQ1vBoXza/z0
+	 j31ADENc18b2ld5UL5hZ9A8a1kvSUQnBL6G7Mbyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/110] usb: typec: altmode should keep reference to parent
-Date: Wed,  6 Nov 2024 13:03:42 +0100
-Message-ID: <20241106120303.608468649@linuxfoundation.org>
+Subject: [PATCH 4.19 295/350] RDMA/bnxt_re: Return more meaningful error
+Date: Wed,  6 Nov 2024 13:03:43 +0100
+Message-ID: <20241106120328.103901032@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
+[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
 
-The altmode device release refers to its parent device, but without keeping
-a reference to it.
+When the HWRM command fails, driver currently returns -EFAULT(Bad
+address). This does not look correct.
 
-When registering the altmode, get a reference to the parent and put it in
-the release function.
+Modified to return -EIO(I/O error).
 
-Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
-like this:
-
-[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
-[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   46.612867] ==================================================================
-[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
-[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
-[   46.614538]
-[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
-[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   46.616042] Workqueue: events kobject_delayed_cleanup
-[   46.616446] Call Trace:
-[   46.616648]  <TASK>
-[   46.616820]  dump_stack_lvl+0x5b/0x7c
-[   46.617112]  ? typec_altmode_release+0x38/0x129
-[   46.617470]  print_report+0x14c/0x49e
-[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
-[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
-[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
-[   46.618807]  ? typec_altmode_release+0x38/0x129
-[   46.619161]  kasan_report+0x8d/0xb4
-[   46.619447]  ? typec_altmode_release+0x38/0x129
-[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620185]  typec_altmode_release+0x38/0x129
-[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620907]  device_release+0xaf/0xf2
-[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.621584]  process_scheduled_works+0x4f6/0x85f
-[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
-[   46.622353]  ? hlock_class+0x31/0x9a
-[   46.622647]  ? lock_acquired+0x361/0x3c3
-[   46.622956]  ? move_linked_works+0x46/0x7d
-[   46.623277]  worker_thread+0x1ce/0x291
-[   46.623582]  ? __kthread_parkme+0xc8/0xdf
-[   46.623900]  ? __pfx_worker_thread+0x10/0x10
-[   46.624236]  kthread+0x17e/0x190
-[   46.624501]  ? kthread+0xfb/0x190
-[   46.624756]  ? __pfx_kthread+0x10/0x10
-[   46.625015]  ret_from_fork+0x20/0x40
-[   46.625268]  ? __pfx_kthread+0x10/0x10
-[   46.625532]  ret_from_fork_asm+0x1a/0x30
-[   46.625805]  </TASK>
-[   46.625953]
-[   46.626056] Allocated by task 678:
-[   46.626287]  kasan_save_stack+0x24/0x44
-[   46.626555]  kasan_save_track+0x14/0x2d
-[   46.626811]  __kasan_kmalloc+0x3f/0x4d
-[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
-[   46.627362]  typec_register_port+0x23/0x491
-[   46.627698]  cros_typec_probe+0x634/0xbb6
-[   46.628026]  platform_probe+0x47/0x8c
-[   46.628311]  really_probe+0x20a/0x47d
-[   46.628605]  device_driver_attach+0x39/0x72
-[   46.628940]  bind_store+0x87/0xd7
-[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
-[   46.629574]  vfs_write+0x1d6/0x29b
-[   46.629856]  ksys_write+0xcd/0x13b
-[   46.630128]  do_syscall_64+0xd4/0x139
-[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   46.630820]
-[   46.630946] Freed by task 48:
-[   46.631182]  kasan_save_stack+0x24/0x44
-[   46.631493]  kasan_save_track+0x14/0x2d
-[   46.631799]  kasan_save_free_info+0x3f/0x4d
-[   46.632144]  __kasan_slab_free+0x37/0x45
-[   46.632474]  kfree+0x1d4/0x252
-[   46.632725]  device_release+0xaf/0xf2
-[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.633388]  process_scheduled_works+0x4f6/0x85f
-[   46.633764]  worker_thread+0x1ce/0x291
-[   46.634065]  kthread+0x17e/0x190
-[   46.634324]  ret_from_fork+0x20/0x40
-[   46.634621]  ret_from_fork_asm+0x1a/0x30
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
+Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
+Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index 7fa95e7012446..dec83edb09de2 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -430,6 +430,7 @@ static void typec_altmode_release(struct device *dev)
- 		typec_altmode_put_partner(alt);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 8b3b5fdc19bbb..092cc11428f56 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -234,7 +234,7 @@ int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		/* failed with status */
+ 		dev_err(&rcfw->pdev->dev, "QPLIB: cmdq[%#x]=%#x status %#x",
+ 			cookie, opcode, evnt->status);
+-		rc = -EFAULT;
++		rc = -EIO;
+ 	}
  
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
-+	put_device(alt->adev.dev.parent);
- 	kfree(alt);
- }
- 
-@@ -479,6 +480,8 @@ typec_register_altmode(struct device *parent,
- 	alt->adev.dev.type = &typec_altmode_dev_type;
- 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
- 
-+	get_device(alt->adev.dev.parent);
-+
- 	/* Link partners and plugs with the ports */
- 	if (!is_port)
- 		typec_altmode_set_partner(alt);
+ 	return rc;
 -- 
 2.43.0
 
