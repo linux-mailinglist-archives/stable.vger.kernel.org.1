@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0BA9BE84C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623459BEC3F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D55285017
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5AEB254CF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A0B1DFD83;
-	Wed,  6 Nov 2024 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F021FB3F0;
+	Wed,  6 Nov 2024 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R94aWU83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtQHSoWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762EF1DED58;
-	Wed,  6 Nov 2024 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1281E0E1F;
+	Wed,  6 Nov 2024 12:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895792; cv=none; b=od1QQcnDJ+znBVHnhzdCj8W820rWRLft+uQohTs1zP5ngRPegpsoNGyTaqCrKdYWXZByLbFPz6Uhkt2cUA0ar6MKDhTyZB75eFqKDz/iKQUW3DFgPtF8BKtKlPTr63syjJMCbxASX5kBmWYcucc0C+88zuWu6eRausowtiCj1BM=
+	t=1730897619; cv=none; b=B4P9Pj+hUU/FwiyjnbXQxJo7vrHVgZ2iHrn2NL8GO+pdDXe9qCwtX/ZY99iAOOojdh6PmZm7psKj+IbhacaRIAapmquzmlErUp4swBjQ7mJeV7+PN6MCHVZPKHdrg7VhjtL6SLtOpt6qSvI4OPnSHgaAlhGj7qkVb8MUXasu1Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895792; c=relaxed/simple;
-	bh=ze5ixjwogLy4SCOM4US4DeGipTrhkI4zu3nBnLvMn9s=;
+	s=arc-20240116; t=1730897619; c=relaxed/simple;
+	bh=7ifTCB3M6HrjVXWuHTztjoX24kKCNIDImunVzeO/vCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gb3UlfOEYY+V55IZAyqbhfxCSq59vlHSStClSdBVh3z6TTivNVfA8je8dqTOvZF65Lbi7F8RBWFOvbw5DJn2NKGu51PBCXxgzH7HXEiqwSKulzoH24DI+WZIes/DAjORavgIMMkLksjQDNxORrqjsWJU5Y931TezJSW0/hiP9/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R94aWU83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FBCC4CECD;
-	Wed,  6 Nov 2024 12:23:11 +0000 (UTC)
+	 MIME-Version; b=mNizgnUGHPvnSeHP2PZd5YJzdIQVikOxF9yt2loPDZI2TCsxRqFNJVsjpKJfrQ4KwOj7xOxOq4y7OCju1syBZ2x+MFa01ZE+sBXVAXePS5MjEkKwHPUVhKd72qowR6y9Lol2jb8+A7iRhzqxmd8ilxHQm8YK92WPoU55fGWe5sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtQHSoWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFF0C4CECD;
+	Wed,  6 Nov 2024 12:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895792;
-	bh=ze5ixjwogLy4SCOM4US4DeGipTrhkI4zu3nBnLvMn9s=;
+	s=korg; t=1730897618;
+	bh=7ifTCB3M6HrjVXWuHTztjoX24kKCNIDImunVzeO/vCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R94aWU83pPLQb7BWUxZ23vJFjR2OkBM2Q6p7F0/0QEhlPJphYngSFddGcK4KPt8ZZ
-	 wj6duWucAAH+p8AnHuNYdJyBzQtPNXK3CDGmYXe2RMsgotONrkYls7Y9IFtvHDatI8
-	 z26kroIb2xVMAd33VToLI3XJsVSjxd4YSuTTXs1s=
+	b=KtQHSoWCcKgZ1t3rf/GiX/50RIxoSv1IiWlXIuXqYKAuliURnAMyUSfftJzP/x3OO
+	 DT2dlDDmTZtpHXtkqzNnsH5LWnKA4y2kM4eRnZ0moP7ReQ3w5UNuXEo+j4208ew7R7
+	 eLNU2GNjIfxEUZRh04I19hVG74gH8hxwjEWGM9Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Chen Zhongjin <chenzhongjin@huawei.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 338/350] misc: sgi-gru: Dont disable preemption in GRU driver
+Subject: [PATCH 6.6 078/151] rcu-tasks: Initialize data to eliminate RCU-tasks/do_exit() deadlocks
 Date: Wed,  6 Nov 2024 13:04:26 +0100
-Message-ID: <20241106120329.054277990@linuxfoundation.org>
+Message-ID: <20241106120311.000301310@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitri Sivanich <sivanich@hpe.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
+[ Upstream commit 46faf9d8e1d52e4a91c382c6c72da6bd8e68297b ]
 
-Disabling preemption in the GRU driver is unnecessary, and clashes with
-sleeping locks in several code paths.  Remove preempt_disable and
-preempt_enable from the GRU driver.
+Holding a mutex across synchronize_rcu_tasks() and acquiring
+that same mutex in code called from do_exit() after its call to
+exit_tasks_rcu_start() but before its call to exit_tasks_rcu_stop()
+results in deadlock.  This is by design, because tasks that are far
+enough into do_exit() are no longer present on the tasks list, making
+it a bit difficult for RCU Tasks to find them, let alone wait on them
+to do a voluntary context switch.  However, such deadlocks are becoming
+more frequent.  In addition, lockdep currently does not detect such
+deadlocks and they can be difficult to reproduce.
 
-Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+In addition, if a task voluntarily context switches during that time
+(for example, if it blocks acquiring a mutex), then this task is in an
+RCU Tasks quiescent state.  And with some adjustments, RCU Tasks could
+just as well take advantage of that fact.
+
+This commit therefore initializes the data structures that will be needed
+to rely on these quiescent states and to eliminate these deadlocks.
+
+Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
+
+Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Reported-by: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Yang Jihong <yangjihong1@huawei.com>
+Tested-by: Chen Zhongjin <chenzhongjin@huawei.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Stable-dep-of: fd70e9f1d85f ("rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/sgi-gru/grukservices.c | 2 --
- drivers/misc/sgi-gru/grumain.c      | 4 ----
- drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
- 3 files changed, 8 deletions(-)
+ init/init_task.c   | 1 +
+ kernel/fork.c      | 1 +
+ kernel/rcu/tasks.h | 2 ++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
-index 030769018461b..256be2e12faa1 100644
---- a/drivers/misc/sgi-gru/grukservices.c
-+++ b/drivers/misc/sgi-gru/grukservices.c
-@@ -270,7 +270,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- 	int lcpu;
- 
- 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
--	preempt_disable();
- 	bs = gru_lock_kernel_context(-1);
- 	lcpu = uv_blade_processor_id();
- 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
-@@ -284,7 +283,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- static void gru_free_cpu_resources(void *cb, void *dsr)
- {
- 	gru_unlock_kernel_context(uv_numa_blade_id());
--	preempt_enable();
- }
- 
- /*
-diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
-index 8c3e0317c115b..cb4c97210ec36 100644
---- a/drivers/misc/sgi-gru/grumain.c
-+++ b/drivers/misc/sgi-gru/grumain.c
-@@ -954,10 +954,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 
- again:
- 	mutex_lock(&gts->ts_ctxlock);
--	preempt_disable();
- 
- 	if (gru_check_context_placement(gts)) {
--		preempt_enable();
- 		mutex_unlock(&gts->ts_ctxlock);
- 		gru_unload_context(gts, 1);
- 		return VM_FAULT_NOPAGE;
-@@ -966,7 +964,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 	if (!gts->ts_gru) {
- 		STAT(load_user_context);
- 		if (!gru_assign_gru_context(gts)) {
--			preempt_enable();
- 			mutex_unlock(&gts->ts_ctxlock);
- 			set_current_state(TASK_INTERRUPTIBLE);
- 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
-@@ -982,7 +979,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 				vma->vm_page_prot);
+diff --git a/init/init_task.c b/init/init_task.c
+index ff6c4b9bfe6b1..fd9e27185e23a 100644
+--- a/init/init_task.c
++++ b/init/init_task.c
+@@ -152,6 +152,7 @@ struct task_struct init_task
+ 	.rcu_tasks_holdout = false,
+ 	.rcu_tasks_holdout_list = LIST_HEAD_INIT(init_task.rcu_tasks_holdout_list),
+ 	.rcu_tasks_idle_cpu = -1,
++	.rcu_tasks_exit_list = LIST_HEAD_INIT(init_task.rcu_tasks_exit_list),
+ #endif
+ #ifdef CONFIG_TASKS_TRACE_RCU
+ 	.trc_reader_nesting = 0,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 32ffbc1c96bae..9098284720e38 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1973,6 +1973,7 @@ static inline void rcu_copy_process(struct task_struct *p)
+ 	p->rcu_tasks_holdout = false;
+ 	INIT_LIST_HEAD(&p->rcu_tasks_holdout_list);
+ 	p->rcu_tasks_idle_cpu = -1;
++	INIT_LIST_HEAD(&p->rcu_tasks_exit_list);
+ #endif /* #ifdef CONFIG_TASKS_RCU */
+ #ifdef CONFIG_TASKS_TRACE_RCU
+ 	p->trc_reader_nesting = 0;
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 7ac3c8af075fc..4eae3b1bda70e 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -277,6 +277,8 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
+ 		rtpcp->rtpp = rtp;
+ 		if (!rtpcp->rtp_blkd_tasks.next)
+ 			INIT_LIST_HEAD(&rtpcp->rtp_blkd_tasks);
++		if (!rtpcp->rtp_exit_list.next)
++			INIT_LIST_HEAD(&rtpcp->rtp_exit_list);
  	}
  
--	preempt_enable();
- 	mutex_unlock(&gts->ts_ctxlock);
- 
- 	return VM_FAULT_NOPAGE;
-diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
-index be28f05bfafa9..0f837cc3a417b 100644
---- a/drivers/misc/sgi-gru/grutlbpurge.c
-+++ b/drivers/misc/sgi-gru/grutlbpurge.c
-@@ -78,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- 	struct gru_tlb_global_handle *tgh;
- 	int n;
- 
--	preempt_disable();
- 	if (uv_numa_blade_id() == gru->gs_blade_id)
- 		n = get_on_blade_tgh(gru);
- 	else
-@@ -92,7 +91,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
- {
- 	unlock_tgh_handle(tgh);
--	preempt_enable();
- }
- 
- /*
+ 	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d.\n", rtp->name,
 -- 
 2.43.0
 
