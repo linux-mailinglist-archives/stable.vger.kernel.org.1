@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BBC9BE836
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54389BEA5C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 255A91C20B8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A9FC284778
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DB31DF740;
-	Wed,  6 Nov 2024 12:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625051EBFF3;
+	Wed,  6 Nov 2024 12:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sKITsTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPl7gPwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BAC1DF726;
-	Wed,  6 Nov 2024 12:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2EA1EC00E;
+	Wed,  6 Nov 2024 12:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895742; cv=none; b=tkR6kXjZsCj9tj7VAh3FC5cHwT0nI0fEGdrG6YlFcveWl92ogwDZcHuzoVvKWXufi2mOwpP4E7HyOOv9NwxEI6rlfNDD4bOuZq3rH5xR9Kp/mndVkq+hk+E1NSYBjQrKR6hJLqF8Hrw5K25V77RewD1PFr9REVumo2EO/bM91ps=
+	t=1730896691; cv=none; b=k6TvVeK/+PoTUnzVfprM8Z6J3+7yqRLuQ8/MbM8L05SAgeWmHoNkOsFG/fCOfNqSfOHa1+Cq+XCj9EmjuuBeEvgGV0dRapr6S6uzXc2rOmDYnjWn8AHHC1524YpUt76dkRMfiZmyNIkUCf/oHbscw61ry7I6Lc75oQRFsooYEBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895742; c=relaxed/simple;
-	bh=0i+RItifkWfm7cGWqiXz3ykTNHafLwr7lxziLwJuFZY=;
+	s=arc-20240116; t=1730896691; c=relaxed/simple;
+	bh=t07wsVdDbaDed3NcNiJ3FNQ0DGvb+gk0LYdl4sZ6LMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdZzT/z2gRkkChcAjdIKBjIE7JQTH0iGCYc7aHlPyse336WPTI+Bvwf1hAl4q+mpRnpNEDpKZdycRUnmZfWh76g4/XhMdIeJenhMMi+YZyfqFmgW+I8li+Llw7MACaCgMwfmfBJaN2haqH0deJQxMeewAb3sFiwI+X1+dveMeeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sKITsTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767B9C4CED8;
-	Wed,  6 Nov 2024 12:22:21 +0000 (UTC)
+	 MIME-Version; b=SaBIpiMfLC6djjPUxVkJhSM6VFm/ClSzj2x0fOy1bR0H2kR17aaTUgl8jArf2SjY72UT5eIBcAF86b/NyTOLwB2OEL5cFfalRCtoJuw5XoMct2yGKr/aiqP/zQGS/xe3RbG7bPu08DXgZzgI9i26qrq8dS6VX29LZe160RLXfV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPl7gPwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBC5C4CECD;
+	Wed,  6 Nov 2024 12:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895742;
-	bh=0i+RItifkWfm7cGWqiXz3ykTNHafLwr7lxziLwJuFZY=;
+	s=korg; t=1730896690;
+	bh=t07wsVdDbaDed3NcNiJ3FNQ0DGvb+gk0LYdl4sZ6LMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sKITsTwimKsSkYNpSOrdDWC/JbESlQJohw+u6ZkLGme0nWYsPeHo/tR5fLCA3UYU
-	 xe8pJnCCCnwutvnzaBJ+z/GiwxGyzRbNIl5M1BPSyjfZrvdul6/WgGNwePAJE6dROd
-	 imGGcGbsYEme6XRtRaBY12i4MM1xaYIGepPWJJuM=
+	b=LPl7gPwj0Ejs3l8foYfls9BMMYpQpGbIWqo34J7VT+vk/3B5Ab9uOJp7q2Ar9uc7W
+	 OcdzdZuKANj4a/XgtNGkdDj9jlpgMtBHlTVfYazJgvNKWLI8vIq4tham2Yot5fTSa7
+	 MV6PLsC/fobbpbXB0ApYj1NE/n0bXmo2YyWelsxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.19 319/350] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 041/110] ALSA: firewire-lib: Avoid division by zero in apply_constraint_to_size()
 Date: Wed,  6 Nov 2024 13:04:07 +0100
-Message-ID: <20241106120328.632846383@linuxfoundation.org>
+Message-ID: <20241106120304.334927601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
+[ Upstream commit 72cafe63b35d06b5cfbaf807e90ae657907858da ]
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+The step variable is initialized to zero. It is changed in the loop,
+but if it's not changed it will remain zero. Add a variable check
+before the division.
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
+The observed behavior was introduced by commit 826b5de90c0b
+("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size"),
+and it is difficult to show that any of the interval parameters will
+satisfy the snd_interval_test() condition with data from the
+amdtp_rate_table[] table.
 
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 826b5de90c0b ("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size")
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20241018060018.1189537-1-shum.sdl@nppct.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ sound/firewire/amdtp-stream.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2526,6 +2526,31 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index 7a282d8e71485..bd272ab2048e4 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -163,6 +163,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
+ 			step = max(step, amdtp_syt_intervals[i]);
+ 	}
  
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev;
-+	int ret;
++	if (step == 0)
++		return -EINVAL;
 +
-+	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2538,6 +2563,11 @@ static int netvsc_netdev_event(struct no
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
+ 	t.min = roundup(s->min, step);
+ 	t.max = rounddown(s->max, step);
+ 	t.integer = 1;
+-- 
+2.43.0
+
 
 
 
