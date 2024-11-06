@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEED9BE894
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD449BE776
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4380A1F221FD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB6D1C23513
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8781DFDB5;
-	Wed,  6 Nov 2024 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026791DEFF5;
+	Wed,  6 Nov 2024 12:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BK9HxQfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VC2WymeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4B21DED58;
-	Wed,  6 Nov 2024 12:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1B51DF24E;
+	Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895942; cv=none; b=H5WEjTsytJVr5EOqK5MeQCMOw8+y5S8qieEJmjWXy/A324uwHEJA2ueeyiUp5FPGJ1fhq+GsQLqqItVAvNqu1s9lcwR1jId787dHooy1kox8zJjUI0gnxqSNum2MsrByNWBLfsQtIgsFPktKM8udx5Srs1ALBpLxPye0pSA5XEI=
+	t=1730895273; cv=none; b=kFN0wv4105/gS69gUZVcOHQ8OL6p0ZhkQ8HDmrox8hF2oMKFUlfKqwmWdI0/e7mzxoBeMXVynsbj47Hhh8vFBwvzWjZj+TK+gvi0AIDbZQ8uXD1KoWkDXpkzOgBa0wyezWA30EDNJn4Jl9IGCTiiui9yDOcIv37XNWhQluXHi+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895942; c=relaxed/simple;
-	bh=a8vzpWF8BOFgBft0N6/wyGz/fUgfXS8wdbytspuLy8g=;
+	s=arc-20240116; t=1730895273; c=relaxed/simple;
+	bh=hk6N5AncAHChmPCXGRiHstbr9gXkj6ajwyO/npDOX8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCy2/jWT8u/McTq+527AnmL6DZQK6iV8KXf0R1lsvZayyUfuY/WtCdlc1roxJABphM096ngAuqwUx8+tSV37nMbofbD+Let1T13nFgd5NsR67JZdD4zxVliwD46s8V+YjBIRy4YLZieGICotn+aFJkX7fSJMfHhsGLsb2dECi0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK9HxQfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BA6C4CECD;
-	Wed,  6 Nov 2024 12:25:41 +0000 (UTC)
+	 MIME-Version; b=blbXUcD08cyopDEFLGdOGB0wed4uWpa8jiyFCS45mMF+jGFepriMjYVui1GgSiIlJivbUa311MVisgR2D/v2BMj+jzEaFcnKnZQBwE1UMxbGPIL1IsiPFAkRi0EF+dKYD710+uwmFElkwcT+lv/IN7UoATRfXiLw6eNmV4xCrb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VC2WymeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35695C4CECD;
+	Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895942;
-	bh=a8vzpWF8BOFgBft0N6/wyGz/fUgfXS8wdbytspuLy8g=;
+	s=korg; t=1730895273;
+	bh=hk6N5AncAHChmPCXGRiHstbr9gXkj6ajwyO/npDOX8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BK9HxQfzRk/3um9dNeJ1sp4v4c5ADJuE+mkwvcXK52HhWcqfy63oakLL1uLmEHSJi
-	 eVSk2WubUnSzZnQl/7Ckctoffv/9L/7hk1kZYBI7XEUXs1Pdj2hAQzMomb6aMj6xPy
-	 mulNvZ3OwN0nZ5W+GmKBp+WjqbaYc1TO0DvZvhM4=
+	b=VC2WymeQ+05uZmokCbC/AkxzhAvv3LuAI6SL8s0gLRLDV3OH+xQEuF9YB1mhlk9wC
+	 WOz1lobBjqCxSU5ZZHPOSagRKYLJp+ZfsJ4rKsUd7lauTnAdmq9yP3LO3szSwaqxKv
+	 FE+dWW4JKq60ZdjyvncfeKOyxllkqbtoom4c6bzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 035/245] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-Date: Wed,  6 Nov 2024 13:01:28 +0100
-Message-ID: <20241106120320.090025493@linuxfoundation.org>
+Subject: [PATCH 4.19 161/350] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
+Date: Wed,  6 Nov 2024 13:01:29 +0100
+Message-ID: <20241106120324.897049771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 90e0569dd3d32f4f4d2ca691d3fa5a8a14a13c12 ]
+[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
 
-The per-netns IP tunnel hash table is protected by the RTNL mutex and
-ip_tunnel_find() is only called from the control path where the mutex is
-taken.
+Replace one-element array with a flexible-array member in
+`struct host_cmd_ds_802_11_scan_ext`.
 
-Add a lockdep expression to hlist_for_each_entry_rcu() in
-ip_tunnel_find() in order to validate that the mutex is held and to
-silence the suspicious RCU usage warning [1].
+With this, fix the following warning:
 
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gd95d9a31aceb #139 Not tainted
------------------------------
-net/ipv4/ip_tunnel.c:221 RCU-list traversed in non-reader section!!
+elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
 
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/362:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 12 UID: 0 PID: 362 Comm: ip Not tainted 6.12.0-rc3-custom-gd95d9a31aceb #139
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- ip_tunnel_find+0x435/0x4d0
- ip_tunnel_newlink+0x517/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023123009.749764-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 5cffad42fe8ca..49937878d5e8a 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -217,7 +217,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 3e3134bcc2b06..bfa482cf464ff 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -1590,7 +1590,7 @@ struct host_cmd_ds_802_11_scan_rsp {
  
- 	ip_tunnel_flags_copy(flags, parms->i_flags);
+ struct host_cmd_ds_802_11_scan_ext {
+ 	u32   reserved;
+-	u8    tlv_buffer[1];
++	u8    tlv_buffer[];
+ } __packed;
  
--	hlist_for_each_entry_rcu(t, head, hash_node) {
-+	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
- 		if (local == t->parms.iph.saddr &&
- 		    remote == t->parms.iph.daddr &&
- 		    link == READ_ONCE(t->parms.link) &&
+ struct mwifiex_ie_types_bss_mode {
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index 4f0e78ae3dbd0..0cbdd5a930d83 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2570,8 +2570,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
+ 	ext_scan_resp = &resp->params.ext_scan;
+ 
+ 	tlv = (void *)ext_scan_resp->tlv_buffer;
+-	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
+-					      - 1);
++	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
+ 
+ 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
+ 		type = le16_to_cpu(tlv->type);
 -- 
 2.43.0
 
