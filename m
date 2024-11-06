@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-91463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799EC9BEE19
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:15:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC30E9BEE1B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE201C24509
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B01A1285DC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC31F4732;
-	Wed,  6 Nov 2024 13:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4C71F4281;
+	Wed,  6 Nov 2024 13:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qk7X+3jT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1pB/hJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1781DFE10;
-	Wed,  6 Nov 2024 13:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED641DFE35;
+	Wed,  6 Nov 2024 13:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898805; cv=none; b=IqFQyLqkGbalpOyd3VAlSem7az3jgo7QVDa8WDCFHk/DU2ReMpJ+chDoxsMzjnm8ZXTxsqo07QKyO3ceGGDYMiuj1kh3rnEhR/Di+lpNOIrIUqUjwlqkgEqK+xfNRpthe7In3W7IKmGW3so103hI5koWsHwOLLI5ue6F+cBtWro=
+	t=1730898811; cv=none; b=s3NUr2YdM3FIchLF3F6zKS/WtEpGsesZ+SQ3fd3qIFWJC1a5aZy4jugl33r+wf/bmW2X/tFh/l4TNQfoXaZ2dlxnOD/mCwotbuzCNy5VA6YjrKLVmBvMFTR9YNlZ5topSJEXdnEh2X7KFs5sKMbIAPiEFAUZaCloVFgdaHIyfeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898805; c=relaxed/simple;
-	bh=2sjpqsHgovd0H6ONBNbID5JgOoY4EChB/7p9e2v0OHg=;
+	s=arc-20240116; t=1730898811; c=relaxed/simple;
+	bh=PKirrAqgEMM+GEObo0KnGlRQgKG11jINn66hAhx5NII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMA2pWAL81QrIEcAtQFxbr5O8AKNTZ7uTG9cj6PzYZQpn1ya0hAUE9XHeNRzp10DnF8gKNHrJpoG+rdYW9A3ZgUsBv1Lm5rsa2HMmIAL5KQl9gvzrt/uDl/crCuuW6frF5eVY8nE4s9BLeP0FBikAZzBP2fhCTJNRDBm5QsRXRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qk7X+3jT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974D6C4CED4;
-	Wed,  6 Nov 2024 13:13:24 +0000 (UTC)
+	 MIME-Version; b=TJVWzvhnuBNFyS5DmVYhrZFYkXmuDdl4mvIeZzXcr408t5kUUcDV/Xy/xlJEUWbd/hGJz/lBOQql79nSIerwDlMylwTQv8jp0ThcN1iK51a/Z1ptPdOyUYoOrBFiVGOiqXX9K7SFqqNnJAc1tGCFVOd70l0uI/o8BkIggW9spaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1pB/hJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D70C4CECD;
+	Wed,  6 Nov 2024 13:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898805;
-	bh=2sjpqsHgovd0H6ONBNbID5JgOoY4EChB/7p9e2v0OHg=;
+	s=korg; t=1730898810;
+	bh=PKirrAqgEMM+GEObo0KnGlRQgKG11jINn66hAhx5NII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qk7X+3jTKM2HYkemYJTEOX3579KaxI+asU0vp82M5voXiSzLDFsIzYYt+GW0q77wZ
-	 Wy/wskUd8U0ALpfTpK9+1A4n6nIRGO54XIvYDTE8BUVI6S8EUsk1hOhRT53tUvAuZC
-	 qckjjJ9kwNF8C8ovPugYOi0KTMhdIL7a7E47+E6Q=
+	b=Y1pB/hJ4nN+k8yWdreUEn8o+2kH4iNJgaPpXFj59TliyW1HxcrYyK89uSkYas0Z+A
+	 H3D1y/v4xJKrAgB1SaQko4Eyzw62N/MkRorUJVYUxHVNC2D/F6Y4abHAJrwelggtaV
+	 n12Xz96E+alOhk3Ffmk50wij4GiSpBCE5hbQubIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.4 362/462] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
-Date: Wed,  6 Nov 2024 13:04:15 +0100
-Message-ID: <20241106120340.470584275@linuxfoundation.org>
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 5.4 363/462] KVM: s390: Change virtual to physical address access in diag 0x258 handler
+Date: Wed,  6 Nov 2024 13:04:16 +0100
+Message-ID: <20241106120340.494584395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -60,60 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Michael Mueller <mimu@linux.ibm.com>
 
-commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
+commit cad4b3d4ab1f062708fff33f44d246853f51e966 upstream.
 
-According to the VT220 specification the possible character combinations
-sent on RETURN are only CR or CRLF [0].
+The parameters for the diag 0x258 are real addresses, not virtual, but
+KVM was using them as virtual addresses. This only happened to work, since
+the Linux kernel as a guest used to have a 1:1 mapping for physical vs
+virtual addresses.
 
-	The Return key sends either a CR character (0/13) or a CR
-	character (0/13) and an LF character (0/10), depending on the
-	set/reset state of line feed/new line mode (LNM).
+Fix KVM so that it correctly uses the addresses as real addresses.
 
-The sclp/vt220 driver however uses LFCR. This can confuse tools, for
-example the kunit runner.
-
-Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
+Fixes: 8ae04b8f500b ("KVM: s390: Guest's memory access functions get access registers")
+Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-3-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_vt220.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kvm/diag.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/s390/char/sclp_vt220.c
-+++ b/drivers/s390/char/sclp_vt220.c
-@@ -325,7 +325,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
- 
- 	if (convertlf) {
--		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
-+		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
- 		for (from=0, to=0;
- 		     (from < count) && (to < sclp_vt220_space_left(request));
- 		     from++) {
-@@ -334,8 +334,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 			/* Perform conversion */
- 			if (c == 0x0a) {
- 				if (to + 1 < sclp_vt220_space_left(request)) {
--					((unsigned char *) buffer)[to++] = c;
- 					((unsigned char *) buffer)[to++] = 0x0d;
-+					((unsigned char *) buffer)[to++] = c;
- 				} else
- 					break;
- 
+--- a/arch/s390/kvm/diag.c
++++ b/arch/s390/kvm/diag.c
+@@ -78,7 +78,7 @@ static int __diag_page_ref_service(struc
+ 	vcpu->stat.diagnose_258++;
+ 	if (vcpu->run->s.regs.gprs[rx] & 7)
+ 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+-	rc = read_guest(vcpu, vcpu->run->s.regs.gprs[rx], rx, &parm, sizeof(parm));
++	rc = read_guest_real(vcpu, vcpu->run->s.regs.gprs[rx], &parm, sizeof(parm));
+ 	if (rc)
+ 		return kvm_s390_inject_prog_cond(vcpu, rc);
+ 	if (parm.parm_version != 2 || parm.parm_len < 5 || parm.code != 0x258)
 
 
 
