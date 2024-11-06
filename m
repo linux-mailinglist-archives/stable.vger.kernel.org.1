@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-91054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449A19BEC37
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BCF9BEB1C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F040A1F21BB2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C47E2B2222C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571111F4FA8;
-	Wed,  6 Nov 2024 12:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFC81F582F;
+	Wed,  6 Nov 2024 12:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5ybWOcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGOThfno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144E11E0E1F;
-	Wed,  6 Nov 2024 12:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C21A1E32B5;
+	Wed,  6 Nov 2024 12:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897604; cv=none; b=HheG5L00C4Y4QH23uVBekEFtJlbVdgkRBEqkBMgQLnH9Xii+YVdJuu5btBQMYDHHxUbGLS81NYR61p7GX3tqWyjt3STSirpwLjFhhquYV9PoWG5b1zCOIn+hE9PZmhyfiTxNeSWiZWBT2SxlSjb/QFVSiIizKxM865e3BKzYExc=
+	t=1730896842; cv=none; b=oNMwCNO/NQbo60gS+JPF1q2Wh97qYUJySnvneWWFp7PTS6JUwFXryE3uYi3BoRhS2LVMyxgHGfp/ZBxyMIHfKJpqtvfD1GBZG45uHBz7VvbEwfLT9+sdePtU4bZsOkVaWTx/vN6IV0loV8YZND3sI7aLmP4TjbBbZNfsYiMxofw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897604; c=relaxed/simple;
-	bh=bRluDnS99iIyFNfzUA8Y94Kf6cUtajLfKhXqW2QeKuE=;
+	s=arc-20240116; t=1730896842; c=relaxed/simple;
+	bh=qm8dsRWcQZC3C+M91xi+yK7pkkrye+yWhsaOL7s+3gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+BszyvTCkv52uPdXAv3VT3ySoBV49gzuDJK2WIWYn2Ewpdg25Xu1YeEnv76c4N9yvJ4CUS4roOLy+647GcECQe7OAXkf4MqTkb6rCF0Ro8LIa6E4fRwTniKFHpZrunQHQB4YYnzxysnR6EoXoRLdVZdFAxu1wdyU7dP3gkelLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5ybWOcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913C3C4CECD;
-	Wed,  6 Nov 2024 12:53:23 +0000 (UTC)
+	 MIME-Version; b=iDdWh5snij10En/hB77Bc/hYiGzWWzyCyoFphLubU5A2fBARdGcHP8xhrvVIvFj0/gmTUAEPt2T6Apy9gP726HZfiJ7hP39FFCHO1glwI2G7utGG+IepAWVno3zqFV/GXqHXVOostdDi6D+9drsHqwGkEyLhhLR48KP0K2br79g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGOThfno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B500DC4CECD;
+	Wed,  6 Nov 2024 12:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897604;
-	bh=bRluDnS99iIyFNfzUA8Y94Kf6cUtajLfKhXqW2QeKuE=;
+	s=korg; t=1730896842;
+	bh=qm8dsRWcQZC3C+M91xi+yK7pkkrye+yWhsaOL7s+3gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5ybWOcrwICMap0K/6yPC3Ipg7K0rWfkADHPbRF0ZDrU/VlDtmdl32ZVXLQwbqFtc
-	 2hxdJn4zzT5vvt8pJVHGZY8b6e16oobSVao0YLIjBaQnTE5jzeqdd/T73C3Jv75o4U
-	 V+buqBEwHn05YmnqfkgA1y/+kA2utA5ne0FmHWVA=
+	b=NGOThfno5MVUsigVNarTpwW1eJ55VpYY9i+a0s3DKPpms0pMofgzY/CyF6UTz9AMm
+	 qmGssf1L8+8y6uMpF+CULJv3OvLDvalmPolPlTVuCyd06Scpr1cu67No+kvzuv9B7S
+	 VLeDtPGgtnN5Q4p4XfbozSf78xUjfYvYaHMDI9HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 108/151] mmc: sdhci-pci-gli: GL9767: Fix low power mode in the SD Express process
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 090/110] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
 Date: Wed,  6 Nov 2024 13:04:56 +0100
-Message-ID: <20241106120311.843194206@linuxfoundation.org>
+Message-ID: <20241106120305.672293727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit c4dedaaeb3f78d3718e9c1b1e4d972a6b99073cd upstream.
+commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
 
-When starting the SD Express process, the low power negotiation mode will
-be disabled, so we need to re-enable it after switching back to SD mode.
+Avoid potentially crashing in the driver because of uninitialized private data
 
-Fixes: 0e92aec2efa0 ("mmc: sdhci-pci-gli: Add support SD Express card for GL9767")
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
 Cc: stable@vger.kernel.org
-Message-ID: <20241025060017.1663697-2-benchuanggli@gmail.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/cfg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1078,6 +1078,9 @@ static int gl9767_init_sd_express(struct
- 		sdhci_writew(host, value, SDHCI_CLOCK_CONTROL);
- 	}
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2720,7 +2720,8 @@ static int ieee80211_get_tx_power(struct
+ 	struct ieee80211_local *local = wiphy_priv(wiphy);
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
-+	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
-+	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
- 	gl9767_vhs_read(pdev);
+-	if (local->ops->get_txpower)
++	if (local->ops->get_txpower &&
++	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 		return drv_get_txpower(local, sdata, dbm);
  
- 	return 0;
+ 	if (!local->use_chanctx)
 
 
 
