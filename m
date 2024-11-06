@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF8E9BE82B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2119BE959
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69E53B23284
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E030A1C21DE5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8201DF75A;
-	Wed,  6 Nov 2024 12:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5551F1DFD89;
+	Wed,  6 Nov 2024 12:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlRhkdcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvn6nMGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD0F1DF740;
-	Wed,  6 Nov 2024 12:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C91DF251;
+	Wed,  6 Nov 2024 12:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895709; cv=none; b=HDoy5weLisInrNmoVNM0X4jWTnaLvIXIV6wVp223tavzF5VWEiGh46sv30bM6fUfXc6ON5CZXr2mtpcYBpd5Y6H/I+ErwUh8PR9reRUhSeNWz36D9zKE33Sdjl4IFeWTTv40U6bLqoooLFekyUOt2B2hWpKhY82FPSlTElIQ8FU=
+	t=1730896385; cv=none; b=l5KNsZLwHqC97sU4eLwfBlvYihWNXQpjtplXQj4QIFzLTwxbvunuO0UKdIzbL1U+dcfklxkEqXB+4rvwxHgrgHXDFYJipWY5r8MYdlm7AVFmrlf7yIkoarwHeHr4/JhrJ9NM2+KHsXhSL5k9FERoEVvGrw2w7xO3NEUq09VioRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895709; c=relaxed/simple;
-	bh=+nTPRk9zrjGRJE8xb15pmvyEGXXlMGqf0b3OB5Ek+FQ=;
+	s=arc-20240116; t=1730896385; c=relaxed/simple;
+	bh=H6/wMgXF3PuiOCy8dxlQVqbxaR8a/2prFiXygUMtXAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1AAvMfNMscXCKVsaGBolzZAgF8Q811zP5MZU6Oqfnm+ZAibAwdb6I5r/Ht0fHRokQ7x/bI+un+Cuy7CFqcHcqDa4dGEN23VdMUdR4BUlGoowWDmYKSrCAvB9lffyntXRNSVqG0i2GOYEj5f12/tI7JaLi1HufkcouMZhts2aAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlRhkdcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAE0C4CECD;
-	Wed,  6 Nov 2024 12:21:48 +0000 (UTC)
+	 MIME-Version; b=dxPB1+Ru0qiHoDZmCkUihysx1Lruwp1B/cjtKG5o3nWkkBudks8ov0QGOPp9GdAe4t6NxxBzQrqm71Ne5kZnzmMxjriKq2gZlo6ha/Q2V8up/Ga6VQlLZe5Cs6wjPAgFC4wimcYnxUGefBUbHgeFRHXah5NcZrtEIb8CcEonjFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvn6nMGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C578C4CECD;
+	Wed,  6 Nov 2024 12:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895709;
-	bh=+nTPRk9zrjGRJE8xb15pmvyEGXXlMGqf0b3OB5Ek+FQ=;
+	s=korg; t=1730896384;
+	bh=H6/wMgXF3PuiOCy8dxlQVqbxaR8a/2prFiXygUMtXAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlRhkdcQoWWeaA8x7xbO8iw3u4njVWvlKDJQeJ0G+55UCHEjNObvi0nGd64IWfwgM
-	 cuPDu/bKw7H9U6QVsDoVFY9LE5UfNtEb/qSECT6UpK056tPEbM2pCV4Ty9S+IqWt9W
-	 rFLvsWdVTAw92+0KlFXxMo/z/FscsPYBM+80XgSQ=
+	b=jvn6nMGuYyrN/r+vsHyG0bPV44htZZhq3V6hDgcIR8b4yc/GwLLnvYre4gfDHbkMU
+	 pu0gyhwoXGg5XPX4nnt1eZR4JZrG29beytmilXnN0/ASkY9JwV4lT0RUSLkNaJ456V
+	 DDJDJolFhfoEcCttWe8iVb5cmBj3YNo+MJY2QJG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 309/350] jfs: Fix sanity check in dbMount
+Subject: [PATCH 6.11 184/245] xfs: fix finding a last resort AG in xfs_filestream_pick_ag
 Date: Wed,  6 Nov 2024 13:03:57 +0100
-Message-ID: <20241106120328.410236784@linuxfoundation.org>
+Message-ID: <20241106120323.769244798@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 67373ca8404fe57eb1bb4b57f314cff77ce54932 ]
+[ Upstream commit dc60992ce76fbc2f71c2674f435ff6bde2108028 ]
 
-MAXAG is a legitimate value for bmp->db_numag
+When the main loop in xfs_filestream_pick_ag fails to find a suitable
+AG it tries to just pick the online AG.  But the loop for that uses
+args->pag as loop iterator while the later code expects pag to be
+set.  Fix this by reusing the max_pag case for this last resort, and
+also add a check for impossible case of no AG just to make sure that
+the uninitialized pag doesn't even escape in theory.
 
-Fixes: e63866a47556 ("jfs: fix out-of-bounds in dbNextAG() and diAlloc()")
-
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reported-by: syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Tested-by: syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com
+Fixes: f8f1ed1ab3baba ("xfs: return a referenced perag from filestreams allocator")
+Cc: <stable@vger.kernel.org> # v6.3
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_filestream.c | 23 ++++++++++++-----------
+ fs/xfs/xfs_trace.h      | 15 +++++----------
+ 2 files changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 21597e8b727c6..b6c698fe7301d 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -200,7 +200,7 @@ int dbMount(struct inode *ipbmap)
+diff --git a/fs/xfs/xfs_filestream.c b/fs/xfs/xfs_filestream.c
+index e3aaa05555978..88bd23ce74cde 100644
+--- a/fs/xfs/xfs_filestream.c
++++ b/fs/xfs/xfs_filestream.c
+@@ -64,7 +64,7 @@ xfs_filestream_pick_ag(
+ 	struct xfs_perag	*pag;
+ 	struct xfs_perag	*max_pag = NULL;
+ 	xfs_extlen_t		minlen = *longest;
+-	xfs_extlen_t		free = 0, minfree, maxfree = 0;
++	xfs_extlen_t		minfree, maxfree = 0;
+ 	xfs_agnumber_t		agno;
+ 	bool			first_pass = true;
+ 	int			err;
+@@ -107,7 +107,6 @@ xfs_filestream_pick_ag(
+ 			     !(flags & XFS_PICK_USERDATA) ||
+ 			     (flags & XFS_PICK_LOWSPACE))) {
+ 				/* Break out, retaining the reference on the AG. */
+-				free = pag->pagf_freeblks;
+ 				break;
+ 			}
+ 		}
+@@ -150,23 +149,25 @@ xfs_filestream_pick_ag(
+ 		 * grab.
+ 		 */
+ 		if (!max_pag) {
+-			for_each_perag_wrap(args->mp, 0, start_agno, args->pag)
++			for_each_perag_wrap(args->mp, 0, start_agno, pag) {
++				max_pag = pag;
+ 				break;
+-			atomic_inc(&args->pag->pagf_fstrms);
+-			*longest = 0;
+-		} else {
+-			pag = max_pag;
+-			free = maxfree;
+-			atomic_inc(&pag->pagf_fstrms);
++			}
++
++			/* Bail if there are no AGs at all to select from. */
++			if (!max_pag)
++				return -ENOSPC;
+ 		}
++
++		pag = max_pag;
++		atomic_inc(&pag->pagf_fstrms);
+ 	} else if (max_pag) {
+ 		xfs_perag_rele(max_pag);
  	}
  
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
-+	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
+-	trace_xfs_filestream_pick(pag, pino, free);
++	trace_xfs_filestream_pick(pag, pino);
+ 	args->pag = pag;
+ 	return 0;
+-
+ }
+ 
+ static struct xfs_inode *
+diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
+index 180ce697305a9..f681a195a7441 100644
+--- a/fs/xfs/xfs_trace.h
++++ b/fs/xfs/xfs_trace.h
+@@ -691,8 +691,8 @@ DEFINE_FILESTREAM_EVENT(xfs_filestream_lookup);
+ DEFINE_FILESTREAM_EVENT(xfs_filestream_scan);
+ 
+ TRACE_EVENT(xfs_filestream_pick,
+-	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino, xfs_extlen_t free),
+-	TP_ARGS(pag, ino, free),
++	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino),
++	TP_ARGS(pag, ino),
+ 	TP_STRUCT__entry(
+ 		__field(dev_t, dev)
+ 		__field(xfs_ino_t, ino)
+@@ -703,14 +703,9 @@ TRACE_EVENT(xfs_filestream_pick,
+ 	TP_fast_assign(
+ 		__entry->dev = pag->pag_mount->m_super->s_dev;
+ 		__entry->ino = ino;
+-		if (pag) {
+-			__entry->agno = pag->pag_agno;
+-			__entry->streams = atomic_read(&pag->pagf_fstrms);
+-		} else {
+-			__entry->agno = NULLAGNUMBER;
+-			__entry->streams = 0;
+-		}
+-		__entry->free = free;
++		__entry->agno = pag->pag_agno;
++		__entry->streams = atomic_read(&pag->pagf_fstrms);
++		__entry->free = pag->pagf_freeblks;
+ 	),
+ 	TP_printk("dev %d:%d ino 0x%llx agno 0x%x streams %d free %d",
+ 		  MAJOR(__entry->dev), MINOR(__entry->dev),
 -- 
 2.43.0
 
