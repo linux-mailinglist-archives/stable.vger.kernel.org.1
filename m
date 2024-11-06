@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-91036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715FF9BEC25
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A869BEB76
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FAA02854AD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34EF7B23168
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA7F1FB3C0;
-	Wed,  6 Nov 2024 12:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D358D1F7558;
+	Wed,  6 Nov 2024 12:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tONd4pr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoAxpadl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373F21E00AF;
-	Wed,  6 Nov 2024 12:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918A81EBA12;
+	Wed,  6 Nov 2024 12:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897551; cv=none; b=X+pTgF1oC7cf8aqLFAls+T4rGHCR+DHQZ9Habln3iZDqeXwwhY0jiHWHjMm5zFMpNvB6dd77Kx9EU7hZljcxp11Pob6kONoOsGlQgZVUAM+B+YOKjwFD+ZsmyLU0AaLsnyo5bL9xVpu0wTkyhxU+6+ieui/y8HEuwz3r8Xsc1Fc=
+	t=1730897085; cv=none; b=pOjzRmVxpb4vyaUH7J5Nu149Jabavw/7Xza4lLe4w08FMHi+bOVxsEnS0oYAXgM+bPYc5p2dbYaEnMlahvuuNkdKEIw81vxU88syHJza3P3atwUQKVQPDCD9Op9yD0csyBTQZkXO/7bB5LPhUe05/usV+GNzzExQtNXZr69D5vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897551; c=relaxed/simple;
-	bh=a1oGouZm+owF+YeDcJr385s8DDEUnDJ/7UlE1hbU9Qg=;
+	s=arc-20240116; t=1730897085; c=relaxed/simple;
+	bh=JjYP8P2LK93XZmkhj2Tro5GpKmTb9plLhVhZl+zprI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UC4HYv5xeXPYqsHI6/F6Na5ZwahJ90ukqJJOSzGvUgr0sob2ztGePlmxD6b/R2iTzr+UWSq6LU6eJIy1PfNDk6rgKAiuBgMCmt7swVPbwNiAgCijTgkF+U1RRjo5XL2FQSN09xgKPXLYpKQyZ4ixTiD9iy/8L4SY8XzF085SMLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tONd4pr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F27C4CECD;
-	Wed,  6 Nov 2024 12:52:30 +0000 (UTC)
+	 MIME-Version; b=cVNcOh9NxcCxoOrUC9bUvFpGFZkypTolOcJa0dMQ5MoEJb4Hu8t9xhe4O+6oZjwF7zkqbB7G5GmcKhuoHlyVJuzBWkVhNEecBjmSCir9tyaYSV0i2aWnhOZmGguAItxTsGnFdZmwpPsChiYw8AEbPX2/wjraDczAyluf+irfJz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoAxpadl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18949C4CED5;
+	Wed,  6 Nov 2024 12:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897551;
-	bh=a1oGouZm+owF+YeDcJr385s8DDEUnDJ/7UlE1hbU9Qg=;
+	s=korg; t=1730897085;
+	bh=JjYP8P2LK93XZmkhj2Tro5GpKmTb9plLhVhZl+zprI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tONd4pr+lpNRyJHgUIciR6t9+/KOMdIQnjZ/2KyUl28qxGF9FnesfKroE81y+TZ97
-	 NslvFfzlJ1csjd/qvpulmNwJk8DABLC8RmbsjDREYc+ZyMuEpoYbHnA2Nj6C6zZ5o3
-	 rAuXKTtEOILBBZRM6TlGupBOYn/pFYeaWFX7tuas=
+	b=QoAxpadlXZr2ip0GEcIPX+FQGf4Z8RZktLq0YH+KeOJs0kAeTn9Cv79lb7APsuBG5
+	 UY7nQbembixtFi4JkS9YsAvbxTlkSLTEAi6bb3T40+HaLXRPKBTnW7d795QGE9W1Y1
+	 ERWBON2hmsk8aLRkcwbJHzM5Aakxg5qq9oklfTfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
-	syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com,
-	syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com,
-	syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
+	Marcello Sylvester Bauer <marcello.bauer@9elements.com>,
 	Marcello Sylvester Bauer <sylv@sylv.io>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/151] usb: gadget: dummy_hcd: execute hrtimer callback in softirq context
+Subject: [PATCH 6.1 061/126] usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler
 Date: Wed,  6 Nov 2024 13:04:22 +0100
-Message-ID: <20241106120310.885706497@linuxfoundation.org>
+Message-ID: <20241106120307.745307334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,120 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Marcello Sylvester Bauer <sylv@sylv.io>
 
-[ Upstream commit 9313d139aa25e572d860f6f673b73a20f32d7f93 ]
+[ Upstream commit a7f3813e589fd8e2834720829a47b5eb914a9afe ]
 
-Commit a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer
-scheduler") switched dummy_hcd to use hrtimer and made the timer's
-callback be executed in the hardirq context.
+The dummy_hcd transfer scheduler assumes that the internal kernel timer
+frequency is set to 1000Hz to give a polling interval of 1ms. Reducing
+the timer frequency will result in an anti-proportional reduction in
+transfer performance. Switch to a hrtimer to decouple this association.
 
-With that change, __usb_hcd_giveback_urb now gets executed in the hardirq
-context, which causes problems for KCOV and KMSAN.
-
-One problem is that KCOV now is unable to collect coverage from
-the USB code that gets executed from the dummy_hcd's timer callback,
-as KCOV cannot collect coverage in the hardirq context.
-
-Another problem is that the dummy_hcd hrtimer might get triggered in the
-middle of a softirq with KCOV remote coverage collection enabled, and that
-causes a WARNING in KCOV, as reported by syzbot. (I sent a separate patch
-to shut down this WARNING, but that doesn't fix the other two issues.)
-
-Finally, KMSAN appears to ignore tracking memory copying operations
-that happen in the hardirq context, which causes false positive
-kernel-infoleaks, as reported by syzbot.
-
-Change the hrtimer in dummy_hcd to execute the callback in the softirq
-context.
-
-Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
-Reported-by: syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=17ca2339e34a1d863aad
-Reported-by: syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c793a7eca38803212c61
-Reported-by: syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1e6e0b916b211bee1bd6
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141323.413a90d2-lkp@intel.com
-Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-Cc: stable@vger.kernel.org
-Acked-by: Marcello Sylvester Bauer <sylv@sylv.io>
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
-Link: https://lore.kernel.org/r/20240904013051.4409-1-andrey.konovalov@linux.dev
+Signed-off-by: Marcello Sylvester Bauer <marcello.bauer@9elements.com>
+Signed-off-by: Marcello Sylvester Bauer <sylv@sylv.io>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/57a1c2180ff74661600e010c234d1dbaba1d0d46.1712843963.git.sylv@sylv.io
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c | 35 +++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index f37b0d8386c1a..ff7bee78bcc49 100644
+index 899ac9f9c2796..4f9c6e86456fe 100644
 --- a/drivers/usb/gadget/udc/dummy_hcd.c
 +++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -1304,7 +1304,8 @@ static int dummy_urb_enqueue(
+@@ -30,7 +30,7 @@
+ #include <linux/slab.h>
+ #include <linux/errno.h>
+ #include <linux/init.h>
+-#include <linux/timer.h>
++#include <linux/hrtimer.h>
+ #include <linux/list.h>
+ #include <linux/interrupt.h>
+ #include <linux/platform_device.h>
+@@ -240,7 +240,7 @@ enum dummy_rh_state {
+ struct dummy_hcd {
+ 	struct dummy			*dum;
+ 	enum dummy_rh_state		rh_state;
+-	struct timer_list		timer;
++	struct hrtimer			timer;
+ 	u32				port_status;
+ 	u32				old_status;
+ 	unsigned long			re_timeout;
+@@ -1302,8 +1302,8 @@ static int dummy_urb_enqueue(
+ 		urb->error_count = 1;		/* mark as a new urb */
  
  	/* kick the scheduler, it'll do the rest */
- 	if (!hrtimer_active(&dum_hcd->timer))
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
-+				HRTIMER_MODE_REL_SOFT);
+-	if (!timer_pending(&dum_hcd->timer))
+-		mod_timer(&dum_hcd->timer, jiffies + 1);
++	if (!hrtimer_active(&dum_hcd->timer))
++		hrtimer_start(&dum_hcd->timer, ms_to_ktime(1), HRTIMER_MODE_REL);
  
   done:
  	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1325,7 +1326,7 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
+@@ -1324,7 +1324,7 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
  	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
  	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
  			!list_empty(&dum_hcd->urbp_list))
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
+-		mod_timer(&dum_hcd->timer, jiffies);
++		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
  
  	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
  	return rc;
-@@ -1995,7 +1996,8 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
+@@ -1778,7 +1778,7 @@ static int handle_control_request(struct dummy_hcd *dum_hcd, struct urb *urb,
+  * drivers except that the callbacks are invoked from soft interrupt
+  * context.
+  */
+-static void dummy_timer(struct timer_list *t)
++static enum hrtimer_restart dummy_timer(struct hrtimer *t)
+ {
+ 	struct dummy_hcd	*dum_hcd = from_timer(dum_hcd, t, timer);
+ 	struct dummy		*dum = dum_hcd->dum;
+@@ -1809,8 +1809,6 @@ static void dummy_timer(struct timer_list *t)
+ 		break;
+ 	}
+ 
+-	/* FIXME if HZ != 1000 this will probably misbehave ... */
+-
+ 	/* look at each urb queued by the host side driver */
+ 	spin_lock_irqsave(&dum->lock, flags);
+ 
+@@ -1818,7 +1816,7 @@ static void dummy_timer(struct timer_list *t)
+ 		dev_err(dummy_dev(dum_hcd),
+ 				"timer fired with no URBs pending?\n");
+ 		spin_unlock_irqrestore(&dum->lock, flags);
+-		return;
++		return HRTIMER_NORESTART;
+ 	}
+ 	dum_hcd->next_frame_urbp = NULL;
+ 
+@@ -1996,10 +1994,12 @@ static void dummy_timer(struct timer_list *t)
  		dum_hcd->udev = NULL;
  	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
  		/* want a 1 msec delay here */
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
-+				HRTIMER_MODE_REL_SOFT);
+-		mod_timer(&dum_hcd->timer, jiffies + msecs_to_jiffies(1));
++		hrtimer_start(&dum_hcd->timer, ms_to_ktime(1), HRTIMER_MODE_REL);
  	}
  
  	spin_unlock_irqrestore(&dum->lock, flags);
-@@ -2389,7 +2391,7 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
++
++	return HRTIMER_NORESTART;
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -2388,7 +2388,7 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
  		dum_hcd->rh_state = DUMMY_RH_RUNNING;
  		set_link_state(dum_hcd);
  		if (!list_empty(&dum_hcd->urbp_list))
--			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
-+			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
+-			mod_timer(&dum_hcd->timer, jiffies);
++			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
  		hcd->state = HC_STATE_RUNNING;
  	}
  	spin_unlock_irq(&dum_hcd->dum->lock);
-@@ -2467,7 +2469,7 @@ static DEVICE_ATTR_RO(urbs);
+@@ -2466,7 +2466,8 @@ static DEVICE_ATTR_RO(urbs);
  
  static int dummy_start_ss(struct dummy_hcd *dum_hcd)
  {
--	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	dum_hcd->timer.function = dummy_timer;
+-	timer_setup(&dum_hcd->timer, dummy_timer, 0);
++	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	dum_hcd->timer.function = dummy_timer;
  	dum_hcd->rh_state = DUMMY_RH_RUNNING;
  	dum_hcd->stream_en_ep = 0;
-@@ -2497,7 +2499,7 @@ static int dummy_start(struct usb_hcd *hcd)
+ 	INIT_LIST_HEAD(&dum_hcd->urbp_list);
+@@ -2495,7 +2496,8 @@ static int dummy_start(struct usb_hcd *hcd)
  		return dummy_start_ss(dum_hcd);
  
  	spin_lock_init(&dum_hcd->dum->lock);
--	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	dum_hcd->timer.function = dummy_timer;
+-	timer_setup(&dum_hcd->timer, dummy_timer, 0);
++	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	dum_hcd->timer.function = dummy_timer;
  	dum_hcd->rh_state = DUMMY_RH_RUNNING;
  
+ 	INIT_LIST_HEAD(&dum_hcd->urbp_list);
+@@ -2514,8 +2516,11 @@ static int dummy_start(struct usb_hcd *hcd)
+ 
+ static void dummy_stop(struct usb_hcd *hcd)
+ {
+-	device_remove_file(dummy_dev(hcd_to_dummy_hcd(hcd)), &dev_attr_urbs);
+-	dev_info(dummy_dev(hcd_to_dummy_hcd(hcd)), "stopped\n");
++	struct dummy_hcd	*dum_hcd = hcd_to_dummy_hcd(hcd);
++
++	hrtimer_cancel(&dum_hcd->timer);
++	device_remove_file(dummy_dev(dum_hcd), &dev_attr_urbs);
++	dev_info(dummy_dev(dum_hcd), "stopped\n");
+ }
+ 
+ /*-------------------------------------------------------------------------*/
 -- 
 2.43.0
 
