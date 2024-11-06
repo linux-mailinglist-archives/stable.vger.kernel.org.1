@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022EF9BE6D5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA109BECBE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC14C28200A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8188BB21F2B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EAE1DF726;
-	Wed,  6 Nov 2024 12:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B82F1EABA1;
+	Wed,  6 Nov 2024 12:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKXMAVHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOlfhfFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDEB1DF27C;
-	Wed,  6 Nov 2024 12:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296191E909B;
+	Wed,  6 Nov 2024 12:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894855; cv=none; b=N3IyXImutuR07absvkEA5GreUxa/VVKtHwzt5NjOfGEEuPhYxqXxprsDO3FN6QJ78hsyr+ZuKxA0Q2QjFT6TxucCp5F38dg9mBqRjCQ6i0m6KghB6YOusWDI7O7RhuAyFyJV+iSr9Zv8JgLg0DXpbWp1YyTTBa9G2e9ryoybta4=
+	t=1730897907; cv=none; b=tKgtwJhPJk4BrYF2tjv8sOvznnk7XHhill2//kzbEih1GX5fr1Y7xgMMej+hDEfJqeu69rC8QZiFuJwRgQ6aiCSkDKD7OQYZ/ZZNHZvgxUcEF5B2VfO00upw9NVmCb+FVW4LkHVh8QRVvrAo9QjyKeTJap7Hcjr9oUcDJ30GzEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894855; c=relaxed/simple;
-	bh=r6xazE9+YIYUTzFbVh5sn1rd4z8MdFDvvIB1RsegMBU=;
+	s=arc-20240116; t=1730897907; c=relaxed/simple;
+	bh=TLKThlhoqND1IVH3wf0lTlijcfd4qCPbrbp60UPupFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5AqsRBTMT4/1bwowUaQbo3TqOHFOP422noxHnqm+S/6wc9fEXJTtxJaxVOXFgY0xpuPcUNv6HwY/tlrvJ6VZTs3Y3Cdcoger1eLSScaOf1TUnJ0GlLrG4kc12/LH0/aqyk/xBbYJYXWsY4bhklG3FCVc7t08FwJR/d9pkkmO3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKXMAVHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E22C4CECD;
-	Wed,  6 Nov 2024 12:07:34 +0000 (UTC)
+	 MIME-Version; b=TrqA9nK3SrpFgBQDM4ghK/bJGU97jwVcH4580FAtkqnCRZ1zZavM/xgp7KETs2frCniFz3tb3De0rmOea5RjVHrcpHqSyUh0vb+QuwFherl0dOiP6sCptU6xz5tyu3BesmXV6ZfddnNDzDNV3XZiYxRgSVx0kR2++mVHeOMB+/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOlfhfFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0233C4CED4;
+	Wed,  6 Nov 2024 12:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894854;
-	bh=r6xazE9+YIYUTzFbVh5sn1rd4z8MdFDvvIB1RsegMBU=;
+	s=korg; t=1730897907;
+	bh=TLKThlhoqND1IVH3wf0lTlijcfd4qCPbrbp60UPupFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKXMAVHhmcAZYh0cyAHXgAGhwaYFNc/H1W0UJzw/nEytGUqKrk9WKYPXCAdczlxYg
-	 qJEPVmWyUbitnnCKK+FIcRYifQtlWyjywaScrqY7RSFYg/TfccKWy6wA9TZ22599EQ
-	 nKZb16XY8TOzatj0KKzkMmHjrtYJZ/B52W9XYqsA=
+	b=uOlfhfFeHwKKvwVtwfiik2AbByqCkPnKH1AdV3ho50vHM0e62ZlweIw765MfCVO3q
+	 5DkD8WFlbrE2M+II16i6o09wU0ms/LCdzkp3A2Q6ly8cGoHi2JbkfpVTcakn1ZIqEE
+	 1/dEA2fqZTcl+CTCiHHqcRmb2yc2tbxOl0Z9fhpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 023/350] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Subject: [PATCH 5.4 058/462] ARM: versatile: fix OF node leak in CPUs prepare
 Date: Wed,  6 Nov 2024 12:59:11 +0100
-Message-ID: <20241106120321.448301192@linuxfoundation.org>
+Message-ID: <20241106120332.949367769@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
+[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
 
-A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
-available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
-doesn't unnecessarily do refined TSC calibration when setting up the TSC
-clocksource.
+Machine code is leaking OF node reference from of_find_matching_node()
+in realview_smp_prepare_cpus().
 
-With this change, a message such as this is no longer output during boot
-when the TSC is used as the clocksource:
-
-[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
-
-Furthermore, the guest and host will have exactly the same view of the
-TSC frequency, which is important for features such as the TSC deadline
-timer that are emulated by the Hyper-V host.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
+Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 1 +
+ arch/arm/mach-realview/platsmp-dt.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index f8b0fa2dbe374..b43f25b3c99d3 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -243,6 +243,7 @@ static void __init ms_hyperv_init_platform(void)
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
- 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
- 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+diff --git a/arch/arm/mach-realview/platsmp-dt.c b/arch/arm/mach-realview/platsmp-dt.c
+index 5ae783767a5d3..083e6a6f75205 100644
+--- a/arch/arm/mach-realview/platsmp-dt.c
++++ b/arch/arm/mach-realview/platsmp-dt.c
+@@ -66,6 +66,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
+ 		return;
  	}
- 
- 	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED) {
+ 	map = syscon_node_to_regmap(np);
++	of_node_put(np);
+ 	if (IS_ERR(map)) {
+ 		pr_err("PLATSMP: No syscon regmap\n");
+ 		return;
 -- 
 2.43.0
 
