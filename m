@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF389BEBB7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1829F9BE996
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6F11F25310
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14BA2811E5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F8E1F9419;
-	Wed,  6 Nov 2024 12:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60051DFE3B;
+	Wed,  6 Nov 2024 12:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gagWKh1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m732c/uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380541F8F11;
-	Wed,  6 Nov 2024 12:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910621E0488;
+	Wed,  6 Nov 2024 12:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897245; cv=none; b=BlHhHnxokWi+ko2rwC0SWWeP8g8dkCIAuwperk2tj7JNAjzyCw6gXaMrLY6rV4HnmUl/8NOF7WEMHHdgq+EfINF7iMb9No79EIqbueT3TLdskHP2rzYQBrhbM/zBkFSLkQnqAhYbGLhh8YP7dHSun3OdRAdR0gY6DPNmO9yMoZc=
+	t=1730896516; cv=none; b=YS8Cb/eLcXIec81VgHRpEuU/k5fHVYHMiTbKVCkPperM/l3J6/5IsuWyZXSFGguNFX/pd/sXLSYHGPDcvWxIUrzOSryDt8VpYju8nei7NrqVyWc03mHhP69qSDe2XYFpnktAyBK9h0OBh3sF/l4OXmwVjzftGCQmXuU85kaHP8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897245; c=relaxed/simple;
-	bh=yN9L43B7hiE0Ez3YZoHBVQZbecXrfibceZCVtuPc+a4=;
+	s=arc-20240116; t=1730896516; c=relaxed/simple;
+	bh=VGONr6K9TmGbiXtr9hfpI9Lyz+sNywJh0EkSBZJGsEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnsNLWlR06SWJakl0Nc0Gf7iHidjWENMa5G1InKAKgDTieO5XdJNC5PGrH/rnNH1xD/Nv+DiXnG97uMMmrVPigcTBa00JUkiL8qaOwJvCG9fStCDfOD/K/Q5LiMyPJTlcEn+ZHO1aSZlLzAMtQ2/9bfz23YqfrytMzmXT6HxuH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gagWKh1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56021C4CECD;
-	Wed,  6 Nov 2024 12:47:24 +0000 (UTC)
+	 MIME-Version; b=oTe2+5npmJjp+z903vSi4otmDVY0K9KnNCw8rVf6wXLqeqxDjW1StBJQhP+dkKITBosCUimeVEMifL7KqCaHKQyfXNWKOlSwrg0i9iW5ZOPctLwT5W+jfxXpz0/qDaoYiL854AUU+cd9IUwJrKY32FyRZ7ZpOE81w5pLedPKYY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m732c/uo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185E1C4CECD;
+	Wed,  6 Nov 2024 12:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897244;
-	bh=yN9L43B7hiE0Ez3YZoHBVQZbecXrfibceZCVtuPc+a4=;
+	s=korg; t=1730896516;
+	bh=VGONr6K9TmGbiXtr9hfpI9Lyz+sNywJh0EkSBZJGsEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gagWKh1RaP302XW7JA+m8SKhwfiA33Ld/gE6A1u7S/cedkTYCKUoYmYz51wIw6Ejw
-	 457rM+FvbbuhiscTAscQ+M5HHvZYK3/u4E90uq7byWRLskFHW99qRMrsmjBYGmWATu
-	 82gVYcVM6dDRwXECiP4mcly1Z+1MDmC5OGgmNF0k=
+	b=m732c/uoYhNWREknvcrpLA0hFZwtM56heJEidj/CSFXavof03ef6LwRHqIpt073ur
+	 XDjkHyrd45D9YGCkhkb1tWRy2dEPmFzGsrcwNM3Yh/+DnVnbVvzi3PwGr1Ho3qxp5M
+	 SfHuYZ3FrVbvqCq9otkH43io5E9r3IzlyO0+pxy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 078/126] iio: light: veml6030: fix microlux value calculation
-Date: Wed,  6 Nov 2024 13:04:39 +0100
-Message-ID: <20241106120308.191625975@linuxfoundation.org>
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 227/245] drm/i915/dp: Clear VSC SDP during post ddi disable routine
+Date: Wed,  6 Nov 2024 13:04:40 +0100
+Message-ID: <20241106120324.849059030@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-commit 63dd163cd61dda6f38343776b42331cc6b7e56e0 upstream.
+commit 3e307d6c28e7bc7d94b5699d0ed7fe07df6db094 upstream.
 
-The raw value conversion to obtain a measurement in lux as
-INT_PLUS_MICRO does not calculate the decimal part properly to display
-it as micro (in this case microlux). It only calculates the module to
-obtain the decimal part from a resolution that is 10000 times the
-provided in the datasheet (0.5376 lux/cnt for the veml6030). The
-resulting value must still be multiplied by 100 to make it micro.
+Clear VSC SDP if intel_dp_set_infoframes is called from post ddi disable
+routine i.e with the variable of enable as false. This is to avoid
+an infoframes.enable mismatch issue which is caused when pipe is
+connected to eDp which has psr then connected to DPMST. In this case
+eDp's post ddi disable routine does not clear infoframes.enable VSC
+for the given pipe and DPMST does not recompute VSC SDP and write
+infoframes.enable which causes a mismatch.
 
-This bug was introduced with the original implementation of the driver.
+--v2
+-Make the comment match the code [Jani]
 
-Only the illuminance channel is fixed becuase the scale is non sensical
-for the intensity channels anyway.
-
-Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240724163743.3668407-1-suraj.kandpal@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -522,7 +522,7 @@ static int veml6030_read_raw(struct iio_
- 			}
- 			if (mask == IIO_CHAN_INFO_PROCESSED) {
- 				*val = (reg * data->cur_resolution) / 10000;
--				*val2 = (reg * data->cur_resolution) % 10000;
-+				*val2 = (reg * data->cur_resolution) % 10000 * 100;
- 				return IIO_VAL_INT_PLUS_MICRO;
- 			}
- 			*val = reg;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4393,8 +4393,11 @@ void intel_dp_set_infoframes(struct inte
+ 	if (!enable && HAS_DSC(dev_priv))
+ 		val &= ~VDIP_ENABLE_PPS;
+ 
+-	/* When PSR is enabled, this routine doesn't disable VSC DIP */
+-	if (!crtc_state->has_psr)
++	/*
++	 * This routine disables VSC DIP if the function is called
++	 * to disable SDP or if it does not have PSR
++	 */
++	if (!enable || !crtc_state->has_psr)
+ 		val &= ~VIDEO_DIP_ENABLE_VSC_HSW;
+ 
+ 	intel_de_write(dev_priv, reg, val);
 
 
 
