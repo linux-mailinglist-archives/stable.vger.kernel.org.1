@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788779BE6FF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B523B9BECD8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9A81F280CF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C6EFB22303
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EB81D5AD7;
-	Wed,  6 Nov 2024 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201291F7073;
+	Wed,  6 Nov 2024 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffOnyNAM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtkCixQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D641DF24A;
-	Wed,  6 Nov 2024 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE131DFE3B;
+	Wed,  6 Nov 2024 12:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894959; cv=none; b=PNBaWmTPVwLjifX8gBFvdk038WHNFxIzSe8XdIDgi/nyIX3x4xugUYKBXsY/RY4OiPmwhsPWLzuZSaeCxPBrluzhgWkY0GDc6NTTtkMu7+DmG59JrYSzu/fXDjM9/d2TXgSsOUJpNd3ank7bCMa1tqw3a6rr5uwtUT8MMvb6+Lc=
+	t=1730897985; cv=none; b=QxeDscfB0ixiakVa5jcwD4sgXLOuDLS8Y4caY361zwuqnckbzboWEeabvyhzas+W/q7f90VGDhhhF+2DhP4MIhj5qorBewl+F5gmZ8buHS5nUcWzzmw/1OHfSNAC/ROGQlPVB8UeesYfNNE15wPWiYfNFbwU0XGrCnFCsdN1+Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894959; c=relaxed/simple;
-	bh=52d0rWgr0ie3x4qCuiminWStTC2wJoW7lZbNpCcBotw=;
+	s=arc-20240116; t=1730897985; c=relaxed/simple;
+	bh=yglto4tuJoJK5FhKsd3xJJ4zmGnJxw35/7msyLNr0NI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxnKKPR5lw7wW/7wnoqNsljbkVCGiLqnb2luJYHliXxeV0igJQ7JIod9H48C1dBpiDvJKZ/aR7cJhzOpS9a5LJ772WihaPddoIayZ6DZzODz96Id98O0KEzk+0zvGGnkEoEDpxlRp2Glf0ZgYs/0vkwr/Gk+6TVF9UCL4We6/2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffOnyNAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E80C4CECD;
-	Wed,  6 Nov 2024 12:09:18 +0000 (UTC)
+	 MIME-Version; b=Ox0cwIvfJSLPfIOQsIouR1k+1owC9t6ARwiKhmJCVd1iy5sII96YvPYk6PTdJD17sXoTeXUpFbnnSkI+PvvK+0yjDeqx8z94YAgfvroicN1+QqbqE4Z0G0vMDzrnfWAr1DZ0B1x0R4PrSyUdGo2TxbZYIHpGD5COmGQhvBwduxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtkCixQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10152C4CECD;
+	Wed,  6 Nov 2024 12:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894959;
-	bh=52d0rWgr0ie3x4qCuiminWStTC2wJoW7lZbNpCcBotw=;
+	s=korg; t=1730897985;
+	bh=yglto4tuJoJK5FhKsd3xJJ4zmGnJxw35/7msyLNr0NI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ffOnyNAMUxdaF+5KuRXZZ3Y096dwTzxMvOoW+fMqdtsL2+1ZVdihZimsLdQvkvzka
-	 zvQqH20jHgHddDl1790VqnY2N0s/N7Bo/wnN9WbyAwuXLiFnhyxG/mT6iytaYkCd5N
-	 6VdqJ6XWIbi2QkLTBkR2/O5fM3IUhPUm/9TQRbNI=
+	b=gtkCixQ1QurVrB7ApKB3FlZnX12jZM9aVDuqmgYXAb6tDrGKrIf8kuf3S6Kxq2eX4
+	 pMs85kwK70SRyZezqsknfHVFC/YQtkQsmNO6fGKu7V4DqPfcr7eJDf6FwUvmW+uZpS
+	 pMvqqURHRuhA1V6uO7U89t/nEZtrahGAKrl5KQzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 050/350] drm/stm: Fix an error handling path in stm_drm_platform_probe()
-Date: Wed,  6 Nov 2024 12:59:38 +0100
-Message-ID: <20241106120322.127570831@linuxfoundation.org>
+Subject: [PATCH 5.4 086/462] xen/swiotlb: add alignment check for dma buffers
+Date: Wed,  6 Nov 2024 12:59:39 +0100
+Message-ID: <20241106120333.629543320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit ce7c90bfda2656418c69ba0dd8f8a7536b8928d4 ]
+[ Upstream commit 9f40ec84a7976d95c34e7cc070939deb103652b0 ]
 
-If drm_dev_register() fails, a call to drv_load() must be undone, as
-already done in the remove function.
+When checking a memory buffer to be consecutive in machine memory,
+the alignment needs to be checked, too. Failing to do so might result
+in DMA memory not being aligned according to its requested size,
+leading to error messages like:
 
-Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20fff7f853f20a48a96db8ff186124470ec4d976.1704560028.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+  4xxx 0000:2b:00.0: enabling device (0140 -> 0142)
+  4xxx 0000:2b:00.0: Ring address not aligned
+  4xxx 0000:2b:00.0: Failed to initialise service qat_crypto
+  4xxx 0000:2b:00.0: Resetting device qat_dev0
+  4xxx: probe of 0000:2b:00.0 failed with error -14
+
+Fixes: 9435cce87950 ("xen/swiotlb: Add support for 64KB page granularity")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
-index f2021b23554d3..dade0ecdfc1a1 100644
---- a/drivers/gpu/drm/stm/drv.c
-+++ b/drivers/gpu/drm/stm/drv.c
-@@ -152,10 +152,12 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 486d7978ea970..5bd29d0bffa2e 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -89,9 +89,15 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
+ {
+ 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
+ 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
++	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
  
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto err_put;
-+		goto err_unload;
+ 	next_bfn = pfn_to_bfn(xen_pfn);
  
- 	return 0;
- 
-+err_unload:
-+	drv_unload(ddev);
- err_put:
- 	drm_dev_put(ddev);
- 
++	/* If buffer is physically aligned, ensure DMA alignment. */
++	if (IS_ALIGNED(p, algn) &&
++	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
++		return 1;
++
+ 	for (i = 1; i < nr_pages; i++)
+ 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
+ 			return 1;
 -- 
 2.43.0
 
