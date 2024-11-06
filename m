@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C099BE8A5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6D09BE7B6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C671C232A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A661F20F6C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB79A1E0083;
-	Wed,  6 Nov 2024 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D7E1DF254;
+	Wed,  6 Nov 2024 12:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYKI832f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyRs1HGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A917F1D2784;
-	Wed,  6 Nov 2024 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76381DED58;
+	Wed,  6 Nov 2024 12:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895977; cv=none; b=IdChJPbT26TG5OKj9xV4088FmMHCECj7JJHQJg7TyFwAcBfxmjNxLwwz3ZJP1rneuYzNsbMAsw6GczlX5ZXtd4PCZbq3+4lXvMc2nq/37C1X0A0oftUKZy+D91gRa2cENmD5MbDIes3DuyRH/IVGSmvsG23ew+BhvcHMd4ChUUQ=
+	t=1730895418; cv=none; b=NcOVbilhRH7XKZrvWyABnkTW90hpvQEGlExOjVFwyQgss0nolbg39HxafWeXbDW9xwJgq2D7JaUnSQFw1oHR/gbX5dhL6yX/c9X36EIbrisOxmGookPQLmbuBOs7nBM6K+RkSe1kFCmTUSc8ck1J4zXpr7Yho3uzeIZrzSYfW9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895977; c=relaxed/simple;
-	bh=NiWp/XmwUcosqaMcIH3SWp9031RQbxyjroGa8bSkqU0=;
+	s=arc-20240116; t=1730895418; c=relaxed/simple;
+	bh=YYLJFaylWGUoDlZsXmtUwKQV8hHGZr6IyJAiRJr0IP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o90XamSMz2fN5F8otUcy6DedvUt7LW0+oh89/dQ5MWNe5HRzNMAhKxM3Y0ZSJ42FWpfbwhdGDpOuAe9PdlwNLhN04AkobT1hvmKcsycSScpW49QIJmuofKZOymTH5yIiz7WtVjHQ4JKAozMoei7KqlH8Nn7+oxSuHgCzgpNEDns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYKI832f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E758C4CECD;
-	Wed,  6 Nov 2024 12:26:17 +0000 (UTC)
+	 MIME-Version; b=NsD4F6V9u9OP6YSXSebO3Q0eqefszgzCbAOETJV+GOnn3yV7jBL9Rr5VTNCHlw9Pd69C08SKmOyloeKD6TgCyyyw7BNCmodW/xtaqkkbw0p7XKbZgJMMa2eldKzEvFOSMEmMoFrtNKuTQ2CoB8idYAfq7c3sKaqYNFVQhulZ6E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyRs1HGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26625C4CECD;
+	Wed,  6 Nov 2024 12:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895977;
-	bh=NiWp/XmwUcosqaMcIH3SWp9031RQbxyjroGa8bSkqU0=;
+	s=korg; t=1730895418;
+	bh=YYLJFaylWGUoDlZsXmtUwKQV8hHGZr6IyJAiRJr0IP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYKI832fGzUXu1wqzxgLYpChYD0WrmQ3isjxgrd9IQpbF1FgMAYvAQAaSYHVzmzVO
-	 glnuWq7fWLQzw5xRsbOf4bLrasYREW/BcxYJgNkJPpevJtqp+6XR3TeHtnYtjhGxLJ
-	 OA03xlnWfRNchWHgLlEk6NTCKV/rufu6OUZpA5Dk=
+	b=vyRs1HGQoTi/c9zSHBfr/74igfvpGKsernNHzoQusKUrQf4xbeIeuoiRzZZN13MaI
+	 GU7A7jsz+yjITu6of71l27xvFuGjoIy5GcADLZMvRncHGdHYkvdESWv4VCcfwwmcqk
+	 sIWPtl4nR9Chkso/910EGei3p9ryDnOWK9lMDrLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 049/245] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
-Date: Wed,  6 Nov 2024 13:01:42 +0100
-Message-ID: <20241106120320.431456701@linuxfoundation.org>
+Subject: [PATCH 4.19 175/350] scsi: aacraid: Rearrange order of struct aac_srb_unit
+Date: Wed,  6 Nov 2024 13:01:43 +0100
+Message-ID: <20241106120325.253335312@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
+[ Upstream commit 6e5860b0ad4934baee8c7a202c02033b2631bb44 ]
 
-As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
-can only checksum TCP and UDP over IPv6 if the IP header does not
-contains extension.
+struct aac_srb_unit contains struct aac_srb, which contains struct sgmap,
+which ends in a (currently) "fake" (1-element) flexible array.  Converting
+this to a flexible array is needed so that runtime bounds checking won't
+think the array is fixed size (i.e. under CONFIG_FORTIFY_SOURCE=y and/or
+CONFIG_UBSAN_BOUNDS=y), as other parts of aacraid use struct sgmap as a
+flexible array.
 
-This is enforced for UDP packets emitted from user-space to an IPv6
-address as they go through ip6_make_skb(), which calls
-__ip6_append_data() where a check is done on the header size before
-setting CHECKSUM_PARTIAL.
+It is not legal to have a flexible array in the middle of a structure, so
+it either needs to be split up or rearranged so that it is at the end of
+the structure. Luckily, struct aac_srb_unit, which is exclusively
+consumed/updated by aac_send_safw_bmic_cmd(), does not depend on member
+ordering.
 
-But the introduction of UDP encapsulation with fou6 added a code-path
-where it is possible to get an skb with a partial UDP checksum and an
-IPv6 header with extension:
-* fou6 adds a UDP header with a partial checksum if the inner packet
-does not contains a valid checksum.
-* ip6_tunnel adds an IPv6 header with a destination option extension
-header if encap_limit is non-zero (the default value is 4).
+The values set in the on-stack struct aac_srb_unit instance "srbu" by the
+only two callers, aac_issue_safw_bmic_identify() and
+aac_get_safw_ciss_luns(), do not contain anything in srbu.srb.sgmap.sg, and
+they both implicitly initialize srbu.srb.sgmap.count to 0 during
+memset(). For example:
 
-The thread linked below describes in more details how to reproduce the
-problem with GRE-in-UDP tunnel.
+        memset(&srbu, 0, sizeof(struct aac_srb_unit));
 
-Add a check on the network header size in skb_csum_hwoffload_help() to
-make sure no IPv6 packet with extension header is handed to a network
-device with NETIF_F_IPV6_CSUM capability.
+        srbcmd = &srbu.srb;
+        srbcmd->flags   = cpu_to_le32(SRB_DataIn);
+        srbcmd->cdb[0]  = CISS_REPORT_PHYSICAL_LUNS;
+        srbcmd->cdb[1]  = 2; /* extended reporting */
+        srbcmd->cdb[8]  = (u8)(datasize >> 8);
+        srbcmd->cdb[9]  = (u8)(datasize);
 
-Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
-Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+        rcode = aac_send_safw_bmic_cmd(dev, &srbu, phys_luns, datasize);
+
+During aac_send_safw_bmic_cmd(), a separate srb is mapped into DMA, and has
+srbu.srb copied into it:
+
+        srb = fib_data(fibptr);
+        memcpy(srb, &srbu->srb, sizeof(struct aac_srb));
+
+Only then is srb.sgmap.count written and srb->sg populated:
+
+        srb->count              = cpu_to_le32(xfer_len);
+
+        sg64 = (struct sgmap64 *)&srb->sg;
+        sg64->count             = cpu_to_le32(1);
+        sg64->sg[0].addr[1]     = cpu_to_le32(upper_32_bits(addr));
+        sg64->sg[0].addr[0]     = cpu_to_le32(lower_32_bits(addr));
+        sg64->sg[0].count       = cpu_to_le32(xfer_len);
+
+But this is happening in the DMA memory, not in srbu.srb. An attempt to
+copy the changes back to srbu does happen:
+
+        /*
+         * Copy the updated data for other dumping or other usage if
+         * needed
+         */
+        memcpy(&srbu->srb, srb, sizeof(struct aac_srb));
+
+But this was never correct: the sg64 (3 u32s) overlap of srb.sg (2 u32s)
+always meant that srbu.srb would have held truncated information and any
+attempt to walk srbu.srb.sg.sg based on the value of srbu.srb.sg.count
+would result in attempting to parse past the end of srbu.srb.sg.sg[0] into
+srbu.srb_reply.
+
+After getting a reply from hardware, the reply is copied into
+srbu.srb_reply:
+
+        srb_reply = (struct aac_srb_reply *)fib_data(fibptr);
+        memcpy(&srbu->srb_reply, srb_reply, sizeof(struct aac_srb_reply));
+
+This has always been fixed-size, so there's no issue here. It is worth
+noting that the two callers _never check_ srbu contents -- neither
+srbu.srb nor srbu.srb_reply is examined. (They depend on the mapped
+xfer_buf instead.)
+
+Therefore, the ordering of members in struct aac_srb_unit does not matter,
+and the flexible array member can moved to the end.
+
+(Additionally, the two memcpy()s that update srbu could be entirely
+removed as they are never consumed, but I left that as-is.)
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20240711215739.208776-1-kees@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/aacraid/aacraid.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index dd87f5fb2f3a7..25f20c5cc8f55 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3631,6 +3631,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return 0;
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 074760f210145..135e3f39c895c 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -2037,8 +2037,8 @@ struct aac_srb_reply
+ };
  
- 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-+		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+			goto sw_checksum;
- 		switch (skb->csum_offset) {
- 		case offsetof(struct tcphdr, check):
- 		case offsetof(struct udphdr, check):
-@@ -3638,6 +3641,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		}
- 	}
+ struct aac_srb_unit {
+-	struct aac_srb		srb;
+ 	struct aac_srb_reply	srb_reply;
++	struct aac_srb		srb;
+ };
  
-+sw_checksum:
- 	return skb_checksum_help(skb);
- }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
+ /*
 -- 
 2.43.0
 
