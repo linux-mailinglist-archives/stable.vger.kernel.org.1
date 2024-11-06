@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-90341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E431C9BE7D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD32A9BE8FE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D0F2847FE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47548B215C8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48F1DED49;
-	Wed,  6 Nov 2024 12:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2711DF726;
+	Wed,  6 Nov 2024 12:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKyjR14E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoNJdBUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEEC1DF24A;
-	Wed,  6 Nov 2024 12:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD81D2784;
+	Wed,  6 Nov 2024 12:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895486; cv=none; b=YMJdDMdxOR5FFQLb3NR0GCnRgqTzzsv63vIekMQgN0H6S0lJ9PpO5T2zmlqB/DBmLUrbJmJQa02t8ESOmgqJshSGDHXwDzcOLaDvScYJXZsHrfYCBJ/vzbN0liGTxXqwg9MNaglsUkomhfsA7FdfJUQBPxJUKMl/d+IVXnF8hmU=
+	t=1730896162; cv=none; b=GK2mnjwF9Vb3IgXUCvEOUJ0X0ffzKwbLQGJH1xJvRNE3y9Wg/N2OyWhSv1XtADl0LinbSqbxuI5GABbRJAjzXXceIjrNaa50f1xw8p8Z7Ub5OM+UBtZgNrTVHD2A79FO12UW5r/PpHHi1yE7VKQ2+4cJKD1RrONvRVsDuPIikL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895486; c=relaxed/simple;
-	bh=9zvGXRcrs2iiHX/jOKRic6LSINJ3SwOePRU5833t4Ts=;
+	s=arc-20240116; t=1730896162; c=relaxed/simple;
+	bh=Qth4LDcS4pMecX2nY+VzEDhHXRosx+7WS+tO25Ejxs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw1FCIEQS/z+gatxQu0lrgc00/sIOQUZSndHPiO4HLM8se4QZTi4a18XWUvy8Viar3+DFQAT5ko5bOsTHI1GmjSCrOZ3wuyGfhMuFtCsOnBYEyjqL79KizoKyWdMGj2+yvQkNpEN15ZMytMWsB2XDy6B9LuuX6b4UfdAwQqV9AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKyjR14E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94239C4CECD;
-	Wed,  6 Nov 2024 12:18:05 +0000 (UTC)
+	 MIME-Version; b=RTM5I3adK1goKs4iHTKHq/ib5P6M1LNxGxqtIQ+sfjDwLoi4zel1u6FRd8/5IQIAT+cFIxV3IzTExqUcFPmDebNmH07X0iV67a3aSQsk+G4srwyIdOrmcT80XxrUN0icEvNIot26Cq/kHEFEHLaGtB1gm8O8UhzuHv+TDnjIaRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoNJdBUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7B4C4CECD;
+	Wed,  6 Nov 2024 12:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895486;
-	bh=9zvGXRcrs2iiHX/jOKRic6LSINJ3SwOePRU5833t4Ts=;
+	s=korg; t=1730896161;
+	bh=Qth4LDcS4pMecX2nY+VzEDhHXRosx+7WS+tO25Ejxs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKyjR14EMjlpO+sZMsipfq0uCLrIWT+35IfVMz8chSYQPwZXUpVjsSZ+ripfMlcAn
-	 s4pYoAi7Zxa3h6rdKK4NxPfFlYWa0GbQIC4ZSB6D/nvwyGRNrH6DELzD0j5Jg+mRse
-	 MaSbLY1gOLLbdo7vwlLp4GOujrpHQ5HeBrw6gCIk=
+	b=YoNJdBUnHMhjPYyuoDw9bDqeAax/2+EW1w8sTYBsLNefqTHwtl9oH8SJMQiYGg5xO
+	 ajWhow7qdS6K1ob5sUAQtGoLLqfJU/jTyRg7n77LeSklOGhBgnJ8ucgSYB76guaseP
+	 cPRgxiLBErWI7WXG2d8ya3XYt8zx19w0CpkzTjBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinke Han <jinkehan@didiglobal.com>,
-	Tao Chen <chen.dylane@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 234/350] bpf: Check percpu map value size first
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 6.11 109/245] usb: typec: fix unreleased fwnode_handle in typec_port_register_altmodes()
 Date: Wed,  6 Nov 2024 13:02:42 +0100
-Message-ID: <20241106120326.746274787@linuxfoundation.org>
+Message-ID: <20241106120321.902218564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
+commit 9581acb91eaf5bbe70086bbb6fca808220d358ba upstream.
 
-Percpu map is often used, but the map value size limit often ignored,
-like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
-percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
-can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
-like percpu map of local_storage. Maybe the error message seems clearer
-compared with "cannot allocate memory".
+The 'altmodes_node' fwnode_handle is never released after it is no
+longer required, which leaks the resource.
 
-Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the required call to fwnode_handle_put() when 'altmodes_node' is no
+longer required.
+
+Cc: stable@vger.kernel.org
+Fixes: 7b458a4c5d73 ("usb: typec: Add typec_port_register_altmodes()")
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241021-typec-class-fwnode_handle_put-v2-1-3281225d3d27@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/arraymap.c | 3 +++
- kernel/bpf/hashtab.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/usb/typec/class.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 44f53c06629e2..03e244b11f5a0 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -71,6 +71,9 @@ int array_map_alloc_check(union bpf_attr *attr)
- 		 * access the elements.
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
- 
- 	return 0;
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -2341,6 +2341,7 @@ void typec_port_register_altmodes(struct
+ 		altmodes[index] = alt;
+ 		index++;
+ 	}
++	fwnode_handle_put(altmodes_node);
  }
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 16081d8384bfc..bca3287030460 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -291,6 +291,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
- 		 * kmalloc-able later in htab_map_update_elem()
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+ EXPORT_SYMBOL_GPL(typec_port_register_altmodes);
  
- 	return 0;
- }
--- 
-2.43.0
-
 
 
 
