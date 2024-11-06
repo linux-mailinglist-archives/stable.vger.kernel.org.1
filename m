@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1E29BE74C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A77D9BE882
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC83283575
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:12:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05291F237E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ED61DEFD3;
-	Wed,  6 Nov 2024 12:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838B1E0B62;
+	Wed,  6 Nov 2024 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3GfvZ7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hq75c9Qr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16041D416E;
-	Wed,  6 Nov 2024 12:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B951DFDAF;
+	Wed,  6 Nov 2024 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895166; cv=none; b=GONCTwUnvlcBfQANyNTKfiilGT3VCuZgaZsSJP3hFlVdTNdrhImFpJnRlzbD34MPfOthPCg0mE0Sf8KfWAOspjp+Yi0BmlVu+2wGNQAwX04XDEcHgh9yzZfC9DW7H6kF1mH3rStFmULZLaO59FXr/Lzf9ON6dNtM0nd4rWpQ5zY=
+	t=1730895892; cv=none; b=c0/xEcZglBSdSekXLBieSsLMoISg1iVzTliDvxuOC/B5ZQjp9ahQ7+H5mpae4JK6TfTuVJUae2Qb0xTK2JxIBfD3vbdUH+jFAY/A0b7kJmdISyp7RmY0Qu8uLiy5lXixwoJ6VtccBgUqssj4HQjtfoZisbmQOZMW61G6VdNaN9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895166; c=relaxed/simple;
-	bh=5j0ehDtPUj9sM5nnKmdqnojeWAMl9cpRHtg5KuM9lBc=;
+	s=arc-20240116; t=1730895892; c=relaxed/simple;
+	bh=boEgGvu3K1KOBi+giUza6xlil0YbiI8q/29v3cldiTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgZ0smKHfj+A7fXa1VsbRt7sLlJkaLC94cc1Rclibt2PgnzPTWIaIHES88ZEncGZE9Zm6OsaCAQ/+6no1MXaOGVbfq7jVnv5rQ5/34yYi0lIwNBzq+O2s5OSivscRQq/ehHt7cPxzLjQMuOw8HdOMtNhxD5G+Tdk/nj/dAowWl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3GfvZ7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FEC4CECD;
-	Wed,  6 Nov 2024 12:12:45 +0000 (UTC)
+	 MIME-Version; b=Hxg+sDLkpLl2t3O8ODDqfacmsW/pWmj3i1S5xYPM+F4C++8232yoRNixUcBC4+pl/f/AZ1UHwBHXPslmEwYOXnF0N4vG3VjfYn3AEf55xiLvTXzf28829dxFRZkcNhqc6uAc4OyjCaQYRAXSQsHaEm7cq77ekygiTJknSRYU8CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hq75c9Qr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3C1C4CECD;
+	Wed,  6 Nov 2024 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895166;
-	bh=5j0ehDtPUj9sM5nnKmdqnojeWAMl9cpRHtg5KuM9lBc=;
+	s=korg; t=1730895891;
+	bh=boEgGvu3K1KOBi+giUza6xlil0YbiI8q/29v3cldiTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3GfvZ7ZEI5FxkG/CMLmz7xJE32K1tG34yhBWDZogumMN0BSkwRyxYrOxbV2CQE6H
-	 wpdd89SEC8mPYEt0O4vM7pj2Fz6LssYAps6RSNkhrCMPizdl6eFIznOwbHtqRW4JEd
-	 efzwkPEdXUYzgFoYqDEo/p2HMcQ4350FrsgazUm4=
+	b=hq75c9Qrs3RXdJpcfz0BTRaHun2lYwyIgh8id6DuP0OSY/B+oIPQlnHUXboGdk53C
+	 LAUFxNjINpnb8Phkw3bA45cvIt/Zpnfis/isjt30xUubNyJ+vaWB/Gv+oPZzOQIttu
+	 KBKqbg57BP3WN9qTRJVYbO3hEJJeqdEXAQr6KIpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Frank Min <Frank.Min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 126/350] USB: misc: yurex: fix race between read and write
-Date: Wed,  6 Nov 2024 13:00:54 +0100
-Message-ID: <20241106120324.019632511@linuxfoundation.org>
+Subject: [PATCH 6.11 002/245] drm/amdgpu: fix random data corruption for sdma 7
+Date: Wed,  6 Nov 2024 13:00:55 +0100
+Message-ID: <20241106120319.301391105@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Frank Min <Frank.Min@amd.com>
 
-[ Upstream commit 93907620b308609c72ba4b95b09a6aa2658bb553 ]
+[ Upstream commit 108bc59fe817686a59d2008f217bad38a5cf4427 ]
 
-The write code path touches the bbu member in a non atomic manner
-without taking the spinlock. Fix it.
+There is random data corruption caused by const fill, this is caused by
+write compression mode not correctly configured.
 
-The bug is as old as the driver.
+So correct compression mode for const fill.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frank Min <Frank.Min@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 75400f8d6e36afc88d59db8a1f3e4b7d90d836ad)
+Cc: stable@vger.kernel.org # 6.11.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/yurex.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index a85cc0f3e15c4..5f271d25b633d 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -405,7 +405,6 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
- 	struct usb_yurex *dev;
- 	int len = 0;
- 	char in_buffer[MAX_S64_STRLEN];
--	unsigned long flags;
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
+index 403c177f24349..bbf43e668c1c4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
+@@ -51,6 +51,12 @@ MODULE_FIRMWARE("amdgpu/sdma_7_0_1.bin");
+ #define SDMA0_HYP_DEC_REG_END 0x589a
+ #define SDMA1_HYP_DEC_REG_OFFSET 0x20
  
- 	dev = file->private_data;
- 
-@@ -418,9 +417,9 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
- 	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
- 		return -EIO;
- 
--	spin_lock_irqsave(&dev->lock, flags);
-+	spin_lock_irq(&dev->lock);
- 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irqrestore(&dev->lock, flags);
-+	spin_unlock_irq(&dev->lock);
- 	mutex_unlock(&dev->io_mutex);
- 
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
-@@ -510,8 +509,11 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 			__func__, retval);
- 		goto error;
- 	}
--	if (set && timeout)
-+	if (set && timeout) {
-+		spin_lock_irq(&dev->lock);
- 		dev->bbu = c2;
-+		spin_unlock_irq(&dev->lock);
-+	}
- 	return timeout ? count : -EIO;
- 
- error:
++/*define for compression field for sdma7*/
++#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_offset 0
++#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask   0x00000001
++#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift  16
++#define SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(x) (((x) & SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask) << SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift)
++
+ static void sdma_v7_0_set_ring_funcs(struct amdgpu_device *adev);
+ static void sdma_v7_0_set_buffer_funcs(struct amdgpu_device *adev);
+ static void sdma_v7_0_set_vm_pte_funcs(struct amdgpu_device *adev);
+@@ -1611,7 +1617,8 @@ static void sdma_v7_0_emit_fill_buffer(struct amdgpu_ib *ib,
+ 				       uint64_t dst_offset,
+ 				       uint32_t byte_count)
+ {
+-	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_CONST_FILL);
++	ib->ptr[ib->length_dw++] = SDMA_PKT_CONSTANT_FILL_HEADER_OP(SDMA_OP_CONST_FILL) |
++		SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(1);
+ 	ib->ptr[ib->length_dw++] = lower_32_bits(dst_offset);
+ 	ib->ptr[ib->length_dw++] = upper_32_bits(dst_offset);
+ 	ib->ptr[ib->length_dw++] = src_data;
 -- 
 2.43.0
 
