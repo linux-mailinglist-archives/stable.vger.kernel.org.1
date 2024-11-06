@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-90463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDBF9BE873
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CAD9BEA9C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320B928553B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC981F249AD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134F11E048C;
-	Wed,  6 Nov 2024 12:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2611FBCBA;
+	Wed,  6 Nov 2024 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZyw6pHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAsFIeNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C569C1DF736;
-	Wed,  6 Nov 2024 12:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9D1FBCB0;
+	Wed,  6 Nov 2024 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895847; cv=none; b=b4XOverxnDbqkvr/Vc51S4XNKdfz0dncXbSumOl4SSnMUdW64NQPgKYp6+RSyEFWWtk2m42wa0V0ldz3htKettJMYeK7erSgMxJNOYvht8csjYzjGL7Zbpvq39Q0Xb1tgIo/JFXwRcZ4auwfrCFqHC20qZJTXzX2kSCSIH2p0EQ=
+	t=1730896730; cv=none; b=APIK1ZOriK5J882/n5GoOnjK6kFzw3Ny/7Yd/Q9pfxtCQKDClKSEaYxs/o1IDYKz6LvxeAgF1Ximh9TCxd2DX5RBQKVqAjQMY5+lyfJ8irIabUcYZWG0GyN+xwLe3Nr2+ml4+x4tlcCxHOjSZ5CfGn3jE927bk55p8BvbU+/lB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895847; c=relaxed/simple;
-	bh=BpYcQR2C0OsxGF6MTnvco8PUo3lwmLRkOyWpCgYLv8s=;
+	s=arc-20240116; t=1730896730; c=relaxed/simple;
+	bh=KC5wGcfmMcEfqP31vGEX2VkZb6f9OZ48c+dJSQUwfAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfTlfdMrMQ46v7rEHfV32l09L/du6PUuNYZYWEP5Xf/Yogo/Maj20OO+SnQombFaAPuXyXrj3SfFf2PIzrgDbu8STvIjFN+FTz/6iWs3IjYOOJc0AhR4CAm5yGaYYkyh8tPYWxndz3DUlaD4sHvIT4JYvQT80qz1YyUTeTZXoJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZyw6pHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F24C4CECD;
-	Wed,  6 Nov 2024 12:24:07 +0000 (UTC)
+	 MIME-Version; b=BBYeODKEPRVDMPqArQgW58RahW2wccaCGMAImNTv4TDGBP4MXIX9z8MwhtCV4G+20M8wmVh426PBHLxdchIUFY3irANrRTc0i3eKIiMm3kBHDEo8zFTyqfjq86L/P2YUiGDb0/t9JTUJJvmkkYAGmlsXIGvnMBV8g+nV7LU9MhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAsFIeNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C940C4CEE1;
+	Wed,  6 Nov 2024 12:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895847;
-	bh=BpYcQR2C0OsxGF6MTnvco8PUo3lwmLRkOyWpCgYLv8s=;
+	s=korg; t=1730896730;
+	bh=KC5wGcfmMcEfqP31vGEX2VkZb6f9OZ48c+dJSQUwfAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZyw6pHtrzfb6GjktIBXo6RA+feaPJ/HRFfPkRv7/tq5tnhc2r0WNDkP3v48tkizL
-	 GniZbUx6BdVzFRgugVvRvpu1D8Ji5kuVeVhayaqDHOtSC8JPARijSry19sROieynHr
-	 IjtL9Tv12uZOfqzPAOFXiNAoKGLLrzBFg9MDyTro=
+	b=nAsFIeNQ2J7ebrBm3dB5cpjx1Af9/7CLd9krEtUhdXwxsRMedtpWd5A97d8FuG6/V
+	 PaMn69OfgFchzpg09lXKUw66oclDt9tB0dW0E/vOjOoVghG2pg+OAiupIEfHEEBtc+
+	 PJGzlpyfbA/99U57DzONn+/UcG0NrLsSHRu5rOBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 331/350] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
+	Alex Michel <alex.michel@wiedemann-group.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH 5.10 053/110] net: phy: dp83822: Fix reset pin definitions
 Date: Wed,  6 Nov 2024 13:04:19 +0100
-Message-ID: <20241106120328.898484990@linuxfoundation.org>
+Message-ID: <20241106120304.668593855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Michel Alex <Alex.Michel@wiedemann-group.com>
 
-[ Upstream commit 2e95c4384438adeaa772caa560244b1a2efef816 ]
+commit de96f6a3003513c796bbe4e23210a446913f5c00 upstream.
 
-In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
-to be either root or ingress. This assumption is bogus since it's valid
-to create egress qdiscs with major handle ffff:
-Budimir Markovic found that for qdiscs like DRR that maintain an active
-class list, it will cause a UAF with a dangling class pointer.
+This change fixes a rare issue where the PHY fails to detect a link
+due to incorrect reset behavior.
 
-In 066a3b5b2346, the concern was to avoid iterating over the ingress
-qdisc since its parent is itself. The proper fix is to stop when parent
-TC_H_ROOT is reached because the only way to retrieve ingress is when a
-hierarchy which does not contain a ffff: major handle call into
-qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
+The SW_RESET definition was incorrectly assigned to bit 14, which is the
+Digital Restart bit according to the datasheet. This commit corrects
+SW_RESET to bit 15 and assigns DIG_RESTART to bit 14 as per the
+datasheet specifications.
 
-In the scenario where major ffff: is an egress qdisc in any of the tree
-levels, the updates will also propagate to TC_H_ROOT, which then the
-iteration must stop.
+The SW_RESET define is only used in the phy_reset function, which fully
+re-initializes the PHY after the reset is performed. The change in the
+bit definitions should not have any negative impact on the functionality
+of the PHY.
 
-Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+v2:
+- added Fixes tag
+- improved commit message
 
- net/sched/sch_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-Link: https://patch.msgid.link/20241024165547.418570-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5dc39fd5ef35 ("net: phy: DP83822: Add ability to advertise Fiber connection")
+Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Message-ID: <AS1P250MB0608A798661549BF83C4B43EA9462@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/dp83822.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index ab57c0ee9923b..49c4e85257886 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -783,7 +783,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, unsigned int n,
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
--		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
-+		if (parentid == TC_H_ROOT)
- 			break;
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -40,8 +40,8 @@
+ /* Control Register 2 bits */
+ #define DP83822_FX_ENABLE	BIT(14)
  
- 		if (sch->flags & TCQ_F_NOPARENT)
--- 
-2.43.0
-
+-#define DP83822_HW_RESET	BIT(15)
+-#define DP83822_SW_RESET	BIT(14)
++#define DP83822_SW_RESET	BIT(15)
++#define DP83822_DIG_RESTART	BIT(14)
+ 
+ /* PHY STS bits */
+ #define DP83822_PHYSTS_DUPLEX			BIT(2)
 
 
 
