@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-91212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595349BECF7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87769BECF0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E56B286133
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 169421C23DEF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7211F80BA;
-	Wed,  6 Nov 2024 13:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6ED1EE026;
+	Wed,  6 Nov 2024 13:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wvd21i9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+lHD12f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5950B1F80B5;
-	Wed,  6 Nov 2024 13:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C991DFE38;
+	Wed,  6 Nov 2024 13:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898071; cv=none; b=U+F/4/9RTI6/Z+DImwDx5HwZGwsunPgxtG4IWmVGc0lWfIQy6yqli0pg0Kz+0e9m01euDZhzD7QzsJAszLHjnxVSH8xM4mJyiHNzTuzV+tdM5eANob8eXt69lDeOXMXgykDohmUwzuDp2WmrDx75TXKN3fo5HY710bUUbqiOvIs=
+	t=1730898056; cv=none; b=GN7iAB3z+Ie2JMKjBfcu0v0nvBncrXaUkL2UKHEnKIQplBzA1vCUPq0ZaUEEI04FJrMmYQvorxUlFt9yXtJLSpm7b2r70FHGUbVUnmo3968iGcwa7umq94s65EbMDe6ZgcGhRTe1qmGgJ6JaLpLIe74gFsSAzNgAwBeBBeCgoWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898071; c=relaxed/simple;
-	bh=gBqyf0E8JnCAN3/FFT5KiZ7dSJR2jOtVsmu6hHngteI=;
+	s=arc-20240116; t=1730898056; c=relaxed/simple;
+	bh=NWjX4xURxduIYlUBnkm4jlZ0D46EbuwqmzwSMoF5KqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrxnPvppcFS4qT+C1ihqRCOoAPqI2wOh9nQVHwYymG8TSr9fhnZcHoqupa0KmbZ4IxkJPNxTOQmXWkbjeNGmPN8Uwkz+hhCaonwkdfXEPoQPYL2KiXCmP8j5parBeDczFsGLPX0g2xJBEkWsYi50MxAKNP9IxyfC6e6fB3jD7ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wvd21i9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09AFC4CECD;
-	Wed,  6 Nov 2024 13:01:10 +0000 (UTC)
+	 MIME-Version; b=VjyL+iqBT23DzMVXVhJ9qhn6vIDcV5LB2N8EPU6S4IYtFCxKgJWmMSvJCUS5yYEl9guCaNKL+Y0t3eEoK9wijIOm59KRZCX0+Nlz5BkxkyrxdBcCTGXK88WCOsohQ8iwaXNwY8F8H+4MO19znY0KiTnFoup5tIqVMTM6B+0hkrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+lHD12f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22C5C4CED4;
+	Wed,  6 Nov 2024 13:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898071;
-	bh=gBqyf0E8JnCAN3/FFT5KiZ7dSJR2jOtVsmu6hHngteI=;
+	s=korg; t=1730898056;
+	bh=NWjX4xURxduIYlUBnkm4jlZ0D46EbuwqmzwSMoF5KqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wvd21i9lgcg6lwdoMMwJBSbKpIMBSgwtFjidIIKybQyTQvIXx46LVNxo7gA89HFLH
-	 zj/88+nwr3P8hmnTxRq3V9lnySgPUskcCHBGJD+aHlrD/hvKszzYAgYCIZTdIJMO6S
-	 Vj83Y3wo/7hTNbu0PZVhw/Gtpnh7z4zXlIzFZt+w=
+	b=r+lHD12fLkrL4GpB4JIagg1gbQ8VKQsnDlz1E3eC3ycZurMY8tExIu3oUS167B7MT
+	 Y8u39qMi1Iv3tAnLgoKGundIimZ9W6Vjv6NtpVrmulxfxRxxFyJ5rPB9Fk97uOEU9e
+	 xY+7MmhPrJULtnkRm7RSPfn6aoYXa6ZHrf1YkHVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Helge Deller <deller@gmx.de>,
+	Kees Cook <keescook@chromium.org>,
+	Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/462] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
-Date: Wed,  6 Nov 2024 12:59:20 +0100
-Message-ID: <20241106120333.167088060@linuxfoundation.org>
+Subject: [PATCH 5.4 072/462] drm/radeon: Replace one-element array with flexible-array member
+Date: Wed,  6 Nov 2024 12:59:25 +0100
+Message-ID: <20241106120333.288602468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,34 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
 
-[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
+[ Upstream commit c81c5bd5cf2f428867e0bcfcccd4e4d2f8c68f51 ]
 
-If an error occurs after request_mem_region(), a corresponding
-release_mem_region() should be called, as already done in the remove
-function.
+One-element arrays are deprecated, and we are replacing them with
+flexible array members instead. So, replace one-element array with
+flexible-array member in struct _ATOM_FAKE_EDID_PATCH_RECORD and
+refactor the rest of the code accordingly.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Helge Deller <deller@gmx.de>
+It's worth mentioning that doing a build before/after this patch results
+in no binary output differences.
+
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -fstrict-flex-arrays=3 [1].
+
+Link: https://github.com/KSPP/linux/issues/79
+Link: https://github.com/KSPP/linux/issues/239
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101836 [1]
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 17c6baff3d5f ("drm/radeon: properly handle vbios fake edid sizing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hpfb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/atombios.h        | 2 +-
+ drivers/gpu/drm/radeon/radeon_atombios.c | 7 +++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
-index a79af8f069d16..40e51a2fc34d0 100644
---- a/drivers/video/fbdev/hpfb.c
-+++ b/drivers/video/fbdev/hpfb.c
-@@ -344,6 +344,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
- 	if (hpfb_init_one(paddr, vaddr)) {
- 		if (d->scode >= DIOII_SCBASE)
- 			iounmap((void *)vaddr);
-+		release_mem_region(d->resource.start, resource_size(&d->resource));
- 		return -ENOMEM;
- 	}
- 	return 0;
+diff --git a/drivers/gpu/drm/radeon/atombios.h b/drivers/gpu/drm/radeon/atombios.h
+index 4b86e8b450090..e3f4964647641 100644
+--- a/drivers/gpu/drm/radeon/atombios.h
++++ b/drivers/gpu/drm/radeon/atombios.h
+@@ -3615,7 +3615,7 @@ typedef struct _ATOM_FAKE_EDID_PATCH_RECORD
+ {
+   UCHAR ucRecordType;
+   UCHAR ucFakeEDIDLength;
+-  UCHAR ucFakeEDIDString[1];    // This actually has ucFakeEdidLength elements.
++  UCHAR ucFakeEDIDString[];    // This actually has ucFakeEdidLength elements.
+ } ATOM_FAKE_EDID_PATCH_RECORD;
+ 
+ typedef struct  _ATOM_PANEL_RESOLUTION_PATCH_RECORD
+diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
+index 9e0aa357585fd..2b3f702ef8c9b 100644
+--- a/drivers/gpu/drm/radeon/radeon_atombios.c
++++ b/drivers/gpu/drm/radeon/radeon_atombios.c
+@@ -1745,8 +1745,11 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
+ 						}
+ 					}
+ 					record += fake_edid_record->ucFakeEDIDLength ?
+-						fake_edid_record->ucFakeEDIDLength + 2 :
+-						sizeof(ATOM_FAKE_EDID_PATCH_RECORD);
++						  struct_size(fake_edid_record,
++							      ucFakeEDIDString,
++							      fake_edid_record->ucFakeEDIDLength) :
++						  /* empty fake edid record must be 3 bytes long */
++						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					break;
+ 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
+ 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
 -- 
 2.43.0
 
