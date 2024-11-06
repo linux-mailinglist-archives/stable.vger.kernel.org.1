@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-89973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287DA9BDC22
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB69BDC24
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2384283B13
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:15:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E154B28531B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B16D1D934D;
-	Wed,  6 Nov 2024 02:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51C1D9688;
+	Wed,  6 Nov 2024 02:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubqNXaTy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Px42WH8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E611922CD;
-	Wed,  6 Nov 2024 02:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF07B18F2C1;
+	Wed,  6 Nov 2024 02:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859033; cv=none; b=fhMLsDjwf1/AeNqk7HQ3jiiZUva4KJIyYrMmw0otQp5vqY4UA7UgGb/IH2Pc1g8BMeYUflHiYL3HjsjK/n7/1ha5/eASsTJQMjDoFjmL2FHzv5b3YRth79jrGMXLR2XKgl9WjOMRLcnl6iCH5NMD4wByIaXFd5KOfpDotfCmu3I=
+	t=1730859037; cv=none; b=WR3KkhdR8jxiULVGoqz3QW+aziT0eMZSXtD0OLTSf85qiMIHgtQBHC4+TynkEeRnaKRp8gCu3dctniXWfA0Hl3QO0Bt9/dMnZpbqCiLYXy9wP/jCTJ2OsWoX3MnZFMv43h0Sao07fk4p9eZkbXKs24DmWQTQ/WGJgR8gtHaHmfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859033; c=relaxed/simple;
-	bh=XCUWwc5I3W9gb8RnELP6CKlJ7l+b+BwME4lcyD2FhG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tm9zpSU9OvO1o9vTGBdEJRBcNtWvpCPgPETsD6Jh4oGZgGWvBPkNGERDqn5raTjysOffeW0gPZN9N3K/M14e81YfTVQn5UJP/Ksqmo4wFHzPyC+FwXj+2gwRmupeYXbJVjYKUcZDCQDNtkYKfqcELH+T64CGNZRn/mfHxOoQglw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubqNXaTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF0DC4CECF;
-	Wed,  6 Nov 2024 02:10:32 +0000 (UTC)
+	s=arc-20240116; t=1730859037; c=relaxed/simple;
+	bh=64rxGGHOzJlUyvWRWPZyt2BQTMQWnxD9Wzt/FVelKs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZXp4LbX+82tt2YGaHUc6yUIz8Ls/02mAWsLiTs9XwFI0T9u9rVUsobL9OPfLPr76FwTBbaELtuiPzTSwo7wEwmAjBNA52k99vJhxgm8eScFJHDBZvmqpTrv9DtSKwVeYXPHj4iVBqlx7cZ/f2xFX2ibtSqaRxn53k9fFlL0/xzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Px42WH8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE558C4CECF;
+	Wed,  6 Nov 2024 02:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859033;
-	bh=XCUWwc5I3W9gb8RnELP6CKlJ7l+b+BwME4lcyD2FhG0=;
+	s=k20201202; t=1730859037;
+	bh=64rxGGHOzJlUyvWRWPZyt2BQTMQWnxD9Wzt/FVelKs8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ubqNXaTyry6n1tOBGvV9ydqxi10JUW6e14y2nAK6x+yaUTVUKGWm7QU3b+1aoM156
-	 Hx3DMK+AJFChxTjUNd8Z7zbiNhhHYFAQew5mT1HyJy5skQeqR7jTMK+VHZL79ZNH3O
-	 v9HxgO3TjPhw3F+PhMHvdde43JD0vzep0TTkbypY4tCNlr/UKQ2wO6DpRW/VcqrYC5
-	 5Yi9ICrqnjhEvb+52zpkVwxpcS7JBJLdJ7Z4GLrhHupEEvD0srrjppKRWC1Qc/HZmh
-	 dpzBPAYNg8AKO21cETbQwgNCI6ETWmbfBBDbYB9F2oyplyQ7ouufPks+s4qx93sj8v
-	 aCDsJ7jFQJGrw==
+	b=Px42WH8ZPWiZ2bmZUf/drxOOiv+poAtDxe9TczArmZotR9JmwdJGxzXhfzKTQqsEe
+	 KVd2RlY4yRXYwN9/d8/jex0kuVkyYTgB8aBKTSbw+HfRwB7fman65IILMLYn4so45r
+	 UCaFnd++nG7cBW82HvNtfGzR538I5p90s+pGeSAnwtefMefEXZcJ5l+bJNw+YluhQQ
+	 D+ErFu5G9tBMQTkX0nlhXEGg+XxHT78oHj2RT7zfbtSceWqYKfW/0aF88n0DkaOAE0
+	 256RZps5WVlX8Q1768fMU8DNmd1wM7a5ZJgD8DMpGdb9TagL4wlWLk0naN7bnig5Z5
+	 Tr+Ln14M9GvIw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johannes.berg@intel.com
-Cc: linux-wireless@vger.kernel.org,
+	dan.j.williams@intel.com
+Cc: Gregory Price <gourry@gourry.net>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alejandro Lucero <alucerop@amd.com>,
+	linux-cxl@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v6.1-stable tree
-Date: Tue,  5 Nov 2024 21:10:30 -0500
-Message-ID: <20241106021031.181319-1-sashal@kernel.org>
+Subject: FAILED: Patch "cxl/port: Fix CXL port initialization order when the subsystem is built-in" failed to apply to v6.1-stable tree
+Date: Tue,  5 Nov 2024 21:10:33 -0500
+Message-ID: <20241106021034.181613-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,66 +78,129 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7245012f0f496162dd95d888ed2ceb5a35170f1a Mon Sep 17 00:00:00 2001
-From: Johannes Berg <johannes.berg@intel.com>
-Date: Wed, 23 Oct 2024 09:17:44 +0200
-Subject: [PATCH] wifi: iwlwifi: mvm: fix 6 GHz scan construction
+From 6575b268157f37929948a8d1f3bafb3d7c055bc1 Mon Sep 17 00:00:00 2001
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 25 Oct 2024 12:32:55 -0700
+Subject: [PATCH] cxl/port: Fix CXL port initialization order when the
+ subsystem is built-in
 
-If more than 255 colocated APs exist for the set of all
-APs found during 2.4/5 GHz scanning, then the 6 GHz scan
-construction will loop forever since the loop variable
-has type u8, which can never reach the number found when
-that's bigger than 255, and is stored in a u32 variable.
-Also move it into the loops to have a smaller scope.
+When the CXL subsystem is built-in the module init order is determined
+by Makefile order. That order violates expectations. The expectation is
+that cxl_acpi and cxl_mem can race to attach. If cxl_acpi wins the race,
+cxl_mem will find the enabled CXL root ports it needs. If cxl_acpi loses
+the race it will retrigger cxl_mem to attach via cxl_bus_rescan(). That
+flow only works if cxl_acpi can assume ports are enabled immediately
+upon cxl_acpi_probe() return. That in turn can only happen in the
+CONFIG_CXL_ACPI=y case if the cxl_port driver is registered before
+cxl_acpi_probe() runs.
 
-Using a u32 there is fine, we limit the number of APs in
-the scan list and each has a limit on the number of RNR
-entries due to the frame size. With a limit of 1000 scan
-results, a frame size upper bound of 4096 (really it's
-more like ~2300) and a TBTT entry size of at least 11,
-we get an upper bound for the number of ~372k, well in
-the bounds of a u32.
+Fix up the order to prevent initialization failures. Ensure that
+cxl_port is built-in when cxl_acpi is also built-in, arrange for
+Makefile order to resolve the subsys_initcall() order of cxl_port and
+cxl_acpi, and arrange for Makefile order to resolve the
+device_initcall() (module_init()) order of the remaining objects.
 
+As for what contributed to this not being found earlier, the CXL
+regression environment, cxl_test, builds all CXL functionality as a
+module to allow to symbol mocking and other dynamic reload tests.  As a
+result there is no regression coverage for the built-in case.
+
+Reported-by: Gregory Price <gourry@gourry.net>
+Closes: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
+Tested-by: Gregory Price <gourry@gourry.net>
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
 Cc: stable@vger.kernel.org
-Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
-Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Tested-by: Alejandro Lucero <alucerop@amd.com>
+Reviewed-by: Alejandro Lucero <alucerop@amd.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/172988474904.476062.7961350937442459266.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/cxl/Kconfig  |  1 +
+ drivers/cxl/Makefile | 20 ++++++++++++++------
+ drivers/cxl/port.c   | 17 ++++++++++++++++-
+ 3 files changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 3ce9150213a74..ddcbd80a49fb2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 			&cp->channel_config[ch_cnt];
+diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+index 29c192f20082c..876469e23f7a7 100644
+--- a/drivers/cxl/Kconfig
++++ b/drivers/cxl/Kconfig
+@@ -60,6 +60,7 @@ config CXL_ACPI
+ 	default CXL_BUS
+ 	select ACPI_TABLE_LIB
+ 	select ACPI_HMAT
++	select CXL_PORT
+ 	help
+ 	  Enable support for host managed device memory (HDM) resources
+ 	  published by a platform's ACPI CXL memory layout description.  See
+diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+index db321f48ba52e..2caa90fa4bf25 100644
+--- a/drivers/cxl/Makefile
++++ b/drivers/cxl/Makefile
+@@ -1,13 +1,21 @@
+ # SPDX-License-Identifier: GPL-2.0
++
++# Order is important here for the built-in case:
++# - 'core' first for fundamental init
++# - 'port' before platform root drivers like 'acpi' so that CXL-root ports
++#   are immediately enabled
++# - 'mem' and 'pmem' before endpoint drivers so that memdevs are
++#   immediately enabled
++# - 'pci' last, also mirrors the hardware enumeration hierarchy
+ obj-y += core/
+-obj-$(CONFIG_CXL_PCI) += cxl_pci.o
+-obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++obj-$(CONFIG_CXL_PORT) += cxl_port.o
+ obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
+ obj-$(CONFIG_CXL_PMEM) += cxl_pmem.o
+-obj-$(CONFIG_CXL_PORT) += cxl_port.o
++obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++obj-$(CONFIG_CXL_PCI) += cxl_pci.o
  
- 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
--		u8 j, k, n_s_ssids = 0, n_bssids = 0;
-+		u8 k, n_s_ssids = 0, n_bssids = 0;
- 		u8 max_s_ssids, max_bssids;
- 		bool force_passive = false, found = false, allow_passive = true,
- 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
-@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 		cfg->v5.iter_count = 1;
- 		cfg->v5.iter_interval = 0;
+-cxl_mem-y := mem.o
+-cxl_pci-y := pci.o
++cxl_port-y := port.o
+ cxl_acpi-y := acpi.o
+ cxl_pmem-y := pmem.o security.o
+-cxl_port-y := port.o
++cxl_mem-y := mem.o
++cxl_pci-y := pci.o
+diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
+index 861dde65768fe..9dc394295e1fc 100644
+--- a/drivers/cxl/port.c
++++ b/drivers/cxl/port.c
+@@ -208,7 +208,22 @@ static struct cxl_driver cxl_port_driver = {
+ 	},
+ };
  
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			s8 tmp_psd_20;
- 
- 			if (!(scan_6ghz_params[j].channel_idx == i))
-@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 		 * SSID.
- 		 * TODO: improve this logic
- 		 */
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			if (!(scan_6ghz_params[j].channel_idx == i))
- 				continue;
- 
+-module_cxl_driver(cxl_port_driver);
++static int __init cxl_port_init(void)
++{
++	return cxl_driver_register(&cxl_port_driver);
++}
++/*
++ * Be ready to immediately enable ports emitted by the platform CXL root
++ * (e.g. cxl_acpi) when CONFIG_CXL_PORT=y.
++ */
++subsys_initcall(cxl_port_init);
++
++static void __exit cxl_port_exit(void)
++{
++	cxl_driver_unregister(&cxl_port_driver);
++}
++module_exit(cxl_port_exit);
++
+ MODULE_DESCRIPTION("CXL: Port enumeration and services");
+ MODULE_LICENSE("GPL v2");
+ MODULE_IMPORT_NS(CXL);
 -- 
 2.43.0
 
