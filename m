@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-90841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871079BEB4A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7A59BEC11
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A9F1C2240A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7B91C21289
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F59F1F7082;
-	Wed,  6 Nov 2024 12:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FC51F4269;
+	Wed,  6 Nov 2024 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgBwfNc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0/4bFqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAF31E25F8;
-	Wed,  6 Nov 2024 12:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F46A1F1318;
+	Wed,  6 Nov 2024 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896971; cv=none; b=JgsJ+xfmO7w+qR1YoLNF1ozF3ciNu12Uf9wDtIij26DJaqpdDou9kyxLYTDxOPOKiTQinwtaDJSx+gtxiKEFHwor/2Mmc/U2Qiegg5H7ZDrCTCHAjRfcCluZtOpFvn18ia0QdkaOLknFV144pdaPiUKunAeCoyQOJZFM9khW2yM=
+	t=1730897497; cv=none; b=P5DC5fLjUo37zQAylEOI4LpPpjQusNtoDEHEos0G9WOvarfhl34+mMdTMKnpS9ISSknEsITBQ62skx1wKHwYFQhwJe5dvXM14sNZmOkn1Y09pMEWJsOPFQKbVXP0kk8HVBfsOni2gpFM/7Nxulal7UUXrPArdZYCyvYfoFslqzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896971; c=relaxed/simple;
-	bh=btsP2GVvXKESfjYXdUtG4mLnxscm28eKXz/imaPe83o=;
+	s=arc-20240116; t=1730897497; c=relaxed/simple;
+	bh=D7ky12v+gfgsh7yeT+BD69zMUO5ZhFQsmeeUb8zvSkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2F/e0nRAJdTGzwKFHgb+hh+mkwGXAOgDAPrgDsXvRIMn0plvUisT/zoQAsUHkvfEpROgk8orSKqiTc9pQigR0V5qGlwDNRN5vDYUVZsu/gJqZbTq0JQeowlhm2pkjdMY8T1T8yNmfbj2wifcbUrVYa1/PU0RsLiI7liLvFbtto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgBwfNc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C30C4CED7;
-	Wed,  6 Nov 2024 12:42:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=chvvyVVcwNGaWCr5a9MHQ5ruHbNZXgDlsCMBvnw4uKjjg6ZAXAGEN3Fhda9GcMF1AIjNk4Ndj8yDXfS9b2gk0iq1mK01m2MZczI6jHh+QFA+UOE544YxQzJayWpxzUOuVkzAhAtsjY2UiqLi0l4ezTh38pAuM082SlYmmRBk5qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0/4bFqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E73C4CECD;
+	Wed,  6 Nov 2024 12:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896971;
-	bh=btsP2GVvXKESfjYXdUtG4mLnxscm28eKXz/imaPe83o=;
+	s=korg; t=1730897497;
+	bh=D7ky12v+gfgsh7yeT+BD69zMUO5ZhFQsmeeUb8zvSkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgBwfNc4bYcryNcj7VLBp2sguO76b60vfNRtok0SyxPkzS5fVqVZVYZJSAWrwXGdw
-	 Draoau1yiSr4WkMtgqulbK7OmDoEAXiWnbPGANERZmL6UHIsWV8iZh4FlRlnYOrDnn
-	 QAoMshGdsF67Yxf89mdR9PZdoYlea/j7Y2n1ajkI=
+	b=o0/4bFqK95CgMQgnvbQvUkcWg9Dnjqt31sdFnh72Xa3tjmhgEPxWXa8pYPYVOQ6pp
+	 e0P0FIrpHzNJS4Iq68If2BpIZdgFsUjAXu99xc7RY/gliLagebiOavcb79SvUqkup5
+	 lSl5RN9eUH58DizVribk9/RKWfXGc18Qe8KYCb6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Yuying Ma <yuma@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/126] igb: Disable threaded IRQ for igb_msix_other
+Subject: [PATCH 6.6 036/151] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
 Date: Wed,  6 Nov 2024 13:03:44 +0100
-Message-ID: <20241106120306.723818118@linuxfoundation.org>
+Message-ID: <20241106120309.827249450@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
+[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
 
-During testing of SR-IOV, Red Hat QE encountered an issue where the
-ip link up command intermittently fails for the igbvf interfaces when
-using the PREEMPT_RT variant. Investigation revealed that
-e1000_write_posted_mbx returns an error due to the lack of an ACK
-from e1000_poll_for_ack.
+As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
+can only checksum TCP and UDP over IPv6 if the IP header does not
+contains extension.
 
-The underlying issue arises from the fact that IRQs are threaded by
-default under PREEMPT_RT. While the exact hardware details are not
-available, it appears that the IRQ handled by igb_msix_other must
-be processed before e1000_poll_for_ack times out. However,
-e1000_write_posted_mbx is called with preemption disabled, leading
-to a scenario where the IRQ is serviced only after the failure of
-e1000_write_posted_mbx.
+This is enforced for UDP packets emitted from user-space to an IPv6
+address as they go through ip6_make_skb(), which calls
+__ip6_append_data() where a check is done on the header size before
+setting CHECKSUM_PARTIAL.
 
-To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
-ensuring that the kernel handles it immediately, thereby preventing
-the aforementioned error.
+But the introduction of UDP encapsulation with fou6 added a code-path
+where it is possible to get an skb with a partial UDP checksum and an
+IPv6 header with extension:
+* fou6 adds a UDP header with a partial checksum if the inner packet
+does not contains a valid checksum.
+* ip6_tunnel adds an IPv6 header with a destination option extension
+header if encap_limit is non-zero (the default value is 4).
 
-Reproducer:
+The thread linked below describes in more details how to reproduce the
+problem with GRE-in-UDP tunnel.
 
-    #!/bin/bash
+Add a check on the network header size in skb_csum_hwoffload_help() to
+make sure no IPv6 packet with extension header is handed to a network
+device with NETIF_F_IPV6_CSUM capability.
 
-    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
-    ipaddr_vlan=3
-    nic_test=ens14f0
-    vf=${nic_test}v0
-
-    while true; do
-	    ip link set ${nic_test} mtu 1500
-	    ip link set ${vf} mtu 1500
-	    ip link set $vf up
-	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
-	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
-	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
-	    if ! ip link show $vf | grep 'state UP'; then
-		    echo 'Error found'
-		    break
-	    fi
-	    ip link set $vf down
-    done
-
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Reported-by: Yuying Ma <yuma@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
+Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 2e2caf559d00a..4aaead29f2fe7 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -935,7 +935,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
- 	int i, err = 0, vector = 0, free_vector = 0;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 70f757707f1a2..4beb9acf2c183 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3627,6 +3627,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		return 0;
  
- 	err = request_irq(adapter->msix_entries[vector].vector,
--			  igb_msix_other, 0, netdev->name, adapter);
-+			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
- 	if (err)
- 		goto err_out;
+ 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
++		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
++		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
++			goto sw_checksum;
+ 		switch (skb->csum_offset) {
+ 		case offsetof(struct tcphdr, check):
+ 		case offsetof(struct udphdr, check):
+@@ -3634,6 +3637,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		}
+ 	}
  
++sw_checksum:
+ 	return skb_checksum_help(skb);
+ }
+ EXPORT_SYMBOL(skb_csum_hwoffload_help);
 -- 
 2.43.0
 
