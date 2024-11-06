@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709BC9BEB52
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EA99BEA22
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028741F2743D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124A31C23BF7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A544E1F754C;
-	Wed,  6 Nov 2024 12:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A41F669D;
+	Wed,  6 Nov 2024 12:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4/GRs/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogOKzu29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0181F7544;
-	Wed,  6 Nov 2024 12:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B6A1F667B;
+	Wed,  6 Nov 2024 12:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896995; cv=none; b=mjSy/15G2QgLz4NmFb/k4/Y+em5gN7pFtkd9PksRt/fFmEJp+MZ7MUUqIdXs7OSAkUVNeHMYk/Y7F0OLhlKn8/932tR4wmZgKNitpFZFT9sJm0RsvQK8q7gWu7FFlb36jQ7Lf2nBzNnkKe00vqLh11ExrkvoZDsks9+hfK1wM2o=
+	t=1730896646; cv=none; b=SsSPep04TJqAGKdpm0PbMsAiBT/E5da1ObruoeTlPNbiQoQIkbjjgKY7S1ZGx41c9qXdUGhsUzzdXtBUJDr5Vh5VLSpG7rDxxG4ZAa1aVYZJ5Uj3XVQAulz+VMcSkA/wK9nFbwOD+65g6VQGLOUcBw7M7KJIGcpsLGGY7M9doi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896995; c=relaxed/simple;
-	bh=zMTFDaKmoyAhut2tEYf2ZRDwKrvC+MHZmgtLHvMiiCM=;
+	s=arc-20240116; t=1730896646; c=relaxed/simple;
+	bh=U7p9NqYk6eyBim1hd5Fg2AHCNh2EgeAPI/dY6dWzjdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHPZaFB6Fe8g+P6J0f9bzoT0HMGKUEeqpM0O674WwpMp2OhiGV6FT9SwlMaXUE2YGDm7GhpBlKvLaxwZO/9BQ3cKlRVO/mj4l2u59PrKZU2CnmtRnZ2/+4E7NqaUaKpvHyOexkOQKQlzeinLxzo3Bdp3104utS3WhKQ1WW3uqUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4/GRs/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91771C4CECD;
-	Wed,  6 Nov 2024 12:43:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Akf8TnBBWqpMavnRW1hOG8vb3xGmpIGpmnceedPPxDFklC1wr2olFSBZVOli1zYwv/Dj1WkGgHfuyQF5+woyJpKSAOOub67voTwRnTv3olIDbA1ROAHmWmmqh0X1ZAfbdxVRF+FmR2+gxdT0/IOWSPWRKM+7uBMiyrwhvJe5zEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogOKzu29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765DFC4CECD;
+	Wed,  6 Nov 2024 12:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896995;
-	bh=zMTFDaKmoyAhut2tEYf2ZRDwKrvC+MHZmgtLHvMiiCM=;
+	s=korg; t=1730896645;
+	bh=U7p9NqYk6eyBim1hd5Fg2AHCNh2EgeAPI/dY6dWzjdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4/GRs/sX11AYKlLFkFB3G7hTdfDQvdCvTVVS0jP0d6UMyotOnhityBQl1V6aE9U9
-	 E+4Lb/nKoj7JAL+2qgoFmzUFZPTFDrVtFJzJgHpSCmo6K5A5AQQD1kdnQmTRLYAFjb
-	 w1awekfhCnQQemsf8Vc8dbrAsJpElJsswcSihBv8=
+	b=ogOKzu29A9Eh8iErJxZS7djA6iEyYU7GXADVvlt4kLq2Kolz1DeVfYMlBwXIlnfVG
+	 hLDlK5quOVd4MJ8GOVQB0B10Cqe0rRrcM9jVgvEPsuUdug+50J1LKuXkDX9zvNRteJ
+	 3xzMonqltvFGzVOZ3VnTvrnSlqBmVUxfe1ptTArA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/126] netfilter: nf_reject_ipv6: fix potential crash in nf_send_reset6()
+Subject: [PATCH 5.10 025/110] block, bfq: fix procress reference leakage for bfqq in merge chain
 Date: Wed,  6 Nov 2024 13:03:51 +0100
-Message-ID: <20241106120306.919966321@linuxfoundation.org>
+Message-ID: <20241106120303.861634649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +60,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 4ed234fe793f27a3b151c43d2106df2ff0d81aac ]
+[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
 
-I got a syzbot report without a repro [1] crashing in nf_send_reset6()
+Original state:
 
-I think the issue is that dev->hard_header_len is zero, and we attempt
-later to push an Ethernet header.
+        Process 1       Process 2       Process 3       Process 4
+         (BIC1)          (BIC2)          (BIC3)          (BIC4)
+          Λ                |               |               |
+           \--------------\ \-------------\ \-------------\|
+                           V               V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               1               2               4
 
-Use LL_MAX_HEADER, as other functions in net/ipv6/netfilter/nf_reject_ipv6.c.
+After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
+chain in bfq_setup_cooperator()"), if P1 issues a new IO:
 
-[1]
+Without the patch:
 
-skbuff: skb_under_panic: text:ffffffff89b1d008 len:74 put:14 head:ffff88803123aa00 data:ffff88803123a9f2 tail:0x3c end:0x140 dev:syz_tun
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 7373 Comm: syz.1.568 Not tainted 6.12.0-rc2-syzkaller-00631-g6d858708d465 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0d 8d 48 c7 c6 60 a6 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 ba 30 38 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc900045269b0 EFLAGS: 00010282
-RAX: 0000000000000088 RBX: dffffc0000000000 RCX: cd66dacdc5d8e800
-RDX: 0000000000000000 RSI: 0000000000000200 RDI: 0000000000000000
-RBP: ffff88802d39a3d0 R08: ffffffff8174afec R09: 1ffff920008a4ccc
-R10: dffffc0000000000 R11: fffff520008a4ccd R12: 0000000000000140
-R13: ffff88803123aa00 R14: ffff88803123a9f2 R15: 000000000000003c
-FS:  00007fdbee5ff6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000005d322000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  eth_header+0x38/0x1f0 net/ethernet/eth.c:83
-  dev_hard_header include/linux/netdevice.h:3208 [inline]
-  nf_send_reset6+0xce6/0x1270 net/ipv6/netfilter/nf_reject_ipv6.c:358
-  nft_reject_inet_eval+0x3b9/0x690 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  br_nf_pre_routing_ipv6+0x63e/0x770 net/bridge/br_netfilter_ipv6.c:184
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_bridge_pre net/bridge/br_input.c:277 [inline]
-  br_handle_frame+0x9fd/0x1530 net/bridge/br_input.c:424
-  __netif_receive_skb_core+0x13e8/0x4570 net/core/dev.c:5562
-  __netif_receive_skb_one_core net/core/dev.c:5666 [inline]
-  __netif_receive_skb+0x12f/0x650 net/core/dev.c:5781
-  netif_receive_skb_internal net/core/dev.c:5867 [inline]
-  netif_receive_skb+0x1e8/0x890 net/core/dev.c:5926
-  tun_rx_batched+0x1b7/0x8f0 drivers/net/tun.c:1550
-  tun_get_user+0x3056/0x47e0 drivers/net/tun.c:2007
-  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2053
-  new_sync_write fs/read_write.c:590 [inline]
-  vfs_write+0xa6d/0xc90 fs/read_write.c:683
-  ksys_write+0x183/0x2b0 fs/read_write.c:736
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdbeeb7d1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 c9 8d 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 1c 8e 02 00 48
-RSP: 002b:00007fdbee5ff000 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fdbeed36058 RCX: 00007fdbeeb7d1ff
-RDX: 000000000000008e RSI: 0000000020000040 RDI: 00000000000000c8
-RBP: 00007fdbeebf12be R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000008e R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fdbeed36058 R15: 00007ffc38de06e8
- </TASK>
+        Process 1       Process 2       Process 3       Process 4
+         (BIC1)          (BIC2)          (BIC3)          (BIC4)
+          Λ                |               |               |
+           \------------------------------\ \-------------\|
+                                           V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               0               2               4
 
-Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+bfqq3 will be used to handle IO from P1, this is not expected, IO
+should be redirected to bfqq4;
+
+With the patch:
+
+          -------------------------------------------
+          |                                         |
+        Process 1       Process 2       Process 3   |   Process 4
+         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
+                           |               |        |      |
+                            \-------------\ \-------------\|
+                                           V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               0               2               4
+
+IO is redirected to bfqq4, however, procress reference of bfqq3 is still
+2, while there is only P2 using it.
+
+Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
+chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
+code.
+
+Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_reject_ipv6.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ block/bfq-iosched.c | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 4e0976534648c..e4776bd2ed89b 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -268,12 +268,12 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		    int hook)
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 515e3c1a54759..c1600e3ac3339 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -2774,10 +2774,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
+ 	bfq_put_queue(bfqq);
+ }
+ 
+-static void
+-bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
+-		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
++static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
++					 struct bfq_io_cq *bic,
++					 struct bfq_queue *bfqq)
  {
--	struct sk_buff *nskb;
--	struct tcphdr _otcph;
--	const struct tcphdr *otcph;
--	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
- 	struct dst_entry *dst = NULL;
-+	const struct tcphdr *otcph;
-+	struct sk_buff *nskb;
-+	struct tcphdr _otcph;
-+	unsigned int otcplen;
- 	struct flowi6 fl6;
++	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
++
+ 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
+ 		(unsigned long)new_bfqq->pid);
+ 	/* Save weight raising and idle window of the merged queues */
+@@ -2845,6 +2847,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
+ 	new_bfqq->pid = -1;
+ 	bfqq->bic = NULL;
+ 	bfq_release_process_ref(bfqd, bfqq);
++
++	return new_bfqq;
+ }
  
- 	if ((!(ipv6_addr_type(&oip6h->saddr) & IPV6_ADDR_UNICAST)) ||
-@@ -312,9 +312,8 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (IS_ERR(dst))
- 		return;
+ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
+@@ -2880,14 +2884,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
+ 		 * fulfilled, i.e., bic can be redirected to new_bfqq
+ 		 * and bfqq can be put.
+ 		 */
+-		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
+-				new_bfqq);
+-		/*
+-		 * If we get here, bio will be queued into new_queue,
+-		 * so use new_bfqq to decide whether bio and rq can be
+-		 * merged.
+-		 */
+-		bfqq = new_bfqq;
++		while (bfqq != new_bfqq)
++			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
  
--	hh_len = (dst->dev->hard_header_len + 15)&~15;
--	nskb = alloc_skb(hh_len + 15 + dst->header_len + sizeof(struct ipv6hdr)
--			 + sizeof(struct tcphdr) + dst->trailer_len,
-+	nskb = alloc_skb(LL_MAX_HEADER + sizeof(struct ipv6hdr) +
-+			 sizeof(struct tcphdr) + dst->trailer_len,
- 			 GFP_ATOMIC);
+ 		/*
+ 		 * Change also bqfd->bio_bfqq, as
+@@ -5444,6 +5442,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+ 	bool waiting, idle_timer_disabled = false;
  
- 	if (!nskb) {
-@@ -327,7 +326,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (new_bfqq) {
++		struct bfq_queue *old_bfqq = bfqq;
+ 		/*
+ 		 * Release the request's reference to the old bfqq
+ 		 * and make sure one is taken to the shared queue.
+@@ -5459,18 +5458,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+ 		 * then complete the merge and redirect it to
+ 		 * new_bfqq.
+ 		 */
+-		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq)
+-			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
+-					bfqq, new_bfqq);
++		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq) {
++			while (bfqq != new_bfqq)
++				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
++		}
  
- 	nskb->mark = fl6.flowi6_mark;
+-		bfq_clear_bfqq_just_created(bfqq);
++		bfq_clear_bfqq_just_created(old_bfqq);
+ 		/*
+ 		 * rq is about to be enqueued into new_bfqq,
+ 		 * release rq reference on bfqq
+ 		 */
+-		bfq_put_queue(bfqq);
++		bfq_put_queue(old_bfqq);
+ 		rq->elv.priv[1] = new_bfqq;
+-		bfqq = new_bfqq;
+ 	}
  
--	skb_reserve(nskb, hh_len + dst->header_len);
-+	skb_reserve(nskb, LL_MAX_HEADER);
- 	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
- 
+ 	bfq_update_io_thinktime(bfqd, bfqq);
 -- 
 2.43.0
 
