@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-91564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0A69BEE8E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DD39BEECD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468F81F25B52
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30E5E1C247C2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E51413AD11;
-	Wed,  6 Nov 2024 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F83C1DF75A;
+	Wed,  6 Nov 2024 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qt3hUWby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMHlVg3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11BE1DED7C;
-	Wed,  6 Nov 2024 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A451DE2CF;
+	Wed,  6 Nov 2024 13:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899103; cv=none; b=ebnDIPM0A+5UBUH31LxbYAJrZGgs+k568ltb1N4bNuZ0Y6j+H7DnbOpYyaywFoEfggV1AoT3uSYi189xW1FgabK737smzaquETpN4fJHq0fe9SVANIJosqmSLPqkDl5qoeomIieozgQLHsy31NhOz6xjd43NfNWolTq11GnKI7Q=
+	t=1730899257; cv=none; b=p0kEipdXnQ1CjJ7sn4LVom0haHqW+Zuiqov9XooeXgLlMwArh4A278HtIvcEA2mmBtabW0SLXw7Jx8kkeOjSacBWtUeB9LfwJxfeF/y8sWo1BrvA/yFhxHWHUa5cZDzqsALwzuxJ4pKZ2sUYhX/6/YMsPUEvjtRO/U+5KO89PEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899103; c=relaxed/simple;
-	bh=ExSeAd+C7zMMX5S/1qPo/ibgPWMKWQg52bKBWoOrVl4=;
+	s=arc-20240116; t=1730899257; c=relaxed/simple;
+	bh=r6bmTfPZM/tj80ni2qGf3iR45Eqx7zTmTAgKMp+gUS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koHfMgma/ZwQA6Q/uZ0fZVScP3ZN/9BshtjsSRSkpt0nhRVlIGEbFestXBoBH5KvWHMWysLwBqVFfghZeWQBK09IvpsVbyTfuJBUqgVjYsFkQM8IXMKiYIOlaWSQm4py0jvHWQzj3vUmu8xMMnEOqEyt3nOrRIJ94iPkW9Y0XgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qt3hUWby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37735C4CED3;
-	Wed,  6 Nov 2024 13:18:22 +0000 (UTC)
+	 MIME-Version; b=Hyc/lVeSg/eRQWsn0YQpZNKtoKzz5vckb+C8vsbQWJGjZSrrwr9FSv98vIEyXCvcyrrZwgLei7sbzsdMOUHAo8J7+OO1CQvWqxSMUBDuh5pvSa6MHnb3eVqGY83gWnAiPlREtmJpTmNUT0xdc+E66n0oJpHhAOplGUlZ5ZLpRts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMHlVg3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA13C4CECD;
+	Wed,  6 Nov 2024 13:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899102;
-	bh=ExSeAd+C7zMMX5S/1qPo/ibgPWMKWQg52bKBWoOrVl4=;
+	s=korg; t=1730899256;
+	bh=r6bmTfPZM/tj80ni2qGf3iR45Eqx7zTmTAgKMp+gUS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qt3hUWbyr5deD1cy0PIOYot5Jt8nKfXk5KxFSBqu0YpcAA9FV8fptXFqmZKOccE7H
-	 Hw5WAYDBw/1M1OUqMErvHAi64PxiH4BZNrXdRYv0jEcjg/DvXQmcIIZctlGbEKVFQV
-	 mngN24SKo9b0Zrvp8IAi9GcV+/h18bQSCksLizTo=
+	b=iMHlVg3spyA5yFJZmRi/0vjq52IuUcc9iU1YmWs3VK3HnxR34+hVU4cAGihHYMlUZ
+	 ry9tS3r6H1N09ctQ+6nsrYnGJao1csuRD+NdJyj61hij4H6HHqhY310RfjRAStmeRh
+	 k0ShYguXJqjLpk2k1ymi8DfgbtcEmjFfINbpB+E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.4 461/462] mac80211: always have ieee80211_sta_restart()
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 50/73] nilfs2: fix potential deadlock with newly created symlinks
 Date: Wed,  6 Nov 2024 13:05:54 +0100
-Message-ID: <20241106120342.891262425@linuxfoundation.org>
+Message-ID: <20241106120301.456168212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 3fa5a0f5b0d69e31c6476cd81afeca3cc25a4927 upstream.
+commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
 
-When CONFIG_PM isn't defined we don't have the function
-ieee80211_sta_restart() compiled in, but we always need
-it now for firmware restart. Move it out of the ifdef.
+Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
+memory reclamation involving the filesystem layer, which can result in
+circular lock dependencies among the reader/writer semaphore
+nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
+fs_reclaim pseudo lock.
 
-Fixes: 7d352ccf1e99 ("mac80211: Add support to trigger sta disconnect on hardware restart")
-Link: https://lore.kernel.org/r/20220312221957.1fa96c72db51.I8ecaa5f9402fede0272161e0531ab930b97fba3e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This is because after commit 21fc61c73c39 ("don't put symlink bodies in
+pagecache into highmem"), the gfp flags of the page cache for symbolic
+links are overwritten to GFP_KERNEL via inode_nohighmem().
+
+This is not a problem for symlinks read from the backing device, because
+the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
+when a new symlink is created with nilfs_symlink(), the gfp flags remain
+overwritten to GFP_KERNEL.  Then, memory allocation called from
+page_symlink() etc.  triggers memory reclamation including the FS layer,
+which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
+cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+
+Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
+of newly created symlinks in the same way that nilfs_new_inode() and
+__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
+scope consistently or improve the locking constraints.
+
+Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
+Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
+Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mlme.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/namei.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4563,6 +4563,7 @@ void ieee80211_mgd_quiesce(struct ieee80
- 
- 	sdata_unlock(sdata);
- }
-+#endif
- 
- void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata)
- {
-@@ -4598,7 +4599,6 @@ void ieee80211_sta_restart(struct ieee80
- 
- 	sdata_unlock(sdata);
- }
--#endif
- 
- /* interface setup */
- void ieee80211_sta_setup_sdata(struct ieee80211_sub_if_data *sdata)
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -157,6 +157,9 @@ static int nilfs_symlink(struct user_nam
+ 	/* slow symlink */
+ 	inode->i_op = &nilfs_symlink_inode_operations;
+ 	inode_nohighmem(inode);
++	mapping_set_gfp_mask(inode->i_mapping,
++			     mapping_gfp_constraint(inode->i_mapping,
++						    ~__GFP_FS));
+ 	inode->i_mapping->a_ops = &nilfs_aops;
+ 	err = page_symlink(inode, symname, l);
+ 	if (err)
 
 
 
