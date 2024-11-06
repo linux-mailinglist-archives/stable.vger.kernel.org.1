@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-91627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1959BEED7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B214A9BEEE6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C711C2478E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AD491F25886
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB101DED7C;
-	Wed,  6 Nov 2024 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D031DFD9D;
+	Wed,  6 Nov 2024 13:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtpPcnwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoheB3ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FC2646;
-	Wed,  6 Nov 2024 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C109B646;
+	Wed,  6 Nov 2024 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899289; cv=none; b=LfzSR+ahL8DeVi0D2j+qzeWKdfRuGVRndZY3biC6gv0+1kKgItJ0j92DihyGUSaczYz4H5Hq9OeRlydjIM9ZTVUvo0FSCKwFUcfXZ7ZRYgrWl3NjsVfyamGersn1lLSqQgWahqIzOOJKJxetyhehYh6KFqVm1d6orxn0AqWlag0=
+	t=1730899321; cv=none; b=EAIEjQuW6ZNea19W6TjLp15+1TC6foL00FK3RUf7rBasxBotM3J4oQi4QSB1v5xZc/likYDK21BDYXtHZ++kMmrdVcj1I5L2CoIeUh3p81l0aX5F1yflVNi1HuXgwPohDq7+ydrXJlOkjPrqijqdfphp0+1b2rgPQRYajkQ9LV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899289; c=relaxed/simple;
-	bh=MretOLmhZCiOZQseEV3sfoQB/Jb6nJSN3oR9vfL514o=;
+	s=arc-20240116; t=1730899321; c=relaxed/simple;
+	bh=e9pndrQ1aaf9nd0nfXDm79MgNu1JWoutE42D+x6GxN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaZVf6MG9fqo0V5b7XzMenwFqZRxrsRAy1LLEOBcnwJRqItUXgliiZJ1+ApGjuKzt8rWJAb81ET8BPZWrwjwDbE0fNMD4gPgtNLRv33WzVg7c+BM9tngsGg3eCzbZTf4SYAU8s8jQqXi2usWywA1DV01Vj3ftx1gEQNvLKXXz9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtpPcnwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37F9C4CECD;
-	Wed,  6 Nov 2024 13:21:28 +0000 (UTC)
+	 MIME-Version; b=ffMFoV4D0oJjUVYO28CWli6de7hbGMO+SStonjBLtSuTNkIQZ1x2A3GssAjE1cgN5EA/hBwyxfC+FOpIoRiASEMgyk/HJ8RaKPXXV02yFx+/hHdclYAnmufZn0J3iWh7maLAnmdGz6YL4FGwuq9UlWtXQOOVdrU9KNMdGFGlv2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoheB3ML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65DFC4CECD;
+	Wed,  6 Nov 2024 13:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899289;
-	bh=MretOLmhZCiOZQseEV3sfoQB/Jb6nJSN3oR9vfL514o=;
+	s=korg; t=1730899321;
+	bh=e9pndrQ1aaf9nd0nfXDm79MgNu1JWoutE42D+x6GxN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtpPcnwLBiZQg4pxmb20Caodv8/KhUZsj/fdSpH+ZpLKgep398Yjwent/3e6lKSID
-	 MCYu/7cBtJCKr1dMf1ISLeZaVyjX6sbLtFjqx3Cg6c99btiNwzear16oDffEyvrups
-	 j9BdoNjvAKiRW/hjwDcwQzUywdpAUGsZ5WMYoDRE=
+	b=GoheB3ML/zjUQANIQ3WvI7CuINvX6342D+FDIygioLDph+Yqkq730A8gu1/fdZrwd
+	 UcgqH3OGsRZvwtLxkmiqi2JVRnKCdRUAdxjtc+32nRF+cGXpGvcIVx65LX/dwGuQ0p
+	 9Y2miZQxRs/t80CM4YV4ktQuLuDrsO2b2705qi0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@kernel.org>,
+	Wei Xu <weixugc@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 55/73] riscv: Remove duplicated GET_RM
-Date: Wed,  6 Nov 2024 13:05:59 +0100
-Message-ID: <20241106120301.603060010@linuxfoundation.org>
+Subject: [PATCH 5.15 56/73] mm/page_alloc: call check_new_pages() while zone spinlock is not held
+Date: Wed,  6 Nov 2024 13:06:00 +0100
+Message-ID: <20241106120301.630755013@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
 References: <20241106120259.955073160@linuxfoundation.org>
@@ -67,36 +75,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 164f66de6bb6ef454893f193c898dc8f1da6d18b ]
+[ Upstream commit 3313204c8ad553cf93f1ee8cc89456c73a7df938 ]
 
-The macro GET_RM defined twice in this file, one can be removed.
+For high order pages not using pcp, rmqueue() is currently calling the
+costly check_new_pages() while zone spinlock is held, and hard irqs
+masked.
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241008094141.549248-3-zhangchunyan@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+This is not needed, we can release the spinlock sooner to reduce zone
+spinlock contention.
+
+Note that after this patch, we call __mod_zone_freepage_state() before
+deciding to leak the page because it is in bad state.
+
+Link: https://lkml.kernel.org/r/20220304170215.1868106-1-eric.dumazet@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Hugh Dickins <hughd@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 2 --
- 1 file changed, 2 deletions(-)
+ mm/page_alloc.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index b246c3dc69930..d548d6992d988 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -131,8 +131,6 @@
- #define REG_PTR(insn, pos, regs)	\
- 	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 264efa022fa96..474150584ba48 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3698,10 +3698,10 @@ struct page *rmqueue(struct zone *preferred_zone,
+ 	 * allocate greater than order-1 page units with __GFP_NOFAIL.
+ 	 */
+ 	WARN_ON_ONCE((gfp_flags & __GFP_NOFAIL) && (order > 1));
+-	spin_lock_irqsave(&zone->lock, flags);
  
--#define GET_RM(insn)			(((insn) >> 12) & 7)
+ 	do {
+ 		page = NULL;
++		spin_lock_irqsave(&zone->lock, flags);
+ 		/*
+ 		 * order-0 request can reach here when the pcplist is skipped
+ 		 * due to non-CMA allocation context. HIGHATOMIC area is
+@@ -3713,15 +3713,15 @@ struct page *rmqueue(struct zone *preferred_zone,
+ 			if (page)
+ 				trace_mm_page_alloc_zone_locked(page, order, migratetype);
+ 		}
+-		if (!page)
++		if (!page) {
+ 			page = __rmqueue(zone, order, migratetype, alloc_flags);
+-	} while (page && check_new_pages(page, order));
+-	if (!page)
+-		goto failed;
 -
- #define GET_RS1(insn, regs)		(*REG_PTR(insn, SH_RS1, regs))
- #define GET_RS2(insn, regs)		(*REG_PTR(insn, SH_RS2, regs))
- #define GET_RS1S(insn, regs)		(*REG_PTR(RVC_RS1S(insn), 0, regs))
+-	__mod_zone_freepage_state(zone, -(1 << order),
+-				  get_pcppage_migratetype(page));
+-	spin_unlock_irqrestore(&zone->lock, flags);
++			if (!page)
++				goto failed;
++		}
++		__mod_zone_freepage_state(zone, -(1 << order),
++					  get_pcppage_migratetype(page));
++		spin_unlock_irqrestore(&zone->lock, flags);
++	} while (check_new_pages(page, order));
+ 
+ 	__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+ 	zone_statistics(preferred_zone, zone, 1);
 -- 
 2.43.0
 
