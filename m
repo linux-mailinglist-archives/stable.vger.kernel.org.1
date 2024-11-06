@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB509BEBFA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C639BEB81
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504B01F24D62
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A671C21CD0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFC11FAC23;
-	Wed,  6 Nov 2024 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B4D1F80B2;
+	Wed,  6 Nov 2024 12:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhuPQdsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLIoiMhc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CFA1E0DC4;
-	Wed,  6 Nov 2024 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47EA1DF97A;
+	Wed,  6 Nov 2024 12:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897429; cv=none; b=Ri81HXOX1RcpV6/i5c6prCm2Yd+HI8EwED7AZsYio8cHjgHhalC2/P65l/n5kGETLk/+nFgqBaJ6PxynTI6WaE//SLuaLI9dj9EDBGRkkoOsf3WwQMzGbLhqS1lCp942EnbYXkDcHpSsSuo2JRwodynayD9cHpKXYIX6JFCQ/CU=
+	t=1730897123; cv=none; b=DJJMn5lnZli84LYea5MlbtLVHdnOMLbRo77s0BVZXhXvwiEgouL0/ogwQ8LWKj0nfqtrCPBkWQHp/K7KSTfJVzSP1WM/GSBvp6L8emvuXEBqrVno2Pb7Xv1XYe2aEuL3N5gsC2eSjo7G5gYf6DJcq5YoFn8v3GDCOYxCdXzWDHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897429; c=relaxed/simple;
-	bh=p61fEAi7DisFc1HR224EB7j8VyRM0rqT4vdnWV1lNB0=;
+	s=arc-20240116; t=1730897123; c=relaxed/simple;
+	bh=dL1qGhqMkDku8T8q7pT9Mw3rCBaiH7GXsR4rk7InsqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGvf8HIMDBRPIJVWWdLA+GInMT2Tx0RlBPkYMBZyD1MhIk90ucV96BJJzDdI293EnaWKof2b/fqGW754Mm51JnKU6n4xHdAPYZupreY0HpU8Lt0VETmc66kyWeDK6QVnA+XKrm6c08uKDwmK5Ey0mORvfdt4Wre6TfExS+V1kkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhuPQdsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0F5C4CECD;
-	Wed,  6 Nov 2024 12:50:28 +0000 (UTC)
+	 MIME-Version; b=SR6BknTwoJJZuq6CRGHvIgzsiEs+Ta5LHz10qzTjSHVLNI0gypxCWRq5184n6u64W+9cVx+tpVmuQUeRuRzORBIGa4Ug/5iXcZ4k7BlLqYw3wPKIbT935tvPQ/rpjQWsxaj4muQ8PPYKLZa7pxr13ne8bok1g2ydpVY5c1FWsV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLIoiMhc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C348C4CECD;
+	Wed,  6 Nov 2024 12:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897429;
-	bh=p61fEAi7DisFc1HR224EB7j8VyRM0rqT4vdnWV1lNB0=;
+	s=korg; t=1730897123;
+	bh=dL1qGhqMkDku8T8q7pT9Mw3rCBaiH7GXsR4rk7InsqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhuPQdsRI4U883X0wEO3TSMJvnzE14Ogf9brNjVUwEjnq0Yf0UzQWbZTSXMw86nLU
-	 gSijqi8bMGA18uzXNVS2T6F5fr9/IRML8ivTAssaUOaRRb4HYFwqSe/DIqWvrXPcOv
-	 st0LSadmuLMQcSKFfyXDiAyZA7iFIOPxjTk8ta/Y=
+	b=HLIoiMhcpuSBQ/SVB4W2XSq4lkjpTmiyZQV5IgEzoB5mgLaCDlX0a88wWjgnBrbGf
+	 lU0vOnUnyY0dPpkPDGOIFavWCR+LCu4ns7WjqnA9AUdUCIpc9agqwVjOnEcnwRXHyv
+	 SU7u33FWRneWRnLLXVDKXd2QaXP3jIV7sewRiLnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/151] ACPI: CPPC: Make rmw_lock a raw_spin_lock
+Subject: [PATCH 6.1 038/126] iomap: convert iomap_unshare_iter to use large folios
 Date: Wed,  6 Nov 2024 13:03:59 +0100
-Message-ID: <20241106120310.240308204@linuxfoundation.org>
+Message-ID: <20241106120307.141018181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 1c10941e34c5fdc0357e46a25bd130d9cf40b925 ]
+[ Upstream commit a5f31a5028d1e88e97c3b6cdc3e3bf2da085e232 ]
 
-The following BUG was triggered:
+Convert iomap_unshare_iter to create large folios if possible, since the
+write and zeroing paths already do that.  I think this got missed in the
+conversion of the write paths that landed in 6.6-rc1.
 
-=============================
-[ BUG: Invalid wait context ]
-6.12.0-rc2-XXX #406 Not tainted
------------------------------
-kworker/1:1/62 is trying to lock:
-ffffff8801593030 (&cpc_ptr->rmw_lock){+.+.}-{3:3}, at: cpc_write+0xcc/0x370
-other info that might help us debug this:
-context-{5:5}
-2 locks held by kworker/1:1/62:
-  #0: ffffff897ef5ec98 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x2c/0x50
-  #1: ffffff880154e238 (&sg_policy->update_lock){....}-{2:2}, at: sugov_update_shared+0x3c/0x280
-stack backtrace:
-CPU: 1 UID: 0 PID: 62 Comm: kworker/1:1 Not tainted 6.12.0-rc2-g9654bd3e8806 #406
-Workqueue:  0x0 (events)
-Call trace:
-  dump_backtrace+0xa4/0x130
-  show_stack+0x20/0x38
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x28
-  __lock_acquire+0x480/0x1ad8
-  lock_acquire+0x114/0x310
-  _raw_spin_lock+0x50/0x70
-  cpc_write+0xcc/0x370
-  cppc_set_perf+0xa0/0x3a8
-  cppc_cpufreq_fast_switch+0x40/0xc0
-  cpufreq_driver_fast_switch+0x4c/0x218
-  sugov_update_shared+0x234/0x280
-  update_load_avg+0x6ec/0x7b8
-  dequeue_entities+0x108/0x830
-  dequeue_task_fair+0x58/0x408
-  __schedule+0x4f0/0x1070
-  schedule+0x54/0x130
-  worker_thread+0xc0/0x2e8
-  kthread+0x130/0x148
-  ret_from_fork+0x10/0x20
-
-sugov_update_shared() locks a raw_spinlock while cpc_write() locks a
-spinlock.
-
-To have a correct wait-type order, update rmw_lock to a raw spinlock and
-ensure that interrupts will be disabled on the CPU holding it.
-
-Fixes: 60949b7b8054 ("ACPI: CPPC: Fix MASK_VAL() usage")
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://patch.msgid.link/20241028125657.1271512-1-pierre.gondois@arm.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: ritesh.list@gmail.com, willy@infradead.org
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 9 +++++----
- include/acpi/cppc_acpi.h | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ fs/iomap/buffered-io.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 5df417626fd10..26d1beec99137 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -863,7 +863,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 1833608f39318..674ac79bdb456 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1090,7 +1090,6 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
+ 	loff_t pos = iter->pos;
+ 	loff_t length = iomap_length(iter);
+-	long status = 0;
+ 	loff_t written = 0;
  
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
--	spin_lock_init(&cpc_ptr->rmw_lock);
-+	raw_spin_lock_init(&cpc_ptr->rmw_lock);
+ 	/* don't bother with blocks that are not shared to start with */
+@@ -1101,28 +1100,33 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 		return length;
  
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1083,6 +1083,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 	struct cpc_desc *cpc_desc;
-+	unsigned long flags;
+ 	do {
+-		unsigned long offset = offset_in_page(pos);
+-		unsigned long bytes = min_t(loff_t, PAGE_SIZE - offset, length);
+ 		struct folio *folio;
++		int status;
++		size_t offset;
++		size_t bytes = min_t(u64, SIZE_MAX, length);
  
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1122,7 +1123,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			return -ENODEV;
- 		}
- 
--		spin_lock(&cpc_desc->rmw_lock);
-+		raw_spin_lock_irqsave(&cpc_desc->rmw_lock, flags);
- 		switch (size) {
- 		case 8:
- 			prev_val = readb_relaxed(vaddr);
-@@ -1137,7 +1138,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			prev_val = readq_relaxed(vaddr);
+ 		status = iomap_write_begin(iter, pos, bytes, &folio);
+ 		if (unlikely(status))
+ 			return status;
+-		if (iter->iomap.flags & IOMAP_F_STALE)
++		if (iomap->flags & IOMAP_F_STALE)
  			break;
- 		default:
--			spin_unlock(&cpc_desc->rmw_lock);
-+			raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 			return -EFAULT;
- 		}
- 		val = MASK_VAL_WRITE(reg, prev_val, val);
-@@ -1170,7 +1171,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	}
  
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		spin_unlock(&cpc_desc->rmw_lock);
-+		raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
+-		status = iomap_write_end(iter, pos, bytes, bytes, folio);
+-		if (WARN_ON_ONCE(status == 0))
++		offset = offset_in_folio(folio, pos);
++		if (bytes > folio_size(folio) - offset)
++			bytes = folio_size(folio) - offset;
++
++		bytes = iomap_write_end(iter, pos, bytes, bytes, folio);
++		if (WARN_ON_ONCE(bytes == 0))
+ 			return -EIO;
  
- 	return ret_val;
+ 		cond_resched();
+ 
+-		pos += status;
+-		written += status;
+-		length -= status;
++		pos += bytes;
++		written += bytes;
++		length -= bytes;
+ 
+ 		balance_dirty_pages_ratelimited(iter->inode->i_mapping);
+-	} while (length);
++	} while (length > 0);
+ 
+ 	return written;
  }
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index e1720d9306669..a451ca4c207bb 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -65,7 +65,7 @@ struct cpc_desc {
- 	int write_cmd_status;
- 	int write_cmd_id;
- 	/* Lock used for RMW operations in cpc_write() */
--	spinlock_t rmw_lock;
-+	raw_spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
 -- 
 2.43.0
 
