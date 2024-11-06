@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7F29BE832
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506049BEA52
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4A24283711
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C7C1C2523C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803151DF961;
-	Wed,  6 Nov 2024 12:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864431F8EF8;
+	Wed,  6 Nov 2024 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9Gv1rvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9LcDv8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0651DF969;
-	Wed,  6 Nov 2024 12:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263161EABD7;
+	Wed,  6 Nov 2024 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895730; cv=none; b=GfNXiN6CkJowZApFkmRVjuzKYdE0CkOx3z+DAexaxpqWnBp0zvVC8PdtBWbz+lw6hpkHgjbuP6sgJ8vXYl7v7zoGPCdPbhXGQqW69OeOZKWEygpXwgzSm7ZwSSlEVwv85bzWowPxBxcx/qFZVJZpC7yRyvuVR9n7d+TdOg1LHaA=
+	t=1730896679; cv=none; b=bfS5lo9DCyKmgvtHV230paoWXJN7gsH0KhXBNwAFTM5I2MoDk5fPCphQkKSiBs87RW9xzKnzoGDxGBbK4vRz6nouBGbt8ECxHOxtEZS/AsoBcVHnlNvZwtqiM4Mzld6ObHCVDJZj1RbSXDx5D1XZvZPIq8i8kT+Lvrqab41wS94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895730; c=relaxed/simple;
-	bh=GlBbt9YkB/G0oDj0wT5+rQknOKcCDC84TTETEgna3ZE=;
+	s=arc-20240116; t=1730896679; c=relaxed/simple;
+	bh=OlrhO+/4P7tvPKRkZZ5qnBT9SGYSvlSUCiuUYU1/FbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfYm6Vg+X/GdMGCbSsBLoYrbA6BX1Q+lxUIq61nJOjIF/4Xb0hXKJTIwJExh141REuS2XvMc9fKY12OO7d/vC+xJquX9817YIrz5BaZbQq7YEFpsEHD068uk33xwoVU10973A8qVi0KlWfw8T/SHSO3Uq83JHl9Gq62qRBBl1yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9Gv1rvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE2BC4CECD;
-	Wed,  6 Nov 2024 12:22:09 +0000 (UTC)
+	 MIME-Version; b=CehEaWi5l1OMHkiLvNJV+R4ppX5g7kunGhs7VKH1GfeLvAYXPCxdEdxvByi3u3GN4peaZebzDNIq2s9biCbHVIqy7YRcVrbKuH8+qXPxtEiwB1c/msQXDpZjYqZCu7Ef1zEmjWj+C/og+MrprEvq1FlHPYTOEsinfAJzid8S65c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9LcDv8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2CBC4CED6;
+	Wed,  6 Nov 2024 12:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895730;
-	bh=GlBbt9YkB/G0oDj0wT5+rQknOKcCDC84TTETEgna3ZE=;
+	s=korg; t=1730896678;
+	bh=OlrhO+/4P7tvPKRkZZ5qnBT9SGYSvlSUCiuUYU1/FbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9Gv1rvBOk6Xv+vlfRD3TiRR22TNxTbZeBypPbUG2Y0jEXWk6MaWX1R0YGeynIkS0
-	 RGzO3M6qO/Cul2MTrDcb9/Y8ZwL5imr5ivyekEOQtMBAVC8Ci/VpJPeaw3XHwMZI65
-	 xBHAmpoxnLzeHbKstibHugibnu2J6WQMe2xkt53o=
+	b=A9LcDv8Jlo9Pris8wyLs50sIa9YvJHZQSs446F1HAdOc5Ta+XfnjG/zU2h1lkyf/5
+	 s7o5phRNunzgwuRk0yfbte4HeAVoraAdn7UBOzD1m4yUQizvoQKe24rdqrmi4PYTLV
+	 fPTheEJTSs1Kt6MJzapKKvldD9qtxSl5zYkBk8rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 315/350] ALSA: hda/realtek: Update default depop procedure
+	Oliver Neukum <oneukum@suse.com>,
+	Greg Thelen <gthelen@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Sperbeck <jsperbeck@google.com>
+Subject: [PATCH 5.10 037/110] net: usb: usbnet: fix name regression
 Date: Wed,  6 Nov 2024 13:04:03 +0100
-Message-ID: <20241106120328.544907684@linuxfoundation.org>
+Message-ID: <20241106120304.219631092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
+[ Upstream commit 8a7d12d674ac6f2147c18f36d1e15f1a48060edf ]
 
-Old procedure has a chance to meet Headphone no output.
+The fix for MAC addresses broke detection of the naming convention
+because it gave network devices no random MAC before bind()
+was called. This means that the check for the local assignment bit
+was always negative as the address was zeroed from allocation,
+instead of from overwriting the MAC with a unique hardware address.
 
-Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The correct check for whether bind() has altered the MAC is
+done with is_zero_ether_addr
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reported-by: Greg Thelen <gthelen@google.com>
+Diagnosed-by: John Sperbeck <jsperbeck@google.com>
+Fixes: bab8eb0dd4cb9 ("usbnet: modern method to get random MAC")
+Link: https://patch.msgid.link/20241017071849.389636-1-oneukum@suse.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ drivers/net/usb/usbnet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 60dfaf2adaaf5..f33d09d939e14 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3537,20 +3537,18 @@ static void alc_default_init(struct hda_codec *codec)
- 
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		msleep(75);
-+	}
- }
- 
- static void alc_default_shutup(struct hda_codec *codec)
-@@ -3566,22 +3564,20 @@ static void alc_default_shutup(struct hda_codec *codec)
- 
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
--
--	if (!spec->no_shutup_pins)
- 		snd_hda_codec_write(codec, hp_pin, 0,
--				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		msleep(75);
- 
-+		if (!spec->no_shutup_pins)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+	}
- 	alc_auto_setup_eapd(codec, false);
- 	alc_shutup_pins(codec);
- }
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 669cd20cfe00a..b3d363ebea26e 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1717,7 +1717,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		// can rename the link if it knows better.
+ 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
+ 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
+-		     (net->dev_addr [0] & 0x02) == 0))
++		     /* somebody touched it*/
++		     !is_zero_ether_addr(net->dev_addr)))
+ 			strscpy(net->name, "eth%d", sizeof(net->name));
+ 		/* WLAN devices should always be named "wlan%d" */
+ 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
 -- 
 2.43.0
 
