@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615E89BEB5C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECD89BE828
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF169B21F0D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63ABF284C30
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D1B1F7578;
-	Wed,  6 Nov 2024 12:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E221DF73E;
+	Wed,  6 Nov 2024 12:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGlgbVCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZLlQrt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD60D1F7573;
-	Wed,  6 Nov 2024 12:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44D81DF726;
+	Wed,  6 Nov 2024 12:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897022; cv=none; b=D4Ec+dqrS0uqx+/fisuARSLgnZRh/MWXABC+8w3Kq9RuGJazLBKMEOLwpO67HK8gX8wI9oHs/xOhFtDdnSnTrSzqrcN+5OGBBYA6N08mM5Ey9eKqCRScL83f4g+4Vyvit8jwXq/zP1hj7azWJp0fqlEOlJKKCPExbdf9MQtD34c=
+	t=1730895700; cv=none; b=TOLgJtm9k8Fv7V+9bim9eXxwBhExYZrAP46mXiDMfT10g7Cca7EfBc6EwIyGHZx6+9psCV21NUr3fj7z7HqcGeDVO4n4Bgn2WaWl6ybTCd0Po4LglKtpoOOet/YXnOoHPAeRnXPIaqnAg4nDwAENxtaqn41LEQYtLVrW23pHxrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897022; c=relaxed/simple;
-	bh=89ewVA14KqdncHhjx7Rxtu8yA3p6cz7sISt91mDoJJo=;
+	s=arc-20240116; t=1730895700; c=relaxed/simple;
+	bh=m37pfgZv7fQgq/egABhUI3SeSzNcTXUhlnJWrYWsrLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYZ3ZwKpBjpSgpDZGcGtInbRCUqn+zBgbRS8obOUhHWEN8blcJCO1qBlA7hPnrYROv1/Fi7tovfmJQz8YPF/Vaur5tGlSVDNva9M029kVJv5xPCze6kK7GmyPPU8X5JicPoKILwhGo02NbQuyMNUO3CAUHHI+rUtR6njtfVSpuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGlgbVCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15254C4CECD;
-	Wed,  6 Nov 2024 12:43:41 +0000 (UTC)
+	 MIME-Version; b=QSFPRGPkEOeCjhJXeQEoSuMb0el6noyRuAdvjForC/PAH4puFsMekYpwahAJNWZuMjEyb47dXPKKDHi9qRDGqFF8uuKQ0NsuuheIb/NiIJZTkxKYKL2Kp9RNZ9Jlhr58GTP1gL9rZ1vrhgdGFpGA0nKAyNOKTGmcObYAFxDtgcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZLlQrt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4661BC4CECD;
+	Wed,  6 Nov 2024 12:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897022;
-	bh=89ewVA14KqdncHhjx7Rxtu8yA3p6cz7sISt91mDoJJo=;
+	s=korg; t=1730895700;
+	bh=m37pfgZv7fQgq/egABhUI3SeSzNcTXUhlnJWrYWsrLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGlgbVCsAHj52tN49VZp6PRfBciWjuUgxmgsXow5x5yQX3Vl8z92FDfML++Zhlhl6
-	 D+sW8jmdwAnDte7o/4RWIwIeXFwfvvQdtEtFjEhOMpKT8sEzoNT3PFVBIxiQE2ZAxH
-	 ioIwEDPd6600mMpzrIu8bBnX2zqxW7tG4QJYNFfk=
+	b=AZLlQrt2gOOw7HVt37eifulzzFTrGGhEW52JL1a/gKU7yZt37cPanmEibl6EGnI1D
+	 b8ujxxpzutYaatKWZHgw0CkKPt1JOeGo62Z3p+wC5U/j4VBDvmlzGPBCOlZ3KA+DYs
+	 GQwqJthrUslytR/25tS9rQC9jHVCQPjJvGxnKreM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/126] mlxsw: spectrum_ptp: Add missing verification before pushing Tx header
+Subject: [PATCH 4.19 306/350] KVM: s390: gaccess: Cleanup access to guest pages
 Date: Wed,  6 Nov 2024 13:03:54 +0100
-Message-ID: <20241106120307.003402772@linuxfoundation.org>
+Message-ID: <20241106120328.346229341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
 
-[ Upstream commit 0a66e5582b5102c4d7b866b977ff7c850c1174ce ]
+[ Upstream commit bad13799e0305deb258372b7298a86be4c78aaba ]
 
-Tx header should be pushed for each packet which is transmitted via
-Spectrum ASICs. The cited commit moved the call to skb_cow_head() from
-mlxsw_sp_port_xmit() to functions which handle Tx header.
+Introduce a helper function for guest frame access.
 
-In case that mlxsw_sp->ptp_ops->txhdr_construct() is used to handle Tx
-header, and txhdr_construct() is mlxsw_sp_ptp_txhdr_construct(), there is
-no call for skb_cow_head() before pushing Tx header size to SKB. This flow
-is relevant for Spectrum-1 and Spectrum-4, for PTP packets.
-
-Add the missing call to skb_cow_head() to make sure that there is both
-enough room to push the Tx header and that the SKB header is not cloned and
-can be modified.
-
-An additional set will be sent to net-next to centralize the handling of
-the Tx header by pushing it to every packet just before transmission.
-
-Cc: Richard Cochran <richardcochran@gmail.com>
-Fixes: 24157bc69f45 ("mlxsw: Send PTP packets as data packets to overcome a limitation")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/5145780b07ebbb5d3b3570f311254a3a2d554a44.1729866134.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-Id: <20211126164549.7046-4-scgl@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/s390/kvm/gaccess.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
-index 7b01b9c20722a..7bb7b57af1a76 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
-@@ -16,6 +16,7 @@
- #include "spectrum.h"
- #include "spectrum_ptp.h"
- #include "core.h"
-+#include "txheader.h"
- 
- #define MLXSW_SP1_PTP_CLOCK_CYCLES_SHIFT	29
- #define MLXSW_SP1_PTP_CLOCK_FREQ_KHZ		156257 /* 6.4nSec */
-@@ -1696,6 +1697,12 @@ int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
- 				 struct sk_buff *skb,
- 				 const struct mlxsw_tx_info *tx_info)
- {
-+	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
-+		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
-+		dev_kfree_skb_any(skb);
-+		return -ENOMEM;
-+	}
-+
- 	mlxsw_sp_txhdr_construct(skb, tx_info);
+diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+index d4fe5db5984dd..6ba82fe0776f8 100644
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -866,6 +866,20 @@ static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
  	return 0;
  }
+ 
++static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
++			     void *data, unsigned int len)
++{
++	const unsigned int offset = offset_in_page(gpa);
++	const gfn_t gfn = gpa_to_gfn(gpa);
++	int rc;
++
++	if (mode == GACC_STORE)
++		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
++	else
++		rc = kvm_read_guest_page(kvm, gfn, data, offset, len);
++	return rc;
++}
++
+ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
+ 		 unsigned long len, enum gacc_mode mode)
+ {
+@@ -896,10 +910,7 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
+ 	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
+ 	for (idx = 0; idx < nr_pages && !rc; idx++) {
+ 		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
+-		if (mode == GACC_STORE)
+-			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
+-		else
+-			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
++		rc = access_guest_page(vcpu->kvm, mode, gpas[idx], data, fragment_len);
+ 		len -= fragment_len;
+ 		data += fragment_len;
+ 	}
+@@ -920,10 +931,7 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
+ 	while (len && !rc) {
+ 		gpa = kvm_s390_real_to_abs(vcpu, gra);
+ 		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
+-		if (mode)
+-			rc = write_guest_abs(vcpu, gpa, data, fragment_len);
+-		else
+-			rc = read_guest_abs(vcpu, gpa, data, fragment_len);
++		rc = access_guest_page(vcpu->kvm, mode, gpa, data, fragment_len);
+ 		len -= fragment_len;
+ 		gra += fragment_len;
+ 		data += fragment_len;
 -- 
 2.43.0
 
