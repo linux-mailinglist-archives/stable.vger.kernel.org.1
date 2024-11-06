@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4651B9BE77D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882479BE8A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F39CB1F24DF0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7C91C210EE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124541DF978;
-	Wed,  6 Nov 2024 12:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505B41DFE27;
+	Wed,  6 Nov 2024 12:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBkD461o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ov8LNhIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E821DF272;
-	Wed,  6 Nov 2024 12:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D89A1DFDB5;
+	Wed,  6 Nov 2024 12:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895282; cv=none; b=rT35XuofbM8b09PBtxxJcAK5Sj0URqyiNqUoV4ISsOuLiWxh/pMDWN8VQkMGDEY7qNTdxaAIlHyN41hHcQvj0uXKAKt0G3I7iXWWT/opCL9SQzty4MqrsQr1Go5Qf07FRBDluLeDbd6ur7zCOR+r1QC22A3Yh5smt/w6zcl0N20=
+	t=1730895972; cv=none; b=AY/VnJRF3PazV3DaO7Y2JZAaeZFl6utmjp8Lflcyhjz6eMXgHU4hIKO4xNyBqDEZJ+5cGYL3YZy5W/3NfXocfyiM2AtvQbGlonffyxVKVWbCWYQepjWX/W+A/w++JDimZhBe1JFojMHyBW7UIK7pvAJ4braAbK+WJrw94AKkRnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895282; c=relaxed/simple;
-	bh=dbX5iX+JM1AArK52g6ooT/WsWD1iAtepH4mo/3PsyQQ=;
+	s=arc-20240116; t=1730895972; c=relaxed/simple;
+	bh=M4UFU9bs4Oj4TFqB8/ULQ8uFTTwM7kQgcYwoYLWVb54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9jqzdFDC4tfVjtwlde5pr6HK7zx2hYjkdXAFRV+ezXuz2ex2pQBO4P8vX8sOey5ua0Ftnhm3Qn/DpAPCZb63gQ4GOJUZcKi+jK316zT6lSFepvV3o8f1YgncJfBIBNi+rd4qvIjK40RA2oOM/qlInwk0uwzRM4r8U+ZR2GWGTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBkD461o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05165C4CED3;
-	Wed,  6 Nov 2024 12:14:41 +0000 (UTC)
+	 MIME-Version; b=Ed1Zg5XQsEDxM9GNIvDya0Srebqi7aCXI+//Ppqlt24ofRXXkOYJKeIE1l24vaieV2zOMUQeLarmw5BNEMwHOO7JJT/NL3Q/OQ+JAUhEU0NyvqkQsyvpReHDj3GUhNWaeUP7lQyLTga0ZYGXr2scwIL1LWBuMRU4JbK06KMy9A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ov8LNhIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E77DC4CECD;
+	Wed,  6 Nov 2024 12:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895282;
-	bh=dbX5iX+JM1AArK52g6ooT/WsWD1iAtepH4mo/3PsyQQ=;
+	s=korg; t=1730895971;
+	bh=M4UFU9bs4Oj4TFqB8/ULQ8uFTTwM7kQgcYwoYLWVb54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBkD461o8sdBwQ+lZLdJFuA8IuKK4xRoJbW5SIIdIpZOCnBNjAw49edjZZMP2hIWT
-	 hvSPulLrfmB0aS8yFQfOkte9URShp971Gxi05dyWpgjiAipIdJS6YoqsPfuopNwmVj
-	 62gGw/pJzPV7JQvry4vPvo9n3qEasDEFiJUQviAc=
+	b=Ov8LNhIxul2/qH/WjPsORjaYHWzrJgrzk2aBbLTgLpPDp4qHyTOkXxgLSmGMo/uI/
+	 83HTpuQon9m45ZyFk9fZNmGrbqXEUUfB7rPLRtqGzzKCY7kkqTB/Q4ZF2twzzDiZH4
+	 Y/UgUQ601SWxZga4UI4lWWi/UyhZP1bJ7XkDjNtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 164/350] ALSA: hdsp: Break infinite MIDI input flush loop
+Subject: [PATCH 6.11 039/245] netdevsim: Add trailing zero to terminate the string in nsim_nexthop_bucket_activity_write()
 Date: Wed,  6 Nov 2024 13:01:32 +0100
-Message-ID: <20241106120324.975455624@linuxfoundation.org>
+Message-ID: <20241106120320.187368810@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit c01f3815453e2d5f699ccd8c8c1f93a5b8669e59 ]
+[ Upstream commit 4ce1f56a1eaced2523329bef800d004e30f2f76c ]
 
-The current MIDI input flush on HDSP and HDSPM drivers relies on the
-hardware reporting the right value.  If the hardware doesn't give the
-proper value but returns -1, it may be stuck at an infinite loop.
+This was found by a static analyzer.
+We should not forget the trailing zero after copy_from_user()
+if we will further do some string operations, sscanf() in this
+case. Adding a trailing zero will ensure that the function
+performs properly.
 
-Add a counter and break if the loop is unexpectedly too long.
-
-Link: https://patch.msgid.link/20240808091513.31380-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c6385c0b67c5 ("netdevsim: Allow reporting activity on nexthop buckets")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241022171907.8606-1-zichenxie0106@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/rme9652/hdsp.c  | 6 ++++--
- sound/pci/rme9652/hdspm.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/netdevsim/fib.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/rme9652/hdsp.c b/sound/pci/rme9652/hdsp.c
-index a0797fc17d957..b2e38524b1fee 100644
---- a/sound/pci/rme9652/hdsp.c
-+++ b/sound/pci/rme9652/hdsp.c
-@@ -1322,8 +1322,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
+diff --git a/drivers/net/netdevsim/fib.c b/drivers/net/netdevsim/fib.c
+index a1f91ff8ec568..f108e363b716a 100644
+--- a/drivers/net/netdevsim/fib.c
++++ b/drivers/net/netdevsim/fib.c
+@@ -1377,10 +1377,12 @@ static ssize_t nsim_nexthop_bucket_activity_write(struct file *file,
  
- static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
- {
--	while (snd_hdsp_midi_input_available (hdsp, id))
--		snd_hdsp_midi_read_byte (hdsp, id);
-+	int count = 256;
+ 	if (pos != 0)
+ 		return -EINVAL;
+-	if (size > sizeof(buf))
++	if (size > sizeof(buf) - 1)
+ 		return -EINVAL;
+ 	if (copy_from_user(buf, user_buf, size))
+ 		return -EFAULT;
++	buf[size] = 0;
 +
-+	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
-+		snd_hdsp_midi_read_byte(hdsp, id);
- }
+ 	if (sscanf(buf, "%u %hu", &nhid, &bucket_index) != 2)
+ 		return -EINVAL;
  
- static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
-diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
-index 5dfddade1bae9..cc8313913d649 100644
---- a/sound/pci/rme9652/hdspm.c
-+++ b/sound/pci/rme9652/hdspm.c
-@@ -1846,8 +1846,10 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
- 
- static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
- {
--	while (snd_hdspm_midi_input_available (hdspm, id))
--		snd_hdspm_midi_read_byte (hdspm, id);
-+	int count = 256;
-+
-+	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
-+		snd_hdspm_midi_read_byte(hdspm, id);
- }
- 
- static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
 -- 
 2.43.0
 
