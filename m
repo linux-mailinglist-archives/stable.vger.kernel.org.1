@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5379BE7F0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3559BE917
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F35751C23474
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D9B1F21E28
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7A11DF73E;
-	Wed,  6 Nov 2024 12:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508F61DED48;
+	Wed,  6 Nov 2024 12:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zglAAW72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="On6Z1Lt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192381DF257;
-	Wed,  6 Nov 2024 12:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB07DA7F;
+	Wed,  6 Nov 2024 12:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895550; cv=none; b=qDc/WRV1sq0VTmgiYM+lENHoeslH1+1r21nFHXV+btRebdr/1QrnktKF62Yw0HPDAddA3Wu9CYX+BtgBZF4nITjJqR9cMQnadmCcXPaJrDMA8I2I4hYvTrMExIhTW8D+lvVrk6IEtACbVL3uqu2Uvp5gyC6Ayi09Wag9V9TJwy8=
+	t=1730896221; cv=none; b=JDLhXICp8188kXLIjn6RPDeEPPIDmD4KvLR9+RqDPRzpVbvH+6KP8ha5MqhV2lMCIsZIxhiDM1SjKMxhfsQwCVdsYwgvYjvIittxJva8xJccWf9VJpbRIUT1Of1exrohbHMgNo8K9hJGxNXiwDutr/xK/gP0cOR5KfVVAW445jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895550; c=relaxed/simple;
-	bh=Q/JkdyAEvY5UgoyzdhCg1lF3HEk8cTe+V47ZXWY2KPo=;
+	s=arc-20240116; t=1730896221; c=relaxed/simple;
+	bh=GzfIqZT6FxwehxYWE+gVuaHm/aCH504DBqhF2n6yD50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PLHSyQt5SGswwUrHZn913gP/GNOuba8YhuqzUQ1fpb/2lPVyIH7LUhVYO+T6gvvFx93dWPMu/6MBxxvjb4GzZki2l5iOb4rz4DPgj3mlsLQ/2Ir/lSMeiHex5ms1z5r9PsV51PkvpGCANakemgh7EQ0XfW3P6+jBjP6PcjOzOwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zglAAW72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50389C4CECD;
-	Wed,  6 Nov 2024 12:19:09 +0000 (UTC)
+	 MIME-Version; b=m9hqz1pVXoZW6bVeY1Z1sVvUcWFiDjaYLR4+ElgqZPXxWTDMjVA7reGoma5w0Hql16Zu3N9ZnmfgvZZ8B8EaTUYDVraZeRwTXAarD7H5HaFYuX4sOBDpb/pQQv2hOI2RK6/O7f6CDqIxYxCP6dnyku7s398M8eIu2md3lfGd2iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=On6Z1Lt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77471C4CECD;
+	Wed,  6 Nov 2024 12:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895549;
-	bh=Q/JkdyAEvY5UgoyzdhCg1lF3HEk8cTe+V47ZXWY2KPo=;
+	s=korg; t=1730896220;
+	bh=GzfIqZT6FxwehxYWE+gVuaHm/aCH504DBqhF2n6yD50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zglAAW726HHXUrup1nk7p/MUrvrTg1IvyHU1VJFm+/km7dSI1T0IrqPtH8NaDhw1F
-	 GxM/Pq6rSMKVT2en0fRF2sEB9n4fpr1Jknprzwx1WdxUE3vvyyIl580uKG4HSISeTV
-	 L1baalKXGukOgsq3urD1PWQu42oVBQFU/mxnNFFM=
+	b=On6Z1Lt4/r4K6VhZFUYW93nvutYaNO/rWBqdQPCUuJVFtFSiYFqqZGhvvEQiMBnDi
+	 hpSNeeCGsrrZ5j2IdTScI/5edU/2aR8eBQmFQFvbDtjUKa6/lSpq7l9dZ/4wkqJP6q
+	 sXTaL5Zo+OndMmh6jl5NOBJoeGtPGv1r5Fc6Jd8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alexandru Ardelean <aardelean@deviqon.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 256/350] clk: Provide new devm_clk helpers for prepared and enabled clocks
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 131/245] iio: gts-helper: Fix memory leaks in iio_gts_build_avail_scale_table()
 Date: Wed,  6 Nov 2024 13:03:04 +0100
-Message-ID: <20241106120327.234004142@linuxfoundation.org>
+Message-ID: <20241106120322.448084155@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,219 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 7ef9651e9792b08eb310c6beb202cbc947f43cab ]
+commit 691e79ffc42154a9c91dc3b7e96a307037b4be74 upstream.
 
-When a driver keeps a clock prepared (or enabled) during the whole
-lifetime of the driver, these helpers allow to simplify the drivers.
+modprobe iio-test-gts and rmmod it, then the following memory leak
+occurs:
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alexandru Ardelean <aardelean@deviqon.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20220520075737.758761-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: a6191a3d1811 ("gpio: aspeed: Use devm_clk api to manage clock source")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	unreferenced object 0xffffff80c810be00 (size 64):
+	  comm "kunit_try_catch", pid 1654, jiffies 4294913981
+	  hex dump (first 32 bytes):
+	    02 00 00 00 08 00 00 00 20 00 00 00 40 00 00 00  ........ ...@...
+	    80 00 00 00 00 02 00 00 00 04 00 00 00 08 00 00  ................
+	  backtrace (crc a63d875e):
+	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
+	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
+	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
+	    [<0000000071bb4b09>] 0xffffffdf052a62e0
+	    [<000000000315bc18>] 0xffffffdf052a6488
+	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000f505065d>] kthread+0x2e8/0x374
+	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cbfe9e70 (size 16):
+	  comm "kunit_try_catch", pid 1658, jiffies 4294914015
+	  hex dump (first 16 bytes):
+	    10 00 00 00 40 00 00 00 80 00 00 00 00 00 00 00  ....@...........
+	  backtrace (crc 857f0cb4):
+	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
+	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
+	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
+	    [<0000000071bb4b09>] 0xffffffdf052a62e0
+	    [<000000007d089d45>] 0xffffffdf052a6864
+	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000f505065d>] kthread+0x2e8/0x374
+	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
+	......
+
+It includes 5*5 times "size 64" memory leaks, which correspond to 5 times
+test_init_iio_gain_scale() calls with gts_test_gains size 10 (10*size(int))
+and gts_test_itimes size 5. It also includes 5*1 times "size 16"
+memory leak, which correspond to one time __test_init_iio_gain_scale()
+call with gts_test_gains_gain_low size 3 (3*size(int)) and gts_test_itimes
+size 5.
+
+The reason is that the per_time_gains[i] is not freed which is allocated in
+the "gts->num_itime" for loop in iio_gts_build_avail_scale_table().
+
+Cc: stable@vger.kernel.org
+Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20241011095512.3667549-1-ruanjinjie@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-devres.c |  27 ++++++++++
- include/linux/clk.h      | 109 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 136 insertions(+)
+ drivers/iio/industrialio-gts-helper.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
-index 3a45b4d0d502d..cec0e58d92d65 100644
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -71,12 +71,39 @@ struct clk *devm_clk_get(struct device *dev, const char *id)
- }
- EXPORT_SYMBOL(devm_clk_get);
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -307,6 +307,8 @@ static int iio_gts_build_avail_scale_tab
+ 	if (ret)
+ 		goto err_free_out;
  
-+struct clk *devm_clk_get_prepared(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get, clk_prepare, clk_unprepare);
-+}
-+EXPORT_SYMBOL_GPL(devm_clk_get_prepared);
-+
-+struct clk *devm_clk_get_enabled(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get,
-+			      clk_prepare_enable, clk_disable_unprepare);
-+}
-+EXPORT_SYMBOL_GPL(devm_clk_get_enabled);
-+
- struct clk *devm_clk_get_optional(struct device *dev, const char *id)
- {
- 	return __devm_clk_get(dev, id, clk_get_optional, NULL, NULL);
- }
- EXPORT_SYMBOL(devm_clk_get_optional);
++	for (i = 0; i < gts->num_itime; i++)
++		kfree(per_time_gains[i]);
+ 	kfree(per_time_gains);
+ 	gts->per_time_avail_scale_tables = per_time_scales;
  
-+struct clk *devm_clk_get_optional_prepared(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get_optional,
-+			      clk_prepare, clk_unprepare);
-+}
-+EXPORT_SYMBOL_GPL(devm_clk_get_optional_prepared);
-+
-+struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get_optional,
-+			      clk_prepare_enable, clk_disable_unprepare);
-+}
-+EXPORT_SYMBOL_GPL(devm_clk_get_optional_enabled);
-+
- struct clk_bulk_devres {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 55b08adaaa3c1..fb4c86360e5ad 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -388,6 +388,47 @@ int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
-  */
- struct clk *devm_clk_get(struct device *dev, const char *id);
- 
-+/**
-+ * devm_clk_get_prepared - devm_clk_get() + clk_prepare()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Context: May sleep.
-+ *
-+ * Return: a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  (IOW, @id may be identical strings, but
-+ * clk_get may return different clock producers depending on @dev.)
-+ *
-+ * The returned clk (if valid) is prepared. Drivers must however assume
-+ * that the clock is not enabled.
-+ *
-+ * The clock will automatically be unprepared and freed when the device
-+ * is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_prepared(struct device *dev, const char *id);
-+
-+/**
-+ * devm_clk_get_enabled - devm_clk_get() + clk_prepare_enable()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Context: May sleep.
-+ *
-+ * Return: a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  (IOW, @id may be identical strings, but
-+ * clk_get may return different clock producers depending on @dev.)
-+ *
-+ * The returned clk (if valid) is prepared and enabled.
-+ *
-+ * The clock will automatically be disabled, unprepared and freed
-+ * when the device is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_enabled(struct device *dev, const char *id);
-+
- /**
-  * devm_clk_get_optional - lookup and obtain a managed reference to an optional
-  *			   clock producer.
-@@ -399,6 +440,50 @@ struct clk *devm_clk_get(struct device *dev, const char *id);
-  */
- struct clk *devm_clk_get_optional(struct device *dev, const char *id);
- 
-+/**
-+ * devm_clk_get_optional_prepared - devm_clk_get_optional() + clk_prepare()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Context: May sleep.
-+ *
-+ * Return: a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  If no such clk is found, it returns NULL
-+ * which serves as a dummy clk.  That's the only difference compared
-+ * to devm_clk_get_prepared().
-+ *
-+ * The returned clk (if valid) is prepared. Drivers must however
-+ * assume that the clock is not enabled.
-+ *
-+ * The clock will automatically be unprepared and freed when the
-+ * device is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_optional_prepared(struct device *dev, const char *id);
-+
-+/**
-+ * devm_clk_get_optional_enabled - devm_clk_get_optional() +
-+ *                                 clk_prepare_enable()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Context: May sleep.
-+ *
-+ * Return: a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  If no such clk is found, it returns NULL
-+ * which serves as a dummy clk.  That's the only difference compared
-+ * to devm_clk_get_enabled().
-+ *
-+ * The returned clk (if valid) is prepared and enabled.
-+ *
-+ * The clock will automatically be disabled, unprepared and freed
-+ * when the device is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
-+
- /**
-  * devm_get_clk_from_child - lookup and obtain a managed reference to a
-  *			     clock producer from child node.
-@@ -666,12 +751,36 @@ static inline struct clk *devm_clk_get(struct device *dev, const char *id)
- 	return NULL;
- }
- 
-+static inline struct clk *devm_clk_get_prepared(struct device *dev,
-+						const char *id)
-+{
-+	return NULL;
-+}
-+
-+static inline struct clk *devm_clk_get_enabled(struct device *dev,
-+					       const char *id)
-+{
-+	return NULL;
-+}
-+
- static inline struct clk *devm_clk_get_optional(struct device *dev,
- 						const char *id)
- {
- 	return NULL;
- }
- 
-+static inline struct clk *devm_clk_get_optional_prepared(struct device *dev,
-+							 const char *id)
-+{
-+	return NULL;
-+}
-+
-+static inline struct clk *devm_clk_get_optional_enabled(struct device *dev,
-+							const char *id)
-+{
-+	return NULL;
-+}
-+
- static inline int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
- 						 struct clk_bulk_data *clks)
- {
--- 
-2.43.0
-
 
 
 
