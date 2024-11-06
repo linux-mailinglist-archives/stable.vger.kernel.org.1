@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-90270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA939BE777
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E644F9BE89B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EBB51C21BB8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C86AB22777
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B3E1DF24A;
-	Wed,  6 Nov 2024 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E031DF98D;
+	Wed,  6 Nov 2024 12:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT35f0K2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/7ukWxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD55D1D416E;
-	Wed,  6 Nov 2024 12:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4733D1DED58;
+	Wed,  6 Nov 2024 12:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895276; cv=none; b=V59atm6rh+klvm9UozUhhfudCzz+cmub8SLCJBE1Bgje5QdD1AuUbHca+YK3NZSQT08FkWm9Buc201Y0EZezZFkacxJyIg4RXTwu8q/OtfiRyFNwPGPJj7w2ZAB7ZehjH6OH5EdcZeT1AwpYw/EiwZ850eX4/DzcAg5ciQaVFsQ=
+	t=1730895948; cv=none; b=pCQZ7Rb8idtIA6/Az0fztnn0YA8dmOVpoNI/qWAdrbFllLbNLIEMZXndDqPv9tYgjv/+AdXGny9Fs4eLy7YitlD6iWj4pBO56ZvrMIhavB9XQ3SB4PKiK95crQZNTt6GtMgV8o8mPgjuT1zO84kUnMqdNIYS2xMzD9P/WkIoYPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895276; c=relaxed/simple;
-	bh=rXpVa3NE21MDyWLhWo2aI7Zo0fUsoA2gCbFoWT/Aww0=;
+	s=arc-20240116; t=1730895948; c=relaxed/simple;
+	bh=rL3B65hMjXoNjIxWBeVW9blK99hqBJ7hVHKGHCbAfLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUIYhvyWqhokQQ+/w7bKVWIuY6PdnjxlgaSls1qUylIN/rcHv14b17VuO76OMqAhlTrl42xDIUpG65TR3iA9CqY3YOEOQcDI01U5UBJmlJlOroMTjipcy0GJTZJzJJ2C+i8QxC7r9tMekNgl+s9Bwfc87cZ5/VTQQv4r7ugeNpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT35f0K2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31850C4CECD;
-	Wed,  6 Nov 2024 12:14:36 +0000 (UTC)
+	 MIME-Version; b=Cjn6WI4aVMG+dyGWOBT8waJNJAbmqldkVMAPP8IPWMJ6ynDoyJhPV2lfkpRVEADKlMvDXVtUwUu143tBYcF4Rc9qE5cxPT2sevlvw3bP1eKs2mjGv4f9PS7Ntc4d17tsfHAuUxGgkyKwsaDNT/iBQi7tLyh7B8Khs122ypiLd0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/7ukWxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84675C4CECD;
+	Wed,  6 Nov 2024 12:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895276;
-	bh=rXpVa3NE21MDyWLhWo2aI7Zo0fUsoA2gCbFoWT/Aww0=;
+	s=korg; t=1730895947;
+	bh=rL3B65hMjXoNjIxWBeVW9blK99hqBJ7hVHKGHCbAfLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sT35f0K2NFonnrzEyBrbCJ68AqxjUUVcuDcnpwzpR0vRO7c0gnXZkm4SO5urvxm1a
-	 8IXTVcEvUu1WFr+HYrgAelyiR/EZ8CYlc2Og4Ai72wMADEeyXUFMHKnyrPk/Iy1VBg
-	 dh6KO+FkokjxBs25UAk9qb53WgskhwwWTUetIj6Y=
+	b=F/7ukWxqdNSvK6GwqXMCfxJ7AoRxymua5wSYDztGbqNnJboaUkt3abJtL6cH4pvzw
+	 4AwR05zH9YL3Ug1lpHDIZk/EGfSPkzjtP/7BM08vKV5h5pTY1IlaTdKRWw9o1A/lVV
+	 V6zeeprOlkFEy1siTc8sD75Hwkf4Jg84RKp0zdsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 162/350] signal: Replace BUG_ON()s
+Subject: [PATCH 6.11 037/245] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
 Date: Wed,  6 Nov 2024 13:01:30 +0100
-Message-ID: <20241106120324.920858735@linuxfoundation.org>
+Message-ID: <20241106120320.137447516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 7f8af7bac5380f2d95a63a6f19964e22437166e1 ]
+[ Upstream commit 2e95c4384438adeaa772caa560244b1a2efef816 ]
 
-These really can be handled gracefully without killing the machine.
+In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
+to be either root or ingress. This assumption is bogus since it's valid
+to create egress qdiscs with major handle ffff:
+Budimir Markovic found that for qdiscs like DRR that maintain an active
+class list, it will cause a UAF with a dangling class pointer.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+In 066a3b5b2346, the concern was to avoid iterating over the ingress
+qdisc since its parent is itself. The proper fix is to stop when parent
+TC_H_ROOT is reached because the only way to retrieve ingress is when a
+hierarchy which does not contain a ffff: major handle call into
+qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
+
+In the scenario where major ffff: is an egress qdisc in any of the tree
+levels, the updates will also propagate to TC_H_ROOT, which then the
+iteration must stop.
+
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+Link: https://patch.msgid.link/20241024165547.418570-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/signal.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index c79b87ac10416..356bdf5c45e61 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1739,10 +1739,11 @@ struct sigqueue *sigqueue_alloc(void)
- 
- void sigqueue_free(struct sigqueue *q)
- {
--	unsigned long flags;
- 	spinlock_t *lock = &current->sighand->siglock;
-+	unsigned long flags;
- 
--	BUG_ON(!(q->flags & SIGQUEUE_PREALLOC));
-+	if (WARN_ON_ONCE(!(q->flags & SIGQUEUE_PREALLOC)))
-+		return;
- 	/*
- 	 * We must hold ->siglock while testing q->list
- 	 * to serialize with collect_signal() or with
-@@ -1770,7 +1771,10 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
- 	unsigned long flags;
- 	int ret, result;
- 
--	BUG_ON(!(q->flags & SIGQUEUE_PREALLOC));
-+	if (WARN_ON_ONCE(!(q->flags & SIGQUEUE_PREALLOC)))
-+		return 0;
-+	if (WARN_ON_ONCE(q->info.si_code != SI_TIMER))
-+		return 0;
- 
- 	ret = -1;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 2eefa47838799..a1d27bc039a36 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -791,7 +791,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
+ 	drops = max_t(int, n, 0);
  	rcu_read_lock();
-@@ -1789,7 +1793,6 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
- 		 * If an SI_TIMER entry is already queue just increment
- 		 * the overrun count.
- 		 */
--		BUG_ON(q->info.si_code != SI_TIMER);
- 		q->info.si_overrun++;
- 		result = TRACE_SIGNAL_ALREADY_PENDING;
- 		goto out;
+ 	while ((parentid = sch->parent)) {
+-		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
++		if (parentid == TC_H_ROOT)
+ 			break;
+ 
+ 		if (sch->flags & TCQ_F_NOPARENT)
 -- 
 2.43.0
 
