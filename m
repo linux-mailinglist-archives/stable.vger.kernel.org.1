@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245689BEB69
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CEDB9BE878
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C91CB210F5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9354BB2491D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9366D1EABB4;
-	Wed,  6 Nov 2024 12:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FE21E0491;
+	Wed,  6 Nov 2024 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qB4IspR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Azrmhwvo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4C21EABC7;
-	Wed,  6 Nov 2024 12:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91831DFD84;
+	Wed,  6 Nov 2024 12:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897050; cv=none; b=NJ3P72EEtKJA1ufjeAzH9fo73fAAy3V6iS0DJq/baMESGqsZCP39qRgFivQb4Cqs71sLnhXaNrypWY3SrTmdJENgYCj0BPIp93KZUAVD9Okt5zmgjFqSNJF+Nfs+V4r1E9OuvqHlGt3+4RYYCwx7lrApJyQu2UDJ0vVoiC2qxJ8=
+	t=1730895856; cv=none; b=TeJlBxtjN+RC2izlKWqrUNgbkF6LZMSly3c77gF/tPsgXYpI6eAm8WbDpWKIewRa775sNgSS0taIifdyHdEaHZbf4q2SapgR/ZeSn8X+KerTxp8yTzyEJH5FLwcUgbhCHpxwkrndNLlA9ssZpo+KEu+x3hMeJya6yJ+FxmuMWaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897050; c=relaxed/simple;
-	bh=JEJ3xWldJFg4aFVRXjkQHIVjIn08yvN36UZvltAWH2w=;
+	s=arc-20240116; t=1730895856; c=relaxed/simple;
+	bh=l/dwoTyEOKCG+1nReCHGo7vz71m9aC6+lii934tBczU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVV/1PDY3yMb3EDMCVGiYNUU+ToD+aKe0SUylro/0Mpi7IosoV0W/j89kLlwCk5h+aWuDLzcGWFO95Cjb6hh2kMuHiIURmXHy4xhFVLEkIZTTAkr9vaGJDWAh1hxTedU6rrAWCVIbpXwW/p3+PI/fm5r8nX0geqDb8q7WvLg3DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qB4IspR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F6C4CED5;
-	Wed,  6 Nov 2024 12:44:09 +0000 (UTC)
+	 MIME-Version; b=DUxS5GYSidkomRtm5pCrb4LrP/TIKVJi0437pGiEDUsWUJw2nLu/ZT624oCbkHFk1Y6tdWrFRPYaAxo5bzObwZdmiw5FthzVzlo97Zzc3IfGoKRl5bNRWM8+/0m+R4WbQ2kbpEaAYM6felJjPFpIG1DikqwW76xnCWVNI0gGBOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Azrmhwvo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50341C4CECD;
+	Wed,  6 Nov 2024 12:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897050;
-	bh=JEJ3xWldJFg4aFVRXjkQHIVjIn08yvN36UZvltAWH2w=;
+	s=korg; t=1730895856;
+	bh=l/dwoTyEOKCG+1nReCHGo7vz71m9aC6+lii934tBczU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qB4IspR1xLLXKmXOQtQtzqqYFGW9YIYmxsrC01Ha5mXWqqUQj+Ol74RlFhjxXQSEJ
-	 Axs9uJX7gUEu95IgPs+YBJqUgyIHwoekhF9N8SBuCe6tWlJO3oubvw+vAphAdOGXdu
-	 d/kXu+d9puwL/GTs516ykolgBs7O2pGsa6cbTUhY=
+	b=AzrmhwvoYk6g66YNBK+M/ArISNbLuZLFvBPyb/5RsD/j+Hm5qDGCO9YMKwkOMmvt2
+	 r074MlT47YhZuJQGHPBHDSumwiBXcI4f+iHZR5v6+VhRebhHxD4N68EyRHNjgbFJ8z
+	 LjM7pQA1YLQCpTIQRYnfqf5+U7G0GPubBdTt/1pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Yu Chen <chenyu56@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Felipe Balbi <balbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/126] afs: Fix missing subdir edit when renamed between parent dirs
-Date: Wed,  6 Nov 2024 13:04:11 +0100
-Message-ID: <20241106120307.454136988@linuxfoundation.org>
+Subject: [PATCH 4.19 324/350] usb: dwc3: Add splitdisable quirk for Hisilicon Kirin Soc
+Date: Wed,  6 Nov 2024 13:04:12 +0100
+Message-ID: <20241106120328.742650434@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,258 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yu Chen <chenyu56@huawei.com>
 
-[ Upstream commit 247d65fb122ad560be1c8c4d87d7374fb28b0770 ]
+[ Upstream commit f580170f135af14e287560d94045624d4242d712 ]
 
-When rename moves an AFS subdirectory between parent directories, the
-subdir also needs a bit of editing: the ".." entry needs updating to point
-to the new parent (though I don't make use of the info) and the DV needs
-incrementing by 1 to reflect the change of content.  The server also sends
-a callback break notification on the subdirectory if we have one, but we
-can take care of recovering the promise next time we access the subdir.
+SPLIT_BOUNDARY_DISABLE should be set for DesignWare USB3 DRD Core
+of Hisilicon Kirin Soc when dwc3 core act as host.
 
-This can be triggered by something like:
+[mchehab: dropped a dev_dbg() as only traces are now allowwed on this driver]
 
-    mount -t afs %example.com:xfstest.test20 /xfstest.test/
-    mkdir /xfstest.test/{aaa,bbb,aaa/ccc}
-    touch /xfstest.test/bbb/ccc/d
-    mv /xfstest.test/{aaa/ccc,bbb/ccc}
-    touch /xfstest.test/bbb/ccc/e
-
-When the pathwalk for the second touch hits "ccc", kafs spots that the DV
-is incorrect and downloads it again (so the fix is not critical).
-
-Fix this, if the rename target is a directory and the old and new
-parents are different, by:
-
- (1) Incrementing the DV number of the target locally.
-
- (2) Editing the ".." entry in the target to refer to its new parent's
-     vnode ID and uniquifier.
-
-Link: https://lore.kernel.org/r/3340431.1729680010@warthog.procyon.org.uk
-Fixes: 63a4681ff39c ("afs: Locally edit directory data for mkdir/create/unlink/...")
-cc: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Yu Chen <chenyu56@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Felipe Balbi <balbi@kernel.org>
+Stable-dep-of: 0d410e8913f5 ("usb: dwc3: core: Stop processing of pending events if controller is halted")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c               | 25 +++++++++++
- fs/afs/dir_edit.c          | 91 +++++++++++++++++++++++++++++++++++++-
- fs/afs/internal.h          |  2 +
- include/trace/events/afs.h |  7 ++-
- 4 files changed, 122 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/core.c | 25 +++++++++++++++++++++++++
+ drivers/usb/dwc3/core.h |  7 +++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 07dc4ec73520c..38d5260c4614f 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -12,6 +12,7 @@
- #include <linux/swap.h>
- #include <linux/ctype.h>
- #include <linux/sched.h>
-+#include <linux/iversion.h>
- #include <linux/task_io_accounting_ops.h>
- #include "internal.h"
- #include "afs_fs.h"
-@@ -1808,6 +1809,8 @@ static int afs_symlink(struct user_namespace *mnt_userns, struct inode *dir,
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 259eeb2f6ad53..f50b8bf22356b 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -116,6 +116,7 @@ static void __dwc3_set_mode(struct work_struct *work)
+ 	struct dwc3 *dwc = work_to_dwc(work);
+ 	unsigned long flags;
+ 	int ret;
++	u32 reg;
  
- static void afs_rename_success(struct afs_operation *op)
- {
-+	struct afs_vnode *vnode = AFS_FS_I(d_inode(op->dentry));
-+
- 	_enter("op=%08x", op->debug_id);
+ 	if (dwc->dr_mode != USB_DR_MODE_OTG)
+ 		return;
+@@ -167,6 +168,11 @@ static void __dwc3_set_mode(struct work_struct *work)
+ 				otg_set_vbus(dwc->usb2_phy->otg, true);
+ 			phy_set_mode(dwc->usb2_generic_phy, PHY_MODE_USB_HOST);
+ 			phy_set_mode(dwc->usb3_generic_phy, PHY_MODE_USB_HOST);
++			if (dwc->dis_split_quirk) {
++				reg = dwc3_readl(dwc->regs, DWC3_GUCTL3);
++				reg |= DWC3_GUCTL3_SPLITDISABLE;
++				dwc3_writel(dwc->regs, DWC3_GUCTL3, reg);
++			}
+ 		}
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+@@ -1314,6 +1320,9 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 	dwc->dis_metastability_quirk = device_property_read_bool(dev,
+ 				"snps,dis_metastability_quirk");
  
- 	op->ctime = op->file[0].scb.status.mtime_client;
-@@ -1817,6 +1820,22 @@ static void afs_rename_success(struct afs_operation *op)
- 		op->ctime = op->file[1].scb.status.mtime_client;
- 		afs_vnode_commit_status(op, &op->file[1]);
- 	}
++	dwc->dis_split_quirk = device_property_read_bool(dev,
++				"snps,dis-split-quirk");
 +
-+	/* If we're moving a subdir between dirs, we need to update
-+	 * its DV counter too as the ".." will be altered.
-+	 */
-+	if (S_ISDIR(vnode->netfs.inode.i_mode) &&
-+	    op->file[0].vnode != op->file[1].vnode) {
-+		u64 new_dv;
-+
-+		write_seqlock(&vnode->cb_lock);
-+
-+		new_dv = vnode->status.data_version + 1;
-+		vnode->status.data_version = new_dv;
-+		inode_set_iversion_raw(&vnode->netfs.inode, new_dv);
-+
-+		write_sequnlock(&vnode->cb_lock);
-+	}
- }
+ 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
+ 	dwc->tx_de_emphasis = tx_de_emphasis;
  
- static void afs_rename_edit_dir(struct afs_operation *op)
-@@ -1858,6 +1877,12 @@ static void afs_rename_edit_dir(struct afs_operation *op)
- 				 &vnode->fid, afs_edit_dir_for_rename_2);
- 	}
+@@ -1850,10 +1859,26 @@ static int dwc3_resume(struct device *dev)
  
-+	if (S_ISDIR(vnode->netfs.inode.i_mode) &&
-+	    new_dvnode != orig_dvnode &&
-+	    test_bit(AFS_VNODE_DIR_VALID, &vnode->flags))
-+		afs_edit_dir_update_dotdot(vnode, new_dvnode,
-+					   afs_edit_dir_for_rename_sub);
-+
- 	new_inode = d_inode(new_dentry);
- 	if (new_inode) {
- 		spin_lock(&new_inode->i_lock);
-diff --git a/fs/afs/dir_edit.c b/fs/afs/dir_edit.c
-index 0ab7752d1b758..e22682c577302 100644
---- a/fs/afs/dir_edit.c
-+++ b/fs/afs/dir_edit.c
-@@ -126,10 +126,10 @@ static struct folio *afs_dir_get_folio(struct afs_vnode *vnode, pgoff_t index)
- /*
-  * Scan a directory block looking for a dirent of the right name.
-  */
--static int afs_dir_scan_block(union afs_xdr_dir_block *block, struct qstr *name,
-+static int afs_dir_scan_block(const union afs_xdr_dir_block *block, const struct qstr *name,
- 			      unsigned int blocknum)
- {
--	union afs_xdr_dirent *de;
-+	const union afs_xdr_dirent *de;
- 	u64 bitmap;
- 	int d, len, n;
- 
-@@ -491,3 +491,90 @@ void afs_edit_dir_remove(struct afs_vnode *vnode,
- 	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
- 	goto out_unmap;
+ 	return 0;
  }
 +
-+/*
-+ * Edit a subdirectory that has been moved between directories to update the
-+ * ".." entry.
-+ */
-+void afs_edit_dir_update_dotdot(struct afs_vnode *vnode, struct afs_vnode *new_dvnode,
-+				enum afs_edit_dir_reason why)
++static void dwc3_complete(struct device *dev)
 +{
-+	union afs_xdr_dir_block *block;
-+	union afs_xdr_dirent *de;
-+	struct folio *folio;
-+	unsigned int nr_blocks, b;
-+	pgoff_t index;
-+	loff_t i_size;
-+	int slot;
++	struct dwc3	*dwc = dev_get_drvdata(dev);
++	u32		reg;
 +
-+	_enter("");
-+
-+	i_size = i_size_read(&vnode->netfs.inode);
-+	if (i_size < AFS_DIR_BLOCK_SIZE) {
-+		clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
-+		return;
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST &&
++			dwc->dis_split_quirk) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUCTL3);
++		reg |= DWC3_GUCTL3_SPLITDISABLE;
++		dwc3_writel(dwc->regs, DWC3_GUCTL3, reg);
 +	}
-+	nr_blocks = i_size / AFS_DIR_BLOCK_SIZE;
-+
-+	/* Find a block that has sufficient slots available.  Each folio
-+	 * contains two or more directory blocks.
-+	 */
-+	for (b = 0; b < nr_blocks; b++) {
-+		index = b / AFS_DIR_BLOCKS_PER_PAGE;
-+		folio = afs_dir_get_folio(vnode, index);
-+		if (!folio)
-+			goto error;
-+
-+		block = kmap_local_folio(folio, b * AFS_DIR_BLOCK_SIZE - folio_pos(folio));
-+
-+		/* Abandon the edit if we got a callback break. */
-+		if (!test_bit(AFS_VNODE_DIR_VALID, &vnode->flags))
-+			goto invalidated;
-+
-+		slot = afs_dir_scan_block(block, &dotdot_name, b);
-+		if (slot >= 0)
-+			goto found_dirent;
-+
-+		kunmap_local(block);
-+		folio_unlock(folio);
-+		folio_put(folio);
-+	}
-+
-+	/* Didn't find the dirent to clobber.  Download the directory again. */
-+	trace_afs_edit_dir(vnode, why, afs_edit_dir_update_nodd,
-+			   0, 0, 0, 0, "..");
-+	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
-+	goto out;
-+
-+found_dirent:
-+	de = &block->dirents[slot];
-+	de->u.vnode  = htonl(new_dvnode->fid.vnode);
-+	de->u.unique = htonl(new_dvnode->fid.unique);
-+
-+	trace_afs_edit_dir(vnode, why, afs_edit_dir_update_dd, b, slot,
-+			   ntohl(de->u.vnode), ntohl(de->u.unique), "..");
-+
-+	kunmap_local(block);
-+	folio_unlock(folio);
-+	folio_put(folio);
-+	inode_set_iversion_raw(&vnode->netfs.inode, vnode->status.data_version);
-+
-+out:
-+	_leave("");
-+	return;
-+
-+invalidated:
-+	kunmap_local(block);
-+	folio_unlock(folio);
-+	folio_put(folio);
-+	trace_afs_edit_dir(vnode, why, afs_edit_dir_update_inval,
-+			   0, 0, 0, 0, "..");
-+	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
-+	goto out;
-+
-+error:
-+	trace_afs_edit_dir(vnode, why, afs_edit_dir_update_error,
-+			   0, 0, 0, 0, "..");
-+	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
-+	goto out;
 +}
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index a25fdc3e52310..097d5a5f07b1a 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -1043,6 +1043,8 @@ extern void afs_check_for_remote_deletion(struct afs_operation *);
- extern void afs_edit_dir_add(struct afs_vnode *, struct qstr *, struct afs_fid *,
- 			     enum afs_edit_dir_reason);
- extern void afs_edit_dir_remove(struct afs_vnode *, struct qstr *, enum afs_edit_dir_reason);
-+void afs_edit_dir_update_dotdot(struct afs_vnode *vnode, struct afs_vnode *new_dvnode,
-+				enum afs_edit_dir_reason why);
++#else
++#define dwc3_complete NULL
+ #endif /* CONFIG_PM_SLEEP */
  
- /*
-  * dir_silly.c
-diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
-index 54d10c69e55ec..d1ee4272d1cb8 100644
---- a/include/trace/events/afs.h
-+++ b/include/trace/events/afs.h
-@@ -295,7 +295,11 @@ enum yfs_cm_operation {
- 	EM(afs_edit_dir_delete,			"delete") \
- 	EM(afs_edit_dir_delete_error,		"d_err ") \
- 	EM(afs_edit_dir_delete_inval,		"d_invl") \
--	E_(afs_edit_dir_delete_noent,		"d_nent")
-+	EM(afs_edit_dir_delete_noent,		"d_nent") \
-+	EM(afs_edit_dir_update_dd,		"u_ddot") \
-+	EM(afs_edit_dir_update_error,		"u_fail") \
-+	EM(afs_edit_dir_update_inval,		"u_invl") \
-+	E_(afs_edit_dir_update_nodd,		"u_nodd")
+ static const struct dev_pm_ops dwc3_dev_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
++	.complete = dwc3_complete,
+ 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
+ 			dwc3_runtime_idle)
+ };
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index a1d65e36a4d41..7f8804e9e74c3 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -135,6 +135,7 @@
+ #define DWC3_GEVNTCOUNT(n)	(0xc40c + ((n) * 0x10))
  
- #define afs_edit_dir_reasons				  \
- 	EM(afs_edit_dir_for_create,		"Create") \
-@@ -304,6 +308,7 @@ enum yfs_cm_operation {
- 	EM(afs_edit_dir_for_rename_0,		"Renam0") \
- 	EM(afs_edit_dir_for_rename_1,		"Renam1") \
- 	EM(afs_edit_dir_for_rename_2,		"Renam2") \
-+	EM(afs_edit_dir_for_rename_sub,		"RnmSub") \
- 	EM(afs_edit_dir_for_rmdir,		"RmDir ") \
- 	EM(afs_edit_dir_for_silly_0,		"S_Ren0") \
- 	EM(afs_edit_dir_for_silly_1,		"S_Ren1") \
+ #define DWC3_GHWPARAMS8		0xc600
++#define DWC3_GUCTL3		0xc60c
+ #define DWC3_GFLADJ		0xc630
+ 
+ /* Device Registers */
+@@ -362,6 +363,9 @@
+ /* Global User Control Register 2 */
+ #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
+ 
++/* Global User Control Register 3 */
++#define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
++
+ /* Device Configuration Register */
+ #define DWC3_DCFG_DEVADDR(addr)	((addr) << 3)
+ #define DWC3_DCFG_DEVADDR_MASK	DWC3_DCFG_DEVADDR(0x7f)
+@@ -1004,6 +1008,7 @@ struct dwc3_scratchpad_array {
+  * 	2	- No de-emphasis
+  * 	3	- Reserved
+  * @dis_metastability_quirk: set to disable metastability quirk.
++ * @dis_split_quirk: set to disable split boundary.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+  *                 increments or 0 to disable.
+  */
+@@ -1175,6 +1180,8 @@ struct dwc3 {
+ 
+ 	unsigned		dis_metastability_quirk:1;
+ 
++	unsigned		dis_split_quirk:1;
++
+ 	u16			imod_interval;
+ };
+ 
 -- 
 2.43.0
 
