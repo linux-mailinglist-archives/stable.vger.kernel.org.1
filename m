@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-91075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2639BEC50
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611F29BEC5F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D42B8285B96
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 932AF1C23AA6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA461FB89B;
-	Wed,  6 Nov 2024 12:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018071FBCB9;
+	Wed,  6 Nov 2024 12:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POMvG06a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsmYxS61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465D21F4733;
-	Wed,  6 Nov 2024 12:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B225A1FBCAE;
+	Wed,  6 Nov 2024 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897667; cv=none; b=dJ+I48JaIOU9CEiYJc2bsGSCMMAdy+7rtWBN7KxKBbPvsLEgtL6+IFeRz3C8+t1TNW79jKUxAqifykYgGuQmC0NOePnqqY5f20aYMaoUWIzn5PBQIqroxokJKDD0wbzF4QA/VhkhkuHvjZXZohNHjUcj21WucT3vbQ8k0MM5Ebs=
+	t=1730897699; cv=none; b=atDalmZGKGbLETzsOtD9MWTApu6LZoKAgQDh+0kypYMmy15BHVJvXwOFEc7cWdj3JKJc4rbGpUg4nW0wI0+mZh6BhCjsRaz6xZu9WFB46Go766eiG4LSfkERK+Kd3TtfoI3W9V26EWWtuwECo5ZHTVJW7Jvt/t+ZyVXZW4E3ZdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897667; c=relaxed/simple;
-	bh=Tqheekx0SFn4/eMGzOJoesEQg3IFI/WsS4Vsr+gkyI4=;
+	s=arc-20240116; t=1730897699; c=relaxed/simple;
+	bh=3cm+Va+MyqIZyZdhfuUf4bH066YPiaiNSI4czWicQWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCF9BHvolhTk9s2HpAAU+k3XxKD+8/08dDzzAKrPsuNdTHioIhf+0dZlWYSuz2ZWFUyYmQjj1lmUjrSVkp7qMg4hUbtbTR1pqzJxYSow5idH/lS7FD6jP2TDK3ldur53oZUdy1e/q88ROzTCF5nNjkR4qcu5BtbZuNYo6rzWtu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POMvG06a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1604C4CED4;
-	Wed,  6 Nov 2024 12:54:26 +0000 (UTC)
+	 MIME-Version; b=RHAybjrhHqIs9U9YBMuHYSEBPvPADwxI9EeQCxYAXxf1WcxkBcWG0Mm08LB2ltB3d1WaQCshDxXjgcuXBlL3jVfKi/UjF/BqYBav6GXsMkYuNmEnyVEkfeExgfhPZUOmFImCjSEa3qK9VdqdZN5b5XFrSZyXJouNObGlsZpFMp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsmYxS61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B15C4CECD;
+	Wed,  6 Nov 2024 12:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897667;
-	bh=Tqheekx0SFn4/eMGzOJoesEQg3IFI/WsS4Vsr+gkyI4=;
+	s=korg; t=1730897699;
+	bh=3cm+Va+MyqIZyZdhfuUf4bH066YPiaiNSI4czWicQWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POMvG06aa51iExHCPk3jVUm20udYfIvgyhP/k6NcbO/yyLq2c5+rEF8mM2C5LEHKP
-	 ITp1r/KmncTcwNeLusYsOf4H2BkpRLMf/pKOLdENdHRqTzS+eRUXfa/U8gWSS31xU7
-	 ovrBViglk34efPcHNx1WX5VMc9CBk4MnmTEqV64I=
+	b=WsmYxS61s8xQSyyZx6eNX/cKLjYYbZ/oEUsnOfQYSQ+reHRPwaPPom4fT3lBGyEyd
+	 U0x97Yo8sarkEeezQY4ivEl55+4ukybpUrLOvVe0NBWlSF2Ln/bfIjuSfty+w1kSox
+	 sCEZFS/Wzc+KkYKB32Q1qv8SoRKl/b8aDq1bbrwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Oliver Graute <oliver.graute@kococonnector.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/151] riscv: vdso: Prevent the compiler from inserting calls to memset()
-Date: Wed,  6 Nov 2024 13:05:01 +0100
-Message-ID: <20241106120311.977949405@linuxfoundation.org>
+Subject: [PATCH 6.6 114/151] Input: edt-ft5x06 - fix regmap leak when probe fails
+Date: Wed,  6 Nov 2024 13:05:02 +0100
+Message-ID: <20241106120312.005175424@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
 References: <20241106120308.841299741@linuxfoundation.org>
@@ -67,38 +67,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit bf40167d54d55d4b54d0103713d86a8638fb9290 ]
+[ Upstream commit bffdf9d7e51a7be8eeaac2ccf9e54a5fde01ff65 ]
 
-The compiler is smart enough to insert a call to memset() in
-riscv_vdso_get_cpus(), which generates a dynamic relocation.
+The driver neglects to free the instance of I2C regmap constructed at
+the beginning of the edt_ft5x06_ts_probe() method when probe fails.
+Additionally edt_ft5x06_ts_remove() is freeing the regmap too early,
+before the rest of the device resources that are managed by devm are
+released.
 
-So prevent this by using -fno-builtin option.
+Fix this by installing a custom devm action that will ensure that the
+regmap is released at the right time during normal teardown as well as
+in case of probe failure.
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Note that devm_regmap_init_i2c() could not be used because the driver
+may replace the original regmap with a regmap specific for M06 devices
+in the middle of the probe, and using devm_regmap_init_i2c() would
+result in releasing the M06 regmap too early.
+
+Reported-by: Li Zetao <lizetao1@huawei.com>
+Fixes: 9dfd9708ffba ("Input: edt-ft5x06 - convert to use regmap API")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Oliver Graute <oliver.graute@kococonnector.com>
+Link: https://lore.kernel.org/r/ZxL6rIlVlgsAu-Jv@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/touchscreen/edt-ft5x06.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index e8aa7c3800075..d58f32a2035b1 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
+diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
+index 457d53337fbb3..a365577a19945 100644
+--- a/drivers/input/touchscreen/edt-ft5x06.c
++++ b/drivers/input/touchscreen/edt-ft5x06.c
+@@ -1124,6 +1124,14 @@ static void edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
+ 	}
+ }
  
- ccflags-y := -fno-stack-protector
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -fno-builtin
++static void edt_ft5x06_exit_regmap(void *arg)
++{
++	struct edt_ft5x06_ts_data *data = arg;
++
++	if (!IS_ERR_OR_NULL(data->regmap))
++		regmap_exit(data->regmap);
++}
++
+ static void edt_ft5x06_disable_regulators(void *arg)
+ {
+ 	struct edt_ft5x06_ts_data *data = arg;
+@@ -1157,6 +1165,16 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
+ 		return PTR_ERR(tsdata->regmap);
+ 	}
  
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
++	/*
++	 * We are not using devm_regmap_init_i2c() and instead install a
++	 * custom action because we may replace regmap with M06-specific one
++	 * and we need to make sure that it will not be released too early.
++	 */
++	error = devm_add_action_or_reset(&client->dev, edt_ft5x06_exit_regmap,
++					 tsdata);
++	if (error)
++		return error;
++
+ 	chip_data = device_get_match_data(&client->dev);
+ 	if (!chip_data)
+ 		chip_data = (const struct edt_i2c_chip_data *)id->driver_data;
+@@ -1354,7 +1372,6 @@ static void edt_ft5x06_ts_remove(struct i2c_client *client)
+ 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(client);
+ 
+ 	edt_ft5x06_ts_teardown_debugfs(tsdata);
+-	regmap_exit(tsdata->regmap);
+ }
+ 
+ static int edt_ft5x06_ts_suspend(struct device *dev)
 -- 
 2.43.0
 
