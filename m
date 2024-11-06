@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3829BE715
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABC79BECD7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E10C1C23385
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:10:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3871C23DA1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3181DF254;
-	Wed,  6 Nov 2024 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86451F707B;
+	Wed,  6 Nov 2024 12:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5sh2Kxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZh5RJ8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D341DEFD3;
-	Wed,  6 Nov 2024 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E971D86E8;
+	Wed,  6 Nov 2024 12:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895024; cv=none; b=cNQ5QgeyWYSrkdmYI8wlPX7Lw9gBVR+XC40YOZ3IaF1U2FyDSanz0WIw9Idt/IJiiCRfOiabhZvZHmXet2fcu89VHZ35m49J6Sg3KhooRmo5MnRg/3CEBWFSZ9MSTW7mGZQ0v9sWSFHwWHE04Bw2AqkPfpkBqR2TlBwbd40gUCU=
+	t=1730897991; cv=none; b=oSUwzzdd6k2swHwPnCTBLOupw8pib/teQvSB/tVktWKerllXrUedw5oktR3JlmcoeYl660sOCeJW1tWypG4NB/rhW9lqxs+3O3wWToYarT7ZZV9yJ2/XTsJ54bm9cNSxmmtwpD4ta56bu76fM0GkOvU08AQpuwmHFjeAxVjTxqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895024; c=relaxed/simple;
-	bh=XAS6Sl2re3j8AozItli8td5kvA6/hBApb7M/RFnSKZg=;
+	s=arc-20240116; t=1730897991; c=relaxed/simple;
+	bh=9uKRLZJ5fdhAGg+BqRxw0m8thvf1GI5swHNzOSBe2D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4rKcc6+XM7W4pV/+feuhkAPPmuFnrcoJJQIUu2jEl+ohTdPAcYf2PDpPyeMfVazLKsBFk8yHmA6+iHEbV3i+3YISraOHg7nue2/7ym8ChQyUx6NR+DQzYRNVuUYzFtDIX/LlkhIQsZqsD3dxpTI4xkO6Ufc5w8ViALWQuZxyQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5sh2Kxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F93C4CECD;
-	Wed,  6 Nov 2024 12:10:23 +0000 (UTC)
+	 MIME-Version; b=KdVyCBZs4E86yrwa6OQsTTZA9HZD/iPOciGdEfj2+dZpokPNVpnRpCrdzEM38FkCGd5UR0yu8Bh063ryFIlIR/RpatBMun7tnemcVW7xEu4x9U8rABpFl8Edc1gd8VM04BvY+fLtVovfDc3Bv+YgsDEKdjrwICmwf0N9Zz2PLU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZh5RJ8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE49DC4CECD;
+	Wed,  6 Nov 2024 12:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895024;
-	bh=XAS6Sl2re3j8AozItli8td5kvA6/hBApb7M/RFnSKZg=;
+	s=korg; t=1730897991;
+	bh=9uKRLZJ5fdhAGg+BqRxw0m8thvf1GI5swHNzOSBe2D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5sh2Kxyn6V4OwGA51Q0N/zPZHWvmGhJZNR4A9y/kGbDdp7zbIfjZxvTqIXHZxkyz
-	 9Z3JwffI/6hgkN8p9S3QhW9zZs94OZhwzxhn/HFfyjse57rLIo+FG2FwxRzupUpd22
-	 nU79wMg0DCQ6g2oKkay2S/RXY80OzEJGKlrGRugQ=
+	b=mZh5RJ8/Ln/UoAWxuVCeiYqRHR5jhTba0q/qINsXbtCtvCu/cZ1foxzEH8FxUERLu
+	 iWgZA0OLQL2XUAhFO3TbXEqoSepOMVJksAQ5V2p+J9S9687DAmUAF0FWAZasYruUPT
+	 G8YWE+R3bgp2TIqDHNfYu6wasalYV93As9xQN8mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/350] drm/amdgpu: Replace one-element array with flexible-array member
+Subject: [PATCH 5.4 087/462] tpm: Clean up TPM space after command failure
 Date: Wed,  6 Nov 2024 12:59:40 +0100
-Message-ID: <20241106120322.175929636@linuxfoundation.org>
+Message-ID: <20241106120333.654361491@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-[ Upstream commit 320e2590e281d0a7865e861f50155b5b435e9813 ]
+[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
 
-One-element arrays are deprecated, and we are replacing them with
-flexible array members instead. So, replace one-element array with
-flexible-array member in struct _ATOM_FAKE_EDID_PATCH_RECORD and
-refactor the rest of the code accordingly.
+tpm_dev_transmit prepares the TPM space before attempting command
+transmission. However if the command fails no rollback of this
+preparation is done. This can result in transient handles being leaked
+if the device is subsequently closed with no further commands performed.
 
-Important to mention is that doing a build before/after this patch
-results in no binary output differences.
+Fix this by flushing the space in the event of command transmission
+failure.
 
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -fstrict-flex-arrays=3 [1].
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/238
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101836 [1]
-
-Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 8155566a26b8 ("drm/amdgpu: properly handle vbios fake edid sizing")
+Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/atombios_encoders.c | 7 +++++--
- drivers/gpu/drm/amd/include/atombios.h         | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm-dev-common.c | 2 ++
+ drivers/char/tpm/tpm2-space.c     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-index d702fb8e34275..9de266a1bfbe0 100644
---- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-+++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-@@ -2110,8 +2110,11 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
- 						}
- 					}
- 					record += fake_edid_record->ucFakeEDIDLength ?
--						fake_edid_record->ucFakeEDIDLength + 2 :
--						sizeof(ATOM_FAKE_EDID_PATCH_RECORD);
-+						  struct_size(fake_edid_record,
-+							      ucFakeEDIDString,
-+							      fake_edid_record->ucFakeEDIDLength) :
-+						  /* empty fake edid record must be 3 bytes long */
-+						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
-diff --git a/drivers/gpu/drm/amd/include/atombios.h b/drivers/gpu/drm/amd/include/atombios.h
-index 8ba21747b40a3..c9f70accd46d8 100644
---- a/drivers/gpu/drm/amd/include/atombios.h
-+++ b/drivers/gpu/drm/amd/include/atombios.h
-@@ -4107,7 +4107,7 @@ typedef struct _ATOM_FAKE_EDID_PATCH_RECORD
- {
-   UCHAR ucRecordType;
-   UCHAR ucFakeEDIDLength;       // = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
--  UCHAR ucFakeEDIDString[1];    // This actually has ucFakeEdidLength elements.
-+  UCHAR ucFakeEDIDString[];     // This actually has ucFakeEdidLength elements.
- } ATOM_FAKE_EDID_PATCH_RECORD;
+diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
+index b99e1941c52c9..fde81ecbd6a3b 100644
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -48,6 +48,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
  
- typedef struct  _ATOM_PANEL_RESOLUTION_PATCH_RECORD
+ 	if (!ret)
+ 		ret = tpm2_commit_space(chip, space, buf, &len);
++	else
++		tpm2_flush_space(chip);
+ 
+ out_rc:
+ 	return ret ? ret : len;
+diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
+index ffb35f0154c16..c57404c6b98c9 100644
+--- a/drivers/char/tpm/tpm2-space.c
++++ b/drivers/char/tpm/tpm2-space.c
+@@ -166,6 +166,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
+ 	struct tpm_space *space = &chip->work_space;
+ 	int i;
+ 
++	if (!space)
++		return;
++
+ 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
+ 		if (space->context_tbl[i] && ~space->context_tbl[i])
+ 			tpm2_flush_context(chip, space->context_tbl[i]);
 -- 
 2.43.0
 
