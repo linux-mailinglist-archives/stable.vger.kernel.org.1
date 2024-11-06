@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B299BEECE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FA69BEE96
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D9E1F25689
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFB1286BD3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1761DF278;
-	Wed,  6 Nov 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAE71DED7C;
+	Wed,  6 Nov 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJTw4aZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LIALM0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B8A1CCB5F;
-	Wed,  6 Nov 2024 13:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E646646;
+	Wed,  6 Nov 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899259; cv=none; b=A8YIuL6fXy7vMivEGTp0wukFAXtx2dwwSCWoBWRT/Brlw5frK/c7gFZAp+dj4/IU9bQk3yXh7fQJp43nKke1MDSBqa4ddh5Tf7VIbCwudkK0nqoa+CMrKGem7nSvMKmEcTHRzyKVJ6XhhqaNqRlZ6ek3h9ZV2iuPVcatKng2Vfs=
+	t=1730899126; cv=none; b=WgYhHdNeF2kuNcYRjP25ovG3ecX9ZrEAgNEXdMmZ1LBfrGF01dJFLnGL8Sj0SprpPO3dMjGs9bD9OLbR5SFjcpOAFU51dQIZf597L1HRT/ay4ypnLcxF2V+ZRJjyOTBUuWBb6G9wGr3Q35bRNMDlXxktBjoAsmO28RxQeAWq4qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899259; c=relaxed/simple;
-	bh=CYwwqXuumP5h92NkvUCLkTiSUGixhDHBWBPYMpT8Cgg=;
+	s=arc-20240116; t=1730899126; c=relaxed/simple;
+	bh=eE+U5Ebb8AM7ykQxd7Boctxrm8C7YpBMOhgd1Jx9qiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xu0zm2dIg3T9xGucVBVNCxYytMaiJW5m9Ru7M4RB9TjVg2Y0ffKZAocgsuOfr6m2xiAVFzEVWtgqWr/uezqNjZVb5N6fqaZr3MenJtEhhEQYMX0CJsoyzx38uck4RNZOnlgWn+Wypm87h8ibf2kxKhm8Be3f5WIhcplwwp6G4WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJTw4aZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594BCC4CECD;
-	Wed,  6 Nov 2024 13:20:59 +0000 (UTC)
+	 MIME-Version; b=RV0Zri3fxl8/uGYXuMELdAWTdalWKw6YNkctEb1wf7ZcQvrjjprLeCO8SEyFNz/QLZiOWwOCFb6MHmTuzy7OB5KhidGHdsanYE4cwofrUSPDoNvv7MOtBZ0l00O/Metg0U+FBjSn+SQiQllXFakotmc3Ya4mBh43iAu3XAn2QcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LIALM0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9811C4CECD;
+	Wed,  6 Nov 2024 13:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899259;
-	bh=CYwwqXuumP5h92NkvUCLkTiSUGixhDHBWBPYMpT8Cgg=;
+	s=korg; t=1730899126;
+	bh=eE+U5Ebb8AM7ykQxd7Boctxrm8C7YpBMOhgd1Jx9qiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJTw4aZIF7FaB5Be6S4c7tOwp0hRkeENV5mJMGc+kGCA4+6OjGb0LqGM7Ph7uzCIh
-	 7yVc8QQGwr7ply2ailgiWzLQkhIPzz0f522oicxtunxIcCRH/Zj5gMOg53XyoZDF9t
-	 5XgWHrF6Bobf/58dRQ/qsQs00Rx1h8+IlLhuyXBM=
+	b=1LIALM0eBRZj8s7pwKOeQ0VND2n+ZIxFCitv4Jk5iJestgjxqhPX3UbasHl54JHd4
+	 E3ssh4qdmngXCMxjRz1e8oCph6itZdBriqfN6go971LH7HfKjtF8ddnG7ozQBzgAva
+	 dsRgN5PNLWgfRdC/KcC7skSiwRZhINR6Udf5QDHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 51/73] riscv: vdso: Prevent the compiler from inserting calls to memset()
+	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 5.4 462/462] mm: krealloc: Fix MTE false alarm in __do_krealloc
 Date: Wed,  6 Nov 2024 13:05:55 +0100
-Message-ID: <20241106120301.486266314@linuxfoundation.org>
+Message-ID: <20241106120342.916487840@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
 
-[ Upstream commit bf40167d54d55d4b54d0103713d86a8638fb9290 ]
+commit 704573851b51808b45dae2d62059d1d8189138a2 upstream.
 
-The compiler is smart enough to insert a call to memset() in
-riscv_vdso_get_cpus(), which generates a dynamic relocation.
+This patch addresses an issue introduced by commit 1a83a716ec233 ("mm:
+krealloc: consider spare memory for __GFP_ZERO") which causes MTE
+(Memory Tagging Extension) to falsely report a slab-out-of-bounds error.
 
-So prevent this by using -fno-builtin option.
+The problem occurs when zeroing out spare memory in __do_krealloc. The
+original code only considered software-based KASAN and did not account
+for MTE. It does not reset the KASAN tag before calling memset, leading
+to a mismatch between the pointer tag and the memory tag, resulting
+in a false positive.
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Example of the error:
+==================================================================
+swapper/0: BUG: KASAN: slab-out-of-bounds in __memset+0x84/0x188
+swapper/0: Write at addr f4ffff8005f0fdf0 by task swapper/0/1
+swapper/0: Pointer tag: [f4], memory tag: [fe]
+swapper/0:
+swapper/0: CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.
+swapper/0: Hardware name: MT6991(ENG) (DT)
+swapper/0: Call trace:
+swapper/0:  dump_backtrace+0xfc/0x17c
+swapper/0:  show_stack+0x18/0x28
+swapper/0:  dump_stack_lvl+0x40/0xa0
+swapper/0:  print_report+0x1b8/0x71c
+swapper/0:  kasan_report+0xec/0x14c
+swapper/0:  __do_kernel_fault+0x60/0x29c
+swapper/0:  do_bad_area+0x30/0xdc
+swapper/0:  do_tag_check_fault+0x20/0x34
+swapper/0:  do_mem_abort+0x58/0x104
+swapper/0:  el1_abort+0x3c/0x5c
+swapper/0:  el1h_64_sync_handler+0x80/0xcc
+swapper/0:  el1h_64_sync+0x68/0x6c
+swapper/0:  __memset+0x84/0x188
+swapper/0:  btf_populate_kfunc_set+0x280/0x3d8
+swapper/0:  __register_btf_kfunc_id_set+0x43c/0x468
+swapper/0:  register_btf_kfunc_id_set+0x48/0x60
+swapper/0:  register_nf_nat_bpf+0x1c/0x40
+swapper/0:  nf_nat_init+0xc0/0x128
+swapper/0:  do_one_initcall+0x184/0x464
+swapper/0:  do_initcall_level+0xdc/0x1b0
+swapper/0:  do_initcalls+0x70/0xc0
+swapper/0:  do_basic_setup+0x1c/0x28
+swapper/0:  kernel_init_freeable+0x144/0x1b8
+swapper/0:  kernel_init+0x20/0x1a8
+swapper/0:  ret_from_fork+0x10/0x20
+==================================================================
+
+Fixes: 1a83a716ec233 ("mm: krealloc: consider spare memory for __GFP_ZERO")
+Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ mm/slab_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 06e6b27f3bcc9..c1b68f962bada 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1683,7 +1683,7 @@ static __always_inline void *__do_kreall
+ 		/* Zero out spare memory. */
+ 		if (want_init_on_alloc(flags)) {
+ 			kasan_disable_current();
+-			memset((void *)p + new_size, 0, ks - new_size);
++			memset(kasan_reset_tag(p) + new_size, 0, ks - new_size);
+ 			kasan_enable_current();
+ 		}
  
- ccflags-y := -fno-stack-protector
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -fno-builtin
- 
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
--- 
-2.43.0
-
 
 
 
