@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8378D9BEC01
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B6E9BE835
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4898D2823BE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86D01C20C92
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECD11FAC2B;
-	Wed,  6 Nov 2024 12:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B381DF75A;
+	Wed,  6 Nov 2024 12:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSJGxd42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRmiEw+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D59B1DE3B5;
-	Wed,  6 Nov 2024 12:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BE71DF726;
+	Wed,  6 Nov 2024 12:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897450; cv=none; b=WLHtpbMWoZ7/YB2L4LtWOPZflOu3iGsuipyyzRjsF9BsMGPN09MltpRiFl0LVX3guFJnpDo4lXD+wDpGgCjtIo4ykEOjnYicDjsFPHc4qzly8sEANHv5HKLFjscvebwAoG4RXelWG5DwXjQIo0COje2QO/3nR6dORxgULMVYA8I=
+	t=1730895739; cv=none; b=TsDS19YRWc8VyD7SpNFRdm0aqkXqT5ASTuRO3Cxe45BOcH4zUHtq9XxN59HzbqwAC3FviTuRhqiZdRbD/4tUnoqnm6YQ8EbiAXkIASzhQ1gySPLyPO1M7/V1G+uAj9aAZP1cx/TJ/0lCGJICSf58myXn3LFKrtsG1R03gq38KMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897450; c=relaxed/simple;
-	bh=YLAZ416mAebthCPIolGLvYWrXc9mhQzz0QG6cE5YONw=;
+	s=arc-20240116; t=1730895739; c=relaxed/simple;
+	bh=8Tx9NcET2LIiMN8Qn9Wra/0f/VlGK67VmlVrFhf+VtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1Om1GhDdgW46lP2fNLS90+KQb2liMASMzxOLrDPmpxXfWOhU+Ik5nWA0lirlE6zu/75Y1p51hEYkHqHonh7OWgC8UZ5a9vlVfW6L/ZHwWqamyrLt37dWaeUjpxnvGrSKdck5uENnei2xyZ5ALNxFaoz4aPadwCqi7LR9yf+Fdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSJGxd42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C1CC4CECD;
-	Wed,  6 Nov 2024 12:50:49 +0000 (UTC)
+	 MIME-Version; b=S0BBNA8P2d6kyT7rQEX1YW2EBazS6zsxOtNcKy732v7LrfGbsVuxz7IJeJriu+W+kMLYqxrJ27dhRGR8bjRkAg0E1Wppa3M9LqOU8Jneo5qr1GRbw+ZSV1iL3nJRG5G2caHdH+q2eCLu/9uInLR9Vp3lGteq+7BupMLzPID1Lno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRmiEw+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FF2C4CECD;
+	Wed,  6 Nov 2024 12:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897450;
-	bh=YLAZ416mAebthCPIolGLvYWrXc9mhQzz0QG6cE5YONw=;
+	s=korg; t=1730895738;
+	bh=8Tx9NcET2LIiMN8Qn9Wra/0f/VlGK67VmlVrFhf+VtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSJGxd42Gh08GETUigXmEFxvwLHHHGJ3YTk/cWrYg9OYXQCXicNlX4HbfsQJdW7IA
-	 Cq/VNjtBh2rnVz8dm2bDKYXLTV0jcWEcr2LDM/j0ksc1wrJudh1ZX/0FcLHsgxeSss
-	 WpIL2PC9NuEhy+nX0TfNEcjk6uPVuv3KpSG8zXyc=
+	b=BRmiEw+WwnrdyK4JM/hW4d49/plpwfQKPMuHKH7fz3Pui1wu5QVt0tw9FmAG01LGf
+	 Opsnf2YZJCj9uYngW5pJJC/K7p0+5MvfPAcIpbMfxHRoKM5DDcvuaVmtzXiMig2NhT
+	 6J+MogeWRdn0/fbHPkTjhbhN/aWNfaLlvbj39CiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/151] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
-Date: Wed,  6 Nov 2024 13:04:05 +0100
-Message-ID: <20241106120310.406556585@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 4.19 318/350] nilfs2: fix kernel bug due to missing clearing of buffer delay flag
+Date: Wed,  6 Nov 2024 13:04:06 +0100
+Message-ID: <20241106120328.610101242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
+commit 6ed469df0bfbef3e4b44fca954a781919db9f7ab upstream.
 
-Use non-zero subkey to skip analyzer warnings.
+Syzbot reported that after nilfs2 reads a corrupted file system image
+and degrades to read-only, the BUG_ON check for the buffer delay flag
+in submit_bh_wbc() may fail, causing a kernel bug.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because the buffer delay flag is not cleared when clearing the
+buffer state flags to discard a page/folio or a buffer head. So, fix
+this.
+
+This became necessary when the use of nilfs2's own page clear routine
+was expanded.  This state inconsistency does not occur if the buffer
+is written normally by log writing.
+
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Link: https://lore.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/ntfs_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/page.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 28788cf6ba407..cfe9d3bf07f91 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -334,7 +334,7 @@ struct mft_inode {
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -78,7 +78,8 @@ void nilfs_forget_buffer(struct buffer_h
+ 	const unsigned long clear_bits =
+ 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++		 BIT(BH_Delay));
  
- /* Nested class for ntfs_inode::ni_lock. */
- enum ntfs_inode_mutex_lock_class {
--	NTFS_INODE_MUTEX_DIRTY,
-+	NTFS_INODE_MUTEX_DIRTY = 1,
- 	NTFS_INODE_MUTEX_SECURITY,
- 	NTFS_INODE_MUTEX_OBJID,
- 	NTFS_INODE_MUTEX_REPARSE,
--- 
-2.43.0
-
+ 	lock_buffer(bh);
+ 	set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -412,7 +413,8 @@ void nilfs_clear_dirty_page(struct page
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++			 BIT(BH_Delay));
+ 
+ 		bh = head = page_buffers(page);
+ 		do {
 
 
 
