@@ -1,62 +1,70 @@
-Return-Path: <stable+bounces-89974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB69BDC24
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821AB9BDC26
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E154B28531B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39EB41F2172F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F51C1D9688;
-	Wed,  6 Nov 2024 02:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281E71DA100;
+	Wed,  6 Nov 2024 02:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Px42WH8Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdKDaL4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF07B18F2C1;
-	Wed,  6 Nov 2024 02:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68DB18F2EA;
+	Wed,  6 Nov 2024 02:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859037; cv=none; b=WR3KkhdR8jxiULVGoqz3QW+aziT0eMZSXtD0OLTSf85qiMIHgtQBHC4+TynkEeRnaKRp8gCu3dctniXWfA0Hl3QO0Bt9/dMnZpbqCiLYXy9wP/jCTJ2OsWoX3MnZFMv43h0Sao07fk4p9eZkbXKs24DmWQTQ/WGJgR8gtHaHmfI=
+	t=1730859042; cv=none; b=j6ifuGhjzqeK0UNVLZ+pxCFLohXbwW/MFrJ44TLvGZ5qgeEXiE4WKSmuk0bbUc7GiM8+oda6mtanKwyRN1IfgVL1TEFqAPM38+BN75meypSmy6Oqtn0l49dWxeCmFgTdJnGuXqmvgVLi/Dzs5hTWuYsjISCcM6zl4gqut6EwU3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859037; c=relaxed/simple;
-	bh=64rxGGHOzJlUyvWRWPZyt2BQTMQWnxD9Wzt/FVelKs8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZXp4LbX+82tt2YGaHUc6yUIz8Ls/02mAWsLiTs9XwFI0T9u9rVUsobL9OPfLPr76FwTBbaELtuiPzTSwo7wEwmAjBNA52k99vJhxgm8eScFJHDBZvmqpTrv9DtSKwVeYXPHj4iVBqlx7cZ/f2xFX2ibtSqaRxn53k9fFlL0/xzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Px42WH8Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE558C4CECF;
-	Wed,  6 Nov 2024 02:10:35 +0000 (UTC)
+	s=arc-20240116; t=1730859042; c=relaxed/simple;
+	bh=YOEqtlHUrsf/XjbfMYojjf6Vm6w7CDFWN9jC0lFdV3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZYtkLRZSfbS0gANqc9mj+sRqEFKM5MGL3j5cIgbv72AsheKBBGesslzh623uPdThKwBY0xfvyquc/D0ch1lBjRJdLLzAdB/EtOaHy7GqXQz0S9LbZ2VAxO5BFSHmSBIfbZHdQS9Pn5t+C/YEEL/CGx+FEMh3zgYbDKhyxSdrm+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdKDaL4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58CBC4CECF;
+	Wed,  6 Nov 2024 02:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859037;
-	bh=64rxGGHOzJlUyvWRWPZyt2BQTMQWnxD9Wzt/FVelKs8=;
+	s=k20201202; t=1730859042;
+	bh=YOEqtlHUrsf/XjbfMYojjf6Vm6w7CDFWN9jC0lFdV3g=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Px42WH8ZPWiZ2bmZUf/drxOOiv+poAtDxe9TczArmZotR9JmwdJGxzXhfzKTQqsEe
-	 KVd2RlY4yRXYwN9/d8/jex0kuVkyYTgB8aBKTSbw+HfRwB7fman65IILMLYn4so45r
-	 UCaFnd++nG7cBW82HvNtfGzR538I5p90s+pGeSAnwtefMefEXZcJ5l+bJNw+YluhQQ
-	 D+ErFu5G9tBMQTkX0nlhXEGg+XxHT78oHj2RT7zfbtSceWqYKfW/0aF88n0DkaOAE0
-	 256RZps5WVlX8Q1768fMU8DNmd1wM7a5ZJgD8DMpGdb9TagL4wlWLk0naN7bnig5Z5
-	 Tr+Ln14M9GvIw==
+	b=HdKDaL4JqOa9xl03uN7cqkDSAJVHizwjU4nKzG8GyN0bqjD0yngQIqudLBY5gPWZN
+	 C92lWzYu0ptrWJzTFD3SrgfqkRk/TkjvVZOjedTb2nGoWSg+bQ6b6tN2CsLZXdIFvo
+	 s/INBeFSKir9b7TR6zXLPdNkThNx8Tbu0y3GURCRS0d0RI+wZJWn/XyBP9vh0T00if
+	 HlW2twYrIsp5+stHrkR82cwzhgssVMxTk8OXDDRPfN5pQ08gPS9Og/Twkhxe+ytxwt
+	 2+bEmTn28lN519yEY3cOFeyqa7nrWRC4AYj7XM+onf82KAlaCvQI9XwQneFRMopQ7D
+	 F41tbDNXfG8QA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	dan.j.williams@intel.com
-Cc: Gregory Price <gourry@gourry.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alejandro Lucero <alucerop@amd.com>,
-	linux-cxl@vger.kernel.org,
+	baohua@kernel.org
+Cc: Barry Song <v-songbaohua@oppo.com>,
+	Oven Liyang <liyangouwen1@oppo.com>,
+	Kairui Song <kasong@tencent.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Yu Zhao <yuzhao@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Chris Li <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	SeongJae Park <sj@kernel.org>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "cxl/port: Fix CXL port initialization order when the subsystem is built-in" failed to apply to v6.1-stable tree
-Date: Tue,  5 Nov 2024 21:10:33 -0500
-Message-ID: <20241106021034.181613-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm: avoid unconditional one-tick sleep when swapcache_prepare fails" failed to apply to v6.1-stable tree
+Date: Tue,  5 Nov 2024 21:10:37 -0500
+Message-ID: <20241106021038.181730-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,129 +86,111 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6575b268157f37929948a8d1f3bafb3d7c055bc1 Mon Sep 17 00:00:00 2001
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 25 Oct 2024 12:32:55 -0700
-Subject: [PATCH] cxl/port: Fix CXL port initialization order when the
- subsystem is built-in
+From 01626a18230246efdcea322aa8f067e60ffe5ccd Mon Sep 17 00:00:00 2001
+From: Barry Song <v-songbaohua@oppo.com>
+Date: Fri, 27 Sep 2024 09:19:36 +1200
+Subject: [PATCH] mm: avoid unconditional one-tick sleep when swapcache_prepare
+ fails
 
-When the CXL subsystem is built-in the module init order is determined
-by Makefile order. That order violates expectations. The expectation is
-that cxl_acpi and cxl_mem can race to attach. If cxl_acpi wins the race,
-cxl_mem will find the enabled CXL root ports it needs. If cxl_acpi loses
-the race it will retrigger cxl_mem to attach via cxl_bus_rescan(). That
-flow only works if cxl_acpi can assume ports are enabled immediately
-upon cxl_acpi_probe() return. That in turn can only happen in the
-CONFIG_CXL_ACPI=y case if the cxl_port driver is registered before
-cxl_acpi_probe() runs.
+Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+introduced an unconditional one-tick sleep when `swapcache_prepare()`
+fails, which has led to reports of UI stuttering on latency-sensitive
+Android devices.  To address this, we can use a waitqueue to wake up tasks
+that fail `swapcache_prepare()` sooner, instead of always sleeping for a
+full tick.  While tasks may occasionally be woken by an unrelated
+`do_swap_page()`, this method is preferable to two scenarios: rapid
+re-entry into page faults, which can cause livelocks, and multiple
+millisecond sleeps, which visibly degrade user experience.
 
-Fix up the order to prevent initialization failures. Ensure that
-cxl_port is built-in when cxl_acpi is also built-in, arrange for
-Makefile order to resolve the subsys_initcall() order of cxl_port and
-cxl_acpi, and arrange for Makefile order to resolve the
-device_initcall() (module_init()) order of the remaining objects.
+Oven's testing shows that a single waitqueue resolves the UI stuttering
+issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
+hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
+locks can be introduced.
 
-As for what contributed to this not being found earlier, the CXL
-regression environment, cxl_test, builds all CXL functionality as a
-module to allow to symbol mocking and other dynamic reload tests.  As a
-result there is no regression coverage for the built-in case.
-
-Reported-by: Gregory Price <gourry@gourry.net>
-Closes: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
-Tested-by: Gregory Price <gourry@gourry.net>
-Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
-Cc: stable@vger.kernel.org
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Tested-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Alejandro Lucero <alucerop@amd.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/172988474904.476062.7961350937442459266.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+[v-songbaohua@oppo.com: wake_up only when swapcache_wq waitqueue is active]
+  Link: https://lkml.kernel.org/r/20241008130807.40833-1-21cnbao@gmail.com
+Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
+Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: Oven Liyang <liyangouwen1@oppo.com>
+Tested-by: Oven Liyang <liyangouwen1@oppo.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/cxl/Kconfig  |  1 +
- drivers/cxl/Makefile | 20 ++++++++++++++------
- drivers/cxl/port.c   | 17 ++++++++++++++++-
- 3 files changed, 31 insertions(+), 7 deletions(-)
+ mm/memory.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-index 29c192f20082c..876469e23f7a7 100644
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -60,6 +60,7 @@ config CXL_ACPI
- 	default CXL_BUS
- 	select ACPI_TABLE_LIB
- 	select ACPI_HMAT
-+	select CXL_PORT
- 	help
- 	  Enable support for host managed device memory (HDM) resources
- 	  published by a platform's ACPI CXL memory layout description.  See
-diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
-index db321f48ba52e..2caa90fa4bf25 100644
---- a/drivers/cxl/Makefile
-+++ b/drivers/cxl/Makefile
-@@ -1,13 +1,21 @@
- # SPDX-License-Identifier: GPL-2.0
-+
-+# Order is important here for the built-in case:
-+# - 'core' first for fundamental init
-+# - 'port' before platform root drivers like 'acpi' so that CXL-root ports
-+#   are immediately enabled
-+# - 'mem' and 'pmem' before endpoint drivers so that memdevs are
-+#   immediately enabled
-+# - 'pci' last, also mirrors the hardware enumeration hierarchy
- obj-y += core/
--obj-$(CONFIG_CXL_PCI) += cxl_pci.o
--obj-$(CONFIG_CXL_MEM) += cxl_mem.o
-+obj-$(CONFIG_CXL_PORT) += cxl_port.o
- obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
- obj-$(CONFIG_CXL_PMEM) += cxl_pmem.o
--obj-$(CONFIG_CXL_PORT) += cxl_port.o
-+obj-$(CONFIG_CXL_MEM) += cxl_mem.o
-+obj-$(CONFIG_CXL_PCI) += cxl_pci.o
+diff --git a/mm/memory.c b/mm/memory.c
+index 3ccee51adfbbd..bdf77a3ec47bc 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4187,6 +4187,8 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
--cxl_mem-y := mem.o
--cxl_pci-y := pci.o
-+cxl_port-y := port.o
- cxl_acpi-y := acpi.o
- cxl_pmem-y := pmem.o security.o
--cxl_port-y := port.o
-+cxl_mem-y := mem.o
-+cxl_pci-y := pci.o
-diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
-index 861dde65768fe..9dc394295e1fc 100644
---- a/drivers/cxl/port.c
-+++ b/drivers/cxl/port.c
-@@ -208,7 +208,22 @@ static struct cxl_driver cxl_port_driver = {
- 	},
- };
- 
--module_cxl_driver(cxl_port_driver);
-+static int __init cxl_port_init(void)
-+{
-+	return cxl_driver_register(&cxl_port_driver);
-+}
-+/*
-+ * Be ready to immediately enable ports emitted by the platform CXL root
-+ * (e.g. cxl_acpi) when CONFIG_CXL_PORT=y.
-+ */
-+subsys_initcall(cxl_port_init);
++static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
 +
-+static void __exit cxl_port_exit(void)
-+{
-+	cxl_driver_unregister(&cxl_port_driver);
-+}
-+module_exit(cxl_port_exit);
-+
- MODULE_DESCRIPTION("CXL: Port enumeration and services");
- MODULE_LICENSE("GPL v2");
- MODULE_IMPORT_NS(CXL);
+ /*
+  * We enter with non-exclusive mmap_lock (to exclude vma changes,
+  * but allow concurrent faults), and pte mapped but not yet locked.
+@@ -4199,6 +4201,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct folio *swapcache, *folio = NULL;
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
+@@ -4297,7 +4300,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 					 * Relax a bit to prevent rapid
+ 					 * repeated page faults.
+ 					 */
++					add_wait_queue(&swapcache_wq, &wait);
+ 					schedule_timeout_uninterruptible(1);
++					remove_wait_queue(&swapcache_wq, &wait);
+ 					goto out_page;
+ 				}
+ 				need_clear_cache = true;
+@@ -4604,8 +4609,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
+ 	/* Clear the swap cache pin for direct swapin after PTL unlock */
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4620,8 +4628,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
+ 	}
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
 -- 
 2.43.0
 
