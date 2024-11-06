@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20ED09BE6D6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615779BECB9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC42AB242B9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2695F285EB8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131251DF270;
-	Wed,  6 Nov 2024 12:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D53C1F668B;
+	Wed,  6 Nov 2024 12:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q94SLqln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuOGBRbs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49701DF252;
-	Wed,  6 Nov 2024 12:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A1D1E909B;
+	Wed,  6 Nov 2024 12:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894851; cv=none; b=PfuyA3bi4dkUwa9OGhJZPoZcLHmahoneRHSDGhP9lQmYZDCOk92C4EiyCn0T20XyFo1K+ziwzXT69m1Hu8rH0+tSEDjHqbXolftaMhZP6KdpAivtm5MZ+nnuZD/XiLNRYblERlZ3AYT7nLLFQfgUe7b9qOf93I+LRur0KO5RJ0A=
+	t=1730897901; cv=none; b=CgGnwqRNgHoMc8t0u5DNDw+pLiyp233H0cWg7MDoFUXR5v4mepprMgOEvOKDMgcZrH39cVFTyeGuJk5z9zeyGJj+qcK58PBci8nFuO1UTcV8G8GKNu8rLRv9elu3ambgZ8hC0cUw4jqWIU7ZCBdh2Io3xYmxnJZj4tNIp6nTwZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894851; c=relaxed/simple;
-	bh=FBY4uuGxlIGJqpovcIHwkeHGUqX/5+42toAqhtCtOa0=;
+	s=arc-20240116; t=1730897901; c=relaxed/simple;
+	bh=7J7VczyrPIfhi60d/Knh5Sh5Fk3jev6WRYdAr4V5D1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1WErGP1sJ7fRTHXGUUjhGEQ1QQIu3tHxRuZCWPyYTSiFmAfQmXbaryxg8/enTiAxGFB7gbOkGYEzubqVW7vTyV1+5ChrDnCa3hG8CTqQYIF0/pz50hVjz9pdV4ZA7TZtv+ICXVqX8MPMURPlLtOCiz9OXXQ6RWCjsKtv+udlPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q94SLqln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495F0C4CECD;
-	Wed,  6 Nov 2024 12:07:31 +0000 (UTC)
+	 MIME-Version; b=u1mqXe01TdrwFgptJDby07rfXRvkJa/qvb+PxXYC1tQlg2sPZoSEJS6CmpC6hOE0rOd2dmnSDlUaMswPpOwZgh3qUWs9HPriPW70D5euGihsLb6atd3DMlb3y1e9JfbKNh95zazZLenpqmo7pxkhDGiEE0smf/Kxd+NuMO0s3Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuOGBRbs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64EDC4CECD;
+	Wed,  6 Nov 2024 12:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894851;
-	bh=FBY4uuGxlIGJqpovcIHwkeHGUqX/5+42toAqhtCtOa0=;
+	s=korg; t=1730897901;
+	bh=7J7VczyrPIfhi60d/Knh5Sh5Fk3jev6WRYdAr4V5D1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q94SLqlnPyOdT8CIQu6va6rN1s0wUrgSiRAGOjoLewIlpReDRuDGweYJuMwYao4Vd
-	 3cMOOvSX1UqHTynmPreT3ktH7Xga03EcIxpbtZwiS2KUTsXxKp49ZxEkk8MAVa0cVt
-	 5nwOnp27i7zlOAM4jbpLH+dwDN6yvQ+0yJqupXcY=
+	b=EuOGBRbsthFkvtW2oQVM8N9LSG8h1Tgq+VHYFeLMHkFTLCWAoVC8laYegiE9DaQyS
+	 iNaZiXMa12T1m0qHuAweKr9rvgxUN+M9ECC7jLlU5b/SFdMcfpOBMvlCaQitcq3bMk
+	 JD5FSvkDOozuJ9VJvKA/iPEs+iwnUl/RH9PLLPHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 022/350] spi: bcm63xx: Enable module autoloading
+Subject: [PATCH 5.4 057/462] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
 Date: Wed,  6 Nov 2024 12:59:10 +0100
-Message-ID: <20241106120321.423670615@linuxfoundation.org>
+Message-ID: <20241106120332.926133459@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 709df70a20e990d262c473ad9899314039e8ec82 ]
+[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+There is no "fsl,phy" property in pin controller pincfg nodes:
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240831094231.795024-1-liaochen4@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
+
+Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/imx7d-zii-rmu2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index cc6ec3fb5bfdf..d57a75a5ab372 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -490,6 +490,7 @@ static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, bcm63xx_spi_of_match);
+diff --git a/arch/arm/boot/dts/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/imx7d-zii-rmu2.dts
+index 2b8d6cc45a538..7d9209cd4c316 100644
+--- a/arch/arm/boot/dts/imx7d-zii-rmu2.dts
++++ b/arch/arm/boot/dts/imx7d-zii-rmu2.dts
+@@ -350,7 +350,7 @@ MX7D_PAD_SD3_RESET_B__SD3_RESET_B	0x59
  
- static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
+ &iomuxc_lpsr {
+ 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
+-		fsl,phy = <
++		fsl,pins = <
+ 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
+ 		>;
+ 	};
 -- 
 2.43.0
 
