@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BF59BEBF4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF44D9BEA4F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1CF1F23152
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75581F23E74
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C22F1FA256;
-	Wed,  6 Nov 2024 12:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EF31F8935;
+	Wed,  6 Nov 2024 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+Kppahc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eM1+6QwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40E1E0DC4;
-	Wed,  6 Nov 2024 12:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B301F8934;
+	Wed,  6 Nov 2024 12:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897415; cv=none; b=NSbbbFMqhhb4nw3WPxntZHtLmv10J7BwmSfE2H9EyDDf8qH6ph7nPoSXbBG03QXtdDcoG/g7XVVdcoAWJoyEfZTj7E241Mw+1mF2fvNqALhKDEVOESrHHp/GJZex/cbhBA3BuK/DO0BLB3xTN9VPrXEqHwVdN7ujpG0lFMT9/fY=
+	t=1730896676; cv=none; b=u+CqUYaj/hnsY9z4S/rWRxBsviVuR0MsRyjzUd6eSt7cGYC/1codWVeCkFwGoxAf8JAStrRWyo7ZNVhEGXZ6KcqSRx0fWQs6I9Bmr++119pPna1pEO851ukw8g8EYg3yv8juJG+LPHpJJVsUQaj/uwX1Dp1yYmxqmTdugCTlX78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897415; c=relaxed/simple;
-	bh=NFaE16E1guKeUEKrxGuF2Ang1dW4sK04BlPwm/1DVcI=;
+	s=arc-20240116; t=1730896676; c=relaxed/simple;
+	bh=B+uhDNyPgc2+UlLWlxZ88XAeo+wgcrsyt0h5DOfUpDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aGfykdI/VblAi9FOvBxgMwSt2ecjuGBHO0bDRaDS1bQtCXAwb+guMmrqyO4VmL6JWbl/cPUSz/C5EJ6LHuEt7QtEzH+oDsm5Cktv+J3SsfJcyR7W1l2cyiTu0O3Uk+68t9PW+Kqda+jqClfy/oH3bhk52MyW/hPUUOWIzShqh/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+Kppahc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0A4C4CECD;
-	Wed,  6 Nov 2024 12:50:14 +0000 (UTC)
+	 MIME-Version; b=VaO7a/0OPjoypGw9b0nAunqezcs41QuyCWTSWTfIkG/xED8fWcJAgTvTZewFftUSPNuFh4em3TwCWehOttPI3vbGOJpNRdY7Q7Rwcrzwag4Zdf8ng13Twtj6wh0Q3S5l5RDExgP5ScDOtN46rlUc22QCC0agHNGyXH1d3kydufw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM1+6QwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D91C4CED3;
+	Wed,  6 Nov 2024 12:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897414;
-	bh=NFaE16E1guKeUEKrxGuF2Ang1dW4sK04BlPwm/1DVcI=;
+	s=korg; t=1730896675;
+	bh=B+uhDNyPgc2+UlLWlxZ88XAeo+wgcrsyt0h5DOfUpDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+Kppahcbf863HLpm8MsvT3uIQJ++HrD93UafNYXAvI2gBW7KxFbOyeiI2VSXL2Mj
-	 N6E6uKSQJn6irIqt6YWANH7RWu3u8yeytjvm4zy1MdsImAtCQ6K0DE72RJNWFNLIhH
-	 HLi06RoizxwfSwZpPxJ5s0+KqUNbqRz3dFoKlen4=
+	b=eM1+6QwKRslGn5D+53jvO8qvQnbc/4k3vZtrb7k8jUNZrgSZC/fYsTZoZtcvoa6Op
+	 8r+pJ5dA07x+/38ZX9NRnjZyYtpwohyAJF2RpOjRZqRjba84c+QTuTeELF9CZqQg8z
+	 IJ0P3but6W8FVKX/214CWrGz/zFDFSiWsvvrXEFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/151] iomap: turn iomap_want_unshare_iter into an inline function
+Subject: [PATCH 5.10 028/110] drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA
 Date: Wed,  6 Nov 2024 13:03:54 +0100
-Message-ID: <20241106120310.101316713@linuxfoundation.org>
+Message-ID: <20241106120303.950183622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6db388585e486c0261aeef55f8bc63a9b45756c0 ]
+[ Upstream commit d92b90f9a54d9300a6e883258e79f36dab53bfae ]
 
-iomap_want_unshare_iter currently sits in fs/iomap/buffered-io.c, which
-depends on CONFIG_BLOCK.  It is also in used in fs/dax.c whіch has no
-such dependency.  Given that it is a trivial check turn it into an inline
-in include/linux/iomap.h to fix the DAX && !BLOCK build.
+Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with
+a real VLA to fix a "memcpy: detected field-spanning write error" warning:
 
-Fixes: 6ef6a0e821d3 ("iomap: share iomap_unshare_iter predicate code with fsdax")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241015041350.118403-1-hch@lst.de
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+[   13.319813] memcpy: detected field-spanning write (size 16896) of single field "p->data" at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4)
+[   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo]
+[   13.320038] Call Trace:
+[   13.320173]  hgsmi_update_pointer_shape [vboxvideo]
+[   13.320184]  vbox_cursor_atomic_update [vboxvideo]
+
+Note as mentioned in the added comment it seems the original length
+calculation for the allocated and send hgsmi buffer is 4 bytes too large.
+Changing this is not the goal of this patch, so this behavior is kept.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240827104523.17442-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 17 -----------------
- include/linux/iomap.h  | 20 +++++++++++++++++++-
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/vboxvideo/hgsmi_base.c | 10 +++++++++-
+ drivers/gpu/drm/vboxvideo/vboxvideo.h  |  4 +---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 55619cce05422..a05ee2cbb7793 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1270,23 +1270,6 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
- }
- EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+diff --git a/drivers/gpu/drm/vboxvideo/hgsmi_base.c b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+index 361d3193258ea..7edc9cf6a6069 100644
+--- a/drivers/gpu/drm/vboxvideo/hgsmi_base.c
++++ b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+@@ -135,7 +135,15 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
+ 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
+ 	}
  
--bool iomap_want_unshare_iter(const struct iomap_iter *iter)
--{
--	/*
--	 * Don't bother with blocks that are not shared to start with; or
--	 * mappings that cannot be shared, such as inline data, delalloc
--	 * reservations, holes or unwritten extents.
+-	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
++	/*
++	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
++	 * from having a 4 bytes fixed array at the end to using a proper VLA
++	 * at the end. These 4 extra bytes were not subtracted from sizeof(*p)
++	 * before the switch to the VLA, so this way the behavior is unchanged.
++	 * Chances are these 4 extra bytes are not necessary but they are kept
++	 * to avoid regressions.
++	 */
++	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
+ 			       VBVA_MOUSE_POINTER_SHAPE);
+ 	if (!p)
+ 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/vboxvideo/vboxvideo.h b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+index a5de40fe1a76a..bed285fe083c8 100644
+--- a/drivers/gpu/drm/vboxvideo/vboxvideo.h
++++ b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+@@ -351,10 +351,8 @@ struct vbva_mouse_pointer_shape {
+ 	 * Bytes in the gap between the AND and the XOR mask are undefined.
+ 	 * XOR mask scanlines have no gap between them and size of XOR mask is:
+ 	 * xor_len = width * 4 * height.
 -	 *
--	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
--	 * unsharing requires providing a separate source map, and the presence
--	 * of one is a good indicator that unsharing is needed, unlike
--	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
--	 * fork for XFS.
--	 */
--	return (iter->iomap.flags & IOMAP_F_SHARED) &&
--		iter->srcmap.type == IOMAP_MAPPED;
--}
--
- static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- {
- 	struct iomap *iomap = &iter->iomap;
-diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 846cd2f1454c7..47b81ebf6e598 100644
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -256,6 +256,25 @@ static inline const struct iomap *iomap_iter_srcmap(const struct iomap_iter *i)
- 	return &i->iomap;
- }
+-	 * Preallocate 4 bytes for accessing actual data as p->data.
+ 	 */
+-	u8 data[4];
++	u8 data[];
+ } __packed;
  
-+/*
-+ * Check if the range needs to be unshared for a FALLOC_FL_UNSHARE_RANGE
-+ * operation.
-+ *
-+ * Don't bother with blocks that are not shared to start with; or mappings that
-+ * cannot be shared, such as inline data, delalloc reservations, holes or
-+ * unwritten extents.
-+ *
-+ * Note that we use srcmap directly instead of iomap_iter_srcmap as unsharing
-+ * requires providing a separate source map, and the presence of one is a good
-+ * indicator that unsharing is needed, unlike IOMAP_F_SHARED which can be set
-+ * for any data that goes into the COW fork for XFS.
-+ */
-+static inline bool iomap_want_unshare_iter(const struct iomap_iter *iter)
-+{
-+	return (iter->iomap.flags & IOMAP_F_SHARED) &&
-+		iter->srcmap.type == IOMAP_MAPPED;
-+}
-+
- ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
- 		const struct iomap_ops *ops);
- int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
-@@ -271,7 +290,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
- bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio);
- int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 		const struct iomap_ops *ops);
--bool iomap_want_unshare_iter(const struct iomap_iter *iter);
- int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
- 		bool *did_zero, const struct iomap_ops *ops);
- int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
+ /* pointer is visible */
 -- 
 2.43.0
 
