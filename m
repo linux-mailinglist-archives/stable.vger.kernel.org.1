@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-90920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BCE9BEBA8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EE99BEB23
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4351F24F69
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 442E01C21627
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F31F8F0C;
-	Wed,  6 Nov 2024 12:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670131F6662;
+	Wed,  6 Nov 2024 12:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRreTlBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwW15lSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED601E0B62;
-	Wed,  6 Nov 2024 12:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F2A1E0480;
+	Wed,  6 Nov 2024 12:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897206; cv=none; b=jZzrZWf6oBLYUwuNRDrtQr3vL6MS9EBzfB2ITVL0HZ4riQEJhlNzIWo7wkfcL7pyz7FPpBEWh7ORd9uqVo6vJ1xWpIr/kPusY6b+Fw94sP/w3AgTbZnEr0cMF+Zowp9NxUYjOaV0vV5kip9sg0+dmE8zgnJd0UzrAiceqZyFMrQ=
+	t=1730896866; cv=none; b=pUkg6k/CLmi7deeegWI0FZjBuN801eKmep/ecN4LT6vRr9J25Slngr+i/LDhoxdiYg08PlwqNYkZwQJCumSU8WlxUdacV0keswTi+8g/lg/ym+2sw/kORLCZbHRV0DEKhYJtFChMgM147DDkjsmRxvP3JFXrrwTg1uONHK6cKog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897206; c=relaxed/simple;
-	bh=gIMbGBLefe0rwIWuSwndeUQn8xKv22G7im0RxukLmWw=;
+	s=arc-20240116; t=1730896866; c=relaxed/simple;
+	bh=A/d24HY6D+60Z7X4pcIb5l+nQbOrO1VhbxXi1WEEaZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ianiFuexlpbfp4bD7hxL9Fm2RoW52N9NBWto7PtYTU1FIwTMKIkfb791/730gjOiLNeVRRjpZZAU0bWnMpc9oHu2ftzFKkhG6w/aZCXAFYm4s4488hHgydiDxJegh/tuRLqQ9RtAxO30hrviKFU2QJ8x3LFbzbEue4wK9YlANck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRreTlBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8673C4CECD;
-	Wed,  6 Nov 2024 12:46:45 +0000 (UTC)
+	 MIME-Version; b=Zu8MtZtMJG2ZbI8M8knciAKPR/j7LtkKNByrlZtPaHoJthmG1ko65ybU7WJy7HmRk0+iqQm+79/kW2Zd0V7XLpNdHk8do1anUdFMfJO4fSDhD2+ClQh44id+e657QSDnjTIi+F+0eFSMMBa9EFJDwCYclyswwpn0g7yI91qWsU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwW15lSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43487C4CECD;
+	Wed,  6 Nov 2024 12:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897206;
-	bh=gIMbGBLefe0rwIWuSwndeUQn8xKv22G7im0RxukLmWw=;
+	s=korg; t=1730896865;
+	bh=A/d24HY6D+60Z7X4pcIb5l+nQbOrO1VhbxXi1WEEaZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRreTlBqr4u6es+MsDOXmhpENz73qo7li7E5lBDLsA67zplNl+7vjc0k7WHViIRs7
-	 UHauDLBXJ3W4yanSYerii2ydKgLMtW1SDHVEAbX2xXGUP8oys1LAJiHzYJ6pKGGULw
-	 YEq5A4F0unmhVuHO4hoMn5mS9As4MKDtoSAs82gg=
+	b=uwW15lSasAOZLLq5Rq2z/SXdcmZgiKwrW01kFyRwK/NCzaooli0jALBQCnLdCbJd3
+	 dL91QhiWzWmLRrxXzz3i9n1UKHWgJkKbv3hkwPnE/Cf3T4OwuuoG3CCzEk0DW+jJze
+	 npkvnwk01gJ/4JjB8SDxFAn2HKRTs1IIy52V9XD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/126] io_uring: rename kiocb_end_write() local helper
-Date: Wed,  6 Nov 2024 13:05:02 +0100
-Message-ID: <20241106120308.792473139@linuxfoundation.org>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.10 097/110] mm: avoid leaving partial pfn mappings around in error case
+Date: Wed,  6 Nov 2024 13:05:03 +0100
+Message-ID: <20241106120305.859093115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit a370167fe526123637965f60859a9f1f3e1a58b7 ]
+commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
 
-This helper does not take a kiocb as input and we want to create a
-common helper by that name that takes a kiocb as input.
+As Jann points out, PFN mappings are special, because unlike normal
+memory mappings, there is no lifetime information associated with the
+mapping - it is just a raw mapping of PFNs with no reference counting of
+a 'struct page'.
 
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Message-Id: <20230817141337.1025891-2-amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 1d60d74e8526 ("io_uring/rw: fix missing NOWAIT check for O_DIRECT start write")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That's all very much intentional, but it does mean that it's easy to
+mess up the cleanup in case of errors.  Yes, a failed mmap() will always
+eventually clean up any partial mappings, but without any explicit
+lifetime in the page table mapping itself, it's very easy to do the
+error handling in the wrong order.
+
+In particular, it's easy to mistakenly free the physical backing store
+before the page tables are actually cleaned up and (temporarily) have
+stale dangling PTE entries.
+
+To make this situation less error-prone, just make sure that any partial
+pfn mapping is torn down early, before any other error handling.
+
+Reported-and-tested-by: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ mm/memory.c |   27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 038e6b13a7496..4eb42fc29c151 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -220,7 +220,7 @@ static bool io_rw_should_reissue(struct io_kiocb *req)
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2290,11 +2290,7 @@ static inline int remap_p4d_range(struct
+ 	return 0;
  }
- #endif
  
--static void kiocb_end_write(struct io_kiocb *req)
-+static void io_req_end_write(struct io_kiocb *req)
+-/*
+- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
+- * must have pre-validated the caching bits of the pgprot_t.
+- */
+-int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
  {
- 	/*
- 	 * Tell lockdep we inherited freeze protection from submission
-@@ -243,7 +243,7 @@ static void io_req_io_end(struct io_kiocb *req)
- 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
+ 	pgd_t *pgd;
+@@ -2347,6 +2343,27 @@ int remap_pfn_range_notrack(struct vm_ar
+ 	return 0;
+ }
  
- 	if (rw->kiocb.ki_flags & IOCB_WRITE) {
--		kiocb_end_write(req);
-+		io_req_end_write(req);
- 		fsnotify_modify(req->file);
- 	} else {
- 		fsnotify_access(req->file);
-@@ -307,7 +307,7 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res)
- 	struct io_kiocb *req = cmd_to_io_kiocb(rw);
- 
- 	if (kiocb->ki_flags & IOCB_WRITE)
--		kiocb_end_write(req);
-+		io_req_end_write(req);
- 	if (unlikely(res != req->cqe.res)) {
- 		if (res == -EAGAIN && io_rw_should_reissue(req)) {
- 			req->flags |= REQ_F_REISSUE | REQ_F_PARTIAL_IO;
-@@ -956,7 +956,7 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
- 				io->bytes_done += ret2;
- 
- 			if (kiocb->ki_flags & IOCB_WRITE)
--				kiocb_end_write(req);
-+				io_req_end_write(req);
- 			return ret ? ret : -EAGAIN;
- 		}
- done:
-@@ -967,7 +967,7 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
- 		ret = io_setup_async_rw(req, iovec, s, false);
- 		if (!ret) {
- 			if (kiocb->ki_flags & IOCB_WRITE)
--				kiocb_end_write(req);
-+				io_req_end_write(req);
- 			return -EAGAIN;
- 		}
- 		return ret;
--- 
-2.43.0
-
++/*
++ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
++ * must have pre-validated the caching bits of the pgprot_t.
++ */
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
++
++	if (!error)
++		return 0;
++
++	/*
++	 * A partial pfn range mapping is dangerous: it does not
++	 * maintain page reference counts, and callers may free
++	 * pages due to the error. So zap it early.
++	 */
++	zap_page_range_single(vma, addr, size, NULL);
++	return error;
++}
++
+ /**
+  * remap_pfn_range - remap kernel memory to userspace
+  * @vma: user vma to map to
 
 
 
