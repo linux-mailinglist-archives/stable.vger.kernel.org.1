@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F7D9BE8E1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7284D9BE7E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36044B22FCE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D63D0B254A9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893391DE4EA;
-	Wed,  6 Nov 2024 12:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579651DF272;
+	Wed,  6 Nov 2024 12:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfcWg8Rw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3t6z/Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462FE18C00E;
-	Wed,  6 Nov 2024 12:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1449A1DED49;
+	Wed,  6 Nov 2024 12:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896089; cv=none; b=eyDO8binek82/98i7VgGp//uOPlsXaiPRLEOXfLK+R2iRz0UzVw8Bl8OVhXnIHszGg4m/3sTkYXRtNe6HygZBC4ZhfDWyb80DLolcHD3hJTNth11MKv4SrdlEHfoaXQ0CKq4nQQVneG/SuVvyPrBTEHvWFWivc27mi6uasTR1RQ=
+	t=1730895532; cv=none; b=Wmov0sSTjOf0ovOHHE9MIBH+tTxuUQWT2LHPotPX071nXdck2x5yBC1i9cuIEqn9E036eNmZnAhAhcqbcOcpCi0+qtrm06hUh8xjq+wqlouKWc8R1KaHA452ZAWkVG7YNbH0kERFjc4vMRTW/zRkzOVHMmlfggjvuCWUwQwlrLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896089; c=relaxed/simple;
-	bh=C8Hok5jhkAY0jjo291On6PQcO3ynlskmg42dt2yC3MA=;
+	s=arc-20240116; t=1730895532; c=relaxed/simple;
+	bh=5bbjOjhh1CZ1hEYIetHziDGS8Pq4pJItNFX0TF+O1TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRFuyIiwIjUXuW4rCUokVrn5Iq9aP6/DvkH0Cjikief9JwCSheGAt4o96u5LSScmwBHP3LTLYqrbtbHive9OXCuDJp+4Ep8GHdEbGTyWgichlBlh9pyz2OnDWlK6KGHYM2/zPj4QGhvyCrABA5+7f7cS6sY98l8yMi12yjg1P5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfcWg8Rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C337DC4CECD;
-	Wed,  6 Nov 2024 12:28:08 +0000 (UTC)
+	 MIME-Version; b=MyiIet0Jy6KNg4IkGxpxcbAFtHd1pO1jyqRn3krEp+ap/IctwYy1ZdmaWOI3eC4ehsqVqfBMq/ufUgQjAQeALoTn3GeD5Gwq7qnTgaNWBpIUmEAAti/zV/ap2tnPL3AKIKb4leXbq88XgL1CZSkHNtgMI1jw+5GgPUl0XMm4t7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3t6z/Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9027CC4CECD;
+	Wed,  6 Nov 2024 12:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896089;
-	bh=C8Hok5jhkAY0jjo291On6PQcO3ynlskmg42dt2yC3MA=;
+	s=korg; t=1730895532;
+	bh=5bbjOjhh1CZ1hEYIetHziDGS8Pq4pJItNFX0TF+O1TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfcWg8Rw2pIj8pchmtmx7m0plWMSsdDnAHO9icdteT93xhHlWcH5dkahGb8eNrUvW
-	 QT6nSvpFWcfgU9ZT9MEzPkhHg2VhQgd966KA4oG/nxYuPstKD4A72rwh3U1DKYnGib
-	 Mw/EnqMmWLPEDUhoxHpB2+6a6MR18YTFwtg9a27k=
+	b=V3t6z/Dy/hF5zInmbnIUYIT3PZUutrf+dQHF5brBIceb8RtmHSXueWKguVdRrg0YX
+	 xlTbtGXK750xTkWPVD5otC3i6Rw9xkU174Hg4D2QGrtZcG7U+HuDLZLr+qS7jGfI2X
+	 D9lQG0zItOq9oe7lffrn8aScnUBM4rmfehD5Z/n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 087/245] fs/ntfs3: Fix possible deadlock in mi_read
-Date: Wed,  6 Nov 2024 13:02:20 +0100
-Message-ID: <20241106120321.347487391@linuxfoundation.org>
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Keerthy <j-keerthy@ti.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 4.19 213/350] gpio: davinci: fix lazy disable
+Date: Wed,  6 Nov 2024 13:02:21 +0100
+Message-ID: <20241106120326.258013521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 03b097099eef255fbf85ea6a786ae3c91b11f041 ]
+commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
 
-Mutex lock with another subclass used in ni_lock_dir().
+On a few platforms such as TI's AM69 device, disable_irq() fails to keep
+track of the interrupts that happen between disable_irq() and
+enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
+->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
+correctly keep track of edges when disable_irq is called.
 
-Reported-by: syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This solves the issue of disable_irq() not working as expected on such
+platforms.
+
+Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+Acked-by: Keerthy <j-keerthy@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-davinci.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index 0a70c36585463..02b745f117a51 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -81,7 +81,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 		if (err < 0)
- 			inode = ERR_PTR(err);
- 		else {
--			ni_lock(ni);
-+			ni_lock_dir(ni);
- 			inode = dir_search_u(dir, uni, NULL);
- 			ni_unlock(ni);
- 		}
--- 
-2.43.0
-
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -294,7 +294,7 @@ err:
+  * serve as EDMA event triggers.
+  */
+ 
+-static void gpio_irq_disable(struct irq_data *d)
++static void gpio_irq_mask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	u32 mask = (u32) irq_data_get_irq_handler_data(d);
+@@ -303,7 +303,7 @@ static void gpio_irq_disable(struct irq_
+ 	writel_relaxed(mask, &g->clr_rising);
+ }
+ 
+-static void gpio_irq_enable(struct irq_data *d)
++static void gpio_irq_unmask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	u32 mask = (u32) irq_data_get_irq_handler_data(d);
+@@ -329,8 +329,8 @@ static int gpio_irq_type(struct irq_data
+ 
+ static struct irq_chip gpio_irqchip = {
+ 	.name		= "GPIO",
+-	.irq_enable	= gpio_irq_enable,
+-	.irq_disable	= gpio_irq_disable,
++	.irq_unmask	= gpio_irq_unmask,
++	.irq_mask	= gpio_irq_mask,
+ 	.irq_set_type	= gpio_irq_type,
+ 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
+ };
 
 
 
