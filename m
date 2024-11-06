@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49A09BECEF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BF39BE6E5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D704C1C23DC4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5571F280A7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22291EE00E;
-	Wed,  6 Nov 2024 13:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D52A1DF25E;
+	Wed,  6 Nov 2024 12:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfWqjO4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiboY9I9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD6F1DFE38;
-	Wed,  6 Nov 2024 13:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD83D1DF249;
+	Wed,  6 Nov 2024 12:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898053; cv=none; b=Y348r2FkBDAPxDbwWeNKzsI8O0BhOiOShIAymfyCuw8YsAN47i1MMD9/IVWkz1r56T5Ufo7ycdJQ06N6CgGkPCY0lSlwyX3/iUfcPxslR0CzYbaWZfGyjYU76bEs4Gsp7eU8a6DmY0ZETPmgVlglCUWmJZrZbONnYpdxZ0OXyZo=
+	t=1730894897; cv=none; b=X/X5PizXF9iMdgnn/XRgySr/TIldnFwAH4ira7olcnLF+Vr3/TI+mZpnWD0RUNmPHP7hM8DcuO+8zZ7I66+o6EQt2LSWOwpuHojXdEUMEWfWtMFsiCKJNA2XQKkt3pwUW04udGMRVeq0XYVqEAUa2agrp/NdOYSqyfNnSm9DT18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898053; c=relaxed/simple;
-	bh=JfgB4Ps+OKVRW3IoZhToaym4JY+ZbnXjMBoCsx4RHvc=;
+	s=arc-20240116; t=1730894897; c=relaxed/simple;
+	bh=BeJuYUUHZ00XZvNymKiq2lNlKl0NB5rQrWaPaohCHn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DE+Mt/26pZCJMWqVNpbXm7bbbZCuJyexhTc2MshMPKo1zXX5/sblMQluUUJ2Ofg5moNjeuOez4w/ageU53KS1tCZzn8oF6Hr8QM2j4dsySwqr3GO+FrnK5r44pmeDfZtmgZrVNP8nWolNrVlveRAGsor0N0Q0XgSC2MYCtdtkTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfWqjO4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CABC4CECD;
-	Wed,  6 Nov 2024 13:00:52 +0000 (UTC)
+	 MIME-Version; b=RXAzMfUuxPVBI8OBoJNzua8ENJ1MypdbXIz3lh4zo85yPeahqATPrTCMRtrfF8Vt9Tq2nwlQPUX7p91JvmUS+v9TE33YR8z0JPcHrMhcRuGK5RKDoRDUaIYdZUfKrLz6blxa2EdeqF7c6Bv6u4KgG4mzarULk5YCWMJaEVfxrlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiboY9I9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544A2C4CECD;
+	Wed,  6 Nov 2024 12:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898053;
-	bh=JfgB4Ps+OKVRW3IoZhToaym4JY+ZbnXjMBoCsx4RHvc=;
+	s=korg; t=1730894897;
+	bh=BeJuYUUHZ00XZvNymKiq2lNlKl0NB5rQrWaPaohCHn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xfWqjO4eHbNK6QosSJGXLTpEAdUU2iEpwrxnTo/uaxKrIJhZTDw9f0EBKjwVG4ruz
-	 +HSdj9hM63NPFBbKXCPhvhAzW3Lu7l8myH51F9fI0mreeCZWWoCHq7EkD6IDqYpSl0
-	 vFfxoUfxQYbMZOK7X8pBjlx4cnnI1xKgGdWZSmcg=
+	b=JiboY9I91Lbkf+idUdhrQrVcDFurNpWwjxBRUuID366wNEQFqTUJ1E5/HNEUcbVe3
+	 KzZV6HH12FXc3bhNBdNB1wAL/z+S4I8AMCqo5Et+tXRxQ/oafXaVvNI3+mpKLMju/I
+	 n/+xwiDOKk0COt2pLiSN1BjtgJshOW7Ibfi1CEEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/462] drm/amdgpu: properly handle vbios fake edid sizing
+Subject: [PATCH 4.19 036/350] Bluetooth: btusb: Fix not handling ZPL/short-transfer
 Date: Wed,  6 Nov 2024 12:59:24 +0100
-Message-ID: <20241106120333.263956456@linuxfoundation.org>
+Message-ID: <20241106120321.775610631@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 8155566a26b8d6c1dd914f06a0c652e4e2f2adf1 ]
+[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
 
-The comment in the vbios structure says:
-// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
+Requesting transfers of the exact same size of wMaxPacketSize may result
+in ZPL/short-transfer since the USB stack cannot handle it as we are
+limiting the buffer size to be the same as wMaxPacketSize.
 
-This fake edid struct has not been used in a long time, so I'm
-not sure if there were actually any boards out there with a non-128 byte
-EDID, but align the code with the comment.
+Also, in terms of throughput this change has the same effect to
+interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
+by increasing the frame size" had for the bulk endpoint, so users of the
+advertisement bearer (e.g. BT Mesh) may benefit from this change.
 
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
-Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 29 ++++++++++---------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-index 754d1e1387155..74951666733a7 100644
---- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-+++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
-@@ -2098,26 +2098,29 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
- 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
- 					if (fake_edid_record->ucFakeEDIDLength) {
- 						struct edid *edid;
--						int edid_size =
--							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
--						edid = kmalloc(edid_size, GFP_KERNEL);
-+						int edid_size;
-+
-+						if (fake_edid_record->ucFakeEDIDLength == 128)
-+							edid_size = fake_edid_record->ucFakeEDIDLength;
-+						else
-+							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
-+						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
-+							       edid_size, GFP_KERNEL);
- 						if (edid) {
--							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
--							       fake_edid_record->ucFakeEDIDLength);
--
- 							if (drm_edid_is_valid(edid)) {
- 								adev->mode_info.bios_hardcoded_edid = edid;
- 								adev->mode_info.bios_hardcoded_edid_size = edid_size;
--							} else
-+							} else {
- 								kfree(edid);
-+							}
- 						}
-+						record += struct_size(fake_edid_record,
-+								      ucFakeEDIDString,
-+								      edid_size);
-+					} else {
-+						/* empty fake edid record must be 3 bytes long */
-+						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					}
--					record += fake_edid_record->ucFakeEDIDLength ?
--						  struct_size(fake_edid_record,
--							      ucFakeEDIDString,
--							      fake_edid_record->ucFakeEDIDLength) :
--						  /* empty fake edid record must be 3 bytes long */
--						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index b6eb48e44e6b1..c7a1ec57256b4 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -743,7 +743,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
+ 	if (!urb)
+ 		return -ENOMEM;
+ 
+-	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	/* Use maximum HCI Event size so the USB stack handles
++	 * ZPL/short-transfer automatically.
++	 */
++	size = HCI_MAX_EVENT_SIZE;
+ 
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 -- 
 2.43.0
 
