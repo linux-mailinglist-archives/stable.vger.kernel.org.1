@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DB69BE6FB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A460F9BECB4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D20C5281DB7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69D91285C1E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7E81DF260;
-	Wed,  6 Nov 2024 12:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B701F667B;
+	Wed,  6 Nov 2024 12:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF6h4yhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyYDQehl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2615D1DF24C;
-	Wed,  6 Nov 2024 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7ED1E104A;
+	Wed,  6 Nov 2024 12:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894948; cv=none; b=dJcfH+j1CfcyK55JI1j4UiX60HABdXQ14QbsD5JrTrSgORQfWhgOt9w6WWxblp5zp832RQexeTDM7tGcfPsO+tmTg31t8+MoturhsC3bAiuW8O5oY7iF1FSvIG9ciwdJRfrw6vgPIq4syKfnVHDyQOk8ofy8zTvoMqsZX7hu+yg=
+	t=1730897883; cv=none; b=LS/CgrWIfim4Y8+XFIvZMzkpGfisOJXzr9rcKIlBnPMWRUb6rWKwYVTyqaODwpt+x8lOXVwickPM/82Kl6x6W959bWLVeFK1AQpk2BTdvNx8p0vCSL/817P9K6AvkgOmr0fIcOx3VVHd3CXTGC21CVLqJCOMvhl/U6zZ01FY+L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894948; c=relaxed/simple;
-	bh=nbnohREmLTary73iz4ZpD1IcyIYICMynzQi1VLU6iUs=;
+	s=arc-20240116; t=1730897883; c=relaxed/simple;
+	bh=AvCy+QcKjp4Wbohgp0ywQQX72FxL11r4UHjkzPm317U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6UU7gPl7DCfZZBpbus1qhUw7rbD3mtTFgBTY+BDtsJj6gKKLBbHq1mOozdADvHiU15QEg839TyQJBTsAXHvc+Xvm1YcBcR4rVb+uZqv5jEFwWhM98l7yd8ce+KAhuh+dgyK7z9GYwUwA2T8QCEzy9Mv2oKQEQkvKt9CD94GyGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF6h4yhe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55044C4CECD;
-	Wed,  6 Nov 2024 12:09:07 +0000 (UTC)
+	 MIME-Version; b=K+ss0fM+73v/Xa4H/b1xwgfGQCkgfjUJFIorsU01lOWY5258vpRRzV2EVp4gLq1nFeCbPWltq4ach6heLG5BM7YGCMjipdDKpcrfRhRHAjRq2eBNWvGVC78vymSJRzf6xlV4dp5Wed/FlRvB5Ug2feXsdhnnYCRI4H9/XrMocjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyYDQehl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2183C4CECD;
+	Wed,  6 Nov 2024 12:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894947;
-	bh=nbnohREmLTary73iz4ZpD1IcyIYICMynzQi1VLU6iUs=;
+	s=korg; t=1730897883;
+	bh=AvCy+QcKjp4Wbohgp0ywQQX72FxL11r4UHjkzPm317U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YF6h4yheyx+hiwvFjReFU1ZkBhQxiAuJXZzmakCpmEdXk0kQ1IxbZHmRnmziTa2MI
-	 COigx6PxZUramlTTFH4yT08Cd+X0g3JDkVnr4mL+eCgFzCROHNMXn3MIcav6wkHkYH
-	 oOkts0AuUY7Tgl5Rs6hKpX/C5YcBjof8o3wxtyno=
+	b=YyYDQehlPKenkMgMPMUJ8dze1rJ7imeConcai/OXLUsJ0zDbHFMcvtgGkZfuBXcFY
+	 8bXBnZtg77Zt67sMWwhpyWs4tqGLjRys0K/kq0iPpft/UHScv5mvpQjO/Iui9/zlsf
+	 edZNP3splAXfAm/Hc3v9bZ/C3ZOg/90GFCsSZlJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Blocher <thomas.blocher@ek-dev.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 016/350] pinctrl: at91: make it work with current gpiolib
+Subject: [PATCH 5.4 051/462] net: tipc: avoid possible garbage value
 Date: Wed,  6 Nov 2024 12:59:04 +0100
-Message-ID: <20241106120321.273789190@linuxfoundation.org>
+Message-ID: <20241106120332.778270448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Blocher <thomas.blocher@ek-dev.de>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
+[ Upstream commit 99655a304e450baaae6b396cb942b9e47659d644 ]
 
-pinctrl-at91 currently does not support the gpio-groups devicetree
-property and has no pin-range.
-Because of this at91 gpios stopped working since patch
-commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
-This was discussed in the patches
-commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+Clang static checker (scan-build) warning:
+net/tipc/bcast.c:305:4:
+The expression is an uninitialized value. The computed value will also
+be garbage [core.uninitialized.Assign]
+  305 |                         (*cong_link_cnt)++;
+      |                         ^~~~~~~~~~~~~~~~~~
 
-As a workaround manually set pin-range via gpiochip_add_pin_range() until
-a) pinctrl-at91 is reworked to support devicetree gpio-groups
-b) another solution as mentioned in
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
-is found
+tipc_rcast_xmit() will increase cong_link_cnt's value, but cong_link_cnt
+is uninitialized. Although it won't really cause a problem, it's better
+to fix it.
 
-Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
-Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: dca4a17d24ee ("tipc: fix potential hanging after b/rcast changing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Link: https://patch.msgid.link/20240912110119.2025503-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/tipc/bcast.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index ad01cc5798232..48374945b2d7b 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -1290,8 +1290,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+diff --git a/net/tipc/bcast.c b/net/tipc/bcast.c
+index 885ecf6ea65aa..72362fb63d853 100644
+--- a/net/tipc/bcast.c
++++ b/net/tipc/bcast.c
+@@ -313,8 +313,8 @@ static int tipc_mcast_send_sync(struct net *net, struct sk_buff *skb,
+ {
+ 	struct tipc_msg *hdr, *_hdr;
+ 	struct sk_buff_head tmpq;
++	u16 cong_link_cnt = 0;
+ 	struct sk_buff *_skb;
+-	u16 cong_link_cnt;
+ 	int rc = 0;
  
- 	/* We will handle a range of GPIO pins */
- 	for (i = 0; i < gpio_banks; i++)
--		if (gpio_chips[i])
-+		if (gpio_chips[i]) {
- 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
-+			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
-+				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
-+		}
- 
- 	dev_info(&pdev->dev, "initialized AT91 pinctrl driver\n");
- 
+ 	/* Is a cluster supporting with new capabilities ? */
 -- 
 2.43.0
 
