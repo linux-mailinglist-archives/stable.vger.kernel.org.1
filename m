@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE699BE833
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F352E9BE962
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D75284C7D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC2301F239E3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662131DF97D;
-	Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5944F1DF986;
+	Wed,  6 Nov 2024 12:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfOM0JjT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ7P8Hn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EF01DF726;
-	Wed,  6 Nov 2024 12:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AF61DF974;
+	Wed,  6 Nov 2024 12:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895733; cv=none; b=BjljzLviVCaiqHJbYGav+z+kF/r4NbdlYmGcOyE8YqLvFLVFUrcGUUlT/25Qcq4hEM4PcycoPD43mE0ryOSfvnFepEbgdXP/cvFxmrzlSKb370XR74qAnRkY420DKskdY9P0yQ6QsyQaAvLyrPa+0pCX/UjlPV4+f34HhRbrKyM=
+	t=1730896412; cv=none; b=SXcfeSPaB0JvNtCReYtGE8H7AOQiidiW00FW/GMMrITuAHhS6rJY1hadOZ6ZfvggtBp9LJb2qQSQe/2tdB9e6pqQt9qeD5WSlz27TB6IoPdBZWi45QI2Wrm8mY+YffmOZWolURKzeJxmHSe7jDjgHruxS9hTKEuzDbMo7trWqOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895733; c=relaxed/simple;
-	bh=gkEnmai8byE98Vt93iUXhh7VmUsVoOSPsUcM2vhohSE=;
+	s=arc-20240116; t=1730896412; c=relaxed/simple;
+	bh=zyapEtjt+3MRk6BcKnSUfU9Dl3zfB3LoDkG0GzLK2vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzvFjWaTu8y1+25+oIQ6YYHe/jML03rfDafbQIcJlkVfN/dmyq5t9w4EZPnYV6dZXX0c1VHTiB7FE1il+uhWATObC01WP+kNiAU2gh6G4bk8Y8YSpW/1yxT42DLFiz21LRP7mfxKEZJ2vWUjbsk4VpTK5qQcvLir6Fc3w7GPbQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfOM0JjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E89C4CECD;
-	Wed,  6 Nov 2024 12:22:12 +0000 (UTC)
+	 MIME-Version; b=GFoU4KI8LdfoA04uCwijzNoqzVM6N1q7qmu5XhxZ/9IuTmoMG1M4nZV1EYqczFsDXw3C8yv4rge2etkcPTaVEAvgJ8XRHjrOFHC9pQB7An1RCjycVLha697YnHXI1pJeHqH/xXJn33EFy+sI1v7MBiT/mPs5PCoKsc3NAE4zQUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ7P8Hn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751DFC4CECD;
+	Wed,  6 Nov 2024 12:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895733;
-	bh=gkEnmai8byE98Vt93iUXhh7VmUsVoOSPsUcM2vhohSE=;
+	s=korg; t=1730896412;
+	bh=zyapEtjt+3MRk6BcKnSUfU9Dl3zfB3LoDkG0GzLK2vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfOM0JjTk4tTDvTHokhN+t9MT6a1o+FOrS6mc54G4kEMjTMCPYwP0wxFLjUKOQlBK
-	 Hbf9IeUYw91CBpiIhEdlVFdfRsRRBVpi/Y7mrQqlbPi+Od/EY3MvQhBoUKRbru4Vkl
-	 vS1h7VMnefV1HRb3NuZDL8qc5cJNI9D0PMDLC1hg=
+	b=CQ7P8Hn7xhH080wTB1G9UxGmzi22v8o+BLF/YYmgSP0fclw4zsdtwINVXK1gytgTS
+	 SGLvbPJkTbw7aroyVx/IXxE2IwblOCeAnsRFhNXtvdSuo2HVYbPDE9fh7GOUosnq10
+	 8uom46BJV36tt5QRExq7p/nrTiBVe+dT6dDVF8LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 4.19 316/350] drm/amd: Guard against bad data for ATIF ACPI method
-Date: Wed,  6 Nov 2024 13:04:04 +0100
-Message-ID: <20241106120328.566232813@linuxfoundation.org>
+	Maxime Ripard <mripard@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 192/245] drm/tests: hdmi: Fix memory leaks in drm_display_mode_from_cea_vic()
+Date: Wed,  6 Nov 2024 13:04:05 +0100
+Message-ID: <20241106120323.972015771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
+[ Upstream commit add4163aca0d4a86e9fe4aa513865e4237db8aef ]
 
-If a BIOS provides bad data in response to an ATIF method call
-this causes a NULL pointer dereference in the caller.
+modprobe drm_hdmi_state_helper_test and then rmmod it, the following
+memory leak occurs.
 
-```
-? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
-? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
-? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
-? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
-? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
-? exc_page_fault (arch/x86/mm/fault.c:1542)
-? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
-```
+The `mode` allocated in drm_mode_duplicate() called by
+drm_display_mode_from_cea_vic() is not freed, which cause the memory leak:
 
-It has been encountered on at least one system, so guard for it.
+	unreferenced object 0xffffff80ccd18100 (size 128):
+	  comm "kunit_try_catch", pid 1851, jiffies 4295059695
+	  hex dump (first 32 bytes):
+	    57 62 00 00 80 02 90 02 f0 02 20 03 00 00 e0 01  Wb........ .....
+	    ea 01 ec 01 0d 02 00 00 0a 00 00 00 00 00 00 00  ................
+	  backtrace (crc c2f1aa95):
+	    [<000000000f10b11b>] kmemleak_alloc+0x34/0x40
+	    [<000000001cd4cf73>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<00000000f1f3cffa>] drm_mode_duplicate+0x44/0x19c
+	    [<000000008cbeef13>] drm_display_mode_from_cea_vic+0x88/0x98
+	    [<0000000019daaacf>] 0xffffffedc11ae69c
+	    [<000000000aad0f85>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000a9210bac>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<000000000a0b2e9e>] kthread+0x2e8/0x374
+	    [<00000000bd668858>] ret_from_fork+0x10/0x20
+	......
 
-Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
+Free `mode` by using drm_kunit_display_mode_from_cea_vic()
+to fix it.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4af70f19e559 ("drm/tests: Add RGB Quantization tests")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-4-ruanjinjie@huawei.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -90,6 +90,7 @@ static union acpi_object *amdgpu_atif_ca
- 					   struct acpi_buffer *params)
- {
- 	acpi_status status;
-+	union acpi_object *obj;
- 	union acpi_object atif_arg_elements[2];
- 	struct acpi_object_list atif_arg;
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-@@ -112,16 +113,24 @@ static union acpi_object *amdgpu_atif_ca
+diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+index 34ee95d41f296..294773342e710 100644
+--- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+@@ -441,7 +441,7 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
  
- 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
- 				      &buffer);
-+	obj = (union acpi_object *)buffer.pointer;
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
--	/* Fail only if calling the method fails and ATIF is supported */
-+	/* Fail if calling the method fails and ATIF is supported */
- 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
--		kfree(buffer.pointer);
-+		kfree(obj);
- 		return NULL;
- 	}
+ 	drm = &priv->drm;
+@@ -555,7 +555,7 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
  
--	return buffer.pointer;
-+	if (obj->type != ACPI_TYPE_BUFFER) {
-+		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
-+				 obj->type);
-+		kfree(obj);
-+		return NULL;
-+	}
-+
-+	return obj;
- }
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
- /**
+ 	drm = &priv->drm;
+@@ -671,7 +671,7 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	drm = &priv->drm;
+@@ -1263,7 +1263,7 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
+ 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	/*
+-- 
+2.43.0
+
 
 
 
