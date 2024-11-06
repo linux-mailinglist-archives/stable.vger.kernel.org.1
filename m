@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4169BE7FC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8779BE923
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4C5284F09
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE7B11C221BE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5781DF961;
-	Wed,  6 Nov 2024 12:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3A4198E96;
+	Wed,  6 Nov 2024 12:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRa37vD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmtylldJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A63B1DF74E;
-	Wed,  6 Nov 2024 12:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDE8171C9;
+	Wed,  6 Nov 2024 12:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895576; cv=none; b=dExskdgGoyTgjNofPAtyAwcmQmjOBf3jG17hqdNHW+gc57VfXrF6P3Fw150u+kNN4J9iTRpAv66QbBO+WIKwc/9xALiGBRfzK/XGWXhsDOwv84In5ot1Dbe2X04uWzisIaPjIrVJUmZQYg4qAKSgYhY6+1gNs7hshbASq7KG1IU=
+	t=1730896253; cv=none; b=NCMiIjN/hkwJPXPIPG3S9J5RpcVpNrtaOSMTnunqFtjAbECtTUEZreZ95x3D7w2rvQ0suqUJv7MJOgB/eT3WCRB/J6oaP0YyNQ+w5le6EkvYovQEbfkYr40fYsHXnQJ/DLjZFU+vji+cdJiwEuxQ8/IU86upF2dkBFo6FvU7iik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895576; c=relaxed/simple;
-	bh=A6suKevHJJlRbumE3Bx514/fUmEIxCerCp40N2gpqcg=;
+	s=arc-20240116; t=1730896253; c=relaxed/simple;
+	bh=SEec/FX1YQMfYorBkcVSZdYneZ9ldDQXnFtBEcFu+Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhanAWP5zBjmVeUo2+L4UxcDg5NB+ljXzaABTYrQt9dRwIvC/2GiUm1rG2Xytmb+p+hPIbqzsXWn0yVVS45K58+Ccid+bELAqQcPGecIWfjUV5EU4196LIweJsdGtgJ8KJNkDRB2i+qHrsNAP98Os6Qciw78N9x2clkH4+YvNSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRa37vD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0462C4CECD;
-	Wed,  6 Nov 2024 12:19:35 +0000 (UTC)
+	 MIME-Version; b=UMwexQBkmaL71hyCakQBZ0JbOudICrFds3e5o92PEkNevw5r0Af1VGADzwAMmulEK2SKQhhi6qEAhwMgxKdP3fhMBdYxvTjueuWrZakYRN5Jv1kojU14uaHOihIuF5uEqgRRkcUBqHcm/9DI+JCJn1yDUJOedfQ5DG2tW4jxOtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmtylldJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC798C4CECD;
+	Wed,  6 Nov 2024 12:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895576;
-	bh=A6suKevHJJlRbumE3Bx514/fUmEIxCerCp40N2gpqcg=;
+	s=korg; t=1730896253;
+	bh=SEec/FX1YQMfYorBkcVSZdYneZ9ldDQXnFtBEcFu+Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRa37vD4wX4QS6BWaRq4Hb5wr6QeLQ56Kvw/wOgH/tn0UDNjTutfrASngJifYRQgh
-	 /z9XSwv32J5SFt3lLP5qJiZ4xEcV9+B4drtx63JI7cqUs1jtPSUIBVQIoc9HPj/eHZ
-	 1VD4ptcFE++XWtPz/TKdcOFFR5MhEYPIjLO6mH54=
+	b=KmtylldJ+A61PeMKuafYyHjZ/BcO6+JRQdqMOfPZV2g3SpCiC+MzaJcgqKP/UzA1q
+	 nZ4NzlBlOmzL9zCdSryjuASkl6wLxJAt9pi/3EE3OYC9+b77sczH2f9mDLIkM8ib2+
+	 /w3spqqCjR2rukZGP7ZiBONBro9k3bg47EWO8BNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Alberto Reguero <jose.alberto.reguero@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.19 265/350] usb: xhci: Fix problem with xhci resume from suspend
-Date: Wed,  6 Nov 2024 13:03:13 +0100
-Message-ID: <20241106120327.444117390@linuxfoundation.org>
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.11 141/245] thunderbolt: Honor TMU requirements in the domain when setting TMU mode
+Date: Wed,  6 Nov 2024 13:03:14 +0100
+Message-ID: <20241106120322.700236199@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-commit d44238d8254a36249d576c96473269dbe500f5e4 upstream.
+commit 3cea8af2d1a9ae5869b47c3dabe3b20f331f3bbd upstream.
 
-I have a ASUS PN51 S mini pc that has two xhci devices. One from AMD,
-and other from ASMEDIA. The one from ASMEDIA have problems when resume
-from suspend, and keep broken until unplug the  power cord. I use this
-kernel parameter: xhci-hcd.quirks=128 and then it works ok. I make a
-path to reset only the ASMEDIA xhci.
+Currently, when configuring TMU (Time Management Unit) mode of a given
+router, we take into account only its own TMU requirements ignoring
+other routers in the domain. This is problematic if the router we are
+configuring has lower TMU requirements than what is already configured
+in the domain.
 
-Signed-off-by: Jose Alberto Reguero <jose.alberto.reguero@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240919184202.22249-1-jose.alberto.reguero@gmail.com
+In the scenario below, we have a host router with two USB4 ports: A and
+B. Port A connected to device router #1 (which supports CL states) and
+existing DisplayPort tunnel, thus, the TMU mode is HiFi uni-directional.
+
+1. Initial topology
+
+          [Host]
+         A/
+         /
+ [Device #1]
+   /
+Monitor
+
+2. Plug in device #2 (that supports CL states) to downstream port B of
+   the host router
+
+         [Host]
+        A/    B\
+        /       \
+ [Device #1]    [Device #2]
+   /
+Monitor
+
+The TMU mode on port B and port A will be configured to LowRes which is
+not what we want and will cause monitor to start flickering.
+
+To address this we first scan the domain and search for any router
+configured to HiFi uni-directional mode, and if found, configure TMU
+mode of the given router to HiFi uni-directional as well.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/thunderbolt/tb.c |   48 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -55,6 +55,7 @@
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
- #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI			0x2142
-+#define PCI_DEVICE_ID_ASMEDIA_3042_XHCI			0x3042
- #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI			0x3242
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -288,6 +288,24 @@ static void tb_increase_tmu_accuracy(str
+ 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
+ }
  
- static const char hcd_name[] = "xhci_hcd";
-@@ -272,6 +273,10 @@ static void xhci_pci_quirks(struct devic
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042A_XHCI)
- 		xhci->quirks |= XHCI_ASMEDIA_MODIFY_FLOWCONTROL;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
-+	    pdev->device == PCI_DEVICE_ID_ASMEDIA_3042_XHCI)
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
++static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
++{
++	struct tb_switch *sw = tb_to_switch(dev);
 +
- 	if (pdev->vendor == PCI_VENDOR_ID_TI && pdev->device == 0x8241)
- 		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_7;
- 
++	if (sw && tb_switch_tmu_is_enabled(sw) &&
++	    tb_switch_tmu_is_configured(sw, TB_SWITCH_TMU_MODE_HIFI_UNI))
++		return 1;
++
++	return device_for_each_child(dev, NULL,
++				     tb_switch_tmu_hifi_uni_required);
++}
++
++static bool tb_tmu_hifi_uni_required(struct tb *tb)
++{
++	return device_for_each_child(&tb->dev, NULL,
++				     tb_switch_tmu_hifi_uni_required) == 1;
++}
++
+ static int tb_enable_tmu(struct tb_switch *sw)
+ {
+ 	int ret;
+@@ -302,12 +320,30 @@ static int tb_enable_tmu(struct tb_switc
+ 	ret = tb_switch_tmu_configure(sw,
+ 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
+ 	if (ret == -EOPNOTSUPP) {
+-		if (tb_switch_clx_is_enabled(sw, TB_CL1))
+-			ret = tb_switch_tmu_configure(sw,
+-					TB_SWITCH_TMU_MODE_LOWRES);
+-		else
+-			ret = tb_switch_tmu_configure(sw,
+-					TB_SWITCH_TMU_MODE_HIFI_BI);
++		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
++			/*
++			 * Figure out uni-directional HiFi TMU requirements
++			 * currently in the domain. If there are no
++			 * uni-directional HiFi requirements we can put the TMU
++			 * into LowRes mode.
++			 *
++			 * Deliberately skip bi-directional HiFi links
++			 * as these work independently of other links
++			 * (and they do not allow any CL states anyway).
++			 */
++			if (tb_tmu_hifi_uni_required(sw->tb))
++				ret = tb_switch_tmu_configure(sw,
++						TB_SWITCH_TMU_MODE_HIFI_UNI);
++			else
++				ret = tb_switch_tmu_configure(sw,
++						TB_SWITCH_TMU_MODE_LOWRES);
++		} else {
++			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
++		}
++
++		/* If not supported, fallback to bi-directional HiFi */
++		if (ret == -EOPNOTSUPP)
++			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
+ 	}
+ 	if (ret)
+ 		return ret;
 
 
 
