@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-90377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EE89BE801
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6329E9BE926
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A47284AC4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7B31F226F4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0461DF72F;
-	Wed,  6 Nov 2024 12:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D41D5AB5;
+	Wed,  6 Nov 2024 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHjRK1zI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXWrV82t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FD71DF257;
-	Wed,  6 Nov 2024 12:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C24207F;
+	Wed,  6 Nov 2024 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895591; cv=none; b=QkSuicChnwZwkEosBsYLFa8DkUk0i7e79FtikoAQtF+uC36VfCcQrIIIX5ZeHq+x7oUZQnJGK5uKKh3g1PUrihq9LDG+UrNlwX55B8vDUZlSlH9F6eSVMKrNUBOoyo5pQnL5Vgj/+ytXu7ctP+4BL+xZUlysUgpAf1Cz8Zp3C/0=
+	t=1730896262; cv=none; b=SNNDYodOZglYxxgVF8M0RAme/AeSbyfMNz2GGm3NdjQie1dZtiDYqKaIJyCA/XVPE3LE/hUXIRDvXqbmastK92RXb5p9ZUO7Y7t5sXkFULWwXNhvhKML28zJqcZ6bhp8zdJQp8hTkTx4WHZ/aXf9j79CDYCGRoh8WZWtUwkRMY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895591; c=relaxed/simple;
-	bh=nnTwbjq2WoNtL3F623X75mpY7wFmXo1nV+Uog7RXt1M=;
+	s=arc-20240116; t=1730896262; c=relaxed/simple;
+	bh=4Lqv67WK/agUJU9p1dm/pMwrrQRdHu/UIrZ3hQsQIGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOflyUepz/h02kEeS80fcRxZT8r5w24F3C0jdAMjtDEg67czVQ8nry2mlsoAhgG0RzHmAjXz26g+aIvw5OYY0MaOHw1IIUQKuPYcRqdca4FWP2xqs9HvUztwpW5ZUD+EQ81vspoIMm8FPAT0/7dD59bbkdR/HiEXQOLbnWWyKGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHjRK1zI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21668C4CECD;
-	Wed,  6 Nov 2024 12:19:50 +0000 (UTC)
+	 MIME-Version; b=T4SO6YAI4IbWVfy9XNdAlqQJ0+ScH6o/ZQw/Rb+r1+BB6SFxZVJASjfopLjVeZviKjGs7dswlzEAFsPQvee5ebRe1gPcaTE/ohzgDCwIER53eC5hT7O4lSJ6+dNUks0aESkHFAc4J4vrxtYNze6orvR0D2pLa8Bs7gaQpRKOtho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXWrV82t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82BBC4CECD;
+	Wed,  6 Nov 2024 12:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895591;
-	bh=nnTwbjq2WoNtL3F623X75mpY7wFmXo1nV+Uog7RXt1M=;
+	s=korg; t=1730896262;
+	bh=4Lqv67WK/agUJU9p1dm/pMwrrQRdHu/UIrZ3hQsQIGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHjRK1zI5OEECz+haR/hgHruEz/vpPoWCQPl5rZcHKz/oUk/8ILZ11GGaM78TnkTI
-	 ei4yaoDRLUjcdrCN6QzwwdK6yuddzTJdOUSEB0J/vxZLKhY6L3B6w99LCeQczgCSvg
-	 uNxMrdvLPSGnpKsQhR0ZhChLwy4kVAKHMrzaSGIk=
+	b=PXWrV82tp5Ub7hXVWuJmj9pRlsX5CKHcnt08onUp9E7AbzsYsyQpu0xpIPnFNMn+M
+	 1ArYhekPbdRBBR+sElXLMS4bgmCGc99IFZDWD7OLP4XSHL83bL4GPGmDgA3G1+rDdl
+	 vNAo8HQ5lhCTTt5VysSzqH+LKhrk+yQVyZ4mhcxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 4.19 269/350] arm64: probes: Remove broken LDR (literal) uprobe support
+	Gregory Price <gourry@gourry.net>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alejandro Lucero <alucerop@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.11 144/245] cxl/port: Fix CXL port initialization order when the subsystem is built-in
 Date: Wed,  6 Nov 2024 13:03:17 +0100
-Message-ID: <20241106120327.536747119@linuxfoundation.org>
+Message-ID: <20241106120322.771576419@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +69,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
+commit 6575b268157f37929948a8d1f3bafb3d7c055bc1 upstream.
 
-The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
-unsafe to use for uprobes. Both functions were originally written for
-use with kprobes, and access memory with plain C accesses. When uprobes
-was added, these were reused unmodified even though they cannot safely
-access user memory.
+When the CXL subsystem is built-in the module init order is determined
+by Makefile order. That order violates expectations. The expectation is
+that cxl_acpi and cxl_mem can race to attach. If cxl_acpi wins the race,
+cxl_mem will find the enabled CXL root ports it needs. If cxl_acpi loses
+the race it will retrigger cxl_mem to attach via cxl_bus_rescan(). That
+flow only works if cxl_acpi can assume ports are enabled immediately
+upon cxl_acpi_probe() return. That in turn can only happen in the
+CONFIG_CXL_ACPI=y case if the cxl_port driver is registered before
+cxl_acpi_probe() runs.
 
-There are three key problems:
+Fix up the order to prevent initialization failures. Ensure that
+cxl_port is built-in when cxl_acpi is also built-in, arrange for
+Makefile order to resolve the subsys_initcall() order of cxl_port and
+cxl_acpi, and arrange for Makefile order to resolve the
+device_initcall() (module_init()) order of the remaining objects.
 
-1) The plain C accesses do not have corresponding extable entries, and
-   thus if they encounter a fault the kernel will treat these as
-   unintentional accesses to user memory, resulting in a BUG() which
-   will kill the kernel thread, and likely lead to further issues (e.g.
-   lockup or panic()).
+As for what contributed to this not being found earlier, the CXL
+regression environment, cxl_test, builds all CXL functionality as a
+module to allow to symbol mocking and other dynamic reload tests.  As a
+result there is no regression coverage for the built-in case.
 
-2) The plain C accesses are subject to HW PAN and SW PAN, and so when
-   either is in use, any attempt to simulate an access to user memory
-   will fault. Thus neither simulate_ldr_literal() nor
-   simulate_ldrsw_literal() can do anything useful when simulating a
-   user instruction on any system with HW PAN or SW PAN.
-
-3) The plain C accesses are privileged, as they run in kernel context,
-   and in practice can access a small range of kernel virtual addresses.
-   The instructions they simulate have a range of +/-1MiB, and since the
-   simulated instructions must itself be a user instructions in the
-   TTBR0 address range, these can address the final 1MiB of the TTBR1
-   acddress range by wrapping downwards from an address in the first
-   1MiB of the TTBR0 address range.
-
-   In contemporary kernels the last 8MiB of TTBR1 address range is
-   reserved, and accesses to this will always fault, meaning this is no
-   worse than (1).
-
-   Historically, it was theoretically possible for the linear map or
-   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
-   in practice this is extremely unlikely to occur as this would
-   require either:
-
-   * Having enough physical memory to fill the entire linear map all the
-     way to the final 1MiB of the TTBR1 address range.
-
-   * Getting unlucky with KASLR randomization of the linear map such
-     that the populated region happens to overlap with the last 1MiB of
-     the TTBR address range.
-
-   ... and in either case if we were to spill into the final page there
-   would be larger problems as the final page would alias with error
-   pointers.
-
-Practically speaking, (1) and (2) are the big issues. Given there have
-been no reports of problems since the broken code was introduced, it
-appears that no-one is relying on probing these instructions with
-uprobes.
-
-Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
-(literal), limiting the use of simulate_ldr_literal() and
-simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
-(literal) and LDRSW (literal) will be rejected as
-arm_probe_decode_insn() will return INSN_REJECTED. In future we can
-consider introducing working uprobes support for these instructions, but
-this will require more significant work.
-
-Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
+Reported-by: Gregory Price <gourry@gourry.net>
+Closes: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
+Tested-by: Gregory Price <gourry@gourry.net>
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Tested-by: Alejandro Lucero <alucerop@amd.com>
+Reviewed-by: Alejandro Lucero <alucerop@amd.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/172988474904.476062.7961350937442459266.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/cxl/Kconfig  |    1 +
+ drivers/cxl/Makefile |   20 ++++++++++++++------
+ drivers/cxl/port.c   |   17 ++++++++++++++++-
+ 3 files changed, 31 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/kernel/probes/decode-insn.c
-+++ b/arch/arm64/kernel/probes/decode-insn.c
-@@ -104,10 +104,6 @@ arm_probe_decode_insn(probe_opcode_t ins
- 	    aarch64_insn_is_blr(insn) ||
- 	    aarch64_insn_is_ret(insn)) {
- 		api->handler = simulate_br_blr_ret;
--	} else if (aarch64_insn_is_ldr_lit(insn)) {
--		api->handler = simulate_ldr_literal;
--	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
--		api->handler = simulate_ldrsw_literal;
- 	} else {
- 		/*
- 		 * Instruction cannot be stepped out-of-line and we don't
-@@ -145,6 +141,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
- 	probe_opcode_t insn = le32_to_cpu(*addr);
- 	probe_opcode_t *scan_end = NULL;
- 	unsigned long size = 0, offset = 0;
-+	struct arch_probe_insn *api = &asi->api;
+--- a/drivers/cxl/Kconfig
++++ b/drivers/cxl/Kconfig
+@@ -60,6 +60,7 @@ config CXL_ACPI
+ 	default CXL_BUS
+ 	select ACPI_TABLE_LIB
+ 	select ACPI_HMAT
++	select CXL_PORT
+ 	help
+ 	  Enable support for host managed device memory (HDM) resources
+ 	  published by a platform's ACPI CXL memory layout description.  See
+--- a/drivers/cxl/Makefile
++++ b/drivers/cxl/Makefile
+@@ -1,13 +1,21 @@
+ # SPDX-License-Identifier: GPL-2.0
 +
-+	if (aarch64_insn_is_ldr_lit(insn)) {
-+		api->handler = simulate_ldr_literal;
-+		decoded = INSN_GOOD_NO_SLOT;
-+	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
-+		api->handler = simulate_ldrsw_literal;
-+		decoded = INSN_GOOD_NO_SLOT;
-+	} else {
-+		decoded = arm_probe_decode_insn(insn, &asi->api);
-+	}
++# Order is important here for the built-in case:
++# - 'core' first for fundamental init
++# - 'port' before platform root drivers like 'acpi' so that CXL-root ports
++#   are immediately enabled
++# - 'mem' and 'pmem' before endpoint drivers so that memdevs are
++#   immediately enabled
++# - 'pci' last, also mirrors the hardware enumeration hierarchy
+ obj-y += core/
+-obj-$(CONFIG_CXL_PCI) += cxl_pci.o
+-obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++obj-$(CONFIG_CXL_PORT) += cxl_port.o
+ obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
+ obj-$(CONFIG_CXL_PMEM) += cxl_pmem.o
+-obj-$(CONFIG_CXL_PORT) += cxl_port.o
++obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++obj-$(CONFIG_CXL_PCI) += cxl_pci.o
  
- 	/*
- 	 * If there's a symbol defined in front of and near enough to
-@@ -162,7 +169,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
- 		else
- 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
- 	}
--	decoded = arm_probe_decode_insn(insn, &asi->api);
+-cxl_mem-y := mem.o
+-cxl_pci-y := pci.o
++cxl_port-y := port.o
+ cxl_acpi-y := acpi.o
+ cxl_pmem-y := pmem.o security.o
+-cxl_port-y := port.o
++cxl_mem-y := mem.o
++cxl_pci-y := pci.o
+--- a/drivers/cxl/port.c
++++ b/drivers/cxl/port.c
+@@ -208,7 +208,22 @@ static struct cxl_driver cxl_port_driver
+ 	},
+ };
  
- 	if (decoded != INSN_REJECTED && scan_end)
- 		if (is_probed_address_atomic(addr - 1, scan_end))
+-module_cxl_driver(cxl_port_driver);
++static int __init cxl_port_init(void)
++{
++	return cxl_driver_register(&cxl_port_driver);
++}
++/*
++ * Be ready to immediately enable ports emitted by the platform CXL root
++ * (e.g. cxl_acpi) when CONFIG_CXL_PORT=y.
++ */
++subsys_initcall(cxl_port_init);
++
++static void __exit cxl_port_exit(void)
++{
++	cxl_driver_unregister(&cxl_port_driver);
++}
++module_exit(cxl_port_exit);
++
+ MODULE_DESCRIPTION("CXL: Port enumeration and services");
+ MODULE_LICENSE("GPL v2");
+ MODULE_IMPORT_NS(CXL);
 
 
 
