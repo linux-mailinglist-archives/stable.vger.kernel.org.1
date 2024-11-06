@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-90269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD449BE776
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AE59BE896
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB6D1C23513
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A44A2833D7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026791DEFF5;
-	Wed,  6 Nov 2024 12:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF5B1DF99B;
+	Wed,  6 Nov 2024 12:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VC2WymeQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Jxu4+LL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1B51DF24E;
-	Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192DE1DED58;
+	Wed,  6 Nov 2024 12:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895273; cv=none; b=kFN0wv4105/gS69gUZVcOHQ8OL6p0ZhkQ8HDmrox8hF2oMKFUlfKqwmWdI0/e7mzxoBeMXVynsbj47Hhh8vFBwvzWjZj+TK+gvi0AIDbZQ8uXD1KoWkDXpkzOgBa0wyezWA30EDNJn4Jl9IGCTiiui9yDOcIv37XNWhQluXHi+E=
+	t=1730895945; cv=none; b=jdSO0cO1W8h1qSSVtPqDaeHKplTIM3gqMm7CsVdqeXbaaMet0pSG8nGL2LERdHvabvozHRFWdgAcLwJQiXYkJFmxC2SmNaWuYeNpwS5HbMKvFXFe3ZQqkMZq8cvOe+TG5fweNcNE9IdYc8PQVMNhg0RbPa+JukFc+v1Ka8PkEIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895273; c=relaxed/simple;
-	bh=hk6N5AncAHChmPCXGRiHstbr9gXkj6ajwyO/npDOX8o=;
+	s=arc-20240116; t=1730895945; c=relaxed/simple;
+	bh=6tGvwHdsKvt7EAAgihkQ6lwn38Z6OaYxzTGDwyFMAZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blbXUcD08cyopDEFLGdOGB0wed4uWpa8jiyFCS45mMF+jGFepriMjYVui1GgSiIlJivbUa311MVisgR2D/v2BMj+jzEaFcnKnZQBwE1UMxbGPIL1IsiPFAkRi0EF+dKYD710+uwmFElkwcT+lv/IN7UoATRfXiLw6eNmV4xCrb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VC2WymeQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35695C4CECD;
-	Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
+	 MIME-Version; b=mDFBe5eNYAGDatKeGgQlr2p8ojJn0rINMSXv078s2X1jE8EhCdnWxwYk907wfABuMEvslUneq/V+QRkLQHt/wB9f2EdDxHNeX9QCFo4YznP2kH08noGYbw2tq8Uy92BOa0p7hVIrT8iBnorcY7z2fa5NZ10bDtsq7ceY977FN9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Jxu4+LL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9323CC4CECD;
+	Wed,  6 Nov 2024 12:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895273;
-	bh=hk6N5AncAHChmPCXGRiHstbr9gXkj6ajwyO/npDOX8o=;
+	s=korg; t=1730895945;
+	bh=6tGvwHdsKvt7EAAgihkQ6lwn38Z6OaYxzTGDwyFMAZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VC2WymeQ+05uZmokCbC/AkxzhAvv3LuAI6SL8s0gLRLDV3OH+xQEuF9YB1mhlk9wC
-	 WOz1lobBjqCxSU5ZZHPOSagRKYLJp+ZfsJ4rKsUd7lauTnAdmq9yP3LO3szSwaqxKv
-	 FE+dWW4JKq60ZdjyvncfeKOyxllkqbtoom4c6bzw=
+	b=2Jxu4+LLEN/ZXxCTlxkJ38pIdOmFq39zYoa8JMMdUXqO4dAZWyPsbdOQ4TmXcq5ew
+	 Ny8vhRu2FhrTiyYqteMGp+ChLWuuTci0hR2BnhaDGtvPnlwD+6CepY3k6YTWqC2QKF
+	 CO2hIbN0QEY4ZgvqVmdm9TQP6+JWXnQhoEVS1z+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Pau Espin Pedrol <pespin@sysmocom.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Oliver Smith <osmith@sysmocom.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 161/350] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
+Subject: [PATCH 6.11 036/245] gtp: allow -1 to be specified as file description from userspace
 Date: Wed,  6 Nov 2024 13:01:29 +0100
-Message-ID: <20241106120324.897049771@linuxfoundation.org>
+Message-ID: <20241106120320.113403467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
+[ Upstream commit 7515e37bce5c428a56a9b04ea7e96b3f53f17150 ]
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
+Existing user space applications maintained by the Osmocom project are
+breaking since a recent fix that addresses incorrect error checking.
 
-With this, fix the following warning:
+Restore operation for user space programs that specify -1 as file
+descriptor to skip GTPv0 or GTPv1 only sockets.
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
+Fixes: defd8b3c37b0 ("gtp: fix a potential NULL pointer dereference")
+Reported-by: Pau Espin Pedrol <pespin@sysmocom.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Tested-by: Oliver Smith <osmith@sysmocom.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241022144825.66740-1-pablo@netfilter.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/gtp.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 3e3134bcc2b06..bfa482cf464ff 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1590,7 +1590,7 @@ struct host_cmd_ds_802_11_scan_rsp {
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 2e94d10348cce..4cb925321785e 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1702,20 +1702,24 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
+ 		return -EINVAL;
  
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
+ 	if (data[IFLA_GTP_FD0]) {
+-		u32 fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
++		int fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
  
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 4f0e78ae3dbd0..0cbdd5a930d83 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2570,8 +2570,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
+-		sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
+-		if (IS_ERR(sk0))
+-			return PTR_ERR(sk0);
++		if (fd0 >= 0) {
++			sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
++			if (IS_ERR(sk0))
++				return PTR_ERR(sk0);
++		}
+ 	}
  
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
+ 	if (data[IFLA_GTP_FD1]) {
+-		u32 fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
++		int fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
  
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
+-		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
+-		if (IS_ERR(sk1u)) {
+-			gtp_encap_disable_sock(sk0);
+-			return PTR_ERR(sk1u);
++		if (fd1 >= 0) {
++			sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
++			if (IS_ERR(sk1u)) {
++				gtp_encap_disable_sock(sk0);
++				return PTR_ERR(sk1u);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
