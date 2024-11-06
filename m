@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA7C9BECC1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E139BE6DC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CABDB1F24F5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A0E1F280BA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FFE1EBA0A;
-	Wed,  6 Nov 2024 12:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D387F1DF25D;
+	Wed,  6 Nov 2024 12:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOn8EXRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHP5hEvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D501E7C1A;
-	Wed,  6 Nov 2024 12:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900AA1D2784;
+	Wed,  6 Nov 2024 12:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897921; cv=none; b=ACEBKQ4gvZsmp8F9363Ct7XnuIqNzn1YPT9ySu/qkGRd4DuXYagNsrLDG1Wd6w92ke4NvomEhrcaRBsud7uMUAtoo+9juwRNO17aDIhZiS0nQF2Yavlhynqyeh7Q2AnKw9hn3iN3RdwtjJrM4q7owg5byTvhA3Qk3ck0RhymFiE=
+	t=1730894876; cv=none; b=fCwxVuRZjzggZoMvz63BVPOobfBDaqcMmmVf1k4Uyiys1PPsh0x5qVrG8q+Q3mppIpy2yyLzgz9daw3DK2d1O+1YUtEOtd8qfZ5Mn5wvlFqwmY1JuY+zoHYdfaFYSxXQPpsCtDZCFnaV+0y9jtr2d4JXNKjcV1MxRDYQH3VFR+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897921; c=relaxed/simple;
-	bh=HmEOgn/y4LNZ2eNudhID1LOQTeKNCfpM9DTv+5BwDek=;
+	s=arc-20240116; t=1730894876; c=relaxed/simple;
+	bh=EKTvmfKzGPFAgAAn9IAmhsD/YEVC4iKJqcwWCXgmfPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTEVJJKQe4NvLSomKW1Pp5ybIn5y7SaygHqaZmmXqPMqJcFTPpPn1WzvUqqWUB2E7/I2s84i/Ou2leM6AIg4HAJ26wSrLZ6iJBIinPLqCqYLf5VPn7lmYwXkmkOOtIlN+IX4UnBDHeWaL2NiNvXg5MFiMV30xRtFfpj8IS6vSyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOn8EXRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4C0C4CECD;
-	Wed,  6 Nov 2024 12:58:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NgDI3YGb7OI+UPZGOmd0RN+P7+ZkH2xn6uIPZcdyNsPfpFSUal6kQoAPcQAxP6aow0riQZYRFFt5KcZ+N4z9S/EBYXR6e5dKestuBJWruF32+OrdIdlH73AKTlIxCJRYUKfNTbzhFkCA5GtlOSCEdKc93nJlk0FsYxKLJUjGaxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHP5hEvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5333C4CECD;
+	Wed,  6 Nov 2024 12:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897921;
-	bh=HmEOgn/y4LNZ2eNudhID1LOQTeKNCfpM9DTv+5BwDek=;
+	s=korg; t=1730894876;
+	bh=EKTvmfKzGPFAgAAn9IAmhsD/YEVC4iKJqcwWCXgmfPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOn8EXRdstyvDKn4AvzWmpVX+uq/HQJEAXGR5Z7APAxjvi95AhwDw7g/DIHWqIyU5
-	 uQcNyqqfyLQR0QJ7CD1WBUKO+Bofp49gLvSuiIxVvg7yoy0QKytoqAvk4Rtd7ml4pb
-	 4GnstVyyrDRm0OVgGfKKQbVUsbe58G/FADCQNYus=
+	b=sHP5hEvGKYWBKWAiZXnFGD3eS8EdSYQudpAgAwTj12Uuc3zp8igyhzgpd+TOw5cNl
+	 iIIRCT1Pln4MLvW/5dWjJK8vqX8IkFo6Es2cygKu1Mi9uuiOrjYIgtWT36+D7qAEl5
+	 9jSzerS1u6jJtvmifF+08js7p5I51dd+A9Y23th0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Liu <liuyuntao12@huawei.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Minjie Du <duminjie@vivo.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 063/462] hwmon: (ntc_thermistor) fix module autoloading
-Date: Wed,  6 Nov 2024 12:59:16 +0100
-Message-ID: <20241106120333.070413193@linuxfoundation.org>
+Subject: [PATCH 4.19 029/350] wifi: ath9k: fix parameter check in ath9k_init_debug()
+Date: Wed,  6 Nov 2024 12:59:17 +0100
+Message-ID: <20241106120321.596654559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Liu <liuyuntao12@huawei.com>
+From: Minjie Du <duminjie@vivo.com>
 
-[ Upstream commit b6964d66a07a9003868e428a956949e17ab44d7e ]
+[ Upstream commit 6edb4ba6fb5b946d112259f54f4657f82eb71e89 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from of_device_id table.
+Make IS_ERR() judge the debugfs_create_dir() function return
+in ath9k_init_debug()
 
-Fixes: 9e8269de100d ("hwmon: (ntc_thermistor) Add DT with IIO support to NTC thermistor driver")
-Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
-Message-ID: <20240815083021.756134-1-liuyuntao12@huawei.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230712114740.13226-1-duminjie@vivo.com
+Stable-dep-of: f6ffe7f01847 ("wifi: ath9k: Remove error checks when creating debugfs entries")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/ntc_thermistor.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath9k/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
-index 3aad62a0e6619..7e20beb8b11f3 100644
---- a/drivers/hwmon/ntc_thermistor.c
-+++ b/drivers/hwmon/ntc_thermistor.c
-@@ -58,6 +58,7 @@ static const struct platform_device_id ntc_thermistor_id[] = {
- 	[NTC_NCP21WB473]      = { "ncp21wb473",      TYPE_NCPXXWB473 },
- 	[NTC_LAST]            = { },
- };
-+MODULE_DEVICE_TABLE(platform, ntc_thermistor_id);
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index e0a4e3fa87305..1700d23f0aa9e 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1384,7 +1384,7 @@ int ath9k_init_debug(struct ath_hw *ah)
  
- /*
-  * A compensation table should be sorted by the values of .ohm
+ 	sc->debug.debugfs_phy = debugfs_create_dir("ath9k",
+ 						   sc->hw->wiphy->debugfsdir);
+-	if (!sc->debug.debugfs_phy)
++	if (IS_ERR(sc->debug.debugfs_phy))
+ 		return -ENOMEM;
+ 
+ #ifdef CONFIG_ATH_DEBUG
 -- 
 2.43.0
 
