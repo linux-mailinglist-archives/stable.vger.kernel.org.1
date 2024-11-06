@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-91135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243639BECA5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DF39BE6C7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7D11F25968
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 116ADB22719
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7021F585D;
-	Wed,  6 Nov 2024 12:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554BE1DF249;
+	Wed,  6 Nov 2024 12:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEAuGQVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="su65ojQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA3E1F5857;
-	Wed,  6 Nov 2024 12:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE41DF24C;
+	Wed,  6 Nov 2024 12:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897841; cv=none; b=qgtRxxq1v2GYYSDwYPJYCDvtqpbgu9Y1pc0kTS4vD78nQ6/F75DKSqOzKYnP0KLGhP2fKOvlalNJ1R/fFQidWnd1mvlyahbIIOORAY90VVAkdvKDzTa6n6NpSVQR8u0GuPCIvV7GRU4HWUHwnn6bXDlxCsaJCBvF+NFd9uEERYk=
+	t=1730894819; cv=none; b=SaSBRBbrJAF23pM+OT6uAP3jJRJEPgGb21Q+L5vUzJW9sMPlwYHt1l5UFxuSovYgt9+Y/6jUmYTRVAYosoLyvatq4cVUTlaaZ9A1dmZnI0HlIEvfQTxkUch9fSrZrEzJJMeFWcU5bcDuc9lWd/cYxdIXDeKlETN6cSKizrZhxb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897841; c=relaxed/simple;
-	bh=5Hiz9Kp6CaV0akCQvgq0VVi36foHCY2A/IjG4YogGg0=;
+	s=arc-20240116; t=1730894819; c=relaxed/simple;
+	bh=rmjTWp5nKqx4/qbbum5o3KE3M/YC87u9xLEHvhMJSSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/B4TUh1IPdwFhgW1AhFPypWuNZBAFn2FyC4uD4Xy5MJiSZfxVMaxolOr8sHplvH3g5fXKHFwLnyOXSZTg0V9hwQHdrSxb59SU0nLT1+DmR/cv5lwUymL5h+FnZi9EM9XKB5z87ZWJPsdgLhlk3zWVi3ZsGWOuJIGo0yBwLmQqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEAuGQVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB2FC4CECD;
-	Wed,  6 Nov 2024 12:57:21 +0000 (UTC)
+	 MIME-Version; b=Ro+6C0nhQcq3a4uoKvqQwTAY9zBgpSklYAXGbjmiBcHELosoL7RuQ2mPl51R3ik/Km4YQX3I9o12mJS0/RbWcPtPCreGDziuhnim9+hxFKPkG9Nvz60IwGDLwgIQqckdXf/SoxyzVSrPcNqxB5zkEpfo/pnv8v9ZHIjCKIP/gUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=su65ojQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F96EC4CECD;
+	Wed,  6 Nov 2024 12:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897841;
-	bh=5Hiz9Kp6CaV0akCQvgq0VVi36foHCY2A/IjG4YogGg0=;
+	s=korg; t=1730894818;
+	bh=rmjTWp5nKqx4/qbbum5o3KE3M/YC87u9xLEHvhMJSSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEAuGQVXC53a4dFTc2XTRTYO52RZorROmAafOJPebAQxotswLqWqzGLfIUeWr8mc+
-	 3w6FFraVKRUmDdaYyUZj/MkpjrnIJNzrDyUtSsRJrb0QaKkJM5dxVIsbKd8kHK57tJ
-	 DmEK8Hm6LGlc0hutldDo/LttDbXztlnQizLxrqmI=
+	b=su65ojQFABFl5wTmZQHH4CfVb0k2w+mxALO/mwHTRiDqYXZSi6hy/itgQ0EsMfMKS
+	 IT2HrM777u//znjTtKlSIe/FtDLdCJCM9aBaBNRaU+esIEtMrFZFXq3yHoujEaRndX
+	 pmIPRvbbQDCZ0eyEbfL+W0uzKD/GNTYCG3b/JUwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olaf Hering <olaf@aepfle.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/462] mount: handle OOM on mnt_warn_timestamp_expiry
+Subject: [PATCH 4.19 003/350] staging: iio: frequency: ad9834: Validate frequency parameter value
 Date: Wed,  6 Nov 2024 12:58:51 +0100
-Message-ID: <20241106120332.463095233@linuxfoundation.org>
+Message-ID: <20241106120320.952383016@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olaf Hering <olaf@aepfle.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 4bcda1eaf184e308f07f9c61d3a535f9ce477ce8 ]
+[ Upstream commit b48aa991758999d4e8f9296c5bbe388f293ef465 ]
 
-If no page could be allocated, an error pointer was used as format
-string in pr_warn.
+In ad9834_write_frequency() clk_get_rate() can return 0. In such case
+ad9834_calc_freqreg() call will lead to division by zero. Checking
+'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
+ad9834_write_frequency() is called from ad9834_write(), where fout is
+taken from text buffer, which can contain any value.
 
-Rearrange the code to return early in case of OOM. Also add a check
-for the return value of d_path.
+Modify parameters checking.
 
-Fixes: f8b92ba67c5d ("mount: Add mount warning for impending timestamp expiry")
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Link: https://lore.kernel.org/r/20240730085856.32385-1-olaf@aepfle.de
-[brauner: rewrite commit and commit message]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/staging/iio/frequency/ad9834.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index f1c0e0a705621..281f08eaba5b9 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2494,8 +2494,15 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
- 	if (!__mnt_is_readonly(mnt) &&
- 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
- 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
--		char *buf = (char *)__get_free_page(GFP_KERNEL);
--		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
-+		char *buf, *mntpath;
-+
-+		buf = (char *)__get_free_page(GFP_KERNEL);
-+		if (buf)
-+			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
-+		else
-+			mntpath = ERR_PTR(-ENOMEM);
-+		if (IS_ERR(mntpath))
-+			mntpath = "(unknown)";
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index 5e98ee5dfbdc..3eb089dc220e 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -116,7 +116,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
  
- 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
- 			sb->s_type->name,
-@@ -2503,8 +2510,9 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
- 			mntpath, &sb->s_time_max,
- 			(unsigned long long)sb->s_time_max);
+ 	clk_freq = clk_get_rate(st->mclk);
  
--		free_page((unsigned long)buf);
- 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
-+		if (buf)
-+			free_page((unsigned long)buf);
- 	}
- }
+-	if (fout > (clk_freq / 2))
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
  
+ 	regval = ad9834_calc_freqreg(clk_freq, fout);
 -- 
 2.43.0
 
