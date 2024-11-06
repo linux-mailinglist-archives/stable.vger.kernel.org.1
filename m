@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE94E9BE8DC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085EA9BE7A7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C5C2831DF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1DED2824A5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BD51DF995;
-	Wed,  6 Nov 2024 12:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B7F1DF24A;
+	Wed,  6 Nov 2024 12:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QngcRAEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OL06HnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6F51DF986;
-	Wed,  6 Nov 2024 12:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE101DED40;
+	Wed,  6 Nov 2024 12:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896077; cv=none; b=DlKE9t2KzOFXa9Ghu3Fz4AknGvGZ6/mUIJ7WKxh00dXyAfiz+aGbTI3ZThaUiByMkma7f+mEDuIBlF1q+Pm52NZsBmzAWuNtBRnanVNJjzp+JzGqtgkcIXq+La6BYiOZIpdfdQHzKQcrLOt9jlaaITqKK/IZAxsutpeH5g8wbiI=
+	t=1730895381; cv=none; b=fh1TmFmc/a9/vy8wL8TkB+SQeT5RYIsOcPay1s9IAZZA9zPzR5ow+BWeYbsRsgN/IupcMeGqrK1xiZJDSFbd+FqB9QoXjXq7yyUReLWObvP5Nkc2uszEMkVbAzJ6MUcQ5jWszT30bPTab/2hLTEG8oGmp6mzYARsJ7zEuNe4rew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896077; c=relaxed/simple;
-	bh=Xz43xTj29Rl+ZVsgSUjK2omOlA09yI7wQSDpkrTIelY=;
+	s=arc-20240116; t=1730895381; c=relaxed/simple;
+	bh=QFeJ1y0i9nX7xFpPGULBRW+knr1Bk9R0KE/CGE4ISc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXdY9iiNHsoZLb9ESEwF1TAhs/P7doMeImY3ynrzQBNs/N3o+ozxryCrduCK52BVtxPkM2xk9VRaScjz/gqTZrZDcpyxF8pq7i2cFvRl6wwVh7VHeNRt//GvdY9GR/CvkkRkWBy3N+iK5GRNJXrIstxiQghclTJ9r1F9B7A0Joc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QngcRAEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E846AC4CECD;
-	Wed,  6 Nov 2024 12:27:56 +0000 (UTC)
+	 MIME-Version; b=CCFTMYBqbowyp5BzXmwETxrJZwNJH/ympkp2UJ+XQyPvFUnr6tzIDjodGhbdIwWzxGvxRINd6loXnOYVkXQvoWcp/+AalAChV22RGpp7ZAy6bpcE4rSlQWIBYas5bmkAUJmNfaCvOGOFbOEKb09E1aOcYlmDpxZyZaTGFM4V6go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OL06HnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A65BC4CECD;
+	Wed,  6 Nov 2024 12:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896077;
-	bh=Xz43xTj29Rl+ZVsgSUjK2omOlA09yI7wQSDpkrTIelY=;
+	s=korg; t=1730895379;
+	bh=QFeJ1y0i9nX7xFpPGULBRW+knr1Bk9R0KE/CGE4ISc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QngcRAECFxckDlnEijA5SoE7qpW1Z0IBqNYuRoQrl+AEonJeMIFYHETYuUmQtcShR
-	 lTqSHOw/0lDVd+ExrcVRbattVfwqnU2de4fL69j1hAQn7kSKym0V2UhiESqo/jUKmL
-	 a4ekaz7RHnR/0UppWo7YjrAMqb66qeTLkmWR+mBM=
+	b=2OL06HnF+Kn3KM6L7K1Xn74kECAhX/1tYPyY8ehOomWlPGDRJyOl97vGV64w2E/Pe
+	 XD7mKcxT4wslNyHsDOc0+Q6nCvbX2KHt7FBnvE0+D3hSoX0F7/BmTl1AArhNeqH7Z/
+	 iW8MFIfemqCGc9KjN7oMopoLShaOC54YoQ1IWsOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
+	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 046/245] bpf: Free dynamically allocated bits in bpf_iter_bits_destroy()
+Subject: [PATCH 4.19 171/350] jfs: Fix uninit-value access of new_ea in ea_buffer
 Date: Wed,  6 Nov 2024 13:01:39 +0100
-Message-ID: <20241106120320.360706570@linuxfoundation.org>
+Message-ID: <20241106120325.149888076@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit 101ccfbabf4738041273ce64e2b116cf440dea13 ]
+[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
 
-bpf_iter_bits_destroy() uses "kit->nr_bits <= 64" to check whether the
-bits are dynamically allocated. However, the check is incorrect and may
-cause a kmemleak as shown below:
+syzbot reports that lzo1x_1_do_compress is using uninit-value:
 
-unreferenced object 0xffff88812628c8c0 (size 32):
-  comm "swapper/0", pid 1, jiffies 4294727320
-  hex dump (first 32 bytes):
-	b0 c1 55 f5 81 88 ff ff f0 f0 f0 f0 f0 f0 f0 f0  ..U...........
-	f0 f0 f0 f0 f0 f0 f0 f0 00 00 00 00 00 00 00 00  ..............
-  backtrace (crc 781e32cc):
-	[<00000000c452b4ab>] kmemleak_alloc+0x4b/0x80
-	[<0000000004e09f80>] __kmalloc_node_noprof+0x480/0x5c0
-	[<00000000597124d6>] __alloc.isra.0+0x89/0xb0
-	[<000000004ebfffcd>] alloc_bulk+0x2af/0x720
-	[<00000000d9c10145>] prefill_mem_cache+0x7f/0xb0
-	[<00000000ff9738ff>] bpf_mem_alloc_init+0x3e2/0x610
-	[<000000008b616eac>] bpf_global_ma_init+0x19/0x30
-	[<00000000fc473efc>] do_one_initcall+0xd3/0x3c0
-	[<00000000ec81498c>] kernel_init_freeable+0x66a/0x940
-	[<00000000b119f72f>] kernel_init+0x20/0x160
-	[<00000000f11ac9a7>] ret_from_fork+0x3c/0x70
-	[<0000000004671da4>] ret_from_fork_asm+0x1a/0x30
+=====================================================
+BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
 
-That is because nr_bits will be set as zero in bpf_iter_bits_next()
-after all bits have been iterated.
+...
 
-Fix the issue by setting kit->bit to kit->nr_bits instead of setting
-kit->nr_bits to zero when the iteration completes in
-bpf_iter_bits_next(). In addition, use "!nr_bits || bits >= nr_bits" to
-check whether the iteration is complete and still use "nr_bits > 64" to
-indicate whether bits are dynamically allocated. The "!nr_bits" check is
-necessary because bpf_iter_bits_new() may fail before setting
-kit->nr_bits, and this condition will stop the iteration early instead
-of accessing the zeroed or freed kit->bits.
+Uninit was stored to memory at:
+ ea_put fs/jfs/xattr.c:639 [inline]
 
-Considering the initial value of kit->bits is -1 and the type of
-kit->nr_bits is unsigned int, change the type of kit->nr_bits to int.
-The potential overflow problem will be handled in the following patch.
+...
 
-Fixes: 4665415975b0 ("bpf: Add bits iterator")
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241030100516.3633640-2-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Local variable ea_buf created at:
+ __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
+ __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
+
+=====================================================
+
+The reason is ea_buf->new_ea is not initialized properly.
+
+Fix this by using memset to empty its content at the beginning
+in ea_get().
+
+Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/jfs/xattr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index cc8c00864a680..a4521d2606b6b 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2835,7 +2835,7 @@ struct bpf_iter_bits_kern {
- 		unsigned long *bits;
- 		unsigned long bits_copy;
- 	};
--	u32 nr_bits;
-+	int nr_bits;
- 	int bit;
- } __aligned(8);
+diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
+index 37b984692ca90..bb8c4583f0655 100644
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -447,6 +447,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
+ 	int rc;
+ 	int quota_allocation = 0;
  
-@@ -2909,17 +2909,16 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
- __bpf_kfunc int *bpf_iter_bits_next(struct bpf_iter_bits *it)
- {
- 	struct bpf_iter_bits_kern *kit = (void *)it;
--	u32 nr_bits = kit->nr_bits;
-+	int bit = kit->bit, nr_bits = kit->nr_bits;
- 	const unsigned long *bits;
--	int bit;
- 
--	if (nr_bits == 0)
-+	if (!nr_bits || bit >= nr_bits)
- 		return NULL;
- 
- 	bits = nr_bits == 64 ? &kit->bits_copy : kit->bits;
--	bit = find_next_bit(bits, nr_bits, kit->bit + 1);
-+	bit = find_next_bit(bits, nr_bits, bit + 1);
- 	if (bit >= nr_bits) {
--		kit->nr_bits = 0;
-+		kit->bit = bit;
- 		return NULL;
- 	}
- 
++	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
++
+ 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
+ 	if (ji->ea.flag == 0)
+ 		ea_size = 0;
 -- 
 2.43.0
 
