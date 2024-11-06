@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD319BE822
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285E29BE94C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B301F2180C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB2C1C217BF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEC21DF73E;
-	Wed,  6 Nov 2024 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E7A1DED4F;
+	Wed,  6 Nov 2024 12:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2e8lFPbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4nX0k38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1614A1DED49;
-	Wed,  6 Nov 2024 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F297DA7F;
+	Wed,  6 Nov 2024 12:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895683; cv=none; b=WJo39aZtg02eLCefr/K+jfdv+XdYTVxqUiMTiPT/jTJdT5P2K/9qYV54KXxcr2xxDQZeLf3s8W+91hFZO0VM/Cm8xJoyvf6bk4FLgWvQYCkXRsclivAt/ksrZ1XwAUV+UdKUU5dSCggYn4al0JisYoQQLPQxySO9okSwkeVtL1s=
+	t=1730896361; cv=none; b=PiaMmS2w/dR4D2TdYMjiez25fIukAnkUAZCdL42i+hE2EETsL45EAa1C7UZUhGFvsfZLEnw8VLaVlwNdzoPrn+U/UL4vHkpe5SLY+9O/ADNMeSdwMid84ks7obxBlqhynvE+hyT0fnlf/XBRFOCk83yL8qOygmHTBv0MGl7XoZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895683; c=relaxed/simple;
-	bh=gUn5gs9yBIBW2szbV87iOY8+l9TCjYMgYtJLDVzNl8o=;
+	s=arc-20240116; t=1730896361; c=relaxed/simple;
+	bh=g9gw8P4YtUt6Jb3hUfIw7pqS0hzCblkIAuiTOZdRdaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hb7THaDBz+RzuPYkNQGSzvsfzIDP4LlFr/TeEuZSMDiAxUBhX7kMQamwF3/ZB8YcNIFq7EMvly+0Q0n2iv6i1AZB4ygGmfAAAaY4Yn7xtuTqEhsrMfj0rzQkXL4oKFfaIPji3H5dIB4r/DwdAs2A/XD9o0guwpYvO4oyPSirdk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2e8lFPbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61358C4CECD;
-	Wed,  6 Nov 2024 12:21:22 +0000 (UTC)
+	 MIME-Version; b=RpqogDLiX35URKFvR1jajrbb4YMozKCKJJCuECWdlJMzjgxzqB7qiePzbY4QFdI61mWCPZAh9ArU84lblhluqJ6yiir6oIfpis23sCb1ogKTtFrq+6iqgCwP60ddrw/8KzShPuc3lWEy9dfrLWUf+kvgUvoODDlOfDu04SfDRYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4nX0k38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2545C4CECD;
+	Wed,  6 Nov 2024 12:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895683;
-	bh=gUn5gs9yBIBW2szbV87iOY8+l9TCjYMgYtJLDVzNl8o=;
+	s=korg; t=1730896361;
+	bh=g9gw8P4YtUt6Jb3hUfIw7pqS0hzCblkIAuiTOZdRdaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2e8lFPbtyPKEyTCq4FZX36m3/7KLaEI8yXphxbjJSJovHWRm72R8/EL6pCC/7mTvA
-	 82CmWl/Qfe/RHOjV4VzcvP9uJxYFseY/ajmtxTL8IAKlQBy7vzP6sHVtTGwyqHP2XN
-	 bMhuSdaX2YY/LwUzj3Xkm7jywh3a5NoxAjTIGtmk=
+	b=O4nX0k38N4Vha/41tulTjpR1COUeyps27nQhvQKiMtrckU+ThA0HcAMfXIN9Mi1QU
+	 TaBxkqQxoNBY7UB+ACqncxV6jVbuiH8QQ0IdIjebEJvffqZg9dFxNJ6NjpYsBdS+Pw
+	 U5bbbqYOPkGZABg3l0l1WY2NFaIeHXv6u1XTRuoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Matt Fleming <mfleming@cloudflare.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Michal Hocko <mhocko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 301/350] Bluetooth: bnep: fix wild-memory-access in proto_unregister
+Subject: [PATCH 6.11 176/245] mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves
 Date: Wed,  6 Nov 2024 13:03:49 +0100
-Message-ID: <20241106120328.234911481@linuxfoundation.org>
+Message-ID: <20241106120323.570324244@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Matt Fleming <mfleming@cloudflare.com>
 
-[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
+[ Upstream commit 281dd25c1a018261a04d1b8bf41a0674000bfe38 ]
 
-There's issue as follows:
-  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
-  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
-  RIP: 0010:proto_unregister+0xee/0x400
+Under memory pressure it's possible for GFP_ATOMIC order-0 allocations to
+fail even though free pages are available in the highatomic reserves.
+GFP_ATOMIC allocations cannot trigger unreserve_highatomic_pageblock()
+since it's only run from reclaim.
+
+Given that such allocations will pass the watermarks in
+__zone_watermark_unusable_free(), it makes sense to fallback to highatomic
+reserves the same way that ALLOC_OOM can.
+
+This fixes order-0 page allocation failures observed on Cloudflare's fleet
+when handling network packets:
+
+  kswapd1: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
+  nodemask=(null),cpuset=/,mems_allowed=0-7
+  CPU: 10 PID: 696 Comm: kswapd1 Kdump: loaded Tainted: G           O 6.6.43-CUSTOM #1
+  Hardware name: MACHINE
   Call Trace:
-   <TASK>
-   __do_sys_delete_module+0x318/0x580
-   do_syscall_64+0xc1/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   <IRQ>
+   dump_stack_lvl+0x3c/0x50
+   warn_alloc+0x13a/0x1c0
+   __alloc_pages_slowpath.constprop.0+0xc9d/0xd10
+   __alloc_pages+0x327/0x340
+   __napi_alloc_skb+0x16d/0x1f0
+   bnxt_rx_page_skb+0x96/0x1b0 [bnxt_en]
+   bnxt_rx_pkt+0x201/0x15e0 [bnxt_en]
+   __bnxt_poll_work+0x156/0x2b0 [bnxt_en]
+   bnxt_poll+0xd9/0x1c0 [bnxt_en]
+   __napi_poll+0x2b/0x1b0
+   bpf_trampoline_6442524138+0x7d/0x1000
+   __napi_poll+0x5/0x1b0
+   net_rx_action+0x342/0x740
+   handle_softirqs+0xcf/0x2b0
+   irq_exit_rcu+0x6c/0x90
+   sysvec_apic_timer_interrupt+0x72/0x90
+   </IRQ>
 
-As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
-will cleanup all resource. Then when remove bnep module will call
-bnep_sock_cleanup() to cleanup sock's resource.
-To solve above issue just return bnep_sock_init()'s return value in
-bnep_exit().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[mfleming@cloudflare.com: update comment]
+  Link: https://lkml.kernel.org/r/20241015125158.3597702-1-matt@readmodwrite.com
+Link: https://lkml.kernel.org/r/20241011120737.3300370-1-matt@readmodwrite.com
+Link: https://lore.kernel.org/all/CAGis_TWzSu=P7QJmjD58WWiu3zjMTVKSzdOwWE8ORaGytzWJwQ@mail.gmail.com/
+Fixes: 1d91df85f399 ("mm/page_alloc: handle a missing case for memalloc_nocma_{save/restore} APIs")
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/page_alloc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index a16d584a6c0d0..e1cfd110d281e 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -744,8 +744,7 @@ static int __init bnep_init(void)
- 	if (flt[0])
- 		BT_INFO("BNEP filters: %s", flt);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 91ace8ca97e21..ec459522c2934 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2874,12 +2874,12 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			page = __rmqueue(zone, order, migratetype, alloc_flags);
  
--	bnep_sock_init();
--	return 0;
-+	return bnep_sock_init();
- }
+ 			/*
+-			 * If the allocation fails, allow OOM handling access
+-			 * to HIGHATOMIC reserves as failing now is worse than
+-			 * failing a high-order atomic allocation in the
+-			 * future.
++			 * If the allocation fails, allow OOM handling and
++			 * order-0 (atomic) allocs access to HIGHATOMIC
++			 * reserves as failing now is worse than failing a
++			 * high-order atomic allocation in the future.
+ 			 */
+-			if (!page && (alloc_flags & ALLOC_OOM))
++			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
+ 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
  
- static void __exit bnep_exit(void)
+ 			if (!page) {
 -- 
 2.43.0
 
