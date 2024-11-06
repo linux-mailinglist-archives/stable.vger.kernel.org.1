@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-91037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7809BEC26
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB369BEB31
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF33E1C238C1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C16F1C21064
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726D91F1313;
-	Wed,  6 Nov 2024 12:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C131F667E;
+	Wed,  6 Nov 2024 12:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeQJU5Kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RInJiJux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3142D1E0DFD;
-	Wed,  6 Nov 2024 12:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE81E25F7;
+	Wed,  6 Nov 2024 12:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897554; cv=none; b=si+RTyhGcog9KNx8PiMtz4S4jAPd4qCUOVYe/Nsb6KICIV52efqB+sIoGg5uv1Oyy7yNE0dQ3/O1FWgLWwdfMbFH8q58LrTSFEosMy/SXHAbbZ3OtRxy4o5JprX1qWVb6/fHdqlb0L6ZEVEal59ZHpK6JS85IzVovthIfM1Csy0=
+	t=1730896904; cv=none; b=nKiAaysAxzfuV017LheTgbpqq6cZJmLtzlY0+7+DQGPwORFWHNY/XESycU0tqUjeFpkpGZDCynqpfLO9qTQGX4jTqV5VYkDjEoaGVrdaaIXrRGWPZEQQhW2O5ryge6kfGYxOUoJ9mnqEasaX5xXzqZdmicpTDH4ENQ4H4Uc/wdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897554; c=relaxed/simple;
-	bh=kJHikDqhhaCCj/IgrlKO9JlYNAeA8AUl7u11kPAWOo0=;
+	s=arc-20240116; t=1730896904; c=relaxed/simple;
+	bh=Vz2QSFuVaRx8lsSJ9B4L+2OWmKq88eNcz2S96bUYryA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUcUe5UjpAE61lm90SnRQ0yJK77Td1epmJVvTlt+FulhgOKHSdCM1NWLFRzTxEJUNONjrZAPuRJFyO1F9avQXfzSXlcUP5k6JtaHoUkfOppBQ5oZT5GS0GVRvowwYmFerodydqLHbYTq1yi+2fZhLLkpsE/X7NK6JADoWPg1lfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeQJU5Kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3330C4CECD;
-	Wed,  6 Nov 2024 12:52:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZJcDMowMkYgStBPK4/M3+kPM6HsnQGHRZ1J+LaQ+cuAFPsLBRP2F93G3HQy5aaBNLeXxSl0mjuuFoGvYy8+pRTZunHu0bHtWqGwJuZLBUfIeyWzcJzXOjet0oAlC9ZOO/gmuUfM/lAoZD5glK7jmN/wkVSrO+x6qK0Uug1aKeYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RInJiJux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD61C4CECD;
+	Wed,  6 Nov 2024 12:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897554;
-	bh=kJHikDqhhaCCj/IgrlKO9JlYNAeA8AUl7u11kPAWOo0=;
+	s=korg; t=1730896904;
+	bh=Vz2QSFuVaRx8lsSJ9B4L+2OWmKq88eNcz2S96bUYryA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeQJU5KnpTpjmpUjN//v8FPkRTrSp/BNiRyEF7Xzrsr8gAk9VXCzhtQR2UOqfAGaR
-	 zyKYUJOJ3pPDO/p+lgfX/kJXxHGYuwF2bPFXyZ0Q858m5h0iQPUOrX5ik4SxwG2tAG
-	 zUZyaEucIEPwd3fOpBtiuwr0K/N6gE9NzDyCq0iI=
+	b=RInJiJuxMqGPt88ysZ70cLxGvZHm5K28RY13o/t39jSiu0CBglEppgVtZ31k4cslc
+	 MF1d61vHmXczPswqbzFJROU88MjRPipLD62d3sFX5ajn2MSLHRtuZEBSJNM5HWIATs
+	 /EE1MexNr5sOzBEo8ZiZVWg/b+Y+8ODisQb+TwlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 092/151] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
+	Byeonguk Jeong <jungbu2855@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 074/110] bpf: Fix out-of-bounds write in trie_get_next_key()
 Date: Wed,  6 Nov 2024 13:04:40 +0100
-Message-ID: <20241106120311.403468652@linuxfoundation.org>
+Message-ID: <20241106120305.232861437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Byeonguk Jeong <jungbu2855@gmail.com>
 
-commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
+[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
 
-Avoid potentially crashing in the driver because of uninitialized private data
+trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
+while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
+full paths from the root to leaves. For example, consider a trie with
+max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
+0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
+.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
 
-Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
+Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Tested-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3115,7 +3115,8 @@ static int ieee80211_get_tx_power(struct
- 	struct ieee80211_local *local = wiphy_priv(wiphy);
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 3c2d8722d45b3..8370b391f1d6c 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -655,7 +655,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	if (!key || key->prefixlen > trie->max_prefixlen)
+ 		goto find_leftmost;
  
--	if (local->ops->get_txpower)
-+	if (local->ops->get_txpower &&
-+	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
- 		return drv_get_txpower(local, sdata, dbm);
- 
- 	if (!local->use_chanctx)
+-	node_stack = kmalloc_array(trie->max_prefixlen,
++	node_stack = kmalloc_array(trie->max_prefixlen + 1,
+ 				   sizeof(struct lpm_trie_node *),
+ 				   GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!node_stack)
+-- 
+2.43.0
+
 
 
 
