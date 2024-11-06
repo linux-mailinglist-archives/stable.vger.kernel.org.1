@@ -1,71 +1,57 @@
-Return-Path: <stable+bounces-90854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8531F9BEB57
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356039BEBD8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AB81C213A6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2412820A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009141F7556;
-	Wed,  6 Nov 2024 12:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826891F9AB7;
+	Wed,  6 Nov 2024 12:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCbiJ9zV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd8bo4LZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08B71E6DC1;
-	Wed,  6 Nov 2024 12:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2511EF0A4;
+	Wed,  6 Nov 2024 12:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897010; cv=none; b=BDVdXWY6+ZhNJxQ6mec9TLL5wzvNjvvDfCDJ8AQ9hvnLP/lcB9qwi3zj8kn/9B7ZcKnW1V+rW5ugjCQnrp8rwfvU2sI3rbqabGi279YtiF51Rdy/RdnTnCWUk7Y/Mepp834tN7y6BzGuuwGPhebU9nDPWH1lF/ovTX08OAxgAow=
+	t=1730897341; cv=none; b=mzM/DaJE3INCsEbXITnMlZGYxLJeBeYGIXXyiKEOfqHOEEKBvKnb0FKt4rCKnlDfhyRtNyPzdo4aAS9iidFUszC/G+fm1P9KZgfa6lKmOAX4CqBvI78/Xa3/SexcDcIutmlPupeARc+kLawuR2w5r+JGhffDatTfRy2snevd/e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897010; c=relaxed/simple;
-	bh=zSYQNoqzLwxyjUE1DGxOubRCKyV4+IrIRcqfqUX/o4Q=;
+	s=arc-20240116; t=1730897341; c=relaxed/simple;
+	bh=TPSC1iz/CvajLxFJxpfTbwGurdhX/IxGBMGlOMHGaVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcBQGOfIfx+yUG6s+Qj5ml1B1BskCe63AoHnXQeHIq0oee282ZVsHASTNS4397Vnh55dlOAeCZv10xtt1DIMbL2sNQE0UV3o3VBDqz3nKwbjC+rJnQz4ib8vGutDHo4gxp4KSRI7obNl4ndQUjyzVmBXN13b1KWx1S6h/fqVj8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCbiJ9zV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05ECFC4CECD;
-	Wed,  6 Nov 2024 12:43:30 +0000 (UTC)
+	 MIME-Version; b=hUGX/uD9spM2ZkA9aqzcoaM2oFpEvw+iug46DC+Q+lTCN4Iel9yDXEracXm3ltba725y+mSQnbyZYAM3Ic16PuL739PgMmxanbC67q4oaGmZFZndhuWH5l3D6AAzAg7X7NTI14BOxTxNhhKh/y3nVZSkycjpZHe1DOcCTj4L9DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd8bo4LZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3AAC4CECD;
+	Wed,  6 Nov 2024 12:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897010;
-	bh=zSYQNoqzLwxyjUE1DGxOubRCKyV4+IrIRcqfqUX/o4Q=;
+	s=korg; t=1730897340;
+	bh=TPSC1iz/CvajLxFJxpfTbwGurdhX/IxGBMGlOMHGaVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCbiJ9zVUPiSh4gL1SoRw70kPNchZscdC9XltZ0VVzU9ntmowG5IuSYOiEm8B4DkD
-	 WC3Ne75i/CirlZuaYAY/GArU8VtzsGCNmENdSt/PHmVbCnmrpyMcRnlaph8y8JN1mf
-	 yqE3/61FGfXmL9U+Gr1uikkmuJPzeAoUBnd7CVUw=
+	b=Qd8bo4LZzQCumxw8WtJwZMBwi1xkOmYDelNAtZsh5Eyvb1HDDdp0dADLse6QHnMaf
+	 eEz+5nRMjvLAugRwfMLDfu/ab3Qvej6yHINb1jM5eDgA9zwKGp1tpVQc0Pu0aXF3yj
+	 qr2sQgpC2PPOgrN+a9mCw4S/O5iX9A4igF7sWwJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Jiri Olsa <olsajiri@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mike Galbraith <efault@gmx.de>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/126] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
+Subject: [PATCH 6.6 020/151] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
 Date: Wed,  6 Nov 2024 13:03:28 +0100
-Message-ID: <20241106120306.265569468@linuxfoundation.org>
+Message-ID: <20241106120309.392208990@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,85 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 17457784004c84178798432a029ab20e14f728b1 ]
+[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
 
-Some architectures do not populate the entire range categorised by
-KCORE_TEXT, so we must ensure that the kernel address we read from is
-valid.
+If devm_gpiod_get_optional() fails, we need to disable previously enabled
+regulators, as done in the other error handling path of the function.
 
-Unfortunately there is no solution currently available to do so with a
-purely iterator solution so reinstate the bounce buffer in this instance
-so we can use copy_from_kernel_nofault() in order to avoid page faults
-when regions are unmapped.
+Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
+potential gpiod_set_value_cansleep(, 0).
+If the "reset" gpio is not defined, this additional call is just a no-op.
 
-This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-the code to continue to use an iterator.
+This behavior is the same as the one already in the .remove() function.
 
-[lstoakes@gmail.com: correct comment to be strictly correct about reasoning]
-  Link: https://lkml.kernel.org/r/525a3f14-74fa-4c22-9fca-9dab4de8a0c3@lucifer.local
-Link: https://lkml.kernel.org/r/20230731215021.70911-1-lstoakes@gmail.com
-Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reported-by: Jiri Olsa <olsajiri@gmail.com>
-Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Will Deacon <will@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Galbraith <efault@gmx.de>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
+Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/kcore.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ sound/soc/codecs/cs42l51.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 2aff567abe1e3..87a46f2d84195 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -543,10 +543,21 @@ read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
- 		case KCORE_VMEMMAP:
- 		case KCORE_TEXT:
- 			/*
--			 * We use _copy_to_iter() to bypass usermode hardening
--			 * which would otherwise prevent this operation.
-+			 * Sadly we must use a bounce buffer here to be able to
-+			 * make use of copy_from_kernel_nofault(), as these
-+			 * memory regions might not always be mapped on all
-+			 * architectures.
- 			 */
--			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
-+			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-+				if (iov_iter_zero(tsz, iter) != tsz) {
-+					ret = -EFAULT;
-+					goto out;
-+				}
-+			/*
-+			 * We know the bounce buffer is safe to copy from, so
-+			 * use _copy_to_iter() directly.
-+			 */
-+			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
- 				ret = -EFAULT;
- 				goto out;
- 			}
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index e4827b8c2bde4..6e51954bdb1ec 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -747,8 +747,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 
+ 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						      GPIOD_OUT_LOW);
+-	if (IS_ERR(cs42l51->reset_gpio))
+-		return PTR_ERR(cs42l51->reset_gpio);
++	if (IS_ERR(cs42l51->reset_gpio)) {
++		ret = PTR_ERR(cs42l51->reset_gpio);
++		goto error;
++	}
+ 
+ 	if (cs42l51->reset_gpio) {
+ 		dev_dbg(dev, "Release reset gpio\n");
+@@ -780,6 +782,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 	return 0;
+ 
+ error:
++	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
+ 			       cs42l51->supplies);
+ 	return ret;
 -- 
 2.43.0
 
