@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F52E9BECE2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDC79BE703
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376D51F2323C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E72B428511D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1E91F7566;
-	Wed,  6 Nov 2024 13:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41FE1DF24E;
+	Wed,  6 Nov 2024 12:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9rlZB+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy/JOemO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF941F7557;
-	Wed,  6 Nov 2024 13:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE53B1D5AD7;
+	Wed,  6 Nov 2024 12:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898018; cv=none; b=BcE/rtDLpBYdWvACr2Vb+HgvlIBgfLzaHMF/fCCoZwOKvfeLekjzFBQBwS7cmgqsSfrjoH88TwdmGphgYlEOZIGHVctWpDlEQzsOEDA3guxUdCtndNpC6d82FnhbPaXQ9VClcvHJBRb1S1fA3KngCThnrv/C1TwNaCt4PmsULsE=
+	t=1730894971; cv=none; b=sUN4mJVSYLsoT9enIUFBTzBoLcPFzQ0fs1MYgXKCpM/C1/jCmJ3iMHGWIjLObWKjSgUlwxVDeQMqdoUGsO/Z7A4Jjj8Dxaw9fMXDcmg73stvujMiqeS+ZS4BUDBy7SdwvYKbWEPhMUpw01BZIdIUI/lH29FadCJKL6WyA1g5S9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898018; c=relaxed/simple;
-	bh=ssawlkmPOR/AgV85GZYdwHsRgtLg730pVDLDlyyzK7Q=;
+	s=arc-20240116; t=1730894971; c=relaxed/simple;
+	bh=+vOHLq3hLbxjxMJUwa4uLy1gZIpQhYXd1bxI2B5TIH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D54M5QK7LSl+sMVeTzOLjHXP9OCndj28C4kyC8nlOOJrgP+1SwO+mMF2zAbge23lYgPCD1flCecJJ5CtIxQwmRW5BtR9tANle1wSw84PeKSkraCDOuMiEv6LDXacAteEIHmVwBMcLCdOYhvi6TtzYSyLmQWJN2UwhuNSMGIQWv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9rlZB+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4E4C4CECD;
-	Wed,  6 Nov 2024 13:00:17 +0000 (UTC)
+	 MIME-Version; b=IGbipEPGq+vANnz4QzQ4ElJpB0ozLRgvQQf/HBt4qhiossGUq2iVr8gabWm3vgpPkocI5jPpKnkARXLeFer72ImVb1cUqKmyNRxVCm0fHzNM88gz9UTYHC30lpFwWMUm5/w9XSvv/GUx/qVaeKIfAvSs3L/MtCAgu+7xpWDr9QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy/JOemO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5DFC4CECD;
+	Wed,  6 Nov 2024 12:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898017;
-	bh=ssawlkmPOR/AgV85GZYdwHsRgtLg730pVDLDlyyzK7Q=;
+	s=korg; t=1730894971;
+	bh=+vOHLq3hLbxjxMJUwa4uLy1gZIpQhYXd1bxI2B5TIH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9rlZB+TwN1sfXmgu3v+bF4jL8C/4HxVO9sNwF7s6wqgokcYavlclcf8miOnHsvX9
-	 vYivCZFp/bwETkoulKf4Y8kEj2b2jh7S3Re1RdMVYN/xdV7eFkp8J3PVfZT+ae7Esj
-	 hMHJ76bvIRqTIkeCKDi4PctpuamgqcHsd0kj95g0=
+	b=qy/JOemOtuzr6jgLRAj3kGtNcEJIEn0ydbYLMADBLUkNCz1+5yd3WtaDB+DaiTIk4
+	 kCbN7Nj4emwvzZB8/ofOmFXCXxRN23sacQmRIUak9xfV+Pqc47NM/qM/r6K8u7urcL
+	 +UiTR8dLRVY3n74JqURo8Bs0nLqBMECpCOvBXtB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangerkun <yangerkun@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 096/462] ext4: clear EXT4_GROUP_INFO_WAS_TRIMMED_BIT even mount with discard
-Date: Wed,  6 Nov 2024 12:59:49 +0100
-Message-ID: <20241106120333.877854443@linuxfoundation.org>
+Subject: [PATCH 4.19 062/350] drm/msm: fix %s null argument error
+Date: Wed,  6 Nov 2024 12:59:50 +0100
+Message-ID: <20241106120322.422970346@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangerkun <yangerkun@huawei.com>
+From: Sherry Yang <sherry.yang@oracle.com>
 
-[ Upstream commit 20cee68f5b44fdc2942d20f3172a262ec247b117 ]
+[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
 
-Commit 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in
-ext4_group_info") speed up fstrim by skipping trim trimmed group. We
-also has the chance to clear trimmed once there exists some block free
-for this group(mount without discard), and the next trim for this group
-will work well too.
+The following build error was triggered because of NULL string argument:
 
-For mount with discard, we will issue dicard when we free blocks, so
-leave trimmed flag keep alive to skip useless trim trigger from
-userspace seems reasonable. But for some case like ext4 build on
-dm-thinpool(ext4 blocksize 4K, pool blocksize 128K), discard from ext4
-maybe unaligned for dm thinpool, and thinpool will just finish this
-discard(see process_discard_bio when begein equals to end) without
-actually process discard. For this case, trim from userspace can really
-help us to free some thinpool block.
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
+BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
+BUILDSTDERR:       |                                                   ^~
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
 
-So convert to clear trimmed flag for all case no matter mounted with
-discard or not.
+This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
+warnings by default across the subsystem"). Using "(null)" instead
+to fix it.
 
-Fixes: 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in ext4_group_info")
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240817085510.2084444-1-yangerkun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/611071/
+Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index b268dc0e1df44..032e6519865cd 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2836,11 +2836,8 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
- 	/*
- 	 * Clear the trimmed flag for the group so that the next
- 	 * ext4_trim_fs can trim it.
--	 * If the volume is mounted with -o discard, online discard
--	 * is supported and the free blocks will be trimmed online.
- 	 */
--	if (!test_opt(sb, DISCARD))
--		EXT4_MB_GRP_CLEAR_TRIMMED(db);
-+	EXT4_MB_GRP_CLEAR_TRIMMED(db);
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+index 96c2b828dba4a..2d9027c8418ee 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+@@ -366,7 +366,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p)
  
- 	if (!db->bb_free_root.rb_node) {
- 		/* No more items in the per group rb tree
-@@ -4962,8 +4959,9 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
- 					 " group:%d block:%d count:%lu failed"
- 					 " with %d", block_group, bit, count,
- 					 err);
--		} else
--			EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
-+		}
-+
-+		EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
+ 			drm_printf(p, "%s:%d\t%d\t%s\n",
+ 				pipe2name(pipe), j, inuse,
+-				plane ? plane->name : NULL);
++				plane ? plane->name : "(null)");
  
- 		ext4_lock_group(sb, block_group);
- 		mb_clear_bits(bitmap_bh->b_data, bit, count_clusters);
+ 			total += inuse;
+ 		}
 -- 
 2.43.0
 
