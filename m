@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2BE9BE8F7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3271B9BE7CC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0238A284CFB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB6BA28483F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A681E1DF726;
-	Wed,  6 Nov 2024 12:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36F01DF73C;
+	Wed,  6 Nov 2024 12:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHwR6c2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1El5v6xA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6174A1D2784;
-	Wed,  6 Nov 2024 12:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA871DF737;
+	Wed,  6 Nov 2024 12:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896144; cv=none; b=YEJ2e/XEgwZk+GD/02FJUtuVg6ppvTSABV6OMY2oIGhO0jejRiiK0S/M/Qjjcbhax4obYrDTI9wp8ni/X55qrJNcybgIZDiAJWQ3+AiA3Thx1dh1zHySqKsZtC+W5O0lYhHj1qNmWAZILsgBjNyZ9RsSe86htP35MBAAVtjPHoA=
+	t=1730895471; cv=none; b=EqIIWn/BtzVryYe51rjjqIYuIFbxV0jIuzn6o/kKcTL8ju0v37cSmmtYIlx4PE7aDnxrC6ZGyeHXFLYtUtn+/MMBJuqkyeWsftJR4eIJTlZikiDYIaeZVDJ8b6MdkD7tiG1FmFj8LU8irrhiNstHZi6W8ddVDjAwDbGWWcGUCy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896144; c=relaxed/simple;
-	bh=Cld8LoD6Eo+h4g6oqX8OKs+8FDIoJyPoZWRjsEcnQf8=;
+	s=arc-20240116; t=1730895471; c=relaxed/simple;
+	bh=Gc3/V6iPiqF3X3+YdcHTIAtw0k0KamupT9NJPbwPleI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjB3IQQyKVWKc0PiJzgWVZKs/IMGzA25ePmYJK+pvERZuVIdIYB//Wcmj2vRrLkdGu3DZqD8MUIatKlFa/pCvfhbSc/X5Y4btzBXaSwBGcD0QfXxSSXb5q6U6hzTn99O6FZ40aFEgSVAD33+eDP2QOjvcD7fJq1GHVJG8Gl28fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHwR6c2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC418C4CED3;
-	Wed,  6 Nov 2024 12:29:03 +0000 (UTC)
+	 MIME-Version; b=r5a/clCfQagr5fB+xEIZK8K9ryXwRF6tyCIHLxzAxLznX3iJ9Uan1bXzEjSiCfaFehqHEQmR1oH6jjg1zYiGBSksxywi3el99bnj/MbxSE2dORxuDn9DdnMX2z/oyutMQtkrJvNimW6XNl7Z4JRZdwxANXYcT3W8FaliBgc2Xjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1El5v6xA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DF3C4CECD;
+	Wed,  6 Nov 2024 12:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896144;
-	bh=Cld8LoD6Eo+h4g6oqX8OKs+8FDIoJyPoZWRjsEcnQf8=;
+	s=korg; t=1730895471;
+	bh=Gc3/V6iPiqF3X3+YdcHTIAtw0k0KamupT9NJPbwPleI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHwR6c2roJBv8oSAAI2EMC9F3M10KyFWL/diLamcn+v2/2Y8PKW91P4JkBD1ClNTG
-	 e8iXquGtnwuPO0izCNPV4rXKsmcBS5Sopyts1yTIiy9w/t9bNYCQPFhx3MFKmYbnk8
-	 IOkif7corYjE3EbpaiH8C08IhlbmdhxivCGO2RrU=
+	b=1El5v6xA7H7BRvyzQyaMgUwAsaEbfqeH3obWTXj075HY4t8up+UxyaKetFRJ0dXtd
+	 cIV88cNfT7XFCuywJNagMdRXYRHNZFeV/iZNcepgkoNTed/sJ2NjPBvwiSZF1QHY94
+	 GFVQtwKenfrIG6PwTMNJd807mXykaI2x5Eb7ZKjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sachin Sant <sachinp@linux.ibm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 104/245] rpcrdma: Always release the rpcrdma_devices xa_array
+Subject: [PATCH 4.19 229/350] tracing: Remove precision vsnprintf() check from print event
 Date: Wed,  6 Nov 2024 13:02:37 +0100
-Message-ID: <20241106120321.776410872@linuxfoundation.org>
+Message-ID: <20241106120326.638138896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 63a81588cd2025e75fbaf30b65930b76825c456f ]
+[ Upstream commit 5efd3e2aef91d2d812290dcb25b2058e6f3f532c ]
 
-Dai pointed out that the xa_init_flags() in rpcrdma_add_one() needs
-to have a matching xa_destroy() in rpcrdma_remove_one() to release
-underlying memory that the xarray might have accrued during
-operation.
+This reverts 60be76eeabb3d ("tracing: Add size check when printing
+trace_marker output"). The only reason the precision check was added
+was because of a bug that miscalculated the write size of the string into
+the ring buffer and it truncated it removing the terminating nul byte. On
+reading the trace it crashed the kernel. But this was due to the bug in
+the code that happened during development and should never happen in
+practice. If anything, the precision can hide bugs where the string in the
+ring buffer isn't nul terminated and it will not be checked.
 
-Reported-by: Dai Ngo <dai.ngo@oracle.com>
-Fixes: 7e86845a0346 ("rpcrdma: Implement generic device removal")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/all/C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240227125706.04279ac2@gandalf.local.home
+Link: https://lore.kernel.org/all/20240302111244.3a1674be@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20240304174341.2a561d9f@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 60be76eeabb3d ("tracing: Add size check when printing trace_marker output")
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/ib_client.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_output.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/ib_client.c b/net/sunrpc/xprtrdma/ib_client.c
-index 8507cd4d89217..28c68b5f68238 100644
---- a/net/sunrpc/xprtrdma/ib_client.c
-+++ b/net/sunrpc/xprtrdma/ib_client.c
-@@ -153,6 +153,7 @@ static void rpcrdma_remove_one(struct ib_device *device,
- 	}
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index 43fb832d26d23..62015d62dd6f5 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1320,12 +1320,11 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
+ {
+ 	struct print_entry *field;
+ 	struct trace_seq *s = &iter->seq;
+-	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
- 	trace_rpcrdma_client_remove_one_done(device);
-+	xa_destroy(&rd->rd_xa);
- 	kfree(rd);
+ 	trace_assign_type(field, iter->ent);
+ 
+ 	seq_print_ip_sym(s, field->ip, flags);
+-	trace_seq_printf(s, ": %.*s", max, field->buf);
++	trace_seq_printf(s, ": %s", field->buf);
+ 
+ 	return trace_handle_return(s);
  }
+@@ -1334,11 +1333,10 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
+ 					 struct trace_event *event)
+ {
+ 	struct print_entry *field;
+-	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
+ 	trace_assign_type(field, iter->ent);
+ 
+-	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
++	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
+ 
+ 	return trace_handle_return(&iter->seq);
+ }
 -- 
 2.43.0
 
