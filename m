@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133479BEC0C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DC69BE9A1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DB3FB26203
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9286B23D95
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4A81EF081;
-	Wed,  6 Nov 2024 12:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF061E04B5;
+	Wed,  6 Nov 2024 12:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fjw/pkqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iad2uUO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE471E0DFD;
-	Wed,  6 Nov 2024 12:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582B31DFE33;
+	Wed,  6 Nov 2024 12:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897479; cv=none; b=qMKN9AeH9qg3T9Z3LK/sU/i8oDjQTyKQzMtTToLXJYedjRenmrr+V2Jye5ALEOqDi72I16h/GetCjXD2OEuJ7moyNQ4nyDpv6vevsQkeMXNtRJGp7gNSs9jWh16+HPQRBYX3Dtg/HQVWJ4ickO/aJxldClCZ+mG/dK7Lnw5BDL0=
+	t=1730896543; cv=none; b=VhGiqp4wGb6ioX+xjSyANUQwAoJML6QpfBadHgn7UmYNF4C36qcVUzS/ooK3kIwef/WEsOpfyo5242zJuJgNwZ5cILV3VxVE1nb8VoXKGMPNKN0J8Uf1o1DRg74Lb4K0TgA0WLd+8ABqGDOWAvrDTJFWCghFc3Ivh0HB/ADa1Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897479; c=relaxed/simple;
-	bh=dJXWUmJbxhBRZCsOWEg49sMt9tyYHBbHiMC7wf3gens=;
+	s=arc-20240116; t=1730896543; c=relaxed/simple;
+	bh=tYXuKPZxo7ykxr+v6GiTwiXIpHTUkGMp6RBGhn2QBVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dxWxDceRSuKP0+GcmhyRVih6NWqZYmaJO/eOxAOCusS8dmVKKjAVUSUDuxxwqZAdM/aT+wY1ZyLvFuF9xJ4e3mPnGdKWvQ0UZm9CeUTzZ575gD5PAfRsQcjymxsvE0OG9FL6zhg+XVVzw9gRpR+TyleVbxtNBk7HAJcfKf3NTqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fjw/pkqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53349C4CECD;
-	Wed,  6 Nov 2024 12:51:19 +0000 (UTC)
+	 MIME-Version; b=W3NVoiOWh5fIdGIAsI2y0naTva/i9wn8uza9Gc2NFwSqx5qnFuVwbkfshPFjg54XwdkXRQXhraRvnE9ncTDHaSECbtzuv3PYpX2rpAFf++f8zv+UA24g0euruvHeYaBxzx1BUNORTjk53mYy8aHOUJGTgQNUhPg5rkLHyQztZ9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iad2uUO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE581C4CED3;
+	Wed,  6 Nov 2024 12:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897479;
-	bh=dJXWUmJbxhBRZCsOWEg49sMt9tyYHBbHiMC7wf3gens=;
+	s=korg; t=1730896543;
+	bh=tYXuKPZxo7ykxr+v6GiTwiXIpHTUkGMp6RBGhn2QBVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fjw/pkqSPxxUEYOxG/pWmJXG52Nomzdk/9ppBFPZEQuzlOL8UNtgT5xKFz+tpRA8E
-	 BiRM1AP+mC48iiIGamxAujEFyOebQeSw0/JwJ9SW+j/Br14LrSnfHYfD11gHRAFd3f
-	 vtIa6CGf2bfEmYE3E9sPiPyJntRXgpzlIx+tXQG0=
+	b=iad2uUO5IE2oBslFBi9tEg2tWeMqBvDVWKdOpSA5px3mreqwmB39X0pjRvHNcdKM7
+	 m8LI+NGdMqHEg+Tu883wtfi0trK6963gbRAYLhVEcE4wTtMW6Pkb4fAcMVM3FyhiPd
+	 OHrDqHqR14rAOgurqgNUN/p+e8kPTWFQdtWKrimM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/151] cifs: Fix creating native symlinks pointing to current or parent directory
+Subject: [PATCH 6.11 201/245] gpiolib: fix debugfs dangling chip separator
 Date: Wed,  6 Nov 2024 13:04:14 +0100
-Message-ID: <20241106120310.653616292@linuxfoundation.org>
+Message-ID: <20241106120324.191615560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 63271b7d569fbe924bccc7dadc17d3d07a4e5f7a ]
+[ Upstream commit 604888f8c3d01fddd9366161efc65cb3182831f1 ]
 
-Calling 'ln -s . symlink' or 'ln -s .. symlink' creates symlink pointing to
-some object name which ends with U+F029 unicode codepoint. This is because
-trailing dot in the object name is replaced by non-ASCII unicode codepoint.
+Add the missing newline after entries for recently removed gpio chips
+so that the chip sections are separated by a newline as intended.
 
-So Linux SMB client currently is not able to create native symlink pointing
-to current or parent directory on Windows SMB server which can be read by
-either on local Windows server or by any other SMB client which does not
-implement compatible-reverse character replacement.
-
-Fix this problem in cifsConvertToUTF16() function which is doing that
-character replacement. Function comment already says that it does not need
-to handle special cases '.' and '..', but after introduction of native
-symlinks in reparse point form, this handling is needed.
-
-Note that this change depends on the previous change
-"cifs: Improve creating native symlinks pointing to directory".
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
+Cc: stable@vger.kernel.org	# 6.9
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241028125000.24051-3-johan+linaro@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_unicode.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifs_unicode.c b/fs/smb/client/cifs_unicode.c
-index 79d99a9139441..4cc6e0896fad3 100644
---- a/fs/smb/client/cifs_unicode.c
-+++ b/fs/smb/client/cifs_unicode.c
-@@ -484,10 +484,21 @@ cifsConvertToUTF16(__le16 *target, const char *source, int srclen,
- 			/**
- 			 * Remap spaces and periods found at the end of every
- 			 * component of the path. The special cases of '.' and
--			 * '..' do not need to be dealt with explicitly because
--			 * they are addressed in namei.c:link_path_walk().
-+			 * '..' are need to be handled because of symlinks.
-+			 * They are treated as non-end-of-string to avoid
-+			 * remapping and breaking symlinks pointing to . or ..
- 			 **/
--			if ((i == srclen - 1) || (source[i+1] == '\\'))
-+			if ((i == 0 || source[i-1] == '\\') &&
-+			    source[i] == '.' &&
-+			    (i == srclen-1 || source[i+1] == '\\'))
-+				end_of_string = false; /* "." case */
-+			else if (i >= 1 &&
-+				 (i == 1 || source[i-2] == '\\') &&
-+				 source[i-1] == '.' &&
-+				 source[i] == '.' &&
-+				 (i == srclen-1 || source[i+1] == '\\'))
-+				end_of_string = false; /* ".." case */
-+			else if ((i == srclen - 1) || (source[i+1] == '\\'))
- 				end_of_string = true;
- 			else
- 				end_of_string = false;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 1f522499c6fc5..337971080dfde 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -4879,7 +4879,7 @@ static int gpiolib_seq_show(struct seq_file *s, void *v)
+ 
+ 	gc = srcu_dereference(gdev->chip, &gdev->srcu);
+ 	if (!gc) {
+-		seq_printf(s, "%s%s: (dangling chip)",
++		seq_printf(s, "%s%s: (dangling chip)\n",
+ 			   priv->newline ? "\n" : "",
+ 			   dev_name(&gdev->dev));
+ 		return 0;
 -- 
 2.43.0
 
