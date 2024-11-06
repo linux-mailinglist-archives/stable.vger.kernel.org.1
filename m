@@ -1,160 +1,193 @@
-Return-Path: <stable+bounces-90342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4229BE7D3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1159BEA39
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3131C2240F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5F81C244FF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547A71DED49;
-	Wed,  6 Nov 2024 12:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCEA1F76D5;
+	Wed,  6 Nov 2024 12:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C3zOO+xs"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FFeZj506"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666BC1DF737
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 12:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9C01F76B7;
+	Wed,  6 Nov 2024 12:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895489; cv=none; b=H8s7wZTKIgaLN/8M4UxXrth0ApfDOnscyyivBe8sa1xPY8bwhiANb2MrnZ0BYvo4dqU3vT73sSuIgWWnmBF1YOp5DMekVlievkd+8ppyCIbse5rKU25PmgQkyvzvVnR5VCsvVXlWtSheyguP9PnQ5M/nM4UMSke3XWl0WoWvha8=
+	t=1730896665; cv=none; b=ta4Rq4TBhzMV0mXglgxBTsL+UKqoyAN0LUnWVzL4GxBl8QAlcI2kxrHBlrnqeSwgyyR/TIbYmxyYJADok7PRGuxEIgerihEbQ4baVzF19jLrspoJ4YKbZN1oEhu23qAyQgVRbEv8hjBJW2wugrhjyMS8omXvZvC9GI1V/5zCgoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895489; c=relaxed/simple;
-	bh=jq9tjZSX0Nz5KCSVZOVTjQtRL4Y/3PyO8+4tqUHxnaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uNbGoFuvG4jvZOiOHQaEuNpwJNgung8S4xuMxb2WGBp4iSEFfLHN7POuffPkxQoQva81XvlW1aiduYgbKLvV7vaK3gqqf5Il+mzFGSO+y87a+7NNhfoVjc86kQzNZrRXvQdVmbxSPk4seVGc9byfeDZx9pZgYI6fLb0jYuF21o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C3zOO+xs; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d5689eea8so3894633f8f.1
-        for <stable@vger.kernel.org>; Wed, 06 Nov 2024 04:18:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730895486; x=1731500286; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5OicbYssJvQct2Lr3N97//AIKa0PvpzaGyzW7UkpsfA=;
-        b=C3zOO+xsiDCTIU46rrqqvkA/8GrXJvkz80x+s3ol8apjCIj692b/yKSwI0Szx0jmYm
-         zmfgfjIoeVsFYrOPQxvOcZu5COYs4JsZN2W36Nj7fvxqueLegTszksUgRfMqRN8nwj4q
-         ZzR6WL8B1Wr6TXlVTtfWkDtYf85FjksCaXINjH6WvQ0H/zsSNxAofjoaVI8b4Gn6uxLe
-         kH8o0tZQG6isSOhsCxoG3IsTAXYHDEjFk0/VAPG0Tcc7Z2vTEzY/U9QZwgRgddkOfRoj
-         ka+hWz7WmiZ1saQh2UZFFh1YVvjqwFP+EZuXunVkeGNKtQdcUix5D2K0n4nPMVUVriSa
-         vjvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730895486; x=1731500286;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5OicbYssJvQct2Lr3N97//AIKa0PvpzaGyzW7UkpsfA=;
-        b=w/bmMpfsuO+HFWegiRJpS9qBaNorN3CFDm5I8RfQR2Twcdogu883+nS1+/6peEjGRI
-         EAzwotOm23MKHLz09SHLyzEvaxln98Pf+yToYvlyo23yi2wZZ7FiUoYgeEqQKnXU/Z6j
-         dX2dPTalNoiMEM3CCmvkNxFBCy/gl3EZON3IoXFYrR9iFlgviojYlsbsXJWZW/Up04Kz
-         EEirByoW6ld+0fnTtVmsFH/KkaiVHsZrMP3dvbVCtT5g2a+Jv11vrA4qYlE23kQbfr5n
-         o8BAePLoO2lH4IavqvNXiz+76Bit86LjxKUDRSOOygaWbsn39323A7ePd17Wsz51hvhm
-         oxpw==
-X-Forwarded-Encrypted: i=1; AJvYcCWw9PtQUFKs7zqqt20C1p2baGro48F9GFiEn98vaPQLQqrSA1xxYoe1xVwS/B+slMK4uUVDdZw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu+3xpN/up/p1z+UXRumoHHVv4nsBj5MA31HQ3eKEBXCHRkJ4T
-	yC786D6gEyhAKsFOfvWByLzqgtDLEZENgcRqSQZaJuxJeXcmCUr0592Coo9Nuvk=
-X-Google-Smtp-Source: AGHT+IFtoT40eHtnrwAXHz8QyKy5z9wGpQ/l1+VvPX0Bfheczjk+XNbJChmqz+SINZws6jncoVrfXw==
-X-Received: by 2002:a5d:48ce:0:b0:37c:d001:856f with SMTP id ffacd0b85a97d-38061220ac3mr26699965f8f.56.1730895485623;
-        Wed, 06 Nov 2024 04:18:05 -0800 (PST)
-Received: from ta2.c.googlers.com.com (32.134.38.34.bc.googleusercontent.com. [34.38.134.32])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116ac7dsm18938607f8f.105.2024.11.06.04.18.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 04:18:05 -0800 (PST)
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-To: tfiga@chromium.org
-Cc: m.szyprowski@samsung.com,
-	mchehab@kernel.org,
-	yunkec@chromium.org,
-	hverkuil@xs4all.nl,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	andre.draszik@linaro.org,
-	kernel-team@android.com,
-	willmcvicker@google.com,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: videobuf2-core: copy vb planes unconditionally
-Date: Wed,  6 Nov 2024 12:18:02 +0000
-Message-ID: <20241106121802.2939237-1-tudor.ambarus@linaro.org>
-X-Mailer: git-send-email 2.47.0.199.ga7371fff76-goog
+	s=arc-20240116; t=1730896665; c=relaxed/simple;
+	bh=PK6WGWIzzUxygDZyxgAl8NGzW2USJnn+khK0DoMIIho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RoqiggxhkuBt4qJmebiAUQyEshrOtNJTpUauZoTHNZi01FjwOUQzIcmu0Y5mCZcMOGSaKIOy+QtVuSJuFdEfsiWEXZDK2L6axquiYyx0CDpxv+mVaLmoBrgMD8wfLfI60WPwKOFcnXfUxDeY2cK6Hns5g3nBA8ijmHIMEw1FRlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FFeZj506; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6B470114018D;
+	Wed,  6 Nov 2024 07:37:41 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 06 Nov 2024 07:37:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1730896661; x=1730983061; bh=/jLOtRJkzelCEg/A2YxeNiDuCCzg/r1GPN8
+	Ngxasi5k=; b=FFeZj5063QyYvANJ4SJWcaaccy8A0bFk2OeCPZAtb39xWa5aOns
+	+cEa6SbJsOxnEPskn5onyWCbYpH5W7IVjtV66Uh02dq35Zc4Uwzwp+a6LaChdaNa
+	vjEq45pwoMreBFAU2kyLSt4vX0WWBxZ98mjqisGdnZGkETAAk4C0lQGNC6DhS4dQ
+	tByZ7oRPA+CVwzZwAB8oajs6SFQxYuXSUJVMe2X6ctCzrZPZ92Zwr0Qc2pwf5SYY
+	kPaEBW9a6u7dsBfqDee0IFgMGvYJ2tTc5NSR0Wru7AKp02/W+CMp+ww5xHeEk6Gd
+	WtT5sT/ky8hJgCEk9uIjDqinTLlqqeN+/PA==
+X-ME-Sender: <xms:FGMrZ4NFfZ6crfnV-B9ekqcuwkjQ8yrVSIlhRcpGRH5itQgw2y9JRA>
+    <xme:FGMrZ-9mhP4QXLq1v2NQt5KI2MqVNfIbdVmPuB03qMWw8Fs1tk88HfaEpcRFGfzCB
+    KonPhaJF_bGW6U>
+X-ME-Received: <xmr:FGMrZ_TljnC-Qc0vrGjE6VE5WDIW-QWDw2ixI0aQHpvU5DIlTR_Gs36tYqOedxhFVXEpDGBv4kCv5dsUtLut5R0wdMo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddvgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudeifefg
+    leekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthho
+    peduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrthhtrdhmuhhgghgvrh
+    hiughgvgeshhhpvgdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhht
+    rdhnvghtpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehhohhrmhhs
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqrghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:FGMrZwuNRCmqAIpboIuYM4JVhlJRXvM4DPmvtZcQeDjorxdF-ZT9RQ>
+    <xmx:FGMrZwe0T_WEWhy6cmI1Btx4gLkFG5pU7E29HW0dQJfJ9TpRfXs9lQ>
+    <xmx:FGMrZ02NCJhF4HGMFPPIbKN3sQcQzQW263kKfXeUoadTa--BxnVxqw>
+    <xmx:FGMrZ0_pMOapVd5zf7lFE_QlIN6UmH_1-Ztbqy-a7gRdWpeLa1ilzw>
+    <xmx:FWMrZxVWN6yUr9Fvec4ds_qFDMWUZ40di6V-w1thbEHbzxS8kXh8TcyX>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 6 Nov 2024 07:37:39 -0500 (EST)
+Date: Wed, 6 Nov 2024 14:37:36 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+	horms@kernel.org, kuba@kernel.org, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default
+ Routes
+Message-ID: <ZytjEINNRmtpadr_@shredder>
+References: <Zypgu5l7F1FpIpqo@shredder>
+ <20241106025056.11241-1-Matt.Muggeridge@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106025056.11241-1-Matt.Muggeridge@hpe.com>
 
-Copy the relevant data from userspace to the vb->planes unconditionally
-as it's possible some of the fields may have changed after the buffer
-has been validated.
+On Tue, Nov 05, 2024 at 09:50:56PM -0500, Matt Muggeridge wrote:
+> Thank you for your review and feedback, Ido.
+> 
+> >> Without this flag, when there are mutliple default routers, the kernel
+> >> coalesces multiple default routes into an ECMP route. The ECMP route
+> >> ignores per-route REACHABILITY information. If one of the default
+> >> routers is unresponsive, with a Neighbor Cache entry of INCOMPLETE, then
+> >> it can still be selected as the nexthop for outgoing packets. This
+> >> results in an inability to communicate with remote hosts, even though
+> >> one of the default routers remains REACHABLE. This violates RFC4861
+> >> section 6.3.6, bullet 1.
+> >
+> >Do you have forwarding disabled (it causes RT6_LOOKUP_F_REACHABLE to be
+> >set)?
+> 
+> Yes, forwarding is disabled on our embedded system. Though, this needs to
+> work on systems regardless of the state of forwarding.
+> 
+> >  Is the problem that fib6_table_lookup() chooses a reachable
+> >nexthop and then fib6_select_path() overrides it with an unreachable
+> >one?
+> 
+> I'm afraid I don't know.
 
-Keep the dma_buf_put(planes[plane].dbuf) calls in the first
-`if (!reacquired)` case, in order to be close to the plane validation code
-where the buffers were got in the first place.
+We need to understand the current behavior before adding a new interface
+that we will never be able to remove. It is possible we can improve /
+fix the current code. I won't have time to look into it myself until
+next week.
 
-Cc: stable@vger.kernel.org
-Fixes: 95af7c00f35b ("media: videobuf2-core: release all planes first in __prepare_dmabuf()")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
----
- .../media/common/videobuf2/videobuf2-core.c   | 28 ++++++++++---------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> The objective is to allow IPv6 Netlink clients to be able to create default
+> routes from RAs in the same way the kernel creates default routes from RAs.
+> Essentially, I'm trying to have Netlink and Kernel behaviors match.
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index f07dc53a9d06..c0cc441b5164 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -1482,18 +1482,23 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
- 			}
- 			vb->planes[plane].dbuf_mapped = 1;
- 		}
-+	} else {
-+		for (plane = 0; plane < vb->num_planes; ++plane)
-+			dma_buf_put(planes[plane].dbuf);
-+	}
- 
--		/*
--		 * Now that everything is in order, copy relevant information
--		 * provided by userspace.
--		 */
--		for (plane = 0; plane < vb->num_planes; ++plane) {
--			vb->planes[plane].bytesused = planes[plane].bytesused;
--			vb->planes[plane].length = planes[plane].length;
--			vb->planes[plane].m.fd = planes[plane].m.fd;
--			vb->planes[plane].data_offset = planes[plane].data_offset;
--		}
-+	/*
-+	 * Now that everything is in order, copy relevant information
-+	 * provided by userspace.
-+	 */
-+	for (plane = 0; plane < vb->num_planes; ++plane) {
-+		vb->planes[plane].bytesused = planes[plane].bytesused;
-+		vb->planes[plane].length = planes[plane].length;
-+		vb->planes[plane].m.fd = planes[plane].m.fd;
-+		vb->planes[plane].data_offset = planes[plane].data_offset;
-+	}
- 
-+	if (reacquired) {
- 		/*
- 		 * Call driver-specific initialization on the newly acquired buffer,
- 		 * if provided.
-@@ -1503,9 +1508,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
- 			dprintk(q, 1, "buffer initialization failed\n");
- 			goto err_put_vb2_buf;
- 		}
--	} else {
--		for (plane = 0; plane < vb->num_planes; ++plane)
--			dma_buf_put(planes[plane].dbuf);
- 	}
- 
- 	ret = call_vb_qop(vb, buf_prepare, vb);
--- 
-2.47.0.199.ga7371fff76-goog
+I understand, but it's essentially an extension for the legacy IPv6
+multipath API which we are trying to move away from towards the nexthop
+API (see more below).
 
+> 
+> My analysis led me to the need for Netlink clients to set the kernel's
+> fib6_config flags RTF_RA_ROUTER, where:
+> 
+>     #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
+> 
+> >> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
+> >> +		cfg->fc_flags |= RTF_RA_ROUTER;
+> >> +
+> > 
+> > It is possible there are user space programs out there that set this bit
+> > (knowingly or not) when sending requests to the kernel and this change
+> > will result in a behavior change for them. So, if we were to continue in
+> > this path, this would need to be converted to a new netlink attribute to
+> > avoid such potential problems.
+> > 
+> 
+> Is this a mandated approach to implementing unspecified bits in a flag?
+> 
+> I'm a little surprised by this consideration. If we account for poorly
+> written buggy user-programs, doesn't this open any API to an explosion
+> of new attributes or other odd extensions? I'd imagine the same argument
+> would be applicable to ioctl flags, socket flags, and so on. Why would we
+> treat implementing unspecified Netlink bits differently to implementing
+> unspecified ioctl bits, etc.
+> 
+> Naturally, if this is the mandated approach, then I'll reimplement it with
+> a new Netlink attribute. I'm just trying to understand what is the
+> Linux-lore, here?
+
+Using this bit could have been valid if previously the kernel rejected
+requests with this bit set, but as evident by your patch the kernel does
+not do it. It is therefore possible that there are user space programs
+out there that are working perfectly fine right now and they will break
+/ misbehave after this change.
+
+> 
+> > BTW, you can avoid the coalescing problem by using the nexthop API (man
+> > ip-nexthop).
+> 
+> I'm not sure how that would help in this case. We need the nexthop to be
+> determined according to its REACHABILITY and other considerations described
+> in RFC4861.
+
+Using your example:
+
+# ip nexthop add id 1 via fe80::200:10ff:fe10:1060 dev enp0s9
+# ip -6 route add default nhid 1 expires 600 proto ra
+# ip nexthop add id 2 via fe80::200:10ff:fe10:1061 dev enp0s9
+# ip -6 route append default nhid 2 expires 600 proto ra
+# ip -6 route
+fe80::/64 dev enp0s9 proto kernel metric 256 pref medium
+default nhid 1 via fe80::200:10ff:fe10:1060 dev enp0s9 proto ra metric 1024 expires 563sec pref medium
+default nhid 2 via fe80::200:10ff:fe10:1061 dev enp0s9 proto ra metric 1024 expires 594sec pref medium
 
