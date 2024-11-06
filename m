@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052CD9BE936
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4699E9BE7E3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F6D1C217E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 785CC1C22221
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D31A1DED54;
-	Wed,  6 Nov 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941391DF743;
+	Wed,  6 Nov 2024 12:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJyDQeer"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnLzn9+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE251DDA15;
-	Wed,  6 Nov 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B3D1DF27C;
+	Wed,  6 Nov 2024 12:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896298; cv=none; b=dgS3IZSuhEnFUaRzvwPwvV48x0nch9qs79DmymK21KcCaWVoPZQbuNwg6tXuXQ3q2WuVk8gQMJUW1S0OpYpMMSdyQtO5jSCJ6QL+CQ2ej+OuRSv5cHf9QdGD1eKkgFVAUUwwcQCm59OBArcDtjZ9+PI/2yDIPiJyYSghPfTxdo0=
+	t=1730895523; cv=none; b=tzYWo8ozVvsi9LV9z5CA5k3gmXIOd2l8Ngk+DG3SIldtworYeZVdrG5uBoEnAUAiCb5+PJPDfTCgIIkK5fryczLRlelvAJGOpiW2NmXXIwoJiPmVe6k7UAyuAcyEMJIX1ryLgcyxpoE5sx17JT9ZLy4damFuN7/3NtP1Pe7/GAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896298; c=relaxed/simple;
-	bh=vDOK5SYWJONzcaG1mSJYuak3Ljzo0uFahVoljiDRcLE=;
+	s=arc-20240116; t=1730895523; c=relaxed/simple;
+	bh=4h1jDiHkwEGEa01tvs8hyqyAlAHRvSZlOhKUduQ8+fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9VVdXA7IhH+gq4RnOMLb8hkDssLrs342jV2lKLgiqR3tSlkuPssXfpGZKMdaf7GXbLE55gV28s3cKep/EmnYDecQohyjujhgI9azEtN6Cvz3dRMTBPlLlWTYiMjETH6y1PDeYif2Iv9RGrnlrk2StjiBXsZZnQszeyueKZq8A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJyDQeer; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A9FC4CECD;
-	Wed,  6 Nov 2024 12:31:37 +0000 (UTC)
+	 MIME-Version; b=VoM2YLfZ122nr3d2kyMc583r9dkSVg1tqNgUlxi5WtHs5xePhec8K5SNBIWQLm+wkVkshipzc0PHXN3yq7SFusYnKhgj6RiCiKq50OiXw6pwAu4BUuNEEUTLbqOb0VSsAT9utLXjXgIx1bV0y3Lk0lZ0TWhd4raR6PoIn6J5qAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnLzn9+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77DBC4CECD;
+	Wed,  6 Nov 2024 12:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896297;
-	bh=vDOK5SYWJONzcaG1mSJYuak3Ljzo0uFahVoljiDRcLE=;
+	s=korg; t=1730895523;
+	bh=4h1jDiHkwEGEa01tvs8hyqyAlAHRvSZlOhKUduQ8+fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJyDQeer4GzRRABpS+GniN0o4PhmQhmV4bBxyvciqxtBJMEbIHBZYZQuGQAvKBYEP
-	 XXJl1X+JnwZhTQPxy/xQisxneAFP8dR0fJFw2903bf2W7u4Dz+JzP7BRIQhwAPQpEV
-	 Ut+tq3zstXmaVGLPx6zEgc2UtFFLDu379+8Y/BLk=
+	b=VnLzn9+Cj1ChewpI2wXlLuTbHBHB4/KtM1UAgvIEVFAEcz4rMJyeTQQlJ80BVQsRy
+	 ixnSTJ3NT9i/5k4+nCazkXqFdGXzytslwmCDiXzN3/TbcOmwgD+6u9A9+s/yJ2x3Q1
+	 T6y94zbDuy341/QmP+2nkUfJ72J2QPmsn/MAFgdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Peter Xu <peterx@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 120/245] Revert "selftests/mm: fix deadlock for fork after pthread_create on ARM"
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 245/350] tools/iio: Add memory allocation failure check for trigger_name
 Date: Wed,  6 Nov 2024 13:02:53 +0100
-Message-ID: <20241106120322.175711173@linuxfoundation.org>
+Message-ID: <20241106120326.986125197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-commit 5bb1f4c9340e01003b00b94d539eadb0da88f48e upstream.
+[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
 
-Patch series "selftests/mm: revert pthread_barrier change"
+Added a check to handle memory allocation failure for `trigger_name`
+and return `-ENOMEM`.
 
-On Android arm, pthread_create followed by a fork caused a deadlock in
-the case where the fork required work to be completed by the created
-thread.
-
-The previous patches incorrectly assumed that the parent would
-always initialize the pthread_barrier for the child thread.  This
-reverts the change and replaces the fix for wp-fork-with-event with the
-original use of atomic_bool.
-
-
-This patch (of 3):
-
-This reverts commit e142cc87ac4ec618f2ccf5f68aedcd6e28a59d9d.
-
-fork_event_consumer may be called by other tests that do not initialize
-the pthread_barrier, so this approach is not correct.  The subsequent
-patch will revert to using atomic_bool instead.
-
-Link: https://lkml.kernel.org/r/20241018171734.2315053-1-edliaw@google.com
-Link: https://lkml.kernel.org/r/20241018171734.2315053-2-edliaw@google.com
-Fixes: e142cc87ac4e ("fix deadlock for fork after pthread_create on ARM")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/uffd-unit-tests.c |    7 -------
- 1 file changed, 7 deletions(-)
+ tools/iio/iio_generic_buffer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -241,9 +241,6 @@ static void *fork_event_consumer(void *d
- 	fork_event_args *args = data;
- 	struct uffd_msg msg = { 0 };
- 
--	/* Ready for parent thread to fork */
--	pthread_barrier_wait(&ready_for_fork);
--
- 	/* Read until a full msg received */
- 	while (uffd_read_msg(args->parent_uffd, &msg));
- 
-@@ -311,12 +308,8 @@ static int pagemap_test_fork(int uffd, b
- 
- 	/* Prepare a thread to resolve EVENT_FORK */
- 	if (with_event) {
--		pthread_barrier_init(&ready_for_fork, NULL, 2);
- 		if (pthread_create(&thread, NULL, fork_event_consumer, &args))
- 			err("pthread_create()");
--		/* Wait for child thread to start before forking */
--		pthread_barrier_wait(&ready_for_fork);
--		pthread_barrier_destroy(&ready_for_fork);
- 	}
- 
- 	child = fork();
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index ca9f33fa51c9f..e8cf3dc8de72c 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -483,6 +483,10 @@ int main(int argc, char **argv)
+ 			return -ENOMEM;
+ 		}
+ 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
++		if (!trigger_name) {
++			ret = -ENOMEM;
++			goto error;
++		}
+ 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
+ 		free(trig_dev_name);
+ 		if (ret < 0) {
+-- 
+2.43.0
+
 
 
 
