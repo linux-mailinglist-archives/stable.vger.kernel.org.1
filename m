@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-90701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73FF9BE9A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168F29BE837
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DCEE281250
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C34561F215BA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4801E008C;
-	Wed,  6 Nov 2024 12:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A471DF726;
+	Wed,  6 Nov 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVth5zKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvkgt363"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458C81DFE06;
-	Wed,  6 Nov 2024 12:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A9F1DF74E;
+	Wed,  6 Nov 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896555; cv=none; b=o4NMF8rIv2LXBQRJfKZNVWrklT64GiQzNKqHdQvG3pR6aAyHK1KYK5Gq8eCHzIZUXna9C5M5kEHLw9glKP/bvtRm/TwD5U7YfLRF79QZeqdRBroevhYLagZEMn4qkUx0MFwRiCApjE/cQzutqTQDj7r4yMyB7Ex8IDbq/ae8cJY=
+	t=1730895745; cv=none; b=ZtvYkJ9I2kXuFU9zFao+dhsrIVM/KUGK2UeHDxu+nS6gH3BXqASzIpKR2c8j8DH5dzOq/BqCHfoT54e0q8qpBtAo/IqZsF8SuhQWTSLHDpkb0um+LrHal7yD5P3uCyzcEbaNiKxAXNV0uLU+Xhtd+2sZ1cQqz0FHmCxPU9C5wy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896555; c=relaxed/simple;
-	bh=EkuoEfOkEXtvZxy8nxmCvSZ1vpMiqsGUaxXqqu7tNMo=;
+	s=arc-20240116; t=1730895745; c=relaxed/simple;
+	bh=ZtheL90N9LA0rVdn1DXOkNyyKC/lIk/8bCzCLlYgx2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k/EijPmCdPCXE95BFBZy3pkHfQ7/UsupGuulHqzttm+ZxDh5b72ASEW3P2P0n5YIDRsPPoDfIZqJULrGmyRLaWL9lQtf10plkGb4C/iIdmSD1d9t5NigC4zGAVgBFebgtOmhZubW1l2SDCrwKy3laz7dgbZms8/wJqbgyVik4Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVth5zKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF45EC4CECD;
-	Wed,  6 Nov 2024 12:35:54 +0000 (UTC)
+	 MIME-Version; b=RuMJigRtJjyRl+D8ByPNrXG0SVzj0AWhZDfKIhIGO46o5GG77TUXaZj1AygwI7EH2270eIZuH3MbUL8A5r6XWU6j5X7cneT8SfSsaCG+FyAf62zL54qOYrk3k8ys7+UfQIS34OM5iew96T6ShZsLef3WDMfZBSTchyLTAFySfGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvkgt363; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1DFC4CECD;
+	Wed,  6 Nov 2024 12:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896555;
-	bh=EkuoEfOkEXtvZxy8nxmCvSZ1vpMiqsGUaxXqqu7tNMo=;
+	s=korg; t=1730895744;
+	bh=ZtheL90N9LA0rVdn1DXOkNyyKC/lIk/8bCzCLlYgx2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVth5zKDjAi9PCYDnBOLpXcShj3b4iN0mwHTjtk1A6T/cIzg1G16eqb6XoShDwGVk
-	 J4hmYzvY9L3utjDjIW/z2vSTl6xroCn079tdybyKwPslrEACzgWjZHtq1mCyCMsC/N
-	 cFNW1jG4AdJId2p1vcEa0/baa/eIxorsqhagr+Ew=
+	b=bvkgt363UStusOIErHB2xSFeiZicd4E2PHrP4tMEZ9JiewxjN1S7iq77JVAz+lEA8
+	 TdBql4qqEimsm13R2IVT/FH3f1oj1MMJM7WkNIlpfQducGAGSBhKr2Ch4TCtLTSPgD
+	 yYuYMPtxFvlwVxzsld/ICeqg6LN8EQ4IVZMYx1rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Paulo Zanoni <paulo.r.zanoni@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 195/245] drm/xe: Add mmio read before GGTT invalidate
+Subject: [PATCH 4.19 320/350] selinux: improve error checking in sel_write_load()
 Date: Wed,  6 Nov 2024 13:04:08 +0100
-Message-ID: <20241106120324.044917292@linuxfoundation.org>
+Message-ID: <20241106120328.654649995@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 993ca0eccec65a2cacc3cefb15d35ffadc6f00fb ]
+[ Upstream commit 42c773238037c90b3302bf37a57ae3b5c3f6004a ]
 
-On LNL without a mmio read before a GGTT invalidate the GuC can
-incorrectly read the GGTT scratch page upon next access leading to jobs
-not getting scheduled. A mmio read before a GGTT invalidate seems to fix
-this. Since a GGTT invalidate is not a hot code path, blindly do a mmio
-read before each GGTT invalidate.
+Move our existing input sanity checking to the top of sel_write_load()
+and add a check to ensure the buffer size is non-zero.
 
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Reported-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3164
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241023221200.1797832-1-matthew.brost@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 5a710196883e0ac019ac6df2a6d79c16ad3c32fa)
-[ Fix conflict with mmio vs gt argument ]
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Move a local variable initialization from the declaration to before it
+is used.
+
+Minor style adjustments.
+
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+[cascardo: keep fsi initialization at its declaration point as it is used earlier]
+[cascardo: keep check for 64MiB size limit]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_ggtt.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ security/selinux/selinuxfs.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
-index 0cdbc1296e885..226542bb1442e 100644
---- a/drivers/gpu/drm/xe/xe_ggtt.c
-+++ b/drivers/gpu/drm/xe/xe_ggtt.c
-@@ -309,6 +309,16 @@ static void ggtt_invalidate_gt_tlb(struct xe_gt *gt)
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 60b3f16bb5c7b..c35aab9f24471 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -536,6 +536,16 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 	ssize_t length;
+ 	void *data = NULL;
  
- static void xe_ggtt_invalidate(struct xe_ggtt *ggtt)
- {
-+	struct xe_device *xe = tile_to_xe(ggtt->tile);
++	/* no partial writes */
++	if (*ppos)
++		return -EINVAL;
++	/* no empty policies */
++	if (!count)
++		return -EINVAL;
 +
-+	/*
-+	 * XXX: Barrier for GGTT pages. Unsure exactly why this required but
-+	 * without this LNL is having issues with the GuC reading scratch page
-+	 * vs. correct GGTT page. Not particularly a hot code path so blindly
-+	 * do a mmio read here which results in GuC reading correct GGTT page.
-+	 */
-+	xe_mmio_read32(xe_root_mmio_gt(xe), VF_CAP_REG);
++	if (count > 64 * 1024 * 1024)
++		return -EFBIG;
 +
- 	/* Each GT in a tile has its own TLB to cache GGTT lookups */
- 	ggtt_invalidate_gt_tlb(ggtt->tile->primary_gt);
- 	ggtt_invalidate_gt_tlb(ggtt->tile->media_gt);
+ 	mutex_lock(&fsi->mutex);
+ 
+ 	length = avc_has_perm(&selinux_state,
+@@ -544,23 +554,15 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 	if (length)
+ 		goto out;
+ 
+-	/* No partial writes. */
+-	length = -EINVAL;
+-	if (*ppos != 0)
+-		goto out;
+-
+-	length = -EFBIG;
+-	if (count > 64 * 1024 * 1024)
+-		goto out;
+-
+-	length = -ENOMEM;
+ 	data = vmalloc(count);
+-	if (!data)
++	if (!data) {
++		length = -ENOMEM;
+ 		goto out;
+-
+-	length = -EFAULT;
+-	if (copy_from_user(data, buf, count) != 0)
++	}
++	if (copy_from_user(data, buf, count) != 0) {
++		length = -EFAULT;
+ 		goto out;
++	}
+ 
+ 	length = security_load_policy(fsi->state, data, count);
+ 	if (length) {
+@@ -579,6 +581,7 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 		"auid=%u ses=%u lsm=selinux res=1",
+ 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
+ 		audit_get_sessionid(current));
++
+ out:
+ 	mutex_unlock(&fsi->mutex);
+ 	vfree(data);
 -- 
 2.43.0
 
