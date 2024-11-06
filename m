@@ -1,120 +1,107 @@
-Return-Path: <stable+bounces-90499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312C59BE89D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293979BE67E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A63C5B214B7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4993B23E4C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6A1DFD83;
-	Wed,  6 Nov 2024 12:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F9A1D416E;
+	Wed,  6 Nov 2024 12:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5zVfEfR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jslXvER8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9391DF24B;
-	Wed,  6 Nov 2024 12:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA061DF743;
+	Wed,  6 Nov 2024 12:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895954; cv=none; b=WuPum9yNTq4Sb+OCG5hBH8EoqWPmPeu4eht2a3pFF+EuQXZPXtyYYHPBTuTYp4G8AwQ7IlruC1hFwy2XkT10rzND0eSN/aQ6UWxS42ymGU+4Ga3X9VyXIupqhE7AKXXH6vX7f0ye2XfmPjjotDrBbwGpO11NZmzorhzCLe8NoYs=
+	t=1730894461; cv=none; b=O+toWSOBAbmFkOkSYdEyby2cVwrHSLTs199gzZ7mcgon23OgLIOU60bgFt9xVjRmyOLGUEJiulKRcGM6iGZNFF2jjclCKBPReladY5vLDQqi/SXMKaC6HOccp2TC5wpRzdFYlIbeoiNa+G/hjpyqP2Dc6ijUKrTwayl4bO8UhME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895954; c=relaxed/simple;
-	bh=KePHUj2f/ZWIPHroLTvUsfbyFhVZr799O7g3fzSShCA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqX+ny0PsA9+ZMn8Eh2D/RLz6GrtFnc4V+g4fXc8DY7qPQMWYR6qpQ0fQMML+b8gbdnTdDPE0FXxy4CPJ8G8Ys4dwyWGWc73h/jIwIXtAzuY0px/01rt+Cu4a/O0WWcx1ZqqXKYYbBJrIwV80unwr2XESvq++gMMt0mbpX11Xco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5zVfEfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74356C4CECD;
-	Wed,  6 Nov 2024 12:25:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895953;
-	bh=KePHUj2f/ZWIPHroLTvUsfbyFhVZr799O7g3fzSShCA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5zVfEfRnhnOtzqkXz8WJi7lj2tIeQPl9CQYgHL4vnbjXV0zwxpF0FdTMY4TGFRQC
-	 G17fgoGYx6xPNsIpC8e2dFeyW9bCQ4jOsSh9O98P6Cg6usZMuXA9VK4A8xrUWVPTsB
-	 /GerCZw1ADe4cBoUjsVH3QMwYnyIUMn/XU/JNkOM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 005/245] slub/kunit: fix a WARNING due to unwrapped __kmalloc_cache_noprof
-Date: Wed,  6 Nov 2024 13:00:58 +0100
-Message-ID: <20241106120319.376694538@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1730894461; c=relaxed/simple;
+	bh=RE0lcdwDdIX6buDrsczw7DnwP7RjJHNVqjW3F50NMMs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z4owtVYmLidJBpAMxwsBwcbY2IlTQjob6I8Vpm5cJ22N1831h+2ePPeJ9KFDLSa2YhzfpO1zTJu6bvCS4yrQc+oHKjLvr2Cgcy3X0HNnuBCSOkPvz3gMtpzgMWeB6Wdlc0m+ZdBD9T7m/n0CVaCcJxJqyZsLbRBt90mZ4FbzGaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jslXvER8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253D6C4CED3;
+	Wed,  6 Nov 2024 12:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730894461;
+	bh=RE0lcdwDdIX6buDrsczw7DnwP7RjJHNVqjW3F50NMMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jslXvER8LdZSdf6sw+vrVl1/xWWP82jzEAIhRnBEO8RnWE0Jb2Z2FdC2w1Kq76jAi
+	 dw5aeaAnF2tv7Xkv4zxA/yN19LzrOJBZ4aFIWG2PFU2IRSkWvE3RiBqrJgMTnaJRRM
+	 +AtPWWXngaVkaUBT1ZOsHztVZt9cv7Hy8npl4F7DtlsGziUzxUa5kS3tNQ+HYFqezO
+	 CIJRkLTf5PJD6MjDgLcGeZP/nXOkSDzyEU2yg9XRvazuI7KEVlj/AOZJQCLRslXIzt
+	 rC5COtE2vUMCDKezPsJSICgOUzPsaBdqj3FM1m/MOnIqFCwBaKVCqMwnaYUrxEDI70
+	 Kn5KqnVT/w3lQ==
+Date: Wed, 6 Nov 2024 07:00:58 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org, cs@tuxedo.de, Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "ALSA: hda/realtek: Fix headset mic on TUXEDO
+ Gemini 17 Gen3" failed to apply to v6.1-stable tree
+Message-ID: <ZytaejmvQo3NkUrP@sashalap>
+References: <20241106021124.182205-1-sashal@kernel.org>
+ <dc0af563-59d2-4176-ad15-fa93cf5c99d2@tuxedocomputers.com>
+ <a7ab1da8-5fe8-4f46-bf18-bfc8d6fa3e6f@tuxedocomputers.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a7ab1da8-5fe8-4f46-bf18-bfc8d6fa3e6f@tuxedocomputers.com>
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Nov 06, 2024 at 10:23:14AM +0100, Werner Sembach wrote:
+>Am 06.11.24 um 10:19 schrieb Werner Sembach:
+>>Hi,
+>>
+>>Am 06.11.24 um 03:11 schrieb Sasha Levin:
+>>>The patch below does not apply to the v6.1-stable tree.
+>>>If someone wants it applied there, or to any other stable or longterm
+>>>tree, then please email the backport, including the original git commit
+>>>id to <stable@vger.kernel.org>.
+>>
+>>Applying 33affa7fb46c0c07f6c49d4ddac9dd436715064c (ALSA: 
+>>hda/realtek: Add quirks for some Clevo laptops) first and then 
+>>0b04fbe886b4274c8e5855011233aaa69fec6e75 (ALSA: hda/realtek: Fix 
+>>headset mic on TUXEDO Gemini 17 Gen3) and 
+>>e49370d769e71456db3fbd982e95bab8c69f73e8 (ALSA: hda/realtek: Fix 
+>>headset mic on TUXEDO Stellaris 16 Gen6 mb1) makes everything work 
+>>without alteration.
+>>
+>>The first one is just missing the cc stable tag, probably by accident.
+>>
+>>Should I alter the 2nd and 3rd commit or should I send a patchset 
+>>that includes the first one?
+>
+>Sorry just realized that for 5.15 it's a different patch that is 
+>missing for e49370d769e71456db3fbd982e95bab8c69f73e8 to cleanly apply
+>
+>I will just alter the patches
 
-------------------
+It applies, but fails to build:
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+In file included from sound/pci/hda/patch_realtek.c:21:
+sound/pci/hda/patch_realtek.c:9530:59: error: 'ALC2XX_FIXUP_HEADSET_MIC' undeclared here (not in a function); did you mean 'ALC283_FIXUP_HEADSET_MIC'?
+  9530 |         SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+       |                                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./include/sound/core.h:465:50: note: in definition of macro 'SND_PCI_QUIRK'
+   465 |         {_SND_PCI_QUIRK_ID(vend, dev), .value = (val), .name = (xname)}
+       |                                                  ^~~
+make[3]: *** [scripts/Makefile.build:289: sound/pci/hda/patch_realtek.o] Error 1
 
-[ Upstream commit 2b059d0d1e624adc6e69a754bc48057f8bf459dc ]
-
-'modprobe slub_kunit' will have a warning as shown below. The root cause
-is that __kmalloc_cache_noprof was directly used, which resulted in no
-alloc_tag being allocated. This caused current->alloc_tag to be null,
-leading to a warning in alloc_tag_add_check.
-
-Let's add an alloc_hook layer to __kmalloc_cache_noprof specifically
-within lib/slub_kunit.c, which is the only user of this internal slub
-function outside kmalloc implementation itself.
-
-[58162.947016] WARNING: CPU: 2 PID: 6210 at
-./include/linux/alloc_tag.h:125 alloc_tagging_slab_alloc_hook+0x268/0x27c
-[58162.957721] Call trace:
-[58162.957919]  alloc_tagging_slab_alloc_hook+0x268/0x27c
-[58162.958286]  __kmalloc_cache_noprof+0x14c/0x344
-[58162.958615]  test_kmalloc_redzone_access+0x50/0x10c [slub_kunit]
-[58162.959045]  kunit_try_run_case+0x74/0x184 [kunit]
-[58162.959401]  kunit_generic_run_threadfn_adapter+0x2c/0x4c [kunit]
-[58162.959841]  kthread+0x10c/0x118
-[58162.960093]  ret_from_fork+0x10/0x20
-[58162.960363] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Fixes: a0a44d9175b3 ("mm, slab: don't wrap internal functions with alloc_hooks()")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- lib/slub_kunit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
-index e6667a28c0149..af5b9c41d5b30 100644
---- a/lib/slub_kunit.c
-+++ b/lib/slub_kunit.c
-@@ -140,7 +140,7 @@ static void test_kmalloc_redzone_access(struct kunit *test)
- {
- 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_RZ_kmalloc", 32,
- 				SLAB_KMALLOC|SLAB_STORE_USER|SLAB_RED_ZONE);
--	u8 *p = __kmalloc_cache_noprof(s, GFP_KERNEL, 18);
-+	u8 *p = alloc_hooks(__kmalloc_cache_noprof(s, GFP_KERNEL, 18));
- 
- 	kasan_disable_current();
- 
 -- 
-2.43.0
-
-
-
+Thanks,
+Sasha
 
