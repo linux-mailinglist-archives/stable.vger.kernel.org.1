@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26C39BE786
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D269BE759
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 840421F21A22
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8764028380E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FC51DF257;
-	Wed,  6 Nov 2024 12:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF1A1DF24A;
+	Wed,  6 Nov 2024 12:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVhreFgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxCRjFBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ED81922DB;
-	Wed,  6 Nov 2024 12:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3921DEFF5;
+	Wed,  6 Nov 2024 12:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895309; cv=none; b=lUfYqtlxAr5OUwNDuOeeb2MvXyLjsLd6rSY4RlgMQYW9i4uvgNcuzgI7Cqrdsf4h21ExqxQQYeV4AgzsjpC9DQWE9+nJ99t2D6DrEsgDaGtKjIsFWqWYBE0W6H2pyUPPw/N9BzAj71vdUFeAFoiOCG5GeM0J9b0dlQ0eE0gYnSA=
+	t=1730895199; cv=none; b=kNbG/TZmLFlnuMm+oHWcTJHyoPv9VknVogaYQDh2FOf/XzdWUef60t5m92gUzleZTawQ6HPBxEV/S8ar6uCfo5UYkRbJ6NOe977u8hN0yIzdR1Yl5K2gMUFJCQOc5H9peV7+r+zfAGa/QIS/dQ2AQocqeiHzRaMJWDOKw+ksGWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895309; c=relaxed/simple;
-	bh=C57wBlc0Iouga4MYXnlG/LxiWx5ORfZtsM2lQ1wfCNY=;
+	s=arc-20240116; t=1730895199; c=relaxed/simple;
+	bh=DQWTTBVYYY2Zdv3izqE34yHM9pR2W2cXuq0oErquVzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPx+HjSbvaoM1lIet6a1A+g0PWOxsu+ZaWV2WoyILPyZ1EJJP4RzY6YZbZhcFji4GFvOvb3LcJgbA88eKjzG5wykCpTup8FTaEpcAX5/wgJQjwRgEUhgE20CiZzgXbr9bMvO5l6QN4IuIGe2FWw3xOqe1teeAJCqDmn2f4lF3zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVhreFgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA4CC4CECD;
-	Wed,  6 Nov 2024 12:15:08 +0000 (UTC)
+	 MIME-Version; b=PplBs5aZ8KeZ2YVchV1bOkLXO594Z/Mj7e1CGj9U0h6x6WPjnV8JdeDm1f+RAMWOXVMqnbt2Z5wUNX3lIWITr9tLbDDWaWPhgHf72w0hjzh1JEkMVJFxBOwGMJ1VXK3U3hSDYK1EvWdfBFWGZXdmudLbQv+c+xEUMv+e2vUxbPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxCRjFBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B05C4CECD;
+	Wed,  6 Nov 2024 12:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895308;
-	bh=C57wBlc0Iouga4MYXnlG/LxiWx5ORfZtsM2lQ1wfCNY=;
+	s=korg; t=1730895199;
+	bh=DQWTTBVYYY2Zdv3izqE34yHM9pR2W2cXuq0oErquVzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVhreFgzFjln9ed5PtKN8XLyxnn9wMb2w5M9IKVzk/7rcuoX4UqnVkTv7vDBpzFpv
-	 UBvch1x4pVplU9V2TPUlsMjS040wKgRcw3zGsLNTu6tRe93RrEXMpkNTpPH8IsA9rj
-	 lIPD+LuPVjmHwUDkVNy/jHyGv/2VRxWeiLtJ8A6Y=
+	b=VxCRjFBeLnZJlym1/668XRWCS4O49MjgsZ3NxBpRqVODT52gJ/xvX2R/q96qBReek
+	 oMkKCX4JB7R0S11FV2xSM3GmTyXz63aHyz4Dbug7NsWskd5whywwfsWIL64Fxr9eTF
+	 m6HoJ3RE6WxX6vlR9VLUk0x1fdV+52hCuri6KiCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashant Malani <pmalani@chromium.org>,
-	Grant Grundler <grundler@chromium.org>,
-	Hayes Wang <hayeswang@realtek.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 137/350] r8152: Factor out OOB link list waits
-Date: Wed,  6 Nov 2024 13:01:05 +0100
-Message-ID: <20241106120324.290561735@linuxfoundation.org>
+Subject: [PATCH 4.19 138/350] net: ethernet: lantiq_etop: fix memory disclosure
+Date: Wed,  6 Nov 2024 13:01:06 +0100
+Message-ID: <20241106120324.317659525@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -68,182 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prashant Malani <pmalani@chromium.org>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 5f71c84038d39def573744a145c573758f52a949 ]
+[ Upstream commit 45c0de18ff2dc9af01236380404bbd6a46502c69 ]
 
-The same for-loop check for the LINK_LIST_READY bit of an OOB_CTRL
-register is used in several places. Factor these out into a single
-function to reduce the lines of code.
+When applying padding, the buffer is not zeroed, which results in memory
+disclosure. The mentioned data is observed on the wire. This patch uses
+skb_put_padto() to pad Ethernet frames properly. The mentioned function
+zeroes the expanded buffer.
 
-Change-Id: I20e8f327045a72acc0a83e2d145ae2993ab62915
-Signed-off-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Acked-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 45c0de18ff2d ("net: ethernet: lantiq_etop: fix memory disclosure")
+In case the packet cannot be padded it is silently dropped. Statistics
+are also not incremented. This driver does not support statistics in the
+old 32-bit format or the new 64-bit format. These will be added in the
+future. In its current form, the patch should be easily backported to
+stable versions.
+
+Ethernet MACs on Amazon-SE and Danube cannot do padding of the packets
+in hardware, so software padding must be applied.
+
+Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240923214949.231511-2-olek2@wp.pl
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 73 ++++++++++++-----------------------------
- 1 file changed, 21 insertions(+), 52 deletions(-)
+ drivers/net/ethernet/lantiq_etop.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 9c17332c19fd3..2f9daf077e8a7 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -3007,11 +3007,23 @@ static void r8152b_hw_phy_cfg(struct r8152 *tp)
- 	set_bit(PHY_RESET, &tp->flags);
- }
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index b41822d08649d..d492b8899d32a 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -478,7 +478,9 @@ ltq_etop_tx(struct sk_buff *skb, struct net_device *dev)
+ 	unsigned long flags;
+ 	u32 byte_offset;
  
--static void r8152b_exit_oob(struct r8152 *tp)
-+static void wait_oob_link_list_ready(struct r8152 *tp)
- {
- 	u32 ocp_data;
- 	int i;
+-	len = skb->len < ETH_ZLEN ? ETH_ZLEN : skb->len;
++	if (skb_put_padto(skb, ETH_ZLEN))
++		return NETDEV_TX_OK;
++	len = skb->len;
  
-+	for (i = 0; i < 1000; i++) {
-+		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
-+		if (ocp_data & LINK_LIST_READY)
-+			break;
-+		usleep_range(1000, 2000);
-+	}
-+}
-+
-+static void r8152b_exit_oob(struct r8152 *tp)
-+{
-+	u32 ocp_data;
-+
- 	ocp_data = ocp_read_dword(tp, MCU_TYPE_PLA, PLA_RCR);
- 	ocp_data &= ~RCR_ACPT_ALL;
- 	ocp_write_dword(tp, MCU_TYPE_PLA, PLA_RCR, ocp_data);
-@@ -3029,23 +3041,13 @@ static void r8152b_exit_oob(struct r8152 *tp)
- 	ocp_data &= ~MCU_BORW_EN;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7);
- 	ocp_data |= RE_INIT_LL;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	rtl8152_nic_reset(tp);
- 
-@@ -3087,7 +3089,6 @@ static void r8152b_exit_oob(struct r8152 *tp)
- static void r8152b_enter_oob(struct r8152 *tp)
- {
- 	u32 ocp_data;
--	int i;
- 
- 	ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
- 	ocp_data &= ~NOW_IS_OOB;
-@@ -3099,23 +3100,13 @@ static void r8152b_enter_oob(struct r8152 *tp)
- 
- 	rtl_disable(tp);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7);
- 	ocp_data |= RE_INIT_LL;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, RTL8152_RMS);
- 
-@@ -3388,7 +3379,6 @@ static void r8153b_hw_phy_cfg(struct r8152 *tp)
- static void r8153_first_init(struct r8152 *tp)
- {
- 	u32 ocp_data;
--	int i;
- 
- 	rxdy_gated_en(tp, true);
- 	r8153_teredo_off(tp);
-@@ -3408,23 +3398,13 @@ static void r8153_first_init(struct r8152 *tp)
- 	ocp_data &= ~MCU_BORW_EN;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7);
- 	ocp_data |= RE_INIT_LL;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	rtl_rx_vlan_en(tp, tp->netdev->features & NETIF_F_HW_VLAN_CTAG_RX);
- 
-@@ -3449,7 +3429,6 @@ static void r8153_first_init(struct r8152 *tp)
- static void r8153_enter_oob(struct r8152 *tp)
- {
- 	u32 ocp_data;
--	int i;
- 
- 	ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
- 	ocp_data &= ~NOW_IS_OOB;
-@@ -3458,23 +3437,13 @@ static void r8153_enter_oob(struct r8152 *tp)
- 	rtl_disable(tp);
- 	rtl_reset_bmu(tp);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7);
- 	ocp_data |= RE_INIT_LL;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, ocp_data);
- 
--	for (i = 0; i < 1000; i++) {
--		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
--		if (ocp_data & LINK_LIST_READY)
--			break;
--		usleep_range(1000, 2000);
--	}
-+	wait_oob_link_list_ready(tp);
- 
- 	ocp_data = tp->netdev->mtu + VLAN_ETH_HLEN + ETH_FCS_LEN;
- 	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, ocp_data);
+ 	if ((desc->ctl & (LTQ_DMA_OWN | LTQ_DMA_C)) || ch->skb[ch->dma.desc]) {
+ 		netdev_err(dev, "tx ring full\n");
 -- 
 2.43.0
 
