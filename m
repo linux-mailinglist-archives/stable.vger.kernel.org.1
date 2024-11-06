@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-90536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119F79BE8D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EA49BE7AD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1951F22329
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71F35B2497B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0650C1DFD83;
-	Wed,  6 Nov 2024 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24991DF252;
+	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYsCinod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ8O9dKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A3C1DF98C;
-	Wed,  6 Nov 2024 12:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF54C1DE8B4;
+	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896062; cv=none; b=FV77jo7VPxujq3cOSD7zG8sEyBeMmnk0FngDNW2SXWknAO3B+3gf5uJRNJG9+uvCNnNXyZD/LGMbpUgJPoM86UzBPBvR14ZLb5jzEjFnL4PbRb91KA6bjJfAVfIUoEulqyzbHd0rf4BVQVFD1e1VPrTGeb2q5Oa0PNMcSkjkLIU=
+	t=1730895394; cv=none; b=JzcyrKkYmSjspzWzgLs5uwd0VKr7kHL4R32UjuOGN+9EYlxoY0jxUHGuqzDp0e0pP6RkXlal9WytjpsWgRd4hjxDuvFPbozjwpr7Dncla2YVmAR7M6zQ/TkQomwvfCSheepe7WXQ4dVWo/omRY5Mw912b9LQ7jMx3HqIMCQGrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896062; c=relaxed/simple;
-	bh=jYMTNPdOLn5aXr2eyjZuu8oFF/IyLttDXMYHpXDqepk=;
+	s=arc-20240116; t=1730895394; c=relaxed/simple;
+	bh=IsZtY2uP4SbZGxtvd9dFGXskmdg0j8Kj0BO9R2Xk15w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auIoiGBQtyVqkm11x10I8ZX8exeCqoL11vmsbvEzWXdD7RtsTvgigQIZGB9Ak5zM7MIty01FbBpjHb8b0f2M9LW+AoepLAahBnkysSm1yJsA1MVA7lkD0R+rrtSsr4UteCBSYx0er8UFpzB0ZBxH+WU/OAl4ygRWkwnHcMzDQh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYsCinod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE28C4CECD;
-	Wed,  6 Nov 2024 12:27:42 +0000 (UTC)
+	 MIME-Version; b=N6+yI0HUuoSgv1fBeMQ+ymJCCHVLzvQiq3R86wPx80GVLLZG0CHAo1bUjVj8vy//WlmDy4CDwOTuQ7Fura4s39AK0vIvlNfJXYE7fzeFeLsimKrarCqBamAbKXtfAnpxY60tLIphPS7LiELMePV6m4dmT2R+gF4YvxHEn1xHldQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQ8O9dKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C658C4CECD;
+	Wed,  6 Nov 2024 12:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896062;
-	bh=jYMTNPdOLn5aXr2eyjZuu8oFF/IyLttDXMYHpXDqepk=;
+	s=korg; t=1730895394;
+	bh=IsZtY2uP4SbZGxtvd9dFGXskmdg0j8Kj0BO9R2Xk15w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYsCinodqh8k8ihdgdQBWyYt8nlBQM8Wk7Ny6WSLQU+IgEU13yH5xSFy9h+WaeUG3
-	 YceImW+55ygtdHoZj4hZaq2wPV/sbnPE2CO0Q26Mt8xMmB6GYVbaDnspvVKP/Q2liA
-	 TfT5WWQ7vHFSjx0tNi4R3NoJhM5RbVwWqsPas57w=
+	b=DQ8O9dKBAEyO0WqSEL+fmVeDaXrpLcorwXDtYoiXWvadpJBpyokpyaawki3BYdh8Q
+	 1pl+46+vBWWYR0s8Er93k1vp2HypxPKi/bRFWABtRQcA6paE3Es5PJsxkYVJUaLKOf
+	 nsxkWWkxL0DQTx+2Q/RRb6BszZblqRILAkZehL6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 076/245] cxl/events: Fix Trace DRAM Event Record
-Date: Wed,  6 Nov 2024 13:02:09 +0100
-Message-ID: <20241106120321.076394320@linuxfoundation.org>
+	Julian Sun <sunjunchao2870@gmail.com>,
+	syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 202/350] ocfs2: fix null-ptr-deref when journal load failed.
+Date: Wed,  6 Nov 2024 13:02:10 +0100
+Message-ID: <20241106120325.967448699@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +69,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiju Jose <shiju.jose@huawei.com>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-[ Upstream commit 53ab8678e7180834be29cf56cd52825fc3427c02 ]
+commit 5784d9fcfd43bd853654bb80c87ef293b9e8e80a upstream.
 
-CXL spec rev 3.0 section 8.2.9.2.1.2 defines the DRAM Event Record.
+During the mounting process, if journal_reset() fails because of too short
+journal, then lead to jbd2_journal_load() fails with NULL j_sb_buffer.
+Subsequently, ocfs2_journal_shutdown() calls
+jbd2_journal_flush()->jbd2_cleanup_journal_tail()->
+__jbd2_update_log_tail()->jbd2_journal_update_sb_log_tail()
+->lock_buffer(journal->j_sb_buffer), resulting in a null-pointer
+dereference error.
 
-Fix decode memory event type field of DRAM Event Record.
-For e.g. if value is 0x1 it will be reported as an Invalid Address
-(General Media Event Record - Memory Event Type) instead of Scrub Media
-ECC Error (DRAM Event Record - Memory Event Type) and so on.
+To resolve this issue, we should check the JBD2_LOADED flag to ensure the
+journal was properly loaded.  Additionally, use journal instead of
+osb->journal directly to simplify the code.
 
-Fixes: 2d6c1e6d60ba ("cxl/mem: Trace DRAM Event Record")
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-Link: https://patch.msgid.link/20241014143003.1170-1-shiju.jose@huawei.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=05b9b39d8bdfe1a0861f
+Link: https://lkml.kernel.org/r/20240902030844.422725-1-sunjunchao2870@gmail.com
+Fixes: f6f50e28f0cb ("jbd2: Fail to load a journal if it is too short")
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Reported-by: syzbot+05b9b39d8bdfe1a0861f@syzkaller.appspotmail.com
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/trace.h | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ fs/ocfs2/journal.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index 9167cfba7f592..cdffebcf20a4d 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -279,7 +279,7 @@ TRACE_EVENT(cxl_generic_event,
- #define CXL_GMER_MEM_EVT_TYPE_ECC_ERROR			0x00
- #define CXL_GMER_MEM_EVT_TYPE_INV_ADDR			0x01
- #define CXL_GMER_MEM_EVT_TYPE_DATA_PATH_ERROR		0x02
--#define show_mem_event_type(type)	__print_symbolic(type,			\
-+#define show_gmer_mem_event_type(type)	__print_symbolic(type,			\
- 	{ CXL_GMER_MEM_EVT_TYPE_ECC_ERROR,		"ECC Error" },		\
- 	{ CXL_GMER_MEM_EVT_TYPE_INV_ADDR,		"Invalid Address" },	\
- 	{ CXL_GMER_MEM_EVT_TYPE_DATA_PATH_ERROR,	"Data Path Error" }	\
-@@ -373,7 +373,7 @@ TRACE_EVENT(cxl_general_media,
- 		"hpa=%llx region=%s region_uuid=%pUb",
- 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
- 		show_event_desc_flags(__entry->descriptor),
--		show_mem_event_type(__entry->type),
-+		show_gmer_mem_event_type(__entry->type),
- 		show_trans_type(__entry->transaction_type),
- 		__entry->channel, __entry->rank, __entry->device,
- 		__print_hex(__entry->comp_id, CXL_EVENT_GEN_MED_COMP_ID_SIZE),
-@@ -391,6 +391,17 @@ TRACE_EVENT(cxl_general_media,
-  * DRAM Event Record defines many fields the same as the General Media Event
-  * Record.  Reuse those definitions as appropriate.
-  */
-+#define CXL_DER_MEM_EVT_TYPE_ECC_ERROR			0x00
-+#define CXL_DER_MEM_EVT_TYPE_SCRUB_MEDIA_ECC_ERROR	0x01
-+#define CXL_DER_MEM_EVT_TYPE_INV_ADDR			0x02
-+#define CXL_DER_MEM_EVT_TYPE_DATA_PATH_ERROR		0x03
-+#define show_dram_mem_event_type(type)  __print_symbolic(type,				\
-+	{ CXL_DER_MEM_EVT_TYPE_ECC_ERROR,		"ECC Error" },			\
-+	{ CXL_DER_MEM_EVT_TYPE_SCRUB_MEDIA_ECC_ERROR,	"Scrub Media ECC Error" },	\
-+	{ CXL_DER_MEM_EVT_TYPE_INV_ADDR,		"Invalid Address" },		\
-+	{ CXL_DER_MEM_EVT_TYPE_DATA_PATH_ERROR,		"Data Path Error" }		\
-+)
-+
- #define CXL_DER_VALID_CHANNEL				BIT(0)
- #define CXL_DER_VALID_RANK				BIT(1)
- #define CXL_DER_VALID_NIBBLE				BIT(2)
-@@ -477,7 +488,7 @@ TRACE_EVENT(cxl_dram,
- 		"hpa=%llx region=%s region_uuid=%pUb",
- 		__entry->dpa, show_dpa_flags(__entry->dpa_flags),
- 		show_event_desc_flags(__entry->descriptor),
--		show_mem_event_type(__entry->type),
-+		show_dram_mem_event_type(__entry->type),
- 		show_trans_type(__entry->transaction_type),
- 		__entry->channel, __entry->rank, __entry->nibble_mask,
- 		__entry->bank_group, __entry->bank,
--- 
-2.43.0
-
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -989,7 +989,7 @@ void ocfs2_journal_shutdown(struct ocfs2
+ 	if (!igrab(inode))
+ 		BUG();
+ 
+-	num_running_trans = atomic_read(&(osb->journal->j_num_trans));
++	num_running_trans = atomic_read(&(journal->j_num_trans));
+ 	trace_ocfs2_journal_shutdown(num_running_trans);
+ 
+ 	/* Do a commit_cache here. It will flush our journal, *and*
+@@ -1008,9 +1008,10 @@ void ocfs2_journal_shutdown(struct ocfs2
+ 		osb->commit_task = NULL;
+ 	}
+ 
+-	BUG_ON(atomic_read(&(osb->journal->j_num_trans)) != 0);
++	BUG_ON(atomic_read(&(journal->j_num_trans)) != 0);
+ 
+-	if (ocfs2_mount_local(osb)) {
++	if (ocfs2_mount_local(osb) &&
++	    (journal->j_journal->j_flags & JBD2_LOADED)) {
+ 		jbd2_journal_lock_updates(journal->j_journal);
+ 		status = jbd2_journal_flush(journal->j_journal);
+ 		jbd2_journal_unlock_updates(journal->j_journal);
 
 
 
