@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-91117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084479BEC8F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A879BEC9A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37D3A1C23BE8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C88451C23B40
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF02C1FCC44;
-	Wed,  6 Nov 2024 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673F01E25F6;
+	Wed,  6 Nov 2024 12:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZklcOGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIq1Xd76"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB3E1F4FCF;
-	Wed,  6 Nov 2024 12:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251181E0492;
+	Wed,  6 Nov 2024 12:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897788; cv=none; b=RyWROqPpF6xdpnVvh8X1ylPgrnxFr05gFzCJVc2Ve4P+kiPYN0WY8W9Akq/1YQ4tmiGj8MmBp5Wfhw0SbNWx6XO1l5iDKa+p9Ujm3a5MQzq5XWOsFjoahyAXfwB+/lCg+yowV9mVFRUDjki3mV7hWKjnBh6xr7xd0iUF1J3XHhQ=
+	t=1730897815; cv=none; b=JDkHn+Q13LXs7kUa3WvAX/wX7leDVjvkCPyfwHFQae/tn8ccO1P+WNfcDi0gqz7R58i4EN1Fb/ZKLdAvTWCiixuJx2LYJAbUFj/HM+D8ukgDys3IiF0eEkIBMAFYhDYR7olsjvUqcQwYkSWXcfqMBMiQkKGYHXa9AkmJgJ2Nys4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897788; c=relaxed/simple;
-	bh=yJ5mPHVwwm3Jn7I5X7Dr1P2YtLqHTaeRgUDcKY0a73c=;
+	s=arc-20240116; t=1730897815; c=relaxed/simple;
+	bh=JIsMe7RfuqDFN15HbOtaFQxANb2bm7Bqifs9tHwd2Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO5VL3yD6eX4WOjg3iw9jNkDp3r+vuqZBGTlU/BE67bkYWUHkUSCiyyAoAIuXMEsqLfhn0e9mi2wYzSJ0AzqOZwaG1S3kj5R0bMxVJc2mtgSidQbE7aAci+jukUpg5zIrjy214JJT+8hYKJ5rJQ+9u7GbNSN+r+Qs5oHRLeSel8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZklcOGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE563C4CED3;
-	Wed,  6 Nov 2024 12:56:27 +0000 (UTC)
+	 MIME-Version; b=TGQNnFQ816Y5UMg5ATa+ayJ5YoGJ5ftpzYrktgRRzm7Lw39wIdrofWIffQJGg01rzu/ggQgev1InkpBfZqiBb0qYnnYTLee4UXe3xQPz4Fu6jZAchBu3VlPLuhxyTjMXc0K5femeRW/pdYUf8fFkZw/t1WobzFeNyZuiWFkIJpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIq1Xd76; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D237C4CECD;
+	Wed,  6 Nov 2024 12:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897788;
-	bh=yJ5mPHVwwm3Jn7I5X7Dr1P2YtLqHTaeRgUDcKY0a73c=;
+	s=korg; t=1730897815;
+	bh=JIsMe7RfuqDFN15HbOtaFQxANb2bm7Bqifs9tHwd2Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZklcOGO5znaB5sadUhar5C2oQtWND2U+1CtYFO5juTPa4nMV6b776A6nX4pICOoJ
-	 MULx7yBZ6cLHWhYuKa7nJpRcnzi5CT6VpaMYyv2pkKzKyXWsxcB+VKMxBWMMJAy9KG
-	 ggIL/D/7ogP48OIS4HfXUDOUAnXYU/yi9R1URT6M=
+	b=hIq1Xd76GkitZ31TF6ISRODShURk63G6Ah/QEmLhBO9qz/p4YZ9jk1Ifr1/NBgnZ3
+	 PV7rDfnzaj3udUH27koJ5x2OvuuJCQJ9Az4Wn3xOKyBIjS3Y6Sy5yJ+HBzfuHBJYwZ
+	 FhjEAxNV0FtVXfGoA7i6WWwJXAHUDo4O3LRYqqrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/462] net: ethernet: use ip_hdrlen() instead of bit shift
-Date: Wed,  6 Nov 2024 12:58:15 +0100
-Message-ID: <20241106120331.565118655@linuxfoundation.org>
+Subject: [PATCH 5.4 003/462] net: phy: vitesse: repair vsc73xx autonegotiation
+Date: Wed,  6 Nov 2024 12:58:16 +0100
+Message-ID: <20241106120331.588858756@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,48 +67,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 9a039eeb71a42c8b13408a1976e300f3898e1be0 ]
+[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
 
-`ip_hdr(skb)->ihl << 2` is the same as `ip_hdrlen(skb)`
-Therefore, we should use a well-defined function not a bit shift
-to find the header length.
+When the vsc73xx mdio bus work properly, the generic autonegotiation
+configuration works well.
 
-It also compresses two lines to a single line.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/jme.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/phy/vitesse.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index 25aa400e2e3c..773ec50d515b 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -947,15 +947,13 @@ jme_udpsum(struct sk_buff *skb)
- 	if (skb->protocol != htons(ETH_P_IP))
- 		return csum;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if ((ip_hdr(skb)->protocol != IPPROTO_UDP) ||
--	    (skb->len < (ETH_HLEN +
--			(ip_hdr(skb)->ihl << 2) +
--			sizeof(struct udphdr)))) {
-+
-+	if (ip_hdr(skb)->protocol != IPPROTO_UDP ||
-+	    skb->len < (ETH_HLEN + ip_hdrlen(skb) + sizeof(struct udphdr))) {
- 		skb_reset_network_header(skb);
- 		return csum;
- 	}
--	skb_set_transport_header(skb,
--			ETH_HLEN + (ip_hdr(skb)->ihl << 2));
-+	skb_set_transport_header(skb, ETH_HLEN + ip_hdrlen(skb));
- 	csum = udp_hdr(skb)->check;
- 	skb_reset_transport_header(skb);
- 	skb_reset_network_header(skb);
+diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
+index bb680352708a..3f594c8784e2 100644
+--- a/drivers/net/phy/vitesse.c
++++ b/drivers/net/phy/vitesse.c
+@@ -232,16 +232,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
+-static int vsc73xx_config_aneg(struct phy_device *phydev)
+-{
+-	/* The VSC73xx switches does not like to be instructed to
+-	 * do autonegotiation in any way, it prefers that you just go
+-	 * with the power-on/reset defaults. Writing some registers will
+-	 * just make autonegotiation permanently fail.
+-	 */
+-	return 0;
+-}
+-
+ /* This adds a skew for both TX and RX clocks, so the skew should only be
+  * applied to "rgmii-id" interfaces. It may not work as expected
+  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces. */
+@@ -424,7 +414,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -433,7 +422,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -442,7 +430,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -451,7 +438,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
 -- 
 2.43.0
 
