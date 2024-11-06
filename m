@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B83D9BEB5E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B804E9BE961
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170C31F27821
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75E682853C6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C6B1F76A1;
-	Wed,  6 Nov 2024 12:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA40A1DFD90;
+	Wed,  6 Nov 2024 12:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGA/uMAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QWcUy29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78591E7C1A;
-	Wed,  6 Nov 2024 12:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B361DF969;
+	Wed,  6 Nov 2024 12:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897029; cv=none; b=Q5tgY3hsZApoaIe/TMHdlq013FTeNvXnPGBGD4rriT0b/nAmc1DOQ3eVq0YnVmsQ+yPzEDmpqndQobAkzxRG50ZCMLQZ2XjCWbb+RKjIn+mCWacRv+gz+sFNOEIhFmtGoMxcYnDFISqaTfSo90gKwJ4ewBbjgWqpPiicqkiP9CY=
+	t=1730896408; cv=none; b=qkfvQsz2wf+nawiKyBylukJxcH4zKHtBCkqVaUtwKkqEASAAWnDmdjeugVU+M316Ud7pp4Ql0Y/cMkbbNO5x6VAkGhsK26DglkOP7G1WgnSQF2tbgtlJn+0bfro3WPf+eCjeYQI6OzpJPrc9tHHf2aYteJ2BqYILpYahml7efSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897029; c=relaxed/simple;
-	bh=rHipBIrr6uT/EkcpALM17Ayz9stvkeNdv6kn9Jp4ZW8=;
+	s=arc-20240116; t=1730896408; c=relaxed/simple;
+	bh=xkb0kep0iYfqxgbaEd+xQC1kvUtt/3YyRrpyxIXhshc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxIfE5Z1tohQTCK6x6HSrGFzG/bUdugSLRjzN3kOzaAwEtOBl++kHd/hZ7bZDR3WpFqKzmScr8bK2THvjKsHKz/sjcKQ8Wjh7odjsIKFuqbuxmnqv0BpQYxxLHSJLF733DgNXraaKLv+MnX6hDmL3ztsCJLEjjzH14Mtv/ICqic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGA/uMAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3957AC4CECD;
-	Wed,  6 Nov 2024 12:43:49 +0000 (UTC)
+	 MIME-Version; b=VA2DjOc77x1/ijR04kPvnQWPyBtgFomoEicsl6HeEgCZBUGd8wUJ7YtUuaA9JCmduPRGCIaj3BpW9MIiQXhf0Rt+EyebgsbFkPY8M7kF9qqqt+H+jhVM/orqHUMtV54G02QD3/C227hFl9ALS+Pg2zf+XrmcjgPNIFiq/j1IvM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QWcUy29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC08FC4CECD;
+	Wed,  6 Nov 2024 12:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897029;
-	bh=rHipBIrr6uT/EkcpALM17Ayz9stvkeNdv6kn9Jp4ZW8=;
+	s=korg; t=1730896408;
+	bh=xkb0kep0iYfqxgbaEd+xQC1kvUtt/3YyRrpyxIXhshc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGA/uMAjQohFUqFe1sd7Y5fqbZnBTT6Elaub8n/S7l4LimhBsWYpT4IeXwRuo4NbI
-	 q1ri579uzSnD90bIq9mJdQH8HPwJat+4Q31XLnb5jkvbINAdPabyZOosKwyWJpRZHn
-	 /vxi8OcPDmFzrJWklfTWVVAREf5FktBGc00WKwGc=
+	b=2QWcUy29u+OgUIE2logzpm7mCAVV1Awof+faG9VDdGrGE1o/P6DiGZtLtS73bL/Ze
+	 EB/pTXNK0MATmZWtNw0eacT/S+RXxRsl9ptpCfPPrF4B5xmmPPh43eCKTVwQci4u1l
+	 RMcDcN6kCovxvehXO2GPdsr+zb5C/57N1ZzYtWFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ruansy.fnst@fujitsu.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/126] fsdax: dax_unshare_iter needs to copy entire blocks
+Subject: [PATCH 6.11 191/245] drm/connector: hdmi: Fix memory leak in drm_display_mode_from_cea_vic()
 Date: Wed,  6 Nov 2024 13:04:04 +0100
-Message-ID: <20241106120307.272205537@linuxfoundation.org>
+Message-ID: <20241106120323.946308311@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +62,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 50793801fc7f6d08def48754fb0f0706b0cfc394 ]
+[ Upstream commit 926163342a2e7595d950e84c17c693b1272bd491 ]
 
-The code that copies data from srcmap to iomap in dax_unshare_iter is
-very very broken, which bfoster's recent fsx changes have exposed.
+modprobe drm_connector_test and then rmmod drm_connector_test,
+the following memory leak occurs.
 
-If the pos and len passed to dax_file_unshare are not aligned to an
-fsblock boundary, the iter pos and length in the _iter function will
-reflect this unalignment.
+The `mode` allocated in drm_mode_duplicate() called by
+drm_display_mode_from_cea_vic() is not freed, which cause the memory leak:
 
-dax_iomap_direct_access always returns a pointer to the start of the
-kmapped fsdax page, even if its pos argument is in the middle of that
-page.  This is catastrophic for data integrity when iter->pos is not
-aligned to a page, because daddr/saddr do not point to the same byte in
-the file as iter->pos.  Hence we corrupt user data by copying it to the
-wrong place.
+	unreferenced object 0xffffff80cb0ee400 (size 128):
+	  comm "kunit_try_catch", pid 1948, jiffies 4294950339
+	  hex dump (first 32 bytes):
+	    14 44 02 00 80 07 d8 07 04 08 98 08 00 00 38 04  .D............8.
+	    3c 04 41 04 65 04 00 00 05 00 00 00 00 00 00 00  <.A.e...........
+	  backtrace (crc 90e9585c):
+	    [<00000000ec42e3d7>] kmemleak_alloc+0x34/0x40
+	    [<00000000d0ef055a>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<00000000c2062161>] drm_mode_duplicate+0x44/0x19c
+	    [<00000000f96c74aa>] drm_display_mode_from_cea_vic+0x88/0x98
+	    [<00000000d8f2c8b4>] 0xffffffdc982a4868
+	    [<000000005d164dbc>] kunit_try_run_case+0x13c/0x3ac
+	    [<000000006fb23398>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<000000006ea56ca0>] kthread+0x2e8/0x374
+	    [<000000000676063f>] ret_from_fork+0x10/0x20
+	......
 
-If iter->pos + iomap_length() in the _iter function not aligned to a
-page, then we fail to copy a full block, and only partially populate the
-destination block.  This is catastrophic for data confidentiality
-because we expose stale pmem contents.
+Free `mode` by using drm_kunit_display_mode_from_cea_vic()
+to fix it.
 
-Fix both of these issues by aligning copy_pos/copy_len to a page
-boundary (remember, this is fsdax so 1 fsblock == 1 base page) so that
-we always copy full blocks.
-
-We're not done yet -- there's no call to invalidate_inode_pages2_range,
-so programs that have the file range mmap'd will continue accessing the
-old memory mapping after the file metadata updates have completed.
-
-Be careful with the return value -- if the unshare succeeds, we still
-need to return the number of bytes that the iomap iter thinks we're
-operating on.
-
-Cc: ruansy.fnst@fujitsu.com
-Fixes: d984648e428b ("fsdax,xfs: port unshare to fsdax")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/172796813328.1131942.16777025316348797355.stgit@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: abb6f74973e2 ("drm/tests: Add HDMI TDMS character rate tests")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-3-ruanjinjie@huawei.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/tests/drm_connector_test.c | 24 +++++++++++-----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index fa5a82b27c2f6..ca7138bb1d545 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1225,26 +1225,46 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
- {
- 	struct iomap *iomap = &iter->iomap;
- 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
--	loff_t pos = iter->pos;
--	loff_t length = iomap_length(iter);
-+	loff_t copy_pos = iter->pos;
-+	u64 copy_len = iomap_length(iter);
-+	u32 mod;
- 	int id = 0;
- 	s64 ret = 0;
- 	void *daddr = NULL, *saddr = NULL;
+diff --git a/drivers/gpu/drm/tests/drm_connector_test.c b/drivers/gpu/drm/tests/drm_connector_test.c
+index 15e36a8db6858..6bba97d0be88e 100644
+--- a/drivers/gpu/drm/tests/drm_connector_test.c
++++ b/drivers/gpu/drm/tests/drm_connector_test.c
+@@ -996,7 +996,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb(struct kunit *test)
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
  
- 	if (!iomap_want_unshare_iter(iter))
--		return length;
-+		return iomap_length(iter);
-+
-+	/*
-+	 * Extend the file range to be aligned to fsblock/pagesize, because
-+	 * we need to copy entire blocks, not just the byte range specified.
-+	 * Invalidate the mapping because we're about to CoW.
-+	 */
-+	mod = offset_in_page(copy_pos);
-+	if (mod) {
-+		copy_len += mod;
-+		copy_pos -= mod;
-+	}
-+
-+	mod = offset_in_page(copy_pos + copy_len);
-+	if (mod)
-+		copy_len += PAGE_SIZE - mod;
-+
-+	invalidate_inode_pages2_range(iter->inode->i_mapping,
-+				      copy_pos >> PAGE_SHIFT,
-+				      (copy_pos + copy_len - 1) >> PAGE_SHIFT);
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
- 	id = dax_read_lock();
--	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
-+	ret = dax_iomap_direct_access(iomap, copy_pos, copy_len, &daddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1017,7 +1017,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc(struct kunit *test)
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
  
--	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
-+	ret = dax_iomap_direct_access(srcmap, copy_pos, copy_len, &saddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
--	if (copy_mc_to_kernel(daddr, saddr, length) == 0)
--		ret = length;
-+	if (copy_mc_to_kernel(daddr, saddr, copy_len) == 0)
-+		ret = iomap_length(iter);
- 	else
- 		ret = -EIO;
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1038,7 +1038,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc_vic_1(struct kunit *t
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
  
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_RGB);
+@@ -1056,7 +1056,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc(struct kunit *test)
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1077,7 +1077,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc_vic_1(struct kunit *t
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 1);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_RGB);
+@@ -1095,7 +1095,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_double(struct kunit *test)
+ 	unsigned long long rate;
+ 	struct drm_device *drm = &priv->drm;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 6);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 6);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_TRUE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1118,7 +1118,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_valid(struct kunit
+ 	unsigned long long rate;
+ 	unsigned int vic = *(unsigned int *)test->param_value;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, vic);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1155,7 +1155,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_10_bpc(struct kuni
+ 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
+ 	unsigned long long rate;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, vic);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1180,7 +1180,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_12_bpc(struct kuni
+ 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
+ 	unsigned long long rate;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, vic);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1203,7 +1203,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_8_bpc(struct kunit
+ 	struct drm_device *drm = &priv->drm;
+ 	unsigned long long rate;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1225,7 +1225,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_10_bpc(struct kuni
+ 	struct drm_device *drm = &priv->drm;
+ 	unsigned long long rate;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
+@@ -1247,7 +1247,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_12_bpc(struct kuni
+ 	struct drm_device *drm = &priv->drm;
+ 	unsigned long long rate;
+ 
+-	mode = drm_display_mode_from_cea_vic(drm, 16);
++	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 
+ 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 -- 
 2.43.0
 
