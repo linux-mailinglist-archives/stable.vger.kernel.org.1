@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-91070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2785E9BEC49
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3522A9BEB35
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1B201F21C71
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC4E11F26EC2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3580D1FB889;
-	Wed,  6 Nov 2024 12:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1821F668C;
+	Wed,  6 Nov 2024 12:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuOf6/wS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqL2qifA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53061FB884;
-	Wed,  6 Nov 2024 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED711F668B;
+	Wed,  6 Nov 2024 12:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897653; cv=none; b=AVVwF9sjw/Za+ugNBXqHNNS+qNBjkDyoe4fGfBTope5NljjQP7uWVDSINGDNf7W+oL+q2WfRC7ZYpYG0Kj+zx7fkCUShCZvPSxGYfV5yJi3nLL0+uch7qQe8d7ssUsAqatDJp1UXvPzDcfPcohChEJUAh/zN6YyILH8mYcgUO+M=
+	t=1730896915; cv=none; b=kwJxVu1pjhynidjByAiju1pVvHPqTJZAvti+afzaeXn59rXtbQBl67J/Eheo1JlWf5a5RXU2jIRzhg6dBLJdr/9U8FOaVidhslRPWsW2SGZdKO8hQbBNtOtK3s7CGGh49giw7af1EF2PHsUnYqiKJPNWVPzJEjHORyrhim0qGFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897653; c=relaxed/simple;
-	bh=hdKP+sbmKTpbLJzkpznaTg1f/2yfYPCQ2zyLv6z3MPk=;
+	s=arc-20240116; t=1730896915; c=relaxed/simple;
+	bh=E1NCKsHxS4/6m6q++bQlHDZJ2yo1eXhJuWu7df64KWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W97caMqPKpL7VcpTBcrjk1i2R3ahxpIgQlZtG8oFhzYin2+98JFI93hcu0AJ1X1kEbGmTbES7fGMCArb0TBku2dxZIw7HTszSrQvQibVMeb15WsF8w0nO5yZXAzzgL7dtB/mTcrtowph2uBxmWP2OetQcM0znnigwpJXVcaukzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuOf6/wS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA1FC4CECD;
-	Wed,  6 Nov 2024 12:54:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gQLoIxv7uLg8qRtAMFy9zbfNdhRDVsyx0iAeCZo6h8RLzU5kEYveu7aJmDy/TdPoQ6txL1fvX8uis6EHxf35YJ9oisbfq2oyBq1OX0OJy6jI5g4NM4VKRsaLFFmC8oAGbRM7e2AAVyxQOYjhORFKqmdkF5K9eyd2u1L3MM+6VZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqL2qifA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241B2C4CECD;
+	Wed,  6 Nov 2024 12:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897652;
-	bh=hdKP+sbmKTpbLJzkpznaTg1f/2yfYPCQ2zyLv6z3MPk=;
+	s=korg; t=1730896915;
+	bh=E1NCKsHxS4/6m6q++bQlHDZJ2yo1eXhJuWu7df64KWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuOf6/wSz8XZtecoGwxUeoEOHJ2qNjTLhSLeWs1ispLkI+kd0BBtNZOY2J0j/U8BN
-	 KgbSoM37yEATMv//cQOPyTZ3KJmchK3Aajce0LmjA44z9N73KumhaQueQZGL/ODJLd
-	 AIfsL7xa3jss1moKq9ICLNs8WGz5PEpwYom6O2Xk=
+	b=wqL2qifARG3MCas9FjetkQvmLPtE6Yxow/RCNNWKQf+1ZlqHC7zQjjoJc53B5XSHM
+	 ByIMaiiVi5nBceyKuSAFqVK9JWe5az1NcJqn3zenFQ0UJHlhHTgHaA90Y5dG8BjymV
+	 mFEs5s0m6FT0BEKmlTtq4MqG8vDmF/sFy/UVn80U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Michal Hocko <mhocko@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/151] mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves
+	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+	Eric Anholt <eric@anholt.net>,
+	Rob Herring <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Artem Sdvizhkov <raclesdv@gmail.com>
+Subject: [PATCH 5.10 108/110] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
 Date: Wed,  6 Nov 2024 13:05:14 +0100
-Message-ID: <20241106120312.332938413@linuxfoundation.org>
+Message-ID: <20241106120306.155669246@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +70,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-[ Upstream commit 281dd25c1a018261a04d1b8bf41a0674000bfe38 ]
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-Under memory pressure it's possible for GFP_ATOMIC order-0 allocations to
-fail even though free pages are available in the highatomic reserves.
-GFP_ATOMIC allocations cannot trigger unreserve_highatomic_pageblock()
-since it's only run from reclaim.
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Given that such allocations will pass the watermarks in
-__zone_watermark_unusable_free(), it makes sense to fallback to highatomic
-reserves the same way that ALLOC_OOM can.
+Return -EINVAL early if COW mapping is detected.
 
-This fixes order-0 page allocation failures observed on Cloudflare's fleet
-when handling network packets:
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
 
-  kswapd1: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
-  nodemask=(null),cpuset=/,mems_allowed=0-7
-  CPU: 10 PID: 696 Comm: kswapd1 Kdump: loaded Tainted: G           O 6.6.43-CUSTOM #1
-  Hardware name: MACHINE
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x3c/0x50
-   warn_alloc+0x13a/0x1c0
-   __alloc_pages_slowpath.constprop.0+0xc9d/0xd10
-   __alloc_pages+0x327/0x340
-   __napi_alloc_skb+0x16d/0x1f0
-   bnxt_rx_page_skb+0x96/0x1b0 [bnxt_en]
-   bnxt_rx_pkt+0x201/0x15e0 [bnxt_en]
-   __bnxt_poll_work+0x156/0x2b0 [bnxt_en]
-   bnxt_poll+0xd9/0x1c0 [bnxt_en]
-   __napi_poll+0x2b/0x1b0
-   bpf_trampoline_6442524138+0x7d/0x1000
-   __napi_poll+0x5/0x1b0
-   net_rx_action+0x342/0x740
-   handle_softirqs+0xcf/0x2b0
-   irq_exit_rcu+0x6c/0x90
-   sysvec_apic_timer_interrupt+0x72/0x90
-   </IRQ>
-
-[mfleming@cloudflare.com: update comment]
-  Link: https://lkml.kernel.org/r/20241015125158.3597702-1-matt@readmodwrite.com
-Link: https://lkml.kernel.org/r/20241011120737.3300370-1-matt@readmodwrite.com
-Link: https://lore.kernel.org/all/CAGis_TWzSu=P7QJmjD58WWiu3zjMTVKSzdOwWE8ORaGytzWJwQ@mail.gmail.com/
-Fixes: 1d91df85f399 ("mm/page_alloc: handle a missing case for memalloc_nocma_{save/restore} APIs")
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+[ Artem: bp to fix CVE-2024-39497, in order to adapt this patch to branch 5.10
+  add header file mm/internal.h]
+Signed-off-by: Artem Sdvizhkov <raclesdv@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index edb32635037f4..1bbbf2f8b7e4c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2658,12 +2658,12 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- 			page = __rmqueue(zone, order, migratetype, alloc_flags);
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -17,6 +17,8 @@
+ #include <drm/drm_prime.h>
+ #include <drm/drm_print.h>
  
- 			/*
--			 * If the allocation fails, allow OOM handling access
--			 * to HIGHATOMIC reserves as failing now is worse than
--			 * failing a high-order atomic allocation in the
--			 * future.
-+			 * If the allocation fails, allow OOM handling and
-+			 * order-0 (atomic) allocs access to HIGHATOMIC
-+			 * reserves as failing now is worse than failing a
-+			 * high-order atomic allocation in the future.
- 			 */
--			if (!page && (alloc_flags & ALLOC_OOM))
-+			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
- 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
++#include "../../../mm/internal.h"   /* is_cow_mapping() */
++
+ /**
+  * DOC: overview
+  *
+@@ -630,6 +632,9 @@ int drm_gem_shmem_mmap(struct drm_gem_ob
+ 		return ret;
+ 	}
  
- 			if (!page) {
--- 
-2.43.0
-
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
+ 	shmem = to_drm_gem_shmem_obj(obj);
+ 
+ 	ret = drm_gem_shmem_get_pages(shmem);
 
 
 
