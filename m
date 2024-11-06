@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809279BEA8F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939FA9BEB6D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAAD21C23A4D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9A21C222AE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D931EE035;
-	Wed,  6 Nov 2024 12:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1BB1E8825;
+	Wed,  6 Nov 2024 12:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGrD2idZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqEuSyNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C91FB3F6;
-	Wed,  6 Nov 2024 12:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1771DFE27;
+	Wed,  6 Nov 2024 12:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896718; cv=none; b=pO8d83/aHZ9eZUiJbyuI27OzQyp/h6AaGfmkM3NOvdPPFeN8/3AF7qn5h2jl9T1abeeRV3FYw8ddDPh2mmwRTS3NTzVpRb07GWTGOwN3Mmi1Q6c9L0b/bH6qXilm00MOWQWtsh8n2sDe5/vdWgzWqKjXsfEREltWOFbmKLpgjkk=
+	t=1730897068; cv=none; b=eBGV/8UE5G0EtCRwQDa3oNeZp+qWrtbNZ9ClnVcgcKaJgmK1gaCweiDqCWnLY2nAvA8i2TtPfsq4DCwClveM3Y8loTb5gLJj9TLZPOwsCkJvGcH1s5gg1AiXmlaCBatvEy4CKGPaqJFLVGy5CsXUWns9nEdl5oFspbgdIyozD8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896718; c=relaxed/simple;
-	bh=FYsy2ysYqU2Qi5cUEBp2qWFn1XumS2j8LX7HZCcm+u4=;
+	s=arc-20240116; t=1730897068; c=relaxed/simple;
+	bh=gFWMEyW3yQHHehkm7IRgOcis9kEbPfSR+Q9guGCepgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WpirO16qqqzpfp3ZnGDXxhcEuCJGuw/R5Y6MGcjWqz34nF6vxB9Wg8iVpPklZBSVq1XDSinnMF57yFX8YbCeGEcdSZWgQQjN2ssq1iVkEcpGyz14a5dwFIYEJD/SViZssnxokQfWAvJBvbH+pwqJpkKsEQ2M/o15R77fJP3AlPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGrD2idZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B88BC4CECD;
-	Wed,  6 Nov 2024 12:38:37 +0000 (UTC)
+	 MIME-Version; b=Od+QLz8aCMCpk5nvh89IWFLdqLmbnuoXITvf05/h5civMx8P7M2AlD6yFHRTZusqphEFc85jKuNPYGF1KuQcMF0A0g1fEl9ti4bbadCz+w5Y0GwfUPNE+DVhn6IqGS7/Y7uEaVlSG2e2dfZPAUUw0cxRjnIIj51Ij5csQE6GcoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqEuSyNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61916C4CED3;
+	Wed,  6 Nov 2024 12:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896717;
-	bh=FYsy2ysYqU2Qi5cUEBp2qWFn1XumS2j8LX7HZCcm+u4=;
+	s=korg; t=1730897067;
+	bh=gFWMEyW3yQHHehkm7IRgOcis9kEbPfSR+Q9guGCepgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGrD2idZVm3BzEbvQRxO4OE0QV+N7ux+Zk/OsGZag6+bLx/ikKBFRZIEywwfq6GWO
-	 isSIMjkL/CtqfgvNSmVH1/sDmin8p7cvjRYI66tmLJTsuYnCItGKHz8gBd6Bv32JLK
-	 M/3MECMYm4a5VKMBU0UxslkUwGr3gmq3oU8uxqD8=
+	b=KqEuSyNwVYDVFxjerd8m41wovG/9nooD1TDjOBe9UAMd+Da50qy6psQUjURZs+JI+
+	 4xCnrZ/VQGsdPBxL2gEP7Ju4b9o3QEHjUasfjwyLIyYTE6E6lh4B5EbzFrMqzdhYfS
+	 sFkvLIrn982I1qA9aw6ncMeHXwljygoC/S/phimM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 049/110] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
-Date: Wed,  6 Nov 2024 13:04:15 +0100
-Message-ID: <20241106120304.556245416@linuxfoundation.org>
+	syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/126] fs/ntfs3: Fix possible deadlock in mi_read
+Date: Wed,  6 Nov 2024 13:04:16 +0100
+Message-ID: <20241106120307.586104402@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Relvas <josemonsantorelvas@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
+[ Upstream commit 03b097099eef255fbf85ea6a786ae3c91b11f041 ]
 
-The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
-correctly.
-This patch adds a quirk with the proper pin connections.
+Mutex lock with another subclass used in ni_lock_dir().
 
-Note that I do not own this laptop, so I cannot guarantee that this
-fixes the issue.
-Testing was done by other users here:
-https://discussion.fedoraproject.org/t/-/118482
-
-This model appears to have two different dev IDs...
-
-- 0x1177 (as seen on the forum link above)
-- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
-
-I don't think the audio system was changed between model revisions, so
-the patch applies for both IDs.
-
-Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
-Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+bc7ca0ae4591cb2550f9@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/ntfs3/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6966,6 +6966,7 @@ enum {
- 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_PREDATOR_SUBWOOFER,
- 	ALC299_FIXUP_PREDATOR_SPK,
- 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
- 	ALC289_FIXUP_DELL_SPK2,
-@@ -8200,6 +8201,13 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
-+			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
-+		}
-+	},
- 	[ALC299_FIXUP_PREDATOR_SPK] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -8932,6 +8940,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
-+	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
- 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
- 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
+diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
+index a9549e73081fb..7cad1bc2b314f 100644
+--- a/fs/ntfs3/namei.c
++++ b/fs/ntfs3/namei.c
+@@ -79,7 +79,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
+ 		if (err < 0)
+ 			inode = ERR_PTR(err);
+ 		else {
+-			ni_lock(ni);
++			ni_lock_dir(ni);
+ 			inode = dir_search_u(dir, uni, NULL);
+ 			ni_unlock(ni);
+ 		}
+-- 
+2.43.0
+
 
 
 
