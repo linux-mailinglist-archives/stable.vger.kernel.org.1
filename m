@@ -1,101 +1,107 @@
-Return-Path: <stable+bounces-91685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF779BF33E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A84199BF375
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 648631F221A8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FD1A1F21621
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD03D1E0488;
-	Wed,  6 Nov 2024 16:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hb0wtUme"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78DFB20408D;
+	Wed,  6 Nov 2024 16:42:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B8F84039;
-	Wed,  6 Nov 2024 16:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6816013C67C
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 16:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730910657; cv=none; b=rDbAhNu79HMI3QYwQDRXOH65ocW3j5GLiCNMcY1lwuLPr4hZOlyMASlWTeGTgVB+E1fLXIxbHsstfXVS0P4MlWxeyonmt8qmm1+3Jyxfgr8JbXe/QIZLmtTkKD889i1rT/y83ZBDSiH/rjSX5pYcOjfAsw5Vw3RCyZU8D2iw2Bc=
+	t=1730911357; cv=none; b=HMfTDnPAVMUJDkeTAdJ9vcKb+qrspPg9Q4HzFvfxzkaykq6M2XtKMyYsi60RfcgSfcSWeJuE/WzGRbvUpFETL3Az5aVrEtVzuA3szOYVj+enezP00b8qvOU4XHeNvII6+1outMT9UOYXV8Kk+p1xJO/8Z0R1d0YpgPRoobC+278=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730910657; c=relaxed/simple;
-	bh=aq6gzB/Q2PEai0bt8dfut3goVK3r/JhzH5oBN3o9Dfs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=aJlkj9+PrjGGaZJg8uGThPECstnEpTHR7ocbfEwPmGa61QP1GZ8+nVj1JlN41ssdP6gNzMbydred0YXcS440XDbKWIEQLFx+LozDSl25OdJ9lD+ogcaLc5lGsDMZig/Tzjoc95PqgaLh0meaPooiNQ4bAdQ41FeSx3Spz3j77iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hb0wtUme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C54DC4CEC6;
-	Wed,  6 Nov 2024 16:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730910657;
-	bh=aq6gzB/Q2PEai0bt8dfut3goVK3r/JhzH5oBN3o9Dfs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=hb0wtUmeq2YMjK+oyyzy8prhM/yNV4VomwQDFJGxcvn2S5d6BfNYmd/7z3YBAJM9V
-	 nzSC2FQ+VQvCTh/Vo01KtkAnGy25ps6pdvUj81okRr3Q5ORlVCQLj6xuw7Kb1wvke/
-	 FnpHkY/uYBJKftzpEImKljmniB6tXPkti+2jXl80EeHwWR0Xycm5uTQu3vp8m+OaMa
-	 +vIS5QkA3jq9fOIng2oNr3mNuPesNzw2QAODCPGyhpZ9gcdf2X4Bw4i48H6P247LzZ
-	 z3hYHG6CU+dFRQlLk0QBuhxUJ1wszX5THkbtnQzBDyddjkMvRCwctLsOuQu8rJRrjS
-	 hq3FAajvk482A==
-Date: Wed, 6 Nov 2024 17:30:54 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-cc: Nolan Nicholson <nolananicholson@gmail.com>, stable@vger.kernel.org, 
-    bentiss@kernel.org, linux-usb@vger.kernel.org, linux-input@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, anssi.hannula@gmail.com
-Subject: Re: hid-pidff.c: null-pointer deref if optional HID reports are not
- present
-In-Reply-To: <1b40561a-580d-406a-bb2c-1398dce7fb90@kernel.org>
-Message-ID: <nycvar.YFH.7.76.2411061730050.20286@cbobk.fhfr.pm>
-References: <CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com> <1b40561a-580d-406a-bb2c-1398dce7fb90@kernel.org>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1730911357; c=relaxed/simple;
+	bh=J05UC5jAyhKIHR89QRoV6TOinAB1UBpSuX8cAseNo8Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=odfF9zq9GXwJHzxk19lKDalDYhGYe7kYkdUEUt2PMSL8bvZz7pJwbyeemGK6lyNx1AKmqn76Tkh3Xl9AUlAcAZRG8fRkTE+5KkVWLl4gOFxuUpZS241FR4dJwX8jgb6ZQFou9kIBKh8TWztLgv3g8/6ZuLANv6H6s9PEwapo4Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87D131063;
+	Wed,  6 Nov 2024 08:43:04 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9F4673F528;
+	Wed,  6 Nov 2024 08:42:33 -0800 (PST)
+From: Mark Rutland <mark.rutland@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: ardb@kernel.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	stable@vger.kernel.org,
+	will@kernel.org
+Subject: [PATCH] arm64: Kconfig: Make SME depend on BROKEN for now
+Date: Wed,  6 Nov 2024 16:42:20 +0000
+Message-Id: <20241106164220.2789279-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Tue, 5 Nov 2024, Jiri Slaby wrote:
+Although support for SME was merged in v5.19, we've since uncovered a
+number of issues with the implementation, including issues which might
+corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
+patches to address some of these issues, ongoing review has highlighted
+additional functional problems, and more time is necessary to analyse
+and fix these.
 
-> > (This is my first time reporting a Linux bug; please accept my apologies for
-> > any mistakes in the process.)
-> > 
-> > When initializing a HID PID device, hid-pidff.c checks for eight required
-> > HID reports and five optional reports. If the eight required reports are
-> > present, the hid_pidff_init() function then attempts to find the necessary
-> > fields in each required or optional report, using the pidff_find_fields()
-> > function. However, if any of the five optional reports is not present,
-> > pidff_find_fields() will trigger a null-pointer dereference.
-> > 
-> > I recently implemented the descriptors for a USB HID device with PID
-> > force-feedback capability. After implementing the required report
-> > descriptors but not the optional ones, I got an OOPS from the
-> > pidff_find_fields function. I saved the OOPS from my Ubuntu installation,
-> > and have attached it here. I later reproduced the issue on 6.11.6.
-> > 
-> > I was able to work around the issue by having my device present all of the
-> > optional report descriptors as well as all of the required ones.
-> 
-> Indeed. The code checks the required ones in pidff_reports_ok(). But the
-> optional ones are not checked at all and are directly accessed in both
-> pidff_init_fields() and also likely pidff_find_special_fields().
+For now, mark SME as BROKEN in the hope that we can fix things properly
+in the near future. As SME is an OPTIONAL part of ARMv9.2+, and there is
+very little extant hardware, this should not adversely affect the vast
+majority of users.
 
-Thanks for the report.
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.19
+---
+ arch/arm64/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Nolan, will you be willing to create a patch implement a proper checking, 
-test it with your device that's triggering it, and submit it in order to 
-be applied?
+Catalin, Will, if we take this, the minimal set of other fixes necessary
+for now is:
 
-Thanks,
+* "arm64/sve: Discard stale CPU state when handling SVE traps"
+  https://lore.kernel.org/linux-arm-kernel/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org/
+  https://lore.kernel.org/linux-arm-kernel/ZypuQNhWHKut8mLl@J2N7QTR9R3.cambridge.arm.com/
+  (already queued by Will in for-next/fixes)
 
+* "arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint"
+  https://lore.kernel.org/linux-arm-kernel/20241106160448.2712997-1-mark.rutland@arm.com/
+
+Mark.
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 3e29b44d2d7bd..14cc81e154ee2 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2213,6 +2213,7 @@ config ARM64_SME
+ 	bool "ARM Scalable Matrix Extension support"
+ 	default y
+ 	depends on ARM64_SVE
++	depends on BROKEN
+ 	help
+ 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
+ 	  execution state which utilises a substantial subset of the SVE
 -- 
-Jiri Kosina
-SUSE Labs
+2.30.2
 
 
