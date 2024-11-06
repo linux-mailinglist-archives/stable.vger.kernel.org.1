@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-91039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F709BEC28
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CC99BE999
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E552852A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77A0A1C23502
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5C31FB3C2;
-	Wed,  6 Nov 2024 12:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B455F1E04A2;
+	Wed,  6 Nov 2024 12:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6mfT3n0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/lWuJ5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CDF1F471A;
-	Wed,  6 Nov 2024 12:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCDA1DFD90;
+	Wed,  6 Nov 2024 12:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897560; cv=none; b=NcEZP5JWPspyUCKh7ygZ04cR67xsCwKsyX1Jk/h0sk2j/SGfmcRoZSWXDmrpfsvSN5v742qQCxtBAIiUY9JmHD/TLPgc78S4iUYlStiXDp2dGpoBrOV3sKVTl3TTj0q/DcAl2RW/7zwOuL1x5YOhBxe0dU0pTqT1a8SzM3BJv88=
+	t=1730896522; cv=none; b=OIi8Df0LF3ABc+NOa+JuR8ZqjiNhcUALOzyMrCdHZC5dxkfjPSk5kmEQA3QExCLQ4FKfgG3xeXqwoXHfI6gt4sk476bU1Y0R0WSVRtJxeXrK1xRO348MijSxqdkaZkI0ZC92KoZY27adQUZkwV0yJS05QlPumq7xAtIAzcktn0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897560; c=relaxed/simple;
-	bh=jM3hfE614SpSjiNFtOxb7h6wHRjUdzw/FL4MJsj4qhk=;
+	s=arc-20240116; t=1730896522; c=relaxed/simple;
+	bh=LNuVtLGG5UrrJzMwg9oboIzxnuUlTgBNzHHrqnmz+c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjzppTMEuneBIw5guMPLDP7lcr96DUgqZ5PM5S9Dt9hWwqp8m4c+2jBG+OHs1ZcPuTXD3sfQUsjon0BItMQbX2Ecj5OdL27umkUrhW8VGhMi3mjpjVkWecXzHfKaT+vrA0+QCzDad6NoP9xKa+OhU8SvL41eLBeDnK8jHXl22jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6mfT3n0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79811C4CECD;
-	Wed,  6 Nov 2024 12:52:39 +0000 (UTC)
+	 MIME-Version; b=Y4xU1AFpiAqyIf3f/JKv7pE29yVedf0GvCfAwZ9WRpqkf7KwnhCgv8wVY+qpsHitlhn3OA6zksBfIX8tzLbma9jgsUv8Ijk+IhWNRliWDNC4mlikmOwd1fHDd4rdsdHF6vVV/dpSjVzF3QqR/m+oIO2Ax8EiPRPBL0iFTEC3qZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/lWuJ5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96ADC4CED3;
+	Wed,  6 Nov 2024 12:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897559;
-	bh=jM3hfE614SpSjiNFtOxb7h6wHRjUdzw/FL4MJsj4qhk=;
+	s=korg; t=1730896522;
+	bh=LNuVtLGG5UrrJzMwg9oboIzxnuUlTgBNzHHrqnmz+c0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6mfT3n0A2p5LcJBUkmZdU4qSuJRZSzUaHMbgd/8P6IqVaB/OyKotUXGaDlDWd1lQ
-	 xhTMMmNs8nJeu+LXn7cuJvUh/Bu8ZM9CXLBqvADyg/EXe+GKosc6IC3mTNrU5XyACQ
-	 Hn4MC+BKqTEsefsN5HBD8xMR5UA2y+qxL7UOcov4=
+	b=W/lWuJ5JqKE2FCwKodhpViCvS7iR84oBTzj92VgVn/O7KB4AXO3hMs8V/7DjDaMLa
+	 n9FNS1ODf6scXS12QLmP1+ZOqXOtplpzTAeREdXdhNRcPXN3IrrQQBNPoyJO6LDSfP
+	 lHL7aYUZQ3lXqnyJtF/Xiehf+mLRUSd1LLs7cFkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 094/151] wifi: cfg80211: clear wdev->cqm_config pointer on free
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 229/245] drm/i915/pps: Disable DPLS_GATING around pps sequence
 Date: Wed,  6 Nov 2024 13:04:42 +0100
-Message-ID: <20241106120311.459512862@linuxfoundation.org>
+Message-ID: <20241106120324.898844971@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-commit d5fee261dfd9e17b08b1df8471ac5d5736070917 upstream.
+commit c7085d08c7e53d9aef0cdd4b20798356f6f5d469 upstream.
 
-When we free wdev->cqm_config when unregistering, we also
-need to clear out the pointer since the same wdev/netdev
-may get re-registered in another network namespace, then
-destroyed later, running this code again, which results in
-a double-free.
+Disable bit 29 of SCLKGATE_DIS register around pps sequence
+when we turn panel power on.
 
-Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+--v2
+-Squash two commit together [Jani]
+-Use IS_DISPLAY_VER [Jani]
+-Fix multiline comment [Jani]
+
+--v3
+-Define register in a more appropriate place [Mitul]
+
+--v4
+-Register is already defined no need to define it again [Ville]
+-Use correct WA number (lineage no.) [Dnyaneshwar]
+-Fix the range on which this WA is applied [Dnyaneshwar]
+
+Bspec: 49304
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240813042807.4015214-1-suraj.kandpal@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_pps.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1233,6 +1233,7 @@ static void _cfg80211_unregister_wdev(st
- 	/* deleted from the list, so can't be found from nl80211 any more */
- 	cqm_config = rcu_access_pointer(wdev->cqm_config);
- 	kfree_rcu(cqm_config, rcu_head);
-+	RCU_INIT_POINTER(wdev->cqm_config, NULL);
+--- a/drivers/gpu/drm/i915/display/intel_pps.c
++++ b/drivers/gpu/drm/i915/display/intel_pps.c
+@@ -951,6 +951,14 @@ void intel_pps_on_unlocked(struct intel_
+ 		intel_de_posting_read(dev_priv, pp_ctrl_reg);
+ 	}
  
- 	/*
- 	 * Ensure that all events have been processed and
++	/*
++	 * WA: 22019252566
++	 * Disable DPLS gating around power sequence.
++	 */
++	if (IS_DISPLAY_VER(dev_priv, 13, 14))
++		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
++			     0, PCH_DPLSUNIT_CLOCK_GATE_DISABLE);
++
+ 	pp |= PANEL_POWER_ON;
+ 	if (!IS_IRONLAKE(dev_priv))
+ 		pp |= PANEL_POWER_RESET;
+@@ -961,6 +969,10 @@ void intel_pps_on_unlocked(struct intel_
+ 	wait_panel_on(intel_dp);
+ 	intel_dp->pps.last_power_on = jiffies;
+ 
++	if (IS_DISPLAY_VER(dev_priv, 13, 14))
++		intel_de_rmw(dev_priv, SOUTH_DSPCLK_GATE_D,
++			     PCH_DPLSUNIT_CLOCK_GATE_DISABLE, 0);
++
+ 	if (IS_IRONLAKE(dev_priv)) {
+ 		pp |= PANEL_POWER_RESET; /* restore panel reset bit */
+ 		intel_de_write(dev_priv, pp_ctrl_reg, pp);
 
 
 
