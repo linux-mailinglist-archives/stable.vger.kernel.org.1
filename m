@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8779BE923
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AEC9BEBE9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE7B11C221BE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A92B1F23CD6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3A4198E96;
-	Wed,  6 Nov 2024 12:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6252C1F9EBF;
+	Wed,  6 Nov 2024 12:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmtylldJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biyITeqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDE8171C9;
-	Wed,  6 Nov 2024 12:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB4A1E0B7B;
+	Wed,  6 Nov 2024 12:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896253; cv=none; b=NCMiIjN/hkwJPXPIPG3S9J5RpcVpNrtaOSMTnunqFtjAbECtTUEZreZ95x3D7w2rvQ0suqUJv7MJOgB/eT3WCRB/J6oaP0YyNQ+w5le6EkvYovQEbfkYr40fYsHXnQJ/DLjZFU+vji+cdJiwEuxQ8/IU86upF2dkBFo6FvU7iik=
+	t=1730897385; cv=none; b=sXBOWp3802OogD06fidwq7yiz8tq7CbPm6K9Mk4fugMSk2IHUy0v+vThVLAgmz2EAQA9AF4NP9t6AAdfxfHdPTnbK2WR9urNQrJkZ0W+N6M8727bgz3oanc5QMo8T77HYDZiUtmDaKiftA01ukw4T7qGM/Bk8sa5n1AMbw0xhjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896253; c=relaxed/simple;
-	bh=SEec/FX1YQMfYorBkcVSZdYneZ9ldDQXnFtBEcFu+Ng=;
+	s=arc-20240116; t=1730897385; c=relaxed/simple;
+	bh=sJWoqSMYAseeYyOKm7AM7Ix6lwdvyEcQHeRRWlRfFfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMwexQBkmaL71hyCakQBZ0JbOudICrFds3e5o92PEkNevw5r0Af1VGADzwAMmulEK2SKQhhi6qEAhwMgxKdP3fhMBdYxvTjueuWrZakYRN5Jv1kojU14uaHOihIuF5uEqgRRkcUBqHcm/9DI+JCJn1yDUJOedfQ5DG2tW4jxOtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmtylldJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC798C4CECD;
-	Wed,  6 Nov 2024 12:30:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GsyHefqkYmj0j/ZUUsyboSt6uHUow/be9KVIgqWvV6plMMJju0sUcOm7xb7YMCJ0owULne9wxYuJmgt1+ydxuB1HNHG+kVCD9DQTeQ2Q0PscP7mbYarEUWBUGzyqLgMQkUhZB9EnAsHJTlRyHQkWLo7MvJWW1wvIb7LN6q6B/kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biyITeqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BFAC4CECD;
+	Wed,  6 Nov 2024 12:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896253;
-	bh=SEec/FX1YQMfYorBkcVSZdYneZ9ldDQXnFtBEcFu+Ng=;
+	s=korg; t=1730897385;
+	bh=sJWoqSMYAseeYyOKm7AM7Ix6lwdvyEcQHeRRWlRfFfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmtylldJ+A61PeMKuafYyHjZ/BcO6+JRQdqMOfPZV2g3SpCiC+MzaJcgqKP/UzA1q
-	 nZ4NzlBlOmzL9zCdSryjuASkl6wLxJAt9pi/3EE3OYC9+b77sczH2f9mDLIkM8ib2+
-	 /w3spqqCjR2rukZGP7ZiBONBro9k3bg47EWO8BNg=
+	b=biyITeqSpoLpsgAeZgia6Kfi53BxXyHkQpvSSuNVBiYNk5n30ROHBjY6ACqgBkKH9
+	 lgws+c7MAH2NcGAZF38wo2zCkGN4LmORMgBM361GU8M06BA1Z5SjWTf/MJMot1kWWI
+	 6Pb3QKmPWqepvz2w8vyKJEv9EtSlPD1bITu95R2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.11 141/245] thunderbolt: Honor TMU requirements in the domain when setting TMU mode
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 006/151] cgroup: Fix potential overflow issue when checking max_depth
 Date: Wed,  6 Nov 2024 13:03:14 +0100
-Message-ID: <20241106120322.700236199@linuxfoundation.org>
+Message-ID: <20241106120309.015631273@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,124 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-commit 3cea8af2d1a9ae5869b47c3dabe3b20f331f3bbd upstream.
+[ Upstream commit 3cc4e13bb1617f6a13e5e6882465984148743cf4 ]
 
-Currently, when configuring TMU (Time Management Unit) mode of a given
-router, we take into account only its own TMU requirements ignoring
-other routers in the domain. This is problematic if the router we are
-configuring has lower TMU requirements than what is already configured
-in the domain.
+cgroup.max.depth is the maximum allowed descent depth below the current
+cgroup. If the actual descent depth is equal or larger, an attempt to
+create a new child cgroup will fail. However due to the cgroup->max_depth
+is of int type and having the default value INT_MAX, the condition
+'level > cgroup->max_depth' will never be satisfied, and it will cause
+an overflow of the level after it reaches to INT_MAX.
 
-In the scenario below, we have a host router with two USB4 ports: A and
-B. Port A connected to device router #1 (which supports CL states) and
-existing DisplayPort tunnel, thus, the TMU mode is HiFi uni-directional.
+Fix it by starting the level from 0 and using '>=' instead.
 
-1. Initial topology
+It's worth mentioning that this issue is unlikely to occur in reality,
+as it's impossible to have a depth of INT_MAX hierarchy, but should be
+be avoided logically.
 
-          [Host]
-         A/
-         /
- [Device #1]
-   /
-Monitor
-
-2. Plug in device #2 (that supports CL states) to downstream port B of
-   the host router
-
-         [Host]
-        A/    B\
-        /       \
- [Device #1]    [Device #2]
-   /
-Monitor
-
-The TMU mode on port B and port A will be configured to LowRes which is
-not what we want and will cause monitor to start flickering.
-
-To address this we first scan the domain and search for any router
-configured to HiFi uni-directional mode, and if found, configure TMU
-mode of the given router to HiFi uni-directional as well.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1a926e0bbab8 ("cgroup: implement hierarchy limits")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/tb.c |   48 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ kernel/cgroup/cgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -288,6 +288,24 @@ static void tb_increase_tmu_accuracy(str
- 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
- }
- 
-+static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
-+{
-+	struct tb_switch *sw = tb_to_switch(dev);
-+
-+	if (sw && tb_switch_tmu_is_enabled(sw) &&
-+	    tb_switch_tmu_is_configured(sw, TB_SWITCH_TMU_MODE_HIFI_UNI))
-+		return 1;
-+
-+	return device_for_each_child(dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required);
-+}
-+
-+static bool tb_tmu_hifi_uni_required(struct tb *tb)
-+{
-+	return device_for_each_child(&tb->dev, NULL,
-+				     tb_switch_tmu_hifi_uni_required) == 1;
-+}
-+
- static int tb_enable_tmu(struct tb_switch *sw)
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 660817c125e73..b927f0623ac77 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -5697,7 +5697,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
  {
- 	int ret;
-@@ -302,12 +320,30 @@ static int tb_enable_tmu(struct tb_switc
- 	ret = tb_switch_tmu_configure(sw,
- 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
- 	if (ret == -EOPNOTSUPP) {
--		if (tb_switch_clx_is_enabled(sw, TB_CL1))
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_LOWRES);
--		else
--			ret = tb_switch_tmu_configure(sw,
--					TB_SWITCH_TMU_MODE_HIFI_BI);
-+		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
-+			/*
-+			 * Figure out uni-directional HiFi TMU requirements
-+			 * currently in the domain. If there are no
-+			 * uni-directional HiFi requirements we can put the TMU
-+			 * into LowRes mode.
-+			 *
-+			 * Deliberately skip bi-directional HiFi links
-+			 * as these work independently of other links
-+			 * (and they do not allow any CL states anyway).
-+			 */
-+			if (tb_tmu_hifi_uni_required(sw->tb))
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_HIFI_UNI);
-+			else
-+				ret = tb_switch_tmu_configure(sw,
-+						TB_SWITCH_TMU_MODE_LOWRES);
-+		} else {
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
-+		}
-+
-+		/* If not supported, fallback to bi-directional HiFi */
-+		if (ret == -EOPNOTSUPP)
-+			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
- 	}
- 	if (ret)
- 		return ret;
+ 	struct cgroup *cgroup;
+ 	int ret = false;
+-	int level = 1;
++	int level = 0;
+ 
+ 	lockdep_assert_held(&cgroup_mutex);
+ 
+@@ -5705,7 +5705,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
+ 		if (cgroup->nr_descendants >= cgroup->max_descendants)
+ 			goto fail;
+ 
+-		if (level > cgroup->max_depth)
++		if (level >= cgroup->max_depth)
+ 			goto fail;
+ 
+ 		level++;
+-- 
+2.43.0
+
 
 
 
