@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823A39BE7CF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8359BE8FC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B40F11C22186
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B650F1F21208
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832FC1DED53;
-	Wed,  6 Nov 2024 12:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6288B1DED58;
+	Wed,  6 Nov 2024 12:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aljzVAZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r76Qf4dq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0721DF721;
-	Wed,  6 Nov 2024 12:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91D1D2784;
+	Wed,  6 Nov 2024 12:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895480; cv=none; b=vFFsVEWTQMw3WzbGkEZJDXuB7Wz6/5n2xTu0pE7bn9WY6KFPuXi8izJrFreLAmO7kkIVDPFzID1h61SEy1Gk9RHQpLstUf6+ACA3FrxQQ8FQzGKCrheVMIuhM6WKtq6IVqiDlKq9bw3ZdW3tmRf0uP9NlSX6X0OVx25d6T1iD2E=
+	t=1730896156; cv=none; b=EXunIf0uR8AklGiWcjLrj1Aq+tFzGq41mFF6mm4qk0mVGLLSvWwaabTjHc/UurmduKgNkD/m1UfDrv52Lk2ItFXHm7TwSj0gabRa/Zhp3iEhTzhwtAT0daGZvV02B10hFMT33qOxP6kopY7DDo02jwrztTGucOoPbNYjc0P7iDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895480; c=relaxed/simple;
-	bh=qxLJPgHRRo/7mHsPtgY4YepUckG0SdbfbMrXQb9w6aM=;
+	s=arc-20240116; t=1730896156; c=relaxed/simple;
+	bh=+oy1uQ5H1IFv8zk7JB21dyb8GtcFlWM+rtvjsui990U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JV090ZT66BrNudcsTj+D1gKbCVRX77ghDLJG9nmOpxvV2pTsDiQl84qSU3btKYPqY2Bh4iWQkV4Kjl8n9h3cKu0OU+g91jlO4Y/jXfw0F+rZclaTmoPobt1hkVneBOJIVXwS+Qmi2saG0KPvhmGP2wJqpTp+SP3w0GKtcerD1xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aljzVAZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CB4C4CECD;
-	Wed,  6 Nov 2024 12:17:59 +0000 (UTC)
+	 MIME-Version; b=MpE6XwlywEmb4SpSfT9TDWj3r4bBWb3JRpa+fe7JftZ0FpWSL7QU8HmuPJ8i0HDSpU4XmLNuV5khhlcXYCBfEWU/K+81CfaWPgKyAGT9LaodnyLCmnFACVsL7iyH6bjoyrY8VKYNhIbTZsTbAK4LK5dz9K3nQhoCUMDlztNGiWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r76Qf4dq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE46C4CECD;
+	Wed,  6 Nov 2024 12:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895480;
-	bh=qxLJPgHRRo/7mHsPtgY4YepUckG0SdbfbMrXQb9w6aM=;
+	s=korg; t=1730896156;
+	bh=+oy1uQ5H1IFv8zk7JB21dyb8GtcFlWM+rtvjsui990U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aljzVAZxp+uK3hDk2h2Yff6yS3r47JyqNEVDrMzvrBU4uYXAdGSedH9fuTJ4puCT+
-	 M82ta+VuZNx3NxKgo1MIfXE/M3niJKHJhwxDkUG/NZhOA8DHnwfGfF6LBMV2dlS1uD
-	 Wy9ke2jQIMLKcApe0W4e+H2I853y1zPDISKdUE+8=
+	b=r76Qf4dqwj+/qZkuSGC6l8j5wx9c9tGX/Czcb5/16jevz/8NBP8rPYO7dm4QvOx6z
+	 f2c81IeX2Qi04xshnCI60QNBYho6XaOxMVqZIZ6jEahf6JMZ6j6ffLiH1mlXwOajWS
+	 fzp2cm9ZYE6oB4zL4k5oyYB+X5j1wwTrSQt26m9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 232/350] virtio_console: fix misc probe bugs
+	Hongren Zheng <i@zenithal.me>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH 6.11 107/245] usbip: tools: Fix detach_port() invalid port error path
 Date: Wed,  6 Nov 2024 13:02:40 +0100
-Message-ID: <20241106120326.703705266@linuxfoundation.org>
+Message-ID: <20241106120321.850390464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-[ Upstream commit b9efbe2b8f0177fa97bfab290d60858900aa196b ]
+commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
 
-This fixes the following issue discovered by code review:
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-after vqs have been created, a buggy device can send an interrupt.
-
-A control vq callback will then try to schedule control_work which has
-not been initialized yet. Similarly for config interrupt.  Further, in
-and out vq callbacks invoke find_port_by_vq which attempts to take
-ports_lock which also has not been initialized.
-
-To fix, init all locks and work before creating vqs.
-
-Message-ID: <ad982e975a6160ad110c623c016041311ca15b4f.1726511547.git.mst@redhat.com>
-Fixes: 17634ba25544 ("virtio: console: Add a new MULTIPORT feature, support for generic ports")
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/virtio_console.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ tools/usb/usbip/src/usbip_detach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
-index d3937d6904000..ad9e266652607 100644
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -2075,25 +2075,27 @@ static int virtcons_probe(struct virtio_device *vdev)
- 		multiport = true;
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
  	}
  
--	err = init_vqs(portdev);
--	if (err < 0) {
--		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
--		goto free_chrdev;
--	}
--
- 	spin_lock_init(&portdev->ports_lock);
- 	INIT_LIST_HEAD(&portdev->ports);
- 	INIT_LIST_HEAD(&portdev->list);
- 
--	virtio_device_ready(portdev->vdev);
--
- 	INIT_WORK(&portdev->config_work, &config_work_handler);
- 	INIT_WORK(&portdev->control_work, &control_work_handler);
- 
- 	if (multiport) {
- 		spin_lock_init(&portdev->c_ivq_lock);
- 		spin_lock_init(&portdev->c_ovq_lock);
-+	}
- 
-+	err = init_vqs(portdev);
-+	if (err < 0) {
-+		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
-+		goto free_chrdev;
-+	}
-+
-+	virtio_device_ready(portdev->vdev);
-+
-+	if (multiport) {
- 		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
- 		if (err < 0) {
- 			dev_err(&vdev->dev,
--- 
-2.43.0
-
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 
 
 
