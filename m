@@ -1,71 +1,85 @@
-Return-Path: <stable+bounces-91724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701B29BF7A4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 20:54:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33D39BF7EF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 21:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C032BB2265D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 19:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1613028353A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 20:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360520820D;
-	Wed,  6 Nov 2024 19:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977EA20C032;
+	Wed,  6 Nov 2024 20:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FjzeKH8L"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eX3DvZ9h"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FC813A26F
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 19:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A2120A5CB;
+	Wed,  6 Nov 2024 20:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730922857; cv=none; b=JslCbs8/Kh16NaTZ+ovP25kraQW3LqfOflE+GNcW6RpRfVcGfnw3hg5oY+MzAvoS/+L91Hb3SJak1urXlsCi7UhZvlGUkyYhD7x4EhT4L7RUNXisWBFs/aMHmMp+yheMnvjo7HYehjHRxMIQ8jH6OGqqQzkyJuvHTZl0CWUi5qY=
+	t=1730924565; cv=none; b=ihoGUE09Sx8UYkffx9+YlR2ujYY23rJHEq/3Qa5LHKSUdYLxGCfp599WqoVaexyrtpnPzjxh+eVFUtmWGDMC4oPIwLXSKQW2x6t65oqvuToTFkh8gSGtEDS5GUHr/2+yPiMpaDv41xo2MkXwYPgGwrK0R8AvssmxHHIvxC8jhTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730922857; c=relaxed/simple;
-	bh=6UqYyiZMzpE4tr9s0Vmuz+sUu7GfYlpzAYxMvxw0Rb4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gmnbkX/+Y19+dWdc4PxH7VPZ8JXYOUfmAHRlBoO1JgUK9wjFP9+ix0TDccp/eDpZelUT29iEIR/MCCR+kYMU8Q+4Ue31kKLlG+8SgeeD8gO11mddUZdR9K5xxAounlh/lbbUFZWlDpRZeoslArGdw7Ccl8qpR5a4x0ZpOeGyc6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FjzeKH8L; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730922852;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Z0AJT81XUwusmlDp3ak4C1mJAolhBOfTLPwd7IOBvRo=;
-	b=FjzeKH8LgarhOV5f64ku6FnTrsbb/weExEmp7D6ICjexrXjF22ZhGPKL1Ngj+vhBEfI0qS
-	LBDRLv5+jGn26Bsc1HWTAkWxtylclKzU30TIqGrMbqi8g7eYMaUHM/RTHmGHNz0SGuR5k8
-	Sn/+9Wmqq9V1pgBThNACrbklkFpoYBY=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	stable@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v3] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
-Date: Wed,  6 Nov 2024 19:53:54 +0000
-Message-ID: <20241106195354.270757-1-roman.gushchin@linux.dev>
+	s=arc-20240116; t=1730924565; c=relaxed/simple;
+	bh=loFtezzgK7wQHacz/t8Le8GXSKyyBX6qr0+hp8N/srY=;
+	h=Date:To:From:Subject:Message-Id; b=RLuC0ucpwABYMT2LbafdY7dWCrX3iIcbqgjr5IbyJ/YnqX0WHtbdRfACObXXL0SGCSLFx2tAuFDbGS4VdXRI/fZrtz29j2815LXN2aZ1SM19R+kJxty+ar1XQPTIdXs1taneLDxWBrB9LO57RRZgulLcfLI7cu5UvwASehiPJ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eX3DvZ9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD061C4CEC6;
+	Wed,  6 Nov 2024 20:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730924564;
+	bh=loFtezzgK7wQHacz/t8Le8GXSKyyBX6qr0+hp8N/srY=;
+	h=Date:To:From:Subject:From;
+	b=eX3DvZ9hNxjcMJYCl4BDggPnlOva2AB7SkC2WE8Bn720Bqp8NXVatXeK/5Obsb86O
+	 sqRKOC+l4H877re0Tx8WVsi7XPIBsL+CKnF5KuS2W1XaJGOa34HNmViYVp0CvHWGfA
+	 +JU4w87+oIbtha5WIZDawQ5vNyFC8rO5kTNbTRkQ=
+Date: Wed, 06 Nov 2024 12:22:43 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,seanjc@google.com,hughd@google.com,roman.gushchin@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241106202244.CD061C4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Syzbot reported a bad page state problem caused by a page
-being freed using free_page() still having a mlocked flag at
-free_pages_prepare() stage:
+
+The patch titled
+     Subject: mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Subject: mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+Date: Wed, 6 Nov 2024 19:53:54 +0000
+
+Syzbot reported a bad page state problem caused by a page being freed
+using free_page() still having a mlocked flag at free_pages_prepare()
+stage:
 
   BUG: Bad page state in process syz.5.504  pfn:61f45
   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x61f45
@@ -151,40 +165,38 @@ free_pages_prepare() stage:
   R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
    </TASK>
 
-The problem was originally introduced by
-commit b109b87050df ("mm/munlock: replace clear_page_mlock() by final
-clearance"): it was handling focused on handling pagecache
-and anonymous memory and wasn't suitable for lower level
-get_page()/free_page() API's used for example by KVM, as with
-this reproducer.
+The problem was originally introduced by commit b109b87050df ("mm/munlock:
+replace clear_page_mlock() by final clearance"): it was focused on
+handling pagecache and anonymous memory and wasn't suitable for lower
+level get_page()/free_page() API's used for example by KVM, as with this
+reproducer.
 
-Fix it by moving the mlocked flag clearance down to
-free_page_prepare().
+Fix it by moving the mlocked flag clearance down to free_page_prepare().
 
 The bug itself if fairly old and harmless (aside from generating these
 warnings), aside from a small memory leak - "bad" pages are stopped from
 being allocated again.
 
-Reported-by: syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
+Link: https://lkml.kernel.org/r/20241106195354.270757-1-roman.gushchin@linux.dev
 Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
 Acked-by: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
 Cc: Matthew Wilcox <willy@infradead.org>
 Cc: Sean Christopherson <seanjc@google.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/page_alloc.c | 15 +++++++++++++++
- mm/swap.c       | 14 --------------
+
+ mm/page_alloc.c |   15 +++++++++++++++
+ mm/swap.c       |   14 --------------
  2 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 47048b39b8ca..371d1c6c1fc7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1048,6 +1048,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+--- a/mm/page_alloc.c~mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare
++++ a/mm/page_alloc.c
+@@ -1048,6 +1048,7 @@ __always_inline bool free_pages_prepare(
  	bool skip_kasan_poison = should_skip_kasan_poison(page);
  	bool init = want_init_on_free();
  	bool compound = PageCompound(page);
@@ -192,7 +204,7 @@ index 47048b39b8ca..371d1c6c1fc7 100644
  
  	VM_BUG_ON_PAGE(PageTail(page), page);
  
-@@ -1057,6 +1058,20 @@ __always_inline bool free_pages_prepare(struct page *page,
+@@ -1057,6 +1058,20 @@ __always_inline bool free_pages_prepare(
  	if (memcg_kmem_online() && PageMemcgKmem(page))
  		__memcg_kmem_uncharge_page(page, order);
  
@@ -213,11 +225,9 @@ index 47048b39b8ca..371d1c6c1fc7 100644
  	if (unlikely(PageHWPoison(page)) && !order) {
  		/* Do not let hwpoison pages hit pcplists/buddy */
  		reset_page_owner(page, order);
-diff --git a/mm/swap.c b/mm/swap.c
-index 638a3f001676..10decd9dffa1 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
+--- a/mm/swap.c~mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare
++++ a/mm/swap.c
+@@ -78,20 +78,6 @@ static void __page_cache_release(struct
  		lruvec_del_folio(*lruvecp, folio);
  		__folio_clear_lru_flags(folio);
  	}
@@ -238,7 +248,11 @@ index 638a3f001676..10decd9dffa1 100644
  }
  
  /*
--- 
-2.47.0.199.ga7371fff76-goog
+_
+
+Patches currently in -mm which might be from roman.gushchin@linux.dev are
+
+signal-restore-the-override_rlimit-logic.patch
+mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare.patch
 
 
