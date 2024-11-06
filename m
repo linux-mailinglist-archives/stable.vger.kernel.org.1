@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-91003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AFA9BEC02
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201679BEB61
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3A6284549
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B29C6B227EC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9C71FAC32;
-	Wed,  6 Nov 2024 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31751F76AD;
+	Wed,  6 Nov 2024 12:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwTOGDay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/VQMr3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0421DE3B5;
-	Wed,  6 Nov 2024 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6FD1EABA1;
+	Wed,  6 Nov 2024 12:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897453; cv=none; b=SUN2AfJVG4BUHBTLKHsWPNyAhy4s9gJfyAiFJfTa5qZ48ZccFhPTbOgQra0AmygGV/3Z3rptVLWHqzKu+ZW9YlVi/HnAQHH4dbu/UTjqZAQNV/IzLPLwizURYTT/s6WcDpu/Rn3FzxRMSefJVsUNgpYNvbwfAdcsSD+qeeh3wQI=
+	t=1730897035; cv=none; b=nR+JDgSMLmiAIr3PhK8kRriTNoIINutjL7JDXK2PqqOiejkY4mSlllvtj47/y/itya/SLbKY9ytTjusZrIf1M083sFHfJNbLY0yShaX2wdSKUWidbFPrJnZEOM5ZcfhLulmiqInH7rv9al7uhIvp/nAOTX2BBPuw2Ax4EYAo03A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897453; c=relaxed/simple;
-	bh=efzGh3KD+P3vRWmbM40jCSU1QDnn6lhn6/fMtbicId0=;
+	s=arc-20240116; t=1730897035; c=relaxed/simple;
+	bh=CcpT3ygnMOFoIn++BT0g8+IL11Pr7GjX44rahjfR0sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTXZ0tYAjXOcaxDtFzBJ4lakWJbUwxM8QrhDY3DM5cia2L/B2si5Xs+2vZbEagSPUkrTRRb4ELLCq2il8H79qpcM1Vz6KJCIrb9ky88G/CL4h4qQus8KYjQ3lBAhdDswbtsYaCvOzJftO9TF3EPA5Wr1kF8K+AaXuryPF7CMk3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwTOGDay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882B5C4CECD;
-	Wed,  6 Nov 2024 12:50:52 +0000 (UTC)
+	 MIME-Version; b=EU9nBNuqnB5mSKtE+iLCQYcUrhAC116+8+Cf6+sJNZNwobUKNPMPh14SY7Cp6XuB0YiQKOLmH1sHmgFYN0eknJVopSuy5BE/poQZhQ6ikWBD1nBbW6rKAIvVTLsfrMhybBlsTP2J+04DEMroWBQ/lSVU9tsXorTgGvgdBguyC2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/VQMr3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE618C4CECD;
+	Wed,  6 Nov 2024 12:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897453;
-	bh=efzGh3KD+P3vRWmbM40jCSU1QDnn6lhn6/fMtbicId0=;
+	s=korg; t=1730897035;
+	bh=CcpT3ygnMOFoIn++BT0g8+IL11Pr7GjX44rahjfR0sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwTOGDayEjCnF7WZUQqfb+tmh/a3X7pPWISUsQicXlCi4yPhC/HB/+n6mJuYQOcoP
-	 V3r6svD0rQom18JGsY9Ccm0R1ZPKo3hUjE0ReY5pB38MuE9lKe0TlNCZ9y0TdpBCDn
-	 c22MND4qYm2kpl+HBZTG46cOsnokUVQTtCrA6F1s=
+	b=y/VQMr3RpgCUhstjTMzrMjHwNItOL9d1OznQU09lNOBs3nWg6WE24Y1p52f3xHmS0
+	 XEGAX1sYZt2hzXUESsQ745/Y0jcwq+fGiox2VhlJz5LHpxeEGisP15HMwALX493CvE
+	 LilROGkbBH098+Xesrglfxz9+C1/gCHHZWGNFoHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Li <ashimida@linux.alibaba.com>,
+	Kees Cook <keescook@chromium.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/151] fs/ntfs3: Stale inode instead of bad
+Subject: [PATCH 6.1 045/126] compiler-gcc: be consistent with underscores use for `no_sanitize`
 Date: Wed,  6 Nov 2024 13:04:06 +0100
-Message-ID: <20241106120310.434675455@linuxfoundation.org>
+Message-ID: <20241106120307.325248248@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +72,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 1fd21919de6de245b63066b8ee3cfba92e36f0e9 ]
+[ Upstream commit 6e2be1f2ebcea42ed6044432f72f32434e60b34d ]
 
-Fixed the logic of processing inode with wrong sequence number.
+Patch series "compiler-gcc: be consistent with underscores use for
+`no_sanitize`".
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+This patch (of 5):
+
+Other macros that define shorthands for attributes in e.g.
+`compiler_attributes.h` and elsewhere use underscores.
+
+Link: https://lkml.kernel.org/r/20221021115956.9947-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dan Li <ashimida@linux.alibaba.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 894b00a3350c ("kasan: Fix Software Tag-Based KASAN with GCC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/linux/compiler-gcc.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 1545262995da2..20988ef3dc2ec 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -532,11 +532,15 @@ struct inode *ntfs_iget5(struct super_block *sb, const struct MFT_REF *ref,
- 	if (inode->i_state & I_NEW)
- 		inode = ntfs_read_mft(inode, name, ref);
- 	else if (ref->seq != ntfs_i(inode)->mi.mrec->seq) {
--		/* Inode overlaps? */
--		_ntfs_bad_inode(inode);
-+		/*
-+		 * Sequence number is not expected.
-+		 * Looks like inode was reused but caller uses the old reference
-+		 */
-+		iput(inode);
-+		inode = ERR_PTR(-ESTALE);
- 	}
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 149a520515e1d..e6474899250d5 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -103,25 +103,25 @@
+ #endif
  
--	if (IS_ERR(inode) && name)
-+	if (IS_ERR(inode))
- 		ntfs_set_state(sb->s_fs_info, NTFS_DIRTY_ERROR);
+ #if __has_attribute(__no_sanitize_address__)
+-#define __no_sanitize_address __attribute__((no_sanitize_address))
++#define __no_sanitize_address __attribute__((__no_sanitize_address__))
+ #else
+ #define __no_sanitize_address
+ #endif
  
- 	return inode;
+ #if defined(__SANITIZE_THREAD__) && __has_attribute(__no_sanitize_thread__)
+-#define __no_sanitize_thread __attribute__((no_sanitize_thread))
++#define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
+ #else
+ #define __no_sanitize_thread
+ #endif
+ 
+ #if __has_attribute(__no_sanitize_undefined__)
+-#define __no_sanitize_undefined __attribute__((no_sanitize_undefined))
++#define __no_sanitize_undefined __attribute__((__no_sanitize_undefined__))
+ #else
+ #define __no_sanitize_undefined
+ #endif
+ 
+ #if defined(CONFIG_KCOV) && __has_attribute(__no_sanitize_coverage__)
+-#define __no_sanitize_coverage __attribute__((no_sanitize_coverage))
++#define __no_sanitize_coverage __attribute__((__no_sanitize_coverage__))
+ #else
+ #define __no_sanitize_coverage
+ #endif
 -- 
 2.43.0
 
