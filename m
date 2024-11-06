@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-90874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558749BEB6F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA4F9BE96D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31931F27A00
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7FEE1F23651
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250781F76D0;
-	Wed,  6 Nov 2024 12:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662FE1DFD90;
+	Wed,  6 Nov 2024 12:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5WeqK3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bmF5CyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61751DFE31;
-	Wed,  6 Nov 2024 12:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223A81DF98C;
+	Wed,  6 Nov 2024 12:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897070; cv=none; b=JL350Rew9A+7m4mwckTX6GjpauaD6URN5TTebfQFGl1QmIarQn3ZZsEPp5VU6KV3xGB9bkFDT6aPfjXhHdvuXVY7VNjuHHqDcSu8FoewB0XIeL+/zZNDtdOFMCqfWLWAWxm5za1j0bjYNonP2GV9mReA8ViaBAV08IXDdkKYQuw=
+	t=1730896445; cv=none; b=a42OzaRKIRm36a66xJlf+cTipMtgxOfd6Htcdw4V0dkjcjPwp8Sl7KQ8yMoBfM8mDVuCK+NfplGnNE4h2N1u79PA9a875lM2Fo6kbPfIciQ6P/bx4bR+tS0MJDg2mXjO9qGNFJnRqNHv1CNqbdGVSumoWMcGTUV9djVGndwhXRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897070; c=relaxed/simple;
-	bh=VpQuu+3jnewdSLWg1rHweiJf4nCB9iL5ihBYBheBrbU=;
+	s=arc-20240116; t=1730896445; c=relaxed/simple;
+	bh=28DNzc9ndE7w33c6uknGSzl5A9ikmllB2d8S+a25Bp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c98TqHIRSxSFfIPB3Zf3oRSxtJ3aooddvuGpKv+4ZGSF4v1uzWr7Xfj+Vez3XuHH15wGG3yYF6HoNKUZg3IwnkjsfBuR15G8utiAmZq6VcDQFVxQ51B/uzvQvJrmfRS3q0Fa94Ed4IWWxhVl4XP5CS/ed+14a/iv/fayb3EFSNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5WeqK3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5767CC4CED3;
-	Wed,  6 Nov 2024 12:44:30 +0000 (UTC)
+	 MIME-Version; b=YIY+gdYgU+OFBro3rAHp7SRnV+VkXp+Wj3Ftwa8p9SNiDDwI3WIdOQp/tOoZurH3mBslfogORpYuCBbW7qx88K3bzT6c266T8EzRm9g7oXh1xv2ofNQyjdEOAAOAIFSMYRN9Dxx5HQIpSm/KLFJXWLUY7wpiRmjeguJ0R5Qj8wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bmF5CyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DD6C4CED4;
+	Wed,  6 Nov 2024 12:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897070;
-	bh=VpQuu+3jnewdSLWg1rHweiJf4nCB9iL5ihBYBheBrbU=;
+	s=korg; t=1730896445;
+	bh=28DNzc9ndE7w33c6uknGSzl5A9ikmllB2d8S+a25Bp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5WeqK3Q2oF2cCgu6QtyN9Z9LzbfpYkV8wGEEZ405yWLqn8QXroVFXxB9C5H5kTRG
-	 b/DWOpab2ZQIJoTrHG2SCRwLd9F6fJ4Ic6CvkpPfRgJUfE/Zcb+UdqfeOKG5RhtXei
-	 53ZqR6Nn1hOqXSjMmfO3h54jNVPscG0q7Mt4TTMY=
+	b=2bmF5CyVnRaKJd0AkdObhfgcJnvEG3SjlNcGU8EYDtS57zN4xIwV7Dbmx70y2ddg0
+	 Yom8mp0whbmxZHy0GIZtucx8J/5HWnqSbmaDxPrH9BpyBN4FEUcIYC72c0QAHW+jz4
+	 c4w9CbkHsTZBgjNHuHS7aOYooKsND0alqsN8xxXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/126] fs/ntfs3: Additional check in ni_clear()
-Date: Wed,  6 Nov 2024 13:04:17 +0100
-Message-ID: <20241106120307.611941278@linuxfoundation.org>
+Subject: [PATCH 6.11 205/245] mm: multi-gen LRU: ignore non-leaf pmd_young for force_scan=true
+Date: Wed,  6 Nov 2024 13:04:18 +0100
+Message-ID: <20241106120324.291084148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Yuanchu Xie <yuanchu@google.com>
 
-[ Upstream commit d178944db36b3369b78a08ba520de109b89bf2a9 ]
+[ Upstream commit bceeeaed4817ba7ad9013b4116c97220a60fcf7c ]
 
-Checking of NTFS_FLAGS_LOG_REPLAYING added to prevent access to
-uninitialized bitmap during replay process.
+When non-leaf pmd accessed bits are available, MGLRU page table walks can
+clear the non-leaf pmd accessed bit and ignore the accessed bit on the pte
+if it's on a different node, skipping a generation update as well.  If
+another scan occurs on the same node as said skipped pte.
 
-Reported-by: syzbot+3bfd2cc059ab93efcdb4@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+The non-leaf pmd accessed bit might remain cleared and the pte accessed
+bits won't be checked.  While this is sufficient for reclaim-driven aging,
+where the goal is to select a reasonably cold page, the access can be
+missed when aging proactively for workingset estimation of a node/memcg.
+
+In more detail, get_pfn_folio returns NULL if the folio's nid != node
+under scanning, so the page table walk skips processing of said pte.  Now
+the pmd_young flag on this pmd is cleared, and if none of the pte's are
+accessed before another scan occurs on the folio's node, the pmd_young
+check fails and the pte accessed bit is skipped.
+
+Since force_scan disables various other optimizations, we check force_scan
+to ignore the non-leaf pmd accessed bit.
+
+Link: https://lkml.kernel.org/r/20240813163759.742675-1-yuanchu@google.com
+Signed-off-by: Yuanchu Xie <yuanchu@google.com>
+Acked-by: Yu Zhao <yuzhao@google.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Lance Yang <ioworker0@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ddd6d8e975b1 ("mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/vmscan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index e19510f977112..d41ddc06f2071 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -102,7 +102,9 @@ void ni_clear(struct ntfs_inode *ni)
- {
- 	struct rb_node *node;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 128f307da6eea..b1f88638c5ab4 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3456,7 +3456,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 			goto next;
  
--	if (!ni->vfs_inode.i_nlink && ni->mi.mrec && is_rec_inuse(ni->mi.mrec))
-+	if (!ni->vfs_inode.i_nlink && ni->mi.mrec &&
-+	    is_rec_inuse(ni->mi.mrec) &&
-+	    !(ni->mi.sbi->flags & NTFS_FLAGS_LOG_REPLAYING))
- 		ni_delete_all(ni);
+ 		if (!pmd_trans_huge(pmd[i])) {
+-			if (should_clear_pmd_young())
++			if (!walk->force_scan && should_clear_pmd_young())
+ 				pmdp_test_and_clear_young(vma, addr, pmd + i);
+ 			goto next;
+ 		}
+@@ -3543,7 +3543,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
  
- 	al_destroy(ni);
+ 		walk->mm_stats[MM_NONLEAF_TOTAL]++;
+ 
+-		if (should_clear_pmd_young()) {
++		if (!walk->force_scan && should_clear_pmd_young()) {
+ 			if (!pmd_young(val))
+ 				continue;
+ 
 -- 
 2.43.0
 
