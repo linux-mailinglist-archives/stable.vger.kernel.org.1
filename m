@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AE09BEBDE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D855B9BEB3D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D48271F24BA6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15D561C20BC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2791C1EF0A4;
-	Wed,  6 Nov 2024 12:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30171E766F;
+	Wed,  6 Nov 2024 12:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpVtNsXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmU8mEI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B1F1EF0A7;
-	Wed,  6 Nov 2024 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE661F669E;
+	Wed,  6 Nov 2024 12:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897355; cv=none; b=qfol26imEaIp+57LC4Y46Pf9Ylse1anFQGBzCmRDnSTI7Czwg8w93gTxP7yboztNNDzZOjJY8EYcxLZKrLK6IZLpnjjHbtBWLN07lpIY9tJTSn1RrO2wo9v5XxpLDnFakgAqs9oQYoBust/fb283ucE9X5LlGNMCAyv7ZSu3rOk=
+	t=1730896936; cv=none; b=rXzX9s696yqIvVAwEDCXrU+zVyQtDR2CjfpcmlIOiaA57oTF4iSnbCCQ9U6Ie6sTMnDWJN/DbUE+l12lbHGeWfRGQXoRVcusmBJ7Mqzr9AZgQQJaK+mttY2ZTmjJDRFn3VCJm9SDZTYlGsAUvBZFS9xco3uGMAyyuBDUyJobKEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897355; c=relaxed/simple;
-	bh=ij0VwgjoEhDmc/nw2aUWkdFfdzjBCvSY/JMwTRdee1U=;
+	s=arc-20240116; t=1730896936; c=relaxed/simple;
+	bh=KzwXq5iu5JiAU3z4lXjcRP/VWhKTeL26dM4m3i4edWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ch4e8+hnsLKco1JLwtIouw3AZRI/5hf1ZGHLlkVmPU9x8h3CxOpWv7eCWmCN1sFjTR0d+od93MeVqmPNDIJc2OZ38/iw8NtOcqDp4EcJCrXvwKOHmP00By4ut9Nvxc9RKLhwp5107iMXnw9KKBQescpgIp7B0P5UuFI6OirDQzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpVtNsXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18709C4CECD;
-	Wed,  6 Nov 2024 12:49:14 +0000 (UTC)
+	 MIME-Version; b=mnUfCKaz9kvC2gF76cxQepn+RYQwqpih/ICrox4wZx3QhY232X5BYQgke5ik46YeoY6VB1NnjpQkVlyQGBavgTZy83Zl0Tj1mTpcnhgb0tZX1cr0l4aMt+wFMCs0moAd5hK24tPTJzvnmrDUfy/WJeNgWW9BFhbdZdKEXNh/TTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmU8mEI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB21C4CECD;
+	Wed,  6 Nov 2024 12:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897355;
-	bh=ij0VwgjoEhDmc/nw2aUWkdFfdzjBCvSY/JMwTRdee1U=;
+	s=korg; t=1730896936;
+	bh=KzwXq5iu5JiAU3z4lXjcRP/VWhKTeL26dM4m3i4edWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpVtNsXnXY0LCF1UK+iJ+W0OpQD8nN48YgJ8V6sK2mbkLgp5d33uvCoQtEYV8QRH8
-	 4zf/quG0xlpwbNndE3GBq954x51RtcGJkDN1PmDPAmn5koFTiFg0ISwwKQvu4orTpS
-	 2uqyZH9GjdDeTxMWpW00Kos8JZQ98Xp72rsBSLmM=
+	b=jmU8mEI2scxBXTxkrdSvL033elaTc9Kzq/xuoQetYNCYYUvzg691dsTbSm+7z5Uzj
+	 IAgw/fysdL1xHjgAWde3oWrbX5WXCckK0/Ycnw9LsnDvJ4zMLtEvxJD9hVrP58HTQm
+	 h0q1LfktoLMJCmj2nNAFtMD26hsL6SF49H0YRsqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/151] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
+Subject: [PATCH 6.1 012/126] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
 Date: Wed,  6 Nov 2024 13:03:33 +0100
-Message-ID: <20241106120309.523473521@linuxfoundation.org>
+Message-ID: <20241106120306.409446707@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
+[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
 
-There are code paths from which the function is called without holding
-the RCU read lock, resulting in a suspicious RCU usage warning [1].
+Sync iterator conditions with ieee80211_iter_keys_rcu.
 
-Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
-the RCU read lock before calling
-l3mdev_master_upper_ifindex_by_index_rcu().
-
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
------------------------------
-net/core/dev.c:876 RCU-list traversed in non-reader section!!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/361:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- dev_get_by_index_rcu+0x1d3/0x210
- l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
- ip_tunnel_bind_dev+0x72f/0xa00
- ip_tunnel_newlink+0x368/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 4e69f52a51177..006a61ddd36fa 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -260,7 +260,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
- 	memset(fl4, 0, sizeof(*fl4));
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 23bb24243c6e9..585de86fce840 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -976,6 +976,26 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
+ 	mutex_unlock(&sdata->local->key_mtx);
+ }
  
- 	if (oif) {
--		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
-+		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
- 		/* Legacy VRF/l3mdev use case */
- 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
++static void
++ieee80211_key_iter(struct ieee80211_hw *hw,
++		   struct ieee80211_vif *vif,
++		   struct ieee80211_key *key,
++		   void (*iter)(struct ieee80211_hw *hw,
++				struct ieee80211_vif *vif,
++				struct ieee80211_sta *sta,
++				struct ieee80211_key_conf *key,
++				void *data),
++		   void *iter_data)
++{
++	/* skip keys of station in removal process */
++	if (key->sta && key->sta->removed)
++		return;
++	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
++		return;
++	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
++	     &key->conf, iter_data);
++}
++
+ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 			 struct ieee80211_vif *vif,
+ 			 void (*iter)(struct ieee80211_hw *hw,
+@@ -995,16 +1015,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
+ 	if (vif) {
+ 		sdata = vif_to_sdata(vif);
+ 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
+-			iter(hw, &sdata->vif,
+-			     key->sta ? &key->sta->sta : NULL,
+-			     &key->conf, iter_data);
++			ieee80211_key_iter(hw, vif, key, iter, iter_data);
+ 	} else {
+ 		list_for_each_entry(sdata, &local->interfaces, list)
+ 			list_for_each_entry_safe(key, tmp,
+ 						 &sdata->key_list, list)
+-				iter(hw, &sdata->vif,
+-				     key->sta ? &key->sta->sta : NULL,
+-				     &key->conf, iter_data);
++				ieee80211_key_iter(hw, &sdata->vif, key,
++						   iter, iter_data);
  	}
+ 	mutex_unlock(&local->key_mtx);
+ }
+@@ -1022,17 +1039,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
+ {
+ 	struct ieee80211_key *key;
+ 
+-	list_for_each_entry_rcu(key, &sdata->key_list, list) {
+-		/* skip keys of station in removal process */
+-		if (key->sta && key->sta->removed)
+-			continue;
+-		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
+-			continue;
+-
+-		iter(hw, &sdata->vif,
+-		     key->sta ? &key->sta->sta : NULL,
+-		     &key->conf, iter_data);
+-	}
++	list_for_each_entry_rcu(key, &sdata->key_list, list)
++		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
+ }
+ 
+ void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
