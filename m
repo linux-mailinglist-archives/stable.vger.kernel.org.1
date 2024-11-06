@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-90114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686DC9BE6C5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CDE9BECC9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA442B238FF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:06:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EEC1F25335
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E861DF24D;
-	Wed,  6 Nov 2024 12:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFB31E0084;
+	Wed,  6 Nov 2024 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ8m6Fgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehnntVl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E701DEFF4;
-	Wed,  6 Nov 2024 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10CB1DE4CA;
+	Wed,  6 Nov 2024 12:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894812; cv=none; b=lxm7JwrdJpJiM+nv2HKTQL8V3f+66959LUw4yjShbGHo/uebD5VO6OAoGu4Vbr/AFjf41gTGzJZTcML44CeKLMct34hKnyl65Gnc2TfQroTgMSSGgYxdpK3m1DTbiNeGz2IVZ6kdYRBbGI7p0tr7HcxqDlAEnLDA4C9HlIdxMVU=
+	t=1730897947; cv=none; b=Nnea5zj47+GJCtKobfpE1Toi57djJFupBt6YBl0obPxjt2axHSY/AWQ4x3CZp6vSI0ueeuReH8HNSsx6sOIz5PBIfbrE60Ava1uDNY/9fdw/NxRmuFZwVoBB37YUCtu3csn+kWsLfsFPAUkJPB89Dfq+aKLrZ8ZtbcBGNy8xdEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894812; c=relaxed/simple;
-	bh=HOgOvCWXAACyuS2iSxOS3wm+74GE3vSf7jTlqppDZpw=;
+	s=arc-20240116; t=1730897947; c=relaxed/simple;
+	bh=MGM1I3O6NHlRJRseQs/CNFvxkrnNh+iOqFrb/loFEBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huGk2szS4li+eaiYeVLILfx1V469UvwcuybcwkN1SC0ZNOSDlrNNMW1o3gvwrEvKniCaUinZ2rDy9wsbnt0Gm1c4xuoUbAS7cgknZzT4ALstVJcFsq/G6mXD2lOYW6Wxoozi16v56Y7zuuAflfs25RlsnGpbDcTYKt9/uJ0FERk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ8m6Fgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D3C4CECD;
-	Wed,  6 Nov 2024 12:06:51 +0000 (UTC)
+	 MIME-Version; b=gPk9NN43maBYG2hSgx3NVSckDVfeqFodW/4XiZ8Px4XL1AtpdYleIUmgKzxoHTevso3CkrYE9SS67She6GTFUFa/zrwZZLsXcNW3qRn5ST/M+2Md7+eP1uAAF/1QLdNUhLYrkqJonTD0zI7ZW9hAxbMC5crWFUPCyObMS2QDax4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehnntVl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67E0C4CED4;
+	Wed,  6 Nov 2024 12:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894812;
-	bh=HOgOvCWXAACyuS2iSxOS3wm+74GE3vSf7jTlqppDZpw=;
+	s=korg; t=1730897946;
+	bh=MGM1I3O6NHlRJRseQs/CNFvxkrnNh+iOqFrb/loFEBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJ8m6Fgl415x0Z+pD1qWMZr2//dAkWqng2TMYW11AuKcmenZi6d/QJfJvfui46jRt
-	 ID1O6jRXzqN8nZ4rw0grH1hwxbHl+UxIpVtS5Q1wOPNRxyF0yR2wpThfiEZ4g/oXDU
-	 JV0gFXrRmZMbkwMoiRG3Pt7xav/BrX8kwlS65dPM=
+	b=ehnntVl0wiPfyCzP46h9zqEpznsooOiwKl4yXviVc3b6Q+E3zE7P04pxezYg6J9PG
+	 ohqlrUOzcnVPnf4CTIazb79PgICEYbDosp77fdmwlGOfAusbB+0jKC+isq3+iuNVRm
+	 5gxcD5sM9PYf2T6iAL5j0eGWo1uKs+OsTcldHnco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beniamin Bia <beniamin.bia@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <christian.brauner@ubuntu.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Deepa Dinamani <deepa.kernel@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 001/350] staging: iio: frequency: ad9833: Get frequency value statically
+Subject: [PATCH 5.4 036/462] mount: warn only once about timestamp range expiration
 Date: Wed,  6 Nov 2024 12:58:49 +0100
-Message-ID: <20241106120320.904133443@linuxfoundation.org>
+Message-ID: <20241106120332.412614720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +68,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beniamin Bia <biabeniamin@gmail.com>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 80109c32348d7b2e85def9efc3f9524fb166569d ]
+[ Upstream commit a128b054ce029554a4a52fc3abb8c1df8bafcaef ]
 
-The values from platform data were replaced by statically values.
-This was just a intermediate step of taking this driver out of staging and
-load data from device tree.
+Commit f8b92ba67c5d ("mount: Add mount warning for impending timestamp
+expiry") introduced a mount warning regarding filesystem timestamp
+limits, that is printed upon each writable mount or remount.
 
-Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: b48aa9917589 ("staging: iio: frequency: ad9834: Validate frequency parameter value")
+This can result in a lot of unnecessary messages in the kernel log in
+setups where filesystems are being frequently remounted (or mounted
+multiple times).
+
+Avoid this by setting a superblock flag which indicates that the warning
+has been emitted at least once for any particular mount, as suggested in
+[1].
+
+Link: https://lore.kernel.org/CAHk-=wim6VGnxQmjfK_tDg6fbHYKL4EFkmnTjVr9QnRqjDBAeA@mail.gmail.com/ [1]
+Link: https://lkml.kernel.org/r/20220119202934.26495-1-ailiop@suse.com
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Deepa Dinamani <deepa.kernel@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 4bcda1eaf184 ("mount: handle OOM on mnt_warn_timestamp_expiry")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c | 21 +++++++------------
- drivers/staging/iio/frequency/ad9834.h | 28 --------------------------
- 2 files changed, 7 insertions(+), 42 deletions(-)
+ fs/namespace.c     | 2 ++
+ include/linux/fs.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index 4c6d4043903e..f6b36eedd48e 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -389,16 +389,11 @@ static const struct iio_info ad9833_info = {
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 5782cd55dfdbb..3d8fbafc980ba 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2492,6 +2492,7 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 	struct super_block *sb = mnt->mnt_sb;
  
- static int ad9834_probe(struct spi_device *spi)
- {
--	struct ad9834_platform_data *pdata = dev_get_platdata(&spi->dev);
- 	struct ad9834_state *st;
- 	struct iio_dev *indio_dev;
- 	struct regulator *reg;
- 	int ret;
+ 	if (!__mnt_is_readonly(mnt) &&
++	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
+ 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+ 		char *buf = (char *)__get_free_page(GFP_KERNEL);
+ 		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
+@@ -2506,6 +2507,7 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 			tm.tm_year+1900, (unsigned long long)sb->s_time_max);
  
--	if (!pdata) {
--		dev_dbg(&spi->dev, "no platform data?\n");
--		return -ENODEV;
--	}
- 
- 	reg = devm_regulator_get(&spi->dev, "avdd");
- 	if (IS_ERR(reg))
-@@ -418,7 +413,7 @@ static int ad9834_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, indio_dev);
- 	st = iio_priv(indio_dev);
- 	mutex_init(&st->lock);
--	st->mclk = pdata->mclk;
-+	st->mclk = 25000000;
- 	st->spi = spi;
- 	st->devid = spi_get_device_id(spi)->driver_data;
- 	st->reg = reg;
-@@ -454,11 +449,9 @@ static int ad9834_probe(struct spi_device *spi)
- 	spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
- 
- 	st->control = AD9834_B28 | AD9834_RESET;
-+	st->control |= AD9834_DIV2;
- 
--	if (!pdata->en_div2)
--		st->control |= AD9834_DIV2;
--
--	if (!pdata->en_signbit_msb_out && (st->devid == ID_AD9834))
-+	if (st->devid == ID_AD9834)
- 		st->control |= AD9834_SIGN_PIB;
- 
- 	st->data = cpu_to_be16(AD9834_REG_CMD | st->control);
-@@ -468,19 +461,19 @@ static int ad9834_probe(struct spi_device *spi)
- 		goto error_disable_reg;
+ 		free_page((unsigned long)buf);
++		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
  	}
+ }
  
--	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, pdata->freq0);
-+	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, 1000000);
- 	if (ret)
- 		goto error_disable_reg;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index b21fdce37c37a..c0967df137152 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1408,6 +1408,7 @@ extern int send_sigurg(struct fown_struct *fown);
  
--	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, pdata->freq1);
-+	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, 5000000);
- 	if (ret)
- 		goto error_disable_reg;
+ #define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
+ #define SB_I_PERSB_BDI	0x00000200	/* has a per-sb bdi */
++#define SB_I_TS_EXPIRY_WARNED 0x00000400 /* warned about timestamp range expiry */
  
--	ret = ad9834_write_phase(st, AD9834_REG_PHASE0, pdata->phase0);
-+	ret = ad9834_write_phase(st, AD9834_REG_PHASE0, 512);
- 	if (ret)
- 		goto error_disable_reg;
- 
--	ret = ad9834_write_phase(st, AD9834_REG_PHASE1, pdata->phase1);
-+	ret = ad9834_write_phase(st, AD9834_REG_PHASE1, 1024);
- 	if (ret)
- 		goto error_disable_reg;
- 
-diff --git a/drivers/staging/iio/frequency/ad9834.h b/drivers/staging/iio/frequency/ad9834.h
-index ae620f38eb49..da7e83ceedad 100644
---- a/drivers/staging/iio/frequency/ad9834.h
-+++ b/drivers/staging/iio/frequency/ad9834.h
-@@ -8,32 +8,4 @@
- #ifndef IIO_DDS_AD9834_H_
- #define IIO_DDS_AD9834_H_
- 
--/*
-- * TODO: struct ad7887_platform_data needs to go into include/linux/iio
-- */
--
--/**
-- * struct ad9834_platform_data - platform specific information
-- * @mclk:		master clock in Hz
-- * @freq0:		power up freq0 tuning word in Hz
-- * @freq1:		power up freq1 tuning word in Hz
-- * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
-- * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
-- * @en_div2:		digital output/2 is passed to the SIGN BIT OUT pin
-- * @en_signbit_msb_out:	the MSB (or MSB/2) of the DAC data is connected to the
-- *			SIGN BIT OUT pin. en_div2 controls whether it is the MSB
-- *			or MSB/2 that is output. if en_signbit_msb_out=false,
-- *			the on-board comparator is connected to SIGN BIT OUT
-- */
--
--struct ad9834_platform_data {
--	unsigned int		mclk;
--	unsigned int		freq0;
--	unsigned int		freq1;
--	unsigned short		phase0;
--	unsigned short		phase1;
--	bool			en_div2;
--	bool			en_signbit_msb_out;
--};
--
- #endif /* IIO_DDS_AD9834_H_ */
+ /* Possible states of 'frozen' field */
+ enum {
 -- 
 2.43.0
 
