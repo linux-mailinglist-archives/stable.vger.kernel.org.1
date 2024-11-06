@@ -1,57 +1,74 @@
-Return-Path: <stable+bounces-90199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6379BE725
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E707F9BECDD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530B01F24D45
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5FA285FC2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36D91DF24A;
-	Wed,  6 Nov 2024 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85C81F7543;
+	Wed,  6 Nov 2024 13:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv+tj48G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrnAE3/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C2E1D5AD7;
-	Wed,  6 Nov 2024 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BDA1F7556;
+	Wed,  6 Nov 2024 13:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895062; cv=none; b=fmr45nGe11E6APzgEPlK3ToeO13EVEH8Muhp0RdNnflIdWElxJc603pIFCmOp4SBDpGWEdRZn5duejRHi/3rgy9t1O9o7dxepD2Kte2aTTAEF3xnXRMmcDscm/eKz9kLxoAfAH+KMAMg4OsNc3nvxnDAzV9idzlRK0eWwi3L0Yw=
+	t=1730898006; cv=none; b=ST6B1Nq4uCvZBUGM8GOrjUx+i71f3QLAdkUN9vRSQ5cs+Zto9agb+jmW45uCFlrQZLC+A0pUNyt+thFT8+1QCxOA+Aes0dfSeBa6rcgklQkzdyb24qOItLWGqR+/TpeOIIOKblSp88zEgXQ3kWi7UFa0EyNVPBE5l+5F2wzljSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895062; c=relaxed/simple;
-	bh=n1+RJTJBOrIyOZBHrxodSB/yMMJIqhfkQk+yqceCmkg=;
+	s=arc-20240116; t=1730898006; c=relaxed/simple;
+	bh=OeJoMWQofA18LaapbcG2NlumlWBGg8gyMqWz4dHhUXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l63mJYvxDF5nrT4lK978QY3sgWicLVQWt7tpSQWo8yVPbAxoIq7DP18BTSpjZ0Jo0iajDZlqt8U4YvO84uXypnWV8Oh7HQ1fSs/Zwh4cZTQVC1TeWjQihrt5RwHc+msfoPVeM5l74bFMlHNJKxiyN8iWHzIsq69OPbWBBB7QWoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv+tj48G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31683C4CECD;
-	Wed,  6 Nov 2024 12:11:02 +0000 (UTC)
+	 MIME-Version; b=iDR7YATA7n+ep/U4JSWW7eKP2Eibg6c0fc2KQSij6PklJIor9hxkw9qu9D0CtGCl0XhabhvVMIIPHithaRDy0ZQoHD7tCmoEoiIbeLlh1kE3wrs6csetcE1WZMaR2CCg6w9oKAsXfB4kvmZNbAku+1I2556yWYGpvBnTB5Wk8qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrnAE3/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94253C4CECD;
+	Wed,  6 Nov 2024 13:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895062;
-	bh=n1+RJTJBOrIyOZBHrxodSB/yMMJIqhfkQk+yqceCmkg=;
+	s=korg; t=1730898006;
+	bh=OeJoMWQofA18LaapbcG2NlumlWBGg8gyMqWz4dHhUXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv+tj48GZHc+TVOwubKOcvtxTNMFk0p+/jT9Msc5/gnude/2VSpkcgJGZEDAX5Sej
-	 RdHNrUvacbQDRqcTfellQomlYz2dUqmB91ohqsnScW4KNp3Mn8XdsHi2Av3TW5QBiF
-	 FV3mVlUzhrZzvgIUnEnTjGFHYqVMX24VBwa2aBb0=
+	b=GrnAE3/0tYuLMpRFFgx5fc05newQ1Ru1cv9l4RRJon2eSzxPW9gAI8RbC1GozNCZ9
+	 fXMsDpg0hrrxocqi8aq2E/LDpxRfjaw93NelmMsgsFbgRML0Y23kVtRHqe0AwVZ5Pg
+	 PR/EP5p5VQkUwF2WvaL8nQ3Rmy3Bt6YKfadXjomg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 056/350] drm/rockchip: vop: Allow 4096px width scaling
-Date: Wed,  6 Nov 2024 12:59:44 +0100
-Message-ID: <20241106120322.274475690@linuxfoundation.org>
+	Lasse Collin <lasse.collin@tukaani.org>,
+	Sam James <sam@gentoo.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joel Stanley <joel@jms.id.au>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jubin Zhong <zhongjubin@huawei.com>,
+	Jules Maselbas <jmaselbas@zdiv.net>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rui Li <me@lirui.org>,
+	Simon Glass <sjg@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 092/462] xz: cleanup CRC32 edits from 2018
+Date: Wed,  6 Nov 2024 12:59:45 +0100
+Message-ID: <20241106120333.780309285@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +80,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Lasse Collin <lasse.collin@tukaani.org>
 
-[ Upstream commit 0ef968d91a20b5da581839f093f98f7a03a804f7 ]
+[ Upstream commit 2ee96abef214550d9e92f5143ee3ac1fd1323e67 ]
 
-There is no reason to limit VOP scaling to 3840px width, the limit of
-RK3288, when there are newer VOP versions that support 4096px width.
+In 2018, a dependency on <linux/crc32poly.h> was added to avoid
+duplicating the same constant in multiple files.  Two months later it was
+found to be a bad idea and the definition of CRC32_POLY_LE macro was moved
+into xz_private.h to avoid including <linux/crc32poly.h>.
 
-Change to enforce a maximum of 4096px width plane scaling, the maximum
-supported output width of the VOP versions supported by this driver.
+xz_private.h is a wrong place for it too.  Revert back to the upstream
+version which has the poly in xz_crc32_init() in xz_crc32.c.
 
-Fixes: 4c156c21c794 ("drm/rockchip: vop: support plane scale")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-4-jonas@kwiboo.se
+Link: https://lkml.kernel.org/r/20240721133633.47721-10-lasse.collin@tukaani.org
+Fixes: faa16bc404d7 ("lib: Use existing define with polynomial")
+Fixes: 242cdad873a7 ("lib/xz: Put CRC32_POLY_LE in xz_private.h")
+Signed-off-by: Lasse Collin <lasse.collin@tukaani.org>
+Reviewed-by: Sam James <sam@gentoo.org>
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jubin Zhong <zhongjubin@huawei.com>
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Rui Li <me@lirui.org>
+Cc: Simon Glass <sjg@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/xz/xz_crc32.c   | 2 +-
+ lib/xz/xz_private.h | 4 ----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index c502d24b8253e..63c4e16ec449d 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -308,8 +308,8 @@ static void scl_vop_cal_scl_fac(struct vop *vop, const struct vop_win_data *win,
- 	if (info->is_yuv)
- 		is_yuv = true;
+diff --git a/lib/xz/xz_crc32.c b/lib/xz/xz_crc32.c
+index 912aae5fa09e1..34532d14fd4c2 100644
+--- a/lib/xz/xz_crc32.c
++++ b/lib/xz/xz_crc32.c
+@@ -29,7 +29,7 @@ STATIC_RW_DATA uint32_t xz_crc32_table[256];
  
--	if (dst_w > 3840) {
--		DRM_DEV_ERROR(vop->dev, "Maximum dst width (3840) exceeded\n");
-+	if (dst_w > 4096) {
-+		DRM_DEV_ERROR(vop->dev, "Maximum dst width (4096) exceeded\n");
- 		return;
- 	}
+ XZ_EXTERN void xz_crc32_init(void)
+ {
+-	const uint32_t poly = CRC32_POLY_LE;
++	const uint32_t poly = 0xEDB88320;
  
+ 	uint32_t i;
+ 	uint32_t j;
+diff --git a/lib/xz/xz_private.h b/lib/xz/xz_private.h
+index 09360ebb510ef..482b90f363fe3 100644
+--- a/lib/xz/xz_private.h
++++ b/lib/xz/xz_private.h
+@@ -102,10 +102,6 @@
+ #	endif
+ #endif
+ 
+-#ifndef CRC32_POLY_LE
+-#define CRC32_POLY_LE 0xedb88320
+-#endif
+-
+ /*
+  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
+  * before calling xz_dec_lzma2_run().
 -- 
 2.43.0
 
