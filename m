@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52789BE7C9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9F39BE908
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF6D1F21369
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 130B128519B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F261DF73E;
-	Wed,  6 Nov 2024 12:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B8F1DF251;
+	Wed,  6 Nov 2024 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OO0T0lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSNUojXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599A1DF252;
-	Wed,  6 Nov 2024 12:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772B81DDA15;
+	Wed,  6 Nov 2024 12:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895463; cv=none; b=ElMcsplNgql1L+VIewWuk1S1/5ze0Mf0Ws0isTgaRGMGy+i3aIMqad2TUxWHRDOukYGepJVhoBAaRcSEkC9WtNFRNXjEAvqBp9xkGA6LX6luQ2r5iM1I/7RDx+Ifrt7b9+45+djQfTT8dN8mVgr+5HnaJfUvMDX7SqKDdVFGCdk=
+	t=1730896191; cv=none; b=Fg+ZUu+aDxh/iPR2Mcy1WyKLVTIIYa4jr6rWiw8+vzO/XwOf/FNSOzrmEDycGmp74iCx681hmD37FkuUwMrbBjlpDYhNPGaI8f2rQ/E5vWEiOFD6uuvIQ3m1963CvfAU5Yzxv0QzNVlXZ3teZ4fqGTDHcfWnFBkxAGEz7iSxy1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895463; c=relaxed/simple;
-	bh=DAybLMf4QM0T8mHkkMVKpVPg9Fx/jQA3nEyU5JsH0m8=;
+	s=arc-20240116; t=1730896191; c=relaxed/simple;
+	bh=mlV/gI+JzS4zpk3G/4KeJoj+tJKol6dpAIdygOoLvnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b/YmZD27BOkYjIXrWHq74o3hMxoV1vTcxGbWpN/d5YWzBVEx83a57MmWWrrFl243HyMazLaXYyfDsIi2RlzQbNG+MBWg2r/X5NjeIW8o/2Idp6VHWFoZMdaNZDnW1Er4BfNf4wkzkXjss1D8MeA3BsmLvkNSn5RUMyNJXX8GLuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OO0T0lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF67C4CED2;
-	Wed,  6 Nov 2024 12:17:42 +0000 (UTC)
+	 MIME-Version; b=Wgdw4XmZFQY3JMdZtLxexA1Ylnp3wxYJQDrEXPiXcGa2SIxP7bgrvjXhjC2ZhF1ALmSKEHqxXWVsgYVBAXNkllawOqzau5V6ELzqBkifZm8UBIiZ7KewOldj84C3cKJ02xxSAldLMoIzAf7FPS/tkygW0EEmpT7ZRlqg+YHe0SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSNUojXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00390C4CECD;
+	Wed,  6 Nov 2024 12:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895462;
-	bh=DAybLMf4QM0T8mHkkMVKpVPg9Fx/jQA3nEyU5JsH0m8=;
+	s=korg; t=1730896191;
+	bh=mlV/gI+JzS4zpk3G/4KeJoj+tJKol6dpAIdygOoLvnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OO0T0lku0+AqdzcluwjJyYT/GL7y4BOlGJs9vm4voyMAaKxNMU508tHHQSbSf/8s
-	 xEqag+K4RBehCMmgwXeNmp9mqFHvzFyriDdoBiTGpOz575/yZsCbN3llioU+RtcmIJ
-	 1RWHPes01VVFAsw869vvJGrqZbMaGXhppGovswJI=
+	b=xSNUojXLQRxG6CCXUi/AXh+4L7NUHvAan7HGmxJvYLQnTC/ywlKYogeFPBLuUFKpN
+	 +/NPFQZpB3VqxKYvMqBVP+V+M7BnNFVUYKWl5RUWEChQSAz8u4QCYSps48CdpoUVLU
+	 UawLlL+flCzHSADwuIjyRwB1h841cLNGCIAVb/6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 209/350] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 084/245] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
 Date: Wed,  6 Nov 2024 13:02:17 +0100
-Message-ID: <20241106120326.150275376@linuxfoundation.org>
+Message-ID: <20241106120321.274958682@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
+[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
 
-Move ST2 reading with overflow handling after measurement data
-reading.
-ST2 register read have to be read after read measurment data,
-because it means end of the reading and realease the lock on the data.
-Remove ST2 read skip on interrupt based waiting because ST2 required to
-be read out at and of the axis read.
+Use non-zero subkey to skip analyzer warnings.
 
-Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -673,22 +673,8 @@ static int ak8975_start_read_axis(struct
- 	if (ret < 0)
- 		return ret;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index e5255a251929a..79047cd546117 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -334,7 +334,7 @@ struct mft_inode {
  
--	/* This will be executed only for non-interrupt based waiting case */
--	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
--		ret = i2c_smbus_read_byte_data(client,
--					       data->def->ctrl_regs[ST2]);
--		if (ret < 0) {
--			dev_err(&client->dev, "Error in reading ST2\n");
--			return ret;
--		}
--		if (ret & (data->def->ctrl_masks[ST2_DERR] |
--			   data->def->ctrl_masks[ST2_HOFL])) {
--			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
--			return -EINVAL;
--		}
--	}
--
--	return 0;
-+	/* Return with zero if the data is ready. */
-+	return !data->def->ctrl_regs[ST1_DRDY];
- }
- 
- /* Retrieve raw flux value for one of the x, y, or z axis.  */
-@@ -715,6 +701,20 @@ static int ak8975_read_axis(struct iio_d
- 	if (ret < 0)
- 		goto exit;
- 
-+	/* Read out ST2 for release lock on measurment data. */
-+	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Error in reading ST2\n");
-+		goto exit;
-+	}
-+
-+	if (ret & (data->def->ctrl_masks[ST2_DERR] |
-+		   data->def->ctrl_masks[ST2_HOFL])) {
-+		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
- 	mutex_unlock(&data->lock);
- 
- 	pm_runtime_mark_last_busy(&data->client->dev);
+ /* Nested class for ntfs_inode::ni_lock. */
+ enum ntfs_inode_mutex_lock_class {
+-	NTFS_INODE_MUTEX_DIRTY,
++	NTFS_INODE_MUTEX_DIRTY = 1,
+ 	NTFS_INODE_MUTEX_SECURITY,
+ 	NTFS_INODE_MUTEX_OBJID,
+ 	NTFS_INODE_MUTEX_REPARSE,
+-- 
+2.43.0
+
 
 
 
