@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C629BEAB2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:50:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA34A9BE974
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8279E282079
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70445285534
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28D01FDF90;
-	Wed,  6 Nov 2024 12:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C201DF99A;
+	Wed,  6 Nov 2024 12:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jiqy9gwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRbkoR2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6054B1EF946;
-	Wed,  6 Nov 2024 12:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BD6198E96;
+	Wed,  6 Nov 2024 12:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896748; cv=none; b=nU3dm7AMTNwJEbpTt2rRpbvI0aagNhTFH6XXcmRhXadTAZiYjabM205DiBQ0Vmua/v/yyWNjvYpI6Qt2XBw0dNJR7h9osFvyuZbmmpWZiA/FAuKuABrwvbaric959Yi1SyKbo0JtqQX8h2+1dibLwhjt7ZZUw0zmVoODgnXQcOc=
+	t=1730896462; cv=none; b=U+DPfq6r5RGCKxmxdhRCEn2L3QCYzOZeHR4oQcOD1Vr3h8g4rF64jL+fL/UGLrdZPP7zqPovktJzEVseNTTybSobsHwdVslUO+c7kJbF6E1rZx3pFwxtHvjwQqfcKHd1nMC+y6AgM6PNdCsI3W1sngq56AM2c8MWaqRetJkVw/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896748; c=relaxed/simple;
-	bh=PK8NUcBlMJZIoGD9beO1oOonfk3cHqv70pj5fc+HNw8=;
+	s=arc-20240116; t=1730896462; c=relaxed/simple;
+	bh=7S4mPqKfStussWm0zjfZkJG9xiVRhomlAsR9jkG53Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=omHHAYANFU0SYBr9n0fELqyRanYP1Bg+X1hr+jAudeQtn512hltWg71G0zBc+2PNgXvBOuU7BosZ7hy7DwMFmP1up9/9XsT6SalqEqMhXGP66Q29PKvZpTzQK7l412fEYCJ7/4zOksgq2ayTKn3OUCTWQG/GlgsYBqTiPaKM2kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jiqy9gwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E00C4CED6;
-	Wed,  6 Nov 2024 12:39:07 +0000 (UTC)
+	 MIME-Version; b=XntNjqUDYVnEKjOJv47RRnlaasEXim1NtsLAnV6z/WI42eQGUrXutSdx/EqVuWarsTYae3ND6wbgIIi/CkYNf4gKrQVC2vQiUPzqP6VHCUkNVyZRYOEvwQ1zexoc89gP/DdCS/skG9j05YCFDb1zBCDN3ygKIcTgh2tYoVacLj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRbkoR2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A1BC4CECD;
+	Wed,  6 Nov 2024 12:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896748;
-	bh=PK8NUcBlMJZIoGD9beO1oOonfk3cHqv70pj5fc+HNw8=;
+	s=korg; t=1730896462;
+	bh=7S4mPqKfStussWm0zjfZkJG9xiVRhomlAsR9jkG53Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jiqy9gwjM3igMCp862/dzxw6f/wQw1S+SCmNClPgIfvEy0jzk6k7G4vzIRbvRV695
-	 oZkXfLkqgdGX5eYX9DJGi9EzsEt61ZGML+gzqxdNlWTo6yUqWMaxfJQ9x3dSjDsvRj
-	 FSg0IB5yvDLETXDc6jokOLYRiF3b8cgHfrkKlM+s=
+	b=TRbkoR2VsXgh9oTNOm30b55ZBv6dsma2e0RLESnT6t+6W7mhUNMX07L8CwFKQ/ntv
+	 ch2/VxZ1vEAXxY9VT3fiQcA5GJHCeaxmjzTPKDNWz5HOLzsYe8OrKe4fK/NBzEIjXQ
+	 S3BA4CRJ1hmSqoXXe02vpIoT61kb8oPlvblr+pb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/110] cgroup: Fix potential overflow issue when checking max_depth
+	Fabien Parent <fabien.parent@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 211/245] arm64: dts: qcom: msm8939: revert use of APCS mbox for RPM
 Date: Wed,  6 Nov 2024 13:04:24 +0100
-Message-ID: <20241106120304.802478761@linuxfoundation.org>
+Message-ID: <20241106120324.448844507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Fabien Parent <fabien.parent@linaro.org>
 
-[ Upstream commit 3cc4e13bb1617f6a13e5e6882465984148743cf4 ]
+commit d92e9ea2f0f918d7b01cbacb838288bffccc8954 upstream.
 
-cgroup.max.depth is the maximum allowed descent depth below the current
-cgroup. If the actual descent depth is equal or larger, an attempt to
-create a new child cgroup will fail. However due to the cgroup->max_depth
-is of int type and having the default value INT_MAX, the condition
-'level > cgroup->max_depth' will never be satisfied, and it will cause
-an overflow of the level after it reaches to INT_MAX.
+Commit 22e4e43484c4 ("arm64: dts: qcom: msm8939: Use mboxes
+properties for APCS") broke the boot on msm8939 platforms.
 
-Fix it by starting the level from 0 and using '>=' instead.
+The issue comes from the SMD driver failing to request the mbox
+channel because of circular dependencies:
+	1. rpm -> apcs1_mbox -> rpmcc (RPM_SMD_XO_CLK_SRC) -> rpm.
+	2. rpm -> apcs1_mbox -> gcc -> rpmcc (RPM_SMD_XO_CLK_SRC) -> rpm
+	3. rpm -> apcs1_mbox -> apcs2 -> gcc -> rpmcc (RPM_SMD_XO_CLK_SRC) -> rpm
 
-It's worth mentioning that this issue is unlikely to occur in reality,
-as it's impossible to have a depth of INT_MAX hierarchy, but should be
-be avoided logically.
+To fix this issue let's switch back to using the deprecated
+qcom,ipc property for the RPM node.
 
-Fixes: 1a926e0bbab8 ("cgroup: implement hierarchy limits")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 22e4e43484c4 ("arm64: dts: qcom: msm8939: Use mboxes properties for APCS")
+Signed-off-by: Fabien Parent <fabien.parent@linaro.org>
+Link: https://lore.kernel.org/r/20240904-msm8939-rpm-apcs-fix-v1-1-b608e7e48fe1@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8939.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 66970b74106c8..e0fd62d56110a 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5437,7 +5437,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
- {
- 	struct cgroup *cgroup;
- 	int ret = false;
--	int level = 1;
-+	int level = 0;
+diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+index 46d9480cd464..39405713329b 100644
+--- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+@@ -248,7 +248,7 @@ rpm: remoteproc {
  
- 	lockdep_assert_held(&cgroup_mutex);
+ 		smd-edge {
+ 			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
+-			mboxes = <&apcs1_mbox 0>;
++			qcom,ipc = <&apcs1_mbox 8 0>;
+ 			qcom,smd-edge = <15>;
  
-@@ -5445,7 +5445,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
- 		if (cgroup->nr_descendants >= cgroup->max_descendants)
- 			goto fail;
- 
--		if (level > cgroup->max_depth)
-+		if (level >= cgroup->max_depth)
- 			goto fail;
- 
- 		level++;
+ 			rpm_requests: rpm-requests {
 -- 
-2.43.0
+2.47.0
 
 
 
