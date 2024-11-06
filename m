@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816399BE77E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08349BE8BA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46806283F07
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87E2D1F21B86
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C520A1DF994;
-	Wed,  6 Nov 2024 12:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC211DDA15;
+	Wed,  6 Nov 2024 12:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYmHqKuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZ3ST+vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787661DF98F;
-	Wed,  6 Nov 2024 12:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AC81DF726;
+	Wed,  6 Nov 2024 12:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895285; cv=none; b=KMq9OrxeW+zfkxok8R7j0vpLffFJ4bwvBXanz+dsSpyECxwpXnMEkrf6PZICQy69bY8BJycKw9dDMFJ8unG/8rpLhft50AAaM6E57PBsTi4n7gT8iWRWiUZ2dwPEQ94YLJ6sMJO9xKOKhO9G4yEzlfnRHzqmTacm/XL/mVcaMlY=
+	t=1730896036; cv=none; b=XlHz+O+lyOQypnAdbhh9uD3w6lIwLt4urFZ45NT55iYya4aMgioLE3WlFYB6vXBddFe60D84gcw9AHGxzGArjTAArTC5pyvg/azJDtRSDsZiAqo4wJfmJAJ1epXtv2iZIOFXe71L4WxqKQkfxSltNkWWIyLcPVJNs+uJOv9VEQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895285; c=relaxed/simple;
-	bh=2ITKlNkc6vB2MGANEGlXIiSqLvk+7fnWYGmE2Lnt1lE=;
+	s=arc-20240116; t=1730896036; c=relaxed/simple;
+	bh=BSu1+yvOw48dEJx6aC6LBHk+uIiwrXFljWQXzBFGeVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUmHJs9LFkhn+P0gnwfI4L0RplIkmshnzGZRjkelTURvcnNCq23nC+NfnggalXYtNM3xfgX+DZPY0XnxxHA9DxqtXg3cTXn/tuV8lpCUfEuM6qxFAterBmBpqVY0AirV8R+cVVldT3NHt+Z0gMoSDSCgjx4tRqXiHUKX4/J9aWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYmHqKuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F080BC4CECD;
-	Wed,  6 Nov 2024 12:14:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i3dkRQRPfc7XyqaDhO9Mp+JApqIEArah1MpO0SLcELdJBDn0qOsRYR+bXJhcUESzXJOqgiDUngsg2lUULz6lI9D+My4B38C5kalAbNKAP3Lnswu4umNuncGVdCC7P5/8fhs0vLOOwAIuEUf6hcs0iLN60EvNLke720m/93V5yHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZ3ST+vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0283C4CECD;
+	Wed,  6 Nov 2024 12:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895285;
-	bh=2ITKlNkc6vB2MGANEGlXIiSqLvk+7fnWYGmE2Lnt1lE=;
+	s=korg; t=1730896036;
+	bh=BSu1+yvOw48dEJx6aC6LBHk+uIiwrXFljWQXzBFGeVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYmHqKuJfy7qqTwvU92J1n6DQB+1am/SunrNR6BYH63MJF7Bg3XlsEw8dd7iEKXwa
-	 d2B7lxQo5xo9EYcch3a8K+xux4xdEbnFTyEADUBpXit/pL/VJNwj47u/xDZ3EXlUhn
-	 zql2FQUkLga3FPv7ycF/LTmy3D1AcTr3opmPbw5s=
+	b=vZ3ST+vnu4Z2m46WKc+atvcJUHQcsQG4xTYyz0RVUngkS879Oi401WjuQBuU8eASz
+	 A7cEl5tGtS3ujyvyFHsbiOjOtm2l6apahk8bg/hPOh2buHe3TemkcbU/eZJknSN7En
+	 ssM2bzHiHS8C1FaV+X1cMgg7UzTTMkuDubyO29n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Helge Deller <deller@gmx.de>,
+	Byeonguk Jeong <jungbu2855@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 165/350] fbdev: pxafb: Fix possible use after free in pxafb_task()
-Date: Wed,  6 Nov 2024 13:01:33 +0100
-Message-ID: <20241106120324.998513026@linuxfoundation.org>
+Subject: [PATCH 6.11 041/245] bpf: Fix out-of-bounds write in trie_get_next_key()
+Date: Wed,  6 Nov 2024 13:01:34 +0100
+Message-ID: <20241106120320.236464929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Byeonguk Jeong <jungbu2855@gmail.com>
 
-[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
+[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
 
-In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
-after which &fbi->task is associated with pxafb_task. Moreover,
-within this pxafb_init_fbinfo function, the pxafb_blank function
-within the &pxafb_ops struct is capable of scheduling work.
+trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
+while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
+full paths from the root to leaves. For example, consider a trie with
+max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
+0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
+.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
 
-If we remove the module which will call pxafb_remove to make cleanup,
-it will call unregister_framebuffer function which can call
-do_unregister_framebuffer to free fbi->fb through
-put_fb_info(fb_info), while the work mentioned above will be used.
-The sequence of operations that may lead to a UAF bug is as follows:
-
-CPU0                                                CPU1
-
-                                   | pxafb_task
-pxafb_remove                       |
-unregister_framebuffer(info)       |
-do_unregister_framebuffer(fb_info) |
-put_fb_info(fb_info)               |
-// free fbi->fb                    | set_ctrlr_state(fbi, state)
-                                   | __pxafb_lcd_power(fbi, 0)
-                                   | fbi->lcd_power(on, &fbi->fb.var)
-                                   | //use fbi->fb
-
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in pxafb_remove.
-
-Note that only root user can remove the driver at runtime.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
+Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Tested-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxafb.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/lpm_trie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 90dee3e6f8bc7..f76da5c6c6cd6 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2437,6 +2437,7 @@ static int pxafb_remove(struct platform_device *dev)
- 	info = &fbi->fb;
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 0218a5132ab56..9b60eda0f727b 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -655,7 +655,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	if (!key || key->prefixlen > trie->max_prefixlen)
+ 		goto find_leftmost;
  
- 	pxafb_overlay_exit(fbi);
-+	cancel_work_sync(&fbi->task);
- 	unregister_framebuffer(info);
- 
- 	pxafb_disable_controller(fbi);
+-	node_stack = kmalloc_array(trie->max_prefixlen,
++	node_stack = kmalloc_array(trie->max_prefixlen + 1,
+ 				   sizeof(struct lpm_trie_node *),
+ 				   GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!node_stack)
 -- 
 2.43.0
 
