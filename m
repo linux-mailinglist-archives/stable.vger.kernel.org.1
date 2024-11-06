@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246469BE969
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8079BEBE1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7CD285413
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2234628215F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770A31DF98D;
-	Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29EE1EF0B6;
+	Wed,  6 Nov 2024 12:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0rEhQon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcDKgqFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3556C198E96;
-	Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7111E0B7B;
+	Wed,  6 Nov 2024 12:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896433; cv=none; b=OGR9bfS/hNv1lcN49gKSFS9wUEiskxB5MKSNbPPw9cb+/ieIAotKnYTVndt+V7qdJuJW3WSsx+AhkX6lg5XKhYfTly7jkZuKhAIsytWX16H8fKsNrbiNRLNe8HFWJsCLblUbqnqy93aZmUhxj3I5ImsaqmCgoHsn/RVC0CCF5KM=
+	t=1730897364; cv=none; b=MddRJIri8DKMVQs0DG8O5aba/WVucvif2e5K3q9kx7BzyXm/ypCm10BsBl+WyJ8rHMkFv17t1vh+XR58tK9WX3N9LcuKg8hlfwObD9wlQcWHGO479aGtJQdsDoACg9seKM+/I8wfsVmjTu3Gv3VYKXxwtRkBxqjbW1FgYxj9w58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896433; c=relaxed/simple;
-	bh=GLvuFiHqGL+ye1VtF9UL5IOpScq3tpVEBEiHPjTGhEc=;
+	s=arc-20240116; t=1730897364; c=relaxed/simple;
+	bh=H5h22hvXToWXUMrZ8BvgFM83tCmEKCL7vHLi0lR/2dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxGw/3Qu/VaoYR9B3/tWoj1+pOKwzt9piPWZ2n3PfAkwZa6gSSJRyVRltFxHPCZLWLuJKcP7XnuWOpK72KXFPFQFnhrVgkqkVKeRds2Ny70GuDXsed3mWOGzjtrC4pm4rOXDxiExo33YC9BIBtaoua3WU3jY097HpUbr7izdz5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0rEhQon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9C1C4CECD;
-	Wed,  6 Nov 2024 12:33:52 +0000 (UTC)
+	 MIME-Version; b=ofYFxnpfGp7XhuklScQxiDyvoVb1cO47cFaaprun+Ztn7WfdEIRXq55r461XQrHko3Dpky1LnElOFBgBqTU01oqHawc2Q1eudl6qp+6HolUqSROWiAaxB40Lj7u9YeYTTzCzlXZ1rS7YGw7JG18MJ0Im7geDkQY6X/r0i4oTjUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcDKgqFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C5AC4CECD;
+	Wed,  6 Nov 2024 12:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896433;
-	bh=GLvuFiHqGL+ye1VtF9UL5IOpScq3tpVEBEiHPjTGhEc=;
+	s=korg; t=1730897364;
+	bh=H5h22hvXToWXUMrZ8BvgFM83tCmEKCL7vHLi0lR/2dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0rEhQonJpTdqSCPb9M8bZw3i4KAEpQIQOe1Yp/YIdwVbuCHWixgZpxYxdaO7FflR
-	 2E79yvnvvWFhpT7l6bDF0OBpUzI9AVoN9q+kkcb1W6lrS0/eUMGKrVDqQ8MaizaE6s
-	 fWtX2JO7dugaoDDJvHSRe/mOKHPYQpuaYF1qPOnM=
+	b=LcDKgqFjUqPACnd+K5X41gT1FzOaxt/1vsNYtsMM0YtCsmWGX7TcGqEqpaapkn0ao
+	 80PFijzOfW942xg34kmc2zv7NsjC1KFVgCFNcz7Tkb71l+oumbat0I3X98KZH2iMyk
+	 BufM8jPX8cepBDAU3BNfXJ8Y6Rd5UB5sm2now3PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 163/245] cxl/acpi: Ensure ports ready at cxl_acpi_probe() return
+Subject: [PATCH 6.6 028/151] selftests/bpf: Add bpf_percpu_obj_{new,drop}() macro in bpf_experimental.h
 Date: Wed,  6 Nov 2024 13:03:36 +0100
-Message-ID: <20241106120323.247164425@linuxfoundation.org>
+Message-ID: <20241106120309.610940862@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit 48f62d38a07d464a499fa834638afcfd2b68f852 ]
+[ Upstream commit 968c76cb3dc6cc86e8099ecaa5c30dc0d4738a30 ]
 
-In order to ensure root CXL ports are enabled upon cxl_acpi_probe()
-when the 'cxl_port' driver is built as a module, arrange for the
-module to be pre-loaded or built-in.
+The new macro bpf_percpu_obj_{new/drop}() is very similar to bpf_obj_{new,drop}()
+as they both take a type as the argument.
 
-The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
-is merely by inspection since the bug that triggered the discovery of
-this potential problem [1] is fixed by other means. However, a stable
-backport should do no harm.
-
-Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
-Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/172964781969.81806.17276352414854540808.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20230827152805.1999417-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: aa30eb3260b2 ("bpf: Force checkpoint when jmp history is too long")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/acpi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../testing/selftests/bpf/bpf_experimental.h  | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 82b78e331d8ed..432b7cfd12a8e 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -924,6 +924,13 @@ static void __exit cxl_acpi_exit(void)
+diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+index 209811b1993af..4494eaa9937e5 100644
+--- a/tools/testing/selftests/bpf/bpf_experimental.h
++++ b/tools/testing/selftests/bpf/bpf_experimental.h
+@@ -131,4 +131,35 @@ extern int bpf_rbtree_add_impl(struct bpf_rb_root *root, struct bpf_rb_node *nod
+  */
+ extern struct bpf_rb_node *bpf_rbtree_first(struct bpf_rb_root *root) __ksym;
  
- /* load before dax_hmem sees 'Soft Reserved' CXL ranges */
- subsys_initcall(cxl_acpi_init);
-+
-+/*
-+ * Arrange for host-bridge ports to be active synchronous with
-+ * cxl_acpi_probe() exit.
++/* Description
++ *	Allocates a percpu object of the type represented by 'local_type_id' in
++ *	program BTF. User may use the bpf_core_type_id_local macro to pass the
++ *	type ID of a struct in program BTF.
++ *
++ *	The 'local_type_id' parameter must be a known constant.
++ *	The 'meta' parameter is rewritten by the verifier, no need for BPF
++ *	program to set it.
++ * Returns
++ *	A pointer to a percpu object of the type corresponding to the passed in
++ *	'local_type_id', or NULL on failure.
 + */
-+MODULE_SOFTDEP("pre: cxl_port");
++extern void *bpf_percpu_obj_new_impl(__u64 local_type_id, void *meta) __ksym;
 +
- module_exit(cxl_acpi_exit);
- MODULE_DESCRIPTION("CXL ACPI: Platform Support");
- MODULE_LICENSE("GPL v2");
++/* Convenience macro to wrap over bpf_percpu_obj_new_impl */
++#define bpf_percpu_obj_new(type) ((type __percpu_kptr *)bpf_percpu_obj_new_impl(bpf_core_type_id_local(type), NULL))
++
++/* Description
++ *	Free an allocated percpu object. All fields of the object that require
++ *	destruction will be destructed before the storage is freed.
++ *
++ *	The 'meta' parameter is rewritten by the verifier, no need for BPF
++ *	program to set it.
++ * Returns
++ *	Void.
++ */
++extern void bpf_percpu_obj_drop_impl(void *kptr, void *meta) __ksym;
++
++/* Convenience macro to wrap over bpf_obj_drop_impl */
++#define bpf_percpu_obj_drop(kptr) bpf_percpu_obj_drop_impl(kptr, NULL)
++
+ #endif
 -- 
 2.43.0
 
