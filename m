@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BC99BECD5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788779BE6FF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB441286000
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9A81F280CF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CCD1E909C;
-	Wed,  6 Nov 2024 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EB81D5AD7;
+	Wed,  6 Nov 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vv4Cy5Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffOnyNAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5931DFE3B;
-	Wed,  6 Nov 2024 12:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D641DF24A;
+	Wed,  6 Nov 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897982; cv=none; b=Osc77kiDhdvYzHnJVotK4RDdcUj1hge+5DtbcfJ1nZEuMmFWpykhYR0iVBsInbICnStfNQ5n1hQA3+LO1JAxjWTSc7xpmhiO+I7ra3sAnGx8W6E0//4gzhKFIGJg6XwRdKadob7gCSZ7Ia9pZxBdPWuvqTTYS8ixT9GCo5WfdEU=
+	t=1730894959; cv=none; b=PNBaWmTPVwLjifX8gBFvdk038WHNFxIzSe8XdIDgi/nyIX3x4xugUYKBXsY/RY4OiPmwhsPWLzuZSaeCxPBrluzhgWkY0GDc6NTTtkMu7+DmG59JrYSzu/fXDjM9/d2TXgSsOUJpNd3ank7bCMa1tqw3a6rr5uwtUT8MMvb6+Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897982; c=relaxed/simple;
-	bh=RFKY2VEjZ1BJrxcO9AlslDSGs8RPFPfYEhQn0BEL/d0=;
+	s=arc-20240116; t=1730894959; c=relaxed/simple;
+	bh=52d0rWgr0ie3x4qCuiminWStTC2wJoW7lZbNpCcBotw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Evg1u2P/qvkCOHe8PGSN1wgqGAc1ChZgRluaJrGKdt91NO+Fk51OoFUBh4sSUcXD2Irxsuvh0qYSUMSMmiFn4faA5zl6WmmhpYIetzTcj4noulpU+wQym5wg6VEmx3eRuegOAcJXkFLHnwNWOWJZHRvdODUf179rjO7+O542hB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vv4Cy5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FCDC4CECD;
-	Wed,  6 Nov 2024 12:59:41 +0000 (UTC)
+	 MIME-Version; b=MxnKKPR5lw7wW/7wnoqNsljbkVCGiLqnb2luJYHliXxeV0igJQ7JIod9H48C1dBpiDvJKZ/aR7cJhzOpS9a5LJ772WihaPddoIayZ6DZzODz96Id98O0KEzk+0zvGGnkEoEDpxlRp2Glf0ZgYs/0vkwr/Gk+6TVF9UCL4We6/2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffOnyNAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E80C4CECD;
+	Wed,  6 Nov 2024 12:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897982;
-	bh=RFKY2VEjZ1BJrxcO9AlslDSGs8RPFPfYEhQn0BEL/d0=;
+	s=korg; t=1730894959;
+	bh=52d0rWgr0ie3x4qCuiminWStTC2wJoW7lZbNpCcBotw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vv4Cy5YyrRh9csVu6AzN0uz/KygWlGutabIC32hN4rP4UFvMoHNTmyLxZjItwju+
-	 RQ1qTVdsG1/EpYIih8SABl38LP6XLsuKEAm3TpfcRz3gAKxx9QcXnulfboAoQo2gOH
-	 eUzNZ624zcB9NVIbxLBkJAwZCijFNeM1R5l5C2/M=
+	b=ffOnyNAMUxdaF+5KuRXZZ3Y096dwTzxMvOoW+fMqdtsL2+1ZVdihZimsLdQvkvzka
+	 zvQqH20jHgHddDl1790VqnY2N0s/N7Bo/wnN9WbyAwuXLiFnhyxG/mT6iytaYkCd5N
+	 6VdqJ6XWIbi2QkLTBkR2/O5fM3IUhPUm/9TQRbNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/462] xen: use correct end address of kernel for conflict checking
+Subject: [PATCH 4.19 050/350] drm/stm: Fix an error handling path in stm_drm_platform_probe()
 Date: Wed,  6 Nov 2024 12:59:38 +0100
-Message-ID: <20241106120333.605251124@linuxfoundation.org>
+Message-ID: <20241106120322.127570831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit fac1bceeeb04886fc2ee952672e6e6c85ce41dca ]
+[ Upstream commit ce7c90bfda2656418c69ba0dd8f8a7536b8928d4 ]
 
-When running as a Xen PV dom0 the kernel is loaded by the hypervisor
-using a different memory map than that of the host. In order to
-minimize the required changes in the kernel, the kernel adapts its
-memory map to that of the host. In order to do that it is checking
-for conflicts of its load address with the host memory map.
+If drm_dev_register() fails, a call to drv_load() must be undone, as
+already done in the remove function.
 
-Unfortunately the tested memory range does not include the .brk
-area, which might result in crashes or memory corruption when this
-area does conflict with the memory map of the host.
-
-Fix the test by using the _end label instead of __bss_stop.
-
-Fixes: 808fdb71936c ("xen: check for kernel memory conflicting with memory layout")
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20fff7f853f20a48a96db8ff186124470ec4d976.1704560028.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/stm/drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 548d1e0a5ba10..d19fcca0b30b3 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -875,7 +875,7 @@ char * __init xen_memory_setup(void)
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
- 	if (xen_is_e820_reserved(__pa_symbol(_text),
--			__pa_symbol(__bss_stop) - __pa_symbol(_text))) {
-+				 __pa_symbol(_end) - __pa_symbol(_text))) {
- 		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
- 		BUG();
- 	}
+diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
+index f2021b23554d3..dade0ecdfc1a1 100644
+--- a/drivers/gpu/drm/stm/drv.c
++++ b/drivers/gpu/drm/stm/drv.c
+@@ -152,10 +152,12 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
+ 
+ 	ret = drm_dev_register(ddev, 0);
+ 	if (ret)
+-		goto err_put;
++		goto err_unload;
+ 
+ 	return 0;
+ 
++err_unload:
++	drv_unload(ddev);
+ err_put:
+ 	drm_dev_put(ddev);
+ 
 -- 
 2.43.0
 
