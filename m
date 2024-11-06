@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60969BE7FF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54679BE924
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E75151C235F0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CDDD1F2239E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6C21DF72F;
-	Wed,  6 Nov 2024 12:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E131DED48;
+	Wed,  6 Nov 2024 12:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7/E7fV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZBef6vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE751DF272;
-	Wed,  6 Nov 2024 12:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A1C6088F;
+	Wed,  6 Nov 2024 12:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895585; cv=none; b=RHQ3rMG1GPwy6n+t7MBvtwulXF1smG/MTpvtWz9vMuRFL6Lt5DWO0/hMp8QEZsQW/9stlnnHDXv2mEXhAUpeOfkzD6zri24f71bO2NLioi+GEbMp8Y6UA0bpdEoCCJ/ED3Yglkt2x/Ch4U46k5QT5ZC+yb1f0Q2LgDubnoZ7Dxs=
+	t=1730896256; cv=none; b=G9Rc0lwF97mN/Rq1ahwwJttZh4dcD87ptIa9vNJ+vC5ad+B+DMOUmhvD1BzgIDwEbvF9j/XAYzAY0FPuI4g4aFe3iXf8/ZmYp+6aB6fMLiMh76XWzRuMDlSZs9aS3USaa5ZjuXbQQeTLxSvGVmtZvor4+SNHt9Rpi5HZEJZ8GZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895585; c=relaxed/simple;
-	bh=PRqVRxrbYSpRHU/UZ8K1hCgEA+2nmiYfxsizmlQafzw=;
+	s=arc-20240116; t=1730896256; c=relaxed/simple;
+	bh=sFYz4a6pPRiz3OSGFm5h33QRSHnvHui+ZfZxKyCEzeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc3GcXEZDAqJh+jr6DPcBxdx2HZI2h8vGt6Dap7Dy6ebCy6vkfNS7IzG8hs2sTULrdL1wu9UtBk0Xs27vfTKgcs/lINLi6Sz9jDRzsHGHtxFdLLntXOn+qyZ9CCmsSMXpmUUtAGNbK89aKHSHMV0wa13m8PKDn5ttvgl+6Tac/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7/E7fV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BC8C4CECD;
-	Wed,  6 Nov 2024 12:19:45 +0000 (UTC)
+	 MIME-Version; b=r9tOev2HIFUTKBfj9yhGiJow/nTT0Z3B2lNWlRWDzNLHAFoIRt1ZRp2njs6koDAq4wSZ4woNW/VQk+bRY0y+ERGUmpdEuBcgJT1IT2VsOk31zpOUpvXg2+8gIqs+R8HAhdjiE+6VT+CSc7RN7BygjNfQxUSDpctQbsGm474J/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZBef6vx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D275AC4CECD;
+	Wed,  6 Nov 2024 12:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895585;
-	bh=PRqVRxrbYSpRHU/UZ8K1hCgEA+2nmiYfxsizmlQafzw=;
+	s=korg; t=1730896256;
+	bh=sFYz4a6pPRiz3OSGFm5h33QRSHnvHui+ZfZxKyCEzeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7/E7fV23DsOfjeP7bkTGbkwSYDCVJUBCjRaMSSz93yk/RJQJoKyZEgVJGDhTkHKv
-	 LuA25pQUQupJSbHnOdyi7OSmuJJvhnlkhoHsDoW/Z6GyG/YSSeGkh4ZJxqssmD8nfb
-	 adjcsdXaGSy/33yVru4nvEnbSlWCigj5Ryp++3BQ=
+	b=AZBef6vx+v/aZFLDFXe5hDZHfey9EEWh2+Bb3eCU1zFYTJFRzBMUxiTd6H4s0/U11
+	 TlhD3Dr8OWwBBe9CHJ1ZpLU6P/vSwZp+UIle1MtHovQH88Ytt8Dtqx05w5Qx3tDWNz
+	 Tp8NuDVIUo6mih9dNMRlJz5L/FUb2/hMtjymFGzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Kovaleva <a.kovaleva@yadro.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 267/350] net: Fix an unsafe loop on the list
+	Johan Hovold <johan@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 142/245] soc: qcom: pmic_glink: Handle GLINK intent allocation rejections
 Date: Wed,  6 Nov 2024 13:03:15 +0100
-Message-ID: <20241106120327.490444721@linuxfoundation.org>
+Message-ID: <20241106120322.723248484@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 1dae9f1187189bc09ff6d25ca97ead711f7e26f9 upstream.
+commit f8c879192465d9f328cb0df07208ef077c560bb1 upstream.
 
-The kernel may crash when deleting a genetlink family if there are still
-listeners for that family:
+Some versions of the pmic_glink firmware does not allow dynamic GLINK
+intent allocations, attempting to send a message before the firmware has
+allocated its receive buffers and announced these intent allocations
+will fail. When this happens something like this showns up in the log:
 
-Oops: Kernel access of bad area, sig: 11 [#1]
-  ...
-  NIP [c000000000c080bc] netlink_update_socket_mc+0x3c/0xc0
-  LR [c000000000c0f764] __netlink_clear_multicast_users+0x74/0xc0
-  Call Trace:
-__netlink_clear_multicast_users+0x74/0xc0
-genl_unregister_family+0xd4/0x2d0
+    pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
+    pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
+    ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
+    qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
 
-Change the unsafe loop on the list to a safe one, because inside the
-loop there is an element removal from this list.
+GLINK has been updated to distinguish between the cases where the remote
+is going down (-ECANCELED) and the intent allocation being rejected
+(-EAGAIN).
 
-Fixes: b8273570f802 ("genetlink: fix netns vs. netlink table locking (2)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241003104431.12391-1-a.kovaleva@yadro.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Retry the send until intent buffers becomes available, or an actual
+error occur.
+
+To avoid infinitely waiting for the firmware in the event that this
+misbehaves and no intents arrive, an arbitrary 5 second timeout is
+used.
+
+This patch was developed with input from Chris Lew.
+
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/#t
+Cc: stable@vger.kernel.org # rpmsg: glink: Handle rejected intent request better
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Link: https://lore.kernel.org/r/20241023-pmic-glink-ecancelled-v2-2-ebc268129407@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h       |    2 ++
- net/netlink/af_netlink.c |    3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/pmic_glink.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -764,6 +764,8 @@ static inline void sk_add_bind_node(stru
- 	hlist_for_each_entry_safe(__sk, tmp, list, sk_node)
- #define sk_for_each_bound(__sk, list) \
- 	hlist_for_each_entry(__sk, list, sk_bind_node)
-+#define sk_for_each_bound_safe(__sk, tmp, list) \
-+	hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -4,6 +4,7 @@
+  * Copyright (c) 2022, Linaro Ltd
+  */
+ #include <linux/auxiliary_bus.h>
++#include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+@@ -13,6 +14,8 @@
+ #include <linux/soc/qcom/pmic_glink.h>
+ #include <linux/spinlock.h>
  
- /**
-  * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2145,8 +2145,9 @@ void __netlink_clear_multicast_users(str
++#define PMIC_GLINK_SEND_TIMEOUT (5 * HZ)
++
+ enum {
+ 	PMIC_GLINK_CLIENT_BATT = 0,
+ 	PMIC_GLINK_CLIENT_ALTMODE,
+@@ -112,13 +115,29 @@ EXPORT_SYMBOL_GPL(pmic_glink_client_regi
+ int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
  {
- 	struct sock *sk;
- 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
-+	struct hlist_node *tmp;
+ 	struct pmic_glink *pg = client->pg;
++	bool timeout_reached = false;
++	unsigned long start;
+ 	int ret;
  
--	sk_for_each_bound(sk, &tbl->mc_list)
-+	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
- 		netlink_update_socket_mc(nlk_sk(sk), group, 0);
- }
+ 	mutex_lock(&pg->state_lock);
+-	if (!pg->ept)
++	if (!pg->ept) {
+ 		ret = -ECONNRESET;
+-	else
+-		ret = rpmsg_send(pg->ept, data, len);
++	} else {
++		start = jiffies;
++		for (;;) {
++			ret = rpmsg_send(pg->ept, data, len);
++			if (ret != -EAGAIN)
++				break;
++
++			if (timeout_reached) {
++				ret = -ETIMEDOUT;
++				break;
++			}
++
++			usleep_range(1000, 5000);
++			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
++		}
++	}
+ 	mutex_unlock(&pg->state_lock);
  
+ 	return ret;
 
 
 
