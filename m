@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-90098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C52B9BE3ED
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:14:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE559BE3F9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D847A1F24DC9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:14:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941691F24DBD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87ED1DE4E1;
-	Wed,  6 Nov 2024 10:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208FE1DED40;
+	Wed,  6 Nov 2024 10:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PyBwKEgd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OkW4Bc6o"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3771DE3D5;
-	Wed,  6 Nov 2024 10:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACDC1DED4B;
+	Wed,  6 Nov 2024 10:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730887999; cv=none; b=iIyd6PkeKf4UZAHGQ4HmH63E0Q8LnAs1bFlgToBq0/gDNUKdiDFvcieIiD8iQ9A+kSlCEBa7LcOwPjtObgr2Cn4ubd+0SPOvRl2qgLei/CFVBbOdCQ0JnTw3P2/srG7Rt5WdWH8sWA46bNhwAKGeE2nMFYgau2gwxbKKYsWSvME=
+	t=1730888016; cv=none; b=GHiJHUlyPqOgzI/O8wGehr6Ze0+ZvONV1GkcjuhX31DAygtkz2H8i3FYxV3Ikjia82AktI5avLYNzYVMVvAJjKBxuIHAA/wmUjr20huSSz5SWcRw17EUgwKAM1fomx/QWF1W/HTZonKSID49ssU3r/HoNLIy2XVVjuOvM1tjaj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730887999; c=relaxed/simple;
-	bh=VZZfAXWLhzUpGIEWB5aCTnkjLh25KfYAmGZfjfAoBuk=;
+	s=arc-20240116; t=1730888016; c=relaxed/simple;
+	bh=sr47Jg1ARBWRZFZAicQnKkNylUiP8ygX3xVGB/s1QeM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jYpzDOd2O9OdWyNx9PxzMiNR5v8GAHFolgBPxkH4lTRddv99+BwaAI4YSzHWEWyzAzOyxs+PqUuOnrj7HDbO3PdoJcfTOxZY3bmD5qK3G2At8KTIw6Akx5FXcWJySeYY0VSmq5S1nNrF7F8qcH1j3ViewUlHfkp7eF1Z93M2Yfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PyBwKEgd; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=DLOdVGCcAwy6uXPW9ZpGIPJz6VRmxnH3VAmrjFCAuFaCYTyKItbFhvjEHHl2yEaxqS81vohGYvalhydYdfRKxvqELDOeaNaEIX0wzddQvk9HwrKldJwn7SZDCInsUxKQYRKY+TA4oKhbVhFf4dFhjzxgO4d4s/vVFqqUqKt/h/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OkW4Bc6o; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730887998; x=1762423998;
+  t=1730888015; x=1762424015;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VZZfAXWLhzUpGIEWB5aCTnkjLh25KfYAmGZfjfAoBuk=;
-  b=PyBwKEgdF2EWeHYBzb2sT8gqXR33ibsvC3FikgnKgzoZ/9U7TrUbZwWd
-   LicwFv5W80tXFLog5yoLDlZ6Ya8CHQEEyvgdr3skvTSPv4r0W4ddJRp6M
-   uc7gUSgP2k22a0n3A1C+4AlZmmq03TkYoi3VBef8abu5MWt3ITAAXuT+z
-   dnFE3fKJUthW/GuIte7wZ9Nj1NjYxRjRldkq57Lo0tK0EOxrZf9mVA/Xl
-   DUDxB1fRFcnD5rYvBGeFFrQUIFYq7iBsnwc2XGBttuLHwWLOz4UywDi4p
-   RJikuHYFaFfWmZdFOcbYJY30vFkdYuEQndo94w8kgPb0XbQzdvlB40Mg1
-   w==;
-X-CSE-ConnectionGUID: Qy0sWWn/SeeWQgUjsfInaA==
-X-CSE-MsgGUID: 7Rt49zR7Qle3rEznEU9M5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="42059433"
+  bh=sr47Jg1ARBWRZFZAicQnKkNylUiP8ygX3xVGB/s1QeM=;
+  b=OkW4Bc6ohotLE4xm77x3CP3XpLaOnVAlIDbEFc3TsTMivcSPF8b+SZq3
+   4XLViEjym2K0QXNO0sfvRfrOAP5XQiyQrqagt6FxZxjvEIys/Csiu6BIl
+   NFqgIMCCHHUJZ6rfg6BJjE4iCLxvKXc8J5Tu1Sa6E0tCUTVq5QObrjk05
+   8jyDbAw+m/ffpvc8UkSIzwW6A71g7eLgTGf5c/l9j8sdTbYclRQeUKFLZ
+   IjY7yrKde3F4cLXBKGM1oDzxXOnSVPQYsCBLGDvEWrclTL05GvkHvpf4R
+   h7gnzSKmyQnvbqMhsMDraGtfIDb1UMTvoGsT/DZd2pOfjW2a1qr24DZpl
+   Q==;
+X-CSE-ConnectionGUID: h+JdgrK/TVi3Z5KX9TvUIQ==
+X-CSE-MsgGUID: xW2r0lJqS8a5c+OPVG0aLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="42059487"
 X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="42059433"
+   d="scan'208";a="42059487"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 02:13:17 -0800
-X-CSE-ConnectionGUID: iH3Q+aYpSEammDgYnTsC+g==
-X-CSE-MsgGUID: PkwTEmJNTr+59k7Rs2qaPQ==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 02:13:34 -0800
+X-CSE-ConnectionGUID: 6LLWRGRbQXyTr8B7Dl7NGw==
+X-CSE-MsgGUID: hGMMr3a6Q66j18noWcNQwg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
-   d="scan'208";a="84813280"
+   d="scan'208";a="84813467"
 Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Nov 2024 02:13:16 -0800
+  by fmviesa010.fm.intel.com with ESMTP; 06 Nov 2024 02:13:33 -0800
 From: Mathias Nyman <mathias.nyman@linux.intel.com>
 To: <gregkh@linuxfoundation.org>
 Cc: <linux-usb@vger.kernel.org>,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
 	stable@vger.kernel.org,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 20/33] xhci: Don't perform Soft Retry for Etron xHCI host
-Date: Wed,  6 Nov 2024 12:14:46 +0200
-Message-Id: <20241106101459.775897-21-mathias.nyman@linux.intel.com>
+Subject: [PATCH 31/33] usb: xhci: Limit Stop Endpoint retries
+Date: Wed,  6 Nov 2024 12:14:57 +0200
+Message-Id: <20241106101459.775897-32-mathias.nyman@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241106101459.775897-1-mathias.nyman@linux.intel.com>
 References: <20241106101459.775897-1-mathias.nyman@linux.intel.com>
@@ -78,45 +78,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-Since commit f8f80be501aa ("xhci: Use soft retry to recover faster from
-transaction errors"), unplugging USB device while enumeration results in
-errors like this:
+Some host controllers fail to atomically transition an endpoint to the
+Running state on a doorbell ring and enter a hidden "Restarting" state,
+which looks very much like Stopped, with the important difference that
+it will spontaneously transition to Running anytime soon.
 
-[ 364.855321] xhci_hcd 0000:0b:00.0: ERROR Transfer event for disabled endpoint slot 5 ep 2
-[ 364.864622] xhci_hcd 0000:0b:00.0: @0000002167656d70 67f03000 00000021 0c000000 05038001
-[ 374.934793] xhci_hcd 0000:0b:00.0: Abort failed to stop command ring: -110
-[ 374.958793] xhci_hcd 0000:0b:00.0: xHCI host controller not responding, assume dead
-[ 374.967590] xhci_hcd 0000:0b:00.0: HC died; cleaning up
-[ 374.973984] xhci_hcd 0000:0b:00.0: Timeout while waiting for configure endpoint command
+A Stop Endpoint command queued in the Restarting state typically fails
+with Context State Error and the completion handler sees the Endpoint
+Context State as either still Stopped or already Running. Even a case
+of Halted was observed, when an error occurred right after the restart.
 
-Seems that Etorn xHCI host can not perform Soft Retry correctly, apply
-XHCI_NO_SOFT_RETRY quirk to disable Soft Retry and then issue is gone.
+The Halted state is already recovered from by resetting the endpoint.
+The Running state is handled by retrying Stop Endpoint.
 
-This patch depends on commit a4a251f8c235 ("usb: xhci: do not perform
-Soft Retry for some xHCI hosts").
+The Stopped state was recognized as a problem on NEC controllers and
+worked around also by retrying, because the endpoint soon restarts and
+then stops for good. But there is a risk: the command may fail if the
+endpoint is "stopped for good" already, and retries will fail forever.
 
-Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+The possibility of this was not realized at the time, but a number of
+cases were discovered later and reproduced. Some proved difficult to
+deal with, and it is outright impossible to predict if an endpoint may
+fail to ever start at all due to a hardware bug. One such bug (albeit
+on ASM3142, not on NEC) was found to be reliably triggered simply by
+toggling an AX88179 NIC up/down in a tight loop for a few seconds.
+
+An endless retries storm is quite nasty. Besides putting needless load
+on the xHC and CPU, it causes URBs never to be given back, paralyzing
+the device and connection/disconnection logic for the whole bus if the
+device is unplugged. User processes waiting for URBs become unkillable,
+drivers and kworker threads lock up and xhci_hcd cannot be reloaded.
+
+For peace of mind, impose a timeout on Stop Endpoint retries in this
+case. If they don't succeed in 100ms, consider the endpoint stopped
+permanently for some reason and just give back the unlinked URBs. This
+failure case is rare already and work is under way to make it rarer.
+
+Start this work today by also handling one simple case of race with
+Reset Endpoint, because it costs just two lines to implement.
+
+Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
- drivers/usb/host/xhci-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-ring.c | 28 ++++++++++++++++++++++++----
+ drivers/usb/host/xhci.c      |  2 ++
+ drivers/usb/host/xhci.h      |  1 +
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 4b8c93e59d6d..0d49d9c390c1 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -399,6 +399,7 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_ETRON_HOST;
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
-+		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 	}
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index c9c0c4a7588a..dd23596ccd84 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -52,6 +52,7 @@
+  *   endpoint rings; it generates events on the event ring for these.
+  */
  
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
++#include <linux/jiffies.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/dma-mapping.h>
+@@ -1158,16 +1159,35 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			return;
+ 		case EP_STATE_STOPPED:
+ 			/*
+-			 * NEC uPD720200 sometimes sets this state and fails with
+-			 * Context Error while continuing to process TRBs.
+-			 * Be conservative and trust EP_CTX_STATE on other chips.
++			 * Per xHCI 4.6.9, Stop Endpoint command on a Stopped
++			 * EP is a Context State Error, and EP stays Stopped.
++			 *
++			 * But maybe it failed on Halted, and somebody ran Reset
++			 * Endpoint later. EP state is now Stopped and EP_HALTED
++			 * still set because Reset EP handler will run after us.
++			 */
++			if (ep->ep_state & EP_HALTED)
++				break;
++			/*
++			 * On some HCs EP state remains Stopped for some tens of
++			 * us to a few ms or more after a doorbell ring, and any
++			 * new Stop Endpoint fails without aborting the restart.
++			 * This handler may run quickly enough to still see this
++			 * Stopped state, but it will soon change to Running.
++			 *
++			 * Assume this bug on unexpected Stop Endpoint failures.
++			 * Keep retrying until the EP starts and stops again, on
++			 * chips where this is known to help. Wait for 100ms.
+ 			 */
+ 			if (!(xhci->quirks & XHCI_NEC_HOST))
+ 				break;
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+-			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
++			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
++					GET_EP_CTX_STATE(ep_ctx));
+ 
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index bc477cf99805..4977ada0a19e 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -8,6 +8,7 @@
+  * Some code borrowed from the Linux EHCI driver.
+  */
+ 
++#include <linux/jiffies.h>
+ #include <linux/pci.h>
+ #include <linux/iommu.h>
+ #include <linux/iopoll.h>
+@@ -1764,6 +1765,7 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
+ 			ret = -ENOMEM;
+ 			goto done;
+ 		}
++		ep->stop_time = jiffies;
+ 		ep->ep_state |= EP_STOP_CMD_PENDING;
+ 		xhci_queue_stop_endpoint(xhci, command, urb->dev->slot_id,
+ 					 ep_index, 0);
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index a0e992c3db0d..6dd3138b2380 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -691,6 +691,7 @@ struct xhci_virt_ep {
+ 	/* Bandwidth checking storage */
+ 	struct xhci_bw_info	bw_info;
+ 	struct list_head	bw_endpoint_list;
++	unsigned long		stop_time;
+ 	/* Isoch Frame ID checking storage */
+ 	int			next_frame_id;
+ 	/* Use new Isoch TRB layout needed for extended TBC support */
 -- 
 2.25.1
 
