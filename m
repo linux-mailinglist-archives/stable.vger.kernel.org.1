@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-91080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1A69BEC58
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B149BEBBC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5394EB235F8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFB181F25293
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E0E1FBC82;
-	Wed,  6 Nov 2024 12:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4851F9423;
+	Wed,  6 Nov 2024 12:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWZRzJVb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCF3UkFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026AA1F4298;
-	Wed,  6 Nov 2024 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689D71EC017;
+	Wed,  6 Nov 2024 12:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897682; cv=none; b=XxgmUTabd3Ljmrqt86yJ/DkEYOeogV2lwt+mZyKhTQHS4sGXJ8Ql797/nDie+mhB8xPQ64F7Ubkxi7V5rSbtjOz0K1+AE0hEGFudUi3kO4voMdLdMrjQUfC/KVazdQ+qAOeAADti9w/uHB13auYyvtFgwXGRDqJefeo58Jsjz+A=
+	t=1730897262; cv=none; b=AQbxdQ6p3TqKujOY9mYd221D/4UHVjR+Zn7nhUTZWfHjUXNNGu+Bv+UwjqpTwpj0ByVbvO/Bn4Lk5ZvdtKOI6R9AEj6Y4MH2bqLpC9ED76WmZW1Ul2vnhlpFxdfh75qV77mvykJLljhOKE41/oN6WrLe6qYTzz3i0eV4cB2XLpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897682; c=relaxed/simple;
-	bh=N3p6qJe1kqq2cBmrKlOfwcuXKbHi25wqiAg/1kF/AuE=;
+	s=arc-20240116; t=1730897262; c=relaxed/simple;
+	bh=fTVQYHQwSRjNJhYE4kCg3CinRUXQlN63CqaTWlEEM3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEa+9EBrnENmOixrOR0brvwRpqcbZymkHMxWvlCSUSB4xqpAmgxUAhNlOncYUiqhtY68gw54AQvIycbVX19QMMefVqe/VT6SecXkMxHKRXnRQiuHXf8oX61yuRWZAeAPScmqaK0FG0XkaXmV6Lpsig0FixMVMa1qNyQ02RDenVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWZRzJVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC2EC4CECD;
-	Wed,  6 Nov 2024 12:54:41 +0000 (UTC)
+	 MIME-Version; b=AtvisDVFHMj6ThNpgrl1m8uaqyufniadhO6ru2Z54VQy40tHMZBB1NcPXB1HxfwxnEVN8TqjSAOjIPlk1fC8Bw3HbWAswjCQf6HVXaKrmkG5CWzwCAkXPYnecGaXsmcHzQNQ0onM7vMuU35tuSzNfQ3PIQ8gj6XS52tW9hYuDNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCF3UkFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A28C4CECD;
+	Wed,  6 Nov 2024 12:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897681;
-	bh=N3p6qJe1kqq2cBmrKlOfwcuXKbHi25wqiAg/1kF/AuE=;
+	s=korg; t=1730897262;
+	bh=fTVQYHQwSRjNJhYE4kCg3CinRUXQlN63CqaTWlEEM3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWZRzJVbZiu9IirVPK9LQUIMvlOaZtjgkCIo/pbwcBtLA4lTzyT+oPwW1ycTeNTTt
-	 mli3n/gTonuz7fMWxYBTFgggtIcvlZWLWmS2yrONTbxYDSmpLJJw420HruvTpqhVtT
-	 5w6CiIgNqqeCHeUOBj2qhUZ1wy4BDtIR6nFC/cm0=
+	b=JCF3UkFvYvzgUGcmTZ2IVA99KqcK6h7SWS1g0g6yMrLKXDtqAPjV7b4kVl37zocax
+	 kgusXF4g+dT9A+AVXz1pdXSwiiUfmuNjx4Zln66jFv01h6bVsPBO8MUU/8WNmZuJyn
+	 uAQMINUlkouGBL7D4iwcy1wmUIqSIRPJkmXD7S8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/151] kasan: remove vmalloc_percpu test
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 122/126] drm/amd/display: Add null checks for stream and plane before dereferencing
 Date: Wed,  6 Nov 2024 13:05:23 +0100
-Message-ID: <20241106120312.573154511@linuxfoundation.org>
+Message-ID: <20241106120309.353451895@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +71,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 330d8df81f3673d6fb74550bbc9bb159d81b35f7 ]
+commit 15c2990e0f0108b9c3752d7072a97d45d4283aea upstream.
 
-Commit 1a2473f0cbc0 ("kasan: improve vmalloc tests") added the
-vmalloc_percpu KASAN test with the assumption that __alloc_percpu always
-uses vmalloc internally, which is tagged by KASAN.
+This commit adds null checks for the 'stream' and 'plane' variables in
+the dcn30_apply_idle_power_optimizations function. These variables were
+previously assumed to be null at line 922, but they were used later in
+the code without checking if they were null. This could potentially lead
+to a null pointer dereference, which would cause a crash.
 
-However, __alloc_percpu might allocate memory from the first per-CPU
-chunk, which is not allocated via vmalloc().  As a result, the test might
-fail.
+The null checks ensure that 'stream' and 'plane' are not null before
+they are used, preventing potential crashes.
 
-Remove the test until proper KASAN annotation for the per-CPU allocated
-are added; tracked in https://bugzilla.kernel.org/show_bug.cgi?id=215019.
+Fixes the below static smatch checker:
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:938 dcn30_apply_idle_power_optimizations() error: we previously assumed 'stream' could be null (see line 922)
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:940 dcn30_apply_idle_power_optimizations() error: we previously assumed 'plane' could be null (see line 922)
 
-Link: https://lkml.kernel.org/r/20241022160706.38943-1-andrey.konovalov@linux.dev
-Fixes: 1a2473f0cbc0 ("kasan: improve vmalloc tests")
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/all/4a245fff-cc46-44d1-a5f9-fd2f1c3764ae@sifive.com/
-Reported-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Link: https://lore.kernel.org/all/CACzwLxiWzNqPBp4C1VkaXZ2wDwvY3yZeetCi1TLGFipKW77drA@mail.gmail.com/
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Xiangyu: Modified file path to backport this commit]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kasan/kasan_test.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
-index 0119075d2e58e..ecf9f5aa35200 100644
---- a/mm/kasan/kasan_test.c
-+++ b/mm/kasan/kasan_test.c
-@@ -1381,32 +1381,6 @@ static void vm_map_ram_tags(struct kunit *test)
- 	free_pages((unsigned long)p_ptr, 1);
- }
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
+@@ -762,6 +762,9 @@ bool dcn30_apply_idle_power_optimization
+ 			stream = dc->current_state->streams[0];
+ 			plane = (stream ? dc->current_state->stream_status[0].plane_states[0] : NULL);
  
--static void vmalloc_percpu(struct kunit *test)
--{
--	char __percpu *ptr;
--	int cpu;
--
--	/*
--	 * This test is specifically crafted for the software tag-based mode,
--	 * the only tag-based mode that poisons percpu mappings.
--	 */
--	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_SW_TAGS);
--
--	ptr = __alloc_percpu(PAGE_SIZE, PAGE_SIZE);
--
--	for_each_possible_cpu(cpu) {
--		char *c_ptr = per_cpu_ptr(ptr, cpu);
--
--		KUNIT_EXPECT_GE(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_MIN);
--		KUNIT_EXPECT_LT(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_KERNEL);
--
--		/* Make sure that in-bounds accesses don't crash the kernel. */
--		*c_ptr = 0;
--	}
--
--	free_percpu(ptr);
--}
--
- /*
-  * Check that the assigned pointer tag falls within the [KASAN_TAG_MIN,
-  * KASAN_TAG_KERNEL) range (note: excluding the match-all tag) for tag-based
-@@ -1562,7 +1536,6 @@ static struct kunit_case kasan_kunit_test_cases[] = {
- 	KUNIT_CASE(vmalloc_oob),
- 	KUNIT_CASE(vmap_tags),
- 	KUNIT_CASE(vm_map_ram_tags),
--	KUNIT_CASE(vmalloc_percpu),
- 	KUNIT_CASE(match_all_not_assigned),
- 	KUNIT_CASE(match_all_ptr_tag),
- 	KUNIT_CASE(match_all_mem_tag),
--- 
-2.43.0
-
++			if (!stream || !plane)
++				return false;
++
+ 			if (stream && plane) {
+ 				cursor_cache_enable = stream->cursor_position.enable &&
+ 						plane->address.grph.cursor_cache_addr.quad_part;
 
 
 
