@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-90464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AB69BE874
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02739BE96F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA4E1F24B86
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9401C21F86
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7321DF252;
-	Wed,  6 Nov 2024 12:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E806198E96;
+	Wed,  6 Nov 2024 12:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0LTmvHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9lLw7e5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087CF1DF736;
-	Wed,  6 Nov 2024 12:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B05A1DF974;
+	Wed,  6 Nov 2024 12:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895851; cv=none; b=tE/NLa0tiBmFnEQRss7r/iyUzBubqSsBazqgVS1SId1PcaDyrglNXMzMzrfdk1jnOBBNPm06liq+iRtCLVM18Q/59klUtYfgcs1tIqbcDh+XhkEx1VP/Afll9/vV6/+H0lfHib1d6ZEGwsA5M82FjvAHqik5slDHaBc24Ol2Szw=
+	t=1730896451; cv=none; b=cHs/Ik4ORO9NLVl2ZLM+bO60s0h7TC9X6F+eHhtxiFx19tvmcPmKIa/Lqt092SjKrHUU6UUwpoIAwLIZ+6nANwkx/R/ArjY58LPr9pmE9vLMB9R037DNGC2H+l7ulTLlOpzi26f5dbfF41dTCEaC0LZztPQqlaDgpbEoS53c06c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895851; c=relaxed/simple;
-	bh=xyz7QbfV1FnicddKYd+SbwyQNsV7cv6uVDc4ICWbEjY=;
+	s=arc-20240116; t=1730896451; c=relaxed/simple;
+	bh=IUUj8nvgJkWKuvGTlHJt2Fv/8RsLHHZuSgAInAnFVos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sq/FuVG37DMnE0WJt/Sn7hide+orq7CFwx/JUwJPZkNgGSGSEoLPhnWry7qKOozraDQ2pXLohymEu5RVf+cIJm3rhxgSbbn1UYajJQK/SbYo5ASiy74y1+qzpkcW3QWt/wd7ULoD5kbFcNioyGltO9CiojspPT2DzdDjxkT+TSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0LTmvHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F57C4CECD;
-	Wed,  6 Nov 2024 12:24:10 +0000 (UTC)
+	 MIME-Version; b=TgoUfM/UaVTIGISpECewfSCc9/7Jgo1LCYdVKWDKQh2zQ63pmYZT0jSlOnLXivOU2kt228QUCiObtL6xt4tu1jgTAn6sMB6irRMGURMQBm0+pdfWWKuVZh8g4EbZ0kaJFwEGbgbkR1/8Nm3XOtY9f6UX2wUoxXC3xfjC6i2Wodc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9lLw7e5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8205BC4CECD;
+	Wed,  6 Nov 2024 12:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895850;
-	bh=xyz7QbfV1FnicddKYd+SbwyQNsV7cv6uVDc4ICWbEjY=;
+	s=korg; t=1730896450;
+	bh=IUUj8nvgJkWKuvGTlHJt2Fv/8RsLHHZuSgAInAnFVos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0LTmvHs0tWseXme3RxPCMYv5tE+8mIUXTVhRvGCK72Zn8PWQSMsXFuBf6nKpfWT7
-	 TomEErS3xGOG5EShRGaqHGmn8w+WVlDLAYT9PR3frEulGva6DWAtAo2PYEYIA3LEaQ
-	 a/TdxoT++ijGaNL6n+Uss7xvrVpYIzHlKXomiOpY=
+	b=C9lLw7e5eG7QBAcmmJvwK+CviLPiUmAXbfKJzc45QWIPYVl4bwqvjtE7y36sQPbgO
+	 ti2i7yu3BmZ41HxoeQTELXlXKxE6lJvG1b7H2IwA6x4HiLzOQHUNo0W9Yosa252Yne
+	 AztlBrk1yOC0tBdhQUoL0pP0JVL5Kk5o4eUqBlyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byeonguk Jeong <jungbu2855@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zhiguo Jiang <justinjiang@vivo.com>,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 332/350] bpf: Fix out-of-bounds write in trie_get_next_key()
+Subject: [PATCH 6.11 207/245] mm: shrink skip folio mapped by an exiting process
 Date: Wed,  6 Nov 2024 13:04:20 +0100
-Message-ID: <20241106120328.920117630@linuxfoundation.org>
+Message-ID: <20241106120324.345277354@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byeonguk Jeong <jungbu2855@gmail.com>
+From: Zhiguo Jiang <justinjiang@vivo.com>
 
-[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
+[ Upstream commit c495b97624d0c059b0403e26dadb166d69918409 ]
 
-trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
-while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
-full paths from the root to leaves. For example, consider a trie with
-max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
-0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
-.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
+The releasing process of the non-shared anonymous folio mapped solely by
+an exiting process may go through two flows: 1) the anonymous folio is
+firstly is swaped-out into swapspace and transformed into a swp_entry in
+shrink_folio_list; 2) then the swp_entry is released in the process
+exiting flow.  This will result in the high cpu load of releasing a
+non-shared anonymous folio mapped solely by an exiting process.
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Tested-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+When the low system memory and the exiting process exist at the same time,
+it will be likely to happen, because the non-shared anonymous folio mapped
+solely by an exiting process may be reclaimed by shrink_folio_list.
+
+This patch is that shrink skips the non-shared anonymous folio solely
+mapped by an exting process and this folio is only released directly in
+the process exiting flow, which will save swap-out time and alleviate the
+load of the process exiting.
+
+Barry provided some effectiveness testing in [1].  "I observed that
+this patch effectively skipped 6114 folios (either 4KB or 64KB mTHP),
+potentially reducing the swap-out by up to 92MB (97,300,480 bytes)
+during the process exit.  The working set size is 256MB."
+
+Link: https://lkml.kernel.org/r/20240710083641.546-1-justinjiang@vivo.com
+Link: https://lore.kernel.org/linux-mm/20240710033212.36497-1-21cnbao@gmail.com/ [1]
+Signed-off-by: Zhiguo Jiang <justinjiang@vivo.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 1d4832becdc2 ("mm: multi-gen LRU: use {ptep,pmdp}_clear_young_notify()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/rmap.c   | 15 +++++++++++++++
+ mm/vmscan.c |  7 ++++++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index fcd3a15add41d..a929ee0e86b16 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -629,7 +629,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	if (!key || key->prefixlen > trie->max_prefixlen)
- 		goto find_leftmost;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 2490e727e2dcb..2630bde38640c 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -75,6 +75,7 @@
+ #include <linux/memremap.h>
+ #include <linux/userfaultfd_k.h>
+ #include <linux/mm_inline.h>
++#include <linux/oom.h>
  
--	node_stack = kmalloc_array(trie->max_prefixlen,
-+	node_stack = kmalloc_array(trie->max_prefixlen + 1,
- 				   sizeof(struct lpm_trie_node *),
- 				   GFP_ATOMIC | __GFP_NOWARN);
- 	if (!node_stack)
+ #include <asm/tlbflush.h>
+ 
+@@ -870,6 +871,20 @@ static bool folio_referenced_one(struct folio *folio,
+ 			continue;
+ 		}
+ 
++		/*
++		 * Skip the non-shared swapbacked folio mapped solely by
++		 * the exiting or OOM-reaped process. This avoids redundant
++		 * swap-out followed by an immediate unmap.
++		 */
++		if ((!atomic_read(&vma->vm_mm->mm_users) ||
++		    check_stable_address_space(vma->vm_mm)) &&
++		    folio_test_anon(folio) && folio_test_swapbacked(folio) &&
++		    !folio_likely_mapped_shared(folio)) {
++			pra->referenced = -1;
++			page_vma_mapped_walk_done(&pvmw);
++			return false;
++		}
++
+ 		if (pvmw.pte) {
+ 			if (lru_gen_enabled() &&
+ 			    pte_young(ptep_get(pvmw.pte))) {
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index c6d9f5f4f6002..a2ad17092abdf 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -863,7 +863,12 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 	if (vm_flags & VM_LOCKED)
+ 		return FOLIOREF_ACTIVATE;
+ 
+-	/* rmap lock contention: rotate */
++	/*
++	 * There are two cases to consider.
++	 * 1) Rmap lock contention: rotate.
++	 * 2) Skip the non-shared swapbacked folio mapped solely by
++	 *    the exiting or OOM-reaped process.
++	 */
+ 	if (referenced_ptes == -1)
+ 		return FOLIOREF_KEEP;
+ 
 -- 
 2.43.0
 
