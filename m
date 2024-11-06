@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9F19BEB32
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADE99BEC27
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104A428443B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F15C1F24D6D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5332A1E3DEE;
-	Wed,  6 Nov 2024 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650A01F12F9;
+	Wed,  6 Nov 2024 12:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZ0cnA+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/EC5nbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112331E103C;
-	Wed,  6 Nov 2024 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AE21E0DFD;
+	Wed,  6 Nov 2024 12:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896907; cv=none; b=Yn/8vKgeyUyM+1QKYRCgyiJS9KZEBpsbz3tQsc4dAD4YVViBMTRK2OIxSfEeDmEQhZjgG0bZM+aQuyv6QKrBZ5SRqVS1OgZfqWBTsM3KuFF0jYFkzw8aAaSxxOV/aRQcMzi0HxONoXIW+Zka/cqf8eEdcW9mcwtVa7hmJ+QZKgQ=
+	t=1730897557; cv=none; b=Z5nibDu4NIS5FM/rTGVPFHDyHpAwDbYvDRdOJMH72/dcTA8K5KnjjVFZzKlpoAd0o4Al6f7kx7BC8JdAN9oSXKFyTwZo+xa+K5Yi49o0WcnlPWZOmgCBNi0dSupQVNL5KW4RftPyMG0mNs7DPqGjUoETLacWCNt2iCKFBPwUX9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896907; c=relaxed/simple;
-	bh=n74kcTbRRW60wEIO7aDFwFAioc1XBba6rxVe+/Kf28Y=;
+	s=arc-20240116; t=1730897557; c=relaxed/simple;
+	bh=1XkR7rM/dq2+Me7Iv49kkaeVJshR5qaTmhF8ylJmFnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cK4GSL6oGr6I1ui2UV8F0A2ae/Yhrt15V+ewAu78JDMcmyKCtiOCXmfpYR+31wYH7QlxcF59p8LJl5BrfmXIMkyW3ggJMnQfIm9Wx7QMOy4EaMYess+uDnJs1iEhAtTMe9BDIYLiWVN2RsnOGOThi9SGKV1lcHpB9q3K8n+7764=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZ0cnA+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C826C4CECD;
-	Wed,  6 Nov 2024 12:41:46 +0000 (UTC)
+	 MIME-Version; b=T63bT0RFSDLQSWCFqUTz2VmvOcjcquWpp3iSTON6GX2lmb/1i145gTr16JGqr8SAggLAl3ShLJW9cC94u51TcxAAd0D36/Z9m+36elBR4R4qPUIfwmYsHcpMGPZ+efYLpoAIh1RTWBEDNT6dI2NbqiBMHEsy5eMH1vvpWbYJeik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/EC5nbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC83C4CECD;
+	Wed,  6 Nov 2024 12:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896906;
-	bh=n74kcTbRRW60wEIO7aDFwFAioc1XBba6rxVe+/Kf28Y=;
+	s=korg; t=1730897557;
+	bh=1XkR7rM/dq2+Me7Iv49kkaeVJshR5qaTmhF8ylJmFnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZ0cnA+BuYd/JlFau6o6I9rU22BKERvb9tGsaQdSZsQKdtPwhE0weybe/QWx9DTEY
-	 yjqK9QwPBYdDOzeQhXWBpZ/028iXj07oEfdZTWTi6MBJYCqzqJZ/CZKQwS/aNyBRxJ
-	 v6ZVUYziGk/tdp1I7IfUiPVUQGqYJ5erA+nnBNuw=
+	b=e/EC5nbNDrZY1LDx8DDZOu6xX3SxXdmvm5YDUXSCBNfsIWhJLXuDr1DOrujokvk+S
+	 ummBuTOK1ghZFw+k21tUHypQgdA/IhDTTD1h5zKF0GWROPUNoNNqflP2xFi+aGtQh1
+	 yRREBc9mHb/zgxiaZd7xm7qBVeQ4deKqWtvGfKAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/110] net: support ip generic csum processing in skb_csum_hwoffload_help
+	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: [PATCH 6.6 093/151] wifi: ath10k: Fix memory leak in management tx
 Date: Wed,  6 Nov 2024 13:04:41 +0100
-Message-ID: <20241106120305.259960414@linuxfoundation.org>
+Message-ID: <20241106120311.432640659@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-[ Upstream commit 62fafcd63139920eb25b3fbf154177ce3e6f3232 ]
+commit e15d84b3bba187aa372dff7c58ce1fd5cb48a076 upstream.
 
-NETIF_F_IP|IPV6_CSUM feature flag indicates UDP and TCP csum offload
-while NETIF_F_HW_CSUM feature flag indicates ip generic csum offload
-for HW, which includes not only for TCP/UDP csum, but also for other
-protocols' csum like GRE's.
+In the current logic, memory is allocated for storing the MSDU context
+during management packet TX but this memory is not being freed during
+management TX completion. Similar leaks are seen in the management TX
+cleanup logic.
 
-However, in skb_csum_hwoffload_help() it only checks features against
-NETIF_F_CSUM_MASK(NETIF_F_HW|IP|IPV6_CSUM). So if it's a non TCP/UDP
-packet and the features doesn't support NETIF_F_HW_CSUM, but supports
-NETIF_F_IP|IPV6_CSUM only, it would still return 0 and leave the HW
-to do csum.
+Kmemleak reports this problem as below,
 
-This patch is to support ip generic csum processing by checking
-NETIF_F_HW_CSUM for all protocols, and check (NETIF_F_IP_CSUM |
-NETIF_F_IPV6_CSUM) only for TCP and UDP.
+unreferenced object 0xffffff80b64ed250 (size 16):
+  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
+  hex dump (first 16 bytes):
+    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
+  backtrace:
+    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
+    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
+    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
+    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
+    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
+    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
+    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
+    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
 
-Note that we're using skb->csum_offset to check if it's a TCP/UDP
-proctol, this might be fragile. However, as Alex said, for now we
-only have a few L4 protocols that are requesting Tx csum offload,
-we'd better fix this until a new protocol comes with a same csum
-offset.
+Free the memory during completion and cleanup to fix the leak.
 
-v1->v2:
-  - not extend skb->csum_not_inet, but use skb->csum_offset to tell
-    if it's an UDP/TCP csum packet.
-v2->v3:
-  - add a note in the changelog, as Willem suggested.
+Protect the mgmt_pending_tx idr_remove() operation in
+ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
+other instances.
 
-Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
+
+Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
+Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Link: https://patch.msgid.link/20241015064103.6060-1-quic_mpubbise@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c |    7 ++++++-
+ drivers/net/wireless/ath/ath10k/wmi.c     |    2 ++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 5edab9328d5e0..6f04bb2ac4932 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3647,7 +3647,18 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return !!(features & NETIF_F_SCTP_CRC) ? 0 :
- 			skb_crc32c_csum_help(skb);
+--- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
++++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
+@@ -3042,9 +3042,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(s
+ 				       struct sk_buff *msdu)
+ {
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
++	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
+ 	struct ath10k_wmi *wmi = &ar->wmi;
  
--	return !!(features & NETIF_F_CSUM_MASK) ? 0 : skb_checksum_help(skb);
-+	if (features & NETIF_F_HW_CSUM)
-+		return 0;
+-	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_lock_bh(&ar->data_lock);
++	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
++	spin_unlock_bh(&ar->data_lock);
 +
-+	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		switch (skb->csum_offset) {
-+		case offsetof(struct tcphdr, check):
-+		case offsetof(struct udphdr, check):
-+			return 0;
-+		}
-+	}
-+
-+	return skb_checksum_help(skb);
++	kfree(pkt_addr);
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2440,6 +2440,7 @@ wmi_process_mgmt_tx_comp(struct ath10k *
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	info = IEEE80211_SKB_CB(msdu);
++	kfree(pkt_addr);
  
--- 
-2.43.0
-
+ 	if (param->status) {
+ 		info->flags &= ~IEEE80211_TX_STAT_ACK;
+@@ -9559,6 +9560,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_p
+ 	dma_unmap_single(ar->dev, pkt_addr->paddr,
+ 			 msdu->len, DMA_TO_DEVICE);
+ 	ieee80211_free_txskb(ar->hw, msdu);
++	kfree(pkt_addr);
+ 
+ 	return 0;
+ }
 
 
 
