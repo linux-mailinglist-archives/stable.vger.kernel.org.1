@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C249BE8FF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E1D9BE7D5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE51284FD0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B06851C20CEF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238341DF986;
-	Wed,  6 Nov 2024 12:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4C01DF75A;
+	Wed,  6 Nov 2024 12:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4uTX0am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN+uXwC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73E91D2784;
-	Wed,  6 Nov 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4771DF740;
+	Wed,  6 Nov 2024 12:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896164; cv=none; b=QhNa8beZRH+eT1GxsWqClGVyT1K9XhcJgOV9A2cxH8/GePHj/j7AIYqmywVD4q0kv+Gj5UCysB23SZKWuJLm/UIJBkIB8nuc4IKcrjyvf/q0jzMARZAMzyS4MrIx+TMIszDep1Vw1GDjGfPLE7nFf6yc/gOGKhIJMMmwaR2KcKM=
+	t=1730895490; cv=none; b=C4tdmXniKG3C453JkxmkYei2+u4gFvxxNyt2OVXB+gLoj9orVhWRwPMAvaKfM+a8i++74FDYixCYHTc4YpFMuUxoetEImlx/IM5RYcm5gn/4ou6vYB1frf1ot/2sPcW9+pcUEdJLqH74SSnh7/YibgnfXqI8XkKPq2FmKtZIy+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896164; c=relaxed/simple;
-	bh=ZJAx4Xl0X7n13st99tXpspSDLqHcnkTsXf5wWUUiPPM=;
+	s=arc-20240116; t=1730895490; c=relaxed/simple;
+	bh=/9MJTLCIvmESFAgzDwPA2HHUp1vnXmpTxu3kAbsEMUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nWiqB8iIe0jgyqRcQzVTZIu+Dyweo/AmJfE3blWrpbwH90lr0jMI+3OAgD/gr26atyv3nDDMNrbjFE+Lz9n8iPE1MqYHdS6GnedWOaw9rv7wYj5NSfJ7GG2nntJRTG3fjDQcWL3UtMRIuE9jhWpZoJbyKZfjKu7vQIqkpS4JnmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4uTX0am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B898C4CECD;
-	Wed,  6 Nov 2024 12:29:24 +0000 (UTC)
+	 MIME-Version; b=JfrEtxuHZf1Jz62niSaYVVPRU5gMHSSqXeK6UgpsOCz+7gQGQaSn7KHKkQiYsIOvFXqbLBSZcehybbdo6YR/6QFHOMlsWGGgImTBxwk4E01nV48a75rlqjNOsMrYSIkxARkXmL46xIOnZN/UxgGz0qxAJRRCm+UGKkh3tKG7n2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN+uXwC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F07C4CECD;
+	Wed,  6 Nov 2024 12:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896164;
-	bh=ZJAx4Xl0X7n13st99tXpspSDLqHcnkTsXf5wWUUiPPM=;
+	s=korg; t=1730895489;
+	bh=/9MJTLCIvmESFAgzDwPA2HHUp1vnXmpTxu3kAbsEMUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4uTX0aml2PL7zFskbX/b/2EXotc/oZV+h3WmRDjHTz3WRod0Jb8OJoIUq8MSd/co
-	 a8ttU5h7zOUkZ6RgHDcsqrBsoKTuyx/188XiKSM3jw890QV/M/wHntxri+0wkdteA8
-	 IsT1V7TUEyFfNABJh+LdZXUCyTZMwZQnw6lrwrJQ=
+	b=BN+uXwC0vXgzvqgwolqHfqVNHhZ1S7ccdHG9l9hDVtrv3KfHw/QmMq4kfbeFxDYWd
+	 6c1BE6nXLy/JuBcL+LhQMrw46IGxBHSEWjI6mhihI4F4tRPmA5JMziZ48j7hhhc7YD
+	 wPMSq94jridD/gAQ85fTPFJvrYFR18QnhFVzpBOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.11 110/245] usb: typec: tcpm: restrict SNK_WAIT_CAPABILITIES_TIMEOUT transitions to non self-powered devices
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 235/350] s390/facility: Disable compile time optimization for decompressor code
 Date: Wed,  6 Nov 2024 13:02:43 +0100
-Message-ID: <20241106120321.925291401@linuxfoundation.org>
+Message-ID: <20241106120326.767687776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit afb92ad8733ef0a2843cc229e4d96aead80bc429 upstream.
+[ Upstream commit 0147addc4fb72a39448b8873d8acdf3a0f29aa65 ]
 
-PD3.1 spec ("8.3.3.3.3 PE_SNK_Wait_for_Capabilities State") mandates
-that the policy engine perform a hard reset when SinkWaitCapTimer
-expires. Instead the code explicitly does a GET_SOURCE_CAP when the
-timer expires as part of SNK_WAIT_CAPABILITIES_TIMEOUT. Due to this the
-following compliance test failures are reported by the compliance tester
-(added excerpts from the PD Test Spec):
+Disable compile time optimizations of test_facility() for the
+decompressor. The decompressor should not contain any optimized code
+depending on the architecture level set the kernel image is compiled
+for to avoid unexpected operation exceptions.
 
-* COMMON.PROC.PD.2#1:
-  The Tester receives a Get_Source_Cap Message from the UUT. This
-  message is valid except the following conditions: [COMMON.PROC.PD.2#1]
-    a. The check fails if the UUT sends this message before the Tester
-       has established an Explicit Contract
-    ...
+Add a __DECOMPRESSOR check to test_facility() to enforce that
+facilities are always checked during runtime for the decompressor.
 
-* TEST.PD.PROT.SNK.4:
-  ...
-  4. The check fails if the UUT does not send a Hard Reset between
-    tTypeCSinkWaitCap min and max. [TEST.PD.PROT.SNK.4#1] The delay is
-    between the VBUS present vSafe5V min and the time of the first bit
-    of Preamble of the Hard Reset sent by the UUT.
-
-For the purpose of interoperability, restrict the quirk introduced in
-https://lore.kernel.org/all/20240523171806.223727-1-sebastian.reichel@collabora.com/
-to only non self-powered devices as battery powered devices will not
-have the issue mentioned in that commit.
-
-Cc: stable@vger.kernel.org
-Fixes: 122968f8dda8 ("usb: typec: tcpm: avoid resets for missing source capability messages")
-Reported-by: Badhri Jagan Sridharan <badhri@google.com>
-Closes: https://lore.kernel.org/all/CAPTae5LAwsVugb0dxuKLHFqncjeZeJ785nkY4Jfd+M-tCjHSnQ@mail.gmail.com/
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20241024022233.3276995-1-amitsd@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/facility.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index fc619478200f..7ae341a40342 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4515,7 +4515,8 @@ static inline enum tcpm_state hard_reset_state(struct tcpm_port *port)
- 		return ERROR_RECOVERY;
- 	if (port->pwr_role == TYPEC_SOURCE)
- 		return SRC_UNATTACHED;
--	if (port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
-+	if (port->state == SNK_WAIT_CAPABILITIES ||
-+	    port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
- 		return SNK_READY;
- 	return SNK_UNATTACHED;
+diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+index 7ffbc5d7ccf38..79730031e17f3 100644
+--- a/arch/s390/include/asm/facility.h
++++ b/arch/s390/include/asm/facility.h
+@@ -53,8 +53,10 @@ static inline int test_facility(unsigned long nr)
+ 	unsigned long facilities_als[] = { FACILITIES_ALS };
+ 
+ 	if (__builtin_constant_p(nr) && nr < sizeof(facilities_als) * 8) {
+-		if (__test_facility(nr, &facilities_als))
+-			return 1;
++		if (__test_facility(nr, &facilities_als)) {
++			if (!__is_defined(__DECOMPRESSOR))
++				return 1;
++		}
+ 	}
+ 	return __test_facility(nr, &S390_lowcore.stfle_fac_list);
  }
-@@ -5043,8 +5044,11 @@ static void run_state_machine(struct tcpm_port *port)
- 			tcpm_set_state(port, SNK_SOFT_RESET,
- 				       PD_T_SINK_WAIT_CAP);
- 		} else {
--			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
--				       PD_T_SINK_WAIT_CAP);
-+			if (!port->self_powered)
-+				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
-+			else
-+				upcoming_state = hard_reset_state(port);
-+			tcpm_set_state(port, upcoming_state, PD_T_SINK_WAIT_CAP);
- 		}
- 		break;
- 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
 -- 
-2.47.0
+2.43.0
 
 
 
