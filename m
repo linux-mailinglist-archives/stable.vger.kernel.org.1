@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF44D9BEA4F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:43:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615E89BEB5C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75581F23E74
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:43:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF169B21F0D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EF31F8935;
-	Wed,  6 Nov 2024 12:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D1B1F7578;
+	Wed,  6 Nov 2024 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eM1+6QwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGlgbVCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B301F8934;
-	Wed,  6 Nov 2024 12:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD60D1F7573;
+	Wed,  6 Nov 2024 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896676; cv=none; b=u+CqUYaj/hnsY9z4S/rWRxBsviVuR0MsRyjzUd6eSt7cGYC/1codWVeCkFwGoxAf8JAStrRWyo7ZNVhEGXZ6KcqSRx0fWQs6I9Bmr++119pPna1pEO851ukw8g8EYg3yv8juJG+LPHpJJVsUQaj/uwX1Dp1yYmxqmTdugCTlX78=
+	t=1730897022; cv=none; b=D4Ec+dqrS0uqx+/fisuARSLgnZRh/MWXABC+8w3Kq9RuGJazLBKMEOLwpO67HK8gX8wI9oHs/xOhFtDdnSnTrSzqrcN+5OGBBYA6N08mM5Ey9eKqCRScL83f4g+4Vyvit8jwXq/zP1hj7azWJp0fqlEOlJKKCPExbdf9MQtD34c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896676; c=relaxed/simple;
-	bh=B+uhDNyPgc2+UlLWlxZ88XAeo+wgcrsyt0h5DOfUpDg=;
+	s=arc-20240116; t=1730897022; c=relaxed/simple;
+	bh=89ewVA14KqdncHhjx7Rxtu8yA3p6cz7sISt91mDoJJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaO7a/0OPjoypGw9b0nAunqezcs41QuyCWTSWTfIkG/xED8fWcJAgTvTZewFftUSPNuFh4em3TwCWehOttPI3vbGOJpNRdY7Q7Rwcrzwag4Zdf8ng13Twtj6wh0Q3S5l5RDExgP5ScDOtN46rlUc22QCC0agHNGyXH1d3kydufw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM1+6QwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D91C4CED3;
-	Wed,  6 Nov 2024 12:37:55 +0000 (UTC)
+	 MIME-Version; b=rYZ3ZwKpBjpSgpDZGcGtInbRCUqn+zBgbRS8obOUhHWEN8blcJCO1qBlA7hPnrYROv1/Fi7tovfmJQz8YPF/Vaur5tGlSVDNva9M029kVJv5xPCze6kK7GmyPPU8X5JicPoKILwhGo02NbQuyMNUO3CAUHHI+rUtR6njtfVSpuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGlgbVCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15254C4CECD;
+	Wed,  6 Nov 2024 12:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896675;
-	bh=B+uhDNyPgc2+UlLWlxZ88XAeo+wgcrsyt0h5DOfUpDg=;
+	s=korg; t=1730897022;
+	bh=89ewVA14KqdncHhjx7Rxtu8yA3p6cz7sISt91mDoJJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eM1+6QwKRslGn5D+53jvO8qvQnbc/4k3vZtrb7k8jUNZrgSZC/fYsTZoZtcvoa6Op
-	 8r+pJ5dA07x+/38ZX9NRnjZyYtpwohyAJF2RpOjRZqRjba84c+QTuTeELF9CZqQg8z
-	 IJ0P3but6W8FVKX/214CWrGz/zFDFSiWsvvrXEFM=
+	b=BGlgbVCsAHj52tN49VZp6PRfBciWjuUgxmgsXow5x5yQX3Vl8z92FDfML++Zhlhl6
+	 D+sW8jmdwAnDte7o/4RWIwIeXFwfvvQdtEtFjEhOMpKT8sEzoNT3PFVBIxiQE2ZAxH
+	 ioIwEDPd6600mMpzrIu8bBnX2zqxW7tG4QJYNFfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/110] drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA
+Subject: [PATCH 6.1 033/126] mlxsw: spectrum_ptp: Add missing verification before pushing Tx header
 Date: Wed,  6 Nov 2024 13:03:54 +0100
-Message-ID: <20241106120303.950183622@linuxfoundation.org>
+Message-ID: <20241106120307.003402772@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit d92b90f9a54d9300a6e883258e79f36dab53bfae ]
+[ Upstream commit 0a66e5582b5102c4d7b866b977ff7c850c1174ce ]
 
-Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with
-a real VLA to fix a "memcpy: detected field-spanning write error" warning:
+Tx header should be pushed for each packet which is transmitted via
+Spectrum ASICs. The cited commit moved the call to skb_cow_head() from
+mlxsw_sp_port_xmit() to functions which handle Tx header.
 
-[   13.319813] memcpy: detected field-spanning write (size 16896) of single field "p->data" at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4)
-[   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo]
-[   13.320038] Call Trace:
-[   13.320173]  hgsmi_update_pointer_shape [vboxvideo]
-[   13.320184]  vbox_cursor_atomic_update [vboxvideo]
+In case that mlxsw_sp->ptp_ops->txhdr_construct() is used to handle Tx
+header, and txhdr_construct() is mlxsw_sp_ptp_txhdr_construct(), there is
+no call for skb_cow_head() before pushing Tx header size to SKB. This flow
+is relevant for Spectrum-1 and Spectrum-4, for PTP packets.
 
-Note as mentioned in the added comment it seems the original length
-calculation for the allocated and send hgsmi buffer is 4 bytes too large.
-Changing this is not the goal of this patch, so this behavior is kept.
+Add the missing call to skb_cow_head() to make sure that there is both
+enough room to push the Tx header and that the SKB header is not cloned and
+can be modified.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240827104523.17442-1-hdegoede@redhat.com
+An additional set will be sent to net-next to centralize the handling of
+the Tx header by pushing it to every packet just before transmission.
+
+Cc: Richard Cochran <richardcochran@gmail.com>
+Fixes: 24157bc69f45 ("mlxsw: Send PTP packets as data packets to overcome a limitation")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/5145780b07ebbb5d3b3570f311254a3a2d554a44.1729866134.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vboxvideo/hgsmi_base.c | 10 +++++++++-
- drivers/gpu/drm/vboxvideo/vboxvideo.h  |  4 +---
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/vboxvideo/hgsmi_base.c b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
-index 361d3193258ea..7edc9cf6a6069 100644
---- a/drivers/gpu/drm/vboxvideo/hgsmi_base.c
-+++ b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
-@@ -135,7 +135,15 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
- 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+index 7b01b9c20722a..7bb7b57af1a76 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+@@ -16,6 +16,7 @@
+ #include "spectrum.h"
+ #include "spectrum_ptp.h"
+ #include "core.h"
++#include "txheader.h"
  
--	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
-+	/*
-+	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
-+	 * from having a 4 bytes fixed array at the end to using a proper VLA
-+	 * at the end. These 4 extra bytes were not subtracted from sizeof(*p)
-+	 * before the switch to the VLA, so this way the behavior is unchanged.
-+	 * Chances are these 4 extra bytes are not necessary but they are kept
-+	 * to avoid regressions.
-+	 */
-+	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
- 			       VBVA_MOUSE_POINTER_SHAPE);
- 	if (!p)
- 		return -ENOMEM;
-diff --git a/drivers/gpu/drm/vboxvideo/vboxvideo.h b/drivers/gpu/drm/vboxvideo/vboxvideo.h
-index a5de40fe1a76a..bed285fe083c8 100644
---- a/drivers/gpu/drm/vboxvideo/vboxvideo.h
-+++ b/drivers/gpu/drm/vboxvideo/vboxvideo.h
-@@ -351,10 +351,8 @@ struct vbva_mouse_pointer_shape {
- 	 * Bytes in the gap between the AND and the XOR mask are undefined.
- 	 * XOR mask scanlines have no gap between them and size of XOR mask is:
- 	 * xor_len = width * 4 * height.
--	 *
--	 * Preallocate 4 bytes for accessing actual data as p->data.
- 	 */
--	u8 data[4];
-+	u8 data[];
- } __packed;
- 
- /* pointer is visible */
+ #define MLXSW_SP1_PTP_CLOCK_CYCLES_SHIFT	29
+ #define MLXSW_SP1_PTP_CLOCK_FREQ_KHZ		156257 /* 6.4nSec */
+@@ -1696,6 +1697,12 @@ int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+ 				 struct sk_buff *skb,
+ 				 const struct mlxsw_tx_info *tx_info)
+ {
++	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
++		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
++		dev_kfree_skb_any(skb);
++		return -ENOMEM;
++	}
++
+ 	mlxsw_sp_txhdr_construct(skb, tx_info);
+ 	return 0;
+ }
 -- 
 2.43.0
 
