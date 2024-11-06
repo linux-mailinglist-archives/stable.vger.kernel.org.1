@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-90020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B6D9BDCA0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:27:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACDB9BDCA2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06BAA1C20A0C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:27:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA3D7B23C53
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0663D215F4E;
-	Wed,  6 Nov 2024 02:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176C4216447;
+	Wed,  6 Nov 2024 02:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc9lS44H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZSIiHiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B692F18FDB9;
-	Wed,  6 Nov 2024 02:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AA32064E3;
+	Wed,  6 Nov 2024 02:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859208; cv=none; b=YY3bkVXE2YkdLYN5XQbsqBU7FaNle9iQzZZtFNfZzJ1Be6tumpgdojabOaE7L/EUxjlKhr519scyRMAhuFeCJkpepnjn+Q+rKRpokKa6JQCRsNCVqx+06T4DARfFxtL0Ax5ua+e+Z4zVoSnNynt9fn+V721+UAvrIQwnd5Y3ChA=
+	t=1730859209; cv=none; b=bF5HH0MYSoq4rVb5aAfsG1VF+vijGa1HmZsoIm5yjfymkwnQfWF0GaMFJr2OpPWtkwluAZ5EOMnPntXbvtkRBtCwpo+fTcoqn+BExIOdwhibGicLtPSDvt1XD+Zbm75+m5687GP2XS/P+0lv5zdry3zP9WTQZ5F361S7NFR7pSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859208; c=relaxed/simple;
-	bh=Iya6cx9gftMjLiot4YGn/cbRbjuzRahotfTH2ArRiQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PVSzQJ7vgrwrYynqWrveKmn6QyTYWMNQVQlg9jbw/ymif4xuLjOI0Gfa9bLpS8pxrWsVGS0bGuD6aJC7qnfji0CN4SvxXs21meC/TU38vNEDS23Yo3RPvo6EjO4V7smX59bmpNI6+09B5BNLcvkI0GP7jt0YNbPcamso2wUw5RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc9lS44H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605AAC4CED1;
-	Wed,  6 Nov 2024 02:13:25 +0000 (UTC)
+	s=arc-20240116; t=1730859209; c=relaxed/simple;
+	bh=iqC+OPH3hLESQQrFbTP3lgm0j0c9WFR7tDyYA1IV99c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uio+jYAFw+74Omf63WD53fFnToJI4cprC08dv1O6w5TkMGWwrn2PIbbPPhV3WdchMluuA6gXakV521o6O8Vfiqg35KerVX6Igp/XZCJ+YFLIluGMf8Wi4pvXXqtLHves1QQPxuFiggmQkYMaR7AvE/JXdcH3RR2fQbHXxjFwpKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZSIiHiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE26C4CED2;
+	Wed,  6 Nov 2024 02:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859206;
-	bh=Iya6cx9gftMjLiot4YGn/cbRbjuzRahotfTH2ArRiQI=;
+	s=k20201202; t=1730859209;
+	bh=iqC+OPH3hLESQQrFbTP3lgm0j0c9WFR7tDyYA1IV99c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Lc9lS44H0ACxY1ZjleaNpu32d45zJ1r3IVxmLtH9GTAEtDwzSkJwhj+CiHJThiUj5
-	 uIDmysjIB/9EV27Fd4Ll9ojKVj5jRVFxx3QtAKToIgzoXpQE0cqZbPj+KltvUe/SYw
-	 CBJiFaX466VEK9AOc/BqqC8T0Oj967YrDwqq7KPi1cUHc6X5jq9MVlbez0CBnIiB5g
-	 tvUx44BH4C8dJDjOxPs4andDUCcz5vfIDn+Mo6tngkLzX9WYRTdkBRLE0r5RI/Gtts
-	 6T21Jn9X3sEiC9zLOeVBIbl1CT4QvVJhZQQ0RrnUs52VvmLjcRTuDQjSqi0Z5PemXi
-	 /qlWhillcjxYg==
+	b=oZSIiHiSdvaZ9jKFWzv6ogID36Or9YJVrT39hoaoIxT9WIJ5pTTXxyfpbuQawJq5w
+	 mBI1zRMBG9/KNbGlmoaLKHfkG5MSZ9PBWTwZWKPV+iC/O3ZIgpTOCc7Kiu7PlkNTX/
+	 UWF6szF/yHot7NB/lI/XjQ++TIISDSGhtjk4rghskSrUo8VgzIBP5enWD0N76tqQKr
+	 quNmBsN77MBdjP64+TKSncdjVEa7D8899Q1K+8pJEKt1Bs1Hnukq8pL8lMwRCnem3c
+	 LQgCBisGwhRCQbCwCiwt+p1b4WLJk1y/5HpzdiolWJ7TdJKaAd1oFKKLMksId3PgVH
+	 6qmoD1svtYmLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	alexghiti@rivosinc.com
-Cc: Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	linux-riscv@lists.infradead.org,
+	bsegall@google.com
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "riscv: vdso: Prevent the compiler from inserting calls to memset()" failed to apply to v5.4-stable tree
-Date: Tue,  5 Nov 2024 21:13:23 -0500
-Message-ID: <20241106021323.183560-1-sashal@kernel.org>
+Subject: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone" failed to apply to v5.4-stable tree
+Date: Tue,  5 Nov 2024 21:13:26 -0500
+Message-ID: <20241106021327.183601-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,39 +70,90 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bf40167d54d55d4b54d0103713d86a8638fb9290 Mon Sep 17 00:00:00 2001
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 16 Oct 2024 10:36:24 +0200
-Subject: [PATCH] riscv: vdso: Prevent the compiler from inserting calls to
- memset()
+From b5413156bad91dc2995a5c4eab1b05e56914638a Mon Sep 17 00:00:00 2001
+From: Benjamin Segall <bsegall@google.com>
+Date: Fri, 25 Oct 2024 18:35:35 -0700
+Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
 
-The compiler is smart enough to insert a call to memset() in
-riscv_vdso_get_cpus(), which generates a dynamic relocation.
+When cloning a new thread, its posix_cputimers are not inherited, and
+are cleared by posix_cputimers_init(). However, this does not clear the
+tick dependency it creates in tsk->tick_dep_mask, and the handler does
+not reach the code to clear the dependency if there were no timers to
+begin with.
 
-So prevent this by using -fno-builtin option.
+Thus if a thread has a cputimer running before clone/fork, all
+descendants will prevent nohz_full unless they create a cputimer of
+their own.
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Fix this by entirely clearing the tick_dep_mask in copy_process().
+(There is currently no inherited state that needs a tick dependency)
+
+Process-wide timers do not have this problem because fork does not copy
+signal_struct as a baseline, it creates one from scratch.
+
+Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
 ---
- arch/riscv/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/tick.h | 8 ++++++++
+ kernel/fork.c        | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 960feb1526caa..3f1c4b2d0b064 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 72744638c5b0f..99c9c5a7252aa 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_set_task(tsk, bit);
+ }
++
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_clear_task(tsk, bit);
+ }
++
++static inline void tick_dep_init_task(struct task_struct *tsk)
++{
++	atomic_set(&tsk->tick_dep_mask, 0);
++}
++
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 				     enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
++static inline void tick_dep_init_task(struct task_struct *tsk) { }
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_signal(struct signal_struct *signal,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 89ceb4a68af25..6fa9fe62e01e3 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -105,6 +105,7 @@
+ #include <linux/rseq.h>
+ #include <uapi/linux/pidfd.h>
+ #include <linux/pidfs.h>
++#include <linux/tick.h>
  
- ccflags-y := -fno-stack-protector
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -fno-builtin
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -2292,6 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	acct_clear_integrals(p);
  
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
+ 	posix_cputimers_init(&p->posix_cputimers);
++	tick_dep_init_task(p);
+ 
+ 	p->io_context = NULL;
+ 	audit_set_context(p, NULL);
 -- 
 2.43.0
 
