@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1150D9BE88D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0229BE76B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9016AB24A92
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAD7CB228F8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485911DFD89;
-	Wed,  6 Nov 2024 12:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B861DF24E;
+	Wed,  6 Nov 2024 12:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LREA0vXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DW/kT71J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2751DF24B;
-	Wed,  6 Nov 2024 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7FC1D416E;
+	Wed,  6 Nov 2024 12:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895919; cv=none; b=lrz9XgntjiAfeUNNA3mzj8avVbE2vyBtNvrUNOOc9QFosXHODol/fFuJ47h7s5KZia25XutGvi/mU5vnMpQhdZ0MEIbpOuK8WwRxL9WFmldZVAydMxCe1+uyh8Fzfhd+cPQa8vDRUI3m7i1ApERds5ytpm4DVUxMArCU9TMruWY=
+	t=1730895247; cv=none; b=pwBAjwCtCAw12/8xl9b8ZgLO5dwthEuzca0wo+27t1bp+lVQ/2XrHduI9jyzYN45x+/NMZUcmh8ZV0k/vshX3FEvlY/cAdqsAbCQS3yxTCgM6OztLF9a0cFA9+spzK7+99J9YLwqZDoiwqvm0K/3d6CjPiRr5aZHeGMoR6eSUaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895919; c=relaxed/simple;
-	bh=Uj6hnVhYVe8qp2mynOKczYuycXv8LV7U8zIBwGw4daw=;
+	s=arc-20240116; t=1730895247; c=relaxed/simple;
+	bh=Ey17mPXiB5w6FOKzGqA3jru+3JxJuOtwJo+4+ERvjtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QV7n6lMITJ5Bhl5DJkYhk8vjckQebnzixW07fXRS1HYSBlJsANF1s41GlQo1fbpXT3MelHfeukZ/9pKVE82SI21Hxr04laOaPn6bJ33/he+YPdStxTvi+vCAWynQHx9bZzMri6n3II9lK37/GMHH8h++FihUis98SCJfW8OPqBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LREA0vXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E4CC4CECD;
-	Wed,  6 Nov 2024 12:25:17 +0000 (UTC)
+	 MIME-Version; b=V5D3v8kRv1yKr89SILU9uFtSCbIsVY8DI9O94KKUMh72RP7UIKvzwgmEE7BcE0lXqL2bHpIBU6bRhQj/qMQpztNmb2GXoqKz+GHWyhe0gyeGtU9DFhwiY1MWoolTiVuEWjVFqWgCnc0IIFXzsLmwCRh37uymcwWolGqg2SEfJVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DW/kT71J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73709C4CECD;
+	Wed,  6 Nov 2024 12:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895918;
-	bh=Uj6hnVhYVe8qp2mynOKczYuycXv8LV7U8zIBwGw4daw=;
+	s=korg; t=1730895246;
+	bh=Ey17mPXiB5w6FOKzGqA3jru+3JxJuOtwJo+4+ERvjtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LREA0vXMgRRbDnaC084Sg4prN35yAl6N6s/j+jmfrbmGk5anVgfMspnKSil3XC59L
-	 B6GhGHeZEOstn7asVB0LhfgIocCNGDFLnBpYs4N83kR+xWR/xOLpuhopC3u3J3583E
-	 AA3s3ZSxw8NTkYmabzopJsBG+Y/Swj2/m8qZNHDo=
+	b=DW/kT71JNItjpsjKpZh9oNkbjC0SJgbxPJpxsxMJiRqhL1btSWZe3kyta6IfbJvEl
+	 sE95/dm1VknruyZL52yK7ozSrqcGhUpQuHfaHSBe15GnLWOYDLt/LT8cXq5e3hFm9Y
+	 Udxbgev4AmN2DvbGcVPTonK2j+c6cnWKGu44SJuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 028/245] net: stmmac: dwmac4: Fix high address display by updating reg_space[] from register values
+Subject: [PATCH 4.19 153/350] ACPI: EC: Do not release locks during operation region accesses
 Date: Wed,  6 Nov 2024 13:01:21 +0100
-Message-ID: <20241106120319.923777112@linuxfoundation.org>
+Message-ID: <20241106120324.696357763@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit f84ef58e553206b02d06e02158c98fbccba25d19 ]
+[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
 
-The high address will display as 0 if the driver does not set the
-reg_space[]. To fix this, read the high address registers and
-update the reg_space[] accordingly.
+It is not particularly useful to release locks (the EC mutex and the
+ACPI global lock, if present) and re-acquire them immediately thereafter
+during EC address space accesses in acpi_ec_space_handler().
 
-Fixes: fbf68229ffe7 ("net: stmmac: unify registers dumps methods")
-Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021054625.1791965-1-leyfoon.tan@starfivetech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+First, releasing them for a while before grabbing them again does not
+really help anyone because there may not be enough time for another
+thread to acquire them.
+
+Second, if another thread successfully acquires them and carries out
+a new EC write or read in the middle if an operation region access in
+progress, it may confuse the EC firmware, especially after the burst
+mode has been enabled.
+
+Finally, manipulating the locks after writing or reading every single
+byte of data is overhead that it is better to avoid.
+
+Accordingly, modify the code to carry out EC address space accesses
+entirely without releasing the locks.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 8 ++++++++
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h | 2 ++
- 2 files changed, 10 insertions(+)
+ drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-index 84d3a8551b032..071f128aa4907 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-@@ -203,8 +203,12 @@ static void _dwmac4_dump_dma_regs(struct stmmac_priv *priv,
- 		readl(ioaddr + DMA_CHAN_TX_CONTROL(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_RX_CONTROL(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_RX_CONTROL(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_TX_BASE_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_TX_BASE_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_TX_BASE_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_TX_BASE_ADDR(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_RX_BASE_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_RX_BASE_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_RX_BASE_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_RX_BASE_ADDR(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_TX_END_ADDR(default_addrs, channel) / 4] =
-@@ -225,8 +229,12 @@ static void _dwmac4_dump_dma_regs(struct stmmac_priv *priv,
- 		readl(ioaddr + DMA_CHAN_CUR_TX_DESC(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_RX_DESC(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_RX_DESC(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_CUR_TX_BUF_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_CUR_TX_BUF_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_TX_BUF_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_TX_BUF_ADDR(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_CUR_RX_BUF_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_CUR_RX_BUF_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_RX_BUF_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_RX_BUF_ADDR(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_STATUS(default_addrs, channel) / 4] =
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-index 17d9120db5fe9..4f980dcd39582 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-@@ -127,7 +127,9 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
- #define DMA_CHAN_SLOT_CTRL_STATUS(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x3c)
- #define DMA_CHAN_CUR_TX_DESC(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x44)
- #define DMA_CHAN_CUR_RX_DESC(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x4c)
-+#define DMA_CHAN_CUR_TX_BUF_ADDR_HI(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x50)
- #define DMA_CHAN_CUR_TX_BUF_ADDR(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x54)
-+#define DMA_CHAN_CUR_RX_BUF_ADDR_HI(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x58)
- #define DMA_CHAN_CUR_RX_BUF_ADDR(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x5c)
- #define DMA_CHAN_STATUS(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x60)
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 7db62dec2ee53..1d0366c2c2175 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -807,6 +807,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 	unsigned long tmp;
+ 	int ret = 0;
  
++	if (t->rdata)
++		memset(t->rdata, 0, t->rlen);
++
+ 	/* start transaction */
+ 	spin_lock_irqsave(&ec->lock, tmp);
+ 	/* Enable GPE for command processing (IBF=0/OBF=1) */
+@@ -843,8 +846,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
+ 
+ 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
+ 		return -EINVAL;
+-	if (t->rdata)
+-		memset(t->rdata, 0, t->rlen);
+ 
+ 	mutex_lock(&ec->mutex);
+ 	if (ec->global_lock) {
+@@ -871,7 +872,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
+ 				.wdata = NULL, .rdata = &d,
+ 				.wlen = 0, .rlen = 1};
+ 
+-	return acpi_ec_transaction(ec, &t);
++	return acpi_ec_transaction_unlocked(ec, &t);
+ }
+ 
+ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+@@ -881,7 +882,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+ 				.wlen = 0, .rlen = 0};
+ 
+ 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
+-				acpi_ec_transaction(ec, &t) : 0;
++				acpi_ec_transaction_unlocked(ec, &t) : 0;
+ }
+ 
+ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+@@ -897,6 +898,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+ 	return result;
+ }
+ 
++static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
++{
++	int result;
++	u8 d;
++	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
++				.wdata = &address, .rdata = &d,
++				.wlen = 1, .rlen = 1};
++
++	result = acpi_ec_transaction_unlocked(ec, &t);
++	*data = d;
++	return result;
++}
++
+ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ {
+ 	u8 wdata[2] = { address, data };
+@@ -907,6 +921,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ 	return acpi_ec_transaction(ec, &t);
+ }
+ 
++static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
++{
++	u8 wdata[2] = { address, data };
++	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
++				.wdata = wdata, .rdata = NULL,
++				.wlen = 2, .rlen = 0};
++
++	return acpi_ec_transaction_unlocked(ec, &t);
++}
++
+ int ec_read(u8 addr, u8 *val)
+ {
+ 	int err;
+@@ -1320,6 +1344,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	struct acpi_ec *ec = handler_context;
+ 	int result = 0, i, bytes = bits / 8;
+ 	u8 *value = (u8 *)value64;
++	u32 glk;
+ 
+ 	if ((address > 0xFF) || !value || !handler_context)
+ 		return AE_BAD_PARAMETER;
+@@ -1327,13 +1352,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (function != ACPI_READ && function != ACPI_WRITE)
+ 		return AE_BAD_PARAMETER;
+ 
++	mutex_lock(&ec->mutex);
++
++	if (ec->global_lock) {
++		acpi_status status;
++
++		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
++		if (ACPI_FAILURE(status)) {
++			result = -ENODEV;
++			goto unlock;
++		}
++	}
++
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
+ 
+ 	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+-			acpi_ec_read(ec, address, value) :
+-			acpi_ec_write(ec, address, *value);
++			acpi_ec_read_unlocked(ec, address, value) :
++			acpi_ec_write_unlocked(ec, address, *value);
+ 		if (result < 0)
+ 			break;
+ 	}
+@@ -1341,6 +1378,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
+ 
++	if (ec->global_lock)
++		acpi_release_global_lock(glk);
++
++unlock:
++	mutex_unlock(&ec->mutex);
++
+ 	switch (result) {
+ 	case -EINVAL:
+ 		return AE_BAD_PARAMETER;
 -- 
 2.43.0
 
