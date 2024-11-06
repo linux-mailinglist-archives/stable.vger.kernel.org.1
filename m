@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-90770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807AD9BEAC2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:50:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40689BE852
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2A881C210B7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:50:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 950E01F2254E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CEB1FF03B;
-	Wed,  6 Nov 2024 12:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B621DFE12;
+	Wed,  6 Nov 2024 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxQ7uBWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUgTdUH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184271F1301;
-	Wed,  6 Nov 2024 12:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C841DFE06;
+	Wed,  6 Nov 2024 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896761; cv=none; b=hRnjlqIOVV9iL/6wX/CqgdnDH3c1m6cREbEvne16Q+uSAFuje4w37B7ySkAqfX1Craft6gIUIkurDyq/Dmgz49mh1OqmSMFCG6mZRENGxLghaMM351XRMAdvRQeXdrjwiBL2XmMdSn016K5tqmAWRuWAjttwuGaEcRDTm8KUqc0=
+	t=1730895799; cv=none; b=YaqdyUgT4lyAychVCz7VVu6ZnMh8/5mnyCUlGWjy4uzcZIjwJEIS9uYFeJvUpyD6tu+fc1XbYl0KRVfWgx8gaKJ68xT6KQp/EJX3EmB9TRXplYhwsclvXxrSoWL88qbE/0tkFCTyqv27iM5OAu+rjBAHALg7AmX2fHEvVRyrrdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896761; c=relaxed/simple;
-	bh=Us11hKd/Z+kKz4ZR8TO4m5gAWPQgjQl2xvkoSZQF5Gc=;
+	s=arc-20240116; t=1730895799; c=relaxed/simple;
+	bh=Yq/NfmAk4yagtDZxArKRqJtdWqsCTmY3CrSUuqxGcgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZrmKDFCxc30MIOhNiSadq1DMVuT244mtpHUJmBiU5r8TLSVfsFPHGJMnv4j8T1oTzhxvGzQo7MCPsP33cC32Jz4Oq81mZyIhHQtw5RbAxl0Zxmafp1kCXy3BLWv15Kzr97UQnjnmfDTVGUk1wGBMDalb6aob7eT63YnWfxOSQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxQ7uBWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D2BC4CECD;
-	Wed,  6 Nov 2024 12:39:19 +0000 (UTC)
+	 MIME-Version; b=f1aW+cu1rBOezT8l8E+pjoqwgansyh6iN8baKbRuB44wpwtxJGOHuGpXH6AORWP2sJcUOPooexYIpRyr1Pg8+p4xspwftr3Yby+Cb74tTZaj2B29SCb9E51kBu6F2Ytpo3RCgTKJ2FHJ8nKxLB3xnycC5rfXnmeWGKkgLUCER0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUgTdUH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EE8C4CED3;
+	Wed,  6 Nov 2024 12:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896760;
-	bh=Us11hKd/Z+kKz4ZR8TO4m5gAWPQgjQl2xvkoSZQF5Gc=;
+	s=korg; t=1730895799;
+	bh=Yq/NfmAk4yagtDZxArKRqJtdWqsCTmY3CrSUuqxGcgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxQ7uBWzrsxS9VQHPzJroi318A51qn+SkCWcV1cM8dCiyxah5+6WCkJZD3/X9iPxE
-	 BX9ZOa1zkE7sfgL8ArryHa7jRh9dC4xUjusLtZWu/xkOoNsOxoNOvWVAwJe2YYcdQo
-	 5UWowCY4l1HxqFI3LOI+2CKr6qbxNKgIdToQBd1g=
+	b=AUgTdUH8Nh5MzL8wRsuLaINTvQpNKmMvpnx/56ZjbKi0OeaegULLh/sHNbRsw2H3D
+	 72A4ojrfBkDSSd9uGeHKwDBXSMVNiV0x9FuEpe8s1oJF+0G086x5mbswzSWrakM8Ov
+	 UycReIkDQIKUWZwHq0LTDm/O4SdlSMG506VCGJVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/110] RDMA/cxgb4: Dump vendor specific QP details
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 4.19 340/350] usb: phy: Fix API devm_usb_put_phy() can not release the phy
 Date: Wed,  6 Nov 2024 13:04:28 +0100
-Message-ID: <20241106120304.907500360@linuxfoundation.org>
+Message-ID: <20241106120329.097885213@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 89f8c6f197f480fe05edf91eb9359d5425869d04 ]
+commit fdce49b5da6e0fb6d077986dec3e90ef2b094b50 upstream.
 
-Restore the missing functionality to dump vendor specific QP details,
-which was mistakenly removed in the commit mentioned in Fixes line.
+For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
+to release the phy, but it does not do that actually, so it can not fully
+undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
+devres_release() instead of devres_destroy() within the API.
 
-Fixes: 5cc34116ccec ("RDMA: Add dedicated QP resource tracker function")
-Link: https://patch.msgid.link/r/ed9844829135cfdcac7d64285688195a5cd43f82.1728323026.git.leonro@nvidia.com
-Reported-by: Dr. David Alan Gilbert <linux@treblig.org>
-Closes: https://lore.kernel.org/all/Zv_4qAxuC0dLmgXP@gallifrey
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/cxgb4/provider.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/phy/phy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/provider.c b/drivers/infiniband/hw/cxgb4/provider.c
-index 8138c57a1e43b..2824511e20ade 100644
---- a/drivers/infiniband/hw/cxgb4/provider.c
-+++ b/drivers/infiniband/hw/cxgb4/provider.c
-@@ -472,6 +472,7 @@ static const struct ib_device_ops c4iw_dev_ops = {
- 	.fill_res_cq_entry = c4iw_fill_res_cq_entry,
- 	.fill_res_cm_id_entry = c4iw_fill_res_cm_id_entry,
- 	.fill_res_mr_entry = c4iw_fill_res_mr_entry,
-+	.fill_res_qp_entry = c4iw_fill_res_qp_entry,
- 	.get_dev_fw_str = get_dev_fw_str,
- 	.get_dma_mr = c4iw_get_dma_mr,
- 	.get_hw_stats = c4iw_get_mib,
--- 
-2.43.0
-
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -579,7 +579,7 @@ void devm_usb_put_phy(struct device *dev
+ {
+ 	int r;
+ 
+-	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
++	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
+ }
+ EXPORT_SYMBOL_GPL(devm_usb_put_phy);
 
 
 
