@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECF39BEE77
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE089BEEBB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2F61C23D76
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 064D828439E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA011DEFC0;
-	Wed,  6 Nov 2024 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43A31E1036;
+	Wed,  6 Nov 2024 13:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7kVDW2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdcpekQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286F71D86E8;
-	Wed,  6 Nov 2024 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816D71E0DBD;
+	Wed,  6 Nov 2024 13:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899053; cv=none; b=SSuH8bXplzAHZnrL7DZ/jIRp8yj2yAtQ0JFIxJoXQX/XizXJzBuLtnNIM5gshmSMMEiMQssopQwGjV3wrDvwJXeChkTWOelHbNvQYnuT41f8or+f5V6XuH5+5c2pDH2bf3HUaaGnM/sRAALZyz/FR9VKuSgT1/oKpeBP1710c7I=
+	t=1730899207; cv=none; b=VvPrKA9QBuwJ9/kSj0idK2gtkS3cd4wLR9Psz1w1Dsb+ynTtzjHEiGUP19ZTHDtl5mmPLcG+eafdweMiCUJqRJyLLaqpCsBHb3IMWKsdJvya6AkHDcABhHypgFRUCHMrHoVMKeo7BNZ0Mq0E1nNBZ8cjmDvvvsRm7l4ipfnR7+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899053; c=relaxed/simple;
-	bh=rrHjjQTAchrubr0lw+WCQ1GgpRlQj1jtk7jy9ZQb+2k=;
+	s=arc-20240116; t=1730899207; c=relaxed/simple;
+	bh=4bl8luB91je7woID+I1w6yKFKoVHbslWSaXSFyh+qfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wa4RUuA1bOOX9DJV6crXEXbKlCVbSCvFDrnC7H7Ro02N7QApagkUP5doimIftvVLLigvFw3SnH2Q4tVHluoe4dF2eCnvQBk6ilT23L5Y6ak5vyYL4Ih2B1FyuRM9cJGeAUBz0w2UUgKv8n4xWBQRtLV1o9Lj1nhsjfBW1GQIu5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7kVDW2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A081EC4CECD;
-	Wed,  6 Nov 2024 13:17:32 +0000 (UTC)
+	 MIME-Version; b=YBwFMNDeAzgj9McTIlin7Eo/gYSsaug7gKfmac0IXpcAtfbm0hhPu59Ha0oj3fVz0qlL1fNm21Qz9aFk6emKHrsQycLSaKHc+7tJrNMVj6rOtkFfjIMb5dLi6h3cYQepW76PV0DzKRKXUqlcBKkbOSusVRu4QBOWQFq5eoHjZKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdcpekQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2421C4CED4;
+	Wed,  6 Nov 2024 13:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899053;
-	bh=rrHjjQTAchrubr0lw+WCQ1GgpRlQj1jtk7jy9ZQb+2k=;
+	s=korg; t=1730899207;
+	bh=4bl8luB91je7woID+I1w6yKFKoVHbslWSaXSFyh+qfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7kVDW2FriiW3Z06lstthm4ZSi8KO6vFRic5n7fia+UkCX2YMTqFqvjNVGa7OZPwL
-	 HPPZTTQaevIHsXTWvBQbjXUFWpZpVsKwoZVwYHHRcytuixUM5hBXHT/MSgTb+Beque
-	 WhUyB57G5hFhu/nblmSQlSsL7x7dIhZViwMuuIpY=
+	b=ZdcpekQSke44+Evc743CcaRd9X0is/w48Qu73+vVJ6RhZqeLZcGH/Aw8xOWu+DZiX
+	 +hcnLI9RLGvNmdrJryksJOYru+dsoUCRnYk3DEvrr81uCaB0FpFI4u0AEgQfVasHe0
+	 D8S7W31ugynf1KurmMvWuLqAA+GVEP3D86DSN6Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Sivanich <sivanich@hpe.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 445/462] misc: sgi-gru: Dont disable preemption in GRU driver
+Subject: [PATCH 5.15 34/73] scsi: scsi_transport_fc: Allow setting rport state to current state
 Date: Wed,  6 Nov 2024 13:05:38 +0100
-Message-ID: <20241106120342.493004576@linuxfoundation.org>
+Message-ID: <20241106120300.984611095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitri Sivanich <sivanich@hpe.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit b983b271662bd6104d429b0fd97af3333ba760bf ]
+[ Upstream commit d539a871ae47a1f27a609a62e06093fa69d7ce99 ]
 
-Disabling preemption in the GRU driver is unnecessary, and clashes with
-sleeping locks in several code paths.  Remove preempt_disable and
-preempt_enable from the GRU driver.
+The only input fc_rport_set_marginal_state() currently accepts is
+"Marginal" when port_state is "Online", and "Online" when the port_state
+is "Marginal". It should also allow setting port_state to its current
+state, either "Marginal or "Online".
 
-Signed-off-by: Dimitri Sivanich <sivanich@hpe.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Link: https://lore.kernel.org/r/20240917230643.966768-1-bmarzins@redhat.com
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/sgi-gru/grukservices.c | 2 --
- drivers/misc/sgi-gru/grumain.c      | 4 ----
- drivers/misc/sgi-gru/grutlbpurge.c  | 2 --
- 3 files changed, 8 deletions(-)
+ drivers/scsi/scsi_transport_fc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
-index 0197441a1eae7..8dc1c5e519aff 100644
---- a/drivers/misc/sgi-gru/grukservices.c
-+++ b/drivers/misc/sgi-gru/grukservices.c
-@@ -257,7 +257,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- 	int lcpu;
- 
- 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
--	preempt_disable();
- 	bs = gru_lock_kernel_context(-1);
- 	lcpu = uv_blade_processor_id();
- 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
-@@ -271,7 +270,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
- static void gru_free_cpu_resources(void *cb, void *dsr)
- {
- 	gru_unlock_kernel_context(uv_numa_blade_id());
--	preempt_enable();
- }
- 
- /*
-diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
-index e2325e3d077ea..4f7a0f8472556 100644
---- a/drivers/misc/sgi-gru/grumain.c
-+++ b/drivers/misc/sgi-gru/grumain.c
-@@ -941,10 +941,8 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 
- again:
- 	mutex_lock(&gts->ts_ctxlock);
--	preempt_disable();
- 
- 	if (gru_check_context_placement(gts)) {
--		preempt_enable();
- 		mutex_unlock(&gts->ts_ctxlock);
- 		gru_unload_context(gts, 1);
- 		return VM_FAULT_NOPAGE;
-@@ -953,7 +951,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 	if (!gts->ts_gru) {
- 		STAT(load_user_context);
- 		if (!gru_assign_gru_context(gts)) {
--			preempt_enable();
- 			mutex_unlock(&gts->ts_ctxlock);
- 			set_current_state(TASK_INTERRUPTIBLE);
- 			schedule_timeout(GRU_ASSIGN_DELAY);  /* true hack ZZZ */
-@@ -969,7 +966,6 @@ vm_fault_t gru_fault(struct vm_fault *vmf)
- 				vma->vm_page_prot);
- 	}
- 
--	preempt_enable();
- 	mutex_unlock(&gts->ts_ctxlock);
- 
- 	return VM_FAULT_NOPAGE;
-diff --git a/drivers/misc/sgi-gru/grutlbpurge.c b/drivers/misc/sgi-gru/grutlbpurge.c
-index 10921cd2608df..1107dd3e2e9fa 100644
---- a/drivers/misc/sgi-gru/grutlbpurge.c
-+++ b/drivers/misc/sgi-gru/grutlbpurge.c
-@@ -65,7 +65,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- 	struct gru_tlb_global_handle *tgh;
- 	int n;
- 
--	preempt_disable();
- 	if (uv_numa_blade_id() == gru->gs_blade_id)
- 		n = get_on_blade_tgh(gru);
- 	else
-@@ -79,7 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
- static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
- {
- 	unlock_tgh_handle(tgh);
--	preempt_enable();
- }
- 
- /*
+diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
+index a2524106206db..fbe2036ca6196 100644
+--- a/drivers/scsi/scsi_transport_fc.c
++++ b/drivers/scsi/scsi_transport_fc.c
+@@ -1250,7 +1250,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_ONLINE)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else if (port_state == FC_PORTSTATE_ONLINE) {
+ 		/*
+@@ -1260,7 +1260,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
+ 		 */
+ 		if (rport->port_state == FC_PORTSTATE_MARGINAL)
+ 			rport->port_state = port_state;
+-		else
++		else if (port_state != rport->port_state)
+ 			return -EINVAL;
+ 	} else
+ 		return -EINVAL;
 -- 
 2.43.0
 
