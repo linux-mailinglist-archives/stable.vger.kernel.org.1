@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-91029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740ED9BEC1E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5819F9BEB86
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3BA1F24CAA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCED1F27918
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08F01FAF0D;
-	Wed,  6 Nov 2024 12:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1D91F80D9;
+	Wed,  6 Nov 2024 12:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOYu17ZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xB1Zj3sQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5AE1F428D;
-	Wed,  6 Nov 2024 12:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6361E0496;
+	Wed,  6 Nov 2024 12:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897530; cv=none; b=FhLRKLVZ9G6jx2wtdDpRCi7PnZlpH2Hgwcs5g5Bnb1/nh8/3sL205QppmB+s8l9BfRhZv47E7DWZZsOMhxE2cbgWSm1zWUQFhbpSZ/6zsPUyJ0o3eICCmZh3A+OkKoDvc8QtXhF9JtfG0MXWcqEJhLgNhzVV3iunQBefw6m3zKA=
+	t=1730897138; cv=none; b=mxzJQ+rZ/vev+mz9fXuSjIT3IeIcNz5RT2ugmJAZ1ot8SyQTPaH4fOO60dvKGKrqiK5BNMO8WMvVUjlr30BYYQqulzNFahurSbvfnoMajIHNHwt6/3betrSd5kXcYEkOPZkmP9QDVrEHW9jcCtzMoIZwoZavgYKtkbPjXVl7tOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897530; c=relaxed/simple;
-	bh=ViEwyOIs9bAMX/Lbas8x/4KDLn4HLB2Jw7lqfaFnpfU=;
+	s=arc-20240116; t=1730897138; c=relaxed/simple;
+	bh=J9LZVQ79rDUQ8bPVtMpjZ1uawyLXK6ObflXmhSQCFeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCONEUTbJtPXAIdEsqHA6t8Ou4YLPnubLANGcZHV9gqgHtbvnw+kYMoISMEp3sxpPF+/JRu+UNF3Nz//EBcK5laVu39pwDGi5HtQSn/zQwjFhw5QJfzgtDReh8RUPae2Siepzj7AREV4DhDFkjXmX96ysFLTnNX0z1gMSQvkNIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOYu17ZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E23C4CECD;
-	Wed,  6 Nov 2024 12:52:09 +0000 (UTC)
+	 MIME-Version; b=KYemlfTlkS64AYQfVN6G2c6T9653R4epCWrlJhKBo2UF1LRCc5S8veECM8G3rlbr/t9MIwIfAhtBmGtlBmF+Z7gz20hb29I6pCyQ0t0AhWXoVinkpSahS9W8DHKec/tlcfdKPjNyPwH25wl5j6LDtw5Btfp4ECyswIuxiuSTrY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xB1Zj3sQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021F2C4CECD;
+	Wed,  6 Nov 2024 12:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897530;
-	bh=ViEwyOIs9bAMX/Lbas8x/4KDLn4HLB2Jw7lqfaFnpfU=;
+	s=korg; t=1730897138;
+	bh=J9LZVQ79rDUQ8bPVtMpjZ1uawyLXK6ObflXmhSQCFeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOYu17ZHZtP2a+CMQmOR9U+4FaBqOWyaC6Qzs5MJ8DbMfCRtk6yzQw/DdwjwVG0t1
-	 sO4fH6cuyyFgWpaFwi/TfSDnY2fXm0rebY+chpdE5zMK4WiayaA/xoevWV4QawqbVn
-	 r5S8K0H78pA7Bu0ODN7wTOKwbS5s5qtaIT2HHwlw=
+	b=xB1Zj3sQ80GxcLFVTaaJTaunHAPh+OmcGxYI91Bg3exL1XA9g0qEZh1cinn9deSlh
+	 014k3w6I9X6pQFDolfwGxzaoYLomP/ABnYj9W6rztLcJTZLEZvfE7nJy0CEJGruf9v
+	 PW3f0CVT2f9BDdyBtYnlYT5LP7IundyOpVzI1d9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 085/151] phy: qcom: qmp-usb: fix NULL-deref on runtime suspend
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 072/126] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
 Date: Wed,  6 Nov 2024 13:04:33 +0100
-Message-ID: <20241106120311.202670975@linuxfoundation.org>
+Message-ID: <20241106120308.035486282@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit bd9e4d4a3b127686efc60096271b0a44c3100061 upstream.
+commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
 
-Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-removed most users of the platform device driver data, but mistakenly
-also removed the initialisation despite the data still being used in the
-runtime PM callbacks.
+Avoid potentially crashing in the driver because of uninitialized private data
 
-Restore the driver data initialisation at probe to avoid a NULL-pointer
-dereference on runtime suspend.
-
-Apparently no one uses runtime PM, which currently needs to be enabled
-manually through sysfs, with this driver.
-
-Fixes: 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
-Cc: stable@vger.kernel.org	# 6.2
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240911115253.10920-2-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/cfg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -2173,6 +2173,7 @@ static int qmp_usb_probe(struct platform
- 		return -ENOMEM;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3001,7 +3001,8 @@ static int ieee80211_get_tx_power(struct
+ 	struct ieee80211_local *local = wiphy_priv(wiphy);
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
- 	qmp->dev = dev;
-+	dev_set_drvdata(dev, qmp);
+-	if (local->ops->get_txpower)
++	if (local->ops->get_txpower &&
++	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 		return drv_get_txpower(local, sdata, dbm);
  
- 	qmp->cfg = of_device_get_match_data(dev);
- 	if (!qmp->cfg)
+ 	if (!local->use_chanctx)
 
 
 
