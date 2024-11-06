@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF0E9BEB8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458109BEAF0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA051C236C6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B518AB24F10
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21F51F819D;
-	Wed,  6 Nov 2024 12:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3861FF057;
+	Wed,  6 Nov 2024 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/M1xwi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dku9qmR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6092B1F81A7;
-	Wed,  6 Nov 2024 12:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6621B201031;
+	Wed,  6 Nov 2024 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897144; cv=none; b=EAhh/KAl4btWZpCOaLTD8XxBhaEsM8w7WED5AmqNgKB+YNI0itmviov2X7cAibtzDRDA7Qg0+XtnajHHZRJS0itTAucCYuBOITUf91g6EG3e4iBdflWiccCgHuTgiW9O96003jFvd5/rdIOfk4yP6PjAdtejo/vHAHC9DbINuiY=
+	t=1730896800; cv=none; b=UimGw++ZoYquzV02gCB9S16XmovAZ8ja4cLc4SiSxWlurJn7xa6akRCpiiF8Q2qA7w5nTAPEtFkeW531oFCCz7QGVMjACuUXkKiovXv3+1LE6XlbXPpbn4IAUwjESuBlSA2KqDs4v4OXOckb74AggTWyqUUvUv0d6JIySYsXOmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897144; c=relaxed/simple;
-	bh=pyPAEs02w/G8cFyGPwzWFaMY+pAx61Xh5UCvWUNof6A=;
+	s=arc-20240116; t=1730896800; c=relaxed/simple;
+	bh=ScG2kMEYtLEdsDxIIPXgUvFkxRQp2dn4H5TDV2uMi4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAm9B763MXuqRGpAncgSo8TxqjVRQl64jfZcSlNzaF7d1+DIA59yxKDgJ6mdBqktmqKaSD5VZtQs1MZkJWECe4jsUetX1aR022ONiJZPfGQ8owC9RoBIfV6CBZSrs86SSs7VWiVonBNrrRO9iD9I8OfXSkxlF78JDW3MPyv+2ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/M1xwi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAE6C4CECD;
-	Wed,  6 Nov 2024 12:45:43 +0000 (UTC)
+	 MIME-Version; b=ORlTYQMs+CgNMYFvo+BAYkzLBvyuR2psk/zIM3FbOXri3/PnbkhSDNg7M1xMoMRg+Kg4cHXNm6y89WM1WTkOJAZmG+46V+2kdO8r/dblvTJHxC5cbIQEV4uaFsp+XwMq84cAQ3fvIvbX0idWZRvvtfm53xvqsUeJNOJSrKB5Ud0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dku9qmR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EE2C4CED3;
+	Wed,  6 Nov 2024 12:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897144;
-	bh=pyPAEs02w/G8cFyGPwzWFaMY+pAx61Xh5UCvWUNof6A=;
+	s=korg; t=1730896800;
+	bh=ScG2kMEYtLEdsDxIIPXgUvFkxRQp2dn4H5TDV2uMi4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/M1xwi8zyap8QeY4gS5vInigJWxQXVpMaW6haDyL/gOn2tRqBLWl9BstVAnkfPJN
-	 WYlEoHTYxTMB9EbRqniwPfkmGkRZGQf/CgxCZ+DyIIiguu/hFLM2qyYTe3AoHR42y2
-	 IAMetGq+3XReAcR9iCVrK/gcGhqSszfHmA3nxxnI=
+	b=Dku9qmR2mFdx+c6gvcZuRoXtVCbMw3MtNUf0t8MRUsINQSe4KN8BfgakXyLAauAf7
+	 wxfiHodYkOnSLmT/tp92IKOotTBtV7tEPHVrxfeVfaQDIpJbpJNDq2bqzMgzWSJXSh
+	 vkV1j4TOiuTML36EY71aCAHz/U5b/UkMYsqhpXF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Slavin Liu <slavin-ayu@qq.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/126] riscv: vdso: Prevent the compiler from inserting calls to memset()
+Subject: [PATCH 5.10 077/110] netfilter: nft_payload: sanitize offset and length before calling skb_checksum()
 Date: Wed,  6 Nov 2024 13:04:43 +0100
-Message-ID: <20241106120308.296417236@linuxfoundation.org>
+Message-ID: <20241106120305.315866897@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit bf40167d54d55d4b54d0103713d86a8638fb9290 ]
+[ Upstream commit d5953d680f7e96208c29ce4139a0e38de87a57fe ]
 
-The compiler is smart enough to insert a call to memset() in
-riscv_vdso_get_cpus(), which generates a dynamic relocation.
+If access to offset + length is larger than the skbuff length, then
+skb_checksum() triggers BUG_ON().
 
-So prevent this by using -fno-builtin option.
+skb_checksum() internally subtracts the length parameter while iterating
+over skbuff, BUG_ON(len) at the end of it checks that the expected
+length to be included in the checksum calculation is fully consumed.
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20241016083625.136311-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
+Reported-by: Slavin Liu <slavin-ayu@qq.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_payload.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 06e6b27f3bcc9..c1b68f962bada 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -18,6 +18,7 @@ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index fa64b1b8ae918..f607cd7f203ad 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -618,6 +618,9 @@ static void nft_payload_set_eval(const struct nft_expr *expr,
+ 	if ((priv->csum_type == NFT_PAYLOAD_CSUM_INET || priv->csum_flags) &&
+ 	    (priv->base != NFT_PAYLOAD_TRANSPORT_HEADER ||
+ 	     skb->ip_summed != CHECKSUM_PARTIAL)) {
++		if (offset + priv->len > skb->len)
++			goto err;
++
+ 		fsum = skb_checksum(skb, offset, priv->len, 0);
+ 		tsum = csum_partial(src, priv->len, 0);
  
- ccflags-y := -fno-stack-protector
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-+ccflags-y += -fno-builtin
- 
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday.o += -fPIC -include $(c-gettimeofday-y)
 -- 
 2.43.0
 
