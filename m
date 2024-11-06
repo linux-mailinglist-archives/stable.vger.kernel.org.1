@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B689BDCAF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9BA9BDCB1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C50D2867C7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31E62868CD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856D4217305;
-	Wed,  6 Nov 2024 02:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162B4217325;
+	Wed,  6 Nov 2024 02:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrtihutZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VoniZ/YT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1E01D4333;
-	Wed,  6 Nov 2024 02:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDFE2170DC;
+	Wed,  6 Nov 2024 02:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859228; cv=none; b=q7AEVEZuVnUu1388L7JSIt+jIQSAKWp+dUfLrfoBaFhTTsls6Qm01qRJasQuvF8BptnJYwNWVAP5c662+jV407t9kpXdv5omZhis6TWDxN6k2pyytQztkula6pv1jjWz9xw+w2SysMwXu3tY+YJE2yQnD5upntMihPuFe2quNMo=
+	t=1730859231; cv=none; b=OxcAh3vlZXhLAXiUmanDRJlyFtnNotUzwCFXVPw7ptzrxavjAUH5kN+XZ/vZaBlP/7aHDUcJx0u045CRMz67Lthn+GK0ZJNq36I01dZWu3IRnzW1r0EzAJ46GOJruuohUCsNmO+r2a/6Rh+kbQjTAPAsG+6DF97ps7a8H/Bp8EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859228; c=relaxed/simple;
-	bh=D33b50VCgzEa+JWyweTeKTqbYYtjLLTWwS2xqsGxnIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0vwD7D/j6Wn44X+YS9x/OGCCl8QrHIPf0CD+TdDmXjpzvNDIn/FGDXSwaKUoSTC9lzoUsO49kotNaiD3nTPrp/QWQoWpHqCeD2Gwq9pC6LDgmXYSt19IhEIGNIItyP26B1RAeRrNdGAy3CoIuW+1OIIdUm0Ubm9t7g1Qtf2NEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrtihutZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E69C4CECF;
-	Wed,  6 Nov 2024 02:13:46 +0000 (UTC)
+	s=arc-20240116; t=1730859231; c=relaxed/simple;
+	bh=xvlLhKk4KHx9fyVpCDzKSxZUx2DR24Xa4g3M6nL8eOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r/4XVzMrq7RdKwzX4sk8pDFvU5QLeeiOqv7Uuh2LYafDQ1GQL7SIdh27dmjoDD2T4+FIBWpbM3WFRLOZFHxm+vE4q8afVm9fuGfnIftyvnZn9WIfe9UUVftleDHGTmU7GOu3rm4/b/xU6tBCGS9yY+DMyaui0OC4CqwpancIfyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VoniZ/YT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFF8C4CECF;
+	Wed,  6 Nov 2024 02:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859227;
-	bh=D33b50VCgzEa+JWyweTeKTqbYYtjLLTWwS2xqsGxnIw=;
+	s=k20201202; t=1730859231;
+	bh=xvlLhKk4KHx9fyVpCDzKSxZUx2DR24Xa4g3M6nL8eOg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=JrtihutZCr3cr5nIGL23n03311e3oX84gIu7adLMs63lUB3C2ounkc8w4gXRpmS0/
-	 scB342tJlOX4nAZcsRQdwm2aDPaPgO5zmb8IVu+ghq59WmyElc4W9HqK9VQFHoDjPS
-	 vFW1Euk2hp1ULO6DlIO+QamtoSUmI9JJD02RWE7UF0dbVPRmw1UzPcviRSoP1WisPI
-	 87XhiOBcJaNCcNYikAWukOanLNj/0CRhUcteAKtIAvkjgw8zWVzVMfSxu3V+BWpwRG
-	 OF1zgCYOp62XfmAWpHZurc7jrBePRgJtWnJ3mIgFk4vpAtV4dyLoFB5MldZjUuOxMb
-	 SpsCS09UEMvHw==
+	b=VoniZ/YTbSbwGEmOCiN03x+AFug7M93kZsOdRyGVTE7dS/Ma4YeicOWhoEIgLODXG
+	 cz9IBabo3zbb0GMBAmjyZ4TkhkTdW9YzFGBwC7Scb/ZyaxWOulHqALAk8UJI7MEHV1
+	 XD6Gd1LWN0V9eTPxQNdkercl7V9xMOx61AFREzvgq2nybvcpmWKFbFCtyQFLQ6hnZa
+	 BIcqTzT71qafXxrp3vEoQMSqjn6MAvFwKArYVEuNeIS6GvyAUMUhjo5sXEdr8DrQ/2
+	 uxfQEL50bPCAg8aMGTRGKSaDE4m0HGWyWs7dc+/fFMTUAY6N5GNWyAUvrNyCR9fI87
+	 m2tM8t//oA9Dw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	konishi.ryusuke@gmail.com
-Cc: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-nilfs@vger.kernel.org,
+	alexander.usyskin@intel.com
+Cc: stable <stable@kernel.org>,
+	Rohit Agarwal <rohiagar@chromium.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of checked flag" failed to apply to v5.4-stable tree
-Date: Tue,  5 Nov 2024 21:13:45 -0500
-Message-ID: <20241106021345.183802-1-sashal@kernel.org>
+Subject: FAILED: Patch "mei: use kvmalloc for read buffer" failed to apply to v5.4-stable tree
+Date: Tue,  5 Nov 2024 21:13:48 -0500
+Message-ID: <20241106021348.183843-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,49 +73,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Fri, 18 Oct 2024 04:33:10 +0900
-Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checked
- flag
+From 4adf613e01bf99e1739f6ff3e162ad5b7d578d1a Mon Sep 17 00:00:00 2001
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+Date: Tue, 15 Oct 2024 15:31:57 +0300
+Subject: [PATCH] mei: use kvmalloc for read buffer
 
-Syzbot reported that in directory operations after nilfs2 detects
-filesystem corruption and degrades to read-only,
-__block_write_begin_int(), which is called to prepare block writes, may
-fail the BUG_ON check for accesses exceeding the folio/page size,
-triggering a kernel bug.
+Read buffer is allocated according to max message size, reported by
+the firmware and may reach 64K in systems with pxp client.
+Contiguous 64k allocation may fail under memory pressure.
+Read buffer is used as in-driver message storage and not required
+to be contiguous.
+Use kvmalloc to allow kernel to allocate non-contiguous memory.
 
-This was found to be because the "checked" flag of a page/folio was not
-cleared when it was discarded by nilfs2's own routine, which causes the
-sanity check of directory entries to be skipped when the directory
-page/folio is reloaded.  So, fix that.
-
-This was necessary when the use of nilfs2's own page discard routine was
-applied to more than just metadata files.
-
-Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3030dc056459 ("mei: add wrapper for queuing control commands.")
+Cc: stable <stable@kernel.org>
+Reported-by: Rohit Agarwal <rohiagar@chromium.org>
+Closes: https://lore.kernel.org/all/20240813084542.2921300-1-rohiagar@chromium.org/
+Tested-by: Brian Geffon <bgeffon@google.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Acked-by: Tomas Winkler <tomasw@gmail.com>
+Link: https://lore.kernel.org/r/20241015123157.2337026-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/mei/client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 5436eb0424bd1..10def4b559956 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 9d090fa07516f..be011cef12e5d 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -321,7 +321,7 @@ void mei_io_cb_free(struct mei_cl_cb *cb)
+ 		return;
  
- 	folio_clear_uptodate(folio);
- 	folio_clear_mappedtodisk(folio);
-+	folio_clear_checked(folio);
+ 	list_del(&cb->list);
+-	kfree(cb->buf.data);
++	kvfree(cb->buf.data);
+ 	kfree(cb->ext_hdr);
+ 	kfree(cb);
+ }
+@@ -497,7 +497,7 @@ struct mei_cl_cb *mei_cl_alloc_cb(struct mei_cl *cl, size_t length,
+ 	if (length == 0)
+ 		return cb;
  
- 	head = folio_buffers(folio);
- 	if (head) {
+-	cb->buf.data = kmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
++	cb->buf.data = kvmalloc(roundup(length, MEI_SLOT_SIZE), GFP_KERNEL);
+ 	if (!cb->buf.data) {
+ 		mei_io_cb_free(cb);
+ 		return NULL;
 -- 
 2.43.0
 
