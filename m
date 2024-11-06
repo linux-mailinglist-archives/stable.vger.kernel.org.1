@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C539BE8AC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80D09BE78F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A02A28436C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DEED1F24E0C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8ED1DF992;
-	Wed,  6 Nov 2024 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4607E1922DB;
+	Wed,  6 Nov 2024 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6suKDDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0/MdqeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D05B1DF756;
-	Wed,  6 Nov 2024 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019FB1D416E;
+	Wed,  6 Nov 2024 12:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895998; cv=none; b=PRos8BHNaZQIkXdy23vbCyUi1wUuJu2WUiJjHPvi/dsYQ+52DzgijJ6HyeGnkiVW24q/Iq7vl8mYNBVPG8EOVStnlYZjBNfGsaBi4ZwcWtXL2dWcapHWgopDq7eLJoDEGj2Q0IafdNDQJZWztz+GSjg1TJOXPyaKyIWQWxrrDPw=
+	t=1730895330; cv=none; b=fyvg1s4HyxuBIXhVZd/9I5pnJ9R1WbajO8dLz/oW35AJBJxZYUg08zopDg92fSi5bG8CHoEPRI8nJIOSfUi7OOFdRUCN7+QnvW3fAXobhDKe9tcMdL8/SWnF6aIhsLDmpuVkkg7Yoq4CuDDPPWM03XjBL+bFvCFD/cMGSUd9Mv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895998; c=relaxed/simple;
-	bh=rh9eS6AEbIRn3xFZfamEP9GXih31orkJJH+zy4YBrMQ=;
+	s=arc-20240116; t=1730895330; c=relaxed/simple;
+	bh=BaFfI2b+Y34jl6+QTSee7XhNv9usAXdenjKkARFLI0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jTZmVpQriNyI2P3/Bx5EWQEQBgcD6mKDk/esLkZ3pmyrYzEaSicBBJPH3HjkDzURyEQVMtjpa88SLDycEQeJrcTXOEMy22SZMV5pzhooFL+wkY0AKTTtWuu+GhdaBJI7IvSd2JnDSGwhBdVQvNt4tQUjBQK83WPCCT0k3xEO+/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6suKDDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C2DC4CECD;
-	Wed,  6 Nov 2024 12:26:37 +0000 (UTC)
+	 MIME-Version; b=Aakgw/Amlsx3CkRo6JbiDscjSC+OesKQOumMH02qBRciNpbbMlD4Mz9jf3cf9Q1i1qPUSHXXZTdMt2lI0cy72ZZk7ShCL+28H/UaMTKXtyXyxNt4xELr3+UsKIM9/jeQvwJKBOvvVYlVHbcybi7ICJwa6AJWC7g2swf47FBjBSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0/MdqeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3490DC4CED4;
+	Wed,  6 Nov 2024 12:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895998;
-	bh=rh9eS6AEbIRn3xFZfamEP9GXih31orkJJH+zy4YBrMQ=;
+	s=korg; t=1730895329;
+	bh=BaFfI2b+Y34jl6+QTSee7XhNv9usAXdenjKkARFLI0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6suKDDYK4Vfn1AZq5442p9yX7U55xsEoY0CrJtwIo3vkSbBJOCCA7gXoPW5B123+
-	 NabgVD46qg0A0ECHBgpnclMKLRlp/vgts25kkOfIbkajYOu6YENGt5mA2Uop4TN9DH
-	 X1ZNjCTK2xPN1IMslyGIhRGd7YUyztmGG+GIasfA=
+	b=Y0/MdqeW2gIIEgaDl3BhYEnrydgmDYOoMuLTvzeugN6VtRtaw1MH7qdF5DfmBc9oU
+	 bAs9t7D6lxPsGscQjHEGV3mFFcyXFAFeUPoZvH0LNFovn2kj8aShJWGv4x3VK2oDad
+	 XrICM+cXP0NCPQ3LtE5FkcbSQNG2BUpT2iPNf7xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d121e098da06af416d23@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 056/245] bpf, test_run: Fix LIVE_FRAME frame update after a page has been recycled
-Date: Wed,  6 Nov 2024 13:01:49 +0100
-Message-ID: <20241106120320.593132782@linuxfoundation.org>
+Subject: [PATCH 4.19 182/350] selftests: vDSO: fix vDSO symbols lookup for powerpc64
+Date: Wed,  6 Nov 2024 13:01:50 +0100
+Message-ID: <20241106120325.438309817@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit c40dd8c4732551605712985bc5b7045094c6458d ]
+[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
 
-The test_run code detects whether a page has been modified and
-re-initialises the xdp_frame structure if it has, using
-xdp_update_frame_from_buff(). However, xdp_update_frame_from_buff()
-doesn't touch frame->mem, so that wasn't correctly re-initialised, which
-led to the pages from page_pool not being returned correctly. Syzbot
-noticed this as a memory leak.
+On powerpc64, following tests fail locating vDSO functions:
 
-Fix this by also copying the frame->mem structure when re-initialising
-the frame, like we do on initialisation of a new page from page_pool.
+  ~ # ./vdso_test_abi
+  TAP version 13
+  1..16
+  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
+  # Couldn't find __kernel_gettimeofday
+  ok 1 # SKIP __kernel_gettimeofday
+  # clock_id: CLOCK_REALTIME
+  # Couldn't find __kernel_clock_gettime
+  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
+  # Couldn't find __kernel_clock_getres
+  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
+  ...
+  # Couldn't find __kernel_time
+  ok 16 # SKIP __kernel_time
+  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
 
-Fixes: e5995bc7e2ba ("bpf, test_run: fix crashes due to XDP frame overwriting/corruption")
-Fixes: b530e9e1063e ("bpf: Add "live packet" mode for XDP in BPF_PROG_RUN")
-Reported-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/bpf/20241030-test-run-mem-fix-v1-1-41e88e8cae43@redhat.com
+  ~ # ./vdso_test_getrandom
+  __kernel_getrandom is missing!
+
+  ~ # ./vdso_test_gettimeofday
+  Could not find __kernel_gettimeofday
+
+  ~ # ./vdso_test_getcpu
+  Could not find __kernel_getcpu
+
+On powerpc64, as shown below by readelf, vDSO functions symbols have
+type NOTYPE, so also accept that type when looking for symbols.
+
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
+
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
+    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
+    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
+    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
+    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
+    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
+    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
+    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
+
+Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 6d7a442ceb89b..501ec4249fedc 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -246,6 +246,7 @@ static void reset_ctx(struct xdp_page_head *head)
- 	head->ctx.data_meta = head->orig_ctx.data_meta;
- 	head->ctx.data_end = head->orig_ctx.data_end;
- 	xdp_update_frame_from_buff(&head->ctx, head->frame);
-+	head->frame->mem = head->orig_ctx.rxq->mem;
- }
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 9ef3ad3789c17..540f9a284e9f0 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -238,7 +238,8 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
  
- static int xdp_recv_frames(struct xdp_frame **frames, int nframes,
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
++		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
 -- 
 2.43.0
 
