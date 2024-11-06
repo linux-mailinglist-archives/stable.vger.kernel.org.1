@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6511E9BE82E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8456A9BEADA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A3F1C218F3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4875A281EEE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63581DF961;
-	Wed,  6 Nov 2024 12:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CC02003C3;
+	Wed,  6 Nov 2024 12:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKwzZYrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HcvZvM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D881DF73C;
-	Wed,  6 Nov 2024 12:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC311F12F9;
+	Wed,  6 Nov 2024 12:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895718; cv=none; b=L0hOB4NJ89dtHI1iaBrpZtIwoNI4Xp92kfedqYL8qR85Vcur21jupuUrQk15YROVTW2biWeBE9z889SxeB4ZNWEalWf2sMK6NrfIyJGrCmLTwumG97rvKOf3sTHQRfgMN86gp0cK0Pyvv9NK8QJfMJ71Q3w2KbGoffbx7claViw=
+	t=1730896782; cv=none; b=MAhuTKN3JBQpOIiehQac2EH2gKW/KlTv2oDTDTHeAQBgwDq9S4Uhkmlbfl2gIf2kPx1vee/ssVaVhYpdW9MiZpnHM0Q4SYyovu9gSdOuX9TKKIstVoXoQz2adQSOpl5prA+EWqtSFa08+wYyR+4yMFNrja4NlS8avkWkPsDafUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895718; c=relaxed/simple;
-	bh=1jxesrKA3MYMgEA0qCEl2m7gOvc5o2cB+au3TeQrHfQ=;
+	s=arc-20240116; t=1730896782; c=relaxed/simple;
+	bh=Xam2e1OuaPDrj2Qm3fzINC17Qob+kmQj+Iqvc+7P+9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqzi9hERcBQ0Xr1i8Ulljg1VQU92T8fGaCk+1Xd+SbX9zcpiLEYGyHY3Yl/fkl+Qhig21c2+4UW8UPAQDJTZ39NYMAQI19+oX1SZMocvTo2R76L9o1pGPwpBKZRrNOCZVC/gPNOZcMjxk+g0LVIa4Vv5FhY53SwVD0gHnofyZkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKwzZYrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6227C4CECD;
-	Wed,  6 Nov 2024 12:21:57 +0000 (UTC)
+	 MIME-Version; b=MWEAQRSyAZzV4UqJ8H0msJcj0l6arjmsvrV4+yoLy/yAjfiPqBcatoqwiFx5G8bPWj8/wmNawb0hEED6vxlcWEaDHkmKWFn3PWfZM94u7GT/aq+CpPsyO30a/s+Yf+2p+YgAW2qr5N1vQ1RoBSn6MqkbeY66KndW0cy0b+blHrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HcvZvM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C71C4CEDA;
+	Wed,  6 Nov 2024 12:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895718;
-	bh=1jxesrKA3MYMgEA0qCEl2m7gOvc5o2cB+au3TeQrHfQ=;
+	s=korg; t=1730896782;
+	bh=Xam2e1OuaPDrj2Qm3fzINC17Qob+kmQj+Iqvc+7P+9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKwzZYrrknrusKGnt8QPp5tWqpnjSw37xU4hs+ZK4iadRmsY/EwUnljRqGLPDOKGQ
-	 0E5J2D7forVtoFOhucsdWH5NpmSJKqG/Xj2VHPS1Eto13925dDn/l6fYGGjQHbSZEk
-	 lHzQoJcdwOyrqNO8vlUxphZmkPQTcui9O/twW9uk=
+	b=2HcvZvM8bJRVXLhIbjE6ikm1yNZQtQXlddXErbdN4cxIqUOyakV0lrysStW4VsM1J
+	 7rh36vjcdskzcSxriF5p6S6fPmJ957UExQZOEYVGVEJURYhy1HVjxP6yWsKfvmggPC
+	 poVQ6Un80bmvcivqzMtRR/6ZK2S8S+9SO9djXta8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Antony Antony <antony.antony@secunet.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 312/350] dt-bindings: power: Add r8a774b1 SYSC power domain definitions
+Subject: [PATCH 5.10 034/110] xfrm: respect ip protocols rules criteria when performing dst lookups
 Date: Wed,  6 Nov 2024 13:04:00 +0100
-Message-ID: <20241106120328.478044780@linuxfoundation.org>
+Message-ID: <20241106120304.134361448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das@bp.renesas.com>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit be67c41781cb4c06a4acb0b92db0cbb728e955e2 ]
+[ Upstream commit b8469721034300bbb6dec5b4bf32492c95e16a0c ]
 
-This patch adds power domain indices for the RZ/G2N (a.k.a r8a774b1)
-SoC.
+The series in the "fixes" tag added the ability to consider L4 attributes
+in routing rules.
 
-Signed-off-by: Biju Das <biju.das@bp.renesas.com>
-Link: https://lore.kernel.org/r/1567666326-27373-1-git-send-email-biju.das@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
+The dst lookup on the outer packet of encapsulated traffic in the xfrm
+code was not adapted to this change, thus routing behavior that relies
+on L4 information is not respected.
+
+Pass the ip protocol information when performing dst lookups.
+
+Fixes: a25724b05af0 ("Merge branch 'fib_rules-support-sport-dport-and-proto-match'")
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/power/r8a774b1-sysc.h | 26 +++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
- create mode 100644 include/dt-bindings/power/r8a774b1-sysc.h
+ include/net/xfrm.h      |  2 ++
+ net/ipv4/xfrm4_policy.c |  2 ++
+ net/ipv6/xfrm6_policy.c |  3 +++
+ net/xfrm/xfrm_policy.c  | 15 +++++++++++++++
+ 4 files changed, 22 insertions(+)
 
-diff --git a/include/dt-bindings/power/r8a774b1-sysc.h b/include/dt-bindings/power/r8a774b1-sysc.h
-new file mode 100644
-index 0000000000000..373736402f048
---- /dev/null
-+++ b/include/dt-bindings/power/r8a774b1-sysc.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ *
-+ * Copyright (C) 2019 Renesas Electronics Corp.
-+ */
-+#ifndef __DT_BINDINGS_POWER_R8A774B1_SYSC_H__
-+#define __DT_BINDINGS_POWER_R8A774B1_SYSC_H__
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 142967e456b18..798df30c2d253 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -328,6 +328,8 @@ struct xfrm_dst_lookup_params {
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 	u32 mark;
++	__u8 ipproto;
++	union flowi_uli uli;
+ };
+ 
+ struct net_device;
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index d1c2619e03740..5d8e38f4ecc07 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -30,6 +30,8 @@ static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
+ 	fl4->flowi4_mark = params->mark;
+ 	if (params->saddr)
+ 		fl4->saddr = params->saddr->a4;
++	fl4->flowi4_proto = params->ipproto;
++	fl4->uli = params->uli;
+ 
+ 	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 40183fdf7da0e..f5ef5e4c88df1 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -37,6 +37,9 @@ static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *p
+ 	if (params->saddr)
+ 		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
++	fl6.flowi4_proto = params->ipproto;
++	fl6.uli = params->uli;
 +
-+/*
-+ * These power domain indices match the numbers of the interrupt bits
-+ * representing the power areas in the various Interrupt Registers
-+ * (e.g. SYSCISR, Interrupt Status Register)
-+ */
-+
-+#define R8A774B1_PD_CA57_CPU0		 0
-+#define R8A774B1_PD_CA57_CPU1		 1
-+#define R8A774B1_PD_A3VP		 9
-+#define R8A774B1_PD_CA57_SCU		12
-+#define R8A774B1_PD_A3VC		14
-+#define R8A774B1_PD_3DG_A		17
-+#define R8A774B1_PD_3DG_B		18
-+#define R8A774B1_PD_A2VC1		26
-+
-+/* Always-on power area */
-+#define R8A774B1_PD_ALWAYS_ON		32
-+
-+#endif /* __DT_BINDINGS_POWER_R8A774B1_SYSC_H__ */
+ 	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index a7f8da5241ae5..a1a662a55c2ae 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -296,6 +296,21 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 	params.tos = tos;
+ 	params.oif = oif;
+ 	params.mark = mark;
++	params.ipproto = x->id.proto;
++	if (x->encap) {
++		switch (x->encap->encap_type) {
++		case UDP_ENCAP_ESPINUDP:
++			params.ipproto = IPPROTO_UDP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		case TCP_ENCAP_ESPINTCP:
++			params.ipproto = IPPROTO_TCP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		}
++	}
+ 
+ 	dst = __xfrm_dst_lookup(family, &params);
+ 
 -- 
 2.43.0
 
