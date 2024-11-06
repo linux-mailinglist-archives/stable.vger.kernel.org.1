@@ -1,50 +1,74 @@
-Return-Path: <stable+bounces-91686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84199BF375
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:42:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75499BF3A4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FD1A1F21621
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:42:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5611F23E31
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78DFB20408D;
-	Wed,  6 Nov 2024 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CEF204090;
+	Wed,  6 Nov 2024 16:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8P3uzWj"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6816013C67C
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 16:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE484039;
+	Wed,  6 Nov 2024 16:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730911357; cv=none; b=HMfTDnPAVMUJDkeTAdJ9vcKb+qrspPg9Q4HzFvfxzkaykq6M2XtKMyYsi60RfcgSfcSWeJuE/WzGRbvUpFETL3Az5aVrEtVzuA3szOYVj+enezP00b8qvOU4XHeNvII6+1outMT9UOYXV8Kk+p1xJO/8Z0R1d0YpgPRoobC+278=
+	t=1730911994; cv=none; b=KSHyunQ6S7Vmq+TK2k+zsqYxWTwLIXZrO1pOiSZfIvRF3hIQmb4OyOgBlyFXY8Ia9dD0UnHGrZXewyQ1r+83DX9mqhk6VBSG9jmKwSPMrN7+HA2aomDr2TJUbDS9ypxAuqwIo/5r3vDWK4ogKy44dkFvqzDfoprI6/KBAcfS3Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730911357; c=relaxed/simple;
-	bh=J05UC5jAyhKIHR89QRoV6TOinAB1UBpSuX8cAseNo8Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=odfF9zq9GXwJHzxk19lKDalDYhGYe7kYkdUEUt2PMSL8bvZz7pJwbyeemGK6lyNx1AKmqn76Tkh3Xl9AUlAcAZRG8fRkTE+5KkVWLl4gOFxuUpZS241FR4dJwX8jgb6ZQFou9kIBKh8TWztLgv3g8/6ZuLANv6H6s9PEwapo4Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87D131063;
-	Wed,  6 Nov 2024 08:43:04 -0800 (PST)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9F4673F528;
-	Wed,  6 Nov 2024 08:42:33 -0800 (PST)
-From: Mark Rutland <mark.rutland@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: ardb@kernel.org,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	maz@kernel.org,
+	s=arc-20240116; t=1730911994; c=relaxed/simple;
+	bh=2xtSNP79Z+OcH6i5Q5Uvg2EduBSaA1/JfcXdLbWhHp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OEBjLu0xz0qIxy0oMJZzlcKM75mNAxvAAwm7AdHuurXt3I3jZVeAi6ct3eW2ydQp0M0D7aWhV3SqYoLk0Qd4nwzPjHeGkK9nVBxN0Dz1avzp5vM41DUflgVWu0KbGHRHXDqUrpOfTaYvYUUPz8Ycv0BASrRRTJGtJK6I8Da9VNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8P3uzWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491C2C4CEC6;
+	Wed,  6 Nov 2024 16:53:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730911993;
+	bh=2xtSNP79Z+OcH6i5Q5Uvg2EduBSaA1/JfcXdLbWhHp4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=l8P3uzWj1HyOqlbDZfRwAbr83eq6Bxwf1fj1MeSmmXknp9ejaLgcHqGyNomcQSFSn
+	 vHkWQRzVLY8qg/FuyzKVbxSKDaceokh/17ynDBIJTaA0r5oi4Li6U/HIbTs99Ihqpl
+	 U3dIQJP83n/67F4SOrb2MTjbEdROIY8Y6301eErQV9/4bGPED5myu7AI8FpfeBtGEH
+	 kEUiZH0lzHSmY/W5rgA1sQUE8oGlji5Oi4Wun0Yg2N5zJjEVHR3noT9CUXjPtFkiEB
+	 m8+T5vBFYYQxlRTei8qkY9MjSbzcyFY7zNEgWp/9QzPrPQIEOQECMVFkK+hi0CowsV
+	 iE4A52eoLzvrg==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
 	stable@vger.kernel.org,
-	will@kernel.org
-Subject: [PATCH] arm64: Kconfig: Make SME depend on BROKEN for now
-Date: Wed,  6 Nov 2024 16:42:20 +0000
-Message-Id: <20241106164220.2789279-1-mark.rutland@arm.com>
-X-Mailer: git-send-email 2.30.2
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hagar@microsoft.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 5.15 00/73] 5.15.171-rc1 review
+Date: Wed,  6 Nov 2024 08:53:11 -0800
+Message-Id: <20241106165311.8008-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,55 +77,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Although support for SME was merged in v5.19, we've since uncovered a
-number of issues with the implementation, including issues which might
-corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
-patches to address some of these issues, ongoing review has highlighted
-additional functional problems, and more time is necessary to analyse
-and fix these.
+Hello,
 
-For now, mark SME as BROKEN in the hope that we can fix things properly
-in the near future. As SME is an OPTIONAL part of ARMv9.2+, and there is
-very little extant hardware, this should not adversely affect the vast
-majority of users.
+On Wed, 6 Nov 2024 13:05:04 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19
+> This is the start of the stable review cycle for the 5.15.171 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
+> Anything received after that time might be too late.
+
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/damonitor/damon-tests/tree/next/corr
+[2] 7a95f8fff07f ("Linux 5.15.171-rc1")
+
+Thanks,
+SJ
+
+[...]
+
 ---
- arch/arm64/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
 
-Catalin, Will, if we take this, the minimal set of other fixes necessary
-for now is:
-
-* "arm64/sve: Discard stale CPU state when handling SVE traps"
-  https://lore.kernel.org/linux-arm-kernel/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org/
-  https://lore.kernel.org/linux-arm-kernel/ZypuQNhWHKut8mLl@J2N7QTR9R3.cambridge.arm.com/
-  (already queued by Will in for-next/fixes)
-
-* "arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint"
-  https://lore.kernel.org/linux-arm-kernel/20241106160448.2712997-1-mark.rutland@arm.com/
-
-Mark.
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 3e29b44d2d7bd..14cc81e154ee2 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2213,6 +2213,7 @@ config ARM64_SME
- 	bool "ARM Scalable Matrix Extension support"
- 	default y
- 	depends on ARM64_SVE
-+	depends on BROKEN
- 	help
- 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
- 	  execution state which utilises a substantial subset of the SVE
--- 
-2.30.2
-
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh # SKIP
+ok 12 selftests: damon-tests: build_m68k.sh # SKIP
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
