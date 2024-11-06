@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDA79BE6C9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B10F9BECA8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DA51B23A60
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10FA1C23C45
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643341DF252;
-	Wed,  6 Nov 2024 12:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1612A1F6665;
+	Wed,  6 Nov 2024 12:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWNww4Xg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJhjqH4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D11DEFF5;
-	Wed,  6 Nov 2024 12:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C910E1E1036;
+	Wed,  6 Nov 2024 12:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894825; cv=none; b=eOQlZr8258UlGDfxhC9X9QoF3d9C1DUre0i8Yh4LvoX//7BsEycL1srA8q63jdGrNyF75w4yhMvWPOXslL2YZGjJCsaf9BMXuwGf+DDJlHpwx+MEIy2l3zPdoLery2vqeSVeTrhov/2XQY7DY4EfunBIUCDVbxvncWEfwSpmpt4=
+	t=1730897847; cv=none; b=B6uhSyPqCTxYWdhkT0S35jT3JTo5Fd7Qxhvpx4t2ACKJdFq4Xud0ijckVqFlWl8OxJr21ZBNL0qAkreOKw3PEzmGV0A4GI9JUtlr4lZ/k/1Kwrw54j3TpNM+TiDBdSo7pjJLQj2fP8vw7rV1CDobbGmqyfrsxVKLMqwzlZXqiPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894825; c=relaxed/simple;
-	bh=/EeDLNZBSSKauR90LcAR96dHDp5goPASQ7C8vINy9xM=;
+	s=arc-20240116; t=1730897847; c=relaxed/simple;
+	bh=ab3CuUoOhN4/wbdHpalsAUC0VfbIBKQI3YHxf18h4K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhR3OG9IPU5LRDj5YQ6/NuOnToU5e2v5FBvkQSg3VqCy16PKlP0GhUcQnA6OnqTOTQbfheekB1icOsq8m+CEfJkrsHE1tc70mLv2Wln75Fe3G/eV92jaLGSPeYM+b+Z0aI+2/QW15TgiEo2fGzbGVaScIt6UWSMaSYu+AbjXyfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWNww4Xg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0F7C4CECD;
-	Wed,  6 Nov 2024 12:07:04 +0000 (UTC)
+	 MIME-Version; b=fa94QrAaktl7LOZnbaxx9TgtGp0WZeMxl+bGVWKm+J9PndtBXnR3KJpUABn71pRdN03Hojoq/h5PS0vj+yxpUjmVxpScgIhIBX+ARs1hjMmXMQ64iLMLoC2YXa4HzHNkxQU8PHfJ9HzRGywpZ4mF4sVgJTTFJG7Ms2+FkIHeB1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJhjqH4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C793C4CECD;
+	Wed,  6 Nov 2024 12:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894824;
-	bh=/EeDLNZBSSKauR90LcAR96dHDp5goPASQ7C8vINy9xM=;
+	s=korg; t=1730897847;
+	bh=ab3CuUoOhN4/wbdHpalsAUC0VfbIBKQI3YHxf18h4K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWNww4Xg1QoKtjSjJ5u9FTfFJRJzFb5527HmgIiHlNrhR4DFYQEQE0TyuXRXb0Ygu
-	 dDrrYFOZ2snQ4hF2MbhQeFgci6VRLI05MX4gR7OwW+2NUH5p9dkvLYXuxx/Wieqgih
-	 fa79/QeXmgWziQMWqQiBlnEKGov21/iX+38MscMM=
+	b=CJhjqH4OoIBWlvOw4El5Vo6ggOtUlUnsEQUiXeRiNDG/3ZMK1u6cYBYy8XBgOct5M
+	 0NTVOFuMnk8FcoVsXa99jlX8FBzSliWVREq/apEV/dmLETRqsl2vCSQpyOV7hCz6tn
+	 k+FolMhYyjTEL0UTkM9cRFW1D2GvaGj3Intj4USk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 005/350] net: ethernet: use ip_hdrlen() instead of bit shift
+Subject: [PATCH 5.4 040/462] netfilter: nf_tables: elements with timeout below CONFIG_HZ never expire
 Date: Wed,  6 Nov 2024 12:58:53 +0100
-Message-ID: <20241106120321.003548602@linuxfoundation.org>
+Message-ID: <20241106120332.511445727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9a039eeb71a42c8b13408a1976e300f3898e1be0 ]
+[ Upstream commit e0c47281723f301894c14e6f5cd5884fdfb813f9 ]
 
-`ip_hdr(skb)->ihl << 2` is the same as `ip_hdrlen(skb)`
-Therefore, we should use a well-defined function not a bit shift
-to find the header length.
+Element timeout that is below CONFIG_HZ never expires because the
+timeout extension is not allocated given that nf_msecs_to_jiffies64()
+returns 0. Set timeout to the minimum value to honor timeout.
 
-It also compresses two lines to a single line.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8e1102d5a159 ("netfilter: nf_tables: support timeouts larger than 23 days")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/jme.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index a5ab6f3403ae..9b2471b2a955 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -966,15 +966,13 @@ jme_udpsum(struct sk_buff *skb)
- 	if (skb->protocol != htons(ETH_P_IP))
- 		return csum;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if ((ip_hdr(skb)->protocol != IPPROTO_UDP) ||
--	    (skb->len < (ETH_HLEN +
--			(ip_hdr(skb)->ihl << 2) +
--			sizeof(struct udphdr)))) {
-+
-+	if (ip_hdr(skb)->protocol != IPPROTO_UDP ||
-+	    skb->len < (ETH_HLEN + ip_hdrlen(skb) + sizeof(struct udphdr))) {
- 		skb_reset_network_header(skb);
- 		return csum;
- 	}
--	skb_set_transport_header(skb,
--			ETH_HLEN + (ip_hdr(skb)->ihl << 2));
-+	skb_set_transport_header(skb, ETH_HLEN + ip_hdrlen(skb));
- 	csum = udp_hdr(skb)->check;
- 	skb_reset_transport_header(skb);
- 	skb_reset_network_header(skb);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 1a132b800c8c2..f125d505c4519 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3489,7 +3489,7 @@ int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result)
+ 		return -ERANGE;
+ 
+ 	ms *= NSEC_PER_MSEC;
+-	*result = nsecs_to_jiffies64(ms);
++	*result = nsecs_to_jiffies64(ms) ? : !!ms;
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
