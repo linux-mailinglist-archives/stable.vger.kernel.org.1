@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000A19BEB44
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2F69BEBE6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91230B2104A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A16AB281F5D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AD11F706D;
-	Wed,  6 Nov 2024 12:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E861F9EB4;
+	Wed,  6 Nov 2024 12:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUDukukr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8fe+68C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA41E1E25F8;
-	Wed,  6 Nov 2024 12:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EA91E008B;
+	Wed,  6 Nov 2024 12:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896954; cv=none; b=B6/i76dv6YzzabfLye2pZDI9SX1b69St9/qcNISZURT0T4hkHfI9kOYwSVV+tbmk6aFojTXB/6dW444ITOnbfmbHdGesV84JZZqqZ1yurLkkWlK0O+FmQ+iiHInV7Q6Ux6pJCk/qJho6ikaJ6xHZwhCzxwmOWcJZIEMbuZXNNZU=
+	t=1730897376; cv=none; b=Sp9WXnmv0+Z1xFamxh59GgqYMsxOJZlGYdTdJT0z4R0rRh78S4AFDRSDLDSCwfZLHEWwYM5O2BKpJ1XoQT91jwWadlix46Qi+URqTXKcPFLjuY6BsgU1YayXRUQNNrp17JFzXNxL2fe2ooFknKtHa1W0K6U/p9+wulECKglh5FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896954; c=relaxed/simple;
-	bh=Awh0X6NWgmtW5yHDNi3QuiH2RWez/3YYUe3N8I8YOsQ=;
+	s=arc-20240116; t=1730897376; c=relaxed/simple;
+	bh=bHuyH6LdK209xOYfQeKUwzEk812+hoGN5Wcziom3X4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijMNyvX77ZgImZ+8orIwFo2Xq6gScexTzhLoXVV0yYkaJnLFch1COjVW7GfUdDod7sxtGvjLeN1pvXmcOMEqYQJgkBxUB0Q4fQOIGZlmLWMsDhIOouy4V/10g1dImanmikFVqz/OWs7NZPEWgMRpC3SSo0LOTIXnVJQU083PkOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUDukukr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF2FC4CED9;
-	Wed,  6 Nov 2024 12:42:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aizMz9AQ/hSBtp07NLleRcNn2clpc+ZXyqDcQQKgRXva5BC7vcUBeWMmUmJ3eY6NMwzdm0hTtb7aOvndbpl87BLvrYaJkd/q8iaHlKsRVzEXptMyR1y9s34gHTvuVq0SGk1xbPTrAz42vO4auIu2/VftxM9huc/dNQ4OH6/HOOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8fe+68C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23FAC4CECD;
+	Wed,  6 Nov 2024 12:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896953;
-	bh=Awh0X6NWgmtW5yHDNi3QuiH2RWez/3YYUe3N8I8YOsQ=;
+	s=korg; t=1730897376;
+	bh=bHuyH6LdK209xOYfQeKUwzEk812+hoGN5Wcziom3X4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUDukukrifftMSKfPnKcjpQQG7W8vvOeqVLha4HWnmF3P2WMrngT3xNgKkBCALJoW
-	 qfCTvP2k4dE57udOdQFPIKRWkP/rva8NYwff1KGV+T/g0U42J4EPJBI7d2CRh+6mH+
-	 aUffmuTg0hf/cl9gwXQsxOs1v5Pz0GQmSo/t/nbk=
+	b=M8fe+68C5MKuDebG0Vtf5PJ+xXcF0KnE1zxIcPhqc2b3Vsk/p7zStUjOhMVxmrN8z
+	 V3dA6qTDMCuQn9Ia8aadHQPwoXSlBQ6TUF/C3KkSeeXpCvOoUUqt00kcOQ5NmdOv7K
+	 fRtrGUpyfdJR0nCsRGIMGR3O3QRZWQKxnfGxIgQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Byeonguk Jeong <jungbu2855@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/126] wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
+Subject: [PATCH 6.6 031/151] bpf: Fix out-of-bounds write in trie_get_next_key()
 Date: Wed,  6 Nov 2024 13:03:39 +0100
-Message-ID: <20241106120306.584526239@linuxfoundation.org>
+Message-ID: <20241106120309.694468735@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Byeonguk Jeong <jungbu2855@gmail.com>
 
-[ Upstream commit e50a88e5cb8792cc416866496288c5f4d1eb4b1f ]
+[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
 
-This will allow to reconnect immediately instead of leaving the
-connection in a limbo state.
+trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
+while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
+full paths from the root to leaves. For example, consider a trie with
+max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
+0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
+.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.e90531cd3a36.Iebdc9483983c0d8497f9dcf9d79ec37332a5fdcc@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
+Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Tested-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 668bb9ce293db..bf305f1e3ea1d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1348,6 +1348,13 @@ void iwl_mvm_get_acpi_tables(struct iwl_mvm *mvm)
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index d0febf07051ed..daf8ffcfcdac4 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -647,7 +647,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	if (!key || key->prefixlen > trie->max_prefixlen)
+ 		goto find_leftmost;
  
- #endif /* CONFIG_ACPI */
- 
-+static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
-+					struct ieee80211_vif *vif)
-+{
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		ieee80211_hw_restart_disconnect(vif);
-+}
-+
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-@@ -1392,10 +1399,15 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
- 		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp)
-+		if (resp) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
- 				resp);
-+
-+			ieee80211_iterate_interfaces(mvm->hw, 0,
-+						     iwl_mvm_disconnect_iterator,
-+						     mvm);
-+		}
- 	}
- }
- 
+-	node_stack = kmalloc_array(trie->max_prefixlen,
++	node_stack = kmalloc_array(trie->max_prefixlen + 1,
+ 				   sizeof(struct lpm_trie_node *),
+ 				   GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!node_stack)
 -- 
 2.43.0
 
