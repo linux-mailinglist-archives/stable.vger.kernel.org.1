@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-90452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885419BE866
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:24:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F279BEBBB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9EF41C21D4B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:24:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A86F4B23FB0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E7E1E2842;
-	Wed,  6 Nov 2024 12:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DB31EE015;
+	Wed,  6 Nov 2024 12:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQrT1A2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld2UcbF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4AB1DF251;
-	Wed,  6 Nov 2024 12:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BE41EE00F;
+	Wed,  6 Nov 2024 12:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895815; cv=none; b=BS5A8aBLmaCeHy58udRxehxlgjlBSNJgBCPTIhAEJYhlubpcrJpWMMrA1jGmEzzbhxfALs3ftiTz19GBATyX4+WqX8C4mW+7lm6xfHS6OwKjJJJ/5VHNDNGaRT7+yUCzm1I8esxQURoU8EFcsh/82uczDBvSAdgBh1qI6xKVW7w=
+	t=1730897254; cv=none; b=QyFRTJpHibTL055gqJ5e0miUlOSHddtx5pIlsHGSqjYiG4O1ai1R6Ut4nxteFkZANJpVuyUBGjzn4jk2t2glv+z1QwvP8Gv5pMrLW3rXcBXNoL9N4cCOw1yReq4s0fmFcdQsdcO3gTR6icOay5pkXpTHOelbld2ITsnD2unctuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895815; c=relaxed/simple;
-	bh=wQeXe/fd8sz6yIE/Qjpq0U8uo4+e84aW5n3c7OhC1Yg=;
+	s=arc-20240116; t=1730897254; c=relaxed/simple;
+	bh=9nJv/kUUVM4jJcMZtD8DQfUF4lseZjiXmC4hvCFKb4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d80j8ZkJ3ofNgrtyi0ePrR6GOSKuCNa7JI4FPrFkNENYcTeaGAZO9PmCWtkUNrcooSYJgvF9Wb8Z2OFXHDYazkYtsCM3zNMGwqm/UNtDGSaoCVH5iCE9aE2zR9jGLPNOhQByEtLrVTfGtD8xUAPRYROGMlgqVKADorpgENUJ6Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQrT1A2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FB0C4CED3;
-	Wed,  6 Nov 2024 12:23:34 +0000 (UTC)
+	 MIME-Version; b=HkSxFL5HLGCQx8QKMsZX9/GY0HJBlp0QujaYlvBgS/+DxAv5tpwzQI6G34AS03AUb+/tw+mKXs1/uyCdOtuL0hA1mOgGKVwOM35YhDKyP+hX4sabozUmMDLAgObfbf5epRMKxvXJ7VDOofrR7ldCFP+7ixP5U2L9CiwQ6zxcnrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld2UcbF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1361FC4CECD;
+	Wed,  6 Nov 2024 12:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895815;
-	bh=wQeXe/fd8sz6yIE/Qjpq0U8uo4+e84aW5n3c7OhC1Yg=;
+	s=korg; t=1730897253;
+	bh=9nJv/kUUVM4jJcMZtD8DQfUF4lseZjiXmC4hvCFKb4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQrT1A2nOjOQd8/erRkc4iX3EhbCu40x8Ng4+0hPtwNEvYoNo/O1tI+k7/MOW6OWZ
-	 QbCyo2l+bEngsA2fQJSuJ5qN7viMysdU1cAuJ5ttEDce/SHOSpNk9/VzXIDqjT5+Qp
-	 JHGmIUzJgt1COJyJmku1GYvocwETry9t5Ba3FZl8=
+	b=ld2UcbF56F2DFjGPkEQuYHCZS/abQnCBNlyk9nyghhGN3viXj+oxJN/AeIXIV9L3E
+	 BqglRudFxXPRsKgEFakuFMVjg9zlHxon2DWVCe0vcfvSbXO4W2QZvul4Fb9FFnaHe5
+	 QYaU/xL0I+3kESkO9hAF0tYMHYxfFmVPJT4gjxoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH 4.19 344/350] wifi: ath10k: Fix memory leak in management tx
+	stable <stable@kernel.org>,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.1 071/126] Revert "driver core: Fix uevent_show() vs driver detach race"
 Date: Wed,  6 Nov 2024 13:04:32 +0100
-Message-ID: <20241106120329.189660084@linuxfoundation.org>
+Message-ID: <20241106120308.008333876@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit e15d84b3bba187aa372dff7c58ce1fd5cb48a076 upstream.
+commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
 
-In the current logic, memory is allocated for storing the MSDU context
-during management packet TX but this memory is not being freed during
-management TX completion. Similar leaks are seen in the management TX
-cleanup logic.
+This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
 
-Kmemleak reports this problem as below,
+This commit causes a regression, so revert it for now until it can come
+back in a way that works for everyone.
 
-unreferenced object 0xffffff80b64ed250 (size 16):
-  comm "kworker/u16:7", pid 148, jiffies 4294687130 (age 714.199s)
-  hex dump (first 16 bytes):
-    00 2b d8 d8 80 ff ff ff c4 74 e9 fd 07 00 00 00  .+.......t......
-  backtrace:
-    [<ffffffe6e7b245dc>] __kmem_cache_alloc_node+0x1e4/0x2d8
-    [<ffffffe6e7adde88>] kmalloc_trace+0x48/0x110
-    [<ffffffe6bbd765fc>] ath10k_wmi_tlv_op_gen_mgmt_tx_send+0xd4/0x1d8 [ath10k_core]
-    [<ffffffe6bbd3eed4>] ath10k_mgmt_over_wmi_tx_work+0x134/0x298 [ath10k_core]
-    [<ffffffe6e78d5974>] process_scheduled_works+0x1ac/0x400
-    [<ffffffe6e78d60b8>] worker_thread+0x208/0x328
-    [<ffffffe6e78dc890>] kthread+0x100/0x1c0
-    [<ffffffe6e78166c0>] ret_from_fork+0x10/0x20
-
-Free the memory during completion and cleanup to fix the leak.
-
-Protect the mgmt_pending_tx idr_remove() operation in
-ath10k_wmi_tlv_op_cleanup_mgmt_tx_send() using ar->data_lock similar to
-other instances.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
-
-Fixes: dc405152bb64 ("ath10k: handle mgmt tx completion event")
-Fixes: c730c477176a ("ath10k: Remove msdu from idr when management pkt send fails")
-Cc: stable@vger.kernel.org
-Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Link: https://patch.msgid.link/20241015064103.6060-1-quic_mpubbise@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
+Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+Cc: stable <stable@kernel.org>
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c |    7 ++++++-
- drivers/net/wireless/ath/ath10k/wmi.c     |    2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/base/core.c   |   13 +++++--------
+ drivers/base/module.c |    4 ----
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -2655,9 +2655,14 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(s
- 				       struct sk_buff *msdu)
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -25,7 +25,6 @@
+ #include <linux/mutex.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/netdevice.h>
+-#include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+ #include <linux/sched/mm.h>
+ #include <linux/swiotlb.h>
+@@ -2559,7 +2558,6 @@ static const char *dev_uevent_name(struc
+ static int dev_uevent(struct kobject *kobj, struct kobj_uevent_env *env)
  {
- 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
-+	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
- 	struct ath10k_wmi *wmi = &ar->wmi;
+ 	struct device *dev = kobj_to_dev(kobj);
+-	struct device_driver *driver;
+ 	int retval = 0;
  
--	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	spin_lock_bh(&ar->data_lock);
-+	pkt_addr = idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	kfree(pkt_addr);
+ 	/* add device node properties if present */
+@@ -2588,12 +2586,8 @@ static int dev_uevent(struct kobject *ko
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
  
- 	return 0;
- }
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -2362,6 +2362,7 @@ static int wmi_process_mgmt_tx_comp(stru
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
- 			 msdu->len, DMA_TO_DEVICE);
- 	info = IEEE80211_SKB_CB(msdu);
-+	kfree(pkt_addr);
+-	/* Synchronize with module_remove_driver() */
+-	rcu_read_lock();
+-	driver = READ_ONCE(dev->driver);
+-	if (driver)
+-		add_uevent_var(env, "DRIVER=%s", driver->name);
+-	rcu_read_unlock();
++	if (dev->driver)
++		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
  
- 	if (status)
- 		info->flags &= ~IEEE80211_TX_STAT_ACK;
-@@ -9233,6 +9234,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_p
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
- 			 msdu->len, DMA_TO_DEVICE);
- 	ieee80211_free_txskb(ar->hw, msdu);
-+	kfree(pkt_addr);
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
+@@ -2663,8 +2657,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
- 	return 0;
- }
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -7,7 +7,6 @@
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+-#include <linux/rcupdate.h>
+ #include "base.h"
+ 
+ static char *make_driver_name(struct device_driver *drv)
+@@ -78,9 +77,6 @@ void module_remove_driver(struct device_
+ 	if (!drv)
+ 		return;
+ 
+-	/* Synchronize with dev_uevent() */
+-	synchronize_rcu();
+-
+ 	sysfs_remove_link(&drv->p->kobj, "module");
+ 
+ 	if (drv->owner)
 
 
 
