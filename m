@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330859BE9C1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:37:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBFC9BEC2D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC4F281A0F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:37:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86F891F24D39
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321061E104A;
-	Wed,  6 Nov 2024 12:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D3E1FB3D0;
+	Wed,  6 Nov 2024 12:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsjYeHzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwA809f7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1F1E103C;
-	Wed,  6 Nov 2024 12:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84E51F4725;
+	Wed,  6 Nov 2024 12:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896592; cv=none; b=GATmtra/usiQapnc9JMG/H/ZovPFJZlt4bjz9r/v4rKgQZQ4W5HznJxLyzv9TWYs9GmSaWlaTlzvpUEwfzERrbeOpl88aGKi6Y4RLkK+df43KiBWm6tg/uNHcUwqxL8WQSTiA6fyaDu/IzFec9WUwQ2iU+jE9Q8u37ZzaHoy/Fc=
+	t=1730897574; cv=none; b=fxfgW0GTnKCPA7KyUIMZl7cDICd2+3LTyC4BoPKqZFukHOJwNxf503lrw7pCaRxIjAyqwJuRMcGjy9mHL2azr3YnZ2vV0qR9hOAgKK1jgA8HX98jlhSeTHrtNqcacnDKctJ/r2NC3id7U0FTLX44I/xU/qHNlT+tq4Hw7Zn8h8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896592; c=relaxed/simple;
-	bh=fMApUoBvlRiiJG3ABqgKATOMluJBo0pa3Fe/kWshLrg=;
+	s=arc-20240116; t=1730897574; c=relaxed/simple;
+	bh=9iNYxRXqoocMOqlW5Ftyg1ur55lMKDZ4JCn1Dkx05xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfpX+k9uLDMYwp5e5/voF0XaYfAEkwY+QJ8RmWI105qQZtZswgD42x0+LvmciSj7d9j+9YB7BTYhYfAdNz29bcbEtVn/NNXRq++kK7hg+/82DCKJ8Ju4LshIzneKlPlqzcgwAORs2Yxd0xdrPhCuxc29yWDYwJ/P09ZZX/p7pcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsjYeHzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FDEC4CECD;
-	Wed,  6 Nov 2024 12:36:31 +0000 (UTC)
+	 MIME-Version; b=cllxH7/tF/4LzvVazdXxMmmRzZ+MpeUohuQQW+32mWzefR94TZnAa9FuCxIIltBVcMdI3CdMrOmB+B57RFNc2PZmDw/kiWfq56WShK5XphaAFtjFNkWTrUlj3Ktom7ta47F1qaFiUdyHgY42c2wH0rbh8jUqfb06xroG3otX2ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwA809f7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36057C4CECD;
+	Wed,  6 Nov 2024 12:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896591;
-	bh=fMApUoBvlRiiJG3ABqgKATOMluJBo0pa3Fe/kWshLrg=;
+	s=korg; t=1730897574;
+	bh=9iNYxRXqoocMOqlW5Ftyg1ur55lMKDZ4JCn1Dkx05xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsjYeHzm+p/v5Au7K2x++L98W7VfdHQ/kA4R7s+D9sokhkaqxn36DThsw5KzDwrDD
-	 J+ylIcNuTpOx9VQhvPCf9S/Y1O7ZhZg1jAFtY09rsPrh5f3YOBuzsVfoAzI/j0t5U1
-	 yzrpGSDnmtT8efDW93AVHvEAzyWB0TEoArX9IhKQ=
+	b=nwA809f7stPfZsUIiwSzcST0AqmmXpnezdmAeZDTQyyL7f97aJNHgVHJOP4NrM4dS
+	 ZUyRTVrepfkz4ghVCNS3TY2FLZ1oOWlZrhyLGWf2eax1jPw4KMBNn1ui9VyJXmFKhp
+	 v8nsoNIKK0AwExjIQ8G19A3x4SLZ9VErR1+JNUCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 234/245] drm/xe: Support nomodeset kernel command-line option
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 099/151] iio: gts-helper: Fix memory leaks in iio_gts_build_avail_scale_table()
 Date: Wed,  6 Nov 2024 13:04:47 +0100
-Message-ID: <20241106120325.024596860@linuxfoundation.org>
+Message-ID: <20241106120311.598152912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 014125c64d09e58e90dde49fbb57d802a13e2559 upstream.
+commit 691e79ffc42154a9c91dc3b7e96a307037b4be74 upstream.
 
-Setting 'nomodeset' on the kernel command line disables all graphics
-drivers with modesetting capabilities, leaving only firmware drivers,
-such as simpledrm or efifb.
+modprobe iio-test-gts and rmmod it, then the following memory leak
+occurs:
 
-Most DRM drivers automatically support 'nomodeset' via DRM's module
-helper macros. In xe, which uses regular module_init(), manually call
-drm_firmware_drivers_only() to test for 'nomodeset'. Do not register
-the driver if set.
+	unreferenced object 0xffffff80c810be00 (size 64):
+	  comm "kunit_try_catch", pid 1654, jiffies 4294913981
+	  hex dump (first 32 bytes):
+	    02 00 00 00 08 00 00 00 20 00 00 00 40 00 00 00  ........ ...@...
+	    80 00 00 00 00 02 00 00 00 04 00 00 00 08 00 00  ................
+	  backtrace (crc a63d875e):
+	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
+	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
+	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
+	    [<0000000071bb4b09>] 0xffffffdf052a62e0
+	    [<000000000315bc18>] 0xffffffdf052a6488
+	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000f505065d>] kthread+0x2e8/0x374
+	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cbfe9e70 (size 16):
+	  comm "kunit_try_catch", pid 1658, jiffies 4294914015
+	  hex dump (first 16 bytes):
+	    10 00 00 00 40 00 00 00 80 00 00 00 00 00 00 00  ....@...........
+	  backtrace (crc 857f0cb4):
+	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
+	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
+	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
+	    [<0000000071bb4b09>] 0xffffffdf052a62e0
+	    [<000000007d089d45>] 0xffffffdf052a6864
+	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000f505065d>] kthread+0x2e8/0x374
+	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
+	......
 
-v2:
-- use xe's init table (Lucas)
-- do NULL test for init/exit functions
+It includes 5*5 times "size 64" memory leaks, which correspond to 5 times
+test_init_iio_gain_scale() calls with gts_test_gains size 10 (10*size(int))
+and gts_test_itimes size 5. It also includes 5*1 times "size 16"
+memory leak, which correspond to one time __test_init_iio_gain_scale()
+call with gts_test_gains_gain_low size 3 (3*size(int)) and gts_test_itimes
+size 5.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240827121003.97429-1-tzimmermann@suse.de
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The reason is that the per_time_gains[i] is not freed which is allocated in
+the "gts->num_itime" for loop in iio_gts_build_avail_scale_table().
+
+Cc: stable@vger.kernel.org
+Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20241011095512.3667549-1-ruanjinjie@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_module.c |   39 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/iio/industrialio-gts-helper.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_module.c
-+++ b/drivers/gpu/drm/xe/xe_module.c
-@@ -8,6 +8,8 @@
- #include <linux/init.h>
- #include <linux/module.h>
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+index 59d7615c0f56..7326c7949244 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -307,6 +307,8 @@ static int iio_gts_build_avail_scale_table(struct iio_gts *gts)
+ 	if (ret)
+ 		goto err_free_out;
  
-+#include <drm/drm_module.h>
-+
- #include "xe_drv.h"
- #include "xe_hw_fence.h"
- #include "xe_pci.h"
-@@ -61,6 +63,14 @@ module_param_named_unsafe(wedged_mode, x
- MODULE_PARM_DESC(wedged_mode,
- 		 "Module's default policy for the wedged mode - 0=never, 1=upon-critical-errors[default], 2=upon-any-hang");
++	for (i = 0; i < gts->num_itime; i++)
++		kfree(per_time_gains[i]);
+ 	kfree(per_time_gains);
+ 	gts->per_time_avail_scale_tables = per_time_scales;
  
-+static int xe_check_nomodeset(void)
-+{
-+	if (drm_firmware_drivers_only())
-+		return -ENODEV;
-+
-+	return 0;
-+}
-+
- struct init_funcs {
- 	int (*init)(void);
- 	void (*exit)(void);
-@@ -68,6 +78,9 @@ struct init_funcs {
- 
- static const struct init_funcs init_funcs[] = {
- 	{
-+		.init = xe_check_nomodeset,
-+	},
-+	{
- 		.init = xe_hw_fence_module_init,
- 		.exit = xe_hw_fence_module_exit,
- 	},
-@@ -85,15 +98,35 @@ static const struct init_funcs init_func
- 	},
- };
- 
-+static int __init xe_call_init_func(unsigned int i)
-+{
-+	if (WARN_ON(i >= ARRAY_SIZE(init_funcs)))
-+		return 0;
-+	if (!init_funcs[i].init)
-+		return 0;
-+
-+	return init_funcs[i].init();
-+}
-+
-+static void xe_call_exit_func(unsigned int i)
-+{
-+	if (WARN_ON(i >= ARRAY_SIZE(init_funcs)))
-+		return;
-+	if (!init_funcs[i].exit)
-+		return;
-+
-+	init_funcs[i].exit();
-+}
-+
- static int __init xe_init(void)
- {
- 	int err, i;
- 
- 	for (i = 0; i < ARRAY_SIZE(init_funcs); i++) {
--		err = init_funcs[i].init();
-+		err = xe_call_init_func(i);
- 		if (err) {
- 			while (i--)
--				init_funcs[i].exit();
-+				xe_call_exit_func(i);
- 			return err;
- 		}
- 	}
-@@ -106,7 +139,7 @@ static void __exit xe_exit(void)
- 	int i;
- 
- 	for (i = ARRAY_SIZE(init_funcs) - 1; i >= 0; i--)
--		init_funcs[i].exit();
-+		xe_call_exit_func(i);
- }
- 
- module_init(xe_init);
+-- 
+2.47.0
+
 
 
 
