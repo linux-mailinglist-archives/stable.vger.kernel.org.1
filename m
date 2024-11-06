@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-91053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136F79BEC36
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379259BE9BB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBAE7285980
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614DC1C231B9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DDF1E1328;
-	Wed,  6 Nov 2024 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B16C1E008C;
+	Wed,  6 Nov 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oE8vR53V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O81u2m2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FBB1FB3E1;
-	Wed,  6 Nov 2024 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0735A1DFE34;
+	Wed,  6 Nov 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897601; cv=none; b=Jj5EYrL/tOKpWxc/Gp3UgVCg4tRAZMS2mHwQv6lUy69u0MWBFtZ+T03GiQclLVyXMVac54htszjsD4TnFpuvxtQ5apbSu71HWqnQsYa8REBzxjPI2QtpFCp7n+mJGIqSuQE3yCw7y22d7lM3BEDKYgmUP9qEWzypHzuABrJnCXs=
+	t=1730896586; cv=none; b=c0xAVuGcUl+e3UJUHAkyEkzCEoITTiytgx1q06EsV79MszA9jdnVLpu4n8w3jvg1vqL3QxRGpfnWcARzg6BVpYpk1PhQeblOVH+7fUrWR4VXgeM57XwXzP5fhjgz/9h6ECqIV3L+CPNw41Y1vd/P+pu1MtpK5wJ66md1kinwDAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897601; c=relaxed/simple;
-	bh=nhlbmUuiV6hCI0s7r4xBYJnxn1eEjEaFEtdpDAwMPXI=;
+	s=arc-20240116; t=1730896586; c=relaxed/simple;
+	bh=Sy8DeK9o28pwcnXB3fPbe1H9HLaL4BnB7kvTo7YavFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCGiK5prpHCxX+vslGg5v01Z5hEHRcjO9yAsYCv7GLhVZfWtXNVGdgOQ7LHpOCVIE2rfYshmBuhAmgBjIRd5qmRrtPuHeg+pLtiww1THu/Q9qAkyK5tE4f9i5FmKfHMp6cZkt4ODXt4L5a5UIGkkL8UV7UdXxpsgFFUCUyYybQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oE8vR53V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE90AC4CECD;
-	Wed,  6 Nov 2024 12:53:20 +0000 (UTC)
+	 MIME-Version; b=DDLJP3HkRQR5l84wlH2MLEM3v/6KjWt3+DUjJ6XqQOZ/vF4MFMl9ac+BHp27ny9rS7VYg4OvNMKw8r769kHvQwSNSM6DERHYBH3AUKxoTAUh9ro/rx+FN86rT8XwgcW0eun+Nq9UZUDe7he81nXKjh2RUsZ4BoppP6XaJGPTkNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O81u2m2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FD7C4CED3;
+	Wed,  6 Nov 2024 12:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897601;
-	bh=nhlbmUuiV6hCI0s7r4xBYJnxn1eEjEaFEtdpDAwMPXI=;
+	s=korg; t=1730896585;
+	bh=Sy8DeK9o28pwcnXB3fPbe1H9HLaL4BnB7kvTo7YavFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oE8vR53VrqOaqzbtD4rSXMtlZnIHZzKIqLTOKEbvrQ/V/moBMk8oyBJMRLuX7TmJg
-	 iJmHrckkusFWBWJ92D8oMlgV71t61N7XcRMFKlPimkZpeQm4PtCtSO1BDu0KlB+LKn
-	 0e3cwq0NYRTnrlrBymTBZ2dmuwh4uqwILo3Jkr5s=
+	b=O81u2m2Zt8DFUUrJu8QEJQfblz3Jh0oP9gJPJs/3py9rzZm94M7YQv8agJWbk4yiK
+	 ezy4FlnUdiDwexiuU4Lkq3N9wg0/UwecxpEfynLyLewAsibKLYJt0ieEOxu982rMO9
+	 M+vMR1E+HKyjNM0jetAEeLrFUt5PTILsyk1lllG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 107/151] mmc: sdhci-pci-gli: GL9767: Fix low power mode on the set clock function
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 242/245] drm/amdgpu/swsmu: fix ordering for setting workload_mask
 Date: Wed,  6 Nov 2024 13:04:55 +0100
-Message-ID: <20241106120311.814798695@linuxfoundation.org>
+Message-ID: <20241106120325.228469649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 8c68b5656e55e9324875881f1000eb4ee3603a87 upstream.
+commit b932d5ad9257f262a0bfd1bd7146120b0adc11a7 upstream.
 
-On sdhci_gl9767_set_clock(), the vendor header space(VHS) is read-only
-after calling gl9767_disable_ssc_pll() and gl9767_set_ssc_pll_205mhz().
-So the low power negotiation mode cannot be enabled again.
-Introduce gl9767_set_low_power_negotiation() function to fix it.
+No change in functionality for the current code, but we
+need to set the index properly before changing it if we
+ever use a non-0 index.
 
-The explanation process is as below.
-
-static void sdhci_gl9767_set_clock()
-{
-	...
-        gl9767_vhs_write();
-        ...
-	value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-        pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <--- (a)
-
-        gl9767_disable_ssc_pll(); <--- (b)
-        sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-
-        if (clock == 0)
-                return;  <-- (I)
-
-	...
-        if (clock == 200000000 && ios->timing == MMC_TIMING_UHS_SDR104) {
-		...
-                gl9767_set_ssc_pll_205mhz(); <--- (c)
-        }
-	...
-	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-        pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value); <-- (II)
-        gl9767_vhs_read();
-}
-
-(a) disable low power negotiation mode. When return on (I), the low power
-mode is disabled.  After (b) and (c), VHS is read-only, the low power mode
-cannot be enabled on (II).
-
-Reported-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Fixes: d2754355512e ("mmc: sdhci-pci-gli: Set SDR104's clock to 205MHz and enable SSC for GL9767")
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Tested-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20241025060017.1663697-1-benchuanggli@gmail.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |   35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -902,28 +902,40 @@ static void gl9767_disable_ssc_pll(struc
- 	gl9767_vhs_read(pdev);
- }
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1257,7 +1257,6 @@ static int smu_sw_init(void *handle)
+ 	atomic_set(&smu->smu_power.power_gate.vpe_gated, 1);
+ 	atomic_set(&smu->smu_power.power_gate.umsch_mm_gated, 1);
  
-+static void gl9767_set_low_power_negotiation(struct pci_dev *pdev, bool enable)
-+{
-+	u32 value;
-+
-+	gl9767_vhs_write(pdev);
-+
-+	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
-+	if (enable)
-+		value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	else
-+		value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
-+
-+	gl9767_vhs_read(pdev);
-+}
-+
- static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
- {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
- 	struct mmc_ios *ios = &host->mmc->ios;
- 	struct pci_dev *pdev;
--	u32 value;
- 	u16 clk;
+-	smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT] = 0;
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_FULLSCREEN3D] = 1;
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_POWERSAVING] = 2;
+@@ -1265,6 +1264,7 @@ static int smu_sw_init(void *handle)
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_VR] = 4;
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_COMPUTE] = 5;
+ 	smu->workload_prority[PP_SMC_POWER_PROFILE_CUSTOM] = 6;
++	smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
  
- 	pdev = slot->chip->pdev;
- 	host->mmc->actual_clock = 0;
- 
--	gl9767_vhs_write(pdev);
--
--	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
--	value |= PCIE_GLI_9767_CFG_LOW_PWR_OFF;
--	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
--
-+	gl9767_set_low_power_negotiation(pdev, false);
- 	gl9767_disable_ssc_pll(pdev);
- 	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
- 
--	if (clock == 0)
-+	if (clock == 0) {
-+		gl9767_set_low_power_negotiation(pdev, true);
- 		return;
-+	}
- 
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	if (clock == 200000000 && ios->timing == MMC_TIMING_UHS_SDR104) {
-@@ -932,12 +944,7 @@ static void sdhci_gl9767_set_clock(struc
- 	}
- 
- 	sdhci_enable_clk(host, clk);
--
--	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
--	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
--	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
--
--	gl9767_vhs_read(pdev);
-+	gl9767_set_low_power_negotiation(pdev, true);
- }
- 
- static void gli_set_9767(struct sdhci_host *host)
+ 	smu->workload_setting[0] = PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
+ 	smu->workload_setting[1] = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
 
 
 
