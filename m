@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C639BEB81
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 256D09BE82C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A671C21CD0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D601C2337C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B4D1F80B2;
-	Wed,  6 Nov 2024 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA121DF75C;
+	Wed,  6 Nov 2024 12:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLIoiMhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9/7fViG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47EA1DF97A;
-	Wed,  6 Nov 2024 12:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51C1DF740;
+	Wed,  6 Nov 2024 12:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897123; cv=none; b=DJJMn5lnZli84LYea5MlbtLVHdnOMLbRo77s0BVZXhXvwiEgouL0/ogwQ8LWKj0nfqtrCPBkWQHp/K7KSTfJVzSP1WM/GSBvp6L8emvuXEBqrVno2Pb7Xv1XYe2aEuL3N5gsC2eSjo7G5gYf6DJcq5YoFn8v3GDCOYxCdXzWDHg=
+	t=1730895715; cv=none; b=Vn+qPFmzc666uFiPXT0rrVsHtbWutQr9Ov1ynwh7Lct0sHLD6DYHlBdbPvJz9rL5rzuOYnQUYzI8VwJ2HLxysxM7PZViGj8ouQ4qirK36vqQ5ZIYRsRcYUR1THCx2cFC+7EFj2w9MNkVxB73p29cQKPUdGp6EMeKSjynSwyrANI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897123; c=relaxed/simple;
-	bh=dL1qGhqMkDku8T8q7pT9Mw3rCBaiH7GXsR4rk7InsqU=;
+	s=arc-20240116; t=1730895715; c=relaxed/simple;
+	bh=f5VShkQ6aM0s/iKxdXrpJab0j6gr9vpQc27BtoARLWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SR6BknTwoJJZuq6CRGHvIgzsiEs+Ta5LHz10qzTjSHVLNI0gypxCWRq5184n6u64W+9cVx+tpVmuQUeRuRzORBIGa4Ug/5iXcZ4k7BlLqYw3wPKIbT935tvPQ/rpjQWsxaj4muQ8PPYKLZa7pxr13ne8bok1g2ydpVY5c1FWsV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLIoiMhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C348C4CECD;
-	Wed,  6 Nov 2024 12:45:23 +0000 (UTC)
+	 MIME-Version; b=E34wgMux3BB8Z6ilB1RHOhinEKyiXL6cbmr301/e2+fe3/xJ407mFhp834olnjtic2d8F+PPLlGVxzwyDJsk2jbVXkL3D0RVPtxg/nxRimpUa+9x+iJVelqwtVKteVOArSlIW10m/AhjRnViBmUTUGj9kAd+80Bm3h5LsmM459A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9/7fViG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015E4C4CECD;
+	Wed,  6 Nov 2024 12:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897123;
-	bh=dL1qGhqMkDku8T8q7pT9Mw3rCBaiH7GXsR4rk7InsqU=;
+	s=korg; t=1730895715;
+	bh=f5VShkQ6aM0s/iKxdXrpJab0j6gr9vpQc27BtoARLWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLIoiMhcpuSBQ/SVB4W2XSq4lkjpTmiyZQV5IgEzoB5mgLaCDlX0a88wWjgnBrbGf
-	 lU0vOnUnyY0dPpkPDGOIFavWCR+LCu4ns7WjqnA9AUdUCIpc9agqwVjOnEcnwRXHyv
-	 SU7u33FWRneWRnLLXVDKXd2QaXP3jIV7sewRiLnw=
+	b=t9/7fViG+gSIbRf1Ri0W4GZXvN0n746bUvzIovIr1xSCefV1UvqfoYiPOf0vGSG8s
+	 lmpWSZzsDy6Bf1fCjshS4J4hNNrl1v9yzb+0gvGZXO1GQ6XoMmWVfbsERw7gVLehx9
+	 HCTkNGdNhmallqCOGmIrW/wuavi7Ruz26lTAsX6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/126] iomap: convert iomap_unshare_iter to use large folios
+Subject: [PATCH 4.19 311/350] be2net: fix potential memory leak in be_xmit()
 Date: Wed,  6 Nov 2024 13:03:59 +0100
-Message-ID: <20241106120307.141018181@linuxfoundation.org>
+Message-ID: <20241106120328.456768331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit a5f31a5028d1e88e97c3b6cdc3e3bf2da085e232 ]
+[ Upstream commit e4dd8bfe0f6a23acd305f9b892c00899089bd621 ]
 
-Convert iomap_unshare_iter to create large folios if possible, since the
-write and zeroing paths already do that.  I think this got missed in the
-conversion of the write paths that landed in 6.6-rc1.
+The be_xmit() returns NETDEV_TX_OK without freeing skb
+in case of be_xmit_enqueue() fails, add dev_kfree_skb_any() to fix it.
 
-Cc: ritesh.list@gmail.com, willy@infradead.org
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
+Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Message-ID: <20241015144802.12150-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 1833608f39318..674ac79bdb456 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1090,7 +1090,6 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
- 	loff_t pos = iter->pos;
- 	loff_t length = iomap_length(iter);
--	long status = 0;
- 	loff_t written = 0;
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index d0d9a420f557e..8215bd1ca022f 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1386,10 +1386,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	be_get_wrb_params_from_skb(adapter, skb, &wrb_params);
  
- 	/* don't bother with blocks that are not shared to start with */
-@@ -1101,28 +1100,33 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- 		return length;
+ 	wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+-	if (unlikely(!wrb_cnt)) {
+-		dev_kfree_skb_any(skb);
+-		goto drop;
+-	}
++	if (unlikely(!wrb_cnt))
++		goto drop_skb;
  
- 	do {
--		unsigned long offset = offset_in_page(pos);
--		unsigned long bytes = min_t(loff_t, PAGE_SIZE - offset, length);
- 		struct folio *folio;
-+		int status;
-+		size_t offset;
-+		size_t bytes = min_t(u64, SIZE_MAX, length);
+ 	/* if os2bmc is enabled and if the pkt is destined to bmc,
+ 	 * enqueue the pkt a 2nd time with mgmt bit set.
+@@ -1398,7 +1396,7 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
+ 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+ 		if (unlikely(!wrb_cnt))
+-			goto drop;
++			goto drop_skb;
+ 		else
+ 			skb_get(skb);
+ 	}
+@@ -1412,6 +1410,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		be_xmit_flush(adapter, txo);
  
- 		status = iomap_write_begin(iter, pos, bytes, &folio);
- 		if (unlikely(status))
- 			return status;
--		if (iter->iomap.flags & IOMAP_F_STALE)
-+		if (iomap->flags & IOMAP_F_STALE)
- 			break;
- 
--		status = iomap_write_end(iter, pos, bytes, bytes, folio);
--		if (WARN_ON_ONCE(status == 0))
-+		offset = offset_in_folio(folio, pos);
-+		if (bytes > folio_size(folio) - offset)
-+			bytes = folio_size(folio) - offset;
-+
-+		bytes = iomap_write_end(iter, pos, bytes, bytes, folio);
-+		if (WARN_ON_ONCE(bytes == 0))
- 			return -EIO;
- 
- 		cond_resched();
- 
--		pos += status;
--		written += status;
--		length -= status;
-+		pos += bytes;
-+		written += bytes;
-+		length -= bytes;
- 
- 		balance_dirty_pages_ratelimited(iter->inode->i_mapping);
--	} while (length);
-+	} while (length > 0);
- 
- 	return written;
- }
+ 	return NETDEV_TX_OK;
++drop_skb:
++	dev_kfree_skb_any(skb);
+ drop:
+ 	tx_stats(txo)->tx_drv_drops++;
+ 	/* Flush the already enqueued tx requests */
 -- 
 2.43.0
 
