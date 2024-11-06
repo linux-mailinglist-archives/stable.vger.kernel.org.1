@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB3A9BE790
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E089BE8AE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96B01F240BB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCDA284040
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9681DEFF5;
-	Wed,  6 Nov 2024 12:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586651DF736;
+	Wed,  6 Nov 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xxi3wb4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3zQySAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20E51DED40;
-	Wed,  6 Nov 2024 12:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151061DED58;
+	Wed,  6 Nov 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895333; cv=none; b=IgomDF4bqMgp4WaNDu/8rL/+KCX56L/MDzZUP3g/Q7cwyBZTbhdk6hcOXrwnL3an0CosZtbx0iuL88+V8BLozsWdqriWgvZ9rnVHpGcONa8tOweNOP/bQLZvz8C+9OAB81P2nbcD/Z3PE+PGmTAtzJtnSSqccszv+BP95B/oODk=
+	t=1730896007; cv=none; b=e0StsFKPzXb3KyrBYsBtej7iH6O/2lBGJ+6tH090sY+/4I4WIoxe117KVBT1/s+lrX4Lyf21J5GvMGOywa6x8cNLrpqzRgeF7tU5KFOpmLeYzwoTH5APCu1Iz5gn1Ve5nAa9hdOj+e2ydD0f0PVP/FcWIQF4DyCodquUMKx7s5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895333; c=relaxed/simple;
-	bh=qTQ3S5bh7Tde7ABu+v+yIyH4pSyf25JL2WmouV1M9VM=;
+	s=arc-20240116; t=1730896007; c=relaxed/simple;
+	bh=N0YalMcyiL1S+CEWGqqcwHaAwYDdNzzE9BJHS3ZD94E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRdVzR7627+lvU78abrMAwvsjnxPeU9e9A1+LE0x6fUqILaivFb3KPiYBettln6kxRoPRodFWYK+nbSmlb8a9Yv+YC2DbLXO6nFduh0ZcIyDXMWPIniFZrTWwvkBK6KuX8BU8Rvu56xH4by0fFn36qmbMqjzDlvOKKZOxBPJK8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xxi3wb4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F43C4CECD;
-	Wed,  6 Nov 2024 12:15:31 +0000 (UTC)
+	 MIME-Version; b=s8/jRqp6uCUQ28+FqlJmmjHv/EYaqaC4WXyJNivIC+hCQZGDMOlLQmwR95/C0wmZtwbJFHKeK7b8Y2fUk86b/X+UOGqNETPovhP2wVLnef60FPDKafjpcJ5N6XuewL2AXljFLArfBaWmF8ZCg+aWfanwZEsjNzR5jYEhxZkJb2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3zQySAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4C9C4CECD;
+	Wed,  6 Nov 2024 12:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895332;
-	bh=qTQ3S5bh7Tde7ABu+v+yIyH4pSyf25JL2WmouV1M9VM=;
+	s=korg; t=1730896006;
+	bh=N0YalMcyiL1S+CEWGqqcwHaAwYDdNzzE9BJHS3ZD94E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xxi3wb4RYpW80v1i5zLalVKlLTpw1M/MHQl7ZTk50StVYQ8Ha9Y2Vix0JQkDBz/j2
-	 /sVDGmNADUwe7p6hg79H2b025DnedhE1njRCzzqKrl/C3ah720SWxar0nt8WfupQVV
-	 o5WRVlOGrC6SS1fnvghAcLe90WWKAgeuQGHedb7E=
+	b=M3zQySAAxRwvC6AYCKUCDROgwDlPfuEqWmx6eYQIPr0jBvU0wwttvif+LjXJK3gKt
+	 NCmLKEii7Shu/YHpoaDL2YAZTxgjjY30loARk1ZW1uMifiHIVIq7twqgT6TEVGo86d
+	 d9OKAgEwM1XD+uHV+Mo5JPqI3kAPlwUhh8obezuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Hancock <robert.hancock@calian.com>,
-	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 4.19 183/350] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 058/245] iomap: dont bother unsharing delalloc extents
 Date: Wed,  6 Nov 2024 13:01:51 +0100
-Message-ID: <20241106120325.464220306@linuxfoundation.org>
+Message-ID: <20241106120320.639309326@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
+[ Upstream commit f7a4874d977bf4202ad575031222e78809a36292 ]
 
-Frequently an I2C write will be followed by a read, such as a register
-address write followed by a read of the register value. In this driver,
-when the TX FIFO half empty interrupt was raised and it was determined
-that there was enough space in the TX FIFO to send the following read
-command, it would do so without waiting for the TX FIFO to actually
-empty.
+If unshare encounters a delalloc reservation in the srcmap, that means
+that the file range isn't shared because delalloc reservations cannot be
+reflinked.  Therefore, don't try to unshare them.
 
-Unfortunately it appears that in some cases this can result in a NAK
-that was raised by the target device on the write, such as due to an
-unsupported register address, being ignored and the subsequent read
-being done anyway. This can potentially put the I2C bus into an
-invalid state and/or result in invalid read data being processed.
-
-To avoid this, once a message has been fully written to the TX FIFO,
-wait for the TX FIFO empty interrupt before moving on to the next
-message, to ensure NAKs are handled properly.
-
-Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20241002150040.GB21853@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -478,14 +478,17 @@ static irqreturn_t xiic_process(int irq,
- 			goto out;
- 		}
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index d38e52a645888..8167714af5cba 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1346,7 +1346,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 		return length;
  
--		xiic_fill_tx_fifo(i2c);
--
--		/* current message sent and there is space in the fifo */
--		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
-+		if (xiic_tx_space(i2c)) {
-+			xiic_fill_tx_fifo(i2c);
-+		} else {
-+			/* current message fully written */
- 			dev_dbg(i2c->adap.dev.parent,
- 				"%s end of message sent, nmsgs: %d\n",
- 				__func__, i2c->nmsgs);
--			if (i2c->nmsgs > 1) {
-+			/* Don't move onto the next message until the TX FIFO empties,
-+			 * to ensure that a NAK is not missed.
-+			 */
-+			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
- 				xfer_more = 1;
-@@ -496,11 +499,7 @@ static irqreturn_t xiic_process(int irq,
- 					"%s Got TX IRQ but no more to do...\n",
- 					__func__);
- 			}
--		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
--			/* current frame is sent and is last,
--			 * make sure to disable tx half
--			 */
--			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
-+		}
- 	}
- out:
- 	dev_dbg(i2c->adap.dev.parent, "%s clr: 0x%x\n", __func__, clr);
+ 	/*
+-	 * Don't bother with holes or unwritten extents.
++	 * Don't bother with delalloc reservations, holes or unwritten extents.
+ 	 *
+ 	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+ 	 * unsharing requires providing a separate source map, and the presence
+@@ -1355,6 +1355,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 	 * fork for XFS.
+ 	 */
+ 	if (iter->srcmap.type == IOMAP_HOLE ||
++	    iter->srcmap.type == IOMAP_DELALLOC ||
+ 	    iter->srcmap.type == IOMAP_UNWRITTEN)
+ 		return length;
+ 
+-- 
+2.43.0
+
 
 
 
