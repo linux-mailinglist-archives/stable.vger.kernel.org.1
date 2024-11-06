@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-91280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE839BED42
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:10:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA1B9BED45
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:10:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E94421F224C8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E304B246DB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3721F8939;
-	Wed,  6 Nov 2024 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E441F8EE0;
+	Wed,  6 Nov 2024 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avGbnTq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFmy44FM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9361F4FC2;
-	Wed,  6 Nov 2024 13:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F11B1F7544;
+	Wed,  6 Nov 2024 13:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898269; cv=none; b=N8NPl+hhW8eBt4EyiqNxe8L59BOVA92QJDezsBMq+kogjErZeZXwMtIX+qyMSJYWQargBCDE7t872ZdJtXpFv+3v4/8QfJLBg7nknWwL9rFheCToJOfad0x5B+xxLpaLS/5KUhArUMvSnqOrWVqgDLXBcYmZ9vRWWAeshp+4mww=
+	t=1730898272; cv=none; b=lVPdlNwYJToIMHuyb+6dh77Ov6QA7WcCWRzHyWx3rAgXBUNCAEErvH8UV+VYwOH4qJQm11DFP4AkjpSECYGmRJ28Agz1xyGEGmKSWaE5YzoHSyOJKrfPF+wzz9RGSwOk/8C66YN4yZ1cOJ7MDIV+JqYzNGfZ9FbrwUipK7p611A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898269; c=relaxed/simple;
-	bh=okvmIKWA9VtHKhVrxvwD7DCGOYPjPBfzHHA++ejqXwI=;
+	s=arc-20240116; t=1730898272; c=relaxed/simple;
+	bh=qtbkfxOkquK1cDACGTm8BlaYgGRJwHWUAzaPBKjuzmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0ccQE5s/NqLft1mX/kKhWDH+z1KPhDqKRVxLGsQP4lAqMQAnHTAO440etxmgjhdSzXpumZ36B3U+TsNvgjgWLOb2yEhqEX/CW5qJNdX92pis7FULSu0IKi4AEPwE9OuDDKrcWHfjGMpGEmPx/emg+Nj1Ei0gC0Jpo64yvC38M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avGbnTq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D53C4CED3;
-	Wed,  6 Nov 2024 13:04:28 +0000 (UTC)
+	 MIME-Version; b=ipzvaIZKqILgNe3jOtF5rxicDBwxwR3/MHNRJXOmNFP8X1MUb/x9Q8v9rPf1akjqD1lyCT/b/iGv2gCR5hv3uTaq5jRLcHccmZJiF9ocF/ejOccYGGL4/rFwAcvu7/asrK19aZA7uS8CzHGLyacvMAc7oHAHKAe66YneJM/m8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFmy44FM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DA8C4CECD;
+	Wed,  6 Nov 2024 13:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898269;
-	bh=okvmIKWA9VtHKhVrxvwD7DCGOYPjPBfzHHA++ejqXwI=;
+	s=korg; t=1730898272;
+	bh=qtbkfxOkquK1cDACGTm8BlaYgGRJwHWUAzaPBKjuzmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avGbnTq1ai+8QMdJGqyeq7DQv5ezP2fFwf/qQzykDmQDqw57eMLeC0QjJjCoK3MiG
-	 v7g2NmfkYz835CQwf9ycm09/DBseyFiVu6bQwITkSqe/GiecX3M/ntcYhq13mDtnSm
-	 noMp43rjMwCXUPioI3NBlOdJHBkvBdJnY7CYouL8=
+	b=lFmy44FMMI50NiIjLvdH32Y9zc1TbJ8VkJ7r4S2nBR19bEikM19jIek+ieyh5PWLd
+	 8AK8FpVw6JZjjXgpg9PwqupY6RkZ5P3IjKD72ezvAFbs7jNwX8PDD//CR36OCoD36r
+	 6/fLQE6Virg8UykXv0FJcWr2kgPnmh+E1mEprtcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/462] netfilter: uapi: NFTA_FLOWTABLE_HOOK is NLA_NESTED
-Date: Wed,  6 Nov 2024 13:01:13 +0100
-Message-ID: <20241106120335.963512815@linuxfoundation.org>
+Subject: [PATCH 5.4 181/462] net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Wed,  6 Nov 2024 13:01:14 +0100
+Message-ID: <20241106120335.987756331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,33 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 76f1ed087b562a469f2153076f179854b749c09a ]
+[ Upstream commit 09573b1cc76e7ff8f056ab29ea1cdc152ec8c653 ]
 
-Fix the comment which incorrectly defines it as NLA_U32.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/20240911094234.1922418-1-ruanjinjie@huawei.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ieee802154/mcr20a.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index 3e6c61d026e35..0ddfe330f6425 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -1516,7 +1516,7 @@ enum nft_object_attributes {
-  *
-  * @NFTA_FLOWTABLE_TABLE: name of the table containing the expression (NLA_STRING)
-  * @NFTA_FLOWTABLE_NAME: name of this flow table (NLA_STRING)
-- * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration(NLA_U32)
-+ * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration (NLA_NESTED)
-  * @NFTA_FLOWTABLE_USE: number of references to this flow table (NLA_U32)
-  * @NFTA_FLOWTABLE_HANDLE: object handle (NLA_U64)
-  */
+diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+index 383231b854642..16474990dc01e 100644
+--- a/drivers/net/ieee802154/mcr20a.c
++++ b/drivers/net/ieee802154/mcr20a.c
+@@ -1311,16 +1311,13 @@ mcr20a_probe(struct spi_device *spi)
+ 		irq_type = IRQF_TRIGGER_FALLING;
+ 
+ 	ret = devm_request_irq(&spi->dev, spi->irq, mcr20a_irq_isr,
+-			       irq_type, dev_name(&spi->dev), lp);
++			       irq_type | IRQF_NO_AUTOEN, dev_name(&spi->dev), lp);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "could not request_irq for mcr20a\n");
+ 		ret = -ENODEV;
+ 		goto free_dev;
+ 	}
+ 
+-	/* disable_irq by default and wait for starting hardware */
+-	disable_irq(spi->irq);
+-
+ 	ret = ieee802154_register_hw(hw);
+ 	if (ret) {
+ 		dev_crit(&spi->dev, "ieee802154_register_hw failed\n");
 -- 
 2.43.0
 
