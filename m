@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-91032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0212D9BEC21
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9FF9BEB2D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA0F1F21F92
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56A428442C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5DF1FAF1D;
-	Wed,  6 Nov 2024 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20701F6676;
+	Wed,  6 Nov 2024 12:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djkpgY8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTWuKd/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A56C1E0DFD;
-	Wed,  6 Nov 2024 12:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8086A1F667E;
+	Wed,  6 Nov 2024 12:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897539; cv=none; b=M5u7X2r7vgBnSe8/o3LiMd0QvuGrGREImS12bL+GHYamK83MFOhtKuoVMZxPErTYo0ZBF73O6u0yLkmi/iOEAeJidYaNvqmGzwMvPb9zyQ0mCgcYAvmEuCw63MHCzFCooQPx8SgcqbtDAwmqyKLVqgjsUtkEaAFojXyAlZHVh1o=
+	t=1730896892; cv=none; b=YWazmjPUNOhpxVPvKpU42o3OT6bA+kkweISDdXWwhvZy/Nqdwzdq59bywFPC4pE56asyZhncR7U5B20/p0dPBDeD9pKtm6LgdbMhb/aTuRvDsOusc1SaZU8OAhzegPoHCSoE2IkK6FlqHAYK0YKSp1KdyPxzMSSlJtKWkb7fugU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897539; c=relaxed/simple;
-	bh=ul7/HgkcCKJ5v2WaC0VTyQDtb6bLu6N1PAU/3/O1ObQ=;
+	s=arc-20240116; t=1730896892; c=relaxed/simple;
+	bh=gfLlThbJNrGIMTjYZ7GB32DMkWjX3+uaegcCrCY/GWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCX0C4qvCOcOIZLoZrtwg2jqzon6PmTSrjQXN95FV8tRRzbeG7fz4BkOYCKQW9/J7oMGtU2Vw8BCQx1AukQHeh4kdlp7vmuNJvl2y/r00MhdZwa9q1k0eEYKff5aNqTX+2Pse5b+VF9lAVhv5WswFemJG6m5OvfwiuX9nRMsG4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djkpgY8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A585CC4CECD;
-	Wed,  6 Nov 2024 12:52:18 +0000 (UTC)
+	 MIME-Version; b=AQm/LVqL3uwofB+eyP675wb9qBlWxbhLc9d47IMcxAy7NCCG9yfMnmqvfrF6jsD29gqL/4zpjSchv+lhq4wUVZx5uZJN/UqRhK9+GFn20l3lLPp7gSkLKNN+DanCehe2os6Mq0YsuKlE8JKOIlcaEvxEYyMsfTDYm1hwMtBXtUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTWuKd/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FACC4CECD;
+	Wed,  6 Nov 2024 12:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897539;
-	bh=ul7/HgkcCKJ5v2WaC0VTyQDtb6bLu6N1PAU/3/O1ObQ=;
+	s=korg; t=1730896892;
+	bh=gfLlThbJNrGIMTjYZ7GB32DMkWjX3+uaegcCrCY/GWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djkpgY8QJYi68dg/obteS4e0OeNNYkZImuUsOhhQT6fo0zvbxutxYsYS9I1LzdE8r
-	 jfbzIOIwceGV1JtMoIgIiYhn6Qp0slj1g4km/0mzgg/iyhvdAPdWxRgaZ0s6aes62L
-	 g+UtL6arV0W4eSUKXPapgGiz7QRdJ2rrDOrmikQU=
+	b=sTWuKd/u1F+M+MtftFqrWknvG+pv/t0/qHjJnrqA1r2A0xINBXVSZKVRFGo6Stf/+
+	 vWEbVx7nnTumw8AOgMFAx0BuQIG8WHOEY+znBWsYEPuXUF9LoGPr6V+bMVkhyWps4E
+	 aCbXr9tTYOgHxVtSaYU8y2W6b5QCYxRlglYjYRYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 088/151] xhci: Use pm_runtime_get to prevent RPM on unsupported systems
+	Wander Lairson Costa <wander@redhat.com>,
+	Yuying Ma <yuma@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 070/110] igb: Disable threaded IRQ for igb_msix_other
 Date: Wed,  6 Nov 2024 13:04:36 +0100
-Message-ID: <20241106120311.286870861@linuxfoundation.org>
+Message-ID: <20241106120305.123658161@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit 31004740e42846a6f0bb255e6348281df3eb8032 upstream.
+[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
 
-Use pm_runtime_put in the remove function and pm_runtime_get to disable
-RPM on platforms that don't support runtime D3, as re-enabling it through
-sysfs auto power control may cause the controller to malfunction. This
-can lead to issues such as hotplug devices not being detected due to
-failed interrupt generation.
+During testing of SR-IOV, Red Hat QE encountered an issue where the
+ip link up command intermittently fails for the igbvf interfaces when
+using the PREEMPT_RT variant. Investigation revealed that
+e1000_write_posted_mbx returns an error due to the lack of an ACK
+from e1000_poll_for_ack.
 
-Fixes: a5d6264b638e ("xhci: Enable RPM on controllers that support low-power states")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241024133718.723846-1-Basavaraj.Natikar@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The underlying issue arises from the fact that IRQs are threaded by
+default under PREEMPT_RT. While the exact hardware details are not
+available, it appears that the IRQ handled by igb_msix_other must
+be processed before e1000_poll_for_ack times out. However,
+e1000_write_posted_mbx is called with preemption disabled, leading
+to a scenario where the IRQ is serviced only after the failure of
+e1000_write_posted_mbx.
+
+To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
+ensuring that the kernel handles it immediately, thereby preventing
+the aforementioned error.
+
+Reproducer:
+
+    #!/bin/bash
+
+    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
+    ipaddr_vlan=3
+    nic_test=ens14f0
+    vf=${nic_test}v0
+
+    while true; do
+	    ip link set ${nic_test} mtu 1500
+	    ip link set ${vf} mtu 1500
+	    ip link set $vf up
+	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
+	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
+	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
+	    if ! ip link show $vf | grep 'state UP'; then
+		    echo 'Error found'
+		    break
+	    fi
+	    ip link set $vf down
+    done
+
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Reported-by: Yuying Ma <yuma@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -713,7 +713,7 @@ static int xhci_pci_probe(struct pci_dev
- 	pm_runtime_put_noidle(&dev->dev);
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 17cdda3fe415a..e1936aa94077b 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -936,7 +936,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
+ 	int i, err = 0, vector = 0, free_vector = 0;
  
- 	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
--		pm_runtime_forbid(&dev->dev);
-+		pm_runtime_get(&dev->dev);
- 	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
- 		pm_runtime_allow(&dev->dev);
+ 	err = request_irq(adapter->msix_entries[vector].vector,
+-			  igb_msix_other, 0, netdev->name, adapter);
++			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
+ 	if (err)
+ 		goto err_out;
  
-@@ -740,7 +740,9 @@ static void xhci_pci_remove(struct pci_d
- 
- 	xhci->xhc_state |= XHCI_STATE_REMOVING;
- 
--	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
-+	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
-+		pm_runtime_put(&dev->dev);
-+	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
- 		pm_runtime_forbid(&dev->dev);
- 
- 	if (xhci->shared_hcd) {
+-- 
+2.43.0
+
 
 
 
