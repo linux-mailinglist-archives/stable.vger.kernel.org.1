@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EC49BEB3A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015149BE806
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0912811E2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B4D1C20D0D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32B91F5831;
-	Wed,  6 Nov 2024 12:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FE11DF72E;
+	Wed,  6 Nov 2024 12:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZglItxOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX3U6cz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4241F668B;
-	Wed,  6 Nov 2024 12:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3779F1DF24A;
+	Wed,  6 Nov 2024 12:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896927; cv=none; b=ttztoWtpE7STJD4hc2aQ53kHjcbQBX5REWRzcZN/O3h/WP8Ai7YD6/sSkS0ZIvtqTofyNNfiEnIuIgFFpJsMX+u7AkV5GQM7NRv0EgWmmSIy2voVVr+1GELeSqavpaNdyKjrVNlT2A92OPjqmcigvnWPTXmcVZl3yglCYSZgLFg=
+	t=1730895606; cv=none; b=ftAK8E7HQjtRye7JxqoUnpc5cR+WQ6PAckDAD9XG5mGX5pYMP2yHCbZs+a0ylAVzCryvlIZpv5T23GPx+f91H+4fkBMhyYeRmVZ39eevf3XAvv5SnrY2Or8/T6CFzjCLtzmZPsZsjEMvtlF3LKMZlePfPcoMp0GeSHAB7j+0LrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896927; c=relaxed/simple;
-	bh=ownBqU+z5f8d3CuaB2UOtLmfKb85BNgKsHRWowWfvHw=;
+	s=arc-20240116; t=1730895606; c=relaxed/simple;
+	bh=J3wAds+0M4hgUMg4EfKqHRavPoii5ZG1MbCkNcNWYyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cf6rHgXt8ge6wHn/2dlKbi4psaM+BnPzKfmN/Us6JTErQd6qMwhTbZyv2IqTSaTq/VPCOj8DvaxITSQ+BFU6SIU9nyG2WTCo4gs1h47SiZdqBVKmOJwyKNCVRfeGAmBJmZa49CxtxtRYjmXgfaC85ZxfglZ0uXjdyRrRMDBjrrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZglItxOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A2FC4CECD;
-	Wed,  6 Nov 2024 12:42:06 +0000 (UTC)
+	 MIME-Version; b=txuITSYFQgMY8V5DmvB72zHuBE7O8g7mD494IyLgszyLESt5omFL/KMD2nrcWNU/RL5Q7BlSwtHEFlPtafYmh5sPzpsOLLlhga76QbcqwTdPb3rKulD6/8KgnTAT5sjAzccMhQBae8ka+Ncsq4KXiWtq4Dcy9Cv8yAroXAQQFKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX3U6cz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2840C4CECD;
+	Wed,  6 Nov 2024 12:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896927;
-	bh=ownBqU+z5f8d3CuaB2UOtLmfKb85BNgKsHRWowWfvHw=;
+	s=korg; t=1730895606;
+	bh=J3wAds+0M4hgUMg4EfKqHRavPoii5ZG1MbCkNcNWYyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZglItxODNNzfKiuScApFlnejurPOlE0PkHC219OF/U4LLeo5kpo9gJh74TV4GS4q8
-	 voDfS+40j7BKzG8E9tINhJPxNrp6vmXDgSnQPy0sMLdCMiQX0qGDjl3ZUq3fNxMo4G
-	 l+8eosBMiXS9P5KEbh4MWvVFwum8qeo6EB2hYH+o=
+	b=pX3U6cz15oaSSUOTiem9DhsAyXSWJSwx/PgoK0PTWBCBP+3AoCm9IsSV2z2DslIrD
+	 UW7yudGsXWTKTPeGMrD9u8aYE+EWrku8+/QLPHLLzKeInRKKMHrUxxeJgzVwMd2UBt
+	 Gnc9651nUbZWCyvi9bf5916ummYPw05pAqJ2LOjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/126] cpufreq: Generalize of_perf_domain_get_sharing_cpumask phandle format
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 4.19 274/350] net: dsa: mv88e6xxx: Fix out-of-bound access
 Date: Wed,  6 Nov 2024 13:03:22 +0100
-Message-ID: <20241106120306.081312093@linuxfoundation.org>
+Message-ID: <20241106120327.643219600@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit d182dc6de93225cd853de4db68a1a77501bedb6e ]
+commit 528876d867a23b5198022baf2e388052ca67c952 upstream.
 
-of_perf_domain_get_sharing_cpumask currently assumes a 1-argument
-phandle format, and directly returns the argument. Generalize this to
-return the full of_phandle_args, so it can be used by drivers which use
-other phandle styles (e.g. separate nodes). This also requires changing
-the CPU sharing match to compare the full args structure.
+If an ATU violation was caused by a CPU Load operation, the SPID could
+be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
 
-Also, make sure to of_node_put(args.np) (the original code was leaking a
-reference).
-
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: c0f02536fffb ("cpufreq: Avoid a bad reference count on CPU node")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/mediatek-cpufreq-hw.c | 14 +++++++++-----
- include/linux/cpufreq.h               | 28 +++++++++++++++------------
- 2 files changed, 25 insertions(+), 17 deletions(-)
+ drivers/net/dsa/mv88e6xxx/global1_atu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq-hw.c b/drivers/cpufreq/mediatek-cpufreq-hw.c
-index 7f326bb5fd8de..62f5a9d64e8fa 100644
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -162,6 +162,7 @@ static int mtk_cpu_resources_init(struct platform_device *pdev,
- 	struct mtk_cpufreq_data *data;
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
-+	struct of_phandle_args args;
- 	void __iomem *base;
- 	int ret, i;
- 	int index;
-@@ -170,11 +171,14 @@ static int mtk_cpu_resources_init(struct platform_device *pdev,
- 	if (!data)
- 		return -ENOMEM;
- 
--	index = of_perf_domain_get_sharing_cpumask(policy->cpu, "performance-domains",
--						   "#performance-domain-cells",
--						   policy->cpus);
--	if (index < 0)
--		return index;
-+	ret = of_perf_domain_get_sharing_cpumask(policy->cpu, "performance-domains",
-+						 "#performance-domain-cells",
-+						 policy->cpus, &args);
-+	if (ret < 0)
-+		return ret;
-+
-+	index = args.args[0];
-+	of_node_put(args.np);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, index);
- 	if (!res) {
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 9d208648c84d5..1976244b97e3a 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1123,10 +1123,10 @@ cpufreq_table_set_inefficient(struct cpufreq_policy *policy,
- }
- 
- static inline int parse_perf_domain(int cpu, const char *list_name,
--				    const char *cell_name)
-+				    const char *cell_name,
-+				    struct of_phandle_args *args)
- {
- 	struct device_node *cpu_np;
--	struct of_phandle_args args;
- 	int ret;
- 
- 	cpu_np = of_cpu_device_node_get(cpu);
-@@ -1134,41 +1134,44 @@ static inline int parse_perf_domain(int cpu, const char *list_name,
- 		return -ENODEV;
- 
- 	ret = of_parse_phandle_with_args(cpu_np, list_name, cell_name, 0,
--					 &args);
-+					 args);
- 	if (ret < 0)
- 		return ret;
- 
- 	of_node_put(cpu_np);
- 
--	return args.args[0];
-+	return 0;
- }
- 
- static inline int of_perf_domain_get_sharing_cpumask(int pcpu, const char *list_name,
--						     const char *cell_name, struct cpumask *cpumask)
-+						     const char *cell_name, struct cpumask *cpumask,
-+						     struct of_phandle_args *pargs)
- {
--	int target_idx;
- 	int cpu, ret;
-+	struct of_phandle_args args;
- 
--	ret = parse_perf_domain(pcpu, list_name, cell_name);
-+	ret = parse_perf_domain(pcpu, list_name, cell_name, pargs);
- 	if (ret < 0)
- 		return ret;
- 
--	target_idx = ret;
- 	cpumask_set_cpu(pcpu, cpumask);
- 
- 	for_each_possible_cpu(cpu) {
- 		if (cpu == pcpu)
- 			continue;
- 
--		ret = parse_perf_domain(cpu, list_name, cell_name);
-+		ret = parse_perf_domain(cpu, list_name, cell_name, &args);
- 		if (ret < 0)
- 			continue;
- 
--		if (target_idx == ret)
-+		if (pargs->np == args.np && pargs->args_count == args.args_count &&
-+		    !memcmp(pargs->args, args.args, sizeof(args.args[0]) * args.args_count))
- 			cpumask_set_cpu(cpu, cpumask);
-+
-+		of_node_put(args.np);
+--- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
++++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+@@ -363,7 +363,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob
+ 		dev_err_ratelimited(chip->dev,
+ 				    "ATU full violation for %pM portvec %x spid %d\n",
+ 				    entry.mac, entry.portvec, spid);
+-		chip->ports[spid].atu_full_violation++;
++		if (spid < ARRAY_SIZE(chip->ports))
++			chip->ports[spid].atu_full_violation++;
  	}
+ 	mutex_unlock(&chip->reg_lock);
  
--	return target_idx;
-+	return 0;
- }
- #else
- static inline int cpufreq_boost_trigger_state(int state)
-@@ -1198,7 +1201,8 @@ cpufreq_table_set_inefficient(struct cpufreq_policy *policy,
- }
- 
- static inline int of_perf_domain_get_sharing_cpumask(int pcpu, const char *list_name,
--						     const char *cell_name, struct cpumask *cpumask)
-+						     const char *cell_name, struct cpumask *cpumask,
-+						     struct of_phandle_args *pargs)
- {
- 	return -EOPNOTSUPP;
- }
--- 
-2.43.0
-
 
 
 
