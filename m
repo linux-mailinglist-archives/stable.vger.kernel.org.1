@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40C79BECBB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815499BE6D4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33DFAB21E98
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2101C23122
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780B11F6687;
-	Wed,  6 Nov 2024 12:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA171DF747;
+	Wed,  6 Nov 2024 12:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRIm2dt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igZAp7Q3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3067D1E04A6;
-	Wed,  6 Nov 2024 12:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3391DF26F;
+	Wed,  6 Nov 2024 12:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897898; cv=none; b=euKjB38L1r3GTpytYaeed1zVsE64aK9QUt8GZawUPP3qGOEM6iLJhdJrCcJ1eBDapRKSgNdIacZH9MHVG3VZo8QAKSwXLgfiWcUips2Q07jMfRzymoj1fl8DMmYCpHnr5XuPgwSa0IRU4oYBO3HMyZbzKxEpm05auQmWguiT27s=
+	t=1730894848; cv=none; b=APKTaDXtLmD/HAsouUQyCbA3YDI8PEENptMiCpZDbS/BNCfIIwtdzSEsE17NdoreIMhW1TpyJFTILcGzkGEZODMdcOd6akuHBPABbepfUjks/moeN/n3IzAh++bF+xHR/3uXjPdwytZ7Q1p1mupIgWHtTt8aulocQ4Pmz19q+QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897898; c=relaxed/simple;
-	bh=TrzHEsEMaxBLisw91Jma+qELbL4Y1TYnVtPIpEkhuvI=;
+	s=arc-20240116; t=1730894848; c=relaxed/simple;
+	bh=Anqu1gQqtdUgsIJn5ZHSe7Yd5Rt+j2yMINWgPZzAJyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjGcviuzM/gjxFYn3gxo/EzsTFJea8RuYxPySqjq+LhAAhF8fVpT3MSymy1rqNwWNJ2T88v2k7HlWpaSVQ7K58wDB03EpZw1RDz0s9PbQ3VS25lwcwpmUJOChWSFSo2rJvCz9Nug4/p29rm36jbTmn2DPH+ZQyfFnefP3a3TkuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRIm2dt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB08CC4CED3;
-	Wed,  6 Nov 2024 12:58:17 +0000 (UTC)
+	 MIME-Version; b=amxK1fd00gXoeDIqElfHJSbTQEXchVYN5gUbtphydmupWECL4RCaiFRsVw6ks9GQUt44kKUHzCQdb9knbZfH4KcByG4zEhGDup9EC6mM5YFlYEJub99gIG0UIIo3qBvgFqnj/A7pk7gsrlQlAsRkpR4N43tBz35f2+wqPJPjlDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igZAp7Q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506EEC4CECD;
+	Wed,  6 Nov 2024 12:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897898;
-	bh=TrzHEsEMaxBLisw91Jma+qELbL4Y1TYnVtPIpEkhuvI=;
+	s=korg; t=1730894848;
+	bh=Anqu1gQqtdUgsIJn5ZHSe7Yd5Rt+j2yMINWgPZzAJyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRIm2dt1go/2XGhgWuPdBksDPUy/6ISRhpolpRu6II/QjlCugJzrqlq49BsebwNCW
-	 d9+3rlUirECGg3teShfvOHedjUKTxNpBvEEl+FpmZq1YlDxhV6ydEiiEM/s0wjAWUf
-	 cypmn5WVPJIb2r2F4h1dT6d7St/zXaglsChwhc2U=
+	b=igZAp7Q357eZpFQHFpzz/87rdgaof33YqXKyIPamuy2IwaUDdAxho+NXVAukfIohF
+	 r51LUKGlB7PI7UicCROEpvg0hKunzkTyUn7WLWKCDKfQiAqkOBTQIaZYMMdOnoXe7+
+	 Q0togfm6VsXCw83isXw1zfnZ9qwluU8CmuJuYjNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Liao Chen <liaochen4@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/462] spi: ppc4xx: Avoid returning 0 when failed to parse and map IRQ
+Subject: [PATCH 4.19 021/350] ASoC: tda7419: fix module autoloading
 Date: Wed,  6 Nov 2024 12:59:09 +0100
-Message-ID: <20241106120332.900675333@linuxfoundation.org>
+Message-ID: <20241106120321.400200032@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 7781f1d120fec8624fc654eda900fc8748262082 ]
+[ Upstream commit 934b44589da9aa300201a00fe139c5c54f421563 ]
 
-0 is incorrect error code when failed to parse and map IRQ.
-Replace OF specific old API for IRQ retrieval with a generic
-one to fix this issue.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-Fixes: 0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20240814144525.2648450-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240826084924.368387-4-liaochen4@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ppc4xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/codecs/tda7419.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index 9e72ee73c2f61..2b844594a9e6d 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -26,7 +26,6 @@
- #include <linux/errno.h>
- #include <linux/wait.h>
- #include <linux/of_address.h>
--#include <linux/of_irq.h>
- #include <linux/of_platform.h>
- #include <linux/of_gpio.h>
- #include <linux/interrupt.h>
-@@ -491,9 +490,10 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	}
+diff --git a/sound/soc/codecs/tda7419.c b/sound/soc/codecs/tda7419.c
+index 7f3b79c5a5638..a3fc9b7fefd81 100644
+--- a/sound/soc/codecs/tda7419.c
++++ b/sound/soc/codecs/tda7419.c
+@@ -637,6 +637,7 @@ static const struct of_device_id tda7419_of_match[] = {
+ 	{ .compatible = "st,tda7419" },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(of, tda7419_of_match);
  
- 	/* Request IRQ */
--	hw->irqnum = irq_of_parse_and_map(np, 0);
--	if (hw->irqnum <= 0)
-+	ret = platform_get_irq(op, 0);
-+	if (ret < 0)
- 		goto free_host;
-+	hw->irqnum = ret;
- 
- 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
- 			  0, "spi_ppc4xx_of", (void *)hw);
+ static struct i2c_driver tda7419_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
