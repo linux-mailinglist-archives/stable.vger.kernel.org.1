@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-90665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D5F9BE96E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDBF9BE873
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11BCD1C2319C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320B928553B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DF31DFE04;
-	Wed,  6 Nov 2024 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134F11E048C;
+	Wed,  6 Nov 2024 12:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVlEZt41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZyw6pHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A9D1DF974;
-	Wed,  6 Nov 2024 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C569C1DF736;
+	Wed,  6 Nov 2024 12:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896448; cv=none; b=VLBmno7+0ow9q5obk9DuTLKhGjGsMBJ8uPeEz3lBjepXCmdTouifXI5Bgr3FvNIq+nRhRdXN4g5zSMee75tSYAoImSxsWwxsyNjP1S9K4KijjLaJEqG25ni7OUlHe0NCVVWhKXPm8OYaHny//7F8EvOSwiJF8qIdIo6cKF2JZ7k=
+	t=1730895847; cv=none; b=b4XOverxnDbqkvr/Vc51S4XNKdfz0dncXbSumOl4SSnMUdW64NQPgKYp6+RSyEFWWtk2m42wa0V0ldz3htKettJMYeK7erSgMxJNOYvht8csjYzjGL7Zbpvq39Q0Xb1tgIo/JFXwRcZ4auwfrCFqHC20qZJTXzX2kSCSIH2p0EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896448; c=relaxed/simple;
-	bh=Uahj8Wim/9KPV7zz9RrGbT/d1mKlcQl2wTz4sN4/SHY=;
+	s=arc-20240116; t=1730895847; c=relaxed/simple;
+	bh=BpYcQR2C0OsxGF6MTnvco8PUo3lwmLRkOyWpCgYLv8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe1JLrN8MJNVSyEbUL9n+iMTDLiz2vFtR74V2hjrXVfmLPdEYeKzyP9XrzzDHSu90aITqIL411tcO/dj/L9R59aGQDuUbiH5XhvYkIEqNhvuvjxtEvEochHX8WcYFKJyGvhgtryNW6gF+F6UBvr+acMiIn2JyWNHrYWk/GX6rOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVlEZt41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD9CC4CED3;
-	Wed,  6 Nov 2024 12:34:07 +0000 (UTC)
+	 MIME-Version; b=tfTlfdMrMQ46v7rEHfV32l09L/du6PUuNYZYWEP5Xf/Yogo/Maj20OO+SnQombFaAPuXyXrj3SfFf2PIzrgDbu8STvIjFN+FTz/6iWs3IjYOOJc0AhR4CAm5yGaYYkyh8tPYWxndz3DUlaD4sHvIT4JYvQT80qz1YyUTeTZXoJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZyw6pHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F24C4CECD;
+	Wed,  6 Nov 2024 12:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896448;
-	bh=Uahj8Wim/9KPV7zz9RrGbT/d1mKlcQl2wTz4sN4/SHY=;
+	s=korg; t=1730895847;
+	bh=BpYcQR2C0OsxGF6MTnvco8PUo3lwmLRkOyWpCgYLv8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVlEZt41qvD7eiR801PCTdd2Wxhtvmx7Z95zHs1l/bK8HcFBZkz+CXKMV2FvfCnkX
-	 ZYM51QTxxxsa5kfUK88ZeE8fZzH4Xbn6sqVSP5NU9+3CSLZrEkdS81gzAZIYOUtWl8
-	 ovKT07aa3XSPE2UUZpp+dwL2woKTbPCWu5qMCBOk=
+	b=IZyw6pHtrzfb6GjktIBXo6RA+feaPJ/HRFfPkRv7/tq5tnhc2r0WNDkP3v48tkizL
+	 GniZbUx6BdVzFRgugVvRvpu1D8Ji5kuVeVhayaqDHOtSC8JPARijSry19sROieynHr
+	 IjtL9Tv12uZOfqzPAOFXiNAoKGLLrzBFg9MDyTro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	David Stevens <stevensd@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 206/245] mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats
+Subject: [PATCH 4.19 331/350] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
 Date: Wed,  6 Nov 2024 13:04:19 +0100
-Message-ID: <20241106120324.318119011@linuxfoundation.org>
+Message-ID: <20241106120328.898484990@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,155 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit ddd6d8e975b171ea3f63a011a75820883ff0d479 ]
+[ Upstream commit 2e95c4384438adeaa772caa560244b1a2efef816 ]
 
-Patch series "mm: multi-gen LRU: Have secondary MMUs participate in
-MM_WALK".
+In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
+to be either root or ingress. This assumption is bogus since it's valid
+to create egress qdiscs with major handle ffff:
+Budimir Markovic found that for qdiscs like DRR that maintain an active
+class list, it will cause a UAF with a dangling class pointer.
 
-Today, the MM_WALK capability causes MGLRU to clear the young bit from
-PMDs and PTEs during the page table walk before eviction, but MGLRU does
-not call the clear_young() MMU notifier in this case.  By not calling this
-notifier, the MM walk takes less time/CPU, but it causes pages that are
-accessed mostly through KVM / secondary MMUs to appear younger than they
-should be.
+In 066a3b5b2346, the concern was to avoid iterating over the ingress
+qdisc since its parent is itself. The proper fix is to stop when parent
+TC_H_ROOT is reached because the only way to retrieve ingress is when a
+hierarchy which does not contain a ffff: major handle call into
+qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
 
-We do call the clear_young() notifier today, but only when attempting to
-evict the page, so we end up clearing young/accessed information less
-frequently for secondary MMUs than for mm PTEs, and therefore they appear
-younger and are less likely to be evicted.  Therefore, memory that is
-*not* being accessed mostly by KVM will be evicted *more* frequently,
-worsening performance.
+In the scenario where major ffff: is an egress qdisc in any of the tree
+levels, the updates will also propagate to TC_H_ROOT, which then the
+iteration must stop.
 
-ChromeOS observed a tab-open latency regression when enabling MGLRU with a
-setup that involved running a VM:
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-		Tab-open latency histogram (ms)
-Version		p50	mean	p95	p99	max
-base		1315	1198	2347	3454	10319
-mglru		2559	1311	7399	12060	43758
-fix		1119	926	2470	4211	6947
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This series replaces the final non-selftest patchs from this series[1],
-which introduced a similar change (and a new MMU notifier) with KVM
-optimizations.  I'll send a separate series (to Sean and Paolo) for the
-KVM optimizations.
-
-This series also makes proactive reclaim with MGLRU possible for KVM
-memory.  I have verified that this functions correctly with the selftest
-from [1], but given that that test is a KVM selftest, I'll send it with
-the rest of the KVM optimizations later.  Andrew, let me know if you'd
-like to take the test now anyway.
-
-[1]: https://lore.kernel.org/linux-mm/20240926013506.860253-18-jthoughton@google.com/
-
-This patch (of 2):
-
-The removed stats, MM_LEAF_OLD and MM_NONLEAF_TOTAL, are not very helpful
-and become more complicated to properly compute when adding
-test/clear_young() notifiers in MGLRU's mm walk.
-
-Link: https://lkml.kernel.org/r/20241019012940.3656292-1-jthoughton@google.com
-Link: https://lkml.kernel.org/r/20241019012940.3656292-2-jthoughton@google.com
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Signed-off-by: James Houghton <jthoughton@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Matlack <dmatlack@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: David Stevens <stevensd@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://patch.msgid.link/20241024165547.418570-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmzone.h |  2 --
- mm/vmscan.c            | 14 +++++---------
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ net/sched/sch_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 1dc6248feb832..5f44d24ed9ffe 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -458,9 +458,7 @@ struct lru_gen_folio {
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index ab57c0ee9923b..49c4e85257886 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -783,7 +783,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, unsigned int n,
+ 	drops = max_t(int, n, 0);
+ 	rcu_read_lock();
+ 	while ((parentid = sch->parent)) {
+-		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
++		if (parentid == TC_H_ROOT)
+ 			break;
  
- enum {
- 	MM_LEAF_TOTAL,		/* total leaf entries */
--	MM_LEAF_OLD,		/* old leaf entries */
- 	MM_LEAF_YOUNG,		/* young leaf entries */
--	MM_NONLEAF_TOTAL,	/* total non-leaf entries */
- 	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
- 	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
- 	NR_MM_STATS
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b1f88638c5ab4..c6d9f5f4f6002 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3376,7 +3376,6 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 			continue;
- 
- 		if (!pte_young(ptent)) {
--			walk->mm_stats[MM_LEAF_OLD]++;
- 			continue;
- 		}
- 
-@@ -3529,7 +3528,6 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk->mm_stats[MM_LEAF_TOTAL]++;
- 
- 			if (!pmd_young(val)) {
--				walk->mm_stats[MM_LEAF_OLD]++;
- 				continue;
- 			}
- 
-@@ -3541,8 +3539,6 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
--		walk->mm_stats[MM_NONLEAF_TOTAL]++;
--
- 		if (!walk->force_scan && should_clear_pmd_young()) {
- 			if (!pmd_young(val))
- 				continue;
-@@ -5231,11 +5227,11 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
- 		seq_printf(m, "            %10d", tier);
- 		for (type = 0; type < ANON_AND_FILE; type++) {
--			const char *s = "   ";
-+			const char *s = "xxx";
- 			unsigned long n[3] = {};
- 
- 			if (seq == max_seq) {
--				s = "RT ";
-+				s = "RTx";
- 				n[0] = READ_ONCE(lrugen->avg_refaulted[type][tier]);
- 				n[1] = READ_ONCE(lrugen->avg_total[type][tier]);
- 			} else if (seq == min_seq[type] || NR_HIST_GENS > 1) {
-@@ -5257,14 +5253,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 
- 	seq_puts(m, "                      ");
- 	for (i = 0; i < NR_MM_STATS; i++) {
--		const char *s = "      ";
-+		const char *s = "xxxx";
- 		unsigned long n = 0;
- 
- 		if (seq == max_seq && NR_HIST_GENS == 1) {
--			s = "LOYNFA";
-+			s = "TYFA";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
--			s = "loynfa";
-+			s = "tyfa";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		}
- 
+ 		if (sch->flags & TCQ_F_NOPARENT)
 -- 
 2.43.0
 
