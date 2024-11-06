@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-90796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D7F9BEB19
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEB29BEBA0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5995D2840D8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3D71F24EF8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25C61F4FCC;
-	Wed,  6 Nov 2024 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17971F8EF7;
+	Wed,  6 Nov 2024 12:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgS7Ry3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uuqe5dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2611E1335;
-	Wed,  6 Nov 2024 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8861F8908;
+	Wed,  6 Nov 2024 12:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896839; cv=none; b=vFGCJkaNKYmioWv7TLsQWFhGRT2JXztN7xTw/COUGHJozZtrYedATzPL79+tH7Spz8x7NyzoS5KzBtny1Z0ZhkJ6rkYIK3g3gr0167NfOpaiNcCgpTxpa0Q3deF+DSnXeIQdqvjlXWNb5Lk19ZueKK5jH2/gXzmnCTX9n2g4UZw=
+	t=1730897182; cv=none; b=FeyjCYsppsCH2VwevgPINPgSVR2Ve2DgH26vnuGTyJXP4CyJOYoccMMQjv/egNotBH10gp02v3u1WufcGI6r4LfQAEHkVfM3QGCKYzxpWdWsYkCN0x2VM2xJHfi0tunFfMpn+YuGTFX3W9PWJYHr6sAnAKZHcVSj72ipfegzABg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896839; c=relaxed/simple;
-	bh=QsA5DyzIwvhLn2gTG5fp4bg8nfP2lmLm2ocT7n0X4/4=;
+	s=arc-20240116; t=1730897182; c=relaxed/simple;
+	bh=WwaWUjgAzGI+ddIBo7clKsTAZ1KIvVP/0EWu5wN85Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZ3WCYwvkjWJvNJegPajvTFSMV+6OaQzYhoOL9y32BHdAvlIhDVlnncaIO6+ouN+UezzGFLdxLZ5wsjaGv7G+VPK1nBgIvwkmeUbZ8R2SzrAErT6hLhYeB2DiI4LVz4Nv5Sqn/Hx1fZkWoYyDW8bBdeXg0VkGNPh+4zEYex8Khc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgS7Ry3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75ACC4CECD;
-	Wed,  6 Nov 2024 12:40:38 +0000 (UTC)
+	 MIME-Version; b=Hs9PbeuHyH93ovUtBTjOxG7N7KrCXZmxKB6mktXesPRHKsBiYUO4LKTmDPJbJ3AbtQdklLo41nmCFEjK1r+DVk9uw4J4zwS9mZPcp3HU68F8C1C8KUODtzCoy2gnIBUYf1l7MRSKLFEEZMdJhUK5LipEc0thjL1XonEz7ijFVks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uuqe5dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23146C4CECD;
+	Wed,  6 Nov 2024 12:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896839;
-	bh=QsA5DyzIwvhLn2gTG5fp4bg8nfP2lmLm2ocT7n0X4/4=;
+	s=korg; t=1730897182;
+	bh=WwaWUjgAzGI+ddIBo7clKsTAZ1KIvVP/0EWu5wN85Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgS7Ry3KB/HWbRRVLAn0CjBsBbki6sECKI0W6oknSIcNHEqWE5QbrL1FJaDEp9v6l
-	 8O3IkwUmi9gE2om7KmEaDLueCWRyMVGiIXgfOJxr16+qsFH1y7HLG9Mk8V09cX7yVf
-	 GxdXUEypVd5Gw1EKxN2gb+73ZCEccS2LkbAEm6Q8=
+	b=0uuqe5dneY29RAQyf/dVK526tV+/2BGei+Y/Tt5A30RLa+OmFoGOIxP9AXYNDyXaX
+	 zr7U1Hz+mhRNPmQE003e0kJ3mqnIk08bNdtbWZc5qfneOuUpvpwkzihC6xrovkw8IT
+	 aISgYcG/m7yV1ZT5uJcFfdChgKirfiQ7dSl1jhW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 5.10 089/110] Revert "driver core: Fix uevent_show() vs driver detach race"
+	Mel Gorman <mgorman@techsingularity.net>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/126] mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves
 Date: Wed,  6 Nov 2024 13:04:55 +0100
-Message-ID: <20241106120305.646372553@linuxfoundation.org>
+Message-ID: <20241106120308.610552374@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +67,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Mel Gorman <mgorman@techsingularity.net>
 
-commit 9a71892cbcdb9d1459c84f5a4c722b14354158a5 upstream.
+[ Upstream commit 1ebbb21811b76c3b932959787f37985af36f62fa ]
 
-This reverts commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c.
+GFP_ATOMIC allocations get flagged ALLOC_HARDER which is a vague
+description.  In preparation for the removal of GFP_ATOMIC redefine
+__GFP_ATOMIC to simply mean non-blocking and renaming ALLOC_HARDER to
+ALLOC_NON_BLOCK accordingly.  __GFP_HIGH is required for access to
+reserves but non-blocking is granted more access.  For example, GFP_NOWAIT
+is non-blocking but has no special access to reserves.  A __GFP_NOFAIL
+blocking allocation is granted access similar to __GFP_HIGH if the only
+alternative is an OOM kill.
 
-This commit causes a regression, so revert it for now until it can come
-back in a way that works for everyone.
-
-Link: https://lore.kernel.org/all/172790598832.1168608.4519484276671503678.stgit@dwillia2-xfh.jf.intel.com/
-Fixes: 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
-Cc: stable <stable@kernel.org>
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230113111217.14134-6-mgorman@techsingularity.net
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c   |   13 +++++--------
- drivers/base/module.c |    4 ----
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ mm/internal.h   |  7 +++++--
+ mm/page_alloc.c | 44 ++++++++++++++++++++++++--------------------
+ 2 files changed, 29 insertions(+), 22 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -25,7 +25,6 @@
- #include <linux/mutex.h>
- #include <linux/pm_runtime.h>
- #include <linux/netdevice.h>
--#include <linux/rcupdate.h>
- #include <linux/sched/signal.h>
- #include <linux/sched/mm.h>
- #include <linux/sysfs.h>
-@@ -1910,7 +1909,6 @@ static int dev_uevent(struct kset *kset,
- 		      struct kobj_uevent_env *env)
- {
- 	struct device *dev = kobj_to_dev(kobj);
--	struct device_driver *driver;
- 	int retval = 0;
+diff --git a/mm/internal.h b/mm/internal.h
+index cd095ce2f199e..a50bc08337d21 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -754,7 +754,10 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_OOM		ALLOC_NO_WATERMARKS
+ #endif
  
- 	/* add device node properties if present */
-@@ -1939,12 +1937,8 @@ static int dev_uevent(struct kset *kset,
- 	if (dev->type && dev->type->name)
- 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+-#define ALLOC_HARDER		 0x10 /* try to alloc harder */
++#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
++				       * to 25% of the min watermark or
++				       * 62.5% if __GFP_HIGH is set.
++				       */
+ #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
+ 				       * of the min watermark.
+ 				       */
+@@ -769,7 +772,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #define ALLOC_KSWAPD		0x800 /* allow waking of kswapd, __GFP_KSWAPD_RECLAIM set */
  
--	/* Synchronize with module_remove_driver() */
--	rcu_read_lock();
--	driver = READ_ONCE(dev->driver);
--	if (driver)
--		add_uevent_var(env, "DRIVER=%s", driver->name);
--	rcu_read_unlock();
-+	if (dev->driver)
-+		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+ /* Flags that allow allocations below the min watermark. */
+-#define ALLOC_RESERVES (ALLOC_HARDER|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
++#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
  
- 	/* Add common DT information about the device */
- 	of_device_uevent(dev, env);
-@@ -2014,8 +2008,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+ enum ttu_flags;
+ struct tlbflush_unmap_batch;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 6ab53e47ccea1..49dc4ba88c278 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3996,18 +3996,19 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+ 		 * __GFP_HIGH allows access to 50% of the min reserve as well
+ 		 * as OOM.
+ 		 */
+-		if (alloc_flags & ALLOC_MIN_RESERVE)
++		if (alloc_flags & ALLOC_MIN_RESERVE) {
+ 			min -= min / 2;
  
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(kset, &dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
+-		/*
+-		 * Non-blocking allocations can access some of the reserve
+-		 * with more access if also __GFP_HIGH. The reasoning is that
+-		 * a non-blocking caller may incur a more severe penalty
+-		 * if it cannot get memory quickly, particularly if it's
+-		 * also __GFP_HIGH.
+-		 */
+-		if (alloc_flags & ALLOC_HARDER)
+-			min -= min / 4;
++			/*
++			 * Non-blocking allocations (e.g. GFP_ATOMIC) can
++			 * access more reserves than just __GFP_HIGH. Other
++			 * non-blocking allocations requests such as GFP_NOWAIT
++			 * or (GFP_KERNEL & ~__GFP_DIRECT_RECLAIM) do not get
++			 * access to the min reserve.
++			 */
++			if (alloc_flags & ALLOC_NON_BLOCK)
++				min -= min / 4;
++		}
  
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -7,7 +7,6 @@
- #include <linux/errno.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/rcupdate.h>
- #include "base.h"
+ 		/*
+ 		 * OOM victims can try even harder than the normal reserve
+@@ -4858,28 +4859,30 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ 	 * The caller may dip into page reserves a bit more if the caller
+ 	 * cannot run direct reclaim, or if the caller has realtime scheduling
+ 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+-	 * set both ALLOC_HARDER (__GFP_ATOMIC) and ALLOC_MIN_RESERVE(__GFP_HIGH).
++	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
+ 	 */
+ 	alloc_flags |= (__force int)
+ 		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
  
- static char *make_driver_name(struct device_driver *drv)
-@@ -78,9 +77,6 @@ void module_remove_driver(struct device_
- 	if (!drv)
- 		return;
+-	if (gfp_mask & __GFP_ATOMIC) {
++	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 		/*
+ 		 * Not worth trying to allocate harder for __GFP_NOMEMALLOC even
+ 		 * if it can't schedule.
+ 		 */
+ 		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+-			alloc_flags |= ALLOC_HARDER;
++			alloc_flags |= ALLOC_NON_BLOCK;
  
--	/* Synchronize with dev_uevent() */
--	synchronize_rcu();
--
- 	sysfs_remove_link(&drv->p->kobj, "module");
+ 			if (order > 0)
+ 				alloc_flags |= ALLOC_HIGHATOMIC;
+ 		}
  
- 	if (drv->owner)
+ 		/*
+-		 * Ignore cpuset mems for GFP_ATOMIC rather than fail, see the
+-		 * comment for __cpuset_node_allowed().
++		 * Ignore cpuset mems for non-blocking __GFP_HIGH (probably
++		 * GFP_ATOMIC) rather than fail, see the comment for
++		 * __cpuset_node_allowed().
+ 		 */
+-		alloc_flags &= ~ALLOC_CPUSET;
++		if (alloc_flags & ALLOC_MIN_RESERVE)
++			alloc_flags &= ~ALLOC_CPUSET;
+ 	} else if (unlikely(rt_task(current)) && in_task())
+ 		alloc_flags |= ALLOC_MIN_RESERVE;
+ 
+@@ -5312,12 +5315,13 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		WARN_ON_ONCE_GFP(costly_order, gfp_mask);
+ 
+ 		/*
+-		 * Help non-failing allocations by giving them access to memory
+-		 * reserves but do not use ALLOC_NO_WATERMARKS because this
++		 * Help non-failing allocations by giving some access to memory
++		 * reserves normally used for high priority non-blocking
++		 * allocations but do not use ALLOC_NO_WATERMARKS because this
+ 		 * could deplete whole memory reserves which would just make
+-		 * the situation worse
++		 * the situation worse.
+ 		 */
+-		page = __alloc_pages_cpuset_fallback(gfp_mask, order, ALLOC_HARDER, ac);
++		page = __alloc_pages_cpuset_fallback(gfp_mask, order, ALLOC_MIN_RESERVE, ac);
+ 		if (page)
+ 			goto got_pg;
+ 
+-- 
+2.43.0
+
 
 
 
