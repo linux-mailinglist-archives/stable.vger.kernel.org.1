@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-91604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EFE9BEEC2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9159BEE7E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5686CB24096
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25D4E1C209D7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCCA1DFE01;
-	Wed,  6 Nov 2024 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADC11E00AB;
+	Wed,  6 Nov 2024 13:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7fA31K/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFyfw1yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A56A646;
-	Wed,  6 Nov 2024 13:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC981DFE13;
+	Wed,  6 Nov 2024 13:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899222; cv=none; b=YmvwxJQ5rg//jmPc9d+ebBiklpiH4WuUqvNyj/ORwCwpOlS3hLLroeZQv/kGmfTvqbrFZKukmufvC/RZmfdfz7LZRipkBvN/WKI3eFSS4imB3I/Zaz4E1reQ/qkMNbcWDoD15S64OwO++yJ7pmKlRgpuYoYlD6kptBvu8m89DUE=
+	t=1730899067; cv=none; b=CcUbkpGSHn/BBx/IL/QQDd1qaJWhy7v8sJvgCL+p9+F2aMrX+W+Td3bc5pBkJr9KcfYsTBn/wtlF6oeym2cYrVhFik4LCz+gaSqgpOD1eTCKODZaprctnYKI6dLUOQ81XkIpw0jpWPbR99/YCpEYvTQ89m9e21NWzf2ROF6fYhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899222; c=relaxed/simple;
-	bh=AcKZlEgHW6ijQn3Ukn/3wTDhGOOu21b9TKVIdcwA2V4=;
+	s=arc-20240116; t=1730899067; c=relaxed/simple;
+	bh=mntZOBvvmWjbYK+WXnb4LkPeZYQnYlSEdWi9UBfvwYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNWR2dCeNEc529oh/CiLtl71O3AEPUL6cA4D+mdD3GZjYKsbX6tzRfW5c7egbxPMR2u447ZrdgeE2pcWnzQORKEaSFPgu04SSo4JLgiz1dadrwKFiY0fvvtIl4CQdSZ//b7WTN2cvHYgCU5cTg7+bBpq7cY26QcHjkk2ru42i1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7fA31K/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C30C4CECD;
-	Wed,  6 Nov 2024 13:20:21 +0000 (UTC)
+	 MIME-Version; b=b/is9d0QVXQCfcltCzzqhijZuOgI49j/96dEhGzxt1vYo8QD2tD1h9vApkdX1tatPrBI8iz7bWLwHAC0vfwnC9FGILI/dkUO4eSy37FzGQI1Vfvb92iELLvPYXBn2eW1KyvXnt96SZb62DiXrDxcb5CVzNy/tkVfFgJixDNbdS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFyfw1yo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47297C4CECD;
+	Wed,  6 Nov 2024 13:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899221;
-	bh=AcKZlEgHW6ijQn3Ukn/3wTDhGOOu21b9TKVIdcwA2V4=;
+	s=korg; t=1730899067;
+	bh=mntZOBvvmWjbYK+WXnb4LkPeZYQnYlSEdWi9UBfvwYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7fA31K/VRQz4j224km6phV9uU+YNSEu5ASNOHKTs1f/i9L8HNn+IcTsRv23ca5VZ
-	 4b0Kq1SF5l2DsXC9QNL7L+qp/ozSrhkmT/ci0vE4AfXDaLq7LlUpzVGyICHmdq4JjW
-	 nkeuEgQolw3SiF0EmZ7y+38Av2ucqYSidHsWBgbc=
+	b=HFyfw1yo9+iqFyIo26JsN105yq9477l3LIxmYE227hVCUTX+dPkvzCZEe5+8IdOVq
+	 IAgg3CZkgghiFabGfyRkXkIBNzVnPNUQBSSgEJW3eycUc/eFKPkoP+9L8eHKoNlzwE
+	 sFLDJoN4HE8r16dCv9X2+Eyx9Yo5WcfeUkqJU6Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 5.15 39/73] usb: phy: Fix API devm_usb_put_phy() can not release the phy
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 450/462] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
 Date: Wed,  6 Nov 2024 13:05:43 +0100
-Message-ID: <20241106120301.131295116@linuxfoundation.org>
+Message-ID: <20241106120342.621507443@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit fdce49b5da6e0fb6d077986dec3e90ef2b094b50 upstream.
+commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
 
-For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
-to release the phy, but it does not do that actually, so it can not fully
-undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
-devres_release() instead of devres_destroy() within the API.
+Avoid potentially crashing in the driver because of uninitialized private data
 
-Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
+Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -628,7 +628,7 @@ void devm_usb_put_phy(struct device *dev
- {
- 	int r;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2575,7 +2575,8 @@ static int ieee80211_get_tx_power(struct
+ 	struct ieee80211_local *local = wiphy_priv(wiphy);
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
  
--	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
-+	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_usb_put_phy);
+-	if (local->ops->get_txpower)
++	if (local->ops->get_txpower &&
++	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+ 		return drv_get_txpower(local, sdata, dbm);
+ 
+ 	if (!local->use_chanctx)
 
 
 
