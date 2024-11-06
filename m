@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0999BE795
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD709BE8DB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4147A1C2357C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7981C20D21
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00F31DF252;
-	Wed,  6 Nov 2024 12:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B711F1D2784;
+	Wed,  6 Nov 2024 12:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/hEvp4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8PjuiCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFDA1DE8A2;
-	Wed,  6 Nov 2024 12:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A211DED58;
+	Wed,  6 Nov 2024 12:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895347; cv=none; b=rTA1lv2YS6l9d+9Vg0B50I98AZVdkSKMkkPfL+Rw+lWj0uVOrqhhX7/dPSiLDbIq7wnl33tEC2J1V8AfD2gEV2l9F1NCKxlEytD5m+Xu5Ljv1CDQDdDvwBCzkOVrGg6vvEDy1cS3BjGW2BvqIsBnSHiJupA6R6phj+0wTnB3K0M=
+	t=1730896074; cv=none; b=IApdzOs5wzI+T6WHXanaOXSS2xduJuuB1qxywApjVojL7leYTbNk6f409rJ6Q0Mqp3FzfbofE6nzdyZveZonTzhePqjzs9RhO2b1sv1Zskh1l/YMTAx/TXzyjo8w2C1OTof5Wae1Y03QE9Z454dRG513cubenMolsNdK4EwBE1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895347; c=relaxed/simple;
-	bh=Zos4tI3lgLYk+YIotm/2C8IZOB6t7/Gou096R8WoklA=;
+	s=arc-20240116; t=1730896074; c=relaxed/simple;
+	bh=ZpWzVzom94SMIvaRIfCrZ23pBi5ZkjKsuU93HdzkYM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luaqX4od/WjXWV58XogMS49CQRkR0H5i1qfNjeXN9W301KjJV802h+e6ui3B+yq1L9/0J4nmCclq1PDbYHrE+6Kzx1nOJtOLxe6IB80iK8i6WwT58W95+iLa3ieWkUjmSlRKIIr/e6exL1bRGrC+cr5LXpoj5qqu0bp6wXr7Qe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/hEvp4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9FAC4CECD;
-	Wed,  6 Nov 2024 12:15:46 +0000 (UTC)
+	 MIME-Version; b=mUaj6WJvPnGO53UoeePZ61cChMmg+W5ZujopH9kzdY0vJX8UVDr26IHzQgkNWjojidKYFkMqTf56+2KSjQeRFXh/zzZ6tdY3a+8pAudmBnJ7RPG54ONWzWhArPP8d/fGvepWY7YkhYHZqA3/sLofr24soA6sIc3MDDBsIocJfHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8PjuiCf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28A3C4CECD;
+	Wed,  6 Nov 2024 12:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895347;
-	bh=Zos4tI3lgLYk+YIotm/2C8IZOB6t7/Gou096R8WoklA=;
+	s=korg; t=1730896074;
+	bh=ZpWzVzom94SMIvaRIfCrZ23pBi5ZkjKsuU93HdzkYM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/hEvp4tAXg5c7IvQsw6ecZ4VgkWMqgzMkLzJoSat5WFcUSgfJl8Dg1+oYTVLeZfB
-	 aCnwQw/zOzE2LN01YtW21zM1AeuCiWNyFL/l8CEr/tGYUb5p924Ydq3Mtgg6J6UBwx
-	 EAV7CgAlZWYV7U0W1LmaYNU+UZUEZmmcREESR7PI=
+	b=q8PjuiCfQuc8Y6at1VLpx/7VWFZm3dUUBAEfmmg0nDiiymjloQOpI9mhERLXu6NyH
+	 5ijiZT8Y8m8mxp5sxL5D+f4gLUAwpI1kcPs5iDT2iyMIYvoXhwDpROU+1cqJ3UspUL
+	 70kMIGcj9cobQlFSw3ocD2c9ocLzyn60rn2BbR9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 170/350] jfs: check if leafidx greater than num leaves per dmap tree
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 045/245] Bluetooth: hci: fix null-ptr-deref in hci_read_supported_codecs
 Date: Wed,  6 Nov 2024 13:01:38 +0100
-Message-ID: <20241106120325.124437073@linuxfoundation.org>
+Message-ID: <20241106120320.336495111@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit d64ff0d2306713ff084d4b09f84ed1a8c75ecc32 ]
+[ Upstream commit 1e67d8641813f1876a42eeb4f532487b8a7fb0a8 ]
 
-syzbot report a out of bounds in dbSplit, it because dmt_leafidx greater
-than num leaves per dmap tree, add a checking for dmt_leafidx in dbFindLeaf.
+Fix __hci_cmd_sync_sk() to return not NULL for unknown opcodes.
 
-Shaggy:
-Modified sanity check to apply to control pages as well as leaf pages.
+__hci_cmd_sync_sk() returns NULL if a command returns a status event.
+However, it also returns NULL where an opcode doesn't exist in the
+hci_cc table because hci_cmd_complete_evt() assumes status = skb->data[0]
+for unknown opcodes.
+This leads to null-ptr-deref in cmd_sync for HCI_OP_READ_LOCAL_CODECS as
+there is no hci_cc for HCI_OP_READ_LOCAL_CODECS, which always assumes
+status = skb->data[0].
 
-Reported-and-tested-by: syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dca05492eff41f604890
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 1 PID: 2000 Comm: kworker/u9:5 Not tainted 6.9.0-ga6bcb805883c-dirty #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: hci7 hci_power_on
+RIP: 0010:hci_read_supported_codecs+0xb9/0x870 net/bluetooth/hci_codec.c:138
+Code: 08 48 89 ef e8 b8 c1 8f fd 48 8b 75 00 e9 96 00 00 00 49 89 c6 48 ba 00 00 00 00 00 fc ff df 4c 8d 60 70 4c 89 e3 48 c1 eb 03 <0f> b6 04 13 84 c0 0f 85 82 06 00 00 41 83 3c 24 02 77 0a e8 bf 78
+RSP: 0018:ffff888120bafac8 EFLAGS: 00010212
+RAX: 0000000000000000 RBX: 000000000000000e RCX: ffff8881173f0040
+RDX: dffffc0000000000 RSI: ffffffffa58496c0 RDI: ffff88810b9ad1e4
+RBP: ffff88810b9ac000 R08: ffffffffa77882a7 R09: 1ffffffff4ef1054
+R10: dffffc0000000000 R11: fffffbfff4ef1055 R12: 0000000000000070
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88810b9ac000
+FS:  0000000000000000(0000) GS:ffff8881f6c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6ddaa3439e CR3: 0000000139764003 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ hci_read_local_codecs_sync net/bluetooth/hci_sync.c:4546 [inline]
+ hci_init_stage_sync net/bluetooth/hci_sync.c:3441 [inline]
+ hci_init4_sync net/bluetooth/hci_sync.c:4706 [inline]
+ hci_init_sync net/bluetooth/hci_sync.c:4742 [inline]
+ hci_dev_init_sync net/bluetooth/hci_sync.c:4912 [inline]
+ hci_dev_open_sync+0x19a9/0x2d30 net/bluetooth/hci_sync.c:4994
+ hci_dev_do_open net/bluetooth/hci_core.c:483 [inline]
+ hci_power_on+0x11e/0x560 net/bluetooth/hci_core.c:1015
+ process_one_work kernel/workqueue.c:3267 [inline]
+ process_scheduled_works+0x8ef/0x14f0 kernel/workqueue.c:3348
+ worker_thread+0x91f/0xe50 kernel/workqueue.c:3429
+ kthread+0x2cb/0x360 kernel/kthread.c:388
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Fixes: abfeea476c68 ("Bluetooth: hci_sync: Convert MGMT_OP_START_DISCOVERY")
+
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 9f731847ae634..21597e8b727c6 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -3019,9 +3019,10 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- {
- 	int ti, n = 0, k, x = 0;
--	int max_size;
-+	int max_size, max_idx;
- 
- 	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
-+	max_idx = is_ctl ? LPERCTL : LPERDMAP;
- 
- 	/* first check the root of the tree to see if there is
- 	 * sufficient free space.
-@@ -3053,6 +3054,8 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- 		 */
- 		assert(n < 4);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index ae7a5817883aa..c0203a2b51075 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -206,6 +206,12 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return ERR_PTR(err);
  	}
-+	if (le32_to_cpu(tp->dmt_leafidx) >= max_idx)
-+		return -ENOSPC;
  
- 	/* set the return to the leftmost leaf describing sufficient
- 	 * free space.
++	/* If command return a status event skb will be set to NULL as there are
++	 * no parameters.
++	 */
++	if (!skb)
++		return ERR_PTR(-ENODATA);
++
+ 	return skb;
+ }
+ EXPORT_SYMBOL(__hci_cmd_sync_sk);
+@@ -255,6 +261,11 @@ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 	u8 status;
+ 
+ 	skb = __hci_cmd_sync_sk(hdev, opcode, plen, param, event, timeout, sk);
++
++	/* If command return a status event, skb will be set to -ENODATA */
++	if (skb == ERR_PTR(-ENODATA))
++		return 0;
++
+ 	if (IS_ERR(skb)) {
+ 		if (!event)
+ 			bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld", opcode,
+@@ -262,13 +273,6 @@ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return PTR_ERR(skb);
+ 	}
+ 
+-	/* If command return a status event skb will be set to NULL as there are
+-	 * no parameters, in case of failure IS_ERR(skb) would have be set to
+-	 * the actual error would be found with PTR_ERR(skb).
+-	 */
+-	if (!skb)
+-		return 0;
+-
+ 	status = skb->data[0];
+ 
+ 	kfree_skb(skb);
 -- 
 2.43.0
 
