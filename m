@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF749BE96A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB97F9BE83D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B6CC1C230CB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B20D284D5B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD6B1DF99A;
-	Wed,  6 Nov 2024 12:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AF11DF969;
+	Wed,  6 Nov 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW2Pux5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1zhK2rI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6E1198E96;
-	Wed,  6 Nov 2024 12:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D455E1DF726;
+	Wed,  6 Nov 2024 12:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896436; cv=none; b=Z37tBx3xOUyQPpwPaVYFJkmRpMkDvsvhzxZsbHMYVroe4NQvvhkrxwB8DezyXY6uhXIuNJPaR5RiI9dYxKhs8pGfwXjF28d9W8+Ky4wZBbsyd+GbWIuH7kr8/CtNf8tAUF+IR9B0SZ8oWBNBy99pm44ojTgWNqb6Nkh/eL+ZEyw=
+	t=1730895759; cv=none; b=CPuZ4jQSoimt7Bz77VkwsbtDAHm+ltC8NGPycGKFQ8l4G3x/oX6bfmIuhgNPv65jtpkGYYmtxNTJs7u1cPK3Yze2xXlZ7D71hWVCzhroxGO9yPLozLIHhVCCadqbZZQE2FC5WLdOCBPZ71WMq8cx0Rxbd3KyvRPV5GJHC/MWyb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896436; c=relaxed/simple;
-	bh=87k60X25fpJl7D/o2WrBNYnqvFo6+ur63xJ21PsnKaE=;
+	s=arc-20240116; t=1730895759; c=relaxed/simple;
+	bh=GPtop1omdG39kFt0zR1ghXk10lFyCIqnv0OnZWAbOoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSYZJKffISmmc4JTN/IUDXgW9ZiMsNnpXiHN+AiFlrqVqI31s+OFYZCc7YnHl3EHb5HTLSe/7XOXpm1qQAkMeJAPsFrFWTTXHC97lYcFl1CsobeFBwnW36GBHvU1mxerw5NXAlje07bxqv1Xb9iu6MMqaXwmzkyhYMH/9AvPBKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW2Pux5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A164BC4CECD;
-	Wed,  6 Nov 2024 12:33:55 +0000 (UTC)
+	 MIME-Version; b=MCNIv9nL+i/lc7BreAxBSA3/4/bEmHkKbTW6DlNsfywcWbTBjpnysnUXDYmFntysORAFQs5pX+d/SArvMrz5U6ebBQGGquXhb4oWaz5vV54QnjvyfBfM3NJr/ZgsSD3cAWfRWTXQhc/9Y7gjcyhM1vGpu2lGG2kumV9pd3Ck+sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1zhK2rI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B91BC4CECD;
+	Wed,  6 Nov 2024 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896436;
-	bh=87k60X25fpJl7D/o2WrBNYnqvFo6+ur63xJ21PsnKaE=;
+	s=korg; t=1730895759;
+	bh=GPtop1omdG39kFt0zR1ghXk10lFyCIqnv0OnZWAbOoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LW2Pux5u268m9+CEEQMgOgXkRdmS/N+TR7BeHuVKRgsC9mv5OTaVMdRqILs+i2E6G
-	 jQ5F+8YkIztKZfvFBEap8i9hjeVGCMR4XkKJC0oSLQKustRLK1Nc5OPEpjXVoKJwHA
-	 JLOW5my4mRV+GxFuX++FbgyriJN/22OMD+LkAhTc=
+	b=z1zhK2rItc5ckIrDgEQNBP1zNb4X4ZbMjXayYQdhbqaLa31pPK/qf5550ldOq/zY2
+	 1e3Zw+ijsHLDZnEHSYBQ6cdY/muwjbAtYZoKeUt8EFNe/ZBADG826FDyrvUCxgneZt
+	 t/QEW3M7j+ETgOP6PAJhPOgiO/x0bLQpDEfpfnAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Wang <shawnwang@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 164/245] sched/numa: Fix the potential null pointer dereference in task_numa_work()
-Date: Wed,  6 Nov 2024 13:03:37 +0100
-Message-ID: <20241106120323.272533504@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 290/350] nilfs2: propagate directory read errors from nilfs_find_entry()
+Date: Wed,  6 Nov 2024 13:03:38 +0100
+Message-ID: <20241106120327.997322881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Wang <shawnwang@linux.alibaba.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 9c70b2a33cd2aa6a5a59c5523ef053bd42265209 ]
+commit 08cfa12adf888db98879dbd735bc741360a34168 upstream.
 
-When running stress-ng-vm-segv test, we found a null pointer dereference
-error in task_numa_work(). Here is the backtrace:
+Syzbot reported that a task hang occurs in vcs_open() during a fuzzing
+test for nilfs2.
 
-  [323676.066985] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-  ......
-  [323676.067108] CPU: 35 PID: 2694524 Comm: stress-ng-vm-se
-  ......
-  [323676.067113] pstate: 23401009 (nzCv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=--)
-  [323676.067115] pc : vma_migratable+0x1c/0xd0
-  [323676.067122] lr : task_numa_work+0x1ec/0x4e0
-  [323676.067127] sp : ffff8000ada73d20
-  [323676.067128] x29: ffff8000ada73d20 x28: 0000000000000000 x27: 000000003e89f010
-  [323676.067130] x26: 0000000000080000 x25: ffff800081b5c0d8 x24: ffff800081b27000
-  [323676.067133] x23: 0000000000010000 x22: 0000000104d18cc0 x21: ffff0009f7158000
-  [323676.067135] x20: 0000000000000000 x19: 0000000000000000 x18: ffff8000ada73db8
-  [323676.067138] x17: 0001400000000000 x16: ffff800080df40b0 x15: 0000000000000035
-  [323676.067140] x14: ffff8000ada73cc8 x13: 1fffe0017cc72001 x12: ffff8000ada73cc8
-  [323676.067142] x11: ffff80008001160c x10: ffff000be639000c x9 : ffff8000800f4ba4
-  [323676.067145] x8 : ffff000810375000 x7 : ffff8000ada73974 x6 : 0000000000000001
-  [323676.067147] x5 : 0068000b33e26707 x4 : 0000000000000001 x3 : ffff0009f7158000
-  [323676.067149] x2 : 0000000000000041 x1 : 0000000000004400 x0 : 0000000000000000
-  [323676.067152] Call trace:
-  [323676.067153]  vma_migratable+0x1c/0xd0
-  [323676.067155]  task_numa_work+0x1ec/0x4e0
-  [323676.067157]  task_work_run+0x78/0xd8
-  [323676.067161]  do_notify_resume+0x1ec/0x290
-  [323676.067163]  el0_svc+0x150/0x160
-  [323676.067167]  el0t_64_sync_handler+0xf8/0x128
-  [323676.067170]  el0t_64_sync+0x17c/0x180
-  [323676.067173] Code: d2888001 910003fd f9000bf3 aa0003f3 (f9401000)
-  [323676.067177] SMP: stopping secondary CPUs
-  [323676.070184] Starting crashdump kernel...
+The root cause of this problem is that in nilfs_find_entry(), which
+searches for directory entries, ignores errors when loading a directory
+page/folio via nilfs_get_folio() fails.
 
-stress-ng-vm-segv in stress-ng is used to stress test the SIGSEGV error
-handling function of the system, which tries to cause a SIGSEGV error on
-return from unmapping the whole address space of the child process.
+If the filesystem images is corrupted, and the i_size of the directory
+inode is large, and the directory page/folio is successfully read but
+fails the sanity check, for example when it is zero-filled,
+nilfs_check_folio() may continue to spit out error messages in bursts.
 
-Normally this program will not cause kernel crashes. But before the
-munmap system call returns to user mode, a potential task_numa_work()
-for numa balancing could be added and executed. In this scenario, since the
-child process has no vma after munmap, the vma_next() in task_numa_work()
-will return a null pointer even if the vma iterator restarts from 0.
+Fix this issue by propagating the error to the callers when loading a
+page/folio fails in nilfs_find_entry().
 
-Recheck the vma pointer before dereferencing it in task_numa_work().
+The current interface of nilfs_find_entry() and its callers is outdated
+and cannot propagate error codes such as -EIO and -ENOMEM returned via
+nilfs_find_entry(), so fix it together.
 
-Fixes: 214dbc428137 ("sched: convert to vma iterator")
-Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org # v6.2+
-Link: https://lkml.kernel.org/r/20241025022208.125527-1-shawnwang@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241004033640.6841-1-konishi.ryusuke@gmail.com
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Closes: https://lkml.kernel.org/r/20240927013806.3577931-1-lizhi.xu@windriver.com
+Reported-by: syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8a192e8d090fa9a31135
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/dir.c   |   50 +++++++++++++++++++++++++++-----------------------
+ fs/nilfs2/namei.c |   39 ++++++++++++++++++++++++++-------------
+ fs/nilfs2/nilfs.h |    2 +-
+ 3 files changed, 54 insertions(+), 37 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1d2cbdb162a67..425348b8d9eb3 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3289,7 +3289,7 @@ static void task_numa_work(struct callback_head *work)
- 		vma = vma_next(&vmi);
- 	}
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -331,6 +331,8 @@ static int nilfs_readdir(struct file *fi
+  * returns the page in which the entry was found, and the entry itself
+  * (as a parameter - res_dir). Page is returned mapped and unlocked.
+  * Entry is guaranteed to be valid.
++ *
++ * On failure, returns an error pointer and the caller should ignore res_page.
+  */
+ struct nilfs_dir_entry *
+ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+@@ -358,22 +360,24 @@ nilfs_find_entry(struct inode *dir, cons
+ 	do {
+ 		char *kaddr = nilfs_get_page(dir, n, &page);
  
--	do {
-+	for (; vma; vma = vma_next(&vmi)) {
- 		if (!vma_migratable(vma) || !vma_policy_mof(vma) ||
- 			is_vm_hugetlb_page(vma) || (vma->vm_flags & VM_MIXEDMAP)) {
- 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UNSUITABLE);
-@@ -3411,7 +3411,7 @@ static void task_numa_work(struct callback_head *work)
- 		 */
- 		if (vma_pids_forced)
- 			break;
--	} for_each_vma(vmi, vma);
+-		if (!IS_ERR(kaddr)) {
+-			de = (struct nilfs_dir_entry *)kaddr;
+-			kaddr += nilfs_last_byte(dir, n) - reclen;
+-			while ((char *) de <= kaddr) {
+-				if (de->rec_len == 0) {
+-					nilfs_error(dir->i_sb,
+-						"zero-length directory entry");
+-					nilfs_put_page(page);
+-					goto out;
+-				}
+-				if (nilfs_match(namelen, name, de))
+-					goto found;
+-				de = nilfs_next_entry(de);
++		if (IS_ERR(kaddr))
++			return ERR_CAST(kaddr);
++
++		de = (struct nilfs_dir_entry *)kaddr;
++		kaddr += nilfs_last_byte(dir, n) - reclen;
++		while ((char *)de <= kaddr) {
++			if (de->rec_len == 0) {
++				nilfs_error(dir->i_sb,
++					    "zero-length directory entry");
++				nilfs_put_page(page);
++				goto out;
+ 			}
+-			nilfs_put_page(page);
++			if (nilfs_match(namelen, name, de))
++				goto found;
++			de = nilfs_next_entry(de);
+ 		}
++		nilfs_put_page(page);
++
+ 		if (++n >= npages)
+ 			n = 0;
+ 		/* next page is past the blocks we've got */
+@@ -386,7 +390,7 @@ nilfs_find_entry(struct inode *dir, cons
+ 		}
+ 	} while (n != start);
+ out:
+-	return NULL;
++	return ERR_PTR(-ENOENT);
+ 
+ found:
+ 	*res_page = page;
+@@ -431,19 +435,19 @@ fail:
+ 	return NULL;
+ }
+ 
+-ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+ {
+-	ino_t res = 0;
+ 	struct nilfs_dir_entry *de;
+ 	struct page *page;
+ 
+ 	de = nilfs_find_entry(dir, qstr, &page);
+-	if (de) {
+-		res = le64_to_cpu(de->inode);
+-		kunmap(page);
+-		put_page(page);
+-	}
+-	return res;
++	if (IS_ERR(de))
++		return PTR_ERR(de);
++
++	*ino = le64_to_cpu(de->inode);
++	kunmap(page);
++	put_page(page);
++	return 0;
+ }
+ 
+ /* Releases the page */
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -55,12 +55,20 @@ nilfs_lookup(struct inode *dir, struct d
+ {
+ 	struct inode *inode;
+ 	ino_t ino;
++	int res;
+ 
+ 	if (dentry->d_name.len > NILFS_NAME_LEN)
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 
+-	ino = nilfs_inode_by_name(dir, &dentry->d_name);
+-	inode = ino ? nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino) : NULL;
++	res = nilfs_inode_by_name(dir, &dentry->d_name, &ino);
++	if (res) {
++		if (res != -ENOENT)
++			return ERR_PTR(res);
++		inode = NULL;
++	} else {
++		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++	}
++
+ 	return d_splice_alias(inode, dentry);
+ }
+ 
+@@ -261,10 +269,11 @@ static int nilfs_do_unlink(struct inode
+ 	struct page *page;
+ 	int err;
+ 
+-	err = -ENOENT;
+ 	de = nilfs_find_entry(dir, &dentry->d_name, &page);
+-	if (!de)
++	if (IS_ERR(de)) {
++		err = PTR_ERR(de);
+ 		goto out;
 +	}
  
- 	/*
- 	 * If no VMAs are remaining and VMAs were skipped due to the PID
--- 
-2.43.0
-
+ 	inode = d_inode(dentry);
+ 	err = -EIO;
+@@ -358,10 +367,11 @@ static int nilfs_rename(struct inode *ol
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	err = -ENOENT;
+ 	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_page);
+-	if (!old_de)
++	if (IS_ERR(old_de)) {
++		err = PTR_ERR(old_de);
+ 		goto out;
++	}
+ 
+ 	if (S_ISDIR(old_inode->i_mode)) {
+ 		err = -EIO;
+@@ -378,10 +388,12 @@ static int nilfs_rename(struct inode *ol
+ 		if (dir_de && !nilfs_empty_dir(new_inode))
+ 			goto out_dir;
+ 
+-		err = -ENOENT;
+-		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name, &new_page);
+-		if (!new_de)
++		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name,
++					  &new_page);
++		if (IS_ERR(new_de)) {
++			err = PTR_ERR(new_de);
+ 			goto out_dir;
++		}
+ 		nilfs_set_link(new_dir, new_de, new_page, old_inode);
+ 		nilfs_mark_inode_dirty(new_dir);
+ 		new_inode->i_ctime = current_time(new_inode);
+@@ -435,14 +447,15 @@ out:
+  */
+ static struct dentry *nilfs_get_parent(struct dentry *child)
+ {
+-	unsigned long ino;
++	ino_t ino;
++	int res;
+ 	struct inode *inode;
+ 	struct qstr dotdot = QSTR_INIT("..", 2);
+ 	struct nilfs_root *root;
+ 
+-	ino = nilfs_inode_by_name(d_inode(child), &dotdot);
+-	if (!ino)
+-		return ERR_PTR(-ENOENT);
++	res = nilfs_inode_by_name(d_inode(child), &dotdot, &ino);
++	if (res)
++		return ERR_PTR(res);
+ 
+ 	root = NILFS_I(d_inode(child))->i_root;
+ 
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -233,7 +233,7 @@ static inline __u32 nilfs_mask_flags(umo
+ 
+ /* dir.c */
+ extern int nilfs_add_link(struct dentry *, struct inode *);
+-extern ino_t nilfs_inode_by_name(struct inode *, const struct qstr *);
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino);
+ extern int nilfs_make_empty(struct inode *, struct inode *);
+ extern struct nilfs_dir_entry *
+ nilfs_find_entry(struct inode *, const struct qstr *, struct page **);
 
 
 
