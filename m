@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4465A9BEEEF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:22:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1959BEED7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D406DB212D6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C711C2478E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED1B1DF747;
-	Wed,  6 Nov 2024 13:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB101DED7C;
+	Wed,  6 Nov 2024 13:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FB9GRdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtpPcnwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE011DE2CF;
-	Wed,  6 Nov 2024 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FC2646;
+	Wed,  6 Nov 2024 13:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899345; cv=none; b=MUYFeFkYZnypEY8n0ZeWApuZHlYfnnECcGr9N42nAIjPlUU8DCL6O0RdGBNawuS/CJkuFMpsP3FZW6tspEG4dUIKG7Awaat2dKWzvo181xWkwD4gZmGk6mAO7G7AOC1GML/23SMwJH/jI57XiVwGa0SrRXamst8cuyyK3z4yIVQ=
+	t=1730899289; cv=none; b=LfzSR+ahL8DeVi0D2j+qzeWKdfRuGVRndZY3biC6gv0+1kKgItJ0j92DihyGUSaczYz4H5Hq9OeRlydjIM9ZTVUvo0FSCKwFUcfXZ7ZRYgrWl3NjsVfyamGersn1lLSqQgWahqIzOOJKJxetyhehYh6KFqVm1d6orxn0AqWlag0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899345; c=relaxed/simple;
-	bh=Tb8Jy14MhNlw3e/c2f1OGvZ3cTylskVaINh9/scClm8=;
+	s=arc-20240116; t=1730899289; c=relaxed/simple;
+	bh=MretOLmhZCiOZQseEV3sfoQB/Jb6nJSN3oR9vfL514o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHLNrcBirzK6nce2tLiEI0dj2eDlY1qoy7xif5zXsd2PPQ4FKimsDpYxLMGawg8KTWXbaYxFmvMcx/baJPqui4sZKh41E279+3QCRJp2kmzzQ7kaQFTRTowO+fp6MG99HMdzBTZFwjEc6czyocPu43Qx2lWCjihT4Jbh8GckcHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FB9GRdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73354C4CECD;
-	Wed,  6 Nov 2024 13:22:24 +0000 (UTC)
+	 MIME-Version; b=aaZVf6MG9fqo0V5b7XzMenwFqZRxrsRAy1LLEOBcnwJRqItUXgliiZJ1+ApGjuKzt8rWJAb81ET8BPZWrwjwDbE0fNMD4gPgtNLRv33WzVg7c+BM9tngsGg3eCzbZTf4SYAU8s8jQqXi2usWywA1DV01Vj3ftx1gEQNvLKXXz9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtpPcnwL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37F9C4CECD;
+	Wed,  6 Nov 2024 13:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899344;
-	bh=Tb8Jy14MhNlw3e/c2f1OGvZ3cTylskVaINh9/scClm8=;
+	s=korg; t=1730899289;
+	bh=MretOLmhZCiOZQseEV3sfoQB/Jb6nJSN3oR9vfL514o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FB9GRdZwwei+3HghEWPQL+iVFhKEaVw1ERygPaKkZaNQkIC5ssUr0Y/BOaUaFpnW
-	 vk8+JOo82ev7Yq1Tv9h84/TR76cBpMuh8qKVyNRjQsEsXhOdX1ELdVRyeN7A0nsW6d
-	 2xraYSKtOBw10Cics2OHDir8ykJopvEViCJlONPg=
+	b=rtpPcnwLBiZQg4pxmb20Caodv8/KhUZsj/fdSpH+ZpLKgep398Yjwent/3e6lKSID
+	 MCYu/7cBtJCKr1dMf1ISLeZaVyjX6sbLtFjqx3Cg6c99btiNwzear16oDffEyvrups
+	 j9BdoNjvAKiRW/hjwDcwQzUywdpAUGsZ5WMYoDRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 54/73] riscv: Remove unused GENERATING_ASM_OFFSETS
-Date: Wed,  6 Nov 2024 13:05:58 +0100
-Message-ID: <20241106120301.576795706@linuxfoundation.org>
+Subject: [PATCH 5.15 55/73] riscv: Remove duplicated GET_RM
+Date: Wed,  6 Nov 2024 13:05:59 +0100
+Message-ID: <20241106120301.603060010@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
 References: <20241106120259.955073160@linuxfoundation.org>
@@ -69,40 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 
-[ Upstream commit 46d4e5ac6f2f801f97bcd0ec82365969197dc9b1 ]
+[ Upstream commit 164f66de6bb6ef454893f193c898dc8f1da6d18b ]
 
-The macro is not used in the current version of kernel, it looks like
-can be removed to avoid a build warning:
+The macro GET_RM defined twice in this file, one can be removed.
 
-../arch/riscv/kernel/asm-offsets.c: At top level:
-../arch/riscv/kernel/asm-offsets.c:7: warning: macro "GENERATING_ASM_OFFSETS" is not used [-Wunused-macros]
-    7 | #define GENERATING_ASM_OFFSETS
-
-Fixes: 9639a44394b9 ("RISC-V: Provide a cleaner raw_smp_processor_id()")
-Cc: stable@vger.kernel.org
 Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20241008094141.549248-2-zhangchunyan@iscas.ac.cn
+Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241008094141.549248-3-zhangchunyan@iscas.ac.cn
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/asm-offsets.c | 2 --
+ arch/riscv/kernel/traps_misaligned.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index 90f8ce64fa6f1..0b6064fec9e07 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -4,8 +4,6 @@
-  * Copyright (C) 2017 SiFive
-  */
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index b246c3dc69930..d548d6992d988 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -131,8 +131,6 @@
+ #define REG_PTR(insn, pos, regs)	\
+ 	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
  
--#define GENERATING_ASM_OFFSETS
+-#define GET_RM(insn)			(((insn) >> 12) & 7)
 -
- #include <linux/kbuild.h>
- #include <linux/sched.h>
- #include <asm/thread_info.h>
+ #define GET_RS1(insn, regs)		(*REG_PTR(insn, SH_RS1, regs))
+ #define GET_RS2(insn, regs)		(*REG_PTR(insn, SH_RS2, regs))
+ #define GET_RS1S(insn, regs)		(*REG_PTR(RVC_RS1S(insn), 0, regs))
 -- 
 2.43.0
 
