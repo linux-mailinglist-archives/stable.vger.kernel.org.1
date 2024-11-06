@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B539BE907
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52789BE7C9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E15B22867
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF6D1F21369
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48521DF251;
-	Wed,  6 Nov 2024 12:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F261DF73E;
+	Wed,  6 Nov 2024 12:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLPo9vRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OO0T0lk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB31DDA15;
-	Wed,  6 Nov 2024 12:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599A1DF252;
+	Wed,  6 Nov 2024 12:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896188; cv=none; b=PR56Cob5hnVAL65O3VMqXlHuQizkzRxs1EL01IHXBgNgxUa4PEzmHEqw4GXKZdm7XDLWMDBUW8u8kovpKSozGxbBElt8/vvUY/u33M6WfyIiXxH7fJZAmpZJXgg64b4fyzyILBhnsPx3PmEZrvBVdi6BymPt89/2lhPRyO6rT4Y=
+	t=1730895463; cv=none; b=ElMcsplNgql1L+VIewWuk1S1/5ze0Mf0Ws0isTgaRGMGy+i3aIMqad2TUxWHRDOukYGepJVhoBAaRcSEkC9WtNFRNXjEAvqBp9xkGA6LX6luQ2r5iM1I/7RDx+Ifrt7b9+45+djQfTT8dN8mVgr+5HnaJfUvMDX7SqKDdVFGCdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896188; c=relaxed/simple;
-	bh=ODpBx5dwom3v1c1djb9e8CV/vQMFvxajqfsEGJjENnQ=;
+	s=arc-20240116; t=1730895463; c=relaxed/simple;
+	bh=DAybLMf4QM0T8mHkkMVKpVPg9Fx/jQA3nEyU5JsH0m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOgs4MhXECS+toZuJbQe+U4szx99TtMYy+AHoCy+E78vy9RdQjFdz9T2ZZT6kajgtjp3pOWsHx5bBB9PhrUo5GOWevKM6a3CtFoVKEIT9kLdk4ecQzi+Y9TfOgo+HoxkRNzkCZHvkg6ILZCAmJbjcfxOn2QwAsMHxCXOQSNcUCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLPo9vRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC66C4CECD;
-	Wed,  6 Nov 2024 12:29:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b/YmZD27BOkYjIXrWHq74o3hMxoV1vTcxGbWpN/d5YWzBVEx83a57MmWWrrFl243HyMazLaXYyfDsIi2RlzQbNG+MBWg2r/X5NjeIW8o/2Idp6VHWFoZMdaNZDnW1Er4BfNf4wkzkXjss1D8MeA3BsmLvkNSn5RUMyNJXX8GLuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OO0T0lk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF67C4CED2;
+	Wed,  6 Nov 2024 12:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896188;
-	bh=ODpBx5dwom3v1c1djb9e8CV/vQMFvxajqfsEGJjENnQ=;
+	s=korg; t=1730895462;
+	bh=DAybLMf4QM0T8mHkkMVKpVPg9Fx/jQA3nEyU5JsH0m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLPo9vRLBeNGXBQVVGbUDrcAe2WNgdQeBVpYdAM+nT0lt9I+HsESgGIagUoU3dTa/
-	 pspb31wnSQIqV1LOKo7xCCgUt+5fcJHAcXW+cd/NX1VUDEoFbD+ucmUNr4IgiuMv4n
-	 fb3i6jGQATaHnejkr5lRkwzJUXvANkl8bM97NOWs=
+	b=2OO0T0lku0+AqdzcluwjJyYT/GL7y4BOlGJs9vm4voyMAaKxNMU508tHHQSbSf/8s
+	 xEqag+K4RBehCMmgwXeNmp9mqFHvzFyriDdoBiTGpOz575/yZsCbN3llioU+RtcmIJ
+	 1RWHPes01VVFAsw869vvJGrqZbMaGXhppGovswJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 083/245] fs/ntfs3: Check if more than chunk-size bytes are written
-Date: Wed,  6 Nov 2024 13:02:16 +0100
-Message-ID: <20241106120321.247702981@linuxfoundation.org>
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 209/350] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+Date: Wed,  6 Nov 2024 13:02:17 +0100
+Message-ID: <20241106120326.150275376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Ballance <andrewjballance@gmail.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
+commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
 
-A incorrectly formatted chunk may decompress into
-more than LZNT_CHUNK_SIZE bytes and a index out of bounds
-will occur in s_max_off.
+Move ST2 reading with overflow handling after measurement data
+reading.
+ST2 register read have to be read after read measurment data,
+because it means end of the reading and realease the lock on the data.
+Remove ST2 read skip on interrupt based waiting because ST2 required to
+be read out at and of the axis read.
 
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/lznt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
-index 4aae598d6d884..fdc9b2ebf3410 100644
---- a/fs/ntfs3/lznt.c
-+++ b/fs/ntfs3/lznt.c
-@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -673,22 +673,8 @@ static int ak8975_start_read_axis(struct
+ 	if (ret < 0)
+ 		return ret;
  
- 	/* Do decompression until pointers are inside range. */
- 	while (up < unc_end && cmpr < cmpr_end) {
-+		// return err if more than LZNT_CHUNK_SIZE bytes are written
-+		if (up - unc > LZNT_CHUNK_SIZE)
-+			return -EINVAL;
- 		/* Correct index */
- 		while (unc + s_max_off[index] < up)
- 			index += 1;
--- 
-2.43.0
-
+-	/* This will be executed only for non-interrupt based waiting case */
+-	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+-		ret = i2c_smbus_read_byte_data(client,
+-					       data->def->ctrl_regs[ST2]);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "Error in reading ST2\n");
+-			return ret;
+-		}
+-		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+-			   data->def->ctrl_masks[ST2_HOFL])) {
+-			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
++	/* Return with zero if the data is ready. */
++	return !data->def->ctrl_regs[ST1_DRDY];
+ }
+ 
+ /* Retrieve raw flux value for one of the x, y, or z axis.  */
+@@ -715,6 +701,20 @@ static int ak8975_read_axis(struct iio_d
+ 	if (ret < 0)
+ 		goto exit;
+ 
++	/* Read out ST2 for release lock on measurment data. */
++	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
++	if (ret < 0) {
++		dev_err(&client->dev, "Error in reading ST2\n");
++		goto exit;
++	}
++
++	if (ret & (data->def->ctrl_masks[ST2_DERR] |
++		   data->def->ctrl_masks[ST2_HOFL])) {
++		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
++		ret = -EINVAL;
++		goto exit;
++	}
++
+ 	mutex_unlock(&data->lock);
+ 
+ 	pm_runtime_mark_last_busy(&data->client->dev);
 
 
 
