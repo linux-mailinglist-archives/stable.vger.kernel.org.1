@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-90259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A649BE76A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE469BE88A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99DC8283632
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43633283FC9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4954F1DF24A;
-	Wed,  6 Nov 2024 12:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F51DF996;
+	Wed,  6 Nov 2024 12:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bfn6KI/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiguOjOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084CD1D416E;
-	Wed,  6 Nov 2024 12:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB45C1DF969;
+	Wed,  6 Nov 2024 12:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895244; cv=none; b=bxUiY52kYdnBqA2/AsySz/lZJByrfJyL34l0gMk2MmCs/aPuCpwxLbdk/pirk0nG2KD/+ZbFp0QtFG24YdgpaexhnT/X2MYPGQc7I4WIvRlWeurGiy8Vm45VDGgUYQAIbwd72mxr2+HjLnnwB8OFVpaeSFAfQ5iCvh6tcdco9QY=
+	t=1730895915; cv=none; b=CQZfOsgCKbYsCygpiLE/uh9GL8EgRwrld4AYAip3pR7VATRjujup7cWFfYjtyIJesnthrqN9BIfJenUmg57PHFA/Lbh0tWWNR7OGB8PJGr55TDN9pBsiKV32AZPtU1kPAeSNnRgg+OztlLnpv5Vc0gn7CKg1fVlCmn9OBhiqKBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895244; c=relaxed/simple;
-	bh=XRplhH7CZFywTS/48l8qgm/BFwU+FGsS3pvkMrE/SWc=;
+	s=arc-20240116; t=1730895915; c=relaxed/simple;
+	bh=0fY5XrAsB5Luvq/Oqqdb49ECDL5S8EpXiileedMTPsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8qR2aMxZX+7O+duUjgHCIV/380LhOt0dr5qqtjvvhyiHu9HgCoUa1xxVBAqtndwjRphSQZGIIxgh1ZZ+wJDMmmfKo84wcMiYCQVC9Lw6tATuOw8xHNyZEsnL8li7qwodCVR4q03Nxz7g8J/bDwqjUMS4pBYRS4pzZEYtG1cONA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bfn6KI/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD6BC4CECD;
-	Wed,  6 Nov 2024 12:14:03 +0000 (UTC)
+	 MIME-Version; b=FOL6bmpoAVBoa8lNl16Kne5U5utuH5pcL+MGCiA0R7Ps6d9DuiAMmRnbovQOMG0HSIPIl9qu+FaDkkObu/K1vK0+wxnASYpAj+g4C7t3P9eQIH9UOckunVqA8uty1adFoGBSyKlhz4Wbsf7n/+wbamGiQkAdjOI3DwdTJ0Rebl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiguOjOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE4CC4CECD;
+	Wed,  6 Nov 2024 12:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895243;
-	bh=XRplhH7CZFywTS/48l8qgm/BFwU+FGsS3pvkMrE/SWc=;
+	s=korg; t=1730895915;
+	bh=0fY5XrAsB5Luvq/Oqqdb49ECDL5S8EpXiileedMTPsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bfn6KI/fdeIQpwUkvT3CK/h2j6PnTQnYJq2cfvjQvqlEBqpuGxBYi4HlarpGN2OBF
-	 65NJKtXuOrp4pCDddcyFCyP/cDHDfmtSYsxYY8yBORag9GpzcYZrDrWV1leAO1Kkdw
-	 BIP4Cjvo5SG53bT8sHtFawVXVEB1yWBuJT+TEW2g=
+	b=TiguOjOCgrBOnG1Wb+4BJCc1+TTdaq00NKwR11EUljv2hxY+dO5kfa5EZumy7VDQI
+	 LSr4t5wOtiLRfV90TkCCUVlmF5/rHjUSsHzLNrL3YxTysLrA1TBsFAx1zn3pksAlkn
+	 ifI+63T8nexw2+trYpTqHtHZJ3Pwn+S9KH8RBUjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ruan Bonan <bonan.ruan@u.nus.edu>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 152/350] ACPICA: Fix memory leak if acpi_ps_get_next_field() fails
+Subject: [PATCH 6.11 027/245] sock_map: fix a NULL pointer dereference in sock_map_link_update_prog()
 Date: Wed,  6 Nov 2024 13:01:20 +0100
-Message-ID: <20241106120324.672292342@linuxfoundation.org>
+Message-ID: <20241106120319.900178301@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit e6169a8ffee8a012badd8c703716e761ce851b15 ]
+[ Upstream commit 740be3b9a6d73336f8c7d540842d0831dc7a808b ]
 
-ACPICA commit 1280045754264841b119a5ede96cd005bc09b5a7
+The following race condition could trigger a NULL pointer dereference:
 
-If acpi_ps_get_next_field() fails, the previously created field list
-needs to be properly disposed before returning the status code.
+sock_map_link_detach():		sock_map_link_update_prog():
+   mutex_lock(&sockmap_mutex);
+   ...
+   sockmap_link->map = NULL;
+   mutex_unlock(&sockmap_mutex);
+   				   mutex_lock(&sockmap_mutex);
+				   ...
+				   sock_map_prog_link_lookup(sockmap_link->map);
+				   mutex_unlock(&sockmap_mutex);
+   <continue>
 
-Link: https://github.com/acpica/acpica/commit/12800457
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Rename local variable to avoid compiler confusion ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fix it by adding a NULL pointer check. In this specific case, it makes
+no sense to update a link which is being released.
+
+Reported-by: Ruan Bonan <bonan.ruan@u.nus.edu>
+Fixes: 699c23f02c65 ("bpf: Add bpf_link support for sk_msg and sk_skb progs")
+Cc: Yonghong Song <yonghong.song@linux.dev>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Link: https://lore.kernel.org/r/20241026185522.338562-1-xiyou.wangcong@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psargs.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ net/core/sock_map.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-index 576ac74a47935..956aaf6a3f3d0 100644
---- a/drivers/acpi/acpica/psargs.c
-+++ b/drivers/acpi/acpica/psargs.c
-@@ -25,6 +25,8 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state);
- static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 						       *parser_state);
- 
-+static void acpi_ps_free_field_list(union acpi_parse_object *start);
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_package_length
-@@ -683,6 +685,39 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
- 	return_PTR(field);
- }
- 
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_ps_free_field_list
-+ *
-+ * PARAMETERS:  start               - First Op in field list
-+ *
-+ * RETURN:      None.
-+ *
-+ * DESCRIPTION: Free all Op objects inside a field list.
-+ *
-+ ******************************************************************************/
-+
-+static void acpi_ps_free_field_list(union acpi_parse_object *start)
-+{
-+	union acpi_parse_object *cur = start;
-+	union acpi_parse_object *next;
-+	union acpi_parse_object *arg;
-+
-+	while (cur) {
-+		next = cur->common.next;
-+
-+		/* AML_INT_CONNECTION_OP can have a single argument */
-+
-+		arg = acpi_ps_get_arg(cur, 0);
-+		if (arg) {
-+			acpi_ps_free_op(arg);
-+		}
-+
-+		acpi_ps_free_op(cur);
-+		cur = next;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 219fd8f1ca2a4..0550837775d5e 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -1771,6 +1771,10 @@ static int sock_map_link_update_prog(struct bpf_link *link,
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
++	if (!sockmap_link->map) {
++		ret = -ENOLINK;
++		goto out;
 +	}
-+}
-+
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_ps_get_next_arg
-@@ -751,6 +786,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
- 			while (parser_state->aml < parser_state->pkg_end) {
- 				field = acpi_ps_get_next_field(parser_state);
- 				if (!field) {
-+					if (arg) {
-+						acpi_ps_free_field_list(arg);
-+					}
-+
- 					return_ACPI_STATUS(AE_NO_MEMORY);
- 				}
  
+ 	ret = sock_map_prog_link_lookup(sockmap_link->map, &pprog, &plink,
+ 					sockmap_link->attach_type);
 -- 
 2.43.0
 
