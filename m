@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1015B9BE78A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4609BE8AA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4258C1C233EC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C0F283F7C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A0D1DE8A2;
-	Wed,  6 Nov 2024 12:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0911DFDB2;
+	Wed,  6 Nov 2024 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBMu3rKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jInpjO98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6E8171CD;
-	Wed,  6 Nov 2024 12:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B731DF24B;
+	Wed,  6 Nov 2024 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895321; cv=none; b=nBdkeRfZJle8nPnM58B4D1SYvBdfc3oUVSvVx/Czb4LUG+Di/WvHq/LnHlVALVOkzEbQ8kZShwEYcwpMmx/lq2d9f9VikJFYI9qc1wAfhUfMgjoWPNAtTW+0Sq03554b1GmXs6KsMg52T7TUv7bNKoozXkzZbmR278M8CXdK7eI=
+	t=1730895992; cv=none; b=Rxn4w01qlSaZ0OP4xNpP3/rHs+i9e68i7tQvGlWLoESED9NwU4wWFIMdKXRNp43v/Btt9G1mdR/FAJweBS9uJ1nF6lbEsh3ly543C6QAlNJRqSGu2Pr1rV5UjlvZ5wyrH4rBCbTWnqdlxAfYTZvPkq/JgOskJOWf+dghmqQFlAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895321; c=relaxed/simple;
-	bh=7VZYTFrpoq1DDy7+iqNRZxeO261X6j+Xgr2m6MFregw=;
+	s=arc-20240116; t=1730895992; c=relaxed/simple;
+	bh=Wesyq9kjfm383SzGkMYX6/E/kVC5z1FC3MnGguLfA4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5cnEqT989VMLyAQm7Gm2aA9kwAdfEdFX4bOxnl7WQwTHd/2tYWP6b7WukZxQwcT+OTXGoy/MwwCIjk9gDDay9B2ahIppm/d4zkQfgVaoUJphKxtvrlUfa36BiE1Znx0hE2+NqQrsN0QCJbvNCfyXhs2yYFpIL9oI5BCr3yv2Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBMu3rKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C354C4CECD;
-	Wed,  6 Nov 2024 12:15:20 +0000 (UTC)
+	 MIME-Version; b=s+NRYn0u2g1BCdGayyX73WZ95Y9ccAY0xoThF/DiOY4yfd1EWYm0UVjGb+Z2ps2uo7o2/8NPsZAnn0HptAuGZjMe8AjYEQk4VRjVK8cM9HrCI/WJFYaAhgPhx4Am8BF19YP0I2wcTLDUIwj9DrmDlNv5ubgguacInZbsdSoxoek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jInpjO98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04AFC4CECD;
+	Wed,  6 Nov 2024 12:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895320;
-	bh=7VZYTFrpoq1DDy7+iqNRZxeO261X6j+Xgr2m6MFregw=;
+	s=korg; t=1730895992;
+	bh=Wesyq9kjfm383SzGkMYX6/E/kVC5z1FC3MnGguLfA4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBMu3rKcqi08X0mhSA5sn+XMujVwhFioqt2RVrlf3+CrVH9QGZHGYsDWyN5j0XGAK
-	 Ue3aLTsBRWrp7fJ8l6C2oXYK5pKJ14p2zUXAzBsv7CtBkZW2e5kJK+EPLnd/GuAwac
-	 EEFYuBhiwOtSlAbkgeemWFG2SWjBROyXlV1stcL8=
+	b=jInpjO98j/SLqSeFyi0aFYKVaDYSQq2wlVM70WogjEgWvzJn1aZr4W9WHa+6KLXbw
+	 5p++HjlpvxuYCm+Oph/AQX0m/zCTU8Gh5O7lk3PzAgOe1v8H/C/7eQwJCtOg5IQHS8
+	 OtmdAs9dzexVc4XE63n77nb02eEQTZeF8xrXP7As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 179/350] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Subject: [PATCH 6.11 054/245] net: ethernet: mtk_wed: fix path of MT7988 WO firmware
 Date: Wed,  6 Nov 2024 13:01:47 +0100
-Message-ID: <20241106120325.353991202@linuxfoundation.org>
+Message-ID: <20241106120320.546294911@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
+[ Upstream commit 637f41476384c76d3cd7dcf5947caf2c8b8d7a9b ]
 
-Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+linux-firmware commit 808cba84 ("mtk_wed: add firmware for mt7988
+Wireless Ethernet Dispatcher") added mt7988_wo_{0,1}.bin in the
+'mediatek/mt7988' directory while driver current expects the files in
+the 'mediatek' directory.
 
-This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
-synchronous updates because the file descriptor is opened with O_SYNC.
-This can lead to the jbd2_journal_stop() function calling
-jbd2_might_wait_for_commit(), potentially causing a deadlock if the
-EXT4_IOC_MIGRATE call races with a write(2) system call.
+Change path in the driver header now that the firmware has been added.
 
-This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
-case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
-jbd2_journal_stop function while i_data_sem is locked. This triggers
-lockdep because the jbd2_journal_start function might also lock the same
-jbd2_handle simultaneously.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
-Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: e2f64db13aa1 ("net: ethernet: mtk_wed: introduce WED support for MT7988")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/Zxz0GWTR5X5LdWPe@pidgin.makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_wed_wo.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index 4a72583c75593..9f73c2f7f9492 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -678,8 +678,8 @@ int ext4_ind_migrate(struct inode *inode)
- 		ei->i_data[i] = cpu_to_le32(blk++);
- 	ext4_mark_inode_dirty(handle, inode);
- errout:
--	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
-+	ext4_journal_stop(handle);
- out_unlock:
- 	percpu_up_write(&sbi->s_writepages_rwsem);
- 	return ret;
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed_wo.h b/drivers/net/ethernet/mediatek/mtk_wed_wo.h
+index 87a67fa3868d3..c01b1e8428f6d 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed_wo.h
++++ b/drivers/net/ethernet/mediatek/mtk_wed_wo.h
+@@ -91,8 +91,8 @@ enum mtk_wed_dummy_cr_idx {
+ #define MT7981_FIRMWARE_WO	"mediatek/mt7981_wo.bin"
+ #define MT7986_FIRMWARE_WO0	"mediatek/mt7986_wo_0.bin"
+ #define MT7986_FIRMWARE_WO1	"mediatek/mt7986_wo_1.bin"
+-#define MT7988_FIRMWARE_WO0	"mediatek/mt7988_wo_0.bin"
+-#define MT7988_FIRMWARE_WO1	"mediatek/mt7988_wo_1.bin"
++#define MT7988_FIRMWARE_WO0	"mediatek/mt7988/mt7988_wo_0.bin"
++#define MT7988_FIRMWARE_WO1	"mediatek/mt7988/mt7988_wo_1.bin"
+ 
+ #define MTK_WO_MCU_CFG_LS_BASE				0
+ #define MTK_WO_MCU_CFG_LS_HW_VER_ADDR			(MTK_WO_MCU_CFG_LS_BASE + 0x000)
 -- 
 2.43.0
 
