@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-91571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D029BEE95
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C0409BEE66
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1BEB2031D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94371F249D5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE45F1DE2CF;
-	Wed,  6 Nov 2024 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335591E0096;
+	Wed,  6 Nov 2024 13:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6bxa6uY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFSYV7wZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C874646;
-	Wed,  6 Nov 2024 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56FB1CC14B;
+	Wed,  6 Nov 2024 13:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899123; cv=none; b=OWbvp41IjWA9/XKVr6FaJKsRlcMQmJ0u4OnO3jqaorS+GOOeRk3BgubxGYAK00MLEI4q2HbeNAXscWdrrCPmLlPuimhpQs6Vj2XUUQweCh16vrUE8DL9hgqUWYsFxZQrtUqyQPbTUmmw7soHwYf1w97ZNvP9VyTSSEqH+Prx6gQ=
+	t=1730899012; cv=none; b=CYoVJXT5x9mZsrDPBkb6s8RXGJHmCocZWVe1hXlLpOQhnc+edAiPNmEHvVb9y7dbI+6KDTLKyXH7ps3etUZkGZcVRbweTOgqTZj7QFfc0nr0x7Dx5PgDBsctTW5+PoETOYWy65RARUM2/mtOJipbwmT8tpRG4T8O7WWmpeJ2A/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899123; c=relaxed/simple;
-	bh=X6sGs1nydibkYbVtb/cxlJ3QHSqasaAbpXBFS9+Z61Q=;
+	s=arc-20240116; t=1730899012; c=relaxed/simple;
+	bh=BzflyP79Tc/YLtHYwKh+G8aqTZrf+TVMn5zNtksPnu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lizmSf8zn9ByIzitBjqrZDgbSVN7+U91wdSvG8gSbgqe4BgkzHZaWxQaD3qV3OBXul5/psZuXDWt4t0PaNObzmdDc9ZSNPDW37Wa09ML+tv8ZEKeMyjTSaGmFdLsT3yCvV0EvleNxbsvEUIapJS/zULv/9IEtLZAUO5360NnM4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6bxa6uY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3383C4CECD;
-	Wed,  6 Nov 2024 13:18:42 +0000 (UTC)
+	 MIME-Version; b=bt4zFwLVaknP/JwYtHHuONCGk7ETMkPAx3pLwiHzFCetnFrcMOTBNvL44d7myVdmmZ6qPHHG8DjAcd9q9drXME1dJ0hqqwj1BK7QkfHCMMWd1YHuCNe2+gxXUGc/V5iRclqwiUc2ydLohoskIP7DS7YfAuXby0UHdrtuUGrEYR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFSYV7wZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71900C4CECD;
+	Wed,  6 Nov 2024 13:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899123;
-	bh=X6sGs1nydibkYbVtb/cxlJ3QHSqasaAbpXBFS9+Z61Q=;
+	s=korg; t=1730899011;
+	bh=BzflyP79Tc/YLtHYwKh+G8aqTZrf+TVMn5zNtksPnu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6bxa6uYyRUFU48NHgcfwSdrNfjTtDx+20ROMsiKrLxQi+6P4dW5jXViKZLuXHe2K
-	 CKSLQ5l8gtFx9e4W84K3+ZSPtaS1GP4it++W9Uy7QlhjKeMCEQRmm69B5CqNCL9pMJ
-	 JBVBNyacZaQa423zYSrIEVsZbANKHR4w4OeIp4Z0=
+	b=sFSYV7wZx6+G54QMX6RHR/4T8EtHreEpoeDABH08wStHa0jFBX28uV4btOyKSCpva
+	 dClnszdpPRA3oVjFFYEgShry9KrNd8cHNdF5Ai4JBvGoGWYdZ+aducPCtve0zBXgdC
+	 A8sW3RWy5IDP0oh7Tlip7P5JqXV5BQ+KyjOIWSQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 423/462] selinux: improve error checking in sel_write_load()
-Date: Wed,  6 Nov 2024 13:05:16 +0100
-Message-ID: <20241106120341.962622589@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	junhua huang <huang.junhua@zte.com.cn>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.4 424/462] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
+Date: Wed,  6 Nov 2024 13:05:17 +0100
+Message-ID: <20241106120341.986101483@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,90 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: junhua huang <huang.junhua@zte.com.cn>
 
-[ Upstream commit 42c773238037c90b3302bf37a57ae3b5c3f6004a ]
+commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
 
-Move our existing input sanity checking to the top of sel_write_load()
-and add a check to ensure the buffer size is non-zero.
+After we fixed the uprobe inst endian in aarch_be, the sparse check report
+the following warning info:
 
-Move a local variable initialization from the declaration to before it
-is used.
+sparse warnings: (new ones prefixed by >>)
+>> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
+>> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
+@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
+   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
+   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
+>> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
+@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
+   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
+   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
 
-Minor style adjustments.
+use the __le32 to u32 for uprobe_opcode_t, to keep the same.
 
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-[cascardo: keep fsi initialization at its declaration point as it is used earlier]
-[cascardo: keep check for 64MiB size limit]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
+Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/selinuxfs.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ arch/arm64/include/asm/uprobes.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index e9eaff90cbccd..fd6282fa9c39f 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -535,6 +535,16 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 	ssize_t length;
- 	void *data = NULL;
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -14,7 +14,7 @@
+ #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
+ #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
  
-+	/* no partial writes */
-+	if (*ppos)
-+		return -EINVAL;
-+	/* no empty policies */
-+	if (!count)
-+		return -EINVAL;
-+
-+	if (count > 64 * 1024 * 1024)
-+		return -EFBIG;
-+
- 	mutex_lock(&fsi->mutex);
+-typedef u32 uprobe_opcode_t;
++typedef __le32 uprobe_opcode_t;
  
- 	length = avc_has_perm(&selinux_state,
-@@ -543,23 +553,15 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 	if (length)
- 		goto out;
- 
--	/* No partial writes. */
--	length = -EINVAL;
--	if (*ppos != 0)
--		goto out;
--
--	length = -EFBIG;
--	if (count > 64 * 1024 * 1024)
--		goto out;
--
--	length = -ENOMEM;
- 	data = vmalloc(count);
--	if (!data)
-+	if (!data) {
-+		length = -ENOMEM;
- 		goto out;
--
--	length = -EFAULT;
--	if (copy_from_user(data, buf, count) != 0)
-+	}
-+	if (copy_from_user(data, buf, count) != 0) {
-+		length = -EFAULT;
- 		goto out;
-+	}
- 
- 	length = security_load_policy(fsi->state, data, count);
- 	if (length) {
-@@ -578,6 +580,7 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 		"auid=%u ses=%u lsm=selinux res=1",
- 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
- 		audit_get_sessionid(current));
-+
- out:
- 	mutex_unlock(&fsi->mutex);
- 	vfree(data);
--- 
-2.43.0
-
+ struct arch_uprobe_task {
+ };
 
 
 
