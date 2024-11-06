@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D6D9BE706
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF429BECE9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8F51F27F92
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152741F21C77
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715881DF252;
-	Wed,  6 Nov 2024 12:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC5B1F76AA;
+	Wed,  6 Nov 2024 13:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NdnF8Jz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTA2x4rE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1AD1D5AD7;
-	Wed,  6 Nov 2024 12:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1E21EE00C;
+	Wed,  6 Nov 2024 13:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894980; cv=none; b=clNPDYTOjocEctBxBPGTAt7LAO6lKrteIm5OIFTWAf91zza/8FSukiXujwiiDnCl58YH/vig8qTS28ylO9cWDolSFanIQdeN/gDBe9t0wQnQGqXrtjykdb1RLKueLBEc5H0zsEVJNMr0VQdt+Cj/WSuxyo+wpoADoQDTEJSuc20=
+	t=1730898035; cv=none; b=eF6JnNbmTJTd/0IWwEFsRQVoO/Msd45TyFOuuNYGQImRftdpYdZDsZBewKcwPXApz+PZjiuo4JMxavz1R2Z2PlM1bILLAsl9rMHGB0JeGHqZEErCWa3LGgb3x6oKC4kpDakPoTxc4mNvDY5IoXieKJboM6ggEpSSwmLY3U2t/W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894980; c=relaxed/simple;
-	bh=HTSJ4Yz3nz4kj3QLgF4kr0TB0v/fxsANetXTZu22T6A=;
+	s=arc-20240116; t=1730898035; c=relaxed/simple;
+	bh=8RSrMPxP3ufDcRvBiRXkH4yXd+xkI8zBKtzcz9tOjJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGRGiZ9nQE9yQW2h671eBQP2uAFQKRX5pfGohqEVkqZWWfHMl+m5VtnZp+F8LEsWe2OY8p3n67jPeDzkb5+H/x6MudSKfNRcxTy/hxvkldCXIGCcr7wI5w4U7NILowqIKgnSuQzyhMNZbtw7MsZBDgo41ZiAYjYaVJoDRTF219M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NdnF8Jz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70C0C4CECD;
-	Wed,  6 Nov 2024 12:09:39 +0000 (UTC)
+	 MIME-Version; b=dOrOKYG449lrrIV7RLxeIhj/eRAN+Abzp86c1YbKzYq2GKbDzZS7sKiFCVWlWNuFi7yF1/Dw0dYH7oJKTx52Q+Tr5ux+TX4xdTsWMQ1Y4y/X9dxcG8RGGcIOtJZvtZoflWb5egCkCsWlbqPA2ANjJFLRY9hnrSK1qu1FdJc7/qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTA2x4rE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5216CC4CECD;
+	Wed,  6 Nov 2024 13:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894980;
-	bh=HTSJ4Yz3nz4kj3QLgF4kr0TB0v/fxsANetXTZu22T6A=;
+	s=korg; t=1730898035;
+	bh=8RSrMPxP3ufDcRvBiRXkH4yXd+xkI8zBKtzcz9tOjJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NdnF8Jzymml8+WfLVZSJ9NQHRMnoT/YKqfdsDdeH78/LoJvD6yGr1hV7xfOUEbdB
-	 DgPW4/L+hXLDFNdxhhj2YWneXU+Ark8C1sC6YbfaiCnodaIhIyduFhMIuFmCfvLyBc
-	 LRMv9ETn7klMAMR5ggk5+7yHu6bLHsWkTtWZ+Tj0=
+	b=ZTA2x4rEdk5hlC2ypPeZJccgi8Lo6t9AOgr4GpkhCfg1yvc29UsrrZN5EnVU2Up2E
+	 73mG/P1nIQXYzsnNCSkfJcJfCadQmvJiQOFA2xqJ5ACT2ezfKBC42plnShnPq60CA0
+	 13gDs5CbjxC49PxgPiaDouVWnmEuR12GCuA1OT1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 065/350] xen/swiotlb: add alignment check for dma buffers
-Date: Wed,  6 Nov 2024 12:59:53 +0100
-Message-ID: <20241106120322.498681024@linuxfoundation.org>
+Subject: [PATCH 5.4 101/462] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
+Date: Wed,  6 Nov 2024 12:59:54 +0100
+Message-ID: <20241106120334.000541906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 9f40ec84a7976d95c34e7cc070939deb103652b0 ]
+[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
 
-When checking a memory buffer to be consecutive in machine memory,
-the alignment needs to be checked, too. Failing to do so might result
-in DMA memory not being aligned according to its requested size,
-leading to error messages like:
+Patch series "nilfs2: fix potential issues with empty b-tree nodes".
 
-  4xxx 0000:2b:00.0: enabling device (0140 -> 0142)
-  4xxx 0000:2b:00.0: Ring address not aligned
-  4xxx 0000:2b:00.0: Failed to initialise service qat_crypto
-  4xxx 0000:2b:00.0: Resetting device qat_dev0
-  4xxx: probe of 0000:2b:00.0 failed with error -14
+This series addresses three potential issues with empty b-tree nodes that
+can occur with corrupted filesystem images, including one recently
+discovered by syzbot.
 
-Fixes: 9435cce87950 ("xen/swiotlb: Add support for 64KB page granularity")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+This patch (of 3):
+
+If a b-tree is broken on the device, and the b-tree height is greater than
+2 (the level of the root node is greater than 1) even if the number of
+child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
+nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
+
+This is because, when the number of child nodes of the b-tree root is 0,
+nilfs_btree_do_lookup() does not set the block buffer head in any of
+path[x].bp_bh, leaving it as the initial value of NULL, but if the level
+of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
+which accesses the buffer memory of path[x].bp_bh, is called.
+
+Fix this issue by adding a check to nilfs_btree_root_broken(), which
+performs sanity checks when reading the root node from the device, to
+detect this inconsistency.
+
+Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
+early on.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
+Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nilfs2/btree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 2f4d4e36c7b36..98f82c759d1e2 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -98,9 +98,15 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
- {
- 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
- 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
-+	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
- 
- 	next_bfn = pfn_to_bfn(xen_pfn);
- 
-+	/* If buffer is physically aligned, ensure DMA alignment. */
-+	if (IS_ALIGNED(p, algn) &&
-+	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
-+		return 1;
-+
- 	for (i = 1; i < nr_pages; i++)
- 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
- 			return 1;
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index a426e4e2acdac..c2aca9cd78644 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     nchildren < 0 ||
+-		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
++		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
++		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, level, flags, nchildren);
 -- 
 2.43.0
 
