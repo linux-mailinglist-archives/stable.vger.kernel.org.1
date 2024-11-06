@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6D09BE7B6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2461A9BE8A6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A661F20F6C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE286281136
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D7E1DF254;
-	Wed,  6 Nov 2024 12:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F221DFD99;
+	Wed,  6 Nov 2024 12:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyRs1HGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGFjX81D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76381DED58;
-	Wed,  6 Nov 2024 12:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918021DF24B;
+	Wed,  6 Nov 2024 12:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895418; cv=none; b=NcOVbilhRH7XKZrvWyABnkTW90hpvQEGlExOjVFwyQgss0nolbg39HxafWeXbDW9xwJgq2D7JaUnSQFw1oHR/gbX5dhL6yX/c9X36EIbrisOxmGookPQLmbuBOs7nBM6K+RkSe1kFCmTUSc8ck1J4zXpr7Yho3uzeIZrzSYfW9A=
+	t=1730895980; cv=none; b=stSeMbpilYaQrLidRSHvLev3YOAySaf9YM/RU44Hsd2kFIz6lDHDa1wwu8bcnLUxjymKf07F9onEfDx3MsztbZkXTzn1arJM3/hGwVYu9ZH/QujSAaDER7fmm8783AnQ5ahXlzt7Oe7NQIK+EOmN4jKHGJoLdyU9D7IxFqccBOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895418; c=relaxed/simple;
-	bh=YYLJFaylWGUoDlZsXmtUwKQV8hHGZr6IyJAiRJr0IP0=;
+	s=arc-20240116; t=1730895980; c=relaxed/simple;
+	bh=sjak6CCXU1w0lU7vVBAz3lpfa7pEQJYCWH2+qKzhZu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsD4F6V9u9OP6YSXSebO3Q0eqefszgzCbAOETJV+GOnn3yV7jBL9Rr5VTNCHlw9Pd69C08SKmOyloeKD6TgCyyyw7BNCmodW/xtaqkkbw0p7XKbZgJMMa2eldKzEvFOSMEmMoFrtNKuTQ2CoB8idYAfq7c3sKaqYNFVQhulZ6E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyRs1HGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26625C4CECD;
-	Wed,  6 Nov 2024 12:16:57 +0000 (UTC)
+	 MIME-Version; b=UOO60NeyHo9BlxZJQkS9RmzzGWDI0ubBjftKG31EjC0sykShnN364vyVVL3n3z4Ln82CnK+Es4YxB05qB4a2tiTkvXxe5c4DZlsC7AUIOr3B/VJe1M1pHQjB8GzDM6dv/w544SMMJyqxkupT6M+v2dAwx3GR0BK+v8gzZXsD+Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGFjX81D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190DDC4CECD;
+	Wed,  6 Nov 2024 12:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895418;
-	bh=YYLJFaylWGUoDlZsXmtUwKQV8hHGZr6IyJAiRJr0IP0=;
+	s=korg; t=1730895980;
+	bh=sjak6CCXU1w0lU7vVBAz3lpfa7pEQJYCWH2+qKzhZu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyRs1HGQoTi/c9zSHBfr/74igfvpGKsernNHzoQusKUrQf4xbeIeuoiRzZZN13MaI
-	 GU7A7jsz+yjITu6of71l27xvFuGjoIy5GcADLZMvRncHGdHYkvdESWv4VCcfwwmcqk
-	 sIWPtl4nR9Chkso/910EGei3p9ryDnOWK9lMDrLw=
+	b=nGFjX81DUFXeLL5jzQBw2rivzaBv6YeXqlBTYm8jNTYi0W4g6jg5lbe0ceAc4TCr0
+	 k1QqERfuTNI29e4gjK8YaAkRup8UKTqPsACDH3KtFFPf8sRW2iRXvkeKzBnahhOzwZ
+	 F1ABQ1o5a/fA2/SwUA8evztVOUTZIRGZoygTLTV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 175/350] scsi: aacraid: Rearrange order of struct aac_srb_unit
+Subject: [PATCH 6.11 050/245] mlxsw: spectrum_ptp: Add missing verification before pushing Tx header
 Date: Wed,  6 Nov 2024 13:01:43 +0100
-Message-ID: <20241106120325.253335312@linuxfoundation.org>
+Message-ID: <20241106120320.454002376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit 6e5860b0ad4934baee8c7a202c02033b2631bb44 ]
+[ Upstream commit 0a66e5582b5102c4d7b866b977ff7c850c1174ce ]
 
-struct aac_srb_unit contains struct aac_srb, which contains struct sgmap,
-which ends in a (currently) "fake" (1-element) flexible array.  Converting
-this to a flexible array is needed so that runtime bounds checking won't
-think the array is fixed size (i.e. under CONFIG_FORTIFY_SOURCE=y and/or
-CONFIG_UBSAN_BOUNDS=y), as other parts of aacraid use struct sgmap as a
-flexible array.
+Tx header should be pushed for each packet which is transmitted via
+Spectrum ASICs. The cited commit moved the call to skb_cow_head() from
+mlxsw_sp_port_xmit() to functions which handle Tx header.
 
-It is not legal to have a flexible array in the middle of a structure, so
-it either needs to be split up or rearranged so that it is at the end of
-the structure. Luckily, struct aac_srb_unit, which is exclusively
-consumed/updated by aac_send_safw_bmic_cmd(), does not depend on member
-ordering.
+In case that mlxsw_sp->ptp_ops->txhdr_construct() is used to handle Tx
+header, and txhdr_construct() is mlxsw_sp_ptp_txhdr_construct(), there is
+no call for skb_cow_head() before pushing Tx header size to SKB. This flow
+is relevant for Spectrum-1 and Spectrum-4, for PTP packets.
 
-The values set in the on-stack struct aac_srb_unit instance "srbu" by the
-only two callers, aac_issue_safw_bmic_identify() and
-aac_get_safw_ciss_luns(), do not contain anything in srbu.srb.sgmap.sg, and
-they both implicitly initialize srbu.srb.sgmap.count to 0 during
-memset(). For example:
+Add the missing call to skb_cow_head() to make sure that there is both
+enough room to push the Tx header and that the SKB header is not cloned and
+can be modified.
 
-        memset(&srbu, 0, sizeof(struct aac_srb_unit));
+An additional set will be sent to net-next to centralize the handling of
+the Tx header by pushing it to every packet just before transmission.
 
-        srbcmd = &srbu.srb;
-        srbcmd->flags   = cpu_to_le32(SRB_DataIn);
-        srbcmd->cdb[0]  = CISS_REPORT_PHYSICAL_LUNS;
-        srbcmd->cdb[1]  = 2; /* extended reporting */
-        srbcmd->cdb[8]  = (u8)(datasize >> 8);
-        srbcmd->cdb[9]  = (u8)(datasize);
-
-        rcode = aac_send_safw_bmic_cmd(dev, &srbu, phys_luns, datasize);
-
-During aac_send_safw_bmic_cmd(), a separate srb is mapped into DMA, and has
-srbu.srb copied into it:
-
-        srb = fib_data(fibptr);
-        memcpy(srb, &srbu->srb, sizeof(struct aac_srb));
-
-Only then is srb.sgmap.count written and srb->sg populated:
-
-        srb->count              = cpu_to_le32(xfer_len);
-
-        sg64 = (struct sgmap64 *)&srb->sg;
-        sg64->count             = cpu_to_le32(1);
-        sg64->sg[0].addr[1]     = cpu_to_le32(upper_32_bits(addr));
-        sg64->sg[0].addr[0]     = cpu_to_le32(lower_32_bits(addr));
-        sg64->sg[0].count       = cpu_to_le32(xfer_len);
-
-But this is happening in the DMA memory, not in srbu.srb. An attempt to
-copy the changes back to srbu does happen:
-
-        /*
-         * Copy the updated data for other dumping or other usage if
-         * needed
-         */
-        memcpy(&srbu->srb, srb, sizeof(struct aac_srb));
-
-But this was never correct: the sg64 (3 u32s) overlap of srb.sg (2 u32s)
-always meant that srbu.srb would have held truncated information and any
-attempt to walk srbu.srb.sg.sg based on the value of srbu.srb.sg.count
-would result in attempting to parse past the end of srbu.srb.sg.sg[0] into
-srbu.srb_reply.
-
-After getting a reply from hardware, the reply is copied into
-srbu.srb_reply:
-
-        srb_reply = (struct aac_srb_reply *)fib_data(fibptr);
-        memcpy(&srbu->srb_reply, srb_reply, sizeof(struct aac_srb_reply));
-
-This has always been fixed-size, so there's no issue here. It is worth
-noting that the two callers _never check_ srbu contents -- neither
-srbu.srb nor srbu.srb_reply is examined. (They depend on the mapped
-xfer_buf instead.)
-
-Therefore, the ordering of members in struct aac_srb_unit does not matter,
-and the flexible array member can moved to the end.
-
-(Additionally, the two memcpy()s that update srbu could be entirely
-removed as they are never consumed, but I left that as-is.)
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20240711215739.208776-1-kees@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Richard Cochran <richardcochran@gmail.com>
+Fixes: 24157bc69f45 ("mlxsw: Send PTP packets as data packets to overcome a limitation")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/5145780b07ebbb5d3b3570f311254a3a2d554a44.1729866134.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/aacraid/aacraid.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
-index 074760f210145..135e3f39c895c 100644
---- a/drivers/scsi/aacraid/aacraid.h
-+++ b/drivers/scsi/aacraid/aacraid.h
-@@ -2037,8 +2037,8 @@ struct aac_srb_reply
- };
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+index 5b174cb95eb8a..d94081c7658e3 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+@@ -16,6 +16,7 @@
+ #include "spectrum.h"
+ #include "spectrum_ptp.h"
+ #include "core.h"
++#include "txheader.h"
  
- struct aac_srb_unit {
--	struct aac_srb		srb;
- 	struct aac_srb_reply	srb_reply;
-+	struct aac_srb		srb;
- };
- 
- /*
+ #define MLXSW_SP1_PTP_CLOCK_CYCLES_SHIFT	29
+ #define MLXSW_SP1_PTP_CLOCK_FREQ_KHZ		156257 /* 6.4nSec */
+@@ -1684,6 +1685,12 @@ int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+ 				 struct sk_buff *skb,
+ 				 const struct mlxsw_tx_info *tx_info)
+ {
++	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
++		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
++		dev_kfree_skb_any(skb);
++		return -ENOMEM;
++	}
++
+ 	mlxsw_sp_txhdr_construct(skb, tx_info);
+ 	return 0;
+ }
 -- 
 2.43.0
 
