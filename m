@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-90529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2859BE8BE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34A19BE7A1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEFD2846D2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 118941C23629
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB811DF992;
-	Wed,  6 Nov 2024 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD721DF254;
+	Wed,  6 Nov 2024 12:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCY/j2uU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asNlw9wX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE9C1D2784;
-	Wed,  6 Nov 2024 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5561DED58;
+	Wed,  6 Nov 2024 12:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896042; cv=none; b=XIZl+KIB2vatsfMSLDQqfBkz8yt4q/Eye6XJOIU8/2zIOZbII7dxqLWGZRjR7sddlYq8I4mfQwfPpDQQgoNj6n//bKN5W4Wg8qofHPL5qi44l+f4PghXyljD4rIEwR9zRzwSEhL962K9lwmLOn+OO4oR3jKPEVrAfmzLvsGxu2Y=
+	t=1730895368; cv=none; b=KBRPRw0M5UTkYwzciqwpCF6X0IBeksC25yvMwPpYtfQ+mtM7VCs0Hl2fezljex5o1WjQ06XTdhqVbcx+i+cznqUMqkhEZqcoG8XdlT9t9v1NRGG8jPX/m+1bkqmfWzNavjybmaJXvyDMmzf+mCfnwGKbh82kYmlocmnwV8TagXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896042; c=relaxed/simple;
-	bh=EQ1DJBTe8MB56YaVGBtrEAe1UGlYlW5HDGK5+Dm71D0=;
+	s=arc-20240116; t=1730895368; c=relaxed/simple;
+	bh=Wk5EtdVoQwawsPv5c5xZ8cTfDqdZ7VIxRho5lEhdMbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRk9mbYmDHTySvvJrFdx00YjHVYNhR+YWQIWCocmhYgWGXu8MJDEmOoMxa66cNjFbYeeWjFvsMZr6XfuOPNI3guA7uSPx5tctb9e/JLxNI9sNkmp/gHInO9aZ7fUMZp3rxODWx9QlKa3O+KlazA+RgolEMBIIJlWaoRQn6Motrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCY/j2uU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9881DC4CECD;
-	Wed,  6 Nov 2024 12:27:21 +0000 (UTC)
+	 MIME-Version; b=F18Q2+TYbQUGEnG6agNc+Cy5ssD4UJ6+w3lixe31IqVb+I2shoFNJUazW8rKeTJ9qxQi4DmWlxJG8KLJWYYZJovQv6sllov5e2IO8PSpRtBlAH0o6tzX2Nxg0OhkuoHxrBLXPMvWgbZfchcMXXjQXbcjq3BDA1+O8bbmDyVal70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asNlw9wX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4DDC4CECD;
+	Wed,  6 Nov 2024 12:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896042;
-	bh=EQ1DJBTe8MB56YaVGBtrEAe1UGlYlW5HDGK5+Dm71D0=;
+	s=korg; t=1730895367;
+	bh=Wk5EtdVoQwawsPv5c5xZ8cTfDqdZ7VIxRho5lEhdMbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCY/j2uUEP8IMwEFcnHlFmA2nzSHAMr3NiSQ6/RDH78zLvvo2GFjp3PyPLQU6wHjW
-	 aTcghPtNwgQ7b5FqaekqKrZnZARNsKLtXR6I4fgZ4tT0AsnupMCIa/HJETVFoqUg8U
-	 RYWCVKUV3U8D6dLDdrE1xIQb8/qIpIWE5V57f2I0=
+	b=asNlw9wXguiUgGvZHgQIjanpQSoTPfmCudW1awkENOGhMykqkHBM/maMFjkIRdvzD
+	 FQvKFgMsKdOc6x/EBcS/FUNie1k+FGJU1LTdK5Od4inLmKv5TrR5zf7pL0wVyk86E2
+	 hJtl+LP9Ns8notUEMKVSPI03xCdneBRH6KwB8M58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 069/245] smb: client: set correct device number on nfs reparse points
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 194/350] parisc: Fix 64-bit userspace syscall path
 Date: Wed,  6 Nov 2024 13:02:02 +0100
-Message-ID: <20241106120320.903333201@linuxfoundation.org>
+Message-ID: <20241106120325.760437872@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Helge Deller <deller@kernel.org>
 
-[ Upstream commit a9de67336a4aa3ff2e706ba023fb5f7ff681a954 ]
+commit d24449864da5838936669618356b0e30ca2999c3 upstream.
 
-Fix major and minor numbers set on special files created with NFS
-reparse points.
+Currently the glibc isn't yet ported to 64-bit for hppa, so
+there is no usable userspace available yet.
+But it's possible to manually build a static 64-bit binary
+and run that for testing. One such 64-bit test program is
+available at http://ftp.parisc-linux.org/src/64bit.tar.gz
+and it shows various issues with the existing 64-bit syscall
+path in the kernel.
+This patch fixes those issues.
 
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org      # v4.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/reparse.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/syscall.S |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index a4e25b99411ec..c848b5e88d32f 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -108,8 +108,8 @@ static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
- 	buf->InodeType = cpu_to_le64(type);
- 	buf->ReparseDataLength = cpu_to_le16(len + dlen -
- 					     sizeof(struct reparse_data_buffer));
--	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MAJOR(dev) << 32) |
--						 MINOR(dev));
-+	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MINOR(dev) << 32) |
-+						 MAJOR(dev));
- 	iov->iov_base = buf;
- 	iov->iov_len = len + dlen;
- 	return 0;
--- 
-2.43.0
-
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -217,10 +217,10 @@ linux_gateway_entry:
+ 
+ #ifdef CONFIG_64BIT
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -355,10 +355,10 @@ tracesys_next:
+ 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
+ 
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -930,6 +930,8 @@ ENTRY(sys_call_table)
+ END(sys_call_table)
+ 
+ #ifdef CONFIG_64BIT
++#undef __SYSCALL_WITH_COMPAT
++#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+ 	.align 8
+ ENTRY(sys_call_table64)
+ #define SYSCALL_TABLE_64BIT
 
 
 
