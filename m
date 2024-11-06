@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-90332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA759BE7C6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF179BE7CB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E51C1C21835
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8066B251D1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176E31DF25E;
-	Wed,  6 Nov 2024 12:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416BE1DF969;
+	Wed,  6 Nov 2024 12:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OThhtx1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JO6mRJff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61851DED58;
-	Wed,  6 Nov 2024 12:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EFA1DF267;
+	Wed,  6 Nov 2024 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895459; cv=none; b=pt6oQxEJTRdSl8fv1HBSgM2i/P8L+QT3/wgtZJ0N06CPU1jQfxRmdZJeOIq2u+mNW3PWJRy9pxa+Rafb8nHJmI0mq2lPwBJ0zZnAXsozPm4FB1Rtkkkd0RNDdjbrTD6mMNxh/SH40e2lt0ZnPxYXj3QRaMQTMhe+8nLvoAHV6qA=
+	t=1730895466; cv=none; b=K0N0l4ytzpKDYYGTTAUTzyrogId40ZI5g3L2ve98/u4nqWWoyA1Fe840+r960PY2mc8uKYdFV/ht1U5pgJ7ttrwOaXIbgknJ6wfyOxSgLBtGdyTMl3zk+upQ8Sx92Q+D3X5WuFkmPVR+WsqlYTJk2c4ZYgwikX4CBw4T5hvu4no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895459; c=relaxed/simple;
-	bh=Sg5wDMnB/LRpqs6QwAWQ9kjqTDNQ7iOX/O5ASsv/UoA=;
+	s=arc-20240116; t=1730895466; c=relaxed/simple;
+	bh=2zuKzC8GugTu2YHA3ywtIdY60oPXTISWIiHiJWDTAVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBF1H20I7+LCslmhAgkhCQx93ear7he4zyrsZX8SPVMiZeSXnf4CfaC+X4Icxa87OBGT/a09Q/xqmd4qwqtO3J1yK1TLvHaXlHE9jwWrSQNQPWkYodshh20lQmu30xw55HT9j53j8kyPsqq/u0+nEJ1RqevuTMqPFSTCK+peJ+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OThhtx1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45EC4CED3;
-	Wed,  6 Nov 2024 12:17:39 +0000 (UTC)
+	 MIME-Version; b=dHtNTANr1ZUJpghqLy6DnQNSCfoNGNw/pUoP6W13rj5336oionuStoYUgNZFKUmgUVhEnJ5uYqnPIBZlhtp/R1uiUoz+BJdugumaRMxYWZdSKIWwUx+715UnDuqMQWsAQcNGb5Zf/oFDpHu8i7/XB5AIH7neZRwQwLfp5c3wBVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JO6mRJff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28331C4CECD;
+	Wed,  6 Nov 2024 12:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895459;
-	bh=Sg5wDMnB/LRpqs6QwAWQ9kjqTDNQ7iOX/O5ASsv/UoA=;
+	s=korg; t=1730895465;
+	bh=2zuKzC8GugTu2YHA3ywtIdY60oPXTISWIiHiJWDTAVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OThhtx1o3sFlmkZAfhmpnL0LJPDKhNnDRac/QhqjsPSPizJZ7c0+40nUDhPVkynn3
-	 /fSSdokyTmFnguMxQ+EEvD6Hn8aOA8vT4Z0azYtpKHe91rvQUVyT+EOMyBIygME8dE
-	 b4ZFrIgCNzTbRisDaBx1hEpgTQh+FSdcAgRzJGjg=
+	b=JO6mRJffJIj3OBMMazVm4u0zmWo/NS8+we3NMYwSOAAU8dCFiYjSGnX20fC/RpmnQ
+	 2qpvdFTWSPIwNTyzdcSPXMFqO8Ye093HqCBjpNAeq5UWxHFXi+12fgi42yX4nMO5hD
+	 wwv4MPQGWUgVnkoaH35yt9wnBsniXys43FZWox20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 226/350] ACPI: battery: Fix possible crash when unregistering a battery hook
-Date: Wed,  6 Nov 2024 13:02:34 +0100
-Message-ID: <20241106120326.573327650@linuxfoundation.org>
+	zhanchengbin <zhanchengbin1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Baokun Li <libaokun1@huawei.com>
+Subject: [PATCH 4.19 227/350] ext4: fix inode tree inconsistency caused by ENOMEM
+Date: Wed,  6 Nov 2024 13:02:35 +0100
+Message-ID: <20241106120326.594865305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,70 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: zhanchengbin <zhanchengbin1@huawei.com>
 
-[ Upstream commit 76959aff14a0012ad6b984ec7686d163deccdc16 ]
+commit 3f5424790d4377839093b68c12b130077a4e4510 upstream.
 
-When a battery hook returns an error when adding a new battery, then
-the battery hook is automatically unregistered.
-However the battery hook provider cannot know that, so it will later
-call battery_hook_unregister() on the already unregistered battery
-hook, resulting in a crash.
+If ENOMEM fails when the extent is splitting, we need to restore the length
+of the split extent.
+In the ext4_split_extent_at function, only in ext4_ext_create_new_leaf will
+it alloc memory and change the shape of the extent tree,even if an ENOMEM
+is returned at this time, the extent tree is still self-consistent, Just
+restore the split extent lens in the function ext4_split_extent_at.
 
-Fix this by using the list head to mark already unregistered battery
-hooks as already being unregistered so that they can be ignored by
-battery_hook_unregister().
+ext4_split_extent_at
+ ext4_ext_insert_extent
+  ext4_ext_create_new_leaf
+   1)ext4_ext_split
+     ext4_find_extent
+   2)ext4_ext_grow_indepth
+     ext4_find_extent
 
-Fixes: fa93854f7a7e ("battery: Add the battery hooking API")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20241001212835.341788-3-W_Armin@gmx.de
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: zhanchengbin <zhanchengbin1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230103022812.130603-1-zhanchengbin1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index b741ed87ab3db..46aa0e5e6f8b6 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -724,7 +724,7 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- 	list_for_each_entry(battery, &acpi_battery_list, list) {
- 		hook->remove_battery(battery->bat);
- 	}
--	list_del(&hook->list);
-+	list_del_init(&hook->list);
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3293,7 +3293,7 @@ static int ext4_split_extent_at(handle_t
+ 		ext4_ext_mark_unwritten(ex2);
  
- 	pr_info("extension unregistered: %s\n", hook->name);
- }
-@@ -732,7 +732,14 @@ static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- void battery_hook_unregister(struct acpi_battery_hook *hook)
- {
- 	mutex_lock(&hook_mutex);
--	battery_hook_unregister_unlocked(hook);
-+	/*
-+	 * Ignore already unregistered battery hooks. This might happen
-+	 * if a battery hook was previously unloaded due to an error when
-+	 * adding a new battery.
-+	 */
-+	if (!list_empty(&hook->list))
-+		battery_hook_unregister_unlocked(hook);
-+
- 	mutex_unlock(&hook_mutex);
- }
- EXPORT_SYMBOL_GPL(battery_hook_unregister);
-@@ -742,7 +749,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
- 	struct acpi_battery *battery;
+ 	err = ext4_ext_insert_extent(handle, inode, ppath, &newex, flags);
+-	if (err != -ENOSPC && err != -EDQUOT)
++	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+ 		goto out;
  
- 	mutex_lock(&hook_mutex);
--	INIT_LIST_HEAD(&hook->list);
- 	list_add(&hook->list, &battery_hook_list);
  	/*
- 	 * Now that the driver is registered, we need
--- 
-2.43.0
-
 
 
 
