@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C459BE990
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:35:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2729BEC20
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727421C23321
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:35:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94CBB1F24E1B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC421E22E2;
-	Wed,  6 Nov 2024 12:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8643D1FAF0F;
+	Wed,  6 Nov 2024 12:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxOwAMVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcqKUAgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A06D1E1C38;
-	Wed,  6 Nov 2024 12:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9E1F428D;
+	Wed,  6 Nov 2024 12:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896495; cv=none; b=E9LLERbIPoWcJjn8pMAG688iSt5QcddjuDa8XqW/EhE0m1kWs0EUtctv/uT5jIXUVgllrTjb2oa/YW4q3aydX1GDcr+biDi2n7iazQspKO4eoIQA28d8CbE2+5ZorMmPS3bc4Atq1iytyhIfB5pJQAo/fpdSAo8e/kA5FwA9NyU=
+	t=1730897536; cv=none; b=nAJG1liwZClcNZiDfa242KMDtijPVENxHsmZsVxjY5j4bx9t23pGsHx3vvocTNCUz9k4tlG/FvmPg1NW1JgVmj8vS6cUzG5AEk5c8FAigsCeWTu+RYGpZypMVH3+pZ7QdNo1+QQVyESxzA1KhMKc8r+PKKckMDDOxGpwi0DN1qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896495; c=relaxed/simple;
-	bh=2YKgCrolF694gS/++uu+pY3cuhE28nf+YMHW/+h7ABE=;
+	s=arc-20240116; t=1730897536; c=relaxed/simple;
+	bh=7Xm5soon2no+QF0kD6LCU+DwJEsIFlBHvOkfbLzHklA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4DKeXCpVnQaKnT88RyGFbN0RrLSnCu/ARlSngPVwQix5HuGOsJK2yVkArwafWAiiRZX5Q78nR3Q16aja34kXI55v0hmjKfM12T8aqbrLRUzqAPVP9E4FrVqj6G8UKfF37XRgx+trcx/EqTQtd/Zvmrp4wfknCbFFClIJi5IYj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxOwAMVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24FAC4CED4;
-	Wed,  6 Nov 2024 12:34:54 +0000 (UTC)
+	 MIME-Version; b=djhLqPEo/gkVZRweOl3WSvv2HYEdO/GvzeVw6yw0tns1+BK6ay0OS5Nd5zwyjxA9jXWEN5pzYezufo9V/WLH58gWJkJATrac6P7k8ar28gD+oYwM02XbwZGqOLfb54TyQ1tlptLF28RjMcqN6LHoM4uI83Y/PRWxMh17fSY/9ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcqKUAgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBE7C4CED3;
+	Wed,  6 Nov 2024 12:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896495;
-	bh=2YKgCrolF694gS/++uu+pY3cuhE28nf+YMHW/+h7ABE=;
+	s=korg; t=1730897536;
+	bh=7Xm5soon2no+QF0kD6LCU+DwJEsIFlBHvOkfbLzHklA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxOwAMVnszuHzJVDNgVvUTEHWB1U30TSG5+6VJMlOp7reTAgvVtX7UJ8pqWEoc/tX
-	 xq4HHFFWrgiYboi30ctPiTPGN+2p6pESTe9fljoqkqZUV/HJntcW5/T+01/4e5wVGu
-	 9Je9Psh0qAD0kQ4hu8CK1RhRBOsP/vcLeMxK8edU=
+	b=lcqKUAgvI1ltSVk4Xv82OAbOaRkSs+RjQ24gh/Mw7CHqFP5MX8KjH1y/1LbvW+pdo
+	 Wwd+ND001GxVyl/Sm9Tic2lOamFzEQmA/kQIrehWDD5ndiACeFeleaAZqRmtKpCLnY
+	 O+zkIT94ie8RtkJe+4udJME6ph9Lh53hoCZ6rqpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shekhar Chauhan <shekhar.chauhan@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 221/245] drm/i915: Skip programming FIA link enable bits for MTL+
-Date: Wed,  6 Nov 2024 13:04:34 +0100
-Message-ID: <20241106120324.697082018@linuxfoundation.org>
+	Faisal Hassan <quic_faisalh@quicinc.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 087/151] xhci: Fix Link TRB DMA in command ring stopped completion event
+Date: Wed,  6 Nov 2024 13:04:35 +0100
+Message-ID: <20241106120311.259680461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Faisal Hassan <quic_faisalh@quicinc.com>
 
-commit 9fc97277eb2d17492de636b68cf7d2f5c4f15c1b upstream.
+commit 075919f6df5dd82ad0b1894898b315fbb3c29b84 upstream.
 
-Starting with Xe_LPD+, although FIA is still used to readout Type-C pin
-assignment, part of Type-C support is moved to PICA and programming
-PORT_TX_DFLEXDPMLE1(*) registers is not applicable anymore like it was
-for previous display IPs (e.g. see BSpec 49190).
+During the aborting of a command, the software receives a command
+completion event for the command ring stopped, with the TRB pointing
+to the next TRB after the aborted command.
 
-v2:
-  - Mention Bspec 49190 as a reference of instructions for previous
-    IPs. (Shekhar Chauhan)
-  - s/Xe_LPDP/Xe_LPD+/ in the commit message. (Matt Roper)
-  - Update commit message to be more accurate to the changes in the IP.
-    (Imre Deak)
+If the command we abort is located just before the Link TRB in the
+command ring, then during the 'command ring stopped' completion event,
+the xHC gives the Link TRB in the event's cmd DMA, which causes a
+mismatch in handling command completion event.
 
-Bspec: 65750, 65448
-Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240625202652.315936-1-gustavo.sousa@intel.com
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+To address this situation, move the 'command ring stopped' completion
+event check slightly earlier, since the specific command it stopped
+on isn't of significant concern.
+
+Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241022155631.1185-1-quic_faisalh@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_tc.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci-ring.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -393,6 +393,9 @@ void intel_tc_port_set_fia_lane_count(st
- 	bool lane_reversal = dig_port->saved_port_bits & DDI_BUF_PORT_REVERSAL;
- 	u32 val;
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1734,6 +1734,14 @@ static void handle_cmd_completion(struct
  
-+	if (DISPLAY_VER(i915) >= 14)
-+		return;
+ 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
+ 
++	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
 +
- 	drm_WARN_ON(&i915->drm,
- 		    lane_reversal && tc->mode != TC_PORT_LEGACY);
++	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
++	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
++		complete_all(&xhci->cmd_ring_stop_completion);
++		return;
++	}
++
+ 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
+ 			cmd_trb);
+ 	/*
+@@ -1750,14 +1758,6 @@ static void handle_cmd_completion(struct
  
+ 	cancel_delayed_work(&xhci->cmd_timer);
+ 
+-	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
+-
+-	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
+-	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
+-		complete_all(&xhci->cmd_ring_stop_completion);
+-		return;
+-	}
+-
+ 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
+ 		xhci_err(xhci,
+ 			 "Command completion event does not match command\n");
 
 
 
