@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9AF9BE869
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539C89BEC1F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2856D1C21B7C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867641C237B7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E011E5718;
-	Wed,  6 Nov 2024 12:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B80C1E0DBB;
+	Wed,  6 Nov 2024 12:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsUC3jRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnCiV9xu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D01DFE0E;
-	Wed,  6 Nov 2024 12:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566281F428D;
+	Wed,  6 Nov 2024 12:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895821; cv=none; b=bTeXYeth+HlmiYgBRirCuN9Nx4Rv5UWQy6mHffAzFB2Es++/60r7R+FK1FfqrNcTwiUI1cbLoh5bo7hCzh1XZqnyXykR1qVaiHZ1GVzisLWMAn+iq70oY8LdoXbSASKqhXovwDPN/I62DlRbj7Sos6mn8h9Yq/6FpwrAYQGAQ9w=
+	t=1730897533; cv=none; b=jflcTaMY6z+87Pscq+P5KYlJ1gt2YrFFePAlrvnio5/LaVuMr5Ap7JyYV0y23gQYmk72az/fgu4f8/Vp2vilzglgcsuaD3mW6mct2TKseroKeKX8e8vuV6Ep84BNel+8GH9KXrUAIzuPASI7zaOhv7Oi9nZ/UFCy0vtRS2GUeuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895821; c=relaxed/simple;
-	bh=Kv/gyRKfIwjWg26Vud+U43WDnKPeNIwmBb+Oxinz4AY=;
+	s=arc-20240116; t=1730897533; c=relaxed/simple;
+	bh=cNK793dmOY6FQdl1X4WH/Pae/4HulG4Uo2iPpqMxZqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtY1GK8vRzb3C5IN3EIOHa6MduazXtwHJyqnm6npJlOOWRXiI6j9g+OFaTg1SkrogTFRKkwyjA3VEQDb72bsZwhuL6xrCa7WdwCy57xPoNey1MMSJBILxxsxLk7WkM2uW/BVtpLq4UcDXFYRMbUDhrfp1WXf+CAGJ6HrdUMa640=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsUC3jRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A4EC4CECD;
-	Wed,  6 Nov 2024 12:23:40 +0000 (UTC)
+	 MIME-Version; b=qInm135hsk9bh0iLYcch9AN+Ot85fElncLDTMqt7+0LMRNtwczNpmE4+QUiRtKKmEwqh5KlaP11nPts2s5BcS1SbeJXkuOIVJ/De4VlJZv1clBCMc11w8A/AwGuuwp4iN8AuNckbUcB6YBtNeafPXx44PDJs0ofI77bykPtVrYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnCiV9xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FC7C4CECD;
+	Wed,  6 Nov 2024 12:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895821;
-	bh=Kv/gyRKfIwjWg26Vud+U43WDnKPeNIwmBb+Oxinz4AY=;
+	s=korg; t=1730897533;
+	bh=cNK793dmOY6FQdl1X4WH/Pae/4HulG4Uo2iPpqMxZqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsUC3jRdaYymuM+WEU/JcDLQvhW9+4JtmUiv0Eb82+Ov0y3bD73P65hmkQIspOalG
-	 l2mIhddGkhh9e3DtCrK2X/3QcRDMdpZZ/D9E+AOy7W2HqlWaF90Q4Y7wgnQ2BvKEID
-	 y/57RVsRYjSM/79hASGUHpNsnzeO1VYCB8AFJRrA=
+	b=QnCiV9xuCgaZBLWK7+UlC6O0+nicpRCzjhNoIrLdg9yCVNqKy6S8eoazrAZyvjqH0
+	 tXrhX11lyMyfVGbOvDdHTrnidKOziWLKR6b9k1Mt1nzvig261bkeEnvhhImv4eflOd
+	 /hEGGWC+IVGn3VBoGFi3kt+2pBNxZy2TXRmV8lv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 346/350] nilfs2: fix potential deadlock with newly created symlinks
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 086/151] phy: qcom: qmp-usb-legacy: fix NULL-deref on runtime suspend
 Date: Wed,  6 Nov 2024 13:04:34 +0100
-Message-ID: <20241106120329.232432634@linuxfoundation.org>
+Message-ID: <20241106120311.230415845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
+commit 29240130ab77c80bea1464317ae2a5fd29c16a0c upstream.
 
-Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
-memory reclamation involving the filesystem layer, which can result in
-circular lock dependencies among the reader/writer semaphore
-nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
-fs_reclaim pseudo lock.
+Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
+removed most users of the platform device driver data from the
+qcom-qmp-usb driver, but mistakenly also removed the initialisation
+despite the data still being used in the runtime PM callbacks. This bug
+was later reproduced when the driver was copied to create the
+qmp-usb-legacy driver.
 
-This is because after commit 21fc61c73c39 ("don't put symlink bodies in
-pagecache into highmem"), the gfp flags of the page cache for symbolic
-links are overwritten to GFP_KERNEL via inode_nohighmem().
+Restore the driver data initialisation at probe to avoid a NULL-pointer
+dereference on runtime suspend.
 
-This is not a problem for symlinks read from the backing device, because
-the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
-when a new symlink is created with nilfs_symlink(), the gfp flags remain
-overwritten to GFP_KERNEL.  Then, memory allocation called from
-page_symlink() etc.  triggers memory reclamation including the FS layer,
-which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
-cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+Apparently no one uses runtime PM, which currently needs to be enabled
+manually through sysfs, with these drivers.
 
-Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
-of newly created symlinks in the same way that nilfs_new_inode() and
-__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
-scope consistently or improve the locking constraints.
-
-Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
-Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
-Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e464a3180a43 ("phy: qcom-qmp-usb: split off the legacy USB+dp_com support")
+Cc: stable@vger.kernel.org	# 6.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240911115253.10920-3-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/namei.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -156,6 +156,9 @@ static int nilfs_symlink(struct inode *d
- 	/* slow symlink */
- 	inode->i_op = &nilfs_symlink_inode_operations;
- 	inode_nohighmem(inode);
-+	mapping_set_gfp_mask(inode->i_mapping,
-+			     mapping_gfp_constraint(inode->i_mapping,
-+						    ~__GFP_FS));
- 	inode->i_mapping->a_ops = &nilfs_aops;
- 	err = page_symlink(inode, symname, l);
- 	if (err)
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb-legacy.c
+@@ -1302,6 +1302,7 @@ static int qmp_usb_legacy_probe(struct p
+ 		return -ENOMEM;
+ 
+ 	qmp->dev = dev;
++	dev_set_drvdata(dev, qmp);
+ 
+ 	qmp->cfg = of_device_get_match_data(dev);
+ 	if (!qmp->cfg)
 
 
 
