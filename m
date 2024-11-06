@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-90422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A249BE830
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607D19BE95F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01AD1F20355
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECDDDB20BD7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6D1DF75C;
-	Wed,  6 Nov 2024 12:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60E11DF98D;
+	Wed,  6 Nov 2024 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMHzeHgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXMgrCtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561361DF73C;
-	Wed,  6 Nov 2024 12:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EF14207F;
+	Wed,  6 Nov 2024 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895724; cv=none; b=e4Cn+KSD5h6EkW/jOiU5Wl0YjHWJl2XHeJT7teEFCvO39mSaMxsGQkX9pup3oEPfRqV+PAkhZ9/bSi9+IroYippRGWKXq1ldpaMADiCuYGtQMn56vWYh0SPOp2xFDgMGxto0NAz/k4yUO0kvZLD6lLldar5dCi54JHSoP2OJ/jc=
+	t=1730896402; cv=none; b=l6FGVwN7ppmJeoYrm2pyu9Ll79Mog7E11iFnJmzZJNhRjUHaES9+d7IUNg3rr5ijdjNtBLbJp4UYOmHRdOqzxXEAjdeI06bZHFZ9FiNjHgGz4agzCQai/ZqU6yJ57flHnoj2G7gagpBumDVBlLQrvoda256cRcEGkAbcABut3Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895724; c=relaxed/simple;
-	bh=05gSxXv3GUaZsdVN19SWpNELepyB0djIA2hQbRlzAxo=;
+	s=arc-20240116; t=1730896402; c=relaxed/simple;
+	bh=hYO2tzdLOAkyRMwUcuXLvgRTxL8lYdFUObDosIQjrZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/zJFm4gYSH3flnIypPu2U+YupzENVt51MSCrmckB720moTUJ3DJqm1Fl9iVSdnQzVZFu62UWX2ih9XO92yAw8VOONPp5fXIQudLJh7pztl3yvu83oFp6po/iba9EUy4dN+0OQQAxF3p2rkNNU8kkoSJEuWh1eCkZKISkMqNzZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMHzeHgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1BDC4CECD;
-	Wed,  6 Nov 2024 12:22:03 +0000 (UTC)
+	 MIME-Version; b=OWYzCf85xCx1uzZUd1ZVV6UOgQW3W70tmltu0Xz4ZZkfqeXCK39ik2dqjpGcwAKhJXykS0UV3zbjJn8RM0beKgAPCtbL01mJt4KvWIUn84laq6u2IANjneNoDnGkIUm/45Q+Ru+i9XsCttL/Ynni9rXukQTFqrYqzCxcALQ44LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXMgrCtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB698C4CECD;
+	Wed,  6 Nov 2024 12:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895724;
-	bh=05gSxXv3GUaZsdVN19SWpNELepyB0djIA2hQbRlzAxo=;
+	s=korg; t=1730896402;
+	bh=hYO2tzdLOAkyRMwUcuXLvgRTxL8lYdFUObDosIQjrZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMHzeHgu74k8nhaiPRS/gw1QChuKScIN6DX+Ic5Mr+8Yn78vYgd2D4VC8hUkY9mU4
-	 qF0Qjwd9lbzt9Il36qlPOHk+EanbYe5CQJHXvwb1F5dTSg8OECcCxhrgxRKi8yUozO
-	 E1a9K+jNTfs+IE0FVlVhAqLdkGnzC2llsVh5q+jM=
+	b=uXMgrCtCJ6yMVJV6swWXg66w9lYfk+DrueQYyI2n0Ai4049TrB/FLVqBBkLLHnaxU
+	 rYzCNQ4J7ruvvh45BDXLVVXviuT/6KM1OdxmlWj+dDkQ5hJLYNtbq/ng0q08a641Ja
+	 NUL15/jDwcOAilsBIyQWNjef5Xp0xkRt2eQ6GSBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 314/350] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
+Subject: [PATCH 6.11 189/245] kasan: remove vmalloc_percpu test
 Date: Wed,  6 Nov 2024 13:04:02 +0100
-Message-ID: <20241106120328.523314225@linuxfoundation.org>
+Message-ID: <20241106120323.895635455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +68,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
+[ Upstream commit 330d8df81f3673d6fb74550bbc9bb159d81b35f7 ]
 
-If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
-and get the clk->rwsem read lock, so the error path should release
-the lock to make the lock balance and fput the clockid's fd to make
-the refcount balance and release the fd related resource.
+Commit 1a2473f0cbc0 ("kasan: improve vmalloc tests") added the
+vmalloc_percpu KASAN test with the assumption that __alloc_percpu always
+uses vmalloc internally, which is tagged by KASAN.
 
-However the below commit left the error path locked behind resulting in
-unbalanced locking. Check timespec64_valid_strict() before
-get_clock_desc() to fix it, because the "ts" is not changed
-after that.
+However, __alloc_percpu might allocate memory from the first per-CPU
+chunk, which is not allocated via vmalloc().  As a result, the test might
+fail.
 
-Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-[pabeni@redhat.com: fixed commit message typo]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Remove the test until proper KASAN annotation for the per-CPU allocated
+are added; tracked in https://bugzilla.kernel.org/show_bug.cgi?id=215019.
+
+Link: https://lkml.kernel.org/r/20241022160706.38943-1-andrey.konovalov@linux.dev
+Fixes: 1a2473f0cbc0 ("kasan: improve vmalloc tests")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/all/4a245fff-cc46-44d1-a5f9-fd2f1c3764ae@sifive.com/
+Reported-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Link: https://lore.kernel.org/all/CACzwLxiWzNqPBp4C1VkaXZ2wDwvY3yZeetCi1TLGFipKW77drA@mail.gmail.com/
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-clock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/kasan/kasan_test.c | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index cda319c7529e5..c1e5feff8185d 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -303,6 +303,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 	struct posix_clock_desc cd;
- 	int err;
+diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
+index 7b32be2a3cf0e..9efde47f80698 100644
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -1765,32 +1765,6 @@ static void vm_map_ram_tags(struct kunit *test)
+ 	free_pages((unsigned long)p_ptr, 1);
+ }
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
-+
- 	err = get_clock_desc(id, &cd);
- 	if (err)
- 		return err;
-@@ -312,9 +315,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 		goto out;
- 	}
- 
--	if (!timespec64_valid_strict(ts))
--		return -EINVAL;
+-static void vmalloc_percpu(struct kunit *test)
+-{
+-	char __percpu *ptr;
+-	int cpu;
 -
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
- 	else
+-	/*
+-	 * This test is specifically crafted for the software tag-based mode,
+-	 * the only tag-based mode that poisons percpu mappings.
+-	 */
+-	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_SW_TAGS);
+-
+-	ptr = __alloc_percpu(PAGE_SIZE, PAGE_SIZE);
+-
+-	for_each_possible_cpu(cpu) {
+-		char *c_ptr = per_cpu_ptr(ptr, cpu);
+-
+-		KUNIT_EXPECT_GE(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_MIN);
+-		KUNIT_EXPECT_LT(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_KERNEL);
+-
+-		/* Make sure that in-bounds accesses don't crash the kernel. */
+-		*c_ptr = 0;
+-	}
+-
+-	free_percpu(ptr);
+-}
+-
+ /*
+  * Check that the assigned pointer tag falls within the [KASAN_TAG_MIN,
+  * KASAN_TAG_KERNEL) range (note: excluding the match-all tag) for tag-based
+@@ -1967,7 +1941,6 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+ 	KUNIT_CASE(vmalloc_oob),
+ 	KUNIT_CASE(vmap_tags),
+ 	KUNIT_CASE(vm_map_ram_tags),
+-	KUNIT_CASE(vmalloc_percpu),
+ 	KUNIT_CASE(match_all_not_assigned),
+ 	KUNIT_CASE(match_all_ptr_tag),
+ 	KUNIT_CASE(match_all_mem_tag),
 -- 
 2.43.0
 
