@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A29BE829
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B300F9BE957
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B0CFB231D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20741C21C34
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7D51DF75A;
-	Wed,  6 Nov 2024 12:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7287D1DFE09;
+	Wed,  6 Nov 2024 12:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0LS5bLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYGJytvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98131DF726;
-	Wed,  6 Nov 2024 12:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0931DFDB5;
+	Wed,  6 Nov 2024 12:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895703; cv=none; b=P25MvvxSijFCCa9/CsSdn+H8qmMe1VWzmX9vqPV4yr0qrtW7cAWazDGqPRCaN595jhqdSAJpYElgmP4D+1cx8jzDm+jJ5W8X4IyEYDlOpk8YCx3ALd6gwqai5c8NdpZ84r7mLCIQNYMv+fEVY2jfXSU9e+Eg1yJBZDLP4lNnOas=
+	t=1730896379; cv=none; b=MdO4kE0aDR0rVT2+4/g10tfy7CsMOZxiK1TPdQhFJf2p/0JkEgZOujYj92H9fdImDZNR4wlC+s1ramRQIwX9rZDDXaMW2JU5fxpB7BTqCmXtbx9AfYOFhJ4Kk+Rfqjln6hTnmswo8qGikjLi3WCjbQst6KcBnn4FifonEn4vDSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895703; c=relaxed/simple;
-	bh=1o+AmFjwfljo0UCQLCZYuYlfU7s9mKrk0PRDw01wSmI=;
+	s=arc-20240116; t=1730896379; c=relaxed/simple;
+	bh=teo7DbgcZy6LaE2/WHOyV02lACcqZjBlqhaNyYhI3Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFnQTmQxoHwJycmm/sa6XzuD4WZtHkHPmVDEjGg/9uiqOnp9q8GfYFwYfF3ySbjX5HyA+Z4qjQzYlhX8r9nIRpNbhBtR3dQws/vUvpeIyzAY14fG+oJtBA6DJ2UIXuvmt4xU9I+ds0ZcfLHdO6KPkgp48/osR/N2vbpocDHsgh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0LS5bLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBBCC4CECD;
-	Wed,  6 Nov 2024 12:21:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J7tFtdLe50NCNEVmKmSGHTUI+ZN6/7XSg4Rne32T4ERi9z0LIl+JhNSDoRMHt308bhr3LoXKjvgAOWkI7GOcfwHGprgnSW8BTF82Dfu06+pzSq8wK/GAJxeH2Zyp3C8ijYlYAVwWmCtj3CcvsaNE0cGMepJp4W9YxMXkYxX3sG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYGJytvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9F4C4CECD;
+	Wed,  6 Nov 2024 12:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895703;
-	bh=1o+AmFjwfljo0UCQLCZYuYlfU7s9mKrk0PRDw01wSmI=;
+	s=korg; t=1730896379;
+	bh=teo7DbgcZy6LaE2/WHOyV02lACcqZjBlqhaNyYhI3Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0LS5bLSqz/B2spNJhi1T9Gf3VCpBLLswR5Df3RtBDQ17tsTvzbuB38AsgZPgHXco
-	 kQxV5eI9I7fAM6S3RVYEDtGPN3b3uNN+UBqxkrZgJfWuvi5NOERMJShXuyeRFh9cfA
-	 4hUx8oi3idJPADIJ7+38SHM4VNMHDUAVIAlk2CbY=
+	b=bYGJytvpqK+1NH4C+Nch8ddb2gJYo2Ag+8v9TOnphrqaT+++ohenZ081+qAldM0k2
+	 pSFullOxpn8zznrML9dml9ru0RCdzKPu/iykCormieS390fmJqjP25Z3n3uyGakMz9
+	 UGy782vC7rBhtlcJ+rB+oP2YfY1WKI0H6KVACu5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 307/350] KVM: s390: gaccess: Check if guest address is in memslot
+Subject: [PATCH 6.11 182/245] btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
 Date: Wed,  6 Nov 2024 13:03:55 +0100
-Message-ID: <20241106120328.368009206@linuxfoundation.org>
+Message-ID: <20241106120323.719955148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,129 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nico Boehr <nrb@linux.ibm.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
+[ Upstream commit aec8e6bf839101784f3ef037dcdb9432c3f32343 ]
 
-Previously, access_guest_page() did not check whether the given guest
-address is inside of a memslot. This is not a problem, since
-kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
+Mounting btrfs from two images (which have the same one fsid and two
+different dev_uuids) in certain executing order may trigger an UAF for
+variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
+following are the details:
 
-However, -EFAULT is also returned when copy_to/from_user fails.
+1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
+   devices by ioctl(BTRFS_IOC_SCAN_DEV):
 
-When emulating a guest instruction, the address being outside a memslot
-usually means that an addressing exception should be injected into the
-guest.
+             /  btrfs_device_1 → loop0
+   fs_device
+             \  btrfs_device_2 → loop1
+2. mount /dev/loop0 /mnt
+   btrfs_open_devices
+    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     fail: btrfs_close_devices // -ENOMEM
+	    btrfs_close_bdev(btrfs_device_1)
+             fput(btrfs_device_1->bdev_file)
+	      // btrfs_device_1->bdev_file is freed
+	    btrfs_close_bdev(btrfs_device_2)
+             fput(btrfs_device_2->bdev_file)
 
-Failure in copy_to/from_user however indicates that something is wrong
-in userspace and hence should be handled there.
+3. mount /dev/loop1 /mnt
+   btrfs_open_devices
+    btrfs_get_bdev_and_sb(&bdev_file)
+     // EIO, btrfs_device_1->bdev_file is not assigned,
+     // which points to a freed memory area
+    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
+   btrfs_fill_super
+    open_ctree
+     btrfs_free_extra_devids
+      if (btrfs_device_1->bdev_file)
+       fput(btrfs_device_1->bdev_file) // UAF !
 
-To be able to distinguish these two cases, return PGM_ADDRESSING in
-access_guest_page() when the guest address is outside guest memory. In
-access_guest_real(), populate vcpu->arch.pgm.code such that
-kvm_s390_inject_prog_cond() can be used in the caller for injecting into
-the guest (if applicable).
+Fix it by setting 'device->bdev_file' as 'NULL' after closing the
+btrfs_device in btrfs_close_one_device().
 
-Since this adds a new return value to access_guest_page(), we need to make
-sure that other callers are not confused by the new positive return value.
-
-There are the following users of access_guest_page():
-- access_guest_with_key() does the checking itself (in
-  guest_range_to_gpas()), so this case should never happen. Even if, the
-  handling is set up properly.
-- access_guest_real() just passes the return code to its callers, which
-  are:
-    - read_guest_real() - see below
-    - write_guest_real() - see below
-
-There are the following users of read_guest_real():
-- ar_translation() in gaccess.c which already returns PGM_*
-- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
-  return -EFAULT on read_guest_read() nonzero return - no change
-- shadow_crycb(), handle_stfle() always present this as validity, this
-  could be handled better but doesn't change current behaviour - no change
-
-There are the following users of write_guest_real():
-- kvm_s390_store_status_unloaded() always returns -EFAULT on
-  write_guest_real() failure.
-
-Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
-Acked-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
+CC: stable@vger.kernel.org # 4.19+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c |  4 ++++
- arch/s390/kvm/gaccess.h | 14 ++++++++------
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 6ba82fe0776f8..11ddac5e3e923 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
- 	const gfn_t gfn = gpa_to_gfn(gpa);
- 	int rc;
- 
-+	if (!gfn_to_memslot(kvm, gfn))
-+		return PGM_ADDRESSING;
- 	if (mode == GACC_STORE)
- 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
- 	else
-@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 		gra += fragment_len;
- 		data += fragment_len;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index fcedc43ef291a..0485143cd75e0 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1103,6 +1103,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
+ 	if (device->bdev) {
+ 		fs_devices->open_devices--;
+ 		device->bdev = NULL;
++		device->bdev_file = NULL;
  	}
-+	if (rc > 0)
-+		vcpu->arch.pgm.code = rc;
- 	return rc;
- }
- 
-diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
-index 4c56de5429608..6c97cde8623a4 100644
---- a/arch/s390/kvm/gaccess.h
-+++ b/arch/s390/kvm/gaccess.h
-@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest low address and key protection are not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying from @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to guest memory.
-  */
-@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest key protection is not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying to @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to kernel space.
-  */
+ 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+ 	btrfs_destroy_dev_zone_info(device);
 -- 
 2.43.0
 
