@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3559BE917
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244639BE7F1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D9B1F21E28
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06EB1F217CD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508F61DED48;
-	Wed,  6 Nov 2024 12:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E891DF961;
+	Wed,  6 Nov 2024 12:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="On6Z1Lt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKmccZ3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDB07DA7F;
-	Wed,  6 Nov 2024 12:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB7A1DF721;
+	Wed,  6 Nov 2024 12:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896221; cv=none; b=JDLhXICp8188kXLIjn6RPDeEPPIDmD4KvLR9+RqDPRzpVbvH+6KP8ha5MqhV2lMCIsZIxhiDM1SjKMxhfsQwCVdsYwgvYjvIittxJva8xJccWf9VJpbRIUT1Of1exrohbHMgNo8K9hJGxNXiwDutr/xK/gP0cOR5KfVVAW445jE=
+	t=1730895552; cv=none; b=g4W84UyX+/4sxiQc6VwqHIgRKzn+KW3q6anccXXa9hY1VUw3BZieQXiQ2HKBp2jB2kIhX9aqA6L+LuGLCT0f6mHzYk5fO8+CGNXBp4e1Cn8KXrgh3fPEvlxF6L9sJia0i3B0TdcY6YoXBVuNbC9YjpuzBFUdV96dDCVMDbTpKeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896221; c=relaxed/simple;
-	bh=GzfIqZT6FxwehxYWE+gVuaHm/aCH504DBqhF2n6yD50=;
+	s=arc-20240116; t=1730895552; c=relaxed/simple;
+	bh=yWzjQjS5YNTSJuT/+R8V/Vr9fr3X/2qi4cpsNkk3gJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9hqz1pVXoZW6bVeY1Z1sVvUcWFiDjaYLR4+ElgqZPXxWTDMjVA7reGoma5w0Hql16Zu3N9ZnmfgvZZ8B8EaTUYDVraZeRwTXAarD7H5HaFYuX4sOBDpb/pQQv2hOI2RK6/O7f6CDqIxYxCP6dnyku7s398M8eIu2md3lfGd2iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=On6Z1Lt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77471C4CECD;
-	Wed,  6 Nov 2024 12:30:20 +0000 (UTC)
+	 MIME-Version; b=pxBTKw6Qci2DoI8nawixFNJzfyBlKfF/cGfXz/jctVmXPh4lx4i08WTxDJRaQU8vtAS9fqm8ENpx7EJDujCeE5oLNKafyj9cxK0JjoT3o62aw9+s1dfbA93Q2g+rRJq7rQsDkIM8e6523UeePb8Ow3a7ShYtz1rq5jALS5Uu3CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKmccZ3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DE8C4CECD;
+	Wed,  6 Nov 2024 12:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896220;
-	bh=GzfIqZT6FxwehxYWE+gVuaHm/aCH504DBqhF2n6yD50=;
+	s=korg; t=1730895552;
+	bh=yWzjQjS5YNTSJuT/+R8V/Vr9fr3X/2qi4cpsNkk3gJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=On6Z1Lt4/r4K6VhZFUYW93nvutYaNO/rWBqdQPCUuJVFtFSiYFqqZGhvvEQiMBnDi
-	 hpSNeeCGsrrZ5j2IdTScI/5edU/2aR8eBQmFQFvbDtjUKa6/lSpq7l9dZ/4wkqJP6q
-	 sXTaL5Zo+OndMmh6jl5NOBJoeGtPGv1r5Fc6Jd8Y=
+	b=hKmccZ3qhAaj8UZ+EAV8WGLjbkX8dOLMLzJFreIcFIuAWBqIIlEcTBvXAA1/eUUD8
+	 /DsI6f76cAFgT9i8maYUzLYzR/4WrUYUdwa5zoBHKfMHfJfn/HHzpuP13Y9edIRuMY
+	 JrYCzpCOYebhJ48hXUAlFSiSmW/e56ZaVw7Sj5Sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 131/245] iio: gts-helper: Fix memory leaks in iio_gts_build_avail_scale_table()
-Date: Wed,  6 Nov 2024 13:03:04 +0100
-Message-ID: <20241106120322.448084155@linuxfoundation.org>
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 257/350] gpio: aspeed: Use devm_clk api to manage clock source
+Date: Wed,  6 Nov 2024 13:03:05 +0100
+Message-ID: <20241106120327.259205812@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-commit 691e79ffc42154a9c91dc3b7e96a307037b4be74 upstream.
+[ Upstream commit a6191a3d18119184237f4ee600039081ad992320 ]
 
-modprobe iio-test-gts and rmmod it, then the following memory leak
-occurs:
+Replace of_clk_get with devm_clk_get_enabled to manage the clock source.
 
-	unreferenced object 0xffffff80c810be00 (size 64):
-	  comm "kunit_try_catch", pid 1654, jiffies 4294913981
-	  hex dump (first 32 bytes):
-	    02 00 00 00 08 00 00 00 20 00 00 00 40 00 00 00  ........ ...@...
-	    80 00 00 00 00 02 00 00 00 04 00 00 00 08 00 00  ................
-	  backtrace (crc a63d875e):
-	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
-	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
-	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
-	    [<0000000071bb4b09>] 0xffffffdf052a62e0
-	    [<000000000315bc18>] 0xffffffdf052a6488
-	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000f505065d>] kthread+0x2e8/0x374
-	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
-	unreferenced object 0xffffff80cbfe9e70 (size 16):
-	  comm "kunit_try_catch", pid 1658, jiffies 4294914015
-	  hex dump (first 16 bytes):
-	    10 00 00 00 40 00 00 00 80 00 00 00 00 00 00 00  ....@...........
-	  backtrace (crc 857f0cb4):
-	    [<0000000028c1b3c2>] kmemleak_alloc+0x34/0x40
-	    [<000000001d6ecc87>] __kmalloc_noprof+0x2bc/0x3c0
-	    [<00000000393795c1>] devm_iio_init_iio_gts+0x4b4/0x16f4
-	    [<0000000071bb4b09>] 0xffffffdf052a62e0
-	    [<000000007d089d45>] 0xffffffdf052a6864
-	    [<00000000f9dc55b5>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000175a3fd4>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000f505065d>] kthread+0x2e8/0x374
-	    [<00000000bbfb0e5d>] ret_from_fork+0x10/0x20
-	......
-
-It includes 5*5 times "size 64" memory leaks, which correspond to 5 times
-test_init_iio_gain_scale() calls with gts_test_gains size 10 (10*size(int))
-and gts_test_itimes size 5. It also includes 5*1 times "size 16"
-memory leak, which correspond to one time __test_init_iio_gain_scale()
-call with gts_test_gains_gain_low size 3 (3*size(int)) and gts_test_itimes
-size 5.
-
-The reason is that the per_time_gains[i] is not freed which is allocated in
-the "gts->num_itime" for loop in iio_gts_build_avail_scale_table().
-
-Cc: stable@vger.kernel.org
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20241011095512.3667549-1-ruanjinjie@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20241008081450.1490955-3-billy_tsai@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-gts-helper.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-aspeed.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -307,6 +307,8 @@ static int iio_gts_build_avail_scale_tab
- 	if (ret)
- 		goto err_free_out;
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index 5cc80678ac352..cab3d9a4018ab 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -1176,7 +1176,7 @@ static int __init aspeed_gpio_probe(struct platform_device *pdev)
+ 	if (!gpio_id)
+ 		return -EINVAL;
  
-+	for (i = 0; i < gts->num_itime; i++)
-+		kfree(per_time_gains[i]);
- 	kfree(per_time_gains);
- 	gts->per_time_avail_scale_tables = per_time_scales;
- 
+-	gpio->clk = of_clk_get(pdev->dev.of_node, 0);
++	gpio->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(gpio->clk)) {
+ 		dev_warn(&pdev->dev,
+ 				"Failed to get clock from devicetree, debouncing disabled\n");
+-- 
+2.43.0
+
 
 
 
