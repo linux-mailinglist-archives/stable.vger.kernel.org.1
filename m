@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A34D9BE824
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709BC9BEB52
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6C19B229CC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028741F2743D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F431DF73E;
-	Wed,  6 Nov 2024 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A544E1F754C;
+	Wed,  6 Nov 2024 12:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lteEZ5Gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4/GRs/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E2E1DED49;
-	Wed,  6 Nov 2024 12:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0181F7544;
+	Wed,  6 Nov 2024 12:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895689; cv=none; b=GMNnaDSd2wpw9raa5T6I72NPEPNlio4wlZbittlUB2sIte2v4qVR1qo/Qu8JMf5+VpdZhO74WRuvQ3UIcrUiAiPg5CY3xrCk6zlWuan2Z0DnS2p4L278yt1kBdq5Ot1P92hwseENiSQdSNkwAJ9DKFZgAk6goZVwgglJcoSWtrM=
+	t=1730896995; cv=none; b=mjSy/15G2QgLz4NmFb/k4/Y+em5gN7pFtkd9PksRt/fFmEJp+MZ7MUUqIdXs7OSAkUVNeHMYk/Y7F0OLhlKn8/932tR4wmZgKNitpFZFT9sJm0RsvQK8q7gWu7FFlb36jQ7Lf2nBzNnkKe00vqLh11ExrkvoZDsks9+hfK1wM2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895689; c=relaxed/simple;
-	bh=JEPNjDkkX4Ulezla5PeWJ68MrhvBCMBQpJrQmZDKtZs=;
+	s=arc-20240116; t=1730896995; c=relaxed/simple;
+	bh=zMTFDaKmoyAhut2tEYf2ZRDwKrvC+MHZmgtLHvMiiCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdMsCTnJYznYMKvpNnz3BtBvsj89/1djUWY+XsPTpDuo4m3/40THZFmKEIuiR0Md14dPIy3ZdUAl42y0uGlfRjuZ2T1uuZvTkD3a/dCSRiTxheOhFvmUYknCo9X8GMOkUmU+Cr3b62mJuZkdOozJBFKfYsEUy5fsK9Evigo6lug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lteEZ5Gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CEFC4CECD;
-	Wed,  6 Nov 2024 12:21:28 +0000 (UTC)
+	 MIME-Version; b=qHPZaFB6Fe8g+P6J0f9bzoT0HMGKUEeqpM0O674WwpMp2OhiGV6FT9SwlMaXUE2YGDm7GhpBlKvLaxwZO/9BQ3cKlRVO/mj4l2u59PrKZU2CnmtRnZ2/+4E7NqaUaKpvHyOexkOQKQlzeinLxzo3Bdp3104utS3WhKQ1WW3uqUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4/GRs/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91771C4CECD;
+	Wed,  6 Nov 2024 12:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895688;
-	bh=JEPNjDkkX4Ulezla5PeWJ68MrhvBCMBQpJrQmZDKtZs=;
+	s=korg; t=1730896995;
+	bh=zMTFDaKmoyAhut2tEYf2ZRDwKrvC+MHZmgtLHvMiiCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lteEZ5GkGYJ319EQezmMsRw7MLZSvLMIvtWxjhb2DVAD6zjApA3xXTFlaNsDiho1J
-	 G0mvdXZrLrcGEvWh9W21bTElbSYHEqU1UxJI7UM8zL67T1ZpjO2a+aswc8V7PY8VI6
-	 R1GVpryOIFuor9ZzEMNDn/jMO+61qCLsOuEi9uR0=
+	b=A4/GRs/sX11AYKlLFkFB3G7hTdfDQvdCvTVVS0jP0d6UMyotOnhityBQl1V6aE9U9
+	 E+4Lb/nKoj7JAL+2qgoFmzUFZPTFDrVtFJzJgHpSCmo6K5A5AQQD1kdnQmTRLYAFjb
+	 w1awekfhCnQQemsf8Vc8dbrAsJpElJsswcSihBv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 303/350] arm64: probes: Fix uprobes for big-endian kernels
+Subject: [PATCH 6.1 030/126] netfilter: nf_reject_ipv6: fix potential crash in nf_send_reset6()
 Date: Wed,  6 Nov 2024 13:03:51 +0100
-Message-ID: <20241106120328.279183592@linuxfoundation.org>
+Message-ID: <20241106120306.919966321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 13f8f1e05f1dc36dbba6cba0ae03354c0dafcde7 ]
+[ Upstream commit 4ed234fe793f27a3b151c43d2106df2ff0d81aac ]
 
-The arm64 uprobes code is broken for big-endian kernels as it doesn't
-convert the in-memory instruction encoding (which is always
-little-endian) into the kernel's native endianness before analyzing and
-simulating instructions. This may result in a few distinct problems:
+I got a syzbot report without a repro [1] crashing in nf_send_reset6()
 
-* The kernel may may erroneously reject probing an instruction which can
-  safely be probed.
+I think the issue is that dev->hard_header_len is zero, and we attempt
+later to push an Ethernet header.
 
-* The kernel may erroneously erroneously permit stepping an
-  instruction out-of-line when that instruction cannot be stepped
-  out-of-line safely.
+Use LL_MAX_HEADER, as other functions in net/ipv6/netfilter/nf_reject_ipv6.c.
 
-* The kernel may erroneously simulate instruction incorrectly dur to
-  interpretting the byte-swapped encoding.
+[1]
 
-The endianness mismatch isn't caught by the compiler or sparse because:
+skbuff: skb_under_panic: text:ffffffff89b1d008 len:74 put:14 head:ffff88803123aa00 data:ffff88803123a9f2 tail:0x3c end:0x140 dev:syz_tun
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 7373 Comm: syz.1.568 Not tainted 6.12.0-rc2-syzkaller-00631-g6d858708d465 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0d 8d 48 c7 c6 60 a6 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 ba 30 38 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc900045269b0 EFLAGS: 00010282
+RAX: 0000000000000088 RBX: dffffc0000000000 RCX: cd66dacdc5d8e800
+RDX: 0000000000000000 RSI: 0000000000000200 RDI: 0000000000000000
+RBP: ffff88802d39a3d0 R08: ffffffff8174afec R09: 1ffff920008a4ccc
+R10: dffffc0000000000 R11: fffff520008a4ccd R12: 0000000000000140
+R13: ffff88803123aa00 R14: ffff88803123a9f2 R15: 000000000000003c
+FS:  00007fdbee5ff6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000005d322000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  eth_header+0x38/0x1f0 net/ethernet/eth.c:83
+  dev_hard_header include/linux/netdevice.h:3208 [inline]
+  nf_send_reset6+0xce6/0x1270 net/ipv6/netfilter/nf_reject_ipv6.c:358
+  nft_reject_inet_eval+0x3b9/0x690 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  br_nf_pre_routing_ipv6+0x63e/0x770 net/bridge/br_netfilter_ipv6.c:184
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_bridge_pre net/bridge/br_input.c:277 [inline]
+  br_handle_frame+0x9fd/0x1530 net/bridge/br_input.c:424
+  __netif_receive_skb_core+0x13e8/0x4570 net/core/dev.c:5562
+  __netif_receive_skb_one_core net/core/dev.c:5666 [inline]
+  __netif_receive_skb+0x12f/0x650 net/core/dev.c:5781
+  netif_receive_skb_internal net/core/dev.c:5867 [inline]
+  netif_receive_skb+0x1e8/0x890 net/core/dev.c:5926
+  tun_rx_batched+0x1b7/0x8f0 drivers/net/tun.c:1550
+  tun_get_user+0x3056/0x47e0 drivers/net/tun.c:2007
+  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2053
+  new_sync_write fs/read_write.c:590 [inline]
+  vfs_write+0xa6d/0xc90 fs/read_write.c:683
+  ksys_write+0x183/0x2b0 fs/read_write.c:736
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdbeeb7d1ff
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 c9 8d 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 1c 8e 02 00 48
+RSP: 002b:00007fdbee5ff000 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fdbeed36058 RCX: 00007fdbeeb7d1ff
+RDX: 000000000000008e RSI: 0000000020000040 RDI: 00000000000000c8
+RBP: 00007fdbeebf12be R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000008e R11: 0000000000000293 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fdbeed36058 R15: 00007ffc38de06e8
+ </TASK>
 
-* The arch_uprobe::{insn,ixol} fields are encoded as arrays of u8, so
-  the compiler and sparse have no idea these contain a little-endian
-  32-bit value. The core uprobes code populates these with a memcpy()
-  which similarly does not handle endianness.
-
-* While the uprobe_opcode_t type is an alias for __le32, both
-  arch_uprobe_analyze_insn() and arch_uprobe_skip_sstep() cast from u8[]
-  to the similarly-named probe_opcode_t, which is an alias for u32.
-  Hence there is no endianness conversion warning.
-
-Fix this by changing the arch_uprobe::{insn,ixol} fields to __le32 and
-adding the appropriate __le32_to_cpu() conversions prior to consuming
-the instruction encoding. The core uprobes copies these fields as opaque
-ranges of bytes, and so is unaffected by this change.
-
-At the same time, remove MAX_UINSN_BYTES and consistently use
-AARCH64_INSN_SIZE for clarity.
-
-Tested with the following:
-
-| #include <stdio.h>
-| #include <stdbool.h>
-|
-| #define noinline __attribute__((noinline))
-|
-| static noinline void *adrp_self(void)
-| {
-|         void *addr;
-|
-|         asm volatile(
-|         "       adrp    %x0, adrp_self\n"
-|         "       add     %x0, %x0, :lo12:adrp_self\n"
-|         : "=r" (addr));
-| }
-|
-|
-| int main(int argc, char *argv)
-| {
-|         void *ptr = adrp_self();
-|         bool equal = (ptr == adrp_self);
-|
-|         printf("adrp_self   => %p\n"
-|                "adrp_self() => %p\n"
-|                "%s\n",
-|                adrp_self, ptr, equal ? "EQUAL" : "NOT EQUAL");
-|
-|         return 0;
-| }
-
-.... where the adrp_self() function was compiled to:
-
-| 00000000004007e0 <adrp_self>:
-|   4007e0:       90000000        adrp    x0, 400000 <__ehdr_start>
-|   4007e4:       911f8000        add     x0, x0, #0x7e0
-|   4007e8:       d65f03c0        ret
-
-Before this patch, the ADRP is not recognized, and is assumed to be
-steppable, resulting in corruption of the result:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0xffffffffff7e0
-| NOT EQUAL
-
-After this patch, the ADRP is correctly recognized and simulated:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| #
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-
-Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h   | 8 +++-----
- arch/arm64/kernel/probes/uprobes.c | 4 ++--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ net/ipv6/netfilter/nf_reject_ipv6.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
-index 189755d332601..bf3ba528fb6cb 100644
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -13,11 +13,9 @@
- #include <asm/insn.h>
- #include <asm/probes.h>
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 4e0976534648c..e4776bd2ed89b 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -268,12 +268,12 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
+ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		    int hook)
+ {
+-	struct sk_buff *nskb;
+-	struct tcphdr _otcph;
+-	const struct tcphdr *otcph;
+-	unsigned int otcplen, hh_len;
+ 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
+ 	struct dst_entry *dst = NULL;
++	const struct tcphdr *otcph;
++	struct sk_buff *nskb;
++	struct tcphdr _otcph;
++	unsigned int otcplen;
+ 	struct flowi6 fl6;
  
--#define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
--
- #define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
--#define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
-+#define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+ 	if ((!(ipv6_addr_type(&oip6h->saddr) & IPV6_ADDR_UNICAST)) ||
+@@ -312,9 +312,8 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (IS_ERR(dst))
+ 		return;
  
- typedef u32 uprobe_opcode_t;
+-	hh_len = (dst->dev->hard_header_len + 15)&~15;
+-	nskb = alloc_skb(hh_len + 15 + dst->header_len + sizeof(struct ipv6hdr)
+-			 + sizeof(struct tcphdr) + dst->trailer_len,
++	nskb = alloc_skb(LL_MAX_HEADER + sizeof(struct ipv6hdr) +
++			 sizeof(struct tcphdr) + dst->trailer_len,
+ 			 GFP_ATOMIC);
  
-@@ -26,8 +24,8 @@ struct arch_uprobe_task {
+ 	if (!nskb) {
+@@ -327,7 +326,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
  
- struct arch_uprobe {
- 	union {
--		u8 insn[MAX_UINSN_BYTES];
--		u8 ixol[MAX_UINSN_BYTES];
-+		__le32 insn;
-+		__le32 ixol;
- 	};
- 	struct arch_probe_insn api;
- 	bool simulate;
-diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
-index 6aeb11aa7e283..851689216007c 100644
---- a/arch/arm64/kernel/probes/uprobes.c
-+++ b/arch/arm64/kernel/probes/uprobes.c
-@@ -45,7 +45,7 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
- 	else if (!IS_ALIGNED(addr, AARCH64_INSN_SIZE))
- 		return -EINVAL;
+ 	nskb->mark = fl6.flowi6_mark;
  
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
+-	skb_reserve(nskb, hh_len + dst->header_len);
++	skb_reserve(nskb, LL_MAX_HEADER);
+ 	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
+ 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
  
- 	switch (arm_probe_decode_insn(insn, &auprobe->api)) {
- 	case INSN_REJECTED:
-@@ -111,7 +111,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
- 	if (!auprobe->simulate)
- 		return false;
- 
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
- 	addr = instruction_pointer(regs);
- 
- 	if (auprobe->api.handler)
 -- 
 2.43.0
 
