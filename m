@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-90532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD129BE8C7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313BC9BE7A6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6B21C217E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9F01F212A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E211DFD84;
-	Wed,  6 Nov 2024 12:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F021DF254;
+	Wed,  6 Nov 2024 12:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJVj86pm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VO/OYmB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E487D1D2784;
-	Wed,  6 Nov 2024 12:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388B1DE8B4;
+	Wed,  6 Nov 2024 12:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896051; cv=none; b=ZTwVprAnTphd3Y7qEnM7mBfBcHTktqZcGG6wNdy+2oSIbNbaKFqHmEMIBnjTxuUWm9LbK77MeM1Bvfigf42ULJT7N3FGK5+IusfRjSE5SkeJnwBIU8hw06Z3KXklhx5OdsV4tiIt/fn9ISwnvgI2WqbcLu8Jwzq7g8gB0n6UIcA=
+	t=1730895377; cv=none; b=S+E4s5zjoS1OotbqDE9S3oZlNMB0Cao4AZEgVQFA7VhWzC5LyolVuPBbcosckjBqtarK3sM9ShjkGEaS2+O+9hX4qgAdt+6MVelFzAJVJLCoA2HjEyK5eo2J5bpfjPw5cjE7pTBTc27KJkZMhOCCzJG1LNGcW3uJBg9sN6lW5mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896051; c=relaxed/simple;
-	bh=uLnWG7QAamuITbol5sadPK8dse3klJcFIo18gpCr1ek=;
+	s=arc-20240116; t=1730895377; c=relaxed/simple;
+	bh=5KoTCkpdqpv0tcFSlVKAhJSBFnNWWksTqZmHVhwTvlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IohjnCYCe5c1BoZEA3sViT/OGi0cUj3rcya2XVAPrdmwXhKqomgDh8cA4F3qud1VFB88F9etYkklY/JDaTlJeO6jPk2cvToLicDWR3gTg/BFBtXjz8OE729NsIsdLLZ0kDUhqTXGZkhlWY5AjlI/Ho05oMbHgwziKFbZr6gu4zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJVj86pm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63320C4CED4;
-	Wed,  6 Nov 2024 12:27:30 +0000 (UTC)
+	 MIME-Version; b=sM3bMrwSHrVuXTihy/TkN5j1thsVQdH6ur6vfsb0/IFqVc8sZwa47F14cHXRC8QY//r5uDxCuCUOhv+trAxcS2BS4GJY6Vb20yXWTp2yvyjOitpdaHd1DNFOf4qMd1aPIgU4LgWhu7ky8A/4qr9MHhehA+59lcrNZ27u/Y7CDc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VO/OYmB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E8EC4CECD;
+	Wed,  6 Nov 2024 12:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896050;
-	bh=uLnWG7QAamuITbol5sadPK8dse3klJcFIo18gpCr1ek=;
+	s=korg; t=1730895376;
+	bh=5KoTCkpdqpv0tcFSlVKAhJSBFnNWWksTqZmHVhwTvlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJVj86pmjTVewfSgzuiOmnUcwrDNzTrmoKh6O+K8KY7pCfXrObBtox1hiyLfNPG25
-	 yx+5ryhx9WeibXqw9aOa1PbgWoTm/VGAkfIcKRYW1Dep4fva5JxQuru4NFOc+7Xy0d
-	 VeyShhSyMp7ThTwzJLNcbdzKK1+BEaUHwQzNE5CM=
+	b=VO/OYmB84CyQK0sOwbCBkV5UhNwyEg4ATiNBbKUFINRKKia4d/gqye4AMGzkTv9uQ
+	 LPpaao1RwFgT6e3RE96azzz05+TFGiz/tim/u8F+UE+tq0CCrljNEQ8BLX8eFaQv1e
+	 6/niIAwOCYM6s7u2G0hKfajwdsCgkD2GktbYmwlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Liankun Yang <liankun.yang@mediatek.com>,
-	Fei Shao <fshao@chromium.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 072/245] drm/mediatek: Fix get efuse issue for MT8188 DPTX
+	Heming Zhao <heming.zhao@suse.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 197/350] ocfs2: fix the la space leak when unmounting an ocfs2 volume
 Date: Wed,  6 Nov 2024 13:02:05 +0100
-Message-ID: <20241106120320.978352869@linuxfoundation.org>
+Message-ID: <20241106120325.835265196@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,139 +69,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liankun Yang <liankun.yang@mediatek.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 3ded11b5c1b476f6d027d9017aa7deb8ab381ec1 ]
+commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
 
-Update efuse data for MT8188 displayport.
+This bug has existed since the initial OCFS2 code.  The code logic in
+ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
+free bits, which causes an OCFS2 volume to lose the last free clusters of
+LA window on each umount command.
 
-The DP monitor can not display when DUT connected to USB-c to DP dongle.
-Analysis view is invalid DP efuse data.
-
-Fixes: 350c3fe907fb ("drm/mediatek: dp: Add support MT8188 dp/edp function")
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Liankun Yang <liankun.yang@mediatek.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240923132521.22785-1-liankun.yang@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 85 ++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 1 deletion(-)
+ fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index d8796a904eca4..f2bee617f063a 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -145,6 +145,89 @@ struct mtk_dp_data {
- 	u16 audio_m_div2_bit;
- };
+--- a/fs/ocfs2/localalloc.c
++++ b/fs/ocfs2/localalloc.c
+@@ -1026,6 +1026,25 @@ static int ocfs2_sync_local_to_main(stru
+ 		start = bit_off + 1;
+ 	}
  
-+static const struct mtk_dp_efuse_fmt mt8188_dp_efuse_fmt[MTK_DP_CAL_MAX] = {
-+	[MTK_DP_CAL_GLB_BIAS_TRIM] = {
-+		.idx = 0,
-+		.shift = 10,
-+		.mask = 0x1f,
-+		.min_val = 1,
-+		.max_val = 0x1e,
-+		.default_val = 0xf,
-+	},
-+	[MTK_DP_CAL_CLKTX_IMPSE] = {
-+		.idx = 0,
-+		.shift = 15,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_0] = {
-+		.idx = 1,
-+		.shift = 0,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_1] = {
-+		.idx = 1,
-+		.shift = 8,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_2] = {
-+		.idx = 1,
-+		.shift = 16,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_PMOS_3] = {
-+		.idx = 1,
-+		.shift = 24,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_0] = {
-+		.idx = 1,
-+		.shift = 4,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_1] = {
-+		.idx = 1,
-+		.shift = 12,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_2] = {
-+		.idx = 1,
-+		.shift = 20,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+	[MTK_DP_CAL_LN_TX_IMPSEL_NMOS_3] = {
-+		.idx = 1,
-+		.shift = 28,
-+		.mask = 0xf,
-+		.min_val = 1,
-+		.max_val = 0xe,
-+		.default_val = 0x8,
-+	},
-+};
++	/* clear the contiguous bits until the end boundary */
++	if (count) {
++		blkno = la_start_blk +
++			ocfs2_clusters_to_blocks(osb->sb,
++					start - count);
 +
- static const struct mtk_dp_efuse_fmt mt8195_edp_efuse_fmt[MTK_DP_CAL_MAX] = {
- 	[MTK_DP_CAL_GLB_BIAS_TRIM] = {
- 		.idx = 3,
-@@ -2771,7 +2854,7 @@ static SIMPLE_DEV_PM_OPS(mtk_dp_pm_ops, mtk_dp_suspend, mtk_dp_resume);
- static const struct mtk_dp_data mt8188_dp_data = {
- 	.bridge_type = DRM_MODE_CONNECTOR_DisplayPort,
- 	.smc_cmd = MTK_DP_SIP_ATF_VIDEO_UNMUTE,
--	.efuse_fmt = mt8195_dp_efuse_fmt,
-+	.efuse_fmt = mt8188_dp_efuse_fmt,
- 	.audio_supported = true,
- 	.audio_pkt_in_hblank_area = true,
- 	.audio_m_div2_bit = MT8188_AUDIO_M_CODE_MULT_DIV_SEL_DP_ENC0_P0_DIV_2,
--- 
-2.43.0
-
++		trace_ocfs2_sync_local_to_main_free(
++				count, start - count,
++				(unsigned long long)la_start_blk,
++				(unsigned long long)blkno);
++
++		status = ocfs2_release_clusters(handle,
++				main_bm_inode,
++				main_bm_bh, blkno,
++				count);
++		if (status < 0)
++			mlog_errno(status);
++	}
++
+ bail:
+ 	if (status)
+ 		mlog_errno(status);
 
 
 
