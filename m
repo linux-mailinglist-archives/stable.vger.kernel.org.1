@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835279BE7DE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 537C19BE904
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A62B1C21C04
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854A31C2170D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8D01DF995;
-	Wed,  6 Nov 2024 12:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52911DF726;
+	Wed,  6 Nov 2024 12:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNp+RMOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSNot3uV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0871DF991;
-	Wed,  6 Nov 2024 12:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9208D1D2784;
+	Wed,  6 Nov 2024 12:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895505; cv=none; b=V/FEHnRL0jvXp4jpEvaS3rVTgYbgKuJ7HIHQN/3VoBfmr3lj2EHP1I2kuyOyxgye9g3HX92OpS9/Lj3wdsRwxtHV7JGoSUTqIQJAUPOJMITsPzDA0fKCcAzGYQQVRgelDmkLnD/evJ7AYVRPQGyEoL/OIDU2jIhdPum3dZROyFY=
+	t=1730896179; cv=none; b=gICRI+Matks0McmGROWvVBdBB6P0mhwXyOr3XDWIi0MfcQBqDJ2WbbC5Jm5J04fd/OucihqLekmrrjSwUUCIvimT1R8PPtNmcbL4VqmVosQBC9CssknxTIBDvlTixSppHQa8dyqqMGOIiHpT8OWsNJXLgkoUrQFF1syjyknbfWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895505; c=relaxed/simple;
-	bh=KChvJT4IjdTdm/J696c0rUu41Br9ASlslcK8AWXuQhE=;
+	s=arc-20240116; t=1730896179; c=relaxed/simple;
+	bh=kOw/woW92YIl1ImYUVK3S5Pevdu9UZAPeZUSSrb5ync=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FculpahAxR0S3Rmtm6jqPmYeUOwAW85ZJ2dxNPe4LHagitNIWPew9YrkjZ5/dUoN5DnEPsx0ZKu2yXpezVX6LAOwwPE8OEKvdENe6qFdAzDWK31fFYMarL8w+dlmr9D9UlJfVj/+zQDgXibjA3D0gADAvL77DPO/QWPPJVVhJ50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNp+RMOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31E3C4CECD;
-	Wed,  6 Nov 2024 12:18:24 +0000 (UTC)
+	 MIME-Version; b=eUYLFf12WhivYEj9DZhJMC9bC/F+Z0jjHX2lm2lu4ukRbJyWURgt0hBSW3kivUTbb/MepS0OeCKhdDSvg/dc+d12kiES2qo5gA8tM2cAjcQL5OXkyWMo6CBLEUedJJkYLQXTSCXHN6Sm2rT9PWNomikorX6/Qouf/w0AJaYF0qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSNot3uV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF6C4CECD;
+	Wed,  6 Nov 2024 12:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895505;
-	bh=KChvJT4IjdTdm/J696c0rUu41Br9ASlslcK8AWXuQhE=;
+	s=korg; t=1730896179;
+	bh=kOw/woW92YIl1ImYUVK3S5Pevdu9UZAPeZUSSrb5ync=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNp+RMOgVpSR733jyRIhyM0lBLr4p1cePnjYkR/dnlU0nLz9BLetHR8q9RAk89ylU
-	 TRYsBg83fP2nglH17l2W05F6XBfjdlQfEydH0B4mt8dOI1tfxV3TthsmKiwiIypBqr
-	 fRIZ5flbtVK5mB542B+eUKGIz/VZTY1+QCwRyLnU=
+	b=oSNot3uV4h3tgrX3CiIYTIcnDl8tTjb4PK8PSVFmkPhhbBBijM7f/8abrOfiGvuDX
+	 GykK1YsaoI0mtNQZ1TaGJm09naee36TA3i9uMfGVbbxXAAbK4cR8WXUaCzJWnb1AGo
+	 xDt/oXW7XgsVHqRjX04RBeJXfrMy393sgLwZJLxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	"John Warthog9 Hawley (Tenstorrent)" <warthog9@eaglescrag.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 239/350] ktest.pl: Avoid false positives with grub2 skip regex
-Date: Wed,  6 Nov 2024 13:02:47 +0100
-Message-ID: <20241106120326.854597085@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.11 115/245] phy: qcom: qmp-usbc: fix NULL-deref on runtime suspend
+Date: Wed,  6 Nov 2024 13:02:48 +0100
+Message-ID: <20241106120322.049644649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
+commit 34c21f94fa1e147a19b54b6adf0c93a623b70dd8 upstream.
 
-Some distros have grub2 config files with the lines
+Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
+removed most users of the platform device driver data from the
+qcom-qmp-usb driver, but mistakenly also removed the initialisation
+despite the data still being used in the runtime PM callbacks. This bug
+was later reproduced when the driver was copied to create the qmp-usbc
+driver.
 
-    if [ x"${feature_menuentry_id}" = xy ]; then
-      menuentry_id_option="--id"
-    else
-      menuentry_id_option=""
-    fi
+Restore the driver data initialisation at probe to avoid a NULL-pointer
+dereference on runtime suspend.
 
-which match the skip regex defined for grub2 in get_grub_index():
+Apparently no one uses runtime PM, which currently needs to be enabled
+manually through sysfs, with these drivers.
 
-    $skip = '^\s*menuentry';
-
-These false positives cause the grub number to be higher than it
-should be, and the wrong kernel can end up booting.
-
-Grub documents the menuentry command with whitespace between it and the
-title, so make the skip regex reflect this.
-
-Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19281571a4d5 ("phy: qcom: qmp-usb: split USB-C PHY driver")
+Cc: stable@vger.kernel.org	# 6.9
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240911115253.10920-4-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usbc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index a29d9e125b00b..fe73902a197c6 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1969,7 +1969,7 @@ sub get_grub_index {
-     } elsif ($reboot_type eq "grub2") {
- 	$command = "cat $grub_file";
- 	$target = '^\s*menuentry.*' . $grub_menu_qt;
--	$skip = '^\s*menuentry';
-+	$skip = '^\s*menuentry\s';
- 	$submenu = '^\s*submenu\s';
-     } elsif ($reboot_type eq "grub2bls") {
-         $command = $grub_bls_get;
--- 
-2.43.0
-
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usbc.c
+@@ -1049,6 +1049,7 @@ static int qmp_usbc_probe(struct platfor
+ 		return -ENOMEM;
+ 
+ 	qmp->dev = dev;
++	dev_set_drvdata(dev, qmp);
+ 
+ 	qmp->orientation = TYPEC_ORIENTATION_NORMAL;
+ 
 
 
 
