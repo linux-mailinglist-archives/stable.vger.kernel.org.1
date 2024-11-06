@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA049BE914
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652CA9BE816
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26D951F217DF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 290D12826A9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C294F171C9;
-	Wed,  6 Nov 2024 12:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC11C1DF73E;
+	Wed,  6 Nov 2024 12:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTyMrd+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCXyHLMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DDA4207F;
-	Wed,  6 Nov 2024 12:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8810B1DF721;
+	Wed,  6 Nov 2024 12:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896212; cv=none; b=HofGvYp9g+eMgIBeIisoSCfbazbA601sHRh9GS00zMtED4z12wqm+55+P0w2nOGwreanWfURzgAv8WX13SPdtnlHYKB2DOVzTAYnCynZQ52t8+R68EmtaMOOImXi7ISCA3ft56BEnjAI4jmdVhjm3vdYUCNo+QhNCCZ0Kl1KDq0=
+	t=1730895650; cv=none; b=bg8UU0axU3RVwiaR2X0Zbl5eph2e/BN+ZJVS+6gUpGupntp9z91iM5doCmXuTnybwu069PRd2/hZOIyO2iE3WbFKLJt9G8CGkT/hFWUftFsOd33IZVVLsY3mK255aKzYo0JokaGpTwGyQtN2eos3vr7L4xGiRdeEZKjzflp+gdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896212; c=relaxed/simple;
-	bh=7Xrf1lWUc4e4FhfMkIHCC2N/sURic1yJNu7rnDUHGek=;
+	s=arc-20240116; t=1730895650; c=relaxed/simple;
+	bh=v5F+563hjCvszJjSX5bsTAgP+sSoJIr1Yze9zURPAJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVMP4U2kCtHMf9DLSEtAPsTzKhA/D2AwdZuPgsT3CQMksxUq3iQv0afrKRv0mm2NkcTYcLbZ8awZQAqAaGemFg02s+sO47nu0dkZe0wfQHm6Cd/Z+ow3YKn9biJ7x/CoXKZase4vCqv0S6Zh5/ZP8E77TaHSGgl+cBh2mQi3vac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTyMrd+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8C7C4CED3;
-	Wed,  6 Nov 2024 12:30:11 +0000 (UTC)
+	 MIME-Version; b=tCDxh6z3vDiQlIXuXen9Hl+tnX+JlvNvV8Cj2/Jd3NNU2qMcBDXFXhPhUSbn9JhvDfclzwSGcX4P8s5j+RMC7MY/EubGRj5IOCOxVP38jfQo/iINYt5O9yhErwi40acnNtMS1eK2hFt5qHD4A/lRovglMcPP6OYkC/7mvaZLISA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCXyHLMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBFCC4CECD;
+	Wed,  6 Nov 2024 12:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896212;
-	bh=7Xrf1lWUc4e4FhfMkIHCC2N/sURic1yJNu7rnDUHGek=;
+	s=korg; t=1730895650;
+	bh=v5F+563hjCvszJjSX5bsTAgP+sSoJIr1Yze9zURPAJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTyMrd+wNOjIso59J7r72d+KQ4ZJQS0rNuqqwwduay8XmPHPuWyIO/2gkzxofebfT
-	 2Ikqh+uhSjAxw3rd5+TGSiTNv4OI8QQ63g0WThnDCr2O6QPNvJ1+XssEK2jT9jTSA0
-	 64KK+bqeu6itjvvkG4mUqWdd9YgTrzKSDaKA2k00=
+	b=XCXyHLMrcQg0xxKxjBwH8qvqqjhRgPhSYgRmtWPNryiAuNF4Cfjy5x1cKxIsxObH8
+	 x8E4HVYTkCr4xGCWcdT5AnyOP/lAncBV7wzI/W4I2sum9wvW4Q/a8SBD/0k0EID4qv
+	 3LQSUAx0wEIDIcvaXUNrS9maHBeOBLyIRWZWX2kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 128/245] dt-bindings: iio: adc: ad7380: fix ad7380-4 reference supply
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 253/350] gpio: aspeed: Add the flush write to ensure the write complete.
 Date: Wed,  6 Nov 2024 13:03:01 +0100
-Message-ID: <20241106120322.374488062@linuxfoundation.org>
+Message-ID: <20241106120327.164205041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Stephan <jstephan@baylibre.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-commit fbe5956e8809f04e9121923db0b6d1b94f2b93ba upstream.
+[ Upstream commit 1bb5a99e1f3fd27accb804aa0443a789161f843c ]
 
-ad7380-4 is the only device from ad738x family that doesn't have an
-internal reference. Moreover its external reference is called REFIN in
-the datasheet while all other use REFIO as an optional external
-reference. If refio-supply is omitted the internal reference is
-used.
+Performing a dummy read ensures that the register write operation is fully
+completed, mitigating any potential bus delays that could otherwise impact
+the frequency of bitbang usage. E.g., if the JTAG application uses GPIO to
+control the JTAG pins (TCK, TMS, TDI, TDO, and TRST), and the application
+sets the TCK clock to 1 MHz, the GPIO's high/low transitions will rely on
+a delay function to ensure the clock frequency does not exceed 1 MHz.
+However, this can lead to rapid toggling of the GPIO because the write
+operation is POSTed and does not wait for a bus acknowledgment.
 
-Fix the binding by adding refin-supply and makes it required for
-ad7380-4 only.
-
-Fixes: 1a291cc8ee17 ("dt-bindings: iio: adc: ad7380: add support for ad738x-4 4 channels variants")
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Link: https://patch.msgid.link/20241022-ad7380-fix-supplies-v3-1-f0cefe1b7fa6@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 361b79119a4b ("gpio: Add Aspeed driver")
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20241008081450.1490955-2-billy_tsai@aspeedtech.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml |   21 ++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/gpio/gpio-aspeed.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-@@ -54,6 +54,10 @@ properties:
-       A 2.5V to 3.3V supply for the external reference voltage. When omitted,
-       the internal 2.5V reference is used.
+diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+index ba1cd971d50b6..5cc80678ac352 100644
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -407,6 +407,8 @@ static void __aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+ 	gpio->dcache[GPIO_BANK(offset)] = reg;
  
-+  refin-supply:
-+    description:
-+      A 2.5V to 3.3V supply for external reference voltage, for ad7380-4 only.
-+
-   aina-supply:
-     description:
-       The common mode voltage supply for the AINA- pin on pseudo-differential
-@@ -122,6 +126,23 @@ allOf:
-         ainc-supply: false
-         aind-supply: false
+ 	iowrite32(reg, addr);
++	/* Flush write */
++	ioread32(addr);
+ }
  
-+  # ad7380-4 uses refin-supply as external reference.
-+  # All other chips from ad738x family use refio as optional external reference.
-+  # When refio-supply is omitted, internal reference is used.
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - adi,ad7380-4
-+    then:
-+      properties:
-+        refio-supply: false
-+      required:
-+        - refin-supply
-+    else:
-+      properties:
-+        refin-supply: false
-+
- examples:
-   - |
-     #include <dt-bindings/interrupt-controller/irq.h>
+ static void aspeed_gpio_set(struct gpio_chip *gc, unsigned int offset,
+-- 
+2.43.0
+
 
 
 
