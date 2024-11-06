@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C769BE817
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A179BE915
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 223881F21551
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D318B23B7A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98141D173F;
-	Wed,  6 Nov 2024 12:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25311DED4F;
+	Wed,  6 Nov 2024 12:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgFiTj1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y69QIXO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717321DED49;
-	Wed,  6 Nov 2024 12:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8871DE3B8;
+	Wed,  6 Nov 2024 12:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895653; cv=none; b=mRrm42Hjj1mJL7pwyA6ljPDrJgLWUPULmMz4CDiySuiVV9LE0ROEfIuWNETpVaolCouZ5jzAHUYD2/DxYb/1pvhKqOI7asj3Ckpa1RKEGeuhlTAZQtThcplH1o1At0GWoeSwMp4xmo0X7B9eBrieRV+jfTpV3mVImydUHDycTjE=
+	t=1730896215; cv=none; b=rttRVawT5HzxgtUDr7pklg4McMUWMUwjn+EadSVYnYdo5t+lZNVfywdFRfRK/9c9+pYEQC0kHy1dYFXuVV5TLxAh08OCu2C2rzwKMXv/CriHQOooAUqeXlnDvEzMGDuqUgKXtUCFJ/ROM5VCFW3O0CqKhlYSHrLNGz9d5aCfXCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895653; c=relaxed/simple;
-	bh=BDQi3SApF0gx7xJhxJaXfdnhXDepMiuaudDowHZufO0=;
+	s=arc-20240116; t=1730896215; c=relaxed/simple;
+	bh=PgIM+PbyQ0AFoUCgStVIhD7HCqVcwwYuqswLEacmbw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZ7Db85m96AnFBwRadKcD9pRpg9eyUCI3Y6xKmq6um3oYFBD5nKH8X6+wNuL3cs39R13ZADGLWSBwIl2Gq4wJMai7ayKHCr6b37Z4h9a7UP6YXBJG5Wg1aVIqWHSqkxHwhjbW+prPQVAscjmf2ypolnG9afIedcvUrOP7qilQHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgFiTj1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED670C4CECD;
-	Wed,  6 Nov 2024 12:20:52 +0000 (UTC)
+	 MIME-Version; b=ukQS5Sg5L9VdTMz2oIXAC/gHaf9ncMdOvdTiHgHj/maFr+3KrcPq/JRyBoyXoFabq4ZZnJCeMrH3f8jhnmbJKJjQXimgBYsCTOHo/Z8f/HjYFXYt7QtOgdoTm69TFTWR1qX2fQIdTZyKDc7gMUemSmRAsIx2zMInFAkxavrWDoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y69QIXO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919A1C4CED4;
+	Wed,  6 Nov 2024 12:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895653;
-	bh=BDQi3SApF0gx7xJhxJaXfdnhXDepMiuaudDowHZufO0=;
+	s=korg; t=1730896215;
+	bh=PgIM+PbyQ0AFoUCgStVIhD7HCqVcwwYuqswLEacmbw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgFiTj1oiUicv5qfHxx3WpfFNgnyKk1008UWreKX+kEOjRjfuMu1RJ/zIiPOEq9Lw
-	 z0YsO3fLrywf3bY4yWCuavrHcxSA/Z64b9dFYYMKy0aYqTeVIF/j9O/0d8sBHVuCbS
-	 nj1wlXnYMd6O9ntWiYzZeAX2eaT0xux36HrWCX9Q=
+	b=y69QIXO46cXftNtCDPlgpKW7xbiqgtKGUKxdCumrt5asWgKrO94NNftU5eNfUw0ZR
+	 8lWyayN9EnXN9Q9O1/HO5PsjeLUUPN/0C65XhG6Go8ElfTyjQGd6UY4VR9GIAORwwC
+	 u4cBrM1wncoeFiL0Fv9Xjr66nsJbVEgb1QfSOrbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Edworthy <phil.edworthy@renesas.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 254/350] clk: Add (devm_)clk_get_optional() functions
+	Zicheng Qu <quzicheng@huawei.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 129/245] iio: adc: ad7124: fix division by zero in ad7124_set_channel_odr()
 Date: Wed,  6 Nov 2024 13:03:02 +0100
-Message-ID: <20241106120327.186603490@linuxfoundation.org>
+Message-ID: <20241106120322.399328792@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Edworthy <phil.edworthy@renesas.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 60b8f0ddf1a927ef02141a6610fd52575134f821 ]
+commit efa353ae1b0541981bc96dbf2e586387d0392baa upstream.
 
-This adds clk_get_optional() and devm_clk_get_optional() functions to get
-optional clocks.
+In the ad7124_write_raw() function, parameter val can potentially
+be zero. This may lead to a division by zero when DIV_ROUND_CLOSEST()
+is called within ad7124_set_channel_odr(). The ad7124_write_raw()
+function is invoked through the sequence: iio_write_channel_raw() ->
+iio_write_channel_attribute() -> iio_channel_write(), with no checks
+in place to ensure val is non-zero.
 
-They behave the same as (devm_)clk_get() except where there is no clock
-producer. In this case, instead of returning -ENOENT, the function
-returns NULL. This makes error checking simpler and allows
-clk_prepare_enable, etc to be called on the returned reference
-without additional checks.
-
-Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Russell King <linux@armlinux.org.uk>
-[sboyd@kernel.org: Document in devres.txt]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: a6191a3d1811 ("gpio: aspeed: Use devm_clk api to manage clock source")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20241022134330.574601-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/driver-model/devres.txt |  1 +
- drivers/clk/clk-devres.c              | 11 ++++++++
- include/linux/clk.h                   | 36 +++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+)
+ drivers/iio/adc/ad7124.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/driver-model/devres.txt b/Documentation/driver-model/devres.txt
-index 43681ca0837f8..5a2d8c7ce2474 100644
---- a/Documentation/driver-model/devres.txt
-+++ b/Documentation/driver-model/devres.txt
-@@ -235,6 +235,7 @@ certainly invest a bit more effort into libata core layer).
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -645,7 +645,7 @@ static int ad7124_write_raw(struct iio_d
  
- CLOCK
-   devm_clk_get()
-+  devm_clk_get_optional()
-   devm_clk_put()
-   devm_clk_hw_register()
-   devm_of_clk_add_hw_provider()
-diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
-index d854e26a8ddbc..a062389ccd3d5 100644
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -34,6 +34,17 @@ struct clk *devm_clk_get(struct device *dev, const char *id)
- }
- EXPORT_SYMBOL(devm_clk_get);
- 
-+struct clk *devm_clk_get_optional(struct device *dev, const char *id)
-+{
-+	struct clk *clk = devm_clk_get(dev, id);
-+
-+	if (clk == ERR_PTR(-ENOENT))
-+		return NULL;
-+
-+	return clk;
-+}
-+EXPORT_SYMBOL(devm_clk_get_optional);
-+
- struct clk_bulk_devres {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 0a2382d3f68c8..55b08adaaa3c1 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -388,6 +388,17 @@ int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
-  */
- struct clk *devm_clk_get(struct device *dev, const char *id);
- 
-+/**
-+ * devm_clk_get_optional - lookup and obtain a managed reference to an optional
-+ *			   clock producer.
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Behaves the same as devm_clk_get() except where there is no clock producer.
-+ * In this case, instead of returning -ENOENT, the function returns NULL.
-+ */
-+struct clk *devm_clk_get_optional(struct device *dev, const char *id);
-+
- /**
-  * devm_get_clk_from_child - lookup and obtain a managed reference to a
-  *			     clock producer from child node.
-@@ -655,6 +666,12 @@ static inline struct clk *devm_clk_get(struct device *dev, const char *id)
- 	return NULL;
- }
- 
-+static inline struct clk *devm_clk_get_optional(struct device *dev,
-+						const char *id)
-+{
-+	return NULL;
-+}
-+
- static inline int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
- 						 struct clk_bulk_data *clks)
- {
-@@ -774,6 +791,25 @@ static inline void clk_bulk_disable_unprepare(int num_clks,
- 	clk_bulk_unprepare(num_clks, clks);
- }
- 
-+/**
-+ * clk_get_optional - lookup and obtain a reference to an optional clock
-+ *		      producer.
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Behaves the same as clk_get() except where there is no clock producer. In
-+ * this case, instead of returning -ENOENT, the function returns NULL.
-+ */
-+static inline struct clk *clk_get_optional(struct device *dev, const char *id)
-+{
-+	struct clk *clk = clk_get(dev, id);
-+
-+	if (clk == ERR_PTR(-ENOENT))
-+		return NULL;
-+
-+	return clk;
-+}
-+
- #if defined(CONFIG_OF) && defined(CONFIG_COMMON_CLK)
- struct clk *of_clk_get(struct device_node *np, int index);
- struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
--- 
-2.43.0
-
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (val2 != 0) {
++		if (val2 != 0 || val == 0) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
 
 
 
