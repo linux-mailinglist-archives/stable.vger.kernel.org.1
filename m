@@ -1,180 +1,105 @@
-Return-Path: <stable+bounces-90107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DA89BE502
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:58:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF199BE582
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32B9281DFE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 10:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01A37281BFD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 11:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37D61DE3DC;
-	Wed,  6 Nov 2024 10:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CVEkhLX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C6B1DED52;
+	Wed,  6 Nov 2024 11:27:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EC91DE3CD
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 10:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D8B1DE4ED;
+	Wed,  6 Nov 2024 11:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730890717; cv=none; b=a+TLrJtZ1xHQgghhPKsn85FD48pXnug5TP9lv+zdkWizb2Ts3RRihUIvh1s7ZU2mNhV1qTCLK97asoTi/gTvqnZZP+a0D1zyHJ00RtFtdsLLxrJwMxW/NB6vNXIDyZbRZyIEOwNa+e1BalMeYs/iNoS4q3KSo1NEwRxFG1oHTzg=
+	t=1730892467; cv=none; b=RcYnJbsl2QcZP+kBzZF3Lxnq2NaiNzfl7LouNTBvJAYbnzxELkUEXB+FYH2Phoo0UU9v0UJ2IjZ34KLb5OsNPP1yUMpiHMGPXHDalyx9sCRqXOAj5eaoIITsu1nN6Na9ilYD3ubH0PLF+NR2ZbSvBvbMiyQ0vw8XN3U6ZMzurUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730890717; c=relaxed/simple;
-	bh=KL0o3DTpOE7FR+rdI6lipb6tAaehEKsnXkNsW5xps5s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nB0Ccezoq3NInV4h4chQ4XOpj2ZpebtV9iEEOqDTzcSRy6URxToNR85cm5SfghduyaKPLr7/J/Pv+QxAifIUgCJfkgcMDtEMCu8EwGPQHh1NIjmdHHcC8yyyY3Bjh/2QYLVs4uJPNEUS5oz6LivnSqiTaQFBbgSQtvpLRU352K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CVEkhLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D131BC4CED2;
-	Wed,  6 Nov 2024 10:58:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730890717;
-	bh=KL0o3DTpOE7FR+rdI6lipb6tAaehEKsnXkNsW5xps5s=;
-	h=Subject:To:Cc:From:Date:From;
-	b=0CVEkhLXG4Hp3gf81HVDooTxBCUU0H0P7nqnaRKCqfAu1au7FHX/CcruQO0a4H276
-	 RhesMfVYFWUS5KXfIU6XHyQ+Ofh3d85PZ7OQcvG9Kkge5b3IuPh83Oi99LO034MRu9
-	 ZTaufPHWvLVEtb6WYCR9XiOYGbbAr4hU1bsnMFQU=
-Subject: FAILED: patch "[PATCH] block: fix queue limits checks in blk_rq_map_user_bvec for" failed to apply to 6.1-stable tree
-To: hch@lst.de,axboe@kernel.dk,john.g.garry@oracle.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 06 Nov 2024 11:58:19 +0100
-Message-ID: <2024110618-voicing-yield-48ff@gregkh>
+	s=arc-20240116; t=1730892467; c=relaxed/simple;
+	bh=Z2v9o+k2bPx4B1kpWHk2LtaHD6klOShgAlCNkXRU8xI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dn36ofQOxwqPQbrhOf1NLQOFRx5v0xPgDpmb8GSKqoQ8nkePXvoVx9LhtwfkonYCoQkBw0nAC+X6UvpMGE7AUjhY0Yd1qrmkF7hBeaOx8v6r6EypuWjg6pG+l/X/3QCRani7M1GJx/8ElZwL7gwgrwO7tJqBHF9tdhxWDUAL5mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F3551063;
+	Wed,  6 Nov 2024 03:28:14 -0800 (PST)
+Received: from [10.57.91.71] (unknown [10.57.91.71])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 230B03F6A8;
+	Wed,  6 Nov 2024 03:27:43 -0800 (PST)
+Message-ID: <41c73be0-8d9a-4d81-bc51-933ec0bbcbc5@arm.com>
+Date: Wed, 6 Nov 2024 11:27:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panthor: Be stricter about IO mapping flags
+To: Jann Horn <jannh@google.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 04/11/2024 23:17, Jann Horn wrote:
+> The current panthor_device_mmap_io() implementation has two issues:
+> 
+> 1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
+>    panthor_device_mmap_io() bails if VM_WRITE is set, but does not clear
+>    VM_MAYWRITE. That means userspace can use mprotect() to make the mapping
+>    writable later on. This is a classic Linux driver gotcha.
+>    I don't think this actually has any impact in practice:
+>    When the GPU is powered, writes to the FLUSH_ID seem to be ignored; and
+>    when the GPU is not powered, the dummy_latest_flush page provided by the
+>    driver is deliberately designed to not do any flushes, so the only thing
+>    writing to the dummy_latest_flush could achieve would be to make *more*
+>    flushes happen.
+> 
+> 2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which are
+>    mappings without the VM_SHARED flag).
+>    MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA has
+>    copy-on-write semantics, which for VM_PFNMAP are semi-supported but
+>    fairly cursed.
+>    In particular, in such a mapping, the driver can only install PTEs
+>    during mmap() by calling remap_pfn_range() (because remap_pfn_range()
+>    wants to **store the physical address of the mapped physical memory into
+>    the vm_pgoff of the VMA**); installing PTEs later on with a fault
+>    handler (as panthor does) is not supported in private mappings, and so
+>    if you try to fault in such a mapping, vmf_insert_pfn_prot() splats when
+>    it hits a BUG() check.
+> 
+> Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH_ID
+> doesn't make sense) and requiring VM_SHARED (copy-on-write semantics for
+> the FLUSH_ID don't make sense).
+> 
+> Reproducers for both scenarios are in the notes of my patch on the mailing
+> list; I tested that these bugs exist on a Rock 5B machine.
+> 
+> Note that I only compile-tested the patch, I haven't tested it; I don't
+> have a working kernel build setup for the test machine yet. Please test it
+> before applying it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Steven Price <steven.price@arm.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x be0e822bb3f5259c7f9424ba97e8175211288813
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110618-voicing-yield-48ff@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From be0e822bb3f5259c7f9424ba97e8175211288813 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Mon, 28 Oct 2024 10:07:48 +0100
-Subject: [PATCH] block: fix queue limits checks in blk_rq_map_user_bvec for
- real
-
-blk_rq_map_user_bvec currently only has ad-hoc checks for queue limits,
-and the last fix to it enabled valid NVMe I/O to pass, but also allowed
-invalid one for drivers that set a max_segment_size or seg_boundary
-limit.
-
-Fix it once for all by using the bio_split_rw_at helper from the I/O
-path that indicates if and where a bio would be have to be split to
-adhere to the queue limits, and it returns a positive value, turn that
-into -EREMOTEIO to retry using the copy path.
-
-Fixes: 2ff949441802 ("block: fix sanity checks in blk_rq_map_user_bvec")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241028090840.446180-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 6ef2ec1f7d78..b5fd1d857461 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -561,55 +561,33 @@ EXPORT_SYMBOL(blk_rq_append_bio);
- /* Prepare bio for passthrough IO given ITER_BVEC iter */
- static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
- {
--	struct request_queue *q = rq->q;
--	size_t nr_iter = iov_iter_count(iter);
--	size_t nr_segs = iter->nr_segs;
--	struct bio_vec *bvecs, *bvprvp = NULL;
--	const struct queue_limits *lim = &q->limits;
--	unsigned int nsegs = 0, bytes = 0;
-+	const struct queue_limits *lim = &rq->q->limits;
-+	unsigned int max_bytes = lim->max_hw_sectors << SECTOR_SHIFT;
-+	unsigned int nsegs;
- 	struct bio *bio;
--	size_t i;
-+	int ret;
- 
--	if (!nr_iter || (nr_iter >> SECTOR_SHIFT) > queue_max_hw_sectors(q))
--		return -EINVAL;
--	if (nr_segs > queue_max_segments(q))
-+	if (!iov_iter_count(iter) || iov_iter_count(iter) > max_bytes)
- 		return -EINVAL;
- 
--	/* no iovecs to alloc, as we already have a BVEC iterator */
-+	/* reuse the bvecs from the iterator instead of allocating new ones */
- 	bio = blk_rq_map_bio_alloc(rq, 0, GFP_KERNEL);
--	if (bio == NULL)
-+	if (!bio)
- 		return -ENOMEM;
--
- 	bio_iov_bvec_set(bio, (struct iov_iter *)iter);
--	blk_rq_bio_prep(rq, bio, nr_segs);
- 
--	/* loop to perform a bunch of sanity checks */
--	bvecs = (struct bio_vec *)iter->bvec;
--	for (i = 0; i < nr_segs; i++) {
--		struct bio_vec *bv = &bvecs[i];
--
--		/*
--		 * If the queue doesn't support SG gaps and adding this
--		 * offset would create a gap, fallback to copy.
--		 */
--		if (bvprvp && bvec_gap_to_prev(lim, bvprvp, bv->bv_offset)) {
--			blk_mq_map_bio_put(bio);
--			return -EREMOTEIO;
--		}
--		/* check full condition */
--		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
--			goto put_bio;
--		if (bytes + bv->bv_len > nr_iter)
--			break;
--
--		nsegs++;
--		bytes += bv->bv_len;
--		bvprvp = bv;
-+	/* check that the data layout matches the hardware restrictions */
-+	ret = bio_split_rw_at(bio, lim, &nsegs, max_bytes);
-+	if (ret) {
-+		/* if we would have to split the bio, copy instead */
-+		if (ret > 0)
-+			ret = -EREMOTEIO;
-+		blk_mq_map_bio_put(bio);
-+		return ret;
- 	}
-+
-+	blk_rq_bio_prep(rq, bio, nsegs);
- 	return 0;
--put_bio:
--	blk_mq_map_bio_put(bio);
--	return -EINVAL;
- }
- 
- /**
+Thanks,
+Steve
 
 
