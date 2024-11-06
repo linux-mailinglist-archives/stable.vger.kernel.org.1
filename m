@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D949BE88C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A276F9BE758
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B263B1F22082
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A9F81F24BE5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A6E1DFE25;
-	Wed,  6 Nov 2024 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE81F1DF254;
+	Wed,  6 Nov 2024 12:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n67Y5QkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYq+3057"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED0B1DF24B;
-	Wed,  6 Nov 2024 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2241D416E;
+	Wed,  6 Nov 2024 12:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895924; cv=none; b=JDTmSdGJoZuqIeS0yhs3z88dLNjOMCc5LVZa78+vsGAsENBG7mY12CdHiq2aphBndex+25fZRGU046H9MGpI9FZgKGXbtJf1Z+nee6Ij4iVvnbnDtJi0iOuCfGNvpwlv0vpSgkvBG0SOLoPbj3ZcSU1nA2sM1Ny4a1tItsEwX4I=
+	t=1730895196; cv=none; b=SnxaD1BU5mXwxYrY+mB2pdKaKASl5vNhTljQzdOCaddDMIiDChkVLTuiKoW1wc9o4m0ZRyL7o7fyLGdDtd61bQ2xsvNgNXcDYeldZlMjdpjrnZ1BpZDxMqqa3Jly/Dg13op6JTm77WLr4OzmZcQ1ZD82xPjoQgEA/21hoCbjiAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895924; c=relaxed/simple;
-	bh=JdaL0tCPLl0iYP3TKNTf692K2xzyIIo2fV0W1+YQa78=;
+	s=arc-20240116; t=1730895196; c=relaxed/simple;
+	bh=SD7ySQzJaN08FsUfXKr2J+BV3BP5z7JeMbyLRenusf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QcjQ6KsWP8wOry7KTb3OybgHqtwsuWncNkBXCBULINM90HpWtNHYpnDnOjWCDt0QYYJ8eCnjlvWBMB+CLQX4+y1bOFM+r1FZuYWgPUAD1lfXSA/BEOQp6G2SOE7eoxnnuHoVpg78EW60m7XFo/w9L1kOpotIdt9U7cD3szjqNK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n67Y5QkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2126C4CECD;
-	Wed,  6 Nov 2024 12:25:23 +0000 (UTC)
+	 MIME-Version; b=PUPGf79aTZ9K80Ucs/8J0jq52+rgmmhRz/ce/qZ+9eQ9t39LPcXdXd4jhtpMNhA3y+3nphvJRYr4UW/TkE9gOdXqMlNC+ZvFQ7jjMfKo1foFM3P2PTMJV1hyH+ao3hmQpja3mmqqwAwNQjJZ4rB4TJ7hwbMiTnLjMJ8r5K8q4K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYq+3057; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA8BC4CECD;
+	Wed,  6 Nov 2024 12:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895924;
-	bh=JdaL0tCPLl0iYP3TKNTf692K2xzyIIo2fV0W1+YQa78=;
+	s=korg; t=1730895196;
+	bh=SD7ySQzJaN08FsUfXKr2J+BV3BP5z7JeMbyLRenusf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n67Y5QkEDxSWecbssDPATIZXY8Q9sJ66uFz+7xWwm5hzG45iXQiWE3U0oe7KH/IXK
-	 gMqCkeFBUus5rn8IluiHH1SvtOA6fClLBRxFmNujF40Z++icZDh1m/NG1CDn/mTLlU
-	 WpgY7jytrNfKaVRJ0AXKvFAcBR3xapu5cvQkaUes=
+	b=uYq+3057l1gjH+ulImZqYqD2rYvGDCma+SgKatGIdUGAcFM3/xCexl7J92/jLBEc7
+	 UbcvK0WopWXlh+8fN1SonZDtrietqDtQMWpHaZ4EMdIs46k3zRr2folTnYQbmb0QB6
+	 Z39ks850Jgu50m++8Gdq0PdNDL8NYprmAbXYcvMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 003/245] cgroup: Fix potential overflow issue when checking max_depth
-Date: Wed,  6 Nov 2024 13:00:56 +0100
-Message-ID: <20241106120319.326880101@linuxfoundation.org>
+	Tommy Huang <tommy_huang@aspeedtech.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 4.19 129/350] i2c: aspeed: Update the stop sw state when the bus recovery occurs
+Date: Wed,  6 Nov 2024 13:00:57 +0100
+Message-ID: <20241106120324.092598147@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Tommy Huang <tommy_huang@aspeedtech.com>
 
-[ Upstream commit 3cc4e13bb1617f6a13e5e6882465984148743cf4 ]
+commit 93701d3b84ac5f3ea07259d4ced405c53d757985 upstream.
 
-cgroup.max.depth is the maximum allowed descent depth below the current
-cgroup. If the actual descent depth is equal or larger, an attempt to
-create a new child cgroup will fail. However due to the cgroup->max_depth
-is of int type and having the default value INT_MAX, the condition
-'level > cgroup->max_depth' will never be satisfied, and it will cause
-an overflow of the level after it reaches to INT_MAX.
+When the i2c bus recovery occurs, driver will send i2c stop command
+in the scl low condition. In this case the sw state will still keep
+original situation. Under multi-master usage, i2c bus recovery will
+be called when i2c transfer timeout occurs. Update the stop command
+calling with aspeed_i2c_do_stop function to update master_state.
 
-Fix it by starting the level from 0 and using '>=' instead.
-
-It's worth mentioning that this issue is unlikely to occur in reality,
-as it's impossible to have a depth of INT_MAX hierarchy, but should be
-be avoided logically.
-
-Fixes: 1a926e0bbab8 ("cgroup: implement hierarchy limits")
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
+Cc: stable@vger.kernel.org # v4.13+
+Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-aspeed.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index c8e4b62b436a4..6ba7dd2ab771d 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5722,7 +5722,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -159,6 +159,13 @@ struct aspeed_i2c_bus {
+ 
+ static int aspeed_i2c_reset(struct aspeed_i2c_bus *bus);
+ 
++/* precondition: bus.lock has been acquired. */
++static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
++{
++	bus->master_state = ASPEED_I2C_MASTER_STOP;
++	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
++}
++
+ static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
  {
- 	struct cgroup *cgroup;
- 	int ret = false;
--	int level = 1;
-+	int level = 0;
+ 	unsigned long time_left, flags;
+@@ -176,7 +183,7 @@ static int aspeed_i2c_recover_bus(struct
+ 			command);
  
- 	lockdep_assert_held(&cgroup_mutex);
+ 		reinit_completion(&bus->cmd_complete);
+-		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
++		aspeed_i2c_do_stop(bus);
+ 		spin_unlock_irqrestore(&bus->lock, flags);
  
-@@ -5730,7 +5730,7 @@ static bool cgroup_check_hierarchy_limits(struct cgroup *parent)
- 		if (cgroup->nr_descendants >= cgroup->max_descendants)
- 			goto fail;
+ 		time_left = wait_for_completion_timeout(
+@@ -351,13 +358,6 @@ static void aspeed_i2c_do_start(struct a
+ }
  
--		if (level > cgroup->max_depth)
-+		if (level >= cgroup->max_depth)
- 			goto fail;
- 
- 		level++;
--- 
-2.43.0
-
+ /* precondition: bus.lock has been acquired. */
+-static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
+-{
+-	bus->master_state = ASPEED_I2C_MASTER_STOP;
+-	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
+-}
+-
+-/* precondition: bus.lock has been acquired. */
+ static void aspeed_i2c_next_msg_or_stop(struct aspeed_i2c_bus *bus)
+ {
+ 	if (bus->msgs_index + 1 < bus->msgs_count) {
 
 
 
