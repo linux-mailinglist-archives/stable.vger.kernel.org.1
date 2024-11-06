@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-90394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896249BE813
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6911F9BE912
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4872D28255E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DBA5283A77
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F611DF721;
-	Wed,  6 Nov 2024 12:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD41DFDB3;
+	Wed,  6 Nov 2024 12:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhrlPBti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lw2INMBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A433B1D173F;
-	Wed,  6 Nov 2024 12:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851AA6088F;
+	Wed,  6 Nov 2024 12:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895641; cv=none; b=pdPiFazE+TyfhTREKXAmlLyfAjPhqQJM4KSw00sK8JHbn92Ifhvblb9iy8NEuI6SqMddSsRFcBOfCbpkLxNrly2aW3jDzkh5+6EXffyZFHSZLYA2HPA5byygzLXOC7Dszfb+TYyIsPaGP12Wtgyx7k1gqQtVZei2BSMdhMDxzYw=
+	t=1730896206; cv=none; b=ssSXg6CPAIfUj9g2AvqFyhcPdWTqrw85qgcZPKkR4DJbn5Y0zbj4kMkIXU5KjnoREUP+UZIb3pDxC0YUtm1D0Gq4uyGYRuZRI0Z4JajkL/Cy2DGgF/yLmYjBsO4TBoiND6Z9AGOM7L59ySkbIm3tm+g+01Qopd23HALzkmG1fQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895641; c=relaxed/simple;
-	bh=BbJwMQsENcidX43lzX+PDa8aUNJBRqjxOb3+u8PI9Yw=;
+	s=arc-20240116; t=1730896206; c=relaxed/simple;
+	bh=7Hno4yU4rf8cfCtFHPXYTzaoT7q93ccF494RNYs6XN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKhK3BzqNeoZWxq+o++vULOUSAqpgQHpq3L+Oy1rlP//nHBpvU7+BXD264/NWf3IvrWdZ7WLFd0zJWSYS9/YNvqwRt+zz5hwqm3SU4XYxf2fb4ptbTM5CTqWBzVYRajsP2li19bAA0qAr5VCeDS2fOXO3DuJWnbn2lrDYQQGsz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhrlPBti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2711C4CECD;
-	Wed,  6 Nov 2024 12:20:40 +0000 (UTC)
+	 MIME-Version; b=QQtvd3x/XNztAeF4D77/O/6s51Bg7WAQBPC0ILR7NQJpYP1uHH0HMP7V8VaXy1lRYuiTrZiEfPa7fOgrGfDu7hDdK4UoBPBawmqKPfEXlgro2tWBiPrC0TOtFwlpFvsy/xCDVl3j75itaST49OStIkdeViVF0dlowGneu9SgCns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lw2INMBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D44C4CECD;
+	Wed,  6 Nov 2024 12:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895641;
-	bh=BbJwMQsENcidX43lzX+PDa8aUNJBRqjxOb3+u8PI9Yw=;
+	s=korg; t=1730896206;
+	bh=7Hno4yU4rf8cfCtFHPXYTzaoT7q93ccF494RNYs6XN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhrlPBtixK/kmMv/S3nsm2Jickh9XZH1WhOWTioL4tdtX0nNlIqPo2l3H10OQOLkg
-	 cu0plNDmF+TnP3iMAKUi36X6p0SOWlw/F5ycpFeOxziFy0QaQ5lJmG/hhMQ3CsHBCU
-	 RT71RyC8YQNgGrehvQEnSId+jM7IaF9cr4KcLysA=
+	b=lw2INMBGFX5ZDFeffkbhupByMC4DmjbUp7RHRlPctBc6im1cO4TOI/aGZhqOaYD3Y
+	 rT5OMCcitMTV1kTtL6SD+9CYS2aZMIMdtMfOUAFnVTAwpKDtCOTofoL5A09wBPASjG
+	 gTR49wdIMORmx9Vip4x2AjyryHpEL/sDncQ47a3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 250/350] tcp: fix tcp_enter_recovery() to zero retrans_stamp when its safe
-Date: Wed,  6 Nov 2024 13:02:58 +0100
-Message-ID: <20241106120327.097140295@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.11 126/245] wifi: iwlwifi: mvm: fix 6 GHz scan construction
+Date: Wed,  6 Nov 2024 13:02:59 +0100
+Message-ID: <20241106120322.324642756@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b41b4cbd9655bcebcce941bef3601db8110335be ]
+commit 7245012f0f496162dd95d888ed2ceb5a35170f1a upstream.
 
-Fix tcp_enter_recovery() so that if there are no retransmits out then
-we zero retrans_stamp when entering fast recovery. This is necessary
-to fix two buggy behaviors.
+If more than 255 colocated APs exist for the set of all
+APs found during 2.4/5 GHz scanning, then the 6 GHz scan
+construction will loop forever since the loop variable
+has type u8, which can never reach the number found when
+that's bigger than 255, and is stored in a u32 variable.
+Also move it into the loops to have a smaller scope.
 
-Currently a non-zero retrans_stamp value can persist across multiple
-back-to-back loss recovery episodes. This is because we generally only
-clears retrans_stamp if we are completely done with loss recoveries,
-and get to tcp_try_to_open() and find !tcp_any_retrans_done(sk). This
-behavior causes two bugs:
+Using a u32 there is fine, we limit the number of APs in
+the scan list and each has a limit on the number of RNR
+entries due to the frame size. With a limit of 1000 scan
+results, a frame size upper bound of 4096 (really it's
+more like ~2300) and a TBTT entry size of at least 11,
+we get an upper bound for the number of ~372k, well in
+the bounds of a u32.
 
-(1) When a loss recovery episode (CA_Loss or CA_Recovery) is followed
-immediately by a new CA_Recovery, the retrans_stamp value can persist
-and can be a time before this new CA_Recovery episode starts. That
-means that timestamp-based undo will be using the wrong retrans_stamp
-(a value that is too old) when comparing incoming TS ecr values to
-retrans_stamp to see if the current fast recovery episode can be
-undone.
-
-(2) If there is a roughly minutes-long sequence of back-to-back fast
-recovery episodes, one after another (e.g. in a shallow-buffered or
-policed bottleneck), where each fast recovery successfully makes
-forward progress and recovers one window of sequence space (but leaves
-at least one retransmit in flight at the end of the recovery),
-followed by several RTOs, then the ETIMEDOUT check may be using the
-wrong retrans_stamp (a value set at the start of the first fast
-recovery in the sequence). This can cause a very premature ETIMEDOUT,
-killing the connection prematurely.
-
-This commit changes the code to zero retrans_stamp when entering fast
-recovery, when this is known to be safe (no retransmits are out in the
-network). That ensures that when starting a fast recovery episode, and
-it is safe to do so, retrans_stamp is set when we send the fast
-retransmit packet. That addresses both bug (1) and bug (2) by ensuring
-that (if no retransmits are out when we start a fast recovery) we use
-the initial fast retransmit of this fast recovery as the time value
-for undo and ETIMEDOUT calculations.
-
-This makes intuitive sense, since the start of a new fast recovery
-episode (in a scenario where no lost packets are out in the network)
-means that the connection has made forward progress since the last RTO
-or fast recovery, and we should thus "restart the clock" used for both
-undo and ETIMEDOUT logic.
-
-Note that if when we start fast recovery there *are* retransmits out
-in the network, there can still be undesirable (1)/(2) issues. For
-example, after this patch we can still have the (1) and (2) problems
-in cases like this:
-
-+ round 1: sender sends flight 1
-
-+ round 2: sender receives SACKs and enters fast recovery 1,
-  retransmits some packets in flight 1 and then sends some new data as
-  flight 2
-
-+ round 3: sender receives some SACKs for flight 2, notes losses, and
-  retransmits some packets to fill the holes in flight 2
-
-+ fast recovery has some lost retransmits in flight 1 and continues
-  for one or more rounds sending retransmits for flight 1 and flight 2
-
-+ fast recovery 1 completes when snd_una reaches high_seq at end of
-  flight 1
-
-+ there are still holes in the SACK scoreboard in flight 2, so we
-  enter fast recovery 2, but some retransmits in the flight 2 sequence
-  range are still in flight (retrans_out > 0), so we can't execute the
-  new retrans_stamp=0 added here to clear retrans_stamp
-
-It's not yet clear how to fix these remaining (1)/(2) issues in an
-efficient way without breaking undo behavior, given that retrans_stamp
-is currently used for undo and ETIMEDOUT. Perhaps the optimal (but
-expensive) strategy would be to set retrans_stamp to the timestamp of
-the earliest outstanding retransmit when entering fast recovery. But
-at least this commit makes things better.
-
-Note that this does not change the semantics of retrans_stamp; it
-simply makes retrans_stamp accurate in some cases where it was not
-before:
-
-(1) Some loss recovery, followed by an immediate entry into a fast
-recovery, where there are no retransmits out when entering the fast
-recovery.
-
-(2) When a TFO server has a SYNACK retransmit that sets retrans_stamp,
-and then the ACK that completes the 3-way handshake has SACK blocks
-that trigger a fast recovery. In this case when entering fast recovery
-we want to zero out the retrans_stamp from the TFO SYNACK retransmit,
-and set the retrans_stamp based on the timestamp of the fast recovery.
-
-We introduce a tcp_retrans_stamp_cleanup() helper, because this
-two-line sequence already appears in 3 places and is about to appear
-in 2 more as a result of this bug fix patch series. Once this bug fix
-patches series in the net branch makes it into the net-next branch
-we'll update the 3 other call sites to use the new helper.
-
-This is a long-standing issue. The Fixes tag below is chosen to be the
-oldest commit at which the patch will apply cleanly, which is from
-Linux v3.5 in 2012.
-
-Fixes: 1fbc340514fc ("tcp: early retransmit: tcp_enter_recovery()")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001200517.2756803-3-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
+Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 2437a196c1392..0f2320d821ffd 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2320,6 +2320,16 @@ static bool tcp_any_retrans_done(const struct sock *sk)
- 	return false;
- }
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
+ 			&cp->channel_config[ch_cnt];
  
-+/* If loss recovery is finished and there are no retransmits out in the
-+ * network, then we clear retrans_stamp so that upon the next loss recovery
-+ * retransmits_timed_out() and timestamp-undo are using the correct value.
-+ */
-+static void tcp_retrans_stamp_cleanup(struct sock *sk)
-+{
-+	if (!tcp_any_retrans_done(sk))
-+		tcp_sk(sk)->retrans_stamp = 0;
-+}
-+
- static void DBGUNDO(struct sock *sk, const char *msg)
- {
- #if FASTRETRANS_DEBUG > 1
-@@ -2662,6 +2672,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int mib_idx;
+ 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
+-		u8 j, k, n_s_ssids = 0, n_bssids = 0;
++		u8 k, n_s_ssids = 0, n_bssids = 0;
+ 		u8 max_s_ssids, max_bssids;
+ 		bool force_passive = false, found = false, allow_passive = true,
+ 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
+@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
+ 		cfg->v5.iter_count = 1;
+ 		cfg->v5.iter_interval = 0;
  
-+	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
-+	tcp_retrans_stamp_cleanup(sk);
-+
- 	if (tcp_is_reno(tp))
- 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
- 	else
--- 
-2.43.0
-
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			s8 tmp_psd_20;
+ 
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(str
+ 		 * SSID.
+ 		 * TODO: improve this logic
+ 		 */
+-		for (j = 0; j < params->n_6ghz_params; j++) {
++		for (u32 j = 0; j < params->n_6ghz_params; j++) {
+ 			if (!(scan_6ghz_params[j].channel_idx == i))
+ 				continue;
+ 
 
 
 
