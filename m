@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-90603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6329E9BE926
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81ED9BEBEC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7B31F226F4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697351F2392F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D41D5AB5;
-	Wed,  6 Nov 2024 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD3C1F9ED0;
+	Wed,  6 Nov 2024 12:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXWrV82t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC197E34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C24207F;
-	Wed,  6 Nov 2024 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0965A1EF933;
+	Wed,  6 Nov 2024 12:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896262; cv=none; b=SNNDYodOZglYxxgVF8M0RAme/AeSbyfMNz2GGm3NdjQie1dZtiDYqKaIJyCA/XVPE3LE/hUXIRDvXqbmastK92RXb5p9ZUO7Y7t5sXkFULWwXNhvhKML28zJqcZ6bhp8zdJQp8hTkTx4WHZ/aXf9j79CDYCGRoh8WZWtUwkRMY4=
+	t=1730897394; cv=none; b=bT4v/xP8HKccxgv5UR3c9ssqGLuw4HPEEPnxiegX06qf+etIKJnWfdmOkcncKCrtsUOTn5GGFNz99S1sdwWD4gXQYlc6/hSefQhJBcnmWTePuMI+r4URkQkPDvIh+PQpuXxG2DlT2EZE9OGRJymDBP4xYx9WmI0Kn4UfTsRTGME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896262; c=relaxed/simple;
-	bh=4Lqv67WK/agUJU9p1dm/pMwrrQRdHu/UIrZ3hQsQIGA=;
+	s=arc-20240116; t=1730897394; c=relaxed/simple;
+	bh=aLyobywxSWeQ3oEpBpZgMwL5VyjOzoQCv3NgaV84740=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4SO6YAI4IbWVfy9XNdAlqQJ0+ScH6o/ZQw/Rb+r1+BB6SFxZVJASjfopLjVeZviKjGs7dswlzEAFsPQvee5ebRe1gPcaTE/ohzgDCwIER53eC5hT7O4lSJ6+dNUks0aESkHFAc4J4vrxtYNze6orvR0D2pLa8Bs7gaQpRKOtho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXWrV82t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82BBC4CECD;
-	Wed,  6 Nov 2024 12:31:01 +0000 (UTC)
+	 MIME-Version; b=KWVfN4Apj2pXWg/S9TAqPiXdYUdlHg+gK5nTGVaOehJx7AnEvd7Hc4bIApay1BLywaj8tUgyPCFxJ+HXs1ZcA1hfMydkQjs80i4SGntyQqhsz/2yMg7AZ9oR3CAg80cPRrXhdnaHMDfMQHNnbiRBqhsHvXPPhUKLP1NG6SVB5y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC197E34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AF5C4CECD;
+	Wed,  6 Nov 2024 12:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896262;
-	bh=4Lqv67WK/agUJU9p1dm/pMwrrQRdHu/UIrZ3hQsQIGA=;
+	s=korg; t=1730897393;
+	bh=aLyobywxSWeQ3oEpBpZgMwL5VyjOzoQCv3NgaV84740=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXWrV82tp5Ub7hXVWuJmj9pRlsX5CKHcnt08onUp9E7AbzsYsyQpu0xpIPnFNMn+M
-	 1ArYhekPbdRBBR+sElXLMS4bgmCGc99IFZDWD7OLP4XSHL83bL4GPGmDgA3G1+rDdl
-	 vNAo8HQ5lhCTTt5VysSzqH+LKhrk+yQVyZ4mhcxs=
+	b=qC197E345nogwYvTAw+5/rxT87chaZFWbCiLwFRAe4NIf6mMVnk9ACvj5FtMApZCT
+	 GKHbxYtBug8lpGCgyblSXdkVJXeplBaUgfdRfKqKRYBLJWJ/4FUEBPinrXBNraqCAb
+	 aqwbn+m4HihjdnAWM02DOzM3uB0+b4WHZaJomal4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alejandro Lucero <alucerop@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.11 144/245] cxl/port: Fix CXL port initialization order when the subsystem is built-in
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/151] mac80211: MAC80211_MESSAGE_TRACING should depend on TRACING
 Date: Wed,  6 Nov 2024 13:03:17 +0100
-Message-ID: <20241106120322.771576419@linuxfoundation.org>
+Message-ID: <20241106120309.097512358@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 6575b268157f37929948a8d1f3bafb3d7c055bc1 upstream.
+[ Upstream commit b3e046c31441d182b954fc2f57b2dc38c71ad4bc ]
 
-When the CXL subsystem is built-in the module init order is determined
-by Makefile order. That order violates expectations. The expectation is
-that cxl_acpi and cxl_mem can race to attach. If cxl_acpi wins the race,
-cxl_mem will find the enabled CXL root ports it needs. If cxl_acpi loses
-the race it will retrigger cxl_mem to attach via cxl_bus_rescan(). That
-flow only works if cxl_acpi can assume ports are enabled immediately
-upon cxl_acpi_probe() return. That in turn can only happen in the
-CONFIG_CXL_ACPI=y case if the cxl_port driver is registered before
-cxl_acpi_probe() runs.
+When tracing is disabled, there is no point in asking the user about
+enabling tracing of all mac80211 debug messages.
 
-Fix up the order to prevent initialization failures. Ensure that
-cxl_port is built-in when cxl_acpi is also built-in, arrange for
-Makefile order to resolve the subsys_initcall() order of cxl_port and
-cxl_acpi, and arrange for Makefile order to resolve the
-device_initcall() (module_init()) order of the remaining objects.
-
-As for what contributed to this not being found earlier, the CXL
-regression environment, cxl_test, builds all CXL functionality as a
-module to allow to symbol mocking and other dynamic reload tests.  As a
-result there is no regression coverage for the built-in case.
-
-Reported-by: Gregory Price <gourry@gourry.net>
-Closes: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net
-Tested-by: Gregory Price <gourry@gourry.net>
-Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
-Cc: stable@vger.kernel.org
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Tested-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Alejandro Lucero <alucerop@amd.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/172988474904.476062.7961350937442459266.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fae0273168026ed ("mac80211: trace debug messages")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://patch.msgid.link/85bbe38ce0df13350f45714e2dc288cc70947a19.1727179690.git.geert@linux-m68k.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/Kconfig  |    1 +
- drivers/cxl/Makefile |   20 ++++++++++++++------
- drivers/cxl/port.c   |   17 ++++++++++++++++-
- 3 files changed, 31 insertions(+), 7 deletions(-)
+ net/mac80211/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -60,6 +60,7 @@ config CXL_ACPI
- 	default CXL_BUS
- 	select ACPI_TABLE_LIB
- 	select ACPI_HMAT
-+	select CXL_PORT
+diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
+index 51ec8256b7fa9..8278221a36a1d 100644
+--- a/net/mac80211/Kconfig
++++ b/net/mac80211/Kconfig
+@@ -86,7 +86,7 @@ config MAC80211_DEBUGFS
+ 
+ config MAC80211_MESSAGE_TRACING
+ 	bool "Trace all mac80211 debug messages"
+-	depends on MAC80211
++	depends on MAC80211 && TRACING
  	help
- 	  Enable support for host managed device memory (HDM) resources
- 	  published by a platform's ACPI CXL memory layout description.  See
---- a/drivers/cxl/Makefile
-+++ b/drivers/cxl/Makefile
-@@ -1,13 +1,21 @@
- # SPDX-License-Identifier: GPL-2.0
-+
-+# Order is important here for the built-in case:
-+# - 'core' first for fundamental init
-+# - 'port' before platform root drivers like 'acpi' so that CXL-root ports
-+#   are immediately enabled
-+# - 'mem' and 'pmem' before endpoint drivers so that memdevs are
-+#   immediately enabled
-+# - 'pci' last, also mirrors the hardware enumeration hierarchy
- obj-y += core/
--obj-$(CONFIG_CXL_PCI) += cxl_pci.o
--obj-$(CONFIG_CXL_MEM) += cxl_mem.o
-+obj-$(CONFIG_CXL_PORT) += cxl_port.o
- obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
- obj-$(CONFIG_CXL_PMEM) += cxl_pmem.o
--obj-$(CONFIG_CXL_PORT) += cxl_port.o
-+obj-$(CONFIG_CXL_MEM) += cxl_mem.o
-+obj-$(CONFIG_CXL_PCI) += cxl_pci.o
- 
--cxl_mem-y := mem.o
--cxl_pci-y := pci.o
-+cxl_port-y := port.o
- cxl_acpi-y := acpi.o
- cxl_pmem-y := pmem.o security.o
--cxl_port-y := port.o
-+cxl_mem-y := mem.o
-+cxl_pci-y := pci.o
---- a/drivers/cxl/port.c
-+++ b/drivers/cxl/port.c
-@@ -208,7 +208,22 @@ static struct cxl_driver cxl_port_driver
- 	},
- };
- 
--module_cxl_driver(cxl_port_driver);
-+static int __init cxl_port_init(void)
-+{
-+	return cxl_driver_register(&cxl_port_driver);
-+}
-+/*
-+ * Be ready to immediately enable ports emitted by the platform CXL root
-+ * (e.g. cxl_acpi) when CONFIG_CXL_PORT=y.
-+ */
-+subsys_initcall(cxl_port_init);
-+
-+static void __exit cxl_port_exit(void)
-+{
-+	cxl_driver_unregister(&cxl_port_driver);
-+}
-+module_exit(cxl_port_exit);
-+
- MODULE_DESCRIPTION("CXL: Port enumeration and services");
- MODULE_LICENSE("GPL v2");
- MODULE_IMPORT_NS(CXL);
+ 	  Select this option to have mac80211 register the
+ 	  mac80211_msg trace subsystem with tracepoints to
+-- 
+2.43.0
+
 
 
 
