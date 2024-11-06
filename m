@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85949BEA90
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:48:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727ED9BEC0F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A632810B8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:48:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3DABB26266
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345E51FB8AA;
-	Wed,  6 Nov 2024 12:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A31E00AB;
+	Wed,  6 Nov 2024 12:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOO8JppH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crCx3P54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB4C1EE03D;
-	Wed,  6 Nov 2024 12:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30151E0DFD;
+	Wed,  6 Nov 2024 12:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896722; cv=none; b=CgQ2CiyPcDCm+iNGijCAyY2Fwkw5CIjwEbn0rzw5ixluaBoC5FFncV3AxzT36IcUZRIakLejQgVSU+eNyvMnEnE1tIqCbcrXS2L1CaMfs7nyOkbmBXSvw5mr/b8x6ZX/wSlQ1NR6d4ClBYG67W3eoDEvVnczMI1nFbyOe7HLzRo=
+	t=1730897485; cv=none; b=eGJmi1K1Dguarx1TJ1jLvup7/zb0Uwx8xhf70m3V4zAeVPsvUqN21vNcheFQ6sOmLPz0Fc3ZlUz8bJaAGzy8XPky2QKi/uGQeJjogaWgnBjnRFInNcPnnls9bY3zUc6lGKETC12QMgadKIhQ+ufuSdkDPtwRZ8CfLAE0+8rfNIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896722; c=relaxed/simple;
-	bh=QHi052u74O7obAzswvrx1o9+ND5EU4Em6V9PEuwop48=;
+	s=arc-20240116; t=1730897485; c=relaxed/simple;
+	bh=lXq4p9aA5h+VEK+7uP8HqpxABagZSpOwiomWV18QIr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lwm+z9u08B4UQ/DKnIVKonTgykorj/2u5FLQmKJKgdWLrt078dEc2dHHBkya5s+Vjn0ofdVfkwND/Ex3/I9v5JC/IFWcG+y95hQSH4RJFffJkAIj+9RppQ/QAVDmDOyJ2ntwiZDclrWjxlyBhVKGdS3sDO2OkdHF4JRrnhWT8C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOO8JppH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E6FC4CED6;
-	Wed,  6 Nov 2024 12:38:40 +0000 (UTC)
+	 MIME-Version; b=GzzTA4QWBj6QfIZAocWjJ/nL0TZ2FOOo851FlLgDNnk10W5THfbH7OXoWH4z8TWl21l4pGav94GmP2ZVQbsWNnihcvSFpKohxTZBIM/JeBZx9sh4+W0ZqzdaEEyLBcsa05RLbpKGHCMoff84hH5n+ZALHXkJ3K5Zcf59XAXf5LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crCx3P54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C97FC4CECD;
+	Wed,  6 Nov 2024 12:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896721;
-	bh=QHi052u74O7obAzswvrx1o9+ND5EU4Em6V9PEuwop48=;
+	s=korg; t=1730897485;
+	bh=lXq4p9aA5h+VEK+7uP8HqpxABagZSpOwiomWV18QIr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOO8JppHowH5f0ZJBcF987mqZLdNNzNoA5NZ/yILVFHx76uyJdhWuMUggLibzoZ+U
-	 RWWPLDZZxfWfZ4AV1cBV5n/bi6cFokV3Xil/6sleBuLher+BgCDBCdVWc5gJXISdOC
-	 VS0w/+ycPoqDn9EX5ZVY06JaMmo4I7K0p+tCxiww=
+	b=crCx3P54McZ/eturddfBfo8zduj1p9jlJlh4aLH1JsjmCWFGtVACF1JOlTMjB3F/x
+	 lnDVIx6kpgFSnXQtdy+TtJ4UwdL+dgPpXB6QeMrcfyHsgUliw+Tvz3uVqOqZ6Wq/om
+	 YFbDTdALBfiEjJTey1D/vPNjqFpMMGKY/MoIuCVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 050/110] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+	Zhang Rui <rui.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 068/151] thermal: intel: int340x: processor: Add MMIO RAPL PL4 support
 Date: Wed,  6 Nov 2024 13:04:16 +0100
-Message-ID: <20241106120304.582807734@linuxfoundation.org>
+Message-ID: <20241106120310.708054082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
+[ Upstream commit 3fb0eea8a1c4be5884e0731ea76cbd3ce126e1f3 ]
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+Similar to the MSR RAPL interface, MMIO RAPL supports PL4 too, so add
+MMIO RAPL PL4d support to the processor_thermal driver.
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
+As a result, the powercap sysfs for MMIO RAPL will show a new "peak
+power" constraint.
 
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20240930081801.28502-7-rui.zhang@intel.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../thermal/intel/int340x_thermal/processor_thermal_rapl.c    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2789,6 +2789,31 @@ static struct  hv_driver netvsc_drv = {
- 	},
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
+index f7ab1f47ca7a6..f504781f4b7c5 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
+@@ -13,9 +13,9 @@ static struct rapl_if_priv rapl_mmio_priv;
+ 
+ static const struct rapl_mmio_regs rapl_mmio_default = {
+ 	.reg_unit = 0x5938,
+-	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930},
++	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930, 0x59b0},
+ 	.regs[RAPL_DOMAIN_DRAM] = { 0x58e0, 0x58e8, 0x58ec, 0, 0},
+-	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2),
++	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2) | BIT(POWER_LIMIT4),
+ 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
  };
  
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev;
-+	int ret;
-+
-+	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2801,6 +2826,11 @@ static int netvsc_netdev_event(struct no
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
+-- 
+2.43.0
+
 
 
 
