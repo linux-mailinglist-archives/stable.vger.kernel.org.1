@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-91600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2EFF9BEEBC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25DC9BEE7A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D801C248E2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E387B1C21E0B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C13A1E103C;
-	Wed,  6 Nov 2024 13:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DD31E22EF;
+	Wed,  6 Nov 2024 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlZPo0n0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAlUlRvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335FB1E00AF;
-	Wed,  6 Nov 2024 13:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D4E1E22E2;
+	Wed,  6 Nov 2024 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899210; cv=none; b=pwPRspe/yuKba+6OWkbWIdGBgELTCNBi8NAFLihyeiaH/ceTFVTl7jJEmyj/e2wb4j5LId9hqNlD2/kzOrAyvN20AdTPnQO46x0kmUlmYaIT0EJqEmyr9Nu6gJH4sX1/iyKGQxxOGpr7keSSDUdCgkJv7TYM1Fl00wuOguFglPY=
+	t=1730899059; cv=none; b=u5TiI9wgrS+/D17/vmFjijo0C6Pxb0PIV+15fnulbvm2buwMbt010CqgI3Nkskmlt4tZ7JFOB6Qp0dJWel4oRIEeq6CsJoNjUR9UsPVHhxJhotXWJlPKIx6z0ehAB/UbAUpkwn3/e3kViBQaEBmsSzMIll9YnW258Wz2wkTgjcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899210; c=relaxed/simple;
-	bh=V3om6d2SJwIv0DgUzsV1wWdM2ozpDoxIF1lTkk3gOcw=;
+	s=arc-20240116; t=1730899059; c=relaxed/simple;
+	bh=czmGriN8FyrHP/LmFQhDYzo3cCga35juw9IvQ1moolw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=popfkZxKtLInjPlxYfNQDbQiRNMChI1eK33W+v/BIBATVkF0jRID9ltUWDEL7a7//isXB1ggZK8B2cxd0nCGBIoRTuu9AkA0PZoWSBMyByXmwAK4mGtdid1TABOzMkw0AHaKpjRE9bUYSSiMX2eS14lf4znA8cy0tMwzJV63qII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlZPo0n0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F31C4CECD;
-	Wed,  6 Nov 2024 13:20:09 +0000 (UTC)
+	 MIME-Version; b=seow21Pex/5yI78g9nyCCLehbnJF8/5FXmP+U8CPuQkoDxtYLD6a12dEUSTi9L7Ymh+pJi8d8mQRnDkQ3WEGBULwApkG6b/UE61cQVNKINCQB38w7a14Kd7As7fx9EiaBrMwG66vYpJ3qEV28f3R1gFxa52iC/ARyZj0MHO+2iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAlUlRvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82970C4CED9;
+	Wed,  6 Nov 2024 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899210;
-	bh=V3om6d2SJwIv0DgUzsV1wWdM2ozpDoxIF1lTkk3gOcw=;
+	s=korg; t=1730899058;
+	bh=czmGriN8FyrHP/LmFQhDYzo3cCga35juw9IvQ1moolw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlZPo0n0IYHoeLaFn712ptGN8EDU2gS14rTx40fb8DUhVZk/J6HGqzwfuNSq4kO+w
-	 /I7n3UtiUqO0SAUzpQlRRScBmHrPO78jc+DBtPQrEB0TgXUWFuyyJFrt3x8s60+cxB
-	 mzG5GogsCLqFgpurTJ4eNrehQvTg2A+TNXu2ZnGY=
+	b=nAlUlRvvipN0cVAZe6VGIUNytQ2ectxP6e0vi0HOAw4itvz7zdjeuoJeGczwpihAn
+	 A1xVD2k/hmcF+48v5+Lee5zycdTXEpjTOZWZ8qcEn7ZfXWaLTUzc7BXsLZ3zKFi8gX
+	 4qO3yytmbUJOKqnMF8MoVoQviJhUaWKCe2HDCvSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/73] net: amd: mvme147: Fix probe banner message
-Date: Wed,  6 Nov 2024 13:05:39 +0100
-Message-ID: <20241106120301.014090613@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 5.4 447/462] usb: phy: Fix API devm_usb_put_phy() can not release the phy
+Date: Wed,  6 Nov 2024 13:05:40 +0100
+Message-ID: <20241106120342.544298390@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
+commit fdce49b5da6e0fb6d077986dec3e90ef2b094b50 upstream.
 
-Currently this driver prints this line with what looks like
-a rogue format specifier when the device is probed:
-[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
+For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
+to release the phy, but it does not do that actually, so it can not fully
+undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
+devres_release() instead of devres_destroy() within the API.
 
-Change the printk() for netdev_info() and move it after the
-registration has completed so it prints out the name of the
-interface properly.
-
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/mvme147.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/phy/phy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
-index da97fccea9ea6..769355824b7e1 100644
---- a/drivers/net/ethernet/amd/mvme147.c
-+++ b/drivers/net/ethernet/amd/mvme147.c
-@@ -103,10 +103,6 @@ static struct net_device * __init mvme147lance_probe(void)
- 	address = address >> 8;
- 	dev->dev_addr[3] = address&0xff;
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -579,7 +579,7 @@ void devm_usb_put_phy(struct device *dev
+ {
+ 	int r;
  
--	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
--	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
--	       dev->dev_addr);
--
- 	lp = netdev_priv(dev);
- 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
- 	if (!lp->ram) {
-@@ -136,6 +132,9 @@ static struct net_device * __init mvme147lance_probe(void)
- 		return ERR_PTR(err);
- 	}
- 
-+	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
-+		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
-+
- 	return dev;
+-	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
++	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
  }
- 
--- 
-2.43.0
-
+ EXPORT_SYMBOL_GPL(devm_usb_put_phy);
 
 
 
