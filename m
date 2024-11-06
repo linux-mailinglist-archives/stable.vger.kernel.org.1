@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-90201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F399BE727
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8219BECDF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8681F2493B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B6D628607F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E429B1DF252;
-	Wed,  6 Nov 2024 12:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4601F7086;
+	Wed,  6 Nov 2024 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/Xoxz/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6/d2tLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BBB1D5AD7;
-	Wed,  6 Nov 2024 12:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370BB1DF995;
+	Wed,  6 Nov 2024 13:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895068; cv=none; b=fdH4PboHGWN90VI05NQ1wC/f0SgiMMheD7FO/L+fynCMerJ5BOe3U4FlwP0uELWpq9UUsr9hl6TonkFbDAZCTIrjyyINI9pemUI//kMulRq06xTc7Pqa9bJ3z2b9TZBQZP398FYQQ6/g3Z7AFbgTBWBjClmJSoNvMGUwSjSkrs8=
+	t=1730898009; cv=none; b=gtVx/nDcHaasfXtz/SvfcfGq3nf6vN3ljMMA4ZIxEGzu0QwrgaUQ1QCnMeqJN1Hi13mFXWLF5lO0t5WMajpAJ0mB6I4OJdlvbZbYuGhVopbmYVv3DMjMWFyKto1bTe6egdwT6oiCD5sb+/cpf52HNbDtmrXLGwemwTBZbhPkFI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895068; c=relaxed/simple;
-	bh=PSzCCoNDsfZIuuMCBt46opMlN1EK/pzTzYQ1HbxT1H8=;
+	s=arc-20240116; t=1730898009; c=relaxed/simple;
+	bh=ry5hvqQ6XFZxkWBnoke8qlACxMLDf5fcrH+onPsF9Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvb46o/CIX332KKlnCKmiIcmGSdOjOmsTBMy+e2FwmNctgd6p9ys3IPK2Ka+M8fPFJfylmJXHZeD25RCH+Cgnq5ffNlOYOPBb/MwMVpP6WIyktatSuJhlNWifR7pecT+W4Zo8uCgrU9OOyB1dANpMWniFUx5FkGtGNJWy+CcLxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/Xoxz/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA32C4CECD;
-	Wed,  6 Nov 2024 12:11:07 +0000 (UTC)
+	 MIME-Version; b=OyR1fMiUAq5QstCq5gNX9z5Zpl+zWvDC1mQwEIxXia0yMXdwLGOpOHk6NycRMePMzpPr1OhIJc5OYboR1uDPyETOXAS/3ad8S2pB5U6Hw1HvQWLLxBwP3ju6IAAe8/LTbpVj0tlBh5amwGsos15d//RKqE5rX03UYeea6NBHk8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6/d2tLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85621C4CED3;
+	Wed,  6 Nov 2024 13:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895068;
-	bh=PSzCCoNDsfZIuuMCBt46opMlN1EK/pzTzYQ1HbxT1H8=;
+	s=korg; t=1730898009;
+	bh=ry5hvqQ6XFZxkWBnoke8qlACxMLDf5fcrH+onPsF9Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/Xoxz/zFyaA6hE6k11b5FT8gHKbM5m7FXtr9Wk6vF5Uxf9a7UV2c42Iy29gKjfUx
-	 fshQvyyUIZvEAN8V0UN2D0ZaLPwVyGPc7p60byNLp2sqPmAMMvlJw8jh7LUf478XIO
-	 DO9tor+SY0XekKTaSc3+aTgRM5eHpBYbOCyqpR5g=
+	b=g6/d2tLxhkfJP0ip7F7N+igfUegO9iMFL+b7rn6boDVcJ4bHjMqq6JEF+n76FOPPb
+	 Af+EvQidxqYSEAQYD1AMazTFpDKp4mxcvzc1JhHI30eYC0mLjVdUcTm+XhmUGzJ1dd
+	 TYSbhXtsSu1OHL78Pazz09GLdlvMgqzWn/ebsSCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Phil Auld <pauld@redhat.com>,
+	Valentin Schneider <valentin.schneider@arm.com>,
+	Thara Gopinath <thara.gopinath@linaro.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Vincent Donnefort <vincent.donnefort@arm.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ilias Stamatis <stamatis.iliass@gmail.com>,
+	Liang Chen <cl@rock-chips.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>,
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 058/350] jfs: fix out-of-bounds in dbNextAG() and diAlloc()
+Subject: [PATCH 5.4 093/462] kthread: add kthread_work tracepoints
 Date: Wed,  6 Nov 2024 12:59:46 +0100
-Message-ID: <20241106120322.321530837@linuxfoundation.org>
+Message-ID: <20241106120333.805721106@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +80,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit e63866a475562810500ea7f784099bfe341e761a ]
+[ Upstream commit f630c7c6f10546ebff15c3a856e7949feb7a2372 ]
 
-In dbNextAG() , there is no check for the case where bmp->db_numag is
-greater or same than MAXAG due to a polluted image, which causes an
-out-of-bounds. Therefore, a bounds check should be added in dbMount().
+While migrating some code from wq to kthread_worker, I found that I missed
+the execute_start/end tracepoints.  So add similar tracepoints for
+kthread_work.  And for completeness, queue_work tracepoint (although this
+one differs slightly from the matching workqueue tracepoint).
 
-And in dbNextAG(), a check for the case where agpref is greater than
-bmp->db_numag should be added, so an out-of-bounds exception should be
-prevented.
-
-Additionally, a check for the case where agno is greater or same than
-MAXAG should be added in diAlloc() to prevent out-of-bounds.
-
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Link: https://lkml.kernel.org/r/20201010180323.126634-1-robdclark@gmail.com
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Phil Auld <pauld@redhat.com>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Thara Gopinath <thara.gopinath@linaro.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Vincent Donnefort <vincent.donnefort@arm.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Ilias Stamatis <stamatis.iliass@gmail.com>
+Cc: Liang Chen <cl@rock-chips.com>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: "J. Bruce Fields" <bfields@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: e16c7b07784f ("kthread: fix task state in kthread worker if being frozen")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++--
- fs/jfs/jfs_imap.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/trace/events/sched.h | 84 ++++++++++++++++++++++++++++++++++++
+ kernel/kthread.c             |  9 ++++
+ 2 files changed, 93 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 893bc59658dad..1128bcdf5024a 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -200,7 +200,7 @@ int dbMount(struct inode *ipbmap)
- 	}
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 420e80e56e551..5a55ec2b72af0 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -5,6 +5,7 @@
+ #if !defined(_TRACE_SCHED_H) || defined(TRACE_HEADER_MULTI_READ)
+ #define _TRACE_SCHED_H
  
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag) {
-+	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
-@@ -665,7 +665,7 @@ int dbNextAG(struct inode *ipbmap)
- 	 * average free space.
- 	 */
- 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
--		if (agpref == bmp->db_numag)
-+		if (agpref >= bmp->db_numag)
- 			agpref = 0;
++#include <linux/kthread.h>
+ #include <linux/sched/numa_balancing.h>
+ #include <linux/tracepoint.h>
+ #include <linux/binfmts.h>
+@@ -51,6 +52,89 @@ TRACE_EVENT(sched_kthread_stop_ret,
+ 	TP_printk("ret=%d", __entry->ret)
+ );
  
- 		if (atomic_read(&bmp->db_active[agpref]))
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 9893cb6b8a756..1e9a3ec4bfa84 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -1375,7 +1375,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
- 	/* get the ag number of this iag */
- 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
- 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
--	if (agno < 0 || agno > dn_numag)
-+	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
- 		return -EIO;
++/**
++ * sched_kthread_work_queue_work - called when a work gets queued
++ * @worker:	pointer to the kthread_worker
++ * @work:	pointer to struct kthread_work
++ *
++ * This event occurs when a work is queued immediately or once a
++ * delayed work is actually queued (ie: once the delay has been
++ * reached).
++ */
++TRACE_EVENT(sched_kthread_work_queue_work,
++
++	TP_PROTO(struct kthread_worker *worker,
++		 struct kthread_work *work),
++
++	TP_ARGS(worker, work),
++
++	TP_STRUCT__entry(
++		__field( void *,	work	)
++		__field( void *,	function)
++		__field( void *,	worker)
++	),
++
++	TP_fast_assign(
++		__entry->work		= work;
++		__entry->function	= work->func;
++		__entry->worker		= worker;
++	),
++
++	TP_printk("work struct=%p function=%ps worker=%p",
++		  __entry->work, __entry->function, __entry->worker)
++);
++
++/**
++ * sched_kthread_work_execute_start - called immediately before the work callback
++ * @work:	pointer to struct kthread_work
++ *
++ * Allows to track kthread work execution.
++ */
++TRACE_EVENT(sched_kthread_work_execute_start,
++
++	TP_PROTO(struct kthread_work *work),
++
++	TP_ARGS(work),
++
++	TP_STRUCT__entry(
++		__field( void *,	work	)
++		__field( void *,	function)
++	),
++
++	TP_fast_assign(
++		__entry->work		= work;
++		__entry->function	= work->func;
++	),
++
++	TP_printk("work struct %p: function %ps", __entry->work, __entry->function)
++);
++
++/**
++ * sched_kthread_work_execute_end - called immediately after the work callback
++ * @work:	pointer to struct work_struct
++ * @function:   pointer to worker function
++ *
++ * Allows to track workqueue execution.
++ */
++TRACE_EVENT(sched_kthread_work_execute_end,
++
++	TP_PROTO(struct kthread_work *work, kthread_work_func_t function),
++
++	TP_ARGS(work, function),
++
++	TP_STRUCT__entry(
++		__field( void *,	work	)
++		__field( void *,	function)
++	),
++
++	TP_fast_assign(
++		__entry->work		= work;
++		__entry->function	= function;
++	),
++
++	TP_printk("work struct %p: function %ps", __entry->work, __entry->function)
++);
++
+ /*
+  * Tracepoint for waking up a task:
+  */
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 63f7eb3c2640d..eb2b54ae93ee6 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -725,8 +725,15 @@ int kthread_worker_fn(void *worker_ptr)
+ 	raw_spin_unlock_irq(&worker->lock);
  
- 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 	if (work) {
++		kthread_work_func_t func = work->func;
+ 		__set_current_state(TASK_RUNNING);
++		trace_sched_kthread_work_execute_start(work);
+ 		work->func(work);
++		/*
++		 * Avoid dereferencing work after this point.  The trace
++		 * event only cares about the address.
++		 */
++		trace_sched_kthread_work_execute_end(work, func);
+ 	} else if (!freezing(current))
+ 		schedule();
+ 
+@@ -855,6 +862,8 @@ static void kthread_insert_work(struct kthread_worker *worker,
+ {
+ 	kthread_insert_work_sanity_check(worker, work);
+ 
++	trace_sched_kthread_work_queue_work(worker, work);
++
+ 	list_add_tail(&work->node, pos);
+ 	work->worker = worker;
+ 	if (!worker->current_work && likely(worker->task))
 -- 
 2.43.0
 
