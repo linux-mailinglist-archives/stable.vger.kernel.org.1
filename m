@@ -1,93 +1,186 @@
-Return-Path: <stable+bounces-91704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3594E9BF4B5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 18:58:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5D49BF4CA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 19:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6D25B24612
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:58:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172C61F24581
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 18:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33819207A0F;
-	Wed,  6 Nov 2024 17:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8AE20822A;
+	Wed,  6 Nov 2024 18:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="uwYzySPa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3564120408D;
-	Wed,  6 Nov 2024 17:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32643208233
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 18:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730915931; cv=none; b=TfF5RMB+uwZ4Ei3qQQsxYOxsanOo8z6SxsBq5uA26T5Xtk3k+11E9bxhMBPcZDjTfRbXgGpUIRWf+N1m2jV7mZQXV7miy16UL4FTnjE8QwTQttWbesdbI1r6giVXiBgWxfZwxYHTMfpw1jxzOn9SFMl8pVNeXiwV7aUY1drKF1w=
+	t=1730916263; cv=none; b=VVtTLrL950yeRMviBgD7DWCVScN1blArPpwETxHp7mG7/vkaAchSxGaaVy4PFzwryW9DFAzUD9DfMuE8g5xKSoHE5s6MQhL3x7dIwvRlPrm8FKalpETDXZ8du5Bh7Bl8QaY0LBaQ0uEg0VhxtBflSsJtD1VMGOHn7ql5Ynv/p9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730915931; c=relaxed/simple;
-	bh=vpSZueTCVDNlO0388ur1IGgrtb/PEfMr8Nvwewr1XY0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=eZDHUwInHvP/G5NUtgREj420WjrwRQSGvVRi3naP+hNyjHAiYw8g9RehHAzUT+KIbUeHEZHpWLbbRITEUGDM6P16GT5W8t3hAdBCW/n1bg5tG0utMy3aZzCnAnBX3BWQPwDVwjqOLWp7L5kVrPeyf/JUqukNRNMakR4E2LqokzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id B83E92501E;
-	Wed,  6 Nov 2024 20:58:44 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail04.astralinux.ru [10.177.185.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Wed,  6 Nov 2024 20:58:44 +0300 (MSK)
-Received: from smtpclient.apple (unknown [10.198.46.47])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4XkCbz62VKzkWsC;
-	Wed,  6 Nov 2024 20:58:02 +0300 (MSK)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1730916263; c=relaxed/simple;
+	bh=sBSIobfEptnuiR+FyuAucSaxwnt5VnYig/YepY1sJpY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SWW9r+YKMJYP8s9Ykhx0sl4YbeMLpbedp5nc63eg5toHx63gjhoOJMLpfqrWZR0oKeLzgk2awl/gNdlf3T1AaJPYZLmSF8UkimiCbjgp1yFI+CLvXNA9fv3+TkenXfUibWgQgWbZH2UMG2Yc15gIMRWE9MUmC4Y2wu5p9y3RH/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=uwYzySPa; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1730916262; x=1762452262;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qUtsCtHDtbeB/50MaBv7qu+Q0WmzSWBjHXEx4WqpTfI=;
+  b=uwYzySPaExT8enJffoX1wgBSrlagNRtEEkY3Ty+ln5wcavQ7uBoTiUMR
+   pULy9XGeMb53LOWURSWlR88YPbAcblK1WDsUfk9hcdZoR5jUwmtDIjw1B
+   11BvPPIooJa/RRU3eZquTU3Fz1HgZq5EXnFZHgcMXff+SMyWQA0f9VxcJ
+   c=;
+X-IronPort-AV: E=Sophos;i="6.11,263,1725321600"; 
+   d="scan'208";a="245414304"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 18:04:06 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:16949]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.40.73:2525] with esmtp (Farcaster)
+ id b6dd717a-22fb-468e-b911-0e2456d1ee88; Wed, 6 Nov 2024 18:04:04 +0000 (UTC)
+X-Farcaster-Flow-ID: b6dd717a-22fb-468e-b911-0e2456d1ee88
+Received: from EX19D016EUC003.ant.amazon.com (10.252.51.244) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 6 Nov 2024 18:04:01 +0000
+Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
+ EX19D016EUC003.ant.amazon.com (10.252.51.244) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 6 Nov 2024 18:04:00 +0000
+Received: from email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com
+ (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Wed, 6 Nov 2024 18:04:00 +0000
+Received: from dev-dsk-kareemem-1c-885b5fe7.eu-west-1.amazon.com (dev-dsk-kareemem-1c-885b5fe7.eu-west-1.amazon.com [10.13.243.223])
+	by email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com (Postfix) with ESMTPS id F1E3E404A7;
+	Wed,  6 Nov 2024 18:03:59 +0000 (UTC)
+From: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+To: <stable@vger.kernel.org>
+CC: Eric Dumazet <edumazet@google.com>, Naresh Kamboju
+	<naresh.kamboju@linaro.org>, Linux Kernel Functional Testing
+	<lkft@linaro.org>, Xin Long <lucien.xin@gmail.com>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Paolo Abeni <pabeni@redhat.com>, "Abdelkareem
+ Abdelsaamad" <kareemem@amazon.com>
+Subject: [PATCH 6.1.y 5.15.y 5.10.y] net: do not delay dst_entries_add() in dst_release()
+Date: Wed, 6 Nov 2024 18:03:52 +0000
+Message-ID: <20241106180352.91893-1-kareemem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH 6.1 1/1] cpufreq: amd-pstate: add check for
- cpufreq_cpu_get's return value
-From: Anastasia Belova <abelova@astralinux.ru>
-In-Reply-To: <20241106132437.38024-2-abelova@astralinux.ru>
-Date: Wed, 6 Nov 2024 20:57:27 +0300
-Cc: lvc-project@linuxtesting.org,
- Huang Rui <ray.huang@amd.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Perry Yuan <perry.yuan@amd.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <CB41EF06-3DEF-4682-84AE-7E74D6FB448F@astralinux.ru>
-References: <20241106132437.38024-1-abelova@astralinux.ru>
- <20241106132437.38024-2-abelova@astralinux.ru>
-To: stable@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-X-Mailer: Apple Mail (2.3776.700.51.11.1)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 41 0.3.41 623e98d5198769c015c72f45fabbb9f77bdb702b, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 188998 [Nov 06 2024]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2024/11/06 15:41:00 #26827080
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi!
+From: Eric Dumazet <edumazet@google.com>
 
-I found out this commit should be backported to 6.6 first.
-Should I resend this letter after it is done or I may ping it later?
+commit ac888d58869bb99753e7652be19a151df9ecb35d upstream.
 
-Anastasia Belova
+dst_entries_add() uses per-cpu data that might be freed at netns
+dismantle from ip6_route_net_exit() calling dst_entries_destroy()
+
+Before ip6_route_net_exit() can be called, we release all
+the dsts associated with this netns, via calls to dst_release(),
+which waits an rcu grace period before calling dst_destroy()
+
+dst_entries_add() use in dst_destroy() is racy, because
+dst_entries_destroy() could have been called already.
+
+Decrementing the number of dsts must happen sooner.
+
+Notes:
+
+1) in CONFIG_XFRM case, dst_destroy() can call
+   dst_release_immediate(child), this might also cause UAF
+   if the child does not have DST_NOCOUNT set.
+   IPSEC maintainers might take a look and see how to address this.
+
+2) There is also discussion about removing this count of dst,
+   which might happen in future kernels.
+
+Fixes: f88649721268 ("ipv4: fix dst race in sk_dst_get()")
+Closes: https://lore.kernel.org/lkml/CANn89iLCCGsP7SFn9HKpvnKu96Td4KD08xf7aGtiYgZnkjaL=w@mail.gmail.com/T/
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20241008143110.1064899-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+[Conflict due to
+bc9d3a9f2afc ("net: dst: Switch to rcuref_t reference counting")
+is not in the tree]
+Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+---
+ net/core/dst.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/net/core/dst.c b/net/core/dst.c
+index 453ec8aafc4a..5bb143857336 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -109,9 +109,6 @@ struct dst_entry *dst_destroy(struct dst_entry * dst)
+ 		child = xdst->child;
+ 	}
+ #endif
+-	if (!(dst->flags & DST_NOCOUNT))
+-		dst_entries_add(dst->ops, -1);
+-
+ 	if (dst->ops->destroy)
+ 		dst->ops->destroy(dst);
+ 	if (dst->dev)
+@@ -162,6 +159,12 @@ void dst_dev_put(struct dst_entry *dst)
+ }
+ EXPORT_SYMBOL(dst_dev_put);
+ 
++static void dst_count_dec(struct dst_entry *dst)
++{
++	if (!(dst->flags & DST_NOCOUNT))
++		dst_entries_add(dst->ops, -1);
++}
++
+ void dst_release(struct dst_entry *dst)
+ {
+ 	if (dst) {
+@@ -171,8 +174,10 @@ void dst_release(struct dst_entry *dst)
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release);
+@@ -186,8 +191,10 @@ void dst_release_immediate(struct dst_entry *dst)
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release_immediate underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			dst_destroy(dst);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release_immediate);
+-- 
+2.40.1
+
 
