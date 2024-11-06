@@ -1,100 +1,125 @@
-Return-Path: <stable+bounces-89942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE8E9BDAED
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:09:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA269BDB07
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC391C21893
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:09:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769DD283899
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3820315E5B8;
-	Wed,  6 Nov 2024 01:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C4E18BBBB;
+	Wed,  6 Nov 2024 01:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F5YZj37e"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2nts/Rb0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C01B815
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 01:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368B21865EA;
+	Wed,  6 Nov 2024 01:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730855357; cv=none; b=c8EOgw9EERD3li8opJs3vNzGC0VdGRN8SbyHbt1UVdZoCANboZR7YHcRKTXrZOUhPHP3wrbGq6LUVvzhFW9hal07e4/XtgGRX18kkzCYAPAulTYSGWkgpoHAPQ3u0gcpnb6EXbRVWkiYgM5Es5oQaHKwFqxFpiesoJnJFQF49gE=
+	t=1730855632; cv=none; b=JpRx6sQgMD1ZjxdNMnLZOvTNAHFHJMXDCldkFov4oMLmL3d/mhzctY5shtl351xzO71FKPT0EoqoenO3zPJrtE4sB3CtFtrqZsOlNFZ+EQsFrsu/IFIj79w8uWhe5DAhnUSRSWrlflo03TWr8U20urTW7ET/qOy4DG9nOU73618=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730855357; c=relaxed/simple;
-	bh=m1jPRgvwaVt0Ji0K64vPZOJS/AW3EobWcVHaJ+6e92c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u3vu87OsvYLi8/eIFL0Zv7agC7LpYSI3IXGH4Fi+PtbxRapUl20O1+hPB/UmyGfjoqL2pPz1sssj9Br7wXLngfO+VT7dR4UWLorddkyF0QWWlk4tLZm16aZL5glY/V8KW2kjJGUuuzBKjvFaW52ipCRfujOaXG9RGaq21po7XoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F5YZj37e; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7eaee07d665so6512599a12.0
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 17:09:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730855355; x=1731460155; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mM/JOg5R9b+FWm0W8b94lT0depobNUxyZ6mpenVonLw=;
-        b=F5YZj37etMbDFkfq+xPkgdawXcWhpwlf09vsOXLU5h4XV5+HEdNpH+9t8dagp4Kt7l
-         acfHh99oribWtl67RAQFqFIOMmFWBGTm8alpJltgHhn9qpi4jwdAhGwQUQsybgdMb1wZ
-         d7YsVyyoTrtR//KP1TEMnB7qltSI4WDhNFy0+4VUHoY/qiY0yLLJgEIMYPufiduzzYbh
-         zQ935BI96vcnkyWVChDaRdTvOEu5ziJzi9yceHXHwhKPhbGMtYoJkS98eFFbRUrvDzzM
-         2ynCpwWDMWe8upF0JMJAYRtaFa7M3oTvGFm8Z8uHmn2fdxzfmPaMDVrXPGiyfLFAaHEw
-         2chA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730855355; x=1731460155;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mM/JOg5R9b+FWm0W8b94lT0depobNUxyZ6mpenVonLw=;
-        b=i62wF0EQR5CSspyxnytYg0i+uPI2PGF0167oNUakAiMIafcBwCNAXyfKfQ+rEk/l6h
-         89xkGgah2zBe7BGRgzwbEB3RzEKOAQeXgGdgrHYiKsjw9Kf/CRcR7YYxmM6XIW0D6Unc
-         2jGBgtbyLyW0MRQwv1+vaJREIevgQB9w1T7um7C/9jg5tFzbSNB8XqFnP+WgCbXm8EWe
-         nCttnzGeSSoxVz3W1lVkWhAg+F6UjQK15qQbhRjvRn+l61PjQwVogxlZ0B24Z+I8k52E
-         9tADdwE8VJH81DbKp0fLp+k5ZuUZcFdm4ehsfSREDi3zIgj+ZR34fYQwbUu3BoyqKu1G
-         kYYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWbeTEP3aAP/63ekGGrLEBi9/Z1gyFtcEowxkIjqrDKN6bSlKy51dNG6PNtkjtd5kl01JQLBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhcHYuvnQokadjBHi7rsTNDdnjWgC6fv4HBBwTK/80JZR0tpDI
-	sJud6roTQPpK2M59HMkN+FrW22XxyWJwIstkQYsoYRWS7VXSCbtmKRECeFgv/wLHM4J44Sv8cAM
-	RFw==
-X-Google-Smtp-Source: AGHT+IGwBu+onCDNn0Y32ZVpfpCe4rwxG/l9NILnSH55nW3/1oRdipH1Rgb6zMdW9xSxMW4+/zY3xYf4thA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a17:903:448c:b0:20c:c9ac:bd0f with SMTP id
- d9443c01a7336-2111aef735dmr281325ad.5.1730855354521; Tue, 05 Nov 2024
- 17:09:14 -0800 (PST)
-Date: Tue, 5 Nov 2024 17:09:13 -0800
-In-Reply-To: <ZxcK_Gkdn0fegRl6@google.com>
+	s=arc-20240116; t=1730855632; c=relaxed/simple;
+	bh=/MMoDEzuAYbS9Kqzg8bMd6grxDEF23J2Z+gD9DHw6X4=;
+	h=Date:To:From:Subject:Message-Id; b=oIFwAWKw8D/yh92vn1/hWYy7Z2kBo46SW/7NQc4W7nyJxjkmvQYPWxg5pl0xHZzHpNvPI04/A1ZoTgBUlTFtYn/AMcE8OUJawQKeNJrlzD+taB6PzYcfDhIWZm+LMDfEbaUeWRZ8mXLKsudpiRNCjLeeyWx3OWVGyRzJg0vnZTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2nts/Rb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F401BC4CECF;
+	Wed,  6 Nov 2024 01:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730855632;
+	bh=/MMoDEzuAYbS9Kqzg8bMd6grxDEF23J2Z+gD9DHw6X4=;
+	h=Date:To:From:Subject:From;
+	b=2nts/Rb0/b5Fi7TL9uJ6ByydNoW2K3hePGQDuJMy6RqnzVkU0j/fjO739BNruQN3H
+	 DwQqTWhsLUYbTo3UplFy0PSW7o6Kp/WhSLdJ7GejfYU59bQ1KbkYSOJrCIcFXBytVY
+	 yw4O+/+LzQPsOghY1D3zEVqlkF+hb70TEKbtzibQ=
+Date: Tue, 05 Nov 2024 17:13:51 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mawupeng1@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-nonmm-stable] ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch removed from -mm tree
+Message-Id: <20241106011351.F401BC4CECF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
- <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com> <ZxcK_Gkdn0fegRl6@google.com>
-Message-ID: <ZyrBuZPBjJi75gGU@google.com>
-Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
-From: Sean Christopherson <seanjc@google.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Oct 22, 2024, Roman Gushchin wrote:
-> On Mon, Oct 21, 2024 at 12:49:28PM -0700, Hugh Dickins wrote:
-> > On Mon, 21 Oct 2024, Roman Gushchin wrote:
-> > I don't think there's any need to change your text, but
-> > let me remind us that any "Bad page" report stops that page from being
-> > allocated again (because it's in an undefined, potentially dangerous
-> > state): so does amount to a small memory leak even if otherwise harmless.
-> 
-> It looks like I need to post v3 as soon as I get a publicly available
-> syzkaller report, so I'll add this to the commit log.
 
-Today is your lucky day :-)
+The quilt patch titled
+     Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
+has been removed from the -mm tree.  Its filename was
+     ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch
 
-https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Wupeng Ma <mawupeng1@huawei.com>
+Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
+Date: Wed, 23 Oct 2024 17:31:29 +0800
+
+From: Ma Wupeng <mawupeng1@huawei.com>
+
+Percpu memory allocation may failed during create_ipc_ns however this
+fail is not handled properly since ipc sysctls and mq sysctls is not
+released properly. Fix this by release these two resource when failure.
+
+Here is the kmemleak stack when percpu failed:
+
+unreferenced object 0xffff88819de2a600 (size 512):
+  comm "shmem_2nstest", pid 120711, jiffies 4300542254
+  hex dump (first 32 bytes):
+    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
+    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
+  backtrace (crc be7cba35):
+    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
+    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
+    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
+    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
+    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
+    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
+    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
+    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
+    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
+    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
+    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
+Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ ipc/namespace.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/ipc/namespace.c~ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns
++++ a/ipc/namespace.c
+@@ -83,13 +83,15 @@ static struct ipc_namespace *create_ipc_
+ 
+ 	err = msg_init_ns(ns);
+ 	if (err)
+-		goto fail_put;
++		goto fail_ipc;
+ 
+ 	sem_init_ns(ns);
+ 	shm_init_ns(ns);
+ 
+ 	return ns;
+ 
++fail_ipc:
++	retire_ipc_sysctls(ns);
+ fail_mq:
+ 	retire_mq_sysctls(ns);
+ 
+_
+
+Patches currently in -mm which might be from mawupeng1@huawei.com are
+
+
 
