@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B804E9BE961
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3FB9BEA57
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75E682853C6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5545E1F23853
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA40A1DFD90;
-	Wed,  6 Nov 2024 12:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF961DFE31;
+	Wed,  6 Nov 2024 12:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QWcUy29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJn/HeSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B361DF969;
-	Wed,  6 Nov 2024 12:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E31F8F15;
+	Wed,  6 Nov 2024 12:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896408; cv=none; b=qkfvQsz2wf+nawiKyBylukJxcH4zKHtBCkqVaUtwKkqEASAAWnDmdjeugVU+M316Ud7pp4Ql0Y/cMkbbNO5x6VAkGhsK26DglkOP7G1WgnSQF2tbgtlJn+0bfro3WPf+eCjeYQI6OzpJPrc9tHHf2aYteJ2BqYILpYahml7efSA=
+	t=1730896681; cv=none; b=ObREtUSRHM4qM2eopw+KjJd8cXzQRy3NAQ/uftMc/+Kp0sv0mkJ4Yof3B2wu4HN/DVjSb1z0tMtFRHxCP1yK4QxJfQdtS2pwause3MpxBTf9XqezPWdUX44oaE2viuople9QRIvjoPQIwTVhXHInPu7wYnBoKwbflzJYpeOu/pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896408; c=relaxed/simple;
-	bh=xkb0kep0iYfqxgbaEd+xQC1kvUtt/3YyRrpyxIXhshc=;
+	s=arc-20240116; t=1730896681; c=relaxed/simple;
+	bh=/PFAizbs+WYEXPBHgZPkPyz4XDuHG5si1czU9g91jfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VA2DjOc77x1/ijR04kPvnQWPyBtgFomoEicsl6HeEgCZBUGd8wUJ7YtUuaA9JCmduPRGCIaj3BpW9MIiQXhf0Rt+EyebgsbFkPY8M7kF9qqqt+H+jhVM/orqHUMtV54G02QD3/C227hFl9ALS+Pg2zf+XrmcjgPNIFiq/j1IvM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QWcUy29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC08FC4CECD;
-	Wed,  6 Nov 2024 12:33:27 +0000 (UTC)
+	 MIME-Version; b=P/peo+4zjPOGadxKMPPamP9W2rlggoBB0kj1vn9Ou8SuUGSnYg/YRjsk+50xkFjs6v1KC3RX4NRa1Hk8XuM8ZuaAOhxtxJhXjGQIQmJnNxbWZ9Sy/b6wcBHYEWFBDchSUQA9hGSMzfpkUsvKZn6HNzO01vviXrFBVnU8/fVBZI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJn/HeSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42248C4CECD;
+	Wed,  6 Nov 2024 12:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896408;
-	bh=xkb0kep0iYfqxgbaEd+xQC1kvUtt/3YyRrpyxIXhshc=;
+	s=korg; t=1730896681;
+	bh=/PFAizbs+WYEXPBHgZPkPyz4XDuHG5si1czU9g91jfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QWcUy29u+OgUIE2logzpm7mCAVV1Awof+faG9VDdGrGE1o/P6DiGZtLtS73bL/Ze
-	 EB/pTXNK0MATmZWtNw0eacT/S+RXxRsl9ptpCfPPrF4B5xmmPPh43eCKTVwQci4u1l
-	 RMcDcN6kCovxvehXO2GPdsr+zb5C/57N1ZzYtWFM=
+	b=mJn/HeStdEdk4HJckLYA/4WQ5WUkAl7jCEsqa0g7RKRpu7lE6sVJvPShc0333oeCJ
+	 lbSzTkb07zIdGmSX9ENWDyaMsdEuNCjcvN6OrcIz+34hc+glZhP34hqFh7JShTwVsh
+	 VVoQQ1mPyd0HA1nqe+IwBRVBZvyPAjLYiGegxgTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 191/245] drm/connector: hdmi: Fix memory leak in drm_display_mode_from_cea_vic()
+Subject: [PATCH 5.10 038/110] net: sched: fix use-after-free in taprio_change()
 Date: Wed,  6 Nov 2024 13:04:04 +0100
-Message-ID: <20241106120323.946308311@linuxfoundation.org>
+Message-ID: <20241106120304.248535956@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,163 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 926163342a2e7595d950e84c17c693b1272bd491 ]
+[ Upstream commit f504465970aebb2467da548f7c1efbbf36d0f44b ]
 
-modprobe drm_connector_test and then rmmod drm_connector_test,
-the following memory leak occurs.
+In 'taprio_change()', 'admin' pointer may become dangling due to sched
+switch / removal caused by 'advance_sched()', and critical section
+protected by 'q->current_entry_lock' is too small to prevent from such
+a scenario (which causes use-after-free detected by KASAN). Fix this
+by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
+'admin' immediately before an attempt to schedule freeing.
 
-The `mode` allocated in drm_mode_duplicate() called by
-drm_display_mode_from_cea_vic() is not freed, which cause the memory leak:
-
-	unreferenced object 0xffffff80cb0ee400 (size 128):
-	  comm "kunit_try_catch", pid 1948, jiffies 4294950339
-	  hex dump (first 32 bytes):
-	    14 44 02 00 80 07 d8 07 04 08 98 08 00 00 38 04  .D............8.
-	    3c 04 41 04 65 04 00 00 05 00 00 00 00 00 00 00  <.A.e...........
-	  backtrace (crc 90e9585c):
-	    [<00000000ec42e3d7>] kmemleak_alloc+0x34/0x40
-	    [<00000000d0ef055a>] __kmalloc_cache_noprof+0x26c/0x2f4
-	    [<00000000c2062161>] drm_mode_duplicate+0x44/0x19c
-	    [<00000000f96c74aa>] drm_display_mode_from_cea_vic+0x88/0x98
-	    [<00000000d8f2c8b4>] 0xffffffdc982a4868
-	    [<000000005d164dbc>] kunit_try_run_case+0x13c/0x3ac
-	    [<000000006fb23398>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<000000006ea56ca0>] kthread+0x2e8/0x374
-	    [<000000000676063f>] ret_from_fork+0x10/0x20
-	......
-
-Free `mode` by using drm_kunit_display_mode_from_cea_vic()
-to fix it.
-
-Cc: stable@vger.kernel.org
-Fixes: abb6f74973e2 ("drm/tests: Add HDMI TDMS character rate tests")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-3-ruanjinjie@huawei.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-1-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_connector_test.c | 24 +++++++++++-----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ net/sched/sch_taprio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_connector_test.c b/drivers/gpu/drm/tests/drm_connector_test.c
-index 15e36a8db6858..6bba97d0be88e 100644
---- a/drivers/gpu/drm/tests/drm_connector_test.c
-+++ b/drivers/gpu/drm/tests/drm_connector_test.c
-@@ -996,7 +996,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb(struct kunit *test)
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 04ed23b5f21b4..16ab7b1480661 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1590,7 +1590,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
  
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 		taprio_start_sched(sch, start, new_admin);
  
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1017,7 +1017,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc(struct kunit *test)
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
  
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1038,7 +1038,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc_vic_1(struct kunit *t
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_RGB);
-@@ -1056,7 +1056,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc(struct kunit *test)
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1077,7 +1077,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc_vic_1(struct kunit *t
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 1);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_RGB);
-@@ -1095,7 +1095,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_double(struct kunit *test)
- 	unsigned long long rate;
- 	struct drm_device *drm = &priv->drm;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 6);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 6);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_TRUE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1118,7 +1118,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_valid(struct kunit
- 	unsigned long long rate;
- 	unsigned int vic = *(unsigned int *)test->param_value;
- 
--	mode = drm_display_mode_from_cea_vic(drm, vic);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1155,7 +1155,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_10_bpc(struct kuni
- 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
- 	unsigned long long rate;
- 
--	mode = drm_display_mode_from_cea_vic(drm, vic);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1180,7 +1180,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_12_bpc(struct kuni
- 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
- 	unsigned long long rate;
- 
--	mode = drm_display_mode_from_cea_vic(drm, vic);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1203,7 +1203,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_8_bpc(struct kunit
- 	struct drm_device *drm = &priv->drm;
- 	unsigned long long rate;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1225,7 +1225,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_10_bpc(struct kuni
- 	struct drm_device *drm = &priv->drm;
- 	unsigned long long rate;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
-@@ -1247,7 +1247,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_12_bpc(struct kuni
- 	struct drm_device *drm = &priv->drm;
- 	unsigned long long rate;
- 
--	mode = drm_display_mode_from_cea_vic(drm, 16);
-+	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
- 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
 -- 
 2.43.0
 
