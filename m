@@ -1,74 +1,57 @@
-Return-Path: <stable+bounces-90174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4189BE709
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1119BECEA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43FF1F28060
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E531C23D79
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F54A1DF252;
-	Wed,  6 Nov 2024 12:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EACC1F76B0;
+	Wed,  6 Nov 2024 13:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsL8AhMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1t3aw4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB7E1D5AD7;
-	Wed,  6 Nov 2024 12:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10A91E04AD;
+	Wed,  6 Nov 2024 13:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894989; cv=none; b=NnHWWzaXKqKQxuK7Mu3zSIDvwkfEF2350I62sXeVtX19M8e7ZLwUn41pFFXr/kSX1q7zpNv9vgIs3Ob6yt4whtzCByyFaH56hYQ8L6traUMyRp83rbVc0s+xsjD0dsryjfOd25DHHeldtnooOMiHRFOTKmMM1jOa5cZYXr/R1dM=
+	t=1730898041; cv=none; b=fExTBfp4fIpl178g+ntJleCOjMxaSKF123ITzUs3w44FT6TJmiHFN0dxsfzv+gDa68FEc5iYCbsNKEAs3whRgF/bxB2h0f6Y6rD1P88f4qHHOzgajpHbWN5sc74XKcgm6Wz7LfRRJTsjH9hmuQ7TPHjQJLlE9cEGDi8JGPj6JJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894989; c=relaxed/simple;
-	bh=dwFmrCO+UVk5mhEYzYcf06Ot9fQGoU0l3RpjjFhdPuQ=;
+	s=arc-20240116; t=1730898041; c=relaxed/simple;
+	bh=xQt6OOmzoazPd09FfOLxOTO3tn9VSZqhup3gRg20spU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urm/YdMD2DKuBfUgtaa1BO4Dv5kpUFNf2VEnh9XVzIc2Oe7l0zq7TO/B4MkVBY9w8LPO3O/+II2eahBC8azNjZubp6/rHv7xgQrUWwRmeSGiMeUxjIKopG3OJG5D2QSVjrecVxFMib4otRxINIL97VhxTVMgbRS1xr3KZCUYQYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsL8AhMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3523FC4CECD;
-	Wed,  6 Nov 2024 12:09:48 +0000 (UTC)
+	 MIME-Version; b=LrUDlB57tH+nzx+bAaUO5kEdPT73aFSYRXL3B0k4Vmr9j+invArOFpbAyKmLoGXqSA6Ctbwg4Yb2vaJuj7n/jr0JzKzqcccnHwRUGPB5Ubxpajae2ujqSPsfwjU8XM1BWhACv/vTjjWbtFtkuE2Uqo/FkHs8xYIeajGwsp4WMW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1t3aw4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4763CC4CECD;
+	Wed,  6 Nov 2024 13:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894988;
-	bh=dwFmrCO+UVk5mhEYzYcf06Ot9fQGoU0l3RpjjFhdPuQ=;
+	s=korg; t=1730898041;
+	bh=xQt6OOmzoazPd09FfOLxOTO3tn9VSZqhup3gRg20spU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsL8AhMtvbGj2p7Xa45A9DsxfyN89XDsntpWDGOG+9X29LvU1YlLd7GKF0AUxH5ai
-	 fV/FbGSvI6PU+MYUgKG3Mmx4hIsq2uCi0B3T9SLeFLUHdNk5HJjzRnS4zOpcowPJwm
-	 UIKM894klE8cajtdR50wYniaYj27M22a/LDbtSN8=
+	b=j1t3aw4efb76MIlgeGiPOAho26OgFUa/QmB31qgb3VyBtaz8s4XvBrz4YNRShbRba
+	 Zv+2EObMNQSlLax9h5CPn0kh3ZsLTaRY7urePKWJkplfdJnuIcmbk5WIqImwg+anDl
+	 6W4WtzzN/kgIJad8DBaXr/Ljs3fH+PMFpMBQpEN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	Valentin Schneider <valentin.schneider@arm.com>,
-	Thara Gopinath <thara.gopinath@linaro.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Vincent Donnefort <vincent.donnefort@arm.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Jens Axboe <axboe@kernel.dk>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ilias Stamatis <stamatis.iliass@gmail.com>,
-	Liang Chen <cl@rock-chips.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>,
-	"J. Bruce Fields" <bfields@redhat.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 068/350] kthread: add kthread_work tracepoints
+Subject: [PATCH 5.4 103/462] nilfs2: fix potential oob read in nilfs_btree_check_delete()
 Date: Wed,  6 Nov 2024 12:59:56 +0100
-Message-ID: <20241106120322.577046508@linuxfoundation.org>
+Message-ID: <20241106120334.050627048@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,179 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit f630c7c6f10546ebff15c3a856e7949feb7a2372 ]
+[ Upstream commit f9c96351aa6718b42a9f42eaf7adce0356bdb5e8 ]
 
-While migrating some code from wq to kthread_worker, I found that I missed
-the execute_start/end tracepoints.  So add similar tracepoints for
-kthread_work.  And for completeness, queue_work tracepoint (although this
-one differs slightly from the matching workqueue tracepoint).
+The function nilfs_btree_check_delete(), which checks whether degeneration
+to direct mapping occurs before deleting a b-tree entry, causes memory
+access outside the block buffer when retrieving the maximum key if the
+root node has no entries.
 
-Link: https://lkml.kernel.org/r/20201010180323.126634-1-robdclark@gmail.com
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Phil Auld <pauld@redhat.com>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Thara Gopinath <thara.gopinath@linaro.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Vincent Donnefort <vincent.donnefort@arm.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Ilias Stamatis <stamatis.iliass@gmail.com>
-Cc: Liang Chen <cl@rock-chips.com>
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: "J. Bruce Fields" <bfields@redhat.com>
+This does not usually happen because b-tree mappings with 0 child nodes
+are never created by mkfs.nilfs2 or nilfs2 itself.  However, it can happen
+if the b-tree root node read from a device is configured that way, so fix
+this potential issue by adding a check for that case.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-4-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: e16c7b07784f ("kthread: fix task state in kthread worker if being frozen")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/sched.h | 84 ++++++++++++++++++++++++++++++++++++
- kernel/kthread.c             |  9 ++++
- 2 files changed, 93 insertions(+)
+ fs/nilfs2/btree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 9a4bdfadab077..a4eb7bc6fcf5b 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -5,6 +5,7 @@
- #if !defined(_TRACE_SCHED_H) || defined(TRACE_HEADER_MULTI_READ)
- #define _TRACE_SCHED_H
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 7cfff27b4b4a5..7c9f4d79bdbc5 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -1660,13 +1660,16 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 	int nchildren, ret;
  
-+#include <linux/kthread.h>
- #include <linux/sched/numa_balancing.h>
- #include <linux/tracepoint.h>
- #include <linux/binfmts.h>
-@@ -51,6 +52,89 @@ TRACE_EVENT(sched_kthread_stop_ret,
- 	TP_printk("ret=%d", __entry->ret)
- );
+ 	root = nilfs_btree_get_root(btree);
++	nchildren = nilfs_btree_node_get_nchildren(root);
++	if (unlikely(nchildren == 0))
++		return 0;
++
+ 	switch (nilfs_btree_height(btree)) {
+ 	case 2:
+ 		bh = NULL;
+ 		node = root;
+ 		break;
+ 	case 3:
+-		nchildren = nilfs_btree_node_get_nchildren(root);
+ 		if (nchildren > 1)
+ 			return 0;
+ 		ptr = nilfs_btree_node_get_ptr(root, nchildren - 1,
+@@ -1675,12 +1678,12 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 		if (ret < 0)
+ 			return ret;
+ 		node = (struct nilfs_btree_node *)bh->b_data;
++		nchildren = nilfs_btree_node_get_nchildren(node);
+ 		break;
+ 	default:
+ 		return 0;
+ 	}
  
-+/**
-+ * sched_kthread_work_queue_work - called when a work gets queued
-+ * @worker:	pointer to the kthread_worker
-+ * @work:	pointer to struct kthread_work
-+ *
-+ * This event occurs when a work is queued immediately or once a
-+ * delayed work is actually queued (ie: once the delay has been
-+ * reached).
-+ */
-+TRACE_EVENT(sched_kthread_work_queue_work,
-+
-+	TP_PROTO(struct kthread_worker *worker,
-+		 struct kthread_work *work),
-+
-+	TP_ARGS(worker, work),
-+
-+	TP_STRUCT__entry(
-+		__field( void *,	work	)
-+		__field( void *,	function)
-+		__field( void *,	worker)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->work		= work;
-+		__entry->function	= work->func;
-+		__entry->worker		= worker;
-+	),
-+
-+	TP_printk("work struct=%p function=%ps worker=%p",
-+		  __entry->work, __entry->function, __entry->worker)
-+);
-+
-+/**
-+ * sched_kthread_work_execute_start - called immediately before the work callback
-+ * @work:	pointer to struct kthread_work
-+ *
-+ * Allows to track kthread work execution.
-+ */
-+TRACE_EVENT(sched_kthread_work_execute_start,
-+
-+	TP_PROTO(struct kthread_work *work),
-+
-+	TP_ARGS(work),
-+
-+	TP_STRUCT__entry(
-+		__field( void *,	work	)
-+		__field( void *,	function)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->work		= work;
-+		__entry->function	= work->func;
-+	),
-+
-+	TP_printk("work struct %p: function %ps", __entry->work, __entry->function)
-+);
-+
-+/**
-+ * sched_kthread_work_execute_end - called immediately after the work callback
-+ * @work:	pointer to struct work_struct
-+ * @function:   pointer to worker function
-+ *
-+ * Allows to track workqueue execution.
-+ */
-+TRACE_EVENT(sched_kthread_work_execute_end,
-+
-+	TP_PROTO(struct kthread_work *work, kthread_work_func_t function),
-+
-+	TP_ARGS(work, function),
-+
-+	TP_STRUCT__entry(
-+		__field( void *,	work	)
-+		__field( void *,	function)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->work		= work;
-+		__entry->function	= function;
-+	),
-+
-+	TP_printk("work struct %p: function %ps", __entry->work, __entry->function)
-+);
-+
- /*
-  * Tracepoint for waking up a task:
-  */
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 9750f4f7f9010..f69aa5da3b53e 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -696,8 +696,15 @@ int kthread_worker_fn(void *worker_ptr)
- 	spin_unlock_irq(&worker->lock);
- 
- 	if (work) {
-+		kthread_work_func_t func = work->func;
- 		__set_current_state(TASK_RUNNING);
-+		trace_sched_kthread_work_execute_start(work);
- 		work->func(work);
-+		/*
-+		 * Avoid dereferencing work after this point.  The trace
-+		 * event only cares about the address.
-+		 */
-+		trace_sched_kthread_work_execute_end(work, func);
- 	} else if (!freezing(current))
- 		schedule();
- 
-@@ -826,6 +833,8 @@ static void kthread_insert_work(struct kthread_worker *worker,
- {
- 	kthread_insert_work_sanity_check(worker, work);
- 
-+	trace_sched_kthread_work_queue_work(worker, work);
-+
- 	list_add_tail(&work->node, pos);
- 	work->worker = worker;
- 	if (!worker->current_work && likely(worker->task))
+-	nchildren = nilfs_btree_node_get_nchildren(node);
+ 	maxkey = nilfs_btree_node_get_key(node, nchildren - 1);
+ 	nextmaxkey = (nchildren > 1) ?
+ 		nilfs_btree_node_get_key(node, nchildren - 2) : 0;
 -- 
 2.43.0
 
