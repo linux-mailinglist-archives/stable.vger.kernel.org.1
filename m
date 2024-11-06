@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-90791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8578E9BEB11
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123349BEB99
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A581282710
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D191C222AD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90B9205AC7;
-	Wed,  6 Nov 2024 12:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540CE1F8929;
+	Wed,  6 Nov 2024 12:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0JSQeQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8R2RRNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B7A1F4FCE;
-	Wed,  6 Nov 2024 12:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1137D1E04AF;
+	Wed,  6 Nov 2024 12:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896824; cv=none; b=ZT3ROtl1EvTtIBsBMbSoDM3GMOn+dVMrZObBpS0WwrWVKe/e7wI2P1BkBWz09JJSNin8Fh0FbcDjrkSsghJX7jDrIFY/105c4syb1EOQtDKy1D2FiaT9fMRKl71hlSzXIha0uBnNG7z9LkqcskTrb8Gk7czpk5d+ZakGoYW05Xs=
+	t=1730897168; cv=none; b=hojZWXzcg2yvHLWqxi/NwXxAutTpu2YvvvlCD0ISHZE7ljpqp7Fpqh/fTlGACwiER6f150I7gq4EPHh6FRXIoxYi0gZPOiWGZuk56guagp9sYW/gTitGfHowLrlq+hBQD1UTXWBHaF3S8aDHRN0dfKb/kN9H/eVkFgdea1XiNLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896824; c=relaxed/simple;
-	bh=xRbehLLNjlt5GQF9gKax/awK1jbtcO+44cywhVn3tZA=;
+	s=arc-20240116; t=1730897168; c=relaxed/simple;
+	bh=bQc0QKwjeVyLnDxKPX4Tfqqnb1XMbzq727hmmfjsfFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmF1uxKpFwCovhxE2Eye3DUGQS+A6Iadho65+Kk2mck9dnJT4uGqDn2xOedoHCeAVAdTeGtgiVV6fpjEs1gdfkFclz+qoiq4Ww5zOciVr1E33omxCCM8ZQJNYBOyWUr3RiGT8J2H3ZfA6R5OWiqkdY+6489AIMrpqgzT7+1xEfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0JSQeQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE2FC4CECD;
-	Wed,  6 Nov 2024 12:40:23 +0000 (UTC)
+	 MIME-Version; b=NYtpFoDuu5HJ1fYDpGoEdR9LZWgBo2NTAnPqDmE72JdTLreSOORCv1mzhqVjG/9JGYD3Ha26WR7kL4VgYP3BdTPTiDJi5aMKTNXN+y1vx/uxPm2+Qg367IJqyj1J7aVOsf99vHJ7RUlGu/OEL0kTh0FYg72UyImNXqNwR4K+Q94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8R2RRNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C19AC4CECD;
+	Wed,  6 Nov 2024 12:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896824;
-	bh=xRbehLLNjlt5GQF9gKax/awK1jbtcO+44cywhVn3tZA=;
+	s=korg; t=1730897167;
+	bh=bQc0QKwjeVyLnDxKPX4Tfqqnb1XMbzq727hmmfjsfFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0JSQeQ0bMGPzdjNTMh7D5ytNQTgmZqn+EBoJiP4LfEg9SkodV3qCVvV4Mskdbpz2
-	 nYEYyKuc5HOyhBA0JRHyXmUN+4J+eopi+pVtpj3huV1wqUcYh0Ref6djJSPfoCJIhH
-	 YyCFAVrm/DdJxjr9NwMi8hMltY1Tc7WBrn1y9kmQ=
+	b=L8R2RRNdgU3EBK9oVYiRiM+uRFcHtXvzH8iQg7idt0Y0m+nXJ3K/DZ+kSgatxpKWj
+	 J5Pa2b39uIlcZ9VShNu6MTqzhWDFAVFrL7gFmKGzDMsa7apar5ncQLUd0Q03c+ZzVI
+	 i1X3mMbm6qqK9xpRGs9YnqKEaMPDGkfURUQupf34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongren Zheng <i@zenithal.me>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [PATCH 5.10 085/110] usbip: tools: Fix detach_port() invalid port error path
+	Mel Gorman <mgorman@techsingularity.net>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/126] mm/page_alloc: rename ALLOC_HIGH to ALLOC_MIN_RESERVE
 Date: Wed,  6 Nov 2024 13:04:51 +0100
-Message-ID: <20241106120305.536900947@linuxfoundation.org>
+Message-ID: <20241106120308.501197124@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +67,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+From: Mel Gorman <mgorman@techsingularity.net>
 
-commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
+[ Upstream commit 524c48072e5673f4511f1ad81493e2485863fd65 ]
 
-The detach_port() doesn't return error
-when detach is attempted on an invalid port.
+Patch series "Discard __GFP_ATOMIC", v3.
 
-Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongren Zheng <i@zenithal.me>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
-Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Neil's patch has been residing in mm-unstable as commit 2fafb4fe8f7a ("mm:
+discard __GFP_ATOMIC") for a long time and recently brought up again.
+Most recently, I was worried that __GFP_HIGH allocations could use
+high-order atomic reserves which is unintentional but there was no
+response so lets revisit -- this series reworks how min reserves are used,
+protects highorder reserves and then finishes with Neil's patch with very
+minor modifications so it fits on top.
+
+There was a review discussion on renaming __GFP_DIRECT_RECLAIM to
+__GFP_ALLOW_BLOCKING but I didn't think it was that big an issue and is
+orthogonal to the removal of __GFP_ATOMIC.
+
+There were some concerns about how the gfp flags affect the min reserves
+but it never reached a solid conclusion so I made my own attempt.
+
+The series tries to iron out some of the details on how reserves are used.
+ALLOC_HIGH becomes ALLOC_MIN_RESERVE and ALLOC_HARDER becomes
+ALLOC_NON_BLOCK and documents how the reserves are affected.  For example,
+ALLOC_NON_BLOCK (no direct reclaim) on its own allows 25% of the min
+reserve.  ALLOC_MIN_RESERVE (__GFP_HIGH) allows 50% and both combined
+allows deeper access again.  ALLOC_OOM allows access to 75%.
+
+High-order atomic allocations are explicitly handled with the caveat that
+no __GFP_ATOMIC flag means that any high-order allocation that specifies
+GFP_HIGH and cannot enter direct reclaim will be treated as if it was
+GFP_ATOMIC.
+
+This patch (of 6):
+
+__GFP_HIGH aliases to ALLOC_HIGH but the name does not really hint what it
+means.  As ALLOC_HIGH is internal to the allocator, rename it to
+ALLOC_MIN_RESERVE to document that the min reserves can be depleted.
+
+Link: https://lkml.kernel.org/r/20230113111217.14134-1-mgorman@techsingularity.net
+Link: https://lkml.kernel.org/r/20230113111217.14134-2-mgorman@techsingularity.net
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/usb/usbip/src/usbip_detach.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/internal.h   | 4 +++-
+ mm/page_alloc.c | 8 ++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/tools/usb/usbip/src/usbip_detach.c
-+++ b/tools/usb/usbip/src/usbip_detach.c
-@@ -68,6 +68,7 @@ static int detach_port(char *port)
- 	}
+diff --git a/mm/internal.h b/mm/internal.h
+index d01130efce5fb..1be79a5147549 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -755,7 +755,9 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ #endif
  
- 	if (!found) {
-+		ret = -1;
- 		err("Invalid port %s > maxports %d",
- 			port, vhci_driver->nports);
- 		goto call_driver_close;
+ #define ALLOC_HARDER		 0x10 /* try to alloc harder */
+-#define ALLOC_HIGH		 0x20 /* __GFP_HIGH set */
++#define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
++				       * of the min watermark.
++				       */
+ #define ALLOC_CPUSET		 0x40 /* check for correct cpuset */
+ #define ALLOC_CMA		 0x80 /* allow allocations from CMA areas */
+ #ifdef CONFIG_ZONE_DMA32
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index a905b850d31c4..f5b870780d3fd 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3983,7 +3983,7 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+ 	/* free_pages may go negative - that's OK */
+ 	free_pages -= __zone_watermark_unusable_free(z, order, alloc_flags);
+ 
+-	if (alloc_flags & ALLOC_HIGH)
++	if (alloc_flags & ALLOC_MIN_RESERVE)
+ 		min -= min / 2;
+ 
+ 	if (unlikely(alloc_harder)) {
+@@ -4825,18 +4825,18 @@ gfp_to_alloc_flags(gfp_t gfp_mask)
+ 	unsigned int alloc_flags = ALLOC_WMARK_MIN | ALLOC_CPUSET;
+ 
+ 	/*
+-	 * __GFP_HIGH is assumed to be the same as ALLOC_HIGH
++	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
+ 	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+ 	 * to save two branches.
+ 	 */
+-	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_HIGH);
++	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_MIN_RESERVE);
+ 	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM != (__force gfp_t) ALLOC_KSWAPD);
+ 
+ 	/*
+ 	 * The caller may dip into page reserves a bit more if the caller
+ 	 * cannot run direct reclaim, or if the caller has realtime scheduling
+ 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+-	 * set both ALLOC_HARDER (__GFP_ATOMIC) and ALLOC_HIGH (__GFP_HIGH).
++	 * set both ALLOC_HARDER (__GFP_ATOMIC) and ALLOC_MIN_RESERVE(__GFP_HIGH).
+ 	 */
+ 	alloc_flags |= (__force int)
+ 		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
+-- 
+2.43.0
+
 
 
 
