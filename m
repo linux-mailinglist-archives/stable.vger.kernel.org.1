@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-91531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D169F9BEE64
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1118F9BEE3D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8960D1F25110
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43DEC1C24629
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCC81DE4CA;
-	Wed,  6 Nov 2024 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B391E0B61;
+	Wed,  6 Nov 2024 13:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7OwlgkK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRVy/DIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1CA646;
-	Wed,  6 Nov 2024 13:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61411E0496;
+	Wed,  6 Nov 2024 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899006; cv=none; b=uQHDTRpFPbTs5uZ5yTRL8E1UHyRG4CZK1sZJcplU9ePX0abB+YfmALIc63KK1nP1QIzq/20sMXVGzhqjegIBOeY6BwPFlZIN4O/U3a0t9qY+U9tbJ5ZhU7swNWuBTy57VWcJYoW0bQYklJdqMu2ZbuDeOhHxNxIflObFqqYwF+U=
+	t=1730898896; cv=none; b=ag3OtQoaVT1Bc1dt2BRmg21NiXHmqadGrzqtrgMCXyiBUdvcf3kYl1SAPlveFiZYk1sTEs2lHma018IGRn5nPYB7wR87YgKTF7sN0/LA7oeh5xxdOpszNd4FnjK5I9BSHq0VrNnQY/f4c8AJ85lSAYczmvRCLMGHfvXYkvLY4nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899006; c=relaxed/simple;
-	bh=WL//0tHIAWzc+oND/3JlBeIB2yrMSyaL7cKJ2/eLBks=;
+	s=arc-20240116; t=1730898896; c=relaxed/simple;
+	bh=y/ZwcQ30jn8WfaUrni9rH8aPijmUwp8aPsoE/GhhWSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8z7y12xAdM9Wtschb+ESJwksKe+zTdVnGFBd397Tkk6o08GmQHaekjCX4Q41UephWRvt6B0TB9U5ZByTSjTDbcCBK6dCh4XuD97ImEhy071j5jUcoiW2SqRe4fBKKf+dAMlgv065CRof2aof0QRD+CsFxrv/vT1iOYVq9qYJww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7OwlgkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783C7C4CECD;
-	Wed,  6 Nov 2024 13:16:45 +0000 (UTC)
+	 MIME-Version; b=HpIbzSz3KtxzWdmeUW1npNlTfP0FfIJD7A2gZdq8V+b2RudWgJEgzrU9bOzkbC3VNkiawpa+u4Iuh/UQehaoeNQjsmy+k8nWhYWJRjHYQkWAZmzdFE6CdXL7e5jcWVojqH4XkIhIMXruu9hZwVGDD8qvMSpWu+LSPgponimcWk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRVy/DIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BBFC4CECD;
+	Wed,  6 Nov 2024 13:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899005;
-	bh=WL//0tHIAWzc+oND/3JlBeIB2yrMSyaL7cKJ2/eLBks=;
+	s=korg; t=1730898896;
+	bh=y/ZwcQ30jn8WfaUrni9rH8aPijmUwp8aPsoE/GhhWSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7OwlgkKeNIPVMxPDoRjZvYz3AIWbe239I+bfwynol58IJU51SAg0Jsa0Yjlv31GE
-	 EZvNWDf85B58Mo1FPaJhNzsLRS6U7R1K6Jqq+OwoE7Y8Z/Chx4hWsPPuQ4FgKiS2nx
-	 wqrEGZM3wBmuV8/nWWAOOxuRCo6i4BVX+K3PlUP0=
+	b=hRVy/DIkm3GDkVPt/l6Q9xIBcXbVowojZpCstoGu4GJjvE5h8MIX/6xrFAVMGQrBk
+	 OlLAZJBeO5bKseeQEIV3KlfNexYUc3VWo0Rn4qiCALomkmS2zaH9HuEP6GTmcgAZfm
+	 l+zFQoFx22L3WdARz8KP5NOj5JjODBgVHjcLAN9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Wang Hai <wanghai38@huawei.com>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 392/462] net: ethernet: aeroflex: fix potential memory leak in greth_start_xmit_gbit()
-Date: Wed,  6 Nov 2024 13:04:45 +0100
-Message-ID: <20241106120341.207718259@linuxfoundation.org>
+Subject: [PATCH 5.4 393/462] net: systemport: fix potential memory leak in bcm_sysport_xmit()
+Date: Wed,  6 Nov 2024 13:04:46 +0100
+Message-ID: <20241106120341.233601439@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -69,42 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit cf57b5d7a2aad456719152ecd12007fe031628a3 ]
+[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
 
-The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb() to fix it.
+The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
+in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
 
-Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet MAC driver")
+Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
 Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20241012110434.49265-1-wanghai38@huawei.com
+Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/aeroflex/greth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/aeroflex/greth.c b/drivers/net/ethernet/aeroflex/greth.c
-index 19e2b838750cb..9e437aebc7907 100644
---- a/drivers/net/ethernet/aeroflex/greth.c
-+++ b/drivers/net/ethernet/aeroflex/greth.c
-@@ -484,7 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
- 
- 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
- 		dev->stats.tx_errors++;
--		goto out;
-+		goto len_error;
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 5a2094a281e15..4db355a0c7868 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1316,6 +1316,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
+ 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
+ 			  skb->data, skb_len);
+ 		ret = NETDEV_TX_OK;
++		dev_kfree_skb_any(skb);
+ 		goto out;
  	}
  
- 	/* Save skb pointer. */
-@@ -575,6 +575,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
- map_error:
- 	if (net_ratelimit())
- 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
-+len_error:
- 	dev_kfree_skb(skb);
- out:
- 	return err;
 -- 
 2.43.0
 
