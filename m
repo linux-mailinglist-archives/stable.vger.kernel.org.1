@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7169BE771
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD4D9BE890
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43FDB2832D5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC4D1F21975
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BFA1DF74E;
-	Wed,  6 Nov 2024 12:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E001DFD83;
+	Wed,  6 Nov 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb/aOU2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAt3WVcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3321DF24A;
-	Wed,  6 Nov 2024 12:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8371DED58;
+	Wed,  6 Nov 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895259; cv=none; b=BRpllNZMijldMHuKTw7uPxC3Klpqy4iD5lZ8ekeJB8mzEY65OAifgbraOHJ3Bk+D8NlHVnP04EFj8iJcbjZ3qLRoG/M6MxQd9k97rEOE7vjEhfckorBdW75p/yoQLTvloTUtIeXCRP0yEmeB/mdIZR5bixvtgqK7jCbVxw6x+yI=
+	t=1730895933; cv=none; b=q8M9Hcid5iEFgVsIi/z9Z3zCNYsjx/ufgLjXDPD6ohVDM9PKjAELHxvY/Bk4wxXPF5vu9gwamJAz9DCZrc2GH9wympkJDdT5NO3Y7QGsxv66UGODBZNq6DUei/urDVUz1jy2N7eYJe1zdJwxco9jWF+tumaHytKHuOvxjc9BCI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895259; c=relaxed/simple;
-	bh=fFZ4iRhkovHR0TcO3/gM1smk0wCyYkGzy3KqQ18LpP4=;
+	s=arc-20240116; t=1730895933; c=relaxed/simple;
+	bh=gg+6koYsN6uh7bKJQ9HbT1ujcr4qECJp4lM/NqrJXUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4WVdR4gIMQ3VmF7t3dvSSrHTBd2UpmW3RICYjeshom3frhc7U4aiqMlWwuSkMnKwIJmmFroTYfjlEMpPF4xZpTaxzTQqt+n68P10WuMuTHpNLD6qBlXOXc1nSHXmsSlxBLNZiFhm29CfPrmlz+EAr9QtDwK7yWEsRQu8D0aWFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb/aOU2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D01DC4CED2;
-	Wed,  6 Nov 2024 12:14:18 +0000 (UTC)
+	 MIME-Version; b=dxUuCUVxPoYfI/ymBYNQRusWA7GEwpIX4tIoyprOkXlvNr9lM5eDkqVXn50Ys02gj+k4RF3ZmI17eFPr4f5HjZP1c20YDtu5DfQO2ckSyFwHftvjefOiz93RBCAqcy1sKMHvNJNs7xB7FshV7tQDSpcp42uA3a0gnUmWrpz+wuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAt3WVcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91D5C4CECD;
+	Wed,  6 Nov 2024 12:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895258;
-	bh=fFZ4iRhkovHR0TcO3/gM1smk0wCyYkGzy3KqQ18LpP4=;
+	s=korg; t=1730895933;
+	bh=gg+6koYsN6uh7bKJQ9HbT1ujcr4qECJp4lM/NqrJXUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb/aOU2Kp8mKTnb+xzluO7olLE6np1y6ko7dpXUSUw3Wiqb25YUzlCDmQkeETorVU
-	 tEB+sTc3d4MivSKw83SCwU1RzisBGVQJfHxKe7LnTSrd5Z7hanscmRXttsLvxzCLl6
-	 +HBBGBKEDFK1xBhzb4xFOs1JlLtTcHF3aFodsT24=
+	b=QAt3WVcOygrl5jzAs1VnF/YR9+wIZPhSremVcG+NSTQCx3oxphu3t/aweTl6pDKmd
+	 NuwQ/BXW9qb1JsvOaWc4etq/ZnWGCsLdD8NSBcDmDV4TLoYRJ81udwwmqYKPjhaTaO
+	 hHrIzy3RRNYC1Y1FyzGt8m8OH3YKWaTJZD+Rgj4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 157/350] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
+Subject: [PATCH 6.11 032/245] ice: add callbacks for Embedded SYNC enablement on dpll pins
 Date: Wed,  6 Nov 2024 13:01:25 +0100
-Message-ID: <20241106120324.798168898@linuxfoundation.org>
+Message-ID: <20241106120320.018623534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,317 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
+[ Upstream commit 87abc5666ab753e8c31a2d39df3b5233f4e47b43 ]
 
-dev->ip_ptr could be NULL if we set an invalid MTU.
+Allow the user to get and set configuration of Embedded SYNC feature
+on the ice driver dpll pins.
 
-Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
-devinet_ioctl() allocates struct in_ifaddr and fails later in
-inet_set_ifa() because in_dev is NULL.
-
-Let's move the check earlier.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20240822222513.255179-3-arkadiusz.kubalewski@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6e58c3310622 ("ice: fix crash on probe for DPLL enabled E810 LOM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 223 +++++++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_dpll.h |   1 +
+ 2 files changed, 221 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index e2ab8cdb71347..e4fea3adb0652 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -541,10 +541,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index cc35d29ac9e6c..74c0e7319a4ca 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -9,6 +9,7 @@
+ #define ICE_CGU_STATE_ACQ_ERR_THRESHOLD		50
+ #define ICE_DPLL_PIN_IDX_INVALID		0xff
+ #define ICE_DPLL_RCLK_NUM_PER_PF		1
++#define ICE_DPLL_PIN_ESYNC_PULSE_HIGH_PERCENT	25
  
- 	ASSERT_RTNL();
+ /**
+  * enum ice_dpll_pin_type - enumerate ice pin types:
+@@ -30,6 +31,10 @@ static const char * const pin_type_name[] = {
+ 	[ICE_DPLL_PIN_TYPE_RCLK_INPUT] = "rclk-input",
+ };
  
--	if (!in_dev) {
--		inet_free_ifa(ifa);
--		return -ENOBUFS;
--	}
- 	ipv4_devconf_setall(in_dev);
- 	neigh_parms_data_state_setall(in_dev->arp_parms);
- 	if (ifa->ifa_dev != in_dev) {
-@@ -1113,6 +1109,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
++static const struct dpll_pin_frequency ice_esync_range[] = {
++	DPLL_PIN_FREQUENCY_RANGE(0, DPLL_PIN_FREQUENCY_1_HZ),
++};
++
+ /**
+  * ice_dpll_is_reset - check if reset is in progress
+  * @pf: private board structure
+@@ -394,8 +399,8 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
  
- 		if (!ifa) {
- 			ret = -ENOBUFS;
-+			if (!in_dev)
-+				break;
- 			ifa = inet_alloc_ifa();
- 			if (!ifa)
- 				break;
+ 	switch (pin_type) {
+ 	case ICE_DPLL_PIN_TYPE_INPUT:
+-		ret = ice_aq_get_input_pin_cfg(&pf->hw, pin->idx, NULL, NULL,
+-					       NULL, &pin->flags[0],
++		ret = ice_aq_get_input_pin_cfg(&pf->hw, pin->idx, &pin->status,
++					       NULL, NULL, &pin->flags[0],
+ 					       &pin->freq, &pin->phase_adjust);
+ 		if (ret)
+ 			goto err;
+@@ -430,7 +435,7 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
+ 			goto err;
+ 
+ 		parent &= ICE_AQC_GET_CGU_OUT_CFG_DPLL_SRC_SEL;
+-		if (ICE_AQC_SET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
++		if (ICE_AQC_GET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
+ 			pin->state[pf->dplls.eec.dpll_idx] =
+ 				parent == pf->dplls.eec.dpll_idx ?
+ 				DPLL_PIN_STATE_CONNECTED :
+@@ -1100,6 +1105,214 @@ ice_dpll_phase_offset_get(const struct dpll_pin *pin, void *pin_priv,
+ 	return 0;
+ }
+ 
++/**
++ * ice_dpll_output_esync_set - callback for setting embedded sync
++ * @pin: pointer to a pin
++ * @pin_priv: private data pointer passed on pin registration
++ * @dpll: registered dpll pointer
++ * @dpll_priv: private data pointer passed on dpll registration
++ * @freq: requested embedded sync frequency
++ * @extack: error reporting
++ *
++ * Dpll subsystem callback. Handler for setting embedded sync frequency value
++ * on output pin.
++ *
++ * Context: Acquires pf->dplls.lock
++ * Return:
++ * * 0 - success
++ * * negative - error
++ */
++static int
++ice_dpll_output_esync_set(const struct dpll_pin *pin, void *pin_priv,
++			  const struct dpll_device *dpll, void *dpll_priv,
++			  u64 freq, struct netlink_ext_ack *extack)
++{
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_dpll *d = dpll_priv;
++	struct ice_pf *pf = d->pf;
++	u8 flags = 0;
++	int ret;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++	mutex_lock(&pf->dplls.lock);
++	if (p->flags[0] & ICE_AQC_GET_CGU_OUT_CFG_OUT_EN)
++		flags = ICE_AQC_SET_CGU_OUT_CFG_OUT_EN;
++	if (freq == DPLL_PIN_FREQUENCY_1_HZ) {
++		if (p->flags[0] & ICE_AQC_GET_CGU_OUT_CFG_ESYNC_EN) {
++			ret = 0;
++		} else {
++			flags |= ICE_AQC_SET_CGU_OUT_CFG_ESYNC_EN;
++			ret = ice_aq_set_output_pin_cfg(&pf->hw, p->idx, flags,
++							0, 0, 0);
++		}
++	} else {
++		if (!(p->flags[0] & ICE_AQC_GET_CGU_OUT_CFG_ESYNC_EN)) {
++			ret = 0;
++		} else {
++			flags &= ~ICE_AQC_SET_CGU_OUT_CFG_ESYNC_EN;
++			ret = ice_aq_set_output_pin_cfg(&pf->hw, p->idx, flags,
++							0, 0, 0);
++		}
++	}
++	mutex_unlock(&pf->dplls.lock);
++
++	return ret;
++}
++
++/**
++ * ice_dpll_output_esync_get - callback for getting embedded sync config
++ * @pin: pointer to a pin
++ * @pin_priv: private data pointer passed on pin registration
++ * @dpll: registered dpll pointer
++ * @dpll_priv: private data pointer passed on dpll registration
++ * @esync: on success holds embedded sync pin properties
++ * @extack: error reporting
++ *
++ * Dpll subsystem callback. Handler for getting embedded sync frequency value
++ * and capabilities on output pin.
++ *
++ * Context: Acquires pf->dplls.lock
++ * Return:
++ * * 0 - success
++ * * negative - error
++ */
++static int
++ice_dpll_output_esync_get(const struct dpll_pin *pin, void *pin_priv,
++			  const struct dpll_device *dpll, void *dpll_priv,
++			  struct dpll_pin_esync *esync,
++			  struct netlink_ext_ack *extack)
++{
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_dpll *d = dpll_priv;
++	struct ice_pf *pf = d->pf;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++	mutex_lock(&pf->dplls.lock);
++	if (!(p->flags[0] & ICE_AQC_GET_CGU_OUT_CFG_ESYNC_ABILITY) ||
++	    p->freq != DPLL_PIN_FREQUENCY_10_MHZ) {
++		mutex_unlock(&pf->dplls.lock);
++		return -EOPNOTSUPP;
++	}
++	esync->range = ice_esync_range;
++	esync->range_num = ARRAY_SIZE(ice_esync_range);
++	if (p->flags[0] & ICE_AQC_GET_CGU_OUT_CFG_ESYNC_EN) {
++		esync->freq = DPLL_PIN_FREQUENCY_1_HZ;
++		esync->pulse = ICE_DPLL_PIN_ESYNC_PULSE_HIGH_PERCENT;
++	} else {
++		esync->freq = 0;
++		esync->pulse = 0;
++	}
++	mutex_unlock(&pf->dplls.lock);
++
++	return 0;
++}
++
++/**
++ * ice_dpll_input_esync_set - callback for setting embedded sync
++ * @pin: pointer to a pin
++ * @pin_priv: private data pointer passed on pin registration
++ * @dpll: registered dpll pointer
++ * @dpll_priv: private data pointer passed on dpll registration
++ * @freq: requested embedded sync frequency
++ * @extack: error reporting
++ *
++ * Dpll subsystem callback. Handler for setting embedded sync frequency value
++ * on input pin.
++ *
++ * Context: Acquires pf->dplls.lock
++ * Return:
++ * * 0 - success
++ * * negative - error
++ */
++static int
++ice_dpll_input_esync_set(const struct dpll_pin *pin, void *pin_priv,
++			 const struct dpll_device *dpll, void *dpll_priv,
++			 u64 freq, struct netlink_ext_ack *extack)
++{
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_dpll *d = dpll_priv;
++	struct ice_pf *pf = d->pf;
++	u8 flags_en = 0;
++	int ret;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++	mutex_lock(&pf->dplls.lock);
++	if (p->flags[0] & ICE_AQC_GET_CGU_IN_CFG_FLG2_INPUT_EN)
++		flags_en = ICE_AQC_SET_CGU_IN_CFG_FLG2_INPUT_EN;
++	if (freq == DPLL_PIN_FREQUENCY_1_HZ) {
++		if (p->flags[0] & ICE_AQC_GET_CGU_IN_CFG_FLG2_ESYNC_EN) {
++			ret = 0;
++		} else {
++			flags_en |= ICE_AQC_SET_CGU_IN_CFG_FLG2_ESYNC_EN;
++			ret = ice_aq_set_input_pin_cfg(&pf->hw, p->idx, 0,
++						       flags_en, 0, 0);
++		}
++	} else {
++		if (!(p->flags[0] & ICE_AQC_GET_CGU_IN_CFG_FLG2_ESYNC_EN)) {
++			ret = 0;
++		} else {
++			flags_en &= ~ICE_AQC_SET_CGU_IN_CFG_FLG2_ESYNC_EN;
++			ret = ice_aq_set_input_pin_cfg(&pf->hw, p->idx, 0,
++						       flags_en, 0, 0);
++		}
++	}
++	mutex_unlock(&pf->dplls.lock);
++
++	return ret;
++}
++
++/**
++ * ice_dpll_input_esync_get - callback for getting embedded sync config
++ * @pin: pointer to a pin
++ * @pin_priv: private data pointer passed on pin registration
++ * @dpll: registered dpll pointer
++ * @dpll_priv: private data pointer passed on dpll registration
++ * @esync: on success holds embedded sync pin properties
++ * @extack: error reporting
++ *
++ * Dpll subsystem callback. Handler for getting embedded sync frequency value
++ * and capabilities on input pin.
++ *
++ * Context: Acquires pf->dplls.lock
++ * Return:
++ * * 0 - success
++ * * negative - error
++ */
++static int
++ice_dpll_input_esync_get(const struct dpll_pin *pin, void *pin_priv,
++			 const struct dpll_device *dpll, void *dpll_priv,
++			 struct dpll_pin_esync *esync,
++			 struct netlink_ext_ack *extack)
++{
++	struct ice_dpll_pin *p = pin_priv;
++	struct ice_dpll *d = dpll_priv;
++	struct ice_pf *pf = d->pf;
++
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++	mutex_lock(&pf->dplls.lock);
++	if (!(p->status & ICE_AQC_GET_CGU_IN_CFG_STATUS_ESYNC_CAP) ||
++	    p->freq != DPLL_PIN_FREQUENCY_10_MHZ) {
++		mutex_unlock(&pf->dplls.lock);
++		return -EOPNOTSUPP;
++	}
++	esync->range = ice_esync_range;
++	esync->range_num = ARRAY_SIZE(ice_esync_range);
++	if (p->flags[0] & ICE_AQC_GET_CGU_IN_CFG_FLG2_ESYNC_EN) {
++		esync->freq = DPLL_PIN_FREQUENCY_1_HZ;
++		esync->pulse = ICE_DPLL_PIN_ESYNC_PULSE_HIGH_PERCENT;
++	} else {
++		esync->freq = 0;
++		esync->pulse = 0;
++	}
++	mutex_unlock(&pf->dplls.lock);
++
++	return 0;
++}
++
+ /**
+  * ice_dpll_rclk_state_on_pin_set - set a state on rclk pin
+  * @pin: pointer to a pin
+@@ -1224,6 +1437,8 @@ static const struct dpll_pin_ops ice_dpll_input_ops = {
+ 	.phase_adjust_get = ice_dpll_pin_phase_adjust_get,
+ 	.phase_adjust_set = ice_dpll_input_phase_adjust_set,
+ 	.phase_offset_get = ice_dpll_phase_offset_get,
++	.esync_set = ice_dpll_input_esync_set,
++	.esync_get = ice_dpll_input_esync_get,
+ };
+ 
+ static const struct dpll_pin_ops ice_dpll_output_ops = {
+@@ -1234,6 +1449,8 @@ static const struct dpll_pin_ops ice_dpll_output_ops = {
+ 	.direction_get = ice_dpll_output_direction,
+ 	.phase_adjust_get = ice_dpll_pin_phase_adjust_get,
+ 	.phase_adjust_set = ice_dpll_output_phase_adjust_set,
++	.esync_set = ice_dpll_output_esync_set,
++	.esync_get = ice_dpll_output_esync_get,
+ };
+ 
+ static const struct dpll_device_ops ice_dpll_ops = {
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
+index 93172e93995b9..c320f1bf7d6d6 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.h
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
+@@ -31,6 +31,7 @@ struct ice_dpll_pin {
+ 	struct dpll_pin_properties prop;
+ 	u32 freq;
+ 	s32 phase_adjust;
++	u8 status;
+ };
+ 
+ /** ice_dpll - store info required for DPLL control
 -- 
 2.43.0
 
