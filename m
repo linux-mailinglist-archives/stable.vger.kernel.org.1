@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-91000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448D49BEBFE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D949BEB5D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760691C237FE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217CC1C209D6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8353E1F1300;
-	Wed,  6 Nov 2024 12:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D60D1E909B;
+	Wed,  6 Nov 2024 12:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFAmc989"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAV7uoWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4051D1E0B7C;
-	Wed,  6 Nov 2024 12:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43171F76AD;
+	Wed,  6 Nov 2024 12:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897444; cv=none; b=Jp+INHJojY2je26y3PJkb7Ve3x1Szh+k+6K+W9y3qYnm8TBWpe4DU8Gu22ecT53dfzfc1BvhHn0b8H61N6SxsJVbceHHLCPuXFdmbID2VOH6Os1SA4mjzzNIseFfUBAYFrxq4LGz5woKOOlEpANz0xEap0CBY1qw/QhFGEy9rGM=
+	t=1730897026; cv=none; b=qU3EtTY0CesIc2BAKn4/cLmhH4jO2PwsK48AT3qv34UnOqshuNBtpaIwLgfxRSC+LT1uk1ZrMGyPBac6cwjzfeVegKftSd6POraINtifUc6rr5csYNRu2FhtErW734DItZ9NmSLgEHOkhA6v5fd6iHW0nIzZlc/wu+cneyyGDig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897444; c=relaxed/simple;
-	bh=LvjJwXzF5fo+ZZqBCCeZB0DidVc+viR77YRPcZznd+w=;
+	s=arc-20240116; t=1730897026; c=relaxed/simple;
+	bh=RBjkcHo4eVQKdjMmMeENmZGfAxBtCnqD/NrU2PRUzv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jsGGwDu6XXSRAE3m1EYTPcMMDlWvQoCx5dcLvPxUp0wkYvUvqc63iHSMhdeDOymSGwht7kFiiPObNUkUri0M6kFIUQ+FucXZcFFwwyP/zf0np8VOKWFHcL+y4gwEd2pXOjec60Bn29wfLDf4GPBOUVL4u8uqslJvp5iT9PdPtds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFAmc989; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97B9C4CECD;
-	Wed,  6 Nov 2024 12:50:43 +0000 (UTC)
+	 MIME-Version; b=smycdeniHfdbIb2fQXwgGMx3rEHWckRJZr9lIaBzszv4B/doBrgPcJ7w+q8DqBif4nhvxEDCkE/ijbv+AJb7saUYiiY9eycdRLI2D7wgMD1PqYXaF/QKWnRcKnJGsZEqeZlW8hB5gwBnxO50RvS+DvcdQeN4LW02i7fZ7Gy1HBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAV7uoWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB394C4CECD;
+	Wed,  6 Nov 2024 12:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897444;
-	bh=LvjJwXzF5fo+ZZqBCCeZB0DidVc+viR77YRPcZznd+w=;
+	s=korg; t=1730897026;
+	bh=RBjkcHo4eVQKdjMmMeENmZGfAxBtCnqD/NrU2PRUzv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFAmc989W4bs+vp1A9WBP+mzh3uEBsB0DqshqpBok8gMCj7OBXzAt04OqK08K2CyB
-	 br/xX4EWxf+V5A0Pr7l4DJqYj5jX1mk+Nr+o7aY/FN5NAsQLI5Anmp5hRPX0PFsgA6
-	 a+5Xp5gKG+5OoF8uPS1Fc8++6Xc659vR7uDCpEik=
+	b=fAV7uoWjIyUWpWZOfr3mX3fKeS7hVMYRV4FflZtwTzsU6V6rkz+0jXMhlFWsHgBd3
+	 EbpbfU+oke8jC4OISyLMU4D6OMW+2iqPPnWdqDDgldpUYdP97UL/zqLRQaLH7npnGh
+	 DPjHkCQ9ruM7VML735fpqIEjbafKwU/2uyhZjI94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	ruansy.fnst@fujitsu.com,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/151] ntfs3: Add bounds checking to mi_enum_attr()
+Subject: [PATCH 6.1 042/126] fsdax: remove zeroing code from dax_unshare_iter
 Date: Wed,  6 Nov 2024 13:04:03 +0100
-Message-ID: <20241106120310.346886356@linuxfoundation.org>
+Message-ID: <20241106120307.246805589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 556bdf27c2dd5c74a9caacbe524b943a6cd42d99 ]
+[ Upstream commit 95472274b6fed8f2d30fbdda304e12174b3d4099 ]
 
-Added bounds checking to make sure that every attr don't stray beyond
-valid memory region.
+Remove the code in dax_unshare_iter that zeroes the destination memory
+because it's not necessary.
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+If srcmap is unwritten, we don't have to do anything because that
+unwritten extent came from the regular file mapping, and unwritten
+extents cannot be shared.  The same applies to holes.
+
+Furthermore, zeroing to unshare a mapping is just plain wrong because
+unsharing means copy on write, and we should be copying data.
+
+This is effectively a revert of commit 13dd4e04625f ("fsdax: unshare:
+zero destination if srcmap is HOLE or UNWRITTEN")
+
+Cc: ruansy.fnst@fujitsu.com
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/172796813311.1131942.16033376284752798632.stgit@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/record.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ fs/dax.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index 6c76503edc200..2a375247b3c09 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -223,28 +223,19 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		prev_type = 0;
- 		attr = Add2Ptr(rec, off);
- 	} else {
--		/* Check if input attr inside record. */
-+		/*
-+		 * We don't need to check previous attr here. There is
-+		 * a bounds checking in the previous round.
-+		 */
- 		off = PtrOffset(rec, attr);
--		if (off >= used)
--			return NULL;
+diff --git a/fs/dax.c b/fs/dax.c
+index 74f9a14565f59..fa5a82b27c2f6 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1239,14 +1239,6 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
+ 	if (ret < 0)
+ 		goto out_unlock;
  
- 		asize = le32_to_cpu(attr->size);
--		if (asize < SIZEOF_RESIDENT) {
--			/* Impossible 'cause we should not return such attribute. */
--			return NULL;
--		}
+-	/* zero the distance if srcmap is HOLE or UNWRITTEN */
+-	if (srcmap->flags & IOMAP_F_SHARED || srcmap->type == IOMAP_UNWRITTEN) {
+-		memset(daddr, 0, length);
+-		dax_flush(iomap->dax_dev, daddr, length);
+-		ret = length;
+-		goto out_unlock;
+-	}
 -
--		/* Overflow check. */
--		if (off + asize < off)
--			return NULL;
- 
- 		prev_type = le32_to_cpu(attr->type);
- 		attr = Add2Ptr(attr, asize);
- 		off += asize;
- 	}
- 
--	asize = le32_to_cpu(attr->size);
--
- 	/* Can we use the first field (attr->type). */
- 	if (off + 8 > used) {
- 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
-@@ -265,6 +256,12 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 	if (t32 < prev_type)
- 		return NULL;
- 
-+	asize = le32_to_cpu(attr->size);
-+	if (asize < SIZEOF_RESIDENT) {
-+		/* Impossible 'cause we should not return such attribute. */
-+		return NULL;
-+	}
-+
- 	/* Check overflow and boundary. */
- 	if (off + asize < off || off + asize > used)
- 		return NULL;
+ 	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
+ 	if (ret < 0)
+ 		goto out_unlock;
 -- 
 2.43.0
 
