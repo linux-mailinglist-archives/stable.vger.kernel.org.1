@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-90708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA58B9BE9AB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F24E9BEB9B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28DD1F2111F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E39285002
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1821DFE33;
-	Wed,  6 Nov 2024 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414201F892E;
+	Wed,  6 Nov 2024 12:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JP/XKUOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFkzuESp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483AD1DFE3A;
-	Wed,  6 Nov 2024 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BEB1EE000;
+	Wed,  6 Nov 2024 12:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896577; cv=none; b=m7OyknwS1Psv8FXkWVOOv7z/pno7MQE1Hs1B926a5hM2fQ+nzv7I0U2P2HX2kkcPvh50MfFGNHeWfagkQatW4E3JyqiqB1eHdZlvc8jWOIdoz+iHRMapICPnCmqUIYwWXMEx5ec/16tucKY7EwYHUixcke/xUl7JtyNfq8HDXXY=
+	t=1730897174; cv=none; b=mJIxhj7O0LymUMXdg3GhAnuNc48IldzAYzAJKjMaFz1wmBDouYVnKT7/V1BCColedWK12CiuCL18wQanQvL0M1zKs2FDCDilcmQk+CWacDV1oRcpAe2VOuNqOyG8w0pIZx42IZgIvRkcnfAQBdm3KNo1hTgCrbDzl0wDq4YZD5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896577; c=relaxed/simple;
-	bh=n30uP4sah7ov+QFcCs/ogu9THSTcAiPx5U6krFwILpc=;
+	s=arc-20240116; t=1730897174; c=relaxed/simple;
+	bh=2NtUrv9ChmTUalaRZQl7vpGktFezvnbqoD41Q5OWFK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBS8Ea75YUvlURS9hxWfZDDLRN+0QUK4+WM0r6tJvYC7OvGaVA0397c5h3z+CZtG2YLKNMxOGg3x/Pm2yeG2F+X9zirr5Fk/QvsnArc0lzmhHQjFSG5YRllmXa6N1Ubp8/KJYhzBdl4MgMiZq4H4ajiIIs8pS7vplVLSghee+Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JP/XKUOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C92C4CED4;
-	Wed,  6 Nov 2024 12:36:16 +0000 (UTC)
+	 MIME-Version; b=hnu0Y2uHPAjH5t30Mn8tFIth9NCDZ/Y63gqngLzrtTBBZzC3hTdI+meltgXIVpR1PQRYk0SR/cAM10nenexj75Il4ifZYAuvES0w3ARcmYRGQTA3wIlFw9F04Z5MQfFBOGvklU3EiB/s/KDVHFzZhv+k8x4aC++753xmiI14EBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFkzuESp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76114C4CECD;
+	Wed,  6 Nov 2024 12:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896577;
-	bh=n30uP4sah7ov+QFcCs/ogu9THSTcAiPx5U6krFwILpc=;
+	s=korg; t=1730897173;
+	bh=2NtUrv9ChmTUalaRZQl7vpGktFezvnbqoD41Q5OWFK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JP/XKUOaorCs721P+p817K9JZ5q1+l9U84fwy8eJE54KBtimEACG2lDRAlmLflil3
-	 1vbOuYGhXpalSfnNfi4MuJX95sjM0O9ATTpCWOhXB4lNLctYKaNtuheocGzw9XxRxL
-	 QVmb5TQf9Vu8zw69CbsBM+G7kUpBvwXKOlkHsk9I=
+	b=fFkzuESpUkY4Y6NTcXe3Ld+cLKrD8CNO/pkX2o7T5621+EzGQVlEixGC5fLhQsBJ6
+	 1ukzsEni0nyjneUXnohhfEA73M6Zc2JxZRWQeip/uAGtD5LJna80C7at/iitDg9NlC
+	 1PHGOkKxFapGBnTWNInRAUHTKuivTtBnrBMKwysk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shekhar Chauhan <shekhar.chauhan@intel.com>,
-	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
-	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 239/245] drm/xe/xe2: Add performance turning changes
+	Mel Gorman <mgorman@techsingularity.net>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/126] mm/page_alloc: treat RT tasks similar to __GFP_HIGH
 Date: Wed,  6 Nov 2024 13:04:52 +0100
-Message-ID: <20241106120325.151413759@linuxfoundation.org>
+Message-ID: <20241106120308.530528229@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +67,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+From: Mel Gorman <mgorman@techsingularity.net>
 
-commit ecabb5e6ce54711c28706fc794d77adb3ecd0605 upstream.
+[ Upstream commit c988dcbecf3fd5430921eaa3fe9054754f76d185 ]
 
-Update performance tuning according to the hardware spec.
+RT tasks are allowed to dip below the min reserve but ALLOC_HARDER is
+typically combined with ALLOC_MIN_RESERVE so RT tasks are a little
+unusual.  While there is some justification for allowing RT tasks access
+to memory reserves, there is a strong chance that a RT task that is also
+under memory pressure is at risk of missing deadlines anyway.  Relax how
+much reserves an RT task can access by treating it the same as __GFP_HIGH
+allocations.
 
-Bspec: 72161
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-Reviewed-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240805053710.877119-1-shekhar.chauhan@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that in a future kernel release that the RT special casing will be
+removed.  Hard realtime tasks should be locking down resources in advance
+and ensuring enough memory is available.  Even a soft-realtime task like
+audio or video live decoding which cannot jitter should be allocating both
+memory and any disk space required up-front before the recording starts
+instead of relying on reserves.  At best, reserve access will only delay
+the problem by a very short interval.
+
+Link: https://lkml.kernel.org/r/20230113111217.14134-3-mgorman@techsingularity.net
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h |    4 ++++
- drivers/gpu/drm/xe/xe_tuning.c       |    8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ mm/page_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -80,6 +80,9 @@
- #define   LE_CACHEABILITY_MASK			REG_GENMASK(1, 0)
- #define   LE_CACHEABILITY(value)		REG_FIELD_PREP(LE_CACHEABILITY_MASK, value)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f5b870780d3fd..e78ab23eb1743 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4854,7 +4854,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask)
+ 		 */
+ 		alloc_flags &= ~ALLOC_CPUSET;
+ 	} else if (unlikely(rt_task(current)) && in_task())
+-		alloc_flags |= ALLOC_HARDER;
++		alloc_flags |= ALLOC_MIN_RESERVE;
  
-+#define STATELESS_COMPRESSION_CTRL		XE_REG(0x4148)
-+#define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
-+
- #define XE2_GAMREQSTRM_CTRL			XE_REG(0x4194)
- #define   CG_DIS_CNTLBUS			REG_BIT(6)
+ 	alloc_flags = gfp_to_alloc_flags_cma(gfp_mask, alloc_flags);
  
-@@ -194,6 +197,7 @@
- #define GSCPSMI_BASE				XE_REG(0x880c)
- 
- #define CCCHKNREG1				XE_REG_MCR(0x8828)
-+#define   L3CMPCTRL				REG_BIT(23)
- #define   ENCOMPPERFFIX				REG_BIT(18)
- 
- /* Fuse readout registers for GT */
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -39,7 +39,8 @@ static const struct xe_rtp_entry_sr gt_t
- 	},
- 	{ XE_RTP_NAME("Tuning: Compression Overfetch"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
--	  XE_RTP_ACTIONS(CLR(CCCHKNREG1, ENCOMPPERFFIX)),
-+	  XE_RTP_ACTIONS(CLR(CCCHKNREG1, ENCOMPPERFFIX),
-+			 SET(CCCHKNREG1, L3CMPCTRL))
- 	},
- 	{ XE_RTP_NAME("Tuning: Enable compressible partial write overfetch in L3"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
-@@ -50,6 +51,11 @@ static const struct xe_rtp_entry_sr gt_t
- 	  XE_RTP_ACTIONS(SET(L3SQCREG2,
- 			     COMPMEMRD256BOVRFETCHEN))
- 	},
-+	{ XE_RTP_NAME("Tuning: Stateless compression control"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
-+	  XE_RTP_ACTIONS(FIELD_SET(STATELESS_COMPRESSION_CTRL, UNIFIED_COMPRESSION_FORMAT,
-+				   REG_FIELD_PREP(UNIFIED_COMPRESSION_FORMAT, 0)))
-+	},
- 	{}
- };
- 
+-- 
+2.43.0
+
 
 
 
