@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF179BE7CB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE8E9BE8F6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8066B251D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 424F51F23183
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416BE1DF969;
-	Wed,  6 Nov 2024 12:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9ACD1DED58;
+	Wed,  6 Nov 2024 12:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JO6mRJff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVV/jlFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EFA1DF267;
-	Wed,  6 Nov 2024 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946D918C00E;
+	Wed,  6 Nov 2024 12:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895466; cv=none; b=K0N0l4ytzpKDYYGTTAUTzyrogId40ZI5g3L2ve98/u4nqWWoyA1Fe840+r960PY2mc8uKYdFV/ht1U5pgJ7ttrwOaXIbgknJ6wfyOxSgLBtGdyTMl3zk+upQ8Sx92Q+D3X5WuFkmPVR+WsqlYTJk2c4ZYgwikX4CBw4T5hvu4no=
+	t=1730896138; cv=none; b=g84uzGo4rH01M6/M5NyO+yXDggob/Hmh6+qXh/3E0edeMGCLgzimVXkLMGsPzfwSoDVcIDtMYTw2QpjAcqsaK9EeT02rmeTvtTauq7+q4orp3nGY++8KzC18KQK30SdRkwjIv1UcpkPSNpVRG+QXtcvufRoXiizJph2jaHvRXgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895466; c=relaxed/simple;
-	bh=2zuKzC8GugTu2YHA3ywtIdY60oPXTISWIiHiJWDTAVU=;
+	s=arc-20240116; t=1730896138; c=relaxed/simple;
+	bh=tMRnWglhvRkuWySe2zFEGqBqftBIRiLEnqbHdQgDfO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHtNTANr1ZUJpghqLy6DnQNSCfoNGNw/pUoP6W13rj5336oionuStoYUgNZFKUmgUVhEnJ5uYqnPIBZlhtp/R1uiUoz+BJdugumaRMxYWZdSKIWwUx+715UnDuqMQWsAQcNGb5Zf/oFDpHu8i7/XB5AIH7neZRwQwLfp5c3wBVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JO6mRJff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28331C4CECD;
-	Wed,  6 Nov 2024 12:17:44 +0000 (UTC)
+	 MIME-Version; b=SDZaNAhf5BwKnPx51WqLW/Q8OwjKQ8Duf2SCsPTBfIyLrg1fLfkS6bGjYD+PgxiDRagXSaR+8PE+vBld507qE2j3vmdJnKH+VT7+2qJpSxWhqcsExKR7B8173UMVWhx5vsapR0yNGSWe+rJ5NBqppe0wHqCSoXUMlriyHIFnHoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVV/jlFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF39C4CECD;
+	Wed,  6 Nov 2024 12:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895465;
-	bh=2zuKzC8GugTu2YHA3ywtIdY60oPXTISWIiHiJWDTAVU=;
+	s=korg; t=1730896138;
+	bh=tMRnWglhvRkuWySe2zFEGqBqftBIRiLEnqbHdQgDfO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JO6mRJffJIj3OBMMazVm4u0zmWo/NS8+we3NMYwSOAAU8dCFiYjSGnX20fC/RpmnQ
-	 2qpvdFTWSPIwNTyzdcSPXMFqO8Ye093HqCBjpNAeq5UWxHFXi+12fgi42yX4nMO5hD
-	 wwv4MPQGWUgVnkoaH35yt9wnBsniXys43FZWox20=
+	b=iVV/jlFFlpisozSd2G8QztoTXfNm4NXrw6vwDb0L3kbYTJXSHX7xbgAfVHGO3RR2A
+	 OLsqv2u15P1B43FzIDrLgiZ39ta+7Rkr4PMlKb7HC19Tveh9yHV1ervJ2uCLKpYgDR
+	 XEWPrbjR9iViGDCc7H9jciKtwATzT0Kkbbk3dkDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhanchengbin <zhanchengbin1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH 4.19 227/350] ext4: fix inode tree inconsistency caused by ENOMEM
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 102/245] NFSD: Initialize struct nfsd4_copy earlier
 Date: Wed,  6 Nov 2024 13:02:35 +0100
-Message-ID: <20241106120326.594865305@linuxfoundation.org>
+Message-ID: <20241106120321.725587229@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhanchengbin <zhanchengbin1@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 3f5424790d4377839093b68c12b130077a4e4510 upstream.
+[ Upstream commit 63fab04cbd0f96191b6e5beedc3b643b01c15889 ]
 
-If ENOMEM fails when the extent is splitting, we need to restore the length
-of the split extent.
-In the ext4_split_extent_at function, only in ext4_ext_create_new_leaf will
-it alloc memory and change the shape of the extent tree,even if an ENOMEM
-is returned at this time, the extent tree is still self-consistent, Just
-restore the split extent lens in the function ext4_split_extent_at.
+Ensure the refcount and async_copies fields are initialized early.
+cleanup_async_copy() will reference these fields if an error occurs
+in nfsd4_copy(). If they are not correctly initialized, at the very
+least, a refcount underflow occurs.
 
-ext4_split_extent_at
- ext4_ext_insert_extent
-  ext4_ext_create_new_leaf
-   1)ext4_ext_split
-     ext4_find_extent
-   2)ext4_ext_grow_indepth
-     ext4_find_extent
-
-Signed-off-by: zhanchengbin <zhanchengbin1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230103022812.130603-1-zhanchengbin1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Fixes: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3293,7 +3293,7 @@ static int ext4_split_extent_at(handle_t
- 		ext4_ext_mark_unwritten(ex2);
- 
- 	err = ext4_ext_insert_extent(handle, inode, ppath, &newex, flags);
--	if (err != -ENOSPC && err != -EDQUOT)
-+	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
- 		goto out;
- 
- 	/*
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 5768b2ff1d1d1..81a1e3bf06b97 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1838,14 +1838,14 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		if (!async_copy)
+ 			goto out_err;
+ 		async_copy->cp_nn = nn;
++		INIT_LIST_HEAD(&async_copy->copies);
++		refcount_set(&async_copy->refcount, 1);
+ 		/* Arbitrary cap on number of pending async copy operations */
+ 		if (atomic_inc_return(&nn->pending_async_copies) >
+ 				(int)rqstp->rq_pool->sp_nrthreads) {
+ 			atomic_dec(&nn->pending_async_copies);
+ 			goto out_err;
+ 		}
+-		INIT_LIST_HEAD(&async_copy->copies);
+-		refcount_set(&async_copy->refcount, 1);
+ 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+ 		if (!async_copy->cp_src)
+ 			goto out_err;
+-- 
+2.43.0
+
 
 
 
