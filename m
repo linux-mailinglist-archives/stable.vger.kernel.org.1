@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-90982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94AC9BEBEB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EE89BE801
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6018D1F25111
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A47284AC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529431F9ECC;
-	Wed,  6 Nov 2024 12:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0461DF72F;
+	Wed,  6 Nov 2024 12:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIExpmPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHjRK1zI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6961EF928;
-	Wed,  6 Nov 2024 12:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FD71DF257;
+	Wed,  6 Nov 2024 12:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897391; cv=none; b=cybVidexyNQKYRO/XsF2Vnrx7ov0nctbM73C3tgF7L8rjILp+M/ViwwBJxruFoLYj9SLecBB3Vc7W4Sm+CKBLNzNoAowWHg969yIzcRpJ+ipl0LisRGnh/7wBlT2zANJ62+kFsj+dAZBLxRSbYX9LqddCI5Z6H4nDbycBMBXBbE=
+	t=1730895591; cv=none; b=QkSuicChnwZwkEosBsYLFa8DkUk0i7e79FtikoAQtF+uC36VfCcQrIIIX5ZeHq+x7oUZQnJGK5uKKh3g1PUrihq9LDG+UrNlwX55B8vDUZlSlH9F6eSVMKrNUBOoyo5pQnL5Vgj/+ytXu7ctP+4BL+xZUlysUgpAf1Cz8Zp3C/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897391; c=relaxed/simple;
-	bh=yp+6Oc+zChMHK5V5H+g5zB6ajr3E9eKjX1xhz1mtHiU=;
+	s=arc-20240116; t=1730895591; c=relaxed/simple;
+	bh=nnTwbjq2WoNtL3F623X75mpY7wFmXo1nV+Uog7RXt1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h1xSEMcrfRgJqkMCOUtJ4T1OBJ1dKKHJ8G5H2pN7oFuhEHCMsUrrrWdc1h5IIoi8ovnGWyXyePcWFi+GPLd4DbQchsX4439/+kJH5GFh+VzBt2b/tcRaa3mqE1x3f8KPeVv5T4Vvdkemvi6bQbSVZ2AIA7VX0z9fZ+RpBuU98OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIExpmPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CA9C4CECD;
-	Wed,  6 Nov 2024 12:49:50 +0000 (UTC)
+	 MIME-Version; b=TOflyUepz/h02kEeS80fcRxZT8r5w24F3C0jdAMjtDEg67czVQ8nry2mlsoAhgG0RzHmAjXz26g+aIvw5OYY0MaOHw1IIUQKuPYcRqdca4FWP2xqs9HvUztwpW5ZUD+EQ81vspoIMm8FPAT0/7dD59bbkdR/HiEXQOLbnWWyKGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHjRK1zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21668C4CECD;
+	Wed,  6 Nov 2024 12:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897390;
-	bh=yp+6Oc+zChMHK5V5H+g5zB6ajr3E9eKjX1xhz1mtHiU=;
+	s=korg; t=1730895591;
+	bh=nnTwbjq2WoNtL3F623X75mpY7wFmXo1nV+Uog7RXt1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIExpmPT9cQ+PQBdV9Bf2V3F002U2hi2jsvHPEwUOmxS6m3uiF4YgTFTxSAS0gMyX
-	 Kw8NGd0v+StX+Fj9RYj9lB3X+96/gQ/fat6iJQ+pqPos44sXq+uinMJ3N4TJ1r3JM8
-	 p2SCjUUTowtLNEleSjFWmg3Aqfro6GOLHaF1F75o=
+	b=aHjRK1zI5OEECz+haR/hgHruEz/vpPoWCQPl5rZcHKz/oUk/8ILZ11GGaM78TnkTI
+	 ei4yaoDRLUjcdrCN6QzwwdK6yuddzTJdOUSEB0J/vxZLKhY6L3B6w99LCeQczgCSvg
+	 uNxMrdvLPSGnpKsQhR0ZhChLwy4kVAKHMrzaSGIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin-=C3=89ric=20Racine?= <martin-eric.racine@iki.fi>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Brandon Nielsen <nielsenb@jetfuse.net>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/151] wifi: iwlegacy: Fix "field-spanning write" warning in il_enqueue_hcmd()
-Date: Wed,  6 Nov 2024 13:03:16 +0100
-Message-ID: <20241106120309.070998720@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 4.19 269/350] arm64: probes: Remove broken LDR (literal) uprobe support
+Date: Wed,  6 Nov 2024 13:03:17 +0100
+Message-ID: <20241106120327.536747119@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <ben@decadent.org.uk>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit d4cdc46ca16a5c78b36c5b9b6ad8cac09d6130a0 ]
+commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
 
-iwlegacy uses command buffers with a payload size of 320
-bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
-describes the default buffers and there is no separate type describing
-the huge buffers.
+The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
+unsafe to use for uprobes. Both functions were originally written for
+use with kprobes, and access memory with plain C accesses. When uprobes
+was added, these were reused unmodified even though they cannot safely
+access user memory.
 
-The il_enqueue_hcmd() function works with both default and huge
-buffers, and has a memcpy() to the buffer payload.  The size of
-this copy may exceed 320 bytes when using a huge buffer, which
-now results in a run-time warning:
+There are three key problems:
 
-    memcpy: detected field-spanning write (size 1014) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170 (size 320)
+1) The plain C accesses do not have corresponding extable entries, and
+   thus if they encounter a fault the kernel will treat these as
+   unintentional accesses to user memory, resulting in a BUG() which
+   will kill the kernel thread, and likely lead to further issues (e.g.
+   lockup or panic()).
 
-To fix this:
+2) The plain C accesses are subject to HW PAN and SW PAN, and so when
+   either is in use, any attempt to simulate an access to user memory
+   will fault. Thus neither simulate_ldr_literal() nor
+   simulate_ldrsw_literal() can do anything useful when simulating a
+   user instruction on any system with HW PAN or SW PAN.
 
-- Define a new struct type for huge buffers, with a correctly sized
-  payload field
-- When using a huge buffer in il_enqueue_hcmd(), cast the command
-  buffer pointer to that type when looking up the payload field
+3) The plain C accesses are privileged, as they run in kernel context,
+   and in practice can access a small range of kernel virtual addresses.
+   The instructions they simulate have a range of +/-1MiB, and since the
+   simulated instructions must itself be a user instructions in the
+   TTBR0 address range, these can address the final 1MiB of the TTBR1
+   acddress range by wrapping downwards from an address in the first
+   1MiB of the TTBR0 address range.
 
-Reported-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
-References: https://bugs.debian.org/1062421
-References: https://bugzilla.kernel.org/show_bug.cgi?id=219124
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy()")
-Tested-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
-Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZuIhQRi/791vlUhE@decadent.org.uk
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   In contemporary kernels the last 8MiB of TTBR1 address range is
+   reserved, and accesses to this will always fault, meaning this is no
+   worse than (1).
+
+   Historically, it was theoretically possible for the linear map or
+   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
+   in practice this is extremely unlikely to occur as this would
+   require either:
+
+   * Having enough physical memory to fill the entire linear map all the
+     way to the final 1MiB of the TTBR1 address range.
+
+   * Getting unlucky with KASLR randomization of the linear map such
+     that the populated region happens to overlap with the last 1MiB of
+     the TTBR address range.
+
+   ... and in either case if we were to spill into the final page there
+   would be larger problems as the final page would alias with error
+   pointers.
+
+Practically speaking, (1) and (2) are the big issues. Given there have
+been no reports of problems since the broken code was introduced, it
+appears that no-one is relying on probing these instructions with
+uprobes.
+
+Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
+(literal), limiting the use of simulate_ldr_literal() and
+simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
+(literal) and LDRSW (literal) will be rejected as
+arm_probe_decode_insn() will return INSN_REJECTED. In future we can
+consider introducing working uprobes support for these instructions, but
+this will require more significant work.
+
+Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlegacy/common.c | 13 ++++++++++++-
- drivers/net/wireless/intel/iwlegacy/common.h | 12 ++++++++++++
- 2 files changed, 24 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 96002121bb8b2..9fa38221c4311 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -3119,6 +3119,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
- 	struct il_cmd_meta *out_meta;
- 	dma_addr_t phys_addr;
- 	unsigned long flags;
-+	u8 *out_payload;
- 	u32 idx;
- 	u16 fix_size;
- 
-@@ -3154,6 +3155,16 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
- 	out_cmd = txq->cmd[idx];
- 	out_meta = &txq->meta[idx];
- 
-+	/* The payload is in the same place in regular and huge
-+	 * command buffers, but we need to let the compiler know when
-+	 * we're using a larger payload buffer to avoid "field-
-+	 * spanning write" warnings at run-time for huge commands.
-+	 */
-+	if (cmd->flags & CMD_SIZE_HUGE)
-+		out_payload = ((struct il_device_cmd_huge *)out_cmd)->cmd.payload;
-+	else
-+		out_payload = out_cmd->cmd.payload;
+--- a/arch/arm64/kernel/probes/decode-insn.c
++++ b/arch/arm64/kernel/probes/decode-insn.c
+@@ -104,10 +104,6 @@ arm_probe_decode_insn(probe_opcode_t ins
+ 	    aarch64_insn_is_blr(insn) ||
+ 	    aarch64_insn_is_ret(insn)) {
+ 		api->handler = simulate_br_blr_ret;
+-	} else if (aarch64_insn_is_ldr_lit(insn)) {
+-		api->handler = simulate_ldr_literal;
+-	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
+-		api->handler = simulate_ldrsw_literal;
+ 	} else {
+ 		/*
+ 		 * Instruction cannot be stepped out-of-line and we don't
+@@ -145,6 +141,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 	probe_opcode_t insn = le32_to_cpu(*addr);
+ 	probe_opcode_t *scan_end = NULL;
+ 	unsigned long size = 0, offset = 0;
++	struct arch_probe_insn *api = &asi->api;
 +
- 	if (WARN_ON(out_meta->flags & CMD_MAPPED)) {
- 		spin_unlock_irqrestore(&il->hcmd_lock, flags);
- 		return -ENOSPC;
-@@ -3167,7 +3178,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
- 		out_meta->callback = cmd->callback;
++	if (aarch64_insn_is_ldr_lit(insn)) {
++		api->handler = simulate_ldr_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
++		api->handler = simulate_ldrsw_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else {
++		decoded = arm_probe_decode_insn(insn, &asi->api);
++	}
  
- 	out_cmd->hdr.cmd = cmd->id;
--	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
-+	memcpy(out_payload, cmd->data, cmd->len);
+ 	/*
+ 	 * If there's a symbol defined in front of and near enough to
+@@ -162,7 +169,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 		else
+ 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
+ 	}
+-	decoded = arm_probe_decode_insn(insn, &asi->api);
  
- 	/* At this point, the out_cmd now has all of the incoming cmd
- 	 * information */
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-index 69687fcf963fc..027dae5619a37 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.h
-+++ b/drivers/net/wireless/intel/iwlegacy/common.h
-@@ -560,6 +560,18 @@ struct il_device_cmd {
- 
- #define TFD_MAX_PAYLOAD_SIZE (sizeof(struct il_device_cmd))
- 
-+/**
-+ * struct il_device_cmd_huge
-+ *
-+ * For use when sending huge commands.
-+ */
-+struct il_device_cmd_huge {
-+	struct il_cmd_header hdr;	/* uCode API */
-+	union {
-+		u8 payload[IL_MAX_CMD_SIZE - sizeof(struct il_cmd_header)];
-+	} __packed cmd;
-+} __packed;
-+
- struct il_host_cmd {
- 	const void *data;
- 	unsigned long reply_page;
--- 
-2.43.0
-
+ 	if (decoded != INSN_REJECTED && scan_end)
+ 		if (is_probed_address_atomic(addr - 1, scan_end))
 
 
 
