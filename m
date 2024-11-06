@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-90458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2309BE86E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2E9BEB2F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 401831C219A1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5777D1F26DD8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DD81DFD82;
-	Wed,  6 Nov 2024 12:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E4E1E260F;
+	Wed,  6 Nov 2024 12:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOmgH8LA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2H1edCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A1F1DF98C;
-	Wed,  6 Nov 2024 12:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958E21E048E;
+	Wed,  6 Nov 2024 12:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895832; cv=none; b=hU+9zT+yNsYQixwdnaIX+l1e78uH4OIP4drA17pC3leoi2rCnoKa/MfHirH76blNYxUOgn/FZNfs3Eu1Dmk91CyFhQSwO8lY+9QvxOrqrBuwBUwdyMn/GhQMWz93lkbi387yC35xB44sLbXUHxwlze/tHIxfpmo4a2xWjE/vEL4=
+	t=1730896898; cv=none; b=q1HMIkcgt8VFrQeKb3oR3FYSmYON8IqxCUbcQogRR+76GPzSLNctqfC6SuYar01D0DClt6/CncQoSDpsXDl2D/ElTP8WKVshlVjLtjwPhJFxlQZ4jmRK2va/xT53/Lc1sPh+rmtFMAYdfa+0vWS1hxU03fX2FWZj7H9Qwa57q0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895832; c=relaxed/simple;
-	bh=j+bRRNwcSmCHLvYCpnDKSy+j945RA0mtWeh9ako53Nk=;
+	s=arc-20240116; t=1730896898; c=relaxed/simple;
+	bh=svp5yqLIZ00nnXnf7CgjuKRq5mbMIl2/ykNlE9qpuIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7TjYzoBz8fM9Jn2MGlTVJ2vdnr0NAGOzkv7mHXR+s4+bbxwRuaqkx1dajELLnURCCavxWZNqTX8To2k5LXj0AWc9OVbjqbpBCmd7C1q2QDTpJmjnqe3CRRrWDp2D7muQpqFuqzlZIB7BhJdBGrk7rPZ5USgTASuW8SH7AVjk0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOmgH8LA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF40C4CECD;
-	Wed,  6 Nov 2024 12:23:52 +0000 (UTC)
+	 MIME-Version; b=mv87aJgKlc5E355St2P1BSLyyJ0F3Ub/YPDHfsV5gkgSoPjaydL65+UAyySFTGZgG6pRvwYwIEyycpoZBUvrcw9LvMBQLCM6JWd7+ASI9qhRbteWEaoPSe6HToMd9AXOyll2Jgf4BCI+Gjan6IWwsNmOMhtK4HVy3NZPhWemgug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2H1edCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E3EC4CECD;
+	Wed,  6 Nov 2024 12:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895832;
-	bh=j+bRRNwcSmCHLvYCpnDKSy+j945RA0mtWeh9ako53Nk=;
+	s=korg; t=1730896898;
+	bh=svp5yqLIZ00nnXnf7CgjuKRq5mbMIl2/ykNlE9qpuIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOmgH8LA4W6HvpHSKORs3rJ7GzQ55Nw7BKicNmESMpRTR+EKzKrFbEN4rHdIoKz8N
-	 pIUH/tlEIPVMXma2MA1PTEE4YpGsb6eJ5qaTnFvWXmewrBuybRGHdiahGb2wUBp7Fl
-	 x18uZ28ghxU7T3kdElX7SrNcDLXUzZx3sOHJCC/o=
+	b=P2H1edCBoOlGV1ktXwalaTagXnEZuJ5oEFeR60nDPtswxOg5+QIEsb528oiN89YLM
+	 ccSk3yO+TUoVaA3CSglsdmKeXROIV+dwFMfSN5zbTXsGMF47zaJxuh3EwUX9PcBTTj
+	 zibtww4CiB0Eh4WZDDHLakD++otkM8Jdk1+Tq5g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 4.19 350/350] vt: prevent kernel-infoleak in con_font_get()
+	Pau Espin Pedrol <pespin@sysmocom.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Oliver Smith <osmith@sysmocom.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 072/110] gtp: allow -1 to be specified as file description from userspace
 Date: Wed,  6 Nov 2024 13:04:38 +0100
-Message-ID: <20241106120329.321362730@linuxfoundation.org>
+Message-ID: <20241106120305.176653379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
+[ Upstream commit 7515e37bce5c428a56a9b04ea7e96b3f53f17150 ]
 
-font.data may not initialize all memory spaces depending on the implementation
-of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
-is safest to modify it to initialize the allocated memory space to 0, and it
-generally does not affect the overall performance of the system.
+Existing user space applications maintained by the Osmocom project are
+breaking since a recent fix that addresses incorrect error checking.
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
-Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Restore operation for user space programs that specify -1 as file
+descriptor to skip GTPv0 or GTPv1 only sockets.
+
+Fixes: defd8b3c37b0 ("gtp: fix a potential NULL pointer dereference")
+Reported-by: Pau Espin Pedrol <pespin@sysmocom.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Tested-by: Oliver Smith <osmith@sysmocom.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241022144825.66740-1-pablo@netfilter.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/vt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/gtp.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -4450,7 +4450,7 @@ static int con_font_get(struct vc_data *
- 	int c;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 24cb7b97e4fcc..42839cb853f83 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -842,20 +842,24 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
+ 	unsigned int role = GTP_ROLE_GGSN;
  
- 	if (op->data) {
--		font.data = kmalloc(max_font_size, GFP_KERNEL);
-+		font.data = kzalloc(max_font_size, GFP_KERNEL);
- 		if (!font.data)
- 			return -ENOMEM;
- 	} else
+ 	if (data[IFLA_GTP_FD0]) {
+-		u32 fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
++		int fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
+ 
+-		sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
+-		if (IS_ERR(sk0))
+-			return PTR_ERR(sk0);
++		if (fd0 >= 0) {
++			sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
++			if (IS_ERR(sk0))
++				return PTR_ERR(sk0);
++		}
+ 	}
+ 
+ 	if (data[IFLA_GTP_FD1]) {
+-		u32 fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
++		int fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
+ 
+-		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
+-		if (IS_ERR(sk1u)) {
+-			gtp_encap_disable_sock(sk0);
+-			return PTR_ERR(sk1u);
++		if (fd1 >= 0) {
++			sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
++			if (IS_ERR(sk1u)) {
++				gtp_encap_disable_sock(sk0);
++				return PTR_ERR(sk1u);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
