@@ -1,70 +1,55 @@
-Return-Path: <stable+bounces-89959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317279BDBF8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111099BDBFA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635701C22E6C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:11:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 312E51C22EA3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1858719049A;
-	Wed,  6 Nov 2024 02:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33AB1CC89D;
+	Wed,  6 Nov 2024 02:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pifckaH2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feB1JIKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CF2190485;
-	Wed,  6 Nov 2024 02:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546921CC887;
+	Wed,  6 Nov 2024 02:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858981; cv=none; b=DviU1odW0FBspPq2FjkG7clTzeuy8MQB+G0dhOUmrPf7lVBbfsYjdCkHvaPgLsKlEvd1oNAIdx3u/amlu96nODYpTqWlc6xHt1ZPfqm0kCyGSMeU1CDoFSO8b8HMtV1zY+SDdA7tVR67pIXj8dzjD2m+v432uN3l1FxhgMJLRSo=
+	t=1730858985; cv=none; b=HlXibSL0qTWao268hMR9+0Ddrh/Y+geDkKGaYc38H8Xq6oM38LBpHf1EbXbayAeXgp6XuUnblAHIl1rUxi6rsKLUdX7v1IpJFX8dBBx5I1jxRxkdTtltvbFAJn4q8FM+2DglLGhJD0QpxGbQdNTvznhkdXsIeaGZIaACSDzuorc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858981; c=relaxed/simple;
-	bh=6RTZNnGDuEAzppwfEDxHo8Ljs/fWsIF9i8G2Xdc/1Kc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PIjAv6l6VQtHR1au1aNLB9L8yIofMUnXcPkbHibHPoF69zA5a/PiDl81hDTp2fIMyejajIA1zSPpd/lA2EYvUaDUYU2zDxHtrrjyOcBP3gzu74FErFPLjkYj5v0vqDXa7eV2Pp7Coupm6Vvd8qGP9qJWDbGSVB/7R2uAiZ6K2rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pifckaH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8295CC4CECF;
-	Wed,  6 Nov 2024 02:09:38 +0000 (UTC)
+	s=arc-20240116; t=1730858985; c=relaxed/simple;
+	bh=UYVVTwzIzZVes1NNOPT6nwoHhvCAcSGlPc0j0APmPZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jMbs/v5eNFSZfGuNXYR6mxW1ixOb8Wv5khcvD1fM5/AmeEk3cQqwZzA0nBYA8D+Y7Q8Nw6Q5mwgnFlrjK5jZGWZOejj/giSvaN7uc7pG5V1bB6xMyudsw4Y7R7SThp89tBSiESUYzwxuSx6V+2pJJV/zyguhjwkH+BA+zi/3amA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feB1JIKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16D6C4CECF;
+	Wed,  6 Nov 2024 02:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858981;
-	bh=6RTZNnGDuEAzppwfEDxHo8Ljs/fWsIF9i8G2Xdc/1Kc=;
+	s=k20201202; t=1730858984;
+	bh=UYVVTwzIzZVes1NNOPT6nwoHhvCAcSGlPc0j0APmPZE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pifckaH2MyFug5eITCsVdAEQW7HTOfYaFa55sYQ+RG2VgbNJVnT6tZSxdUhh/Uf5G
-	 fr4Tgzia8OwcuiqlXdbo/wuBa/ssTLl/Kpz6qoRjvs+0h6gg5Ib7b96YNwPXzvOiKp
-	 hQJxD6FLUGTqzkywv4Nj9aDVmp1/amCSOsC5ZKOAsVQcMovSmQywKnfCvAoQEDaE+K
-	 dKsP6LYPHECIiNr/uzMKUiMp+D+JZphCmoaGYeKEZom0LNLDG/+E+hJqVsqHWwCOv/
-	 N0mNwAzY7qKtBHMIAX2J92Pqjx6J1Fk/j1vL0lLfdBHkM3N4pVv4LGfMj2PQ5q7KnL
-	 MI39rZZqTO9tw==
+	b=feB1JIKmQDOrU7vXrAnP/z2DBrHvhlpbpd0vw9D60WH56i//lg8ZzmRSIvkhVpzSp
+	 s8KBeYHNR2PvCq33Vd1idBBuU8wKmXDAg43ebQ/V22YsxO6DarRBUndW5O4iRWN44N
+	 uVbpu7mitsuWVfQ9ZayuUqJHgxxJWHbY7qCO7H8mYsd6hfNSY3WOmQIL3uE74JcczN
+	 NYAcA0r0Oe5z5eVM7N2Rg5Hb+wWPvXwr0+1uEbfoKJRWuwJvTbyZCK2fCVPz8RV8By
+	 xIwRBv23YtFt21BPN7h/HpxH5JdcJWRU918mnXfDURd+D8qkSmdE/mXQlltXdzuJl5
+	 gh0wykJXkzs2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	baohua@kernel.org
-Cc: Barry Song <v-songbaohua@oppo.com>,
-	Oven Liyang <liyangouwen1@oppo.com>,
-	Kairui Song <kasong@tencent.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Yu Zhao <yuzhao@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Chris Li <chrisl@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	SeongJae Park <sj@kernel.org>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
+	fdmanana@suse.com
+Cc: Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "mm: avoid unconditional one-tick sleep when swapcache_prepare fails" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:35 -0500
-Message-ID: <20241106020936.168308-1-sashal@kernel.org>
+Subject: FAILED: Patch "btrfs: fix defrag not merging contiguous extents due to merged extent maps" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:41 -0500
+Message-ID: <20241106020942.170673-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,111 +71,117 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 01626a18230246efdcea322aa8f067e60ffe5ccd Mon Sep 17 00:00:00 2001
-From: Barry Song <v-songbaohua@oppo.com>
-Date: Fri, 27 Sep 2024 09:19:36 +1200
-Subject: [PATCH] mm: avoid unconditional one-tick sleep when swapcache_prepare
- fails
+From 77b0d113eec49a7390ff1a08ca1923e89f5f86c6 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Tue, 29 Oct 2024 15:18:45 +0000
+Subject: [PATCH] btrfs: fix defrag not merging contiguous extents due to
+ merged extent maps
 
-Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-introduced an unconditional one-tick sleep when `swapcache_prepare()`
-fails, which has led to reports of UI stuttering on latency-sensitive
-Android devices.  To address this, we can use a waitqueue to wake up tasks
-that fail `swapcache_prepare()` sooner, instead of always sleeping for a
-full tick.  While tasks may occasionally be woken by an unrelated
-`do_swap_page()`, this method is preferable to two scenarios: rapid
-re-entry into page faults, which can cause livelocks, and multiple
-millisecond sleeps, which visibly degrade user experience.
+When running defrag (manual defrag) against a file that has extents that
+are contiguous and we already have the respective extent maps loaded and
+merged, we end up not defragging the range covered by those contiguous
+extents. This happens when we have an extent map that was the result of
+merging multiple extent maps for contiguous extents and the length of the
+merged extent map is greater than or equals to the defrag threshold
+length.
 
-Oven's testing shows that a single waitqueue resolves the UI stuttering
-issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
-hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
-locks can be introduced.
+The script below reproduces this scenario:
 
-[v-songbaohua@oppo.com: wake_up only when swapcache_wq waitqueue is active]
-  Link: https://lkml.kernel.org/r/20241008130807.40833-1-21cnbao@gmail.com
-Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
-Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Reported-by: Oven Liyang <liyangouwen1@oppo.com>
-Tested-by: Oven Liyang <liyangouwen1@oppo.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+   $ cat test.sh
+   #!/bin/bash
+
+   DEV=/dev/sdi
+   MNT=/mnt/sdi
+
+   mkfs.btrfs -f $DEV
+   mount $DEV $MNT
+
+   # Create a 256K file with 4 extents of 64K each.
+   xfs_io -f -c "falloc 0 64K" \
+             -c "pwrite 0 64K" \
+             -c "falloc 64K 64K" \
+             -c "pwrite 64K 64K" \
+             -c "falloc 128K 64K" \
+             -c "pwrite 128K 64K" \
+             -c "falloc 192K 64K" \
+             -c "pwrite 192K 64K" \
+             $MNT/foo
+
+   umount $MNT
+   echo -n "Initial number of file extent items: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+   mount $DEV $MNT
+   # Read the whole file in order to load and merge extent maps.
+   cat $MNT/foo > /dev/null
+
+   btrfs filesystem defragment -t 128K $MNT/foo
+   umount $MNT
+   echo -n "Number of file extent items after defrag with 128K threshold: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+   mount $DEV $MNT
+   # Read the whole file in order to load and merge extent maps.
+   cat $MNT/foo > /dev/null
+
+   btrfs filesystem defragment -t 256K $MNT/foo
+   umount $MNT
+   echo -n "Number of file extent items after defrag with 256K threshold: "
+   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
+
+Running it:
+
+   $ ./test.sh
+   Initial number of file extent items: 4
+   Number of file extent items after defrag with 128K threshold: 4
+   Number of file extent items after defrag with 256K threshold: 4
+
+The 4 extents don't get merged because we have an extent map with a size
+of 256K that is the result of merging the individual extent maps for each
+of the four 64K extents and at defrag_lookup_extent() we have a value of
+zero for the generation threshold ('newer_than' argument) since this is a
+manual defrag. As a consequence we don't call defrag_get_extent() to get
+an extent map representing a single file extent item in the inode's
+subvolume tree, so we end up using the merged extent map at
+defrag_collect_targets() and decide not to defrag.
+
+Fix this by updating defrag_lookup_extent() to always discard extent maps
+that were merged and call defrag_get_extent() regardless of the minimum
+generation threshold ('newer_than' argument).
+
+A test case for fstests will be sent along soon.
+
+CC: stable@vger.kernel.org # 6.1+
+Fixes: 199257a78bb0 ("btrfs: defrag: don't use merged extent map for their generation check")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 ---
- mm/memory.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/btrfs/defrag.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 3ccee51adfbbd..bdf77a3ec47bc 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4187,6 +4187,8 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
-+
- /*
-  * We enter with non-exclusive mmap_lock (to exclude vma changes,
-  * but allow concurrent faults), and pte mapped but not yet locked.
-@@ -4199,6 +4201,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct folio *swapcache, *folio = NULL;
-+	DECLARE_WAITQUEUE(wait, current);
- 	struct page *page;
- 	struct swap_info_struct *si = NULL;
- 	rmap_t rmap_flags = RMAP_NONE;
-@@ -4297,7 +4300,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 					 * Relax a bit to prevent rapid
- 					 * repeated page faults.
- 					 */
-+					add_wait_queue(&swapcache_wq, &wait);
- 					schedule_timeout_uninterruptible(1);
-+					remove_wait_queue(&swapcache_wq, &wait);
- 					goto out_page;
- 				}
- 				need_clear_cache = true;
-@@ -4604,8 +4609,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
- out:
- 	/* Clear the swap cache pin for direct swapin after PTL unlock */
--	if (need_clear_cache)
-+	if (need_clear_cache) {
- 		swapcache_clear(si, entry, nr_pages);
-+		if (waitqueue_active(&swapcache_wq))
-+			wake_up(&swapcache_wq);
-+	}
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
-@@ -4620,8 +4628,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		folio_unlock(swapcache);
- 		folio_put(swapcache);
+diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
+index b95ef44c326bd..968dae9539482 100644
+--- a/fs/btrfs/defrag.c
++++ b/fs/btrfs/defrag.c
+@@ -763,12 +763,12 @@ static struct extent_map *defrag_lookup_extent(struct inode *inode, u64 start,
+ 	 * We can get a merged extent, in that case, we need to re-search
+ 	 * tree to get the original em for defrag.
+ 	 *
+-	 * If @newer_than is 0 or em::generation < newer_than, we can trust
+-	 * this em, as either we don't care about the generation, or the
+-	 * merged extent map will be rejected anyway.
++	 * This is because even if we have adjacent extents that are contiguous
++	 * and compatible (same type and flags), we still want to defrag them
++	 * so that we use less metadata (extent items in the extent tree and
++	 * file extent items in the inode's subvolume tree).
+ 	 */
+-	if (em && (em->flags & EXTENT_FLAG_MERGED) &&
+-	    newer_than && em->generation >= newer_than) {
++	if (em && (em->flags & EXTENT_FLAG_MERGED)) {
+ 		free_extent_map(em);
+ 		em = NULL;
  	}
--	if (need_clear_cache)
-+	if (need_clear_cache) {
- 		swapcache_clear(si, entry, nr_pages);
-+		if (waitqueue_active(&swapcache_wq))
-+			wake_up(&swapcache_wq);
-+	}
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
 -- 
 2.43.0
 
