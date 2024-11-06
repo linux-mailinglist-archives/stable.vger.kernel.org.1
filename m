@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F187A9BE84B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B609BEAB4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 213931C20D1A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B84012834FB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B52B1DF98C;
-	Wed,  6 Nov 2024 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8BC1FCC44;
+	Wed,  6 Nov 2024 12:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APwJ+/nu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12FJlE46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B851DF740;
-	Wed,  6 Nov 2024 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF521E0B7C;
+	Wed,  6 Nov 2024 12:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895789; cv=none; b=oIU/+/2G7bOhpvxipds592+z7SVaAeTaPsuCVsNcuPwqEqo+ATzLLuqAc3YlAgzJWG/Lp+Q+NW5JO9m1UaAaOqeW6fbG1em2EuCRwOG6BbmADJyXW+3/P0chsektd//GSSbofDTy7fbNo5iPIv1rrGbsOKtdqycjbP1ZYJPhi5g=
+	t=1730896751; cv=none; b=Bb8bDl3KxkcmbC/EeBqhpKjazhxigVeJZ190v453sPgSHkg7WwMoT9tjr333B3jUXe70wsK5pI93A5yXIh8N1hruwU5ER98l3x3g8UNNAY/ZjM5CPQDV8698IaSr7+d+UtuYLdGKkqyct4G5OT9WQLigXRSkq+qWKWYG4C3kvA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895789; c=relaxed/simple;
-	bh=hTY7Gm2/z88U4KdNYRHBrsiXP++MTLNdaI+qm79FO0U=;
+	s=arc-20240116; t=1730896751; c=relaxed/simple;
+	bh=rIwIDQ52LI8UeejoMlZKGh78AX1l+PdzHl9GFDd5I4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1Zj2z5lJXDdgbHryeAg4kbvdcyak3Uc/gjOijPMzxtTxAvP9/qaC4TJelm2w4wyhmtSyO3JxLhL8oveI3xR/4Wd+49XigMFi0700cEKzHce3vqPUtNDTaV/rGQQ5ky87Op2xWhjhkIMJA6tn7ozi2SzYtOIeUnysNpKnunB8gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APwJ+/nu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE103C4CECD;
-	Wed,  6 Nov 2024 12:23:08 +0000 (UTC)
+	 MIME-Version; b=kZTgRBC21wkj4Rm465ZPYIkQDHsm3ORgSYsU3IMPuPEUle3T1QcoM5rn0BvWkycbWPbHsm71N0ZxlPIt3fuxxg82w1yyThWdnnpTDNDzh5AvKtInQkskKo3nyWI0/oY1TSzumfly7DJ4LJaFiwExEGrOzx+IIPYnPjLMk5fRufU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12FJlE46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11F7C4CED5;
+	Wed,  6 Nov 2024 12:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895789;
-	bh=hTY7Gm2/z88U4KdNYRHBrsiXP++MTLNdaI+qm79FO0U=;
+	s=korg; t=1730896751;
+	bh=rIwIDQ52LI8UeejoMlZKGh78AX1l+PdzHl9GFDd5I4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APwJ+/nuwG4RgtGb985qhBGnn8N0lJnzCfjZ9UTrhZYwbohGXIp4y5e9apa4OQmpu
-	 UYCBVkF5kcyTQBZeu4BHS0OG6JtbwN0UXwUk4XFiZbdNeGeWsS8AYN+MY8jUQ6ds34
-	 KAWEa4cUwWZf7kzdLBoFfdneB3sEkQhmGEg/4guM=
+	b=12FJlE468MhSbeAS2ITN3vKfy9YyH9P3THbw8XG3TuXZbxBHkZWQK/xJ2GPYvsmZS
+	 3ueOFiHDVoDIrDVe62yQHOshFWDmaaXgZtaM5oJWoki04ezRfd+VusYQC8ROha1vVr
+	 D6ofWMqBBfB3zgFuV7yPekLddeHDfSoOsitLy6/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 337/350] net: amd: mvme147: Fix probe banner message
+Subject: [PATCH 5.10 059/110] mac80211: MAC80211_MESSAGE_TRACING should depend on TRACING
 Date: Wed,  6 Nov 2024 13:04:25 +0100
-Message-ID: <20241106120329.032809198@linuxfoundation.org>
+Message-ID: <20241106120304.827634126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 82c5b53140faf89c31ea2b3a0985a2f291694169 ]
+[ Upstream commit b3e046c31441d182b954fc2f57b2dc38c71ad4bc ]
 
-Currently this driver prints this line with what looks like
-a rogue format specifier when the device is probed:
-[    2.840000] eth%d: MVME147 at 0xfffe1800, irq 12, Hardware Address xx:xx:xx:xx:xx:xx
+When tracing is disabled, there is no point in asking the user about
+enabling tracing of all mac80211 debug messages.
 
-Change the printk() for netdev_info() and move it after the
-registration has completed so it prints out the name of the
-interface properly.
-
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 3fae0273168026ed ("mac80211: trace debug messages")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://patch.msgid.link/85bbe38ce0df13350f45714e2dc288cc70947a19.1727179690.git.geert@linux-m68k.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/mvme147.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/mac80211/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/mvme147.c b/drivers/net/ethernet/amd/mvme147.c
-index 0a920448522f3..0bb27f4dd6428 100644
---- a/drivers/net/ethernet/amd/mvme147.c
-+++ b/drivers/net/ethernet/amd/mvme147.c
-@@ -105,10 +105,6 @@ struct net_device * __init mvme147lance_probe(int unit)
- 	address = address >> 8;
- 	dev->dev_addr[3] = address&0xff;
+diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
+index 51ec8256b7fa9..8278221a36a1d 100644
+--- a/net/mac80211/Kconfig
++++ b/net/mac80211/Kconfig
+@@ -86,7 +86,7 @@ config MAC80211_DEBUGFS
  
--	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
--	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
--	       dev->dev_addr);
--
- 	lp = netdev_priv(dev);
- 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
- 	if (!lp->ram) {
-@@ -138,6 +134,9 @@ struct net_device * __init mvme147lance_probe(int unit)
- 		return ERR_PTR(err);
- 	}
- 
-+	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
-+		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
-+
- 	return dev;
- }
- 
+ config MAC80211_MESSAGE_TRACING
+ 	bool "Trace all mac80211 debug messages"
+-	depends on MAC80211
++	depends on MAC80211 && TRACING
+ 	help
+ 	  Select this option to have mac80211 register the
+ 	  mac80211_msg trace subsystem with tracepoints to
 -- 
 2.43.0
 
