@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-89968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF44E9BDC11
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:14:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489799BDC15
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACD3284317
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:14:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5133F1C22C95
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378C91D5AC6;
-	Wed,  6 Nov 2024 02:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2350C1D5ADE;
+	Wed,  6 Nov 2024 02:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PU47tdYs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RA2GuPjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C6D1917FD;
-	Wed,  6 Nov 2024 02:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D240C1D5CF2;
+	Wed,  6 Nov 2024 02:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859019; cv=none; b=VlN+zVj8jKO3sK8eZqWka0Xnlh32MjXu9RrE/ZRf4trbpN7J+jhVUfzZHuYAJm4yZcNvvxlzJ1x7ErGizzBjyy5yA1rJ9ZakyUfrcHarSTIqTstrVyEOyAcPe++vtYrMXhzJONs41dTw1XdTxw2EbtCSMz18/yrblRX0fAYFFNw=
+	t=1730859020; cv=none; b=u93TjaJ71+Ueuf+C8L/h391mfeSSDRrZQbDBpV6kY8kA1IDRjI198hLE2XWkmjUV92e3sIDLNWNVYt/nZ1Fb4ykOAg/QTZKkgg/2GsgtsRVXwJNTwj5WERNZfAv0TIn09PrRVkPfFOBWE0zUdr/KhS91ooZAaQatU9SW6gk6bEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859019; c=relaxed/simple;
-	bh=SN/F7j50A1cjRLVeVc+cJ+1ynHn5Rvk8WoMVzF1nZis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rwiJO51kDxFmC5X+1rXmLxb9v4ZUMyMcxFZ0BNiSn8C1xFUfbrpOR5sFUdzCzPDrJaxSt4MwE2oO3YLQR7UZz7QUzWcuG5uRlo7rs5mDfO+x687oo53r4M2B/qryOUDoDXyQ0UKkuMpIcBZAqLly/uZCpsS/b/Ljc3IH1Wo1TfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PU47tdYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689E7C4CECF;
-	Wed,  6 Nov 2024 02:10:16 +0000 (UTC)
+	s=arc-20240116; t=1730859020; c=relaxed/simple;
+	bh=U8SfGi9S7CnLF+4L2YGr8saonvufQuCOZTo6a5ch3ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cgCiz6PLCuHNqaCWlBNTh46w+ENFPgg1mLhc0iHOHp1rHMUm1AJShC6csH8jPG4IlypJEqAO1mbR6aqQSWA/OVlF1fLo2QF3kqu5UTgkOq3JOhX/7/6IgPlTRuUTG9Gi3s24hJZ02KBxdXw0TvoFQ0Opz7EBmo2N2AWXY0Yljuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RA2GuPjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81AAC4CED1;
+	Wed,  6 Nov 2024 02:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859017;
-	bh=SN/F7j50A1cjRLVeVc+cJ+1ynHn5Rvk8WoMVzF1nZis=;
+	s=k20201202; t=1730859020;
+	bh=U8SfGi9S7CnLF+4L2YGr8saonvufQuCOZTo6a5ch3ls=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PU47tdYsb6+KapFzmI0HtgWNAkfRHWJH4bGnlcZRinsGGXLMuX5TFZxK4IqaZvxtG
-	 B2ghdz36t0lYGcowpBGEjhshiS08v16K5z76tn4cZEhZPQ9e16CqiZZJ/JIXamyFLQ
-	 5uEtPx+JFiC1GzPLNaKzOblKHHRpbflowDyhqNs343RPXUaEm1oZ9+LdaFWD6gcwM5
-	 VPYQVtwHclX4+vtSF0zF4/XtYhDdHw6Mus9lD2sUGdDruzSnzTPkyUrxcS0CahCkl+
-	 folCivwsjC69DioWvyzKv8VkCbuwQbDj+6FjnrQ4CBDp/ahOkbgZECARXAAI5ySRYO
-	 ZJZGE/zhlWi9A==
+	b=RA2GuPjGnT22Rq6DFbnCAoEHRuVloPelScBi1j9M7bDkrZXle4V2smcqE2jk495ke
+	 MvV9J4SjMn3lYN4j5x5ZJTLjOKmHMHYWzBVQCW2TLcw7OojpLz7tknd26rMbvJfkUt
+	 DS3gwLM4V+STjuVU30fdNSmBfZISXw236eHdxVZZCySUol2bHu/3Mc2t78Yp68vCV8
+	 HDf8O9MP9kVvPYQAiyzvXxcJztr6Lck9MVibz7u+0Ji7OJjmYDQbECXoQfhbTTiOaV
+	 3CgY7fGeyxoprW3mq72YfVlb3nUObi3bTV/o4OyotqeDVAGggSyVIegmAsJ5SC13K+
+	 MSp3YlfZPpRuw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	aha310510@gmail.com
-Cc: syzbot <syzkaller@googlegroup.com>,
-	Hugh Dickins <hughd@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
+	bsegall@google.com
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "mm: shmem: fix data-race in shmem_getattr()" failed to apply to v6.1-stable tree
-Date: Tue,  5 Nov 2024 21:10:14 -0500
-Message-ID: <20241106021014.179357-1-sashal@kernel.org>
+Subject: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone" failed to apply to v6.1-stable tree
+Date: Tue,  5 Nov 2024 21:10:17 -0500
+Message-ID: <20241106021018.179970-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,99 +70,90 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From d949d1d14fa281ace388b1de978e8f2cd52875cf Mon Sep 17 00:00:00 2001
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Mon, 9 Sep 2024 21:35:58 +0900
-Subject: [PATCH] mm: shmem: fix data-race in shmem_getattr()
+From b5413156bad91dc2995a5c4eab1b05e56914638a Mon Sep 17 00:00:00 2001
+From: Benjamin Segall <bsegall@google.com>
+Date: Fri, 25 Oct 2024 18:35:35 -0700
+Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
 
-I got the following KCSAN report during syzbot testing:
+When cloning a new thread, its posix_cputimers are not inherited, and
+are cleared by posix_cputimers_init(). However, this does not clear the
+tick dependency it creates in tsk->tick_dep_mask, and the handler does
+not reach the code to clear the dependency if there were no timers to
+begin with.
 
-==================================================================
-BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
+Thus if a thread has a cputimer running before clone/fork, all
+descendants will prevent nohz_full unless they create a cputimer of
+their own.
 
-write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
- inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
- inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
- shmem_mknod+0x117/0x180 mm/shmem.c:3443
- shmem_create+0x34/0x40 mm/shmem.c:3497
- lookup_open fs/namei.c:3578 [inline]
- open_last_lookups fs/namei.c:3647 [inline]
- path_openat+0xdbc/0x1f00 fs/namei.c:3883
- do_filp_open+0xf7/0x200 fs/namei.c:3913
- do_sys_openat2+0xab/0x120 fs/open.c:1416
- do_sys_open fs/open.c:1431 [inline]
- __do_sys_openat fs/open.c:1447 [inline]
- __se_sys_openat fs/open.c:1442 [inline]
- __x64_sys_openat+0xf3/0x120 fs/open.c:1442
- x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Fix this by entirely clearing the tick_dep_mask in copy_process().
+(There is currently no inherited state that needs a tick dependency)
 
-read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
- inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
- inode_get_ctime include/linux/fs.h:1629 [inline]
- generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
- shmem_getattr+0x17b/0x200 mm/shmem.c:1157
- vfs_getattr_nosec fs/stat.c:166 [inline]
- vfs_getattr+0x19b/0x1e0 fs/stat.c:207
- vfs_statx_path fs/stat.c:251 [inline]
- vfs_statx+0x134/0x2f0 fs/stat.c:315
- vfs_fstatat+0xec/0x110 fs/stat.c:341
- __do_sys_newfstatat fs/stat.c:505 [inline]
- __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
- __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
- x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Process-wide timers do not have this problem because fork does not copy
+signal_struct as a baseline, it creates one from scratch.
 
-value changed: 0x2755ae53 -> 0x27ee44d3
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-==================================================================
-
-When calling generic_fillattr(), if you don't hold read lock, data-race
-will occur in inode member variables, which can cause unexpected
-behavior.
-
-Since there is no special protection when shmem_getattr() calls
-generic_fillattr(), data-race occurs by functions such as shmem_unlink()
-or shmem_mknod(). This can cause unexpected results, so commenting it out
-is not enough.
-
-Therefore, when calling generic_fillattr() from shmem_getattr(), it is
-appropriate to protect the inode using inode_lock_shared() and
-inode_unlock_shared() to prevent data-race.
-
-Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
-Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot <syzkaller@googlegroup.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
 ---
- mm/shmem.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/tick.h | 8 ++++++++
+ kernel/fork.c        | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index c5adb987b23cf..4ba1d00fabdaa 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1166,7 +1166,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
- 	stat->attributes_mask |= (STATX_ATTR_APPEND |
- 			STATX_ATTR_IMMUTABLE |
- 			STATX_ATTR_NODUMP);
-+	inode_lock_shared(inode);
- 	generic_fillattr(idmap, request_mask, inode, stat);
-+	inode_unlock_shared(inode);
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 72744638c5b0f..99c9c5a7252aa 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_set_task(tsk, bit);
+ }
++
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_clear_task(tsk, bit);
+ }
++
++static inline void tick_dep_init_task(struct task_struct *tsk)
++{
++	atomic_set(&tsk->tick_dep_mask, 0);
++}
++
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 				     enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
++static inline void tick_dep_init_task(struct task_struct *tsk) { }
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_signal(struct signal_struct *signal,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 89ceb4a68af25..6fa9fe62e01e3 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -105,6 +105,7 @@
+ #include <linux/rseq.h>
+ #include <uapi/linux/pidfd.h>
+ #include <linux/pidfs.h>
++#include <linux/tick.h>
  
- 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
- 		stat->blksize = HPAGE_PMD_SIZE;
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -2292,6 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	acct_clear_integrals(p);
+ 
+ 	posix_cputimers_init(&p->posix_cputimers);
++	tick_dep_init_task(p);
+ 
+ 	p->io_context = NULL;
+ 	audit_set_context(p, NULL);
 -- 
 2.43.0
 
