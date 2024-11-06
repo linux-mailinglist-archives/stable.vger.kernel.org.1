@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED649BEBB0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9EF9BEC44
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E611F252A5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 553761F2392F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE221F8F1D;
-	Wed,  6 Nov 2024 12:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDCE1FB3FF;
+	Wed,  6 Nov 2024 12:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1tG9+Zl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+uFZt8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2851E0B62;
-	Wed,  6 Nov 2024 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8BD1F4FBB;
+	Wed,  6 Nov 2024 12:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897226; cv=none; b=OOeUUVbC9O9BxsAZuuT7lUaUrpedcqlxDrHAikKKrj0y5wLhc5BI9o/h2ai9YZYmSo4hKFEbmB+Ha1kBqpNIAv8/Z00GcBenEsJsx3x3wB7QmZDK2hLjILjwlIcrQcyue7PI56cnDtPxjFV3NMvAzFfiMBrhhdAiaxtOQLerwzY=
+	t=1730897637; cv=none; b=Fx91d2F07Z36pf3uxAf3UR3jy2tMRh6s2aTKNV9wJ0oQy8fesweyCAjBY1GudIJi+uNAGOExMNPrqN6Kf2Bk1O81QXwIsXPjllbzp/4xnrc7kJycNUejy2fOHaOBQ7zSGwa07+y8z7yZfU7RRO9lwRLMploa+pJJKMEbw2mynk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897226; c=relaxed/simple;
-	bh=RCmOhtKcPihiedxV5ucOjwBY0FjiuDxEcYeWpgtg8EE=;
+	s=arc-20240116; t=1730897637; c=relaxed/simple;
+	bh=dfNmGu+kGUQb7EX/fL3j6GKQu+DYgKn4VtEZlqXIBQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=js9UFUe91qj2L1HMUD08sIVO9y9ZY3y+b47HdjWbVvE+KpDsJoCBxlI7saTxtO1n7Bl8NavVbgXjs0pHbE8PeAcmmVYgjh+8meJM6hwgrysvjNiQWz/NLlfpI8C/zHD49Ge7VvBTeVF819JPBlk/S5/yAG/ebRdZnCykH/7bUiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1tG9+Zl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FA0C4CECD;
-	Wed,  6 Nov 2024 12:47:06 +0000 (UTC)
+	 MIME-Version; b=fmfFfeqY6siSC8cM1HCV9MtlBEr4/M9mVPj8Ul8PU6E7oclpxPlLSw6zEPmq7PMgn3aQW48doA7nxzvqr2wZYGBiXSi/EbUSH+8schOQklJmadWZrnmTuTFPThWX6lBLa987zkLEYz1iVOv9mQJdKLe9UGwEUDxM4JUQX7U5od0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+uFZt8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A3FC4CECD;
+	Wed,  6 Nov 2024 12:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897226;
-	bh=RCmOhtKcPihiedxV5ucOjwBY0FjiuDxEcYeWpgtg8EE=;
+	s=korg; t=1730897636;
+	bh=dfNmGu+kGUQb7EX/fL3j6GKQu+DYgKn4VtEZlqXIBQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1tG9+Zl215PH7lzKg2zEiWY+nJFtIlMYegX31kKndjkoaM2EAOqCQjspJVtBXE7c
-	 sqv5t6joBtLIeiI+BxQlu/KASwtHzhipFNR1tTSFYnt0bsiGkv7rHLGBG9odbSvJzD
-	 rRwwQtRsGzHCe27SE/vmfme5QESoyktn56sJBJf8=
+	b=A+uFZt8rFgnyC3fHl/BQYde44b+GZyv1mZZtmnRJFHvAONwoiwnScTMSyUM5/PP2d
+	 +XaERG3jrQxvK9nC2w5F77EMI4OvA0jrSrw7JLj9ChzmrO/nyL6OdBeXLjnV7W1NVP
+	 c4pOc2hv7pQt5sphlcKuwn71ZNtNTlMmud+gfWSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/126] mm/migrate.c: stop using 0 as NULL pointer
+Subject: [PATCH 6.6 121/151] cxl/acpi: Ensure ports ready at cxl_acpi_probe() return
 Date: Wed,  6 Nov 2024 13:05:09 +0100
-Message-ID: <20241106120308.978630198@linuxfoundation.org>
+Message-ID: <20241106120312.195262451@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 4c74b65f478dc9353780a6be17fc82f1b06cea80 ]
+[ Upstream commit 48f62d38a07d464a499fa834638afcfd2b68f852 ]
 
-mm/migrate.c:1198:24: warning: Using plain integer as NULL pointer
+In order to ensure root CXL ports are enabled upon cxl_acpi_probe()
+when the 'cxl_port' driver is built as a module, arrange for the
+module to be pre-loaded or built-in.
 
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3080
-Link: https://lkml.kernel.org/r/20221116012345.84870-1-yang.lee@linux.alibaba.com
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 35e41024c4c2 ("vmscan,migrate: fix page count imbalance on node stats when demoting pages")
+The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
+is merely by inspection since the bug that triggered the discovery of
+this potential problem [1] is fixed by other means. However, a stable
+backport should do no harm.
+
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
+Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Tested-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/172964781969.81806.17276352414854540808.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/acpi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 562f819dc6189..81444abf54dba 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1192,7 +1192,7 @@ static int unmap_and_move(new_page_t get_new_page,
- 		return -ENOMEM;
- 	dst = page_folio(newpage);
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index 4319534558309..9a881a764cf35 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -768,6 +768,13 @@ static void __exit cxl_acpi_exit(void)
  
--	dst->private = 0;
-+	dst->private = NULL;
- 	rc = __unmap_and_move(src, dst, force, mode);
- 	if (rc == MIGRATEPAGE_SUCCESS)
- 		set_page_owner_migrate_reason(&dst->page, reason);
+ /* load before dax_hmem sees 'Soft Reserved' CXL ranges */
+ subsys_initcall(cxl_acpi_init);
++
++/*
++ * Arrange for host-bridge ports to be active synchronous with
++ * cxl_acpi_probe() exit.
++ */
++MODULE_SOFTDEP("pre: cxl_port");
++
+ module_exit(cxl_acpi_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_IMPORT_NS(CXL);
 -- 
 2.43.0
 
