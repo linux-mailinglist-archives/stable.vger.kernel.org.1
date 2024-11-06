@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E179BE6E1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F59B9BECC3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4396B1C22FAD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 248FD285F00
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A4E1DF249;
-	Wed,  6 Nov 2024 12:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148EF1EBFF4;
+	Wed,  6 Nov 2024 12:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXldYzrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2kOhrtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39841DF73E;
-	Wed,  6 Nov 2024 12:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46941E7C1A;
+	Wed,  6 Nov 2024 12:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894883; cv=none; b=WmZEnknTbDAPr/62e5lBd2zjNIxB3y4embJMjjEhA1NHLPzxyXuMiyF+GefjvLJDdwtxpzvWc1nV8dpXnBEeqq0G8EcvgDqgZuvc2B0mTLlbaQVDp2C3fQ8gmNi5X9a62yu1yaFeEl8F83ycos2qXEyTSPrq42H8uP1msYe/3Xw=
+	t=1730897930; cv=none; b=IO8BM/BkTV3seDicu2cj/yyjX+QBd2EsjyWaxDQiJsp99QkRXiAF0hetncuhUcZ0rPFIdMJqXB8T3RLcxjuYRBe1PgZ98dTIfIBOtmmOM2JHagi/R72EcmVJpPMLiJ6uMBuc9jyzqWJynfh/WogBEcSsfvDGCNjuXQ1Tb5WrO7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894883; c=relaxed/simple;
-	bh=/MDBpc4tPbgHjatJjsnkOCaGl7Fj7YfZdrXOqVnSI84=;
+	s=arc-20240116; t=1730897930; c=relaxed/simple;
+	bh=a/zXdJsyaeJpQ3Sny0K/FmICzRE9NU1SxNWYpVpTMbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZ7VSao+jzZeiAtkfsO1FEpKgOx+MD9It7ns8jgLtTY2Vk6VBDnEwyUKWimDsIPPf0gJamBXK68Q22tgEKSFS5Gw7Kqiazdswe4JBK03ri/b/0GU4d0VdCkllOqdt49AwowoYi3T5NQYz99DO1EbxJL7UZktTmsxwAZ0FBEuHbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXldYzrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC23C4CED3;
-	Wed,  6 Nov 2024 12:08:02 +0000 (UTC)
+	 MIME-Version; b=MYzRqY6HzMMqrFcviNEE6QzlFnB2F5GpWQDtiYt9LzLa33KKeLKZFTsX4k62ZQM2ElxOWfyz9Fs8nr/+oJXpw9XLH9JIqiLbBqOR/fOqVf4Bqm+VNPFoaXnfDg5mgzyxRygjIeJ/4nL78rViEKNjRzRha17aPXkxWJiAPlrTmWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2kOhrtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9CEC4CED3;
+	Wed,  6 Nov 2024 12:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894882;
-	bh=/MDBpc4tPbgHjatJjsnkOCaGl7Fj7YfZdrXOqVnSI84=;
+	s=korg; t=1730897930;
+	bh=a/zXdJsyaeJpQ3Sny0K/FmICzRE9NU1SxNWYpVpTMbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXldYzrOzNu8PRbamiTQqGFoaJH4EFGhcYnS5s5ldDzoSS5yApZ0lolPDXW5l1eIX
-	 EoFS9UYcBgr/Sy4SmPcFlf2BDxKC9+e4u7dtkdXDNqZDlIgBQV22E4128uO7yJr4Ka
-	 hX2b0Gfv2dvStqLyLhpPXr8c8+Z6ze900tb8l1UI=
+	b=L2kOhrtJu6rajaPqRKHlJhlEIseYzju4Wa4d9feyNoxvXrB0xxEPUcjYu6cFsbujD
+	 8TAnqMSCN/OUuE/pJ7YqCxws7sheZDqzs2N/fHa9MetWTXxKNwflQE1/GxsjEceIzL
+	 nIttctVg5gEIdgWuCZy+4uxrEG/JwQfAlngDwx7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Henrik Grimler <henrik@grimler.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 031/350] netfilter: nf_tables: elements with timeout below CONFIG_HZ never expire
+Subject: [PATCH 5.4 066/462] power: supply: max17042_battery: Fix SOC threshold calc w/ no current sense
 Date: Wed,  6 Nov 2024 12:59:19 +0100
-Message-ID: <20241106120321.647795211@linuxfoundation.org>
+Message-ID: <20241106120333.142243768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit e0c47281723f301894c14e6f5cd5884fdfb813f9 ]
+[ Upstream commit 3a3acf839b2cedf092bdd1ff65b0e9895df1656b ]
 
-Element timeout that is below CONFIG_HZ never expires because the
-timeout extension is not allocated given that nf_msecs_to_jiffies64()
-returns 0. Set timeout to the minimum value to honor timeout.
+Commit 223a3b82834f ("power: supply: max17042_battery: use VFSOC for
+capacity when no rsns") made it so that capacity on systems without
+current sensing would be read from VFSOC instead of RepSOC. However,
+the SOC threshold calculation still read RepSOC to get the SOC
+regardless of the current sensing option state.
 
-Fixes: 8e1102d5a159 ("netfilter: nf_tables: support timeouts larger than 23 days")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fix this by applying the same conditional to determine which register
+should be read.
+
+This also seems to be the intended behavior as per the datasheet - SOC
+alert config value in MiscCFG on setups without current sensing is set
+to a value of 0b11, indicating SOC alerts being generated based on
+VFSOC, instead of 0b00 which indicates SOC alerts being generated based
+on RepSOC.
+
+This fixes an issue on the Galaxy S3/Midas boards, where the alert
+interrupt would be constantly retriggered, causing high CPU usage
+on idle (around ~12%-15%).
+
+Fixes: e5f3872d2044 ("max17042: Add support for signalling change in SOC")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Henrik Grimler <henrik@grimler.se>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240817-max17042-soc-threshold-fix-v1-1-72b45899c3cc@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/max17042_battery.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a033c9baf58ad..25b2870dda24a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3339,7 +3339,7 @@ int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result)
- 		return -ERANGE;
- 
- 	ms *= NSEC_PER_MSEC;
--	*result = nsecs_to_jiffies64(ms);
-+	*result = nsecs_to_jiffies64(ms) ? : !!ms;
- 	return 0;
- }
- 
+diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
+index 170639a1e734a..b3afcc5ffd57b 100644
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -834,7 +834,10 @@ static void max17042_set_soc_threshold(struct max17042_chip *chip, u16 off)
+ 	/* program interrupt thesholds such that we should
+ 	 * get interrupt for every 'off' perc change in the soc
+ 	 */
+-	regmap_read(map, MAX17042_RepSOC, &soc);
++	if (chip->pdata->enable_current_sense)
++		regmap_read(map, MAX17042_RepSOC, &soc);
++	else
++		regmap_read(map, MAX17042_VFSOC, &soc);
+ 	soc >>= 8;
+ 	soc_tr = (soc + off) << 8;
+ 	if (off < soc)
 -- 
 2.43.0
 
