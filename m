@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-90500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE759BE89C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E50D9BE774
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936071F227C8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81705B231F8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6911DF969;
-	Wed,  6 Nov 2024 12:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCD41DEFF5;
+	Wed,  6 Nov 2024 12:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLV/N/aH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRi9yW3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173B1DED58;
-	Wed,  6 Nov 2024 12:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297E41DF24A;
+	Wed,  6 Nov 2024 12:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895957; cv=none; b=QjA7KGDeKK9knWqHmayE7kXGNVoHpW4g9UBIDL3osvJbEqfWwbcYXk2nQEKUBv1k4KVO5hES2NQszPwz52lN3FLKHMmDJZ2OYL1+g/FazYik/P22/GSC5/2lY9kpjzvTw+Aoa7FMwr3r4hepMQ5GsfSFg4logyCd9G//WPMr+vQ=
+	t=1730895262; cv=none; b=UyaKcyn3RP/Uo/oGszHT5dv06FtsEkKaV1PfWiUUT7UxfL3Atz7zvtGi41dQMJ7AQRRu1OhI9x3tD6M//JolLaz5KS9zScJIlEV4Rf2egPR+lKlRAcsjvmAQjZuPK/ksYIGqQM5cJ7hqu3QbXPwLR345E3ZMU+DXgGKqrdp3j6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895957; c=relaxed/simple;
-	bh=zHUjsY9f+bVuymnLtzpYTllfKiglAG4CcvU612ToRKY=;
+	s=arc-20240116; t=1730895262; c=relaxed/simple;
+	bh=MwYlmtWBB9VNj6sfwjnlLarUfbFckMNbtD4ipo3fa20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyFk1el+4ZdW9qjn9YJlXHNrOhq2LbLvTQ2Joy8f2WvsOWzz0hROOWGL9eEX127BAulj3JKY9KtaQD8N4c6SRJ2pztP1RG/RiHhil/L7JlnEY6qqhzXCzQWJoGT99fXUIyQq3NLnNFljE7HmqQ+NAnzKWREbC40xdSp30i76O1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLV/N/aH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6897BC4CECD;
-	Wed,  6 Nov 2024 12:25:56 +0000 (UTC)
+	 MIME-Version; b=MUhueNpycaAv0UjSX9eouXIg/K+LYdqX48XQKIrfQMwdrCMiA2ZciFkE4G2xT3iO77g1YT7op8PNrlr623cQoo3J3UAKiNySRIw1G0HMJU9lMmBxR5oUAeG4z4YGzgg4Yqq5xsfIpK7JEvmSKPHXxjo1m1sU2BtqhMx/W1BH6eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRi9yW3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E997C4CED2;
+	Wed,  6 Nov 2024 12:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895956;
-	bh=zHUjsY9f+bVuymnLtzpYTllfKiglAG4CcvU612ToRKY=;
+	s=korg; t=1730895261;
+	bh=MwYlmtWBB9VNj6sfwjnlLarUfbFckMNbtD4ipo3fa20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLV/N/aHSRaDCRzndnKHikWL2BIONilKPT4eUoqVyRCB//aBVYEtH7vhmydlXpnP/
-	 i+os+EsWrw/EemxCZXz0sN5cfF6bIH9D/TX+SZfDlNOaz3BWewZF27bKn8JNmJs4ZB
-	 V1MA08aWf2O6VbWDBu38z+2GOM05s+Rbt3yh1Jjg=
+	b=SRi9yW3La2rWGxxD81BImRlf1UjUKUDyDZkH4aP6T+5NuByshoOsFnxau4+VUFFn/
+	 8PJ7Grn1tFsRQjsD8U1aAFZMVPNVTf8tVQkzFbLwEkrpYjN2Nrcujpasc/8lfrPbBd
+	 ZhLM3ARiQQOFC0W7JJYW/0TkLBoVGNhwCUzr8Ibo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	jslaby@suse.cz,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 006/245] perf trace: Fix non-listed archs in the syscalltbl routines
+	Dan Carpenter <error27@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 4.19 131/350] usb: yurex: Fix inconsistent locking bug in yurex_read()
 Date: Wed,  6 Nov 2024 13:00:59 +0100
-Message-ID: <20241106120319.401530518@linuxfoundation.org>
+Message-ID: <20241106120324.142492133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby <jslaby@suse.cz>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 5d35634ecc2d2c3938bd7dc23df0ad046da1b303 ]
+commit e7d3b9f28654dbfce7e09f8028210489adaf6a33 upstream.
 
-This fixes a build breakage on 32-bit arm, where the
-syscalltbl__id_at_idx() function was missing.
+Unlock before returning on the error path.
 
-Committer notes:
-
-Generating a proper syscall table from a copy of
-arch/arm/tools/syscall.tbl ends up being too big a patch for this rc
-stage, I started doing it but while testing noticed some other problems
-with using BPF to collect pointer args on arm7 (32-bit) will maybe
-continue trying to make it work on the next cycle...
-
-Fixes: 7a2fb5619cc1fb53 ("perf trace: Fix iteration of syscall ids in syscalltbl->entries")
-Suggested-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: <jslaby@suse.cz>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/lkml/3a592835-a14f-40be-8961-c0cee7720a94@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 86b20af11e84 ("usb: yurex: Replace snprintf() with the safer scnprintf() variant")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202312170252.3udgrIcP-lkp@intel.com/
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20231219063639.450994-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/syscalltbl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/misc/yurex.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/syscalltbl.c b/tools/perf/util/syscalltbl.c
-index 0dd26b991b3fb..351da249f1cc6 100644
---- a/tools/perf/util/syscalltbl.c
-+++ b/tools/perf/util/syscalltbl.c
-@@ -42,6 +42,11 @@ static const char *const *syscalltbl_native = syscalltbl_mips_n64;
- #include <asm/syscalls.c>
- const int syscalltbl_native_max_id = SYSCALLTBL_LOONGARCH_MAX_ID;
- static const char *const *syscalltbl_native = syscalltbl_loongarch;
-+#else
-+const int syscalltbl_native_max_id = 0;
-+static const char *const syscalltbl_native[] = {
-+	[0] = "unknown",
-+};
- #endif
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -414,8 +414,10 @@ static ssize_t yurex_read(struct file *f
+ 		return -ENODEV;
+ 	}
  
- struct syscall {
-@@ -178,6 +183,11 @@ int syscalltbl__id(struct syscalltbl *tbl, const char *name)
- 	return audit_name_to_syscall(name, tbl->audit_machine);
- }
+-	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
++	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
++		mutex_unlock(&dev->io_mutex);
+ 		return -EIO;
++	}
  
-+int syscalltbl__id_at_idx(struct syscalltbl *tbl __maybe_unused, int idx)
-+{
-+	return idx;
-+}
-+
- int syscalltbl__strglobmatch_next(struct syscalltbl *tbl __maybe_unused,
- 				  const char *syscall_glob __maybe_unused, int *idx __maybe_unused)
- {
--- 
-2.43.0
-
+ 	spin_lock_irq(&dev->lock);
+ 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
 
 
 
