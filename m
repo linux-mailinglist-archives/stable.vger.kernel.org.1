@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809E69BEC7D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C919BEB25
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453EC284661
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788261F26BB4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153EC1FC7E6;
-	Wed,  6 Nov 2024 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C721E25ED;
+	Wed,  6 Nov 2024 12:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUCnK481"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irXIAXOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C702B1FC7DE;
-	Wed,  6 Nov 2024 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E503E1E22EF;
+	Wed,  6 Nov 2024 12:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897738; cv=none; b=TDcMNBEUDVjkiDPQBmkOa5icBDYeYVBXbtbS4sMxzubj1xjQxHUBTk+vtbliUM4o7YIcGogTIOzYE2GlbAo/vAM0HSkv8bAaN3S1cHKG/JNqR8QsaRXvDLxBpYVE0WXS3hIOwkNAaWZZljhncRlpk1xJOCcMbZLeejc0L2gGSL0=
+	t=1730896875; cv=none; b=Du8IABN+XaRqqCtYnLafpDPAb0UGP8fPeFkoQ6PxBEc5O4jUwo3/z0scmf4sTpQSzkBCcoNQiVPaHVrLLMrEbfNP/XG2G8N4eguyiFTDXpy3678fDdI+6P99OQDHPmqqSpfgBpx2/QkuU+vGCHsFROBCOFfdMc++JzvAxka+ksE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897738; c=relaxed/simple;
-	bh=iFR+s+ptb+lniXqm+VMj4ifwHDHd9R409uhZfmyujvQ=;
+	s=arc-20240116; t=1730896875; c=relaxed/simple;
+	bh=wNH35qae8wN9xnrj+GBg3mEoPs1VM/YBInMUnV/ZRa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tw2F9VQcJQAzwoWrnnPlcCAEmmhudIfpfX80C7oSiNknXf3XPiIRnPAuBi/So/qyo4O5Eo6pEIkUM+gy3V8z3GFxuWynjDh+mPgvE6uqw52uEAE6jA6NtRaWqvqiIaLxPKOuVSWFeT5EQVTKkeGlKja4g+dIH1VYW3XTWMqtAXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUCnK481; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03121C4CECD;
-	Wed,  6 Nov 2024 12:55:37 +0000 (UTC)
+	 MIME-Version; b=hSgSKnMD7e9K2dHGaAMcAUtsGKZRcP9ERRY1rJIQ8GN0fUDFObr6TaniKFjI7F+BsLVX5X+EM1dMy7f3r4rMfbUX7tL2tusWfNgN9tOsuwgnuWtTcfheAl+5jmJMMPBSKbfNji3t8d5dW8jLb9A+s15YFUTauJ4aXLzwKrNz1KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irXIAXOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241B6C4CECD;
+	Wed,  6 Nov 2024 12:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897738;
-	bh=iFR+s+ptb+lniXqm+VMj4ifwHDHd9R409uhZfmyujvQ=;
+	s=korg; t=1730896874;
+	bh=wNH35qae8wN9xnrj+GBg3mEoPs1VM/YBInMUnV/ZRa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUCnK481RAw2OSHOJsLaYuTcL5VcmH4uVWRVvGK7GMqaX6ai5gxLPfV549FaoMm2I
-	 EKUfsSpObiBhLF5fg9CUGZTHXVkULKJotmIqLvBqmpxT+U2Maqoqx3go0H5Qjjjchi
-	 IZ1Q4PhKm/Kvl4senoONZvQbOLTCTAnzZTpnyEU8=
+	b=irXIAXOHjuTrQJ5xJi073ajqJygBvUicFfrns09V7Df/V/T+28EwXHFJkF+fRDBJs
+	 w4C6OFOU98zPwpF6i0hjH19uyMtst4PhM70Eijn0AS6//c/1y+hKk+BRkrGm9DWrJc
+	 ETMwhnAELE5ctzvT4T9z6f4OBWkh+89G3NatnYMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Charlie Jenkins <charlie@rivosinc.com>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/151] riscv: Use %u to format the output of cpu
-Date: Wed,  6 Nov 2024 13:05:05 +0100
-Message-ID: <20241106120312.084998915@linuxfoundation.org>
+Subject: [PATCH 5.10 100/110] riscv: Use %u to format the output of cpu
+Date: Wed,  6 Nov 2024 13:05:06 +0100
+Message-ID: <20241106120305.938698143@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 457a18efcb114..6b710ef9d9aef 100644
+index df84e0c13db18..0e948e87bd813 100644
 --- a/arch/riscv/kernel/cpu-hotplug.c
 +++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -65,7 +65,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
+@@ -69,7 +69,7 @@ void __cpu_die(unsigned int cpu)
  	if (cpu_ops[cpu]->cpu_is_stopped)
  		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
  	if (ret)
