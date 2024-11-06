@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE009BEA84
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:47:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94ED9BE958
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136DD281712
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F15E2853F7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29631FB3D9;
-	Wed,  6 Nov 2024 12:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0E41DFE3A;
+	Wed,  6 Nov 2024 12:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ovB/8Jv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dJiKAme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2261FB3CE;
-	Wed,  6 Nov 2024 12:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1711A1DFE38;
+	Wed,  6 Nov 2024 12:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896708; cv=none; b=PlzIpNzHgQyeRDvr8yngkq7kHILqJlz0AChbFPsJpjDfXHNpbeSFMjz1CO8lAc4UN84/S6ww0o0zwi7KPiqUr97O6W275/lm7zd2CimzdlimkraRuDxxj9OJunRwQNd8RjBG47qRkVdXHZbg0rOn8sqTDZ7YyOLvsw3SkuzpaIE=
+	t=1730896382; cv=none; b=bnY6JupFOr5VtbanZiSbx9vm4s0su4jze/vd/lVNH56G8hYycnFs6GdIVI3SciKHJ3bgwh8ovDJkUpI8FA0IaM9ptFRnThxQcq2F5eSXp1sVbFRFpI+JIxXA1dAwSKxtnSraWKEPOrNCWau7XT5E4qkhOpNX3DCdMf+I8zo+KEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896708; c=relaxed/simple;
-	bh=bFMNBeTBK0q51+2izrbx4OfDAx1hzFYyrGskEwFGtlQ=;
+	s=arc-20240116; t=1730896382; c=relaxed/simple;
+	bh=PNVvr3xbi+Y0lLuQUNLkVeUeA9H+URuhPACqZs2qfQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tD/rlpAb066bOfksSqEIWgazHLuJQtNF+noAZfpt86SqhFErcxHHMT+fyuHapYXEmR+T9k6ucT/6aFgK23nqkr/9kiY49lHlM8V4mFh1i17HG7O5tfaiSimAVUGSElrkJCWVm1ziDUxw9OaPfimSutN3wSryfN7tatfzhem1m8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ovB/8Jv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00B0C4CEDC;
-	Wed,  6 Nov 2024 12:38:27 +0000 (UTC)
+	 MIME-Version; b=XFc+R3x43msVmHABLcCFygUWPdSF4aqCRJlUYgVvycrd6E8HS1PvudRsi+Rx2w0JeuaXuq+RGeaYm3P5BMxDOeKaWUMr9O5bhmaMzTngQ/lPG9xEAYY5KtjwjNunNNnaZO9xhPUYWJNvaRNoifIP5vG/JaZX7PmjSXCBUhFbxts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dJiKAme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92044C4CECD;
+	Wed,  6 Nov 2024 12:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896708;
-	bh=bFMNBeTBK0q51+2izrbx4OfDAx1hzFYyrGskEwFGtlQ=;
+	s=korg; t=1730896382;
+	bh=PNVvr3xbi+Y0lLuQUNLkVeUeA9H+URuhPACqZs2qfQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ovB/8JvxafEpSJ5/elBO6xTYviOCHTmY+zjQ8BhA8KkP5lcOyDPgXkELOz522eT1
-	 +eDzxOscBuxRMNCZq9SDdT4BlgWwTNxDc8ziOqjpImgATtLZzjZXNFDgI/+mDeOps+
-	 g23L5vO8zcRZEUPnp4KKWJ6uteYu0uQB6Yz9wy34=
+	b=1dJiKAme7B4lsx1iVNqyEZTU7uK2L+JtDmYXHghQgAh0XWOSrb4x0KUtuVcORK39e
+	 fC+52JrYmGlQ7t4jzAVD9AtQQvetT8j7tZPjUbALX3+8qfi0gDjwbek2lzKke0h5DN
+	 /e7uWh6TC+YZUKJA44Ud3nQJ8q6XDdB+LidWKt4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/110] ASoC: fsl_sai: Enable FIFO continue on error FCONT bit
-Date: Wed,  6 Nov 2024 13:03:55 +0100
-Message-ID: <20241106120303.981574696@linuxfoundation.org>
+Subject: [PATCH 6.11 183/245] accel/ivpu: Fix NOC firewall interrupt handling
+Date: Wed,  6 Nov 2024 13:03:56 +0100
+Message-ID: <20241106120323.744696144@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
 
-[ Upstream commit 72455e33173c1a00c0ce93d2b0198eb45d5f4195 ]
+[ Upstream commit 72f7e16eccddde99386a10eb2d08833e805917c6 ]
 
-FCONT=1 means On FIFO error, the SAI will continue from the
-same word that caused the FIFO error to set after the FIFO
-warning flag has been cleared.
+The NOC firewall interrupt means that the HW prevented
+unauthorized access to a protected resource, so there
+is no need to trigger device reset in such case.
 
-Set FCONT bit in control register to avoid the channel swap
-issue after SAI xrun.
+To facilitate security testing add firewall_irq_counter
+debugfs file that tracks firewall interrupts.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8a27ad81f7d3 ("accel/ivpu: Split IP and buttress code")
+Cc: stable@vger.kernel.org # v6.11+
+Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241017144958.79327-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 5 ++++-
- sound/soc/fsl/fsl_sai.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_debugfs.c | 9 +++++++++
+ drivers/accel/ivpu/ivpu_hw.c      | 1 +
+ drivers/accel/ivpu/ivpu_hw.h      | 1 +
+ drivers/accel/ivpu/ivpu_hw_ip.c   | 5 ++++-
+ 4 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 03731d14d4757..998102711da09 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -490,6 +490,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
+index 6f86f8df30db0..8d50981594d15 100644
+--- a/drivers/accel/ivpu/ivpu_debugfs.c
++++ b/drivers/accel/ivpu/ivpu_debugfs.c
+@@ -108,6 +108,14 @@ static int reset_pending_show(struct seq_file *s, void *v)
+ 	return 0;
+ }
  
- 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
- 
-+	/* Set to avoid channel swap */
-+	val_cr4 |= FSL_SAI_CR4_FCONT;
++static int firewall_irq_counter_show(struct seq_file *s, void *v)
++{
++	struct ivpu_device *vdev = seq_to_ivpu(s);
 +
- 	/* Set to output mode to avoid tri-stated data pins */
- 	if (tx)
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
-@@ -515,7 +518,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 			   FSL_SAI_CR3_TRCE((1 << pins) - 1));
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
--			   FSL_SAI_CR4_CHMOD_MASK,
-+			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
- 			   val_cr4);
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 691847d54b17d..eff3b7b2dd3e8 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -132,6 +132,7 @@
++	seq_printf(s, "%d\n", atomic_read(&vdev->hw->firewall_irq_counter));
++	return 0;
++}
++
+ static const struct drm_debugfs_info vdev_debugfs_list[] = {
+ 	{"bo_list", bo_list_show, 0},
+ 	{"fw_name", fw_name_show, 0},
+@@ -116,6 +124,7 @@ static const struct drm_debugfs_info vdev_debugfs_list[] = {
+ 	{"last_bootmode", last_bootmode_show, 0},
+ 	{"reset_counter", reset_counter_show, 0},
+ 	{"reset_pending", reset_pending_show, 0},
++	{"firewall_irq_counter", firewall_irq_counter_show, 0},
+ };
  
- /* SAI Transmit and Receive Configuration 4 Register */
+ static ssize_t
+diff --git a/drivers/accel/ivpu/ivpu_hw.c b/drivers/accel/ivpu/ivpu_hw.c
+index 27f0fe4d54e00..e69c0613513f1 100644
+--- a/drivers/accel/ivpu/ivpu_hw.c
++++ b/drivers/accel/ivpu/ivpu_hw.c
+@@ -249,6 +249,7 @@ int ivpu_hw_init(struct ivpu_device *vdev)
+ 	platform_init(vdev);
+ 	wa_init(vdev);
+ 	timeouts_init(vdev);
++	atomic_set(&vdev->hw->firewall_irq_counter, 0);
  
-+#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
- #define FSL_SAI_CR4_FCONT	BIT(28)
- #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
- #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
+ 	return 0;
+ }
+diff --git a/drivers/accel/ivpu/ivpu_hw.h b/drivers/accel/ivpu/ivpu_hw.h
+index 1c0c98e3afb88..a96a05b2acda9 100644
+--- a/drivers/accel/ivpu/ivpu_hw.h
++++ b/drivers/accel/ivpu/ivpu_hw.h
+@@ -52,6 +52,7 @@ struct ivpu_hw_info {
+ 	int dma_bits;
+ 	ktime_t d0i3_entry_host_ts;
+ 	u64 d0i3_entry_vpu_ts;
++	atomic_t firewall_irq_counter;
+ };
+ 
+ int ivpu_hw_init(struct ivpu_device *vdev);
+diff --git a/drivers/accel/ivpu/ivpu_hw_ip.c b/drivers/accel/ivpu/ivpu_hw_ip.c
+index dfd2f4a5b5268..60b33fc59d96e 100644
+--- a/drivers/accel/ivpu/ivpu_hw_ip.c
++++ b/drivers/accel/ivpu/ivpu_hw_ip.c
+@@ -1062,7 +1062,10 @@ static void irq_wdt_mss_handler(struct ivpu_device *vdev)
+ 
+ static void irq_noc_firewall_handler(struct ivpu_device *vdev)
+ {
+-	ivpu_pm_trigger_recovery(vdev, "NOC Firewall IRQ");
++	atomic_inc(&vdev->hw->firewall_irq_counter);
++
++	ivpu_dbg(vdev, IRQ, "NOC Firewall interrupt detected, counter %d\n",
++		 atomic_read(&vdev->hw->firewall_irq_counter));
+ }
+ 
+ /* Handler for IRQs from NPU core */
 -- 
 2.43.0
 
