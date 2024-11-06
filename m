@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE60A9BEBAB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156429BEC7A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7325328590A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C05D41F24E44
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F91D1F8F0F;
-	Wed,  6 Nov 2024 12:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4C71FC7E0;
+	Wed,  6 Nov 2024 12:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fW1NLE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud6VGV7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD51F8F0E;
-	Wed,  6 Nov 2024 12:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD881FC7DA;
+	Wed,  6 Nov 2024 12:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897212; cv=none; b=p0iJsb92hYB0l/H6aTeFv0ZMXkd3Lu9eVbjGY5hvPxw4FxmFr/gU8XicPmQjxh5ax3TB59G3Ul1oUY7NHMfmiQtOFj2g3pIEbN5tAKmU22aIfd2cMOs9D2LcyUo3v5ubiBIzSiwon8z0QMYP+QdxdfCwmPBLRG7bi71WqdvlIOo=
+	t=1730897735; cv=none; b=Ekwn6qkEMtf6tDMSi2H0WCMj+3FtNMvsAO5iCNodMMxWqXsHYpLnsWwgQ0ossBm3tKZWvHtCFtszB3OV8mBS6BcexYoFPzxAkbUUt9ncUl0wdUTN/yKvdQvq0279SGN/2J1WHqIOuzaryJHbxzuAg0lPisjjYmbk3yH18WBpQ9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897212; c=relaxed/simple;
-	bh=M/Y8COOCxjjXNdI3IESA7SrfHKNuL4Bn7iaHiiJV0Fs=;
+	s=arc-20240116; t=1730897735; c=relaxed/simple;
+	bh=TMUggIWQG66uPpO7d1uynyRpfdSJSTtncwvw4ZrPjjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDwDs6iTpomdAbYlT8mDVByekHUyav7wUK1subdQVHWr35j0I6wF6X7+SWtX1vd3sCBUBWXd9fANy8/2CHk8vz7HWG2w6f0c1hdl4Pek2EM5a0s4XwQm1cpWVTMNaPvdWQEwUwuMrhuhDVF19yyj6aJA2i+vn8Nevp3Pvy1V90M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fW1NLE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964B4C4CECD;
-	Wed,  6 Nov 2024 12:46:51 +0000 (UTC)
+	 MIME-Version; b=VF53Li63OpVk1nZ4UV48p0fw3QrQ5TkrhUYG1eA49v3Pp/vPbWTh5wVTJgXgLuC+46rGAMgUu01H/t8qLWmD+9n9Q7XhxxxP/br7gnj+3dLub3w55zdibHxB9DDDgeqwrQLWA7oVtTitXgR9ZLX9dJHXujYoWhPeXKvNkUPzmlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud6VGV7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC47C4CEF0;
+	Wed,  6 Nov 2024 12:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897212;
-	bh=M/Y8COOCxjjXNdI3IESA7SrfHKNuL4Bn7iaHiiJV0Fs=;
+	s=korg; t=1730897735;
+	bh=TMUggIWQG66uPpO7d1uynyRpfdSJSTtncwvw4ZrPjjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fW1NLE6ZYq6HTKOuNiVZwkX570wY+ayT8VK9ys0nVLLySoECAqaVcyhRfp7XB7e5
-	 gm9KuM9KkaGnjYUlXk8P5jfc6MggP96A9pjB9Z8MJDhDoNMCud18BjXtszPbRJNk/P
-	 3D10gwnqjZiv0UyJGPHVorBN556S2VUKpos4P0J4=
+	b=Ud6VGV7HSOL6iLK8hlJSrBO7n3HrRnjpRdQaS2DEwyD1gqpmeINenmzSylem2vr/3
+	 hdRFHnpaeFk1sKt6fWh3XrlXYZ4wPbfCssrm2neYy2oYWPuYc/igKgEXcbOVbpP2fL
+	 C7A72qZQUDLkUXMpdcGF/vQBr9VCr/8Y20sFkqf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/126] io_uring: use kiocb_{start,end}_write() helpers
+Subject: [PATCH 6.6 116/151] riscv: efi: Set NX compat flag in PE/COFF header
 Date: Wed,  6 Nov 2024 13:05:04 +0100
-Message-ID: <20241106120308.845040929@linuxfoundation.org>
+Message-ID: <20241106120312.059423246@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-[ Upstream commit e484fd73f4bdcb00c2188100c2d84e9f3f5c9f7d ]
+[ Upstream commit d41373a4b910961df5a5e3527d7bde6ad45ca438 ]
 
-Use helpers instead of the open coded dance to silence lockdep warnings.
+The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
+EFI binary does not rely on pages that are both executable and
+writable.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Message-Id: <20230817141337.1025891-5-amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 1d60d74e8526 ("io_uring/rw: fix missing NOWAIT check for O_DIRECT start write")
+The flag is used by some distro versions of GRUB to decide if the EFI
+binary may be executed.
+
+As the Linux kernel neither has RWX sections nor needs RWX pages for
+relocation we should set the flag.
+
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240929140233.211800-1-heinrich.schuchardt@canonical.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c | 23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ arch/riscv/kernel/efi-header.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 4eb42fc29c151..c15c7873813b3 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -222,15 +222,10 @@ static bool io_rw_should_reissue(struct io_kiocb *req)
- 
- static void io_req_end_write(struct io_kiocb *req)
- {
--	/*
--	 * Tell lockdep we inherited freeze protection from submission
--	 * thread.
--	 */
- 	if (req->flags & REQ_F_ISREG) {
--		struct super_block *sb = file_inode(req->file)->i_sb;
-+		struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
- 
--		__sb_writers_acquired(sb, SB_FREEZE_WRITE);
--		sb_end_write(sb);
-+		kiocb_end_write(&rw->kiocb);
- 	}
- }
- 
-@@ -897,18 +892,8 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
- 		return ret;
- 	}
- 
--	/*
--	 * Open-code file_start_write here to grab freeze protection,
--	 * which will be released by another thread in
--	 * io_complete_rw().  Fool lockdep by telling it the lock got
--	 * released so that it doesn't complain about the held lock when
--	 * we return to userspace.
--	 */
--	if (req->flags & REQ_F_ISREG) {
--		sb_start_write(file_inode(req->file)->i_sb);
--		__sb_writers_release(file_inode(req->file)->i_sb,
--					SB_FREEZE_WRITE);
--	}
-+	if (req->flags & REQ_F_ISREG)
-+		kiocb_start_write(kiocb);
- 	kiocb->ki_flags |= IOCB_WRITE;
- 
- 	if (likely(req->file->f_op->write_iter))
+diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+index 515b2dfbca75b..c5f17c2710b58 100644
+--- a/arch/riscv/kernel/efi-header.S
++++ b/arch/riscv/kernel/efi-header.S
+@@ -64,7 +64,7 @@ extra_header_fields:
+ 	.long	efi_header_end - _start			// SizeOfHeaders
+ 	.long	0					// CheckSum
+ 	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
+-	.short	0					// DllCharacteristics
++	.short	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	// DllCharacteristics
+ 	.quad	0					// SizeOfStackReserve
+ 	.quad	0					// SizeOfStackCommit
+ 	.quad	0					// SizeOfHeapReserve
 -- 
 2.43.0
 
