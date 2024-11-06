@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-91092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5089BEC6D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85739BEC6F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A07912817DC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA9151C23B32
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD981FBCBB;
-	Wed,  6 Nov 2024 12:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA21E1FBF72;
+	Wed,  6 Nov 2024 12:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5vdLsX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6hbA9dM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D681FBF6A;
-	Wed,  6 Nov 2024 12:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B6D1FBF71;
+	Wed,  6 Nov 2024 12:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897717; cv=none; b=LuFX72O9LML6h56Mgms9GOdBsJsVOn4ltSrcTcGvpmvo7+VpNWRPs+z7EA3WSQBBD4fEqWC7EqSgciVlCzNPH4Cws8q0qQve7yi/aOjBPNdrbAObcwH5Y+sfHlHRhK+EiW3aQv9wawvPai/fZIrzLaBYOmdFqL5Se7SoYIcMVIY=
+	t=1730897720; cv=none; b=Ikk4gcO4j3yHeot4R1ZSO6MrQOsevYjffhaALIpT6wNLEF3pWUXBH7Mfx+VGCaYJgh6wbeCa1bziwalCeKt/b+bq3398XQJ14khws0WbaWnKZsv1lG2r8+Wv0KREZ24ZHisYoLmJjH/zh10Qc2q5/kGQ9DnV4kbDF+q9kWNUQtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897717; c=relaxed/simple;
-	bh=lVnTdrFlWlCj0OQB7EQKnjL73O1XDwSTBLn5j/cCXTA=;
+	s=arc-20240116; t=1730897720; c=relaxed/simple;
+	bh=XYnddLXQHhjvKO4fKCqXng+VHktlA6p4xkZcDol+nC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3GHPE1/Q/jQXDQXkrT8sdXzrqRxCdUKOOQifPugKyNNbTu1yrA+wahX1djYJ17dJoMERrC3vUB7Mv6cTi9fTLOLyBlDkKgak7CeBsNRsPz2H6sAvmWCAnVJs36Div3dCGQxaBucIV9DscH+s4pKAA6XMmRAwv5PMkVcoKrD89k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5vdLsX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4068C4CECD;
-	Wed,  6 Nov 2024 12:55:16 +0000 (UTC)
+	 MIME-Version; b=NYlyrP88NlzNcQ1V/9YWcwrPfiNuaaTk9AN1Df0FCVPI1nCQnsYN2uFixyFxh70TG3mT9111NPwjNkpSr0XsjXJjSakLcn6T8HbqjgbBr+yxLeVsRBEcNfMIo15OZ2402QweSmLgBXzDsllF+OHyVQ+kEl9AOKVwwa9TigG5CaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6hbA9dM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B64C4CECD;
+	Wed,  6 Nov 2024 12:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897717;
-	bh=lVnTdrFlWlCj0OQB7EQKnjL73O1XDwSTBLn5j/cCXTA=;
+	s=korg; t=1730897720;
+	bh=XYnddLXQHhjvKO4fKCqXng+VHktlA6p4xkZcDol+nC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5vdLsX9UCHTUrqe+I2ITVwYcf/4CSm/w0xo77oPnMEDihyTjiMDCAt73NxxazSHr
-	 YaTuP12u9ArGxpHdzR6YmLT5dXWzL/nmjWedMY3ejwh2TUdFmrJZMulXELGF+fpmHX
-	 cRl3YcAz5bsfF4xYG9PFueoFgOgkGiSwy39wEZlE=
+	b=c6hbA9dM30LglIa8fFrVT7P0q+jinNAvMVClD7Mdq4UkESRguWyO0rSjfU9gR2Jul
+	 0xIYMdD4cTtPuU0BV1jZ5djT0prqWcS0cm6oQWVWvyhLZ+1iRMGeZxIO4daOLkOOoO
+	 Th3gIFmhFjZcERqxrdHmqX5mV/XPUwH5IZsgSSgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.6 146/151] SUNRPC: Remove BUG_ON call sites
-Date: Wed,  6 Nov 2024 13:05:34 +0100
-Message-ID: <20241106120312.865793549@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 147/151] ASoC: SOF: ipc4-topology: Add definition for generic switch/enum control
+Date: Wed,  6 Nov 2024 13:05:35 +0100
+Message-ID: <20241106120312.894161753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
 References: <20241106120308.841299741@linuxfoundation.org>
@@ -68,45 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 789ce196a31dd13276076762204bee87df893e53 upstream.
+commit 060a07cd9bc69eba2da33ed96b1fa69ead60bab1 upstream.
 
-There is no need to take down the whole system for these assertions.
+Currently IPC4 has no notion of a switch or enum type of control which is
+a generic concept in ALSA.
 
-I'd rather not attempt a heroic save here, as some bug has occurred
-that has left the transport data structures in an unknown state.
-Just warn and then leak the left-over resources.
+The generic support for these control types will be as follows:
+- large config is used to send the channel-value par array
+- param_id of a SWITCH type is 200
+- param_id of an ENUM type is 201
 
-Acked-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Each module need to support a switch or/and enum must handle these
+universal param_ids.
+The message payload is described by struct sof_ipc4_control_msg_payload.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230919103115.30783-2-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svc.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/sof/ipc4-topology.h |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -577,11 +577,12 @@ svc_destroy(struct kref *ref)
- 	timer_shutdown_sync(&serv->sv_temptimer);
+--- a/sound/soc/sof/ipc4-topology.h
++++ b/sound/soc/sof/ipc4-topology.h
+@@ -319,7 +319,7 @@ struct sof_ipc4_copier {
+ /**
+  * struct sof_ipc4_ctrl_value_chan: generic channel mapped value data
+  * @channel: Channel ID
+- * @value: gain value
++ * @value: Value associated with @channel
+  */
+ struct sof_ipc4_ctrl_value_chan {
+ 	u32 channel;
+@@ -343,6 +343,23 @@ struct sof_ipc4_control_data {
+ 	};
+ };
  
- 	/*
--	 * The last user is gone and thus all sockets have to be destroyed to
--	 * the point. Check this.
-+	 * Remaining transports at this point are not expected.
- 	 */
--	BUG_ON(!list_empty(&serv->sv_permsocks));
--	BUG_ON(!list_empty(&serv->sv_tempsocks));
-+	WARN_ONCE(!list_empty(&serv->sv_permsocks),
-+		  "SVC: permsocks remain for %s\n", serv->sv_program->pg_name);
-+	WARN_ONCE(!list_empty(&serv->sv_tempsocks),
-+		  "SVC: tempsocks remain for %s\n", serv->sv_program->pg_name);
- 
- 	cache_clean_deferred(serv);
- 
++#define SOF_IPC4_SWITCH_CONTROL_PARAM_ID	200
++#define SOF_IPC4_ENUM_CONTROL_PARAM_ID		201
++
++/**
++ * struct sof_ipc4_control_msg_payload - IPC payload for kcontrol parameters
++ * @id: unique id of the control
++ * @num_elems: Number of elements in the chanv array
++ * @reserved: reserved for future use, must be set to 0
++ * @chanv: channel ID and value array
++ */
++struct sof_ipc4_control_msg_payload {
++	uint16_t id;
++	uint16_t num_elems;
++	uint32_t reserved[4];
++	DECLARE_FLEX_ARRAY(struct sof_ipc4_ctrl_value_chan, chanv);
++} __packed;
++
+ /**
+  * struct sof_ipc4_gain_params - IPC gain parameters
+  * @channels: Channels
 
 
 
