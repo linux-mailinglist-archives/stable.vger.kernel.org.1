@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-91620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A2D9BEED1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EB69BEE92
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E4A028637E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 992C61F24394
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6F41DF75A;
-	Wed,  6 Nov 2024 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74D81DF75A;
+	Wed,  6 Nov 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5ps13bQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BclIcQZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7F7646;
-	Wed,  6 Nov 2024 13:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B8A646;
+	Wed,  6 Nov 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899268; cv=none; b=aP+7+fNXWp/OOcHKXPUedH8OrNRJYCKrYlqSIZoMwOMvQP88G9EdZ93OQ1Q/jn2MWRI8BioPpOosUXuVQ3xeDgNRgdBbbCFTtxIZanZs69KwJPF0Ks/8JUDSpZ5HBb+Pd6f5khxm74Wu+holUtvBmonp9T5U8Cg7nNagKBZ2m1Y=
+	t=1730899114; cv=none; b=Rqlt+kJAY5ErO3yc/hP42DcsekNAgpXZwnV/iXyppNIJDVq49IHImFQ6HRdUX3kmZ6TeKP4T8clgxpVHY7uGy4poP3+CHTotrsg5H8WnwGJRt6WdkhkfVUK5qgRBDQTZsLB5iVVujG4MyMK1Zpbx4aWDiYOvovzh4wD16pla4Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899268; c=relaxed/simple;
-	bh=wrhutbalQimbz8vvJaLn14AK5oJB85EarpJOIdHS9mo=;
+	s=arc-20240116; t=1730899114; c=relaxed/simple;
+	bh=C0zbi2d3zJC1J+DsqrcrlQ72lZBK5kwAqCSAGw7ovSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PeGz7a6W4T2toKSdpx7AT9bgaAKG0Kv43e+/D0JsG0m3kLP1Px/zdQ7lvxrBOIsap9+Wo+bjTmh/IIiKoH+BjIoPdV0jPw5IblmdvAXbpI4K3KhdS7nJzvFhVtIxfR5/13Gv/zL7mUqZgIkhgxUYJxQXBpAXCIhRkk419CEfrBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5ps13bQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423B1C4CECD;
-	Wed,  6 Nov 2024 13:21:08 +0000 (UTC)
+	 MIME-Version; b=YptNkIfppuAN5b6F3D5RpvSrYkatnrjrQTxuxlTpZkG8XGvd++zPvhMzwuK2iEGaZA50/FLbNQ6fL5bDDf4ij62GRSnUJO0pRzAHyhmDxNs4nvDuqi3G8rTGgEIyLFOEDHFR4QkfUhgER3a+3RAM+wLjDsdDaDF5/6VWKR4I7RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BclIcQZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D49C4CECD;
+	Wed,  6 Nov 2024 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899268;
-	bh=wrhutbalQimbz8vvJaLn14AK5oJB85EarpJOIdHS9mo=;
+	s=korg; t=1730899114;
+	bh=C0zbi2d3zJC1J+DsqrcrlQ72lZBK5kwAqCSAGw7ovSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5ps13bQJmCBW26WNxzxGYqaoTeR/Stp2xmg7+2BJuExzXi3OxGjkLCGwt/FDZntK
-	 xFJ/sr3nUjewclIxj84bojA4e3bQGSUIJV2a1VQNkJNKemXPOoW39TyB/BhuTEXgVl
-	 I7OlnBfXhV8Cxvvyt+h+aNNeXvPccL+h7Aoo3cMc=
+	b=BclIcQZQ4pSTaMPbu4Fatu0/TyvR6d8Fe9/dHh/KMEyOoSB95JKMSTzOfXfbuOb1L
+	 oZrBzan4NPwRDiT6kXTpQ6yi3DFzD12ZmAKzntX07AD0U7UaCtvl660jAdV17goSQG
+	 oJ67oCNnHarigbX7fBLRgqPAShx6Tt+aO9anpQOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Jaiswal <quic_jsuraj@quicinc.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/73] net: stmmac: TSO: Fix unbalanced DMA map/unmap for non-paged SKB data
-Date: Wed,  6 Nov 2024 13:05:22 +0100
-Message-ID: <20241106120300.509610803@linuxfoundation.org>
+Subject: [PATCH 5.4 430/462] wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
+Date: Wed,  6 Nov 2024 13:05:23 +0100
+Message-ID: <20241106120342.131148214@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 66600fac7a984dea4ae095411f644770b2561ede ]
+[ Upstream commit e50a88e5cb8792cc416866496288c5f4d1eb4b1f ]
 
-In case the non-paged data of a SKB carries protocol header and protocol
-payload to be transmitted on a certain platform that the DMA AXI address
-width is configured to 40-bit/48-bit, or the size of the non-paged data
-is bigger than TSO_MAX_BUFF_SIZE on a certain platform that the DMA AXI
-address width is configured to 32-bit, then this SKB requires at least
-two DMA transmit descriptors to serve it.
+This will allow to reconnect immediately instead of leaving the
+connection in a limbo state.
 
-For example, three descriptors are allocated to split one DMA buffer
-mapped from one piece of non-paged data:
-    dma_desc[N + 0],
-    dma_desc[N + 1],
-    dma_desc[N + 2].
-Then three elements of tx_q->tx_skbuff_dma[] will be allocated to hold
-extra information to be reused in stmmac_tx_clean():
-    tx_q->tx_skbuff_dma[N + 0],
-    tx_q->tx_skbuff_dma[N + 1],
-    tx_q->tx_skbuff_dma[N + 2].
-Now we focus on tx_q->tx_skbuff_dma[entry].buf, which is the DMA buffer
-address returned by DMA mapping call. stmmac_tx_clean() will try to
-unmap the DMA buffer _ONLY_IF_ tx_q->tx_skbuff_dma[entry].buf
-is a valid buffer address.
-
-The expected behavior that saves DMA buffer address of this non-paged
-data to tx_q->tx_skbuff_dma[entry].buf is:
-    tx_q->tx_skbuff_dma[N + 0].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = dma_map_single();
-Unfortunately, the current code misbehaves like this:
-    tx_q->tx_skbuff_dma[N + 0].buf = dma_map_single();
-    tx_q->tx_skbuff_dma[N + 1].buf = NULL;
-    tx_q->tx_skbuff_dma[N + 2].buf = NULL;
-
-On the stmmac_tx_clean() side, when dma_desc[N + 0] is closed by the
-DMA engine, tx_q->tx_skbuff_dma[N + 0].buf is a valid buffer address
-obviously, then the DMA buffer will be unmapped immediately.
-There may be a rare case that the DMA engine does not finish the
-pending dma_desc[N + 1], dma_desc[N + 2] yet. Now things will go
-horribly wrong, DMA is going to access a unmapped/unreferenced memory
-region, corrupted data will be transmited or iommu fault will be
-triggered :(
-
-In contrast, the for-loop that maps SKB fragments behaves perfectly
-as expected, and that is how the driver should do for both non-paged
-data and paged frags actually.
-
-This patch corrects DMA map/unmap sequences by fixing the array index
-for tx_q->tx_skbuff_dma[entry].buf when assigning DMA buffer address.
-
-Tested and verified on DWXGMAC CORE 3.20a
-
-Reported-by: Suraj Jaiswal <quic_jsuraj@quicinc.com>
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021061023.2162701-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240128084842.e90531cd3a36.Iebdc9483983c0d8497f9dcf9d79ec37332a5fdcc@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 22 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b62d153f1676e..4a194f30f4a83 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4110,11 +4110,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (dma_mapping_error(priv->device, des))
- 		goto dma_map_err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 27bd9ed48bec4..16bf070566e6c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1182,6 +1182,13 @@ static int iwl_mvm_ppag_init(struct iwl_mvm *mvm)
+ }
+ #endif /* CONFIG_ACPI */
  
--	tx_q->tx_skbuff_dma[first_entry].buf = des;
--	tx_q->tx_skbuff_dma[first_entry].len = skb_headlen(skb);
--	tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
--	tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
--
- 	if (priv->dma_cap.addr64 <= 32) {
- 		first->des0 = cpu_to_le32(des);
- 
-@@ -4133,6 +4128,23 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
- 
-+	/* In case two or more DMA transmit descriptors are allocated for this
-+	 * non-paged SKB data, the DMA buffer address should be saved to
-+	 * tx_q->tx_skbuff_dma[].buf corresponding to the last descriptor,
-+	 * and leave the other tx_q->tx_skbuff_dma[].buf as NULL to guarantee
-+	 * that stmmac_tx_clean() does not unmap the entire DMA buffer too early
-+	 * since the tail areas of the DMA buffer can be accessed by DMA engine
-+	 * sooner or later.
-+	 * By saving the DMA buffer address to tx_q->tx_skbuff_dma[].buf
-+	 * corresponding to the last descriptor, stmmac_tx_clean() will unmap
-+	 * this DMA buffer right after the DMA engine completely finishes the
-+	 * full buffer transmission.
-+	 */
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
-+	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
++static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
++					struct ieee80211_vif *vif)
++{
++	if (vif->type == NL80211_IFTYPE_STATION)
++		ieee80211_hw_restart_disconnect(vif);
++}
 +
- 	/* Prepare fragments */
- 	for (i = 0; i < nfrags; i++) {
- 		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
+ {
+ 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
+@@ -1226,10 +1233,15 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
+ 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
+ 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
+ 		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
+-		if (resp)
++		if (resp) {
+ 			IWL_ERR(mvm,
+ 				"Failed to send recovery cmd blob was invalid %d\n",
+ 				resp);
++
++			ieee80211_iterate_interfaces(mvm->hw, 0,
++						     iwl_mvm_disconnect_iterator,
++						     mvm);
++		}
+ 	}
+ }
+ 
 -- 
 2.43.0
 
