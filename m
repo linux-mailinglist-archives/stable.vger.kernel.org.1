@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-90746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716DE9BEA59
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:44:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5563C9BEB63
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C88A1C255D1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:44:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D680DB25E8A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A9F1EBFF4;
-	Wed,  6 Nov 2024 12:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AEA1F76B6;
+	Wed,  6 Nov 2024 12:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdlD5a9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+7de2fs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81AF1E0084;
-	Wed,  6 Nov 2024 12:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36321EABB4;
+	Wed,  6 Nov 2024 12:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896687; cv=none; b=gRXfzj6P2Psm9nkDKnUX+9MUHiMISHo/pxEcWi3NL+TJN89XQHDq7FoEVOrixGm+WQXbOYPum2dDTBx8zckxj3m6PQHl1nyPNYgjOePyH93LCsT0tQCT1+eYbiQipUr3bXLezVkeE7uszrmKcfEnoRJEUsyAj4apyefH2A90kjs=
+	t=1730897039; cv=none; b=p8QN/QHTVl1UX/Vn9BZ1PZW+YJ0W9XHEJo8Lw46kwr2hwCy19dUPIi43RR3XRClsdbM9gZAbfGUnQKapit93sj88eDgFzFUAEDCiV6k3ywe6SHHspVVYAiSDZhf6UWnO5Rcp05fYhe/IDwpzmLBoDbZxY3fasEa/i49C9qm7IOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896687; c=relaxed/simple;
-	bh=Xflp0jSJdLU01o8pew/1Jdppq6xfEHgsQ1G1r9amHFw=;
+	s=arc-20240116; t=1730897039; c=relaxed/simple;
+	bh=FlHciFbl1I1pKNJNHGpf10elFhrQ9oiu+FZWVrP9wB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcKJo6LHIF5q5SstQ9ae8ATBYu2W9BaAgS0q1nQoZp+RoNa2h/rfKoAAxtM7ifrOTwWKSDoiV2wAfP/bg2cy0ttHOkR9KLPIPLfS5iY458UNl3oQ18VYz3RAzIp/cA/1gDFLOvIY6YUpiJl0oqivxJZY4XzVf/sT2OtPNz/6+WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdlD5a9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E524C4CECD;
-	Wed,  6 Nov 2024 12:38:07 +0000 (UTC)
+	 MIME-Version; b=rjtykiMpaENKCTWqSEVabWnq4ZpW7lbO9S8DO138eEIOX4JsRSDvKa+pfqr3XdJIGk9eoo9RsvEsYDeCA9HvduTnv/wk8X0dpG4wc78Dm+ukJH31Kn5UtPTab1G48pceAqNBGUbQiC/8pYdlVspJ78A0ffy3gZaQmj64f3nbDDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+7de2fs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFB7C4CECD;
+	Wed,  6 Nov 2024 12:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896687;
-	bh=Xflp0jSJdLU01o8pew/1Jdppq6xfEHgsQ1G1r9amHFw=;
+	s=korg; t=1730897038;
+	bh=FlHciFbl1I1pKNJNHGpf10elFhrQ9oiu+FZWVrP9wB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdlD5a9on9qWdl8kIEbaTVr9H+ipxIRfqhwKjtWWWX24Eh1YrO6vVJG3aidR8vZRk
-	 tw5TxfidZxa/GoUn64XUlvOeHbW9FPy3mByOC5qCc3/tVILAiosqLa0f6R5KoERJ/x
-	 lIKhBWiSB7TNMBcKZHNQZQpa3N3bCj/gp4+ftMBI=
+	b=E+7de2fseZ5J/ChLJvrujg8y+Liv184vPMgZsfQ1NoOcknR/nYBPc2GI2dNZc+IT6
+	 /t4a+aKRDSwD/l4XlDWqURroFLC8NIWaZEWfq+m9+ioVPxhRarSUHOG9Kj67PdzyrP
+	 XvllDSCQvpMbZZ6mZ6R74gnM49xTz3VopfQoCvCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Li <ashimida@linux.alibaba.com>,
+	Kees Cook <keescook@chromium.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/110] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
-Date: Wed,  6 Nov 2024 13:04:06 +0100
-Message-ID: <20241106120304.307654090@linuxfoundation.org>
+Subject: [PATCH 6.1 046/126] compiler-gcc: remove attribute support check for `__no_sanitize_address__`
+Date: Wed,  6 Nov 2024 13:04:07 +0100
+Message-ID: <20241106120307.350423796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +72,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
+[ Upstream commit ae37a9a2c2d0960d643d782b426ea1aa9c05727a ]
 
-If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
-and get the clk->rwsem read lock, so the error path should release
-the lock to make the lock balance and fput the clockid's fd to make
-the refcount balance and release the fd related resource.
+The attribute was added in GCC 4.8, while the minimum GCC version
+supported by the kernel is GCC 5.1.
 
-However the below commit left the error path locked behind resulting in
-unbalanced locking. Check timespec64_valid_strict() before
-get_clock_desc() to fix it, because the "ts" is not changed
-after that.
+Therefore, remove the check.
 
-Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-[pabeni@redhat.com: fixed commit message typo]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://godbolt.org/z/84v56vcn8
+Link: https://lkml.kernel.org/r/20221021115956.9947-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dan Li <ashimida@linux.alibaba.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 894b00a3350c ("kasan: Fix Software Tag-Based KASAN with GCC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-clock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/compiler-gcc.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index 8127673bfc45e..05e73d209aa87 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 	struct posix_clock_desc cd;
- 	int err;
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index e6474899250d5..b6050483ba421 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -102,11 +102,7 @@
+ #define __noscs __attribute__((__no_sanitize__("shadow-call-stack")))
+ #endif
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
-+
- 	err = get_clock_desc(id, &cd);
- 	if (err)
- 		return err;
-@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 		goto out;
- 	}
+-#if __has_attribute(__no_sanitize_address__)
+ #define __no_sanitize_address __attribute__((__no_sanitize_address__))
+-#else
+-#define __no_sanitize_address
+-#endif
  
--	if (!timespec64_valid_strict(ts))
--		return -EINVAL;
--
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
- 	else
+ #if defined(__SANITIZE_THREAD__) && __has_attribute(__no_sanitize_thread__)
+ #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
 -- 
 2.43.0
 
