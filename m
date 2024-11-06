@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8524F9BEA69
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:45:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6E09BEB65
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B4B1F24B43
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:45:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41CD5B22510
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56721F9A9C;
-	Wed,  6 Nov 2024 12:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68671F76B9;
+	Wed,  6 Nov 2024 12:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaZiR8G3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8HGryt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFA41F9A8C;
-	Wed,  6 Nov 2024 12:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723A11EABC7;
+	Wed,  6 Nov 2024 12:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896693; cv=none; b=p+BM2UYPqStARhV60WQ9bbIEo1nyc8CY3fp6YgeIpGsddpJz42teiL5M14kmWIGgFywxce6hZ17rlhCaOXp7Ns0GZDEfIKviWOZgXwGWioFGv7RIB3PA9qzYlLpV6ZPsHveZN5a/qJ+2ZxeVzJx5TgLOFfSXWNxt4boAOQrWG4k=
+	t=1730897044; cv=none; b=tpkgySGH/BFvcwQBIAjq8ij/e9NINhg05MV/4G1o2MWiftzsbf/ceFNevzL/4OZol1o0pRu6cH2QVdJBmUkLcjXEirAoIuJep761Emx/0I01n9h5ZjVnW8P61ArBMqp+Um7H/VpNWupGFu20RWpNyXhl6CajRvRfVpWczDAgXdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896693; c=relaxed/simple;
-	bh=7GWTWRgHJjCCRBJ/R1TcG5us2woWagZqUHRhO5sVD9U=;
+	s=arc-20240116; t=1730897044; c=relaxed/simple;
+	bh=Rt91iS6ZwAPpYj9mc3xJTQ35EL+2kM+xX6jPiRy0wVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scuI8ZvjKbeqgZFpm9pYUa2yvS/9iwP0WCYeyT6Gt4xtLh3yGt060g8RM+zfDXq2yw5tTOApu+c3w7Ejphcri1v/AuKsIT3lOfnder2XtExwnz4dpKe9p3CJthUqtizph3nGtZymzWwfZyNRthjIVxO/Om1lvK36PLRIkX6xG7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaZiR8G3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12576C4CED4;
-	Wed,  6 Nov 2024 12:38:12 +0000 (UTC)
+	 MIME-Version; b=XhEjdbjM3meXlI8/eJ0ZOQQXDNQPx3TyV8NhLRqp608dk++18gilnaft5dkIDP5ZlH+cUd3UXJ5xfHq427qAupSpOOYLc6O6hXYiNekUlvCxlcGWvsb70cdZHu9j//UjoQ+1FT4Lh7ILhCptnRxnyUlx+SRgWwKVSKxUmT3gCXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8HGryt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66AEC4CECD;
+	Wed,  6 Nov 2024 12:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896693;
-	bh=7GWTWRgHJjCCRBJ/R1TcG5us2woWagZqUHRhO5sVD9U=;
+	s=korg; t=1730897044;
+	bh=Rt91iS6ZwAPpYj9mc3xJTQ35EL+2kM+xX6jPiRy0wVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaZiR8G3Bet/A6OsAUuOUYtJOz89CCq0QDwvfshgg7FQsUc5RYslW1H22ifh5d62a
-	 zEqseve6yaxVagTy5U1YtCopRgw8ikOInWpO+9vGLCnPBTW/VrLr/4F73j/DeV57kK
-	 VT7xLhICl+O7fDruUirEpt2FcG0/WPNPPxyDZDbE=
+	b=X8HGryt+k3hKLgkFY5DsbhzWAmNvZfwKzUllcXXsc0lby+LTUSG0niHiisFcRIi8r
+	 ThYdQk1dxehyqQvxhApcIdls7UU3MdQ71xKkuzrWmGsh3eufAgLKX/eVLhsnIjWNC2
+	 +qDoFJ4cl3XjqQJRIpq/CGsJ1F1SqhD4kogp4jjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/110] ALSA: hda/realtek: Update default depop procedure
-Date: Wed,  6 Nov 2024 13:04:08 +0100
-Message-ID: <20241106120304.363960693@linuxfoundation.org>
+Subject: [PATCH 6.1 048/126] firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()
+Date: Wed,  6 Nov 2024 13:04:09 +0100
+Message-ID: <20241106120307.403492628@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
+[ Upstream commit c83212d79be2c9886d3e6039759ecd388fd5fed1 ]
 
-Old procedure has a chance to meet Headphone no output.
+In sdei_device_freeze(), the input parameter of cpuhp_remove_state() is
+passed as 'sdei_entry_point' by mistake. Change it to 'sdei_hp_state'.
 
-Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d2c48b2387eb ("firmware: arm_sdei: Fix sleep from invalid context BUG")
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20241016084740.183353-1-wangxiongfeng2@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ drivers/firmware/arm_sdei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 05a2442cfc656..2ccc1f7e424db 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3789,20 +3789,18 @@ static void alc_default_init(struct hda_codec *codec)
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 285fe7ad490d1..3e8051fe82965 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -763,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
  
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	/* unregister private events */
+-	cpuhp_remove_state(sdei_entry_point);
++	cpuhp_remove_state(sdei_hp_state);
  
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		msleep(75);
-+	}
- }
- 
- static void alc_default_shutup(struct hda_codec *codec)
-@@ -3818,22 +3816,20 @@ static void alc_default_shutup(struct hda_codec *codec)
- 
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
--
--	if (!spec->no_shutup_pins)
- 		snd_hda_codec_write(codec, hp_pin, 0,
--				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		msleep(75);
- 
-+		if (!spec->no_shutup_pins)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+	}
- 	alc_auto_setup_eapd(codec, false);
- 	alc_shutup_pins(codec);
- }
+ 	err = sdei_unregister_shared();
+ 	if (err)
 -- 
 2.43.0
 
