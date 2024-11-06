@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-90737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0E89BEA35
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:42:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F331B9BE843
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6521B1F2124F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:42:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30F041C20B8A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1B81F76BE;
-	Wed,  6 Nov 2024 12:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4FF1DF986;
+	Wed,  6 Nov 2024 12:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKZXSm1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3MOOHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3900B1E767B;
-	Wed,  6 Nov 2024 12:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2301DF740;
+	Wed,  6 Nov 2024 12:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896664; cv=none; b=NUG1P8+boI29Mo/maCGcXS8xCPE2j9GySw7YL0N/3qogKqg7GhFPOOM+GBTpJi7BxfcJWhRTtyYvCk/+ftF+AkEbINts0iclgyronFwfwvJRceBOESBIbKTsP/gj70JhpWN4ZyhTx8EyoYx//fHXxxL3eSajwlQgFaoi0QpVFuc=
+	t=1730895774; cv=none; b=d29penFnXiJZvoreZbfB2XmgF67jx9JpSweAGhb5hs+dj6p+nxsTlPWs/QoOi0ciDHC0izONN3AwDIQGhMRHq3dX3ucdi+uHO1JsoF2IpHSPgZIzfotsNaFU7Ge747tvHHyMrE+PPwVMSVJSNjWe1jwulMFxSDMF5bFwAwHajm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896664; c=relaxed/simple;
-	bh=CsVd1JK/fPP/FWMlXxIW17RMoht1myFM6rz7w2oMt/g=;
+	s=arc-20240116; t=1730895774; c=relaxed/simple;
+	bh=J89n2Vz/Sk34EtvdwukJoyPJmyB1PIK0UtXx9psyn5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvjjHh6MIA9n2vaxR46l/V8HsnUA+IQb6FIuUVW1uFtlDRNxXQwLbcg0D12Vh8AaOughM9IJIferRwi7XfUoGDYtdd/zN9fqvCjKMtd0bssKYoSQqEkHM5OuwY4CaudcPYEWaVlUy0zcpncsdHa7cl0UJhH0xd0Tgd4SPrt7qG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKZXSm1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBC8C4CECD;
-	Wed,  6 Nov 2024 12:37:43 +0000 (UTC)
+	 MIME-Version; b=onhFCRlNEGlsiEiJ1u8K3qDcxekXOVR4MfnQt9tHcMbUMUQV433FrMvxouWfwg9uDz6HX7ldpDrON0T9WNz/93es71kAQV1pN1Jby+08ECui73mf5pVrYRW/vqHC/kf9Tq2opK5AcDGFthEssWpokhcR9udgeQOxykXhKdLDsaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG3MOOHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2B3C4CECD;
+	Wed,  6 Nov 2024 12:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896663;
-	bh=CsVd1JK/fPP/FWMlXxIW17RMoht1myFM6rz7w2oMt/g=;
+	s=korg; t=1730895774;
+	bh=J89n2Vz/Sk34EtvdwukJoyPJmyB1PIK0UtXx9psyn5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKZXSm1xZ8gj7NUG4xLxKcDf1o/w1NaR+bB6p7JXhMj3XHcjViHOPOgKqv1RyJHHK
-	 a3I92ud1RlMuahtqnFy0T3hWc2/2cB+kYPNpXVc91cZWh0d9tixIJ4OxX4TvjNzFgL
-	 AOcz7uT2aOh+z6zILKYiHX3TqqI7jPLkHvtjAE10=
+	b=rG3MOOHTUWxaTSOQtAVzXQatkNigLH0KshdFW2KSW6sksGJ58uQNmQy02cJtKBOBZ
+	 63ml0MGW3UArcKGHZg+SxYLgIU/CMOd3HF80eX2revLrEiluMwNuc37RwBfWejKzGK
+	 /FSQAAFw9cNRiA+/1oHJzw2gRXi7hjlpLsSctIiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/110] RDMA/bnxt_re: Fix a bug while setting up Level-2 PBL pages
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 4.19 285/350] xhci: Fix incorrect stream context type macro
 Date: Wed,  6 Nov 2024 13:03:33 +0100
-Message-ID: <20241106120303.351523467@linuxfoundation.org>
+Message-ID: <20241106120327.885620335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 7988bdbbb85ac85a847baf09879edcd0f70521dc ]
+commit 6599b6a6fa8060145046d0744456b6abdb3122a7 upstream.
 
-Avoid memory corruption while setting up Level-2 PBL pages for the non MR
-resources when num_pages > 256K.
+The stream contex type (SCT) bitfield is used both in the stream context
+data structure,  and in the 'Set TR Dequeue pointer' command TRB.
+In both cases it uses bits 3:1
 
-There will be a single PDE page address (contiguous pages in the case of >
-PAGE_SIZE), but, current logic assumes multiple pages, leading to invalid
-memory access after 256K PBL entries in the PDE.
+The SCT_FOR_TRB(p) macro used to set the stream context type (SCT) field
+for the 'Set TR Dequeue pointer' command TRB incorrectly shifts the value
+1 bit left before masking the three bits.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Link: https://patch.msgid.link/r/1728373302-19530-10-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by first masking and rshifting, just like the similar
+SCT_FOR_CTX(p) macro does
+
+This issue has not been visibile as the lost bit 3 is only used with
+secondary stream arrays (SSA). Xhci driver currently only supports using
+a primary stream array with Linear stream addressing.
+
+Fixes: 95241dbdf828 ("xhci: Set SCT field for Set TR dequeue on streams")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241016140000.783905-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/usb/host/xhci.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 2861a2bbea6e4..af23e57fc78ed 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -256,22 +256,9 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			dst_virt_ptr =
- 				(dma_addr_t **)hwq->pbl[PBL_LVL_0].pg_arr;
- 			src_phys_ptr = hwq->pbl[PBL_LVL_1].pg_map_arr;
--			if (hwq_attr->type == HWQ_TYPE_MR) {
--			/* For MR it is expected that we supply only 1 contigous
--			 * page i.e only 1 entry in the PDL that will contain
--			 * all the PBLs for the user supplied memory region
--			 */
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[0][i] = src_phys_ptr[i] |
--						flag;
--			} else {
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[PTR_PG(i)][PTR_IDX(i)] =
--						src_phys_ptr[i] |
--						PTU_PDE_VALID;
--			}
-+			for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count; i++)
-+				dst_virt_ptr[0][i] = src_phys_ptr[i] | flag;
-+
- 			/* Alloc or init PTEs */
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_2],
- 					 hwq_attr->sginfo);
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1273,7 +1273,7 @@ enum xhci_setup_dev {
+ /* Set TR Dequeue Pointer command TRB fields, 6.4.3.9 */
+ #define TRB_TO_STREAM_ID(p)		((((p) & (0xffff << 16)) >> 16))
+ #define STREAM_ID_FOR_TRB(p)		((((p)) & 0xffff) << 16)
+-#define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
++#define SCT_FOR_TRB(p)			(((p) & 0x7) << 1)
+ 
+ /* Link TRB specific fields */
+ #define TRB_TC			(1<<1)
 
 
 
