@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051CF9BEB1F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C259BEBA6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385721C214B8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7BB2831C6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855751F5827;
-	Wed,  6 Nov 2024 12:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28B21F8F07;
+	Wed,  6 Nov 2024 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLvJHiF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/3wEPZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4342C1E230D;
-	Wed,  6 Nov 2024 12:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F511F8F04;
+	Wed,  6 Nov 2024 12:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896854; cv=none; b=oWtB1GlL6FwwOglHXkeZinG7TmMALz9k7czPdb0yHU0r7s4HYg6/qcfUZyMgmSKPZ8cU7FllU/OCDa1PmPg8NsH97m+8bDv1QNl1AY/V+8xQXc/SpQXE+nyoLkqoC3yc+E5rOVkniWi9JU1d3IDNvBbeT/Cyr51gQ+LsXwv8wPs=
+	t=1730897197; cv=none; b=WRroorhFy6bfbUL2rqxRaAmoR2hgufyw36disocisYtDyPb2EEBo/SjVqfVGgogrY4yW4p095B+sMoZoGu5oaDJwDvypHNaTlB4cC5Wp8DvS9O+icMHDNJLlTxEd48NOr3H9b+nqIVcCiINxvMxM4SvrdvCl5Ka42ZibyOEHdeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896854; c=relaxed/simple;
-	bh=dJKB/5Rpw/Vsw4sCh0TpbW6igoO0nghQwRGCsvHSyL4=;
+	s=arc-20240116; t=1730897197; c=relaxed/simple;
+	bh=lyiGBF/RZAzki9FBv4Kn1/lQn+EqnRATAQabvrejhdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvRX4LG6/CLOYWc2TwOTjZYnplgGcgCxncJUG5DvzGJOu2bL4BFrQk0TomDV43XoEOZ4LpA6euv2q+s4c1YE98OSJGBgYvhZn4FMxa/E7oZAfkx0oxReZhI0DHf2m/SfuVrWo1MHK0ctJAsdN+gmJ7BmRCqMot7a6hGA8seUSY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLvJHiF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBAEC4CED4;
-	Wed,  6 Nov 2024 12:40:53 +0000 (UTC)
+	 MIME-Version; b=uLVTmxrXe+2FFqihR6g4hggif83dJIdo4jkZtf+3WFAV+k7B5bXSg5ZvizF7FXxnr4UbbnTs5aDm6r696Ijc6qhRI3wHKYMalax+ufRr1bsjNU5OUKPvst61/T0WZQBSd/9f0MJfySqlfMnvWY2MLGzSxM+ukV2Mk2lHmqAMFjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/3wEPZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC67C4CECD;
+	Wed,  6 Nov 2024 12:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896853;
-	bh=dJKB/5Rpw/Vsw4sCh0TpbW6igoO0nghQwRGCsvHSyL4=;
+	s=korg; t=1730897197;
+	bh=lyiGBF/RZAzki9FBv4Kn1/lQn+EqnRATAQabvrejhdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLvJHiF1uC2UJzsjPnYqcd4ISiYGaduqSmXkfCqFjkKsT4MP+Dy878Pic9x/UTSh/
-	 N9eWvH/TQk2JQszf1HkSyZEOXgbyKB449A3m+FP4QsrFmoSGkUGVmA62iIuWH3u/Xv
-	 YtGGyeja7r/K77oyfWaaYUitmmcpRMr3r6Y0Zk7E=
+	b=V/3wEPZlvWg7NK2kTdcXR3XvGv/fiNQFe9RlGe+/vu22BAbzVLTp5oxR8rXGhv09V
+	 JFqFXreg681/Xpm1Tg2f0lznWu31S5FckNor0KGpdsBmvT4dv3As3ZeB9fLive+yf9
+	 J9bDtjgYUIIGHTdL1iniPgsW/QahuX9FWKsahhgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 094/110] iio: light: veml6030: fix microlux value calculation
+	Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 099/126] nvmet-auth: assign dh_key to NULL after kfree_sensitive
 Date: Wed,  6 Nov 2024 13:05:00 +0100
-Message-ID: <20241106120305.781415079@linuxfoundation.org>
+Message-ID: <20241106120308.741406099@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
 
-commit 63dd163cd61dda6f38343776b42331cc6b7e56e0 upstream.
+[ Upstream commit d2f551b1f72b4c508ab9298419f6feadc3b5d791 ]
 
-The raw value conversion to obtain a measurement in lux as
-INT_PLUS_MICRO does not calculate the decimal part properly to display
-it as micro (in this case microlux). It only calculates the module to
-obtain the decimal part from a resolution that is 10000 times the
-provided in the datasheet (0.5376 lux/cnt for the veml6030). The
-resulting value must still be multiplied by 100 to make it micro.
+ctrl->dh_key might be used across multiple calls to nvmet_setup_dhgroup()
+for the same controller. So it's better to nullify it after release on
+error path in order to avoid double free later in nvmet_destroy_auth().
 
-This bug was introduced with the original implementation of the driver.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Only the illuminance channel is fixed becuase the scale is non sensical
-for the intensity channels anyway.
-
+Fixes: 7a277c37d352 ("nvmet-auth: Diffie-Hellman key exchange support")
 Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/veml6030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/auth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -522,7 +522,7 @@ static int veml6030_read_raw(struct iio_
- 			}
- 			if (mask == IIO_CHAN_INFO_PROCESSED) {
- 				*val = (reg * data->cur_resolution) / 10000;
--				*val2 = (reg * data->cur_resolution) % 10000;
-+				*val2 = (reg * data->cur_resolution) % 10000 * 100;
- 				return IIO_VAL_INT_PLUS_MICRO;
- 			}
- 			*val = reg;
+diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
+index aacc05ec00c2b..74791078fdebc 100644
+--- a/drivers/nvme/target/auth.c
++++ b/drivers/nvme/target/auth.c
+@@ -101,6 +101,7 @@ int nvmet_setup_dhgroup(struct nvmet_ctrl *ctrl, u8 dhgroup_id)
+ 			pr_debug("%s: ctrl %d failed to generate private key, err %d\n",
+ 				 __func__, ctrl->cntlid, ret);
+ 			kfree_sensitive(ctrl->dh_key);
++			ctrl->dh_key = NULL;
+ 			return ret;
+ 		}
+ 		ctrl->dh_keysize = crypto_kpp_maxsize(ctrl->dh_tfm);
+-- 
+2.43.0
+
 
 
 
