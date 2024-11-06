@@ -1,60 +1,70 @@
-Return-Path: <stable+bounces-89948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3A69BDBD4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:08:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACF59BDBD6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43FB0284627
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BBE01F24537
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F04B18FDB0;
-	Wed,  6 Nov 2024 02:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AD618FC6B;
+	Wed,  6 Nov 2024 02:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLHmkCgU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+rWMte/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBA218C903;
-	Wed,  6 Nov 2024 02:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8193318F2F8;
+	Wed,  6 Nov 2024 02:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858923; cv=none; b=VFu+DtC08/RIQH2WrvtFKb3jTdYQNLcdTM3w6bkYFC4uEk6NrN/g9YvrjGV6IHJv9YPONx5EoY+jy4yQUwyu1O305jJ2hGYruQgI8fAmAmWjsCXFWhMe/mCQ2FUfF63jfLwfpSuZFmFcCxbHbpJl4zEamnQRuk/Sf1snWhDFFKc=
+	t=1730858928; cv=none; b=N9EJcSbTyCAhJEcJ/qdNHsI0u8Jbtihk0Ywgdl8fO0ck33JT1t0wCelBhAtC/b6AMivb4ZiuC4ikbtcctDXjpkgnSMVLWsf22NwwnQ5fJ7M2zU8f/uwgBpKfjmHYTC0SrhQQHtR0Ldg1tSmMCkGvNf+wdw54ILvDMox4CgUgTd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858923; c=relaxed/simple;
-	bh=6RdsDJCekACBSQ/decuXvIXkG38AIIzXKc9s9K/m2gg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lr3yLsxcELH4ZEviu4VrdtYRl43Kp66ga93tfizhtb2RKCgp6I57JX1ngQT8C4vwsTy8cCULleIFdUoHWaWnpcWWU76y+OCW8pwiyzMGpu/KGmNyDo5x+9haai1+tVh1qGfMb/KhC64edndvDOMH+JcYFOF6hUhhygWJM6mBgH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLHmkCgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9674AC4CECF;
-	Wed,  6 Nov 2024 02:08:41 +0000 (UTC)
+	s=arc-20240116; t=1730858928; c=relaxed/simple;
+	bh=y633lpEFyHH8MzWJ9nz+N53GCqq0mDTqy0M+lzKqTAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syQ2B7psRNFqSCjijRshHc+FkA3J098yuzD3Zemrad+9ibAUmbFKdIFpiZRN2IDGBbMaxB+u07K210d2Kljy++C9AJtsDtlUY5IUAENAKOTeiNqi2lqWfQh5Jc7HE2Mcgu1qdSsL+st9yh4XGp0Q9n6SBUMeHU5yFNve+dV1N2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+rWMte/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C10EC4CECF;
+	Wed,  6 Nov 2024 02:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858923;
-	bh=6RdsDJCekACBSQ/decuXvIXkG38AIIzXKc9s9K/m2gg=;
+	s=k20201202; t=1730858928;
+	bh=y633lpEFyHH8MzWJ9nz+N53GCqq0mDTqy0M+lzKqTAA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=bLHmkCgUJ8DNphFMJIs7Y3zWta2o/5rLa7tqziceKYdXxus72OVZ4cX+WT3Owi4tH
-	 GeCEDoEbkPXfWNLhFNVRVU3ay+cNaMYJa2ReoghcKoWNjHPVVVZiSKrXE4aKEMlWiu
-	 H2tS88ZzFwO7Re5Wmuz1xRquMvrWiIZAYE8kPVY1o1dNUEzaUzR9cfq2ejIEddVgFN
-	 wullEsRfSuLLKnImSGCS7lZiFgtk8mlvUoks/y7F+tzmnA9rmXFNGKZGhkjzQAC4Qo
-	 dnAnympltpJLRlZvIwnNaoabTBpI8AijOmlIq0rBxWkCkSfY+sT2XPQybyA8l/2DxZ
-	 XsNTTbAkmF/1A==
+	b=U+rWMte/2MUJ7JnY25v4qIws8gct2Bes9nVV389irSKwWcXLWzvHiYJstLb0Im1jQ
+	 drQ308378IMY6ch61nBPWpF2LUaZOifxtzfctftosU4Kwc/85+YNTJj7zi3RuHQtTW
+	 VsrVKsX2swP1o7AjFEZ3Z4LAtQFc2WerzjI5exDAkuDgMov4s9HEFc0OhTFr4ZS4Pn
+	 Qnl9Ur70wvaGPTF25FbGJrW3NgVrxAo1Ss0gwcIa+KYRU6SBmMdfnhwFnfL06EEMJA
+	 04yjVPG/p61R0dhVo9Q/ygINkygzcblyzFh6d3HgZqqR2KzfsSttF0TbZCqgLi2JWK
+	 rAsa7lWY5FUjg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	conor.dooley@microchip.com
-Cc: Jason Montleon <jmontleo@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "RISC-V: disallow gcc + rust builds" failed to apply to v6.11-stable tree
-Date: Tue,  5 Nov 2024 21:08:39 -0500
-Message-ID: <20241106020840.164364-1-sashal@kernel.org>
+	baohua@kernel.org
+Cc: Barry Song <v-songbaohua@oppo.com>,
+	Oven Liyang <liyangouwen1@oppo.com>,
+	Kairui Song <kasong@tencent.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Yu Zhao <yuzhao@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Chris Li <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	SeongJae Park <sj@kernel.org>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: FAILED: Patch "mm: avoid unconditional one-tick sleep when swapcache_prepare fails" failed to apply to v6.11-stable tree
+Date: Tue,  5 Nov 2024 21:08:43 -0500
+Message-ID: <20241106020843.164405-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,62 +86,111 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 33549fcf37ec461f398f0a41e1c9948be2e5aca4 Mon Sep 17 00:00:00 2001
-From: Conor Dooley <conor.dooley@microchip.com>
-Date: Tue, 1 Oct 2024 12:28:13 +0100
-Subject: [PATCH] RISC-V: disallow gcc + rust builds
+From 01626a18230246efdcea322aa8f067e60ffe5ccd Mon Sep 17 00:00:00 2001
+From: Barry Song <v-songbaohua@oppo.com>
+Date: Fri, 27 Sep 2024 09:19:36 +1200
+Subject: [PATCH] mm: avoid unconditional one-tick sleep when swapcache_prepare
+ fails
 
-During the discussion before supporting rust on riscv, it was decided
-not to support gcc yet, due to differences in extension handling
-compared to llvm (only the version of libclang matching the c compiler
-is supported). Recently Jason Montleon reported [1] that building with
-gcc caused build issues, due to unsupported arguments being passed to
-libclang. After some discussion between myself and Miguel, it is better
-to disable gcc + rust builds to match the original intent, and
-subsequently support it when an appropriate set of extensions can be
-deduced from the version of libclang.
+Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+introduced an unconditional one-tick sleep when `swapcache_prepare()`
+fails, which has led to reports of UI stuttering on latency-sensitive
+Android devices.  To address this, we can use a waitqueue to wake up tasks
+that fail `swapcache_prepare()` sooner, instead of always sleeping for a
+full tick.  While tasks may occasionally be woken by an unrelated
+`do_swap_page()`, this method is preferable to two scenarios: rapid
+re-entry into page faults, which can cause livelocks, and multiple
+millisecond sleeps, which visibly degrade user experience.
 
-Closes: https://lore.kernel.org/all/20240917000848.720765-2-jmontleo@redhat.com/ [1]
-Link: https://lore.kernel.org/all/20240926-battering-revolt-6c6a7827413e@spud/ [2]
-Fixes: 70a57b247251a ("RISC-V: enable building 64-bit kernels with rust support")
-Cc: stable@vger.kernel.org
-Reported-by: Jason Montleon <jmontleo@redhat.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20241001-playlist-deceiving-16ece2f440f5@spud
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Oven's testing shows that a single waitqueue resolves the UI stuttering
+issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
+hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
+locks can be introduced.
+
+[v-songbaohua@oppo.com: wake_up only when swapcache_wq waitqueue is active]
+  Link: https://lkml.kernel.org/r/20241008130807.40833-1-21cnbao@gmail.com
+Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
+Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: Oven Liyang <liyangouwen1@oppo.com>
+Tested-by: Oven Liyang <liyangouwen1@oppo.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- Documentation/rust/arch-support.rst | 2 +-
- arch/riscv/Kconfig                  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ mm/memory.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 750ff371570a0..54be7ddf3e57a 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -17,7 +17,7 @@ Architecture   Level of support  Constraints
- =============  ================  ==============================================
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
--``riscv``      Maintained        ``riscv64`` only.
-+``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
- =============  ================  ==============================================
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 62545946ecf43..f4c570538d55b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -177,7 +177,7 @@ config RISCV
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RETHOOK if !XIP_KERNEL
- 	select HAVE_RSEQ
--	select HAVE_RUST if RUSTC_SUPPORTS_RISCV
-+	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
- 	select HAVE_SAMPLE_FTRACE_DIRECT
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
- 	select HAVE_STACKPROTECTOR
+diff --git a/mm/memory.c b/mm/memory.c
+index 3ccee51adfbbd..bdf77a3ec47bc 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4187,6 +4187,8 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
++static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
++
+ /*
+  * We enter with non-exclusive mmap_lock (to exclude vma changes,
+  * but allow concurrent faults), and pte mapped but not yet locked.
+@@ -4199,6 +4201,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct folio *swapcache, *folio = NULL;
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
+@@ -4297,7 +4300,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 					 * Relax a bit to prevent rapid
+ 					 * repeated page faults.
+ 					 */
++					add_wait_queue(&swapcache_wq, &wait);
+ 					schedule_timeout_uninterruptible(1);
++					remove_wait_queue(&swapcache_wq, &wait);
+ 					goto out_page;
+ 				}
+ 				need_clear_cache = true;
+@@ -4604,8 +4609,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
+ 	/* Clear the swap cache pin for direct swapin after PTL unlock */
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4620,8 +4628,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
+ 	}
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
 -- 
 2.43.0
 
