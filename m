@@ -1,130 +1,101 @@
-Return-Path: <stable+bounces-91684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37B29BF31A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:22:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF779BF33E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 17:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C3B2B21592
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 648631F221A8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BD12038B9;
-	Wed,  6 Nov 2024 16:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD03D1E0488;
+	Wed,  6 Nov 2024 16:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cU5QPBMw";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cU5QPBMw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hb0wtUme"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A6C18B48B;
-	Wed,  6 Nov 2024 16:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B8F84039;
+	Wed,  6 Nov 2024 16:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730910114; cv=none; b=QYIOo+22NVbuBpmf3zj7WB9xYsHSItVeIjuftpNcWsvuoINLI1GIF4Ikq/ZnGHXURXVdUBDpYMV4iQKgWKdfTcoyNNeN1NdgUt79VAEXR/o2CTCLrZbQYFXJsPNaM3B0OoiiODfJxGy87BL3+++ExQDCpmvRBalcM6AgfI5NvgY=
+	t=1730910657; cv=none; b=rDbAhNu79HMI3QYwQDRXOH65ocW3j5GLiCNMcY1lwuLPr4hZOlyMASlWTeGTgVB+E1fLXIxbHsstfXVS0P4MlWxeyonmt8qmm1+3Jyxfgr8JbXe/QIZLmtTkKD889i1rT/y83ZBDSiH/rjSX5pYcOjfAsw5Vw3RCyZU8D2iw2Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730910114; c=relaxed/simple;
-	bh=HQshn+aokYOzX2PpyF6fG/q8hoNYMwDs17z7ySDbn+I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WR7UddHej7salTGlIg8jbpnTWmuSII7HMPv3wH67542/7f8zzmHGppscyQhmaBEauUrmfyAp/jHYbxvXAxtGtK4lTPt/AY6nKlhlFLoqZJg1BJwjXHSvAWWAp/tPOW/RJVeu9sqWCGt9f8KV6CPhMrVE+UwuZk/oOz5GCIxGk2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cU5QPBMw; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cU5QPBMw; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730910110;
-	bh=HQshn+aokYOzX2PpyF6fG/q8hoNYMwDs17z7ySDbn+I=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=cU5QPBMw0ZGmjN/yoxh7HPiQzwCj5iIh2GWiCibNLbuDqXnHEbBP++cZJh7NLQfaj
-	 2PUWA5eoBUff5V46dVuBXE95G365AUDvoAZnZVg5H/qcj9KGyuc98nbud5cU/mVIAv
-	 MH/4GJURB9MmQTZvIS+yvvfXyqRGdDcyU1T1aLbQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9A9AF1286919;
-	Wed, 06 Nov 2024 11:21:50 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id cgtYq2N-FNZZ; Wed,  6 Nov 2024 11:21:50 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730910110;
-	bh=HQshn+aokYOzX2PpyF6fG/q8hoNYMwDs17z7ySDbn+I=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=cU5QPBMw0ZGmjN/yoxh7HPiQzwCj5iIh2GWiCibNLbuDqXnHEbBP++cZJh7NLQfaj
-	 2PUWA5eoBUff5V46dVuBXE95G365AUDvoAZnZVg5H/qcj9KGyuc98nbud5cU/mVIAv
-	 MH/4GJURB9MmQTZvIS+yvvfXyqRGdDcyU1T1aLbQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EE24A1286912;
-	Wed, 06 Nov 2024 11:21:46 -0500 (EST)
-Message-ID: <9e9e54cdd4905b58470f674aefcfd4dabca4108d.camel@HansenPartnership.com>
-Subject: Re: [PATCH 6.6 00/28] fix CVE-2024-46701
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Chuck Lever III <chuck.lever@oracle.com>, Yu Kuai
- <yukuai1@huaweicloud.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-stable
- <stable@vger.kernel.org>,  "harry.wentland@amd.com"
- <harry.wentland@amd.com>, "sunpeng.li@amd.com" <sunpeng.li@amd.com>, 
- "Rodrigo.Siqueira@amd.com" <Rodrigo.Siqueira@amd.com>,
- "alexander.deucher@amd.com" <alexander.deucher@amd.com>,
- "christian.koenig@amd.com" <christian.koenig@amd.com>, "Xinhui.Pan@amd.com"
- <Xinhui.Pan@amd.com>,  "airlied@gmail.com" <airlied@gmail.com>, Daniel
- Vetter <daniel@ffwll.ch>, Al Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Liam Howlett <liam.howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Sasha Levin
- <sashal@kernel.org>, "srinivasan.shanmugam@amd.com"
- <srinivasan.shanmugam@amd.com>, "chiahsuan.chung@amd.com"
- <chiahsuan.chung@amd.com>, "mingo@kernel.org" <mingo@kernel.org>, 
- "mgorman@techsingularity.net" <mgorman@techsingularity.net>,
- "yukuai3@huawei.com" <yukuai3@huawei.com>,  "chengming.zhou@linux.dev"
- <chengming.zhou@linux.dev>, "zhangpeng.00@bytedance.com"
- <zhangpeng.00@bytedance.com>, "amd-gfx@lists.freedesktop.org"
- <amd-gfx@lists.freedesktop.org>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux FS Devel
- <linux-fsdevel@vger.kernel.org>,  "maple-tree@lists.infradead.org"
- <maple-tree@lists.infradead.org>, linux-mm <linux-mm@kvack.org>, 
- "yi.zhang@huawei.com" <yi.zhang@huawei.com>, yangerkun
- <yangerkun@huawei.com>
-Date: Wed, 06 Nov 2024 11:21:45 -0500
-In-Reply-To: <7AB98056-93CC-4DE5-AD42-49BA582D3BEF@oracle.com>
-References: <20241024132009.2267260-1-yukuai1@huaweicloud.com>
-	 <2024110625-earwig-deport-d050@gregkh>
-	 <7AB98056-93CC-4DE5-AD42-49BA582D3BEF@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1730910657; c=relaxed/simple;
+	bh=aq6gzB/Q2PEai0bt8dfut3goVK3r/JhzH5oBN3o9Dfs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=aJlkj9+PrjGGaZJg8uGThPECstnEpTHR7ocbfEwPmGa61QP1GZ8+nVj1JlN41ssdP6gNzMbydred0YXcS440XDbKWIEQLFx+LozDSl25OdJ9lD+ogcaLc5lGsDMZig/Tzjoc95PqgaLh0meaPooiNQ4bAdQ41FeSx3Spz3j77iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hb0wtUme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C54DC4CEC6;
+	Wed,  6 Nov 2024 16:30:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730910657;
+	bh=aq6gzB/Q2PEai0bt8dfut3goVK3r/JhzH5oBN3o9Dfs=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=hb0wtUmeq2YMjK+oyyzy8prhM/yNV4VomwQDFJGxcvn2S5d6BfNYmd/7z3YBAJM9V
+	 nzSC2FQ+VQvCTh/Vo01KtkAnGy25ps6pdvUj81okRr3Q5ORlVCQLj6xuw7Kb1wvke/
+	 FnpHkY/uYBJKftzpEImKljmniB6tXPkti+2jXl80EeHwWR0Xycm5uTQu3vp8m+OaMa
+	 +vIS5QkA3jq9fOIng2oNr3mNuPesNzw2QAODCPGyhpZ9gcdf2X4Bw4i48H6P247LzZ
+	 z3hYHG6CU+dFRQlLk0QBuhxUJ1wszX5THkbtnQzBDyddjkMvRCwctLsOuQu8rJRrjS
+	 hq3FAajvk482A==
+Date: Wed, 6 Nov 2024 17:30:54 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+cc: Nolan Nicholson <nolananicholson@gmail.com>, stable@vger.kernel.org, 
+    bentiss@kernel.org, linux-usb@vger.kernel.org, linux-input@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, anssi.hannula@gmail.com
+Subject: Re: hid-pidff.c: null-pointer deref if optional HID reports are not
+ present
+In-Reply-To: <1b40561a-580d-406a-bb2c-1398dce7fb90@kernel.org>
+Message-ID: <nycvar.YFH.7.76.2411061730050.20286@cbobk.fhfr.pm>
+References: <CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com> <1b40561a-580d-406a-bb2c-1398dce7fb90@kernel.org>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On Wed, 2024-11-06 at 15:19 +0000, Chuck Lever III wrote:
-> This is the first I've heard of this CVE. It
-> would help if the patch authors got some
-> notification when these are filed.
+On Tue, 5 Nov 2024, Jiri Slaby wrote:
 
-Greg did it; it came from the kernel CNA:
+> > (This is my first time reporting a Linux bug; please accept my apologies for
+> > any mistakes in the process.)
+> > 
+> > When initializing a HID PID device, hid-pidff.c checks for eight required
+> > HID reports and five optional reports. If the eight required reports are
+> > present, the hid_pidff_init() function then attempts to find the necessary
+> > fields in each required or optional report, using the pidff_find_fields()
+> > function. However, if any of the five optional reports is not present,
+> > pidff_find_fields() will trigger a null-pointer dereference.
+> > 
+> > I recently implemented the descriptors for a USB HID device with PID
+> > force-feedback capability. After implementing the required report
+> > descriptors but not the optional ones, I got an OOPS from the
+> > pidff_find_fields function. I saved the OOPS from my Ubuntu installation,
+> > and have attached it here. I later reproduced the issue on 6.11.6.
+> > 
+> > I was able to work around the issue by having my device present all of the
+> > optional report descriptors as well as all of the required ones.
+> 
+> Indeed. The code checks the required ones in pidff_reports_ok(). But the
+> optional ones are not checked at all and are directly accessed in both
+> pidff_init_fields() and also likely pidff_find_special_fields().
 
-https://www.cve.org/CVERecord?id=CVE-2024-46701
+Thanks for the report.
 
-The way it seems to work is that this is simply a wrapper for the
-upstream commit:
+Nolan, will you be willing to create a patch implement a proper checking, 
+test it with your device that's triggering it, and submit it in order to 
+be applied?
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a
+Thanks,
 
-Which is what appears as the last stable reference.  I assume someone
-investigated and added the vulnerable kernel details.  I think the
-theory is that since you reviewed the original upstream patch, stable
-just takes care of the backports and CVE management of the existing fix
-through the normal stable process.
-
-James
- 
-
+-- 
+Jiri Kosina
+SUSE Labs
 
 
