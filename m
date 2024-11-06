@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-91134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE06F9BECA3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36ED59BECB0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0CA31C23BA4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2AD81F21BE7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A0E1E501B;
-	Wed,  6 Nov 2024 12:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994611E9094;
+	Wed,  6 Nov 2024 12:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq2yZiq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XETZzGlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39CB1E103C;
-	Wed,  6 Nov 2024 12:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565D71DFE1E;
+	Wed,  6 Nov 2024 12:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897839; cv=none; b=CtzWFsJItd+Vt+0GcH+W13T89jjMmDDPLj7IMdRIkWW93jLV/0LDCpv9/jn5FcRuMjOcs9siRdLrW6iyof9RuK4X7dMkJZqAqAVhcv6Esi1l0tJ4vdPz4h+NPQck6ladgi8ptCi1U03dGM3D4BHVcJqaKuQVacmdwhbGeuNWPOw=
+	t=1730897871; cv=none; b=V1XK4UiSZ8ejOKhZO/g8HExMzit6Ff3K0r/qynQKXYANiO9tItVJZYE6QDggKMruH4sX7KvyT7Bl6lYFwswPXPA35xOJqomFCPcqeJBupnmYcfIv2uW17uxahlRpDE12JOiDyD+8buqIRz5WQ/w5CAZUwGR6JR3Yh0wwz12HawU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897839; c=relaxed/simple;
-	bh=wJpumwltiGFMVHUFEV6+RoZ0giuiLgcpeFLg0CTNiXo=;
+	s=arc-20240116; t=1730897871; c=relaxed/simple;
+	bh=UsZVFBfv/m6azL45kOIvzukNiHDOe3bScD+Mv2GzXX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DsNyBhPEpTEM8Wwee/mhoShsOik3SCWguiOeKDn4q6LK14TjJj1lYYR1z/XA3j+0sF+OzYuUBWF+z35zbLuggaTrPU3qd3s+sGc4QFWafri8/Y1u24H5WQaldxlIENmwJRZiCBun4XNPbl5EoiQ4a/FNe0NroICZRoo+15zgt90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq2yZiq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DAAC4CECD;
-	Wed,  6 Nov 2024 12:57:18 +0000 (UTC)
+	 MIME-Version; b=uSgK8eLLOYhTxmbQOA9jxIB6lXTiCbYj9mPBFtXDFtgXjoKbANx3xVEhCYyQR3uSDIQ6BdtyF5HxWu0uoGdGHuwyY1p3FCGD/nA/D4K1HxesoT+MAkIXmb/sjUBRveoa1UiZJcDtskiFx5oeBbgGR5274PGr2BZZZVona3Vo/lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XETZzGlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E9C4CECD;
+	Wed,  6 Nov 2024 12:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897838;
-	bh=wJpumwltiGFMVHUFEV6+RoZ0giuiLgcpeFLg0CTNiXo=;
+	s=korg; t=1730897871;
+	bh=UsZVFBfv/m6azL45kOIvzukNiHDOe3bScD+Mv2GzXX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rq2yZiq5MBY65Pqf7dUYm37dW54gxlcdQ2IeGdBSNoSk8majAe3+5T8pU4tZ0lvQA
-	 7hhggKUkTQlO4IgU7ndYDxqKfgNGFRbvbU1/ZOna1BAHsiixjh1ULGm4IR+IV/erbh
-	 cUIRatVhTCBMZ43x/kRQbotxbTS0GDjmnDyGr98o=
+	b=XETZzGlxZb05IfimbWz+n40WS/FRPQG3x3xM5hatTAmhfDkjlEqFrsTlChtS1YojM
+	 XOWNW0MPgko9f0oTmUTgVQUKZAjTUMiuxSQWhbfq+KErZdbnmUI2G/CLu3R1lvKndu
+	 h5QMhEpiIfU6wrJS7TaWEUbfo1lgDRMp1C1hCyXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	syzbot+8cd36f6b65f3cafd400a@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 029/462] bpf: Fix DEVMAP_HASH overflow check on 32-bit arches
-Date: Wed,  6 Nov 2024 12:58:42 +0100
-Message-ID: <20241106120332.237906814@linuxfoundation.org>
+	Junhao Xie <bigfoot@classfun.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 030/462] USB: serial: pl2303: add device id for Macrosilicon MS3020
+Date: Wed,  6 Nov 2024 12:58:43 +0100
+Message-ID: <20241106120332.262254813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -61,64 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Junhao Xie <bigfoot@classfun.cn>
 
-commit 281d464a34f540de166cee74b723e97ac2515ec3 upstream.
+commit 7d47d22444bb7dc1b6d768904a22070ef35e1fc0 upstream.
 
-The devmap code allocates a number hash buckets equal to the next power
-of two of the max_entries value provided when creating the map. When
-rounding up to the next power of two, the 32-bit variable storing the
-number of buckets can overflow, and the code checks for overflow by
-checking if the truncated 32-bit value is equal to 0. However, on 32-bit
-arches the rounding up itself can overflow mid-way through, because it
-ends up doing a left-shift of 32 bits on an unsigned long value. If the
-size of an unsigned long is four bytes, this is undefined behaviour, so
-there is no guarantee that we'll end up with a nice and tidy 0-value at
-the end.
+Add the device id for the Macrosilicon MS3020 which is a
+PL2303HXN based device.
 
-Syzbot managed to turn this into a crash on arm32 by creating a
-DEVMAP_HASH with max_entries > 0x80000000 and then trying to update it.
-Fix this by moving the overflow check to before the rounding up
-operation.
-
-Fixes: 6f9d451ab1a3 ("xdp: Add devmap_hash map type for looking up devices by hashed index")
-Link: https://lore.kernel.org/r/000000000000ed666a0611af6818@google.com
-Reported-and-tested-by: syzbot+8cd36f6b65f3cafd400a@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Message-ID: <20240307120340.99577-2-toke@redhat.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/devmap.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/serial/pl2303.c |    1 +
+ drivers/usb/serial/pl2303.h |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -130,10 +130,13 @@ static int dev_map_init_map(struct bpf_d
- 	cost = (u64) sizeof(struct list_head) * num_possible_cpus();
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -112,6 +112,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(SMART_VENDOR_ID, SMART_PRODUCT_ID) },
+ 	{ USB_DEVICE(AT_VENDOR_ID, AT_VTKIT3_PRODUCT_ID) },
+ 	{ USB_DEVICE(IBM_VENDOR_ID, IBM_PRODUCT_ID) },
++	{ USB_DEVICE(MACROSILICON_VENDOR_ID, MACROSILICON_MS3020_PRODUCT_ID) },
+ 	{ }					/* Terminating entry */
+ };
  
- 	if (attr->map_type == BPF_MAP_TYPE_DEVMAP_HASH) {
--		dtab->n_buckets = roundup_pow_of_two(dtab->map.max_entries);
--
--		if (!dtab->n_buckets) /* Overflow check */
-+		/* hash table size must be power of 2; roundup_pow_of_two() can
-+		 * overflow into UB on 32-bit arches, so check that first
-+		 */
-+		if (dtab->map.max_entries > 1UL << 31)
- 			return -EINVAL;
+--- a/drivers/usb/serial/pl2303.h
++++ b/drivers/usb/serial/pl2303.h
+@@ -165,3 +165,7 @@
+ /* Allied Telesis VT-Kit3 */
+ #define AT_VENDOR_ID		0x0caa
+ #define AT_VTKIT3_PRODUCT_ID	0x3001
 +
-+		dtab->n_buckets = roundup_pow_of_two(dtab->map.max_entries);
- 		cost += (u64) sizeof(struct hlist_head) * dtab->n_buckets;
- 	} else {
- 		cost += (u64) dtab->map.max_entries * sizeof(struct bpf_dtab_netdev *);
++/* Macrosilicon MS3020 */
++#define MACROSILICON_VENDOR_ID		0x345f
++#define MACROSILICON_MS3020_PRODUCT_ID	0x3020
 
 
 
