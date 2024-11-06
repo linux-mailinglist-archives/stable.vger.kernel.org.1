@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CE89BE6E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462779BECCB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B801FB248ED
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4B5285E01
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355171DF257;
-	Wed,  6 Nov 2024 12:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710041EC01C;
+	Wed,  6 Nov 2024 12:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg47b0+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsNXdjtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B711DF24D;
-	Wed,  6 Nov 2024 12:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA261EC011;
+	Wed,  6 Nov 2024 12:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894889; cv=none; b=YsRFf6fzCdopcFLykAzp9JkIjHssgYddA1q3CF9pAzeaquZbdVzMcsqLZtLAMVB6/9RckKoDa2jWnD2NhtfQOF7qJFGcAuhFWBlgPoSLxIZa+LLgWYfKLYIxHKF5f6CklNErRJrHIYhCHcTmmgEsYJwbLPDtQxWWughgvqHsV+k=
+	t=1730897956; cv=none; b=QCB3O6Wjol4wSLChiZQDkUMdRSrt3hmQQdL9Z+Rv0DiJw4+i4cDoN3FuJdOVSGfFl8XmSLQEzHZD8YqRLiphYHuJnTNOflpSLGlAFGk1GKsarUAUJCeb4OwvfQUuQtOfp4UtzcBdbaarbde6KDLxbj2b/HjPppynNYVR/OLWiAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894889; c=relaxed/simple;
-	bh=+fwIoVPk+oWWNS82mXLD4lf6cTbe4tZ3O8AdwAonA2M=;
+	s=arc-20240116; t=1730897956; c=relaxed/simple;
+	bh=I6bfeVmlFLzwnvqbMZ9YhZ9X/mUnvHFynMnd7Hrg7gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFU6Ffq3QpM78aNHQu2NUgL2iZ/pI1MSRX0pqYewPf6dd0JjLDyJHETY/Zf/I25exvsbXgwc8FOTZbjKoGKyDQh0eDZnpe7PgCqM9IfooXxxX6OK5Jxhct4sursz8nrFLsjiBR32ZdijEyoUQgtUbFD9dOgsYyAJcUYdH+F9OGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg47b0+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C12DC4CECD;
-	Wed,  6 Nov 2024 12:08:08 +0000 (UTC)
+	 MIME-Version; b=TpYoxQq16VWzGxfVqXDnvoriurpVkrmizBA6lbAb6PDE1LZiTxj8DYoiB01qk++nT3FB+yrUfwR/OP9ZqGyCcMIc0DGbvQQOOF/AneQACtjc1AaxiPA+HWXQvDjw5rY7sWsNqhlI6nxjAh57Qw/lWjX9UwjVEeytHoneBH3AJzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsNXdjtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6568BC4CECD;
+	Wed,  6 Nov 2024 12:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894888;
-	bh=+fwIoVPk+oWWNS82mXLD4lf6cTbe4tZ3O8AdwAonA2M=;
+	s=korg; t=1730897955;
+	bh=I6bfeVmlFLzwnvqbMZ9YhZ9X/mUnvHFynMnd7Hrg7gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zg47b0+0XnDZSmUYNldIUG6OgT/MlIsK3U+JFj8k2vei55QKJdAKOzxCPIqnUmWla
-	 X1PK+7rLjdk0pO0qbb1uQs+1Y18V9EuKPtxAoEveFbI05L52dyTwwRke6SnamOz7mv
-	 GFN8XuC2LQvUckxEdOyQDAPlONcbZz8XFr5VfpZI=
+	b=wsNXdjtJk9bRzkDyYggoxoPRgTMG3waT5JsFDEXJ5+yhUOJ6Qoa4/0vbtAaf1F32C
+	 8onyiKSxSXjrUY6ErCKM08IAveWJVzOpx/oVW4iWsPMZkVXEXfm+1prnPUbWXnnyuz
+	 IcTm/cBE6RepkF5pqTQC7VK/0CngQaZLWmTxZfQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/350] wifi: cfg80211: fix two more possible UBSAN-detected off-by-one errors
+Subject: [PATCH 5.4 068/462] mtd: powernv: Add check devm_kasprintf() returned value
 Date: Wed,  6 Nov 2024 12:59:21 +0100
-Message-ID: <20241106120321.699368042@linuxfoundation.org>
+Message-ID: <20241106120333.189867633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 15ea13b1b1fbf6364d4cd568e65e4c8479632999 ]
+[ Upstream commit 395999829880a106bb95f0ce34e6e4c2b43c6a5d ]
 
-Although not reproduced in practice, these two cases may be
-considered by UBSAN as off-by-one errors. So fix them in the
-same way as in commit a26a5107bc52 ("wifi: cfg80211: fix UBSAN
-noise in cfg80211_wext_siwscan()").
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value is not checked.
 
-Fixes: 807f8a8c3004 ("cfg80211/nl80211: add support for scheduled scans")
-Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240909090806.1091956-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240828092427.128177-1-hanchunchao@inspur.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 3 ++-
- net/wireless/sme.c     | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/mtd/devices/powernv_flash.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ebd8449f2fcf1..f3f01ab1abd38 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7578,7 +7578,8 @@ nl80211_parse_sched_scan(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		return ERR_PTR(-ENOMEM);
- 
- 	if (n_ssids)
--		request->ssids = (void *)&request->channels[n_channels];
-+		request->ssids = (void *)request +
-+			struct_size(request, channels, n_channels);
- 	request->n_ssids = n_ssids;
- 	if (ie_len) {
- 		if (n_ssids)
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index ebc73faa8fb18..4e6afb765e815 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -116,7 +116,8 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
- 		n_channels = i;
- 	}
- 	request->n_channels = n_channels;
--	request->ssids = (void *)&request->channels[n_channels];
-+	request->ssids = (void *)request +
-+		struct_size(request, channels, n_channels);
- 	request->n_ssids = 1;
- 
- 	memcpy(request->ssids[0].ssid, wdev->conn->params.ssid,
+diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
+index 0b757d9ba2f6b..0ab64a1cec09e 100644
+--- a/drivers/mtd/devices/powernv_flash.c
++++ b/drivers/mtd/devices/powernv_flash.c
+@@ -204,6 +204,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
+ 	 * get them
+ 	 */
+ 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
++	if (!mtd->name)
++		return -ENOMEM;
++
+ 	mtd->type = MTD_NORFLASH;
+ 	mtd->flags = MTD_WRITEABLE;
+ 	mtd->size = size;
 -- 
 2.43.0
 
