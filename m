@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49A19BEBE5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC16C9BE93F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D661F1C23768
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718B52849C6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AD41F9EAE;
-	Wed,  6 Nov 2024 12:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0EB1DED58;
+	Wed,  6 Nov 2024 12:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffW36k6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CpE2vUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7CE1EE012;
-	Wed,  6 Nov 2024 12:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0216088F;
+	Wed,  6 Nov 2024 12:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897373; cv=none; b=b0uJRKQNMRLEAW76R2/oUwv14O6+XiFIdAKhSvI6mJT9SqEvFDK3CP1Mm3BuuI+WBxY+m/iqcJLx7zmYPuwdvi/GXbjV65kaz0B1pXwQldFtXt0EaU8NC29lay5UUzfXXZ4SxnKq8lrf0M3F4eiwoRuwcjtdml7HurzxTBjdtls=
+	t=1730896321; cv=none; b=mjcFTErsgxirM2wBTrQI97T2BN8evKldxlV7RiNckgUDfPvXqQVtbYwU8BggVVM8tt7d6FEJzChk3pR1uV3xtRC6o3rkqMg7clNxFXnd/lPHr9HavLNhYudCKIGLzGUFGJe4SgoEz2exAHW3XjQdQg7YkYZcumVwy5vT9QD/VIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897373; c=relaxed/simple;
-	bh=aqW3BwqDuTV/J3DmeeO0WwGrzxKR2i0CKHJb4MKOrdw=;
+	s=arc-20240116; t=1730896321; c=relaxed/simple;
+	bh=32Xkm0kEa02eyNZOR08qX0HpV2RVP7W2Srr1PieYNMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCf1IUDJ70YwFjK++CTqp+JsrBQmq7AdMATuXdP1c52pNz+sQ47HTQIT0q1VHJfs7KZr5IppbbQdm0QP93B9zegptOlF0EieU9r/0BoEa3uj35TvHU+sfUWPQicvNgv9WsQ5MUDcZXcxWp3nMXZVVKLDIZBBuDcYprhSOIMR2i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffW36k6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2661C4CECD;
-	Wed,  6 Nov 2024 12:49:32 +0000 (UTC)
+	 MIME-Version; b=e8quDqqAaFTo5nHV4XTbWVX/nQjFLDbBuaOPhd2ixSa9j8O6rhJOX/aF9m5Ol0MAc7DEKF922sOZfttkkhnq21h+5bmqoba6oflPvYpTddxMPWogue93df6WkPAHDkswgtYd6967kMDOW+QNBRS3pQV9ujktobH4e1GEckvEWPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CpE2vUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448DDC4CECD;
+	Wed,  6 Nov 2024 12:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897373;
-	bh=aqW3BwqDuTV/J3DmeeO0WwGrzxKR2i0CKHJb4MKOrdw=;
+	s=korg; t=1730896321;
+	bh=32Xkm0kEa02eyNZOR08qX0HpV2RVP7W2Srr1PieYNMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ffW36k6UICTC7BwBsE0dBUs0NKdmgQ/mD0bExS72PwJrktvIrCaT5qOP4nBAwGASK
-	 RMvU/8PK2B1KGeiaU/NZ+Q7mw6Q6ApgBz7+DS3gjtJ1SnLH8uj08JtDyJAWLZujBAl
-	 3yj+nPIV7s+89yGPcfPCOzAwsYfdHmxnz07OLnF4=
+	b=0CpE2vUb58Ypx1ZKo6ZiTFFYONm5I+0CcC/OsIfngMHx/63GjgpH2g1RvZIxUpakY
+	 UXdCoKo4Km6xLDt7N+nQmM6VTX+CR6pG3zr6J6qQXH6yhdx06v0Iq2Ud3cVFUPjVsi
+	 Dkb9M3IqTJDSWWvkG7utoxKeLrFPpmypqQcWgK8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/151] netdevsim: Add trailing zero to terminate the string in nsim_nexthop_bucket_activity_write()
+Subject: [PATCH 6.11 165/245] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
 Date: Wed,  6 Nov 2024 13:03:38 +0100
-Message-ID: <20241106120309.664638963@linuxfoundation.org>
+Message-ID: <20241106120323.298359694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Benjamin Segall <bsegall@google.com>
 
-[ Upstream commit 4ce1f56a1eaced2523329bef800d004e30f2f76c ]
+[ Upstream commit b5413156bad91dc2995a5c4eab1b05e56914638a ]
 
-This was found by a static analyzer.
-We should not forget the trailing zero after copy_from_user()
-if we will further do some string operations, sscanf() in this
-case. Adding a trailing zero will ensure that the function
-performs properly.
+When cloning a new thread, its posix_cputimers are not inherited, and
+are cleared by posix_cputimers_init(). However, this does not clear the
+tick dependency it creates in tsk->tick_dep_mask, and the handler does
+not reach the code to clear the dependency if there were no timers to
+begin with.
 
-Fixes: c6385c0b67c5 ("netdevsim: Allow reporting activity on nexthop buckets")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20241022171907.8606-1-zichenxie0106@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Thus if a thread has a cputimer running before clone/fork, all
+descendants will prevent nohz_full unless they create a cputimer of
+their own.
+
+Fix this by entirely clearing the tick_dep_mask in copy_process().
+(There is currently no inherited state that needs a tick dependency)
+
+Process-wide timers do not have this problem because fork does not copy
+signal_struct as a baseline, it creates one from scratch.
+
+Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/fib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/tick.h | 8 ++++++++
+ kernel/fork.c        | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/netdevsim/fib.c b/drivers/net/netdevsim/fib.c
-index a1f91ff8ec568..f108e363b716a 100644
---- a/drivers/net/netdevsim/fib.c
-+++ b/drivers/net/netdevsim/fib.c
-@@ -1377,10 +1377,12 @@ static ssize_t nsim_nexthop_bucket_activity_write(struct file *file,
- 
- 	if (pos != 0)
- 		return -EINVAL;
--	if (size > sizeof(buf))
-+	if (size > sizeof(buf) - 1)
- 		return -EINVAL;
- 	if (copy_from_user(buf, user_buf, size))
- 		return -EFAULT;
-+	buf[size] = 0;
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 72744638c5b0f..99c9c5a7252aa 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -251,12 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_set_task(tsk, bit);
+ }
 +
- 	if (sscanf(buf, "%u %hu", &nhid, &bucket_index) != 2)
- 		return -EINVAL;
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_clear_task(tsk, bit);
+ }
++
++static inline void tick_dep_init_task(struct task_struct *tsk)
++{
++	atomic_set(&tsk->tick_dep_mask, 0);
++}
++
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+@@ -290,6 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 				     enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
++static inline void tick_dep_init_task(struct task_struct *tsk) { }
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_signal(struct signal_struct *signal,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 6b97fb2ac4af5..dbf3c5d81df3b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -104,6 +104,7 @@
+ #include <linux/rseq.h>
+ #include <uapi/linux/pidfd.h>
+ #include <linux/pidfs.h>
++#include <linux/tick.h>
  
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -2290,6 +2291,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	acct_clear_integrals(p);
+ 
+ 	posix_cputimers_init(&p->posix_cputimers);
++	tick_dep_init_task(p);
+ 
+ 	p->io_context = NULL;
+ 	audit_set_context(p, NULL);
 -- 
 2.43.0
 
