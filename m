@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD14C9BE8B8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522549BE79F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2C29284285
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A3A1F21440
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202F81DF756;
-	Wed,  6 Nov 2024 12:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DFA1DEFF5;
+	Wed,  6 Nov 2024 12:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmaKZJcG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRX23/vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DEB1D2784;
-	Wed,  6 Nov 2024 12:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6547B1922DB;
+	Wed,  6 Nov 2024 12:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896030; cv=none; b=F5EeZlXF2u8GPQ114NWNBDp3t2EmO2EmRo/A0lP2dWx0N+OiVXDWbXn7yLVQBNppX0WWcGhYwr6Fyug8EUx5xqLCIctRxcxUD9h93Yr/cVKfqoeDQlwMsHJbQv6uoZ4TA+8TjgsK40WOyhSXXcxAOoiQMwaHF40hlNG0l42hAwk=
+	t=1730895359; cv=none; b=bDXRS/9Wf9GvXQfSVj/IzJs9R46cW9ThApgFQAiuf0yTWlI87spkpQX8w7BenIdF1L3qXqLA6k1KbBZVoKTc68OUlqMIsGTt1bZo5kr15+9lDzPicrN+Tp0+lcVdjLoFvvzEg7bC9zdks4PRWJt6qqbtnaqwz5IQo/ohKPof09M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896030; c=relaxed/simple;
-	bh=a4fnKqXuiIJRg/tO6TjfnKv68cyqDShclJKJ0hzDu8Q=;
+	s=arc-20240116; t=1730895359; c=relaxed/simple;
+	bh=K28JGaKCgzSTdcTzisCw7nq/fPurKga+utzu26L0d1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z74eBQb/90EmalYcPhrdDNhh6pK0JVQd7Q1a5ie01aK/DFa4neR7ifpLEkgqrTa/whkuJwVLfpswiO+V655YTkj3NGx7dt3Nl/lez2RNqiKRytn20y/d7XSsNtuyyoD+Q9RikSKYVRPaEOP375O6c4LAG1ZHnV9KwRp4ubasJBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmaKZJcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF48C4CED5;
-	Wed,  6 Nov 2024 12:27:09 +0000 (UTC)
+	 MIME-Version; b=Yix237Whh7PRxBC5sZPCDBHVW7daM6csx7R/LTQY2ZIKNanTWWuXCa6krsu8HFRKMxUqPftzuyDZ7xZXMnoe9c2DouYpcFk55S+DzphzP9Uo8lK6huxF2rD9q0Kg+gGM2+f/XEfIYqOEF9hpxDWvTYiu/bnPTRfkvXKjczMmNHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRX23/vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4FDC4CECD;
+	Wed,  6 Nov 2024 12:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896030;
-	bh=a4fnKqXuiIJRg/tO6TjfnKv68cyqDShclJKJ0hzDu8Q=;
+	s=korg; t=1730895359;
+	bh=K28JGaKCgzSTdcTzisCw7nq/fPurKga+utzu26L0d1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmaKZJcGBu1xGYK1aauYjSuaF8GXjnaSNmqbl5xzq4GeHG8yybvNigFvMC30fBXRi
-	 Nuu247Y8B/qVHB8OAjk3z0UAvrBILo65K2VsqnMTfbPFclYMFZTej18G+iEmJbkFrg
-	 5f3PJkFp84y2OlRENwsJOHWJ7goSIabNHnchXEl8=
+	b=jRX23/vmaAN1m9s7oVDDzt7LiImQFZ+4OGlBStyp/Ly037aNJOouegiHnETIbK9Dd
+	 Np27oF8Ooy98OXiYf/1IthFs805minJN3EbKEa9zJJX6hgCjUjjgo+CexN7bh7SD95
+	 iqghca3HmGGsTlOtjcnTJ5yxn0Zhp+XR6FzPxC04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 066/245] ACPI: CPPC: Make rmw_lock a raw_spin_lock
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 191/350] ext4: aovid use-after-free in ext4_ext_insert_extent()
 Date: Wed,  6 Nov 2024 13:01:59 +0100
-Message-ID: <20241106120320.831899185@linuxfoundation.org>
+Message-ID: <20241106120325.679275104@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 1c10941e34c5fdc0357e46a25bd130d9cf40b925 ]
+commit a164f3a432aae62ca23d03e6d926b122ee5b860d upstream.
 
-The following BUG was triggered:
+As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is
+reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and
+cause UAF. Below is a sample trace with dummy values:
 
-=============================
-[ BUG: Invalid wait context ]
-6.12.0-rc2-XXX #406 Not tainted
------------------------------
-kworker/1:1/62 is trying to lock:
-ffffff8801593030 (&cpc_ptr->rmw_lock){+.+.}-{3:3}, at: cpc_write+0xcc/0x370
-other info that might help us debug this:
-context-{5:5}
-2 locks held by kworker/1:1/62:
-  #0: ffffff897ef5ec98 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x2c/0x50
-  #1: ffffff880154e238 (&sg_policy->update_lock){....}-{2:2}, at: sugov_update_shared+0x3c/0x280
-stack backtrace:
-CPU: 1 UID: 0 PID: 62 Comm: kworker/1:1 Not tainted 6.12.0-rc2-g9654bd3e8806 #406
-Workqueue:  0x0 (events)
-Call trace:
-  dump_backtrace+0xa4/0x130
-  show_stack+0x20/0x38
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x28
-  __lock_acquire+0x480/0x1ad8
-  lock_acquire+0x114/0x310
-  _raw_spin_lock+0x50/0x70
-  cpc_write+0xcc/0x370
-  cppc_set_perf+0xa0/0x3a8
-  cppc_cpufreq_fast_switch+0x40/0xc0
-  cpufreq_driver_fast_switch+0x4c/0x218
-  sugov_update_shared+0x234/0x280
-  update_load_avg+0x6ec/0x7b8
-  dequeue_entities+0x108/0x830
-  dequeue_task_fair+0x58/0x408
-  __schedule+0x4f0/0x1070
-  schedule+0x54/0x130
-  worker_thread+0xc0/0x2e8
-  kthread+0x130/0x148
-  ret_from_fork+0x10/0x20
+ext4_ext_insert_extent
+  path = *ppath = 2000
+  ext4_ext_create_new_leaf(ppath)
+    ext4_find_extent(ppath)
+      path = *ppath = 2000
+      if (depth > path[0].p_maxdepth)
+            kfree(path = 2000);
+            *ppath = path = NULL;
+      path = kcalloc() = 3000
+      *ppath = 3000;
+      return path;
+  /* here path is still 2000, UAF! */
+  eh = path[depth].p_hdr
 
-sugov_update_shared() locks a raw_spinlock while cpc_write() locks a
-spinlock.
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_ext_insert_extent+0x26d4/0x3330
+Read of size 8 at addr ffff8881027bf7d0 by task kworker/u36:1/179
+CPU: 3 UID: 0 PID: 179 Comm: kworker/u6:1 Not tainted 6.11.0-rc2-dirty #866
+Call Trace:
+ <TASK>
+ ext4_ext_insert_extent+0x26d4/0x3330
+ ext4_ext_map_blocks+0xe22/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+[...]
 
-To have a correct wait-type order, update rmw_lock to a raw spinlock and
-ensure that interrupts will be disabled on the CPU holding it.
+Allocated by task 179:
+ ext4_find_extent+0x81c/0x1f70
+ ext4_ext_map_blocks+0x146/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+ ext4_writepages+0x26d/0x4e0
+ do_writepages+0x175/0x700
+[...]
 
-Fixes: 60949b7b8054 ("ACPI: CPPC: Fix MASK_VAL() usage")
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://patch.msgid.link/20241028125657.1271512-1-pierre.gondois@arm.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Freed by task 179:
+ kfree+0xcb/0x240
+ ext4_find_extent+0x7c0/0x1f70
+ ext4_ext_insert_extent+0xa26/0x3330
+ ext4_ext_map_blocks+0xe22/0x2d40
+ ext4_map_blocks+0x71e/0x1700
+ ext4_do_writepages+0x1290/0x2800
+ ext4_writepages+0x26d/0x4e0
+ do_writepages+0x175/0x700
+[...]
+==================================================================
+
+So use *ppath to update the path to avoid the above problem.
+
+Reported-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Closes: https://lore.kernel.org/r/ZqyL6rmtwl6N4MWR@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com
+Fixes: 10809df84a4d ("ext4: teach ext4_ext_find_extent() to realloc path if necessary")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240822023545.1994557-7-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 9 +++++----
- include/acpi/cppc_acpi.h | 2 +-
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ fs/ext4/extents.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index ed91dfd4fdca7..544f53ae9cc0c 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -867,7 +867,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -2099,6 +2099,7 @@ prepend:
+ 				       ppath, newext);
+ 	if (err)
+ 		goto cleanup;
++	path = *ppath;
+ 	depth = ext_depth(inode);
+ 	eh = path[depth].p_hdr;
  
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
--	spin_lock_init(&cpc_ptr->rmw_lock);
-+	raw_spin_lock_init(&cpc_ptr->rmw_lock);
- 
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1087,6 +1087,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 	struct cpc_desc *cpc_desc;
-+	unsigned long flags;
- 
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1126,7 +1127,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			return -ENODEV;
- 		}
- 
--		spin_lock(&cpc_desc->rmw_lock);
-+		raw_spin_lock_irqsave(&cpc_desc->rmw_lock, flags);
- 		switch (size) {
- 		case 8:
- 			prev_val = readb_relaxed(vaddr);
-@@ -1141,7 +1142,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 			prev_val = readq_relaxed(vaddr);
- 			break;
- 		default:
--			spin_unlock(&cpc_desc->rmw_lock);
-+			raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 			return -EFAULT;
- 		}
- 		val = MASK_VAL_WRITE(reg, prev_val, val);
-@@ -1174,7 +1175,7 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	}
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		spin_unlock(&cpc_desc->rmw_lock);
-+		raw_spin_unlock_irqrestore(&cpc_desc->rmw_lock, flags);
- 
- 	return ret_val;
- }
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index e1720d9306669..a451ca4c207bb 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -65,7 +65,7 @@ struct cpc_desc {
- 	int write_cmd_status;
- 	int write_cmd_id;
- 	/* Lock used for RMW operations in cpc_write() */
--	spinlock_t rmw_lock;
-+	raw_spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
--- 
-2.43.0
-
 
 
 
