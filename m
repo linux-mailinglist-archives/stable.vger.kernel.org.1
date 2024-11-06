@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-90439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F331B9BE843
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AE09BEBDE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30F041C20B8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D48271F24BA6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4FF1DF986;
-	Wed,  6 Nov 2024 12:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2791C1EF0A4;
+	Wed,  6 Nov 2024 12:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3MOOHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpVtNsXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2301DF740;
-	Wed,  6 Nov 2024 12:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B1F1EF0A7;
+	Wed,  6 Nov 2024 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895774; cv=none; b=d29penFnXiJZvoreZbfB2XmgF67jx9JpSweAGhb5hs+dj6p+nxsTlPWs/QoOi0ciDHC0izONN3AwDIQGhMRHq3dX3ucdi+uHO1JsoF2IpHSPgZIzfotsNaFU7Ge747tvHHyMrE+PPwVMSVJSNjWe1jwulMFxSDMF5bFwAwHajm8=
+	t=1730897355; cv=none; b=qfol26imEaIp+57LC4Y46Pf9Ylse1anFQGBzCmRDnSTI7Czwg8w93gTxP7yboztNNDzZOjJY8EYcxLZKrLK6IZLpnjjHbtBWLN07lpIY9tJTSn1RrO2wo9v5XxpLDnFakgAqs9oQYoBust/fb283ucE9X5LlGNMCAyv7ZSu3rOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895774; c=relaxed/simple;
-	bh=J89n2Vz/Sk34EtvdwukJoyPJmyB1PIK0UtXx9psyn5Y=;
+	s=arc-20240116; t=1730897355; c=relaxed/simple;
+	bh=ij0VwgjoEhDmc/nw2aUWkdFfdzjBCvSY/JMwTRdee1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onhFCRlNEGlsiEiJ1u8K3qDcxekXOVR4MfnQt9tHcMbUMUQV433FrMvxouWfwg9uDz6HX7ldpDrON0T9WNz/93es71kAQV1pN1Jby+08ECui73mf5pVrYRW/vqHC/kf9Tq2opK5AcDGFthEssWpokhcR9udgeQOxykXhKdLDsaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG3MOOHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2B3C4CECD;
-	Wed,  6 Nov 2024 12:22:53 +0000 (UTC)
+	 MIME-Version; b=ch4e8+hnsLKco1JLwtIouw3AZRI/5hf1ZGHLlkVmPU9x8h3CxOpWv7eCWmCN1sFjTR0d+od93MeVqmPNDIJc2OZ38/iw8NtOcqDp4EcJCrXvwKOHmP00By4ut9Nvxc9RKLhwp5107iMXnw9KKBQescpgIp7B0P5UuFI6OirDQzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpVtNsXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18709C4CECD;
+	Wed,  6 Nov 2024 12:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895774;
-	bh=J89n2Vz/Sk34EtvdwukJoyPJmyB1PIK0UtXx9psyn5Y=;
+	s=korg; t=1730897355;
+	bh=ij0VwgjoEhDmc/nw2aUWkdFfdzjBCvSY/JMwTRdee1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rG3MOOHTUWxaTSOQtAVzXQatkNigLH0KshdFW2KSW6sksGJ58uQNmQy02cJtKBOBZ
-	 63ml0MGW3UArcKGHZg+SxYLgIU/CMOd3HF80eX2revLrEiluMwNuc37RwBfWejKzGK
-	 /FSQAAFw9cNRiA+/1oHJzw2gRXi7hjlpLsSctIiQ=
+	b=mpVtNsXnXY0LCF1UK+iJ+W0OpQD8nN48YgJ8V6sK2mbkLgp5d33uvCoQtEYV8QRH8
+	 4zf/quG0xlpwbNndE3GBq954x51RtcGJkDN1PmDPAmn5koFTiFg0ISwwKQvu4orTpS
+	 2uqyZH9GjdDeTxMWpW00Kos8JZQ98Xp72rsBSLmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4.19 285/350] xhci: Fix incorrect stream context type macro
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/151] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
 Date: Wed,  6 Nov 2024 13:03:33 +0100
-Message-ID: <20241106120327.885620335@linuxfoundation.org>
+Message-ID: <20241106120309.523473521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 6599b6a6fa8060145046d0744456b6abdb3122a7 upstream.
+[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
 
-The stream contex type (SCT) bitfield is used both in the stream context
-data structure,  and in the 'Set TR Dequeue pointer' command TRB.
-In both cases it uses bits 3:1
+There are code paths from which the function is called without holding
+the RCU read lock, resulting in a suspicious RCU usage warning [1].
 
-The SCT_FOR_TRB(p) macro used to set the stream context type (SCT) field
-for the 'Set TR Dequeue pointer' command TRB incorrectly shifts the value
-1 bit left before masking the three bits.
+Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
+the RCU read lock before calling
+l3mdev_master_upper_ifindex_by_index_rcu().
 
-Fix this by first masking and rshifting, just like the similar
-SCT_FOR_CTX(p) macro does
+[1]
+WARNING: suspicious RCU usage
+6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
+-----------------------------
+net/core/dev.c:876 RCU-list traversed in non-reader section!!
 
-This issue has not been visibile as the lost bit 3 is only used with
-secondary stream arrays (SSA). Xhci driver currently only supports using
-a primary stream array with Linear stream addressing.
+other info that might help us debug this:
 
-Fixes: 95241dbdf828 ("xhci: Set SCT field for Set TR dequeue on streams")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241016140000.783905-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by ip/361:
+ #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
+Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ lockdep_rcu_suspicious.cold+0x4f/0xd6
+ dev_get_by_index_rcu+0x1d3/0x210
+ l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
+ ip_tunnel_bind_dev+0x72f/0xa00
+ ip_tunnel_newlink+0x368/0x7a0
+ ipgre_newlink+0x14c/0x170
+ __rtnl_newlink+0x1173/0x19c0
+ rtnl_newlink+0x6c/0xa0
+ rtnetlink_rcv_msg+0x3cc/0xf60
+ netlink_rcv_skb+0x171/0x450
+ netlink_unicast+0x539/0x7f0
+ netlink_sendmsg+0x8c1/0xd80
+ ____sys_sendmsg+0x8f9/0xc20
+ ___sys_sendmsg+0x197/0x1e0
+ __sys_sendmsg+0x122/0x1f0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.h |    2 +-
+ include/net/ip_tunnels.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1273,7 +1273,7 @@ enum xhci_setup_dev {
- /* Set TR Dequeue Pointer command TRB fields, 6.4.3.9 */
- #define TRB_TO_STREAM_ID(p)		((((p) & (0xffff << 16)) >> 16))
- #define STREAM_ID_FOR_TRB(p)		((((p)) & 0xffff) << 16)
--#define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
-+#define SCT_FOR_TRB(p)			(((p) & 0x7) << 1)
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 4e69f52a51177..006a61ddd36fa 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -260,7 +260,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
+ 	memset(fl4, 0, sizeof(*fl4));
  
- /* Link TRB specific fields */
- #define TRB_TC			(1<<1)
+ 	if (oif) {
+-		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
++		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
+ 		/* Legacy VRF/l3mdev use case */
+ 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
+ 	}
+-- 
+2.43.0
+
 
 
 
