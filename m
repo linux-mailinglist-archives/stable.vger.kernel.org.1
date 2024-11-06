@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-91014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727ED9BEC0F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837C79BE9A3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3DABB26266
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FD19B23F07
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A31E00AB;
-	Wed,  6 Nov 2024 12:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D201E0B61;
+	Wed,  6 Nov 2024 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crCx3P54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YObDHId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30151E0DFD;
-	Wed,  6 Nov 2024 12:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402A71DFE0B;
+	Wed,  6 Nov 2024 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897485; cv=none; b=eGJmi1K1Dguarx1TJ1jLvup7/zb0Uwx8xhf70m3V4zAeVPsvUqN21vNcheFQ6sOmLPz0Fc3ZlUz8bJaAGzy8XPky2QKi/uGQeJjogaWgnBjnRFInNcPnnls9bY3zUc6lGKETC12QMgadKIhQ+ufuSdkDPtwRZ8CfLAE0+8rfNIk=
+	t=1730896549; cv=none; b=HRVovlCfPC15gCMJgXVDGmhP9QKtJ8i8OwgnbrIsrdF0JTmhT9AnJPORJx6zl+pPNFD88VjFzd2f3EsdLeQp1uQiAL9HqkPpPzIjf0fO+0Qfh0nFubB2OxWVvH3GASMBhkzLYDOpNooMH15A3uw19tHvzKSkVjF7U/kUhksZecE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897485; c=relaxed/simple;
-	bh=lXq4p9aA5h+VEK+7uP8HqpxABagZSpOwiomWV18QIr0=;
+	s=arc-20240116; t=1730896549; c=relaxed/simple;
+	bh=L8IjY8bc/3c4OP96xIX17HnHLpxs38Lwz8k6XzHvEr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzzTA4QWBj6QfIZAocWjJ/nL0TZ2FOOo851FlLgDNnk10W5THfbH7OXoWH4z8TWl21l4pGav94GmP2ZVQbsWNnihcvSFpKohxTZBIM/JeBZx9sh4+W0ZqzdaEEyLBcsa05RLbpKGHCMoff84hH5n+ZALHXkJ3K5Zcf59XAXf5LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crCx3P54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C97FC4CECD;
-	Wed,  6 Nov 2024 12:51:24 +0000 (UTC)
+	 MIME-Version; b=fnz0uyJ9ZZtVKtwH4HFvV2XAQVpekxp1kyZCPwTjsicGQdo7wJ8CTpfPw5FXZJWSRrGQKex9SyJpE0QDOCKPp1QbEdrEuL4FlKms0oQXbFutyRx0Gah+wp8O3Wq2KLIDMQml6brIoIZ6VnnmrzG7IEF1Rko/QcABsMsNuF2sHvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YObDHId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B700C4CECD;
+	Wed,  6 Nov 2024 12:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897485;
-	bh=lXq4p9aA5h+VEK+7uP8HqpxABagZSpOwiomWV18QIr0=;
+	s=korg; t=1730896549;
+	bh=L8IjY8bc/3c4OP96xIX17HnHLpxs38Lwz8k6XzHvEr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crCx3P54McZ/eturddfBfo8zduj1p9jlJlh4aLH1JsjmCWFGtVACF1JOlTMjB3F/x
-	 lnDVIx6kpgFSnXQtdy+TtJ4UwdL+dgPpXB6QeMrcfyHsgUliw+Tvz3uVqOqZ6Wq/om
-	 YFbDTdALBfiEjJTey1D/vPNjqFpMMGKY/MoIuCVQ=
+	b=1YObDHIdq9BQzCJUciuK6iAYEjf4dhNt7m3DsAhrBiOvAySg3kxllQogETEZ+XWP9
+	 tm7MYQlI8m9aFfdQ8TT3QpqCTX2eQQQpXErr60Fuuupo8F0o5Hcl+E54lK+bI2ygtJ
+	 oP3mCFek66EGKOqNe+NCZRnBOlQ+14/KVIVkd1pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/151] thermal: intel: int340x: processor: Add MMIO RAPL PL4 support
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michael Matz <matz@suse.de>,
+	Matthias Bodenbinder <matthias@bodenbinder.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Gabriel Krisman Bertazi <gabriel@krisman.be>
+Subject: [PATCH 6.11 203/245] mm, mmap: limit THP alignment of anonymous mappings to PMD-aligned sizes
 Date: Wed,  6 Nov 2024 13:04:16 +0100
-Message-ID: <20241106120310.708054082@linuxfoundation.org>
+Message-ID: <20241106120324.243782042@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +72,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 3fb0eea8a1c4be5884e0731ea76cbd3ce126e1f3 ]
+[ Upstream commit d4148aeab412432bf928f311eca8a2ba52bb05df ]
 
-Similar to the MSR RAPL interface, MMIO RAPL supports PL4 too, so add
-MMIO RAPL PL4d support to the processor_thermal driver.
+Since commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries") a mmap() of anonymous memory without a specific address hint
+and of at least PMD_SIZE will be aligned to PMD so that it can benefit
+from a THP backing page.
 
-As a result, the powercap sysfs for MMIO RAPL will show a new "peak
-power" constraint.
+However this change has been shown to regress some workloads
+significantly.  [1] reports regressions in various spec benchmarks, with
+up to 600% slowdown of the cactusBSSN benchmark on some platforms.  The
+benchmark seems to create many mappings of 4632kB, which would have merged
+to a large THP-backed area before commit efa7df3e3bb5 and now they are
+fragmented to multiple areas each aligned to PMD boundary with gaps
+between.  The regression then seems to be caused mainly due to the
+benchmark's memory access pattern suffering from TLB or cache aliasing due
+to the aligned boundaries of the individual areas.
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20240930081801.28502-7-rui.zhang@intel.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Another known regression bisected to commit efa7df3e3bb5 is darktable [2]
+[3] and early testing suggests this patch fixes the regression there as
+well.
+
+To fix the regression but still try to benefit from THP-friendly anonymous
+mapping alignment, add a condition that the size of the mapping must be a
+multiple of PMD size instead of at least PMD size.  In case of many
+odd-sized mapping like the cactusBSSN creates, those will stop being
+aligned and with gaps between, and instead naturally merge again.
+
+Link: https://lkml.kernel.org/r/20241024151228.101841-2-vbabka@suse.cz
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Michael Matz <matz@suse.de>
+Debugged-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1229012 [1]
+Reported-by: Matthias Bodenbinder <matthias@bodenbinder.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219366 [2]
+Closes: https://lore.kernel.org/all/2050f0d4-57b0-481d-bab8-05e8d48fed0c@leemhuis.info/ [3]
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../thermal/intel/int340x_thermal/processor_thermal_rapl.c    | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/mmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-index f7ab1f47ca7a6..f504781f4b7c5 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-@@ -13,9 +13,9 @@ static struct rapl_if_priv rapl_mmio_priv;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 18fddcce03b85..8a04f29aa4230 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1952,7 +1952,8 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
  
- static const struct rapl_mmio_regs rapl_mmio_default = {
- 	.reg_unit = 0x5938,
--	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930},
-+	.regs[RAPL_DOMAIN_PACKAGE] = { 0x59a0, 0x593c, 0x58f0, 0, 0x5930, 0x59b0},
- 	.regs[RAPL_DOMAIN_DRAM] = { 0x58e0, 0x58e8, 0x58ec, 0, 0},
--	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2),
-+	.limits[RAPL_DOMAIN_PACKAGE] = BIT(POWER_LIMIT2) | BIT(POWER_LIMIT4),
- 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
- };
- 
+ 	if (get_area) {
+ 		addr = get_area(file, addr, len, pgoff, flags);
+-	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
++	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
++		   && IS_ALIGNED(len, PMD_SIZE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+ 		addr = thp_get_unmapped_area_vmflags(file, addr, len,
+ 						     pgoff, flags, vm_flags);
 -- 
 2.43.0
 
