@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F339E9BEBF0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096CC9BEA1E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B291B26074
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC99E2840DC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C001FA24F;
-	Wed,  6 Nov 2024 12:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905561F6681;
+	Wed,  6 Nov 2024 12:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SujI1fWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWU58xKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EB91FA248;
-	Wed,  6 Nov 2024 12:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8B91F6672;
+	Wed,  6 Nov 2024 12:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897403; cv=none; b=ZImDZaTHi72f4UggjWFmbBXwZdHsd8k6bMhCyQ9dCU2RAjBGKuNyKuMZ9nj/Bo8Q3IFA/a0x3wGUqVRt6DNx/7wCMBiMR3k/KECg9NSkauGJuOmXnWVwt82fdOP4KCWdzRGsBkK+OJ+b9LaBFe3oKZjTsM9UMNWE4ev+Oqg4kE4=
+	t=1730896643; cv=none; b=WAzIpSDOVKDoTNxGCqbm167l7BdVAEBeNeRozir17qCUVZofVQ4/en2Ve6GDYXLFkH/TdGhDhmaJCRFpLyesaEWiFXArOraM+am6h3i5nNzFkJKWjGTCGGML9CgQa4RJzzli7e8y2jck5nQaPf8aF87jFB93Fa57k1SjNEn0YRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897403; c=relaxed/simple;
-	bh=uHm1IOiF7PNHEIg5Xgq3CqLanRcbwSrt0nOoRJg1HV4=;
+	s=arc-20240116; t=1730896643; c=relaxed/simple;
+	bh=KQ0Af49HGrGEqhcVjCkWlPw7CSbLOXk/mMcyL1HAheM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8Yb8RqgMerMpjflYBIAo3DiiRg7GLJXLdsBEhfuyjGNmU4S4KFsQSPw5zOYc0w1nfSLjtP86SNaDRHie2igPTgRbvEiTPOatSdnNR1oyZiJ+mM7x+3O0+jlhqxD83JfeQ0gvrmhpJ1A3PyqCDvtyTVvcI9vM/hCxK1rVzywbDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SujI1fWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E3AC4CECD;
-	Wed,  6 Nov 2024 12:50:02 +0000 (UTC)
+	 MIME-Version; b=Fc9hdnepXRFkfurIRfHCu6rgqiGYg568kZngJCyo9xcHJVuyTW5b6iTW6lQuHAaxJEr8d7haevM7ROA/Bk4sf7le8FKxLLcB/yJWmL2ft+dvFuqavrHV/2zXJr77shSL3xhuF1VDqn7e7AYhjzdAUbE+UIxWmlD69gHJ6Tom4fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWU58xKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF0C4CED8;
+	Wed,  6 Nov 2024 12:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897402;
-	bh=uHm1IOiF7PNHEIg5Xgq3CqLanRcbwSrt0nOoRJg1HV4=;
+	s=korg; t=1730896642;
+	bh=KQ0Af49HGrGEqhcVjCkWlPw7CSbLOXk/mMcyL1HAheM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SujI1fWt+kNH5qgzNjfdkGRqyXpBSeCIh1Th0eGuiLJM7Mophw+0A1QIeoNenI352
-	 l9wZixcEF3EmWCVoM+Hlkc1dc0InOXt+1W23ID/q+dBAO4w+RujCr+pdGIZ7ku05B+
-	 fS+3TBis8NR1Ngaw5nxIoU4d4jCD5S+ZW7eYODrc=
+	b=JWU58xKYkRcexWW0roOTIq3RmjPfJS9NuP20/wx4b5wueIuqwCUpe4RGECzMuRaX0
+	 mJYKGwyg3+6M1Lckcxf9tn5V1GMq/obH9pkA18zw4rhdeCGjKQRNly6UaZeGYNe1Pv
+	 iSxo6wZ2nM06VknD/ewrQkvLRnwrmc9/k48PevgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/151] iomap: dont bother unsharing delalloc extents
+Subject: [PATCH 5.10 024/110] KVM: s390: gaccess: Check if guest address is in memslot
 Date: Wed,  6 Nov 2024 13:03:50 +0100
-Message-ID: <20241106120309.991625456@linuxfoundation.org>
+Message-ID: <20241106120303.833455227@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-[ Upstream commit f7a4874d977bf4202ad575031222e78809a36292 ]
+[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
 
-If unshare encounters a delalloc reservation in the srcmap, that means
-that the file range isn't shared because delalloc reservations cannot be
-reflinked.  Therefore, don't try to unshare them.
+Previously, access_guest_page() did not check whether the given guest
+address is inside of a memslot. This is not a problem, since
+kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20241002150040.GB21853@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
+However, -EFAULT is also returned when copy_to/from_user fails.
+
+When emulating a guest instruction, the address being outside a memslot
+usually means that an addressing exception should be injected into the
+guest.
+
+Failure in copy_to/from_user however indicates that something is wrong
+in userspace and hence should be handled there.
+
+To be able to distinguish these two cases, return PGM_ADDRESSING in
+access_guest_page() when the guest address is outside guest memory. In
+access_guest_real(), populate vcpu->arch.pgm.code such that
+kvm_s390_inject_prog_cond() can be used in the caller for injecting into
+the guest (if applicable).
+
+Since this adds a new return value to access_guest_page(), we need to make
+sure that other callers are not confused by the new positive return value.
+
+There are the following users of access_guest_page():
+- access_guest_with_key() does the checking itself (in
+  guest_range_to_gpas()), so this case should never happen. Even if, the
+  handling is set up properly.
+- access_guest_real() just passes the return code to its callers, which
+  are:
+    - read_guest_real() - see below
+    - write_guest_real() - see below
+
+There are the following users of read_guest_real():
+- ar_translation() in gaccess.c which already returns PGM_*
+- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
+  return -EFAULT on read_guest_read() nonzero return - no change
+- shadow_crycb(), handle_stfle() always present this as validity, this
+  could be handled better but doesn't change current behaviour - no change
+
+There are the following users of write_guest_real():
+- kvm_s390_store_status_unloaded() always returns -EFAULT on
+  write_guest_real() failure.
+
+Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/kvm/gaccess.c |  4 ++++
+ arch/s390/kvm/gaccess.h | 14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 7db9bb0d15184..eb65953895d24 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1282,7 +1282,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- 		return length;
+diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+index 164f96ba61dd2..5a880e2545243 100644
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
+ 	const gfn_t gfn = gpa_to_gfn(gpa);
+ 	int rc;
  
- 	/*
--	 * Don't bother with holes or unwritten extents.
-+	 * Don't bother with delalloc reservations, holes or unwritten extents.
- 	 *
- 	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
- 	 * unsharing requires providing a separate source map, and the presence
-@@ -1291,6 +1291,7 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- 	 * fork for XFS.
- 	 */
- 	if (iter->srcmap.type == IOMAP_HOLE ||
-+	    iter->srcmap.type == IOMAP_DELALLOC ||
- 	    iter->srcmap.type == IOMAP_UNWRITTEN)
- 		return length;
++	if (!gfn_to_memslot(kvm, gfn))
++		return PGM_ADDRESSING;
+ 	if (mode == GACC_STORE)
+ 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
+ 	else
+@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
+ 		gra += fragment_len;
+ 		data += fragment_len;
+ 	}
++	if (rc > 0)
++		vcpu->arch.pgm.code = rc;
+ 	return rc;
+ }
  
+diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+index 7c72a5e3449f8..8ed2d6c7404ff 100644
+--- a/arch/s390/kvm/gaccess.h
++++ b/arch/s390/kvm/gaccess.h
+@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest low address and key protection are not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying from @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to guest memory.
+  */
+@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest key protection is not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying to @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to kernel space.
+  */
 -- 
 2.43.0
 
