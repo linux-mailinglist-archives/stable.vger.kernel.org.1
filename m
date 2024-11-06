@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-90520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49EC9BE8B2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07949BE793
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CCFF1F220B7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A03281B4C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065871DF756;
-	Wed,  6 Nov 2024 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29211DEFF5;
+	Wed,  6 Nov 2024 12:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXEXWL+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAxN6Uze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84AC1D2784;
-	Wed,  6 Nov 2024 12:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B9C1D416E;
+	Wed,  6 Nov 2024 12:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896015; cv=none; b=SE1oZYUcrK+cswPuTMk5k9EHD75WgPk1Mq6MDwgoP6yGk5uRm0HhJhmTx2zfiM8qIsNySbRej4CXyNG+FsJGeSExSIB0qy5I3ala2z4Ss1H4kMWvYphqpjlkW76QBIWiEH7koXB81rSEyvsbB33K7zdfY0WfKwAO9jixdssvpdQ=
+	t=1730895341; cv=none; b=WhqpGU2/+UfDhRmbwkE7C3mghtn7fMWr6/7+S45LBgUys5yqbrqK6dY+jsaz/Aoj69dKWm++dcNFRu7hFqP82KiCxAVoPXKVWLqR/cHDs1nWREAXa14hGhCp1ka2J1uuL77KF/YhVJFsj2Yj6ufZfPdIU0xINUrT5UT0h2FDDmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896015; c=relaxed/simple;
-	bh=Yr4r69HQnoaR9z+gufNVtBUx1HKbnFFM6wVZqU010to=;
+	s=arc-20240116; t=1730895341; c=relaxed/simple;
+	bh=86iMv183xq/DwXp50goXH1E4e2tFmGq1e6NkFihgN5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLVRbrE12Y54dE8P2uOrbevbi2vcq9phvm+JbLmevI8t8UI9/8wkecZPbE6G8wXEDplKumKlYup1WlW0EulYXwgjfGb6+c/VyqUA76bJxoEe725GG4SToE4e/U7b7BVeY+3MjIbTpOEZoPKsCdN9Z6PKc0jp+BntBFgJMStxubU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXEXWL+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B94AC4CECD;
-	Wed,  6 Nov 2024 12:26:55 +0000 (UTC)
+	 MIME-Version; b=a6RScDGgIOHjUrJRbB66pzClggTZWinOmpx3pRBVLQW0kzaixGrtI6LhJu26wTjgpj3w7ExF0+nBBq4l5Cg1QQ0IbPS1q53qW5Gu+mhbNvKn+C5Tsd3z16DBbToJO4wrN+h6tMAZweoknQAw/ClNi06bEJDWpyIaDi8OgEyhq7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAxN6Uze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D5EC4CECD;
+	Wed,  6 Nov 2024 12:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896015;
-	bh=Yr4r69HQnoaR9z+gufNVtBUx1HKbnFFM6wVZqU010to=;
+	s=korg; t=1730895341;
+	bh=86iMv183xq/DwXp50goXH1E4e2tFmGq1e6NkFihgN5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXEXWL+fwwsoRDF1WjXaeBKJd+2yp/dbGmZLwNrKbxW+P5J94Ea9zW2y6pd+Op9J6
-	 y41AayqmjrxaDqksCzKB0hogSxgCh5ohKHLz9JArB5WcJTb6sxNeHkPy1XCzwc9Src
-	 tX8orrHRuGYd1FxyUWVizyETFZUpo4ktP40O0iOk=
+	b=SAxN6UzeRDX1TYPBm1eAf4s+7dkVwNA3zT2cej3cLtMVvTEFScjplSjZxBNA76L0O
+	 T3Wujh+/5icdo/Kj/gmlSTIiBmycDAVBVoX/xBj8P8Q/iVrD+H92Wyt4qaDikTwHAJ
+	 UhkhkR6+nOJgoTZ6tEMecGSrNUami266l9gWUdSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ruansy.fnst@fujitsu.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 061/245] fsdax: dax_unshare_iter needs to copy entire blocks
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 186/350] parisc: Fix itlb miss handler for 64-bit programs
 Date: Wed,  6 Nov 2024 13:01:54 +0100
-Message-ID: <20241106120320.709516859@linuxfoundation.org>
+Message-ID: <20241106120325.542991848@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 50793801fc7f6d08def48754fb0f0706b0cfc394 ]
+commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
 
-The code that copies data from srcmap to iomap in dax_unshare_iter is
-very very broken, which bfoster's recent fsx changes have exposed.
+For an itlb miss when executing code above 4 Gb on ILP64 adjust the
+iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
+delivery for the 64-bit static test program from
+http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
+handled by the signal trampoline code in the 64-bit VDSO which is mapped
+into high userspace memory region above 4GB for 64-bit processes.
 
-If the pos and len passed to dax_file_unshare are not aligned to an
-fsblock boundary, the iter pos and length in the _iter function will
-reflect this unalignment.
-
-dax_iomap_direct_access always returns a pointer to the start of the
-kmapped fsdax page, even if its pos argument is in the middle of that
-page.  This is catastrophic for data integrity when iter->pos is not
-aligned to a page, because daddr/saddr do not point to the same byte in
-the file as iter->pos.  Hence we corrupt user data by copying it to the
-wrong place.
-
-If iter->pos + iomap_length() in the _iter function not aligned to a
-page, then we fail to copy a full block, and only partially populate the
-destination block.  This is catastrophic for data confidentiality
-because we expose stale pmem contents.
-
-Fix both of these issues by aligning copy_pos/copy_len to a page
-boundary (remember, this is fsdax so 1 fsblock == 1 base page) so that
-we always copy full blocks.
-
-We're not done yet -- there's no call to invalidate_inode_pages2_range,
-so programs that have the file range mmap'd will continue accessing the
-old memory mapping after the file metadata updates have completed.
-
-Be careful with the return value -- if the unshare succeeds, we still
-need to return the number of bytes that the iomap iter thinks we're
-operating on.
-
-Cc: ruansy.fnst@fujitsu.com
-Fixes: d984648e428b ("fsdax,xfs: port unshare to fsdax")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/172796813328.1131942.16777025316348797355.stgit@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org	# v4.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dax.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ arch/parisc/kernel/entry.S |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 9fbbdaa784b43..21b47402b3dca 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1262,26 +1262,46 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
- {
- 	struct iomap *iomap = &iter->iomap;
- 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
--	loff_t pos = iter->pos;
--	loff_t length = iomap_length(iter);
-+	loff_t copy_pos = iter->pos;
-+	u64 copy_len = iomap_length(iter);
-+	u32 mod;
- 	int id = 0;
- 	s64 ret = 0;
- 	void *daddr = NULL, *saddr = NULL;
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1089,8 +1089,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
+ 	STREG           %r16, PT_ISR(%r29)
+ 	STREG           %r17, PT_IOR(%r29)
  
- 	if (!iomap_want_unshare_iter(iter))
--		return length;
-+		return iomap_length(iter);
-+
-+	/*
-+	 * Extend the file range to be aligned to fsblock/pagesize, because
-+	 * we need to copy entire blocks, not just the byte range specified.
-+	 * Invalidate the mapping because we're about to CoW.
-+	 */
-+	mod = offset_in_page(copy_pos);
-+	if (mod) {
-+		copy_len += mod;
-+		copy_pos -= mod;
-+	}
-+
-+	mod = offset_in_page(copy_pos + copy_len);
-+	if (mod)
-+		copy_len += PAGE_SIZE - mod;
-+
-+	invalidate_inode_pages2_range(iter->inode->i_mapping,
-+				      copy_pos >> PAGE_SHIFT,
-+				      (copy_pos + copy_len - 1) >> PAGE_SHIFT);
+-#if 0 && defined(CONFIG_64BIT)
+-	/* Revisit when we have 64-bit code above 4Gb */
++#if defined(CONFIG_64BIT)
+ 	b,n		intr_save2
  
- 	id = dax_read_lock();
--	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
-+	ret = dax_iomap_direct_access(iomap, copy_pos, copy_len, &daddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
- 
--	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
-+	ret = dax_iomap_direct_access(srcmap, copy_pos, copy_len, &saddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
- 
--	if (copy_mc_to_kernel(daddr, saddr, length) == 0)
--		ret = length;
-+	if (copy_mc_to_kernel(daddr, saddr, copy_len) == 0)
-+		ret = iomap_length(iter);
- 	else
- 		ret = -EIO;
- 
--- 
-2.43.0
-
+ skip_save_ior:
+@@ -1098,8 +1097,7 @@ skip_save_ior:
+ 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
+ 	 * above.
+ 	 */
+-	extrd,u,*	%r8,PSW_W_BIT,1,%r1
+-	cmpib,COND(=),n	1,%r1,intr_save2
++	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
+ 	LDREG		PT_IASQ0(%r29), %r16
+ 	LDREG		PT_IAOQ0(%r29), %r17
+ 	/* adjust iasq/iaoq */
 
 
 
