@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585769BE7FB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3149BEBE7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1CA284D20
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D2251C23764
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC00E1DF73B;
-	Wed,  6 Nov 2024 12:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748A91F9EB8;
+	Wed,  6 Nov 2024 12:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU7DUVR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWKJf64P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D7A1DF25E;
-	Wed,  6 Nov 2024 12:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EE11E008B;
+	Wed,  6 Nov 2024 12:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895573; cv=none; b=f1DT8v+ShKWwgoFBvsrPqejM8P8XY8fF4O7jV+z4tKsGxIPs+gUpzub0EbzJcfgGKunqCTRgXokk9TSAhmm2d0sgVtcMqFgzamjnVxUkr0FJ0RX3mQ9i/QduSHv/QKl4qKRwM60Gpa/aIVJlCO75gzLePJYGYjG3RoYph0HaC7Y=
+	t=1730897379; cv=none; b=gCmMjNuDndbwpRMzExzczM2Cmiji2Lf1pmILvaOSb0EkgpJ9DMqarD/dKBMbyO+YSNL/4s/BRFe91LtS3YfysOzNQ4D4yN0A4I4JpX71fQT0fjFFY9CQ8YJ7w4ZItiCIVNpLhkyOI2T3IyeHTrNTMrBVu8pfX3zaHcvzPIiEBs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895573; c=relaxed/simple;
-	bh=fSXyV27UBmr2iWXva1/6uhPygbdz5QsI6wvQkpYvkoY=;
+	s=arc-20240116; t=1730897379; c=relaxed/simple;
+	bh=88N1M5qoRC7cS6z69iWyWvdDTjjE3eXKcpLZJaoF1W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqE6vlL3ua2zhJcUTk+H3kV6HoeCU4sulqSr3zYaFbLA2g2fJTrZ02ukDFkH7gN0SGGjCaHeC1mRsCRvBfygh5fwfrSBKB7UqBd5xTz8VOkmlcAazkyobnwpEsFMFJNzSNW4aRB8SFmxPF2vS6hQ3P+OkbNsF/vEm435MdVfrgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU7DUVR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E58EC4CECD;
-	Wed,  6 Nov 2024 12:19:32 +0000 (UTC)
+	 MIME-Version; b=Wx6C9V+Du7Sk0dtO8KdkT7VZTq0HEu8Mmdd5bkrRJ3TEYoGnxVDManb/PlUZSQGJLyrgGDmWaqv31diU2Js8f1JzH2wgbIpKwee63m+QWcr6mZZ4mZRoc/CmNjFyp/4t9umYYEj0YxbMiZVWeW7agvhW1pQtekoxjlkKavGfUj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWKJf64P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCBEC4CECD;
+	Wed,  6 Nov 2024 12:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895573;
-	bh=fSXyV27UBmr2iWXva1/6uhPygbdz5QsI6wvQkpYvkoY=;
+	s=korg; t=1730897379;
+	bh=88N1M5qoRC7cS6z69iWyWvdDTjjE3eXKcpLZJaoF1W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zU7DUVR3mxJ8KpIMx7112cMB+jYrF+Uc94b8ArjreYFLTwcmlJVhw5Ugece2FIPPw
-	 5Mc5IbyQrKu1bi2PQDL26BHn8I0LTzBDtbncc/sUOZs8rBMqhft6BvOIjhAwCH0De7
-	 WTx2nbi36nOz0Y+zE50knU0GP9+fI4UtvcgoL4H8=
+	b=DWKJf64PVLzUrwBJDcwJ+rhhhHyS/PppCnhkIBBlfOsaCJFE4pXxTykMu/EHfFDKv
+	 qaIeA33dIUIGCAXVk/HYj6bWvtFLtCWU/Hbgj6GU812GkOOGghT83GCLyCh82IYESV
+	 Fv2qthxgWCRkVcI54rYHTkywMvqWQfcolig5MYXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.19 264/350] Revert "usb: yurex: Replace snprintf() with the safer scnprintf() variant"
+	Brenton Simpson <appsforartists@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/151] Input: xpad - sort xpad_device by vendor and product ID
 Date: Wed,  6 Nov 2024 13:03:12 +0100
-Message-ID: <20241106120327.419408451@linuxfoundation.org>
+Message-ID: <20241106120308.961837000@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Brenton Simpson <appsforartists@google.com>
 
-commit 71c717cd8a2e180126932cc6851ff21c1d04d69a upstream.
+[ Upstream commit 18970d4f6317a3595cc592c3c7815f63d1818932 ]
 
-This reverts commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035.
+This helps making sure there are no duplicate entries in the tables.
 
-This patch leads to passing 0 to simple_read_from_buffer()
-as a fifth argument, turning the read method into a nop.
-The change is fundamentally flawed, as it breaks the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241007094004.242122-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brenton Simpson <appsforartists@google.com>
+Link: https://lore.kernel.org/r/20240130231903.293265-1-appsforartists@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: ea330429a04b ("Input: xpad - add support for 8BitDo Ultimate 2C Wireless Controller")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/yurex.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/input/joystick/xpad.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -34,8 +34,6 @@
- #define YUREX_BUF_SIZE		8
- #define YUREX_WRITE_TIMEOUT	(HZ*2)
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 1cb47488375be..ebe243b79d819 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -127,6 +127,7 @@ static const struct xpad_device {
+ 	u8 mapping;
+ 	u8 xtype;
+ } xpad_device[] = {
++	/* Please keep this list sorted by vendor and product ID. */
+ 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
+ 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
+@@ -152,9 +153,9 @@ static const struct xpad_device {
+ 	{ 0x045e, 0x02d1, "Microsoft X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02dd, "Microsoft X-Box One pad (Firmware 2015)", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02e3, "Microsoft X-Box One Elite pad", MAP_PADDLES, XTYPE_XBOXONE },
+-	{ 0x045e, 0x0b00, "Microsoft X-Box One Elite 2 pad", MAP_PADDLES, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02ea, "Microsoft X-Box One S pad", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x0719, "Xbox 360 Wireless Receiver", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
++	{ 0x045e, 0x0b00, "Microsoft X-Box One Elite 2 pad", MAP_PADDLES, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x0b0a, "Microsoft X-Box Adaptive Controller", MAP_PROFILE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x0b12, "Microsoft Xbox Series S|X Controller", MAP_SELECT_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x046d, 0xc21d, "Logitech Gamepad F310", 0, XTYPE_XBOX360 },
+@@ -343,7 +344,6 @@ static const struct xpad_device {
+ 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
+-	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x24c6, 0x5000, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5300, "PowerA MINI PROEX Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5303, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
+@@ -358,9 +358,9 @@ static const struct xpad_device {
+ 	{ 0x24c6, 0x5502, "Hori Fighting Stick VX Alt", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5503, "Hori Fighting Edge", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5506, "Hori SOULCALIBUR V Stick", 0, XTYPE_XBOX360 },
+-	{ 0x24c6, 0x5510, "Hori Fighting Commander ONE (Xbox 360/PC Mode)", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x550d, "Hori GEM Xbox controller", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x550e, "Hori Real Arcade Pro V Kai 360", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
++	{ 0x24c6, 0x5510, "Hori Fighting Commander ONE (Xbox 360/PC Mode)", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x551a, "PowerA FUSION Pro Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x24c6, 0x561a, "PowerA FUSION Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x24c6, 0x5b00, "ThrustMaster Ferrari 458 Racing Wheel", 0, XTYPE_XBOX360 },
+@@ -373,6 +373,7 @@ static const struct xpad_device {
+ 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
++	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
+@@ -470,6 +471,10 @@ static const signed short xpad_btn_paddles[] = {
+ 	{ XPAD_XBOXONE_VENDOR_PROTOCOL((vend), 208) }
  
--#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
--
- /* table of devices that work with this driver */
- static struct usb_device_id yurex_table[] = {
- 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
-@@ -404,7 +402,8 @@ static ssize_t yurex_read(struct file *f
- {
- 	struct usb_yurex *dev;
- 	int len = 0;
--	char in_buffer[MAX_S64_STRLEN];
-+	char in_buffer[20];
-+	unsigned long flags;
- 
- 	dev = file->private_data;
- 
-@@ -414,16 +413,14 @@ static ssize_t yurex_read(struct file *f
- 		return -ENODEV;
- 	}
- 
--	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
--		mutex_unlock(&dev->io_mutex);
--		return -EIO;
--	}
--
--	spin_lock_irq(&dev->lock);
--	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irq(&dev->lock);
-+	spin_lock_irqsave(&dev->lock, flags);
-+	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
-+	spin_unlock_irqrestore(&dev->lock, flags);
- 	mutex_unlock(&dev->io_mutex);
- 
-+	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
-+		return -EIO;
-+
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
- }
- 
+ static const struct usb_device_id xpad_table[] = {
++	/*
++	 * Please keep this list sorted by vendor ID. Note that there are 2
++	 * macros - XPAD_XBOX360_VENDOR and XPAD_XBOXONE_VENDOR.
++	 */
+ 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* Xbox USB-IF not-approved class */
+ 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 controller */
+ 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
+-- 
+2.43.0
+
 
 
 
