@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-90638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4B79BE94E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130C49BEBF1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC38285278
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44CBC1C2381F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775701DED4F;
-	Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0EC1EF938;
+	Wed,  6 Nov 2024 12:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBqkFXVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJZveVIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3357E7DA7F;
-	Wed,  6 Nov 2024 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F3F1FA247;
+	Wed,  6 Nov 2024 12:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896367; cv=none; b=Hgy50A+xn+AvC2M6/7u5E4dtjUwZI1wIxJ4q+rpNnhmDWbpnm3XI7wpnXFboPOukgBYHoZwapXl4YSRH9yTwPVMqXeTpXlCTnzNsJwCbXomCBYnaupkP3Q+dEuhsw5+fkZUkhNCd45VW8SctThERm+tzFbC6oS/hTGw0aDli9ZU=
+	t=1730897406; cv=none; b=ZqBSPDyQP5Oh9JVCYw4c1/45tDgWddb1B5Cu3ME2IRHL01pXKHtc7adgttrzEdupcU0hnRRvyFZ0xPxrj4qPHJYtTf+3IIVkMx3mAkqEXKkOws38A4f6cvUlOnCA0GMotvq7Tj/PyLIHUN0Zl6tE+Cxi2JvMxl67d6BSkRYhhRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896367; c=relaxed/simple;
-	bh=bmfkuF8fZQ7rsTlFPJsNICL6ESpjuoxmJeQX77gnuZY=;
+	s=arc-20240116; t=1730897406; c=relaxed/simple;
+	bh=mvlIY7YsBi9RTqvT9VCOqAnZzOaN4w9aOImd4k3lWPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkWB7exZY/XI+EcnYfn/s8inU/nP+Cr6zwKyiF84j3IfW8wfnkJTZRzBz4ExJdwU57X9b//MxMa6n/lFLxEN2N6kbbaxIhYnaHJXjpN2mG6MI2MBXaRIQcKzlkHRZw13P8lOp7TnU2rPga8/E08la6Pb37hCMR/8A0P6Lgtn0Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBqkFXVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB860C4CECD;
-	Wed,  6 Nov 2024 12:32:46 +0000 (UTC)
+	 MIME-Version; b=FAj1R/MpCcz7b1jur2Nr8Zs+Dp1xy3rguZ0cdLXGuEXvJl6NMneUHch9UGTtJw4/+EzGa+2oCFNP2A/aj7tQxgLD3QZtRLTo3DUGyQFl31oN1uo7106954SzoLi/9OhFkGkuAtqGKq8w8+J5g4skC/9TrWyzHtqTdQz2S3Zpc+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJZveVIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FD0C4CECD;
+	Wed,  6 Nov 2024 12:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896367;
-	bh=bmfkuF8fZQ7rsTlFPJsNICL6ESpjuoxmJeQX77gnuZY=;
+	s=korg; t=1730897405;
+	bh=mvlIY7YsBi9RTqvT9VCOqAnZzOaN4w9aOImd4k3lWPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBqkFXVZSOIqDxpTa3vY9LPiWpC2Yrill5zfNyi5JC7NWSrIHEKsp66eF7cgDORUd
-	 92k80vPAqoPTXnak8IPgjaYQJ1+ht8/dGBB4Vpo23xAX0WA7Hrxy1cvVbwTWOBR+x+
-	 4OVTXxhhjZ94WgftT4lSl7byecHGTejM1n4n6IME=
+	b=FJZveVIi/fmDYCcF4T8lB1GI4PgKCOndnLPQNe1r0KPeRcHR1Fn/Ac5LJLF54WdbH
+	 qS41u4/i52BOz0L8LtzdzkUdJGf//5e5s7a3o3YTybkNA8t/7mEhnk0UlwbVDr200x
+	 LeLR/aiPVVk9Vt3ACXx/GW4Qs6qBhcSpAQdSApvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 178/245] x86/traps: move kmsan check after instrumentation_begin
+Subject: [PATCH 6.6 043/151] iomap: share iomap_unshare_iter predicate code with fsdax
 Date: Wed,  6 Nov 2024 13:03:51 +0100
-Message-ID: <20241106120323.617976605@linuxfoundation.org>
+Message-ID: <20241106120310.017944376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 1db272864ff250b5e607283eaec819e1186c8e26 ]
+[ Upstream commit 6ef6a0e821d3dad6bf8a5d5508762dba9042c84b ]
 
-During x86_64 kernel build with CONFIG_KMSAN, the objtool warns following:
+The predicate code that iomap_unshare_iter uses to decide if it's really
+needs to unshare a file range mapping should be shared with the fsdax
+version, because right now they're opencoded and inconsistent.
 
-  AR      built-in.a
-  AR      vmlinux.a
-  LD      vmlinux.o
-vmlinux.o: warning: objtool: handle_bug+0x4: call to
-    kmsan_unpoison_entry_regs() leaves .noinstr.text section
-  OBJCOPY modules.builtin.modinfo
-  GEN     modules.builtin
-  MODPOST Module.symvers
-  CC      .vmlinux.export.o
+Note that we simplify the predicate logic a bit -- we no longer allow
+unsharing of inline data mappings, but there aren't any filesystems that
+allow shared inline data currently.
 
-Moving kmsan_unpoison_entry_regs() _after_ instrumentation_begin() fixes
-the warning.
+This is a fix in the sense that it should have been ported to fsdax.
 
-There is decode_bug(regs->ip, &imm) is left before KMSAN unpoisoining, but
-it has the return condition and if we include it after
-instrumentation_begin() it results the warning "return with
-instrumentation enabled", hence, I'm concerned that regs will not be KMSAN
-unpoisoned if `ud_type == BUG_NONE` is true.
-
-Link: https://lkml.kernel.org/r/20241016152407.3149001-1-snovitoll@gmail.com
-Fixes: ba54d194f8da ("x86/traps: avoid KMSAN bugs originating from handle_bug()")
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b53fdb215d13 ("iomap: improve shared block detection in iomap_unshare_iter")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/172796813294.1131942.15762084021076932620.stgit@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/traps.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/dax.c               |  3 +--
+ fs/iomap/buffered-io.c | 30 ++++++++++++++++--------------
+ include/linux/iomap.h  |  1 +
+ 3 files changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 415881607c5df..29ec49209ae01 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -261,12 +261,6 @@ static noinstr bool handle_bug(struct pt_regs *regs)
- 	int ud_type;
- 	u32 imm;
+diff --git a/fs/dax.c b/fs/dax.c
+index d48b4fc7a4838..2f7f5e2d167dd 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1268,8 +1268,7 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
+ 	s64 ret = 0;
+ 	void *daddr = NULL, *saddr = NULL;
  
--	/*
--	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
--	 * is a rare case that uses @regs without passing them to
--	 * irqentry_enter().
--	 */
--	kmsan_unpoison_entry_regs(regs);
- 	ud_type = decode_bug(regs->ip, &imm);
- 	if (ud_type == BUG_NONE)
- 		return handled;
-@@ -275,6 +269,12 @@ static noinstr bool handle_bug(struct pt_regs *regs)
- 	 * All lies, just get the WARN/BUG out.
- 	 */
- 	instrumentation_begin();
-+	/*
-+	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
-+	 * is a rare case that uses @regs without passing them to
-+	 * irqentry_enter().
-+	 */
-+	kmsan_unpoison_entry_regs(regs);
+-	/* don't bother with blocks that are not shared to start with */
+-	if (!(iomap->flags & IOMAP_F_SHARED))
++	if (!iomap_want_unshare_iter(iter))
+ 		return length;
+ 
+ 	id = dax_read_lock();
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index eb65953895d24..55619cce05422 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1270,19 +1270,12 @@ int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
+ }
+ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+ 
+-static loff_t iomap_unshare_iter(struct iomap_iter *iter)
++bool iomap_want_unshare_iter(const struct iomap_iter *iter)
+ {
+-	struct iomap *iomap = &iter->iomap;
+-	loff_t pos = iter->pos;
+-	loff_t length = iomap_length(iter);
+-	loff_t written = 0;
+-
+-	/* Don't bother with blocks that are not shared to start with. */
+-	if (!(iomap->flags & IOMAP_F_SHARED))
+-		return length;
+-
  	/*
- 	 * Since we're emulating a CALL with exceptions, restore the interrupt
- 	 * state to what it was at the exception site.
+-	 * Don't bother with delalloc reservations, holes or unwritten extents.
++	 * Don't bother with blocks that are not shared to start with; or
++	 * mappings that cannot be shared, such as inline data, delalloc
++	 * reservations, holes or unwritten extents.
+ 	 *
+ 	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
+ 	 * unsharing requires providing a separate source map, and the presence
+@@ -1290,9 +1283,18 @@ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ 	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
+ 	 * fork for XFS.
+ 	 */
+-	if (iter->srcmap.type == IOMAP_HOLE ||
+-	    iter->srcmap.type == IOMAP_DELALLOC ||
+-	    iter->srcmap.type == IOMAP_UNWRITTEN)
++	return (iter->iomap.flags & IOMAP_F_SHARED) &&
++		iter->srcmap.type == IOMAP_MAPPED;
++}
++
++static loff_t iomap_unshare_iter(struct iomap_iter *iter)
++{
++	struct iomap *iomap = &iter->iomap;
++	loff_t pos = iter->pos;
++	loff_t length = iomap_length(iter);
++	loff_t written = 0;
++
++	if (!iomap_want_unshare_iter(iter))
+ 		return length;
+ 
+ 	do {
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index 96dd0acbba44a..846cd2f1454c7 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -271,6 +271,7 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len);
+ bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio);
+ int iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 		const struct iomap_ops *ops);
++bool iomap_want_unshare_iter(const struct iomap_iter *iter);
+ int iomap_zero_range(struct inode *inode, loff_t pos, loff_t len,
+ 		bool *did_zero, const struct iomap_ops *ops);
+ int iomap_truncate_page(struct inode *inode, loff_t pos, bool *did_zero,
 -- 
 2.43.0
 
