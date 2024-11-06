@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-91159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C7C9BECBD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661189BE6D7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA79B1C23CEF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D0E2828BD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBDF1EABB4;
-	Wed,  6 Nov 2024 12:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E276A1DF27C;
+	Wed,  6 Nov 2024 12:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAGgm7We"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXoRkAFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9601EABB9;
-	Wed,  6 Nov 2024 12:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1051DF257;
+	Wed,  6 Nov 2024 12:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897913; cv=none; b=tI8TzXo1eMYyYZQSDM3LqwcNj4zrI9REQTceqoQOgzn3Nft+v1At8vPEvpVBrtJ0sAxpGszjwK3wWotL+Kiqv7jYnGEfzhWMdmUNHBnxiuamG4CHKD2qpjGRPEDVibHb4z7aSFMF4wKTlto2lSwQPSRXuxFKzDZQHwbKIrW26mI=
+	t=1730894860; cv=none; b=E/axKoF7ECQUcms4YrLg3iiz+26wNZu4SQ8XG0fJ5B/Y7OMYL0qBLEfUmernCzUVD2tjYBwk2oI0eNRhnGRyL0BJ1Uh5pzAf0Z/COtddkqGvMGvEgUgMSKZyR8cnyR4JRX0wZsqgqZAjJxaMSkZaDFLP4WXUd/kt/XgSQLQkPKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897913; c=relaxed/simple;
-	bh=RZOYJCH3N1F8Remwfo86T0YA1e9Yh8ikf1sRahqcUiU=;
+	s=arc-20240116; t=1730894860; c=relaxed/simple;
+	bh=bZuLPjgXXn1S5PUo2SXTan5j0vRlSTcj+jO8hGvR6Cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sfs9PmCsKz22RtAOBIdXfDIi9e+32n7AKRqhWFUX8givyRR4wX5VA7CafTvEuTBythPOQSrZbwLQnSADJdquLdJOK8FnpkBVZzST/+Z8Cm4w3au2K+E9DsO71aZL+Y+KYnJoZdKshb4DF6uBBvvhcEuc+w0IDfkzOhnlwt5Eh20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAGgm7We; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE9AC4CECD;
-	Wed,  6 Nov 2024 12:58:32 +0000 (UTC)
+	 MIME-Version; b=PwKdGvds550rg51NFIkYvc7WXt0vEE8f7GO8GKs9IJrime4r5Oa056fVLSNVrCltx3kRS/EOmGx/zqZ9WruFlybChWufXSzqTLe2zUZ0W/l2yceEKX8r4xI4aH3WB0p+aKNxETRN0Bc7O/qPq1jNwNZvxAzzIFYDgz6dEEitiqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXoRkAFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB276C4CECD;
+	Wed,  6 Nov 2024 12:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897913;
-	bh=RZOYJCH3N1F8Remwfo86T0YA1e9Yh8ikf1sRahqcUiU=;
+	s=korg; t=1730894860;
+	bh=bZuLPjgXXn1S5PUo2SXTan5j0vRlSTcj+jO8hGvR6Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAGgm7WeXLPFg1+Yqcb7yMs6UNiH2oMDVB1fJ02oiBsi/ADjT5Y4QYN9rypMmNgCg
-	 zBAld+3Qg8CxvYrruft5I+MO0BrCUBN+wws5OlI3Ls/teDZkVT1bAEW4laVCwEC3za
-	 Fu4GT3l4K0U3EqyVicNu+HmLbUdH7Md05YjxjUdM=
+	b=oXoRkAFGbugprZoPYzdVP9y5e7LIQ2IZlO1Q43BfxLlkAVxfG/3ycQVWVtLYWl64U
+	 Akrx6iveU2ZwrWpWXxiSLbwVVDTQ0a1gJwROG6yDQKc3IO60GdLfCmLpRlI3yyJQhs
+	 rI2NDTn1Br0tDW6ZN6LvMw4hprZ/eMQ2OkyU8lfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Agrawal <agrawal.ag.ankit@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Ferry Meng <mengferry@linux.alibaba.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	lei lu <llfamsec@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/462] clocksource/drivers/qcom: Add missing iounmap() on errors in msm_dt_timer_init()
+Subject: [PATCH 4.19 025/350] ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
 Date: Wed,  6 Nov 2024 12:59:13 +0100
-Message-ID: <20241106120332.997677894@linuxfoundation.org>
+Message-ID: <20241106120321.499530892@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +70,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
+From: Ferry Meng <mengferry@linux.alibaba.com>
 
-[ Upstream commit ca140a0dc0a18acd4653b56db211fec9b2339986 ]
+[ Upstream commit af77c4fc1871847b528d58b7fdafb4aa1f6a9262 ]
 
-Add the missing iounmap() when clock frequency fails to get read by the
-of_property_read_u32() call, or if the call to msm_timer_init() fails.
+xattr in ocfs2 maybe 'non-indexed', which saved with additional space
+requested.  It's better to check if the memory is out of bound before
+memcmp, although this possibility mainly comes from crafted poisonous
+images.
 
-Fixes: 6e3321631ac2 ("ARM: msm: Add DT support to msm_timer")
-Signed-off-by: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240713095713.GA430091@bnew-VirtualBox
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lkml.kernel.org/r/20240520024024.1976129-2-joseph.qi@linux.alibaba.com
+Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-qcom.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clocksource/timer-qcom.c b/drivers/clocksource/timer-qcom.c
-index b4afe3a675835..eac4c95c6127f 100644
---- a/drivers/clocksource/timer-qcom.c
-+++ b/drivers/clocksource/timer-qcom.c
-@@ -233,6 +233,7 @@ static int __init msm_dt_timer_init(struct device_node *np)
- 	}
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 8ec85c2503f23..bf00c7d4282b2 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -1082,7 +1082,7 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
+ {
+ 	struct ocfs2_xattr_entry *entry;
+ 	size_t name_len;
+-	int i, cmp = 1;
++	int i, name_offset, cmp = 1;
  
- 	if (of_property_read_u32(np, "clock-frequency", &freq)) {
-+		iounmap(cpu0_base);
- 		pr_err("Unknown frequency\n");
+ 	if (name == NULL)
  		return -EINVAL;
- 	}
-@@ -243,7 +244,11 @@ static int __init msm_dt_timer_init(struct device_node *np)
- 	freq /= 4;
- 	writel_relaxed(DGT_CLK_CTL_DIV_4, source_base + DGT_CLK_CTL);
- 
--	return msm_timer_init(freq, 32, irq, !!percpu_offset);
-+	ret = msm_timer_init(freq, 32, irq, !!percpu_offset);
-+	if (ret)
-+		iounmap(cpu0_base);
-+
-+	return ret;
- }
- TIMER_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
- TIMER_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
+@@ -1097,10 +1097,15 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
+ 		cmp = name_index - ocfs2_xattr_get_type(entry);
+ 		if (!cmp)
+ 			cmp = name_len - entry->xe_name_len;
+-		if (!cmp)
+-			cmp = memcmp(name, (xs->base +
+-				     le16_to_cpu(entry->xe_name_offset)),
+-				     name_len);
++		if (!cmp) {
++			name_offset = le16_to_cpu(entry->xe_name_offset);
++			if ((xs->base + name_offset + name_len) > xs->end) {
++				ocfs2_error(inode->i_sb,
++					    "corrupted xattr entries");
++				return -EFSCORRUPTED;
++			}
++			cmp = memcmp(name, (xs->base + name_offset), name_len);
++		}
+ 		if (cmp == 0)
+ 			break;
+ 		entry += 1;
 -- 
 2.43.0
 
