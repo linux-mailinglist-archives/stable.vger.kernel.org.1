@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-89991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2439BDC56
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573619BDC58
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 638461F24661
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:20:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DEA61F249E9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42391DE8A5;
-	Wed,  6 Nov 2024 02:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD40E1DED51;
+	Wed,  6 Nov 2024 02:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hkZAwCCE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0vlrshT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986BF199FB0;
-	Wed,  6 Nov 2024 02:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E871DED4A;
+	Wed,  6 Nov 2024 02:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859106; cv=none; b=Xa4EIbASfpsSGOlvvZdHw3p0gs27Ol8r3R20s4xt55FZLC0MVZgI29dFzd9vTB3iVL+XqRS5q5TXXiAiz9J6qT8gw6sVS5nYkD5Kv5HaFo1Fs0Tf9+qP7J2SeDPx/vhW0xPEdWKe+DHd48CLEmIsmnISx7uztlvK9RKw1z4CNek=
+	t=1730859109; cv=none; b=XXpxmRk56e1Ocoi0KAU1LCsaenR6kMTJVedl7y4PLQ1Yvbgdwfvl//T9ZAbCwoFQUeGkbdKXFFwsQlb+zbO315TzfF+2ecszKDxPbcCHsr4vEbiTAupH40mn13y6deoP9WHxvnL3ypv+6B109f5nf66DOTFybOPEzZpuNtmHrSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859106; c=relaxed/simple;
-	bh=arQC7q9bUgHeGWGwoLFQu8c6GIZavFEEYy4zji7l768=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cvO6LPcjtE5JCfQp6vDUCNIN8z7E3Rqmcf4E7cCh5GASudaWUMMX1/hD9HS9DTeEtZNIHXxJxw7pGMhcGiCkyeYiBacY5hwyn0lU+vBc0hRX/FWNjRM8Y+6VWNy5ED61IoJ9wPsVRFA1RT/vsVd9c0HLkddKfV92OEU69gq5ing=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hkZAwCCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8360DC4CECF;
-	Wed,  6 Nov 2024 02:11:45 +0000 (UTC)
+	s=arc-20240116; t=1730859109; c=relaxed/simple;
+	bh=qy5kpwvp5FoF/kDBdMOQEMr0kDst9jy3O5XZHrtXb10=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nR6IcTd8uwxbdIilNii3FRupSvDnnadGwyHe7pRc5G49GrdH/fcKFwVI3vdv+6IfIUBnZsR9wG8/UlcaX6pTcR6HMao6zPuc+6x4BpdTrPheyiDQ/O7z4wqbgfsuzuCv6vVrKYD8CEUMQ6pkdHUb87V7xKWc/h+plbv12HY+Em8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0vlrshT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68246C4CECF;
+	Wed,  6 Nov 2024 02:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859106;
-	bh=arQC7q9bUgHeGWGwoLFQu8c6GIZavFEEYy4zji7l768=;
+	s=k20201202; t=1730859109;
+	bh=qy5kpwvp5FoF/kDBdMOQEMr0kDst9jy3O5XZHrtXb10=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hkZAwCCE/pxdmjkEWp4hwArUQAHf8Du33X/JycIgIdCg5l2wXpGrkdb4JjAlKPNuk
-	 MVbOSjel9ekIeqqS80n+W2HpyV5PDVdJXzm4Ke/ayVTCbvSXG0fpdOvXwXbeyBzqCV
-	 v97xMnie3U2e7xEYpec+2r4WVoctaYGfUVzToZj/XpraCofnlhJQKRJcIhYpdlrzlv
-	 4dkreHrGnHU3qw/drGQ5W4y/gk0gJilPuJlALof/VpdjV4/xrC4FaOO369+0eFDicV
-	 NkoIP5VJHvmoi919A+IPk83ySxQ27QpKm/cpg6G9t6gvfDg7gP9ta1eU5JH28uUImh
-	 md+GjUNhjSE7Q==
+	b=J0vlrshToFzqRPaeQMQCxKGeQFEjgkEZredjJXLwGc+h7LIyNHUmKDP2iOzgW9sS2
+	 dyj66tc8wz1VCrAvMlfGFGN9pto8zIK49m6G3mf9mi7ndglawE0KO1igdw7gXUPRmz
+	 u7vZSKX5OsKb+KHA7ueNsMlr1939ieVpIl38mbYTQ3C85ESTvBEtXtbFWt6CPTR0hD
+	 c+umQrSsj9vJoRDaVelRfCizHbBXKs7iopQm3x6GXRiQRkqtfdA9WmkArgLc9c9kmK
+	 Fi3U1xjXoKUlmEuxlg7job4vvL7FOTUThzAEC+noZBn2BXU2z0tbQuLEIpTJQjd7Rl
+	 AI4bRbYyGTu3w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johannes.berg@intel.com
-Cc: linux-wireless@vger.kernel.org,
+	jan@jschaer.ch
+Cc: Takashi Iwai <tiwai@suse.de>,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v5.15-stable tree
-Date: Tue,  5 Nov 2024 21:11:43 -0500
-Message-ID: <20241106021144.182416-1-sashal@kernel.org>
+Subject: FAILED: Patch "ALSA: usb-audio: Add quirks for Dell WD19 dock" failed to apply to v5.15-stable tree
+Date: Tue,  5 Nov 2024 21:11:46 -0500
+Message-ID: <20241106021146.182457-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,6 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the v5.15-stable tree.
@@ -69,66 +71,45 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7245012f0f496162dd95d888ed2ceb5a35170f1a Mon Sep 17 00:00:00 2001
-From: Johannes Berg <johannes.berg@intel.com>
-Date: Wed, 23 Oct 2024 09:17:44 +0200
-Subject: [PATCH] wifi: iwlwifi: mvm: fix 6 GHz scan construction
+From 4413665dd6c528b31284119e3571c25f371e1c36 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>
+Date: Tue, 29 Oct 2024 23:12:49 +0100
+Subject: [PATCH] ALSA: usb-audio: Add quirks for Dell WD19 dock
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-If more than 255 colocated APs exist for the set of all
-APs found during 2.4/5 GHz scanning, then the 6 GHz scan
-construction will loop forever since the loop variable
-has type u8, which can never reach the number found when
-that's bigger than 255, and is stored in a u32 variable.
-Also move it into the loops to have a smaller scope.
+The WD19 family of docks has the same audio chipset as the WD15. This
+change enables jack detection on the WD19.
 
-Using a u32 there is fine, we limit the number of APs in
-the scan list and each has a limit on the number of RNR
-entries due to the frame size. With a limit of 1000 scan
-results, a frame size upper bound of 4096 (really it's
-more like ~2300) and a TBTT entry size of at least 11,
-we get an upper bound for the number of ~372k, well in
-the bounds of a u32.
+We don't need the dell_dock_mixer_init quirk for the WD19. It is only
+needed because of the dell_alc4020_map quirk for the WD15 in
+mixer_maps.c, which disables the volume controls. Even for the WD15,
+this quirk was apparently only needed when the dock firmware was not
+updated.
 
-Cc: stable@vger.kernel.org
-Fixes: eae94cf82d74 ("iwlwifi: mvm: add support for 6GHz")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219375
-Link: https://patch.msgid.link/20241023091744.f4baed5c08a1.I8b417148bbc8c5d11c101e1b8f5bf372e17bf2a7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/usb/mixer_quirks.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 3ce9150213a74..ddcbd80a49fb2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1774,7 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 			&cp->channel_config[ch_cnt];
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 2a9594f34dac6..6456e87e2f397 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -4042,6 +4042,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
++	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
++		err = dell_dock_mixer_create(mixer);
++		break;
  
- 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
--		u8 j, k, n_s_ssids = 0, n_bssids = 0;
-+		u8 k, n_s_ssids = 0, n_bssids = 0;
- 		u8 max_s_ssids, max_bssids;
- 		bool force_passive = false, found = false, allow_passive = true,
- 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
-@@ -1799,7 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 		cfg->v5.iter_count = 1;
- 		cfg->v5.iter_interval = 0;
- 
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			s8 tmp_psd_20;
- 
- 			if (!(scan_6ghz_params[j].channel_idx == i))
-@@ -1873,7 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
- 		 * SSID.
- 		 * TODO: improve this logic
- 		 */
--		for (j = 0; j < params->n_6ghz_params; j++) {
-+		for (u32 j = 0; j < params->n_6ghz_params; j++) {
- 			if (!(scan_6ghz_params[j].channel_idx == i))
- 				continue;
- 
+ 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
+ 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
 -- 
 2.43.0
 
