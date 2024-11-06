@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-90689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CFF9BE997
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F709BEC28
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D531C2341E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E552852A4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6C91DFE25;
-	Wed,  6 Nov 2024 12:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5C31FB3C2;
+	Wed,  6 Nov 2024 12:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLupVrnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6mfT3n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDBA1DFD90;
-	Wed,  6 Nov 2024 12:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CDF1F471A;
+	Wed,  6 Nov 2024 12:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896519; cv=none; b=pBJzrFZhG6Ppx9VHahviHEw5UZ3FkXRyz0KmMczOdN2YDr6gtUntHpMm0tdKzmuk/R1d/hPLUL7ZcGqm3j13L49sVyUK5IKaU5NLmeaM/hdTEZ51EhqaeHHcvgrXE/yiDp0o+djwinu3pRT5fMxCmtbnbVYyvtAfYlwYAVE5dxo=
+	t=1730897560; cv=none; b=NcEZP5JWPspyUCKh7ygZ04cR67xsCwKsyX1Jk/h0sk2j/SGfmcRoZSWXDmrpfsvSN5v742qQCxtBAIiUY9JmHD/TLPgc78S4iUYlStiXDp2dGpoBrOV3sKVTl3TTj0q/DcAl2RW/7zwOuL1x5YOhBxe0dU0pTqT1a8SzM3BJv88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896519; c=relaxed/simple;
-	bh=BZxL/1w8NeAAXupQuSA55lgzgK0burY+28b44lpkrck=;
+	s=arc-20240116; t=1730897560; c=relaxed/simple;
+	bh=jM3hfE614SpSjiNFtOxb7h6wHRjUdzw/FL4MJsj4qhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xohv0xyTQBiBW7bs3fGOdwdmGqGSmewy7TnHjq4J8ue2gg6DXVkSDQaHjowq5igRxemxK8tKEM/Zqk2QNefQ+uEsROYjcPsflRKl+AYqOGwX46LTv9Cvo+A05MXRWG1QFPGspqrJLbfVCuYr65mdJ0y5l6Kl57DzIW2Egn5ssHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLupVrnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0777EC4CECD;
-	Wed,  6 Nov 2024 12:35:18 +0000 (UTC)
+	 MIME-Version; b=hjzppTMEuneBIw5guMPLDP7lcr96DUgqZ5PM5S9Dt9hWwqp8m4c+2jBG+OHs1ZcPuTXD3sfQUsjon0BItMQbX2Ecj5OdL27umkUrhW8VGhMi3mjpjVkWecXzHfKaT+vrA0+QCzDad6NoP9xKa+OhU8SvL41eLBeDnK8jHXl22jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6mfT3n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79811C4CECD;
+	Wed,  6 Nov 2024 12:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896519;
-	bh=BZxL/1w8NeAAXupQuSA55lgzgK0burY+28b44lpkrck=;
+	s=korg; t=1730897559;
+	bh=jM3hfE614SpSjiNFtOxb7h6wHRjUdzw/FL4MJsj4qhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLupVrnTRPEliPnR+NWOc1uQ7EtBuHrno/G7yndwTK2Pe9MCgCQ7MPz2xTFc7tDx1
-	 PPhNjVDifJb8rKzgI1O9LNgVrW4xZQPO6QecGkhvvCfPKEPACzUqwvVAWEI76KoWez
-	 ocIFPFFy5aa4mtc/gRdAKW30oPTszEOl4eYpZuCg=
+	b=t6mfT3n0A2p5LcJBUkmZdU4qSuJRZSzUaHMbgd/8P6IqVaB/OyKotUXGaDlDWd1lQ
+	 xhTMMmNs8nJeu+LXn7cuJvUh/Bu8ZM9CXLBqvADyg/EXe+GKosc6IC3mTNrU5XyACQ
+	 Hn4MC+BKqTEsefsN5HBD8xMR5UA2y+qxL7UOcov4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
-	Arun R Murthy <arun.r.murthy@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 228/245] drm/i915/display/dp: Compute AS SDP when vrr is also enabled
-Date: Wed,  6 Nov 2024 13:04:41 +0100
-Message-ID: <20241106120324.873113765@linuxfoundation.org>
+	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 094/151] wifi: cfg80211: clear wdev->cqm_config pointer on free
+Date: Wed,  6 Nov 2024 13:04:42 +0100
+Message-ID: <20241106120311.459512862@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit eb53e5b933b9ff315087305b3dc931af3067d19c upstream.
+commit d5fee261dfd9e17b08b1df8471ac5d5736070917 upstream.
 
-AS SDP should be computed when VRR timing generator is also enabled.
-Correct the compute condition to compute params of Adaptive sync SDP
-when VRR timing genrator is enabled along with sink support indication.
+When we free wdev->cqm_config when unregistering, we also
+need to clear out the pointer since the same wdev/netdev
+may get re-registered in another network namespace, then
+destroyed later, running this code again, which results in
+a double-free.
 
---v2:
-Modify if condition (Jani).
-
-Fixes: b2013783c445 ("drm/i915/display: Cache adpative sync caps to use it later")
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org
-Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-(added prefix drm in subject)
-Link: https://patchwork.freedesktop.org/patch/msgid/20240730040941.396862-1-mitulkumar.ajitkumar.golani@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2627,7 +2627,7 @@ static void intel_dp_compute_as_sdp(stru
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1233,6 +1233,7 @@ static void _cfg80211_unregister_wdev(st
+ 	/* deleted from the list, so can't be found from nl80211 any more */
+ 	cqm_config = rcu_access_pointer(wdev->cqm_config);
+ 	kfree_rcu(cqm_config, rcu_head);
++	RCU_INIT_POINTER(wdev->cqm_config, NULL);
  
--	if (!crtc_state->vrr.enable || intel_dp->as_sdp_supported)
-+	if (!crtc_state->vrr.enable || !intel_dp->as_sdp_supported)
- 		return;
- 
- 	crtc_state->infoframes.enable |= intel_hdmi_infoframe_enable(DP_SDP_ADAPTIVE_SYNC);
+ 	/*
+ 	 * Ensure that all events have been processed and
 
 
 
