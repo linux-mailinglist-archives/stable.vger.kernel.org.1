@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1A29BE7BE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72219BE8E7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81DAD283C46
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7518E1F226FC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F521DF25E;
-	Wed,  6 Nov 2024 12:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85451DF995;
+	Wed,  6 Nov 2024 12:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwQCabKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="it1rl3WM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA29A1DE8B4;
-	Wed,  6 Nov 2024 12:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643241DF986;
+	Wed,  6 Nov 2024 12:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895436; cv=none; b=HMZVNgGbtcs+8OoDeGpksxsbo61t27nN6kpznUfpZPHLxg0/1Ky0qt4z18dmPXx9L7tShtRCp7bpnWWl+UTUTtHmNP7JorUGpOkv7lTHJc3hssVE0ug/DY1NiJ9VgBuRivXNFwol8eBaDYe37JCILagNvuoraFIw6nOH8JF2xrc=
+	t=1730896109; cv=none; b=B3hoOjqsSpw7Uc2S3/NX0jgYy6l7TzKjB59FA51Il0H9U5xDHGBeEdbUgGdynchtJw65J7z0R7QMZJWdcChY/9jX6Uzja9SfIMyFt1Bnn8iYZ4/P7E7+cM85FUMc59YWSRGrssBVDxWyARigpwKr0NnL0owMXA5z9vcT3DX8Mgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895436; c=relaxed/simple;
-	bh=lucF8VKbiy+eXFQv03eGM43L4hVq+x2IWkPtrKpFe94=;
+	s=arc-20240116; t=1730896109; c=relaxed/simple;
+	bh=6bEN17zruFIWTGKvv5Kqpa6SEBWikZQd4Mf+1gsnh08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtblQCz+ZYpeadi177UcJE4xl9HpkeIL13u0kxw5EB+XFR6OqybsZt3V+90QbQthjY2PWE3g1PjpqsZSTnob836aXiMOt2657pF8tdXBr+n3NUAp3dLlLpGpG2+Ygdrr8StQEfPsnej65jC+fX2vc2nt4oSOqTssP6m2xiDTvhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwQCabKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF88EC4CED6;
-	Wed,  6 Nov 2024 12:17:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GhLR4f7ZgxeEteMG0Jc5gXV5xNuA3mwtOIZfuaJbD5uh6dj1Im9qjw150xJZWL96EsM5+USjSOqhZPgf3R13CAdNXjkAhmfhdiIvjLCQcLkSuincEVODzzHX+dKGr2ziIJHsx5wgpHikJzuRO/lsZrme+9UuDMm2qk5uTlIIXKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=it1rl3WM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1B0C4CECD;
+	Wed,  6 Nov 2024 12:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895436;
-	bh=lucF8VKbiy+eXFQv03eGM43L4hVq+x2IWkPtrKpFe94=;
+	s=korg; t=1730896109;
+	bh=6bEN17zruFIWTGKvv5Kqpa6SEBWikZQd4Mf+1gsnh08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwQCabKjSufABQCDsgPVIMX+bX/3iBm5523FD5tKJQHx3YoAYBHIrALCamIHogkK5
-	 2c/HGwiC66O1nyMorEu2GpLKZ7OLCr3yhSlwqD/1ZXajCSzOcf1wqu1QuHc3IYeAdf
-	 PTJOrOo5WqEQrtf0tsYMyOp9di9lIdzGpCvL2aAs=
+	b=it1rl3WMZRvtBrKf9leUZV9tfUrAYedo/Fp3CgDoCiyxY6/+QXIGrkyhqScSxTRQF
+	 A5dhLY31zZILKqGauCjr+J2KsGMWSDdsi3KvQbf7yu0l/3zaBQ97kCUICLSq/HyErb
+	 cLzyoJrrCi36Z0YT6eX4kaJbSzRgoCW1/XaVazMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 218/350] arm64: cputype: Add Neoverse-N3 definitions
+Subject: [PATCH 6.11 093/245] cifs: Improve creating native symlinks pointing to directory
 Date: Wed,  6 Nov 2024 13:02:26 +0100
-Message-ID: <20241106120326.384709315@linuxfoundation.org>
+Message-ID: <20241106120321.498805451@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,302 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 924725707d80bc2588cefafef76ff3f164d299bc ]
+[ Upstream commit 3eb40512530e4f64f819d8e723b6f41695dace5a ]
 
-Add cputype definitions for Neoverse-N3. These will be used for errata
-detection in subsequent patches.
+SMB protocol for native symlinks distinguish between symlink to directory
+and symlink to file. These two symlink types cannot be exchanged, which
+means that symlink of file type pointing to directory cannot be resolved at
+all (and vice-versa).
 
-These values can be found in Table A-261 ("MIDR_EL1 bit descriptions")
-in issue 02 of the Neoverse-N3 TRM, which can be found at:
+Windows follows this rule for local filesystems (NTFS) and also for SMB.
 
-  https://developer.arm.com/documentation/107997/0000/?lang=en
+Linux SMB client currenly creates all native symlinks of file type. Which
+means that Windows (and some other SMB clients) cannot resolve symlinks
+pointing to directory created by Linux SMB client.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240930111705.3352047-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+As Linux system does not distinguish between directory and file symlinks,
+its API does not provide enough information for Linux SMB client during
+creating of native symlinks.
+
+Add some heuristic into the Linux SMB client for choosing the correct
+symlink type during symlink creation. Check if the symlink target location
+ends with slash, or last path component is dot or dot-dot, and check if the
+target location on SMB share exists and is a directory. If at least one
+condition is truth then create a new SMB symlink of directory type.
+Otherwise create it as file type symlink.
+
+This change improves interoperability with Windows systems. Windows systems
+would be able to resolve more SMB symlinks created by Linux SMB client
+which points to existing directory.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/reparse.c   | 164 +++++++++++++++++++++++++++++++++++++-
+ fs/smb/client/smb2inode.c |   3 +-
+ fs/smb/client/smb2proto.h |   1 +
+ 3 files changed, 164 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index e3df8b0c067bf..b8593cebb4ff4 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -98,6 +98,7 @@
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
-+#define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index c848b5e88d32f..74abbdf5026c7 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -14,6 +14,12 @@
+ #include "fs_context.h"
+ #include "reparse.h"
  
- #define APM_CPU_PART_POTENZA		0x000
++static int detect_directory_symlink_target(struct cifs_sb_info *cifs_sb,
++					   const unsigned int xid,
++					   const char *full_path,
++					   const char *symname,
++					   bool *directory);
++
+ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
+ 				struct dentry *dentry, struct cifs_tcon *tcon,
+ 				const char *full_path, const char *symname)
+@@ -24,6 +30,7 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
+ 	struct inode *new;
+ 	struct kvec iov;
+ 	__le16 *path;
++	bool directory;
+ 	char *sym, sep = CIFS_DIR_SEP(cifs_sb);
+ 	u16 len, plen;
+ 	int rc = 0;
+@@ -45,6 +52,18 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
+ 		goto out;
+ 	}
  
-@@ -143,6 +144,7 @@
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
-+#define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
++	/*
++	 * SMB distinguish between symlink to directory and symlink to file.
++	 * They cannot be exchanged (symlink of file type which points to
++	 * directory cannot be resolved and vice-versa). Try to detect if
++	 * the symlink target could be a directory or not. When detection
++	 * fails then treat symlink as a file (non-directory) symlink.
++	 */
++	directory = false;
++	rc = detect_directory_symlink_target(cifs_sb, xid, full_path, symname, &directory);
++	if (rc < 0)
++		goto out;
++
+ 	plen = 2 * UniStrnlen((wchar_t *)path, PATH_MAX);
+ 	len = sizeof(*buf) + plen * 2;
+ 	buf = kzalloc(len, GFP_KERNEL);
+@@ -69,7 +88,8 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
+ 	iov.iov_base = buf;
+ 	iov.iov_len = len;
+ 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
+-				     tcon, full_path, &iov, NULL);
++				     tcon, full_path, directory,
++				     &iov, NULL);
+ 	if (!IS_ERR(new))
+ 		d_instantiate(dentry, new);
+ 	else
+@@ -81,6 +101,144 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
+ 	return rc;
+ }
+ 
++static int detect_directory_symlink_target(struct cifs_sb_info *cifs_sb,
++					   const unsigned int xid,
++					   const char *full_path,
++					   const char *symname,
++					   bool *directory)
++{
++	char sep = CIFS_DIR_SEP(cifs_sb);
++	struct cifs_open_parms oparms;
++	struct tcon_link *tlink;
++	struct cifs_tcon *tcon;
++	const char *basename;
++	struct cifs_fid fid;
++	char *resolved_path;
++	int full_path_len;
++	int basename_len;
++	int symname_len;
++	char *path_sep;
++	__u32 oplock;
++	int open_rc;
++
++	/*
++	 * First do some simple check. If the original Linux symlink target ends
++	 * with slash, or last path component is dot or dot-dot then it is for
++	 * sure symlink to the directory.
++	 */
++	basename = kbasename(symname);
++	basename_len = strlen(basename);
++	if (basename_len == 0 || /* symname ends with slash */
++	    (basename_len == 1 && basename[0] == '.') || /* last component is "." */
++	    (basename_len == 2 && basename[0] == '.' && basename[1] == '.')) { /* or ".." */
++		*directory = true;
++		return 0;
++	}
++
++	/*
++	 * For absolute symlinks it is not possible to determinate
++	 * if it should point to directory or file.
++	 */
++	if (symname[0] == '/') {
++		cifs_dbg(FYI,
++			 "%s: cannot determinate if the symlink target path '%s' "
++			 "is directory or not, creating '%s' as file symlink\n",
++			 __func__, symname, full_path);
++		return 0;
++	}
++
++	/*
++	 * If it was not detected as directory yet and the symlink is relative
++	 * then try to resolve the path on the SMB server, check if the path
++	 * exists and determinate if it is a directory or not.
++	 */
++
++	full_path_len = strlen(full_path);
++	symname_len = strlen(symname);
++
++	tlink = cifs_sb_tlink(cifs_sb);
++	if (IS_ERR(tlink))
++		return PTR_ERR(tlink);
++
++	resolved_path = kzalloc(full_path_len + symname_len + 1, GFP_KERNEL);
++	if (!resolved_path) {
++		cifs_put_tlink(tlink);
++		return -ENOMEM;
++	}
++
++	/*
++	 * Compose the resolved SMB symlink path from the SMB full path
++	 * and Linux target symlink path.
++	 */
++	memcpy(resolved_path, full_path, full_path_len+1);
++	path_sep = strrchr(resolved_path, sep);
++	if (path_sep)
++		path_sep++;
++	else
++		path_sep = resolved_path;
++	memcpy(path_sep, symname, symname_len+1);
++	if (sep == '\\')
++		convert_delimiter(path_sep, sep);
++
++	tcon = tlink_tcon(tlink);
++	oparms = CIFS_OPARMS(cifs_sb, tcon, resolved_path,
++			     FILE_READ_ATTRIBUTES, FILE_OPEN, 0, ACL_NO_MODE);
++	oparms.fid = &fid;
++
++	/* Try to open as a directory (NOT_FILE) */
++	oplock = 0;
++	oparms.create_options = cifs_create_options(cifs_sb,
++						    CREATE_NOT_FILE | OPEN_REPARSE_POINT);
++	open_rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, NULL);
++	if (open_rc == 0) {
++		/* Successful open means that the target path is definitely a directory. */
++		*directory = true;
++		tcon->ses->server->ops->close(xid, tcon, &fid);
++	} else if (open_rc == -ENOTDIR) {
++		/* -ENOTDIR means that the target path is definitely a file. */
++		*directory = false;
++	} else if (open_rc == -ENOENT) {
++		/* -ENOENT means that the target path does not exist. */
++		cifs_dbg(FYI,
++			 "%s: symlink target path '%s' does not exist, "
++			 "creating '%s' as file symlink\n",
++			 __func__, symname, full_path);
++	} else {
++		/* Try to open as a file (NOT_DIR) */
++		oplock = 0;
++		oparms.create_options = cifs_create_options(cifs_sb,
++							    CREATE_NOT_DIR | OPEN_REPARSE_POINT);
++		open_rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, NULL);
++		if (open_rc == 0) {
++			/* Successful open means that the target path is definitely a file. */
++			*directory = false;
++			tcon->ses->server->ops->close(xid, tcon, &fid);
++		} else if (open_rc == -EISDIR) {
++			/* -EISDIR means that the target path is definitely a directory. */
++			*directory = true;
++		} else {
++			/*
++			 * This code branch is called when we do not have a permission to
++			 * open the resolved_path or some other client/process denied
++			 * opening the resolved_path.
++			 *
++			 * TODO: Try to use ops->query_dir_first on the parent directory
++			 * of resolved_path, search for basename of resolved_path and
++			 * check if the ATTR_DIRECTORY is set in fi.Attributes. In some
++			 * case this could work also when opening of the path is denied.
++			 */
++			cifs_dbg(FYI,
++				 "%s: cannot determinate if the symlink target path '%s' "
++				 "is directory or not, creating '%s' as file symlink\n",
++				 __func__, symname, full_path);
++		}
++	}
++
++	kfree(resolved_path);
++	cifs_put_tlink(tlink);
++	return 0;
++}
++
+ static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
+ 			       mode_t mode, dev_t dev,
+ 			       struct kvec *iov)
+@@ -137,7 +295,7 @@ static int mknod_nfs(unsigned int xid, struct inode *inode,
+ 	};
+ 
+ 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
+-				     tcon, full_path, &iov, NULL);
++				     tcon, full_path, false, &iov, NULL);
+ 	if (!IS_ERR(new))
+ 		d_instantiate(dentry, new);
+ 	else
+@@ -283,7 +441,7 @@ static int mknod_wsl(unsigned int xid, struct inode *inode,
+ 	data.wsl.eas_len = len;
+ 
+ 	new = smb2_get_reparse_inode(&data, inode->i_sb,
+-				     xid, tcon, full_path,
++				     xid, tcon, full_path, false,
+ 				     &reparse_iov, &xattr_iov);
+ 	if (!IS_ERR(new))
+ 		d_instantiate(dentry, new);
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index a6dab60e2c01e..cdb0e028e73c4 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1198,6 +1198,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 				     const unsigned int xid,
+ 				     struct cifs_tcon *tcon,
+ 				     const char *full_path,
++				     bool directory,
+ 				     struct kvec *reparse_iov,
+ 				     struct kvec *xattr_iov)
+ {
+@@ -1217,7 +1218,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 			     FILE_READ_ATTRIBUTES |
+ 			     FILE_WRITE_ATTRIBUTES,
+ 			     FILE_CREATE,
+-			     CREATE_NOT_DIR | OPEN_REPARSE_POINT,
++			     (directory ? CREATE_NOT_FILE : CREATE_NOT_DIR) | OPEN_REPARSE_POINT,
+ 			     ACL_NO_MODE);
+ 	if (xattr_iov)
+ 		oparms.ea_cctx = xattr_iov;
+diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
+index b208232b12a24..5e0855fefcfe6 100644
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -61,6 +61,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 				     const unsigned int xid,
+ 				     struct cifs_tcon *tcon,
+ 				     const char *full_path,
++				     bool directory,
+ 				     struct kvec *reparse_iov,
+ 				     struct kvec *xattr_iov);
+ int smb2_query_reparse_point(const unsigned int xid,
 -- 
 2.43.0
 
