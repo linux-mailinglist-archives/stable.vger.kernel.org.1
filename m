@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-90542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91FE9BE8DD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF989BE8A4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176F81C21835
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFBCA1C22C68
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A229C1DF99A;
-	Wed,  6 Nov 2024 12:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490D01DFE3B;
+	Wed,  6 Nov 2024 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b700Sz7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSMKNxBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF591DF251;
-	Wed,  6 Nov 2024 12:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F121D2784;
+	Wed,  6 Nov 2024 12:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896080; cv=none; b=k61kAJQLt/B7Ctu1ZyObgcI1daNXhr5OeZlqheeEyTuESVTMe4sMWQv2YlZsUps/4BlGb/tOTGE+OBYk0bCZPVinq6sf8BtYUxIrDemZ94kPzQ+HWNO+08vC9/yMnlS3chLLhpjlNSocTb0+P7jWOweOI5uU8IZ2kub6Md/wkoQ=
+	t=1730895975; cv=none; b=HSID/sKSc06Q34i6jtMT573guy6Ki3x3BbGQapbSEX5O9GVYnrienV/ywu1wyL+qzbSY5PW9DXkmjQJgJuDCTd+ZQuylGBU4OKGhDFClghcRfmCWdrOFouIyj6xJU5gybHY20iki+iNwei56cb5hLhTJgAjuWoDet9lzvCkDwns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896080; c=relaxed/simple;
-	bh=+C+7ciEw/I5oXXy/sCTP9uKgvOdFYlO/79m5uaUvuiw=;
+	s=arc-20240116; t=1730895975; c=relaxed/simple;
+	bh=T8P1nV03xQnsRRgr29o3Pvu3byEb3YZCoWDgFZrU8oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O18OuFBrYivAbdSYJX6UA4GUreJMl7fKPYmNgvfsDR3OP2zS8MgUAPxbf8W3rxvMa8xKgQXJC1+Yk6cOFgOTqFnX7bHHyqkyHZlatN4B/dqGStjgFKtUqoHXpXDpAVaoyWV4L3xolp8bKU0ipBmlA1Xm10ORc7FQHeL9NpOIHoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b700Sz7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63E9C4CECD;
-	Wed,  6 Nov 2024 12:27:59 +0000 (UTC)
+	 MIME-Version; b=CbWQSRfNGTj+OniIgXLem5Dm4K7fnO7rSAP6nejIYfP7T5EmKENBNQ2ugRqvIYe4hD9+LS21D3hhAFZ8xVJB5mtk92sGfGUMv4wdZN4bhxr8YJyuPbNRtuti2yals3gBDXYOObxHl5YlkaGpTtFg8Z7aBBWEVqRU84sAENJKAnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSMKNxBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B81CC4CED4;
+	Wed,  6 Nov 2024 12:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896080;
-	bh=+C+7ciEw/I5oXXy/sCTP9uKgvOdFYlO/79m5uaUvuiw=;
+	s=korg; t=1730895974;
+	bh=T8P1nV03xQnsRRgr29o3Pvu3byEb3YZCoWDgFZrU8oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b700Sz7zP/VZ4buN6Oh9rQbw35NF4ku0V7Z+1X6WEho9d1AdJQDNDVncufae6l0Ei
-	 GrOILzWrbF7OJEff519PRbm4N7OV7XbWxcgclZmfmtw4hnV3BiZ5tOCfvBqt6739Kw
-	 EWWyWN5mjkn3UscXxtSKoepZT50sBRY2AK/eO/Mo=
+	b=DSMKNxBsSdnHAL05QLlfYbJXAnp6+SPmmqFe1h/WuxE37SwvkGTOJFherctO51Kas
+	 c7QoDiFF9ZyyiYaPCNdG67u7se3MK9NlpiZUTwQ1z6tqpedtCXDpKKnpF1GsEXoevQ
+	 UnCPi7y5lIWj+upqkf07qpJLXmDsPsh3CyezoXdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hou Tao <houtao1@huawei.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 047/245] bpf: Add bpf_mem_alloc_check_size() helper
-Date: Wed,  6 Nov 2024 13:01:40 +0100
-Message-ID: <20241106120320.383534823@linuxfoundation.org>
+Subject: [PATCH 6.11 048/245] bpf: Check the validity of nr_words in bpf_iter_bits_new()
+Date: Wed,  6 Nov 2024 13:01:41 +0100
+Message-ID: <20241106120320.406644466@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
 References: <20241106120319.234238499@linuxfoundation.org>
@@ -68,76 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 62a898b07b83f6f407003d8a70f0827a5af08a59 ]
+[ Upstream commit 393397fbdcad7396639d7077c33f86169184ba99 ]
 
-Introduce bpf_mem_alloc_check_size() to check whether the allocation
-size exceeds the limitation for the kmalloc-equivalent allocator. The
-upper limit for percpu allocation is LLIST_NODE_SZ bytes larger than
-non-percpu allocation, so a percpu argument is added to the helper.
+Check the validity of nr_words in bpf_iter_bits_new(). Without this
+check, when multiplication overflow occurs for nr_bits (e.g., when
+nr_words = 0x0400-0001, nr_bits becomes 64), stack corruption may occur
+due to bpf_probe_read_kernel_common(..., nr_bytes = 0x2000-0008).
 
-The helper will be used in the following patch to check whether the size
-parameter passed to bpf_mem_alloc() is too big.
+Fix it by limiting the maximum value of nr_words to 511. The value is
+derived from the current implementation of BPF memory allocator. To
+ensure compatibility if the BPF memory allocator's size limitation
+changes in the future, use the helper bpf_mem_alloc_check_size() to
+check whether nr_bytes is too larger. And return -E2BIG instead of
+-ENOMEM for oversized nr_bytes.
 
+Fixes: 4665415975b0 ("bpf: Add bits iterator")
 Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241030100516.3633640-3-houtao@huaweicloud.com
+Link: https://lore.kernel.org/r/20241030100516.3633640-4-houtao@huaweicloud.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 393397fbdcad ("bpf: Check the validity of nr_words in bpf_iter_bits_new()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_mem_alloc.h |  3 +++
- kernel/bpf/memalloc.c         | 14 +++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ kernel/bpf/helpers.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf_mem_alloc.h b/include/linux/bpf_mem_alloc.h
-index aaf004d943228..e45162ef59bb1 100644
---- a/include/linux/bpf_mem_alloc.h
-+++ b/include/linux/bpf_mem_alloc.h
-@@ -33,6 +33,9 @@ int bpf_mem_alloc_percpu_init(struct bpf_mem_alloc *ma, struct obj_cgroup *objcg
- int bpf_mem_alloc_percpu_unit_init(struct bpf_mem_alloc *ma, int size);
- void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma);
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index a4521d2606b6b..8419de44c5174 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2830,6 +2830,8 @@ struct bpf_iter_bits {
+ 	__u64 __opaque[2];
+ } __aligned(8);
  
-+/* Check the allocation size for kmalloc equivalent allocator */
-+int bpf_mem_alloc_check_size(bool percpu, size_t size);
++#define BITS_ITER_NR_WORDS_MAX 511
 +
- /* kmalloc/kfree equivalent: */
- void *bpf_mem_alloc(struct bpf_mem_alloc *ma, size_t size);
- void bpf_mem_free(struct bpf_mem_alloc *ma, void *ptr);
-diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
-index dec892ded031e..b2c7a4c49be77 100644
---- a/kernel/bpf/memalloc.c
-+++ b/kernel/bpf/memalloc.c
-@@ -35,6 +35,8 @@
-  */
- #define LLIST_NODE_SZ sizeof(struct llist_node)
+ struct bpf_iter_bits_kern {
+ 	union {
+ 		unsigned long *bits;
+@@ -2844,7 +2846,8 @@ struct bpf_iter_bits_kern {
+  * @it: The new bpf_iter_bits to be created
+  * @unsafe_ptr__ign: A pointer pointing to a memory area to be iterated over
+  * @nr_words: The size of the specified memory area, measured in 8-byte units.
+- * Due to the limitation of memalloc, it can't be greater than 512.
++ * The maximum value of @nr_words is @BITS_ITER_NR_WORDS_MAX. This limit may be
++ * further reduced by the BPF memory allocator implementation.
+  *
+  * This function initializes a new bpf_iter_bits structure for iterating over
+  * a memory area which is specified by the @unsafe_ptr__ign and @nr_words. It
+@@ -2871,6 +2874,8 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
  
-+#define BPF_MEM_ALLOC_SIZE_MAX 4096
-+
- /* similar to kmalloc, but sizeof == 8 bucket is gone */
- static u8 size_index[24] __ro_after_init = {
- 	3,	/* 8 */
-@@ -65,7 +67,7 @@ static u8 size_index[24] __ro_after_init = {
+ 	if (!unsafe_ptr__ign || !nr_words)
+ 		return -EINVAL;
++	if (nr_words > BITS_ITER_NR_WORDS_MAX)
++		return -E2BIG;
  
- static int bpf_mem_cache_idx(size_t size)
- {
--	if (!size || size > 4096)
-+	if (!size || size > BPF_MEM_ALLOC_SIZE_MAX)
- 		return -1;
+ 	/* Optimization for u64 mask */
+ 	if (nr_bits == 64) {
+@@ -2882,6 +2887,9 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
+ 		return 0;
+ 	}
  
- 	if (size <= 192)
-@@ -1005,3 +1007,13 @@ void notrace *bpf_mem_cache_alloc_flags(struct bpf_mem_alloc *ma, gfp_t flags)
- 
- 	return !ret ? NULL : ret + LLIST_NODE_SZ;
- }
-+
-+int bpf_mem_alloc_check_size(bool percpu, size_t size)
-+{
-+	/* The size of percpu allocation doesn't have LLIST_NODE_SZ overhead */
-+	if ((percpu && size > BPF_MEM_ALLOC_SIZE_MAX) ||
-+	    (!percpu && size > BPF_MEM_ALLOC_SIZE_MAX - LLIST_NODE_SZ))
++	if (bpf_mem_alloc_check_size(false, nr_bytes))
 +		return -E2BIG;
 +
-+	return 0;
-+}
+ 	/* Fallback to memalloc */
+ 	kit->bits = bpf_mem_alloc(&bpf_global_ma, nr_bytes);
+ 	if (!kit->bits)
 -- 
 2.43.0
 
