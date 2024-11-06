@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4F69BE815
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA049BE914
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32A5C1F2137F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26D951F217DF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06CA1DF26B;
-	Wed,  6 Nov 2024 12:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C294F171C9;
+	Wed,  6 Nov 2024 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oQit5WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTyMrd+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1081DED49;
-	Wed,  6 Nov 2024 12:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DDA4207F;
+	Wed,  6 Nov 2024 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895647; cv=none; b=otR8Mu+fmu3gV3Xf7zzhvaj5pH/WGcZ9hQuTcXderwg1AjyN4tgRDf1/21rFyRs14pJl6BR+6B0Nkl43zczwsdfpGnd7uSAaTNTxT60VWLug8CTW6GctRUBolFYKL8vBjmsWuF8+I9BdKBcQh1hpCE6TfaNTIxgYJqf5av8hey0=
+	t=1730896212; cv=none; b=HofGvYp9g+eMgIBeIisoSCfbazbA601sHRh9GS00zMtED4z12wqm+55+P0w2nOGwreanWfURzgAv8WX13SPdtnlHYKB2DOVzTAYnCynZQ52t8+R68EmtaMOOImXi7ISCA3ft56BEnjAI4jmdVhjm3vdYUCNo+QhNCCZ0Kl1KDq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895647; c=relaxed/simple;
-	bh=3MT2PdnG7+R7Imk7mb9KeQR8WnDIrDV057CC71b7tBc=;
+	s=arc-20240116; t=1730896212; c=relaxed/simple;
+	bh=7Xrf1lWUc4e4FhfMkIHCC2N/sURic1yJNu7rnDUHGek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrVVrSLuOpnCj8oDcXgVyc/7mh4gtxMXFHOBPK0OOMvrBlHwmGtlO+T3DwEvn61OWTGVgxZkXi+UEkdJM/XUJJ+EGkbEbDLkkg6m3g6Lt0kkX3rGE9UemPXiXOgviELnF4mSSJGFSalE1/fjOCFBqFtIZhcqCkWqIb/RVGo/kuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oQit5WS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C5BC4CECD;
-	Wed,  6 Nov 2024 12:20:46 +0000 (UTC)
+	 MIME-Version; b=hVMP4U2kCtHMf9DLSEtAPsTzKhA/D2AwdZuPgsT3CQMksxUq3iQv0afrKRv0mm2NkcTYcLbZ8awZQAqAaGemFg02s+sO47nu0dkZe0wfQHm6Cd/Z+ow3YKn9biJ7x/CoXKZase4vCqv0S6Zh5/ZP8E77TaHSGgl+cBh2mQi3vac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTyMrd+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8C7C4CED3;
+	Wed,  6 Nov 2024 12:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895647;
-	bh=3MT2PdnG7+R7Imk7mb9KeQR8WnDIrDV057CC71b7tBc=;
+	s=korg; t=1730896212;
+	bh=7Xrf1lWUc4e4FhfMkIHCC2N/sURic1yJNu7rnDUHGek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oQit5WSYTcyK7o0dKeu3fXmvnjV1DedrUmxG7IKEwfSRnd4iW3UuNO/3qrqUNKho
-	 Mrny/at1Lu5WRTBQvE56vDCRXfTaZ6w1FYCsR2Kbkkvk/2nCv8a2OynnNrUstmSEjZ
-	 QwNsYuwWX/Xrcs37aHNrwLBsXnNcPU/xhHyowRyQ=
+	b=TTyMrd+wNOjIso59J7r72d+KQ4ZJQS0rNuqqwwduay8XmPHPuWyIO/2gkzxofebfT
+	 2Ikqh+uhSjAxw3rd5+TGSiTNv4OI8QQ63g0WThnDCr2O6QPNvJ1+XssEK2jT9jTSA0
+	 64KK+bqeu6itjvvkG4mUqWdd9YgTrzKSDaKA2k00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 252/350] Bluetooth: RFCOMM: FIX possible deadlock in rfcomm_sk_state_change
-Date: Wed,  6 Nov 2024 13:03:00 +0100
-Message-ID: <20241106120327.141751975@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Julien Stephan <jstephan@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 128/245] dt-bindings: iio: adc: ad7380: fix ad7380-4 reference supply
+Date: Wed,  6 Nov 2024 13:03:01 +0100
+Message-ID: <20241106120322.374488062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Julien Stephan <jstephan@baylibre.com>
 
-[ Upstream commit 08d1914293dae38350b8088980e59fbc699a72fe ]
+commit fbe5956e8809f04e9121923db0b6d1b94f2b93ba upstream.
 
-rfcomm_sk_state_change attempts to use sock_lock so it must never be
-called with it locked but rfcomm_sock_ioctl always attempt to lock it
-causing the following trace:
+ad7380-4 is the only device from ad738x family that doesn't have an
+internal reference. Moreover its external reference is called REFIN in
+the datasheet while all other use REFIO as an optional external
+reference. If refio-supply is omitted the internal reference is
+used.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.8.0-syzkaller-08951-gfe46a7dd189e #0 Not tainted
-------------------------------------------------------
-syz-executor386/5093 is trying to acquire lock:
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1671 [inline]
-ffff88807c396258 (sk_lock-AF_BLUETOOTH-BTPROTO_RFCOMM){+.+.}-{0:0}, at: rfcomm_sk_state_change+0x5b/0x310 net/bluetooth/rfcomm/sock.c:73
+Fix the binding by adding refin-supply and makes it required for
+ad7380-4 only.
 
-but task is already holding lock:
-ffff88807badfd28 (&d->lock){+.+.}-{3:3}, at: __rfcomm_dlc_close+0x226/0x6a0 net/bluetooth/rfcomm/core.c:491
-
-Reported-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Tested-by: syzbot+d7ce59b06b3eb14fd218@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7ce59b06b3eb14fd218
-Fixes: 3241ad820dbb ("[Bluetooth] Add timestamp support to L2CAP, RFCOMM and SCO")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1a291cc8ee17 ("dt-bindings: iio: adc: ad7380: add support for ad738x-4 4 channels variants")
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://patch.msgid.link/20241022-ad7380-fix-supplies-v3-1-f0cefe1b7fa6@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 2 --
- 1 file changed, 2 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml |   21 ++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 78830efe89d73..8f53cc0d9682a 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -872,9 +872,7 @@ static int rfcomm_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+@@ -54,6 +54,10 @@ properties:
+       A 2.5V to 3.3V supply for the external reference voltage. When omitted,
+       the internal 2.5V reference is used.
  
- 	if (err == -ENOIOCTLCMD) {
- #ifdef CONFIG_BT_RFCOMM_TTY
--		lock_sock(sk);
- 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
--		release_sock(sk);
- #else
- 		err = -EOPNOTSUPP;
- #endif
--- 
-2.43.0
-
++  refin-supply:
++    description:
++      A 2.5V to 3.3V supply for external reference voltage, for ad7380-4 only.
++
+   aina-supply:
+     description:
+       The common mode voltage supply for the AINA- pin on pseudo-differential
+@@ -122,6 +126,23 @@ allOf:
+         ainc-supply: false
+         aind-supply: false
+ 
++  # ad7380-4 uses refin-supply as external reference.
++  # All other chips from ad738x family use refio as optional external reference.
++  # When refio-supply is omitted, internal reference is used.
++  - if:
++      properties:
++        compatible:
++          enum:
++            - adi,ad7380-4
++    then:
++      properties:
++        refio-supply: false
++      required:
++        - refin-supply
++    else:
++      properties:
++        refin-supply: false
++
+ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/irq.h>
 
 
 
