@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DBC9BE960
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448D49BEBFE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089ED28539A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760691C237FE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DE01DF974;
-	Wed,  6 Nov 2024 12:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8353E1F1300;
+	Wed,  6 Nov 2024 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDHyK5LG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFAmc989"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8CF1DF969;
-	Wed,  6 Nov 2024 12:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4051D1E0B7C;
+	Wed,  6 Nov 2024 12:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896405; cv=none; b=FmM5vDFd9+LrVEKLjV9SUXsGEd4goIWXXgs3zVeGedBP7djkJmQ1KZBuEtK6gZbWXm6Nl+SDjxHZdNhZK/qC1VE8DMvXfNjIBjqQbDcFhtb3tfMhvgSj0zlwfQ8iaL4TJwNjrhR7YaJ4XliqKgysGAkXexmlaiI1AUa76vVJ0xo=
+	t=1730897444; cv=none; b=Jp+INHJojY2je26y3PJkb7Ve3x1Szh+k+6K+W9y3qYnm8TBWpe4DU8Gu22ecT53dfzfc1BvhHn0b8H61N6SxsJVbceHHLCPuXFdmbID2VOH6Os1SA4mjzzNIseFfUBAYFrxq4LGz5woKOOlEpANz0xEap0CBY1qw/QhFGEy9rGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896405; c=relaxed/simple;
-	bh=GmnFEJ2x1/lk4ThH3O6tXAi3lZf3ptwtp3iaijJT/D8=;
+	s=arc-20240116; t=1730897444; c=relaxed/simple;
+	bh=LvjJwXzF5fo+ZZqBCCeZB0DidVc+viR77YRPcZznd+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhUoTBhxOGW/l9+zXVe/4Uqo2+zjZfI2bW2bxsg5/0vBNhVSEykIZjvZb/zdpADhK35S4JiOBjQGa9iyFNObaL5VEMnLxo1HlM7dizWtjH3UJJQXdQZWCiUqn/E6P33dEloI3bViM6K38kX+7fSTuI2B00yQkYkx1tiasa66gYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDHyK5LG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9796C4CECD;
-	Wed,  6 Nov 2024 12:33:24 +0000 (UTC)
+	 MIME-Version; b=jsGGwDu6XXSRAE3m1EYTPcMMDlWvQoCx5dcLvPxUp0wkYvUvqc63iHSMhdeDOymSGwht7kFiiPObNUkUri0M6kFIUQ+FucXZcFFwwyP/zf0np8VOKWFHcL+y4gwEd2pXOjec60Bn29wfLDf4GPBOUVL4u8uqslJvp5iT9PdPtds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFAmc989; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97B9C4CECD;
+	Wed,  6 Nov 2024 12:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896405;
-	bh=GmnFEJ2x1/lk4ThH3O6tXAi3lZf3ptwtp3iaijJT/D8=;
+	s=korg; t=1730897444;
+	bh=LvjJwXzF5fo+ZZqBCCeZB0DidVc+viR77YRPcZznd+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDHyK5LGlqUesYUI4e7+SReq+XWeL1m4YZYfp8FjtOna18jmAwzGLvPOM63RANso8
-	 mrwqKv1DmlNIDUUcEbz1FnJ2kYhx7jixtTEK259SesLDEGsQL+NySSDSiP0YTTL1Ha
-	 4pyc8w2A4xMv4aSR5caSrQkr+zgmJeGdz15W1fX0=
+	b=pFAmc989W4bs+vp1A9WBP+mzh3uEBsB0DqshqpBok8gMCj7OBXzAt04OqK08K2CyB
+	 br/xX4EWxf+V5A0Pr7l4DJqYj5jX1mk+Nr+o7aY/FN5NAsQLI5Anmp5hRPX0PFsgA6
+	 a+5Xp5gKG+5OoF8uPS1Fc8++6Xc659vR7uDCpEik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	lei lu <llfamsec@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 190/245] drm/tests: helpers: Add helper for drm_display_mode_from_cea_vic()
+Subject: [PATCH 6.6 055/151] ntfs3: Add bounds checking to mi_enum_attr()
 Date: Wed,  6 Nov 2024 13:04:03 +0100
-Message-ID: <20241106120323.922581270@linuxfoundation.org>
+Message-ID: <20241106120310.346886356@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: lei lu <llfamsec@gmail.com>
 
-[ Upstream commit caa714f86699bcfb01aa2d698db12d91af7d0d81 ]
+[ Upstream commit 556bdf27c2dd5c74a9caacbe524b943a6cd42d99 ]
 
-As Maxime suggested, add a new helper
-drm_kunit_display_mode_from_cea_vic(), it can replace the direct call
-of drm_display_mode_from_cea_vic(), and it will help solving
-the `mode` memory leaks.
+Added bounds checking to make sure that every attr don't stray beyond
+valid memory region.
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-2-ruanjinjie@huawei.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: 926163342a2e ("drm/connector: hdmi: Fix memory leak in drm_display_mode_from_cea_vic()")
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 42 +++++++++++++++++++++++
- include/drm/drm_kunit_helpers.h           |  4 +++
- 2 files changed, 46 insertions(+)
+ fs/ntfs3/record.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index aa62719dab0e4..04a6b8cc62ac6 100644
---- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
-+++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -3,6 +3,7 @@
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_drv.h>
-+#include <drm/drm_edid.h>
- #include <drm/drm_fourcc.h>
- #include <drm/drm_kunit_helpers.h>
- #include <drm/drm_managed.h>
-@@ -311,6 +312,47 @@ drm_kunit_helper_create_crtc(struct kunit *test,
- }
- EXPORT_SYMBOL_GPL(drm_kunit_helper_create_crtc);
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 6c76503edc200..2a375247b3c09 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -223,28 +223,19 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 		prev_type = 0;
+ 		attr = Add2Ptr(rec, off);
+ 	} else {
+-		/* Check if input attr inside record. */
++		/*
++		 * We don't need to check previous attr here. There is
++		 * a bounds checking in the previous round.
++		 */
+ 		off = PtrOffset(rec, attr);
+-		if (off >= used)
+-			return NULL;
  
-+static void kunit_action_drm_mode_destroy(void *ptr)
-+{
-+	struct drm_display_mode *mode = ptr;
-+
-+	drm_mode_destroy(NULL, mode);
-+}
-+
-+/**
-+ * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC
-+					   for a KUnit test
-+ * @test: The test context object
-+ * @dev: DRM device
-+ * @video_code: CEA VIC of the mode
-+ *
-+ * Creates a new mode matching the specified CEA VIC for a KUnit test.
-+ *
-+ * Resources will be cleaned up automatically.
-+ *
-+ * Returns: A new drm_display_mode on success or NULL on failure
-+ */
-+struct drm_display_mode *
-+drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
-+				    u8 video_code)
-+{
-+	struct drm_display_mode *mode;
-+	int ret;
-+
-+	mode = drm_display_mode_from_cea_vic(dev, video_code);
-+	if (!mode)
-+		return NULL;
-+
-+	ret = kunit_add_action_or_reset(test,
-+					kunit_action_drm_mode_destroy,
-+					mode);
-+	if (ret)
-+		return NULL;
-+
-+	return mode;
-+}
-+EXPORT_SYMBOL_GPL(drm_kunit_display_mode_from_cea_vic);
-+
- MODULE_AUTHOR("Maxime Ripard <maxime@cerno.tech>");
- MODULE_DESCRIPTION("KUnit test suite helper functions");
- MODULE_LICENSE("GPL");
-diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
-index e7cc17ee4934a..afdd46ef04f70 100644
---- a/include/drm/drm_kunit_helpers.h
-+++ b/include/drm/drm_kunit_helpers.h
-@@ -120,4 +120,8 @@ drm_kunit_helper_create_crtc(struct kunit *test,
- 			     const struct drm_crtc_funcs *funcs,
- 			     const struct drm_crtc_helper_funcs *helper_funcs);
+ 		asize = le32_to_cpu(attr->size);
+-		if (asize < SIZEOF_RESIDENT) {
+-			/* Impossible 'cause we should not return such attribute. */
+-			return NULL;
+-		}
+-
+-		/* Overflow check. */
+-		if (off + asize < off)
+-			return NULL;
  
-+struct drm_display_mode *
-+drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
-+				    u8 video_code);
+ 		prev_type = le32_to_cpu(attr->type);
+ 		attr = Add2Ptr(attr, asize);
+ 		off += asize;
+ 	}
+ 
+-	asize = le32_to_cpu(attr->size);
+-
+ 	/* Can we use the first field (attr->type). */
+ 	if (off + 8 > used) {
+ 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
+@@ -265,6 +256,12 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 	if (t32 < prev_type)
+ 		return NULL;
+ 
++	asize = le32_to_cpu(attr->size);
++	if (asize < SIZEOF_RESIDENT) {
++		/* Impossible 'cause we should not return such attribute. */
++		return NULL;
++	}
 +
- #endif // DRM_KUNIT_HELPERS_H_
+ 	/* Check overflow and boundary. */
+ 	if (off + asize < off || off + asize > used)
+ 		return NULL;
 -- 
 2.43.0
 
