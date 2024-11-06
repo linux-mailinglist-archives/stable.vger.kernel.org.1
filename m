@@ -1,155 +1,94 @@
-Return-Path: <stable+bounces-91664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BB79BF14C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807C59BF163
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76451F2117E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:13:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372FF1F2225D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB32202F71;
-	Wed,  6 Nov 2024 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0ED203703;
+	Wed,  6 Nov 2024 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CrnE/KrI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTiVV26D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8031F201244
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 15:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72622036E2;
+	Wed,  6 Nov 2024 15:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730905980; cv=none; b=D+bHoTpjw01/ErPIVZyL9P1SUN09W76ZhavQ5/Jyir1k8gjEBkRxprX0ncgajqw+0eyzGLctbgy0pB0wpL6e9tXexQ25rwWW1syNeZdwOzekNYrB9xliKlNOUSYc7ZDjxObgpuCXrR9PyNRpGoezTStgGqlyTwmYmdqAXur0ua8=
+	t=1730906239; cv=none; b=CFdOEOjhTBAEV1gRDmPT1GC+TEyb+wLwx2hNQAl8DTqj7YOPCNuvRZC/QnbgFtgRA22Y1WFwc7GN/A0kKBFHnXw16hL5pi3bjE1JzfTbRAk0y9sB7fKeBRAnuo8JzQD1Rc2BJPG4rjoCpU9pPdysHp98Mf6JjijXf00VyfuRqpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730905980; c=relaxed/simple;
-	bh=hJwSnsQSETNFXzvgqfuf9ElowDht9infCxazmOXBa7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V31lsCXnIrBnr0Zncl6kBNBN34CrOgOyxvSgOhfxooMsWyenfeqddWYz1D3g4JWr0nKEe6wzD4bRVuQTtbhfSc+fPEL/lYWCXmBnrY3pUkz/WZ3RZyQlcedr0heQk6pSzth8DbrPydld6cYYQ9IGSw7wkNNOXqzOiH90K+9y9fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CrnE/KrI; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-718998df806so3228641a34.1
-        for <stable@vger.kernel.org>; Wed, 06 Nov 2024 07:12:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730905977; x=1731510777; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/s8MXlCqJ3S3d997kkGlOblTEnbIpL85LZHtL6uGm0Q=;
-        b=CrnE/KrIw/TiKdKuaCwGjz/Y9hFOIr8AIKFgu/Cm4JOsTl2iR9N6OGlyzYMvDjj4pO
-         wBkcR4Q0mX1rtNH51CfKiDSGIzrOFgJhRPtOmMqLOy2UIw9K8t2WQnQ5yOikua/bGzBK
-         tM2p16jVHFQ9hrUGTpc8IAoD4GyU5ldQNDx1FcpecKt6pZ3kLdfsy+BaNqsalLYmb3X8
-         OUltoc4OT0VDsisz9qagoVAviWfKWQ2hLrutFnFQQoK47j+78dcPTyQy+FuJ5cnBrmPY
-         GbDpjr/GhZYizHdLLCYUfldp3xomvJLtyEmiz1fw+X39IC4LdOX/FDWV6+2sf4UhtscF
-         UmNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730905977; x=1731510777;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/s8MXlCqJ3S3d997kkGlOblTEnbIpL85LZHtL6uGm0Q=;
-        b=tO9yMnS+Ky23q9fmGuTiIhsE0MDgfciYivM/hxFs4U7W4eslUP0v2qzRQZBkRIYzuE
-         rWF4F2wPV0NFOshll76aYqEahzyJmYu6kgF5mSpZ0l/+JbgyBZqp/TjqO03Lu5VcN/9o
-         PG5SPAtohITQBeft78UXAybwz6esZeD6jDfiblpB6TWJPqTplLvHFD69j1/GEopqHerH
-         tOrVM4kDZBvvftyHnRZ4jSIGIvJ/Zmd9+MTmhO4E2Wnz/0mnQk4l0+BUZe0J0CBNh69V
-         54he2/nV8yLJfPQxBiq3fvth5K2D+LDzoQrfdLlKv2bjndnbzTbWIEZNLjMxyxMbgmMY
-         NBoA==
-X-Gm-Message-State: AOJu0YwPht3l4l5Fp4APkc6LT1NZK85v2H0mGQU9tYaMqZ9/Tf94Awpf
-	+sLbTuTs2Cqhm+aaYlKYGRL817RPYye+Usv+0Zlc86iazUYk8oHPz++tuXWM76hNlO+njmH2CJW
-	Itow/157hqcyCjFtshg1Qu5yCCexK1n2gh679CA==
-X-Google-Smtp-Source: AGHT+IFK0O+catjkeLn95aRPwfONLUcgvqi/oAotqb/lG7yJa9aCtKL/wkazFs/bxZ/MPrgGD7dqggXgWdBZY7x6muM=
-X-Received: by 2002:a05:6218:2814:b0:1b3:9b15:ac01 with SMTP id
- e5c5f4694b2df-1c5f98c5a83mr960654055d.3.1730905977486; Wed, 06 Nov 2024
- 07:12:57 -0800 (PST)
+	s=arc-20240116; t=1730906239; c=relaxed/simple;
+	bh=C83+cS1FmxFeYWO4grdtw/TcIlDardzYddF7qf2i1sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dW3XnyJdThfXzRUXK5Capmz0Lr1302JqHdkWLKxMfqCeiglrOuZQsb5NKYLhDsqEzEVlycqRtJyQ/bNCGk1AOSDiwI9RhCno2AcitZM//GYJtbSJ3i2n5qnVhOwKB51m4lG4MDFuUCnCjWW7l4N/zA/Ox2KvBsZQ2pLu9wcH5cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTiVV26D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63FFC4CEC6;
+	Wed,  6 Nov 2024 15:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730906238;
+	bh=C83+cS1FmxFeYWO4grdtw/TcIlDardzYddF7qf2i1sY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UTiVV26DrXcC45caqLHhEMxU5TiEn317mvWJ7DfW+oTrT2FnLowY9e3jA8GcfJRFY
+	 dHBi4abr2dT5J8VsZRZxUoxLEz9kUEhgGxqT1iZ/wa0egKJZqQWLbOnN4cd4/52rmz
+	 7AfwUOaPUEHCV680Mx8SLb5as7x23TWPtPRVJ6CKFoL+FPtKpYrZvQH5guDp++/pbW
+	 myMU1fCXa9jcSWsAFRofcUdf3AZB5Fp72tBmBRcNCfUQNrTWeKHfypt4LUwb0GE4tt
+	 gma2EpI3KYVpQ6brHGU6U1awxLQLyco5HCZUdAP2cfNuqbEOMzUNit7Abafso4hIWm
+	 tf8zNAieC2xrw==
+Date: Wed, 6 Nov 2024 15:17:14 +0000
+From: Simon Horman <horms@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	linux-can@vger.kernel.org, kernel@pengutronix.de,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH can v3] can: mcp251xfd: mcp251xfd_get_tef_len(): fix
+ length calculation
+Message-ID: <20241106151714.GR4507@kernel.org>
+References: <20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241106120319.234238499@linuxfoundation.org>
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 6 Nov 2024 15:12:46 +0000
-Message-ID: <CA+G9fYtjpUJFFV=FdqvW+5K+JL5ZYN4sPfVDjQovqzd7cib39w@mail.gmail.com>
-Subject: Re: [PATCH 6.11 000/245] 6.11.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
-	broonie@kernel.org, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
-	David Sterba <dsterba@suse.com>, Linux btrfs <linux-btrfs@vger.kernel.org>, 
-	linux-mips@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de>
 
-On Wed, 6 Nov 2024 at 12:26, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.11.7 release.
-> There are 245 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.7-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Mon, Nov 04, 2024 at 05:42:40PM +0100, Marc Kleine-Budde wrote:
+> Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+> broken TEF FIFO tail index erratum") introduced
+> mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+> from the Transmit Event FIFO (TEF).
+> 
+> As the TEF has no head pointer, the driver uses the TX FIFO's tail
+> pointer instead, assuming that send frames are completed. However the
+> check for the TEF being full was not correct. This leads to the driver
+> stop working if the TEF is full.
+> 
+> Fix the TEF full check by assuming that if, from the driver's point of
+> view, there are no free TX buffers in the chip and the TX FIFO is
+> empty, all messages must have been sent and the TEF must therefore be
+> full.
+> 
+> Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+> Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
+> Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+> Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-The mips gcc-12 allmodconfig build failed on the Linux stable-rc
-linux-6.11.y branch.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-
-First seen on Linux stable-rc v6.11.4-642-g0e21c72fc970
-
-  Good: v6.11.4-397-g4ccf0b49d5b6
-  Bad:   v6.11.4-642-g0e21c72fc970
-
-mips:
-  build:
-    * gcc-12-allmodconfig
-
-Build errors:
--------------
-ERROR: modpost: "__cmpxchg_small" [fs/btrfs/btrfs.ko] undefined!
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Links:
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.11.y/build/v6.11.4-642-g0e21c72fc970/testrun/25700362/suite/build/test/gcc-12-allmodconfig/log
-- https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTbq5WdzEalBxPXBBCuzLUA45b/
-- https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTbq5WdzEalBxPXBBCuzLUA45b/config
-
-Steps to reproduce:
-------------
-   - tuxmake --runtime podman --target-arch mips --toolchain gcc-12
---kconfig allmodconfig
-
-metadata:
-----
-  git describe: v6.11.4-642-g0e21c72fc970
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: 0e21c72fc970e320e6c1ca9d81d2dce4aab95b3b
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTbq5WdzEalBxPXBBCuzLUA45b/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTbq5WdzEalBxPXBBCuzLUA45b/
-  toolchain: gcc-12
-  config: allmodconfig
-  arch: mips
-
---
-Linaro LKFT
-https://lkft.linaro.org
+...
 
