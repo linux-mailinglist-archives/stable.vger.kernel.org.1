@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-91569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C0F9BEE93
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804239BEED3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CAC71F25889
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 440E1285AE3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF021DE2CF;
-	Wed,  6 Nov 2024 13:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94381DF75A;
+	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3qG3UiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY3v8p2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1FE1CC89D;
-	Wed,  6 Nov 2024 13:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D0646;
+	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899117; cv=none; b=IZH0ZoCsg+N/0EuSPi1HBbqOV50VX5NmmNJoGQd2zSUd7GKvrrnEImOMWOwj3kA6pjb17f8hd+l97wQHHa/dJoLorg2OshrzskzR5mAMnaZ4cNdUxtlHKieOZdocPeq6OPKkxismmXQLI4Sd2mnLQR640RXpnjxjJ5para0rpgQ=
+	t=1730899274; cv=none; b=hiMPvuBUBqd6AMiow4yu3gEKqVaaUr5kW9efpJ5Xqo+BVh8p3lnPFZpFvjR49J04zbO8LidWDHJCLcRHpGV99dbbi8G9X/UcS/3Zed0+oEAj2Qt6EB8qsnuxBu6NSEDJmv1pDiKnC1cVG2JdW9Q9LEFBQUj7xSp8h4NOBUybSA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899117; c=relaxed/simple;
-	bh=MIFU2VTLGB225Dl2DX6oKlGmBoLgXUZ2hD8WmJbxtwY=;
+	s=arc-20240116; t=1730899274; c=relaxed/simple;
+	bh=r9Tq24Ha+cyj7MWnF+UiXeWzNPClwbviADY0lpxZcuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pvqz4NLrVNoIxrhmSttj2/On4+PqvKj6FNaBpIiXu0UmvYcL91668ysaybus4rqlTvgt6VVRDlt3ufM9EomhV6plbfTMtbRPyQu2yncgymVncZ7pUzK0f0zlAxS+kzPUmex97QwaFfvELM9dHqsA8SxOojGVyolebZd7e0rxP+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3qG3UiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114A6C4CECD;
-	Wed,  6 Nov 2024 13:18:36 +0000 (UTC)
+	 MIME-Version; b=jtkPdulOO0w5vc6K0KMs5gCd3QS57n5ds9m+1Qt82dUyp5dm/vQ5wgs6cwb/aqrxJdapqJ3ZiIZM6cEwRnkjGvhvkfpfncVsfund+VzQLoMI0eJAlWnF+5ifmns66t2MJLgQdDvGa/kHh9qBN6NvrxRwRFxfVchDCcC5JYef2U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY3v8p2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5FBC4CECD;
+	Wed,  6 Nov 2024 13:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899117;
-	bh=MIFU2VTLGB225Dl2DX6oKlGmBoLgXUZ2hD8WmJbxtwY=;
+	s=korg; t=1730899274;
+	bh=r9Tq24Ha+cyj7MWnF+UiXeWzNPClwbviADY0lpxZcuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3qG3UiGqtqCzfby7Wps7kR+D3Rv8P1JasdbAOCAqmG8DkVgDChj2opUW9+3Y1/9U
-	 B1HxZTPGZmkOZ13u9DAz1GBnF9XBxLEs5P6wRReAMrk7BuapkSn1MqJFE7EqC/k/x9
-	 bpvfd/XBCaNjsxdZr0OpXqLYN74gK7Vg3SKL0ebA=
+	b=oY3v8p2p/Yx0ivu3EodPOHlR5kUPQTjBGCfxF94gxjN+74/OqwaLrTI9QCjWdh3mr
+	 GPK1onylmne4Ko3ZHOoKIH3hR4PkEUB4pcLUWfb0pf2XHxtqRueK/7IQFL1Cd+pzU0
+	 5r+8cIaLGgwU9TCjJ3gsv5xDzaQFd9PqCYTTLQZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 431/462] wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
+Subject: [PATCH 5.15 20/73] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
 Date: Wed,  6 Nov 2024 13:05:24 +0100
-Message-ID: <20241106120342.154634232@linuxfoundation.org>
+Message-ID: <20241106120300.565700130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 07a6e3b78a65f4b2796a8d0d4adb1a15a81edead ]
+[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
 
-1. The size of the response packet is not validated.
-2. The response buffer is not freed.
+There are code paths from which the function is called without holding
+the RCU read lock, resulting in a suspicious RCU usage warning [1].
 
-Resolve these issues by switching to iwl_mvm_send_cmd_status(),
-which handles both size validation and frees the buffer.
+Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
+the RCU read lock before calling
+l3mdev_master_upper_ifindex_by_index_rcu().
 
-Fixes: f130bb75d881 ("iwlwifi: add FW recovery flow")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.76c73185951e.Id3b6ca82ced2081f5ee4f33c997491d0ebda83f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[1]
+WARNING: suspicious RCU usage
+6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
+-----------------------------
+net/core/dev.c:876 RCU-list traversed in non-reader section!!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by ip/361:
+ #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
+Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ lockdep_rcu_suspicious.cold+0x4f/0xd6
+ dev_get_by_index_rcu+0x1d3/0x210
+ l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
+ ip_tunnel_bind_dev+0x72f/0xa00
+ ip_tunnel_newlink+0x368/0x7a0
+ ipgre_newlink+0x14c/0x170
+ __rtnl_newlink+0x1173/0x19c0
+ rtnl_newlink+0x6c/0xa0
+ rtnetlink_rcv_msg+0x3cc/0xf60
+ netlink_rcv_skb+0x171/0x450
+ netlink_unicast+0x539/0x7f0
+ netlink_sendmsg+0x8c1/0xd80
+ ____sys_sendmsg+0x8f9/0xc20
+ ___sys_sendmsg+0x197/0x1e0
+ __sys_sendmsg+0x122/0x1f0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ include/net/ip_tunnels.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 16bf070566e6c..287f9c551525c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1192,8 +1192,8 @@ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-+	u32 status = 0;
- 	int ret;
--	u32 resp;
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 0a0de98c0b7f2..d8b9942f1afd9 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -247,7 +247,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
+ 	memset(fl4, 0, sizeof(*fl4));
  
- 	struct iwl_fw_error_recovery_cmd recovery_cmd = {
- 		.flags = cpu_to_le32(flags),
-@@ -1201,7 +1201,6 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	};
- 	struct iwl_host_cmd host_cmd = {
- 		.id = WIDE_ID(SYSTEM_GROUP, FW_ERROR_RECOVERY_CMD),
--		.flags = CMD_WANT_SKB,
- 		.data = {&recovery_cmd, },
- 		.len = {sizeof(recovery_cmd), },
- 	};
-@@ -1221,7 +1220,7 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 		recovery_cmd.buf_size = cpu_to_le32(error_log_size);
+ 	if (oif) {
+-		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
++		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
+ 		/* Legacy VRF/l3mdev use case */
+ 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
  	}
- 
--	ret = iwl_mvm_send_cmd(mvm, &host_cmd);
-+	ret = iwl_mvm_send_cmd_status(mvm, &host_cmd, &status);
- 	kfree(mvm->error_recovery_buf);
- 	mvm->error_recovery_buf = NULL;
- 
-@@ -1232,11 +1231,10 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
--		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp) {
-+		if (status) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
--				resp);
-+				status);
- 
- 			ieee80211_iterate_interfaces(mvm->hw, 0,
- 						     iwl_mvm_disconnect_iterator,
 -- 
 2.43.0
 
