@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51A29BEBAA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7715C9BEC76
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E9B81F24E99
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01956B20F5E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6499F1E0B63;
-	Wed,  6 Nov 2024 12:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69031E0DBD;
+	Wed,  6 Nov 2024 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oiofwf2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNgeU1U+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA021E0B62;
-	Wed,  6 Nov 2024 12:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714041F4FBC;
+	Wed,  6 Nov 2024 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897209; cv=none; b=TvcI5CcG9Fov24glpBMTqpgUMfLZmJxcy06Yc7VP0ZLTXDRUVDy0x7fzoW0iGJSqIADMPrW1jqRuN3D8PmZvyAo81vBZz65ayeFvLLAwU/r2t+JkmNSM6JcC8sVKs/PKfnBDSYT395oeKgAEPr+jN4DIL93dv7sMLUXzY103WoE=
+	t=1730897732; cv=none; b=tPS1urz1xdV/FbgEb12VDFNcqFVdLxX8EFDtyEAXjGAm7YgWFOwI0pg0TTmriDZu9Q7KikCZvf6lWgRcs8FQfyZXWB3Jz+eBwPo02916PziCriwhcM3kDo2DMC92nfydJzy+b0BM/IXJVAigElA2m7GD6aNh0D/sfpPd9H5cc3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897209; c=relaxed/simple;
-	bh=qqoTILHFMLtTj69JNfzPH2WDwcFWEs8PzcJpHjzmViE=;
+	s=arc-20240116; t=1730897732; c=relaxed/simple;
+	bh=SuRbsDMMX8NpMK0YgUe7cm6E7YgQg6Zob0mfhkjhJfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1DjGHGhLceSgPkSzIG9/ra035knEqhF8jC32E20ke2GjbxPdxa8D/2WslnaFzDGqLGUv0k8Sh8gtJ/sTLdQdXp9ocAhuQO/rBXEi3QsuLMlFcpWp8Wun0i8p/WRCkymkmK/StjknaYLxEojoGN78IuVeAU2WGTp3caTR0tYX2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oiofwf2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8EFC4CECD;
-	Wed,  6 Nov 2024 12:46:48 +0000 (UTC)
+	 MIME-Version; b=MwON35tbz5kEoPLxl4I6r4R+n06tJFJhTADl01xIVSn5hZR6MwWVH4P/iTONcGbSMky3mlBw/HCSE3fTuKn9zmwh2nyzczc0R06zBhE3APjf9/VLJ8bpsUIB/ow091Qj6ZGEfhvVa67USi52AZXUD0dvQqUcD/DP0LJY1iiMmek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNgeU1U+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E995AC4CECD;
+	Wed,  6 Nov 2024 12:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897209;
-	bh=qqoTILHFMLtTj69JNfzPH2WDwcFWEs8PzcJpHjzmViE=;
+	s=korg; t=1730897732;
+	bh=SuRbsDMMX8NpMK0YgUe7cm6E7YgQg6Zob0mfhkjhJfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oiofwf2YKfD/6sJinPlinoirgsyEMHEd8JpBFW4o1EDkVWI2N3wIDqtLhF7ep/jjb
-	 OFwJJZWv6/8YFnUorrSESqtGhoEr530enzbhVluZgdfMp/zRm+65c1SeNqOabyU3bY
-	 jfzXa8oGI3gD25/BZrm638TpZeh/eldA+Wj8u25g=
+	b=lNgeU1U+0SkuXpFbu10k6ONzJZP9kTy6WUynQSejES5g5FE1wsz6ad/0aVjuetq9c
+	 2ftA7gppwGVSmEhbSUPl8GPeBIHmtM5pWfXGj/JlgFI0wPO306qCj0s9PrhCSuwFlm
+	 PtsRA5ANGU/KuYZ2a66NkZJS8CmPj6ZIQyMwxjDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/126] fs: create kiocb_{start,end}_write() helpers
+Subject: [PATCH 6.6 115/151] ALSA: hda/realtek: Limit internal Mic boost on Dell platform
 Date: Wed,  6 Nov 2024 13:05:03 +0100
-Message-ID: <20241106120308.816843697@linuxfoundation.org>
+Message-ID: <20241106120312.032143798@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit ed0360bbab72b829437b67ebb2f9cfac19f59dfe ]
+[ Upstream commit 78e7be018784934081afec77f96d49a2483f9188 ]
 
-aio, io_uring, cachefiles and overlayfs, all open code an ugly variant
-of file_{start,end}_write() to silence lockdep warnings.
+Dell want to limit internal Mic boost on all Dell platform.
 
-Create helpers for this lockdep dance so we can use the helpers in all
-the callers.
-
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Message-Id: <20230817141337.1025891-4-amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 1d60d74e8526 ("io_uring/rw: fix missing NOWAIT check for O_DIRECT start write")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/561fc5f5eff04b6cbd79ed173cd1c1db@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fs.h | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ sound/pci/hda/patch_realtek.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 33c4961309833..0d32634c5cf0d 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3029,6 +3029,42 @@ static inline void file_end_write(struct file *file)
- 	__sb_end_write(file_inode(file)->i_sb, SB_FREEZE_WRITE);
- }
- 
-+/**
-+ * kiocb_start_write - get write access to a superblock for async file io
-+ * @iocb: the io context we want to submit the write with
-+ *
-+ * This is a variant of sb_start_write() for async io submission.
-+ * Should be matched with a call to kiocb_end_write().
-+ */
-+static inline void kiocb_start_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	sb_start_write(inode->i_sb);
-+	/*
-+	 * Fool lockdep by telling it the lock got released so that it
-+	 * doesn't complain about the held lock when we return to userspace.
-+	 */
-+	__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
-+}
-+
-+/**
-+ * kiocb_end_write - drop write access to a superblock after async file io
-+ * @iocb: the io context we sumbitted the write with
-+ *
-+ * Should be matched with a call to kiocb_start_write().
-+ */
-+static inline void kiocb_end_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	/*
-+	 * Tell lockdep we inherited freeze protection from submission thread.
-+	 */
-+	__sb_writers_acquired(inode->i_sb, SB_FREEZE_WRITE);
-+	sb_end_write(inode->i_sb);
-+}
-+
- /*
-  * This is used for regular files where some users -- especially the
-  * currently executed binary in a process, previously handled via
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9be5a5c509f09..bf504744ae2a3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7234,6 +7234,7 @@ enum {
+ 	ALC286_FIXUP_SONY_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_PINCFG_NO_HP_TO_LINEOUT,
+ 	ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
++	ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 	ALC269_FIXUP_DELL2_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_DELL3_MIC_NO_PRESENCE,
+ 	ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+@@ -7268,6 +7269,7 @@ enum {
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
++	ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 	ALC255_FIXUP_DELL2_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_HEADSET_MODE,
+ 	ALC255_FIXUP_HEADSET_MODE_NO_HP_MIC,
+@@ -7760,6 +7762,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_HEADSET_MODE
+ 	},
++	[ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_limit_int_mic_boost,
++		.chained = true,
++		.chain_id = ALC269_FIXUP_DELL1_MIC_NO_PRESENCE
++	},
+ 	[ALC269_FIXUP_DELL2_MIC_NO_PRESENCE] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -8040,6 +8048,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC255_FIXUP_HEADSET_MODE
+ 	},
++	[ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc269_fixup_limit_int_mic_boost,
++		.chained = true,
++		.chain_id = ALC255_FIXUP_DELL1_MIC_NO_PRESENCE
++	},
+ 	[ALC255_FIXUP_DELL2_MIC_NO_PRESENCE] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -10482,6 +10496,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC269_FIXUP_DELL2_MIC_NO_PRESENCE, .name = "dell-headset-dock"},
+ 	{.id = ALC269_FIXUP_DELL3_MIC_NO_PRESENCE, .name = "dell-headset3"},
+ 	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE, .name = "dell-headset4"},
++	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET, .name = "dell-headset4-quiet"},
+ 	{.id = ALC283_FIXUP_CHROME_BOOK, .name = "alc283-dac-wcaps"},
+ 	{.id = ALC283_FIXUP_SENSE_COMBO_JACK, .name = "alc283-sense-combo"},
+ 	{.id = ALC292_FIXUP_TPT440_DOCK, .name = "tpt440-dock"},
+@@ -11033,16 +11048,16 @@ static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
+ 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
++	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
++	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+-	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB,
++	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
 -- 
 2.43.0
 
