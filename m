@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-89946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFF59BDBCA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:07:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BBA9BDBD1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E92501F24295
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA90A284ECC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31CD18F2DD;
-	Wed,  6 Nov 2024 02:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF75F18F2DD;
+	Wed,  6 Nov 2024 02:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAJFT7ry"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="shU7kjBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4A18EFD4;
-	Wed,  6 Nov 2024 02:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D4418C903;
+	Wed,  6 Nov 2024 02:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858854; cv=none; b=F+K4fpDaaisdKiCLT1F0kj7ja9+e5yJArebKPPr9bb4lvWJ1cGpQX6tDWIyKfZ3AKN/HEPAm6/1bOJ2OWp3HFPnbCI1ywwpJeKHMlhjR8kmp+loH1lQytxy25hxgtlPm3S5nE2YIZt0io9zVSMHZF5IoFnLQIa+5X9g9Xj7rtQc=
+	t=1730858919; cv=none; b=V4UPcfD1wSIf8Lzu+h/zUVdO1xiK6advLwoYtC6vXYQT002E4Hn7s6lueu1Cpw+0AqIP8LXC5ZTihVEWOchJVztOlIqq35n3PIXvqSkznkuh0lhshq4NdEzsqx7oi5nGnwt1mN+I5lvEWMtUC/fpQLPXsZFPOlZIjrM1BaEwXAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858854; c=relaxed/simple;
+	s=arc-20240116; t=1730858919; c=relaxed/simple;
 	bh=16WZozry3IWIsN9qHKE/zH8myu5XP6InRSKDu/UUqTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D2xFZ2Z+D7+SwUq8ns0ZOq0J871WLAiW+r0FNtYhsy0gq+Hy/P26BJSH6NimAmLdQ2Jek5nGfovkMDFGeSpBSMbtdIoqTqo9eefz84xFT3FM5wlyPFI4ngoT2STS2Xvwhx4lXBR91rNy8tVSH/oV7fXi/9U8/VuXT9cTVVwCMzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAJFT7ry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7D5C4CECF;
-	Wed,  6 Nov 2024 02:07:33 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pDAcNjElW/+c3yCKNX5fzKHp+vezQAVZVi1cLmV3+8vy9hhdqnBbP86dWNAv2U6i2a+kIpjeZ0UUl6axU6X+6rb0FyFWbTO6EGO5czdQvO1jkaOre0eghEmoyJBgsAluwhWNlneEW2Kg0wjTi5EWW/9S9sMLCSBSp7e9FCFX+zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=shU7kjBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E546C4CECF;
+	Wed,  6 Nov 2024 02:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858854;
+	s=k20201202; t=1730858919;
 	bh=16WZozry3IWIsN9qHKE/zH8myu5XP6InRSKDu/UUqTg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=VAJFT7ryTJ0n5D9qhGRyyBLWHEbEXACNi2zKXDXhR5fIoPhn9uP/1hy4p/6Yo1oGh
-	 p6Q0vaUCbmFSBq31OwCuXdFhmr2HDHPzu7iUtahW9iygYPLNWQksBCpvNB0LxYtDbD
-	 fwXYa6rglLaMegYa1fPhZtbHqqmR4L3/gr77UWvwvKilmq3Gnhvhoyuw8w/v2YeP+e
-	 MLqf8zRKnm6glEjPK77rVudRaxsLHZbx+TWp56Rh+JBPnT7jO10Ms8RD0VeCUneugf
-	 1SLjhkpKa+PvNyB0ENJPAMqK4D345jXlnB16K5jddukLWtf0adx7wduY9eitFxw/jh
-	 W1KK+FYS6dDeg==
+	b=shU7kjBvYA2U/QCdhlxDzXSurrYcAj00kcqUk8tUAYRZX1FY34mE7xS6lTQcyVST1
+	 YLhxwCSrCDxkS1b8KKPOhHqTfk4Y8yIkzVPj1CNnqtW7Yz4D0L/8QGTCMD25U7xBuZ
+	 aVjwk6oVrIpp/a/AubR4vbFDSduelfz+c/r8X/buUXrR4Fhq7AgbSkUKCcpQKGZBxF
+	 Fb/ZaeUre0qFvqQgjzFpvleo97Um0tTthMxPlN6Tr9qClzHZigmJQ+E53TAykvwCuR
+	 /x1vRSgGfCgYG6v2MHKPDDBlzygCS5vFyOxBjICB2sePBLyswUZZH61+0GtzNLMOp8
+	 tV81XoI7ab9IQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	alexghiti@rivosinc.com
@@ -49,8 +49,8 @@ Cc: Jason Montleon <jmontleo@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
 Subject: FAILED: Patch "riscv: Do not use fortify in early code" failed to apply to v6.11-stable tree
-Date: Tue,  5 Nov 2024 21:07:30 -0500
-Message-ID: <20241106020731.164192-1-sashal@kernel.org>
+Date: Tue,  5 Nov 2024 21:08:35 -0500
+Message-ID: <20241106020836.164319-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
