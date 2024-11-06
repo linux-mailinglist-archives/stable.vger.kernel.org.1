@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A199BE938
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910D19BE7EF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D1BEB21701
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C306F1C2306D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923461DF726;
-	Wed,  6 Nov 2024 12:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ED71DF737;
+	Wed,  6 Nov 2024 12:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7z+6JVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecmcsb7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509AD198E96;
-	Wed,  6 Nov 2024 12:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56A91DF25E;
+	Wed,  6 Nov 2024 12:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896304; cv=none; b=u+zSlKLBTRHWI9Uvgq7uz/wAUelFFgCy8NRoLxL7h8WnpaxknfDRYqAFDEDlBOZvIneoxxuSXhlYPPCdzt9rUI5tmRCgi/icjYyfN5B+20KqqhYgaNf7LvOblUxJjZwmpFoofsI8Lj5qtu4NzYC1WIqcTbWwISGziSBszP+6DDo=
+	t=1730895546; cv=none; b=dAhUBiF6cjucK/4vHxumEmKKJdiHH+L4NskwLkj5l3+f6aZMJv7MHxBcVZBQChpSZZ/oqbq+qbJQBTSlKurca2DY6wqCO6fuMpYzLyJXty52NW2iIiN/uks6w05qp4Ojk+dnQMFfHLC3RLPEpom5j/oqg8VjbKyeKs1TqcdFhXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896304; c=relaxed/simple;
-	bh=oTHhREzhJF2B3IEdlczyzRG8Suwr6xdpGcObvjdnCY4=;
+	s=arc-20240116; t=1730895546; c=relaxed/simple;
+	bh=L0WeL7+SHLAN7rNH4ZWvxm7kbd53f2+9L+fdkd4ffQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDmx8ikIAFU63pqc1rXA0YOBaLshr4ijv/Vz60p4mUrcUImXFhZ4/AYRAZhC1Z2+sMf3dCpByNH9uiK16pkjicVlsnYVRsYgENkUxw40bCOIu7LyfiZTS6eZK3kn77Rq2q8Vp1dui171ZKDAfjPOe4w48wf3yG9JVTM396JQgS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7z+6JVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F39AC4CECD;
-	Wed,  6 Nov 2024 12:31:43 +0000 (UTC)
+	 MIME-Version; b=YRiqFGE7b213wJpmJFnHp04JbOdXURVmf1KvnPqBcmFn6jAsXkXMmPTHeiJR+qtb5goXTM+JKrdw3sWoFKJ7G+7Rd+S/cAvBXWFUEy1AjoJXa2acB7pXSrIq5oNGseNR9cAZ5z9XVjZf7Pag7EeoMl3c63hrIDwdCtB5zCOZkgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecmcsb7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF8DC4CECD;
+	Wed,  6 Nov 2024 12:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896304;
-	bh=oTHhREzhJF2B3IEdlczyzRG8Suwr6xdpGcObvjdnCY4=;
+	s=korg; t=1730895546;
+	bh=L0WeL7+SHLAN7rNH4ZWvxm7kbd53f2+9L+fdkd4ffQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7z+6JVE3OAGCZwD9HZp0CZIfoBPfmBlJPnsM8CG7u/6EZjXfLBjmrsRwQyLpFRUK
-	 ehQD35xXYu32S1W/Y9x2QfQBVM9a6f1kHkRtapzwWdrlwgNi57OqmpmK6fdM8u6qIP
-	 J2UPu348PsdHrpIlb5ICAK0ZSLVjNrRAcweU29Sw=
+	b=ecmcsb7yh2woxtCmWHdnwu+ZVkhLM1FsXnU3jbeLQgM3fn6s71oI5fXbaLvnoflwA
+	 qYoB6Bst0k/aXUV7zsdJ5yGn4D6AnwfBIieeq5bjJdcF+8pcQj5K7VrBfJFKRJWZwU
+	 Ipm8QIR7jv0+QJA6eHwAgEJZ6/RK1AGZssHB2CLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.11 122/245] wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 247/350] fbdev: sisfb: Fix strbuf array overflow
 Date: Wed,  6 Nov 2024 13:02:55 +0100
-Message-ID: <20241106120322.225752384@linuxfoundation.org>
+Message-ID: <20241106120327.029504458@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-commit 393b6bc174b0dd21bb2a36c13b36e62fc3474a23 upstream.
+[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
 
-Avoid potentially crashing in the driver because of uninitialized private data
+The values of the variables xres and yres are placed in strbuf.
+These variables are obtained from strbuf1.
+The strbuf1 array contains digit characters
+and a space if the array contains non-digit characters.
+Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
+more than 16 bytes will be written to strbuf.
+It is suggested to increase the size of the strbuf array to 24.
 
-Fixes: 5b3dc42b1b0d ("mac80211: add support for driver tx power reporting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241002095630.22431-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/sis/sis_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3138,7 +3138,8 @@ static int ieee80211_get_tx_power(struct
- 	struct ieee80211_local *local = wiphy_priv(wiphy);
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index b7f9da690db27..38a772582bc3e 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -197,7 +197,7 @@ static void sisfb_search_mode(char *name, bool quiet)
+ {
+ 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
+ 	int i = 0;
+-	char strbuf[16], strbuf1[20];
++	char strbuf[24], strbuf1[20];
+ 	char *nameptr = name;
  
--	if (local->ops->get_txpower)
-+	if (local->ops->get_txpower &&
-+	    (sdata->flags & IEEE80211_SDATA_IN_DRIVER))
- 		return drv_get_txpower(local, sdata, dbm);
- 
- 	if (local->emulate_chanctx)
+ 	/* We don't know the hardware specs yet and there is no ivideo */
+-- 
+2.43.0
+
 
 
 
