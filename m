@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-91084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5F19BEC5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9519BEBC1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027C21F2310A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF9611C23776
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9521FBCAF;
-	Wed,  6 Nov 2024 12:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAC81F942A;
+	Wed,  6 Nov 2024 12:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bgb83CL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICF5mkSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAF61FBCAD;
-	Wed,  6 Nov 2024 12:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA62A1DFE10;
+	Wed,  6 Nov 2024 12:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897694; cv=none; b=tzNnZpBqT2dFH56hll7HcaPGoxgA5GezcaHL1BJZcU+6YWeF4fFbg5poemUmsc/5n9XAL8B7MnqC6ou2bxZl7kNW7mp3Z1NmW0AxK6a6AWwmVn7KC89bljifcSyGemMUGDQhgWMiqAq2soYHZ6oJvSa9WZ3KhapCalxupJ2SKKo=
+	t=1730897274; cv=none; b=fIIWoGlQD9IyljU9L8pPBtPkDdU5NQhO/VX2Me931RNyQt36nmtMrlrgEDkYXinOX1xcq9r5fJ1pPY/hTu2wmsUv7sT+yxPMLaOVtg9+uIcp+jHPYT1LoGBJF1g43IQcd8jIy1F4snfwRsnKnAi1UVn3oTYJHtnbXGRdqtM6exM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897694; c=relaxed/simple;
-	bh=a57WO3XFVYipOE1xMoxmC7np56AjB+c03WJ+zoPp8V8=;
+	s=arc-20240116; t=1730897274; c=relaxed/simple;
+	bh=U8NymE6IUkCQbiQnuUWQHf8RpopgEwbjKDLCSHcUVgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtkjVe3yCRciGmlYJcN9vn5FfgyU6EkMG5EN3s/Rfixoi2tdTGA6lVt5mb1kT1rdeJikKhS1seRZEwPeOb2wyaB0xIIHXKTFIDgGNUp4762CXVLfQDNcf33bGTkq+FhbXAJNOcd+KtqPIfS7TDUk4x6ct/+H+GbbI3BsnYkZJrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bgb83CL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C880C4CECD;
-	Wed,  6 Nov 2024 12:54:53 +0000 (UTC)
+	 MIME-Version; b=L0tnyM/6YTlLADTxNRzTWHrTeF14IlnD2msvWbd4vxpJXMkriZ+yAOPgM/0VSfAc/s9RPJdpy9dn4PxZdtJo/TUQylxvO5HPla8jgeL/DxuwlH0kQTqGRmKL12N2DS82M4LveUuu9Q2mN4D7ZsX1kNb/kNGgXEeSSFBinieYc0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICF5mkSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9181C4CECD;
+	Wed,  6 Nov 2024 12:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897693;
-	bh=a57WO3XFVYipOE1xMoxmC7np56AjB+c03WJ+zoPp8V8=;
+	s=korg; t=1730897274;
+	bh=U8NymE6IUkCQbiQnuUWQHf8RpopgEwbjKDLCSHcUVgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bgb83CL1vPtQFaWlnyPfOuxDwfX3lZYqravCl6axzTYQ2Gmne+TDuSddRtcMeedtP
-	 /0Kcn0+O1+yUFRWEP/Pumq1dFkh1FhjAcaYx/1ZUR0U9D6LXyqTK+51hMUmhWUxe99
-	 nPg7TKwmcp4CGdg356gVUrekWdkt/0cTduzbfVfg=
+	b=ICF5mkSfy1ATt0tQLV4dKXllIR/Gf7IA+BTXI0Vdv4XEsQU6NItL0E8Wqimgile09
+	 UckcoSyW8fhi0+gJ9KovktuQVzewrvEA+e5K/QxiBivdouvUjC6Hh6obtE9oOh24kS
+	 4vpaMuL8sWWjiY4Z6FbeWNzPkNijnN3ZgBbCUb4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 139/151] io_uring: always lock __io_cqring_overflow_flush
+	"Huang, Ying" <ying.huang@intel.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 126/126] migrate_pages_batch: fix statistics for longterm pin retry
 Date: Wed,  6 Nov 2024 13:05:27 +0100
-Message-ID: <20241106120312.678485996@linuxfoundation.org>
+Message-ID: <20241106120309.460117907@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Huang Ying <ying.huang@intel.com>
 
-commit 8d09a88ef9d3cb7d21d45c39b7b7c31298d23998 upstream.
+commit 851ae6424697d1c4f085cb878c88168923ebcad1 upstream.
 
-Conditional locking is never great, in case of
-__io_cqring_overflow_flush(), which is a slow path, it's not justified.
-Don't handle IOPOLL separately, always grab uring_lock for overflow
-flushing.
+In commit fd4a7ac32918 ("mm: migrate: try again if THP split is failed due
+to page refcnt"), if the THP splitting fails due to page reference count,
+we will retry to improve migration successful rate.  But the failed
+splitting is counted as migration failure and migration retry, which will
+cause duplicated failure counting.  So, in this patch, this is fixed via
+undoing the failure counting if we decide to retry.  The patch is tested
+via failure injection.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/162947df299aa12693ac4b305dacedab32ec7976.1712708261.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20230416235929.1040194-1-ying.huang@intel.com
+Fixes: fd4a7ac32918 ("mm: migrate: try again if THP split is failed due to page refcnt")
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ mm/migrate.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -667,6 +667,8 @@ static void io_cqring_overflow_kill(stru
- 	struct io_overflow_cqe *ocqe;
- 	LIST_HEAD(list);
- 
-+	lockdep_assert_held(&ctx->uring_lock);
-+
- 	spin_lock(&ctx->completion_lock);
- 	list_splice_init(&ctx->cq_overflow_list, &list);
- 	clear_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq);
-@@ -683,6 +685,8 @@ static void __io_cqring_overflow_flush(s
- {
- 	size_t cqe_size = sizeof(struct io_uring_cqe);
- 
-+	lockdep_assert_held(&ctx->uring_lock);
-+
- 	if (__io_cqring_events(ctx) == ctx->cq_entries)
- 		return;
- 
-@@ -727,12 +731,9 @@ static void __io_cqring_overflow_flush(s
- 
- static void io_cqring_do_overflow_flush(struct io_ring_ctx *ctx)
- {
--	/* iopoll syncs against uring_lock, not completion_lock */
--	if (ctx->flags & IORING_SETUP_IOPOLL)
--		mutex_lock(&ctx->uring_lock);
-+	mutex_lock(&ctx->uring_lock);
- 	__io_cqring_overflow_flush(ctx);
--	if (ctx->flags & IORING_SETUP_IOPOLL)
--		mutex_unlock(&ctx->uring_lock);
-+	mutex_unlock(&ctx->uring_lock);
- }
- 
- static void io_cqring_overflow_flush(struct io_ring_ctx *ctx)
-@@ -1611,6 +1612,8 @@ static int io_iopoll_check(struct io_rin
- 	unsigned int nr_events = 0;
- 	unsigned long check_cq;
- 
-+	lockdep_assert_held(&ctx->uring_lock);
-+
- 	if (!io_allowed_run_tw(ctx))
- 		return -EEXIST;
- 
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1700,6 +1700,9 @@ split_folio_migration:
+ 							large_retry++;
+ 							thp_retry += is_thp;
+ 							nr_retry_pages += nr_pages;
++							/* Undo duplicated failure counting. */
++							nr_large_failed--;
++							stats->nr_thp_failed -= is_thp;
+ 							break;
+ 						}
+ 					}
 
 
 
