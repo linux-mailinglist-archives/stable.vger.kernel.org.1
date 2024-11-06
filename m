@@ -1,57 +1,71 @@
-Return-Path: <stable+bounces-90963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD0B9BEBD7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8531F9BEB57
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4E451F25065
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AB81C213A6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3081F9AB4;
-	Wed,  6 Nov 2024 12:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009141F7556;
+	Wed,  6 Nov 2024 12:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8PiRf8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCbiJ9zV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B9C1F943D;
-	Wed,  6 Nov 2024 12:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08B71E6DC1;
+	Wed,  6 Nov 2024 12:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897335; cv=none; b=Xpsht2K3s/zi3w4KrFvlMvaa28aRKjjo3CT018AmZS5ATOYJOV3FkC80AaIC+8dYQfNBG8IdJVi8DL6fwwsUrIe3AB+L1+2QVW3sodYm0R87taEgFU5WZXLKP+GjJuJOLgM5V2YTFoT/VBD8q5AHD73zvRbm+ksJ0UCp7ukXh8g=
+	t=1730897010; cv=none; b=BDVdXWY6+ZhNJxQ6mec9TLL5wzvNjvvDfCDJ8AQ9hvnLP/lcB9qwi3zj8kn/9B7ZcKnW1V+rW5ugjCQnrp8rwfvU2sI3rbqabGi279YtiF51Rdy/RdnTnCWUk7Y/Mepp834tN7y6BzGuuwGPhebU9nDPWH1lF/ovTX08OAxgAow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897335; c=relaxed/simple;
-	bh=SSxak3SB3+VAYBaq3bQoahgUS7tqZ3S7ACI8wyCxeIE=;
+	s=arc-20240116; t=1730897010; c=relaxed/simple;
+	bh=zSYQNoqzLwxyjUE1DGxOubRCKyV4+IrIRcqfqUX/o4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/tOHttMbhdrwPbOA99a/YCFcsqdt+FwbyFFKrWg0ub12n3AMIeyYpZspc0WU1TfVBhamSAtlsiqh8T/bvGlP2k/RbpE3hHcV8/A3RcXM7wBiOpqFIfLCa+/AV5+Mtr15lcWL35JT2rxwAxPlA6aUPvO4NGqRB+peeajow5ml6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8PiRf8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D39C4CECD;
-	Wed,  6 Nov 2024 12:48:54 +0000 (UTC)
+	 MIME-Version; b=gcBQGOfIfx+yUG6s+Qj5ml1B1BskCe63AoHnXQeHIq0oee282ZVsHASTNS4397Vnh55dlOAeCZv10xtt1DIMbL2sNQE0UV3o3VBDqz3nKwbjC+rJnQz4ib8vGutDHo4gxp4KSRI7obNl4ndQUjyzVmBXN13b1KWx1S6h/fqVj8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCbiJ9zV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05ECFC4CECD;
+	Wed,  6 Nov 2024 12:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897334;
-	bh=SSxak3SB3+VAYBaq3bQoahgUS7tqZ3S7ACI8wyCxeIE=;
+	s=korg; t=1730897010;
+	bh=zSYQNoqzLwxyjUE1DGxOubRCKyV4+IrIRcqfqUX/o4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8PiRf8+AxQkwQCyB3Yqipq/A5LvNr7vUHNnaGZ4JhKU0Q0x8v78tahjYlqCgTAHZ
-	 cXmDw3WAMPeWb7F4OSiWPpwxy7jXtPnS94kL+LQqFU4StQ4is/Wt4KVurSTZpObr4P
-	 IbP8OOaIQCeDsE4q/mCAlIaD6SFJCmf35QVOKblQ=
+	b=GCbiJ9zVUPiSh4gL1SoRw70kPNchZscdC9XltZ0VVzU9ntmowG5IuSYOiEm8B4DkD
+	 WC3Ne75i/CirlZuaYAY/GArU8VtzsGCNmENdSt/PHmVbCnmrpyMcRnlaph8y8JN1mf
+	 yqE3/61FGfXmL9U+Gr1uikkmuJPzeAoUBnd7CVUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Jiri Olsa <olsajiri@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mike Galbraith <efault@gmx.de>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/151] wifi: iwlwifi: mvm: dont add default link in fw restart flow
-Date: Wed,  6 Nov 2024 13:03:27 +0100
-Message-ID: <20241106120309.366595327@linuxfoundation.org>
+Subject: [PATCH 6.1 007/126] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
+Date: Wed,  6 Nov 2024 13:03:28 +0100
+Message-ID: <20241106120306.265569468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +77,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Lorenzo Stoakes <lstoakes@gmail.com>
 
-[ Upstream commit 734a377e1eacc5153bae0ccd4423365726876e93 ]
+[ Upstream commit 17457784004c84178798432a029ab20e14f728b1 ]
 
-When we add the vif (and its default link) in fw restart we may
-override the link that already exists. We take care of this but if
-link 0 is a valid MLO link, then we will re-create a default link on
-mvmvif->link[0] and we'll loose the real link we had there.
+Some architectures do not populate the entire range categorised by
+KCORE_TEXT, so we must ensure that the kernel address we read from is
+valid.
 
-In non-MLO, we need to re-create the default link upon the interface
-creation, this is fine. In MLO, we'll just wait for change_vif_links()
-to re-build the links.
+Unfortunately there is no solution currently available to do so with a
+purely iterator solution so reinstate the bounce buffer in this instance
+so we can use copy_from_kernel_nofault() in order to avoid page faults
+when regions are unmapped.
 
-Fixes: bf976c814c86 ("wifi: iwlwifi: mvm: implement link change ops")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241010140328.385bfea1b2e9.I4a127312285ccb529cc95cc4edf6fbe1e0a136ad@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
+bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
+the code to continue to use an iterator.
+
+[lstoakes@gmail.com: correct comment to be strictly correct about reasoning]
+  Link: https://lkml.kernel.org/r/525a3f14-74fa-4c22-9fca-9dab4de8a0c3@lucifer.local
+Link: https://lkml.kernel.org/r/20230731215021.70911-1-lstoakes@gmail.com
+Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
+Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reported-by: Jiri Olsa <olsajiri@gmail.com>
+Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: Will Deacon <will@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mike Galbraith <efault@gmx.de>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 24 ++++++++++++++-----
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ fs/proc/kcore.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 4d9a872818a52..d05a800cbdb4c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -39,8 +39,6 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 	/* reset deflink MLO parameters */
- 	mvmvif->deflink.fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
- 	mvmvif->deflink.active = 0;
--	/* the first link always points to the default one */
--	mvmvif->link[0] = &mvmvif->deflink;
- 
- 	ret = iwl_mvm_mld_mac_ctxt_add(mvm, vif);
- 	if (ret)
-@@ -58,9 +56,19 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
- 	}
- 
--	ret = iwl_mvm_add_link(mvm, vif, &vif->bss_conf);
--	if (ret)
--		goto out_free_bf;
-+	/* We want link[0] to point to the default link, unless we have MLO and
-+	 * in this case this will be modified later by .change_vif_links()
-+	 * If we are in the restart flow with an MLD connection, we will wait
-+	 * to .change_vif_links() to setup the links.
-+	 */
-+	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) ||
-+	    !ieee80211_vif_is_mld(vif)) {
-+		mvmvif->link[0] = &mvmvif->deflink;
-+
-+		ret = iwl_mvm_add_link(mvm, vif, &vif->bss_conf);
-+		if (ret)
-+			goto out_free_bf;
-+	}
- 
- 	/* Save a pointer to p2p device vif, so it can later be used to
- 	 * update the p2p device MAC when a GO is started/stopped
-@@ -1015,7 +1023,11 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&mvm->mutex);
- 
--	if (old_links == 0) {
-+	/* If we're in RESTART flow, the default link wasn't added in
-+         * drv_add_interface(), and link[0] doesn't point to it.
-+	 */
-+	if (old_links == 0 && !test_bit(IWL_MVM_STATUS_IN_HW_RESTART,
-+					&mvm->status)) {
- 		err = iwl_mvm_disable_link(mvm, vif, &vif->bss_conf);
- 		if (err)
- 			goto out_err;
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 2aff567abe1e3..87a46f2d84195 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -543,10 +543,21 @@ read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 		case KCORE_VMEMMAP:
+ 		case KCORE_TEXT:
+ 			/*
+-			 * We use _copy_to_iter() to bypass usermode hardening
+-			 * which would otherwise prevent this operation.
++			 * Sadly we must use a bounce buffer here to be able to
++			 * make use of copy_from_kernel_nofault(), as these
++			 * memory regions might not always be mapped on all
++			 * architectures.
+ 			 */
+-			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
++			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
++				if (iov_iter_zero(tsz, iter) != tsz) {
++					ret = -EFAULT;
++					goto out;
++				}
++			/*
++			 * We know the bounce buffer is safe to copy from, so
++			 * use _copy_to_iter() directly.
++			 */
++			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
+ 				ret = -EFAULT;
+ 				goto out;
+ 			}
 -- 
 2.43.0
 
