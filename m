@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-90490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDEC9BE88E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 038979BE76D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F192844ED
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357111C21BB7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB41DF969;
-	Wed,  6 Nov 2024 12:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9343D1DF24E;
+	Wed,  6 Nov 2024 12:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj/Hie5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZYhlAFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74B61DED58;
-	Wed,  6 Nov 2024 12:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E431DF254;
+	Wed,  6 Nov 2024 12:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895927; cv=none; b=ek75j3N4TUl8dmj0oyClEAfMAqEA38dGkU6tRv4NDagXvyHFX/5+tlfPlU6KVIPh8YUj3CAjJRwtZFgC7svuKFrl0FVOxbASb+sxuowpI1mbT+Ltf7/wIrscb84F7XV5TKyKmIomekfXJaV4N6CWjKIhyA+ShdSULDOTTvdYK9g=
+	t=1730895253; cv=none; b=u/M7lM5is02w9D5Ku4MGM78aMpvAjSpyzM1Qp4IWnBUQ3Sp0fPS8njsi9yl5qf6i2d9bnITAZsRqmF5AIyWMcTUf/2bkiAgficuS54GR+kvWX9gflZA8SEC6WASOZpGsFWg5rPhwzGzxbjVybf/7gV62KAPTSjValvdcd3HyiOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895927; c=relaxed/simple;
-	bh=7oznihawD9c5e+4wOcQPLTJVy10phO5BJ7Lo/9USejU=;
+	s=arc-20240116; t=1730895253; c=relaxed/simple;
+	bh=KLLgt7zVSsNtqxXUwnw26C08FPUMn5b14VFbeEQSWwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmYUSbWUSnhJwBihqqXOBe6JFS0wVVoR35VzJT/Xjp9iyof0sNQKNd9eGoTIEZBWgDU3e1HmMIeRwwQpO7zDfllk+lWXZf4UOiVjlIuQ/iIyg/MAbNXjb+x8vfv/0HIVn3hM8ZBHCL9iBsWGjXzXpuksQ2xmAmzr/f+MR0P3QUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj/Hie5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7517C4CECD;
-	Wed,  6 Nov 2024 12:25:26 +0000 (UTC)
+	 MIME-Version; b=kkIbCQ2/bl9JQYwTXTYmUXGXWl0zppCufGGb001SXycW9suf3DyR7UCF3KxXB7oa+unV+7/Bhx79JfuYaRnugTK+FIitA7f1mcpkKsu97HZUiZuZcOoShW9nHwQULJmo9wRN4tj9Q/GZsUZgQbrs0LSU2zqb1ZwL5rV38gRYK1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZYhlAFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1BCC4CECD;
+	Wed,  6 Nov 2024 12:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895927;
-	bh=7oznihawD9c5e+4wOcQPLTJVy10phO5BJ7Lo/9USejU=;
+	s=korg; t=1730895252;
+	bh=KLLgt7zVSsNtqxXUwnw26C08FPUMn5b14VFbeEQSWwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gj/Hie5Lf70lqFlm8So4BEjNBnk+kwa7dvLO7NVor8omWNHXy19ME4iqWRDjWRbl9
-	 N2nFioVzDSg3CqU/p29ktlEMNQgDNojOP3YIwKCxMiV1g3SY9T/xCV6h8PZL+9A+Kl
-	 7DgHL7oI386xoQ2W8qMJRsc0VojU8xG9TPOzU9Ho=
+	b=VZYhlAFPXzyt29Nn0uA6EbJl91iPnswXWH1eh69mMbRmvGKc2K6vH89KxXtJvBMr7
+	 5fUcs9yhhe/O4DGVXMScjhrhpLick0DMO1znx3XhM2C1GZVc7VuleBplBl8uekQANA
+	 o6Hc+/NXRYd7cSnFsG69P7GjccoFL+VvXNOXWYUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Yuying Ma <yuma@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 030/245] igb: Disable threaded IRQ for igb_msix_other
+Subject: [PATCH 4.19 155/350] tipc: guard against string buffer overrun
 Date: Wed,  6 Nov 2024 13:01:23 +0100
-Message-ID: <20241106120319.970840571@linuxfoundation.org>
+Message-ID: <20241106120324.749050220@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
+[ Upstream commit 6555a2a9212be6983d2319d65276484f7c5f431a ]
 
-During testing of SR-IOV, Red Hat QE encountered an issue where the
-ip link up command intermittently fails for the igbvf interfaces when
-using the PREEMPT_RT variant. Investigation revealed that
-e1000_write_posted_mbx returns an error due to the lack of an ACK
-from e1000_poll_for_ack.
+Smatch reports that copying media_name and if_name to name_parts may
+overwrite the destination.
 
-The underlying issue arises from the fact that IRQs are threaded by
-default under PREEMPT_RT. While the exact hardware details are not
-available, it appears that the IRQ handled by igb_msix_other must
-be processed before e1000_poll_for_ack times out. However,
-e1000_write_posted_mbx is called with preemption disabled, leading
-to a scenario where the IRQ is serviced only after the failure of
-e1000_write_posted_mbx.
+ .../bearer.c:166 bearer_name_validate() error: strcpy() 'media_name' too large for 'name_parts->media_name' (32 vs 16)
+ .../bearer.c:167 bearer_name_validate() error: strcpy() 'if_name' too large for 'name_parts->if_name' (1010102 vs 16)
 
-To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
-ensuring that the kernel handles it immediately, thereby preventing
-the aforementioned error.
+This does seem to be the case so guard against this possibility by using
+strscpy() and failing if truncation occurs.
 
-Reproducer:
+Introduced by commit b97bf3fd8f6a ("[TIPC] Initial merge")
 
-    #!/bin/bash
+Compile tested only.
 
-    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
-    ipaddr_vlan=3
-    nic_test=ens14f0
-    vf=${nic_test}v0
-
-    while true; do
-	    ip link set ${nic_test} mtu 1500
-	    ip link set ${vf} mtu 1500
-	    ip link set $vf up
-	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
-	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
-	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
-	    if ! ip link show $vf | grep 'state UP'; then
-		    echo 'Error found'
-		    break
-	    fi
-	    ip link set $vf down
-    done
-
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Reported-by: Yuying Ma <yuma@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240801-tipic-overrun-v2-1-c5b869d1f074@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tipc/bearer.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index f1d0881687233..b83df5f94b1f5 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -907,7 +907,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
- 	int i, err = 0, vector = 0, free_vector = 0;
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index c7686ff00f5bc..5ceb7d489686f 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -158,8 +158,12 @@ static int bearer_name_validate(const char *name,
  
- 	err = request_irq(adapter->msix_entries[vector].vector,
--			  igb_msix_other, 0, netdev->name, adapter);
-+			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
- 	if (err)
- 		goto err_out;
- 
+ 	/* return bearer name components, if necessary */
+ 	if (name_parts) {
+-		strcpy(name_parts->media_name, media_name);
+-		strcpy(name_parts->if_name, if_name);
++		if (strscpy(name_parts->media_name, media_name,
++			    TIPC_MAX_MEDIA_NAME) < 0)
++			return 0;
++		if (strscpy(name_parts->if_name, if_name,
++			    TIPC_MAX_IF_NAME) < 0)
++			return 0;
+ 	}
+ 	return 1;
+ }
 -- 
 2.43.0
 
