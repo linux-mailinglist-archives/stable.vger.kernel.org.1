@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39459BE92C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C879BE804
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100381C21DAC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F4EF1C23179
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61D11DF992;
-	Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9482C1DF73B;
+	Wed,  6 Nov 2024 12:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsiPCfE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE7SJHnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634571DF251;
-	Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D011DF257;
+	Wed,  6 Nov 2024 12:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896274; cv=none; b=pr4YXrzb/410qf68NF+zxDXZMHupMTxG/Mwt2HDtzT/WBFCsyzBgSeY0SKInnVt11cBMarqXZsS7uPAPuOTXTcDg9v750pq8CmDa0VR/32SjCHYpnN0Mm+e1Y46FjY1zlDETfBEeMeap8ianTYJxEmlFG5DWFsHJrVeq4SD/YKc=
+	t=1730895600; cv=none; b=lfcnH5VGm0yEEmPhplAACI0w20hkDCL4nhvnDmKq1hwsJy4b01E6oLKYnQDU0BX8gzSNNv4qJh3KfHiWpjWoT0tcSrxzfPpbRCOdqAvz3fXX6CpOFiKYVggnGVD6AT3V2/Dx5AbIHWzqwwFJ6g7Jmm6ntKd8EVFgpDvnXzObHi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896274; c=relaxed/simple;
-	bh=muEea+tRuyuNvZ3HFkFrS7U7o3Bqc4XBcvaYSuzL34s=;
+	s=arc-20240116; t=1730895600; c=relaxed/simple;
+	bh=q4TwM7Th4cmo2u0YcA+pYME2W1tIA2H+9ehBJM4jaqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foS+3hWm0ioVJ8Oantob/S1p7rU/dcP1xhYd7T/g6hE5pTyu1K4nLKkWDEKPpfo0jhfvPbtYXMgRAaMxKonN7cOyQnxUJhT51lXpvjdYIpbCify3KdGdlVUvSVcaDDwj27fGLK5X6mPCS4Kc2yRTEJPPlgwaBnpTd0o6jXCMMgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsiPCfE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8554C4CED6;
-	Wed,  6 Nov 2024 12:31:13 +0000 (UTC)
+	 MIME-Version; b=LulaLC6W5alAIDDwbw8jUNh7SPsVK2OLnki2JojT0hw1rjlMOzDfXDJgalec37JFFsCQGENAPf/Nac5lN/Vx07OENbDAG8oVDGT3YDrfhqf8XnU+SPkLf94pgz6Pm8xqgJ+DCZg43s5RuqXhAEjy11XnZFr2Sv7uarcOzH+oABQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE7SJHnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDE6C4CECD;
+	Wed,  6 Nov 2024 12:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896274;
-	bh=muEea+tRuyuNvZ3HFkFrS7U7o3Bqc4XBcvaYSuzL34s=;
+	s=korg; t=1730895600;
+	bh=q4TwM7Th4cmo2u0YcA+pYME2W1tIA2H+9ehBJM4jaqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsiPCfE+x+iDFxnFbxAlKtLTh0RbK5bO7s9qaiUtcYhISffo+6p8dK2YYr03QENim
-	 IeEgez+BHcbTSzH5rQuIcjQFUbjcV464paOPuIbghtjTsrVH92HkJJ3kkeAnj66SBV
-	 ZX/XIHpu9JgMckaSkuttpiIoEGKPxHfmAEqzAqPo=
+	b=yE7SJHntwXyC2foKq1XBVO6sJi8pD3THrJfWlDbGRLKfh10FIAr+HpdqLw8Y+NzQ9
+	 uyc+BXjy8xDzffIV9yPlmdt0IhMJAfZtSwpbGAJpYW8ysAH9snU/IIw3T+xpFGbmhS
+	 vdkk12JbAPPS3IffiyCA2I6TIUjxtSFkQO1pHIa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Zhang <xizhang@purestorage.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 147/245] block: fix sanity checks in blk_rq_map_user_bvec
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 272/350] fat: fix uninitialized variable
 Date: Wed,  6 Nov 2024 13:03:20 +0100
-Message-ID: <20241106120322.845297178@linuxfoundation.org>
+Message-ID: <20241106120327.600699946@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Zhang <xizhang@purestorage.com>
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
-[ Upstream commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd ]
+commit 963a7f4d3b90ee195b895ca06b95757fcba02d1a upstream.
 
-blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
-causes unnecessary failures in NVMe passthrough I/O, reproducible as
-follows:
+syszbot produced this with a corrupted fs image.  In theory, however an IO
+error would trigger this also.
 
-- register a 2 page, page-aligned buffer against a ring
-- use that buffer to do a 1 page io_uring NVMe passthrough read
+This affects just an error report, so should not be a serious error.
 
-The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
-then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
-the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
-fail. This failure is unnecessary, as when the check succeeds, it means
-we've checked the entire buffer that will be used by the request - i.e.
-blk_rq_map_user_bvec should complete successfully. Therefore, terminate
-the loop early and return successfully when the check bytes + bv->bv_len
-> nr_iter succeeds.
-
-While we're at it, also remove the check that all segments in the bvec
-are single-page. While this seems to be true for all users of the
-function, it doesn't appear to be required anywhere downstream.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-Co-developed-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
-Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/87r08wjsnh.fsf@mail.parknet.co.jp
+Link: https://lkml.kernel.org/r/66ff2c95.050a0220.49194.03e9.GAE@google.com
+Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Reported-by: syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-map.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/fat/namei_vfat.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 0e1167b239342..6ef2ec1f7d78b 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
- 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
- 			goto put_bio;
- 		if (bytes + bv->bv_len > nr_iter)
--			goto put_bio;
--		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
--			goto put_bio;
-+			break;
- 
- 		nsegs++;
- 		bytes += bv->bv_len;
--- 
-2.43.0
-
+--- a/fs/fat/namei_vfat.c
++++ b/fs/fat/namei_vfat.c
+@@ -1018,7 +1018,7 @@ error_inode:
+ 	if (corrupt < 0) {
+ 		fat_fs_error(new_dir->i_sb,
+ 			     "%s: Filesystem corrupted (i_pos %lld)",
+-			     __func__, sinfo.i_pos);
++			     __func__, new_i_pos);
+ 	}
+ 	goto out;
+ }
 
 
 
