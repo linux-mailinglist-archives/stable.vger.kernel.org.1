@@ -1,186 +1,174 @@
-Return-Path: <stable+bounces-91705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5D49BF4CA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 19:04:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81449BF5A4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 19:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172C61F24581
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 18:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07E8B1C2194E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 18:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8AE20822A;
-	Wed,  6 Nov 2024 18:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F03209663;
+	Wed,  6 Nov 2024 18:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="uwYzySPa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f42BrrDB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32643208233
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 18:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6DB208214;
+	Wed,  6 Nov 2024 18:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730916263; cv=none; b=VVtTLrL950yeRMviBgD7DWCVScN1blArPpwETxHp7mG7/vkaAchSxGaaVy4PFzwryW9DFAzUD9DfMuE8g5xKSoHE5s6MQhL3x7dIwvRlPrm8FKalpETDXZ8du5Bh7Bl8QaY0LBaQ0uEg0VhxtBflSsJtD1VMGOHn7ql5Ynv/p9s=
+	t=1730918995; cv=none; b=q+4kypP3punOeUP+gqBo4ZbAe1eepw2AyOsmK4diLkci83hBn553lfK3zO57KltBkV7WsBKKUtcka15CAQsJdlQsUxWfdLV0Fy0uhKJEU22znu59BGNsMh+wCaeMwvGFi1QbFCyAWIFB7xgeehfVRF5XWBdpCY3bvXncEPr6PNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730916263; c=relaxed/simple;
-	bh=sBSIobfEptnuiR+FyuAucSaxwnt5VnYig/YepY1sJpY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SWW9r+YKMJYP8s9Ykhx0sl4YbeMLpbedp5nc63eg5toHx63gjhoOJMLpfqrWZR0oKeLzgk2awl/gNdlf3T1AaJPYZLmSF8UkimiCbjgp1yFI+CLvXNA9fv3+TkenXfUibWgQgWbZH2UMG2Yc15gIMRWE9MUmC4Y2wu5p9y3RH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=uwYzySPa; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1730916262; x=1762452262;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qUtsCtHDtbeB/50MaBv7qu+Q0WmzSWBjHXEx4WqpTfI=;
-  b=uwYzySPaExT8enJffoX1wgBSrlagNRtEEkY3Ty+ln5wcavQ7uBoTiUMR
-   pULy9XGeMb53LOWURSWlR88YPbAcblK1WDsUfk9hcdZoR5jUwmtDIjw1B
-   11BvPPIooJa/RRU3eZquTU3Fz1HgZq5EXnFZHgcMXff+SMyWQA0f9VxcJ
-   c=;
-X-IronPort-AV: E=Sophos;i="6.11,263,1725321600"; 
-   d="scan'208";a="245414304"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 18:04:06 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:16949]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.40.73:2525] with esmtp (Farcaster)
- id b6dd717a-22fb-468e-b911-0e2456d1ee88; Wed, 6 Nov 2024 18:04:04 +0000 (UTC)
-X-Farcaster-Flow-ID: b6dd717a-22fb-468e-b911-0e2456d1ee88
-Received: from EX19D016EUC003.ant.amazon.com (10.252.51.244) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 6 Nov 2024 18:04:01 +0000
-Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
- EX19D016EUC003.ant.amazon.com (10.252.51.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 6 Nov 2024 18:04:00 +0000
-Received: from email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com
- (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Wed, 6 Nov 2024 18:04:00 +0000
-Received: from dev-dsk-kareemem-1c-885b5fe7.eu-west-1.amazon.com (dev-dsk-kareemem-1c-885b5fe7.eu-west-1.amazon.com [10.13.243.223])
-	by email-imr-corp-prod-iad-1box-1a-6851662a.us-east-1.amazon.com (Postfix) with ESMTPS id F1E3E404A7;
-	Wed,  6 Nov 2024 18:03:59 +0000 (UTC)
-From: Abdelkareem Abdelsaamad <kareemem@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Eric Dumazet <edumazet@google.com>, Naresh Kamboju
-	<naresh.kamboju@linaro.org>, Linux Kernel Functional Testing
-	<lkft@linaro.org>, Xin Long <lucien.xin@gmail.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Paolo Abeni <pabeni@redhat.com>, "Abdelkareem
- Abdelsaamad" <kareemem@amazon.com>
-Subject: [PATCH 6.1.y 5.15.y 5.10.y] net: do not delay dst_entries_add() in dst_release()
-Date: Wed, 6 Nov 2024 18:03:52 +0000
-Message-ID: <20241106180352.91893-1-kareemem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1730918995; c=relaxed/simple;
+	bh=DVwDJD/KkZRG9Ci5yJY5o05rou58w9qxq4QZ3Hjqx9g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LjWQ7T1/157LoVfdTezG708yycQTPWHbAZqNCHWBnNH7zu9Oqnv8jiHIwUOW3uMJQFOn/dK7IcSHB5ErbZxjjj5COWtdTNmtg/sMCIB52FC+oEOpEbBiQme3kh1CzVL6W8+y5+eExLTHbB9JbU5n8Lz1ZW2nOwy/9R9ab6gW9gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f42BrrDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D9F4C4CEC6;
+	Wed,  6 Nov 2024 18:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730918995;
+	bh=DVwDJD/KkZRG9Ci5yJY5o05rou58w9qxq4QZ3Hjqx9g=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=f42BrrDBT4ESuZRLwjsVuiRkn88yrIvMUvzv8CSGgyN/kpN3WKcwjn8p2gkcdqeQ5
+	 9NFXZHLYk6KNSP6R4nz5dMLFaRyyHcL44fCpcWIrkklCeEhLrd4kc8MtrOW3QMYUdC
+	 NtgTbxF68vDCejKkZNEvpaKTiDeLPdPkhRk5UU8riM4XtyxaM/LPXNfgI6aFQal6te
+	 1nHessVe6rWHXVtRt0Jou14QvdRxKLTOe3ffDmx2501Vy8gDCDUUeTrcHAoxsJMtHf
+	 n6DG9iCQ8VjEZOFvnaQACUSmruXu0bSkQ408OqGHNMhBPCQTEHXd/9zXV3WAdI/9Xx
+	 62M2d57j2Aj1g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45A14D59F62;
+	Wed,  6 Nov 2024 18:49:55 +0000 (UTC)
+From: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>
+Subject: [PATCH net 0/6] Make TCP-MD5-diag slightly less broken
+Date: Wed, 06 Nov 2024 18:10:13 +0000
+Message-Id: <20241106-tcp-md5-diag-prep-v1-0-d62debf3dded@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAWxK2cC/x2MSQrDMAwAvxJ0rsB2N9qvlB4cS050iGssUwohf
+ 4/S4wzMrKDchBWewwqNv6LyKQb+NECaY5kYhYwhuHDx3t2wp4oLXZEkTlgbVwzZUcrnu6eHA+t
+ MZvn9ny8o3OFtcozKOLZY0nzslqidG2zbDgv5IMqBAAAA
+X-Change-ID: 20241106-tcp-md5-diag-prep-2f0dcf371d90
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ David Ahern <dsahern@kernel.org>, Ivan Delalande <colona@arista.com>, 
+ Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
+ John Fastabend <john.fastabend@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ mptcp@lists.linux.dev, Dmitry Safonov <0x7f454c46@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730918993; l=4298;
+ i=0x7f454c46@gmail.com; s=20240410; h=from:subject:message-id;
+ bh=DVwDJD/KkZRG9Ci5yJY5o05rou58w9qxq4QZ3Hjqx9g=;
+ b=Q5kvMZzu/5iCWGWYFoCykO42N7Cilo4ui53yOEQLYEJv7xu6ULHvMTUwZFbYnd+grqxebBatf
+ xgQC6i5XrsnCZN2KLe4KTqooOmKeaCoknsIy/eDclwlURdI3tb6kx4K
+X-Developer-Key: i=0x7f454c46@gmail.com; a=ed25519;
+ pk=cFSWovqtkx0HrT5O9jFCEC/Cef4DY8a2FPeqP4THeZQ=
+X-Endpoint-Received: by B4 Relay for 0x7f454c46@gmail.com/20240410 with
+ auth_id=152
+X-Original-From: Dmitry Safonov <0x7f454c46@gmail.com>
+Reply-To: 0x7f454c46@gmail.com
 
-From: Eric Dumazet <edumazet@google.com>
+My original intent was to replace the last non-upstream Arista's TCP-AO
+piece. That is per-netns procfs seqfile which lists AO keys. In my view
+an acceptable upstream alternative would be TCP-AO-diag uAPI.
 
-commit ac888d58869bb99753e7652be19a151df9ecb35d upstream.
+So, I started by looking and reviewing TCP-MD5-diag code. And straight
+away I saw a bunch of issues:
 
-dst_entries_add() uses per-cpu data that might be freed at netns
-dismantle from ip6_route_net_exit() calling dst_entries_destroy()
+1. Similarly to TCP_MD5SIG_EXT, which doesn't check tcpm_flags for
+   unknown flags and so being non-extendable setsockopt(), the same
+   way tcp_diag_put_md5sig() dumps md5 keys in an array of
+   tcp_diag_md5sig, which makes it ABI non-extendable structure
+   as userspace can't tolerate any new members in it.
 
-Before ip6_route_net_exit() can be called, we release all
-the dsts associated with this netns, via calls to dst_release(),
-which waits an rcu grace period before calling dst_destroy()
+2. Inet-diag allocates netlink message for sockets in
+   inet_diag_dump_one_icsk(), which uses a TCP-diag callback
+   .idiag_get_aux_size(), that pre-calculates the needed space for
+   TCP-diag related information. But as neither socket lock nor
+   rcu_readlock() are held between allocation and the actual TCP
+   info filling, the TCP-related space requirement may change before
+   reaching tcp_diag_put_md5sig(). I.e., the number of TCP-MD5 keys on
+   a socket. Thankfully, TCP-MD5-diag won't overwrite the skb, but will
+   return EMSGSIZE, triggering WARN_ON() in inet_diag_dump_one_icsk().
 
-dst_entries_add() use in dst_destroy() is racy, because
-dst_entries_destroy() could have been called already.
+3. Inet-diag "do" request* can create skb of any message required size.
+   But "dump" request* the skb size, since d35c99ff77ec ("netlink: do
+   not enter direct reclaim from netlink_dump()") is limited by
+   32 KB. Having in mind that sizeof(struct tcp_diag_md5sig) = 100 bytes, 
+   dumps for sockets that have more than 327 keys are going to fail
+   (not counting other diag infos, which lower this limit futher).
+   That is much lower than the number of TCP-MD5 keys that can be
+   allocated on a socket with the current default
+   optmem_max limit (128Kb).
 
-Decrementing the number of dsts must happen sooner.
+So, then I went and written selftests for TCP-MD5-diag and besides
+confirming that (2) and (3) are not theoretical issues, I also
+discovered another issues, that I didn't notice on code inspection:
 
-Notes:
+4. nlattr::nla_len is __u16, which limits the largest netlink attibute
+   by 64Kb or by 655 tcp_diag_md5sig keys in the diag array. What
+   happens de-facto is that the netlink attribute gets u16 overflow,
+   breaking the userspace parsing - RTA_NEXT(), that should point
+   to the next attribute, points into the middle of md5 keys array.
 
-1) in CONFIG_XFRM case, dst_destroy() can call
-   dst_release_immediate(child), this might also cause UAF
-   if the child does not have DST_NOCOUNT set.
-   IPSEC maintainers might take a look and see how to address this.
+In this patch set issues (2) and (4) are addressed.
+(2) by not returning EMSGSIZE when the dump raced with modifying
+TCP-MD5 keys on a socket, but mark the dump inconsistent by setting
+NLM_F_DUMP_INTR nlmsg flag. Which changes uAPI in situations where
+previously kernel did WARN() and errored the dump.
+(4) by artificially limiting the maximum attribute size by U16_MAX - 1.
 
-2) There is also discussion about removing this count of dst,
-   which might happen in future kernels.
+In order to remove the new limit from (4) solution, my plan is to
+convert the dump of TCP-MD5 keys from an array to
+NL_ATTR_TYPE_NESTED_ARRAY (or alike), which should also address (1).
+And for (3), it's needed to teach tcp-diag how-to remember not only
+socket on which previous recvmsg() stopped, but potentially TCP-MD5
+key as well.
 
-Fixes: f88649721268 ("ipv4: fix dst race in sk_dst_get()")
-Closes: https://lore.kernel.org/lkml/CANn89iLCCGsP7SFn9HKpvnKu96Td4KD08xf7aGtiYgZnkjaL=w@mail.gmail.com/T/
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20241008143110.1064899-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+I plan in the next part of patch set address (3), (1) and the new limit
+for (4), together with adding new TCP-AO-diag.
 
-[Conflict due to
-bc9d3a9f2afc ("net: dst: Switch to rcuref_t reference counting")
-is not in the tree]
-Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+* Terminology from Documentation/userspace-api/netlink/intro.rst
+
+Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
 ---
- net/core/dst.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+Dmitry Safonov (6):
+      net/diag: Do not race on dumping MD5 keys with adding new MD5 keys
+      net/diag: Warn only once on EMSGSIZE
+      net/diag: Pre-allocate optional info only if requested
+      net/diag: Always pre-allocate tcp_ulp info
+      net/diag: Limit TCP-MD5-diag array by max attribute length
+      net/netlink: Correct the comment on netlink message max cap
 
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 453ec8aafc4a..5bb143857336 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -109,9 +109,6 @@ struct dst_entry *dst_destroy(struct dst_entry * dst)
- 		child = xdst->child;
- 	}
- #endif
--	if (!(dst->flags & DST_NOCOUNT))
--		dst_entries_add(dst->ops, -1);
--
- 	if (dst->ops->destroy)
- 		dst->ops->destroy(dst);
- 	if (dst->dev)
-@@ -162,6 +159,12 @@ void dst_dev_put(struct dst_entry *dst)
- }
- EXPORT_SYMBOL(dst_dev_put);
- 
-+static void dst_count_dec(struct dst_entry *dst)
-+{
-+	if (!(dst->flags & DST_NOCOUNT))
-+		dst_entries_add(dst->ops, -1);
-+}
-+
- void dst_release(struct dst_entry *dst)
- {
- 	if (dst) {
-@@ -171,8 +174,10 @@ void dst_release(struct dst_entry *dst)
- 		if (WARN_ONCE(newrefcnt < 0, "dst_release underflow"))
- 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
- 					     __func__, dst, newrefcnt);
--		if (!newrefcnt)
-+		if (!newrefcnt){
-+			dst_count_dec(dst);
- 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
-+		}
- 	}
- }
- EXPORT_SYMBOL(dst_release);
-@@ -186,8 +191,10 @@ void dst_release_immediate(struct dst_entry *dst)
- 		if (WARN_ONCE(newrefcnt < 0, "dst_release_immediate underflow"))
- 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
- 					     __func__, dst, newrefcnt);
--		if (!newrefcnt)
-+		if (!newrefcnt){
-+			dst_count_dec(dst);
- 			dst_destroy(dst);
-+		}
- 	}
- }
- EXPORT_SYMBOL(dst_release_immediate);
+ include/linux/inet_diag.h |  3 +-
+ include/net/tcp.h         |  1 -
+ net/ipv4/inet_diag.c      | 87 ++++++++++++++++++++++++++++++++++++++---------
+ net/ipv4/tcp_diag.c       | 69 ++++++++++++++++++-------------------
+ net/mptcp/diag.c          | 20 -----------
+ net/netlink/af_netlink.c  |  4 +--
+ net/tls/tls_main.c        | 17 ---------
+ 7 files changed, 109 insertions(+), 92 deletions(-)
+---
+base-commit: 2e1b3cc9d7f790145a80cb705b168f05dab65df2
+change-id: 20241106-tcp-md5-diag-prep-2f0dcf371d90
+
+Best regards,
 -- 
-2.40.1
+Dmitry Safonov <0x7f454c46@gmail.com>
+
 
 
