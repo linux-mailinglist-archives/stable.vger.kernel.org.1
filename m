@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-91161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CD59BECC0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3593F9BE6DB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 209CD1C23D25
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5CE5B244E3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384191EB9EC;
-	Wed,  6 Nov 2024 12:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452EF1DF257;
+	Wed,  6 Nov 2024 12:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+XgNCec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tZpJTRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E017F1E8825;
-	Wed,  6 Nov 2024 12:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FE71DF24B;
+	Wed,  6 Nov 2024 12:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897919; cv=none; b=UC1GVN+9KzeSBzqXZtd9opz6zvO3SNSkuOvH/T6mbCOC0OthvHsqxKQrnjHFY9ND87CK42XGGB4RrPmoJsQJA3iJdgTqcLC6Aq9Pm4jQG+wXbarUGWcdFav5k6wA0foDRMrpg8UsAB4NAO0f73LuLCWRSXHqDrghRFPmcjw+YDc=
+	t=1730894867; cv=none; b=ORGWlrYE6T28PRXIqAyHtb5E7Ik8PgA35YONAUePZJn4/4z6A5pFXG+IDRUfEp9U8dn2Syzh+NUgMJCZ8ok40oZMtc0EtzZcfQfA8IjGDAN2eIdMr9EL7U+q3T+Kmw2sogRiXiwtJc4jMYYnMogEXqmb+ujcNmH1nPGCMuCO4rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897919; c=relaxed/simple;
-	bh=2ujlV6ZxWEgsq+pvm9ddS3hkueG0y2+bUAhtEYCGcAo=;
+	s=arc-20240116; t=1730894867; c=relaxed/simple;
+	bh=Vhr/rbecO1zjpzQP2XevugyrtrI0SJ0k00PPjKuf4/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W++tXxpUGf1EONAiOJWC75b07zwiVA8A5KgRWwkVZB47EcpfY4tMDCJxCZoNDDVNllLwUd4WmbwGLpB6ThcCeTW1PyeXvcpDFFO4ayPAHW3pJ17OQV5MlNPmqdoQvOlLvH1sbMw/8ru/M2Z72/jNYND2jwc98ouKTQ1Gpic4KP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+XgNCec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690A8C4CECD;
-	Wed,  6 Nov 2024 12:58:38 +0000 (UTC)
+	 MIME-Version; b=I6PzxIQ+uHxjo4qhxyCDdef/S0QWgQ6ho+3tG1LB36W2zu6Fjikidi332H45mxO8whXkFs3Dd43nm51AWmej1Trlsf8Jfg23MjU3B9WYCr/ewmQnZ2vs/Or7OCJxv0CHxLmaw6hghVwL0Yt8ie3EoKP4lvEjSEoVNfbZlGiPY2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tZpJTRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF0BC4CECD;
+	Wed,  6 Nov 2024 12:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897918;
-	bh=2ujlV6ZxWEgsq+pvm9ddS3hkueG0y2+bUAhtEYCGcAo=;
+	s=korg; t=1730894866;
+	bh=Vhr/rbecO1zjpzQP2XevugyrtrI0SJ0k00PPjKuf4/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+XgNCectM4aNV3cFE4imKwYcNZX+AtnT5g6IWX5SstkX2u4x3Szda55QdwP8Iac9
-	 GP1tU2ZpZ6dCXlpt1WIiXBHWDCn6T9zOabm1awDevTWbmneHy6DLLfiGvBR6vDN2Cx
-	 pPArZftoc56yz2URshMLwArpVm5kjMY6LX7qHorA=
+	b=2tZpJTRPTLKteGDUqpQWwyEMg71lVYSSl3FrM7P2QirgHbtk2RW6xtTLnbF9pGFg2
+	 9ghXDRlFQbRqrGV1w53B0pICFJvDXjZRFjhW/laCQdzRb4XbTZAE4+xQxWTk1jpRnf
+	 aAx6et4nOJU9zBqUegVEz3qkEZfWDNcoOJn8fMzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/462] mtd: slram: insert break after errors in parsing the map
+	Junhao Xie <bigfoot@classfun.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 027/350] USB: serial: pl2303: add device id for Macrosilicon MS3020
 Date: Wed,  6 Nov 2024 12:59:15 +0100
-Message-ID: <20241106120333.046274159@linuxfoundation.org>
+Message-ID: <20241106120321.546867430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Junhao Xie <bigfoot@classfun.cn>
 
-[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
+commit 7d47d22444bb7dc1b6d768904a22070ef35e1fc0 upstream.
 
-GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
-path in which, due to lazy evaluation, devlength isn't initialised with the
-parsed string:
+Add the device id for the Macrosilicon MS3020 which is a
+PL2303HXN based device.
 
-   289		while (map) {
-   290			devname = devstart = devlength = NULL;
-   291
-   292			if (!(devname = strsep(&map, ","))) {
-   293				E("slram: No devicename specified.\n");
-   294				break;
-   295			}
-   296			T("slram: devname = %s\n", devname);
-   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
-   298				E("slram: No devicestart specified.\n");
-   299			}
-   300			T("slram: devstart = %s\n", devstart);
- → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
-   302				E("slram: No devicelength / -end specified.\n");
-   303			}
- → 304			T("slram: devlength = %s\n", devlength);
-   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
-   306				return(-EINVAL);
-   307			}
-
-Parsing should be finished after map == NULL, so a break is best inserted after
-each E("slram: ... \n") error message.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/devices/slram.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/pl2303.c |    1 +
+ drivers/usb/serial/pl2303.h |    4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
-index 28131a127d065..8297b366a0669 100644
---- a/drivers/mtd/devices/slram.c
-+++ b/drivers/mtd/devices/slram.c
-@@ -296,10 +296,12 @@ static int __init init_slram(void)
- 		T("slram: devname = %s\n", devname);
- 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
- 			E("slram: No devicestart specified.\n");
-+			break;
- 		}
- 		T("slram: devstart = %s\n", devstart);
- 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
- 			E("slram: No devicelength / -end specified.\n");
-+			break;
- 		}
- 		T("slram: devlength = %s\n", devlength);
- 		if (parse_cmdline(devname, devstart, devlength) != 0) {
--- 
-2.43.0
-
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -112,6 +112,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(SMART_VENDOR_ID, SMART_PRODUCT_ID) },
+ 	{ USB_DEVICE(AT_VENDOR_ID, AT_VTKIT3_PRODUCT_ID) },
+ 	{ USB_DEVICE(IBM_VENDOR_ID, IBM_PRODUCT_ID) },
++	{ USB_DEVICE(MACROSILICON_VENDOR_ID, MACROSILICON_MS3020_PRODUCT_ID) },
+ 	{ }					/* Terminating entry */
+ };
+ 
+--- a/drivers/usb/serial/pl2303.h
++++ b/drivers/usb/serial/pl2303.h
+@@ -165,3 +165,7 @@
+ /* Allied Telesis VT-Kit3 */
+ #define AT_VENDOR_ID		0x0caa
+ #define AT_VTKIT3_PRODUCT_ID	0x3001
++
++/* Macrosilicon MS3020 */
++#define MACROSILICON_VENDOR_ID		0x345f
++#define MACROSILICON_MS3020_PRODUCT_ID	0x3020
 
 
 
