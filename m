@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-91594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630769BEEB5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF199BEE75
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264BC283B73
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE1EDB231DE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1BA1DE2CF;
-	Wed,  6 Nov 2024 13:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB7B1E0090;
+	Wed,  6 Nov 2024 13:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjHOa3rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPDscdGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848F01E048E;
-	Wed,  6 Nov 2024 13:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC441DFD9D;
+	Wed,  6 Nov 2024 13:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899192; cv=none; b=HiIpxklDQ1kdfJm527wGquVz/C8mjCDy5eaepYHvrOf5FPBUtnzYAdnftgBVnaKPxWjAFH30oYL6dmNnSK8/c53rJ5kNIf+w/ilgDpz0L1Tw9/3yezplr1VyEJsPryCU97+/zz7HpkuGiVWt/6nYhbJ/iphaXpysNfVP9sHsVbI=
+	t=1730899041; cv=none; b=PzlnFO1PpXjLtYhHp4k4hxtzCh1CXeZXCCvm036slfpofi1o2+HsTy1bWOx0O6xVaFAbyxIQva/YVfn+Dbcm0qMsB2IFbZE3iukPpSnYZnrEyqAZUlrZ3wpusYNGE72WgTYCTKDhD94baHwGlAVJ7rdXcG7aWfZJR1OU1rNJlTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899192; c=relaxed/simple;
-	bh=/UYgAEfSePERiUGMoObSQUqp2jiHpbb0vXKTJPjwndg=;
+	s=arc-20240116; t=1730899041; c=relaxed/simple;
+	bh=QG83wDktA8bMXzn2LPFATbCP//I0S08wHIt2vPNxzY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ba8iakbPwwHRpKtIf/hBGJpBpmGl+LUFJZ5DhuMNu27gTXnGVyVDCma8ayUnDMdjG5pXt1HzOtwF5PdujPZbrgFyynIboBAOO0hUGkdSjzLHnAOT25dI3oVDxggBMP9KMKJSWszdvEOUNvfpbx9yuH29BICRKDCrL6DlvaQjLSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjHOa3rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D35FC4CECD;
-	Wed,  6 Nov 2024 13:19:51 +0000 (UTC)
+	 MIME-Version; b=b1mzPYXfpyDla6yacHc+l2IOdE+rpsI242iGt074M+0FiOSlB4mMRqVU3q3Q2PINKCEwnjpaQ/gayOoMSVIqe6ii88GFJW1KcYxw3Ik3vROnP+RuNUsCDn+g2rnjvSzWoQlLdHP6J+31gK3XPeQNYkvYT88fzT7Gmyoc4o5KvL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPDscdGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFF8C4CED3;
+	Wed,  6 Nov 2024 13:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899192;
-	bh=/UYgAEfSePERiUGMoObSQUqp2jiHpbb0vXKTJPjwndg=;
+	s=korg; t=1730899041;
+	bh=QG83wDktA8bMXzn2LPFATbCP//I0S08wHIt2vPNxzY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjHOa3rnXJPDuGFrVWK90XYfn19Zzqgc6+bR8q2ouBNYm5UtPbZ2qtWGF/l4gyRUF
-	 TDMvgfEiUEXn9W+vbYGFWNBqzhS+kNBLXYSuFQyWMHDhbwRgZFV0dozE5FKqFJi7tM
-	 0RgPZ1gq+Ap1KZx2FF2Lfzw6fhrEjboPn5o9BGCc=
+	b=WPDscdGu4TjH1GetednASfL5zvxpzUTVitqbVbFVjCwhjUXU2Dj0rWt81/PVLXet1
+	 cV37RGqN5quJ4dlTzvSgmY1TB3erLkaUsKWJr0MvLjHxfug0tg5nyxSS6Yiy3kt4wu
+	 8NWFGm/AGFjw94eLWQuDAUMH1c1WtcN8oErod7Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	zhong jiang <zhongjiang@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/73] fs/ntfs3: Check if more than chunk-size bytes are written
-Date: Wed,  6 Nov 2024 13:05:34 +0100
-Message-ID: <20241106120300.862962521@linuxfoundation.org>
+Subject: [PATCH 5.4 442/462] drivers/misc: ti-st: Remove unneeded variable in st_tty_open
+Date: Wed,  6 Nov 2024 13:05:35 +0100
+Message-ID: <20241106120342.418481200@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Ballance <andrewjballance@gmail.com>
+From: zhong jiang <zhongjiang@huawei.com>
 
-[ Upstream commit 9931122d04c6d431b2c11b5bb7b10f28584067f0 ]
+[ Upstream commit 8b063441b7417a79b0c27efc401479748ccf8ad1 ]
 
-A incorrectly formatted chunk may decompress into
-more than LZNT_CHUNK_SIZE bytes and a index out of bounds
-will occur in s_max_off.
+st_tty_open do not need local variable to store different value,
+Hence just remove it.
 
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+Link: https://lore.kernel.org/r/1568307147-43468-1-git-send-email-zhongjiang@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: c83212d79be2 ("firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/lznt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/ti-st/st_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/lznt.c b/fs/ntfs3/lznt.c
-index 28f654561f279..09db01c1098cd 100644
---- a/fs/ntfs3/lznt.c
-+++ b/fs/ntfs3/lznt.c
-@@ -236,6 +236,9 @@ static inline ssize_t decompress_chunk(u8 *unc, u8 *unc_end, const u8 *cmpr,
+diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
+index c19460e7f0f16..7a7a1ac81ad02 100644
+--- a/drivers/misc/ti-st/st_core.c
++++ b/drivers/misc/ti-st/st_core.c
+@@ -709,7 +709,6 @@ EXPORT_SYMBOL_GPL(st_unregister);
+  */
+ static int st_tty_open(struct tty_struct *tty)
+ {
+-	int err = 0;
+ 	struct st_data_s *st_gdata;
+ 	pr_info("%s ", __func__);
  
- 	/* Do decompression until pointers are inside range. */
- 	while (up < unc_end && cmpr < cmpr_end) {
-+		// return err if more than LZNT_CHUNK_SIZE bytes are written
-+		if (up - unc > LZNT_CHUNK_SIZE)
-+			return -EINVAL;
- 		/* Correct index */
- 		while (unc + s_max_off[index] < up)
- 			index += 1;
+@@ -732,7 +731,8 @@ static int st_tty_open(struct tty_struct *tty)
+ 	 */
+ 	st_kim_complete(st_gdata->kim_data);
+ 	pr_debug("done %s", __func__);
+-	return err;
++
++	return 0;
+ }
+ 
+ static void st_tty_close(struct tty_struct *tty)
 -- 
 2.43.0
 
