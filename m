@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-91673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814479BF1BE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:32:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 832679BF1BF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474122831B6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7A561C246BB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8AC204080;
-	Wed,  6 Nov 2024 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6712040AE;
+	Wed,  6 Nov 2024 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="fr3HZQ01"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="W6/p8tBj"
 X-Original-To: stable@vger.kernel.org
 Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4BE203709
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF883203704
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 15:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730907060; cv=none; b=rJc7+90/Y7ErK0b5CfOr2xW+CRT2y3Q0tK96zH4bOokq0zdFyD//d/+VVQniO7Y/FpRVKSPJqzWhTxXqZA04HuY+YuaA71dapZQOXoLSF+IQLjIih1KQWVhLWP4JPBGMVfA+IyB/8Vq6krHk2K7X4fONnJyievVzTMFOs92PMbw=
+	t=1730907073; cv=none; b=NcfrX2sychLas1+L6ux7Al1RPozsCWksEld9UprUezA/ze8iBjae1eLsmfFOP69AFIIk1esJ2ljXJOaaauezRan+t8aigZa/OPZtwnu0vEYRqX7aRbA4Kn5KG3eJKqpn9CcdNQY0752dUDlhOn9UKrMVFHOPHageV34pY1dwBLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730907060; c=relaxed/simple;
-	bh=1KhAN6Up8LvxWkGYnnnz9w9v3VZ1k1LEOJafT0KomhU=;
+	s=arc-20240116; t=1730907073; c=relaxed/simple;
+	bh=1FZpCdVnTqeQowpVcN/DVZ5XI+WsghCG8934Yyo6w0s=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Uw50iq2lt2bsk/7pUPynXXESWm+fY6dgcyPm2NWOIIlJZhaN7hEfeEQPuATCMlwDNRZe8vDlwG6j/AGE26B3N/Owt2Jb4XAE0DJAQIC8e1ZA9WYb47rPNyDLuP0FTwkLPn7UuJiVKx5iWU8cYyXmSAyDT1HpX+Tb1XvT2ffVp0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=fr3HZQ01; arc=none smtp.client-ip=17.58.6.54
+	 In-Reply-To:To:Cc; b=lQbZcAM/4UKrfIfxDjutd8qtxQ3tSmKNZn3J8IIwGanWKzq/cXcI5TpAGmfhQQuLmCdERbaTF91dYs/2A5rony+MWBTFeY3Cbo/Sg5DsYUGIsR+UUSCcY6ZYVQDWuWthW3XcEyxH8lGMNx5li1MV0nEKzah7Al0ZrE3YQoXCHHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=W6/p8tBj; arc=none smtp.client-ip=17.58.6.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730907058;
-	bh=D4p/ONPwsChgPFkyQAZ67fVmHAM1m6iVzlq7cFn+C6Y=;
+	s=1a1hai; t=1730907071;
+	bh=jRJAq6X1q0kmcyUpWLUZ36Ko6dovwQNaa0R6U7y4YOE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
 	 x-icloud-hme;
-	b=fr3HZQ017dFCBGKqttkIsUH2i3owsFsG+7gLZMNXsBYZ6xXhGy1yl47UdUlea9o+i
-	 SS97zM/WqTgmQyJdYA4IcPffxaBC4vYN+GBtVGU3Jg9XE0zQvBN/vCenJA+Vko+3NL
-	 nAhSmKNpW7tRrvaj56rNGr/Y0EOILd6vBAs9D+vq6DohmC+aCalDqYasiRYoKlxuM+
-	 oXQ7mBd/49q5AoyJP342heXsninLXoChVvECmbwtfEU+uH1LmtkjqxFILH2LOPK4He
-	 OAzdE5i63FqwQIoXdL8v8V/WLDXVefW2vQBikf6ZrQ2oG6Im/XZvIwTiJPd0Bk3gv6
-	 LvNNbV7npFOEQ==
+	b=W6/p8tBjL9AUAg9Podk7POQ5vLnNEo8ef1bFmoIF4j/vVQSo+5kv7MbvN1ePRcSEO
+	 sS5DYAU24u6IHuprUqLj+ZI8tCcRHDbkwdFlyuQgBnowvYcncNrroBPrVm2FFmbdhp
+	 +5cpCuEE15Q1h81E8oUZGdTZr/0CjDSl5O/d9jxOi8bymvPuuYhjddbBz71lYHNbmy
+	 HFsFINDT5t04LvUtkSHEe0tj0UK7J6VK5vmQu6z0+liT9S6SgiSycocnTPmZSDIhGE
+	 LeFTe3cyw9z85whLCp5wNbhaV2CDSDQZlVn2zr1iww2D+5jopHeK89hII95xfvEIvi
+	 HGQzJ9NZV+tdA==
 Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id A9D853A1115;
-	Wed,  6 Nov 2024 15:30:46 +0000 (UTC)
+	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id 9C3063A10BF;
+	Wed,  6 Nov 2024 15:30:59 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Date: Wed, 06 Nov 2024 23:29:19 +0800
-Subject: [PATCH v5 3/6] phy: core: Fix that API devm_phy_destroy() fails to
- destroy the phy
+Date: Wed, 06 Nov 2024 23:29:20 +0800
+Subject: [PATCH v5 4/6] phy: core: Fix an OF node refcount leakage in
+ _of_phy_get()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241106-phy_core_fix-v5-3-9771652eb88c@quicinc.com>
+Message-Id: <20241106-phy_core_fix-v5-4-9771652eb88c@quicinc.com>
 References: <20241106-phy_core_fix-v5-0-9771652eb88c@quicinc.com>
 In-Reply-To: <20241106-phy_core_fix-v5-0-9771652eb88c@quicinc.com>
 To: Vinod Koul <vkoul@kernel.org>, 
@@ -76,8 +76,8 @@ Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
  linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
  Johan Hovold <johan+linaro@kernel.org>
 X-Mailer: b4 0.14.1
-X-Proofpoint-GUID: IspyCmIlreuz43qiXRwdWu5eepWx8eoK
-X-Proofpoint-ORIG-GUID: IspyCmIlreuz43qiXRwdWu5eepWx8eoK
+X-Proofpoint-GUID: XhTcyP6hSKb-9YGDWtkqgALci_WdNh6U
+X-Proofpoint-ORIG-GUID: XhTcyP6hSKb-9YGDWtkqgALci_WdNh6U
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-11-06_09,2024-11-06_01,2024-09-30_01
@@ -89,44 +89,46 @@ X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
-to destroy the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_consume(), and the missing
-phy_destroy() call will cause that the phy fails to be destroyed.
+_of_phy_get() will directly return when suffers of_device_is_compatible()
+error, but it forgets to decrease refcount of OF node @args.np before error
+return, the refcount was increased by previous of_parse_phandle_with_args()
+so causes the OF node's refcount leakage.
 
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
+Fix by decreasing the refcount via of_node_put() before the error return.
 
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
 Cc: stable@vger.kernel.org
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
-Why to fix the API here instead of directly deleting it?
-
-1) it is simpler, just one line change.
-2) it may be used in future.
-3) ensure this restored API right if need to restore it in future
-   after deleting.
-
-Anyone may remove such APIs separately later if he/she cares.
----
- drivers/phy/phy-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/phy-core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index de07e1616b34..52ca590a58b9 100644
+index 52ca590a58b9..b88fbda6c046 100644
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -1121,7 +1121,7 @@ void devm_phy_destroy(struct device *dev, struct phy *phy)
- {
- 	int r;
+@@ -629,8 +629,10 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+ 		return ERR_PTR(-ENODEV);
  
--	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_phy_destroy);
+ 	/* This phy type handled by the usb-phy subsystem for now */
+-	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
+-		return ERR_PTR(-ENODEV);
++	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
++		phy = ERR_PTR(-ENODEV);
++		goto out_put_node;
++	}
+ 
+ 	mutex_lock(&phy_provider_mutex);
+ 	phy_provider = of_phy_provider_lookup(args.np);
+@@ -652,6 +654,7 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+ 
+ out_unlock:
+ 	mutex_unlock(&phy_provider_mutex);
++out_put_node:
+ 	of_node_put(args.np);
+ 
+ 	return phy;
 
 -- 
 2.34.1
