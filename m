@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-91517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C70F9BEE56
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFE49BEE9F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE5651C244EC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521151F25C04
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE191EC00E;
-	Wed,  6 Nov 2024 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CD21DED7C;
+	Wed,  6 Nov 2024 13:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6b9j8DG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVe5HVuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B40B1E0B84;
-	Wed,  6 Nov 2024 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22937646;
+	Wed,  6 Nov 2024 13:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898965; cv=none; b=jfcJQSUi3kGy1VOBcuU+tUqAmn/zk9+wzc4nIQwpjs+mJNFoN67iJcePL7OXoN3CaZ6jqwRyv+VwKfntXHvx10bUG1rbgbGR3H9T9Yaz6bn3g67kgMgVHt/SBE4OKwLW2EDMhT+vU/HJ03b769cKvFHDA4rugwItE8/cRAJ/VIY=
+	t=1730899147; cv=none; b=AL9pvE5aK1gyRpimNOIz9UxnmnQlfVI1WGB0j9P+SqD/hL2BCi+rPWzmJIVrmlJX7Wsa6/5W1yHkQysquhNaAObStf6enp28Rj8Y+oF+Y6dxvj+PUwoa8Dpt2+pzLrHeapl6/euZ+kfRyUpCTLfUoVQ5A08CeRbjK9eja37j4QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898965; c=relaxed/simple;
-	bh=beOdNSYE6bxNlfFmrWUcK83qEIGRPE1in+xtcjyxKsY=;
+	s=arc-20240116; t=1730899147; c=relaxed/simple;
+	bh=qNdO55ow33wwP//Vff6YvUCFA0US1ZpZJlPX6UCmlDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1cNfJUnXXHJy291KSOnSG+QGcKXccWHJyr9KRFd27KaNNCvo/oraCm24UZnujkq9sksd2BrpUYtV0eg3+qhWxvfpQSoBumbXPIlHJHwzTSvhnOjAGw0fPFFpabOfP2qS/pfJ+MUILGBwingWqF6tPDeiGQbE5o5ATWQq8+7FHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6b9j8DG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794C6C4CECD;
-	Wed,  6 Nov 2024 13:16:04 +0000 (UTC)
+	 MIME-Version; b=dcXp9dU0nd/4bvDLIp/2OclhPEaqYQ2pgwXIoHTl+kCkzzcasS291QH8Hem4onLOWnMyl9NM09MPBA+VxfzE8MNSl05l+Lb4lXzdhj+EnVCf3iXlNW97bOYPnLTHbpAfCTUYUtrGHxvmc/wdF1dXexXawBS5pUWNC5nb12om9Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVe5HVuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9432DC4CECD;
+	Wed,  6 Nov 2024 13:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898964;
-	bh=beOdNSYE6bxNlfFmrWUcK83qEIGRPE1in+xtcjyxKsY=;
+	s=korg; t=1730899147;
+	bh=qNdO55ow33wwP//Vff6YvUCFA0US1ZpZJlPX6UCmlDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6b9j8DGp/+lU3x38Vo1lbACQ0RmAythNq/W6mPOnULlei3Jl3Ul4L6vApaCnIsD5
-	 e4I9rILcnmI2MtfQP/Y2XaO8/auo/dEYQBQanD+m+npLpvQMc58JbwIFGupHXTldlG
-	 PaBlImLkQOwn6rk0EzeqXK6gPn0abvRRLtC0GJqA=
+	b=VVe5HVuo3AyY6/ubnjT2bJd2kk1anIFITQ9Ed1QkX/aizED2CcVu02a9F1kD8f+py
+	 s8v7XFI0htkpSh4FhTgKHMgg55kGlZWEScgMnMgc82z7s348y7d3vuTPiAoiUFulpt
+	 +xEUDQgsKSq6c8RSHd4qvJU948rjkYJC/EyleYFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aubrey Li <aubrey.li@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 414/462] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
+Subject: [PATCH 5.15 03/73] ACPI: PRM: Remove unnecessary blank lines
 Date: Wed,  6 Nov 2024 13:05:07 +0100
-Message-ID: <20241106120341.742427961@linuxfoundation.org>
+Message-ID: <20241106120300.061745108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Aubrey Li <aubrey.li@intel.com>
 
-[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
+[ Upstream commit caa2bd07f5c5f09acf62072906daeaa667e2b645 ]
 
-If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
-and get the clk->rwsem read lock, so the error path should release
-the lock to make the lock balance and fput the clockid's fd to make
-the refcount balance and release the fd related resource.
+Just remove unnecessary blank lines, no other code changes
 
-However the below commit left the error path locked behind resulting in
-unbalanced locking. Check timespec64_valid_strict() before
-get_clock_desc() to fix it, because the "ts" is not changed
-after that.
-
-Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-[pabeni@redhat.com: fixed commit message typo]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-clock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/prmt.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index 369bb5caa8e3a..d123478a32c43 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 	struct posix_clock_desc cd;
- 	int err;
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 09c0af8a46f0a..8d876bdb08f68 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -49,7 +49,6 @@ struct prm_context_buffer {
+ };
+ #pragma pack()
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
-+
- 	err = get_clock_desc(id, &cd);
- 	if (err)
- 		return err;
-@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 		goto out;
- 	}
- 
--	if (!timespec64_valid_strict(ts))
--		return -EINVAL;
 -
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
- 	else
+ static LIST_HEAD(prm_module_list);
+ 
+ struct prm_handler_info {
+@@ -73,7 +72,6 @@ struct prm_module_info {
+ 	struct prm_handler_info handlers[];
+ };
+ 
+-
+ static u64 efi_pa_va_lookup(u64 pa)
+ {
+ 	efi_memory_desc_t *md;
+@@ -88,7 +86,6 @@ static u64 efi_pa_va_lookup(u64 pa)
+ 	return 0;
+ }
+ 
+-
+ #define get_first_handler(a) ((struct acpi_prmt_handler_info *) ((char *) (a) + a->handler_info_offset))
+ #define get_next_handler(a) ((struct acpi_prmt_handler_info *) (sizeof(struct acpi_prmt_handler_info) + (char *) a))
+ 
+@@ -171,7 +168,6 @@ static void *find_guid_info(const guid_t *guid, u8 mode)
+ 	return NULL;
+ }
+ 
+-
+ static struct prm_module_info *find_prm_module(const guid_t *guid)
+ {
+ 	return (struct prm_module_info *)find_guid_info(guid, GET_MODULE);
 -- 
 2.43.0
 
