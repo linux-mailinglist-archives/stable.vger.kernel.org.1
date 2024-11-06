@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C129B9BEBCC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594839BE803
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D401C237AE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112831F228DF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02CF1EF096;
-	Wed,  6 Nov 2024 12:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2881DF72E;
+	Wed,  6 Nov 2024 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEgSARas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH9W50X9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA691E0083;
-	Wed,  6 Nov 2024 12:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B43E1DED49;
+	Wed,  6 Nov 2024 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897310; cv=none; b=dOGUfp2iuhopuns49dY2fCPeY6TU3DnUH+1yVuPr1q///HAc3GioBiS2P2+/3hMsqznyX/hkVGTvUwY/a8YjWtV95sBflIkROeg2sghxZyQkOwQlQkOQjoqAgulGOnP3hiMLU1P0FiS0ybl5UiMrNy6bdBTtg4REttdBY4lgHJ8=
+	t=1730895597; cv=none; b=GbUGZ7nsKG4FXAe6lfk9lm9GwQManbbLdgEMatNoobhnDB6CSOIHNa+r1DoNJDHS9ncP0+Rr6dp/oSDdilZtfXWKSJ2v1gMJYmHDkB2iM3ZWQPSPlGyMdyPaoqvet4ln2+VFfKPkWoX66ut9+7hQSscFkAE4oA6iCrhoDZHWrHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897310; c=relaxed/simple;
-	bh=ti63tm4VHoc2lJ/0WrcFnAhxXwSo36NJcgMVoCdSirQ=;
+	s=arc-20240116; t=1730895597; c=relaxed/simple;
+	bh=M6V6N0SSDcV+vxlk83zbYWExEWP2TnFvUyXQGryck0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=os4FiszWOPuHnI9UFjClHPjJCNP7Jip/bdoAvAFtJTo8RvEwOiMeORHrhWgyZV9yXnLveCcgfgmEvt2YZ1IAuChEIhK0QlwNRpjKVjMnKguJNvC5E7GmJ4XIRF1UoFFdDy2Z28rywIehkxQ9ZimJ5E+xEai42scWlQnlWhvux+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEgSARas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1A6C4CECD;
-	Wed,  6 Nov 2024 12:48:29 +0000 (UTC)
+	 MIME-Version; b=qHiFt+OOanBNcAoqvmM1itpTBhlZUOy+NWGcpoEST837qC4zjXBbV02cuIdAS4895/hWJDeLQGcqs0lKnzWWW2g9r2gEPXafjo87jnFH5Qqigwfx9ExG+ICN2eUUKMcdlmXe9eAD/4IIurhu4IyMu9fz0e4LQ0ntsVLOseByZkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH9W50X9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC706C4CED3;
+	Wed,  6 Nov 2024 12:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897309;
-	bh=ti63tm4VHoc2lJ/0WrcFnAhxXwSo36NJcgMVoCdSirQ=;
+	s=korg; t=1730895597;
+	bh=M6V6N0SSDcV+vxlk83zbYWExEWP2TnFvUyXQGryck0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEgSARass0kJtByHR2vgdhuvo8s++DBagpo5Lo85VGWg0MDhlmYF0z0ake5oL3HQ2
-	 OWU5SXIuTehgmvFLcBOoe0opB17t8b0eUFLfNjhG/0JJ9EJHY1VYOeazF27rKg3eyD
-	 1/nE/GTqvmpptU7jOVVah0KDfHaFoo8z8rh2BZu0=
+	b=tH9W50X90IGSOEKiIgnc5vnDR82VUyokilyllFteyyBv8rR7i99S0YDw9EBUIbcH+
+	 2YVdrH2O2uDh8gEZHHvmmGXs/MP0JWnPRy1ndH3yXpbqZEyURJkzpg4mbNW8Pvkboj
+	 nelSci5vhK8WGWYAhCX/52nlknipCdxEyiA/E9Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Praneesh P <quic_ppranees@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/151] wifi: ath11k: Fix invalid ring usage in full monitor mode
+	SiyuLi <siyuli@glenfly.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 271/350] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
 Date: Wed,  6 Nov 2024 13:03:19 +0100
-Message-ID: <20241106120309.148691004@linuxfoundation.org>
+Message-ID: <20241106120327.579269148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit befd716ed429b26eca7abde95da6195c548470de ]
+commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 upstream.
 
-On full monitor HW the monitor destination rxdma ring does not have the
-same descriptor format as in the "classical" mode. The full monitor
-destination entries are of hal_sw_monitor_ring type and fetched using
-ath11k_dp_full_mon_process_rx while the classical ones are of type
-hal_reo_entrance_ring and fetched with ath11k_dp_rx_mon_dest_process.
+Add DMA support for audio function of Glenfly Arise chip, which uses
+Requester ID of function 0.
 
-Although both hal_sw_monitor_ring and hal_reo_entrance_ring are of same
-size, the offset to useful info (such as sw_cookie, paddr, etc) are
-different. Thus if ath11k_dp_rx_mon_dest_process gets called on full
-monitor destination ring, invalid skb buffer id will be fetched from DMA
-ring causing issues such as the following rcu_sched stall:
-
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:     0-....: (1 GPs behind) idle=c67/0/0x7 softirq=45768/45769 fqs=1012
-  (t=2100 jiffies g=14817 q=8703)
- Task dump for CPU 0:
- task:swapper/0       state:R  running task     stack: 0 pid:    0 ppid:     0 flags:0x0000000a
- Call trace:
-  dump_backtrace+0x0/0x160
-  show_stack+0x14/0x20
-  sched_show_task+0x158/0x184
-  dump_cpu_task+0x40/0x4c
-  rcu_dump_cpu_stacks+0xec/0x12c
-  rcu_sched_clock_irq+0x6c8/0x8a0
-  update_process_times+0x88/0xd0
-  tick_sched_timer+0x74/0x1e0
-  __hrtimer_run_queues+0x150/0x204
-  hrtimer_interrupt+0xe4/0x240
-  arch_timer_handler_phys+0x30/0x40
-  handle_percpu_devid_irq+0x80/0x130
-  handle_domain_irq+0x5c/0x90
-  gic_handle_irq+0x8c/0xb4
-  do_interrupt_handler+0x30/0x54
-  el1_interrupt+0x2c/0x4c
-  el1h_64_irq_handler+0x14/0x1c
-  el1h_64_irq+0x74/0x78
-  do_raw_spin_lock+0x60/0x100
-  _raw_spin_lock_bh+0x1c/0x2c
-  ath11k_dp_rx_mon_mpdu_pop.constprop.0+0x174/0x650
-  ath11k_dp_rx_process_mon_status+0x8b4/0xa80
-  ath11k_dp_rx_process_mon_rings+0x244/0x510
-  ath11k_dp_service_srng+0x190/0x300
-  ath11k_pcic_ext_grp_napi_poll+0x30/0xc0
-  __napi_poll+0x34/0x174
-  net_rx_action+0xf8/0x2a0
-  _stext+0x12c/0x2ac
-  irq_exit+0x94/0xc0
-  handle_domain_irq+0x60/0x90
-  gic_handle_irq+0x8c/0xb4
-  call_on_irq_stack+0x28/0x44
-  do_interrupt_handler+0x4c/0x54
-  el1_interrupt+0x2c/0x4c
-  el1h_64_irq_handler+0x14/0x1c
-  el1h_64_irq+0x74/0x78
-  arch_cpu_idle+0x14/0x20
-  do_idle+0xf0/0x130
-  cpu_startup_entry+0x24/0x50
-  rest_init+0xf8/0x104
-  arch_call_rest_init+0xc/0x14
-  start_kernel+0x56c/0x58c
-  __primary_switched+0xa0/0xa8
-
-Thus ath11k_dp_rx_mon_dest_process(), which use classical destination
-entry format, should no be called on full monitor capable HW.
-
-Fixes: 67a9d399fcb0 ("ath11k: enable RX PPDU stats in monitor co-exist mode")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Reviewed-by: Praneesh P <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20240924194119.15942-1-repk@triplefau.lt
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
+Signed-off-by: SiyuLi <siyuli@glenfly.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c    |    4 ++++
+ include/linux/pci_ids.h |    2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index a4d56136f42f7..fb426195a3f01 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -5240,8 +5240,11 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
- 		    hal_status == HAL_TLV_STATUS_PPDU_DONE) {
- 			rx_mon_stats->status_ppdu_done++;
- 			pmon->mon_ppdu_status = DP_PPDU_STATUS_DONE;
--			ath11k_dp_rx_mon_dest_process(ar, mac_id, budget, napi);
--			pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
-+			if (!ab->hw_params.full_monitor_mode) {
-+				ath11k_dp_rx_mon_dest_process(ar, mac_id,
-+							      budget, napi);
-+				pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
-+			}
- 		}
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4044,6 +4044,10 @@ static void quirk_dma_func0_alias(struct
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
  
- 		if (ppdu_info->peer_id == HAL_INVALID_PEERID ||
--- 
-2.43.0
-
++/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
++
+ static void quirk_dma_func1_alias(struct pci_dev *dev)
+ {
+ 	if (PCI_FUNC(dev->devfn) != 1)
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2647,6 +2647,8 @@
+ #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+ #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+ 
++#define PCI_VENDOR_ID_GLENFLY		0x6766
++
+ #define PCI_VENDOR_ID_INTEL		0x8086
+ #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
+ #define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
 
 
 
