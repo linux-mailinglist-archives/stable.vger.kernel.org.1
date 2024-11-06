@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-91276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7163E9BED3D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:10:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F096F9BED4C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2BB31C23F1E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECB01C24067
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838C1DF257;
-	Wed,  6 Nov 2024 13:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763A11F8F1E;
+	Wed,  6 Nov 2024 13:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaXtIwkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuvKy89x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071191F472E;
-	Wed,  6 Nov 2024 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E301F8F19;
+	Wed,  6 Nov 2024 13:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898259; cv=none; b=Li1hG4nxi0pK0Obc1VBFNqDf0BUmHGtTTnQcflYA6Mpv4Iw0unC9st+3tQ4vhUTVYQkYigHbkza1Mmt474eOukSmrYU+MUeF/0cHzlZxpas6+42jkP2ENCWcJwP/Sn+XctWrcSnE1oyF1z+DlfVbJSjoE0P5UJevNmrblag+K1A=
+	t=1730898290; cv=none; b=emBhA5pMQIGMXcRajPTl28lNMohVsWv6SMW9yatxnKQoF5iMoVgDaLr2aiMdafumZ6BUHu4/2tS4lcaj+4GbrjD8Fm9JY/Bps0NiIO5iPnbPgIEbKgaHu9VBlYsoASvxqKn+r053lhjJd4B+0nSHfsQWJBLqrobLEQxE0TbiaL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898259; c=relaxed/simple;
-	bh=RHumeifFrFoOpKRHD9NBIvaMgvR9FrYjFgG+3GioQFc=;
+	s=arc-20240116; t=1730898290; c=relaxed/simple;
+	bh=egn0knBhAhZ1xGxDoGB5ATeXpnh/Kc5HxaKp95wFTaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVxBX/fBN0/nLxegp8AhitAqlCp9hVetFnMUPhOHaxQPVkwooEClu9QkC6WAhKZZ3tQorbn2eIxBqRefNij7SmRM1HYLoubpGWwfKK8VHMhTxGMA1NMnic4WYD5JGsEXL4tAbWJe2t/SAbQOvL1P4+IjM5HbhjGn8w0kAJb3BqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaXtIwkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B84C4CECD;
-	Wed,  6 Nov 2024 13:04:17 +0000 (UTC)
+	 MIME-Version; b=EhsweL0/y0EeYxOmMRheePHtfqedxBUIMuRSgzYUyBqzE9GgyfYzH9Bx2vODbD8w1nPLuHNiiAVf3tzwiXh5hv1l0r+WwW4HuxOAajn+ttSbDoAvE4C+AKmg6JnjmkozAx4Qh5AsAgJosoORczcPkq5+vjmSLtp6U7yya7P6QT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuvKy89x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB08FC4CED4;
+	Wed,  6 Nov 2024 13:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898257;
-	bh=RHumeifFrFoOpKRHD9NBIvaMgvR9FrYjFgG+3GioQFc=;
+	s=korg; t=1730898290;
+	bh=egn0knBhAhZ1xGxDoGB5ATeXpnh/Kc5HxaKp95wFTaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GaXtIwkjukMIAP4Fvoi3aeg1RdrADRD0tgKeOVJwn4rSYqil61n7BnBGZrFq15jj1
-	 eDckafnTY7JuXyTs3FKF4U+Jvgv5Csfh5X84Qlg8nLvcBecn8TipEieGRFhvke6da8
-	 cUZ5+dl7q9YoGDhyHkjvsa99M+ja5TuQXpVYhNhc=
+	b=OuvKy89xOjLQzRjutnUm/CtUd8cPD/X3msfDj4rPdVnWRIjbMF6YoXQwohtdxxLEx
+	 +f/pa/YeU0oCFDj77g7WRyUpDqYW6FnBfdYRva1OhKsNjsecvYumPqGE1HleVmHlx6
+	 ZZNi71ktR+xyf6bwAed3lIG4W3J2/bvberQatDoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 150/462] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
-Date: Wed,  6 Nov 2024 13:00:43 +0100
-Message-ID: <20241106120335.217731712@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 5.4 151/462] wifi: rtw88: 8822c: Fix reported RX band width
+Date: Wed,  6 Nov 2024 13:00:44 +0100
+Message-ID: <20241106120335.243179153@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -65,39 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit a98cfe6ff15b62f94a44d565607a16771c847bc6 upstream.
+commit a71ed5898dfae68262f79277915d1dfe34586bc6 upstream.
 
-Internal documentation suggest that the TUXEDO Polaris 15 Gen5 AMD might
-have GMxXGxX as the board name instead of GMxXGxx.
+"iw dev wlp2s0 station dump" shows incorrect rx bitrate:
 
-Adding both to be on the safe side.
+tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
+rx bitrate:     86.7 MBit/s VHT-MCS 9 VHT-NSS 1
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240910094008.1601230-1-wse@tuxedocomputers.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This is because the RX band width is calculated incorrectly. Fix the
+calculation according to the phydm_rxsc_2_bw() function from the
+official drivers.
+
+After:
+
+tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
+rx bitrate:     390.0 MBit/s VHT-MCS 9 80MHz VHT-NSS 1
+
+It also works correctly with the AP configured for 20 MHz and 40 MHz.
+
+Tested with RTL8822CE.
+
+Cc: stable@vger.kernel.org
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/bca8949b-e2bd-4515-98fd-70d3049a0097@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -456,6 +456,12 @@ static const struct dmi_system_id asus_l
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
-+		},
-+	},
-+	{
- 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -1655,12 +1655,14 @@ static void query_phy_status_page1(struc
+ 	else
+ 		rxsc = GET_PHY_STAT_P1_HT_RXSC(phy_status);
+ 
+-	if (rxsc >= 9 && rxsc <= 12)
++	if (rxsc == 0)
++		bw = rtwdev->hal.current_band_width;
++	else if (rxsc >= 1 && rxsc <= 8)
++		bw = RTW_CHANNEL_WIDTH_20;
++	else if (rxsc >= 9 && rxsc <= 12)
+ 		bw = RTW_CHANNEL_WIDTH_40;
+-	else if (rxsc >= 13)
+-		bw = RTW_CHANNEL_WIDTH_80;
+ 	else
+-		bw = RTW_CHANNEL_WIDTH_20;
++		bw = RTW_CHANNEL_WIDTH_80;
+ 
+ 	pkt_stat->rx_power[RF_PATH_A] = GET_PHY_STAT_P1_PWDB_A(phy_status) - 110;
+ 	pkt_stat->rx_power[RF_PATH_B] = GET_PHY_STAT_P1_PWDB_B(phy_status) - 110;
 
 
 
