@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-91584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD7D9BEEA8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D496D9BEE5B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567501F25C42
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126361C247BF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEAF1E1C33;
-	Wed,  6 Nov 2024 13:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFF31EE00A;
+	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR1XNL9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1QJcSAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66DB1E0DF0;
-	Wed,  6 Nov 2024 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A770754765;
+	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899161; cv=none; b=P/e7CpjpWN3t3jvxPdamziGP723lFI9Fvbn4BhQYiE7AgPtb1YTYsp7ibbY2DwcdC+kyU0muWthjemd80YdxDqsFOIc2xdSugUlxp8mNvRsEkVD+l51vjl/DepujlYwixuV5LoSFtbziV7zUG9Ngy7dCtKUWV6/XUDC74RFbjfE=
+	t=1730898979; cv=none; b=LxrpNSAKp3qNa/FCO9sBZILegkLrVqtDmGgwZXO8ylJVm5tj9STmj+I1E0idf1520EfExFW1VjlKQxsTqHiLSFZe6IZeyaDddQiU8m3ae/8B/g6CifZswhRvrRd6qcv1zw25gm5C1wRCs/NjNWSqaB8Vv6ww6TKmxT7TzodJPb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899161; c=relaxed/simple;
-	bh=UqhOTZEk8f4USS66NQc70tf7AyK/nEIFWQuzB9BvER0=;
+	s=arc-20240116; t=1730898979; c=relaxed/simple;
+	bh=yeqCz5wXm9U1ygrKYdJqtpi+Tyd0IilpoCN5BYcqAH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZ1ZEXfaRkBiagEUGCf9/ULlgWA2mIal3hVL1aj6NnipaRB3OcIlJZvJ2Xc2U03MKyvDm6RYi/2aANSGpeMrUZmarcyvfxGAQDVIq9FfYbhZHqwTmudzYo3qomeVnUQlBCjilxjWP3+dmDzlHzKO3rCORUZdSZuihfyDw3OomM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR1XNL9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3AEC4CED3;
-	Wed,  6 Nov 2024 13:19:21 +0000 (UTC)
+	 MIME-Version; b=S6aun7mYKDd4Dm96zjcAd61zk00177CsSK7bKWXVsded+PUT1++QSh8EAy7cKsQ/Xt6/5BNC06AnkOYnlhnwRMRoe14PNsYUBX+Q15a6W7r9DpDHNOGJHUEWD4L3gwvHY90UaWCpIYOFUIYSqc6KpCBbZeUuPQvlVJvq4luJ8Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1QJcSAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F35C4CECD;
+	Wed,  6 Nov 2024 13:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899161;
-	bh=UqhOTZEk8f4USS66NQc70tf7AyK/nEIFWQuzB9BvER0=;
+	s=korg; t=1730898979;
+	bh=yeqCz5wXm9U1ygrKYdJqtpi+Tyd0IilpoCN5BYcqAH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OR1XNL9SlIBKrnhI5Ys96M3tnK2qMeeCqJUX493qC1SsiPix3Wvz2U1e7ai07fBCd
-	 MrLUfokmR+7awDSZ1g9rQGOOHS+IjcUHg4Ks8OgSMhYmfSLaIIvktkWJTH/sL9JfWb
-	 kZjZ/syJk6jGlMEJdVPtL0305FQvhHXPXXi6+Y24=
+	b=Y1QJcSApTaotVhKIxJTYjOWtSgsNpYZq93G9PwqdfpQ/xBm1huzQmfESUVMg9KLbW
+	 o+lnthAf3mnZ4uX1nDLHUpXad18kQsIe+391srWLuHSyaqfy18Z9bAeqh9XrbewiKE
+	 G4kdUvatMRZuKoDBhlL6XoUOGsis2btASKRHGIMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/73] wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
+	Shubham Panwar <shubiisp8@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 419/462] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
 Date: Wed,  6 Nov 2024 13:05:12 +0100
-Message-ID: <20241106120300.211061377@linuxfoundation.org>
+Message-ID: <20241106120341.864273627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Shubham Panwar <shubiisp8@gmail.com>
 
-[ Upstream commit 52009b419355195912a628d0a9847922e90c348c ]
+commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
 
-Sync iterator conditions with ieee80211_iter_keys_rcu.
+Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
+detection issue.
 
-Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20241006153630.87885-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The _LID device incorrectly returns the lid status as "closed" during
+boot, causing the system to enter a suspend loop right after booting.
+
+The quirk ensures that the correct lid state is reported initially,
+preventing the system from immediately suspending after startup.  It
+only addresses the initial lid state detection and ensures proper
+system behavior upon boot.
+
+Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
+Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
+[ rjw: Changelog edits ]
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/key.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ drivers/acpi/button.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 7b427e39831bd..c755e3b332de0 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -918,6 +918,26 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
- 	mutex_unlock(&sdata->local->key_mtx);
- }
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -111,6 +111,17 @@ static const struct dmi_system_id lid_bl
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Samsung galaxybook2 ,initial _LID device notification returns
++		 * lid closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
  
-+static void
-+ieee80211_key_iter(struct ieee80211_hw *hw,
-+		   struct ieee80211_vif *vif,
-+		   struct ieee80211_key *key,
-+		   void (*iter)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				struct ieee80211_key_conf *key,
-+				void *data),
-+		   void *iter_data)
-+{
-+	/* skip keys of station in removal process */
-+	if (key->sta && key->sta->removed)
-+		return;
-+	if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
-+		return;
-+	iter(hw, vif, key->sta ? &key->sta->sta : NULL,
-+	     &key->conf, iter_data);
-+}
-+
- void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 			 struct ieee80211_vif *vif,
- 			 void (*iter)(struct ieee80211_hw *hw,
-@@ -937,16 +957,13 @@ void ieee80211_iter_keys(struct ieee80211_hw *hw,
- 	if (vif) {
- 		sdata = vif_to_sdata(vif);
- 		list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
--			iter(hw, &sdata->vif,
--			     key->sta ? &key->sta->sta : NULL,
--			     &key->conf, iter_data);
-+			ieee80211_key_iter(hw, vif, key, iter, iter_data);
- 	} else {
- 		list_for_each_entry(sdata, &local->interfaces, list)
- 			list_for_each_entry_safe(key, tmp,
- 						 &sdata->key_list, list)
--				iter(hw, &sdata->vif,
--				     key->sta ? &key->sta->sta : NULL,
--				     &key->conf, iter_data);
-+				ieee80211_key_iter(hw, &sdata->vif, key,
-+						   iter, iter_data);
- 	}
- 	mutex_unlock(&local->key_mtx);
- }
-@@ -964,17 +981,8 @@ _ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
- {
- 	struct ieee80211_key *key;
- 
--	list_for_each_entry_rcu(key, &sdata->key_list, list) {
--		/* skip keys of station in removal process */
--		if (key->sta && key->sta->removed)
--			continue;
--		if (!(key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE))
--			continue;
--
--		iter(hw, &sdata->vif,
--		     key->sta ? &key->sta->sta : NULL,
--		     &key->conf, iter_data);
--	}
-+	list_for_each_entry_rcu(key, &sdata->key_list, list)
-+		ieee80211_key_iter(hw, &sdata->vif, key, iter, iter_data);
- }
- 
- void ieee80211_iter_keys_rcu(struct ieee80211_hw *hw,
--- 
-2.43.0
-
 
 
 
