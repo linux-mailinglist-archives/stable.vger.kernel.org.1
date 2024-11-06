@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-91536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EB19BEE69
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD429BEEAF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CE8B286781
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D00BEB23FB0
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092681E04A8;
-	Wed,  6 Nov 2024 13:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF52F1DFE3A;
+	Wed,  6 Nov 2024 13:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQauCe9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEWgP06h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4861CC14B;
-	Wed,  6 Nov 2024 13:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60B91CC89D;
+	Wed,  6 Nov 2024 13:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899020; cv=none; b=bYKsw52HLPy5KJPXNTRy0/SEU2JTysXy1mhfJTomvi+ocOetWayWua0UZDCLQ79L1dJqNqdwhe0+bqYz5d54MM8pUrvREojDwmrtZ4U3AOTcBrEPDbs7saK6URzNtbYN+y2DE5kP5nTwPoJg2ZyhaMA0h3T0AjwotA2H/hMo+CI=
+	t=1730899176; cv=none; b=K/cZcwmvYK29UMTpbieCy7la0TFocKLLMgnX+xsbZjLDMjrq/WBQmdMs8axCjgh21AM/j3bB63+bIblDz/RP5IOH4kt0K6bkWhnu7bC6awQ/bedWoiZqzfyNI8kC035KOmcd6MDPNQUlippHA15GD1IySGHm03xLQ+xfTf51WAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899020; c=relaxed/simple;
-	bh=8hxezi0RpsByraFbw4XEwnDiMYni2kei4MC/HA9LAbo=;
+	s=arc-20240116; t=1730899176; c=relaxed/simple;
+	bh=ieQA8i+Fsx97/hQhrtKKH9KgfdWVdgWqFB2ZLBNTQCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNyGxX7o/xnUuPA59R5c2WaIP3YtHt9peQ6HICedx1DR0+uy6j7JbmAvwvNTAb/yM4pQCYI/Hk2UZWnSarvFHiMBlyFU4UgZeocciWFjRvqS7r/FNgxrabk9CZf95l+Ff4hGJNGkYgBf2QgruDtiLOf0B8YOM5cV+VKx/1ZI3ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQauCe9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FADBC4CECD;
-	Wed,  6 Nov 2024 13:17:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NHC7F3xUTctEzr6ge47ydfW7VOvanPa34ge+RmvJuGPoFolVjOZ5xdvYK7+F/AwyLm6mjd4xoigh0KdXgTujPt+ApRcVzUCA1xV/T1SZeEqMd7Liyubj9t3wNFfWX4WSUzrPq3LiSOrkw+Io3sboLjgwQAkVm2EN4kwvLLM057I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEWgP06h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6174C4CECD;
+	Wed,  6 Nov 2024 13:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899020;
-	bh=8hxezi0RpsByraFbw4XEwnDiMYni2kei4MC/HA9LAbo=;
+	s=korg; t=1730899174;
+	bh=ieQA8i+Fsx97/hQhrtKKH9KgfdWVdgWqFB2ZLBNTQCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQauCe9HAqUJSf+UvbcBATX5N/Yg2252/LEYk/tisJEGeVjasVjWLa7YOMngAby3E
-	 DFpC7ksy3smUJ9hU8uc7ijTjzfr0jTMxkPjcoB6Ab2WvTRkYv/nBQf3buqwsPofKC3
-	 N+MHztmBhP7x5wupssfUFGsPbFxQlKeyC+naeLAs=
+	b=LEWgP06hbUS3OZZsiQK1dLvwKVIl3ivqoRJ4dnEcTc8bprhDFZK2UhM1cLCpmaLqn
+	 2zSlOVXefWOamk7P/WsNHE6p3uml7+F3MOmnf+gW47WqjSUjMJpL3ZfeQah+NWUhYZ
+	 TUrOwULJU7epMjqWF79Lva0XcheTjVoVWQ7DV4RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Simon Horman <simon.horman@netronome.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Byeonguk Jeong <jungbu2855@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 435/462] gtp: simplify error handling code in gtp_encap_enable()
+Subject: [PATCH 5.15 24/73] bpf: Fix out-of-bounds write in trie_get_next_key()
 Date: Wed,  6 Nov 2024 13:05:28 +0100
-Message-ID: <20241106120342.249040165@linuxfoundation.org>
+Message-ID: <20241106120300.682589998@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Byeonguk Jeong <jungbu2855@gmail.com>
 
-[ Upstream commit b289ba5e07105548b8219695e5443d807a825eb8 ]
+[ Upstream commit 13400ac8fb80c57c2bfb12ebd35ee121ce9b4d21 ]
 
-'gtp_encap_disable_sock(sk)' handles the case where sk is NULL, so there
-is no need to test it before calling the function.
+trie_get_next_key() allocates a node stack with size trie->max_prefixlen,
+while it writes (trie->max_prefixlen + 1) nodes to the stack when it has
+full paths from the root to leaves. For example, consider a trie with
+max_prefixlen is 8, and the nodes with key 0x00/0, 0x00/1, 0x00/2, ...
+0x00/8 inserted. Subsequent calls to trie_get_next_key with _key with
+.prefixlen = 8 make 9 nodes be written on the node stack with size 8.
 
-This saves a few line of code.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <simon.horman@netronome.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7515e37bce5c ("gtp: allow -1 to be specified as file description from userspace")
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
+Signed-off-by: Byeonguk Jeong <jungbu2855@gmail.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Tested-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/Zxx384ZfdlFYnz6J@localhost.localdomain
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ kernel/bpf/lpm_trie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index c868f4ffa240f..9c62bc277ae86 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -860,8 +860,7 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 4ea7fb0ca1ad4..6b2bf71f8de4b 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -644,7 +644,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	if (!key || key->prefixlen > trie->max_prefixlen)
+ 		goto find_leftmost;
  
- 		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
- 		if (IS_ERR(sk1u)) {
--			if (sk0)
--				gtp_encap_disable_sock(sk0);
-+			gtp_encap_disable_sock(sk0);
- 			return PTR_ERR(sk1u);
- 		}
- 	}
-@@ -869,10 +868,8 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
- 	if (data[IFLA_GTP_ROLE]) {
- 		role = nla_get_u32(data[IFLA_GTP_ROLE]);
- 		if (role > GTP_ROLE_SGSN) {
--			if (sk0)
--				gtp_encap_disable_sock(sk0);
--			if (sk1u)
--				gtp_encap_disable_sock(sk1u);
-+			gtp_encap_disable_sock(sk0);
-+			gtp_encap_disable_sock(sk1u);
- 			return -EINVAL;
- 		}
- 	}
+-	node_stack = kmalloc_array(trie->max_prefixlen,
++	node_stack = kmalloc_array(trie->max_prefixlen + 1,
+ 				   sizeof(struct lpm_trie_node *),
+ 				   GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!node_stack)
 -- 
 2.43.0
 
