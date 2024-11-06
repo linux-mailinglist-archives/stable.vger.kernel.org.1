@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613499BE975
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D58319BEB7A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267A528539A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99C14284E41
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002981DFD9D;
-	Wed,  6 Nov 2024 12:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802441F80B8;
+	Wed,  6 Nov 2024 12:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSZXnuKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J67RQh0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF73198E96;
-	Wed,  6 Nov 2024 12:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3C21EBA12;
+	Wed,  6 Nov 2024 12:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896468; cv=none; b=vGOogGTPu0/cJNRibKp9RVooy6mcA3hxuQ5RK/bSGeEnZpq4UfQ1xweQGNCQ3PetLUEToG2URa0kEnT8H+QfOofyIpJwJh95GgQrfz7SaI48UBDZnIOxSpnrS/QnjR1LJygtsPlzPjlxtMvTezGxf/9sxpVQqamSOzRXeOAdic0=
+	t=1730897103; cv=none; b=O03TMjC+a6m0XsbBBbJvf62qJGOG0Ga2ze9EmBtC+ANqlxV+3Y3jhdZ88rGV6kw8DGJaaAQvLPtyWJ/DusFtMXF6T0nk7R2QrydNB1uX7D5/VtlCVyuA/22jnsIuAJmp00cuccKVaHAJbEhoPDFfotWI1982Q62xNQcwGo9wPjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896468; c=relaxed/simple;
-	bh=BSeKeT75Q6r68kNEmA6TLJ9l0xkfJsiF+NW7dGJr/EM=;
+	s=arc-20240116; t=1730897103; c=relaxed/simple;
+	bh=D6XkY6vWJwhcPwcyJ/ihBpuNIxW1MKh59w3ZkV2igrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQIvDFH+N6QQUv3UnfMmw4HcYlW39oE9VcJMP+W+Y6rf/t7rR6Z0c+Srs+NSnHHx+J4J7a2MMa7WRhiLkO4M8RvEeL70Oz9jesVjrm8Eeooo9BULprQIQ6TaTG4hnQb4AduGEYOK7jl00/UAJOaRgDIjObyZ3XkHNDhlbjztOkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSZXnuKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A81C4CECD;
-	Wed,  6 Nov 2024 12:34:28 +0000 (UTC)
+	 MIME-Version; b=g4WtLGg9YXueCH66LyBsMrQZAqkD3LrQPpL9msAC93hSwFsQpvd7Bzny5DJV+FOStN5MW8t+7Pum3j0h5toWtWswievMb7y754dYqruoUq13bFKoQlo2wONKzOP4wDibuzXsfu76ChezJxYgncc6524jCk/holQwkDIq4fGZYlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J67RQh0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F49C4CECD;
+	Wed,  6 Nov 2024 12:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896468;
-	bh=BSeKeT75Q6r68kNEmA6TLJ9l0xkfJsiF+NW7dGJr/EM=;
+	s=korg; t=1730897103;
+	bh=D6XkY6vWJwhcPwcyJ/ihBpuNIxW1MKh59w3ZkV2igrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSZXnuKi2Ky9dBglY6W8qHMZcrs/Pj/4FKFFqHsuLF6GrfzRGajXkkC/ZPfEZYcNa
-	 1Rl95HmXYqhAbYCQNWcarkUwxJld6BWyEihGFqAvA2XiLc3CrFBWtEozK6jZb4In8L
-	 h94+e/vSaCd8Kmt5qFmye9LS5UdZvC5pZYJwn+PA=
+	b=J67RQh0IJKgI6I6qb1L9VhLBxeiZ3NMxShMW4DBDP1Se17qZneQcc9HwWzVLgbe1A
+	 QXCzR1Q8JWFgrb4bhAHMiaDH6LFFky239VP8pYch8ZOqSGSRC6PTj49FkWujOIyV7+
+	 9Xw1qxsNQ5y4oghgRNPud4NweEcttPaAm2sdo9oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.11 213/245] arm64: dts: qcom: x1e80100: Fix up BAR spaces
-Date: Wed,  6 Nov 2024 13:04:26 +0100
-Message-ID: <20241106120324.498382303@linuxfoundation.org>
+	Hongren Zheng <i@zenithal.me>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH 6.1 066/126] usbip: tools: Fix detach_port() invalid port error path
+Date: Wed,  6 Nov 2024 13:04:27 +0100
+Message-ID: <20241106120307.872900728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-commit 7af1418500124150f9fd24e1a5b9c288771df271 upstream.
+commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
 
-The 32-bit BAR spaces are reaching outside their assigned register
-regions. Shrink them to match their actual sizes.
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-This resolves an issue where the regions overlap and one of the
-controllers won't come up, which can be seen in the log as:
-
-  qcom-pcie 1c08000.pci: resource collision: [mem 0x7c300000-0x7fffffff] conflicts with 1c00000.pci dbi [mem 0x7e000000-0x7e000f1c]
-
-While at it, unify the style.
-
-Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
 Cc: stable@vger.kernel.org
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Tested-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240710-topic-barman-v1-1-5f63fca8d0fc@linaro.org
-[bjorn: Added note about overlapping resource regions]
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/usb/usbip/src/usbip_detach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -2895,9 +2895,9 @@
- 				    "mhi";
- 			#address-cells = <3>;
- 			#size-cells = <2>;
--			ranges = <0x01000000 0 0x00000000 0 0x70200000 0 0x100000>,
--				 <0x02000000 0 0x70300000 0 0x70300000 0 0x3d00000>;
--			bus-range = <0 0xff>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x70200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x70300000 0x0 0x70300000 0x0 0x1d00000>;
-+			bus-range = <0x00 0xff>;
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
+ 	}
  
- 			dma-coherent;
- 
-@@ -3017,8 +3017,8 @@
- 				    "mhi";
- 			#address-cells = <3>;
- 			#size-cells = <2>;
--			ranges = <0x01000000 0 0x00000000 0 0x7c200000 0 0x100000>,
--				 <0x02000000 0 0x7c300000 0 0x7c300000 0 0x3d00000>;
-+			ranges = <0x01000000 0x0 0x00000000 0x0 0x7c200000 0x0 0x100000>,
-+				 <0x02000000 0x0 0x7c300000 0x0 0x7c300000 0x0 0x1d00000>;
- 			bus-range = <0x00 0xff>;
- 
- 			dma-coherent;
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 
 
 
