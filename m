@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13589BE95C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6511E9BE82E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 636861F23B8A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A3F1C218F3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBB81DFE06;
-	Wed,  6 Nov 2024 12:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63581DF961;
+	Wed,  6 Nov 2024 12:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buy4DWx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKwzZYrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE92C1DF251;
-	Wed,  6 Nov 2024 12:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D881DF73C;
+	Wed,  6 Nov 2024 12:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896393; cv=none; b=OEH1/EiuraYeAwgplXLSNujtJTf/F1mheO1vcXPLR+ghSE6vCAgJQkHO+WwDzrM0t6w6BbiShi/Vyv1jqXtYfP/QbCIgirKMEi7ThjYu109SHmWtrsPNoQRgqlx23NbeMcSklw8ffYAgcQ51hIEDnBN/S6zYlNsYUVFjwPth2Rs=
+	t=1730895718; cv=none; b=L0hOB4NJ89dtHI1iaBrpZtIwoNI4Xp92kfedqYL8qR85Vcur21jupuUrQk15YROVTW2biWeBE9z889SxeB4ZNWEalWf2sMK6NrfIyJGrCmLTwumG97rvKOf3sTHQRfgMN86gp0cK0Pyvv9NK8QJfMJ71Q3w2KbGoffbx7claViw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896393; c=relaxed/simple;
-	bh=vxCbe6N3GN4heMUSFsV/ZhkPl0vmlMV/PfNA4MHYs14=;
+	s=arc-20240116; t=1730895718; c=relaxed/simple;
+	bh=1jxesrKA3MYMgEA0qCEl2m7gOvc5o2cB+au3TeQrHfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8YyjIV2tj10X+XvVmI8i9QWD9B7naCExtKwyUSg3j0NXMPkVjnEyBMBxEpG7czitjjiZl5qY6Dxs2u6iS1iqosLzxsGCuXCQgGiSJgIeozstIVLJ+zQ1ydw3UHUgwi9I4HfBAFJ3z46tb6BfDjh3yiYiq0L8ouV/8va2aZChG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buy4DWx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46200C4CECD;
-	Wed,  6 Nov 2024 12:33:13 +0000 (UTC)
+	 MIME-Version; b=bqzi9hERcBQ0Xr1i8Ulljg1VQU92T8fGaCk+1Xd+SbX9zcpiLEYGyHY3Yl/fkl+Qhig21c2+4UW8UPAQDJTZ39NYMAQI19+oX1SZMocvTo2R76L9o1pGPwpBKZRrNOCZVC/gPNOZcMjxk+g0LVIa4Vv5FhY53SwVD0gHnofyZkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKwzZYrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6227C4CECD;
+	Wed,  6 Nov 2024 12:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896393;
-	bh=vxCbe6N3GN4heMUSFsV/ZhkPl0vmlMV/PfNA4MHYs14=;
+	s=korg; t=1730895718;
+	bh=1jxesrKA3MYMgEA0qCEl2m7gOvc5o2cB+au3TeQrHfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buy4DWx3R0WuWMa8zDu4QKQQDQu6XrHbCkHKCMeA8c2Upf1E7TQkEiCv8rv39ubF8
-	 67xayPnCS2vznlTB34mhTKCknxMq3idYFsV/oD4C7Q363kMIuxZ7M8qsYWXQtn2cTB
-	 jJQo5s4d7cED03yBHnErjCghp58zloLHspVmsXwY=
+	b=NKwzZYrrknrusKGnt8QPp5tWqpnjSw37xU4hs+ZK4iadRmsY/EwUnljRqGLPDOKGQ
+	 0E5J2D7forVtoFOhucsdWH5NpmSJKqG/Xj2VHPS1Eto13925dDn/l6fYGGjQHbSZEk
+	 lHzQoJcdwOyrqNO8vlUxphZmkPQTcui9O/twW9uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Biju Das <biju.das@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 186/245] ALSA: hda/realtek: Fix headset mic on TUXEDO Stellaris 16 Gen6 mb1
-Date: Wed,  6 Nov 2024 13:03:59 +0100
-Message-ID: <20241106120323.819844041@linuxfoundation.org>
+Subject: [PATCH 4.19 312/350] dt-bindings: power: Add r8a774b1 SYSC power domain definitions
+Date: Wed,  6 Nov 2024 13:04:00 +0100
+Message-ID: <20241106120328.478044780@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Biju Das <biju.das@bp.renesas.com>
 
-[ Upstream commit e49370d769e71456db3fbd982e95bab8c69f73e8 ]
+[ Upstream commit be67c41781cb4c06a4acb0b92db0cbb728e955e2 ]
 
-Quirk is needed to enable headset microphone on missing pin 0x19.
+This patch adds power domain indices for the RZ/G2N (a.k.a r8a774b1)
+SoC.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241029151653.80726-2-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Biju Das <biju.das@bp.renesas.com>
+Link: https://lore.kernel.org/r/1567666326-27373-1-git-send-email-biju.das@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/dt-bindings/power/r8a774b1-sysc.h | 26 +++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+ create mode 100644 include/dt-bindings/power/r8a774b1-sysc.h
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 25d4c417d3c07..660fd984a9285 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10971,6 +10971,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d05, 0x115c, "TongFang GMxTGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x121b, "TongFang GMxAGxx", ALC269_FIXUP_NO_SHUTUP),
- 	SND_PCI_QUIRK(0x1d05, 0x1387, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+diff --git a/include/dt-bindings/power/r8a774b1-sysc.h b/include/dt-bindings/power/r8a774b1-sysc.h
+new file mode 100644
+index 0000000000000..373736402f048
+--- /dev/null
++++ b/include/dt-bindings/power/r8a774b1-sysc.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0
++ *
++ * Copyright (C) 2019 Renesas Electronics Corp.
++ */
++#ifndef __DT_BINDINGS_POWER_R8A774B1_SYSC_H__
++#define __DT_BINDINGS_POWER_R8A774B1_SYSC_H__
++
++/*
++ * These power domain indices match the numbers of the interrupt bits
++ * representing the power areas in the various Interrupt Registers
++ * (e.g. SYSCISR, Interrupt Status Register)
++ */
++
++#define R8A774B1_PD_CA57_CPU0		 0
++#define R8A774B1_PD_CA57_CPU1		 1
++#define R8A774B1_PD_A3VP		 9
++#define R8A774B1_PD_CA57_SCU		12
++#define R8A774B1_PD_A3VC		14
++#define R8A774B1_PD_3DG_A		17
++#define R8A774B1_PD_3DG_B		18
++#define R8A774B1_PD_A2VC1		26
++
++/* Always-on power area */
++#define R8A774B1_PD_ALWAYS_ON		32
++
++#endif /* __DT_BINDINGS_POWER_R8A774B1_SYSC_H__ */
 -- 
 2.43.0
 
