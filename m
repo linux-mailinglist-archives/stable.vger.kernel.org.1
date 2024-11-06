@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-90645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA9D9BE95B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A557E9BEB3B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AED4B210DE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65BC7284645
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732951DFD90;
-	Wed,  6 Nov 2024 12:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DE21F7062;
+	Wed,  6 Nov 2024 12:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X52Ca8i0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="silAxvtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8101DF986;
-	Wed,  6 Nov 2024 12:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F621E5718;
+	Wed,  6 Nov 2024 12:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896388; cv=none; b=An1bV1SMHYpJ821beVPKSQv3w9ZxWkKyBI1L8qY5egGxdcp5jYfHCFILF7vfL4s3ZMjx+cZD8tCGHIeoBtIUValXQ8FtlgH7uzVUEESKu7sbPoOehKvI7xHhf+vzwdsdtiBI3SnEIZnE9YaNJpJS52WLE/cOewJltP3wR9WBlO4=
+	t=1730896930; cv=none; b=dmntfEonxtnpaSXL8JI/bTibcVkP3mFjXQnI9LrJr7Qc+gGja4gLKD9KAlL0qaYoAWb9AGKktTThOBbpzkL2HTj/w8QKQbstqPMkbTEa2YZ1QZ9Lw2OMZLVUC1DnBeTxSjYWm1tG7R9FmibHmK85NNSkd/wDjEG25bxYjVr2Qvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896388; c=relaxed/simple;
-	bh=HRvfZsiyLt/YhGMsad1UV29z58AvLitfeqmwS2WrH84=;
+	s=arc-20240116; t=1730896930; c=relaxed/simple;
+	bh=H/4yWOUVX+tVYIMvaAmvNgfem0ATK8owfCNAEhR2OFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZr2lsCvqOT8WrjkigHijlVXws/22XkYYZZSKNap/jI5jIu+FjgxbhoLl8A/mhuaeZ4dtaX8y20Y+iJYJxQA+W2em8H1gMMgzNCaDOO+Kc8Bnhmi4Jx7UpY2X0F3obe8ghX7Ebuf1n1gGx224oLQZlXYLRoqClK4fGa3b8PFvNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X52Ca8i0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF5C4CECD;
-	Wed,  6 Nov 2024 12:33:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ln4gnpgnmOAZiXBcaDUnjtJ70XZbFjebIQkqpDjd3nZGUPJHOeoLQt5i8MY/iDp9AdvJBM20tx7Mtl6pEhXgYQe/Lvg+z7wxeM7LV7WRiOv6wdsqcvN6pWc76uM+2LPr9/mpj6yiQgUHMin6NGeu11luiPHNmv5IdO1Q+GAKpok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=silAxvtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF99C4CECD;
+	Wed,  6 Nov 2024 12:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896387;
-	bh=HRvfZsiyLt/YhGMsad1UV29z58AvLitfeqmwS2WrH84=;
+	s=korg; t=1730896930;
+	bh=H/4yWOUVX+tVYIMvaAmvNgfem0ATK8owfCNAEhR2OFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X52Ca8i0+rLGWKBghwCwSZXnoJ8ZZqMU5pvFDibFyAZVgYi2ER/36pkyKZ7sYHxKp
-	 NzbHTk4Agag06D30RUTvj6RE/36gb58XdnCdk1VTikKLnJ2obDcyg5vevZNreL+hIt
-	 Sg2rdQwRJ4Vfdh/vWgubsfQMEsQIWp1uCvxXFBkc=
+	b=silAxvtCTPl+PH6csKkuyLIKTgn/02hB7sxyvqG/cHN8Y4fxigGeV7YxMiRHZXj4e
+	 m2//Dvddi+rrrGRaBiKjda8MOuZPxywis6JCjHgi25n3oh9Nyla3fYEAtt3kaNmjfw
+	 tlAJn/SoFxGfIg6+9W2Y5ExnOLOLS3Q+GK05v2DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	WangYuli <wangyuli@uniontech.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	=?UTF-8?q?Martin-=C3=89ric=20Racine?= <martin-eric.racine@iki.fi>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Brandon Nielsen <nielsenb@jetfuse.net>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 158/245] riscv: Use %u to format the output of cpu
+Subject: [PATCH 6.1 010/126] wifi: iwlegacy: Fix "field-spanning write" warning in il_enqueue_hcmd()
 Date: Wed,  6 Nov 2024 13:03:31 +0100
-Message-ID: <20241106120323.123680283@linuxfoundation.org>
+Message-ID: <20241106120306.350302452@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-[ Upstream commit e0872ab72630dada3ae055bfa410bf463ff1d1e0 ]
+[ Upstream commit d4cdc46ca16a5c78b36c5b9b6ad8cac09d6130a0 ]
 
-'cpu' is an unsigned integer, so its conversion specifier should
-be %u, not %d.
+iwlegacy uses command buffers with a payload size of 320
+bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
+describes the default buffers and there is no separate type describing
+the huge buffers.
 
-Suggested-by: Wentao Guan <guanwentao@uniontech.com>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Link: https://lore.kernel.org/all/alpine.DEB.2.21.2409122309090.40372@angie.orcam.me.uk/
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Fixes: f1e58583b9c7 ("RISC-V: Support cpu hotplug")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/4C127DEECDA287C8+20241017032010.96772-1-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The il_enqueue_hcmd() function works with both default and huge
+buffers, and has a memcpy() to the buffer payload.  The size of
+this copy may exceed 320 bytes when using a huge buffer, which
+now results in a run-time warning:
+
+    memcpy: detected field-spanning write (size 1014) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170 (size 320)
+
+To fix this:
+
+- Define a new struct type for huge buffers, with a correctly sized
+  payload field
+- When using a huge buffer in il_enqueue_hcmd(), cast the command
+  buffer pointer to that type when looking up the payload field
+
+Reported-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
+References: https://bugs.debian.org/1062421
+References: https://bugzilla.kernel.org/show_bug.cgi?id=219124
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy()")
+Tested-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
+Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/ZuIhQRi/791vlUhE@decadent.org.uk
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlegacy/common.c | 13 ++++++++++++-
+ drivers/net/wireless/intel/iwlegacy/common.h | 12 ++++++++++++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 28b58fc5ad199..a1e38ecfc8be2 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -58,7 +58,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
- 	if (cpu_ops->cpu_is_stopped)
- 		ret = cpu_ops->cpu_is_stopped(cpu);
- 	if (ret)
--		pr_warn("CPU%d may not have stopped: %d\n", cpu, ret);
-+		pr_warn("CPU%u may not have stopped: %d\n", cpu, ret);
- }
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 96002121bb8b2..9fa38221c4311 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -3119,6 +3119,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
+ 	struct il_cmd_meta *out_meta;
+ 	dma_addr_t phys_addr;
+ 	unsigned long flags;
++	u8 *out_payload;
+ 	u32 idx;
+ 	u16 fix_size;
  
- /*
+@@ -3154,6 +3155,16 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
+ 	out_cmd = txq->cmd[idx];
+ 	out_meta = &txq->meta[idx];
+ 
++	/* The payload is in the same place in regular and huge
++	 * command buffers, but we need to let the compiler know when
++	 * we're using a larger payload buffer to avoid "field-
++	 * spanning write" warnings at run-time for huge commands.
++	 */
++	if (cmd->flags & CMD_SIZE_HUGE)
++		out_payload = ((struct il_device_cmd_huge *)out_cmd)->cmd.payload;
++	else
++		out_payload = out_cmd->cmd.payload;
++
+ 	if (WARN_ON(out_meta->flags & CMD_MAPPED)) {
+ 		spin_unlock_irqrestore(&il->hcmd_lock, flags);
+ 		return -ENOSPC;
+@@ -3167,7 +3178,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
+ 		out_meta->callback = cmd->callback;
+ 
+ 	out_cmd->hdr.cmd = cmd->id;
+-	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
++	memcpy(out_payload, cmd->data, cmd->len);
+ 
+ 	/* At this point, the out_cmd now has all of the incoming cmd
+ 	 * information */
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+index 69687fcf963fc..027dae5619a37 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.h
++++ b/drivers/net/wireless/intel/iwlegacy/common.h
+@@ -560,6 +560,18 @@ struct il_device_cmd {
+ 
+ #define TFD_MAX_PAYLOAD_SIZE (sizeof(struct il_device_cmd))
+ 
++/**
++ * struct il_device_cmd_huge
++ *
++ * For use when sending huge commands.
++ */
++struct il_device_cmd_huge {
++	struct il_cmd_header hdr;	/* uCode API */
++	union {
++		u8 payload[IL_MAX_CMD_SIZE - sizeof(struct il_cmd_header)];
++	} __packed cmd;
++} __packed;
++
+ struct il_host_cmd {
+ 	const void *data;
+ 	unsigned long reply_page;
 -- 
 2.43.0
 
