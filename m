@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64B09BEA79
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:46:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C09BEC08
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA6928387B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:46:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7C31C23794
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7261FAC5B;
-	Wed,  6 Nov 2024 12:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625641FAC40;
+	Wed,  6 Nov 2024 12:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMrhEZQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GclrnAkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE541FAC59;
-	Wed,  6 Nov 2024 12:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF5B1E00B0;
+	Wed,  6 Nov 2024 12:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896702; cv=none; b=pLRNBlmk9SV6cYeQeyjhf5yP9vwon1ksGzr6HWUW07W+3i96smMJB7Sd99B8VIPTE8r6bTUTayJPzYO2nwmtiOiJQvFArxWgNCTC/AH6xuL/890DtuQuTk/w0og2tov5Zu9b8tQ9RamL7p7fR7FjJdcXW0y8B0ztuge5ShzrnVo=
+	t=1730897471; cv=none; b=hvHG/FHylzcjpcn3EnFMnqM33R9uAZU8bLy89j9eBAsz1ymzdt1RpT2NKzumDpyXhZjUgYFoi1nzRkqqQO4wC46JCqsNjeaH8AZE23JnyWy8aa/QvHknNelVua8E/4O+QeULuuBLR3EREXKGRfuqpks8ZxSuBIn2dQZNz3AFIA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896702; c=relaxed/simple;
-	bh=RGId5GxaNNfoFUqGmrn0fO1vrDhcFFBDI+Gc81sga3A=;
+	s=arc-20240116; t=1730897471; c=relaxed/simple;
+	bh=4wKBuyW7Kl1dTHdFdZ4czhD72bm9BAualB55eiMXFE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HW1FdCOtwkxffN54IAx1cHB+bdi1FtoeOT4g5IfDUm4WDKqecuzirOaU3ppWVwzshNZ4J1UhuPUEsrbdnPRSoIRuPLLRgGLZC7/1LOnUWjF2fNGJ9aO7YqJg91iLjS7zt7kr2ShMXivAF0MFvmG0iIEjX3fzFDLT9YdKjqi637s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMrhEZQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3202C4AF09;
-	Wed,  6 Nov 2024 12:38:21 +0000 (UTC)
+	 MIME-Version; b=mgOrwrfbXDS1IYjvRc2ZdtI7kiC1mtXrfPC7mMFOtb+znKGqQgNFMVoBRYRDRiusNGTF/e+f7nGSpjwRevZd03Axj9yxanmCBBvMojrDuMEPogukTNJuAlqSs8mHIDGI0LmfigMMXaKup+RfV5jMsATItjWoiIZSsJiAIxFlElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GclrnAkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DD6C4CECD;
+	Wed,  6 Nov 2024 12:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896702;
-	bh=RGId5GxaNNfoFUqGmrn0fO1vrDhcFFBDI+Gc81sga3A=;
+	s=korg; t=1730897471;
+	bh=4wKBuyW7Kl1dTHdFdZ4czhD72bm9BAualB55eiMXFE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMrhEZQBFrBznTXu1hOaIGLlruQQ6glUWSHANfnA+jtm2oZE4jrzDADQ5MLQzg9BA
-	 1ni2qQvP0l2vmzu/9/XyltRTrGPMFB0ukTYIXXzGpNX5HBTyii39aU+IhOGq/uwm91
-	 j+puBDRZHEF88miAMqsSY6ncGvBi7UWAf25Nu7ZY=
+	b=GclrnAkUSBBiK6IuVlNe6nZZTpkIiVjkRdY71UFpB32vF92zQiQ09mQxt4QthRMCs
+	 3xKu4ZwrqQltR66oYEkrHRUuDATz+mRSwQVwnQQdwFaF2G+R6TriF9L6FwpFRMZA8W
+	 EJUG0zdozoqDMaW9yGdlcrjVcVnOim9bu/k5fc5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Panwar <shubiisp8@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 045/110] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
+	syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 063/151] fs/ntfs3: Additional check in ntfs_file_release
 Date: Wed,  6 Nov 2024 13:04:11 +0100
-Message-ID: <20241106120304.447317595@linuxfoundation.org>
+Message-ID: <20241106120310.573925779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubham Panwar <shubiisp8@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
+[ Upstream commit 031d6f608290c847ba6378322d0986d08d1a645a ]
 
-Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
-detection issue.
-
-The _LID device incorrectly returns the lid status as "closed" during
-boot, causing the system to enter a suspend loop right after booting.
-
-The quirk ensures that the correct lid state is reported initially,
-preventing the system from immediately suspending after startup.  It
-only addresses the initial lid state detection and ensures proper
-system behavior upon boot.
-
-Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
-Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
-[ rjw: Changelog edits ]
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/button.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/ntfs3/file.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -124,6 +124,17 @@ static const struct dmi_system_id dmi_li
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
- 	},
-+	{
-+		/*
-+		 * Samsung galaxybook2 ,initial _LID device notification returns
-+		 * lid closed.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-+	},
- 	{}
- };
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index f14d21b6c6d39..2ecd0303f9421 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1173,7 +1173,14 @@ static int ntfs_file_release(struct inode *inode, struct file *file)
+ 	/* If we are last writer on the inode, drop the block reservation. */
+ 	if (sbi->options->prealloc &&
+ 	    ((file->f_mode & FMODE_WRITE) &&
+-	     atomic_read(&inode->i_writecount) == 1)) {
++	     atomic_read(&inode->i_writecount) == 1)
++	   /*
++	    * The only file when inode->i_fop = &ntfs_file_operations and
++	    * init_rwsem(&ni->file.run_lock) is not called explicitly is MFT.
++	    *
++	    * Add additional check here.
++	    */
++	    && inode->i_ino != MFT_REC_MFT) {
+ 		ni_lock(ni);
+ 		down_write(&ni->file.run_lock);
  
+-- 
+2.43.0
+
 
 
 
