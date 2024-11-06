@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-90301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34A19BE7A1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A0B9BE8C2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 118941C23629
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AF8284291
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD721DF254;
-	Wed,  6 Nov 2024 12:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0501DF992;
+	Wed,  6 Nov 2024 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asNlw9wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHAwG+zL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5561DED58;
-	Wed,  6 Nov 2024 12:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFDB1DED58;
+	Wed,  6 Nov 2024 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895368; cv=none; b=KBRPRw0M5UTkYwzciqwpCF6X0IBeksC25yvMwPpYtfQ+mtM7VCs0Hl2fezljex5o1WjQ06XTdhqVbcx+i+cznqUMqkhEZqcoG8XdlT9t9v1NRGG8jPX/m+1bkqmfWzNavjybmaJXvyDMmzf+mCfnwGKbh82kYmlocmnwV8TagXI=
+	t=1730896045; cv=none; b=bDeZEJaaqrC+FnxqTrGr/3aIp4YxItgSDQkSeFo9hajsp7QCq/afElUQRNO3O1rrbtYhvs6g7ILXo9y4xE63BMcyAzj4tO3WG4B7UuXBbYfF/dyp4mObrc9ruGJUvIrm30REVmHD82QAT0qWdGnDsyeg7chp16ZK5h1bxXEucQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895368; c=relaxed/simple;
-	bh=Wk5EtdVoQwawsPv5c5xZ8cTfDqdZ7VIxRho5lEhdMbI=;
+	s=arc-20240116; t=1730896045; c=relaxed/simple;
+	bh=mfqrF43Pllih8y9OxZmjZJdPtltXQEyg2TDG470a59c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F18Q2+TYbQUGEnG6agNc+Cy5ssD4UJ6+w3lixe31IqVb+I2shoFNJUazW8rKeTJ9qxQi4DmWlxJG8KLJWYYZJovQv6sllov5e2IO8PSpRtBlAH0o6tzX2Nxg0OhkuoHxrBLXPMvWgbZfchcMXXjQXbcjq3BDA1+O8bbmDyVal70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asNlw9wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4DDC4CECD;
-	Wed,  6 Nov 2024 12:16:07 +0000 (UTC)
+	 MIME-Version; b=aKUYyV8kPB+nuexXmvUn8sC4ZuoxM0xC1EIN8gA4I2vAF70NbYaVvB2EEcZe/PQsw5HLzjWUsgdXLjaaI1D7Jc+HKBYwPSYm2ApEaGkgFXUzxs+UrFjKSJ3wG1iojZ3ZIRjF3b+1vYaiL5yPuIThQaCy+kmV8tPjWfRTJKvkbRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHAwG+zL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874CCC4CECD;
+	Wed,  6 Nov 2024 12:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895367;
-	bh=Wk5EtdVoQwawsPv5c5xZ8cTfDqdZ7VIxRho5lEhdMbI=;
+	s=korg; t=1730896044;
+	bh=mfqrF43Pllih8y9OxZmjZJdPtltXQEyg2TDG470a59c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asNlw9wXguiUgGvZHgQIjanpQSoTPfmCudW1awkENOGhMykqkHBM/maMFjkIRdvzD
-	 FQvKFgMsKdOc6x/EBcS/FUNie1k+FGJU1LTdK5Od4inLmKv5TrR5zf7pL0wVyk86E2
-	 hJtl+LP9Ns8notUEMKVSPI03xCdneBRH6KwB8M58=
+	b=dHAwG+zLTT6ivHEgA0NmmirllmzzHgeIQyliFZcxrzJMe2cen/O2dUJ9UzgzgUo5J
+	 n7iM6tvOUyszl+XbrDDa84TFQx+J76fU7Zbno+e2r7muRWhublwvepv0aAzQkCpST4
+	 4tqVRX+98DAKUORHVJ6m3PHgfCY3jj3JjwtRUHw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 194/350] parisc: Fix 64-bit userspace syscall path
-Date: Wed,  6 Nov 2024 13:02:02 +0100
-Message-ID: <20241106120325.760437872@linuxfoundation.org>
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 070/245] drm/mediatek: ovl: Remove the color format comment for ovl_fmt_convert()
+Date: Wed,  6 Nov 2024 13:02:03 +0100
+Message-ID: <20241106120320.929119023@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-commit d24449864da5838936669618356b0e30ca2999c3 upstream.
+[ Upstream commit 41607c3ceb0e527e0985387bc41bbf291dc9a3d8 ]
 
-Currently the glibc isn't yet ported to 64-bit for hppa, so
-there is no usable userspace available yet.
-But it's possible to manually build a static 64-bit binary
-and run that for testing. One such 64-bit test program is
-available at http://ftp.parisc-linux.org/src/64bit.tar.gz
-and it shows various issues with the existing 64-bit syscall
-path in the kernel.
-This patch fixes those issues.
+Since we changed MACROs to be consistent with DRM input color format
+naming, the comment for ovl_fmt_conver() is no longer needed.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org      # v4.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f428b95ac89 ("drm/mediatek: Add new color format MACROs in OVL")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20241009034646.13143-4-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/syscall.S |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -217,10 +217,10 @@ linux_gateway_entry:
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+index 9d6d9fd8342e4..4221206b994f1 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -379,11 +379,6 @@ void mtk_ovl_layer_off(struct device *dev, unsigned int idx,
  
- #ifdef CONFIG_64BIT
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -355,10 +355,10 @@ tracesys_next:
- 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
- 
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -930,6 +930,8 @@ ENTRY(sys_call_table)
- END(sys_call_table)
- 
- #ifdef CONFIG_64BIT
-+#undef __SYSCALL_WITH_COMPAT
-+#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
- 	.align 8
- ENTRY(sys_call_table64)
- #define SYSCALL_TABLE_64BIT
+ static unsigned int ovl_fmt_convert(struct mtk_disp_ovl *ovl, unsigned int fmt)
+ {
+-	/* The return value in switch "MEM_MODE_INPUT_FORMAT_XXX"
+-	 * is defined in mediatek HW data sheet.
+-	 * The alphabet order in XXX is no relation to data
+-	 * arrangement in memory.
+-	 */
+ 	switch (fmt) {
+ 	default:
+ 	case DRM_FORMAT_RGB565:
+-- 
+2.43.0
+
 
 
 
