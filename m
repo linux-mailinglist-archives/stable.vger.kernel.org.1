@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-91331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E65C9BED81
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31D69BED5D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 615DA1C240CB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2143E1C23F82
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D311E6DD5;
-	Wed,  6 Nov 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05301F9A8A;
+	Wed,  6 Nov 2024 13:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGYFMlEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttqWT5c+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976521E04A6;
-	Wed,  6 Nov 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF021F9A83;
+	Wed,  6 Nov 2024 13:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898420; cv=none; b=AwlfdF1BY2XXj25F4emqZQmexZB3ZPs7BTxSg3cvIYS53V60wGfVAZxrR5ruNr3+bbaWIup1xXZeMCvO3fIcv6NVO15ITP83xUXurBlchRnXo/lsLN5BsoP6b8hzRGm2osPmU8Js/2BJ9keG0Lys08F3qE8Ch/wwNCjH4nzLwMs=
+	t=1730898313; cv=none; b=AwkI6RlhI9n5b9ODP2i+D6yZ1NxyNgHyfSl62367BKFrZl67T6ENcQfE2RGi3SI9lvcgTz0p41eTptBpjwwPKkH+B+NB/msj0ziioZ9+yODAOVvhuD4Dst+1W+y1O1FVmGy4qHpwN7Ai2p1trgD+D+JSpkqHB9bp/uLXdMaa8sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898420; c=relaxed/simple;
-	bh=Jr1HD/EmXCZWn9nTa50OtWzV9DSsv03wKFo975lgZPw=;
+	s=arc-20240116; t=1730898313; c=relaxed/simple;
+	bh=YdekU1DT7K6X3MBZo5Cs9znTFVkqt1U3gOrxBq1CwwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyFH+rK/qH5fHZz28YkBELZkpA4Qi/jxFisvOWdwpl8SPNa/Ijx1vd/dDC0fZmbRS6OyWyZpLnQz0HYCACjQds4/Yb3o2vJnWCpmtgdR7MP+Yi0prMaImyh9ufKmSnz9QfoNhoAFrFWr2ZHau6dPyMQWmMrneC5Z694YpmvPMlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGYFMlEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F109C4CECD;
-	Wed,  6 Nov 2024 13:06:59 +0000 (UTC)
+	 MIME-Version; b=gDEBL3xCSuMX4dJB5e8lmYkIYgg5AZZgEW37+FcBzDMlhD2NDHnyIZzImASjinQs3+jmEOjJ3aYv/pAeo9BYxq5qcTuk7yX6IBMYuMjt/kjubESiTC3Y2orVY0ErObuZgKpgVrI4TPOoismA2tUX36VkovK75s9QL6kDNOtv/o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttqWT5c+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F7C4CECD;
+	Wed,  6 Nov 2024 13:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898420;
-	bh=Jr1HD/EmXCZWn9nTa50OtWzV9DSsv03wKFo975lgZPw=;
+	s=korg; t=1730898313;
+	bh=YdekU1DT7K6X3MBZo5Cs9znTFVkqt1U3gOrxBq1CwwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGYFMlEOqZAzJolWLq8jj4dL80zGuCB8BGEUlwTXZLdfALfE4FyCWnIO4wW01+Czn
-	 Yrv0e8qO9Ndmo2Pt6P46fSi4KzQLfng8W9jgRh2wqHwBHNmivwjbDD/BdP3KUs5bUU
-	 pYI48RRU+RfrjfR0qf1+wOw9l3HCR+kg3fseYCeQ=
+	b=ttqWT5c+EHa+4nJo7VgUWEw+t/h62BvEudgPgpQ0WPI5io+yi0OS69MaRs9sqNPjv
+	 C9fFBy7BbPwS221Asaz/XQfGgrziZhknZqLVUjXHTJoIyWv7u3TQlI3g7owwBPKQcg
+	 5g0llTHXOHW1tdhxzZZ1O8niiD2YMz5YJRE20Aos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.4 196/462] ice: Adjust over allocation of memory in ice_sched_add_root_node() and ice_sched_add_node()
-Date: Wed,  6 Nov 2024 13:01:29 +0100
-Message-ID: <20241106120336.356785183@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 197/462] net: hisilicon: hip04: fix OF node leak in probe()
+Date: Wed,  6 Nov 2024 13:01:30 +0100
+Message-ID: <20241106120336.382439215@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -69,58 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 62fdaf9e8056e9a9e6fe63aa9c816ec2122d60c6 ]
+[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
 
-In ice_sched_add_root_node() and ice_sched_add_node() there are calls to
-devm_kcalloc() in order to allocate memory for array of pointers to
-'ice_sched_node' structure. But incorrect types are used as sizeof()
-arguments in these calls (structures instead of pointers) which leads to
-over allocation of memory.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Adjust over allocation of memory by correcting types in devm_kcalloc()
-sizeof() arguments.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sched.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index 2fde9653a608f..d1c0ccee879bc 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -27,9 +27,8 @@ ice_sched_add_root_node(struct ice_port_info *pi,
- 	if (!root)
- 		return ICE_ERR_NO_MEMORY;
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
+index b5eae06dd8705..00ca5183f9c3e 100644
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
+@@ -955,6 +955,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
+ 	priv->tx_coalesce_timer.function = tx_done;
  
--	/* coverity[suspicious_sizeof] */
- 	root->children = devm_kcalloc(ice_hw_to_dev(hw), hw->max_children[0],
--				      sizeof(*root), GFP_KERNEL);
-+				      sizeof(*root->children), GFP_KERNEL);
- 	if (!root->children) {
- 		devm_kfree(ice_hw_to_dev(hw), root);
- 		return ICE_ERR_NO_MEMORY;
-@@ -181,10 +180,9 @@ ice_sched_add_node(struct ice_port_info *pi, u8 layer,
- 	if (!node)
- 		return ICE_ERR_NO_MEMORY;
- 	if (hw->max_children[layer]) {
--		/* coverity[suspicious_sizeof] */
- 		node->children = devm_kcalloc(ice_hw_to_dev(hw),
- 					      hw->max_children[layer],
--					      sizeof(*node), GFP_KERNEL);
-+					      sizeof(*node->children), GFP_KERNEL);
- 		if (!node->children) {
- 			devm_kfree(ice_hw_to_dev(hw), node);
- 			return ICE_ERR_NO_MEMORY;
+ 	priv->map = syscon_node_to_regmap(arg.np);
++	of_node_put(arg.np);
+ 	if (IS_ERR(priv->map)) {
+ 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
+ 		ret = PTR_ERR(priv->map);
 -- 
 2.43.0
 
