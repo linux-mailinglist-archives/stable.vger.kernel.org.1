@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D5F9BE724
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03AB9BECDC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85687B25B89
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57F428602A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F691DF25D;
-	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2961EE000;
+	Wed,  6 Nov 2024 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMVzaXbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6axh+n+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DED1DEFD3;
-	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42D61F7544;
+	Wed,  6 Nov 2024 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895059; cv=none; b=ofaE+mv1MxZGOBx54nSECFPVIOQ0LqSD196I8fv8BgVkKRCQ/S/+OAAmSkTLIq0yNcwQXW7C//zsA2CrECNAIjKj1pldID7qM6WTXcwiqdCcTlhikMFZi/bXTx42N8AEg01snZfcHMfp0TwKlrPTCWsaIROv9WC/DYuJ8n/EaFI=
+	t=1730898003; cv=none; b=Kfg4EQhrtiBZIf5sxYxxhKslY0x3jzuiE8PtxIX8ma391WBmWcUDtWwFhDF5r/+3Eo/QRj7Za6KDpByoVMSKSHBJgonMrcJ7KPavbdErnXf/cMLIhBso+8PfocwS8GnE2WIcArzVZTyixxUqxhikVVNqzsJabVFfIQ4gwUrgYFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895059; c=relaxed/simple;
-	bh=5UyWsTtuSpXq1KXKUCnRr9NQQy1wKXOQdzdxHOWSkrw=;
+	s=arc-20240116; t=1730898003; c=relaxed/simple;
+	bh=ctH3GDyP6ZD5+zgEJ4f7r2oY7ygvYVXyf4f6G776DUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQogJq3kpKVEhP6f2QlV01Zvlw2H/v9RmM9AuANMAxlVb+bSOdQDULE5rbmP6FKY4Dfc7OtevWSLW+e4ORSCgTNjMBxk0Evh/dqmMvQfXt7k/N4RkAV5MCEFw+/tFsIeO8rrs1oGBTrOkHPoJkkhjEmh+1uq3TMQGd1b/TzkUdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMVzaXbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371CBC4CED2;
-	Wed,  6 Nov 2024 12:10:59 +0000 (UTC)
+	 MIME-Version; b=F9x6tBqMLqT4iPkvj+CkS0t8hiLob3vXmKEebIIGRgsEZfVwRCKO2ObQe3ucpCs5MyePCk4/OkvTXJOlJTj1JvYjFhDKeU20UQmmJ5xsKHw3lAnMUSMOnRJ/doOK41NIvPvjFXBjmVgtUY1ZjDv0DO61UjbF1qqi0Ds2n7fHEjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6axh+n+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AD9C4CECD;
+	Wed,  6 Nov 2024 13:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895059;
-	bh=5UyWsTtuSpXq1KXKUCnRr9NQQy1wKXOQdzdxHOWSkrw=;
+	s=korg; t=1730898003;
+	bh=ctH3GDyP6ZD5+zgEJ4f7r2oY7ygvYVXyf4f6G776DUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMVzaXbsp/9oM5Yp0MVq46qQUARhjFemcm/PPaGFY8jdnBrufgXCF/fOEfitNNiOS
-	 w7NC6cOmC+VwaPDd4uV+aCoN6P5kAc+3u0dUYSibYdARMqsKHVulyPXsThZTPwTCTh
-	 lMVYdUdaZhuc3JwdBN+cj+eUbDDZ7K1iq/NJu+H0=
+	b=j6axh+n+wDz1Tbmd18L5IF8QE7cqBayl/81r5r/2B/4crN/Hs2K3+1vqQ1E8oLc+Y
+	 /C/Pc2Sk46dEibQHz5tkp8XFMJ+Zn7pmnwlsPXxfnoaJWICQ+dMfAw3qTr06JezEo1
+	 fvyNaFPgvIs/znNt5kHjAd4B7t9W9qqCQVY4XFCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 055/350] drm/radeon: properly handle vbios fake edid sizing
-Date: Wed,  6 Nov 2024 12:59:43 +0100
-Message-ID: <20241106120322.248344364@linuxfoundation.org>
+Subject: [PATCH 5.4 091/462] selftests/bpf: Fix error compiling test_lru_map.c
+Date: Wed,  6 Nov 2024 12:59:44 +0100
+Message-ID: <20241106120333.754961577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 17c6baff3d5f65c8da164137a58742541a060b2f ]
+[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
 
-The comment in the vbios structure says:
-// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
+Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
+the sequencing can raise compile errors, so move the increment outside the
+macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
 
-This fake edid struct has not been used in a long time, so I'm
-not sure if there were actually any boards out there with a non-128 byte
-EDID, but align the code with the comment.
+  In file included from test_lru_map.c:11:
+  test_lru_map.c: In function 'sched_next_online':
+  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
+    129 |                 CPU_SET(next++, &cpuset);
+        |                             ^
+  cc1: all warnings being treated as errors
 
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
-Fixes: c324acd5032f ("drm/radeon/kms: parse the extended LCD info block")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_atombios.c | 29 +++++++++++++-----------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
-index 0d11d6d1f5f0a..317843bd67d93 100644
---- a/drivers/gpu/drm/radeon/radeon_atombios.c
-+++ b/drivers/gpu/drm/radeon/radeon_atombios.c
-@@ -1727,26 +1727,29 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
- 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
- 					if (fake_edid_record->ucFakeEDIDLength) {
- 						struct edid *edid;
--						int edid_size =
--							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
--						edid = kmalloc(edid_size, GFP_KERNEL);
-+						int edid_size;
-+
-+						if (fake_edid_record->ucFakeEDIDLength == 128)
-+							edid_size = fake_edid_record->ucFakeEDIDLength;
-+						else
-+							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
-+						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
-+							       edid_size, GFP_KERNEL);
- 						if (edid) {
--							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
--							       fake_edid_record->ucFakeEDIDLength);
--
- 							if (drm_edid_is_valid(edid)) {
- 								rdev->mode_info.bios_hardcoded_edid = edid;
- 								rdev->mode_info.bios_hardcoded_edid_size = edid_size;
--							} else
-+							} else {
- 								kfree(edid);
-+							}
- 						}
-+						record += struct_size(fake_edid_record,
-+								      ucFakeEDIDString,
-+								      edid_size);
-+					} else {
-+						/* empty fake edid record must be 3 bytes long */
-+						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					}
--					record += fake_edid_record->ucFakeEDIDLength ?
--						  struct_size(fake_edid_record,
--							      ucFakeEDIDString,
--							      fake_edid_record->ucFakeEDIDLength) :
--						  /* empty fake edid record must be 3 bytes long */
--						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
+diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
+index 6a5349f9eb148..7748d28e8b97a 100644
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -137,7 +137,8 @@ static int sched_next_online(int pid, int *next_to_try)
+ 
+ 	while (next < nr_cpus) {
+ 		CPU_ZERO(&cpuset);
+-		CPU_SET(next++, &cpuset);
++		CPU_SET(next, &cpuset);
++		next++;
+ 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
+ 			ret = 0;
+ 			break;
 -- 
 2.43.0
 
