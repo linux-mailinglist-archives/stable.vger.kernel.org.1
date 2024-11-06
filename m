@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2649BE7B9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920B59BE8DA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AB001C23728
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53F01C221CE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D151DF252;
-	Wed,  6 Nov 2024 12:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4292D1DF726;
+	Wed,  6 Nov 2024 12:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngjUfCaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEE5gvMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF451DE8B4;
-	Wed,  6 Nov 2024 12:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ED61D2784;
+	Wed,  6 Nov 2024 12:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895427; cv=none; b=X4RDDIupO8gc8rjX0DWJUVWJjakbBjfjoeChWeyz9ZAc/YF2iRSklctOFgY6RWf0Qpt4ueJoPRzAq8a38KjQhS9CXyR834INxSwwoUv0QF1TmMt8WWOR5DyvqQJLaRJ7yOxD6+2jFQmYagYDq0YHISErnDOu0qUE+J4ZR4If8NM=
+	t=1730896072; cv=none; b=WWCNhj8TnoHD+tKq6+u2saPb9vmmkxdRrACxm3kHt9PIUmqnhS7nOWwQaocKGcVbtLQHEOhe+boJI0ZrA52RI4y4I+yRqHf8yFLlxLqarRg7Zj71nhPMALSUxx45FbfC948oFESkUhGFv0MeGLu/PvFv/zIDskscNMdxm0GmWh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895427; c=relaxed/simple;
-	bh=Npq0ejoPEzmE8HYcOO/rj+Akm9i6hopjFbLy5SrmgSA=;
+	s=arc-20240116; t=1730896072; c=relaxed/simple;
+	bh=UDAjR11ny07GW/+6XDvz2gPk/msbo0tzYe+ER9GAWVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpGrxdrrqJV1unZpBcMgOmI3EItUppRsRIC8PgHiBRUhwTzd8h28mmDBEJMB3RggsO6hFVlrG4tQFYMfJiUzugiUCjBrsWrYrDhdjCWvfwOdK96H2CXPqpUGP8sT3ZRrfEAU6VIwhWBGaMWRGi/mtnKR4gkENWl6dBjT2PQNsck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngjUfCaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26871C4CECD;
-	Wed,  6 Nov 2024 12:17:06 +0000 (UTC)
+	 MIME-Version; b=rCEAqSVI8LT+YOgFR1A1WZw3+keicA3MUejWwX+fj6s/XjHHJ9Kqwj3ZAcGnqeFI7lB0xPCq6yf91v/LJRWn48WEBMUT3Uez722hreL2Wabp2TEZ+jfVCRQDoWkHPyQ7f59E3p6chJWAX3/Qbj92eGfl1Hz+/XFrEKDs983/qzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEE5gvMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAFCC4CECD;
+	Wed,  6 Nov 2024 12:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895427;
-	bh=Npq0ejoPEzmE8HYcOO/rj+Akm9i6hopjFbLy5SrmgSA=;
+	s=korg; t=1730896071;
+	bh=UDAjR11ny07GW/+6XDvz2gPk/msbo0tzYe+ER9GAWVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngjUfCazgLoICKxaW2fjxP8WcYNAnW1iV9D+I7JWiu3ZloUAna8691u3Dalc7Q3+P
-	 SJEGgN4ZvLohFrz7PBYcD7v85AGsX1esyezB8AlKWvpPH5m7P05youjAfZsItK226h
-	 YaEhZrAXDqhqR4t+U9XgACtV3ZiCQOTNPhiZw4I4=
+	b=TEE5gvMgbb69Du9Yfe9tX/F1gBkMpZwbjf41/5BElQNssG9JlUsWKi2RxCRmtL76y
+	 5qaM1sBW5Z4fQ8OCUOb6sPk3ZgFI3kwh2lTCyJTB/oezKiMBh3xhXTQS6Z2jCEbj7B
+	 0XMAEMWlvnhvZx7SOiKv/J4LnxmrPBbai7rijnsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e38d703eeb410b17b473@syzkaller.appspotmail.com,
-	Remington Brasga <rbrasga@uci.edu>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 168/350] jfs: UBSAN: shift-out-of-bounds in dbFindBits
-Date: Wed,  6 Nov 2024 13:01:36 +0100
-Message-ID: <20241106120325.075232910@linuxfoundation.org>
+Subject: [PATCH 6.11 044/245] netfilter: nf_reject_ipv6: fix potential crash in nf_send_reset6()
+Date: Wed,  6 Nov 2024 13:01:37 +0100
+Message-ID: <20241106120320.311707810@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remington Brasga <rbrasga@uci.edu>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b0b2fc815e514221f01384f39fbfbff65d897e1c ]
+[ Upstream commit 4ed234fe793f27a3b151c43d2106df2ff0d81aac ]
 
-Fix issue with UBSAN throwing shift-out-of-bounds warning.
+I got a syzbot report without a repro [1] crashing in nf_send_reset6()
 
-Reported-by: syzbot+e38d703eeb410b17b473@syzkaller.appspotmail.com
-Signed-off-by: Remington Brasga <rbrasga@uci.edu>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+I think the issue is that dev->hard_header_len is zero, and we attempt
+later to push an Ethernet header.
+
+Use LL_MAX_HEADER, as other functions in net/ipv6/netfilter/nf_reject_ipv6.c.
+
+[1]
+
+skbuff: skb_under_panic: text:ffffffff89b1d008 len:74 put:14 head:ffff88803123aa00 data:ffff88803123a9f2 tail:0x3c end:0x140 dev:syz_tun
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 7373 Comm: syz.1.568 Not tainted 6.12.0-rc2-syzkaller-00631-g6d858708d465 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0d 8d 48 c7 c6 60 a6 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 ba 30 38 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc900045269b0 EFLAGS: 00010282
+RAX: 0000000000000088 RBX: dffffc0000000000 RCX: cd66dacdc5d8e800
+RDX: 0000000000000000 RSI: 0000000000000200 RDI: 0000000000000000
+RBP: ffff88802d39a3d0 R08: ffffffff8174afec R09: 1ffff920008a4ccc
+R10: dffffc0000000000 R11: fffff520008a4ccd R12: 0000000000000140
+R13: ffff88803123aa00 R14: ffff88803123a9f2 R15: 000000000000003c
+FS:  00007fdbee5ff6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000005d322000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  eth_header+0x38/0x1f0 net/ethernet/eth.c:83
+  dev_hard_header include/linux/netdevice.h:3208 [inline]
+  nf_send_reset6+0xce6/0x1270 net/ipv6/netfilter/nf_reject_ipv6.c:358
+  nft_reject_inet_eval+0x3b9/0x690 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  br_nf_pre_routing_ipv6+0x63e/0x770 net/bridge/br_netfilter_ipv6.c:184
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_bridge_pre net/bridge/br_input.c:277 [inline]
+  br_handle_frame+0x9fd/0x1530 net/bridge/br_input.c:424
+  __netif_receive_skb_core+0x13e8/0x4570 net/core/dev.c:5562
+  __netif_receive_skb_one_core net/core/dev.c:5666 [inline]
+  __netif_receive_skb+0x12f/0x650 net/core/dev.c:5781
+  netif_receive_skb_internal net/core/dev.c:5867 [inline]
+  netif_receive_skb+0x1e8/0x890 net/core/dev.c:5926
+  tun_rx_batched+0x1b7/0x8f0 drivers/net/tun.c:1550
+  tun_get_user+0x3056/0x47e0 drivers/net/tun.c:2007
+  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2053
+  new_sync_write fs/read_write.c:590 [inline]
+  vfs_write+0xa6d/0xc90 fs/read_write.c:683
+  ksys_write+0x183/0x2b0 fs/read_write.c:736
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdbeeb7d1ff
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 c9 8d 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 1c 8e 02 00 48
+RSP: 002b:00007fdbee5ff000 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fdbeed36058 RCX: 00007fdbeeb7d1ff
+RDX: 000000000000008e RSI: 0000000020000040 RDI: 00000000000000c8
+RBP: 00007fdbeebf12be R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000008e R11: 0000000000000293 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fdbeed36058 R15: 00007ffc38de06e8
+ </TASK>
+
+Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/netfilter/nf_reject_ipv6.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 1128bcdf5024a..9f731847ae634 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -3097,7 +3097,7 @@ static int dbFindBits(u32 word, int l2nb)
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 7db0437140bf2..9ae2b2725bf99 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -268,12 +268,12 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
+ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		    int hook)
+ {
+-	struct sk_buff *nskb;
+-	struct tcphdr _otcph;
+-	const struct tcphdr *otcph;
+-	unsigned int otcplen, hh_len;
+ 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
+ 	struct dst_entry *dst = NULL;
++	const struct tcphdr *otcph;
++	struct sk_buff *nskb;
++	struct tcphdr _otcph;
++	unsigned int otcplen;
+ 	struct flowi6 fl6;
  
- 	/* scan the word for nb free bits at nb alignments.
- 	 */
--	for (bitno = 0; mask != 0; bitno += nb, mask >>= nb) {
-+	for (bitno = 0; mask != 0; bitno += nb, mask = (mask >> nb)) {
- 		if ((mask & word) == mask)
- 			break;
- 	}
+ 	if ((!(ipv6_addr_type(&oip6h->saddr) & IPV6_ADDR_UNICAST)) ||
+@@ -312,9 +312,8 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (IS_ERR(dst))
+ 		return;
+ 
+-	hh_len = (dst->dev->hard_header_len + 15)&~15;
+-	nskb = alloc_skb(hh_len + 15 + dst->header_len + sizeof(struct ipv6hdr)
+-			 + sizeof(struct tcphdr) + dst->trailer_len,
++	nskb = alloc_skb(LL_MAX_HEADER + sizeof(struct ipv6hdr) +
++			 sizeof(struct tcphdr) + dst->trailer_len,
+ 			 GFP_ATOMIC);
+ 
+ 	if (!nskb) {
+@@ -327,7 +326,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 
+ 	nskb->mark = fl6.flowi6_mark;
+ 
+-	skb_reserve(nskb, hh_len + dst->header_len);
++	skb_reserve(nskb, LL_MAX_HEADER);
+ 	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
+ 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
+ 
 -- 
 2.43.0
 
