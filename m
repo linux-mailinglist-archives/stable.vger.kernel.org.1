@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9619BE8AF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB3A9BE790
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9059B21C1E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96B01F240BB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E00E1DF986;
-	Wed,  6 Nov 2024 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9681DEFF5;
+	Wed,  6 Nov 2024 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJ8CaZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xxi3wb4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D391DF251;
-	Wed,  6 Nov 2024 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20E51DED40;
+	Wed,  6 Nov 2024 12:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896001; cv=none; b=fEqRe1T2rU5I1YRUGvFdN5ZZ1ztHwXxtUix68daY56068qSxZutWzOqls4btjOJi9mnHSrisiZlJSO73AeD9ESetkXwUm5yZdtELFb8YiUPiBNuqlQBkPHttiTVEiaGN/v1T4oIBfc+j8qvCVpHcOe63J+1paaSQ6mA6x62HVjI=
+	t=1730895333; cv=none; b=IgomDF4bqMgp4WaNDu/8rL/+KCX56L/MDzZUP3g/Q7cwyBZTbhdk6hcOXrwnL3an0CosZtbx0iuL88+V8BLozsWdqriWgvZ9rnVHpGcONa8tOweNOP/bQLZvz8C+9OAB81P2nbcD/Z3PE+PGmTAtzJtnSSqccszv+BP95B/oODk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896001; c=relaxed/simple;
-	bh=EvGonwRU37Y0J6Si/LPiMpwPrTjwLnAlSl/fa3V6WMQ=;
+	s=arc-20240116; t=1730895333; c=relaxed/simple;
+	bh=qTQ3S5bh7Tde7ABu+v+yIyH4pSyf25JL2WmouV1M9VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNMqs5j/fmj+YdE/WDEfR3HDoq8dfKsmPWZWlzz7kZNNpCTCQ889UlOWRYpst30vLTUpqdRpADyViVsr29oBILx1Ab1694vLkNqeEz29g9sICBEpb/ZEKZ5YdIDFes+KXFU0KbaVcmnjZZbR6IrfvGVYyEhf+hwN1xAE4UNTVVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJ8CaZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A301FC4CECD;
-	Wed,  6 Nov 2024 12:26:40 +0000 (UTC)
+	 MIME-Version; b=TRdVzR7627+lvU78abrMAwvsjnxPeU9e9A1+LE0x6fUqILaivFb3KPiYBettln6kxRoPRodFWYK+nbSmlb8a9Yv+YC2DbLXO6nFduh0ZcIyDXMWPIniFZrTWwvkBK6KuX8BU8Rvu56xH4by0fFn36qmbMqjzDlvOKKZOxBPJK8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xxi3wb4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F43C4CECD;
+	Wed,  6 Nov 2024 12:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896001;
-	bh=EvGonwRU37Y0J6Si/LPiMpwPrTjwLnAlSl/fa3V6WMQ=;
+	s=korg; t=1730895332;
+	bh=qTQ3S5bh7Tde7ABu+v+yIyH4pSyf25JL2WmouV1M9VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJJ8CaZDQq9Rz0W4pw2JgKt21m/C4ggXZOh8voObBNN6eaO+uzV641TKo7x3tOGZ7
-	 U3wSyCRhdCLOKAY7QfifkqNMAjIypG2ta9AIhxNOR5ATyh5ZjdJhCAYU1mrJfBWuiA
-	 kDxnkUnvLTiZr2/HPr4/i+8AV2ZOVarbGjin1o0Y=
+	b=Xxi3wb4RYpW80v1i5zLalVKlLTpw1M/MHQl7ZTk50StVYQ8Ha9Y2Vix0JQkDBz/j2
+	 /sVDGmNADUwe7p6hg79H2b025DnedhE1njRCzzqKrl/C3ah720SWxar0nt8WfupQVV
+	 o5WRVlOGrC6SS1fnvghAcLe90WWKAgeuQGHedb7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 057/245] iomap: improve shared block detection in iomap_unshare_iter
-Date: Wed,  6 Nov 2024 13:01:50 +0100
-Message-ID: <20241106120320.616048895@linuxfoundation.org>
+	Robert Hancock <robert.hancock@calian.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 4.19 183/350] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
+Date: Wed,  6 Nov 2024 13:01:51 +0100
+Message-ID: <20241106120325.464220306@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Robert Hancock <robert.hancock@calian.com>
 
-[ Upstream commit b53fdb215d13f8e9c29541434bf2d14dac8bcbdc ]
+commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
 
-Currently iomap_unshare_iter relies on the IOMAP_F_SHARED flag to detect
-blocks to unshare.  This is reasonable, but IOMAP_F_SHARED is also useful
-for the file system to do internal book keeping for out of place writes.
-XFS used to that, until it got removed in commit 72a048c1056a
-("xfs: only set IOMAP_F_SHARED when providing a srcmap to a write")
-because unshare for incorrectly unshare such blocks.
+Frequently an I2C write will be followed by a read, such as a register
+address write followed by a read of the register value. In this driver,
+when the TX FIFO half empty interrupt was raised and it was determined
+that there was enough space in the TX FIFO to send the following read
+command, it would do so without waiting for the TX FIFO to actually
+empty.
 
-Add an extra safeguard by checking the explicitly provided srcmap instead
-of the fallback to the iomap for valid data, as that catches the case
-where we'd just copy from the same place we'd write to easily, allowing
-to reinstate setting IOMAP_F_SHARED for all XFS writes that go to the
-COW fork.
+Unfortunately it appears that in some cases this can result in a NAK
+that was raised by the target device on the write, such as due to an
+unsupported register address, being ignored and the subsequent read
+being done anyway. This can potentially put the I2C bus into an
+invalid state and/or result in invalid read data being processed.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240910043949.3481298-3-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid this, once a message has been fully written to the TX FIFO,
+wait for the TX FIFO empty interrupt before moving on to the next
+message, to ensure NAKs are handled properly.
+
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 8e6edb6628183..d38e52a645888 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1337,16 +1337,25 @@ EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
- static loff_t iomap_unshare_iter(struct iomap_iter *iter)
- {
- 	struct iomap *iomap = &iter->iomap;
--	const struct iomap *srcmap = iomap_iter_srcmap(iter);
- 	loff_t pos = iter->pos;
- 	loff_t length = iomap_length(iter);
- 	loff_t written = 0;
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -478,14 +478,17 @@ static irqreturn_t xiic_process(int irq,
+ 			goto out;
+ 		}
  
--	/* don't bother with blocks that are not shared to start with */
-+	/* Don't bother with blocks that are not shared to start with. */
- 	if (!(iomap->flags & IOMAP_F_SHARED))
- 		return length;
--	/* don't bother with holes or unwritten extents */
--	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
-+
-+	/*
-+	 * Don't bother with holes or unwritten extents.
-+	 *
-+	 * Note that we use srcmap directly instead of iomap_iter_srcmap as
-+	 * unsharing requires providing a separate source map, and the presence
-+	 * of one is a good indicator that unsharing is needed, unlike
-+	 * IOMAP_F_SHARED which can be set for any data that goes into the COW
-+	 * fork for XFS.
-+	 */
-+	if (iter->srcmap.type == IOMAP_HOLE ||
-+	    iter->srcmap.type == IOMAP_UNWRITTEN)
- 		return length;
- 
- 	do {
--- 
-2.43.0
-
+-		xiic_fill_tx_fifo(i2c);
+-
+-		/* current message sent and there is space in the fifo */
+-		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
++		if (xiic_tx_space(i2c)) {
++			xiic_fill_tx_fifo(i2c);
++		} else {
++			/* current message fully written */
+ 			dev_dbg(i2c->adap.dev.parent,
+ 				"%s end of message sent, nmsgs: %d\n",
+ 				__func__, i2c->nmsgs);
+-			if (i2c->nmsgs > 1) {
++			/* Don't move onto the next message until the TX FIFO empties,
++			 * to ensure that a NAK is not missed.
++			 */
++			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
+ 				i2c->nmsgs--;
+ 				i2c->tx_msg++;
+ 				xfer_more = 1;
+@@ -496,11 +499,7 @@ static irqreturn_t xiic_process(int irq,
+ 					"%s Got TX IRQ but no more to do...\n",
+ 					__func__);
+ 			}
+-		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
+-			/* current frame is sent and is last,
+-			 * make sure to disable tx half
+-			 */
+-			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
++		}
+ 	}
+ out:
+ 	dev_dbg(i2c->adap.dev.parent, "%s clr: 0x%x\n", __func__, clr);
 
 
 
