@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-90130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661189BE6D7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DC19BECBF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D0E2828BD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3D71C23D07
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E276A1DF27C;
-	Wed,  6 Nov 2024 12:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497C61EABDB;
+	Wed,  6 Nov 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXoRkAFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/I7oGK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1051DF257;
-	Wed,  6 Nov 2024 12:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566B1E7C1A;
+	Wed,  6 Nov 2024 12:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894860; cv=none; b=E/axKoF7ECQUcms4YrLg3iiz+26wNZu4SQ8XG0fJ5B/Y7OMYL0qBLEfUmernCzUVD2tjYBwk2oI0eNRhnGRyL0BJ1Uh5pzAf0Z/COtddkqGvMGvEgUgMSKZyR8cnyR4JRX0wZsqgqZAjJxaMSkZaDFLP4WXUd/kt/XgSQLQkPKg=
+	t=1730897916; cv=none; b=RfOZJFkLOwjf6jtvbZAgkbmr+940xJxWyK7JVDrVWdfon1HW6BJHT2o1dLCs3cLEtYeUUtXnL701SCa/E3pkR78LWllmLCKbeWBH4Y3L5rAgXYO6P4vlGzeY1B/RQFWSZuW4Ou5Uyr4Qzn5NLSFP8SfSypKnD1RhgvVvg+aeShE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894860; c=relaxed/simple;
-	bh=bZuLPjgXXn1S5PUo2SXTan5j0vRlSTcj+jO8hGvR6Cw=;
+	s=arc-20240116; t=1730897916; c=relaxed/simple;
+	bh=8Iwo7gibWiRQWpEiCqYIwfop++yilqIMUwD269WStFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwKdGvds550rg51NFIkYvc7WXt0vEE8f7GO8GKs9IJrime4r5Oa056fVLSNVrCltx3kRS/EOmGx/zqZ9WruFlybChWufXSzqTLe2zUZ0W/l2yceEKX8r4xI4aH3WB0p+aKNxETRN0Bc7O/qPq1jNwNZvxAzzIFYDgz6dEEitiqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXoRkAFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB276C4CECD;
-	Wed,  6 Nov 2024 12:07:39 +0000 (UTC)
+	 MIME-Version; b=dzyboUQd3CT/T/xfNkjOpjNgfeZLn/Sauu61aA3rxxIrJMx3eHrURgXDDkvco78fqSmLiD1SP7kTpsH5F7YxAj0tJKf8DF3BYEpJS2sB5XBylVqD/vsyhim5Nbrs9BcfmVi82BThYPcbDQ6Vi5hCVpTSDTtmJ+BwqtQUYNSapEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/I7oGK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DC3C4CECD;
+	Wed,  6 Nov 2024 12:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894860;
-	bh=bZuLPjgXXn1S5PUo2SXTan5j0vRlSTcj+jO8hGvR6Cw=;
+	s=korg; t=1730897915;
+	bh=8Iwo7gibWiRQWpEiCqYIwfop++yilqIMUwD269WStFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXoRkAFGbugprZoPYzdVP9y5e7LIQ2IZlO1Q43BfxLlkAVxfG/3ycQVWVtLYWl64U
-	 Akrx6iveU2ZwrWpWXxiSLbwVVDTQ0a1gJwROG6yDQKc3IO60GdLfCmLpRlI3yyJQhs
-	 rI2NDTn1Br0tDW6ZN6LvMw4hprZ/eMQ2OkyU8lfM=
+	b=1/I7oGK+/7LBJbsFEv921BMpr0uAn6c0R42IuMuMUdDiG+V9pFuVTE6Wh/Tnp4QdI
+	 B4omB3Q9lPoE/xX3LIu+0Rn2Aa+X1ILEZtGdPQVVuJg0VXpgZ7g3/4hZFovKBm5rg7
+	 kmCQrhBpNPi9JguDO6rVlfRAHfVHJ+2lwCqnSl8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	lei lu <llfamsec@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Jun Piao <piaojun@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 025/350] ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
-Date: Wed,  6 Nov 2024 12:59:13 +0100
-Message-ID: <20241106120321.499530892@linuxfoundation.org>
+Subject: [PATCH 5.4 061/462] hwmon: (max16065) Fix overflows seen when writing limits
+Date: Wed,  6 Nov 2024 12:59:14 +0100
+Message-ID: <20241106120333.022024706@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit af77c4fc1871847b528d58b7fdafb4aa1f6a9262 ]
+[ Upstream commit 744ec4477b11c42e2c8de9eb8364675ae7a0bd81 ]
 
-xattr in ocfs2 maybe 'non-indexed', which saved with additional space
-requested.  It's better to check if the memory is out of bound before
-memcmp, although this possibility mainly comes from crafted poisonous
-images.
+Writing large limits resulted in overflows as reported by module tests.
 
-Link: https://lkml.kernel.org/r/20240520024024.1976129-2-joseph.qi@linux.alibaba.com
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+in0_lcrit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_crit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_min: Suspected overflow: [max=5538, read 0, written 2147483647]
+
+Fix the problem by clamping prior to multiplications and the use of
+DIV_ROUND_CLOSEST, and by using consistent variable types.
+
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/xattr.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/hwmon/max16065.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 8ec85c2503f23..bf00c7d4282b2 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -1082,7 +1082,7 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- {
- 	struct ocfs2_xattr_entry *entry;
- 	size_t name_len;
--	int i, cmp = 1;
-+	int i, name_offset, cmp = 1;
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 49b7e0b6d1bbe..5d0ecc8d56af1 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -114,9 +114,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
+ 	return limit * range / 256;
+ }
  
- 	if (name == NULL)
- 		return -EINVAL;
-@@ -1097,10 +1097,15 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- 		cmp = name_index - ocfs2_xattr_get_type(entry);
- 		if (!cmp)
- 			cmp = name_len - entry->xe_name_len;
--		if (!cmp)
--			cmp = memcmp(name, (xs->base +
--				     le16_to_cpu(entry->xe_name_offset)),
--				     name_len);
-+		if (!cmp) {
-+			name_offset = le16_to_cpu(entry->xe_name_offset);
-+			if ((xs->base + name_offset + name_len) > xs->end) {
-+				ocfs2_error(inode->i_sb,
-+					    "corrupted xattr entries");
-+				return -EFSCORRUPTED;
-+			}
-+			cmp = memcmp(name, (xs->base + name_offset), name_len);
-+		}
- 		if (cmp == 0)
- 			break;
- 		entry += 1;
+-static inline int MV_TO_LIMIT(int mv, int range)
++static inline int MV_TO_LIMIT(unsigned long mv, int range)
+ {
+-	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
++	mv = clamp_val(mv, 0, ULONG_MAX / 256);
++	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
+ }
+ 
+ static inline int ADC_TO_CURR(int adc, int gain)
 -- 
 2.43.0
 
