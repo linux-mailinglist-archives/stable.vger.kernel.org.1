@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9339BEB94
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD3C9BEB0C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D188AB24102
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F20F1C20BCC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828461D86E8;
-	Wed,  6 Nov 2024 12:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC65B1E1C37;
+	Wed,  6 Nov 2024 12:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivHn3XCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeX6oAnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2F21DB520;
-	Wed,  6 Nov 2024 12:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7768F204F85;
+	Wed,  6 Nov 2024 12:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897159; cv=none; b=A0CnbPzNuVWZr+YEsKGjn4xonK2bZeN7sNZ+HMOrdt7YsILu0pQLI0us5lu7gB108trwVz7vPG26fT09vP+nVIDqEAkkUHwa+7vlPFgwOtgubIulrl4TNIQTJYLO4buaOjivPGIXSu3ESBBkZvBBk5Lw3g/CabMpIm4lNzPkkLc=
+	t=1730896818; cv=none; b=I0Rg/JJACzKkOo7ksn3iHv9aXw7DW7E2+grykELKeVcWGFpjMKiIaeKMhAOHtlxTpVspzKwTpGEMBUUWrQ/xjhAyQrePLidDFebmQjxUkuqFFaT0XOBGLZ4JN9OTi55ImrYKncw+e/XRbaKpDzNxji90E6L+HaAjMnZ4dMF+D34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897159; c=relaxed/simple;
-	bh=iqj50jDUMNtjBXUGVmiNLq4LBDUk7N/89JQch0YMgIM=;
+	s=arc-20240116; t=1730896818; c=relaxed/simple;
+	bh=jOFIL3t70iBOeQjmsm4zijHh81e4aTWf8Zr9mgoOZVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcKv20ovTPueJzHnJ84rdCL+cEDOIHTr48wVSJjR2xjEt6e2l8hCzNOlmUWB+aXZ/alVz93wH137cYAYSO+Ax8HmF4FjUL96STrotC8QbgznMEMeM5dcf8I+yLCVA/RaU9YQujiQdl9NYJnRxAuJ+oxn2OmzT1Cmh4tDzpC+DLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivHn3XCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BB9C4CECD;
-	Wed,  6 Nov 2024 12:45:58 +0000 (UTC)
+	 MIME-Version; b=q9znwCcHbLOUscb/C0lr7fx6LZr5/D0E//bOr1JTP77pK1s5aZDUNszhHKKDiVJ5i7LGmY7tgEG8XRN/3CTWmcAZ5YfhSE7tgAqjM6jvHXJ1rL8ostZVBGfYZ8+nlz4MZm6XG0fDCpvPMarpk9FQ30ObtqCpCKnaWGK1f8aBFWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeX6oAnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F021AC4CED3;
+	Wed,  6 Nov 2024 12:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897159;
-	bh=iqj50jDUMNtjBXUGVmiNLq4LBDUk7N/89JQch0YMgIM=;
+	s=korg; t=1730896818;
+	bh=jOFIL3t70iBOeQjmsm4zijHh81e4aTWf8Zr9mgoOZVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivHn3XCQCQW/LuxyH+61Feb4x/INBFVfPJsTYv3GJNzP4bUwuEkn+4/GpUP/jMLwU
-	 w/svOd0zzxXz4Hi8tR1FrJGsPRgvNpYZUbHi3F1LddlAvPYQO0tb2W8h76VgmAtLBH
-	 8+xi8Wt8nb0RCGffZTPp3HGsF7SrIWIjmNmEp0NQ=
+	b=jeX6oAnNknWF1dIG/j568kVHXU9HmgUYSufKiXdhe4pour3kn2+bcighq3fmgMTv0
+	 IH1NuUFIGCbNtutP1C+r1tqKnoCC4jg3+T3IPBL89e1R+gwgLs3EngVqBJZt7szyuD
+	 Pt0btx8xak14vFBGj6RaaLgxD2OTQyll4t3Cm6oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/126] riscv: Remove duplicated GET_RM
-Date: Wed,  6 Nov 2024 13:04:48 +0100
-Message-ID: <20241106120308.423051291@linuxfoundation.org>
+Subject: [PATCH 5.10 083/110] NFS: remove revoked delegation from servers delegation list
+Date: Wed,  6 Nov 2024 13:04:49 +0100
+Message-ID: <20241106120305.481332845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 164f66de6bb6ef454893f193c898dc8f1da6d18b ]
+[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
 
-The macro GET_RM defined twice in this file, one can be removed.
+After the delegation is returned to the NFS server remove it
+from the server's delegations list to reduce the time it takes
+to scan this list.
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241008094141.549248-3-zhangchunyan@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Network trace captured while running the below script shows the
+time taken to service the CB_RECALL increases gradually due to
+the overhead of traversing the delegation list in
+nfs_delegation_find_inode_server.
+
+The NFS server in this test is a Solaris server which issues
+CB_RECALL when receiving the all-zero stateid in the SETATTR.
+
+mount=/mnt/data
+for i in $(seq 1 20)
+do
+   echo $i
+   mkdir $mount/testtarfile$i
+   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
+done
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/nfs/delegation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 5348d842c7453..3d16cc803220e 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -132,8 +132,6 @@
- #define REG_PTR(insn, pos, regs)	\
- 	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index c15188d0b6b33..02d9af026ad15 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -960,6 +960,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
+ 	}
  
--#define GET_RM(insn)			(((insn) >> 12) & 7)
--
- #define GET_RS1(insn, regs)		(*REG_PTR(insn, SH_RS1, regs))
- #define GET_RS2(insn, regs)		(*REG_PTR(insn, SH_RS2, regs))
- #define GET_RS1S(insn, regs)		(*REG_PTR(RVC_RS1S(insn), 0, regs))
+ 	nfs_mark_delegation_revoked(delegation);
++	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
++	spin_unlock(&delegation->lock);
++	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
++		nfs_put_delegation(delegation);
++	goto out_rcu_unlock;
+ 
+ out_clear_returning:
+ 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
 -- 
 2.43.0
 
