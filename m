@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D278F9BE8B1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC12C9BE791
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9723928302D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED64D1C235F6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164F01DF736;
-	Wed,  6 Nov 2024 12:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B31D1DED7B;
+	Wed,  6 Nov 2024 12:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvhL75Hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9XrLSa6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98301DED58;
-	Wed,  6 Nov 2024 12:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8821DE8A2;
+	Wed,  6 Nov 2024 12:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896012; cv=none; b=CJzpYAtNn8TPlajjbpKXbQHEm8gHKwLXmMlpVJxTAlPrpJOieBju93cH9LrnbobX3NgBtY+03v7vEuaLqyns2BPYwHNYR2COKl+HxQjJOpuU1zDcLudQ4swMXjhJbq7reDbplf+ZjbIGO68Kc2ctVTBcJhGyeYQ84KJJvIkoQXM=
+	t=1730895339; cv=none; b=M6cfiP7FdUexlSB4Oy0Jru7MKavkJYHAM/2D5cn8p870fNlqRlD+ZZZ00om9nIN7Y/1nawSyADDL5gToyML2kEyoSMAQVQhaePlYrw0WTcLizUPnVtBRNFJ+EmdQS+h1VhIGza91b49NkqG+kqC3RWF0CIiOkaSsVHQgwq7n5dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896012; c=relaxed/simple;
-	bh=0U3XUqH3A5ouYA9Juk7pjqRvx2c69tQbZYhP9mf2jfg=;
+	s=arc-20240116; t=1730895339; c=relaxed/simple;
+	bh=mpEqja8a8kEOOewZVWivjb3M61gQw/J3MBG1PDe2IFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/H4VbrYnKGhpOhs/1wJO8mGEPwfDjpStCU6G/ThBewEeWOaGDvTPjHPbwI+oFuY8LmYPkeiTINTb+Qtq0VDKLnvpyHRU3YoSmfW8Dn5yeMihkJ563U1782Zs1jpuKulpqbs4uGn57lYJAsjj7QEC7OdibYj+X2nH6unIC+QeiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvhL75Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D716C4CECD;
-	Wed,  6 Nov 2024 12:26:52 +0000 (UTC)
+	 MIME-Version; b=pnZ0oH0vxgK6sM8VsgXxnJrCAUJ2j3fFjhhB6gVxPXDk2gnVqufKKxgHzQapcdgcx6pdDM3o97YZEYAgjju6QwikwFKh4kMMEeLs83lc9V2IivP3+E860bOKFmmHCo9XvGvn3SmF9kM6GtgLK0Pl6Wa7va3Jg5OIsuW+V/wIMWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9XrLSa6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDFFC4CECD;
+	Wed,  6 Nov 2024 12:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896012;
-	bh=0U3XUqH3A5ouYA9Juk7pjqRvx2c69tQbZYhP9mf2jfg=;
+	s=korg; t=1730895338;
+	bh=mpEqja8a8kEOOewZVWivjb3M61gQw/J3MBG1PDe2IFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvhL75HvWBSgCnV45Riam630AkO238xxedVKAPoDv3WXU99fGta5fwIYYV5p3uQ/P
-	 u9AOWTm7fJvP5iKYqojFMnsLLr/umqh9NKUroUp/jrQoYJbEOgR/BEYPsWPvyrW4sb
-	 9H9tGW+BY9krDM3VzNwX0mzVCxHEKKm9sURoX6Qw=
+	b=t9XrLSa6YlK74GlD+baQa8MH3ISCFabSo9371Agt3RegcTom2E1C3rjw02J6MOH9j
+	 U3p5nY5C7aT4bAR7ZXMDMKBqF2d5AyKh3qHnKPw17vzSXzaq6kszyWhB7iVs0oDGFd
+	 kUdZxqrQ1Ygcpx/4kkk4vl8iRKrHewx12hhsOpRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ruansy.fnst@fujitsu.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 060/245] fsdax: remove zeroing code from dax_unshare_iter
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 4.19 185/350] perf/core: Fix small negative period being ignored
 Date: Wed,  6 Nov 2024 13:01:53 +0100
-Message-ID: <20241106120320.685604600@linuxfoundation.org>
+Message-ID: <20241106120325.516935321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit 95472274b6fed8f2d30fbdda304e12174b3d4099 ]
+commit 62c0b1061593d7012292f781f11145b2d46f43ab upstream.
 
-Remove the code in dax_unshare_iter that zeroes the destination memory
-because it's not necessary.
+In perf_adjust_period, we will first calculate period, and then use
+this period to calculate delta. However, when delta is less than 0,
+there will be a deviation compared to when delta is greater than or
+equal to 0. For example, when delta is in the range of [-14,-1], the
+range of delta = delta + 7 is between [-7,6], so the final value of
+delta/8 is 0. Therefore, the impact of -1 and -2 will be ignored.
+This is unacceptable when the target period is very short, because
+we will lose a lot of samples.
 
-If srcmap is unwritten, we don't have to do anything because that
-unwritten extent came from the regular file mapping, and unwritten
-extents cannot be shared.  The same applies to holes.
+Here are some tests and analyzes:
+before:
+  # perf record -e cs -F 1000  ./a.out
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.022 MB perf.data (518 samples) ]
 
-Furthermore, zeroing to unshare a mapping is just plain wrong because
-unsharing means copy on write, and we should be copying data.
+  # perf script
+  ...
+  a.out     396   257.956048:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.957891:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.959730:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.961545:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.963355:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.965163:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.966973:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.968785:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.970593:         23 cs:  ffffffff81f4eeec schedul>
+  ...
 
-This is effectively a revert of commit 13dd4e04625f ("fsdax: unshare:
-zero destination if srcmap is HOLE or UNWRITTEN")
+after:
+  # perf record -e cs -F 1000  ./a.out
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.058 MB perf.data (1466 samples) ]
 
-Cc: ruansy.fnst@fujitsu.com
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/172796813311.1131942.16033376284752798632.stgit@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 50793801fc7f ("fsdax: dax_unshare_iter needs to copy entire blocks")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # perf script
+  ...
+  a.out     395    59.338813:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.339707:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.340682:         13 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.341751:         13 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.342799:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.343765:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.344651:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.345539:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.346502:         13 cs:  ffffffff81f4eeec schedul>
+  ...
+
+test.c
+
+int main() {
+        for (int i = 0; i < 20000; i++)
+                usleep(10);
+
+        return 0;
+}
+
+  # time ./a.out
+  real    0m1.583s
+  user    0m0.040s
+  sys     0m0.298s
+
+The above results were tested on x86-64 qemu with KVM enabled using
+test.c as test program. Ideally, we should have around 1500 samples,
+but the previous algorithm had only about 500, whereas the modified
+algorithm now has about 1400. Further more, the new version shows 1
+sample per 0.001s, while the previous one is 1 sample per 0.002s.This
+indicates that the new algorithm is more sensitive to small negative
+values compared to old algorithm.
+
+Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240831074316.2106159-2-luogengkun@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dax.c | 8 --------
- 1 file changed, 8 deletions(-)
+ kernel/events/core.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 5064eefb1c1e4..9fbbdaa784b43 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1276,14 +1276,6 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
- 	if (ret < 0)
- 		goto out_unlock;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -3618,7 +3618,11 @@ static void perf_adjust_period(struct pe
+ 	period = perf_calculate_period(event, nsec, count);
  
--	/* zero the distance if srcmap is HOLE or UNWRITTEN */
--	if (srcmap->flags & IOMAP_F_SHARED || srcmap->type == IOMAP_UNWRITTEN) {
--		memset(daddr, 0, length);
--		dax_flush(iomap->dax_dev, daddr, length);
--		ret = length;
--		goto out_unlock;
--	}
--
- 	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
- 	if (ret < 0)
- 		goto out_unlock;
--- 
-2.43.0
-
+ 	delta = (s64)(period - hwc->sample_period);
+-	delta = (delta + 7) / 8; /* low pass filter */
++	if (delta >= 0)
++		delta += 7;
++	else
++		delta -= 7;
++	delta /= 8; /* low pass filter */
+ 
+ 	sample_period = hwc->sample_period + delta;
+ 
 
 
 
