@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A276F9BE758
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B509BE89A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A9F81F24BE5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642712810AA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE81F1DF254;
-	Wed,  6 Nov 2024 12:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A631DFD89;
+	Wed,  6 Nov 2024 12:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYq+3057"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j91JaHqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2241D416E;
-	Wed,  6 Nov 2024 12:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0032B1DF252;
+	Wed,  6 Nov 2024 12:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895196; cv=none; b=SnxaD1BU5mXwxYrY+mB2pdKaKASl5vNhTljQzdOCaddDMIiDChkVLTuiKoW1wc9o4m0ZRyL7o7fyLGdDtd61bQ2xsvNgNXcDYeldZlMjdpjrnZ1BpZDxMqqa3Jly/Dg13op6JTm77WLr4OzmZcQ1ZD82xPjoQgEA/21hoCbjiAM=
+	t=1730895951; cv=none; b=mhPdmRdTs3dFMfpRQdy+x70zUc6Cn5H9l+8HD7+0l4rK/T3UTZtieNpGsPtn+UMvzPZmhgHJq565Mt2t+r6qLxqENcb64+q1sQypCQSJGH+PCqTAtEfLaArwcQHEka3hLXOE6bP+FApbA8Lt3Nk7MuJWuOG/giJqWvXWYlyfBUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895196; c=relaxed/simple;
-	bh=SD7ySQzJaN08FsUfXKr2J+BV3BP5z7JeMbyLRenusf4=;
+	s=arc-20240116; t=1730895951; c=relaxed/simple;
+	bh=eR+R1e0kwLrWpPnOkUC+7b13PpmDdEXPm5qUTZVx0/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUPGf79aTZ9K80Ucs/8J0jq52+rgmmhRz/ce/qZ+9eQ9t39LPcXdXd4jhtpMNhA3y+3nphvJRYr4UW/TkE9gOdXqMlNC+ZvFQ7jjMfKo1foFM3P2PTMJV1hyH+ao3hmQpja3mmqqwAwNQjJZ4rB4TJ7hwbMiTnLjMJ8r5K8q4K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYq+3057; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA8BC4CECD;
-	Wed,  6 Nov 2024 12:13:15 +0000 (UTC)
+	 MIME-Version; b=ptUO/fz+N9BK3dKjvPdSYuebfFK0GixsjMW/QXKFk7KJWXFrYy6MlAgwphQggFzFR35jjuCeIlio8Onhueiw4eOZv04pwvov+Ip1LP3xw2P2jzw1vWY+EvbGqQ8peZJUNcJftr3WEfsjoMqdFbIp8wwZXY5G1TrPXU8JnNR7uz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j91JaHqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B04BC4CECD;
+	Wed,  6 Nov 2024 12:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895196;
-	bh=SD7ySQzJaN08FsUfXKr2J+BV3BP5z7JeMbyLRenusf4=;
+	s=korg; t=1730895950;
+	bh=eR+R1e0kwLrWpPnOkUC+7b13PpmDdEXPm5qUTZVx0/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYq+3057l1gjH+ulImZqYqD2rYvGDCma+SgKatGIdUGAcFM3/xCexl7J92/jLBEc7
-	 UbcvK0WopWXlh+8fN1SonZDtrietqDtQMWpHaZ4EMdIs46k3zRr2folTnYQbmb0QB6
-	 Z39ks850Jgu50m++8Gdq0PdNDL8NYprmAbXYcvMc=
+	b=j91JaHqVkxPSjic8pYgNWth71n12PxZ9G7n7ZvjWrMAIjvVfVTcV9mfROaRa+KB08
+	 Iib5EjMNZ/goGbmkkc6hvuEv4Y4KpGh1tzipjSTM2bC58phnHvaNGVMf6puiaAcLUf
+	 AULc9Z4uQwVR/cRfnKmnivUAVig9Ugw9zNA+nyfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommy Huang <tommy_huang@aspeedtech.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 4.19 129/350] i2c: aspeed: Update the stop sw state when the bus recovery occurs
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 004/245] spi: geni-qcom: Fix boot warning related to pm_runtime and devres
 Date: Wed,  6 Nov 2024 13:00:57 +0100
-Message-ID: <20241106120324.092598147@linuxfoundation.org>
+Message-ID: <20241106120319.351159236@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommy Huang <tommy_huang@aspeedtech.com>
+From: Georgi Djakov <djakov@kernel.org>
 
-commit 93701d3b84ac5f3ea07259d4ced405c53d757985 upstream.
+[ Upstream commit d0ccf760a405d243a49485be0a43bd5b66ed17e2 ]
 
-When the i2c bus recovery occurs, driver will send i2c stop command
-in the scl low condition. In this case the sw state will still keep
-original situation. Under multi-master usage, i2c bus recovery will
-be called when i2c transfer timeout occurs. Update the stop command
-calling with aspeed_i2c_do_stop function to update master_state.
+During boot, users sometimes observe the following warning:
 
-Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
-Cc: stable@vger.kernel.org # v4.13+
-Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[7.841431] WARNING: CPU: 4 PID: 492 at
+drivers/interconnect/core.c:685 __icc_enable
+(drivers/interconnect/core.c:685 (discriminator 7))
+[..]
+[7.841541] Call trace:
+[7.841542] __icc_enable (drivers/interconnect/core.c:685 (discriminator 7))
+[7.841545] icc_disable (drivers/interconnect/core.c:708)
+[7.841547] geni_icc_disable (drivers/soc/qcom/qcom-geni-se.c:862)
+[7.841553] spi_geni_runtime_suspend+0x3c/0x4c spi_geni_qcom
+
+This occurs when the spi-geni driver receives an -EPROBE_DEFER error
+from spi_geni_grab_gpi_chan(), causing devres to start releasing all
+resources as shown below:
+
+[7.138679] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_icc_release (8 bytes)
+[7.138751] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_icc_release (8 bytes)
+[7.138827] geni_spi 880000.spi: DEVRES REL ffff800081443800 pm_runtime_disable_action (16 bytes)
+[7.139494] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_pm_opp_config_release (16 bytes)
+[7.139512] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_spi_release_controller (8 bytes)
+[7.139516] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_clk_release (16 bytes)
+[7.139519] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_ioremap_release (8 bytes)
+[7.139524] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_region_release (24 bytes)
+[7.139527] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_kzalloc_release (22 bytes)
+[7.139530] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_pinctrl_release (8 bytes)
+[7.139539] geni_spi 880000.spi: DEVRES REL ffff800081443800 devm_kzalloc_release (40 bytes)
+
+The issue here is that pm_runtime_disable_action() results in a call to
+spi_geni_runtime_suspend(), which attempts to suspend the device and
+disable an interconnect path that devm_icc_release() has just released.
+
+Resolve this by calling geni_icc_get() before enabling runtime PM. This
+approach ensures that when devres releases resources in reverse order,
+it will start with pm_runtime_disable_action(), suspending the device,
+and then proceed to free the remaining resources.
+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/r/CA+G9fYtsjFtddG8i+k-SpV8U6okL0p4zpsTiwGfNH5GUA8dWAA@mail.gmail.com
+Fixes: 89e362c883c6 ("spi: geni-qcom: Undo runtime PM changes at driver exit time")
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Link: https://patch.msgid.link/20241008231615.430073-1-djakov@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -159,6 +159,13 @@ struct aspeed_i2c_bus {
- 
- static int aspeed_i2c_reset(struct aspeed_i2c_bus *bus);
- 
-+/* precondition: bus.lock has been acquired. */
-+static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
-+{
-+	bus->master_state = ASPEED_I2C_MASTER_STOP;
-+	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
-+}
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 6f4057330444d..fa967be4f9a17 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -1108,6 +1108,11 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	init_completion(&mas->tx_reset_done);
+ 	init_completion(&mas->rx_reset_done);
+ 	spin_lock_init(&mas->lock);
 +
- static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
- {
- 	unsigned long time_left, flags;
-@@ -176,7 +183,7 @@ static int aspeed_i2c_recover_bus(struct
- 			command);
++	ret = geni_icc_get(&mas->se, NULL);
++	if (ret)
++		return ret;
++
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
+ 	ret = devm_pm_runtime_enable(dev);
+@@ -1117,9 +1122,6 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
+ 		spi->target = true;
  
- 		reinit_completion(&bus->cmd_complete);
--		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
-+		aspeed_i2c_do_stop(bus);
- 		spin_unlock_irqrestore(&bus->lock, flags);
- 
- 		time_left = wait_for_completion_timeout(
-@@ -351,13 +358,6 @@ static void aspeed_i2c_do_start(struct a
- }
- 
- /* precondition: bus.lock has been acquired. */
--static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus)
--{
--	bus->master_state = ASPEED_I2C_MASTER_STOP;
--	writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
--}
--
--/* precondition: bus.lock has been acquired. */
- static void aspeed_i2c_next_msg_or_stop(struct aspeed_i2c_bus *bus)
- {
- 	if (bus->msgs_index + 1 < bus->msgs_count) {
+-	ret = geni_icc_get(&mas->se, NULL);
+-	if (ret)
+-		return ret;
+ 	/* Set the bus quota to a reasonable value for register access */
+ 	mas->se.icc_paths[GENI_TO_CORE].avg_bw = Bps_to_icc(CORE_2X_50_MHZ);
+ 	mas->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
+-- 
+2.43.0
+
 
 
 
