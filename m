@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-90154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1899BE6F5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D17C9BECD1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 049721F28022
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618D0285EB5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E1A1DF254;
-	Wed,  6 Nov 2024 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455F21F669C;
+	Wed,  6 Nov 2024 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0PrAoA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9jPHFqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488CD1DF249;
-	Wed,  6 Nov 2024 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CB31E04BA;
+	Wed,  6 Nov 2024 12:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894930; cv=none; b=PeU1hrjFY78SbHT8YiwtXrH+wZgsXhyUjgnCqR5yqXKSNE7y+7kkhLKZOSP20TSmO/oHquHGu8lnmQR/4l+65Pd91dGusPxHZ3ef1KeEWsBhYYBmdzWbPqF06JQ/C9JLdY0V+kpqvmHFT11pR2WD5+N8SJlogt0B8inFyfXhN0E=
+	t=1730897971; cv=none; b=iyx+uBV/gKXYAX3EK/Dc9ujyFn2RLgNGImzwswRYqtHnhUaJQwjU1InZodGm7DwklYypqm6QIlwVVNq/EUgtQzLvV3pCCkGhox4cYKqhKNO5h2Av8bAMcUYWkURNABAnjif4bjpNuRpPzfBqd8f7zLr00eYVDDiU7sd6G8HOGcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894930; c=relaxed/simple;
-	bh=nAdIhSuR4xtFb5QAFc/zDGaq7IQHAYD7jdw2HT60cTc=;
+	s=arc-20240116; t=1730897971; c=relaxed/simple;
+	bh=2KGtN4/HfJXRcqcxE/soZQkuYKgdjkyv5Mte6bxQoyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X77/Q2EifE/c4rCryUcHyDRvBRIYsD+uD/xBNN2QFh9sepgUooSb1NjHRyyYHJof9sg5oiH71m8PdxrmqFIXXNK3Lz2znsFGkxwzhPN/0p1qTE5NqmxtDqbUJSNL+uqcwotL9bxRvxXKyeyIcND7vQLWHXb0oRZn59S/iaSHs3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0PrAoA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A1FC4CECD;
-	Wed,  6 Nov 2024 12:08:49 +0000 (UTC)
+	 MIME-Version; b=l519lIj0/1QACLnqFddYIR0jxOwb2VJaGWvvzGk2EM5x4PqeO0eQKlvaGe4GTJIHTF7fCOWvlTJXztOnF7d7UJLwi4Wi7CpNCDkOwuMj2DLPN5PTYIoIpbusSwqGecnvSa/34jRvQKJ+LEpg+QMC5k3blBTZWLoHk6PTdx8m3sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9jPHFqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37936C4CECD;
+	Wed,  6 Nov 2024 12:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894930;
-	bh=nAdIhSuR4xtFb5QAFc/zDGaq7IQHAYD7jdw2HT60cTc=;
+	s=korg; t=1730897970;
+	bh=2KGtN4/HfJXRcqcxE/soZQkuYKgdjkyv5Mte6bxQoyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0PrAoA8HWoaH3vPCda/ow+O2h6Zy2VpD/DciR1U+g0aqf3dt6qNu/MPoVaaRbBTv
-	 rT0rk9Q2MxBeTrFYMvQePBvQ5M4+29QE0ZAusZnn6w4bi8Lu6YBfAfE9nTqJbDRakt
-	 fyKSuzrKF80mmtkLyoTWelHug0q5xVoHb/b3+8+Q=
+	b=W9jPHFqTPKkqsjEkBKkzpTazcDDCKy7gBsa0kxcDgm4HfKfeidoQ6M8v5N57PJ0pp
+	 QkkcdCMAa1yFqtA+X4v6QOYaDJLn/UfuJ5Lntd237i5TuXj8E7rgg7MoMBq4IEfYBr
+	 mru3H2F5WnUjdBPt6Z5hW3379+RTJTcdn1u88cRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 046/350] mtd: slram: insert break after errors in parsing the map
+Subject: [PATCH 5.4 081/462] drm/msm/a5xx: fix races in preemption evaluation stage
 Date: Wed,  6 Nov 2024 12:59:34 +0100
-Message-ID: <20241106120322.025170796@linuxfoundation.org>
+Message-ID: <20241106120333.507949363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
+[ Upstream commit ce050f307ad93bcc5958d0dd35fc276fd394d274 ]
 
-GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
-path in which, due to lazy evaluation, devlength isn't initialised with the
-parsed string:
+On A5XX GPUs when preemption is used it's invietable to enter a soft
+lock-up state in which GPU is stuck at empty ring-buffer doing nothing.
+This appears as full UI lockup and not detected as GPU hang (because
+it's not). This happens due to not triggering preemption when it was
+needed. Sometimes this state can be recovered by some new submit but
+generally it won't happen because applications are waiting for old
+submits to retire.
 
-   289		while (map) {
-   290			devname = devstart = devlength = NULL;
-   291
-   292			if (!(devname = strsep(&map, ","))) {
-   293				E("slram: No devicename specified.\n");
-   294				break;
-   295			}
-   296			T("slram: devname = %s\n", devname);
-   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
-   298				E("slram: No devicestart specified.\n");
-   299			}
-   300			T("slram: devstart = %s\n", devstart);
- → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
-   302				E("slram: No devicelength / -end specified.\n");
-   303			}
- → 304			T("slram: devlength = %s\n", devlength);
-   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
-   306				return(-EINVAL);
-   307			}
+One of the reasons why this happens is a race between a5xx_submit and
+a5xx_preempt_trigger called from IRQ during submit retire. Former thread
+updates ring->cur of previously empty and not current ring right after
+latter checks it for emptiness. Then both threads can just exit because
+for first one preempt_state wasn't NONE yet and for second one all rings
+appeared to be empty.
 
-Parsing should be finished after map == NULL, so a break is best inserted after
-each E("slram: ... \n") error message.
+To prevent such situations from happening we need to establish guarantee
+for preempt_trigger to make decision after each submit or retire. To
+implement this we serialize preemption initiation using spinlock. If
+switch is already in progress we need to re-trigger preemption when it
+finishes.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
+Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/612045/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/slram.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.h     |  1 +
+ drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 24 +++++++++++++++++++++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
-index 10183ee4e12b2..aa4f73aef3626 100644
---- a/drivers/mtd/devices/slram.c
-+++ b/drivers/mtd/devices/slram.c
-@@ -295,10 +295,12 @@ static int __init init_slram(void)
- 		T("slram: devname = %s\n", devname);
- 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
- 			E("slram: No devicestart specified.\n");
-+			break;
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
+index 833468ce6b6d7..cf29cc6238c7e 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
+@@ -35,6 +35,7 @@ struct a5xx_gpu {
+ 	uint64_t preempt_iova[MSM_GPU_MAX_RINGS];
+ 
+ 	atomic_t preempt_state;
++	spinlock_t preempt_start_lock;
+ 	struct timer_list preempt_timer;
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+index 0a892f4f59d1d..e55a6a068c39a 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+@@ -98,12 +98,19 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 	if (gpu->nr_rings == 1)
+ 		return;
+ 
++	/*
++	 * Serialize preemption start to ensure that we always make
++	 * decision on latest state. Otherwise we can get stuck in
++	 * lower priority or empty ring.
++	 */
++	spin_lock_irqsave(&a5xx_gpu->preempt_start_lock, flags);
++
+ 	/*
+ 	 * Try to start preemption by moving from NONE to START. If
+ 	 * unsuccessful, a preemption is already in flight
+ 	 */
+ 	if (!try_preempt_state(a5xx_gpu, PREEMPT_NONE, PREEMPT_START))
+-		return;
++		goto out;
+ 
+ 	/* Get the next ring to preempt to */
+ 	ring = get_next_ring(gpu);
+@@ -128,9 +135,11 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 		set_preempt_state(a5xx_gpu, PREEMPT_ABORT);
+ 		update_wptr(gpu, a5xx_gpu->cur_ring);
+ 		set_preempt_state(a5xx_gpu, PREEMPT_NONE);
+-		return;
++		goto out;
+ 	}
+ 
++	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
++
+ 	/* Make sure the wptr doesn't update while we're in motion */
+ 	spin_lock_irqsave(&ring->lock, flags);
+ 	a5xx_gpu->preempt[ring->id]->wptr = get_wptr(ring);
+@@ -154,6 +163,10 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 
+ 	/* And actually start the preemption */
+ 	gpu_write(gpu, REG_A5XX_CP_CONTEXT_SWITCH_CNTL, 1);
++	return;
++
++out:
++	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
+ }
+ 
+ void a5xx_preempt_irq(struct msm_gpu *gpu)
+@@ -191,6 +204,12 @@ void a5xx_preempt_irq(struct msm_gpu *gpu)
+ 	update_wptr(gpu, a5xx_gpu->cur_ring);
+ 
+ 	set_preempt_state(a5xx_gpu, PREEMPT_NONE);
++
++	/*
++	 * Try to trigger preemption again in case there was a submit or
++	 * retire during ring switch
++	 */
++	a5xx_preempt_trigger(gpu);
+ }
+ 
+ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
+@@ -289,5 +308,6 @@ void a5xx_preempt_init(struct msm_gpu *gpu)
  		}
- 		T("slram: devstart = %s\n", devstart);
- 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
- 			E("slram: No devicelength / -end specified.\n");
-+			break;
- 		}
- 		T("slram: devlength = %s\n", devlength);
- 		if (parse_cmdline(devname, devstart, devlength) != 0) {
+ 	}
+ 
++	spin_lock_init(&a5xx_gpu->preempt_start_lock);
+ 	timer_setup(&a5xx_gpu->preempt_timer, a5xx_preempt_timer, 0);
+ }
 -- 
 2.43.0
 
