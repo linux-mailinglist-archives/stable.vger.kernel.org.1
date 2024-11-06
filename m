@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87999BEB1D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 780549BEC3A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8874C2820B6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37012283B11
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9454A1E32B5;
-	Wed,  6 Nov 2024 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7421FB3ED;
+	Wed,  6 Nov 2024 12:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVW/1HeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAw7nCko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00F1E0491;
-	Wed,  6 Nov 2024 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF031FB3E9;
+	Wed,  6 Nov 2024 12:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896848; cv=none; b=Ns1aCgPF7lNHjqeZsUyyQbr3ZehfS3x+H6TlEFfkd7hpiVhJalazcS6EoPmt7D51Lfqhcz51y9UHWdusdJo5yJNiDaYYYi+jIFBrO+RJAuW3EiXJ0ma0dtoNXZb5GXWhZ3dVdkyHtlFX1RT7oqhxp2Oon4uydFyHCLlVRp+vKSE=
+	t=1730897610; cv=none; b=NmDDLx1LsCjWYTwNyOIiOIdkTd3rBiNzZtxmtp+mQFk/nrzZYXXOek9lDLeQCITzYiSbXCLEbA8xUfUHIL9Zml+vojKuEcyXrvopcfN8b3D54Cti07hX4I7p3Vz6+1Wb3ODeNXBw2O9wiyvjnyu7NjV9m5GgZ78nUm1Nt2Uy7m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896848; c=relaxed/simple;
-	bh=24QHYSz9XQnAGOtnakh6oCNnK+AcTt/1YJZtqL+VBZI=;
+	s=arc-20240116; t=1730897610; c=relaxed/simple;
+	bh=uOpFm96BxlImeY5m+OCibT4oM9k+lwyUKlYHfKF3qyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fNyzeilt1sC9RQP8B6LUIWHISlpTYSn/Ln1vZCd0hUx54IF4vTA5w6FqOfOWfSaxahZc8mviJUllxrghOCIC+BzBaIs9lGbVQDOgCKKvmVpkCLMOKFthCXoNDMJw5fD+vhePVCSHVF/dxZmA3tpYj1zN4ruebLkwRjeNE6l6a9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVW/1HeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AFFC4CECD;
-	Wed,  6 Nov 2024 12:40:47 +0000 (UTC)
+	 MIME-Version; b=jlMus6AFg3WA83zMqH7o573GyC+MnnMPZ5nKoZsY6wWGyr7pQrBmC0TJNeCciFI93m3Fokh2OzGj73lSTmQvR9h1FLtEJAfNl+Y1lQKEZplGdUUDk8o/aivujuz4WrKu2yjDTzQ2j4heh0RZQKBOcT6ZfFEB5kQC7cvPcqDgn0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAw7nCko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728A1C4CECD;
+	Wed,  6 Nov 2024 12:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896847;
-	bh=24QHYSz9XQnAGOtnakh6oCNnK+AcTt/1YJZtqL+VBZI=;
+	s=korg; t=1730897609;
+	bh=uOpFm96BxlImeY5m+OCibT4oM9k+lwyUKlYHfKF3qyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVW/1HeCXE0TCRrEUXLQrzoi3pO4G/6++7BPF/d69o4CMlrb2N8xTQh0jk6G0u9UI
-	 2jv2MqE7luUodsBgtBLFKq2FwIamkJoU+zb8VuKOemmZyj43Q0aZ8liUbpD5ezigcI
-	 FGzgKM92n8vlxNiivnaGWIFzIu5ItaMj6DovYl3U=
+	b=MAw7nCkowXLbNojj7pAlvNBGWM3Ju9/t4W+zf7hwxhctgeMAwlK9qhhIKHHQ/AGv1
+	 +FL+1iPiqxE4VVK50ccH+JIkVmwPd3pQ3qR1WIqj4f62Qx1D893SrPYzbCCfg6nGr+
+	 VPYK9ozV/gkuHGcZe7T5+8C5vJbEBcpTxpithloA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 5.10 092/110] wifi: iwlegacy: Clear stale interrupts before resuming device
+	Vishal Chourasia <vishalc@linux.ibm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 110/151] cgroup/bpf: use a dedicated workqueue for cgroup bpf destruction
 Date: Wed,  6 Nov 2024 13:04:58 +0100
-Message-ID: <20241106120305.727160133@linuxfoundation.org>
+Message-ID: <20241106120311.896346148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,179 +61,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 07c90acb071b9954e1fecb1e4f4f13d12c544b34 upstream.
+[ Upstream commit 117932eea99b729ee5d12783601a4f7f5fd58a23 ]
 
-iwl4965 fails upon resume from hibernation on my laptop. The reason
-seems to be a stale interrupt which isn't being cleared out before
-interrupts are enabled. We end up with a race beween the resume
-trying to bring things back up, and the restart work (queued form
-the interrupt handler) trying to bring things down. Eventually
-the whole thing blows up.
+A hung_task problem shown below was found:
 
-Fix the problem by clearing out any stale interrupts before
-interrupts get enabled during resume.
+INFO: task kworker/0:0:8 blocked for more than 327 seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Workqueue: events cgroup_bpf_release
+Call Trace:
+ <TASK>
+ __schedule+0x5a2/0x2050
+ ? find_held_lock+0x33/0x100
+ ? wq_worker_sleeping+0x9e/0xe0
+ schedule+0x9f/0x180
+ schedule_preempt_disabled+0x25/0x50
+ __mutex_lock+0x512/0x740
+ ? cgroup_bpf_release+0x1e/0x4d0
+ ? cgroup_bpf_release+0xcf/0x4d0
+ ? process_scheduled_works+0x161/0x8a0
+ ? cgroup_bpf_release+0x1e/0x4d0
+ ? mutex_lock_nested+0x2b/0x40
+ ? __pfx_delay_tsc+0x10/0x10
+ mutex_lock_nested+0x2b/0x40
+ cgroup_bpf_release+0xcf/0x4d0
+ ? process_scheduled_works+0x161/0x8a0
+ ? trace_event_raw_event_workqueue_execute_start+0x64/0xd0
+ ? process_scheduled_works+0x161/0x8a0
+ process_scheduled_works+0x23a/0x8a0
+ worker_thread+0x231/0x5b0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x14d/0x1c0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x59/0x70
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-Here's a debug log of the indicent:
-[   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
-[   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
-[   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
-[   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
-[   12.042690] ieee80211 phy0: il4965_irq_tasklet End inta 0x00000000, enabled 0xaa00008b, fh 0x00000000, flags 0x00000282
-[   12.052207] ieee80211 phy0: il4965_mac_start enter
-[   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
-[   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
-[   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
-[   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
-[   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
-[   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
-[   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
-[   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
-[   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
-[   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
-[   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
-[   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
-[   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
-[   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
-[   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
-[   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
-[   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
-[   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
-[   12.058869] ieee80211 phy0: Hardware restart was requested
-[   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
-[   16.132303] ------------[ cut here ]------------
-[   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
-[   16.132338] WARNING: CPU: 0 PID: 181 at net/mac80211/util.c:1826 ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132390] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
-[   16.132456] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Not tainted 6.11.0-cl+ #143
-[   16.132460] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
-[   16.132463] Workqueue: async async_run_entry_fn
-[   16.132469] RIP: 0010:ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132501] Code: da 02 00 00 c6 83 ad 05 00 00 00 48 89 df e8 98 1b fc ff 85 c0 41 89 c7 0f 84 e9 02 00 00 48 c7 c7 a0 e6 48 a0 e8 d1 77 c4 e0 <0f> 0b eb 2d 84 c0 0f 85 8b 01 00 00 c6 87 ad 05 00 00 00 e8 69 1b
-[   16.132504] RSP: 0018:ffffc9000029fcf0 EFLAGS: 00010282
-[   16.132507] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: 0000000000000001
-[   16.132509] RDX: ffffffff81f21a18 RSI: 0000000000000086 RDI: 0000000000000001
-[   16.132510] RBP: ffff8880072003c0 R08: 0000000000000000 R09: 0000000000000003
-[   16.132512] R10: 0000000000000000 R11: ffff88807e5b0000 R12: 0000000000000001
-[   16.132514] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffff92
-[   16.132515] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
-[   16.132517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   16.132519] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
-[   16.132521] Call Trace:
-[   16.132525]  <TASK>
-[   16.132526]  ? __warn+0x77/0x120
-[   16.132532]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132564]  ? report_bug+0x15c/0x190
-[   16.132568]  ? handle_bug+0x36/0x70
-[   16.132571]  ? exc_invalid_op+0x13/0x60
-[   16.132573]  ? asm_exc_invalid_op+0x16/0x20
-[   16.132579]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132611]  ? snd_hdac_bus_init_cmd_io+0x24/0x200 [snd_hda_core]
-[   16.132617]  ? pick_eevdf+0x133/0x1c0
-[   16.132622]  ? check_preempt_wakeup_fair+0x70/0x90
-[   16.132626]  ? wakeup_preempt+0x4a/0x60
-[   16.132628]  ? ttwu_do_activate.isra.0+0x5a/0x190
-[   16.132632]  wiphy_resume+0x79/0x1a0 [cfg80211]
-[   16.132675]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
-[   16.132697]  dpm_run_callback+0x75/0x1b0
-[   16.132703]  device_resume+0x97/0x200
-[   16.132707]  async_resume+0x14/0x20
-[   16.132711]  async_run_entry_fn+0x1b/0xa0
-[   16.132714]  process_one_work+0x13d/0x350
-[   16.132718]  worker_thread+0x2be/0x3d0
-[   16.132722]  ? cancel_delayed_work_sync+0x70/0x70
-[   16.132725]  kthread+0xc0/0xf0
-[   16.132729]  ? kthread_park+0x80/0x80
-[   16.132732]  ret_from_fork+0x28/0x40
-[   16.132735]  ? kthread_park+0x80/0x80
-[   16.132738]  ret_from_fork_asm+0x11/0x20
-[   16.132741]  </TASK>
-[   16.132742] ---[ end trace 0000000000000000 ]---
-[   16.132930] ------------[ cut here ]------------
-[   16.132932] WARNING: CPU: 0 PID: 181 at net/mac80211/driver-ops.c:41 drv_stop+0xe7/0xf0 [mac80211]
-[   16.132957] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
-[   16.133014] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Tainted: G        W          6.11.0-cl+ #143
-[   16.133018] Tainted: [W]=WARN
-[   16.133019] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
-[   16.133021] Workqueue: async async_run_entry_fn
-[   16.133025] RIP: 0010:drv_stop+0xe7/0xf0 [mac80211]
-[   16.133048] Code: 48 85 c0 74 0e 48 8b 78 08 89 ea 48 89 de e8 e0 87 04 00 65 ff 0d d1 de c4 5f 0f 85 42 ff ff ff e8 be 52 c2 e0 e9 38 ff ff ff <0f> 0b 5b 5d c3 0f 1f 40 00 41 54 49 89 fc 55 53 48 89 f3 2e 2e 2e
-[   16.133050] RSP: 0018:ffffc9000029fc50 EFLAGS: 00010246
-[   16.133053] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: ffff88800377f6c0
-[   16.133054] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880072008e0
-[   16.133056] RBP: 0000000000000000 R08: ffffffff81f238d8 R09: 0000000000000000
-[   16.133058] R10: ffff8880080520f0 R11: 0000000000000000 R12: ffff888008051c60
-[   16.133060] R13: ffff8880072008e0 R14: 0000000000000000 R15: ffff8880072011d8
-[   16.133061] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
-[   16.133063] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   16.133065] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
-[   16.133067] Call Trace:
-[   16.133069]  <TASK>
-[   16.133070]  ? __warn+0x77/0x120
-[   16.133075]  ? drv_stop+0xe7/0xf0 [mac80211]
-[   16.133098]  ? report_bug+0x15c/0x190
-[   16.133100]  ? handle_bug+0x36/0x70
-[   16.133103]  ? exc_invalid_op+0x13/0x60
-[   16.133105]  ? asm_exc_invalid_op+0x16/0x20
-[   16.133109]  ? drv_stop+0xe7/0xf0 [mac80211]
-[   16.133132]  ieee80211_do_stop+0x55a/0x810 [mac80211]
-[   16.133161]  ? fq_codel_reset+0xa5/0xc0 [sch_fq_codel]
-[   16.133164]  ieee80211_stop+0x4f/0x180 [mac80211]
-[   16.133192]  __dev_close_many+0xa2/0x120
-[   16.133195]  dev_close_many+0x90/0x150
-[   16.133198]  dev_close+0x5d/0x80
-[   16.133200]  cfg80211_shutdown_all_interfaces+0x40/0xe0 [cfg80211]
-[   16.133223]  wiphy_resume+0xb2/0x1a0 [cfg80211]
-[   16.133247]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
-[   16.133269]  dpm_run_callback+0x75/0x1b0
-[   16.133273]  device_resume+0x97/0x200
-[   16.133277]  async_resume+0x14/0x20
-[   16.133280]  async_run_entry_fn+0x1b/0xa0
-[   16.133283]  process_one_work+0x13d/0x350
-[   16.133287]  worker_thread+0x2be/0x3d0
-[   16.133290]  ? cancel_delayed_work_sync+0x70/0x70
-[   16.133294]  kthread+0xc0/0xf0
-[   16.133296]  ? kthread_park+0x80/0x80
-[   16.133299]  ret_from_fork+0x28/0x40
-[   16.133302]  ? kthread_park+0x80/0x80
-[   16.133304]  ret_from_fork_asm+0x11/0x20
-[   16.133307]  </TASK>
-[   16.133308] ---[ end trace 0000000000000000 ]---
-[   16.133335] ieee80211 phy0: PM: dpm_run_callback(): wiphy_resume [cfg80211] returns -110
-[   16.133360] ieee80211 phy0: PM: failed to restore async: error -110
+This issue can be reproduced by the following pressuse test:
+1. A large number of cpuset cgroups are deleted.
+2. Set cpu on and off repeatly.
+3. Set watchdog_thresh repeatly.
+The scripts can be obtained at LINK mentioned above the signature.
 
-Cc: stable@vger.kernel.org
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241001200745.8276-1-ville.syrjala@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The reason for this issue is cgroup_mutex and cpu_hotplug_lock are
+acquired in different tasks, which may lead to deadlock.
+It can lead to a deadlock through the following steps:
+1. A large number of cpusets are deleted asynchronously, which puts a
+   large number of cgroup_bpf_release works into system_wq. The max_active
+   of system_wq is WQ_DFL_ACTIVE(256). Consequently, all active works are
+   cgroup_bpf_release works, and many cgroup_bpf_release works will be put
+   into inactive queue. As illustrated in the diagram, there are 256 (in
+   the acvtive queue) + n (in the inactive queue) works.
+2. Setting watchdog_thresh will hold cpu_hotplug_lock.read and put
+   smp_call_on_cpu work into system_wq. However step 1 has already filled
+   system_wq, 'sscs.work' is put into inactive queue. 'sscs.work' has
+   to wait until the works that were put into the inacvtive queue earlier
+   have executed (n cgroup_bpf_release), so it will be blocked for a while.
+3. Cpu offline requires cpu_hotplug_lock.write, which is blocked by step 2.
+4. Cpusets that were deleted at step 1 put cgroup_release works into
+   cgroup_destroy_wq. They are competing to get cgroup_mutex all the time.
+   When cgroup_metux is acqured by work at css_killed_work_fn, it will
+   call cpuset_css_offline, which needs to acqure cpu_hotplug_lock.read.
+   However, cpuset_css_offline will be blocked for step 3.
+5. At this moment, there are 256 works in active queue that are
+   cgroup_bpf_release, they are attempting to acquire cgroup_mutex, and as
+   a result, all of them are blocked. Consequently, sscs.work can not be
+   executed. Ultimately, this situation leads to four processes being
+   blocked, forming a deadlock.
+
+system_wq(step1)		WatchDog(step2)			cpu offline(step3)	cgroup_destroy_wq(step4)
+...
+2000+ cgroups deleted asyn
+256 actives + n inactives
+				__lockup_detector_reconfigure
+				P(cpu_hotplug_lock.read)
+				put sscs.work into system_wq
+256 + n + 1(sscs.work)
+sscs.work wait to be executed
+				warting sscs.work finish
+								percpu_down_write
+								P(cpu_hotplug_lock.write)
+								...blocking...
+											css_killed_work_fn
+											P(cgroup_mutex)
+											cpuset_css_offline
+											P(cpu_hotplug_lock.read)
+											...blocking...
+256 cgroup_bpf_release
+mutex_lock(&cgroup_mutex);
+..blocking...
+
+To fix the problem, place cgroup_bpf_release works on a dedicated
+workqueue which can break the loop and solve the problem. System wqs are
+for misc things which shouldn't create a large number of concurrent work
+items. If something is going to generate >WQ_DFL_ACTIVE(256) concurrent
+work items, it should use its own dedicated workqueue.
+
+Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
+Cc: stable@vger.kernel.org # v5.3+
+Link: https://lore.kernel.org/cgroups/e90c32d2-2a85-4f28-9154-09c7d320cb60@huawei.com/T/#t
+Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlegacy/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/cgroup.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -4963,6 +4963,8 @@ il_pci_resume(struct device *device)
- 	 */
- 	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 913a6a7e62ca6..cf2eb0895d403 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -24,6 +24,23 @@
+ DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_ATTACH_TYPE);
+ EXPORT_SYMBOL(cgroup_bpf_enabled_key);
  
-+	_il_wr(il, CSR_INT, 0xffffffff);
-+	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
- 	il_enable_interrupts(il);
++/*
++ * cgroup bpf destruction makes heavy use of work items and there can be a lot
++ * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
++ * destruction work items don't end up filling up max_active of system_wq
++ * which may lead to deadlock.
++ */
++static struct workqueue_struct *cgroup_bpf_destroy_wq;
++
++static int __init cgroup_bpf_wq_init(void)
++{
++	cgroup_bpf_destroy_wq = alloc_workqueue("cgroup_bpf_destroy", 0, 1);
++	if (!cgroup_bpf_destroy_wq)
++		panic("Failed to alloc workqueue for cgroup bpf destroy.\n");
++	return 0;
++}
++core_initcall(cgroup_bpf_wq_init);
++
+ /* __always_inline is necessary to prevent indirect call through run_prog
+  * function pointer.
+  */
+@@ -334,7 +351,7 @@ static void cgroup_bpf_release_fn(struct percpu_ref *ref)
+ 	struct cgroup *cgrp = container_of(ref, struct cgroup, bpf.refcnt);
  
- 	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))
+ 	INIT_WORK(&cgrp->bpf.release_work, cgroup_bpf_release);
+-	queue_work(system_wq, &cgrp->bpf.release_work);
++	queue_work(cgroup_bpf_destroy_wq, &cgrp->bpf.release_work);
+ }
+ 
+ /* Get underlying bpf_prog of bpf_prog_list entry, regardless if it's through
+-- 
+2.43.0
+
 
 
 
