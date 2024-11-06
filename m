@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-90621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9359BE93D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70FA9BE7DF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A3041C232CE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996591F23516
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699171DED4F;
-	Wed,  6 Nov 2024 12:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92C61DF26B;
+	Wed,  6 Nov 2024 12:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vq0NS2sg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMn9yq1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24855171C9;
-	Wed,  6 Nov 2024 12:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8624A1DF721;
+	Wed,  6 Nov 2024 12:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896316; cv=none; b=t1DLJX/6II8WZEsHCnQqQyh7ZukcX5taWHa4NJjg88TBprmIEJ9FcI2BKvFYmKxEiWUR/JI2U0XHPYqIi9vW3QkcA/AwLizEDHcG9ddtJLSRQ1ptuDlk49eMBeLm8WTno+NlFfBwQ9PevvF1VU2wZB00VoA/jxxdrW1o+8rlfHA=
+	t=1730895511; cv=none; b=FK1oTrlD8l/GT1yhJuSd90NSX3u8JdkZn0KixEHZzOMcLACIkn27cXWUhiBNstY0veYyNIh1CiwfbALRhrMkes6iwVuL0BHvrAYscl22XVMVl4ckDfHURiuORByaYB95yUuq/bAligedhtaxPnwYPAn5Ed3iiXrG5YJGWNb41SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896316; c=relaxed/simple;
-	bh=gna4QCP5O/0HWCtHsoFYRuNWJvpFevwwoxnkvaywOxs=;
+	s=arc-20240116; t=1730895511; c=relaxed/simple;
+	bh=dmUPOFpb7eY6Mx+BOTYKfTvEGZh8Sv1WpTL9t0CSVb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn/3VIudZYNa5vatoceJOOi+a7lOkJCzlzpah66M1CahbDtYN8BS0J2WSAevxt+ju6TAzjqcw5V1DxHpZrp8q+TvI2i2OUDlGWNATWEqgdeByzjLcK1V6vTgLOGkCSWv7+5qtpv7Vc2koVPyQDL4V8jikr8z0GoWbmGJT8wuTyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vq0NS2sg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55236C4CED3;
-	Wed,  6 Nov 2024 12:31:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kxn0tp9jdZ0uhbIdnfcacDMnEZml/pLuYO33/9q2K3kR71VrXZDo//iCUNFLbqvRcB+HH996rw/BwJTLrzzRyK/pqS929B0wR0DzLUOimF7kZxtSNtqIECXBeb5zIq5hQEOh5KWoeaS3JnT4cCjeRdyUYDj7UudvWHnV1me7tM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMn9yq1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A02C4CECD;
+	Wed,  6 Nov 2024 12:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896315;
-	bh=gna4QCP5O/0HWCtHsoFYRuNWJvpFevwwoxnkvaywOxs=;
+	s=korg; t=1730895511;
+	bh=dmUPOFpb7eY6Mx+BOTYKfTvEGZh8Sv1WpTL9t0CSVb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vq0NS2sgbNA9b49N2zWB7Dj8WwgXtZrckvH2mmQ7tAaTo8HLIMvtIAxpeeLQ66Jsm
-	 8s7f/i5jkxSn/b2AIlN84xjbFXjaoeZkeLtsNFIFmxPns/Rd3dUvUOqhA2Ml/RwyQ8
-	 Fq9AbgguEujlSmQoYmgxjVRdxsXPUsSQJfVetERs=
+	b=SMn9yq1bKHc/EW/1GQwci1KEirQruJPNljFx8pnnrrj4bGxv02kmx2nE8zeOSaYhT
+	 vi4Jm7NR/0UtlGvIOmkQcOkmFpoXPNvlUun+qN3MkFM0VubD8rLBz/EE3cMThqS3DJ
+	 Ue1RmTRh1MNiLNu1MbOf1ULdWSRulW910rXLPMrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faisal Hassan <quic_faisalh@quicinc.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.11 116/245] xhci: Fix Link TRB DMA in command ring stopped completion event
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 241/350] i2c: i801: Use a different adapter-name for IDF adapters
 Date: Wed,  6 Nov 2024 13:02:49 +0100
-Message-ID: <20241106120322.074365461@linuxfoundation.org>
+Message-ID: <20241106120326.897240218@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faisal Hassan <quic_faisalh@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 075919f6df5dd82ad0b1894898b315fbb3c29b84 upstream.
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-During the aborting of a command, the software receives a command
-completion event for the command ring stopped, with the TRB pointing
-to the next TRB after the aborted command.
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-If the command we abort is located just before the Link TRB in the
-command ring, then during the 'command ring stopped' completion event,
-the xHC gives the Link TRB in the event's cmd DMA, which causes a
-mismatch in handling command completion event.
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
 
-To address this situation, move the 'command ring stopped' completion
-event check slightly earlier, since the specific command it stopped
-on isn't of significant concern.
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
 
-Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241022155631.1185-1-quic_faisalh@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1718,6 +1718,14 @@ static void handle_cmd_completion(struct
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index c1e2539b79502..b552f8d62fa2f 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1674,8 +1674,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
- 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
+ 	i801_add_tco(priv);
  
-+	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
 +
-+	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
-+	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
-+		complete_all(&xhci->cmd_ring_stop_completion);
-+		return;
-+	}
-+
- 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
- 			cmd_trb);
- 	/*
-@@ -1734,14 +1742,6 @@ static void handle_cmd_completion(struct
- 
- 	cancel_delayed_work(&xhci->cmd_timer);
- 
--	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
--
--	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
--	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
--		complete_all(&xhci->cmd_ring_stop_completion);
--		return;
--	}
--
- 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
- 		xhci_err(xhci,
- 			 "Command completion event does not match command\n");
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
+-- 
+2.43.0
+
 
 
 
