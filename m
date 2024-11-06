@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-90423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299249BE831
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246469BE969
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D576F1F21EA7
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7CD285413
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ED21DF73C;
-	Wed,  6 Nov 2024 12:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770A31DF98D;
+	Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewWyTv2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0rEhQon"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434BA1DF726;
-	Wed,  6 Nov 2024 12:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3556C198E96;
+	Wed,  6 Nov 2024 12:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895727; cv=none; b=eh1CtUzKHmXj94g/CzEnH/n/gEiXLx6+YhC+7BYZoOfuKKeh1G2hAEo8JE9T6nuqiTq5LrSyEV0kSWpc+QX2jlgzX2EjA58k1sRY+gBidpt3lsrMjXHTX6ESRnSyWsZFKYipKPwTfI3q7Z4nr94w/mk4yz4Pe8siasvbJi+7xo8=
+	t=1730896433; cv=none; b=OGR9bfS/hNv1lcN49gKSFS9wUEiskxB5MKSNbPPw9cb+/ieIAotKnYTVndt+V7qdJuJW3WSsx+AhkX6lg5XKhYfTly7jkZuKhAIsytWX16H8fKsNrbiNRLNe8HFWJsCLblUbqnqy93aZmUhxj3I5ImsaqmCgoHsn/RVC0CCF5KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895727; c=relaxed/simple;
-	bh=pV+g58PjaJCMXvlL08GQTD4H5vHBba0OVhPTW0iyk18=;
+	s=arc-20240116; t=1730896433; c=relaxed/simple;
+	bh=GLvuFiHqGL+ye1VtF9UL5IOpScq3tpVEBEiHPjTGhEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leAp2SvJk4OqVkD4DKMfIs7QNUkXLRVCPW2W3UiIl3r3hOaX4TD7dPXEUaTVUVS77j4/VYl8JPV2nLSJzVS3wH7Vk5+c7xUtWB5bGoErqJY5POP6GWdB1gWu33RWYH+6gAimwkuOgK10SBTWq2t3Eh80PWOBPMXympW9n8Znzqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewWyTv2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC831C4CECD;
-	Wed,  6 Nov 2024 12:22:06 +0000 (UTC)
+	 MIME-Version; b=YxGw/3Qu/VaoYR9B3/tWoj1+pOKwzt9piPWZ2n3PfAkwZa6gSSJRyVRltFxHPCZLWLuJKcP7XnuWOpK72KXFPFQFnhrVgkqkVKeRds2Ny70GuDXsed3mWOGzjtrC4pm4rOXDxiExo33YC9BIBtaoua3WU3jY097HpUbr7izdz5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0rEhQon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9C1C4CECD;
+	Wed,  6 Nov 2024 12:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895727;
-	bh=pV+g58PjaJCMXvlL08GQTD4H5vHBba0OVhPTW0iyk18=;
+	s=korg; t=1730896433;
+	bh=GLvuFiHqGL+ye1VtF9UL5IOpScq3tpVEBEiHPjTGhEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewWyTv2g0jTLz4nbxvYk+eW/DW0nub7XEU20y7+gqztbvJz0AUChq4g0QYtps5cYn
-	 TTUdcfEHdYS1kmrSCc2giaEzMvByFdDKBf085rrGGqq+EpXVTlLSji2wNkfiZupdlE
-	 U9qGUxmn1JulmtuPiMvjW827pdzAvufbQb1IoGG8=
+	b=X0rEhQonJpTdqSCPb9M8bZw3i4KAEpQIQOe1Yp/YIdwVbuCHWixgZpxYxdaO7FflR
+	 2E79yvnvvWFhpT7l6bDF0OBpUzI9AVoN9q+kkcb1W6lrS0/eUMGKrVDqQ8MaizaE6s
+	 fWtX2JO7dugaoDDJvHSRe/mOKHPYQpuaYF1qPOnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 288/350] parport: Proper fix for array out-of-bounds access
+	Dan Williams <dan.j.williams@intel.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 163/245] cxl/acpi: Ensure ports ready at cxl_acpi_probe() return
 Date: Wed,  6 Nov 2024 13:03:36 +0100
-Message-ID: <20241106120327.951701994@linuxfoundation.org>
+Message-ID: <20241106120323.247164425@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dan Williams <dan.j.williams@intel.com>
 
-commit 02ac3a9ef3a18b58d8f3ea2b6e46de657bf6c4f9 upstream.
+[ Upstream commit 48f62d38a07d464a499fa834638afcfd2b68f852 ]
 
-The recent fix for array out-of-bounds accesses replaced sprintf()
-calls blindly with snprintf().  However, since snprintf() returns the
-would-be-printed size, not the actually output size, the length
-calculation can still go over the given limit.
+In order to ensure root CXL ports are enabled upon cxl_acpi_probe()
+when the 'cxl_port' driver is built as a module, arrange for the
+module to be pre-loaded or built-in.
 
-Use scnprintf() instead of snprintf(), which returns the actually
-output letters, for addressing the potential out-of-bounds access
-properly.
+The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
+is merely by inspection since the bug that triggered the discovery of
+this potential problem [1] is fixed by other means. However, a stable
+backport should do no harm.
 
-Fixes: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
-Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240920103318.19271-1-tiwai@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
+Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Tested-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/172964781969.81806.17276352414854540808.stgit@dwillia2-xfh.jf.intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/procfs.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/cxl/acpi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
-+			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index 82b78e331d8ed..432b7cfd12a8e 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -924,6 +924,13 @@ static void __exit cxl_acpi_exit(void)
  
- 	if(!len) {
--		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
-+		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
- 
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
- 
- 	if ((str = info->model) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
- 
- 	if ((str = info->mfr) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
-+	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -156,7 +156,7 @@ static int do_hardware_irq(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -184,7 +184,7 @@ static int do_hardware_dma(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -216,7 +216,7 @@ static int do_hardware_modes(struct ctl_
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
-+		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
+ /* load before dax_hmem sees 'Soft Reserved' CXL ranges */
+ subsys_initcall(cxl_acpi_init);
++
++/*
++ * Arrange for host-bridge ports to be active synchronous with
++ * cxl_acpi_probe() exit.
++ */
++MODULE_SOFTDEP("pre: cxl_port");
++
+ module_exit(cxl_acpi_exit);
+ MODULE_DESCRIPTION("CXL ACPI: Platform Support");
+ MODULE_LICENSE("GPL v2");
+-- 
+2.43.0
+
 
 
 
