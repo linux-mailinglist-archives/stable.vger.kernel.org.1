@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-90462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB869BE872
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA5E9BEC0E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F1352850C4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3BB1C23794
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4541DF98C;
-	Wed,  6 Nov 2024 12:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003601FAC30;
+	Wed,  6 Nov 2024 12:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXyJiWg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDfIitaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4381E0083;
-	Wed,  6 Nov 2024 12:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD95D1E0DBB;
+	Wed,  6 Nov 2024 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895844; cv=none; b=P6qy0RZqDxZD/a36LFLDLGZ9dO2AhuTFwWUQNu+zd08S8TeWCNfUu/MgB7aguNRjhxIvApU6qtPAPWI7MfrTN8ySGP2tS+lx4fS+5iwxiN3D1J853/xyTaGl7VNRPXPTXDflM6blv8hFiSHHwCjgg9NDJtL9hKNNPpBDQkx2jAY=
+	t=1730897491; cv=none; b=V30RmoTvmam6v6LAypzhw26WMQ5+9hjhbUbbym551Q/QhAXlT2ZWbKMwga2eVV04rNv0qgSd3cQAxMkvNOIQuDtm+JhQlCcbaLA9yjWuPQ8Oxw13ucvxzjrIGqdASxdUmopMb/AOJXM5Y9/1GpjP85ieb9lbBEIjyeCR3JsRklM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895844; c=relaxed/simple;
-	bh=llKwh10n1leC0zj3sU0z0qEWgA/7zAHkqBzN+8UzIf8=;
+	s=arc-20240116; t=1730897491; c=relaxed/simple;
+	bh=QKm21WQXHqO0CXLIEA7HGIHfkItc5A43YLzge1O51+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/Cl2SsdSK/4avZheOZMPLKx+w2vZELFcUsLeszjI75h3XhF3tKyiOx6uH4jzaxJBpH0vnqlTaew65g8izETuLQhJ0ERQJr7MP9MVuKwoI+J7tQCu3BXJBc+kA9eo27pre9VHpIAzsG5Fjt+RLpEQBTnEhYqhGn72Elc67EHZcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXyJiWg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553CDC4CECD;
-	Wed,  6 Nov 2024 12:24:04 +0000 (UTC)
+	 MIME-Version; b=L8oDub3XEmWJMo/nOxtwPE8yYaoupnoc/4W32L/ePiCxgWursaWvmOdILKdDoppVGZRQL8H6n1loJhJkC8LmAjpGSPoBFsZ4nx/PZ/Wu25vNAj1RhNTQiz0Sp/+H4dUicBOIcPZfOaw9oannXxJqgDtw1GSoGveVplPZrK/PrAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDfIitaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BE0C4CECD;
+	Wed,  6 Nov 2024 12:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895844;
-	bh=llKwh10n1leC0zj3sU0z0qEWgA/7zAHkqBzN+8UzIf8=;
+	s=korg; t=1730897491;
+	bh=QKm21WQXHqO0CXLIEA7HGIHfkItc5A43YLzge1O51+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXyJiWg2kEnUObVFpSlL8DZcT9yIqugBlpzovwiVCWf6UR/GSztbNmiROhgYUNb8C
-	 854l9yS2KtN6K360ig+sTGSwZYTulbODgX7xqmBF9juM61Lcu1VWtCpAqdVOq3nP6p
-	 Aj4DqA1KX6ivorJGYpfgtNUzWYSj/YGT4OyD9S+M=
+	b=dDfIitaT3oQSUTn4rIzzpPiaciDCH+ksMIGD6EbvQLl2ZimVnXDRifqGtDZrbCYpp
+	 6c9V5/MoaGkXssRAfqmL6DFH7k5BHQsoUEMHSZ4TTLzdA4IuBqO7/1Fr5i7KDOcPQD
+	 320OGI6OeKCrTRihu8c+VSs+miwH3tTV2LUu9Ggo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pau Espin Pedrol <pespin@sysmocom.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Oliver Smith <osmith@sysmocom.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 330/350] gtp: allow -1 to be specified as file description from userspace
+Subject: [PATCH 6.6 070/151] NFS: remove revoked delegation from servers delegation list
 Date: Wed,  6 Nov 2024 13:04:18 +0100
-Message-ID: <20241106120328.875490515@linuxfoundation.org>
+Message-ID: <20241106120310.769206064@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 7515e37bce5c428a56a9b04ea7e96b3f53f17150 ]
+[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
 
-Existing user space applications maintained by the Osmocom project are
-breaking since a recent fix that addresses incorrect error checking.
+After the delegation is returned to the NFS server remove it
+from the server's delegations list to reduce the time it takes
+to scan this list.
 
-Restore operation for user space programs that specify -1 as file
-descriptor to skip GTPv0 or GTPv1 only sockets.
+Network trace captured while running the below script shows the
+time taken to service the CB_RECALL increases gradually due to
+the overhead of traversing the delegation list in
+nfs_delegation_find_inode_server.
 
-Fixes: defd8b3c37b0 ("gtp: fix a potential NULL pointer dereference")
-Reported-by: Pau Espin Pedrol <pespin@sysmocom.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Tested-by: Oliver Smith <osmith@sysmocom.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241022144825.66740-1-pablo@netfilter.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The NFS server in this test is a Solaris server which issues
+CB_RECALL when receiving the all-zero stateid in the SETATTR.
+
+mount=/mnt/data
+for i in $(seq 1 20)
+do
+   echo $i
+   mkdir $mount/testtarfile$i
+   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
+done
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ fs/nfs/delegation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 8ad324ef99a2b..2a544724f0e2a 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -853,20 +853,24 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
- 	unsigned int role = GTP_ROLE_GGSN;
- 
- 	if (data[IFLA_GTP_FD0]) {
--		u32 fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
-+		int fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
- 
--		sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
--		if (IS_ERR(sk0))
--			return PTR_ERR(sk0);
-+		if (fd0 >= 0) {
-+			sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
-+			if (IS_ERR(sk0))
-+				return PTR_ERR(sk0);
-+		}
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index a2034511b6314..4bf2526a3a189 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -981,6 +981,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
  	}
  
- 	if (data[IFLA_GTP_FD1]) {
--		u32 fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
-+		int fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
+ 	nfs_mark_delegation_revoked(delegation);
++	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
++	spin_unlock(&delegation->lock);
++	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
++		nfs_put_delegation(delegation);
++	goto out_rcu_unlock;
  
--		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
--		if (IS_ERR(sk1u)) {
--			gtp_encap_disable_sock(sk0);
--			return PTR_ERR(sk1u);
-+		if (fd1 >= 0) {
-+			sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
-+			if (IS_ERR(sk1u)) {
-+				gtp_encap_disable_sock(sk0);
-+				return PTR_ERR(sk1u);
-+			}
- 		}
- 	}
- 
+ out_clear_returning:
+ 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
 -- 
 2.43.0
 
