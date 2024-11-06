@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78809BE82A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3479BEB74
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3B7283638
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 826131C23581
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE64B1DF74E;
-	Wed,  6 Nov 2024 12:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B211F76DF;
+	Wed,  6 Nov 2024 12:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLG5EoLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgGLp9Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFC11DF726;
-	Wed,  6 Nov 2024 12:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809B01EC00E;
+	Wed,  6 Nov 2024 12:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895706; cv=none; b=XygkU/W6AYqr21gGcR3cCVqHmC+h0EgEQ8fgwotbg1Gxe6Yvm1P8oP+aZb10Mwk5rAsoDNEczajJM0ggqUFIdSlVX1EHXFpJv8b144ejlUlOYnsjfaLJNxJiUgaf4aFXVPvhPe3zz+lTGsddgsLS09D/6a8DQQyilJhiKTVA75U=
+	t=1730897088; cv=none; b=GSAcfaG8edm5GErj2fp3Tqk95VGhjP5EVXehQwaYs97vnPRwpj4L/MJ2H2H7fZmGEskvJxN0JR0JpSRZUDH7r9KJQfr1p1o3RDpnNv+rHLM9gkXpFzrKCWqSxQBy9bpMRLfBJQ1poJXY3T6LuMGSQlyalEm3NwIWjHKeKAJTnDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895706; c=relaxed/simple;
-	bh=PpGtntJUgGvIhBY4hSye9TjEjMxI5J7EIRm1dnT+r6Y=;
+	s=arc-20240116; t=1730897088; c=relaxed/simple;
+	bh=+KwZF2j0i3nJGA34Rg8Qh79+wYmr8IoHyPUxLRGTfPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEBo2dJxQlz4Kb/pHRA3Xm099pPgfEFf5bRs6Fksg5HHGEMQpo4QP340S53EcHgfxjFlX/NsPzsGmxcAdpq3DEoswdtXoa6FSNcLf2keGbb88XDogD0uFYuaPfcfB09dcLdQRgZ9xMt+gNvQEps4iPi08O5dKEoyfLa+mAiNCSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLG5EoLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24023C4CECD;
-	Wed,  6 Nov 2024 12:21:45 +0000 (UTC)
+	 MIME-Version; b=K1ZyO73/ubqDnfOi0+Awd8KM1faQnhcgBB9lwtosmiivj2Fwg6YqadTsiOFQvC3MrXUT1ho5AebNmqLqPFrqhsSOSn+dvNDYwxetExMFZLebU5L4eVRqyD8NRIYaSC8yrSbNt3/l3+jn5bq+5ON0oBy3wdvAyNwAzffi2zd2l7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgGLp9Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078E1C4CECD;
+	Wed,  6 Nov 2024 12:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895706;
-	bh=PpGtntJUgGvIhBY4hSye9TjEjMxI5J7EIRm1dnT+r6Y=;
+	s=korg; t=1730897088;
+	bh=+KwZF2j0i3nJGA34Rg8Qh79+wYmr8IoHyPUxLRGTfPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLG5EoLLI0Ik6gfiZU3HYQb5KdPDP8/6c1ClosgypyXI674kPfRg6uEJH2Gc2wcNC
-	 ZtBDzzVKiaqC+4ZILJXu6IQrmJUVy5fGW7c0wGZCUn76D7Av/7rScuCHWGqTq0WN8T
-	 cm/+fCJZVO0+5bciRWvtJFW8Pd+aO6AwqPim6mCw=
+	b=SgGLp9FpGgCrbuLA6M0eO6aPyBKCdWF+VmK4My/INU1Dt8xca4TGy00Pd7XZVAqO+
+	 Ivhau7uP8lBMsU3cEAvYJ+DtOu9rvnrli8ztTbXMMQfdZuTFvJLN4voRQsEoNv8+m2
+	 J8YM5TrYmddtZL7iUdqnLARbT8hse3gddYV/jF88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.com>,
-	Gianfranco Trad <gianf.trad@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 308/350] udf: fix uninit-value use in udf_get_fileshortad
+Subject: [PATCH 6.1 035/126] mlxsw: spectrum_ipip: Rename Spectrum-2 ip6gre operations
 Date: Wed,  6 Nov 2024 13:03:56 +0100
-Message-ID: <20241106120328.389200169@linuxfoundation.org>
+Message-ID: <20241106120307.057226727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +64,209 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gianfranco Trad <gianf.trad@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 264db9d666ad9a35075cc9ed9ec09d021580fbb1 ]
+[ Upstream commit ab30e4d4b29ba530c65406e8a146630d0663c570 ]
 
-Check for overflow when computing alen in udf_current_aext to mitigate
-later uninit-value use in udf_get_fileshortad KMSAN bug[1].
-After applying the patch reproducer did not trigger any issue[2].
+There are two main differences between Spectrum-1 and newer ASICs in
+terms of IP-in-IP support:
 
-[1] https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
-[2] https://syzkaller.appspot.com/x/log.txt?x=10242227980000
+1. In Spectrum-1, RIFs representing ip6gre tunnels require two entries
+   in the RIF table.
 
-Reported-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
-Tested-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240925074613.8475-3-gianf.trad@gmail.com
+2. In Spectrum-2 and newer ASICs, packets ingress the underlay (during
+   encapsulation) and egress the underlay (during decapsulation) via a
+   special generic loopback RIF.
+
+The first difference was handled in previous patches by adding the
+'double_rif_entry' field to the Spectrum-1 operations structure of
+ip6gre RIFs. The second difference is handled during RIF creation, by
+only creating a generic loopback RIF in Spectrum-2 and newer ASICs.
+
+Therefore, the ip6gre operations can be shared between Spectrum-1 and
+newer ASIC in a similar fashion to how the ipgre operations are shared.
+
+Rename the operations to not be Spectrum-2 specific and move them
+earlier in the file so that they could later be used for Spectrum-1.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 12ae97c531fc ("mlxsw: spectrum_ipip: Fix memory leak when changing remote IPv6 address")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../ethernet/mellanox/mlxsw/spectrum_ipip.c   | 94 +++++++++----------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 08d7208eb7b75..76bb8be01b8d9 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -2166,12 +2166,15 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 		alen = udf_file_entry_alloc_offset(inode) +
- 							iinfo->i_lenAlloc;
- 	} else {
-+		struct allocExtDesc *header =
-+			(struct allocExtDesc *)epos->bh->b_data;
-+
- 		if (!epos->offset)
- 			epos->offset = sizeof(struct allocExtDesc);
- 		ptr = epos->bh->b_data + epos->offset;
--		alen = sizeof(struct allocExtDesc) +
--			le32_to_cpu(((struct allocExtDesc *)epos->bh->b_data)->
--							lengthAllocDescs);
-+		if (check_add_overflow(sizeof(struct allocExtDesc),
-+				le32_to_cpu(header->lengthAllocDescs), &alen))
-+			return -1;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+index 7ed4b64fecc7a..fd421fbfc71bd 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+@@ -429,28 +429,8 @@ mlxsw_sp1_ipip_rem_addr_unset_gre6(struct mlxsw_sp *mlxsw_sp,
+ 	WARN_ON_ONCE(1);
+ }
  
- 	switch (iinfo->i_alloc_type) {
+-static const struct mlxsw_sp_ipip_ops mlxsw_sp1_ipip_gre6_ops = {
+-	.dev_type = ARPHRD_IP6GRE,
+-	.ul_proto = MLXSW_SP_L3_PROTO_IPV6,
+-	.inc_parsing_depth = true,
+-	.double_rif_entry = true,
+-	.parms_init = mlxsw_sp1_ipip_netdev_parms_init_gre6,
+-	.nexthop_update = mlxsw_sp1_ipip_nexthop_update_gre6,
+-	.decap_config = mlxsw_sp1_ipip_decap_config_gre6,
+-	.can_offload = mlxsw_sp1_ipip_can_offload_gre6,
+-	.ol_loopback_config = mlxsw_sp1_ipip_ol_loopback_config_gre6,
+-	.ol_netdev_change = mlxsw_sp1_ipip_ol_netdev_change_gre6,
+-	.rem_ip_addr_set = mlxsw_sp1_ipip_rem_addr_set_gre6,
+-	.rem_ip_addr_unset = mlxsw_sp1_ipip_rem_addr_unset_gre6,
+-};
+-
+-const struct mlxsw_sp_ipip_ops *mlxsw_sp1_ipip_ops_arr[] = {
+-	[MLXSW_SP_IPIP_TYPE_GRE4] = &mlxsw_sp_ipip_gre4_ops,
+-	[MLXSW_SP_IPIP_TYPE_GRE6] = &mlxsw_sp1_ipip_gre6_ops,
+-};
+-
+ static struct mlxsw_sp_ipip_parms
+-mlxsw_sp2_ipip_netdev_parms_init_gre6(const struct net_device *ol_dev)
++mlxsw_sp_ipip_netdev_parms_init_gre6(const struct net_device *ol_dev)
+ {
+ 	struct __ip6_tnl_parm parms = mlxsw_sp_ipip_netdev_parms6(ol_dev);
+ 
+@@ -465,9 +445,9 @@ mlxsw_sp2_ipip_netdev_parms_init_gre6(const struct net_device *ol_dev)
+ }
+ 
+ static int
+-mlxsw_sp2_ipip_nexthop_update_gre6(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
+-				   struct mlxsw_sp_ipip_entry *ipip_entry,
+-				   bool force, char *ratr_pl)
++mlxsw_sp_ipip_nexthop_update_gre6(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
++				  struct mlxsw_sp_ipip_entry *ipip_entry,
++				  bool force, char *ratr_pl)
+ {
+ 	u16 rif_index = mlxsw_sp_ipip_lb_rif_index(ipip_entry->ol_lb);
+ 	enum mlxsw_reg_ratr_op op;
+@@ -483,9 +463,9 @@ mlxsw_sp2_ipip_nexthop_update_gre6(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
+ }
+ 
+ static int
+-mlxsw_sp2_ipip_decap_config_gre6(struct mlxsw_sp *mlxsw_sp,
+-				 struct mlxsw_sp_ipip_entry *ipip_entry,
+-				 u32 tunnel_index)
++mlxsw_sp_ipip_decap_config_gre6(struct mlxsw_sp *mlxsw_sp,
++				struct mlxsw_sp_ipip_entry *ipip_entry,
++				u32 tunnel_index)
+ {
+ 	u16 rif_index = mlxsw_sp_ipip_lb_rif_index(ipip_entry->ol_lb);
+ 	u16 ul_rif_id = mlxsw_sp_ipip_lb_ul_rif_id(ipip_entry->ol_lb);
+@@ -520,8 +500,8 @@ mlxsw_sp2_ipip_decap_config_gre6(struct mlxsw_sp *mlxsw_sp,
+ 	return mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(rtdp), rtdp_pl);
+ }
+ 
+-static bool mlxsw_sp2_ipip_can_offload_gre6(const struct mlxsw_sp *mlxsw_sp,
+-					    const struct net_device *ol_dev)
++static bool mlxsw_sp_ipip_can_offload_gre6(const struct mlxsw_sp *mlxsw_sp,
++					   const struct net_device *ol_dev)
+ {
+ 	struct __ip6_tnl_parm tparm = mlxsw_sp_ipip_netdev_parms6(ol_dev);
+ 	bool inherit_tos = tparm.flags & IP6_TNL_F_USE_ORIG_TCLASS;
+@@ -535,8 +515,8 @@ static bool mlxsw_sp2_ipip_can_offload_gre6(const struct mlxsw_sp *mlxsw_sp,
+ }
+ 
+ static struct mlxsw_sp_rif_ipip_lb_config
+-mlxsw_sp2_ipip_ol_loopback_config_gre6(struct mlxsw_sp *mlxsw_sp,
+-				       const struct net_device *ol_dev)
++mlxsw_sp_ipip_ol_loopback_config_gre6(struct mlxsw_sp *mlxsw_sp,
++				      const struct net_device *ol_dev)
+ {
+ 	struct __ip6_tnl_parm parms = mlxsw_sp_ipip_netdev_parms6(ol_dev);
+ 	enum mlxsw_reg_ritr_loopback_ipip_type lb_ipipt;
+@@ -554,20 +534,20 @@ mlxsw_sp2_ipip_ol_loopback_config_gre6(struct mlxsw_sp *mlxsw_sp,
+ }
+ 
+ static int
+-mlxsw_sp2_ipip_ol_netdev_change_gre6(struct mlxsw_sp *mlxsw_sp,
+-				     struct mlxsw_sp_ipip_entry *ipip_entry,
+-				     struct netlink_ext_ack *extack)
++mlxsw_sp_ipip_ol_netdev_change_gre6(struct mlxsw_sp *mlxsw_sp,
++				    struct mlxsw_sp_ipip_entry *ipip_entry,
++				    struct netlink_ext_ack *extack)
+ {
+ 	struct mlxsw_sp_ipip_parms new_parms;
+ 
+-	new_parms = mlxsw_sp2_ipip_netdev_parms_init_gre6(ipip_entry->ol_dev);
++	new_parms = mlxsw_sp_ipip_netdev_parms_init_gre6(ipip_entry->ol_dev);
+ 	return mlxsw_sp_ipip_ol_netdev_change_gre(mlxsw_sp, ipip_entry,
+ 						  &new_parms, extack);
+ }
+ 
+ static int
+-mlxsw_sp2_ipip_rem_addr_set_gre6(struct mlxsw_sp *mlxsw_sp,
+-				 struct mlxsw_sp_ipip_entry *ipip_entry)
++mlxsw_sp_ipip_rem_addr_set_gre6(struct mlxsw_sp *mlxsw_sp,
++				struct mlxsw_sp_ipip_entry *ipip_entry)
+ {
+ 	return mlxsw_sp_ipv6_addr_kvdl_index_get(mlxsw_sp,
+ 						 &ipip_entry->parms.daddr.addr6,
+@@ -575,24 +555,44 @@ mlxsw_sp2_ipip_rem_addr_set_gre6(struct mlxsw_sp *mlxsw_sp,
+ }
+ 
+ static void
+-mlxsw_sp2_ipip_rem_addr_unset_gre6(struct mlxsw_sp *mlxsw_sp,
+-				   const struct mlxsw_sp_ipip_entry *ipip_entry)
++mlxsw_sp_ipip_rem_addr_unset_gre6(struct mlxsw_sp *mlxsw_sp,
++				  const struct mlxsw_sp_ipip_entry *ipip_entry)
+ {
+ 	mlxsw_sp_ipv6_addr_put(mlxsw_sp, &ipip_entry->parms.daddr.addr6);
+ }
+ 
++static const struct mlxsw_sp_ipip_ops mlxsw_sp1_ipip_gre6_ops = {
++	.dev_type = ARPHRD_IP6GRE,
++	.ul_proto = MLXSW_SP_L3_PROTO_IPV6,
++	.inc_parsing_depth = true,
++	.double_rif_entry = true,
++	.parms_init = mlxsw_sp1_ipip_netdev_parms_init_gre6,
++	.nexthop_update = mlxsw_sp1_ipip_nexthop_update_gre6,
++	.decap_config = mlxsw_sp1_ipip_decap_config_gre6,
++	.can_offload = mlxsw_sp1_ipip_can_offload_gre6,
++	.ol_loopback_config = mlxsw_sp1_ipip_ol_loopback_config_gre6,
++	.ol_netdev_change = mlxsw_sp1_ipip_ol_netdev_change_gre6,
++	.rem_ip_addr_set = mlxsw_sp1_ipip_rem_addr_set_gre6,
++	.rem_ip_addr_unset = mlxsw_sp1_ipip_rem_addr_unset_gre6,
++};
++
++const struct mlxsw_sp_ipip_ops *mlxsw_sp1_ipip_ops_arr[] = {
++	[MLXSW_SP_IPIP_TYPE_GRE4] = &mlxsw_sp_ipip_gre4_ops,
++	[MLXSW_SP_IPIP_TYPE_GRE6] = &mlxsw_sp1_ipip_gre6_ops,
++};
++
+ static const struct mlxsw_sp_ipip_ops mlxsw_sp2_ipip_gre6_ops = {
+ 	.dev_type = ARPHRD_IP6GRE,
+ 	.ul_proto = MLXSW_SP_L3_PROTO_IPV6,
+ 	.inc_parsing_depth = true,
+-	.parms_init = mlxsw_sp2_ipip_netdev_parms_init_gre6,
+-	.nexthop_update = mlxsw_sp2_ipip_nexthop_update_gre6,
+-	.decap_config = mlxsw_sp2_ipip_decap_config_gre6,
+-	.can_offload = mlxsw_sp2_ipip_can_offload_gre6,
+-	.ol_loopback_config = mlxsw_sp2_ipip_ol_loopback_config_gre6,
+-	.ol_netdev_change = mlxsw_sp2_ipip_ol_netdev_change_gre6,
+-	.rem_ip_addr_set = mlxsw_sp2_ipip_rem_addr_set_gre6,
+-	.rem_ip_addr_unset = mlxsw_sp2_ipip_rem_addr_unset_gre6,
++	.parms_init = mlxsw_sp_ipip_netdev_parms_init_gre6,
++	.nexthop_update = mlxsw_sp_ipip_nexthop_update_gre6,
++	.decap_config = mlxsw_sp_ipip_decap_config_gre6,
++	.can_offload = mlxsw_sp_ipip_can_offload_gre6,
++	.ol_loopback_config = mlxsw_sp_ipip_ol_loopback_config_gre6,
++	.ol_netdev_change = mlxsw_sp_ipip_ol_netdev_change_gre6,
++	.rem_ip_addr_set = mlxsw_sp_ipip_rem_addr_set_gre6,
++	.rem_ip_addr_unset = mlxsw_sp_ipip_rem_addr_unset_gre6,
+ };
+ 
+ const struct mlxsw_sp_ipip_ops *mlxsw_sp2_ipip_ops_arr[] = {
 -- 
 2.43.0
 
