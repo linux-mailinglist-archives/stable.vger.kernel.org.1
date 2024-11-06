@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-90535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D2C9BE8CF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893559BE7AB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E56EB21B03
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAC1E1C23662
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160891DDA15;
-	Wed,  6 Nov 2024 12:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7A31DF254;
+	Wed,  6 Nov 2024 12:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIoX8aC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ET4UgRX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B8A1DE4EA;
-	Wed,  6 Nov 2024 12:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF3E1DE8B4;
+	Wed,  6 Nov 2024 12:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896059; cv=none; b=NQpZyVd9ZjHXuvwhnAr+7zlWqtUyjFpQQaKQmlIT/f8oO3SL1iTTAibsjNWytwrCoiJ8i6Gp29nofHxZH8v5ftWzwtkf7IlAHDrrDSEibk6uuJbwUhR0PxZKZKOxTIwwvTGX+PZkH9b6PfeJkKgXZDXjY80ULkMClztXFxVm6o8=
+	t=1730895391; cv=none; b=J9nJ3HJgf8u6e3kubb0jUoV2iAmrj/wAfDaDqC7pqAf20xgn/wfXVcyAuAUSZnVkl9BVz5XiFWCLXJbZkz3p+pZ+RoG3J+tQ899TD8i+xco/bL/emYbY4zwnD0jbG0hnoZZjGgMzEefuXGyWw9cNcEht3yt8Q6fngWP3BKRVVko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896059; c=relaxed/simple;
-	bh=8RzyW70rtTu97jnP1SeZbU+sA62kR2iTgdTKzgmFVT8=;
+	s=arc-20240116; t=1730895391; c=relaxed/simple;
+	bh=ZMm8FcFFpmhGuX47Yl+WUd/8Fee6YzMCCMaJZLf3RV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iM6ipfzEPDUWyRDRSuTJ6+qcdxgcLDlMpGjiYTQxNa5gr8rq8b2J6mLGEMGCgpW96O4a1qxwKrS2SW90i9KynXWha1womcVy0//l8jeloLutNZ77j8GJF1zQ17cLyiuaoWFDENuZmiRU5FmSOwisP1rGjqzgdxobOLD6fBYHg3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIoX8aC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50821C4CECD;
-	Wed,  6 Nov 2024 12:27:39 +0000 (UTC)
+	 MIME-Version; b=olh1FmGjwVXG73bwFH0A8GeB87VOA4QDhAcic9K2fUqHxa0t5tyyAJBshmmGfOCHAH9Oc5Mq6nOR/GzOBvV9p8/DaI7BRX530f5n1OZRoxXyL1nveeT394LcKDaZIll8Ack56BGDvFDcMIgvLEiZLW2itFfjLefT7XbYEMwbjis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ET4UgRX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172B2C4CECD;
+	Wed,  6 Nov 2024 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896059;
-	bh=8RzyW70rtTu97jnP1SeZbU+sA62kR2iTgdTKzgmFVT8=;
+	s=korg; t=1730895391;
+	bh=ZMm8FcFFpmhGuX47Yl+WUd/8Fee6YzMCCMaJZLf3RV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIoX8aC+ohvqqXsHD181nLbe5fsBgBxhQGTx9LLxj+QYJaL/U6HFheT+K4V/8JTGN
-	 mkNn8f6cF4YlEleluXB4HUfID19zq6UcdRdZfWT8TFMcKe/RscOwBP9MTk+vqommv2
-	 N+/SDHo4jwt/BYMPXIn7eT+Vtx6DpHrfb6553ngI=
+	b=ET4UgRX/V0nQYeT1OmRBiIkQNXrCcoMGULcqmCk+MZvl6n+Qr9x2bOi5moKHd/I5b
+	 OGntqgTFDSiMY0iGgwTXb+ixKECGIPaV5O+cRXDxIB5eys8+ZSQpxlOyxHJMjRtx2Q
+	 ovrFRY7HZrJkWnTrN4hfhDvWLH6wijfUhRty3rNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 075/245] drm/tegra: Fix NULL vs IS_ERR() check in probe()
-Date: Wed,  6 Nov 2024 13:02:08 +0100
-Message-ID: <20241106120321.052391826@linuxfoundation.org>
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 201/350] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
+Date: Wed,  6 Nov 2024 13:02:09 +0100
+Message-ID: <20241106120325.939199226@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit a85df8c7b5ee2d3d4823befada42c5c41aff4cb0 ]
+commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
 
-The iommu_paging_domain_alloc() function doesn't  return NULL pointers,
-it returns error pointers.  Update the check to match.
+Patch series "Misc fixes for ocfs2_read_blocks", v5.
 
-Fixes: 45c690aea8ee ("drm/tegra: Use iommu_paging_domain_alloc()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/ba31cf3a-af3d-4ff1-87a8-f05aaf8c780b@stanley.mountain
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
+the issue reported by syzbot, which detects bad unlock balance in
+ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
+Zhao when reviewing above fix.
+
+
+This patch (of 2):
+
+There was a lock release before exiting, so remove the unreasonable unlock.
+
+Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
+Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
+Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/drm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ocfs2/buffer_head_io.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tegra/drm.c b/drivers/gpu/drm/tegra/drm.c
-index d79c76a287f22..6a29ac1b2d219 100644
---- a/drivers/gpu/drm/tegra/drm.c
-+++ b/drivers/gpu/drm/tegra/drm.c
-@@ -1152,8 +1152,8 @@ static int host1x_drm_probe(struct host1x_device *dev)
- 
- 	if (host1x_drm_wants_iommu(dev) && device_iommu_mapped(dma_dev)) {
- 		tegra->domain = iommu_paging_domain_alloc(dma_dev);
--		if (!tegra->domain) {
--			err = -ENOMEM;
-+		if (IS_ERR(tegra->domain)) {
-+			err = PTR_ERR(tegra->domain);
- 			goto free;
- 		}
- 
--- 
-2.43.0
-
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -251,7 +251,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
+ 		if (bhs[i] == NULL) {
+ 			bhs[i] = sb_getblk(sb, block++);
+ 			if (bhs[i] == NULL) {
+-				ocfs2_metadata_cache_io_unlock(ci);
+ 				status = -ENOMEM;
+ 				mlog_errno(status);
+ 				/* Don't forget to put previous bh! */
 
 
 
