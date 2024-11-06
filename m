@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A7C9BE82F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246B49BEADE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1401F20355
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 556081C23ACC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0E41DF740;
-	Wed,  6 Nov 2024 12:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781F51E1322;
+	Wed,  6 Nov 2024 12:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPlp1vHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2RoYCSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F5A1DF73C;
-	Wed,  6 Nov 2024 12:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336F32003BF;
+	Wed,  6 Nov 2024 12:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895721; cv=none; b=rgk0W4K5g34jkS/MqFmM1OJa0R44FIUqxxcNopu/LLr3zahchxl12lp9XSRGRhvoVovcVy1KPz3kJrnDAUE+VXs2DAwKYFCoOdD17ilLAlqe0fo328hTH6CEbZX5kVTigcrMW7/NXBzPaoiWGSRAj8gc7kfMp4GdSoedoDiyLrM=
+	t=1730896785; cv=none; b=c5O/ZQEeDZcjcj8p/PfU6zB1ky0hfi/mkJpI4y7xbcb4J8N1kh7rbffLKzuEo+QCq6NnaxubUujGGCOprYqZhz53k3Y5y5R9Rplq4wFG9hBqrTVI5qpXTCHMPSClg0J2T58Yz6VpGzTO/qUVPF+OZML+3bkQoLMtHC+zLR7YT8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895721; c=relaxed/simple;
-	bh=1T+e97zD/mtrkC5E/tpzfuNn0NrjaIEEftGMxh8b8gM=;
+	s=arc-20240116; t=1730896785; c=relaxed/simple;
+	bh=kcAssdzMC5h5KVUNVttz45vewImycxsp1JFHMok+QLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpFnt5BJYnNSk3FrZx7NN20iVjlnTiFfm1bScNhi/gipI8CG/PB4UPbWjb6oPSA7VVam3IbaS8L5uAvwFNrmyiv0pvY6Ze4N8ZIzP4I/KIrZlvy3oGWaxeS/pOT6VgeGbX+76U0zz5ko1xbyaMWZc6BvW5Q2k73yM69B1t3vC3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPlp1vHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61CBC4CECD;
-	Wed,  6 Nov 2024 12:22:00 +0000 (UTC)
+	 MIME-Version; b=LIWH2x46ACPCILZrAI1JqWUBnmCMP+lX96W+3/ThVUO53CudBAlLr8LIf+rF/t8AiBV9XKZbEWdz7hnBfz48po5gw6ZOvDEk7L4IJrrOMTSLg/22n1a6cjtuBG44Xj3jztKvDimceTWwaez5rlty9rNx4bS0z/+qNcDanCuJNpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2RoYCSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD63EC4CECD;
+	Wed,  6 Nov 2024 12:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895721;
-	bh=1T+e97zD/mtrkC5E/tpzfuNn0NrjaIEEftGMxh8b8gM=;
+	s=korg; t=1730896785;
+	bh=kcAssdzMC5h5KVUNVttz45vewImycxsp1JFHMok+QLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPlp1vHb57h/yKiG8OgunzpvXqBdWP9l5hYbQ8tGo6vv09fuNH1H1Z6FXtjORjgMd
-	 jfy8UfrxKOGUz6o0ZQI9i7q5MRWPZPIe2BFufQg3ZoXruG+gIxF4O46nw0yg3HO69o
-	 vnNO1rfvFU0isOmxFfTL6QYFXyK/kHMIQVi0rFq0=
+	b=b2RoYCSKjbh/JEtT6jMgWrMzhDD3bvmvm2MHINdQd7yQ2CQ9ojf68w7PXwN/rX8JA
+	 Obf9fltdWXvfWvGwZEhvA/pSVivD4vv+fouSYUu8+HttcoU1E+M8nzMyMXV/YI2ffs
+	 maN12VwjTDn76mzX09mOTLLy98pdP5348mkbaSlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Thelen <gthelen@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 4.19 313/350] net: usb: usbnet: fix name regression
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 035/110] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
 Date: Wed,  6 Nov 2024 13:04:01 +0100
-Message-ID: <20241106120328.500586893@linuxfoundation.org>
+Message-ID: <20241106120304.164571156@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 8a7d12d674ac6f2147c18f36d1e15f1a48060edf ]
+[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
 
-The fix for MAC addresses broke detection of the naming convention
-because it gave network devices no random MAC before bind()
-was called. This means that the check for the local assignment bit
-was always negative as the address was zeroed from allocation,
-instead of from overwriting the MAC with a unique hardware address.
+The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-The correct check for whether bind() has altered the MAC is
-done with is_zero_ether_addr
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reported-by: Greg Thelen <gthelen@google.com>
-Diagnosed-by: John Sperbeck <jsperbeck@google.com>
-Fixes: bab8eb0dd4cb9 ("usbnet: modern method to get random MAC")
-Link: https://patch.msgid.link/20241017071849.389636-1-oneukum@suse.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 938335f4738df..ec3a7cea8c8a8 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1746,7 +1746,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		// can rename the link if it knows better.
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
- 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     (net->dev_addr [0] & 0x02) == 0))
-+		     /* somebody touched it*/
-+		     !is_zero_ether_addr(net->dev_addr)))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 83a6114afbf90..3278e2126dc29 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -1015,6 +1015,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	if(skb->len > XMIT_BUFF_SIZE)
+ 	{
+ 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
++		dev_kfree_skb(skb);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
 -- 
 2.43.0
 
