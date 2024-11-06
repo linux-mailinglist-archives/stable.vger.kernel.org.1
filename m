@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-90877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDC89BEB71
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E72F9BEAA1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1FE51C23533
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA3E1F249A6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013441E0084;
-	Wed,  6 Nov 2024 12:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED51FBF60;
+	Wed,  6 Nov 2024 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q15rHRWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJtJTXG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AD61EABD0;
-	Wed,  6 Nov 2024 12:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF481FBF5D;
+	Wed,  6 Nov 2024 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897079; cv=none; b=HMswvN2urTBFvfE5/QeBcrE+ZD8yXUbr8t7Iea5u9I79REoioISPtHTCpz6kWnSdC8AHThUZgy2zPXSVQSjCTMK5F2NcTt4lxmRkUt2Rxjte12nIsRTniZDNyvgGaUAi8851E7W2tcpMu0eL1MnRe8CKM+C56n6efDRSi94pHao=
+	t=1730896733; cv=none; b=GLKNdEheZj4pJIgQrIfoc1K/4c6ZIun+FXELs7XwZw4yGmJ3WeTLJyu7hXVnQcGhieU0mx6gaT91QKu3TAumwQhg3zwLsH/e+PO4t1DWUkxsVsQBEFAddZ0JnCZlOlz3kxo0UIvBBaqR6wNJalgX3fCkgs+oMeTULUdNglpxD/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897079; c=relaxed/simple;
-	bh=jZqQq4nvDudpjhpHXbUgVMBUZg696ZDCRq10S+oEBJk=;
+	s=arc-20240116; t=1730896733; c=relaxed/simple;
+	bh=Q8hnD5djZn1TcT2mrM5ScS2pxuCE/JFWru5Bw2cNE+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3pFzDnbG3fYAVrR8FIKX3c8wMtKfa20igkG0X7lP8zodX6Eg9hTApsdmKUoiv877vqsEo0b1yrpWsi9QWakMaXfst+SuM4IEDms/fZeW/R01vQGP45scJgHpuoQ/hYvcmbp4nu/3SXMOVMCP6xZNIq9P4VYHudNZ1JAcca+lac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q15rHRWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38753C4CECD;
-	Wed,  6 Nov 2024 12:44:39 +0000 (UTC)
+	 MIME-Version; b=kAFRe2lOzqN3Hk8to93XE8689Lywa8W5nefWpBCUotngnNjYDSADmqZvcNEMi1A1RnUCabTdvkyWkSb539dIGP+zKBJYwd6mR6rN1YRqw0ZbMkPBK5aeFJOfMtYwBY61v87SAJSbIvpiRhxGBT9UlS+Vfxd2gncpFc3L1cDENB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJtJTXG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE09C4CECD;
+	Wed,  6 Nov 2024 12:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897079;
-	bh=jZqQq4nvDudpjhpHXbUgVMBUZg696ZDCRq10S+oEBJk=;
+	s=korg; t=1730896733;
+	bh=Q8hnD5djZn1TcT2mrM5ScS2pxuCE/JFWru5Bw2cNE+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q15rHRWSshiQ5Z/6cyscoIvsd2S7XnNa/PtHsbnjBBOUgkXiYqpepFPewtpoyi6C8
-	 3jui9natnQ0JEkWzT15qiqoFLnhnLidbXtSoE5w7Z7wLbS3hKqDCMTDcNROu7saY0h
-	 n/x0N2RrfOGvBg0XdQxKVIF6kCNAhaEI4+GAfh1U=
+	b=tJtJTXG2CI4Yi037nzOcZJegRZNEjyeWer/Rjtg73Luzl+shK7R3pJBY2CorCCZ4W
+	 EGq22I1XgmKZ8qe0szafOcjy2h6U3+3XBCsEfofb3hRchXw0g/fzqJDpaoTSc4CHnG
+	 TXqwFPImxRcMZk9gflrAtV5JYpG6P6zxEbmB8X84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/126] NFS: remove revoked delegation from servers delegation list
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 054/110] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
 Date: Wed,  6 Nov 2024 13:04:20 +0100
-Message-ID: <20241106120307.691378896@linuxfoundation.org>
+Message-ID: <20241106120304.695430439@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
+commit 49da1463c9e3d2082276c3e0e2a8b65a88711cd2 upstream.
 
-After the delegation is returned to the NFS server remove it
-from the server's delegations list to reduce the time it takes
-to scan this list.
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+possibly return NULL pointer. NULL Pointer Dereference may be
+triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-Network trace captured while running the below script shows the
-time taken to service the CB_RECALL increases gradually due to
-the overhead of traversing the delegation list in
-nfs_delegation_find_inode_server.
-
-The NFS server in this test is a Solaris server which issues
-CB_RECALL when receiving the all-zero stateid in the SETATTR.
-
-mount=/mnt/data
-for i in $(seq 1 20)
-do
-   echo $i
-   mkdir $mount/testtarfile$i
-   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
-done
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241006205737.8829-1-zichenxie0106@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/delegation.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/qcom/lpass-cpu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 2ba4d221bf9d5..39c697e100b1b 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -981,6 +981,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
- 	}
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -946,6 +946,8 @@ int asoc_qcom_lpass_cpu_platform_probe(s
+ 	/* Allocation for i2sctl regmap fields */
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
  
- 	nfs_mark_delegation_revoked(delegation);
-+	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
-+	spin_unlock(&delegation->lock);
-+	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
-+		nfs_put_delegation(delegation);
-+	goto out_rcu_unlock;
- 
- out_clear_returning:
- 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
--- 
-2.43.0
-
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
 
 
 
