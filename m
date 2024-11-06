@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-90886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057B49BEB7B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D587A9BE979
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0202285037
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FAA1B21A1A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1241DF270;
-	Wed,  6 Nov 2024 12:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CEE1DFDB1;
+	Wed,  6 Nov 2024 12:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRuWveAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEk9tduf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2EC1F80B2;
-	Wed,  6 Nov 2024 12:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C7E1DFD89;
+	Wed,  6 Nov 2024 12:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897106; cv=none; b=hHnxbYhImBZDyNq5gKha7FlIYQtyeo5Xas9khmmECU0RXs5mz/2SZA2iWBISketIiQVcK5AFlOB2+Gq0w9Wemk0Z+HwmnF+0fUdUh+uFQnz8dMOs7AEfQNrNnw7rBY+BhHKZaE+kcqdqDwteXiEkflR0iOVnJqvtkAxFgX9E27o=
+	t=1730896477; cv=none; b=jXG0xRMRbbwVpj5QBOx/MOVUCYAV2mO4I/+QD4de2CxkuO9FekNZelaIH8rUI0yc6bbkZZ4UhWRuCqYtYpURPj6MQfWMlG2nyoiM743GtezE+oEEwQTCeXcea2KztR7F5LMuTM32Bzymf9ObW3Rrx8phz0CaTHs1Ccf5Q9aU+2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897106; c=relaxed/simple;
-	bh=Db4+9+IYgjCallxSpYrdtOCYaD0xmXsEQI89OVRNZBU=;
+	s=arc-20240116; t=1730896477; c=relaxed/simple;
+	bh=7/nvfeGtR8GQIeO9J6oBU+IJlbxVKPiTIY/Qcni8ZR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2kfOk2FwjdohCEM3iCu02ai7unrV74dIr6mBRzzzZ9p5SfpTrfexS6hvh8fitOWmbHRgHvEDT0nECSIw1Ba+aPqi8Eh04OISMzg28L6L/p7Mzzc1TtfvAvZr1MUO6p65FypD56YHeg+4IE0+9crt/iBAJOh15XHKrmwziBdZKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRuWveAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A274CC4CECD;
-	Wed,  6 Nov 2024 12:45:05 +0000 (UTC)
+	 MIME-Version; b=jQyKBFVzEh3vbkLMRVlFMhD2+lbL9gqCSUC9/eJubOPIVrEBt8lglidQGXo2DIk2EHx3R/rSZxgZPdcWtgKCT31wGQOejTf6DVu8tdRuq0q5BtjwWcr4uPp2guZBfua+kCr50uKmYKMqYYKsYsjgZyYw37z7puMTb1WZP6rIKt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEk9tduf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15161C4CECD;
+	Wed,  6 Nov 2024 12:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897106;
-	bh=Db4+9+IYgjCallxSpYrdtOCYaD0xmXsEQI89OVRNZBU=;
+	s=korg; t=1730896477;
+	bh=7/nvfeGtR8GQIeO9J6oBU+IJlbxVKPiTIY/Qcni8ZR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRuWveAYku8qLFebGVwk0sf9cMJAUGh3DgnDMxCcG90Fe9D98gYHyFmZXDjX080Sc
-	 Bw/p9hdb3JnpsICPWL/4v9GKU9I7lEOYOUwh8qmnozrbB062yAiNMYgNshHLSnZKjA
-	 EP4j9Q+ddibgD8vCizqbLNjeljhg7egqi6z52Fmk=
+	b=pEk9tdufQuGDs3l8Z84pcwEDErlM3KBGU1IKG20dNIPo7ZA+IUyQDbbnInXnH6A8z
+	 FUoeNcK71/mpcl2MGosfmQ6W+D9CTiDyixaxRDpF8sQemdzVfM2XUDMM+8RDPDJjn2
+	 LeyCeUuiHmZMqDeU38opbN+zrTwcOepjWdNrWgTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 6.1 067/126] usb: phy: Fix API devm_usb_put_phy() can not release the phy
+	Abel Vesa <abel.vesa@linaro.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 215/245] arm64: dts: qcom: x1e80100: fix PCIe4 interconnect
 Date: Wed,  6 Nov 2024 13:04:28 +0100
-Message-ID: <20241106120307.898183133@linuxfoundation.org>
+Message-ID: <20241106120324.547435679@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit fdce49b5da6e0fb6d077986dec3e90ef2b094b50 upstream.
+commit f3bba5eb46ddb8f460fc808a65050a9bf2f7ef23 upstream.
 
-For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
-to release the phy, but it does not do that actually, so it can not fully
-undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
-devres_release() instead of devres_destroy() within the API.
+The fourth PCIe controller is connected to the PCIe North ANoC.
 
-Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com
+Fix the corresponding interconnect property so that the OS manages the
+right path.
+
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Cc: stable@vger.kernel.org	# 6.9
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Sibi Sankar <quic_sibis@quicinc.com>
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241024131101.13587-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy.c |    2 +-
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -628,7 +628,7 @@ void devm_usb_put_phy(struct device *dev
- {
- 	int r;
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -3068,7 +3068,7 @@
+ 			assigned-clocks = <&gcc GCC_PCIE_4_AUX_CLK>;
+ 			assigned-clock-rates = <19200000>;
  
--	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
-+	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_usb_put_phy);
+-			interconnects = <&pcie_south_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
++			interconnects = <&pcie_north_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
+ 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
+ 					 &cnoc_main SLAVE_PCIE_4 QCOM_ICC_TAG_ALWAYS>;
 
 
 
