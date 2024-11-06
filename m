@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFD29BE99C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16DB9BEB8C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1CA31C233B9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3DA1C231BC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBE01E00B1;
-	Wed,  6 Nov 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEC11F81AF;
+	Wed,  6 Nov 2024 12:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBwb5Erk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKdikiWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FBA1DFE1E;
-	Wed,  6 Nov 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D711F81AA;
+	Wed,  6 Nov 2024 12:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896531; cv=none; b=X+pvFYIdQQ5pel1Z6H9GFIZ8p1az+DoBPmurB+mAKLr82h78IuDXGaP+19wDsqPvKp1vyT/MFMBXUa0xVtD/kBsVVohEoEbPJ484i9+YAfJLU7jw9Y1Tojv/KJLqjw/wDe++e7VS+prAcp64Dd0P+C53S/1393ViWw0QwQFaej4=
+	t=1730897150; cv=none; b=RydCIheTZEBt0FOQmf6WFSdpkXat/Mp2MnBI3OS/8j8Bb594oseWk8hQXcSx6QoYCbrGc9HvT5vamtOvACwz0d3mwM7sJfnUrSmR5MjiRTWzjg5ot81vzP3a1xbV/ecwxiZhm62hEBKGZTedtEAKryLTWsO6VK6sDXcTqbqchRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896531; c=relaxed/simple;
-	bh=v8jlWVLf+NCtEWP7PPeWvuexaXydaTJ3kCpDHHhLPQc=;
+	s=arc-20240116; t=1730897150; c=relaxed/simple;
+	bh=8fuyALaXkZ5Vl/yRosUCyDO9DGUuh/3J1V+LGdyfOCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KIxksOMM2AA9TAVJMOKwEjI7c0cbFFLJSG7HHngeZWXM8qbvgFuADpHyTuqFcYvb4vA0K5w6ZqiNVIvhBHxgOr6qmEJY85lQKeg/X8j/TrhFAOtcYgJXThH2Kl2RppzT/TpLIEUSKkOLSXk0G4HnZ8jATDZWHggG7OVhwHiZKFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBwb5Erk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD414C4CED4;
-	Wed,  6 Nov 2024 12:35:30 +0000 (UTC)
+	 MIME-Version; b=PC5xasChgExdHgNibaLtoQ9p+PXVbMLSXD6FHPIQsChOS9tKQBR99OzJln1l4irkhVygNh28a1yqyy8rhPcB1jScJaJ7Cf+i461EvhXr4CPXs0W+L+YL5ZgbjJIJtSUqKvBceGVU7krVHURAFLi0/2w+7CUziguiF84/w30LV0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKdikiWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0133C4CECD;
+	Wed,  6 Nov 2024 12:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896531;
-	bh=v8jlWVLf+NCtEWP7PPeWvuexaXydaTJ3kCpDHHhLPQc=;
+	s=korg; t=1730897150;
+	bh=8fuyALaXkZ5Vl/yRosUCyDO9DGUuh/3J1V+LGdyfOCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBwb5Erkn7POzVudFp/h4Nw8o06EQf/f3MM5ShnWPVO3OYrHDLWUxHLTm+ASf59F8
-	 grwUcq4G94Ik0o0SgI5oR3A3EvCH6coMPa/AI1UqvlWZomxMUL8kopPgyEOTPq2/Ld
-	 akDIT46KLd67c5HO8x3+SY0cxbtgdPUQ0dnfwEiA=
+	b=VKdikiWcPYEa/rvR7fEYHIw8iWpPQ7tXedR/oQ3AZyCmhUGDNqNwlBboVHY/+hMA0
+	 Pzl0dH+8F1Z2pCSP7Ky0efEbJyYtZVulNzV9iMcacoV7rw0coo+prQpE2jBO9KhdM4
+	 XfOZYFdwtNhTSqSq2MhUdSHgyX6PP0agSLlBmdZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 232/245] drm/i915/psr: Prevent Panel Replay if CRC calculation is enabled
+	Ard Biesheuvel <ardb@kernel.org>,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/126] riscv: efi: Set NX compat flag in PE/COFF header
 Date: Wed,  6 Nov 2024 13:04:45 +0100
-Message-ID: <20241106120324.975968538@linuxfoundation.org>
+Message-ID: <20241106120308.346429953@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-commit a8efd8ce280996fe29f2564f705e96e18da3fa62 upstream.
+[ Upstream commit d41373a4b910961df5a5e3527d7bde6ad45ca438 ]
 
-Similarly as for PSR2 CRC calculation seems to timeout when Panel Replay is
-enabled. Fix this by falling back to PSR if CRC calculation is enabled.
+The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
+EFI binary does not rely on pages that are both executable and
+writable.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2266
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240819092549.1298233-1-jouni.hogander@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The flag is used by some distro versions of GRUB to decide if the EFI
+binary may be executed.
+
+As the Linux kernel neither has RWX sections nor needs RWX pages for
+relocation we should set the flag.
+
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240929140233.211800-1-heinrich.schuchardt@canonical.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/riscv/kernel/efi-header.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1605,6 +1605,12 @@ _panel_replay_compute_config(struct inte
- 	if (!alpm_config_valid(intel_dp, crtc_state, true))
- 		return false;
- 
-+	if (crtc_state->crc_enabled) {
-+		drm_dbg_kms(&i915->drm,
-+			    "Panel Replay not enabled because it would inhibit pipe CRC calculation\n");
-+		return false;
-+	}
-+
- 	return true;
- }
- 
+diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
+index 8e733aa48ba6c..c306f3a6a800e 100644
+--- a/arch/riscv/kernel/efi-header.S
++++ b/arch/riscv/kernel/efi-header.S
+@@ -59,7 +59,7 @@ extra_header_fields:
+ 	.long	efi_header_end - _start			// SizeOfHeaders
+ 	.long	0					// CheckSum
+ 	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
+-	.short	0					// DllCharacteristics
++	.short	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	// DllCharacteristics
+ 	.quad	0					// SizeOfStackReserve
+ 	.quad	0					// SizeOfStackCommit
+ 	.quad	0					// SizeOfHeapReserve
+-- 
+2.43.0
+
 
 
 
