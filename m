@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-90668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0645A9BE971
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB9C9BE849
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCDA2854FC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C97601C20D04
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB571DFD89;
-	Wed,  6 Nov 2024 12:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2131DFE25;
+	Wed,  6 Nov 2024 12:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuxHd4K9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Tu8SY+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB751DF974;
-	Wed,  6 Nov 2024 12:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B76A1DFE12;
+	Wed,  6 Nov 2024 12:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896457; cv=none; b=Cg8UoSSr8fmIsJU3YdW6llJapA+5BAR/OEORrxOQ+zic5b2o9Px0YaRyct4bxWQCtWAmPiS85g4VsJ/culVv/YXtrcFlh7Nvv16EmaV+4xR9jOLalD6WFXCUHY2YIRVwufVdHSZ5CSKS0N/YAz3xnVlWNs9/TR8WXsHh+slRVZ4=
+	t=1730895780; cv=none; b=EUvG4uaPslks8nUxecD6lRyCkJgC4WAVhYMH/xQjySZ0B7gZSnQEtlX/DFD1wJcvM+7nZFSQBJV5fHSm1iZ4IrU5T/CyeeLYIpI5eIqxePookuc2DugL+PNCR6wazFmyfzj1facS+FmM6cl0fm7cKrunuYWCJzlnc+lgUjfqP5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896457; c=relaxed/simple;
-	bh=8bQuBepsDmv6FkRue6ATJ2udTf79nY8eeJtoPR/V+Zs=;
+	s=arc-20240116; t=1730895780; c=relaxed/simple;
+	bh=9kdsLVZe32eICVQf5B1XXHXqkMFcfP1HuYKCE7egkS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTH4VzXMTnQzGdlukDEl0LyIc6DsuD92JLwNTu8xZqN6m5sGLAtzkOrj7M2F2krojoZRC9joQvqhj0/cLAwPZDq/F5v65Nk0Qc4ge0fwL+n+5twWGYZf45677x9g7xD+XtXt6Z8jnhGkMcHeIZktYUPtGxuUwCOt2mGkTZzs76A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuxHd4K9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7010EC4CECD;
-	Wed,  6 Nov 2024 12:34:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AM4kjvaFfwJ36QtO/MceO5p+8ikGFL/KoThpJqO9Nio36P0gCNKwRl86w5rUlFqOJgQThiAnUwWYiv7C/x64BLkXITEstlFiHYMoqIBDrkx2r/mr4pNtOskKLcyaqSRblI0VLV14VH37LlkWoQ/hbeHrseOpGyK40ftC0OBjNNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Tu8SY+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60ACC4CED5;
+	Wed,  6 Nov 2024 12:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896456;
-	bh=8bQuBepsDmv6FkRue6ATJ2udTf79nY8eeJtoPR/V+Zs=;
+	s=korg; t=1730895780;
+	bh=9kdsLVZe32eICVQf5B1XXHXqkMFcfP1HuYKCE7egkS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuxHd4K9k6+Y3S02kU09CIX13OZyl2BADNFKUS63maq1v4VMbHWT2OTPvCgbfaNfc
-	 R80eU401zv5wjMzKdq/1XU2DAfpPbMMyr2sk/PGnPdcud1fl0AtSvcSyti/HpfcXxo
-	 9KhetCfGfNrimPGA9+Ns8odMbBJBu7XFVLP/1y5o=
+	b=0Tu8SY+MCmVivvxbuSzciB6atQDWAn+Q3nFERX6MJznlTuFoY6i+gaH6XXYKGvVUv
+	 z66LNKqDtrPycTcixjXQeBhKUz8s3PhPi+TE4h40YLLIrQLi7p7iu1adXBIgEOAGk4
+	 uD8KqICzL/jGNFHdJxoHicPI6FiqmCnDovqL4NBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	E Shattow <e@freeshell.de>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.11 209/245] riscv: dts: starfive: Update ethernet phy0 delay parameter values for Star64
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 334/350] net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension
 Date: Wed,  6 Nov 2024 13:04:22 +0100
-Message-ID: <20241106120324.397627867@linuxfoundation.org>
+Message-ID: <20241106120328.965567545@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: E Shattow <e@freeshell.de>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-commit 825bb69228c8ab85637d21cdf4d44207937130b6 upstream.
+[ Upstream commit 04c20a9356f283da623903e81e7c6d5df7e4dc3c ]
 
-Improve function of Star64 bottom network port phy0 with updated delay values.
-Initial upstream patches supporting Star64 use the same vendor board support
-package parameters known to result in an unreliable bottom network port.
+As documented in skbuff.h, devices with NETIF_F_IPV6_CSUM capability
+can only checksum TCP and UDP over IPv6 if the IP header does not
+contains extension.
 
-Success acquiring DHCP lease and no dropped packets to ping LAN address:
-rx  900: tx 1500 1650 1800 1950
-rx  750: tx      1650 1800 1950
-rx  600: tx           1800 1950
-rx 1050: tx      1650 1800 1950
-rx 1200: tx 1500 1650 1800 1950
-rx 1350: tx 1500 1650 1800 1950
-rx 1500: tx 1500 1650 1800 1950
-rx 1650: tx 1500 1650 1800 1950
-rx 1800: tx 1500 1650 1800 1950
-rx 1900: tx                1950
-rx 1950: tx                1950
+This is enforced for UDP packets emitted from user-space to an IPv6
+address as they go through ip6_make_skb(), which calls
+__ip6_append_data() where a check is done on the header size before
+setting CHECKSUM_PARTIAL.
 
-Failure acquiring DHCP lease or many dropped packets:
-rx  450: tx                1500      1800 1950
-rx  600: tx      1200 1350      1650
-rx  750: tx           1350 1500
-rx  900: tx      1200 1350
-rx 1050: tx 1050 1200 1350 1500
-rx 1200: tx           1350
-rx 1350: tx           1350
-rx 1500: tx      1200 1350
-rx 1650: tx 1050 1200 1350
-rx 1800: tx 1050 1200 1350
-rx 1900: tx                1500 1650 1800
-rx 1950: tx      1200 1350
+But the introduction of UDP encapsulation with fou6 added a code-path
+where it is possible to get an skb with a partial UDP checksum and an
+IPv6 header with extension:
+* fou6 adds a UDP header with a partial checksum if the inner packet
+does not contains a valid checksum.
+* ip6_tunnel adds an IPv6 header with a destination option extension
+header if encap_limit is non-zero (the default value is 4).
 
-Non-functional:
-rx    0: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
-rx  150: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
-rx  300: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
-rx  450: tx 0  150  300  450  600  750  900 1050 1200 1350      1650
-rx  600: tx 0  150  300  450  600  750  900 1050
-rx  750: tx 0  150  300  450  600  750  900 1050 1200
-rx  900: tx 0  150  300  450  600  750  900 1050
-rx 1050: tx 0  150  300  450  600  750  900
-rx 1200: tx 0  150  300  450  600  750  900 1050 1200
-rx 1350: tx 0  150  300  450  600  750  900 1050 1200
-rx 1500: tx 0  150  300  450  600  750  900 1050
-rx 1650: tx 0  150  300  450  600  750  900
-rx 1800: tx 0  150  300  450  600  750  900
-rx 1900: tx 0  150  300  450  600  750  900 1050 1200 1350
-rx 1950: tx 0  150  300  450  600  750  900 1050
+The thread linked below describes in more details how to reproduce the
+problem with GRE-in-UDP tunnel.
 
-Selecting the median of all working rx delay values 1500 combined with tx delay
-values 1500, 1650, 1800, and 1950 only the tx delay value of 1950 (default) is
-reliable as tested in both Linux 6.11.2 and U-Boot v2024.10
+Add a check on the network header size in skb_csum_hwoffload_help() to
+make sure no IPv6 packet with extension header is handed to a network
+device with NETIF_F_IPV6_CSUM capability.
 
-Signed-off-by: E Shattow <e@freeshell.de>
-CC: stable@vger.kernel.org
-Fixes: 2606bf583b962 ("riscv: dts: starfive: add Star64 board devicetree")
-Acked-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/26548921.1r3eYUQgxm@benoit.monin/T/#u
+Fixes: aa3463d65e7b ("fou: Add encap ops for IPv6 tunnels")
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts
-+++ b/arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts
-@@ -44,8 +44,7 @@
- };
+diff --git a/net/core/dev.c b/net/core/dev.c
+index fb48a6b1301fb..c5b5dac093d6a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3327,6 +3327,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		return 0;
  
- &phy0 {
--	rx-internal-delay-ps = <1900>;
--	tx-internal-delay-ps = <1500>;
-+	rx-internal-delay-ps = <1500>;
- 	motorcomm,rx-clk-drv-microamp = <2910>;
- 	motorcomm,rx-data-drv-microamp = <2910>;
- 	motorcomm,tx-clk-adj-enabled;
+ 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
++		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
++		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
++			goto sw_checksum;
+ 		switch (skb->csum_offset) {
+ 		case offsetof(struct tcphdr, check):
+ 		case offsetof(struct udphdr, check):
+@@ -3334,6 +3337,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+ 		}
+ 	}
+ 
++sw_checksum:
+ 	return skb_checksum_help(skb);
+ }
+ EXPORT_SYMBOL(skb_csum_hwoffload_help);
+-- 
+2.43.0
+
 
 
 
