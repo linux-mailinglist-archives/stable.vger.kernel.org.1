@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-91013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80249BEC0B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809279BEA8F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7A4284788
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAAD21C23A4D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A61D1FAC4C;
-	Wed,  6 Nov 2024 12:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D931EE035;
+	Wed,  6 Nov 2024 12:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoR949Op"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGrD2idZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EDB1EF955;
-	Wed,  6 Nov 2024 12:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C91FB3F6;
+	Wed,  6 Nov 2024 12:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897482; cv=none; b=Wgmto2qgOJ0XQI5C82LXWm017sESYPOtefdDtruw2nG6sMAFDBPY7EIIJu2f0FyKHbF744OXVPjY/7K7+XoZt2VloPkWbGQ0HkdM29VayEJXILTD4IgRzyLC4B3GT8qWSvIjSkq0j516h1fFwTAUUzTQbusuWquEUmpJYeugs5w=
+	t=1730896718; cv=none; b=pO8d83/aHZ9eZUiJbyuI27OzQyp/h6AaGfmkM3NOvdPPFeN8/3AF7qn5h2jl9T1abeeRV3FYw8ddDPh2mmwRTS3NTzVpRb07GWTGOwN3Mmi1Q6c9L0b/bH6qXilm00MOWQWtsh8n2sDe5/vdWgzWqKjXsfEREltWOFbmKLpgjkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897482; c=relaxed/simple;
-	bh=aV6aK5EL8ZoKSNWUexjhrQD8X2Z8+ZimVJi9iOGUnTU=;
+	s=arc-20240116; t=1730896718; c=relaxed/simple;
+	bh=FYsy2ysYqU2Qi5cUEBp2qWFn1XumS2j8LX7HZCcm+u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V13474wVwpQGpZad5JSbLmwsiLEtTv/n3dagYxjtYt+8A5wm76gL8ZWfulVklWNHgtygAWmSuW0f5b9Y49wd903JL5FaAfRmVaAAJjfbQ0loYjcGOU+FOb2ScFsfSEGCG07ZvHh5f1IkiAETAIuNnv5yEaenncRUWB4EOQEPXsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoR949Op; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E0DC4CECD;
-	Wed,  6 Nov 2024 12:51:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WpirO16qqqzpfp3ZnGDXxhcEuCJGuw/R5Y6MGcjWqz34nF6vxB9Wg8iVpPklZBSVq1XDSinnMF57yFX8YbCeGEcdSZWgQQjN2ssq1iVkEcpGyz14a5dwFIYEJD/SViZssnxokQfWAvJBvbH+pwqJpkKsEQ2M/o15R77fJP3AlPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGrD2idZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B88BC4CECD;
+	Wed,  6 Nov 2024 12:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897482;
-	bh=aV6aK5EL8ZoKSNWUexjhrQD8X2Z8+ZimVJi9iOGUnTU=;
+	s=korg; t=1730896717;
+	bh=FYsy2ysYqU2Qi5cUEBp2qWFn1XumS2j8LX7HZCcm+u4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoR949Opgwv/Ux9ogiJvxAfZY0n034ZD+By422Vxkg3NQ3IObruGs2NCJaaKrCBJQ
-	 DkxDduOjVTtSGxXKEPdq8jhpLmrn9tDJKPg87bsUuVJag0GQljQCCCmwRPwq8Q+3Me
-	 WUcizjQ55axMszcfHjPwogZIJkO9XjuB3blBWrfg=
+	b=AGrD2idZVm3BzEbvQRxO4OE0QV+N7ux+Zk/OsGZag6+bLx/ikKBFRZIEywwfq6GWO
+	 isSIMjkL/CtqfgvNSmVH1/sDmin8p7cvjRYI66tmLJTsuYnCItGKHz8gBd6Bv32JLK
+	 M/3MECMYm4a5VKMBU0UxslkUwGr3gmq3oU8uxqD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/151] thermal: intel: int340x: processor: Remove MMIO RAPL CPU hotplug support
+	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 049/110] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
 Date: Wed,  6 Nov 2024 13:04:15 +0100
-Message-ID: <20241106120310.682953333@linuxfoundation.org>
+Message-ID: <20241106120304.556245416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: José Relvas <josemonsantorelvas@gmail.com>
 
-[ Upstream commit bfc6819e4bf56a55df6178f93241b5845ad672eb ]
+commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
 
-CPU0/package0 is always online and the MMIO RAPL driver runs on single
-package systems only, so there is no need to handle CPU hotplug in it.
+The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
+correctly.
+This patch adds a quirk with the proper pin connections.
 
-Always register a RAPL package device for package 0 and remove the
-unnecessary CPU hotplug support.
+Note that I do not own this laptop, so I cannot guarantee that this
+fixes the issue.
+Testing was done by other users here:
+https://discussion.fedoraproject.org/t/-/118482
 
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20240930081801.28502-6-rui.zhang@intel.com
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This model appears to have two different dev IDs...
+
+- 0x1177 (as seen on the forum link above)
+- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
+
+I don't think the audio system was changed between model revisions, so
+the patch applies for both IDs.
+
+Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
+Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../int340x_thermal/processor_thermal_rapl.c  | 66 +++++++------------
- 1 file changed, 22 insertions(+), 44 deletions(-)
+ sound/pci/hda/patch_realtek.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-index e964a9375722a..f7ab1f47ca7a6 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.c
-@@ -19,42 +19,6 @@ static const struct rapl_mmio_regs rapl_mmio_default = {
- 	.limits[RAPL_DOMAIN_DRAM] = BIT(POWER_LIMIT2),
- };
- 
--static int rapl_mmio_cpu_online(unsigned int cpu)
--{
--	struct rapl_package *rp;
--
--	/* mmio rapl supports package 0 only for now */
--	if (topology_physical_package_id(cpu))
--		return 0;
--
--	rp = rapl_find_package_domain_cpuslocked(cpu, &rapl_mmio_priv, true);
--	if (!rp) {
--		rp = rapl_add_package_cpuslocked(cpu, &rapl_mmio_priv, true);
--		if (IS_ERR(rp))
--			return PTR_ERR(rp);
--	}
--	cpumask_set_cpu(cpu, &rp->cpumask);
--	return 0;
--}
--
--static int rapl_mmio_cpu_down_prep(unsigned int cpu)
--{
--	struct rapl_package *rp;
--	int lead_cpu;
--
--	rp = rapl_find_package_domain_cpuslocked(cpu, &rapl_mmio_priv, true);
--	if (!rp)
--		return 0;
--
--	cpumask_clear_cpu(cpu, &rp->cpumask);
--	lead_cpu = cpumask_first(&rp->cpumask);
--	if (lead_cpu >= nr_cpu_ids)
--		rapl_remove_package_cpuslocked(rp);
--	else if (rp->lead_cpu == cpu)
--		rp->lead_cpu = lead_cpu;
--	return 0;
--}
--
- static int rapl_mmio_read_raw(int cpu, struct reg_action *ra)
- {
- 	if (!ra->reg.mmio)
-@@ -82,6 +46,7 @@ static int rapl_mmio_write_raw(int cpu, struct reg_action *ra)
- int proc_thermal_rapl_add(struct pci_dev *pdev, struct proc_thermal_device *proc_priv)
- {
- 	const struct rapl_mmio_regs *rapl_regs = &rapl_mmio_default;
-+	struct rapl_package *rp;
- 	enum rapl_domain_reg_id reg;
- 	enum rapl_domain_type domain;
- 	int ret;
-@@ -109,25 +74,38 @@ int proc_thermal_rapl_add(struct pci_dev *pdev, struct proc_thermal_device *proc
- 		return PTR_ERR(rapl_mmio_priv.control_type);
- 	}
- 
--	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "powercap/rapl:online",
--				rapl_mmio_cpu_online, rapl_mmio_cpu_down_prep);
--	if (ret < 0) {
--		powercap_unregister_control_type(rapl_mmio_priv.control_type);
--		rapl_mmio_priv.control_type = NULL;
--		return ret;
-+	/* Register a RAPL package device for package 0 which is always online */
-+	rp = rapl_find_package_domain(0, &rapl_mmio_priv, false);
-+	if (rp) {
-+		ret = -EEXIST;
-+		goto err;
-+	}
-+
-+	rp = rapl_add_package(0, &rapl_mmio_priv, false);
-+	if (IS_ERR(rp)) {
-+		ret = PTR_ERR(rp);
-+		goto err;
- 	}
--	rapl_mmio_priv.pcap_rapl_online = ret;
- 
- 	return 0;
-+
-+err:
-+	powercap_unregister_control_type(rapl_mmio_priv.control_type);
-+	rapl_mmio_priv.control_type = NULL;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(proc_thermal_rapl_add);
- 
- void proc_thermal_rapl_remove(void)
- {
-+	struct rapl_package *rp;
-+
- 	if (IS_ERR_OR_NULL(rapl_mmio_priv.control_type))
- 		return;
- 
--	cpuhp_remove_state(rapl_mmio_priv.pcap_rapl_online);
-+	rp = rapl_find_package_domain(0, &rapl_mmio_priv, false);
-+	if (rp)
-+		rapl_remove_package(rp);
- 	powercap_unregister_control_type(rapl_mmio_priv.control_type);
- }
- EXPORT_SYMBOL_GPL(proc_thermal_rapl_remove);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6966,6 +6966,7 @@ enum {
+ 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
++	ALC255_FIXUP_PREDATOR_SUBWOOFER,
+ 	ALC299_FIXUP_PREDATOR_SPK,
+ 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
+ 	ALC289_FIXUP_DELL_SPK2,
+@@ -8200,6 +8201,13 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
+ 	},
++	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
++			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
++		}
++	},
+ 	[ALC299_FIXUP_PREDATOR_SPK] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -8932,6 +8940,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
+ 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
++	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
++	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
+ 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
+ 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
 
 
 
