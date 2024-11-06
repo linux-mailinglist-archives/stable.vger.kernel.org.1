@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-90544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B24F9BE8DF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:28:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8142E9BE7AC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0411C21793
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:28:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46605283AA7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13751DF726;
-	Wed,  6 Nov 2024 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7611DEFF5;
+	Wed,  6 Nov 2024 12:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWW5Wux3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0ot1Rt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF551DE4EA;
-	Wed,  6 Nov 2024 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41D61DE8B4;
+	Wed,  6 Nov 2024 12:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896086; cv=none; b=BxSonCA+fb47xcUl8lqJWHDfSa3gZUypbHbbFNYBnlppMoqyvwfsYgoU7xsTs2toqqcTq40unF1BPVFtiN7CFbLXEIRaIth9vhC92+MsZhKW+nEGLSon4cAAtoMMG1+/n58fVfoBSCylVbq1q5bBkKY5fU3r5ECYqA0Qi/SEtXw=
+	t=1730895397; cv=none; b=fByNXk29XmoTxiaAzT/bkh1ISPJdd4VPaHkGOSzX/856gjRtAX3HdP86fsPP+LC38lKWRpOClntozYkG9KYglfTw+Fs28UvmHNUeVWCaXwE4VJabDrQLxX6giI4zLAFNY2hWHeB3poBMDJl61rEyVJxgL4Lm0lX3nl7hU7Yt158=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896086; c=relaxed/simple;
-	bh=aaRRHUaCIns7h7Kihf4fNwcC+0PTMnxhmuTsObfJmbw=;
+	s=arc-20240116; t=1730895397; c=relaxed/simple;
+	bh=tKUNg8hjOcXR4UAQEw9XLMQBWi/cF/GqjHB7VgAq+AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTzl8FEylARQWX4JTqXprLxrsJXmnXzA8V0Lz1uQUHNMPyczxWdbABiQxxFjCe/KxQPO26m58M9l33WRXou1jITzyF/vXfFh7GRc4NlojdTbpHZey01gIas0RavHMbNuyuQwcPGQpJoqRb8xT61Fs1/nxZL1jhdcEXohk9jVbi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWW5Wux3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16D1C4CED3;
-	Wed,  6 Nov 2024 12:28:05 +0000 (UTC)
+	 MIME-Version; b=d9NhTgIoySrZTb1vwm36EOvKsLRsKlc8VIX5PtujOOEK3d+QhZapbP6X/dPX10nZVXj0+6GDISuHixplVTHB/8xBA8294OUlSMQLFwafACjpTJDwJDW7OOecwxuHn7A3X3cecb9pD9+g6RP5VBsPbLuI+HCb5Sh+OedtS03SkQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0ot1Rt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A940C4CECD;
+	Wed,  6 Nov 2024 12:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896086;
-	bh=aaRRHUaCIns7h7Kihf4fNwcC+0PTMnxhmuTsObfJmbw=;
+	s=korg; t=1730895397;
+	bh=tKUNg8hjOcXR4UAQEw9XLMQBWi/cF/GqjHB7VgAq+AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWW5Wux3lt+tHbqTlEmt516Y5YWkse5RcCXQec2IWm2/RlD2TZzs4Bx6Mk22+EDgm
-	 a/q6cTRElc2tm2VEAymoKYqOaoSL5C8oEJ1ZaABMcppi4O0pl2ucifdxjkhygZWtLg
-	 LwM2RpQLVCh+zFqCg31WjV4KQu4JKSiUfRPrt0to=
+	b=o0ot1Rt5lCKylVFW9PHBhoQ51hJHCbrtvT7jpnzhHT2JX/crZ6BHYhGpXmbTgw93A
+	 RxQHWKZ/6F97YBhdjMiSRJysh2GDYtFsahhfBgI7x3UpBWJ2jvSWf0Pm3kbyDe2YA2
+	 ooMUSrF7ZziAAowdVkIVyaT3rs/i1yqiSz3GjOEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Christoph Hellwig <hch@lst.de>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 078/245] nvme: module parameter to disable pi with offsets
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 203/350] ocfs2: fix possible null-ptr-deref in ocfs2_set_buffer_uptodate
 Date: Wed,  6 Nov 2024 13:02:11 +0100
-Message-ID: <20241106120321.126249125@linuxfoundation.org>
+Message-ID: <20241106120325.994240166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +69,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 42ab37eaad17aee458489c553a367621ee04e0bc ]
+commit 33b525cef4cff49e216e4133cc48452e11c0391e upstream.
 
-A recent commit enables integrity checks for formats the previous kernel
-versions registered with the "nop" integrity profile. This means
-namespaces using that format become unreadable when upgrading the kernel
-past that commit.
+When doing cleanup, if flags without OCFS2_BH_READAHEAD, it may trigger
+NULL pointer dereference in the following ocfs2_set_buffer_uptodate() if
+bh is NULL.
 
-Introduce a module parameter to restore the "nop" integrity profile so
-that storage can be readable once again. This could be a boot device, so
-the setting needs to happen at module load time.
-
-Fixes: 921e81db524d17 ("nvme: allow integrity when PI is not in first bytes")
-Reported-by: David Wei <dw@davidwei.uk>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240902023636.1843422-3-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: Heming Zhao <heming.zhao@suse.com>
+Suggested-by: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ fs/ocfs2/buffer_head_io.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index a6fb1359a7e14..89ad4217f8606 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -90,6 +90,17 @@ module_param(apst_secondary_latency_tol_us, ulong, 0644);
- MODULE_PARM_DESC(apst_secondary_latency_tol_us,
- 	"secondary APST latency tolerance in us");
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -404,7 +404,8 @@ read_failure:
+ 		/* Always set the buffer in the cache, even if it was
+ 		 * a forced read, or read-ahead which hasn't yet
+ 		 * completed. */
+-		ocfs2_set_buffer_uptodate(ci, bh);
++		if (bh)
++			ocfs2_set_buffer_uptodate(ci, bh);
+ 	}
+ 	ocfs2_metadata_cache_io_unlock(ci);
  
-+/*
-+ * Older kernels didn't enable protection information if it was at an offset.
-+ * Newer kernels do, so it breaks reads on the upgrade if such formats were
-+ * used in prior kernels since the metadata written did not contain a valid
-+ * checksum.
-+ */
-+static bool disable_pi_offsets = false;
-+module_param(disable_pi_offsets, bool, 0444);
-+MODULE_PARM_DESC(disable_pi_offsets,
-+	"disable protection information if it has an offset");
-+
- /*
-  * nvme_wq - hosts nvme related works that are not reset or delete
-  * nvme_reset_wq - hosts nvme reset works
-@@ -1921,8 +1932,12 @@ static void nvme_configure_metadata(struct nvme_ctrl *ctrl,
- 
- 	if (head->pi_size && head->ms >= head->pi_size)
- 		head->pi_type = id->dps & NVME_NS_DPS_PI_MASK;
--	if (!(id->dps & NVME_NS_DPS_PI_FIRST))
--		info->pi_offset = head->ms - head->pi_size;
-+	if (!(id->dps & NVME_NS_DPS_PI_FIRST)) {
-+		if (disable_pi_offsets)
-+			head->pi_type = 0;
-+		else
-+			info->pi_offset = head->ms - head->pi_size;
-+	}
- 
- 	if (ctrl->ops->flags & NVME_F_FABRICS) {
- 		/*
--- 
-2.43.0
-
 
 
 
