@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-90901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16DB9BEB8C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A0B9BEAF8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:54:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3DA1C231BC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B381C237EA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEC11F81AF;
-	Wed,  6 Nov 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098B8201115;
+	Wed,  6 Nov 2024 12:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKdikiWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUECSMO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D711F81AA;
-	Wed,  6 Nov 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F541E0DB1;
+	Wed,  6 Nov 2024 12:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897150; cv=none; b=RydCIheTZEBt0FOQmf6WFSdpkXat/Mp2MnBI3OS/8j8Bb594oseWk8hQXcSx6QoYCbrGc9HvT5vamtOvACwz0d3mwM7sJfnUrSmR5MjiRTWzjg5ot81vzP3a1xbV/ecwxiZhm62hEBKGZTedtEAKryLTWsO6VK6sDXcTqbqchRE=
+	t=1730896806; cv=none; b=ARI/Wnw3KUG/XE2C8l+q8qAVii2nCUNS/sxxsrO6+G8gkr7HAp9jJei21Ux8lzJNR/TydxSCn9g24S9Z6rdRbUPJUTrBWwb5MHv/MmDE7sBqNVecZwHYbB921faMmmDt5T+gf+1CyqvPZ+FRyjSCxvw3FrYYW0VUHTyGChyFlJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897150; c=relaxed/simple;
-	bh=8fuyALaXkZ5Vl/yRosUCyDO9DGUuh/3J1V+LGdyfOCE=;
+	s=arc-20240116; t=1730896806; c=relaxed/simple;
+	bh=n2bTqXeqRzyON80CelVQVh88d9sNWbadLPh2PT/XtuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC5xasChgExdHgNibaLtoQ9p+PXVbMLSXD6FHPIQsChOS9tKQBR99OzJln1l4irkhVygNh28a1yqyy8rhPcB1jScJaJ7Cf+i461EvhXr4CPXs0W+L+YL5ZgbjJIJtSUqKvBceGVU7krVHURAFLi0/2w+7CUziguiF84/w30LV0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKdikiWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0133C4CECD;
-	Wed,  6 Nov 2024 12:45:49 +0000 (UTC)
+	 MIME-Version; b=Pqfe/EsmX9aMavB3HFKic96wWl2YrEors/xL6DDB2Z+CBSbPjQaHIIExOWQKSkOp02yhjIhFUcO5SwQXjt2EBkqkVH/RaHVdHyDsh00Atdc5sSD+mRaitcvvYaOkC2M/iyHlIvatAc2bWLYYXIMl8j1eG8g1nxS76PcwxOrlVYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUECSMO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AE9C4CED5;
+	Wed,  6 Nov 2024 12:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897150;
-	bh=8fuyALaXkZ5Vl/yRosUCyDO9DGUuh/3J1V+LGdyfOCE=;
+	s=korg; t=1730896806;
+	bh=n2bTqXeqRzyON80CelVQVh88d9sNWbadLPh2PT/XtuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKdikiWcPYEa/rvR7fEYHIw8iWpPQ7tXedR/oQ3AZyCmhUGDNqNwlBboVHY/+hMA0
-	 Pzl0dH+8F1Z2pCSP7Ky0efEbJyYtZVulNzV9iMcacoV7rw0coo+prQpE2jBO9KhdM4
-	 XfOZYFdwtNhTSqSq2MhUdSHgyX6PP0agSLlBmdZ4=
+	b=dUECSMO+DmNWFy1lTCKFLQ/3YtSS6HDLbOY44Ta63QhrOvlLKaD99ELy42jftN+xf
+	 sqLtL10q7alFbmrzDzHk+dL73tkA2AdqYx1V1QZsS2XAdfabdwW7om/v3uKtiBx+5E
+	 uQF7q9X0ArYd18wykjh/5SgvCF/w0pDMnycZYubE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Li <ashimida@linux.alibaba.com>,
+	Kees Cook <keescook@chromium.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/126] riscv: efi: Set NX compat flag in PE/COFF header
+Subject: [PATCH 5.10 079/110] compiler-gcc: remove attribute support check for `__no_sanitize_address__`
 Date: Wed,  6 Nov 2024 13:04:45 +0100
-Message-ID: <20241106120308.346429953@linuxfoundation.org>
+Message-ID: <20241106120305.369505633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +72,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit d41373a4b910961df5a5e3527d7bde6ad45ca438 ]
+[ Upstream commit ae37a9a2c2d0960d643d782b426ea1aa9c05727a ]
 
-The IMAGE_DLLCHARACTERISTICS_NX_COMPAT informs the firmware that the
-EFI binary does not rely on pages that are both executable and
-writable.
+The attribute was added in GCC 4.8, while the minimum GCC version
+supported by the kernel is GCC 5.1.
 
-The flag is used by some distro versions of GRUB to decide if the EFI
-binary may be executed.
+Therefore, remove the check.
 
-As the Linux kernel neither has RWX sections nor needs RWX pages for
-relocation we should set the flag.
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Fixes: cb7d2dd5612a ("RISC-V: Add PE/COFF header for EFI stub")
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240929140233.211800-1-heinrich.schuchardt@canonical.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://godbolt.org/z/84v56vcn8
+Link: https://lkml.kernel.org/r/20221021115956.9947-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dan Li <ashimida@linux.alibaba.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 894b00a3350c ("kasan: Fix Software Tag-Based KASAN with GCC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/efi-header.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/compiler-gcc.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/efi-header.S b/arch/riscv/kernel/efi-header.S
-index 8e733aa48ba6c..c306f3a6a800e 100644
---- a/arch/riscv/kernel/efi-header.S
-+++ b/arch/riscv/kernel/efi-header.S
-@@ -59,7 +59,7 @@ extra_header_fields:
- 	.long	efi_header_end - _start			// SizeOfHeaders
- 	.long	0					// CheckSum
- 	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
--	.short	0					// DllCharacteristics
-+	.short	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	// DllCharacteristics
- 	.quad	0					// SizeOfStackReserve
- 	.quad	0					// SizeOfStackCommit
- 	.quad	0					// SizeOfHeapReserve
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index f8333dab22fa8..bf78da28e8427 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -116,11 +116,7 @@
+ #define KASAN_ABI_VERSION 3
+ #endif
+ 
+-#if __has_attribute(__no_sanitize_address__)
+ #define __no_sanitize_address __attribute__((__no_sanitize_address__))
+-#else
+-#define __no_sanitize_address
+-#endif
+ 
+ #if defined(__SANITIZE_THREAD__) && __has_attribute(__no_sanitize_thread__)
+ #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
 -- 
 2.43.0
 
