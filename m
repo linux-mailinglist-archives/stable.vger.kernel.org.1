@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-91543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF199BEE75
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653A69BEEB6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE1EDB231DE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97A381C24902
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB7B1E0090;
-	Wed,  6 Nov 2024 13:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA651E00AB;
+	Wed,  6 Nov 2024 13:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPDscdGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcwaJIrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC441DFD9D;
-	Wed,  6 Nov 2024 13:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C76D1CC89D;
+	Wed,  6 Nov 2024 13:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899041; cv=none; b=PzlnFO1PpXjLtYhHp4k4hxtzCh1CXeZXCCvm036slfpofi1o2+HsTy1bWOx0O6xVaFAbyxIQva/YVfn+Dbcm0qMsB2IFbZE3iukPpSnYZnrEyqAZUlrZ3wpusYNGE72WgTYCTKDhD94baHwGlAVJ7rdXcG7aWfZJR1OU1rNJlTE=
+	t=1730899195; cv=none; b=jrcwbhDa6mundLiMpZUbnRjSG3IU6WIClWKEo5SQFHa8GlBfhNJ4iY3FXUc+R0KreoQ6ztJJKJ71w0G3ENgWC7ZM6gsAtN8IiWt6fdj4hPsNGbKYsNazRrVzXEiFSpmidNfLZcc/YxU67+qjcQBneXGWg6+AlioV10qbhcP8uHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899041; c=relaxed/simple;
-	bh=QG83wDktA8bMXzn2LPFATbCP//I0S08wHIt2vPNxzY4=;
+	s=arc-20240116; t=1730899195; c=relaxed/simple;
+	bh=rtr7xawq0ICASJDmFa4U8xqzwd89N0A4B0iDL8x2mnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1mzPYXfpyDla6yacHc+l2IOdE+rpsI242iGt074M+0FiOSlB4mMRqVU3q3Q2PINKCEwnjpaQ/gayOoMSVIqe6ii88GFJW1KcYxw3Ik3vROnP+RuNUsCDn+g2rnjvSzWoQlLdHP6J+31gK3XPeQNYkvYT88fzT7Gmyoc4o5KvL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPDscdGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFF8C4CED3;
-	Wed,  6 Nov 2024 13:17:20 +0000 (UTC)
+	 MIME-Version; b=EtQ09gxfBTn5A4Nblh58bC7JygkU0s7VT29JfRcjyspKFe0U05bM2EhE007tK5iYfsL6Nt9bFYpbkMXm3Tsi+cJtd6q3fqE2bNTQRkqhDHGYLsD2RwqGKgcOSrNp5iPl2LyEZdg4CFxqH7wvkXEohsy0lADLjjVcam115vCFdO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcwaJIrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E995CC4CED3;
+	Wed,  6 Nov 2024 13:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899041;
-	bh=QG83wDktA8bMXzn2LPFATbCP//I0S08wHIt2vPNxzY4=;
+	s=korg; t=1730899195;
+	bh=rtr7xawq0ICASJDmFa4U8xqzwd89N0A4B0iDL8x2mnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPDscdGu4TjH1GetednASfL5zvxpzUTVitqbVbFVjCwhjUXU2Dj0rWt81/PVLXet1
-	 cV37RGqN5quJ4dlTzvSgmY1TB3erLkaUsKWJr0MvLjHxfug0tg5nyxSS6Yiy3kt4wu
-	 8NWFGm/AGFjw94eLWQuDAUMH1c1WtcN8oErod7Bs=
+	b=bcwaJIrDLrWepsCMokbNGttgglFZNIYlNwlZm34riwOkf/lYC7DGGPAr0zLX18394
+	 hEsz5/qcqTcMblCYCrCm/1CXYQv0wgZpNZ9dK/bU6wNBHeqjn93DVez7i+2Vy+9DtS
+	 0zXiRf0ML9M4/YOtkIxy2MAlPJLuwYbWKjv3v+CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhong jiang <zhongjiang@huawei.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 442/462] drivers/misc: ti-st: Remove unneeded variable in st_tty_open
+Subject: [PATCH 5.15 31/73] fs/ntfs3: Fix warning possible deadlock in ntfs_set_state
 Date: Wed,  6 Nov 2024 13:05:35 +0100
-Message-ID: <20241106120342.418481200@linuxfoundation.org>
+Message-ID: <20241106120300.893773005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhong jiang <zhongjiang@huawei.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 8b063441b7417a79b0c27efc401479748ccf8ad1 ]
+[ Upstream commit 5b2db723455a89dc96743d34d8bdaa23a402db2f ]
 
-st_tty_open do not need local variable to store different value,
-Hence just remove it.
+Use non-zero subkey to skip analyzer warnings.
 
-Signed-off-by: zhong jiang <zhongjiang@huawei.com>
-Link: https://lore.kernel.org/r/1568307147-43468-1-git-send-email-zhongjiang@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: c83212d79be2 ("firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reported-by: syzbot+c2ada45c23d98d646118@syzkaller.appspotmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/ti-st/st_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
-index c19460e7f0f16..7a7a1ac81ad02 100644
---- a/drivers/misc/ti-st/st_core.c
-+++ b/drivers/misc/ti-st/st_core.c
-@@ -709,7 +709,6 @@ EXPORT_SYMBOL_GPL(st_unregister);
-  */
- static int st_tty_open(struct tty_struct *tty)
- {
--	int err = 0;
- 	struct st_data_s *st_gdata;
- 	pr_info("%s ", __func__);
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index b4c09b99edd1d..7b46926e920c6 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -328,7 +328,7 @@ struct mft_inode {
  
-@@ -732,7 +731,8 @@ static int st_tty_open(struct tty_struct *tty)
- 	 */
- 	st_kim_complete(st_gdata->kim_data);
- 	pr_debug("done %s", __func__);
--	return err;
-+
-+	return 0;
- }
- 
- static void st_tty_close(struct tty_struct *tty)
+ /* Nested class for ntfs_inode::ni_lock. */
+ enum ntfs_inode_mutex_lock_class {
+-	NTFS_INODE_MUTEX_DIRTY,
++	NTFS_INODE_MUTEX_DIRTY = 1,
+ 	NTFS_INODE_MUTEX_SECURITY,
+ 	NTFS_INODE_MUTEX_OBJID,
+ 	NTFS_INODE_MUTEX_REPARSE,
 -- 
 2.43.0
 
