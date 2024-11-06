@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-91566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B9D9BEE90
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:18:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE989BEEC6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85901C245D3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17EAFB24298
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30991DF995;
-	Wed,  6 Nov 2024 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293191DF75A;
+	Wed,  6 Nov 2024 13:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSnDe+hZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwW7JMS6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809001CB310;
-	Wed,  6 Nov 2024 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF98646;
+	Wed,  6 Nov 2024 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899108; cv=none; b=tscJfgsbJsJnNWIiXuWcTj4NvaniFQ+FmE4EwbLvVDHGTzRjAavXhKmVCPvP4w3ap5oh62TV+wKi9HSJK8OsDW0GLtH61PZ5jXdxyhWoSxLHuh1/AB1DA80+AJ2L9UJHxhLuGofdEVlgmIefD20D6GEIK81wpWRRocKe/3bVMV8=
+	t=1730899236; cv=none; b=MFLFmginzuvfWx8I8vl1Nkq0cPqAJiA1rbZ1GMPxebexB+kPQ9gC61Po8mS6IkHgrJOze/fvbIX+v+Trrqhr2+yS9H869mRLXBge4yRH9CEPIMZ+ER/s60IT05LD7Yid+L6LKkZ4JkOoZ5tu9bbm/8oOmSpD2xVtRGNuwPllrro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899108; c=relaxed/simple;
-	bh=GQjpg4vXp+G/pdPuKYA/x9uNF8G3pBSGw9aKOW8+ovY=;
+	s=arc-20240116; t=1730899236; c=relaxed/simple;
+	bh=1KqoN8rZ+nLU5sf8j1igiaTmUJpeKA1dfcYdG6HaPmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUJ08g+jp2LA0Dv/WxPc9GR2WvwAnAgwxjdNgQoZMvllmo8kbsjr3O5arfVLyGz6akwM8IEWs0OGu+hUvwzTAMMXHHjh1YnL4m0k1Wp4uApnNm1kCnJ59GxeSEj8EvSGtP4vSfWHcWqOaInw8WgzcxOMuul0F4SwlmFDwLQmZhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSnDe+hZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B7BC4CECD;
-	Wed,  6 Nov 2024 13:18:27 +0000 (UTC)
+	 MIME-Version; b=iO2Vpy3pvlthszVDG7Txuv6qmCal/rRq3C+Vy52aSKnEPWsufUADKLQEdYiXThweQXPsaJzKujZuhMId0eb7lppvKz5Gqqfn3iOuEwBt7+G9G98/g2i62eXpKgfOOdFhZZzjNG8kHSL8oL3SPPsbX3ji2RVxXg9/C1Dodd97aaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwW7JMS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AB9C4CECD;
+	Wed,  6 Nov 2024 13:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899108;
-	bh=GQjpg4vXp+G/pdPuKYA/x9uNF8G3pBSGw9aKOW8+ovY=;
+	s=korg; t=1730899236;
+	bh=1KqoN8rZ+nLU5sf8j1igiaTmUJpeKA1dfcYdG6HaPmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSnDe+hZS4kCIkuF2X8nE/nGL+0cjrFb1U15UZwb+Y8+oNgfFaUqllyfKdOyo9aSz
-	 PlxGT1rFQ3C9MMBOJUCJigOdfLRsC0Wtfig5NvTSW79hJ3OqxmS+TzXJM0DXwBatOs
-	 GOddR3Rk2SQFJWj/x4jMyU0kcVD0aFpCv3cSvyoQ=
+	b=EwW7JMS67Gy5On6EFktcsLCUix8SHmc889j1NnOcdFccm+iAK97ArkcSllDFxS5QR
+	 fPalz+PwmPbXGmqmw17QF9sQgB7TyGC17VbMCCnPKqi9J9WcfdAmmNGQFaS3fl4Fze
+	 O7yRPRRNxQzU9Pqo/9dXAm0xFqYL4PNR4meU4VnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 428/462] mac80211: do drv_reconfig_complete() before restarting all
+Subject: [PATCH 5.15 17/73] ASoC: cs42l51: Fix some error handling paths in cs42l51_probe()
 Date: Wed,  6 Nov 2024 13:05:21 +0100
-Message-ID: <20241106120342.083716692@linuxfoundation.org>
+Message-ID: <20241106120300.478055882@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 13dee10b30c058ee2c58c5da00339cc0d4201aa6 ]
+[ Upstream commit d221b844ee79823ffc29b7badc4010bdb0960224 ]
 
-When we reconfigure, the driver might do some things to complete
-the reconfiguration. It's strange and could be broken in some
-cases because we restart other works (e.g. remain-on-channel and
-TX) before this happens, yet only start queues later.
+If devm_gpiod_get_optional() fails, we need to disable previously enabled
+regulators, as done in the other error handling path of the function.
 
-Change this to do the reconfig complete when reconfiguration is
-actually complete, not when we've already started doing other
-things again.
+Also, gpiod_set_value_cansleep(, 1) needs to be called to undo a
+potential gpiod_set_value_cansleep(, 0).
+If the "reset" gpio is not defined, this additional call is just a no-op.
 
-For iwlwifi, this should fix a race where the reconfig can race
-with TX, for ath10k and ath11k that also use this it won't make
-a difference because they just start queues there, and mac80211
-also stopped the queues and will restart them later as before.
+This behavior is the same as the one already in the .remove() function.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20211129152938.cab99f22fe19.Iefe494687f15fd85f77c1b989d1149c8efdfdc36@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
+Fixes: 11b9cd748e31 ("ASoC: cs42l51: add reset management")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/a5e5f4b9fb03f46abd2c93ed94b5c395972ce0d1.1729975570.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/codecs/cs42l51.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 6223af1c3457a..8d3069c93a60a 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2491,6 +2491,13 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		mutex_unlock(&local->sta_mtx);
- 	}
+diff --git a/sound/soc/codecs/cs42l51.c b/sound/soc/codecs/cs42l51.c
+index 4b026e1c3fe3e..09445db29aa1f 100644
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -754,8 +754,10 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
  
-+	/*
-+	 * If this is for hw restart things are still running.
-+	 * We may want to change that later, however.
-+	 */
-+	if (local->open_count && (!suspended || reconfig_due_to_wowlan))
-+		drv_reconfig_complete(local, IEEE80211_RECONFIG_TYPE_RESTART);
-+
- 	if (local->in_reconfig) {
- 		local->in_reconfig = false;
- 		barrier();
-@@ -2509,13 +2516,6 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 					IEEE80211_QUEUE_STOP_REASON_SUSPEND,
- 					false);
+ 	cs42l51->reset_gpio = devm_gpiod_get_optional(dev, "reset",
+ 						      GPIOD_OUT_LOW);
+-	if (IS_ERR(cs42l51->reset_gpio))
+-		return PTR_ERR(cs42l51->reset_gpio);
++	if (IS_ERR(cs42l51->reset_gpio)) {
++		ret = PTR_ERR(cs42l51->reset_gpio);
++		goto error;
++	}
  
--	/*
--	 * If this is for hw restart things are still running.
--	 * We may want to change that later, however.
--	 */
--	if (local->open_count && (!suspended || reconfig_due_to_wowlan))
--		drv_reconfig_complete(local, IEEE80211_RECONFIG_TYPE_RESTART);
--
- 	if (!suspended)
- 		return 0;
+ 	if (cs42l51->reset_gpio) {
+ 		dev_dbg(dev, "Release reset gpio\n");
+@@ -787,6 +789,7 @@ int cs42l51_probe(struct device *dev, struct regmap *regmap)
+ 	return 0;
  
+ error:
++	gpiod_set_value_cansleep(cs42l51->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(cs42l51->supplies),
+ 			       cs42l51->supplies);
+ 	return ret;
 -- 
 2.43.0
 
