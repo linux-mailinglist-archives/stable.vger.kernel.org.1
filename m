@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-91068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101359BEC47
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7F89BEB34
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1A0E1F24C11
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91286284574
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EEB1F471B;
-	Wed,  6 Nov 2024 12:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640081E5712;
+	Wed,  6 Nov 2024 12:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvjdBtkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeGBLhJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C671F4298;
-	Wed,  6 Nov 2024 12:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222E91E25F7;
+	Wed,  6 Nov 2024 12:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897646; cv=none; b=DlZ1eJAmvAWB2RJtFv3BvxrSR/n7PP5TIjknLw1fnQWwNqqZIIxcE15GVHv4+aoMDHyb4bk+oJUtNDzbuyOgaiHRcGkLwdadboofCyM254KElRuXKo6NYD3sS4Sr11EjVYJmuZx8ziloYnp7Xusd6gKo1caJW/E/x5+Vrzdz7Lo=
+	t=1730896913; cv=none; b=ku8iHay9dnWc2F7bBrxR0ikly08IcUj+pg+MgbLBcJIVeEfkN7ksev9XOrdftkEkMnyZFOMDjAkrgWCYQQEMQGPyO97XvWDMGTXs836o2jaLf4eEmL0iQ9XSaCOQoGOKRcgDoUVoDD2ZnFJWZFf5qZxNiwXGHjXHLDBvaDHQ1xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897646; c=relaxed/simple;
-	bh=CmjDuqW+1mjFav0uaNyTroAZ95f2SO8NuA6jjf/ptKc=;
+	s=arc-20240116; t=1730896913; c=relaxed/simple;
+	bh=KpjctIwnKaryIfKDlqnaGWLnbKDM8XKwRGIN4BC+EQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClZs90KcrLd2BiMO3F6lCcpgWdfbJ4AXA0i6XTF68JvwZEzAqU5OV6veqRSBPM4hxRrNXYJgBRnHzR/0z1Ej6eCzq2+uL0/ep+qZ6A/KwZnef2B0NNAvHRfAxX1x0EO/AgkWCCrgLnEGpgXrzTnDDdvzdYqsFKhRXaOPpy1/Pxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvjdBtkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E464C4CED4;
-	Wed,  6 Nov 2024 12:54:05 +0000 (UTC)
+	 MIME-Version; b=M4NTcQ7yREGLqom8yiiUlNStmV1JHDFlGwDvrxfRX+gUHwAG57PIpKRiZaAsiX/lahfhF8FGxLe+1wlVBP2W7btoHNdLuOzOXGstU2QgukeA8R8uaG7rfWBlyoSeLIbriSNwK138M9O67nuVwtb1ulV2kkdnl/Yc+qtmbrgCI2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeGBLhJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EEFC4CECD;
+	Wed,  6 Nov 2024 12:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897646;
-	bh=CmjDuqW+1mjFav0uaNyTroAZ95f2SO8NuA6jjf/ptKc=;
+	s=korg; t=1730896912;
+	bh=KpjctIwnKaryIfKDlqnaGWLnbKDM8XKwRGIN4BC+EQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvjdBtkV7f53oRR4/PY1tDFZBFZRb58/DdawU2ovPsai111JlL2xChVdwIjngMc97
-	 BtGMqhy1KT0oX8ms6NEphCL7aaYOOSdkfL9tH5yTsJc8jm4WCIMCBy8rpBJ5TXwEJT
-	 GOcykKlJbfKuQ7FvRS7/C92Nigz8ESkLGllwDejc=
+	b=aeGBLhJkx12Y9u/jNTvDELXWi+oZOvj/CJuuDDnvlEFzzix0UGYySVIK8CreL/gV+
+	 elMGEeG5WNlK0LhgnMJXi0sk7epYNdASH7EuSAe3ts0kX1MA5rJTNgDHSXOirDlVDh
+	 zQNnCGFcYEAzjvVO+QqpP+RyqE+KU0S+e5tfrUuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/151] mptcp: init: protect sched with rcu_read_lock
-Date: Wed,  6 Nov 2024 13:05:12 +0100
-Message-ID: <20241106120312.278947048@linuxfoundation.org>
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+Subject: [PATCH 5.10 107/110] Revert "drm/mipi-dsi: Set the fwnode for mipi_dsi_device"
+Date: Wed,  6 Nov 2024 13:05:13 +0100
+Message-ID: <20241106120306.127049335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 3deb12c788c385e17142ce6ec50f769852fcec65 ]
+This reverts commit 139c27648f8d3b2283f74715d8e7f0df7f5e55ca which is
+commit a26cc2934331b57b5a7164bff344f0a2ec245fc0 upstream.
 
-Enabling CONFIG_PROVE_RCU_LIST with its dependence CONFIG_RCU_EXPERT
-creates this splat when an MPTCP socket is created:
+Reason for revert:
+1. The commit [1] does not land on linux-5.15, so this patch does not
+fix anything.
 
-  =============================
-  WARNING: suspicious RCU usage
-  6.12.0-rc2+ #11 Not tainted
-  -----------------------------
-  net/mptcp/sched.c:44 RCU-list traversed in non-reader section!!
+2. Since the fw_devlink improvements series [2] does not land on
+linux-5.15, using device_set_fwnode() causes the panel to flash during
+bootup.
 
-  other info that might help us debug this:
+Incorrect link management may lead to incorrect device initialization,
+affecting firmware node links and consumer relationships.
+The fwnode setting of panel to the DSI device would cause a DSI
+initialization error without series[2], so this patch was reverted to
+avoid using the incomplete fw_devlink functionality.
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  no locks held by mptcp_connect/176.
+[1] commit 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
+[2] Link: https://lore.kernel.org/all/20230207014207.1678715-1-saravanak@google.com
 
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 176 Comm: mptcp_connect Not tainted 6.12.0-rc2+ #11
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  Call Trace:
-   <TASK>
-   dump_stack_lvl (lib/dump_stack.c:123)
-   lockdep_rcu_suspicious (kernel/locking/lockdep.c:6822)
-   mptcp_sched_find (net/mptcp/sched.c:44 (discriminator 7))
-   mptcp_init_sock (net/mptcp/protocol.c:2867 (discriminator 1))
-   ? sock_init_data_uid (arch/x86/include/asm/atomic.h:28)
-   inet_create.part.0.constprop.0 (net/ipv4/af_inet.c:386)
-   ? __sock_create (include/linux/rcupdate.h:347 (discriminator 1))
-   __sock_create (net/socket.c:1576)
-   __sys_socket (net/socket.c:1671)
-   ? __pfx___sys_socket (net/socket.c:1712)
-   ? do_user_addr_fault (arch/x86/mm/fault.c:1419 (discriminator 1))
-   __x64_sys_socket (net/socket.c:1728)
-   do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-That's because when the socket is initialised, rcu_read_lock() is not
-used despite the explicit comment written above the declaration of
-mptcp_sched_find() in sched.c. Adding the missing lock/unlock avoids the
-warning.
-
-Fixes: 1730b2b2c5a5 ("mptcp: add sched in mptcp_sock")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/523
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021-net-mptcp-sched-lock-v1-1-637759cf061c@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.15.169
+Cc: stable@vger.kernel.org # 5.10.228
+Cc: stable@vger.kernel.org # 5.4.284
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_mipi_dsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 8cdd4ec152e7b..cd6f8d655c185 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2823,8 +2823,10 @@ static int mptcp_init_sock(struct sock *sk)
- 	if (unlikely(!net->mib.mptcp_statistics) && !mptcp_mib_alloc(net))
- 		return -ENOMEM;
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
+@@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mip
+ 		return dsi;
+ 	}
  
-+	rcu_read_lock();
- 	ret = mptcp_init_sched(mptcp_sk(sk),
- 			       mptcp_sched_find(mptcp_get_scheduler(net)));
-+	rcu_read_unlock();
- 	if (ret)
- 		return ret;
+-	device_set_node(&dsi->dev, of_fwnode_handle(info->node));
++	dsi->dev.of_node = info->node;
+ 	dsi->channel = info->channel;
+ 	strlcpy(dsi->name, info->type, sizeof(dsi->name));
  
--- 
-2.43.0
-
 
 
 
