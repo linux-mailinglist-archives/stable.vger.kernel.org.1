@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-91464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75589BEE1A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:15:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2EC9BEE26
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F61B1F22300
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 375971F24DD3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5682D1F4723;
-	Wed,  6 Nov 2024 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442681F4FD8;
+	Wed,  6 Nov 2024 13:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY85EPKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJ1LbgPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2B31DFE10;
-	Wed,  6 Nov 2024 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36A01F4FD2;
+	Wed,  6 Nov 2024 13:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898808; cv=none; b=udyXIWxr55uac3pUXYqwqJmQmOd5/kSUQI5i/t59b7SclguiZeB6e/a+FuY3MXrwdnjKYZ4EXdt6Sl9QDWV998fSWB8KJl3tvyeqOrFtdfK15q18vCLOO1bh3NDcd8ddUO0p1UnAFTuYTv2LFPDdqeKjn1ocC2Ss7UXYBLeWOv4=
+	t=1730898840; cv=none; b=LQQlK+c1k4s3ObjxLpwxdZmUQvku6nyIQ0E8IS10SGuOBSpsrt6s00TIzA6YYW6wJZw07H7TrYmWweX3zrpLLiWvAp5UIK/DER1kHaxHfrqSxDX9XrSmDvbl4yZBu95XutT+eLOUX9QQqraCFzEWAZNE3pacV6JKMT4j04R4dys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898808; c=relaxed/simple;
-	bh=Ab2X+s+Sw8Vhh7YSXfb7zjh51oP1BqR7CVpLBgTNqWg=;
+	s=arc-20240116; t=1730898840; c=relaxed/simple;
+	bh=bXunMJDFIs+ipEfoWPkg1ftA5nf6YZTHsi7LhS30ykE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPgw+h594Q+EqziZGGRUwNLka26un7VA2z8QbvvubXb1JY09fnFlYjgAEnsSjAc48ghYyx3Xkh91S2kY2L52RMAYW3m529reKcGKUutmDkdGoLunlmIU+M7iYiAfuixMMSsEvwWgAIr7SLryt461L6hLHGJzEApOWJn+E+Biq38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY85EPKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8599AC4CECD;
-	Wed,  6 Nov 2024 13:13:27 +0000 (UTC)
+	 MIME-Version; b=ArMVvoCEAwavN6zrge6lGHhAtmW6FO8goGZ/qHOWrR4/wEgPttXAN+kHlWtCjlXyCJO6pG7PFapF0+lMNZwD95rOiYh4qh9wBrPWlhs59SDkfphwgwoZCBynp6Yy07zacuqyaKnS0cJDGvYAj8/UBWdslZREq+pRsmwst7P7TPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJ1LbgPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D891C4CED5;
+	Wed,  6 Nov 2024 13:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898807;
-	bh=Ab2X+s+Sw8Vhh7YSXfb7zjh51oP1BqR7CVpLBgTNqWg=;
+	s=korg; t=1730898839;
+	bh=bXunMJDFIs+ipEfoWPkg1ftA5nf6YZTHsi7LhS30ykE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rY85EPKoDRBvWzAhQGgMF6GXhHd4m88xuGDeRtnlRWKxq1cFIN2FAAO2YGM1yrJZX
-	 Od6VAm03/kGDYqGSM8NUKX8TxcUw2NbC/fj65Jo+NilbZ1XYfv9epGHerSaOF++xGH
-	 t4UzO8YDhRqRYXONQNcwUfpCjWgMrDB5HQeAFFBc=
+	b=fJ1LbgPzxdnZJHhCJHEx0g0eUObC6ONo9B1f9gaD5DMu5upUvwusv5/tAa4hM9Da9
+	 l5YAvwVlOVIdm0eom0hgFgHai88XmlLGgHPnyfezHk8GfzHGY8SuBC3q5ppozKsNXf
+	 cPNqUwnxEsE7xBXThLONvZ02myJ0Pb50ZYlZPBhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 345/462] Revert "usb: yurex: Replace snprintf() with the safer scnprintf() variant"
-Date: Wed,  6 Nov 2024 13:03:58 +0100
-Message-ID: <20241106120340.047575932@linuxfoundation.org>
+	stable@kernel.org,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 346/462] usb: dwc3: core: Stop processing of pending events if controller is halted
+Date: Wed,  6 Nov 2024 13:03:59 +0100
+Message-ID: <20241106120340.072427347@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -65,68 +66,125 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-commit 71c717cd8a2e180126932cc6851ff21c1d04d69a upstream.
+commit 0d410e8913f5cffebcca79ffdd596009d4a13a28 upstream.
 
-This reverts commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035.
+This commit addresses an issue where events were being processed when
+the controller was in a halted state. To fix this issue by stop
+processing the events as the event count was considered stale or
+invalid when the controller was halted.
 
-This patch leads to passing 0 to simple_read_from_buffer()
-as a fifth argument, turning the read method into a nop.
-The change is fundamentally flawed, as it breaks the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241007094004.242122-1-oneukum@suse.com
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc: stable@kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240916231813.206-1-selvarasu.g@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/yurex.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/usb/dwc3/core.c   |   22 +++++++++++++++++++---
+ drivers/usb/dwc3/core.h   |    4 ----
+ drivers/usb/dwc3/gadget.c |   11 -----------
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -34,8 +34,6 @@
- #define YUREX_BUF_SIZE		8
- #define YUREX_WRITE_TIMEOUT	(HZ*2)
- 
--#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
--
- /* table of devices that work with this driver */
- static struct usb_device_id yurex_table[] = {
- 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
-@@ -404,7 +402,8 @@ static ssize_t yurex_read(struct file *f
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -418,6 +418,7 @@ static int dwc3_alloc_event_buffers(stru
+ int dwc3_event_buffers_setup(struct dwc3 *dwc)
  {
- 	struct usb_yurex *dev;
- 	int len = 0;
--	char in_buffer[MAX_S64_STRLEN];
-+	char in_buffer[20];
-+	unsigned long flags;
+ 	struct dwc3_event_buffer	*evt;
++	u32				reg;
  
- 	dev = file->private_data;
+ 	if (!dwc->ev_buf)
+ 		return 0;
+@@ -430,8 +431,10 @@ int dwc3_event_buffers_setup(struct dwc3
+ 			upper_32_bits(evt->dma));
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0),
+ 			DWC3_GEVNTSIZ_SIZE(evt->length));
+-	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
  
-@@ -414,16 +413,14 @@ static ssize_t yurex_read(struct file *f
- 		return -ENODEV;
- 	}
- 
--	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
--		mutex_unlock(&dev->io_mutex);
--		return -EIO;
--	}
--
--	spin_lock_irq(&dev->lock);
--	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irq(&dev->lock);
-+	spin_lock_irqsave(&dev->lock, flags);
-+	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
-+	spin_unlock_irqrestore(&dev->lock, flags);
- 	mutex_unlock(&dev->io_mutex);
- 
-+	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
-+		return -EIO;
-+
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
++	/* Clear any stale event */
++	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
++	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
+ 	return 0;
  }
  
+@@ -458,7 +461,10 @@ void dwc3_event_buffers_cleanup(struct d
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTADRHI(0), 0);
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTSIZ(0), DWC3_GEVNTSIZ_INTMASK
+ 			| DWC3_GEVNTSIZ_SIZE(0));
+-	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), 0);
++
++	/* Clear any stale event */
++	reg = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
++	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), reg);
+ }
+ 
+ static int dwc3_alloc_scratch_buffers(struct dwc3 *dwc)
+@@ -1799,7 +1805,11 @@ static int dwc3_runtime_resume(struct de
+ 
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+-		dwc3_gadget_process_pending_events(dwc);
++		if (dwc->pending_events) {
++			pm_runtime_put(dwc->dev);
++			dwc->pending_events = false;
++			enable_irq(dwc->irq_gadget);
++		}
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_HOST:
+ 	default:
+@@ -1886,6 +1896,12 @@ static void dwc3_complete(struct device
+ static const struct dev_pm_ops dwc3_dev_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(dwc3_suspend, dwc3_resume)
+ 	.complete = dwc3_complete,
++
++	/*
++	 * Runtime suspend halts the controller on disconnection. It relies on
++	 * platforms with custom connection notification to start the controller
++	 * again.
++	 */
+ 	SET_RUNTIME_PM_OPS(dwc3_runtime_suspend, dwc3_runtime_resume,
+ 			dwc3_runtime_idle)
+ };
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1487,7 +1487,6 @@ static inline void dwc3_otg_host_init(st
+ #if !IS_ENABLED(CONFIG_USB_DWC3_HOST)
+ int dwc3_gadget_suspend(struct dwc3 *dwc);
+ int dwc3_gadget_resume(struct dwc3 *dwc);
+-void dwc3_gadget_process_pending_events(struct dwc3 *dwc);
+ #else
+ static inline int dwc3_gadget_suspend(struct dwc3 *dwc)
+ {
+@@ -1499,9 +1498,6 @@ static inline int dwc3_gadget_resume(str
+ 	return 0;
+ }
+ 
+-static inline void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+-{
+-}
+ #endif /* !IS_ENABLED(CONFIG_USB_DWC3_HOST) */
+ 
+ #if IS_ENABLED(CONFIG_USB_DWC3_ULPI)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3827,14 +3827,3 @@ err1:
+ err0:
+ 	return ret;
+ }
+-
+-void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
+-{
+-	if (dwc->pending_events) {
+-		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
+-		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
+-		pm_runtime_put(dwc->dev);
+-		dwc->pending_events = false;
+-		enable_irq(dwc->irq_gadget);
+-	}
+-}
 
 
 
