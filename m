@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-91534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307E69BEE67
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8716E9BEED6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9B91F259F0
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC1628651F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEE41E0491;
-	Wed,  6 Nov 2024 13:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C066E1DE2CF;
+	Wed,  6 Nov 2024 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbUGLsBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM6bkD2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A0E1E048E;
-	Wed,  6 Nov 2024 13:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D65B1DF995;
+	Wed,  6 Nov 2024 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899014; cv=none; b=SFcFEQQugByNttGSSzcnVMDQ6OnOP4m0IGgSWuWIgwzI/TUYJNxYKmpTd0u4h4o0Evi7Z5ykucZVP4LZsCSgtZAh/Jc3GPFnkfmkiwTmJiXiH4TL8BksuyziskcGJDX/3Co4wX+mW8/UVAx1p1IlSmg+TDjNJM4VUNQrZi3Cz5c=
+	t=1730899283; cv=none; b=mi/zcmv1xqcivHdkPPz3pcvNoFkrNwBN623FEoAe60PHAYjrX9GP0m65NB+OJuO3zQahZudJRMk+lMGdm4+mgXkUFP9p8ML9wqQuHf26xvu91+pg+3Gm8QZTUHVx+H+B0yAj5bRpj8fjMu1r2fmuqeBGd7etAEdFdSwpUefxRvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899014; c=relaxed/simple;
-	bh=hmg5OH+r8+/o/WqmnW9RiJl/t3zzWtlb3sVXbdH5n4Y=;
+	s=arc-20240116; t=1730899283; c=relaxed/simple;
+	bh=n4zvGsnWCEqHkufMzlA1u747l2qItide44PUsaupxig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZijVdT4neGpGdCAUNZCYFa8suqYRUCRYGFY3oC9v32b8Q8nyKw5WjD9lGSi4N0kD0D22oDPdNoUeR9NA8aq2iddZ6WycZr85gbyH7SZIDVIUKTVU5ftTyIq7bQUD8SL2hLhOSjUu9qtpvvmPfAAB4u9dV7laH3/rAJv0aGa+BkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbUGLsBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9E0C4CECD;
-	Wed,  6 Nov 2024 13:16:54 +0000 (UTC)
+	 MIME-Version; b=okNExzqtr1t4pTGfsIhYsF4E9KG0aTLNTp0rTsiC4g/1yjNOy0AkLbHax4MYmQO9NuH3RH0oSxClHfBAY/THREnpYIwiy1qLpmiMbDiXdnSGDVUHQQyslPXxJ0U+MXogXvGT3mOfSdGBQJGrhqRp+A1VLL4h2LKwNRVkq6msX5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM6bkD2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A95C4CECD;
+	Wed,  6 Nov 2024 13:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899014;
-	bh=hmg5OH+r8+/o/WqmnW9RiJl/t3zzWtlb3sVXbdH5n4Y=;
+	s=korg; t=1730899283;
+	bh=n4zvGsnWCEqHkufMzlA1u747l2qItide44PUsaupxig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbUGLsBNb6QLDa5EyjDomYwmpVtb9HZ4ySyU54PmkWS+lnN0J79cHj4w9HI0N9qKY
-	 v15pBdQiNNFWRRdoWwdiZYbGIkFTtj1/MI0BX1yVD39n2x1n27nw3iB9gbhoggtOyx
-	 PaGNkubysLASs+hcu7+DjJJunh63MxvHyGGZ/D5E=
+	b=OM6bkD2BkQBBdXzHMvbnWMdx/HDZ9gZtVa8IluBvdf8HgVTPG6QznHA0k869DuuQQ
+	 CJKz2aWiVwqoRc6hABLy8sMs/g9rsYQy/wOZBHj7c1L3YukEOXgai+8x1RYGYD/NiK
+	 +1F3JaIwLumed1Hc6k522qVMmKvhZ/5KRUqHsPy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <m.falkowski@samsung.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Rob Herring <robh@kernel.org>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 433/462] dt-bindings: gpu: Convert Samsung Image Rotator to dt-schema
-Date: Wed,  6 Nov 2024 13:05:26 +0100
-Message-ID: <20241106120342.202714021@linuxfoundation.org>
+Subject: [PATCH 5.15 23/73] netdevsim: Add trailing zero to terminate the string in nsim_nexthop_bucket_activity_write()
+Date: Wed,  6 Nov 2024 13:05:27 +0100
+Message-ID: <20241106120300.652779223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Falkowski <m.falkowski@samsung.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 6e3ffcd592060403ee2d956c9b1704775898db79 ]
+[ Upstream commit 4ce1f56a1eaced2523329bef800d004e30f2f76c ]
 
-Convert Samsung Image Rotator to newer dt-schema format.
+This was found by a static analyzer.
+We should not forget the trailing zero after copy_from_user()
+if we will further do some string operations, sscanf() in this
+case. Adding a trailing zero will ensure that the function
+performs properly.
 
-Signed-off-by: Maciej Falkowski <m.falkowski@samsung.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 338c4d3902fe ("igb: Disable threaded IRQ for igb_msix_other")
+Fixes: c6385c0b67c5 ("netdevsim: Allow reporting activity on nexthop buckets")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241022171907.8606-1-zichenxie0106@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/gpu/samsung-rotator.txt          | 28 -----------
- .../bindings/gpu/samsung-rotator.yaml         | 48 +++++++++++++++++++
- 2 files changed, 48 insertions(+), 28 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/gpu/samsung-rotator.txt
- create mode 100644 Documentation/devicetree/bindings/gpu/samsung-rotator.yaml
+ drivers/net/netdevsim/fib.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/gpu/samsung-rotator.txt b/Documentation/devicetree/bindings/gpu/samsung-rotator.txt
-deleted file mode 100644
-index 3aca2578da0bd..0000000000000
---- a/Documentation/devicetree/bindings/gpu/samsung-rotator.txt
-+++ /dev/null
-@@ -1,28 +0,0 @@
--* Samsung Image Rotator
--
--Required properties:
--  - compatible : value should be one of the following:
--	* "samsung,s5pv210-rotator" for Rotator IP in S5PV210
--	* "samsung,exynos4210-rotator" for Rotator IP in Exynos4210
--	* "samsung,exynos4212-rotator" for Rotator IP in Exynos4212/4412
--	* "samsung,exynos5250-rotator" for Rotator IP in Exynos5250
--
--  - reg : Physical base address of the IP registers and length of memory
--	  mapped region.
--
--  - interrupts : Interrupt specifier for rotator interrupt, according to format
--		 specific to interrupt parent.
--
--  - clocks : Clock specifier for rotator clock, according to generic clock
--	     bindings. (See Documentation/devicetree/bindings/clock/exynos*.txt)
--
--  - clock-names : Names of clocks. For exynos rotator, it should be "rotator".
--
--Example:
--	rotator@12810000 {
--		compatible = "samsung,exynos4210-rotator";
--		reg = <0x12810000 0x1000>;
--		interrupts = <0 83 0>;
--		clocks = <&clock 278>;
--		clock-names = "rotator";
--	};
-diff --git a/Documentation/devicetree/bindings/gpu/samsung-rotator.yaml b/Documentation/devicetree/bindings/gpu/samsung-rotator.yaml
-new file mode 100644
-index 0000000000000..45ce562435fa7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpu/samsung-rotator.yaml
-@@ -0,0 +1,48 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpu/samsung-rotator.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/netdevsim/fib.c b/drivers/net/netdevsim/fib.c
+index 14787d17f703f..b71414b3a1d40 100644
+--- a/drivers/net/netdevsim/fib.c
++++ b/drivers/net/netdevsim/fib.c
+@@ -1366,10 +1366,12 @@ static ssize_t nsim_nexthop_bucket_activity_write(struct file *file,
+ 
+ 	if (pos != 0)
+ 		return -EINVAL;
+-	if (size > sizeof(buf))
++	if (size > sizeof(buf) - 1)
+ 		return -EINVAL;
+ 	if (copy_from_user(buf, user_buf, size))
+ 		return -EFAULT;
++	buf[size] = 0;
 +
-+title: Samsung SoC Image Rotator
-+
-+maintainers:
-+  - Inki Dae <inki.dae@samsung.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - "samsung,s5pv210-rotator"
-+      - "samsung,exynos4210-rotator"
-+      - "samsung,exynos4212-rotator"
-+      - "samsung,exynos5250-rotator"
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+    - const: rotator
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+examples:
-+  - |
-+    rotator@12810000 {
-+        compatible = "samsung,exynos4210-rotator";
-+        reg = <0x12810000 0x1000>;
-+        interrupts = <0 83 0>;
-+        clocks = <&clock 278>;
-+        clock-names = "rotator";
-+    };
-+
+ 	if (sscanf(buf, "%u %hu", &nhid, &bucket_index) != 2)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
