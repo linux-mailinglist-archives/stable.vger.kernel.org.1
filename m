@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-91138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8443B9BECA9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:06:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A234E9BE6CA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48D0D285DBF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:06:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C0D8B23B5E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B701F666C;
-	Wed,  6 Nov 2024 12:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A57A1DF24B;
+	Wed,  6 Nov 2024 12:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB0uZ/1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4jE3QSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8CC1E7C3C;
-	Wed,  6 Nov 2024 12:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC01DEFF4;
+	Wed,  6 Nov 2024 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897850; cv=none; b=QT++zPM3q0TO1ZuqwKYTsIyBgrX8Pzv+1plwaE8q+vaibadT8Trg52jHCvVs4NqB7VjlPhqN9W3Y7Whv6I0kX7a7XWQe7Uw8MNa+kFyyny1RbSslqjbu7HVoU0WeScoJC7TJ2Fm0Of+bHm5WUIGRWxMOAuQO6GPEstQQjATPyzA=
+	t=1730894828; cv=none; b=WzZVx3xzdrTObv7f3whAt0VEsb/QnNMmuTcPHxTRDaX32Pkh+oH9w5H1imvmEx4Ztb7ffPwSdSG9uCoIADGheh7bKW5PpbE8c2HLTX0oiIF8X/gUIT02jL98l7Cc+Z0igeJmLO+ZbhgJlSmat0Jo8r+QjqGOREFMBlD2a/qEUx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897850; c=relaxed/simple;
-	bh=cfQaVyC2T9xock9xpUYoQvbUO2YOJLg3pxmETxZ6ovo=;
+	s=arc-20240116; t=1730894828; c=relaxed/simple;
+	bh=hCgFfeFPmHs1uZCKpKxJNtQGfpu3Ad6fMYfjgg3cO8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ip7bRdAwCModc/e/pyddA4K1xPaCf/giP7T4jy9ZzssTAv77+5salcMsn1Zzn2+WQg8Z9tLzYXPy/1zHNgFUvzFKR3bewXg9znVJbGyFykAlf1jAwxOaTzoqbUCn9OL6hhAKpYXthQrVvb31aNFCkp2+WnjcWqSz9aHx7RtrP6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB0uZ/1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AF3C4CECD;
-	Wed,  6 Nov 2024 12:57:30 +0000 (UTC)
+	 MIME-Version; b=J4BLFI8RzH3hWcUpRBjwS2oxCcxQuzRQAh0MznnEI5SqZpBC8kXOVVGgMmJmSUptiJRO++f1BEIJRfVqA/rLo+EMsa38Z7UMEsD6+EGS0t5WNBDIz9yyrnKGiKw8h3gGFXO1bBA7qpN4hXPLWLc+T+Iq+txFPUNrrK9gQuS5lyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4jE3QSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D92C4CECD;
+	Wed,  6 Nov 2024 12:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897850;
-	bh=cfQaVyC2T9xock9xpUYoQvbUO2YOJLg3pxmETxZ6ovo=;
+	s=korg; t=1730894827;
+	bh=hCgFfeFPmHs1uZCKpKxJNtQGfpu3Ad6fMYfjgg3cO8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lB0uZ/1Zl2zoRCSzNGsMPpD9ftj2KEI6kCRMLg26D0/wmAp+vN2rwfYeVO+lm47VY
-	 OXcY0GW2eiJNkq/IFL0WIDfQ7v/OX+XVTYOcmQbR4w1MYSSgBC/3nfQ5bwLYoDjNJb
-	 d1Xcg24hZ45IS6pasZzvZbMHZexzhcQTkvOm9qXQ=
+	b=K4jE3QSrQP2n50FFnKFtD8RNn2RaPoYvkcK6YN+2JQdnC36Bc9rJKQQX2qyVheGZ7
+	 GYdhgRUuSxi2kgXgUmC+M3+YcaftII8hKQk9VMxNI6FH0v2PZ0mKUot7YHr5RtqNkI
+	 MUOdgCeX6rQx7d08GPjx/Cq8kOr40r47BsVnCXtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/462] netfilter: nf_tables: reject element expiration with no timeout
+Subject: [PATCH 4.19 006/350] net: phy: vitesse: repair vsc73xx autonegotiation
 Date: Wed,  6 Nov 2024 12:58:54 +0100
-Message-ID: <20241106120332.535084907@linuxfoundation.org>
+Message-ID: <20241106120321.026326988@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit d2dc429ecb4e79ad164028d965c00f689e6f6d06 ]
+[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
 
-If element timeout is unset and set provides no default timeout, the
-element expiration is silently ignored, reject this instead to let user
-know this is unsupported.
+When the vsc73xx mdio bus work properly, the generic autonegotiation
+configuration works well.
 
-Also prepare for supporting timeout that never expire, where zero
-timeout and expiration must be also rejected.
-
-Fixes: 8e1102d5a159 ("netfilter: nf_tables: support timeouts larger than 23 days")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/vitesse.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f125d505c4519..3c4cc2e58bf83 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4887,6 +4887,9 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (nla[NFTA_SET_ELEM_EXPIRATION] != NULL) {
- 		if (!(set->flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
-+		if (timeout == 0)
-+			return -EOPNOTSUPP;
-+
- 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_ELEM_EXPIRATION],
- 					    &expiration);
- 		if (err)
+diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
+index fbf9ad429593..697b07fdf3ec 100644
+--- a/drivers/net/phy/vitesse.c
++++ b/drivers/net/phy/vitesse.c
+@@ -241,16 +241,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
+ 	return genphy_config_init(phydev);
+ }
+ 
+-static int vsc73xx_config_aneg(struct phy_device *phydev)
+-{
+-	/* The VSC73xx switches does not like to be instructed to
+-	 * do autonegotiation in any way, it prefers that you just go
+-	 * with the power-on/reset defaults. Writing some registers will
+-	 * just make autonegotiation permanently fail.
+-	 */
+-	return 0;
+-}
+-
+ /* This adds a skew for both TX and RX clocks, so the skew should only be
+  * applied to "rgmii-id" interfaces. It may not work as expected
+  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces. */
+@@ -459,7 +449,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	.features       = PHY_GBIT_FEATURES,
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -468,7 +457,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	.features       = PHY_GBIT_FEATURES,
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -477,7 +465,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	.features       = PHY_GBIT_FEATURES,
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -486,7 +473,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	.features       = PHY_GBIT_FEATURES,
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
 -- 
 2.43.0
 
