@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-90991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9CA39BEBF5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2AE9BEB68
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813AC1F24796
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF661284B86
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588E31DE3B9;
-	Wed,  6 Nov 2024 12:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3DB1EABC7;
+	Wed,  6 Nov 2024 12:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RetZyt1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOsZevO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D291E008B;
-	Wed,  6 Nov 2024 12:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0BA1F7092;
+	Wed,  6 Nov 2024 12:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897418; cv=none; b=XZlPEk1lnpks5pG/AoIwwXdRQol9GUtinK02wKeazakVzc4UeRptjglgoCdONvfDPZHZEkuvBm195hcWWwsX5VaCBKY2YIdKnrMgr/7sswN0fez8/AR69H2N5XLOb+dhD9M0rMsOdiRTEaucrtZwGeGUYdxQyZo9n8xTQSkwg28=
+	t=1730897056; cv=none; b=pMBRHxgmNuWwG41z7cBDbDCBbs5ZMl+uFcTFdpn1Nz/eDL+FpIEDVKh0dpGVrcNZbM95d2/MLGLQnSaLm/fsHHCQ1TTi7E5du6kx+0jhpF/pDCasERp23XY83FF5WO8MaiLnrAG1Vn04nVd5DWd26mDYoBBjwsiCi8d0UJVeHfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897418; c=relaxed/simple;
-	bh=rN11O6qlghfNjhL4WiS7dav9eQR0vMRPGqZ5MvadziY=;
+	s=arc-20240116; t=1730897056; c=relaxed/simple;
+	bh=ibMiy7frOXhfHpg/K/CI64HkJQdo6bg+gLEgPyQXp6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nk1zzSvcozGIy9lLKU1lcttt89HN5Fx6+n8bFYYI45jC7owAkuOtT0uijhUqjWXff6Wm/5lOgWp5rMvSpIJ+eCfsCVE48j4afHLAMmIn54fCju+G8uwHiTs3rBRvmXGyY/cUSJ8xuuP/Orxs8HLsAAS6HNthv8GSD4VLTDm0mos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RetZyt1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB79C4CED4;
-	Wed,  6 Nov 2024 12:50:17 +0000 (UTC)
+	 MIME-Version; b=OoEAP6XPH0GzwOsaXoWX028nfdtSrNAVQSEgr7ekk7TfacJvmbMk1qBjBdLIuHGV/A/pi8I59d49u3X2gBG6Xm3XYz48uI7Df4lTWaAO0sKqx0NUsctVSIaqEUt27E0eew432XROO9R1PX0a0Qm/5qtGE9VGITQJbapJtQ3cHj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOsZevO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0701C4CED3;
+	Wed,  6 Nov 2024 12:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897417;
-	bh=rN11O6qlghfNjhL4WiS7dav9eQR0vMRPGqZ5MvadziY=;
+	s=korg; t=1730897056;
+	bh=ibMiy7frOXhfHpg/K/CI64HkJQdo6bg+gLEgPyQXp6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RetZyt1gYJtjp6uszk+T2fjsQfMNvKD9qE0ZRG8byMYW2hrPXlIYpIragEAxkGl5I
-	 SumNtMti41T+1hDIXCFcjzx8FT1woqc9TdJjxn19qIvTVslShARPKNQFXjkLSp7wrV
-	 HKLkaOfDEefKpKcwFZTp4TinlhlMD1fc2oyEJoNc=
+	b=AOsZevO7H98cKP4zJ+Bhd2oMA7gSQQvXIR7it5qNHR09Ro9V0Cxa6A9JPXKq2iyl7
+	 wKAKfUGzGRb6dzokvimOz0pGkpxXQQtag07T9Pvuveb1UP4E7LNWmDiRZu5IOcdbMA
+	 w0nIIEb/n51MbJOFRQfhc5em3p/HvLAN/kekdECc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+908886656a02769af987@syzkaller.appspotmail.com,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrew Pinski <pinskia@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Marco Elver <elver@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/151] kasan: Fix Software Tag-Based KASAN with GCC
+Subject: [PATCH 6.1 034/126] mlxsw: spectrum_router: Add support for double entry RIFs
 Date: Wed,  6 Nov 2024 13:03:55 +0100
-Message-ID: <20241106120310.128091557@linuxfoundation.org>
+Message-ID: <20241106120307.031439718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 894b00a3350c560990638bdf89bdf1f3d5491950 ]
+[ Upstream commit 5ca1b208c5d107fd4b9e7801200dea18ab1af8e7 ]
 
-Per [1], -fsanitize=kernel-hwaddress with GCC currently does not disable
-instrumentation in functions with __attribute__((no_sanitize_address)).
+In Spectrum-1, loopback router interfaces (RIFs) used for IP-in-IP
+encapsulation with an IPv6 underlay require two RIF entries and the RIF
+index must be even.
 
-However, __attribute__((no_sanitize("hwaddress"))) does correctly
-disable instrumentation. Use it instead.
+Prepare for this change by extending the RIF parameters structure with a
+'double_entry' field that indicates if the RIF being created requires
+two RIF entries or not. Only set it for RIFs representing ip6gre tunnels
+in Spectrum-1.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117196 [1]
-Link: https://lore.kernel.org/r/000000000000f362e80620e27859@google.com
-Link: https://lore.kernel.org/r/ZvFGwKfoC4yVjN_X@J2N7QTR9R3
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218854
-Reported-by: syzbot+908886656a02769af987@syzkaller.appspotmail.com
-Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrew Pinski <pinskia@gmail.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Fixes: 7b861a53e46b ("kasan: Bump required compiler version")
-Link: https://lore.kernel.org/r/20241021120013.3209481-1-elver@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 12ae97c531fc ("mlxsw: spectrum_ipip: Fix memory leak when changing remote IPv6 address")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-gcc.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c   |    1 +
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.h   |    1 +
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c |    2 ++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index 8c9a095c17571..9e6961078c2aa 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -102,7 +102,11 @@
- #define __noscs __attribute__((__no_sanitize__("shadow-call-stack")))
- #endif
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+@@ -433,6 +433,7 @@ static const struct mlxsw_sp_ipip_ops ml
+ 	.dev_type = ARPHRD_IP6GRE,
+ 	.ul_proto = MLXSW_SP_L3_PROTO_IPV6,
+ 	.inc_parsing_depth = true,
++	.double_rif_entry = true,
+ 	.parms_init = mlxsw_sp1_ipip_netdev_parms_init_gre6,
+ 	.nexthop_update = mlxsw_sp1_ipip_nexthop_update_gre6,
+ 	.decap_config = mlxsw_sp1_ipip_decap_config_gre6,
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.h
+@@ -49,6 +49,7 @@ struct mlxsw_sp_ipip_ops {
+ 	int dev_type;
+ 	enum mlxsw_sp_l3proto ul_proto; /* Underlay. */
+ 	bool inc_parsing_depth;
++	bool double_rif_entry;
  
-+#ifdef __SANITIZE_HWADDRESS__
-+#define __no_sanitize_address __attribute__((__no_sanitize__("hwaddress")))
-+#else
- #define __no_sanitize_address __attribute__((__no_sanitize_address__))
-+#endif
+ 	struct mlxsw_sp_ipip_parms
+ 	(*parms_init)(const struct net_device *ol_dev);
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+@@ -77,6 +77,7 @@ struct mlxsw_sp_rif_params {
+ 	};
+ 	u16 vid;
+ 	bool lag;
++	bool double_entry;
+ };
  
- #if defined(__SANITIZE_THREAD__)
- #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))
--- 
-2.43.0
-
+ struct mlxsw_sp_rif_subport {
+@@ -1068,6 +1069,7 @@ mlxsw_sp_ipip_ol_ipip_lb_create(struct m
+ 	lb_params = (struct mlxsw_sp_rif_params_ipip_lb) {
+ 		.common.dev = ol_dev,
+ 		.common.lag = false,
++		.common.double_entry = ipip_ops->double_rif_entry,
+ 		.lb_config = ipip_ops->ol_loopback_config(mlxsw_sp, ol_dev),
+ 	};
+ 
 
 
 
