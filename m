@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93469BE6EF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:08:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9E49BECCE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31EE3B25514
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A4D1C235A4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06761DF24A;
-	Wed,  6 Nov 2024 12:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D2D1EBFE3;
+	Wed,  6 Nov 2024 12:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiYGJcZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlcDUZ8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1D91DF249;
-	Wed,  6 Nov 2024 12:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113BC1F6698;
+	Wed,  6 Nov 2024 12:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894918; cv=none; b=FZKx7kA5wqDjqDoZGkFm6VJvoXICV0Bg08xiq+TPQ9eKzr0FdvzZ5+82tPa8BwISPlfqUtNOwWkcJE/EbHjuE10hdSIgs7JDQmYl7Jq+Ok4Xeg1MheoDxPgDXMstIKp19WStaR81Pykkzp2yOk3g+B5itrHMleiAUslaBAhvV2A=
+	t=1730897962; cv=none; b=q0lCuTAqr31SdhQ7tlXGkTrRRpxvsvVUs28H93falJmg30U+AJRxjNB24bPa8ymxT+66DRykfo38FD5GChvm6YuVTOZCWYhmIrc93Je6jwIzD6NcHV36HFa61oibe6NFSerqT+S35oHxBKeOCurUADtMXDP3DywNDsRsOG2n0jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894918; c=relaxed/simple;
-	bh=UgJXE36GtBX7eCrhgQdQs8V3t5DV3EL4VP3Z58zzb68=;
+	s=arc-20240116; t=1730897962; c=relaxed/simple;
+	bh=gbx3e5U4w7mzydddGFZUw21YhSoylCZxg2FTOgPfoWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEp6tAjEiKD3hpPFfyQuwcpd5gcNiEIA6Vu5F9sgHOJ+L0kko9yfNqyUwZU0NYmVjR2YgEGO8GEVKrKxS5MqsCAfKE8TwwhTKM64j2pRMFeOo9sMouCYjQpHQ4EZ3xS4xz2HVIWyaeBB/61cSmg2qMCvFS5vpsxAFpqc/vDgM8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiYGJcZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41B4C4CECD;
-	Wed,  6 Nov 2024 12:08:37 +0000 (UTC)
+	 MIME-Version; b=hqIxDhMVOMCg3w8WAhS2tOs5s1HepoQddR1tT5gW5W8C/Ovkk0BWIGN8/INQrljJ/5BtxOW8Qke/Cf5aMcEZpN6r3PUO7cpbc+yvobrxPamt7gyh4krB569LwzhZT/u7WGiyw9+S1xjscHYlvhOUPsAQwBvU07R1QnUlGynlKuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlcDUZ8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCBEC4CECD;
+	Wed,  6 Nov 2024 12:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894918;
-	bh=UgJXE36GtBX7eCrhgQdQs8V3t5DV3EL4VP3Z58zzb68=;
+	s=korg; t=1730897961;
+	bh=gbx3e5U4w7mzydddGFZUw21YhSoylCZxg2FTOgPfoWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiYGJcZjxtHQfD8XPzu0MOahMX4hs7VSTsm5i8YwR7g4OdiQN52fVPI+N3LzVE9bC
-	 I84RlvXLlvyyd8d3rPoJRKLQ9Oijup4/RO6MucvgfKiN5KaAcKFxAERKIOc+VW35ub
-	 Wn2CJhuXXoo03tK1xgg9s5TL947Yz3TGFfjGS3bc=
+	b=UlcDUZ8vpa/OGM4hh3HXfE0TKX7C4Bw+9ZwG07HHtZxWfHvPzmSmk8EZpmywxcvgG
+	 mhbaJyFWSHW5YLLSRcy5Jmr2z2+FcISydm90toCgnlOCsGFHDR3BChdsbertDz/aIS
+	 whfRvmI0WGpR1ZngOweRISstL5Zgj7/bQDIQxtuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 042/350] ARM: versatile: fix OF node leak in CPUs prepare
-Date: Wed,  6 Nov 2024 12:59:30 +0100
-Message-ID: <20241106120321.925110932@linuxfoundation.org>
+Subject: [PATCH 5.4 078/462] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Date: Wed,  6 Nov 2024 12:59:31 +0100
+Message-ID: <20241106120333.434437568@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
+[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
 
-Machine code is leaking OF node reference from of_find_matching_node()
-in realview_smp_prepare_cpus().
+In adreno_request_fw() when debugging information is printed to the log
+after firmware load, an incorrect filename is printed. 'newname' is used
+instead of 'fwname', so prefix "qcom/" is being added to filename.
+Looks like "copy-paste" mistake.
 
-Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fix this mistake by replacing 'newname' with 'fwname'.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602382/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-realview/platsmp-dt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-realview/platsmp-dt.c b/arch/arm/mach-realview/platsmp-dt.c
-index c242423bf8db5..66d6b11eda7bd 100644
---- a/arch/arm/mach-realview/platsmp-dt.c
-+++ b/arch/arm/mach-realview/platsmp-dt.c
-@@ -70,6 +70,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
- 		return;
- 	}
- 	map = syscon_node_to_regmap(np);
-+	of_node_put(np);
- 	if (IS_ERR(map)) {
- 		pr_err("PLATSMP: No syscon regmap\n");
- 		return;
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 6f83253a8c585..3edecd4fc8f60 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -247,7 +247,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
+ 		ret = request_firmware_direct(&fw, fwname, drm->dev);
+ 		if (!ret) {
+ 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
+-				newname);
++				fwname);
+ 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
+ 			goto out;
+ 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
 -- 
 2.43.0
 
