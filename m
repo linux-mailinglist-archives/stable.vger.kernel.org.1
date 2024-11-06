@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-91435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF329BEDF5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:14:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F71B9BEE03
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90C0F2865EF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE1C28226C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807D31DF75A;
-	Wed,  6 Nov 2024 13:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66581EABDB;
+	Wed,  6 Nov 2024 13:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP/djLl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2udCG43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2D81DE4CA;
-	Wed,  6 Nov 2024 13:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39CF1E907E;
+	Wed,  6 Nov 2024 13:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898725; cv=none; b=NnwkaUjeFaFOQrxR3cmgqNtykn2czCuNsydXu3mAmTSFmdUxqiPCxxPzGqDpVLMGunWZrNE31s8rqkbkJnQCSVIjgWle/JyJhRypQS2GivSFboYADuSnlwz8QJgutUKqxdTVg7Vofn9D4eiRVwsU9i/3dMzCuAbiIR4Q/z9pSgk=
+	t=1730898754; cv=none; b=h4fxBdCHJRcoVGWmYgI5PPvnN8UeXg8GjvYdg6lvXZIJr/9KAFlP+WtLSvGho8yYMPKPiSWgg+neMt1GsXUf01axYEhmDjbaklWHX/j9jkf0J/qX3FmK2eBsxF2OA4qFRT7GQa8fBaS488pL2T6BG0WFemm8R6E0gie8JibseVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898725; c=relaxed/simple;
-	bh=ZV3NnxtglXdeWiok8R9ZSMRZfz5ihfewUFY1NFHYmno=;
+	s=arc-20240116; t=1730898754; c=relaxed/simple;
+	bh=nWEJdMDJwwMvIz1mmCyBhDa8KxkeiHZN5cMd3vPpZzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMLJM4kV87d0wntNlsini5MwFzBDWY0/TnsjEXyAyxG6w3b5L/Os+qEpot6jBkdIGGSG61nkQdK+N0QW1+ZOk+OJKpOSr5MJlh/O3usB2/yQPfb/Hv8U90I1f6VmmdzYpGlROittjWVWp47ItYReE4DoGdvJ7eTJu457W+vb2S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP/djLl9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B179CC4CECD;
-	Wed,  6 Nov 2024 13:12:04 +0000 (UTC)
+	 MIME-Version; b=DZnY2/K14Do8vSbYehJnJxn+qcyfhrwVFsNf0BufJ57I5skDRaq3eBjOhDQ7tYB/S0iqo7sJf+7b7rcq50vKizbbei9TMpwTiEzgCz7u/CULHP0qYZiyiWnyhmGVhy/Xd6kGvXuBnHZA0ukhvbC8O4H2muGHFdVz6BF8DBdT11k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2udCG43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE50C4CECD;
+	Wed,  6 Nov 2024 13:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898725;
-	bh=ZV3NnxtglXdeWiok8R9ZSMRZfz5ihfewUFY1NFHYmno=;
+	s=korg; t=1730898754;
+	bh=nWEJdMDJwwMvIz1mmCyBhDa8KxkeiHZN5cMd3vPpZzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MP/djLl9XKLKPLakRgQK42HVFijWsq0JlKpdQ/jHnqoR6mi4yA1ZCy47rwzdRbSza
-	 Wro91dgzpU7Rhvu9Unpt/gK9saIQUE7GjRraqncP+o4H/qKdQApHnjAH34T/rLFT1A
-	 2gI//Cl1b3PfyPhCQChxr/RsHFvheDY8yb6K8yPc=
+	b=M2udCG431i0WOJUaLrdjSzPqrmFNIq0+ysvWW8V8NkEe7kYUiCi6ujKqZ4ycobE/y
+	 yEDVvO/Kpyt59MHl+5sQ9dj+X3jtnF9exFbJ+3oHkXUpo4FCcsdAGVHS5UVWLfHzBL
+	 FfD/4HSnmHLlVZ2zZvdy+yBXwGwhOMI4JukjI2HY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	"John Warthog9 Hawley (Tenstorrent)" <warthog9@eaglescrag.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 307/462] s390/cpum_sf: Remove WARN_ON_ONCE statements
-Date: Wed,  6 Nov 2024 13:03:20 +0100
-Message-ID: <20241106120339.111127212@linuxfoundation.org>
+Subject: [PATCH 5.4 308/462] ktest.pl: Avoid false positives with grub2 skip regex
+Date: Wed,  6 Nov 2024 13:03:21 +0100
+Message-ID: <20241106120339.135025223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -69,69 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Daniel Jordan <daniel.m.jordan@oracle.com>
 
-[ Upstream commit b495e710157606889f2d8bdc62aebf2aa02f67a7 ]
+[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
 
-Remove WARN_ON_ONCE statements. These have not triggered in the
-past.
+Some distros have grub2 config files with the lines
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+    if [ x"${feature_menuentry_id}" = xy ]; then
+      menuentry_id_option="--id"
+    else
+      menuentry_id_option=""
+    fi
+
+which match the skip regex defined for grub2 in get_grub_index():
+
+    $skip = '^\s*menuentry';
+
+These false positives cause the grub number to be higher than it
+should be, and the wrong kernel can end up booting.
+
+Grub documents the menuentry command with whitespace between it and the
+title, so make the skip regex reflect this.
+
+Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
+Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index b83bddf35e068..4f251cd624d7e 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1412,7 +1412,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
- 	unsigned long head, base, offset;
- 	struct hws_trailer_entry *te;
- 
--	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
-+	if (handle->head & ~PAGE_MASK)
- 		return -EINVAL;
- 
- 	aux->head = handle->head >> PAGE_SHIFT;
-@@ -1580,7 +1580,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 	unsigned long num_sdb;
- 
- 	aux = perf_get_aux(handle);
--	if (WARN_ON_ONCE(!aux))
-+	if (!aux)
- 		return;
- 
- 	/* Inform user space new data arrived */
-@@ -1599,7 +1599,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 			debug_sprintf_event(sfdbg, 1, "AUX buffer used up\n");
- 			break;
- 		}
--		if (WARN_ON_ONCE(!aux))
-+		if (!aux)
- 			return;
- 
- 		/* Update head and alert_mark to new position */
-@@ -1836,12 +1836,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
- {
- 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
- 
--	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-+	if (!(event->hw.state & PERF_HES_STOPPED))
- 		return;
--
--	if (flags & PERF_EF_RELOAD)
--		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
--
- 	perf_pmu_disable(event->pmu);
- 	event->hw.state = 0;
- 	cpuhw->lsctl.cs = 1;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index d36612c620981..e7adb429018b2 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1954,7 +1954,7 @@ sub get_grub_index {
+     } elsif ($reboot_type eq "grub2") {
+ 	$command = "cat $grub_file";
+ 	$target = '^\s*menuentry.*' . $grub_menu_qt;
+-	$skip = '^\s*menuentry';
++	$skip = '^\s*menuentry\s';
+ 	$submenu = '^\s*submenu\s';
+     } elsif ($reboot_type eq "grub2bls") {
+         $command = $grub_bls_get;
 -- 
 2.43.0
 
