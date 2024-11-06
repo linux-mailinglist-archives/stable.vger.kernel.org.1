@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DC19BECBF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57EF9BE6D9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3D71C23D07
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805F2B25065
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497C61EABDB;
-	Wed,  6 Nov 2024 12:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2226F1DF25B;
+	Wed,  6 Nov 2024 12:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/I7oGK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVS3MWbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566B1E7C1A;
-	Wed,  6 Nov 2024 12:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDBA1DF24A;
+	Wed,  6 Nov 2024 12:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897916; cv=none; b=RfOZJFkLOwjf6jtvbZAgkbmr+940xJxWyK7JVDrVWdfon1HW6BJHT2o1dLCs3cLEtYeUUtXnL701SCa/E3pkR78LWllmLCKbeWBH4Y3L5rAgXYO6P4vlGzeY1B/RQFWSZuW4Ou5Uyr4Qzn5NLSFP8SfSypKnD1RhgvVvg+aeShE=
+	t=1730894863; cv=none; b=K1hMHK0gpURF2m7q6u33zR8cR1aKbQNWL24cF6OtmZcr+7fwW7TJM/oGhYIIFWLKYtw6F1YpbLx6hUQj0209p0Lt3i4ipV4PAC0IBC1YjxCVjHxTp2qgaGytDEA/8x93kp1iZwp4o7JClgFXbP9NBz4+gIK1FScXARzC8/pclM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897916; c=relaxed/simple;
-	bh=8Iwo7gibWiRQWpEiCqYIwfop++yilqIMUwD269WStFM=;
+	s=arc-20240116; t=1730894863; c=relaxed/simple;
+	bh=LwboW90aKy9PgooDhS/BCHWORXxgzKXz4ailNfmeoBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzyboUQd3CT/T/xfNkjOpjNgfeZLn/Sauu61aA3rxxIrJMx3eHrURgXDDkvco78fqSmLiD1SP7kTpsH5F7YxAj0tJKf8DF3BYEpJS2sB5XBylVqD/vsyhim5Nbrs9BcfmVi82BThYPcbDQ6Vi5hCVpTSDTtmJ+BwqtQUYNSapEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/I7oGK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DC3C4CECD;
-	Wed,  6 Nov 2024 12:58:35 +0000 (UTC)
+	 MIME-Version; b=FWpKwnvd6gXJPmsbxQX12626pA9r7cnqfw/JEXpW7itosNkxyEeq0i1FYyEmNPrKnT7gIyYMhqTYyhON6zkPBlYSrrfTyA7xGp6BpZkFp71IQPNLl+dsLsYG3UvphiHvBwH31/FTU4VJNyVny9AE3p6HLd4u59FBMieQUe8XAb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVS3MWbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19045C4CECD;
+	Wed,  6 Nov 2024 12:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897915;
-	bh=8Iwo7gibWiRQWpEiCqYIwfop++yilqIMUwD269WStFM=;
+	s=korg; t=1730894863;
+	bh=LwboW90aKy9PgooDhS/BCHWORXxgzKXz4ailNfmeoBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/I7oGK+/7LBJbsFEv921BMpr0uAn6c0R42IuMuMUdDiG+V9pFuVTE6Wh/Tnp4QdI
-	 B4omB3Q9lPoE/xX3LIu+0Rn2Aa+X1ILEZtGdPQVVuJg0VXpgZ7g3/4hZFovKBm5rg7
-	 kmCQrhBpNPi9JguDO6rVlfRAHfVHJ+2lwCqnSl8I=
+	b=yVS3MWbVXiSoE+oZ4B6Y4pwy6qYJweXp+X+GYxxyIH5v/dBIf+4yZ+pOEfRDwSa0u
+	 Ng9uTmcjjvn6SDzs6aWJLsWA0MdopJHZOH0gEL+S63OszGK8SousB5vgpfE+x42iD6
+	 MNjEsoao4HeVTyKk/Koekyohy/gaahYG+YLFBVWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/462] hwmon: (max16065) Fix overflows seen when writing limits
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 4.19 026/350] gpio: prevent potential speculation leaks in gpio_device_get_desc()
 Date: Wed,  6 Nov 2024 12:59:14 +0100
-Message-ID: <20241106120333.022024706@linuxfoundation.org>
+Message-ID: <20241106120321.523895514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 744ec4477b11c42e2c8de9eb8364675ae7a0bd81 ]
+commit d795848ecce24a75dfd46481aee066ae6fe39775 upstream.
 
-Writing large limits resulted in overflows as reported by module tests.
+Userspace may trigger a speculative read of an address outside the gpio
+descriptor array.
+Users can do that by calling gpio_ioctl() with an offset out of range.
+Offset is copied from user and then used as an array index to get
+the gpio descriptor without sanitization in gpio_device_get_desc().
 
-in0_lcrit: Suspected overflow: [max=5538, read 0, written 2147483647]
-in0_crit: Suspected overflow: [max=5538, read 0, written 2147483647]
-in0_min: Suspected overflow: [max=5538, read 0, written 2147483647]
+This change ensures that the offset is sanitized by using
+array_index_nospec() to mitigate any possibility of speculative
+information leaks.
 
-Fix the problem by clamping prior to multiplications and the use of
-DIV_ROUND_CLOSEST, and by using consistent variable types.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240523085332.1801-1-hagarhem@amazon.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/max16065.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 49b7e0b6d1bbe..5d0ecc8d56af1 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -114,9 +114,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
- 	return limit * range / 256;
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -3,6 +3,7 @@
+ #include <linux/module.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/nospec.h>
+ #include <linux/spinlock.h>
+ #include <linux/list.h>
+ #include <linux/device.h>
+@@ -144,7 +145,7 @@ struct gpio_desc *gpiochip_get_desc(stru
+ 	if (hwnum >= gdev->ngpio)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	return &gdev->descs[hwnum];
++	return &gdev->descs[array_index_nospec(hwnum, gdev->ngpio)];
  }
  
--static inline int MV_TO_LIMIT(int mv, int range)
-+static inline int MV_TO_LIMIT(unsigned long mv, int range)
- {
--	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
-+	mv = clamp_val(mv, 0, ULONG_MAX / 256);
-+	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
- }
- 
- static inline int ADC_TO_CURR(int adc, int gain)
--- 
-2.43.0
-
+ /**
 
 
 
