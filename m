@@ -1,183 +1,100 @@
-Return-Path: <stable+bounces-89941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D539BDAD1
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:02:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE8E9BDAED
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64E0E1F21335
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC391C21893
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 01:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFEF187848;
-	Wed,  6 Nov 2024 01:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3820315E5B8;
+	Wed,  6 Nov 2024 01:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UqLRPifi"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F5YZj37e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6867A7DA9E;
-	Wed,  6 Nov 2024 01:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C01B815
+	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 01:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730854869; cv=none; b=e7HYlLNoKwKn0OuprmOpJ99M0dkS/oM/yMpylSYLzLnswpBqqTcHKzry7c6zLOm4CTrSiezcHJ452zpfPDE1HDNSnFFAkRIWz68zBAyYaEutcBX//YM3IhhT8wkeudTMgGHeVYFO25IALU77ejRO0gRZ1vBwyAU3Qrm6cjEy328=
+	t=1730855357; cv=none; b=c8EOgw9EERD3li8opJs3vNzGC0VdGRN8SbyHbt1UVdZoCANboZR7YHcRKTXrZOUhPHP3wrbGq6LUVvzhFW9hal07e4/XtgGRX18kkzCYAPAulTYSGWkgpoHAPQ3u0gcpnb6EXbRVWkiYgM5Es5oQaHKwFqxFpiesoJnJFQF49gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730854869; c=relaxed/simple;
-	bh=c/Yr3lrToFwykC/Scu1cqKSLwL3lup8PEdRorOu/9+E=;
-	h=Date:To:From:Subject:Message-Id; b=fEH/XSs62qiS5QP9OZdyxKqMTYpBnXYYs4nsrPect7CguYp7QHf2ZIZIsFHijzaHbFj+OzjAbRPuDRLZyjyPvx0MoOeFEUV+GQlSXOEJH7UXBkmTEnhqrn33B6BglTIiVD5zYsOzk8mMUj+AyVrNq+59FBEUMdtQ63K13mOw10I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UqLRPifi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6A7C4CECF;
-	Wed,  6 Nov 2024 01:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730854869;
-	bh=c/Yr3lrToFwykC/Scu1cqKSLwL3lup8PEdRorOu/9+E=;
-	h=Date:To:From:Subject:From;
-	b=UqLRPifiZDG9yWqDfN37z1BbyM9aeraiEFzMkUmaTGuN6bbWJiAXmWtfZyxPN6kPw
-	 lIEwlWUcJDUW6Ft1jN/4889U2XHCftrr15PbD4uZDw4WadcLIP9oV6nqywSnfSI6I7
-	 en7U7UikALCIUzMIwpA5SqsFnXM55D6CGyC1++vE=
-Date: Tue, 05 Nov 2024 17:01:08 -0800
-To: mm-commits@vger.kernel.org,yeweihua4@huawei.com,stable@vger.kernel.org,sj@kernel.org,sieberf@amazon.com,shakeel.butt@linux.dev,foersleo@amazon.de,zhengyejian@huaweicloud.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch removed from -mm tree
-Message-Id: <20241106010109.3A6A7C4CECF@smtp.kernel.org>
+	s=arc-20240116; t=1730855357; c=relaxed/simple;
+	bh=m1jPRgvwaVt0Ji0K64vPZOJS/AW3EobWcVHaJ+6e92c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u3vu87OsvYLi8/eIFL0Zv7agC7LpYSI3IXGH4Fi+PtbxRapUl20O1+hPB/UmyGfjoqL2pPz1sssj9Br7wXLngfO+VT7dR4UWLorddkyF0QWWlk4tLZm16aZL5glY/V8KW2kjJGUuuzBKjvFaW52ipCRfujOaXG9RGaq21po7XoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F5YZj37e; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7eaee07d665so6512599a12.0
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 17:09:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730855355; x=1731460155; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mM/JOg5R9b+FWm0W8b94lT0depobNUxyZ6mpenVonLw=;
+        b=F5YZj37etMbDFkfq+xPkgdawXcWhpwlf09vsOXLU5h4XV5+HEdNpH+9t8dagp4Kt7l
+         acfHh99oribWtl67RAQFqFIOMmFWBGTm8alpJltgHhn9qpi4jwdAhGwQUQsybgdMb1wZ
+         d7YsVyyoTrtR//KP1TEMnB7qltSI4WDhNFy0+4VUHoY/qiY0yLLJgEIMYPufiduzzYbh
+         zQ935BI96vcnkyWVChDaRdTvOEu5ziJzi9yceHXHwhKPhbGMtYoJkS98eFFbRUrvDzzM
+         2ynCpwWDMWe8upF0JMJAYRtaFa7M3oTvGFm8Z8uHmn2fdxzfmPaMDVrXPGiyfLFAaHEw
+         2chA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730855355; x=1731460155;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mM/JOg5R9b+FWm0W8b94lT0depobNUxyZ6mpenVonLw=;
+        b=i62wF0EQR5CSspyxnytYg0i+uPI2PGF0167oNUakAiMIafcBwCNAXyfKfQ+rEk/l6h
+         89xkGgah2zBe7BGRgzwbEB3RzEKOAQeXgGdgrHYiKsjw9Kf/CRcR7YYxmM6XIW0D6Unc
+         2jGBgtbyLyW0MRQwv1+vaJREIevgQB9w1T7um7C/9jg5tFzbSNB8XqFnP+WgCbXm8EWe
+         nCttnzGeSSoxVz3W1lVkWhAg+F6UjQK15qQbhRjvRn+l61PjQwVogxlZ0B24Z+I8k52E
+         9tADdwE8VJH81DbKp0fLp+k5ZuUZcFdm4ehsfSREDi3zIgj+ZR34fYQwbUu3BoyqKu1G
+         kYYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWbeTEP3aAP/63ekGGrLEBi9/Z1gyFtcEowxkIjqrDKN6bSlKy51dNG6PNtkjtd5kl01JQLBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhcHYuvnQokadjBHi7rsTNDdnjWgC6fv4HBBwTK/80JZR0tpDI
+	sJud6roTQPpK2M59HMkN+FrW22XxyWJwIstkQYsoYRWS7VXSCbtmKRECeFgv/wLHM4J44Sv8cAM
+	RFw==
+X-Google-Smtp-Source: AGHT+IGwBu+onCDNn0Y32ZVpfpCe4rwxG/l9NILnSH55nW3/1oRdipH1Rgb6zMdW9xSxMW4+/zY3xYf4thA=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a17:903:448c:b0:20c:c9ac:bd0f with SMTP id
+ d9443c01a7336-2111aef735dmr281325ad.5.1730855354521; Tue, 05 Nov 2024
+ 17:09:14 -0800 (PST)
+Date: Tue, 5 Nov 2024 17:09:13 -0800
+In-Reply-To: <ZxcK_Gkdn0fegRl6@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+ <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com> <ZxcK_Gkdn0fegRl6@google.com>
+Message-ID: <ZyrBuZPBjJi75gGU@google.com>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+From: Sean Christopherson <seanjc@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Matthew Wilcox <willy@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 
+On Tue, Oct 22, 2024, Roman Gushchin wrote:
+> On Mon, Oct 21, 2024 at 12:49:28PM -0700, Hugh Dickins wrote:
+> > On Mon, 21 Oct 2024, Roman Gushchin wrote:
+> > I don't think there's any need to change your text, but
+> > let me remind us that any "Bad page" report stops that page from being
+> > allocated again (because it's in an undefined, potentially dangerous
+> > state): so does amount to a small memory leak even if otherwise harmless.
+> 
+> It looks like I need to post v3 as soon as I get a publicly available
+> syzkaller report, so I'll add this to the commit log.
 
-The quilt patch titled
-     Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
-has been removed from the -mm tree.  Its filename was
-     mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
+Today is your lucky day :-)
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
-Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
-Date: Tue, 22 Oct 2024 16:39:26 +0800
-
-Patch series "mm/damon/vaddr: Fix issue in
-damon_va_evenly_split_region()".  v2.
-
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
-
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
-
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
-
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision, then
-each time split one piece of size 'sz_piece' from origin 'start' to 'end'
-would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'.  In addition, add above case into damon_test_split_evenly().
-
-And add 'nr_piece == 1' check in damon_va_evenly_split_region() for better
-code readability and add a corresponding kunit testcase.
-
-
-This patch (of 2):
-
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
-
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
-
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
-
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision,
-then each time split one piece of size 'sz_piece' from origin 'start' to
-'end' would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'. In addition, add above case into damon_test_split_evenly().
-
-After this patch, damon-operations test passed:
-
- # ./tools/testing/kunit/kunit.py run damon-operations
- [...]
- ============== damon-operations (6 subtests) ===============
- [PASSED] damon_test_three_regions_in_vmas
- [PASSED] damon_test_apply_three_regions1
- [PASSED] damon_test_apply_three_regions2
- [PASSED] damon_test_apply_three_regions3
- [PASSED] damon_test_apply_three_regions4
- [PASSED] damon_test_split_evenly
- ================ [PASSED] damon-operations =================
-
-Link: https://lkml.kernel.org/r/20241022083927.3592237-1-zhengyejian@huaweicloud.com
-Link: https://lkml.kernel.org/r/20241022083927.3592237-2-zhengyejian@huaweicloud.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Ye Weihua <yeweihua4@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/tests/vaddr-kunit.h |    1 +
- mm/damon/vaddr.c             |    4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
-
---- a/mm/damon/tests/vaddr-kunit.h~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
-+++ a/mm/damon/tests/vaddr-kunit.h
-@@ -300,6 +300,7 @@ static void damon_test_split_evenly(stru
- 	damon_test_split_evenly_fail(test, 0, 100, 0);
- 	damon_test_split_evenly_succ(test, 0, 100, 10);
- 	damon_test_split_evenly_succ(test, 5, 59, 5);
-+	damon_test_split_evenly_succ(test, 0, 3, 2);
- 	damon_test_split_evenly_fail(test, 5, 6, 2);
- }
- 
---- a/mm/damon/vaddr.c~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
-+++ a/mm/damon/vaddr.c
-@@ -67,6 +67,7 @@ static int damon_va_evenly_split_region(
- 	unsigned long sz_orig, sz_piece, orig_end;
- 	struct damon_region *n = NULL, *next;
- 	unsigned long start;
-+	unsigned int i;
- 
- 	if (!r || !nr_pieces)
- 		return -EINVAL;
-@@ -80,8 +81,7 @@ static int damon_va_evenly_split_region(
- 
- 	r->ar.end = r->ar.start + sz_piece;
- 	next = damon_next_region(r);
--	for (start = r->ar.end; start + sz_piece <= orig_end;
--			start += sz_piece) {
-+	for (start = r->ar.end, i = 1; i < nr_pieces; start += sz_piece, i++) {
- 		n = damon_new_region(start, start + sz_piece);
- 		if (!n)
- 			return -ENOMEM;
-_
-
-Patches currently in -mm which might be from zhengyejian@huaweicloud.com are
-
-
+https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
 
