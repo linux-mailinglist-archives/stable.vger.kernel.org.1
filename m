@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-90413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28699BE827
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F989BE950
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83485284030
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA2AC28528C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176691DF969;
-	Wed,  6 Nov 2024 12:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC011DF251;
+	Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cotP6jF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPx2IVGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F5F1DF73C;
-	Wed,  6 Nov 2024 12:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1822C1DE3B8;
+	Wed,  6 Nov 2024 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895697; cv=none; b=BZYoG9lMUI4T+amByjJN6rk9ZR/WwOPpT5pd6tjDp0W7Z3wnVCnjpqV6Qk84X3i+JtjMgWVL4w9SqVNccpKvuUjvKtpL77bykft93Wzh+xLLJDXrYc8nxpvslxdJHwOgNtHjgNQtXTLvp2nosNoLExsDOFIqPOKn7tInnx7b4+8=
+	t=1730896373; cv=none; b=LV4g+30iJ5GVlmgCdsLDBkMZW/ynnT3ekrxKD51taQPcnw7fiwa3ctP01DiWzIwUR802bezp1A2/CBErHSa08JmB5wp592VJ3E51KiBQ2hCFCg83F0lBG1EBx+ff5sbDkRkDR+q8Lfnhi8a2AtNAbuIhFmTIUWkcHxIbVtNKago=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895697; c=relaxed/simple;
-	bh=Sk12d4Z+ohTPqsKLhMi0j3tAt4EP45ths8ham7ZnWSA=;
+	s=arc-20240116; t=1730896373; c=relaxed/simple;
+	bh=XK/MXnSqlYrlBhr0evEVNBb1Q76H+3LLeD7i7rLO+8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sayjByP9rJO7oa224/CcWGGWtSXTWACCrZMr+oz2EmmEZjf3fxxO8REgh9He6a30/rSDrgBZ8GyxFc+soaig1/CG/HmOMSSVO153ZahwbH+lRYhJ0Y37loBG9jn06FSxmKl/ecDSbCrjCPEir9lMducwKIkVpDUGRnDAdYoWTcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cotP6jF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A380C4CECD;
-	Wed,  6 Nov 2024 12:21:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HLWxvTueO3k7ITQeBsLICyWF1QXuk10KvgNyDgXQdi/4aRpaxr74hh26bXTEWz1jMCaACtlwAS8ByqkArmDtzPmmh37bCUF/Q0yC3T8QgwYps5yZKWzQ8BYXpjh8lU8OriLQMz1xa3xyD+tsqfUTv1SHXX0eGW85hhFCzPMRsCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPx2IVGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618CAC4CECD;
+	Wed,  6 Nov 2024 12:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895697;
-	bh=Sk12d4Z+ohTPqsKLhMi0j3tAt4EP45ths8ham7ZnWSA=;
+	s=korg; t=1730896373;
+	bh=XK/MXnSqlYrlBhr0evEVNBb1Q76H+3LLeD7i7rLO+8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cotP6jF7/v3NzIguUeXpceARvaEmc32zw4bzK7Mbv6nYtss/0qtpVh7QewsfW4j+L
-	 srz8UJEiVklExHPZQXoYanupAn+VS4EZ0f52HC9zypxv+uhw9d6XX82nbk/2ZATV7W
-	 e9EC4VVD6y4xwRc8ICi9c7ZGBUbG0Kf1riWVOugI=
+	b=yPx2IVGS5Un4qdYL46sAL2irwuFKGmBr69BGlv6JQqV8p5ed2Yw92V+Y4ptl5QUS1
+	 qBPkA9rpUYzq00zVe5VDYaawcmo8D5UYkBj11ZU29Fy80rw/HpTBE0a/XDHzdOWNnM
+	 qlsl8/aGNpZ6KApkAyCXZYZ90C5c5PP/WaPQmxJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Gregory Price <gourry@gourry.net>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	AKASHI Takahiro <takahiro.akashi@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 305/350] KVM: s390: gaccess: Refactor access address range check
+Subject: [PATCH 6.11 180/245] resource,kexec: walk_system_ram_res_rev must retain resource flags
 Date: Wed,  6 Nov 2024 13:03:53 +0100
-Message-ID: <20241106120328.324215577@linuxfoundation.org>
+Message-ID: <20241106120323.667789854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,237 +69,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Gregory Price <gourry@gourry.net>
 
-[ Upstream commit 7faa543df19bf62d4583a64d3902705747f2ad29 ]
+[ Upstream commit b125a0def25a082ae944c9615208bf359abdb61c ]
 
-Do not round down the first address to the page boundary, just translate
-it normally, which gives the value we care about in the first place.
-Given this, translating a single address is just the special case of
-translating a range spanning a single page.
+walk_system_ram_res_rev() erroneously discards resource flags when passing
+the information to the callback.
 
-Make the output optional, so the function can be used to just check a
-range.
+This causes systems with IORESOURCE_SYSRAM_DRIVER_MANAGED memory to have
+these resources selected during kexec to store kexec buffers if that
+memory happens to be at placed above normal system ram.
 
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-3-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+This leads to undefined behavior after reboot.  If the kexec buffer is
+never touched, nothing happens.  If the kexec buffer is touched, it could
+lead to a crash (like below) or undefined behavior.
+
+Tested on a system with CXL memory expanders with driver managed memory,
+TPM enabled, and CONFIG_IMA_KEXEC=y.  Adding printk's showed the flags
+were being discarded and as a result the check for
+IORESOURCE_SYSRAM_DRIVER_MANAGED passes.
+
+find_next_iomem_res: name(System RAM (kmem))
+		     start(10000000000)
+		     end(1034fffffff)
+		     flags(83000200)
+
+locate_mem_hole_top_down: start(10000000000) end(1034fffffff) flags(0)
+
+[.] BUG: unable to handle page fault for address: ffff89834ffff000
+[.] #PF: supervisor read access in kernel mode
+[.] #PF: error_code(0x0000) - not-present page
+[.] PGD c04c8bf067 P4D c04c8bf067 PUD c04c8be067 PMD 0
+[.] Oops: 0000 [#1] SMP
+[.] RIP: 0010:ima_restore_measurement_list+0x95/0x4b0
+[.] RSP: 0018:ffffc900000d3a80 EFLAGS: 00010286
+[.] RAX: 0000000000001000 RBX: 0000000000000000 RCX: ffff89834ffff000
+[.] RDX: 0000000000000018 RSI: ffff89834ffff000 RDI: ffff89834ffff018
+[.] RBP: ffffc900000d3ba0 R08: 0000000000000020 R09: ffff888132b8a900
+[.] R10: 4000000000000000 R11: 000000003a616d69 R12: 0000000000000000
+[.] R13: ffffffff8404ac28 R14: 0000000000000000 R15: ffff89834ffff000
+[.] FS:  0000000000000000(0000) GS:ffff893d44640000(0000) knlGS:0000000000000000
+[.] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[.] ata5: SATA link down (SStatus 0 SControl 300)
+[.] CR2: ffff89834ffff000 CR3: 000001034d00f001 CR4: 0000000000770ef0
+[.] PKRU: 55555554
+[.] Call Trace:
+[.]  <TASK>
+[.]  ? __die+0x78/0xc0
+[.]  ? page_fault_oops+0x2a8/0x3a0
+[.]  ? exc_page_fault+0x84/0x130
+[.]  ? asm_exc_page_fault+0x22/0x30
+[.]  ? ima_restore_measurement_list+0x95/0x4b0
+[.]  ? template_desc_init_fields+0x317/0x410
+[.]  ? crypto_alloc_tfm_node+0x9c/0xc0
+[.]  ? init_ima_lsm+0x30/0x30
+[.]  ima_load_kexec_buffer+0x72/0xa0
+[.]  ima_init+0x44/0xa0
+[.]  __initstub__kmod_ima__373_1201_init_ima7+0x1e/0xb0
+[.]  ? init_ima_lsm+0x30/0x30
+[.]  do_one_initcall+0xad/0x200
+[.]  ? idr_alloc_cyclic+0xaa/0x110
+[.]  ? new_slab+0x12c/0x420
+[.]  ? new_slab+0x12c/0x420
+[.]  ? number+0x12a/0x430
+[.]  ? sysvec_apic_timer_interrupt+0xa/0x80
+[.]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+[.]  ? parse_args+0xd4/0x380
+[.]  ? parse_args+0x14b/0x380
+[.]  kernel_init_freeable+0x1c1/0x2b0
+[.]  ? rest_init+0xb0/0xb0
+[.]  kernel_init+0x16/0x1a0
+[.]  ret_from_fork+0x2f/0x40
+[.]  ? rest_init+0xb0/0xb0
+[.]  ret_from_fork_asm+0x11/0x20
+[.]  </TASK>
+
+Link: https://lore.kernel.org/all/20231114091658.228030-1-bhe@redhat.com/
+Link: https://lkml.kernel.org/r/20241017190347.5578-1-gourry@gourry.net
+Fixes: 7acf164b259d ("resource: add walk_system_ram_res_rev()")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 122 +++++++++++++++++++++++-----------------
- 1 file changed, 69 insertions(+), 53 deletions(-)
+ kernel/resource.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index b184749ffc5ae..d4fe5db5984dd 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -794,35 +794,74 @@ static int low_address_protection_enabled(struct kvm_vcpu *vcpu,
- 	return 1;
- }
- 
--static int guest_page_range(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
--			    unsigned long *pages, unsigned long nr_pages,
--			    const union asce asce, enum gacc_mode mode)
-+/**
-+ * guest_range_to_gpas() - Calculate guest physical addresses of page fragments
-+ * covering a logical range
-+ * @vcpu: virtual cpu
-+ * @ga: guest address, start of range
-+ * @ar: access register
-+ * @gpas: output argument, may be NULL
-+ * @len: length of range in bytes
-+ * @asce: address-space-control element to use for translation
-+ * @mode: access mode
-+ *
-+ * Translate a logical range to a series of guest absolute addresses,
-+ * such that the concatenation of page fragments starting at each gpa make up
-+ * the whole range.
-+ * The translation is performed as if done by the cpu for the given @asce, @ar,
-+ * @mode and state of the @vcpu.
-+ * If the translation causes an exception, its program interruption code is
-+ * returned and the &struct kvm_s390_pgm_info pgm member of @vcpu is modified
-+ * such that a subsequent call to kvm_s390_inject_prog_vcpu() will inject
-+ * a correct exception into the guest.
-+ * The resulting gpas are stored into @gpas, unless it is NULL.
-+ *
-+ * Note: All fragments except the first one start at the beginning of a page.
-+ *	 When deriving the boundaries of a fragment from a gpa, all but the last
-+ *	 fragment end at the end of the page.
-+ *
-+ * Return:
-+ * * 0		- success
-+ * * <0		- translation could not be performed, for example if  guest
-+ *		  memory could not be accessed
-+ * * >0		- an access exception occurred. In this case the returned value
-+ *		  is the program interruption code and the contents of pgm may
-+ *		  be used to inject an exception into the guest.
-+ */
-+static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
-+			       unsigned long *gpas, unsigned long len,
-+			       const union asce asce, enum gacc_mode mode)
- {
- 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
-+	unsigned int offset = offset_in_page(ga);
-+	unsigned int fragment_len;
- 	int lap_enabled, rc = 0;
- 	enum prot_type prot;
-+	unsigned long gpa;
- 
- 	lap_enabled = low_address_protection_enabled(vcpu, asce);
--	while (nr_pages) {
-+	while (min(PAGE_SIZE - offset, len) > 0) {
-+		fragment_len = min(PAGE_SIZE - offset, len);
- 		ga = kvm_s390_logical_to_effective(vcpu, ga);
- 		if (mode == GACC_STORE && lap_enabled && is_low_address(ga))
- 			return trans_exc(vcpu, PGM_PROTECTION, ga, ar, mode,
- 					 PROT_TYPE_LA);
--		ga &= PAGE_MASK;
- 		if (psw_bits(*psw).dat) {
--			rc = guest_translate(vcpu, ga, pages, asce, mode, &prot);
-+			rc = guest_translate(vcpu, ga, &gpa, asce, mode, &prot);
- 			if (rc < 0)
- 				return rc;
- 		} else {
--			*pages = kvm_s390_real_to_abs(vcpu, ga);
--			if (kvm_is_error_gpa(vcpu->kvm, *pages))
-+			gpa = kvm_s390_real_to_abs(vcpu, ga);
-+			if (kvm_is_error_gpa(vcpu->kvm, gpa))
- 				rc = PGM_ADDRESSING;
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 1681ab5012e12..4f3df25176caa 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -460,9 +460,7 @@ int walk_system_ram_res_rev(u64 start, u64 end, void *arg,
+ 			rams_size += 16;
  		}
- 		if (rc)
- 			return trans_exc(vcpu, rc, ga, ar, mode, prot);
--		ga += PAGE_SIZE;
--		pages++;
--		nr_pages--;
-+		if (gpas)
-+			*gpas++ = gpa;
-+		offset = 0;
-+		ga += fragment_len;
-+		len -= fragment_len;
- 	}
- 	return 0;
- }
-@@ -831,10 +870,10 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
- 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
--	unsigned long nr_pages, gpa, idx;
--	unsigned long pages_array[2];
-+	unsigned long nr_pages, idx;
-+	unsigned long gpa_array[2];
- 	unsigned int fragment_len;
--	unsigned long *pages;
-+	unsigned long *gpas;
- 	int need_ipte_lock;
- 	union asce asce;
- 	int rc;
-@@ -846,30 +885,28 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 	if (rc)
- 		return rc;
- 	nr_pages = (((ga & ~PAGE_MASK) + len - 1) >> PAGE_SHIFT) + 1;
--	pages = pages_array;
--	if (nr_pages > ARRAY_SIZE(pages_array))
--		pages = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
--	if (!pages)
-+	gpas = gpa_array;
-+	if (nr_pages > ARRAY_SIZE(gpa_array))
-+		gpas = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
-+	if (!gpas)
- 		return -ENOMEM;
- 	need_ipte_lock = psw_bits(*psw).dat && !asce.r;
- 	if (need_ipte_lock)
- 		ipte_lock(vcpu);
--	rc = guest_page_range(vcpu, ga, ar, pages, nr_pages, asce, mode);
-+	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
--		gpa = pages[idx] + offset_in_page(ga);
--		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
-+		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
- 		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpa, data, fragment_len);
-+			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
- 		else
--			rc = kvm_read_guest(vcpu->kvm, gpa, data, fragment_len);
-+			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
- 		len -= fragment_len;
--		ga += fragment_len;
- 		data += fragment_len;
- 	}
- 	if (need_ipte_lock)
- 		ipte_unlock(vcpu);
--	if (nr_pages > ARRAY_SIZE(pages_array))
--		vfree(pages);
-+	if (nr_pages > ARRAY_SIZE(gpa_array))
-+		vfree(gpas);
- 	return rc;
- }
  
-@@ -906,8 +943,6 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 			    unsigned long *gpa, enum gacc_mode mode)
- {
--	psw_t *psw = &vcpu->arch.sie_block->gpsw;
--	enum prot_type prot;
- 	union asce asce;
- 	int rc;
- 
-@@ -915,23 +950,7 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
- 	if (rc)
- 		return rc;
--	if (is_low_address(gva) && low_address_protection_enabled(vcpu, asce)) {
--		if (mode == GACC_STORE)
--			return trans_exc(vcpu, PGM_PROTECTION, gva, 0,
--					 mode, PROT_TYPE_LA);
--	}
+-		rams[i].start = res.start;
+-		rams[i++].end = res.end;
 -
--	if (psw_bits(*psw).dat && !asce.r) {	/* Use DAT? */
--		rc = guest_translate(vcpu, gva, gpa, asce, mode, &prot);
--		if (rc > 0)
--			return trans_exc(vcpu, rc, gva, 0, mode, prot);
--	} else {
--		*gpa = kvm_s390_real_to_abs(vcpu, gva);
--		if (kvm_is_error_gpa(vcpu->kvm, *gpa))
--			return trans_exc(vcpu, rc, gva, PGM_ADDRESSING, mode, 0);
--	}
--
--	return rc;
-+	return guest_range_to_gpas(vcpu, gva, ar, gpa, 1, asce, mode);
- }
++		rams[i++] = res;
+ 		start = res.end + 1;
+ 	}
  
- /**
-@@ -940,17 +959,14 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- int check_gva_range(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 		    unsigned long length, enum gacc_mode mode)
- {
--	unsigned long gpa;
--	unsigned long currlen;
-+	union asce asce;
- 	int rc = 0;
- 
-+	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
-+	if (rc)
-+		return rc;
- 	ipte_lock(vcpu);
--	while (length > 0 && !rc) {
--		currlen = min(length, PAGE_SIZE - (gva % PAGE_SIZE));
--		rc = guest_translate_address(vcpu, gva, ar, &gpa, mode);
--		gva += currlen;
--		length -= currlen;
--	}
-+	rc = guest_range_to_gpas(vcpu, gva, ar, NULL, length, asce, mode);
- 	ipte_unlock(vcpu);
- 
- 	return rc;
 -- 
 2.43.0
 
