@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-90042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDE09BDCD8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:32:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8417C9BDCDB
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 978841F24B6B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:32:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0849C28931D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4DD219480;
-	Wed,  6 Nov 2024 02:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4154321949D;
+	Wed,  6 Nov 2024 02:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6RYVlk3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nO9n2cDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75421D7E31;
-	Wed,  6 Nov 2024 02:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78A51D86C9;
+	Wed,  6 Nov 2024 02:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859283; cv=none; b=Gb8slbe59PICAh/ovQ5TgEZGDHaH3WqwYFsWmyIy64SlECZFzaJ1W5O62QQ6mvm9q9uJQgIEZLbjm4wCDFAYCeQsPfXU66OsYHzM0S/cV7N2em94x4TXbKPIhMAoZAKtIwuFccGdcdEyKmLbBnbHNXHpTtke3lqK2LQDo8/iUiQ=
+	t=1730859287; cv=none; b=mBoKvLI9X8XNt/qDKL37vmbWGyUv5XDHzPnF5jXQ8gpdW5icqX3NU8Me67pqsIRCH5DX6b0Ik2N/UExwd0nvW/TfODzEzznlNa7MZ/+EQB7bhYHPrBPFWtdAdwV4UpyrhEhVt+AqJ1envaBGz3oyCsx68ecMQDzodGytiNaPzaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859283; c=relaxed/simple;
-	bh=a1fx9W5C2Y8DIeSPoUZDAcxu4n24EELzZtYvi7JTuWs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rJd/vyEsz90A7QWluSiBGx/VQeJDs+6f/7krT28jC+eXLlQUf4gFQkP6wiPgQc9+h5HQKOdJF2NoZPGuqf35d1xrZI2F8kq+rpm8pVuLNXWx/N4L+WCW7nmD2pyuaRY6dJvR9qNgjtl5QudFTtDqZVgD/Tu34M1U7RRV3wSrVgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6RYVlk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D32C4CECF;
-	Wed,  6 Nov 2024 02:14:41 +0000 (UTC)
+	s=arc-20240116; t=1730859287; c=relaxed/simple;
+	bh=JyPJGtsm3K6JU32Nz/iopXhqEVlPNysU3RBw17FVilc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iFRAffa6O2t3gR1LyugU4QD7HM3NKdkI9V01L8ZAUSvnf8xlRtspV2H77+WRRIa/hUeohXXw6I7RF7Uv1H5kKzQjyXmtj+9A0bhcym81yaV0vwC70rV/UYhbae4+LdaFJcGLH8VOifrRknwhb/mIGIMtl6pK9KW6NraXT9z8ywE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nO9n2cDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F88C4CECF;
+	Wed,  6 Nov 2024 02:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859283;
-	bh=a1fx9W5C2Y8DIeSPoUZDAcxu4n24EELzZtYvi7JTuWs=;
+	s=k20201202; t=1730859286;
+	bh=JyPJGtsm3K6JU32Nz/iopXhqEVlPNysU3RBw17FVilc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=G6RYVlk3mEPqkiUBh5Tc5XkG1RSYmsESh8UJiPbjpp5XXniTQrzmuRDj9dHFHZ+c4
-	 XYEgMnqoKTUsAiS+KjiZN4O6UKzBdNHEFr2qY+ldoZuAZkNcpE5bbZCS+gBLU5NgoC
-	 8Ajb0x3hWLG+Ae2RT2HSE7b308S8zHwlqxFxXUKAhprjV6DZKgQt0hWc54vaaOP518
-	 iEqwvIv60NeVbo1N/m0KFyd6sEObE9dG+Uw8TF0WQFrItc3AeTsVOPEfhxQ2rD4T+S
-	 vhI5zhJ/lniGb9TdflFuRdFT1d2VPFrKHD5K7BwaP3db+3oO3WPQXGmzT23gz49xsy
-	 yBsXwFz6ra4lw==
+	b=nO9n2cDy4CLNx+EX4Zmsxf8FZyiuKHxz5VoZi4tQXlEGmmKl5yOpEGI60uUeHBkT1
+	 Yukp8Tb6dgy1ltoHvY5KnzTUSmTGiuh7evRLKPzpnDdAua3c7VINfot1WzyUi8VQVV
+	 6Q9IOzlWYKvud1rnhcwBOkWpO0MsW9XM40hqjMMIhkpORJkvTdbZF9/IhfhbW2R0l7
+	 xvMuXVFKTDjPnYcdmYLU9yzbySzboE6g3rZlsg+y4Zb1eDJ5qD08uRuvicI4F/OyWu
+	 WacVGFZF/j2PuyzmGnNK7U1WjzRXV9VcNCsP9VyHa/TGSmsjU/7UWvMW3eqnUohffd
+	 1Pmag3ke3A5+A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	johan+linaro@kernel.org
-Cc: Thierry Reding <treding@nvidia.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
+	gil.fine@linux.intel.com
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "gpiolib: fix debugfs newline separators" failed to apply to v4.19-stable tree
-Date: Tue,  5 Nov 2024 21:14:40 -0500
-Message-ID: <20241106021440.184439-1-sashal@kernel.org>
+Subject: FAILED: Patch "thunderbolt: Honor TMU requirements in the domain when setting TMU mode" failed to apply to v4.19-stable tree
+Date: Tue,  5 Nov 2024 21:14:43 -0500
+Message-ID: <20241106021444.184480-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,45 +70,121 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3e8b7238b427e05498034c240451af5f5495afda Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Mon, 28 Oct 2024 13:49:58 +0100
-Subject: [PATCH] gpiolib: fix debugfs newline separators
+From 3cea8af2d1a9ae5869b47c3dabe3b20f331f3bbd Mon Sep 17 00:00:00 2001
+From: Gil Fine <gil.fine@linux.intel.com>
+Date: Thu, 10 Oct 2024 17:29:42 +0300
+Subject: [PATCH] thunderbolt: Honor TMU requirements in the domain when
+ setting TMU mode
 
-The gpiolib debugfs interface exports a list of all gpio chips in a
-system and the state of their pins.
+Currently, when configuring TMU (Time Management Unit) mode of a given
+router, we take into account only its own TMU requirements ignoring
+other routers in the domain. This is problematic if the router we are
+configuring has lower TMU requirements than what is already configured
+in the domain.
 
-The gpio chip sections are supposed to be separated by a newline
-character, but a long-standing bug prevents the separator from
-being included when output is generated in multiple sessions, making the
-output inconsistent and hard to read.
+In the scenario below, we have a host router with two USB4 ports: A and
+B. Port A connected to device router #1 (which supports CL states) and
+existing DisplayPort tunnel, thus, the TMU mode is HiFi uni-directional.
 
-Make sure to only suppress the newline separator at the beginning of the
-file as intended.
+1. Initial topology
 
-Fixes: f9c4a31f6150 ("gpiolib: Use seq_file's iterator interface")
-Cc: stable@vger.kernel.org	# 3.7
-Cc: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241028125000.24051-2-johan+linaro@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+          [Host]
+         A/
+         /
+ [Device #1]
+   /
+Monitor
+
+2. Plug in device #2 (that supports CL states) to downstream port B of
+   the host router
+
+         [Host]
+        A/    B\
+        /       \
+ [Device #1]    [Device #2]
+   /
+Monitor
+
+The TMU mode on port B and port A will be configured to LowRes which is
+not what we want and will cause monitor to start flickering.
+
+To address this we first scan the domain and search for any router
+configured to HiFi uni-directional mode, and if found, configure TMU
+mode of the given router to HiFi uni-directional as well.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/gpio/gpiolib.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thunderbolt/tb.c | 48 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index d5952ab7752c2..e27488a90bc97 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4926,6 +4926,8 @@ static void *gpiolib_seq_start(struct seq_file *s, loff_t *pos)
- 		return NULL;
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index 10e719dd837ce..4f777788e9179 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -288,6 +288,24 @@ static void tb_increase_tmu_accuracy(struct tb_tunnel *tunnel)
+ 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
+ }
  
- 	s->private = priv;
-+	if (*pos > 0)
-+		priv->newline = true;
- 	priv->idx = srcu_read_lock(&gpio_devices_srcu);
- 
- 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
++static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
++{
++	struct tb_switch *sw = tb_to_switch(dev);
++
++	if (sw && tb_switch_tmu_is_enabled(sw) &&
++	    tb_switch_tmu_is_configured(sw, TB_SWITCH_TMU_MODE_HIFI_UNI))
++		return 1;
++
++	return device_for_each_child(dev, NULL,
++				     tb_switch_tmu_hifi_uni_required);
++}
++
++static bool tb_tmu_hifi_uni_required(struct tb *tb)
++{
++	return device_for_each_child(&tb->dev, NULL,
++				     tb_switch_tmu_hifi_uni_required) == 1;
++}
++
+ static int tb_enable_tmu(struct tb_switch *sw)
+ {
+ 	int ret;
+@@ -302,12 +320,30 @@ static int tb_enable_tmu(struct tb_switch *sw)
+ 	ret = tb_switch_tmu_configure(sw,
+ 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
+ 	if (ret == -EOPNOTSUPP) {
+-		if (tb_switch_clx_is_enabled(sw, TB_CL1))
+-			ret = tb_switch_tmu_configure(sw,
+-					TB_SWITCH_TMU_MODE_LOWRES);
+-		else
+-			ret = tb_switch_tmu_configure(sw,
+-					TB_SWITCH_TMU_MODE_HIFI_BI);
++		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
++			/*
++			 * Figure out uni-directional HiFi TMU requirements
++			 * currently in the domain. If there are no
++			 * uni-directional HiFi requirements we can put the TMU
++			 * into LowRes mode.
++			 *
++			 * Deliberately skip bi-directional HiFi links
++			 * as these work independently of other links
++			 * (and they do not allow any CL states anyway).
++			 */
++			if (tb_tmu_hifi_uni_required(sw->tb))
++				ret = tb_switch_tmu_configure(sw,
++						TB_SWITCH_TMU_MODE_HIFI_UNI);
++			else
++				ret = tb_switch_tmu_configure(sw,
++						TB_SWITCH_TMU_MODE_LOWRES);
++		} else {
++			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
++		}
++
++		/* If not supported, fallback to bi-directional HiFi */
++		if (ret == -EOPNOTSUPP)
++			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
+ 	}
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
