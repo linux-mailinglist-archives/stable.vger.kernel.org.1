@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-90961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9D99BEBD5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0B49BE80A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3791C23807
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1BC61C23287
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4731B1E0083;
-	Wed,  6 Nov 2024 12:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508821DF73B;
+	Wed,  6 Nov 2024 12:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTAXCcND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZBm469e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCE21EF0A4;
-	Wed,  6 Nov 2024 12:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E22E1DED49;
+	Wed,  6 Nov 2024 12:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897328; cv=none; b=blVsRoeoAgQhcpd7OZWTQm8Bf9oaqIh7uWtBca09xK9oKSyJ5frekyf/qMNbumA1P+g/Flebryz1VsASrJBhod9bzCzapyP80tSepqdf0vzqHNvTRURi8Taei6sEkdTHWym4Eie7B5QxRMqYETZF4zNM3vkT9WHqX4qp/sW01jU=
+	t=1730895618; cv=none; b=P8aaXod9uTB/XO69PfrgShEOkhnImlaectofkI7l0e+Gx0kHWSzqJ/2A7H1DJxmSP891Ja8zkWbrIm9UxaC+XhmBRaIlPH7PryktlyBsIxU9uISIhgugArAi4J8fFK3wwQ0mC8AcxtTWWAXFootZ3gEckTBqqppm9404jyd/UcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897328; c=relaxed/simple;
-	bh=2j3nyefYzmERmLyvVg0R8p9+9eCW5wxl27fZQQPEdcI=;
+	s=arc-20240116; t=1730895618; c=relaxed/simple;
+	bh=pzIpMMR9OhRFMRyJ8QKMzALy5hlhMU7GQav0Mx2tsik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJgst+bg2EA06LTvTb8q3K01eaWS+0cd4P6zDr+i7Vjzab9whqlm83+26KzXe43R25T1lJVEl317+wT0kEkZVuSZ3m/7EDtR8ULvgw5zfml0fhBu7rii37BsGtAlP5NBjXPkzzahh4DOZOhxmVG+e1PAJmCkSwrNgbdOmR0KaA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTAXCcND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB69C4CECD;
-	Wed,  6 Nov 2024 12:48:47 +0000 (UTC)
+	 MIME-Version; b=c0+ArKzsPrv/gAfGbmqrnzYLuQuM3EWxjoOs1kQD9wNQeXK68bFXhNiQmhysn8CsFUpoMQYoWCIbslbiX1lWlLdDxdOxu/aXofVcTWeao8pmIt0fDkPppBN4uwcP2GOm6alvV1vK1ZJz0aoWGgGh8Hto+0BLflm33ikj/LeWr/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZBm469e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C5EC4CECD;
+	Wed,  6 Nov 2024 12:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897327;
-	bh=2j3nyefYzmERmLyvVg0R8p9+9eCW5wxl27fZQQPEdcI=;
+	s=korg; t=1730895617;
+	bh=pzIpMMR9OhRFMRyJ8QKMzALy5hlhMU7GQav0Mx2tsik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTAXCcNDK8g+BIc2WulCuLd74IzbXSJ/3ZFqgjkSXHgMDFowbr9vk6fUMYesNaIeq
-	 TdvqF6wQz71PgwQiF7Op4ToGygBmgzJfc0MSFjZzZ33qPionpoxcicKHtSyR2tJHjT
-	 P6+TJT92KAvgB7DOKxfJiF5x6HjNH9zCsbBH+740=
+	b=qZBm469eQ0NshpN9HA96U1o3wdyBJk4nxomQLdQbcYZPTwHOG8SYcdARTJhpHIVwt
+	 JIho9jDw+MSNwtqzvDFE2TwyYjm1SqunHvA/b79H9ovw4G/sJal7npNUpKDqmmyu4a
+	 oyPMIlC/HAWRma/8oH/ykczNk+WhRRDWop8QXlgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/151] wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
+	Venkatesh Srinivas <venkateshs@chromium.org>,
+	Jim Mattson <jmattson@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	stable@kernel.org
+Subject: [PATCH 4.19 277/350] x86/cpufeatures: Define X86_FEATURE_AMD_IBPB_RET
 Date: Wed,  6 Nov 2024 13:03:25 +0100
-Message-ID: <20241106120309.311860711@linuxfoundation.org>
+Message-ID: <20241106120327.709051926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit e50a88e5cb8792cc416866496288c5f4d1eb4b1f ]
+commit ff898623af2ed564300752bba83a680a1e4fec8d upstream.
 
-This will allow to reconnect immediately instead of leaving the
-connection in a limbo state.
+AMD's initial implementation of IBPB did not clear the return address
+predictor. Beginning with Zen4, AMD's IBPB *does* clear the return address
+predictor. This behavior is enumerated by CPUID.80000008H:EBX.IBPB_RET[30].
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.e90531cd3a36.Iebdc9483983c0d8497f9dcf9d79ec37332a5fdcc@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Define X86_FEATURE_AMD_IBPB_RET for use in KVM_GET_SUPPORTED_CPUID,
+when determining cross-vendor capabilities.
+
+Suggested-by: Venkatesh Srinivas <venkateshs@chromium.org>
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeatures.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 51f396287dc69..4bc395a5731b2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1394,6 +1394,13 @@ void iwl_mvm_get_acpi_tables(struct iwl_mvm *mvm)
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -216,7 +216,7 @@
+ #define X86_FEATURE_SPEC_STORE_BYPASS_DISABLE	( 7*32+23) /* "" Disable Speculative Store Bypass. */
+ #define X86_FEATURE_LS_CFG_SSBD		( 7*32+24)  /* "" AMD SSBD implementation via LS_CFG MSR */
+ #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
+-#define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
++#define X86_FEATURE_IBPB		( 7*32+26) /* "ibpb" Indirect Branch Prediction Barrier without a guaranteed RSB flush */
+ #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
+ #define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 (Zen) */
+ #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
+@@ -306,6 +306,7 @@
+ #define X86_FEATURE_VIRT_SSBD		(13*32+25) /* Virtualized Speculative Store Bypass Disable */
+ #define X86_FEATURE_AMD_SSB_NO		(13*32+26) /* "" Speculative Store Bypass is fixed in hardware. */
+ #define X86_FEATURE_BTC_NO		(13*32+29) /* "" Not vulnerable to Branch Type Confusion */
++#define X86_FEATURE_AMD_IBPB_RET	(13*32+30) /* "" IBPB clears return address predictor */
  
- #endif /* CONFIG_ACPI */
- 
-+static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
-+					struct ieee80211_vif *vif)
-+{
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		ieee80211_hw_restart_disconnect(vif);
-+}
-+
- void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- {
- 	u32 error_log_size = mvm->fw->ucode_capa.error_log_size;
-@@ -1438,10 +1445,15 @@ void iwl_mvm_send_recovery_cmd(struct iwl_mvm *mvm, u32 flags)
- 	/* skb respond is only relevant in ERROR_RECOVERY_UPDATE_DB */
- 	if (flags & ERROR_RECOVERY_UPDATE_DB) {
- 		resp = le32_to_cpu(*(__le32 *)host_cmd.resp_pkt->data);
--		if (resp)
-+		if (resp) {
- 			IWL_ERR(mvm,
- 				"Failed to send recovery cmd blob was invalid %d\n",
- 				resp);
-+
-+			ieee80211_iterate_interfaces(mvm->hw, 0,
-+						     iwl_mvm_disconnect_iterator,
-+						     mvm);
-+		}
- 	}
- }
- 
--- 
-2.43.0
-
+ /* Thermal and Power Management Leaf, CPUID level 0x00000006 (EAX), word 14 */
+ #define X86_FEATURE_DTHERM		(14*32+ 0) /* Digital Thermal Sensor */
 
 
 
