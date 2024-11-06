@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-91305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA419BED67
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFECD9BED72
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:11:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC6601F251F3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 851A5285EC3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB351F5822;
-	Wed,  6 Nov 2024 13:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8528D1E25F5;
+	Wed,  6 Nov 2024 13:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t13WJVOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZaJGKTi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5E31F4FCE;
-	Wed,  6 Nov 2024 13:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419C81E1A25;
+	Wed,  6 Nov 2024 13:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898343; cv=none; b=kRnhVJL1C6kk7+mtqabWOR8f/aBp+I2Sv1Uu2zApsQ9JuwlGapmhI37xJt7yPyvpABU9xudPhIOLXf01G6hxRw2bjwvCcWxAMtxqRY+mtQx4g5AO6B+VaXUkGztSwaa0L7JU20yzPsY+MDgAoC5NOYrQWmbImZrAhuKRDc8MLgE=
+	t=1730898376; cv=none; b=Swfs9AtyD7C5+jVDb5cQU4ovZ0QVacmRNhXSpebqXkGntvf4Rs7NHLonkm0nbEGFi/6TMqDGP76Yd6c6KbxfidZ1cIyDuWxX1IC62xWAqzl8Vt+EwPeW9ukOzLoDWiiI7KPTJ56DyrnUMbfU5PMz1U1QpskiWwzbKAkXp+pyuL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898343; c=relaxed/simple;
-	bh=zUVhxGhuNWTRBNluesvZi4v9UBBktpsqenrefDCAkLE=;
+	s=arc-20240116; t=1730898376; c=relaxed/simple;
+	bh=TqeKsJKxxwErvNjn83VnUKvMXbLzMEb4OMGvf7gjqWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck9gHHlkNQojzTvK4PmomeJhgc5EXeF6NWkb0fi02M9nv0GIg3M2Fy3AnCHccxsjoqOVHttUWsQGbV+V45DgibUFdHM4t9r6bbQL9nvodzGGLy/zdr9w8Iz/E35hfTNCRzmSq6VRwWr/NYQtHY+qnbSW/rZz0+F/FIUYpa1tt5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t13WJVOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA72EC4CECD;
-	Wed,  6 Nov 2024 13:05:42 +0000 (UTC)
+	 MIME-Version; b=QljuNX/lzjkkXJemWGyxTDar4rlJObuA7LfU3T41jOWDN4YHISGuXSm96JKv/V5NciLTfXHQxnknuhX/14umU3KTmFC+ehoHjieGWrsPoV5pVqcXzwVLZibqE6tm+vFOyUoCGtpqgzTbNBPmJ6+gz7UoxPiD70eoIKZTjeV6LOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZaJGKTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAB2C4CED8;
+	Wed,  6 Nov 2024 13:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898343;
-	bh=zUVhxGhuNWTRBNluesvZi4v9UBBktpsqenrefDCAkLE=;
+	s=korg; t=1730898375;
+	bh=TqeKsJKxxwErvNjn83VnUKvMXbLzMEb4OMGvf7gjqWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t13WJVOcDPE8ypM/3nc+x7Ee4YDY0ItZHLVEhm8CKSMtfml3m6jg2HubN+F4sdiem
-	 91ycC31Vq7TBBaZ0TU9n0RRyIWqgb/zA59lm/8HKWBzatLXM2zIWj6QIkBLHQeKkRo
-	 KhJ9FYiWwaPAlp9nO2Ee6eL13ffDsKN1jQjIDN2o=
+	b=hZaJGKTiuxlAoNPV0v7zQO4quPqpkRUa7b4ICNcaVk1ozKG79zCKTeFXUCVlP0N/y
+	 seRlOxDVz1uV4q/rf+PE2YQpZ7Jx/sewlbBgF01V41hBh/LOaUCywkOFZ/xpegNqZj
+	 ihc7VjjJlOkdR1988rImnmntR/hpT3naQFWwbypE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Oder Chiou <oder_chiou@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 189/462] sctp: set sk_state back to CLOSED if autobind fails in sctp_listen_start
-Date: Wed,  6 Nov 2024 13:01:22 +0100
-Message-ID: <20241106120336.183076985@linuxfoundation.org>
+Subject: [PATCH 5.4 190/462] ALSA: hda/realtek: Fix the push button function for the ALC257
+Date: Wed,  6 Nov 2024 13:01:23 +0100
+Message-ID: <20241106120336.207607829@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -68,53 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Oder Chiou <oder_chiou@realtek.com>
 
-[ Upstream commit 8beee4d8dee76b67c75dc91fd8185d91e845c160 ]
+[ Upstream commit 05df9732a0894846c46d0062d4af535c5002799d ]
 
-In sctp_listen_start() invoked by sctp_inet_listen(), it should set the
-sk_state back to CLOSED if sctp_autobind() fails due to whatever reason.
+The headset push button cannot work properly in case of the ALC257.
+This patch reverted the previous commit to correct the side effect.
 
-Otherwise, next time when calling sctp_inet_listen(), if sctp_sk(sk)->reuse
-is already set via setsockopt(SCTP_REUSE_PORT), sctp_sk(sk)->bind_hash will
-be dereferenced as sk_state is LISTENING, which causes a crash as bind_hash
-is NULL.
-
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  RIP: 0010:sctp_inet_listen+0x7f0/0xa20 net/sctp/socket.c:8617
-  Call Trace:
-   <TASK>
-   __sys_listen_socket net/socket.c:1883 [inline]
-   __sys_listen+0x1b7/0x230 net/socket.c:1894
-   __do_sys_listen net/socket.c:1902 [inline]
-
-Fixes: 5e8f3f703ae4 ("sctp: simplify sctp listening code")
-Reported-by: syzbot+f4e0f821e3a3b7cee51d@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/a93e655b3c153dc8945d7a812e6d8ab0d52b7aa0.1727729391.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ef9718b3d54e ("ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7")
+Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
+Link: https://patch.msgid.link/20240930105039.3473266-1-oder_chiou@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 614130ff6ba06..eef807edd61da 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -8396,8 +8396,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
- 	 */
- 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
- 	if (!ep->base.bind_addr.port) {
--		if (sctp_autobind(sk))
-+		if (sctp_autobind(sk)) {
-+			inet_sk_set_state(sk, SCTP_SS_CLOSED);
- 			return -EAGAIN;
-+		}
- 	} else {
- 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
- 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index fbd8b4206bad8..f32c3c3752417 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -520,6 +520,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
++	case 0x10ec0257:
+ 	case 0x19e58326:
+ 	case 0x10ec0283:
+ 	case 0x10ec0285:
 -- 
 2.43.0
 
