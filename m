@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594839BE803
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39459BE92C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112831F228DF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100381C21DAC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2881DF72E;
-	Wed,  6 Nov 2024 12:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61D11DF992;
+	Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH9W50X9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsiPCfE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B43E1DED49;
-	Wed,  6 Nov 2024 12:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634571DF251;
+	Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895597; cv=none; b=GbUGZ7nsKG4FXAe6lfk9lm9GwQManbbLdgEMatNoobhnDB6CSOIHNa+r1DoNJDHS9ncP0+Rr6dp/oSDdilZtfXWKSJ2v1gMJYmHDkB2iM3ZWQPSPlGyMdyPaoqvet4ln2+VFfKPkWoX66ut9+7hQSscFkAE4oA6iCrhoDZHWrHU=
+	t=1730896274; cv=none; b=pr4YXrzb/410qf68NF+zxDXZMHupMTxG/Mwt2HDtzT/WBFCsyzBgSeY0SKInnVt11cBMarqXZsS7uPAPuOTXTcDg9v750pq8CmDa0VR/32SjCHYpnN0Mm+e1Y46FjY1zlDETfBEeMeap8ianTYJxEmlFG5DWFsHJrVeq4SD/YKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895597; c=relaxed/simple;
-	bh=M6V6N0SSDcV+vxlk83zbYWExEWP2TnFvUyXQGryck0U=;
+	s=arc-20240116; t=1730896274; c=relaxed/simple;
+	bh=muEea+tRuyuNvZ3HFkFrS7U7o3Bqc4XBcvaYSuzL34s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHiFt+OOanBNcAoqvmM1itpTBhlZUOy+NWGcpoEST837qC4zjXBbV02cuIdAS4895/hWJDeLQGcqs0lKnzWWW2g9r2gEPXafjo87jnFH5Qqigwfx9ExG+ICN2eUUKMcdlmXe9eAD/4IIurhu4IyMu9fz0e4LQ0ntsVLOseByZkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH9W50X9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC706C4CED3;
-	Wed,  6 Nov 2024 12:19:56 +0000 (UTC)
+	 MIME-Version; b=foS+3hWm0ioVJ8Oantob/S1p7rU/dcP1xhYd7T/g6hE5pTyu1K4nLKkWDEKPpfo0jhfvPbtYXMgRAaMxKonN7cOyQnxUJhT51lXpvjdYIpbCify3KdGdlVUvSVcaDDwj27fGLK5X6mPCS4Kc2yRTEJPPlgwaBnpTd0o6jXCMMgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsiPCfE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8554C4CED6;
+	Wed,  6 Nov 2024 12:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895597;
-	bh=M6V6N0SSDcV+vxlk83zbYWExEWP2TnFvUyXQGryck0U=;
+	s=korg; t=1730896274;
+	bh=muEea+tRuyuNvZ3HFkFrS7U7o3Bqc4XBcvaYSuzL34s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tH9W50X90IGSOEKiIgnc5vnDR82VUyokilyllFteyyBv8rR7i99S0YDw9EBUIbcH+
-	 2YVdrH2O2uDh8gEZHHvmmGXs/MP0JWnPRy1ndH3yXpbqZEyURJkzpg4mbNW8Pvkboj
-	 nelSci5vhK8WGWYAhCX/52nlknipCdxEyiA/E9Wc=
+	b=GsiPCfE+x+iDFxnFbxAlKtLTh0RbK5bO7s9qaiUtcYhISffo+6p8dK2YYr03QENim
+	 IeEgez+BHcbTSzH5rQuIcjQFUbjcV464paOPuIbghtjTsrVH92HkJJ3kkeAnj66SBV
+	 ZX/XIHpu9JgMckaSkuttpiIoEGKPxHfmAEqzAqPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SiyuLi <siyuli@glenfly.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 271/350] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
-Date: Wed,  6 Nov 2024 13:03:19 +0100
-Message-ID: <20241106120327.579269148@linuxfoundation.org>
+	Xinyu Zhang <xizhang@purestorage.com>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 147/245] block: fix sanity checks in blk_rq_map_user_bvec
+Date: Wed,  6 Nov 2024 13:03:20 +0100
+Message-ID: <20241106120322.845297178@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Xinyu Zhang <xizhang@purestorage.com>
 
-commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 upstream.
+[ Upstream commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd ]
 
-Add DMA support for audio function of Glenfly Arise chip, which uses
-Requester ID of function 0.
+blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
+causes unnecessary failures in NVMe passthrough I/O, reproducible as
+follows:
 
-Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
-Signed-off-by: SiyuLi <siyuli@glenfly.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- register a 2 page, page-aligned buffer against a ring
+- use that buffer to do a 1 page io_uring NVMe passthrough read
+
+The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
+then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
+the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
+fail. This failure is unnecessary, as when the check succeeds, it means
+we've checked the entire buffer that will be used by the request - i.e.
+blk_rq_map_user_bvec should complete successfully. Therefore, terminate
+the loop early and return successfully when the check bytes + bv->bv_len
+> nr_iter succeeds.
+
+While we're at it, also remove the check that all segments in the bvec
+are single-page. While this seems to be true for all users of the
+function, it doesn't appear to be required anywhere downstream.
+
+CC: stable@vger.kernel.org
+Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
+Co-developed-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
+Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c    |    4 ++++
- include/linux/pci_ids.h |    2 ++
- 2 files changed, 6 insertions(+)
+ block/blk-map.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4044,6 +4044,10 @@ static void quirk_dma_func0_alias(struct
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 0e1167b239342..6ef2ec1f7d78b 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct request *rq, const struct iov_iter *iter)
+ 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
+ 			goto put_bio;
+ 		if (bytes + bv->bv_len > nr_iter)
+-			goto put_bio;
+-		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
+-			goto put_bio;
++			break;
  
-+/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
-+
- static void quirk_dma_func1_alias(struct pci_dev *dev)
- {
- 	if (PCI_FUNC(dev->devfn) != 1)
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2647,6 +2647,8 @@
- #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
- #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
- 
-+#define PCI_VENDOR_ID_GLENFLY		0x6766
-+
- #define PCI_VENDOR_ID_INTEL		0x8086
- #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
- #define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
+ 		nsegs++;
+ 		bytes += bv->bv_len;
+-- 
+2.43.0
+
 
 
 
