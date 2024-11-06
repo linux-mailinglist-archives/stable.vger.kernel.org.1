@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3ED59BEC7E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FD49BEB26
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0A2281E4B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A737D282072
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38D41FC7F2;
-	Wed,  6 Nov 2024 12:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98611E25FC;
+	Wed,  6 Nov 2024 12:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/gAv0xY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HF9W8/nS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF51FC7DE;
-	Wed,  6 Nov 2024 12:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C571E22EF;
+	Wed,  6 Nov 2024 12:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897741; cv=none; b=l0CwgB6U7oUlqUtIeQAgDd0frN38/zoisv8LQgVu5D968SCngeoc7n7dK/7vjW6vK+cnbC9JTbTjb1zAkePGsdZtoIsR/ZVvKyy+pkKcfrTZDuC11IZixeAZULGO54Dx1UUobzqJOyR6ciR9qkKHWR1ncXwkht4ax0440EGTZWY=
+	t=1730896877; cv=none; b=mbz5w932C/ye+NEZs7FsODKc+TC6ioWeREXpTP/Ch1WK5G6foA4MXRZgaOMvNpJxWL2le6FCdFqC1V47y6hUqM5kkGnmYJd1zm3TB2RUp6GZicdW7uEmQBDS6SD3NjUOtriH/bTsnkyXsYb2D5/YWjGWL5SB4N4wVSnSvvIi7Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897741; c=relaxed/simple;
-	bh=vbuN/YpMT6xnuNBAV9J+ulVGF64PzIEvDjcKtl3vvVE=;
+	s=arc-20240116; t=1730896877; c=relaxed/simple;
+	bh=Cf/fmzCWNhYPbQlqeIKVmrdjhtYxI5OUgZD3kQDLR1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Swl82Nxf7bqdeQrBlXkY85x28HZ8YRTrOnJQdj8nRPKhaxu9tZbIHFvIpOWNFDw1oWYzdHA6rNzm4YUGwEgj2etMmS7wAbThjc8CAZNVAEsBjhy/xk0GJ3JbNNupnmCdxvKT/oeO+hmsFwXFx6bfNMTpFoxcW9HsmGkATDHzzpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/gAv0xY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB591C4CED3;
-	Wed,  6 Nov 2024 12:55:40 +0000 (UTC)
+	 MIME-Version; b=tz5Z0nJKIWg6medEDo5sea8oc4YheJq1NP7dw4XGNme77H9XwAhTZfo6OWwaVjugI/6Htrtrs4m5y6rgKzLNN/snOzVMefm8U0WllmNW8skd1S8muWxTL3Y4QE6A7C1xCv22ApArVD6PZwtj1VO5Po7/XGIR64F/3nD3q8uqZCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HF9W8/nS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAD1C4CECD;
+	Wed,  6 Nov 2024 12:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897741;
-	bh=vbuN/YpMT6xnuNBAV9J+ulVGF64PzIEvDjcKtl3vvVE=;
+	s=korg; t=1730896877;
+	bh=Cf/fmzCWNhYPbQlqeIKVmrdjhtYxI5OUgZD3kQDLR1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/gAv0xYWqHn46oTdIC5WimdZodKML5JgyF+XQt7GTU5FGcA3nPifhVmJgC6BZcxk
-	 jkcovuXGy1nrSBeIvWCI9sBiz6IKedDoDtEHwdDCTch3h+LtnbHvjZKwHMBmZUenhm
-	 GlqUM6nWlK0mChBpSejZoX696su3jUecDywM4wuM=
+	b=HF9W8/nSnnk8Xge7AQg2p5ihuILnKF+OnUTv+cVXNQWzDOSDZeePyjGi7yFy8OXYL
+	 KAYTnyt2rQX5wZoS2dWKufRpcZefRF8Wl6+TbmoUyGFW0A5yBx7zkyuO88yz5V3sVT
+	 MvZ1vCdyxNwnU/OViyr4Wo4qkzSXsLxBgABPZ5pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/151] riscv: Remove unused GENERATING_ASM_OFFSETS
-Date: Wed,  6 Nov 2024 13:05:06 +0100
-Message-ID: <20241106120312.113120159@linuxfoundation.org>
+Subject: [PATCH 5.10 101/110] riscv: Remove unused GENERATING_ASM_OFFSETS
+Date: Wed,  6 Nov 2024 13:05:07 +0100
+Message-ID: <20241106120305.965761501@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,7 +91,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 deletions(-)
 
 diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index 9f535d5de33f9..6a992cba2f287 100644
+index 877ff65b4e136..a3d4317309d4c 100644
 --- a/arch/riscv/kernel/asm-offsets.c
 +++ b/arch/riscv/kernel/asm-offsets.c
 @@ -4,8 +4,6 @@
@@ -101,8 +101,8 @@ index 9f535d5de33f9..6a992cba2f287 100644
 -#define GENERATING_ASM_OFFSETS
 -
  #include <linux/kbuild.h>
- #include <linux/mm.h>
  #include <linux/sched.h>
+ #include <asm/thread_info.h>
 -- 
 2.43.0
 
