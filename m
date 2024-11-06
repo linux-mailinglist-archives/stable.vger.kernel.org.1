@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E989BE87F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6159BE75E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DA99B249B3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD73281EB7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1111DFD8D;
-	Wed,  6 Nov 2024 12:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A878F1DEFF5;
+	Wed,  6 Nov 2024 12:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPl0A3Wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esCwrj8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288411DF756;
-	Wed,  6 Nov 2024 12:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649911D416E;
+	Wed,  6 Nov 2024 12:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895880; cv=none; b=aJQOJT0zSYWF/09q5k6b3rWg9CRqXEf4b90Lcn0ip2HkiKsg+XahIuHuBpKV0y6nI5ZoQjlGnWXdwj9ZBwu3A4KEOMtJyOyi8mX8VR7+RAKOYSlMYuPttyBBnOJrgxjd2ApxD4VpJiAk8PA1gNiWqFMDZOmFTrc29qFkDA8Nt9c=
+	t=1730895208; cv=none; b=MweJhVKRBmQu1FmwJcBOF/OFjkfqsS8V80cihFlKlNo1any0UbBD8mSXoUz+QoIuqz1LUe9iWEc+PFAulJCrF0Tt0LojwTJbjLerrQ1HlrnFJ9zNt884a04GBmzcB68HrP5ywHxBbQI2xsiEYizbwFnDFeUjlrkEILZipbmpYWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895880; c=relaxed/simple;
-	bh=jayxCsrBSItvcTGIHXZaaCCO2E4nG0URwFQB5+8huew=;
+	s=arc-20240116; t=1730895208; c=relaxed/simple;
+	bh=cFiBECi12OdYLyILwmYwx34aqAET+7J+8eZKiU+JiD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V13e8lJvwbvNQtxyf638Fwdwj4zzy5DppW+vrJEYLfns6bvfkmacCUtkqW2T3MlZOuYIyZzTLmlwxcGh2s70Y4nbNJLjrO0mwmfv4tkNH6pydCteY718liadJEVGTPYU0mwS6jRMelKb1c+LkQPzjHnpavsKCILdRB7fVFjv04Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPl0A3Wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4F8C4CECD;
-	Wed,  6 Nov 2024 12:24:39 +0000 (UTC)
+	 MIME-Version; b=bWEusNpJ+l6IeiXQsjX+uV8MndN1KlRaMF7NqyFEn8zgNcgESY8/+C5IfshasmVmT468snisLaQc/jssAtiVVfRvAbgfjrjMkLGs30J6VnLUTvty0CQCjFLSfutET02SeqOP1GvXDlAQmrEBCxLFKvM+ZVezVETvFICtVB3UbMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esCwrj8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC0FC4CECD;
+	Wed,  6 Nov 2024 12:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895880;
-	bh=jayxCsrBSItvcTGIHXZaaCCO2E4nG0URwFQB5+8huew=;
+	s=korg; t=1730895208;
+	bh=cFiBECi12OdYLyILwmYwx34aqAET+7J+8eZKiU+JiD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPl0A3Wzuxg/cKh8X0L+aevubKRKa8caVySNs9C/D7o3Gyv/0GsLCD2mdGNz07Hmi
-	 hSYRQzHPudHUDx77MM87euVUPGRnNKt9Dz5cazqANGvdCZv+RmBYwd/eN91bR/2q+h
-	 DAlIAWxCFUc2G6pBOtplU9rQVw3e2yzLvpLfWcOQ=
+	b=esCwrj8xh0s1sVYQXaksq9BWU70FBOayBIW1r9PCz0sg3s1Fd4KcQeKqBL2nBnr0f
+	 /tyc4wOepc1MPza2X9GenTv4x6w+97hvSoEHbRT5L5jRvPdJR9yRzn60/XqsnaZbtA
+	 XUzoxhYGntbvtNE7sI2ofoCMxIGx7nLtdo9Jz1Xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Anton Danilov <littlesmilingcloud@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 016/245] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
+Subject: [PATCH 4.19 141/350] ipv4: ip_gre: Fix drops of small packets in ipgre_xmit
 Date: Wed,  6 Nov 2024 13:01:09 +0100
-Message-ID: <20241106120319.639136927@linuxfoundation.org>
+Message-ID: <20241106120324.397946064@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Anton Danilov <littlesmilingcloud@gmail.com>
 
-[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
+[ Upstream commit c4a14f6d9d17ad1e41a36182dd3b8a5fd91efbd7 ]
 
-After the cited commit below max_dest_rd_atomic and max_rd_atomic values
-are being rounded down to the next power of 2. As opposed to the old
-behavior and mlx4 driver where they used to be rounded up instead.
+Regression Description:
 
-In order to stay consistent with older code and other drivers, revert to
-using fls round function which rounds up to the next power of 2.
+Depending on the options specified for the GRE tunnel device, small
+packets may be dropped. This occurs because the pskb_network_may_pull
+function fails due to the packet's insufficient length.
 
-Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
-Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+For example, if only the okey option is specified for the tunnel device,
+original (before encapsulation) packets smaller than 28 bytes (including
+the IPv4 header) will be dropped. This happens because the required
+length is calculated relative to the network header, not the skb->head.
+
+Here is how the required length is computed and checked:
+
+* The pull_len variable is set to 28 bytes, consisting of:
+  * IPv4 header: 20 bytes
+  * GRE header with Key field: 8 bytes
+
+* The pskb_network_may_pull function adds the network offset, shifting
+the checkable space further to the beginning of the network header and
+extending it to the beginning of the packet. As a result, the end of
+the checkable space occurs beyond the actual end of the packet.
+
+Instead of ensuring that 28 bytes are present in skb->head, the function
+is requesting these 28 bytes starting from the network header. For small
+packets, this requested length exceeds the actual packet size, causing
+the check to fail and the packets to be dropped.
+
+This issue affects both locally originated and forwarded packets in
+DMVPN-like setups.
+
+How to reproduce (for local originated packets):
+
+  ip link add dev gre1 type gre ikey 1.9.8.4 okey 1.9.8.4 \
+          local <your-ip> remote 0.0.0.0
+
+  ip link set mtu 1400 dev gre1
+  ip link set up dev gre1
+  ip address add 192.168.13.1/24 dev gre1
+  ip neighbor add 192.168.13.2 lladdr <remote-ip> dev gre1
+  ping -s 1374 -c 10 192.168.13.2
+  tcpdump -vni gre1
+  tcpdump -vni <your-ext-iface> 'ip proto 47'
+  ip -s -s -d link show dev gre1
+
+Solution:
+
+Use the pskb_may_pull function instead the pskb_network_may_pull.
+
+Fixes: 80d875cfc9d3 ("ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()")
+Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240924235158.106062-1-littlesmilingcloud@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ip_gre.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index e39b1a101e972..10ce3b44f645f 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -4268,14 +4268,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
- 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 2f5d2109c9192..ea30393c8c66c 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -711,11 +711,11 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
+ 		if (skb_cow_head(skb, 0))
+ 			goto free_skb;
  
- 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
--		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
-+		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
+-		tnl_params = (const struct iphdr *)skb->data;
+-
+-		if (!pskb_network_may_pull(skb, pull_len))
++		if (!pskb_may_pull(skb, pull_len))
+ 			goto free_skb;
  
- 	if (attr_mask & IB_QP_SQ_PSN)
- 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
- 
- 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
- 		MLX5_SET(qpc, qpc, log_rra_max,
--			 ilog2(attr->max_dest_rd_atomic));
-+			 fls(attr->max_dest_rd_atomic - 1));
- 
- 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
- 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
++		tnl_params = (const struct iphdr *)skb->data;
++
+ 		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
+ 		skb_pull(skb, pull_len);
+ 		skb_reset_mac_header(skb);
 -- 
 2.43.0
 
