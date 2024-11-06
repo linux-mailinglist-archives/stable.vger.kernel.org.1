@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-91599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE089BEEBB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:20:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0679BEE78
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 064D828439E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA4F01F259C8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43A31E1036;
-	Wed,  6 Nov 2024 13:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678EC1DF995;
+	Wed,  6 Nov 2024 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdcpekQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXDh2503"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816D71E0DBD;
-	Wed,  6 Nov 2024 13:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256EE1D86E8;
+	Wed,  6 Nov 2024 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899207; cv=none; b=VvPrKA9QBuwJ9/kSj0idK2gtkS3cd4wLR9Psz1w1Dsb+ynTtzjHEiGUP19ZTHDtl5mmPLcG+eafdweMiCUJqRJyLLaqpCsBHb3IMWKsdJvya6AkHDcABhHypgFRUCHMrHoVMKeo7BNZ0Mq0E1nNBZ8cjmDvvvsRm7l4ipfnR7+M=
+	t=1730899056; cv=none; b=FUquDZBpqYYdbMU+IHHYezMkA/wMKMXpA5w/goOajC4wp5Htm7S0VnjGEDATicpFzqqaD9NirxOCEqUGShizFV1uoX7S1OrXhtIFSdGCpnSAju2sFgsMASeG9VoO0OrfWXTPJY/AHLPxHFIFyY62+OME9u72mFMEb8qTxYcaaUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899207; c=relaxed/simple;
-	bh=4bl8luB91je7woID+I1w6yKFKoVHbslWSaXSFyh+qfA=;
+	s=arc-20240116; t=1730899056; c=relaxed/simple;
+	bh=tYwvO7a4NSZvbZGVjgN85sE9uPCuoDS1AkGcYIoHlKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBwFMNDeAzgj9McTIlin7Eo/gYSsaug7gKfmac0IXpcAtfbm0hhPu59Ha0oj3fVz0qlL1fNm21Qz9aFk6emKHrsQycLSaKHc+7tJrNMVj6rOtkFfjIMb5dLi6h3cYQepW76PV0DzKRKXUqlcBKkbOSusVRu4QBOWQFq5eoHjZKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdcpekQS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2421C4CED4;
-	Wed,  6 Nov 2024 13:20:06 +0000 (UTC)
+	 MIME-Version; b=dqwWp1OhBL1ZMGSXW1tDt+mw+2d2D0CoMTp+l+ArJ4OOykLG7VSSSAiqiv6yY9C1QbDrrlq2HxEOT8IPLWrUkaDhC7XbGTNeBTW4eK5oZePjrHjYtr5X5QMljTPEUyjyzT+bnyJ+7yc0pigTWoJqwRf8gwj632oRau59wJhUNkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXDh2503; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24AAC4CED5;
+	Wed,  6 Nov 2024 13:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899207;
-	bh=4bl8luB91je7woID+I1w6yKFKoVHbslWSaXSFyh+qfA=;
+	s=korg; t=1730899056;
+	bh=tYwvO7a4NSZvbZGVjgN85sE9uPCuoDS1AkGcYIoHlKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdcpekQSke44+Evc743CcaRd9X0is/w48Qu73+vVJ6RhZqeLZcGH/Aw8xOWu+DZiX
-	 +hcnLI9RLGvNmdrJryksJOYru+dsoUCRnYk3DEvrr81uCaB0FpFI4u0AEgQfVasHe0
-	 D8S7W31ugynf1KurmMvWuLqAA+GVEP3D86DSN6Kc=
+	b=zXDh2503j4x755Ra/ttfpX0Hr00iXoH2Kjl1OGdDFMFJHEcgwWOVfjQdZibgJkIT4
+	 NyDtJt8+eeukuEv8v1qw/DQcj/F0dr6ilLOklvRb1FJmr+PCvPqJ9G4A9iBQSeEsHL
+	 9U9Onbpx+vi9ZjY7RFsH2GN6CFeC7bm8rXoZv5CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/73] scsi: scsi_transport_fc: Allow setting rport state to current state
-Date: Wed,  6 Nov 2024 13:05:38 +0100
-Message-ID: <20241106120300.984611095@linuxfoundation.org>
+	Hongren Zheng <i@zenithal.me>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH 5.4 446/462] usbip: tools: Fix detach_port() invalid port error path
+Date: Wed,  6 Nov 2024 13:05:39 +0100
+Message-ID: <20241106120342.517793064@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-[ Upstream commit d539a871ae47a1f27a609a62e06093fa69d7ce99 ]
+commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
 
-The only input fc_rport_set_marginal_state() currently accepts is
-"Marginal" when port_state is "Online", and "Online" when the port_state
-is "Marginal". It should also allow setting port_state to its current
-state, either "Marginal or "Online".
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Link: https://lore.kernel.org/r/20240917230643.966768-1-bmarzins@redhat.com
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_fc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/usb/usbip/src/usbip_detach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
-index a2524106206db..fbe2036ca6196 100644
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -1250,7 +1250,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
- 		 */
- 		if (rport->port_state == FC_PORTSTATE_ONLINE)
- 			rport->port_state = port_state;
--		else
-+		else if (port_state != rport->port_state)
- 			return -EINVAL;
- 	} else if (port_state == FC_PORTSTATE_ONLINE) {
- 		/*
-@@ -1260,7 +1260,7 @@ static ssize_t fc_rport_set_marginal_state(struct device *dev,
- 		 */
- 		if (rport->port_state == FC_PORTSTATE_MARGINAL)
- 			rport->port_state = port_state;
--		else
-+		else if (port_state != rport->port_state)
- 			return -EINVAL;
- 	} else
- 		return -EINVAL;
--- 
-2.43.0
-
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
+ 	}
+ 
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 
 
 
