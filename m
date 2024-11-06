@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-90687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5414F9BE998
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315509BEC24
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1CFCB23A53
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F931C20B8A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E804B1E0493;
-	Wed,  6 Nov 2024 12:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9466D1EF080;
+	Wed,  6 Nov 2024 12:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="103Yauol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3cgyV4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54BB1E048C;
-	Wed,  6 Nov 2024 12:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BDB1F429C;
+	Wed,  6 Nov 2024 12:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896513; cv=none; b=JXZA4qAGAZfwflFQBTEaZOUKwrEW7x+90/EJjCp+6z55OpMfZVDhcI5Sh3xJbYI3ItvNhYIS4yJop7lYsiHC7vM8REZ+a1vC0oP40cSDkFQixqyG1HmPrW48Lo8KjsTI6MYmgplJlewJbwveJ8bJf/ME1joNvwb78jOsmSgIhiM=
+	t=1730897548; cv=none; b=OXn7VvrR6u/EcY8krl96CHB/0D+oPpPv57PE3DrjM1FcRKRfB20mrG7dJAMfR+mx62TDy7ws92LuDIFW7VuI2HCKEhSVVL7tZshqRMAX3m2yOsomZ4pYmWoc5UjXKCdYV3iqFlYOrVLWd+CToCR3ZzNWWfpAEELwmN6PYZNmgzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896513; c=relaxed/simple;
-	bh=GyV1BA0+W3C69h0J+cqdTkAoRc2eiJIsrKnsHaJsi0I=;
+	s=arc-20240116; t=1730897548; c=relaxed/simple;
+	bh=GnXqGs2j03QtY9grWr6b1xIEXz/rgbTMPjoaOaM4xMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhL2UtsF0idLQbzXlwPtduf2BRoK1wYHPpFlnkO/d5+aEw8Y/DO/iVbxWU83UQFCzz9C8vR5N4+G0uKeewfhrR++CznDWnnLVH0klZzfj7KltakwxZ5yjf5hW14hET6cMs0HlLLZF6+Murq8qabxbSRieHNMGXFYasLhoQYTyvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=103Yauol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24065C4CECD;
-	Wed,  6 Nov 2024 12:35:12 +0000 (UTC)
+	 MIME-Version; b=Qc1oiEpzkhOAVk2jCac5QB4Plf9dBe+ZBdf970DRbl1SG3t1ilM9/13/WnnHf+Z2vy8+hKfC0y99To7mP7VrmOj5dtQxaDLDKoqbxzvElDUtgQkG0jcJiqym9MYmXHSZCPK4hw4dzRUSMbYGT0+KBydHfdVxl5l2SPMbjDi3Jdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3cgyV4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94729C4CECD;
+	Wed,  6 Nov 2024 12:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896513;
-	bh=GyV1BA0+W3C69h0J+cqdTkAoRc2eiJIsrKnsHaJsi0I=;
+	s=korg; t=1730897548;
+	bh=GnXqGs2j03QtY9grWr6b1xIEXz/rgbTMPjoaOaM4xMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=103Yauol3TEkEa9XuWBzj4zJoU3KZVML3/mjnv3djltZjzWoXZ/icOCBliYF+E311
-	 qecg2BmWAn7GhbXaKEIAu9C2JPJYA4+BPz6z7W3DvvH77dr64X4ywqgTl1YLac+OVb
-	 MuitnaE9+IXxm14LnkHeCATOfHs4reVM86k9o5Kw=
+	b=c3cgyV4IHOnOJB5hJpBxBdgZK0SsyvQzg1l+1BZWDTP7cEwMXTvegvOL52Q2Adokc
+	 J2iKZWGBJBeofu+sRrV8i0C/0qwc5kujg92bbAw47YfZYgd03WbEyR/nEI2rtnimUc
+	 ioGZhNY7+g9/L2qDltAmRD7fbdwlWORXs3cdFY/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 226/245] drm/i915/hdcp: Add encoder check in hdcp2_get_capability
+	Edward Liaw <edliaw@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 091/151] Revert "selftests/mm: replace atomic_bool with pthread_barrier_t"
 Date: Wed,  6 Nov 2024 13:04:39 +0100
-Message-ID: <20241106120324.824360777@linuxfoundation.org>
+Message-ID: <20241106120311.376731802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Kandpal <suraj.kandpal@intel.com>
+From: Edward Liaw <edliaw@google.com>
 
-commit d34f4f058edf1235c103ca9c921dc54820d14d40 upstream.
+commit 3673167a3a07f25b3f06754d69f406edea65543a upstream.
 
-Add encoder check in intel_hdcp2_get_capability to avoid
-null pointer error.
+This reverts commit e61ef21e27e8deed8c474e9f47f4aa7bc37e138c.
 
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240722064451.3610512-3-suraj.kandpal@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+uffd_poll_thread may be called by other tests that do not initialize the
+pthread_barrier, so this approach is not correct.  This will revert to
+using atomic_bool instead.
+
+Link: https://lkml.kernel.org/r/20241018171734.2315053-3-edliaw@google.com
+Fixes: e61ef21e27e8 ("selftests/mm: replace atomic_bool with pthread_barrier_t")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp_hdcp.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/uffd-common.c     |    5 ++---
+ tools/testing/selftests/mm/uffd-common.h     |    3 ++-
+ tools/testing/selftests/mm/uffd-unit-tests.c |   14 ++++++--------
+ 3 files changed, 10 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp_hdcp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_hdcp.c
-@@ -677,8 +677,15 @@ static
- int intel_dp_hdcp2_get_capability(struct intel_connector *connector,
- 				  bool *capable)
- {
--	struct intel_digital_port *dig_port = intel_attached_dig_port(connector);
--	struct drm_dp_aux *aux = &dig_port->dp.aux;
-+	struct intel_digital_port *dig_port;
-+	struct drm_dp_aux *aux;
-+
-+	*capable = false;
-+	if (!intel_attached_encoder(connector))
-+		return -EINVAL;
-+
-+	dig_port = intel_attached_dig_port(connector);
-+	aux = &dig_port->dp.aux;
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -17,7 +17,7 @@ bool map_shared;
+ bool test_uffdio_wp = true;
+ unsigned long long *count_verify;
+ uffd_test_ops_t *uffd_test_ops;
+-pthread_barrier_t ready_for_fork;
++atomic_bool ready_for_fork;
  
- 	return _intel_dp_hdcp2_get_capability(aux, capable);
- }
+ static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
+ {
+@@ -508,8 +508,7 @@ void *uffd_poll_thread(void *arg)
+ 	pollfd[1].fd = pipefd[cpu*2];
+ 	pollfd[1].events = POLLIN;
+ 
+-	/* Ready for parent thread to fork */
+-	pthread_barrier_wait(&ready_for_fork);
++	ready_for_fork = true;
+ 
+ 	for (;;) {
+ 		ret = poll(pollfd, 2, -1);
+--- a/tools/testing/selftests/mm/uffd-common.h
++++ b/tools/testing/selftests/mm/uffd-common.h
+@@ -33,6 +33,7 @@
+ #include <inttypes.h>
+ #include <stdint.h>
+ #include <sys/random.h>
++#include <stdatomic.h>
+ 
+ #include "../kselftest.h"
+ #include "vm_util.h"
+@@ -98,7 +99,7 @@ extern bool map_shared;
+ extern bool test_uffdio_wp;
+ extern unsigned long long *count_verify;
+ extern volatile bool test_uffdio_copy_eexist;
+-extern pthread_barrier_t ready_for_fork;
++extern atomic_bool ready_for_fork;
+ 
+ extern uffd_test_ops_t anon_uffd_test_ops;
+ extern uffd_test_ops_t shmem_uffd_test_ops;
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -770,7 +770,7 @@ static void uffd_sigbus_test_common(bool
+ 	char c;
+ 	struct uffd_args args = { 0 };
+ 
+-	pthread_barrier_init(&ready_for_fork, NULL, 2);
++	ready_for_fork = false;
+ 
+ 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
+ 
+@@ -787,9 +787,8 @@ static void uffd_sigbus_test_common(bool
+ 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+ 		err("uffd_poll_thread create");
+ 
+-	/* Wait for child thread to start before forking */
+-	pthread_barrier_wait(&ready_for_fork);
+-	pthread_barrier_destroy(&ready_for_fork);
++	while (!ready_for_fork)
++		; /* Wait for the poll_thread to start executing before forking */
+ 
+ 	pid = fork();
+ 	if (pid < 0)
+@@ -830,7 +829,7 @@ static void uffd_events_test_common(bool
+ 	char c;
+ 	struct uffd_args args = { 0 };
+ 
+-	pthread_barrier_init(&ready_for_fork, NULL, 2);
++	ready_for_fork = false;
+ 
+ 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
+ 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
+@@ -841,9 +840,8 @@ static void uffd_events_test_common(bool
+ 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+ 		err("uffd_poll_thread create");
+ 
+-	/* Wait for child thread to start before forking */
+-	pthread_barrier_wait(&ready_for_fork);
+-	pthread_barrier_destroy(&ready_for_fork);
++	while (!ready_for_fork)
++		; /* Wait for the poll_thread to start executing before forking */
+ 
+ 	pid = fork();
+ 	if (pid < 0)
 
 
 
