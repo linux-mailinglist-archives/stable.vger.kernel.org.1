@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-90214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438DE9BE738
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:11:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF3F9BE743
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E907B21606
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACD611C20C82
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D39F1DEFF5;
-	Wed,  6 Nov 2024 12:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E59D1DEFD3;
+	Wed,  6 Nov 2024 12:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvVWZ61/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLGCIj2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAE81D5AD7;
-	Wed,  6 Nov 2024 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F6D1D416E;
+	Wed,  6 Nov 2024 12:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895106; cv=none; b=aKUHD39oQt+mLPgiM2lxOpahYXp0DbexBUR8tCzQop/JIwHpAdVVcxTFC2werrHyRw9qeRu2NjY6kDL+eOPHBI7L5BRQ/YfHrh2eYM1ni1edffeub1PxaRK3+4dIOx1J3Q7Koi39mBtf4fmnGLG6Sm9OlgSWe+gsF6t4JYODo7k=
+	t=1730895139; cv=none; b=gcCy1/DUYiPwDGXnUL/1sYipTxdnTbznKq/0sT3OGLZZK2pW4fvbl8Jr2YS/qw6DowxkoI+YRoxrfHhCBCyNkM6d3rjy4Ra6XNObstJOznReFOkxGEttpe5tgGos3BEC/WxywPDPJK8xz1FVpEVCdnhYRhJE96zTxmiKDB9uTK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895106; c=relaxed/simple;
-	bh=+lyHFEhDT3+qg2EHfr8P7ZAQ5LL5zBZOAXUgeBq1OmE=;
+	s=arc-20240116; t=1730895139; c=relaxed/simple;
+	bh=y4Oc5Yd9pM4ProhXTNNhQTos1SHSBQchzpBEZnbHfn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J36B25ToVz3wmzvVupI2jExpKHBkCCTjDMJgwOFAVT3cQF9HTIebUPrZE3TG9CDSEtAatsQKmxamJgPDgF/FhsIonkmMFsnG4JgjOg6yDkeMVmsTN6rrEgLR9GaZwmz7wqIPC5LiBbqJa1KytsD8qqoaHlggWqlucwhtfWbOJWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvVWZ61/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C64C4CECD;
-	Wed,  6 Nov 2024 12:11:46 +0000 (UTC)
+	 MIME-Version; b=j7I+RqPBeBmeY36Z9VXIl5QgWPx077ebDudLUtFXeLs3huQpoxeIqeUCdSCXSmAPQwVbugy0329CB9Oi34d+/V0fXPZ3aF58cX+QLzMkS2ksfQC7ACsDiK/608AHO+bAMvYSKLU8GdabjKdBGCgjP1lPv9EH+ZPs0YLkJDykhjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLGCIj2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2320BC4CECD;
+	Wed,  6 Nov 2024 12:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895106;
-	bh=+lyHFEhDT3+qg2EHfr8P7ZAQ5LL5zBZOAXUgeBq1OmE=;
+	s=korg; t=1730895139;
+	bh=y4Oc5Yd9pM4ProhXTNNhQTos1SHSBQchzpBEZnbHfn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvVWZ61/wJW0+3WQVcM8kl9gEfL5nqupadrGiYTT1dstTYw/4eDhkYALa0Ay3osKs
-	 lAEMFShP5J4Gl17lNjB/sgMRNSrtKHkt7ENB9MZnKwt/2Rd6ygTIKNcQFCF2hN+jB5
-	 6u4m1Dzt9XBlfpP62CfOZgMf/97t7xHLa3MheL7o=
+	b=NLGCIj2CrVUMMpeeLNX44KBYIT+Kjdgsg1SMW/qwJvCjMOw5W1n53rL55NMneKyEN
+	 fcBJm6N1tt7jNYw8ctS0hfjwmWS9j3piJomfok0+GL97KhIyd4RMh5ZVd4JqFS32yX
+	 bmITaSKykrp2nuSxY3bidQAlHMoK98SSTvzZoB9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jianzheng <wangjianzheng@vivo.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 090/350] pinctrl: mvebu: Fix devinit_dove_pinctrl_probe function
-Date: Wed,  6 Nov 2024 13:00:18 +0100
-Message-ID: <20241106120323.124038848@linuxfoundation.org>
+Subject: [PATCH 4.19 091/350] RDMA/cxgb4: Added NULL check for lookup_atid
+Date: Wed,  6 Nov 2024 13:00:19 +0100
+Message-ID: <20241106120323.147142555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,117 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Jianzheng <wangjianzheng@vivo.com>
+From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
 
-[ Upstream commit c25478419f6fd3f74c324a21ec007cf14f2688d7 ]
+[ Upstream commit e766e6a92410ca269161de059fff0843b8ddd65f ]
 
-When an error occurs during the execution of the function
-__devinit_dove_pinctrl_probe, the clk is not properly disabled.
+The lookup_atid() function can return NULL if the ATID is
+invalid or does not exist in the identifier table, which
+could lead to dereferencing a null pointer without a
+check in the `act_establish()` and `act_open_rpl()` functions.
+Add a NULL check to prevent null pointer dereferencing.
 
-Fix this by calling clk_disable_unprepare before return.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: ba607b6238a1 ("pinctrl: mvebu: make pdma clock on dove mandatory")
-Signed-off-by: Wang Jianzheng <wangjianzheng@vivo.com>
-Link: https://lore.kernel.org/20240829064823.19808-1-wangjianzheng@vivo.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: cfdda9d76436 ("RDMA/cxgb4: Add driver for Chelsio T4 RNIC")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+Link: https://patch.msgid.link/20240912145844.77516-1-m.lobanov@rosalinux.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-dove.c | 42 +++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 13 deletions(-)
+ drivers/infiniband/hw/cxgb4/cm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-dove.c b/drivers/pinctrl/mvebu/pinctrl-dove.c
-index 2c5032d0def52..8a77289fe96fb 100644
---- a/drivers/pinctrl/mvebu/pinctrl-dove.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-dove.c
-@@ -773,7 +773,7 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 		of_match_device(dove_pinctrl_of_match, &pdev->dev);
- 	struct mvebu_mpp_ctrl_data *mpp_data;
- 	void __iomem *base;
--	int i;
-+	int i, ret;
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index e8d2135df22db..f9ea863a80885 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -1180,6 +1180,8 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret;
  
- 	pdev->dev.platform_data = (void *)match->data;
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
  
-@@ -789,13 +789,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 	clk_prepare_enable(clk);
+ 	pr_debug("ep %p tid %u snd_isn %u rcv_isn %u\n", ep, tid,
+ 		 be32_to_cpu(req->snd_isn), be32_to_cpu(req->rcv_isn));
+@@ -2235,6 +2237,9 @@ static int act_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret = 0;
  
- 	base = devm_platform_get_and_ioremap_resource(pdev, 0, &mpp_res);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
-+	if (IS_ERR(base)) {
-+		ret = PTR_ERR(base);
-+		goto err_probe;
-+	}
- 
- 	mpp_data = devm_kcalloc(&pdev->dev, dove_pinctrl_info.ncontrols,
- 				sizeof(*mpp_data), GFP_KERNEL);
--	if (!mpp_data)
--		return -ENOMEM;
-+	if (!mpp_data) {
-+		ret = -ENOMEM;
-+		goto err_probe;
-+	}
- 
- 	dove_pinctrl_info.control_data = mpp_data;
- 	for (i = 0; i < ARRAY_SIZE(dove_mpp_controls); i++)
-@@ -814,8 +818,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 	}
- 
- 	mpp4_base = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(mpp4_base))
--		return PTR_ERR(mpp4_base);
-+	if (IS_ERR(mpp4_base)) {
-+		ret = PTR_ERR(mpp4_base);
-+		goto err_probe;
-+	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
- 	if (!res) {
-@@ -826,8 +832,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 	}
- 
- 	pmu_base = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(pmu_base))
--		return PTR_ERR(pmu_base);
-+	if (IS_ERR(pmu_base)) {
-+		ret = PTR_ERR(pmu_base);
-+		goto err_probe;
-+	}
- 
- 	gconfmap = syscon_regmap_lookup_by_compatible("marvell,dove-global-config");
- 	if (IS_ERR(gconfmap)) {
-@@ -837,12 +845,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 		adjust_resource(&fb_res,
- 			(mpp_res->start & INT_REGS_MASK) + GC_REGS_OFFS, 0x14);
- 		gc_base = devm_ioremap_resource(&pdev->dev, &fb_res);
--		if (IS_ERR(gc_base))
--			return PTR_ERR(gc_base);
-+		if (IS_ERR(gc_base)) {
-+			ret = PTR_ERR(gc_base);
-+			goto err_probe;
-+		}
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
 +
- 		gconfmap = devm_regmap_init_mmio(&pdev->dev,
- 						 gc_base, &gc_regmap_config);
--		if (IS_ERR(gconfmap))
--			return PTR_ERR(gconfmap);
-+		if (IS_ERR(gconfmap)) {
-+			ret = PTR_ERR(gconfmap);
-+			goto err_probe;
-+		}
- 	}
- 
- 	/* Warn on any missing DT resource */
-@@ -850,6 +863,9 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
- 		dev_warn(&pdev->dev, FW_BUG "Missing pinctrl regs in DTB. Please update your firmware.\n");
- 
- 	return mvebu_pinctrl_probe(pdev);
-+err_probe:
-+	clk_disable_unprepare(clk);
-+	return ret;
- }
- 
- static struct platform_driver dove_pinctrl_driver = {
+ 	la = (struct sockaddr_in *)&ep->com.local_addr;
+ 	ra = (struct sockaddr_in *)&ep->com.remote_addr;
+ 	la6 = (struct sockaddr_in6 *)&ep->com.local_addr;
 -- 
 2.43.0
 
