@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-90712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE109BE9BD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:37:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 449A19BEC37
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334E2281B18
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F040A1F21BB2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A7A1E0DC4;
-	Wed,  6 Nov 2024 12:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571111F4FA8;
+	Wed,  6 Nov 2024 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PivI/VwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5ybWOcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F82F1E00AB;
-	Wed,  6 Nov 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144E11E0E1F;
+	Wed,  6 Nov 2024 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896590; cv=none; b=Gx2sQ3QPkOGIV/+fyI30xWqTlb7fKwduItlkpmSQHQqrBJ2YoH99rNcfExCWtKLy9M7vLj0KGNgwCkXuC59+CRtayzCRYptytM7oZxmZonEz+7UDJ8TTPwg9J566xpgX3vXeuTQ5oA0zPnm8XoylGsltwuRNtiuXwoS88k0l3Wc=
+	t=1730897604; cv=none; b=HheG5L00C4Y4QH23uVBekEFtJlbVdgkRBEqkBMgQLnH9Xii+YVdJuu5btBQMYDHHxUbGLS81NYR61p7GX3tqWyjt3STSirpwLjFhhquYV9PoWG5b1zCOIn+hE9PZmhyfiTxNeSWiZWBT2SxlSjb/QFVSiIizKxM865e3BKzYExc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896590; c=relaxed/simple;
-	bh=WcgMKb7L5Z3qM29AXJG+xqYA/GjYaJTxQ5kc611Waww=;
+	s=arc-20240116; t=1730897604; c=relaxed/simple;
+	bh=bRluDnS99iIyFNfzUA8Y94Kf6cUtajLfKhXqW2QeKuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9PHswyyT6GqYpY3XDk+98Ys0RTuyKk19A+Ogxm/kmMkj1pDI3wtsHHjVvxYKu92WOjbQimDDCYy4htcybfE75dM+lyxmWOPip+E0vSLaZjLlE040vFomaGZmGYSyqLZ+y8lhQi7Ku7IQ3v3b/rrC5da+B+Dlb3WXdmbA6Iuo88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PivI/VwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74172C4CED4;
-	Wed,  6 Nov 2024 12:36:28 +0000 (UTC)
+	 MIME-Version; b=G+BszyvTCkv52uPdXAv3VT3ySoBV49gzuDJK2WIWYn2Ewpdg25Xu1YeEnv76c4N9yvJ4CUS4roOLy+647GcECQe7OAXkf4MqTkb6rCF0Ro8LIa6E4fRwTniKFHpZrunQHQB4YYnzxysnR6EoXoRLdVZdFAxu1wdyU7dP3gkelLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5ybWOcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913C3C4CECD;
+	Wed,  6 Nov 2024 12:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896588;
-	bh=WcgMKb7L5Z3qM29AXJG+xqYA/GjYaJTxQ5kc611Waww=;
+	s=korg; t=1730897604;
+	bh=bRluDnS99iIyFNfzUA8Y94Kf6cUtajLfKhXqW2QeKuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PivI/VwOSLhYKsj9xtKggdeH5cHrjLeoUwzxXqu9v4fb/4qYBejdLHUx4Dy7sg75u
-	 awCFONCdsJGa5rfSO4Y6gYRQdYFoh4Qc0RAbcW6kBJ6JXNdQhYBKgtCSXhSe54JVd/
-	 RD/FkFa99tFnx6Qm+Zl2KF3T2coovK2bEKM7Aj9M=
+	b=K5ybWOcrwICMap0K/6yPC3Ipg7K0rWfkADHPbRF0ZDrU/VlDtmdl32ZVXLQwbqFtc
+	 2hxdJn4zzT5vvt8pJVHGZY8b6e16oobSVao0YLIjBaQnTE5jzeqdd/T73C3Jv75o4U
+	 V+buqBEwHn05YmnqfkgA1y/+kA2utA5ne0FmHWVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 243/245] drm/amdgpu/swsmu: default to fullscreen 3D profile for dGPUs
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 108/151] mmc: sdhci-pci-gli: GL9767: Fix low power mode in the SD Express process
 Date: Wed,  6 Nov 2024 13:04:56 +0100
-Message-ID: <20241106120325.253208271@linuxfoundation.org>
+Message-ID: <20241106120311.843194206@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-commit ec1aab7816b06c32f42935e34ce3a3040c778afb upstream.
+commit c4dedaaeb3f78d3718e9c1b1e4d972a6b99073cd upstream.
 
-This uses more aggressive hueristics than the the bootup default
-profile.  On windows the OS has a special fullscreen 3D mode
-where this is used.  Since we don't have the equivalent on Linux
-default to this profile for dGPUs.
+When starting the SD Express process, the low power negotiation mode will
+be disabled, so we need to re-enable it after switching back to SD mode.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1500
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 336568de918e08c825b3b1cbe2ec809f2fc26d94)
+Fixes: 0e92aec2efa0 ("mmc: sdhci-pci-gli: Add support SD Express card for GL9767")
+Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Cc: stable@vger.kernel.org
+Message-ID: <20241025060017.1663697-2-benchuanggli@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1264,7 +1264,11 @@ static int smu_sw_init(void *handle)
- 	smu->workload_prority[PP_SMC_POWER_PROFILE_VR] = 4;
- 	smu->workload_prority[PP_SMC_POWER_PROFILE_COMPUTE] = 5;
- 	smu->workload_prority[PP_SMC_POWER_PROFILE_CUSTOM] = 6;
--	smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
-+
-+	if (smu->is_apu)
-+		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT];
-+	else
-+		smu->workload_mask = 1 << smu->workload_prority[PP_SMC_POWER_PROFILE_FULLSCREEN3D];
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -1078,6 +1078,9 @@ static int gl9767_init_sd_express(struct
+ 		sdhci_writew(host, value, SDHCI_CLOCK_CONTROL);
+ 	}
  
- 	smu->workload_setting[0] = PP_SMC_POWER_PROFILE_BOOTUP_DEFAULT;
- 	smu->workload_setting[1] = PP_SMC_POWER_PROFILE_FULLSCREEN3D;
++	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
++	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
+ 	gl9767_vhs_read(pdev);
+ 
+ 	return 0;
 
 
 
