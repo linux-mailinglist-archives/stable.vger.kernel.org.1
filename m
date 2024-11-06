@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-89967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE8B9BDC10
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:13:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF44E9BDC11
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD51EB225B5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:13:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACD3284317
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C14F1D47AC;
-	Wed,  6 Nov 2024 02:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378C91D5AC6;
+	Wed,  6 Nov 2024 02:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M//Tx/NO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PU47tdYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361E318F2DB;
-	Wed,  6 Nov 2024 02:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C6D1917FD;
+	Wed,  6 Nov 2024 02:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859014; cv=none; b=BywBnvQO+7NMb9dMNWZGfq9lG8Wa+k8sW41hdEWdYvryP7gZuVO13/DLIrIicmCRpE6dJSaMowxd0lNEj6dx7swiJ6rboX+0NS4d9GX7qEAVgfhaIgDWQ/E8Gk2oA41zkvG+avWpnJkrYnPHbEGuuzylKFS7JMdUNvjnYyXC3gM=
+	t=1730859019; cv=none; b=VlN+zVj8jKO3sK8eZqWka0Xnlh32MjXu9RrE/ZRf4trbpN7J+jhVUfzZHuYAJm4yZcNvvxlzJ1x7ErGizzBjyy5yA1rJ9ZakyUfrcHarSTIqTstrVyEOyAcPe++vtYrMXhzJONs41dTw1XdTxw2EbtCSMz18/yrblRX0fAYFFNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859014; c=relaxed/simple;
-	bh=MRu7MqtpbNGk9SRbu0G0jcEfKspoZusy2eapm8Bawj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oxrD+XWqqwxMxzVJZcuXTPPHfqV4gmDB+Na38imNX0jhwmUSlT9ouJ/i6pJwPfXgqo2rnsVsI8207AiiVxnalnG3iQeS5zTP0lvMvkJI6HNm931ZzIUSpeElzgs0av4rbQegrPiwYnciuqmAcqBfRLsJMF0kzx3IDpCoAWo6v/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M//Tx/NO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337EFC4CECF;
-	Wed,  6 Nov 2024 02:10:12 +0000 (UTC)
+	s=arc-20240116; t=1730859019; c=relaxed/simple;
+	bh=SN/F7j50A1cjRLVeVc+cJ+1ynHn5Rvk8WoMVzF1nZis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rwiJO51kDxFmC5X+1rXmLxb9v4ZUMyMcxFZ0BNiSn8C1xFUfbrpOR5sFUdzCzPDrJaxSt4MwE2oO3YLQR7UZz7QUzWcuG5uRlo7rs5mDfO+x687oo53r4M2B/qryOUDoDXyQ0UKkuMpIcBZAqLly/uZCpsS/b/Ljc3IH1Wo1TfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PU47tdYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689E7C4CECF;
+	Wed,  6 Nov 2024 02:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859014;
-	bh=MRu7MqtpbNGk9SRbu0G0jcEfKspoZusy2eapm8Bawj8=;
+	s=k20201202; t=1730859017;
+	bh=SN/F7j50A1cjRLVeVc+cJ+1ynHn5Rvk8WoMVzF1nZis=;
 	h=From:To:Cc:Subject:Date:From;
-	b=M//Tx/NOoegTXAaiRyIvSenqq/knpm8GuHtmg3aTuIu7esSJ7rGeClXUzIPjQGNj4
-	 k5nf73pHRkqXi13Yyz5Fa7I055eQxGB/2J7mnFVM/LBP8/Oj0okD3FvncBuRgaj/nA
-	 3umHk10oHH/xDmXpW0Bw/Pu89spid9WggrLX5fVMV4WA1tWleskooYkkD/KOu9vAIb
-	 kCloMYLEmowhFCHhybvmhyVqsGM4AdJvkbawIScac8P7QEjXdHLSmPKJkZDcOTZ3vo
-	 7r2sRyYyXO1UEicX9nOfvF9VqqfkFJC/aSR1fYP8CfjNuMZo0PXfNyNsmsxKMzyEGu
-	 7iaT3E2EPDmGw==
+	b=PU47tdYsb6+KapFzmI0HtgWNAkfRHWJH4bGnlcZRinsGGXLMuX5TFZxK4IqaZvxtG
+	 B2ghdz36t0lYGcowpBGEjhshiS08v16K5z76tn4cZEhZPQ9e16CqiZZJ/JIXamyFLQ
+	 5uEtPx+JFiC1GzPLNaKzOblKHHRpbflowDyhqNs343RPXUaEm1oZ9+LdaFWD6gcwM5
+	 VPYQVtwHclX4+vtSF0zF4/XtYhDdHw6Mus9lD2sUGdDruzSnzTPkyUrxcS0CahCkl+
+	 folCivwsjC69DioWvyzKv8VkCbuwQbDj+6FjnrQ4CBDp/ahOkbgZECARXAAI5ySRYO
+	 ZJZGE/zhlWi9A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	yuzhao@google.com
-Cc: James Houghton <jthoughton@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	David Stevens <stevensd@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wei Xu <weixugc@google.com>,
+	aha310510@gmail.com
+Cc: syzbot <syzkaller@googlegroup.com>,
+	Hugh Dickins <hughd@google.com>,
+	Yu Zhao <yuzhao@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats" failed to apply to v6.1-stable tree
-Date: Tue,  5 Nov 2024 21:10:10 -0500
-Message-ID: <20241106021010.178546-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm: shmem: fix data-race in shmem_getattr()" failed to apply to v6.1-stable tree
+Date: Tue,  5 Nov 2024 21:10:14 -0500
+Message-ID: <20241106021014.179357-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,153 +73,99 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ddd6d8e975b171ea3f63a011a75820883ff0d479 Mon Sep 17 00:00:00 2001
-From: Yu Zhao <yuzhao@google.com>
-Date: Sat, 19 Oct 2024 01:29:38 +0000
-Subject: [PATCH] mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL
- stats
+From d949d1d14fa281ace388b1de978e8f2cd52875cf Mon Sep 17 00:00:00 2001
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 9 Sep 2024 21:35:58 +0900
+Subject: [PATCH] mm: shmem: fix data-race in shmem_getattr()
 
-Patch series "mm: multi-gen LRU: Have secondary MMUs participate in
-MM_WALK".
+I got the following KCSAN report during syzbot testing:
 
-Today, the MM_WALK capability causes MGLRU to clear the young bit from
-PMDs and PTEs during the page table walk before eviction, but MGLRU does
-not call the clear_young() MMU notifier in this case.  By not calling this
-notifier, the MM walk takes less time/CPU, but it causes pages that are
-accessed mostly through KVM / secondary MMUs to appear younger than they
-should be.
+==================================================================
+BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
 
-We do call the clear_young() notifier today, but only when attempting to
-evict the page, so we end up clearing young/accessed information less
-frequently for secondary MMUs than for mm PTEs, and therefore they appear
-younger and are less likely to be evicted.  Therefore, memory that is
-*not* being accessed mostly by KVM will be evicted *more* frequently,
-worsening performance.
+write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
+ inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
+ inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
+ shmem_mknod+0x117/0x180 mm/shmem.c:3443
+ shmem_create+0x34/0x40 mm/shmem.c:3497
+ lookup_open fs/namei.c:3578 [inline]
+ open_last_lookups fs/namei.c:3647 [inline]
+ path_openat+0xdbc/0x1f00 fs/namei.c:3883
+ do_filp_open+0xf7/0x200 fs/namei.c:3913
+ do_sys_openat2+0xab/0x120 fs/open.c:1416
+ do_sys_open fs/open.c:1431 [inline]
+ __do_sys_openat fs/open.c:1447 [inline]
+ __se_sys_openat fs/open.c:1442 [inline]
+ __x64_sys_openat+0xf3/0x120 fs/open.c:1442
+ x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-ChromeOS observed a tab-open latency regression when enabling MGLRU with a
-setup that involved running a VM:
+read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
+ inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
+ inode_get_ctime include/linux/fs.h:1629 [inline]
+ generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
+ shmem_getattr+0x17b/0x200 mm/shmem.c:1157
+ vfs_getattr_nosec fs/stat.c:166 [inline]
+ vfs_getattr+0x19b/0x1e0 fs/stat.c:207
+ vfs_statx_path fs/stat.c:251 [inline]
+ vfs_statx+0x134/0x2f0 fs/stat.c:315
+ vfs_fstatat+0xec/0x110 fs/stat.c:341
+ __do_sys_newfstatat fs/stat.c:505 [inline]
+ __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
+ __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
+ x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-		Tab-open latency histogram (ms)
-Version		p50	mean	p95	p99	max
-base		1315	1198	2347	3454	10319
-mglru		2559	1311	7399	12060	43758
-fix		1119	926	2470	4211	6947
+value changed: 0x2755ae53 -> 0x27ee44d3
 
-This series replaces the final non-selftest patchs from this series[1],
-which introduced a similar change (and a new MMU notifier) with KVM
-optimizations.  I'll send a separate series (to Sean and Paolo) for the
-KVM optimizations.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+==================================================================
 
-This series also makes proactive reclaim with MGLRU possible for KVM
-memory.  I have verified that this functions correctly with the selftest
-from [1], but given that that test is a KVM selftest, I'll send it with
-the rest of the KVM optimizations later.  Andrew, let me know if you'd
-like to take the test now anyway.
+When calling generic_fillattr(), if you don't hold read lock, data-race
+will occur in inode member variables, which can cause unexpected
+behavior.
 
-[1]: https://lore.kernel.org/linux-mm/20240926013506.860253-18-jthoughton@google.com/
+Since there is no special protection when shmem_getattr() calls
+generic_fillattr(), data-race occurs by functions such as shmem_unlink()
+or shmem_mknod(). This can cause unexpected results, so commenting it out
+is not enough.
 
+Therefore, when calling generic_fillattr() from shmem_getattr(), it is
+appropriate to protect the inode using inode_lock_shared() and
+inode_unlock_shared() to prevent data-race.
 
-This patch (of 2):
-
-The removed stats, MM_LEAF_OLD and MM_NONLEAF_TOTAL, are not very helpful
-and become more complicated to properly compute when adding
-test/clear_young() notifiers in MGLRU's mm walk.
-
-Link: https://lkml.kernel.org/r/20241019012940.3656292-1-jthoughton@google.com
-Link: https://lkml.kernel.org/r/20241019012940.3656292-2-jthoughton@google.com
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Signed-off-by: James Houghton <jthoughton@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Matlack <dmatlack@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: David Stevens <stevensd@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Wei Xu <weixugc@google.com>
+Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
+Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot <syzkaller@googlegroup.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/mmzone.h |  2 --
- mm/vmscan.c            | 14 +++++---------
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ mm/shmem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 17506e4a28355..9342e5692dab6 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -458,9 +458,7 @@ struct lru_gen_folio {
+diff --git a/mm/shmem.c b/mm/shmem.c
+index c5adb987b23cf..4ba1d00fabdaa 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1166,7 +1166,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
+ 	stat->attributes_mask |= (STATX_ATTR_APPEND |
+ 			STATX_ATTR_IMMUTABLE |
+ 			STATX_ATTR_NODUMP);
++	inode_lock_shared(inode);
+ 	generic_fillattr(idmap, request_mask, inode, stat);
++	inode_unlock_shared(inode);
  
- enum {
- 	MM_LEAF_TOTAL,		/* total leaf entries */
--	MM_LEAF_OLD,		/* old leaf entries */
- 	MM_LEAF_YOUNG,		/* young leaf entries */
--	MM_NONLEAF_TOTAL,	/* total non-leaf entries */
- 	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
- 	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
- 	NR_MM_STATS
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index eb4e8440c5071..4f1d33e4b3601 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3399,7 +3399,6 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 			continue;
- 
- 		if (!pte_young(ptent)) {
--			walk->mm_stats[MM_LEAF_OLD]++;
- 			continue;
- 		}
- 
-@@ -3552,7 +3551,6 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk->mm_stats[MM_LEAF_TOTAL]++;
- 
- 			if (!pmd_young(val)) {
--				walk->mm_stats[MM_LEAF_OLD]++;
- 				continue;
- 			}
- 
-@@ -3564,8 +3562,6 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
--		walk->mm_stats[MM_NONLEAF_TOTAL]++;
--
- 		if (!walk->force_scan && should_clear_pmd_young()) {
- 			if (!pmd_young(val))
- 				continue;
-@@ -5254,11 +5250,11 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
- 		seq_printf(m, "            %10d", tier);
- 		for (type = 0; type < ANON_AND_FILE; type++) {
--			const char *s = "   ";
-+			const char *s = "xxx";
- 			unsigned long n[3] = {};
- 
- 			if (seq == max_seq) {
--				s = "RT ";
-+				s = "RTx";
- 				n[0] = READ_ONCE(lrugen->avg_refaulted[type][tier]);
- 				n[1] = READ_ONCE(lrugen->avg_total[type][tier]);
- 			} else if (seq == min_seq[type] || NR_HIST_GENS > 1) {
-@@ -5280,14 +5276,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
- 
- 	seq_puts(m, "                      ");
- 	for (i = 0; i < NR_MM_STATS; i++) {
--		const char *s = "      ";
-+		const char *s = "xxxx";
- 		unsigned long n = 0;
- 
- 		if (seq == max_seq && NR_HIST_GENS == 1) {
--			s = "LOYNFA";
-+			s = "TYFA";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
--			s = "loynfa";
-+			s = "tyfa";
- 			n = READ_ONCE(mm_state->stats[hist][i]);
- 		}
- 
+ 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
+ 		stat->blksize = HPAGE_PMD_SIZE;
 -- 
 2.43.0
 
