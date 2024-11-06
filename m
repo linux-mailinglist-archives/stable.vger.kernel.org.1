@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2119BE959
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91FC9BE82D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E030A1C21DE5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51AE4B2325B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5551F1DFD89;
-	Wed,  6 Nov 2024 12:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C476C1DF961;
+	Wed,  6 Nov 2024 12:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvn6nMGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/3ppQvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C91DF251;
-	Wed,  6 Nov 2024 12:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814061DF73E;
+	Wed,  6 Nov 2024 12:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896385; cv=none; b=l5KNsZLwHqC97sU4eLwfBlvYihWNXQpjtplXQj4QIFzLTwxbvunuO0UKdIzbL1U+dcfklxkEqXB+4rvwxHgrgHXDFYJipWY5r8MYdlm7AVFmrlf7yIkoarwHeHr4/JhrJ9NM2+KHsXhSL5k9FERoEVvGrw2w7xO3NEUq09VioRg=
+	t=1730895712; cv=none; b=Xb8zmwcp6+y9KCXiJP8RRdh4rF89xCQh1hFqzIBXRx5JOi9949LFw8BcL31RrNm/n9oroOuvAGB7b47OuYSOS/bpTMMl4KCUc/mMCMYhrpXjq1BuKD4V1nXS8w4fOgw9+9S6d21Uf8Ti/PFoc71qTpbWNovP+1PbHcGuenLqOrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896385; c=relaxed/simple;
-	bh=H6/wMgXF3PuiOCy8dxlQVqbxaR8a/2prFiXygUMtXAE=;
+	s=arc-20240116; t=1730895712; c=relaxed/simple;
+	bh=WnZPTphLgA3JfmQGxIFIBmg4LEfLorAeE55R6/p92q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxPB1+Ru0qiHoDZmCkUihysx1Lruwp1B/cjtKG5o3nWkkBudks8ov0QGOPp9GdAe4t6NxxBzQrqm71Ne5kZnzmMxjriKq2gZlo6ha/Q2V8up/Ga6VQlLZe5Cs6wjPAgFC4wimcYnxUGefBUbHgeFRHXah5NcZrtEIb8CcEonjFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvn6nMGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C578C4CECD;
-	Wed,  6 Nov 2024 12:33:04 +0000 (UTC)
+	 MIME-Version; b=TpN5V0ifhg5gB4vmSgFUwoVZ740SZ+L6dq5bapPb7d8KY/MMTDwaSA6HJvnm3QPUimI68s10lX5x/W2QMOO9f9rWrHwjPqw87jy/OV/NNXVTh53++dTLUAuOZNz3yM+NxJ8E3fdCuZZl6dSK0Qws1wtCifh7H8kk2yyu2HIOg0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/3ppQvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC71C4CECD;
+	Wed,  6 Nov 2024 12:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896384;
-	bh=H6/wMgXF3PuiOCy8dxlQVqbxaR8a/2prFiXygUMtXAE=;
+	s=korg; t=1730895712;
+	bh=WnZPTphLgA3JfmQGxIFIBmg4LEfLorAeE55R6/p92q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvn6nMGuYyrN/r+vsHyG0bPV44htZZhq3V6hDgcIR8b4yc/GwLLnvYre4gfDHbkMU
-	 pu0gyhwoXGg5XPX4nnt1eZR4JZrG29beytmilXnN0/ASkY9JwV4lT0RUSLkNaJ456V
-	 DDJDJolFhfoEcCttWe8iVb5cmBj3YNo+MJY2QJG4=
+	b=l/3ppQvxejndPhPRr8G9O9kiZ9VPvVeC8zz3avYunOP9sbkV1Hp2vj9Aq4M1i3t2z
+	 7FrITGSNGcz5ltxVEOo+mVPgChkVQ187kW27yB1CYBMnEk6mLxEx0IAFOu9RFFO91u
+	 ExC8+xX6IcKjfwrADNLH8KyFy98kU63gi56s180Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 184/245] xfs: fix finding a last resort AG in xfs_filestream_pick_ag
-Date: Wed,  6 Nov 2024 13:03:57 +0100
-Message-ID: <20241106120323.769244798@linuxfoundation.org>
+Subject: [PATCH 4.19 310/350] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
+Date: Wed,  6 Nov 2024 13:03:58 +0100
+Message-ID: <20241106120328.433066224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit dc60992ce76fbc2f71c2674f435ff6bde2108028 ]
+[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
 
-When the main loop in xfs_filestream_pick_ag fails to find a suitable
-AG it tries to just pick the online AG.  But the loop for that uses
-args->pag as loop iterator while the later code expects pag to be
-set.  Fix this by reusing the max_pag case for this last resort, and
-also add a check for impossible case of no AG just to make sure that
-the uninitialized pag doesn't even escape in theory.
+The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-Reported-by: syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Tested-by: syzbot+4125a3c514e3436a02e6@syzkaller.appspotmail.com
-Fixes: f8f1ed1ab3baba ("xfs: return a referenced perag from filestreams allocator")
-Cc: <stable@vger.kernel.org> # v6.3
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_filestream.c | 23 ++++++++++++-----------
- fs/xfs/xfs_trace.h      | 15 +++++----------
- 2 files changed, 17 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/xfs/xfs_filestream.c b/fs/xfs/xfs_filestream.c
-index e3aaa05555978..88bd23ce74cde 100644
---- a/fs/xfs/xfs_filestream.c
-+++ b/fs/xfs/xfs_filestream.c
-@@ -64,7 +64,7 @@ xfs_filestream_pick_ag(
- 	struct xfs_perag	*pag;
- 	struct xfs_perag	*max_pag = NULL;
- 	xfs_extlen_t		minlen = *longest;
--	xfs_extlen_t		free = 0, minfree, maxfree = 0;
-+	xfs_extlen_t		minfree, maxfree = 0;
- 	xfs_agnumber_t		agno;
- 	bool			first_pass = true;
- 	int			err;
-@@ -107,7 +107,6 @@ xfs_filestream_pick_ag(
- 			     !(flags & XFS_PICK_USERDATA) ||
- 			     (flags & XFS_PICK_LOWSPACE))) {
- 				/* Break out, retaining the reference on the AG. */
--				free = pag->pagf_freeblks;
- 				break;
- 			}
- 		}
-@@ -150,23 +149,25 @@ xfs_filestream_pick_ag(
- 		 * grab.
- 		 */
- 		if (!max_pag) {
--			for_each_perag_wrap(args->mp, 0, start_agno, args->pag)
-+			for_each_perag_wrap(args->mp, 0, start_agno, pag) {
-+				max_pag = pag;
- 				break;
--			atomic_inc(&args->pag->pagf_fstrms);
--			*longest = 0;
--		} else {
--			pag = max_pag;
--			free = maxfree;
--			atomic_inc(&pag->pagf_fstrms);
-+			}
-+
-+			/* Bail if there are no AGs at all to select from. */
-+			if (!max_pag)
-+				return -ENOSPC;
- 		}
-+
-+		pag = max_pag;
-+		atomic_inc(&pag->pagf_fstrms);
- 	} else if (max_pag) {
- 		xfs_perag_rele(max_pag);
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index e0c9fee4e1e65..7948d59b96282 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -1015,6 +1015,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	if(skb->len > XMIT_BUFF_SIZE)
+ 	{
+ 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
++		dev_kfree_skb(skb);
+ 		return NETDEV_TX_OK;
  	}
  
--	trace_xfs_filestream_pick(pag, pino, free);
-+	trace_xfs_filestream_pick(pag, pino);
- 	args->pag = pag;
- 	return 0;
--
- }
- 
- static struct xfs_inode *
-diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
-index 180ce697305a9..f681a195a7441 100644
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -691,8 +691,8 @@ DEFINE_FILESTREAM_EVENT(xfs_filestream_lookup);
- DEFINE_FILESTREAM_EVENT(xfs_filestream_scan);
- 
- TRACE_EVENT(xfs_filestream_pick,
--	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino, xfs_extlen_t free),
--	TP_ARGS(pag, ino, free),
-+	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino),
-+	TP_ARGS(pag, ino),
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(xfs_ino_t, ino)
-@@ -703,14 +703,9 @@ TRACE_EVENT(xfs_filestream_pick,
- 	TP_fast_assign(
- 		__entry->dev = pag->pag_mount->m_super->s_dev;
- 		__entry->ino = ino;
--		if (pag) {
--			__entry->agno = pag->pag_agno;
--			__entry->streams = atomic_read(&pag->pagf_fstrms);
--		} else {
--			__entry->agno = NULLAGNUMBER;
--			__entry->streams = 0;
--		}
--		__entry->free = free;
-+		__entry->agno = pag->pag_agno;
-+		__entry->streams = atomic_read(&pag->pagf_fstrms);
-+		__entry->free = pag->pagf_freeblks;
- 	),
- 	TP_printk("dev %d:%d ino 0x%llx agno 0x%x streams %d free %d",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
 -- 
 2.43.0
 
