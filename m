@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-89960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111099BDBFA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2D49BDC01
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 312E51C22EA3
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9335AB23310
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33AB1CC89D;
-	Wed,  6 Nov 2024 02:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D181CF2AE;
+	Wed,  6 Nov 2024 02:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feB1JIKm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qm+otMio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546921CC887;
-	Wed,  6 Nov 2024 02:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E691CF2A5;
+	Wed,  6 Nov 2024 02:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858985; cv=none; b=HlXibSL0qTWao268hMR9+0Ddrh/Y+geDkKGaYc38H8Xq6oM38LBpHf1EbXbayAeXgp6XuUnblAHIl1rUxi6rsKLUdX7v1IpJFX8dBBx5I1jxRxkdTtltvbFAJn4q8FM+2DglLGhJD0QpxGbQdNTvznhkdXsIeaGZIaACSDzuorc=
+	t=1730858988; cv=none; b=K3o/gfvNEeDGsjemPQr1vgwWUnKLLcS8kPlp2SX2wnv6a8iFmy+8BgqslQLLVLzGc/0hcLjBe+KU+62VCW6fmk2hvTOcTKThFmrrZMD47/Ghw/whmqDVteJV5fSoeXnLl/iK9W9K1/0rA7L9r2s/+cnMcE7xx4HXdX2fRDr3AjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858985; c=relaxed/simple;
-	bh=UYVVTwzIzZVes1NNOPT6nwoHhvCAcSGlPc0j0APmPZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jMbs/v5eNFSZfGuNXYR6mxW1ixOb8Wv5khcvD1fM5/AmeEk3cQqwZzA0nBYA8D+Y7Q8Nw6Q5mwgnFlrjK5jZGWZOejj/giSvaN7uc7pG5V1bB6xMyudsw4Y7R7SThp89tBSiESUYzwxuSx6V+2pJJV/zyguhjwkH+BA+zi/3amA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feB1JIKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16D6C4CECF;
-	Wed,  6 Nov 2024 02:09:43 +0000 (UTC)
+	s=arc-20240116; t=1730858988; c=relaxed/simple;
+	bh=Ze3uZ+nIk5OMTMG/Q231NOFs4pQu+2SRKm8T9nCRF80=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syPmlZbJG3jlQdOXFkGhGEfoC+j+1W+7gyoYqpJ4IyBY59riiBjceQMFOe5TXn97khNbQ4jedtu6NLr+EVFj6Rv/t8uZNOuORH1hVt7iW+2sBA9q2d/xy2kCFzK5a524JrxGooe31ibCy2jEwfW2J6MZBxlIcRSSxay6vpA7OLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qm+otMio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E5C4CECF;
+	Wed,  6 Nov 2024 02:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858984;
-	bh=UYVVTwzIzZVes1NNOPT6nwoHhvCAcSGlPc0j0APmPZE=;
+	s=k20201202; t=1730858988;
+	bh=Ze3uZ+nIk5OMTMG/Q231NOFs4pQu+2SRKm8T9nCRF80=;
 	h=From:To:Cc:Subject:Date:From;
-	b=feB1JIKmQDOrU7vXrAnP/z2DBrHvhlpbpd0vw9D60WH56i//lg8ZzmRSIvkhVpzSp
-	 s8KBeYHNR2PvCq33Vd1idBBuU8wKmXDAg43ebQ/V22YsxO6DarRBUndW5O4iRWN44N
-	 uVbpu7mitsuWVfQ9ZayuUqJHgxxJWHbY7qCO7H8mYsd6hfNSY3WOmQIL3uE74JcczN
-	 NYAcA0r0Oe5z5eVM7N2Rg5Hb+wWPvXwr0+1uEbfoKJRWuwJvTbyZCK2fCVPz8RV8By
-	 xIwRBv23YtFt21BPN7h/HpxH5JdcJWRU918mnXfDURd+D8qkSmdE/mXQlltXdzuJl5
-	 gh0wykJXkzs2Q==
+	b=qm+otMioORvglZyvfAM7xxEejLhB09+arBTcHgKv6tcPZI1dX6p70N17dZcaAZTgR
+	 p8J3Y6rBAw4hfO77P5OTobKXdDDvQK2mlUw0TQgeesTSY59li0zDWEeQf7hNYJgADA
+	 jpn8Zjhusl+5iWSWDqAR1J3LLPkRtGWWtGHXoidQ/f2Jpvcgwti+dLMcsxXaAVEJtX
+	 yIuCIYoE0rDXtyqJrnYKD43E6wkzaIFM2UjQM0g19iWjTO+m7t9xZ3z7MpHpHRVZTc
+	 onyYHLUOsg3p7p5NFj2DS6fqgTGtvXy6OzSWsbLoj9umIrQCNtMB6Sw4Y99I99yOb8
+	 Hv7ouYnGbQYpA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	fdmanana@suse.com
-Cc: Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	linux-btrfs@vger.kernel.org,
+	konishi.ryusuke@gmail.com
+Cc: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-nilfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "btrfs: fix defrag not merging contiguous extents due to merged extent maps" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:41 -0500
-Message-ID: <20241106020942.170673-1-sashal@kernel.org>
+Subject: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of checked flag" failed to apply to v6.6-stable tree
+Date: Tue,  5 Nov 2024 21:09:45 -0500
+Message-ID: <20241106020945.172057-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,117 +71,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 77b0d113eec49a7390ff1a08ca1923e89f5f86c6 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Tue, 29 Oct 2024 15:18:45 +0000
-Subject: [PATCH] btrfs: fix defrag not merging contiguous extents due to
- merged extent maps
+From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Fri, 18 Oct 2024 04:33:10 +0900
+Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checked
+ flag
 
-When running defrag (manual defrag) against a file that has extents that
-are contiguous and we already have the respective extent maps loaded and
-merged, we end up not defragging the range covered by those contiguous
-extents. This happens when we have an extent map that was the result of
-merging multiple extent maps for contiguous extents and the length of the
-merged extent map is greater than or equals to the defrag threshold
-length.
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-The script below reproduces this scenario:
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
 
-   $ cat test.sh
-   #!/bin/bash
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
 
-   DEV=/dev/sdi
-   MNT=/mnt/sdi
-
-   mkfs.btrfs -f $DEV
-   mount $DEV $MNT
-
-   # Create a 256K file with 4 extents of 64K each.
-   xfs_io -f -c "falloc 0 64K" \
-             -c "pwrite 0 64K" \
-             -c "falloc 64K 64K" \
-             -c "pwrite 64K 64K" \
-             -c "falloc 128K 64K" \
-             -c "pwrite 128K 64K" \
-             -c "falloc 192K 64K" \
-             -c "pwrite 192K 64K" \
-             $MNT/foo
-
-   umount $MNT
-   echo -n "Initial number of file extent items: "
-   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
-
-   mount $DEV $MNT
-   # Read the whole file in order to load and merge extent maps.
-   cat $MNT/foo > /dev/null
-
-   btrfs filesystem defragment -t 128K $MNT/foo
-   umount $MNT
-   echo -n "Number of file extent items after defrag with 128K threshold: "
-   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
-
-   mount $DEV $MNT
-   # Read the whole file in order to load and merge extent maps.
-   cat $MNT/foo > /dev/null
-
-   btrfs filesystem defragment -t 256K $MNT/foo
-   umount $MNT
-   echo -n "Number of file extent items after defrag with 256K threshold: "
-   btrfs inspect-internal dump-tree -t 5 $DEV | grep EXTENT_DATA | wc -l
-
-Running it:
-
-   $ ./test.sh
-   Initial number of file extent items: 4
-   Number of file extent items after defrag with 128K threshold: 4
-   Number of file extent items after defrag with 256K threshold: 4
-
-The 4 extents don't get merged because we have an extent map with a size
-of 256K that is the result of merging the individual extent maps for each
-of the four 64K extents and at defrag_lookup_extent() we have a value of
-zero for the generation threshold ('newer_than' argument) since this is a
-manual defrag. As a consequence we don't call defrag_get_extent() to get
-an extent map representing a single file extent item in the inode's
-subvolume tree, so we end up using the merged extent map at
-defrag_collect_targets() and decide not to defrag.
-
-Fix this by updating defrag_lookup_extent() to always discard extent maps
-that were merged and call defrag_get_extent() regardless of the minimum
-generation threshold ('newer_than' argument).
-
-A test case for fstests will be sent along soon.
-
-CC: stable@vger.kernel.org # 6.1+
-Fixes: 199257a78bb0 ("btrfs: defrag: don't use merged extent map for their generation check")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/btrfs/defrag.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/nilfs2/page.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
-index b95ef44c326bd..968dae9539482 100644
---- a/fs/btrfs/defrag.c
-+++ b/fs/btrfs/defrag.c
-@@ -763,12 +763,12 @@ static struct extent_map *defrag_lookup_extent(struct inode *inode, u64 start,
- 	 * We can get a merged extent, in that case, we need to re-search
- 	 * tree to get the original em for defrag.
- 	 *
--	 * If @newer_than is 0 or em::generation < newer_than, we can trust
--	 * this em, as either we don't care about the generation, or the
--	 * merged extent map will be rejected anyway.
-+	 * This is because even if we have adjacent extents that are contiguous
-+	 * and compatible (same type and flags), we still want to defrag them
-+	 * so that we use less metadata (extent items in the extent tree and
-+	 * file extent items in the inode's subvolume tree).
- 	 */
--	if (em && (em->flags & EXTENT_FLAG_MERGED) &&
--	    newer_than && em->generation >= newer_than) {
-+	if (em && (em->flags & EXTENT_FLAG_MERGED)) {
- 		free_extent_map(em);
- 		em = NULL;
- 	}
+diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+index 5436eb0424bd1..10def4b559956 100644
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+ 
+ 	folio_clear_uptodate(folio);
+ 	folio_clear_mappedtodisk(folio);
++	folio_clear_checked(folio);
+ 
+ 	head = folio_buffers(folio);
+ 	if (head) {
 -- 
 2.43.0
 
