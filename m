@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-90842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E799BEB4B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10DF9BEC14
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F3F11F2730F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E8F3B2637A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AC11F7086;
-	Wed,  6 Nov 2024 12:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304C41FAC5A;
+	Wed,  6 Nov 2024 12:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRK7TLDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmyXRN3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19851E04A6;
-	Wed,  6 Nov 2024 12:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC01F426A;
+	Wed,  6 Nov 2024 12:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896974; cv=none; b=UfcONHQv18c7+wsirEIO3TjJNwNrpXSFEu3PEDZ6+bTrq6pLf3Sxyb+4ZIP4ZrdcgATWJ12m5wJNaMIU+uPtuXN/0viDFYC5palHm3sE792cFJ71a7FsjndqXX/r7bHE+vvTFTQs18VRST57rw/xi5J4xiUn6ROhJNSa6sJQFG0=
+	t=1730897501; cv=none; b=FzhfS4KYGAaMUhYcir2TXv4obRbU5KKmFsh/P9VqZ40ZR7CdJLd+Lbvlt8BD/pTNpo7z8xF2DRDnqgV2wdK/5dueKMPYL1+et0yTsJQgm4x/4L2L6rh7c4CYFt3S9C3oI/UyzPhapfADrkzcdOczwkW8LbeIXnKGpnHZE6RM+cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896974; c=relaxed/simple;
-	bh=K8POy4QKFwdC/B5pphEpeP0UT5BrgjQEqgDXnKFxJYU=;
+	s=arc-20240116; t=1730897501; c=relaxed/simple;
+	bh=6ixKpKXp3n8TC7b9Gg7anDQ3N3wC1zvAL3/Ed/u2rTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6jHgnUFdkOFGDq3uLwJQz6bM2ZIInqxIxlvaPx1GjcQJiEuCxibccbM8li0gB0xzI7gP7ikgU+v9qGEd9LD79U5bR67C+W79aRhjnjLrp/R4hQjyDw1HhZDFRUlTOimmeVbxLVDYooFOih9HvpxfVA8UBfe4a/Bq7AUp2WpH6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRK7TLDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE09AC4CED4;
-	Wed,  6 Nov 2024 12:42:53 +0000 (UTC)
+	 MIME-Version; b=jy1n0s8lKliFMEvvW7c50A+jhnLI7tCY3N2rIvegTtmYjOH5sCA6Scj2tc4wtzT4U7e6+spBnTYz/lf1+RVJy1XynvnYFLyXLQtvWwWIyUjvj6wH2R8yUW5KoLe5ESkdonrsU3dtRqqbAyK8TGCG8IIf/T8A3BHivkTRpJQFal8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmyXRN3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25149C4CECD;
+	Wed,  6 Nov 2024 12:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896974;
-	bh=K8POy4QKFwdC/B5pphEpeP0UT5BrgjQEqgDXnKFxJYU=;
+	s=korg; t=1730897500;
+	bh=6ixKpKXp3n8TC7b9Gg7anDQ3N3wC1zvAL3/Ed/u2rTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRK7TLDgJQ2vrSD5H5mCQUQyZu2Fsucy5+AmCdiwWG/rTvZsDXEpHaYmTTOxAv780
-	 oBCIhI25FojodwKqLROYoGD/6C6Q/Wv0Jn6OMGrh+U8KZ8oEKnZgN/hG+K3fY6fT8m
-	 iLjS+8/3BbfttRxhH3ukf13g/ZXCMUsbm2czvmbM=
+	b=XmyXRN3alH+mlQaBfyoIFelNN2L8kD5HezU0TrXaetqE+H9xCAnwTAcR+RhWyzrMa
+	 aRqSg1btarwDfWYnXKPaKlstcu6kFp3EU3gqZSaVKiEuc4MfyZg4l1Pj1mDiHMLHvw
+	 tN4XeC+AOJYstv/tFirUxjdRR3izgTkLR9s9pITg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/126] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
+Subject: [PATCH 6.6 037/151] mlxsw: spectrum_ptp: Add missing verification before pushing Tx header
 Date: Wed,  6 Nov 2024 13:03:45 +0100
-Message-ID: <20241106120306.751314841@linuxfoundation.org>
+Message-ID: <20241106120309.855073869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
+[ Upstream commit 0a66e5582b5102c4d7b866b977ff7c850c1174ce ]
 
-There are code paths from which the function is called without holding
-the RCU read lock, resulting in a suspicious RCU usage warning [1].
+Tx header should be pushed for each packet which is transmitted via
+Spectrum ASICs. The cited commit moved the call to skb_cow_head() from
+mlxsw_sp_port_xmit() to functions which handle Tx header.
 
-Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
-the RCU read lock before calling
-l3mdev_master_upper_ifindex_by_index_rcu().
+In case that mlxsw_sp->ptp_ops->txhdr_construct() is used to handle Tx
+header, and txhdr_construct() is mlxsw_sp_ptp_txhdr_construct(), there is
+no call for skb_cow_head() before pushing Tx header size to SKB. This flow
+is relevant for Spectrum-1 and Spectrum-4, for PTP packets.
 
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
------------------------------
-net/core/dev.c:876 RCU-list traversed in non-reader section!!
+Add the missing call to skb_cow_head() to make sure that there is both
+enough room to push the Tx header and that the SKB header is not cloned and
+can be modified.
 
-other info that might help us debug this:
+An additional set will be sent to net-next to centralize the handling of
+the Tx header by pushing it to every packet just before transmission.
 
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/361:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- dev_get_by_index_rcu+0x1d3/0x210
- l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
- ip_tunnel_bind_dev+0x72f/0xa00
- ip_tunnel_newlink+0x368/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
+Cc: Richard Cochran <richardcochran@gmail.com>
+Fixes: 24157bc69f45 ("mlxsw: Send PTP packets as data packets to overcome a limitation")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/5145780b07ebbb5d3b3570f311254a3a2d554a44.1729866134.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 0cc077c3dda30..f1ba369306fee 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -252,7 +252,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
- 	memset(fl4, 0, sizeof(*fl4));
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+index cbb6c75a66206..56fbb94c496f1 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+@@ -16,6 +16,7 @@
+ #include "spectrum.h"
+ #include "spectrum_ptp.h"
+ #include "core.h"
++#include "txheader.h"
  
- 	if (oif) {
--		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
-+		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
- 		/* Legacy VRF/l3mdev use case */
- 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
- 	}
+ #define MLXSW_SP1_PTP_CLOCK_CYCLES_SHIFT	29
+ #define MLXSW_SP1_PTP_CLOCK_FREQ_KHZ		156257 /* 6.4nSec */
+@@ -1684,6 +1685,12 @@ int mlxsw_sp_ptp_txhdr_construct(struct mlxsw_core *mlxsw_core,
+ 				 struct sk_buff *skb,
+ 				 const struct mlxsw_tx_info *tx_info)
+ {
++	if (skb_cow_head(skb, MLXSW_TXHDR_LEN)) {
++		this_cpu_inc(mlxsw_sp_port->pcpu_stats->tx_dropped);
++		dev_kfree_skb_any(skb);
++		return -ENOMEM;
++	}
++
+ 	mlxsw_sp_txhdr_construct(skb, tx_info);
+ 	return 0;
+ }
 -- 
 2.43.0
 
