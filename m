@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-91082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931849BEC57
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:04:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5E89BEBBF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 575F3285B5D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:04:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325291F21BD4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724D61FBC8A;
-	Wed,  6 Nov 2024 12:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974A91F9424;
+	Wed,  6 Nov 2024 12:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjkCnrKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YacU+3vw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1FC1F4298;
-	Wed,  6 Nov 2024 12:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510DC1F941F;
+	Wed,  6 Nov 2024 12:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897688; cv=none; b=UD6KzvzNW6D+i7dffTtnYVUXAm6saqjaN/0wd//N+F8i1iJOS/aGMgpA1nmuhdKXqz8JqqDnPejHzbaQxk3OLNOGq7PxD/XogV+qsQRmtV2diiFiGmatEtED//47gG6mvTjqT53lD0mBa7p421wo/Eb72swA7Ln6fXT2sqItZ0k=
+	t=1730897268; cv=none; b=TsEp0MYgnMsD+MM9ZKtnsIjKSaT8s7K0iNoewpErNbdGrQZd+1vzK+JOu83NOZIua6WJbi9wBn1mEJycLzIJkG7w9QzFgTm3j1YCz8erRgc+m4xm+ifKggS3JI+2wbBEK/GLj6frCXUItjfqjiyOzd3Z3fuef/9IW2CmMOSuXnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897688; c=relaxed/simple;
-	bh=Suj+vDmIvCRWbzP3z4IGtwoVZF2qvG8wZBj4JEAJoBQ=;
+	s=arc-20240116; t=1730897268; c=relaxed/simple;
+	bh=GGNANi3hCyrHY/OuV1j2E0RzGpt+yHBDe4VZZsRLppc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQBPUqWTgckkoCLVl2OL+A68DORPLZkDJMG2XCK73tY3iQdQ7Grmr7lLVsvLFNzdfalCTFEsJcJZhtX6vvjx9JHzHZMECQl173nY4xunG+klWDLEUL4rAkKLJgGBqIxKI+9aeR6/+6uOeJsvhpM1y9ZevV/0giN+UBJIO/72Ofo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjkCnrKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2FDC4CECD;
-	Wed,  6 Nov 2024 12:54:47 +0000 (UTC)
+	 MIME-Version; b=PeSVmrEN8Fhn6/+szLuSueBDfzeN0QblxcSGAD9MYiuEqeBAaaPsI7Assy0s7sTYBOYGv7m0b1gw4ulsFC+4MBRcssveCaiuGEqKQNdH0Zz4xiEgsGM+zku7HGs9pgI5tQmDpLkXtVHtrZBvWtkkk0/UkWtI0HIkQHkoEKtIl3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YacU+3vw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6F4C4CECD;
+	Wed,  6 Nov 2024 12:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897687;
-	bh=Suj+vDmIvCRWbzP3z4IGtwoVZF2qvG8wZBj4JEAJoBQ=;
+	s=korg; t=1730897268;
+	bh=GGNANi3hCyrHY/OuV1j2E0RzGpt+yHBDe4VZZsRLppc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bjkCnrKQxdyGSouLerc26JlmeUrkLxMGA1gvn7makHW+Mr3KTZ9SdFaEWr1MQIu3J
-	 NIWBSPHc9mPfAAXwJeepRDyzVd9Vuq2rfjeqeDhG4UglhitwiJtwYXzGWCUCE6gtUI
-	 JkqMkfDAPvhxml4r7t60H3CFVXhJrf2SZYdwmd/U=
+	b=YacU+3vw7FArkI2XS5XNcyeLssJL4zJZBa0SI/qYl/vUKX03zTKyntb4dzWKVD8En
+	 igxcdiCvnjgztJaz0miwdopM1JyVhLds90S58YNznoZpfHW1tMCS+cUhcV49crARSL
+	 60hgOqi/Erg6Vtj3g4b7lr+YLYti0M1R/JUqdlB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Yang Shi <shy828301@gmail.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Wei Xu <weixugc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/151] vmscan,migrate: fix page count imbalance on node stats when demoting pages
+	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.1 124/126] vt: prevent kernel-infoleak in con_font_get()
 Date: Wed,  6 Nov 2024 13:05:25 +0100
-Message-ID: <20241106120312.624778396@linuxfoundation.org>
+Message-ID: <20241106120309.407540619@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 35e41024c4c2b02ef8207f61b9004f6956cf037b ]
+commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
 
-When numa balancing is enabled with demotion, vmscan will call
-migrate_pages when shrinking LRUs.  migrate_pages will decrement the
-the node's isolated page count, leading to an imbalanced count when
-invoked from (MG)LRU code.
+font.data may not initialize all memory spaces depending on the implementation
+of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
+is safest to modify it to initialize the allocated memory space to 0, and it
+generally does not affect the overall performance of the system.
 
-The result is dmesg output like such:
-
-$ cat /proc/sys/vm/stat_refresh
-
-[77383.088417] vmstat_refresh: nr_isolated_anon -103212
-[77383.088417] vmstat_refresh: nr_isolated_file -899642
-
-This negative value may impact compaction and reclaim throttling.
-
-The following path produces the decrement:
-
-shrink_folio_list
-  demote_folio_list
-    migrate_pages
-      migrate_pages_batch
-        migrate_folio_move
-          migrate_folio_done
-            mod_node_page_state(-ve) <- decrement
-
-This path happens for SUCCESSFUL migrations, not failures.  Typically
-callers to migrate_pages are required to handle putback/accounting for
-failures, but this is already handled in the shrink code.
-
-When accounting for migrations, instead do not decrement the count when
-the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
-is the only source of MR_DEMOTION.
-
-Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
-Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
+Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c | 2 +-
+ drivers/tty/vt/vt.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 5d7d39b1c0699..c5ed8caf6a406 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1093,7 +1093,7 @@ static void migrate_folio_done(struct folio *src,
- 	 * not accounted to NR_ISOLATED_*. They can be recognized
- 	 * as __PageMovable
- 	 */
--	if (likely(!__folio_test_movable(src)))
-+	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
- 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
- 				    folio_is_file_lru(src), -folio_nr_pages(src));
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4603,7 +4603,7 @@ static int con_font_get(struct vc_data *
+ 	int c;
  
--- 
-2.43.0
-
+ 	if (op->data) {
+-		font.data = kmalloc(max_font_size, GFP_KERNEL);
++		font.data = kzalloc(max_font_size, GFP_KERNEL);
+ 		if (!font.data)
+ 			return -ENOMEM;
+ 	} else
 
 
 
