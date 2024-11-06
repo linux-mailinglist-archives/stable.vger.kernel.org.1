@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-90606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B619BE929
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:31:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C129B9BEBCC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60161F2234E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:31:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D401C237AE
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEF71DE3B8;
-	Wed,  6 Nov 2024 12:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02CF1EF096;
+	Wed,  6 Nov 2024 12:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoCUyC9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEgSARas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD985198E96;
-	Wed,  6 Nov 2024 12:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA691E0083;
+	Wed,  6 Nov 2024 12:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896271; cv=none; b=HoxfehV1YYCUriEaGujmVfTMtb9dxA7tnb3N6bMRRYifTNtq7ZXfaBYelDc523Ey/CYMBr/lyK8XoaaytversCZX5sq/oZDu/9FJ7GPjjiRLznvwjMom0vldsZXyIbAZtoSqNMMycX+voIaaSY4g4DWB1EFdkOh+gUhuOaFF4AE=
+	t=1730897310; cv=none; b=dOGUfp2iuhopuns49dY2fCPeY6TU3DnUH+1yVuPr1q///HAc3GioBiS2P2+/3hMsqznyX/hkVGTvUwY/a8YjWtV95sBflIkROeg2sghxZyQkOwQlQkOQjoqAgulGOnP3hiMLU1P0FiS0ybl5UiMrNy6bdBTtg4REttdBY4lgHJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896271; c=relaxed/simple;
-	bh=3xgvypl63aFfPZJFs2006wfYdCWtDhBmsnL/lMMn2aE=;
+	s=arc-20240116; t=1730897310; c=relaxed/simple;
+	bh=ti63tm4VHoc2lJ/0WrcFnAhxXwSo36NJcgMVoCdSirQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCdgJto7VZCdXZwW3ab/K8nZw7cUe1BSmCjUq1OSXL376Ks0iC+EeodL5D5v3QvduF/V52TkfIsg2MuJpuW8UBuHBGlsQm/sw82mtpTPNYJCwh/JEglQKjLZnfzDVGRrV3wByuPLyxI2ttjNN3CUOJlGllZwEy5BMmirL7Md7Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoCUyC9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA95C4CECD;
-	Wed,  6 Nov 2024 12:31:10 +0000 (UTC)
+	 MIME-Version; b=os4FiszWOPuHnI9UFjClHPjJCNP7Jip/bdoAvAFtJTo8RvEwOiMeORHrhWgyZV9yXnLveCcgfgmEvt2YZ1IAuChEIhK0QlwNRpjKVjMnKguJNvC5E7GmJ4XIRF1UoFFdDy2Z28rywIehkxQ9ZimJ5E+xEai42scWlQnlWhvux+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEgSARas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1A6C4CECD;
+	Wed,  6 Nov 2024 12:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896271;
-	bh=3xgvypl63aFfPZJFs2006wfYdCWtDhBmsnL/lMMn2aE=;
+	s=korg; t=1730897309;
+	bh=ti63tm4VHoc2lJ/0WrcFnAhxXwSo36NJcgMVoCdSirQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoCUyC9UxiH5yDa7ogEyw+sHUUQjMiXp5xXdeTMKj45PlH/O8BArkYJfCRkXn1omT
-	 mg8IAbNoiJSZjKi+VYDuQHcjyj+e68tsMDpWK5arN5hzJV2kSEtUDCsUFE6pecxV2I
-	 fTe9NYsPFFBh0R/LfWxM+PS75gp8o9hBq7EIWMt0=
+	b=HEgSARass0kJtByHR2vgdhuvo8s++DBagpo5Lo85VGWg0MDhlmYF0z0ake5oL3HQ2
+	 OWU5SXIuTehgmvFLcBOoe0opB17t8b0eUFLfNjhG/0JJ9EJHY1VYOeazF27rKg3eyD
+	 1/nE/GTqvmpptU7jOVVah0KDfHaFoo8z8rh2BZu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 146/245] mmc: sdhci-pci-gli: GL9767: Fix low power mode in the SD Express process
+	Remi Pommarel <repk@triplefau.lt>,
+	Praneesh P <quic_ppranees@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 011/151] wifi: ath11k: Fix invalid ring usage in full monitor mode
 Date: Wed,  6 Nov 2024 13:03:19 +0100
-Message-ID: <20241106120322.820943243@linuxfoundation.org>
+Message-ID: <20241106120309.148691004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit c4dedaaeb3f78d3718e9c1b1e4d972a6b99073cd upstream.
+[ Upstream commit befd716ed429b26eca7abde95da6195c548470de ]
 
-When starting the SD Express process, the low power negotiation mode will
-be disabled, so we need to re-enable it after switching back to SD mode.
+On full monitor HW the monitor destination rxdma ring does not have the
+same descriptor format as in the "classical" mode. The full monitor
+destination entries are of hal_sw_monitor_ring type and fetched using
+ath11k_dp_full_mon_process_rx while the classical ones are of type
+hal_reo_entrance_ring and fetched with ath11k_dp_rx_mon_dest_process.
 
-Fixes: 0e92aec2efa0 ("mmc: sdhci-pci-gli: Add support SD Express card for GL9767")
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Cc: stable@vger.kernel.org
-Message-ID: <20241025060017.1663697-2-benchuanggli@gmail.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Although both hal_sw_monitor_ring and hal_reo_entrance_ring are of same
+size, the offset to useful info (such as sw_cookie, paddr, etc) are
+different. Thus if ath11k_dp_rx_mon_dest_process gets called on full
+monitor destination ring, invalid skb buffer id will be fetched from DMA
+ring causing issues such as the following rcu_sched stall:
+
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:     0-....: (1 GPs behind) idle=c67/0/0x7 softirq=45768/45769 fqs=1012
+  (t=2100 jiffies g=14817 q=8703)
+ Task dump for CPU 0:
+ task:swapper/0       state:R  running task     stack: 0 pid:    0 ppid:     0 flags:0x0000000a
+ Call trace:
+  dump_backtrace+0x0/0x160
+  show_stack+0x14/0x20
+  sched_show_task+0x158/0x184
+  dump_cpu_task+0x40/0x4c
+  rcu_dump_cpu_stacks+0xec/0x12c
+  rcu_sched_clock_irq+0x6c8/0x8a0
+  update_process_times+0x88/0xd0
+  tick_sched_timer+0x74/0x1e0
+  __hrtimer_run_queues+0x150/0x204
+  hrtimer_interrupt+0xe4/0x240
+  arch_timer_handler_phys+0x30/0x40
+  handle_percpu_devid_irq+0x80/0x130
+  handle_domain_irq+0x5c/0x90
+  gic_handle_irq+0x8c/0xb4
+  do_interrupt_handler+0x30/0x54
+  el1_interrupt+0x2c/0x4c
+  el1h_64_irq_handler+0x14/0x1c
+  el1h_64_irq+0x74/0x78
+  do_raw_spin_lock+0x60/0x100
+  _raw_spin_lock_bh+0x1c/0x2c
+  ath11k_dp_rx_mon_mpdu_pop.constprop.0+0x174/0x650
+  ath11k_dp_rx_process_mon_status+0x8b4/0xa80
+  ath11k_dp_rx_process_mon_rings+0x244/0x510
+  ath11k_dp_service_srng+0x190/0x300
+  ath11k_pcic_ext_grp_napi_poll+0x30/0xc0
+  __napi_poll+0x34/0x174
+  net_rx_action+0xf8/0x2a0
+  _stext+0x12c/0x2ac
+  irq_exit+0x94/0xc0
+  handle_domain_irq+0x60/0x90
+  gic_handle_irq+0x8c/0xb4
+  call_on_irq_stack+0x28/0x44
+  do_interrupt_handler+0x4c/0x54
+  el1_interrupt+0x2c/0x4c
+  el1h_64_irq_handler+0x14/0x1c
+  el1h_64_irq+0x74/0x78
+  arch_cpu_idle+0x14/0x20
+  do_idle+0xf0/0x130
+  cpu_startup_entry+0x24/0x50
+  rest_init+0xf8/0x104
+  arch_call_rest_init+0xc/0x14
+  start_kernel+0x56c/0x58c
+  __primary_switched+0xa0/0xa8
+
+Thus ath11k_dp_rx_mon_dest_process(), which use classical destination
+entry format, should no be called on full monitor capable HW.
+
+Fixes: 67a9d399fcb0 ("ath11k: enable RX PPDU stats in monitor co-exist mode")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Reviewed-by: Praneesh P <quic_ppranees@quicinc.com>
+Link: https://patch.msgid.link/20240924194119.15942-1-repk@triplefau.lt
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -1068,6 +1068,9 @@ static int gl9767_init_sd_express(struct
- 		sdhci_writew(host, value, SDHCI_CLOCK_CONTROL);
- 	}
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index a4d56136f42f7..fb426195a3f01 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -5240,8 +5240,11 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
+ 		    hal_status == HAL_TLV_STATUS_PPDU_DONE) {
+ 			rx_mon_stats->status_ppdu_done++;
+ 			pmon->mon_ppdu_status = DP_PPDU_STATUS_DONE;
+-			ath11k_dp_rx_mon_dest_process(ar, mac_id, budget, napi);
+-			pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
++			if (!ab->hw_params.full_monitor_mode) {
++				ath11k_dp_rx_mon_dest_process(ar, mac_id,
++							      budget, napi);
++				pmon->mon_ppdu_status = DP_PPDU_STATUS_START;
++			}
+ 		}
  
-+	pci_read_config_dword(pdev, PCIE_GLI_9767_CFG, &value);
-+	value &= ~PCIE_GLI_9767_CFG_LOW_PWR_OFF;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_CFG, value);
- 	gl9767_vhs_read(pdev);
- 
- 	return 0;
+ 		if (ppdu_info->peer_id == HAL_INVALID_PEERID ||
+-- 
+2.43.0
+
 
 
 
