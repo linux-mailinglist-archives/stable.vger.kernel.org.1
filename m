@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-91533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0409BEE66
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DCB9BEE9D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94371F249D5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D701C240E1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335591E0096;
-	Wed,  6 Nov 2024 13:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D441E0488;
+	Wed,  6 Nov 2024 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFSYV7wZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb/8huDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56FB1CC14B;
-	Wed,  6 Nov 2024 13:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335391E00AB;
+	Wed,  6 Nov 2024 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730899012; cv=none; b=CYoVJXT5x9mZsrDPBkb6s8RXGJHmCocZWVe1hXlLpOQhnc+edAiPNmEHvVb9y7dbI+6KDTLKyXH7ps3etUZkGZcVRbweTOgqTZj7QFfc0nr0x7Dx5PgDBsctTW5+PoETOYWy65RARUM2/mtOJipbwmT8tpRG4T8O7WWmpeJ2A/s=
+	t=1730899141; cv=none; b=pXbHKcFKc73cvoT4tdc217VlQIE1c4H3dHotpkLUwYUD6ZTXZKLKIjajLfhLyuJOy8L1YAuT1WyxDicvYPn8lyHPyXVcgY3tIfS2tTa6HP6/a9QDtjr0x/4yaHy/JhmWiPU577/ZlGIHNc392zAAIIhkQ5tGOmFajpbFTB2Cb9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730899012; c=relaxed/simple;
-	bh=BzflyP79Tc/YLtHYwKh+G8aqTZrf+TVMn5zNtksPnu0=;
+	s=arc-20240116; t=1730899141; c=relaxed/simple;
+	bh=eFeWUI0mYH/y6bt/QBCUao+dZDH7J4fRVGV+VKs8DNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt4zFwLVaknP/JwYtHHuONCGk7ETMkPAx3pLwiHzFCetnFrcMOTBNvL44d7myVdmmZ6qPHHG8DjAcd9q9drXME1dJ0hqqwj1BK7QkfHCMMWd1YHuCNe2+gxXUGc/V5iRclqwiUc2ydLohoskIP7DS7YfAuXby0UHdrtuUGrEYR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFSYV7wZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71900C4CECD;
-	Wed,  6 Nov 2024 13:16:51 +0000 (UTC)
+	 MIME-Version; b=c5l9pwjbwCpP14rdJdNr0ZDc8wUdgkXis4cGJZI1MzEZ+pCPNSIQvsV+UQmHvOgGut5W3GAGpHl+N49yPZsBgq6WpRKazs1AubxL02Le13RZRTQlIf5LVlKDzOaYFqd1u8ObbYOx858JZBDGgTuXwjxakFmf9a3KZkEC1CWWk1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb/8huDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD20EC4CED3;
+	Wed,  6 Nov 2024 13:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730899011;
-	bh=BzflyP79Tc/YLtHYwKh+G8aqTZrf+TVMn5zNtksPnu0=;
+	s=korg; t=1730899141;
+	bh=eFeWUI0mYH/y6bt/QBCUao+dZDH7J4fRVGV+VKs8DNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFSYV7wZx6+G54QMX6RHR/4T8EtHreEpoeDABH08wStHa0jFBX28uV4btOyKSCpva
-	 dClnszdpPRA3oVjFFYEgShry9KrNd8cHNdF5Ai4JBvGoGWYdZ+aducPCtve0zBXgdC
-	 A8sW3RWy5IDP0oh7Tlip7P5JqXV5BQ+KyjOIWSQE=
+	b=bb/8huDCCOBgLkGKvpk7sB8HzRz1i927PvUsp6Al08LtWgghP7fwQjlPP6Eg0T4Ee
+	 +mTHN4ySscD6EfRonq5xxOYBP2GzLe9XwbgYe/Br5L4MJfLRL7h+ZR+0nfqsCAWUyb
+	 bx8DSlu4s6B+iFPkh+skkNBz94o4ggXyVToyFPFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	junhua huang <huang.junhua@zte.com.cn>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.4 424/462] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
+	Johannes Berg <johannes.berg@intel.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/73] mac80211: do drv_reconfig_complete() before restarting all
 Date: Wed,  6 Nov 2024 13:05:17 +0100
-Message-ID: <20241106120341.986101483@linuxfoundation.org>
+Message-ID: <20241106120300.356440553@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junhua huang <huang.junhua@zte.com.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
+[ Upstream commit 13dee10b30c058ee2c58c5da00339cc0d4201aa6 ]
 
-After we fixed the uprobe inst endian in aarch_be, the sparse check report
-the following warning info:
+When we reconfigure, the driver might do some things to complete
+the reconfiguration. It's strange and could be broken in some
+cases because we restart other works (e.g. remain-on-channel and
+TX) before this happens, yet only start queues later.
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
->> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
-@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
-   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
->> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
-@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
-   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
+Change this to do the reconfig complete when reconfiguration is
+actually complete, not when we've already started doing other
+things again.
 
-use the __le32 to u32 for uprobe_opcode_t, to keep the same.
+For iwlwifi, this should fix a race where the reconfig can race
+with TX, for ath10k and ath11k that also use this it won't make
+a difference because they just start queues there, and mac80211
+also stopped the queues and will restart them later as before.
 
-Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
-Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20211129152938.cab99f22fe19.Iefe494687f15fd85f77c1b989d1149c8efdfdc36@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 07a6e3b78a65 ("wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/util.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -14,7 +14,7 @@
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
- #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index ef7b6d88ee00c..28676a305916c 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2656,6 +2656,13 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		mutex_unlock(&local->sta_mtx);
+ 	}
  
--typedef u32 uprobe_opcode_t;
-+typedef __le32 uprobe_opcode_t;
++	/*
++	 * If this is for hw restart things are still running.
++	 * We may want to change that later, however.
++	 */
++	if (local->open_count && (!suspended || reconfig_due_to_wowlan))
++		drv_reconfig_complete(local, IEEE80211_RECONFIG_TYPE_RESTART);
++
+ 	if (local->in_reconfig) {
+ 		local->in_reconfig = false;
+ 		barrier();
+@@ -2674,13 +2681,6 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 					IEEE80211_QUEUE_STOP_REASON_SUSPEND,
+ 					false);
  
- struct arch_uprobe_task {
- };
+-	/*
+-	 * If this is for hw restart things are still running.
+-	 * We may want to change that later, however.
+-	 */
+-	if (local->open_count && (!suspended || reconfig_due_to_wowlan))
+-		drv_reconfig_complete(local, IEEE80211_RECONFIG_TYPE_RESTART);
+-
+ 	if (!suspended)
+ 		return 0;
+ 
+-- 
+2.43.0
+
 
 
 
