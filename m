@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-90361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E029BE7EE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7C79BE906
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A77FB1C20C92
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E29C1C214C8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313F51DF738;
-	Wed,  6 Nov 2024 12:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F29A1DF726;
+	Wed,  6 Nov 2024 12:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa1fiW13"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbIykjgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16F51DF25E;
-	Wed,  6 Nov 2024 12:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E85C1D2784;
+	Wed,  6 Nov 2024 12:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895544; cv=none; b=Mwp0ZAZArXuwoPccnOM7nhT1p4+aW/eCb6ryp6zmpaUeiASmST7h3g0bX+FkbIRmO5RxnnhdFfJnHaEPNvW+i1Zm75S052mWfoywjN9Pc+4Bpm/8Zk5MRF/2Ym93p6h5eFjQrIHmw0eciJXC65YHbtJmW8VoXihUlasE/Nkj+/4=
+	t=1730896185; cv=none; b=jiyXMgnBp7IbUErogsUGvu7jMKHDg/Qwvw2jgdMRO0w4BViKiceKn9KZFoQthMy5DAkM4V749gU4Aw6UQxTbpJZYHa5iXhDbjZWspKhR8r4olnzsNZwXiNfwow966Oe5p2D3TWiGumMf2WiS67KZ9D+FKBTPUfJP2m3kuD5RGCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895544; c=relaxed/simple;
-	bh=Js/W1lrfkMYaSsltn62Kk13aSa8AvoGvV5sOFuk4mcI=;
+	s=arc-20240116; t=1730896185; c=relaxed/simple;
+	bh=YNDd2DxFb6VKmRRwzwJJS857J5cF3KLYWGy5/vprxl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgusKH7FS2sjymizXlSk22gVZKKBzQNumXXEHtmJQahmTqsQciE/FQWDj2TgqtKxc8ZoR6IIfN/XORBjE47cjVPmT0bkuZQbbusQAtHq10lQYxf5UaSZMTAx+Ig9FIp3STQS0D1uI5RhJboKUasK4rwqIPfe6YjnQqXEO96OlQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aa1fiW13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A85C4CED4;
-	Wed,  6 Nov 2024 12:19:03 +0000 (UTC)
+	 MIME-Version; b=U2hRMj3rl6YqDmaJHP+eDQ2ecaLEKi/5ymZdc41O+KKVeAET7ZowS1+OE2AhBlhFBz5zzAy45gK5On8Dt9rLaFnA06rTwgcRA4Zt7j3xY5+gy6nEvewZ9Pp+vjTjkqRnYYnPRI01zj6i2cnIEQoVYPGP/5OCCJXcltsTOU85s80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbIykjgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC567C4CECD;
+	Wed,  6 Nov 2024 12:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895543;
-	bh=Js/W1lrfkMYaSsltn62Kk13aSa8AvoGvV5sOFuk4mcI=;
+	s=korg; t=1730896185;
+	bh=YNDd2DxFb6VKmRRwzwJJS857J5cF3KLYWGy5/vprxl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aa1fiW13FDWN4phHyjR24SyYWk3lIxJBXLl++6X0jzxZ4TpxZXvRtk3h/R7vBrrsq
-	 ifHawGwBipCYuD2SquSavHHlt6d7J/vn3qbH+x4bEln3eRFDNfKlROTWHM+oEfXeim
-	 mgzxO26+02VuhK296oKI9c58qM8ECXtkBQNJHj9Q=
+	b=AbIykjgR7xnvwIz82S5WEY8kvPvqtw9gkW+x7pwYE/o6Ly2iErIZIwx61wHc43DGv
+	 d0UdBz98VmJXr9GST5J8LRaLyLsosSS8ssVGCJGEjgp+x5yc/7TvqPtDD2a6XnFWze
+	 S/4xqTcecSqhBiL+vFr6RukfLKhS4maSJAoiOUYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 4.19 207/350] media: uapi/linux/cec.h: cec_msg_set_reply_to: zero flags
+	lei lu <llfamsec@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 082/245] ntfs3: Add bounds checking to mi_enum_attr()
 Date: Wed,  6 Nov 2024 13:02:15 +0100
-Message-ID: <20241106120326.097933173@linuxfoundation.org>
+Message-ID: <20241106120321.222056074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: lei lu <llfamsec@gmail.com>
 
-commit 599f6899051cb70c4e0aa9fd591b9ee220cb6f14 upstream.
+[ Upstream commit 556bdf27c2dd5c74a9caacbe524b943a6cd42d99 ]
 
-The cec_msg_set_reply_to() helper function never zeroed the
-struct cec_msg flags field, this can cause unexpected behavior
-if flags was uninitialized to begin with.
+Added bounds checking to make sure that every attr don't stray beyond
+valid memory region.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 0dbacebede1e ("[media] cec: move the CEC framework out of staging and to media")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/cec.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/record.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
---- a/include/uapi/linux/cec.h
-+++ b/include/uapi/linux/cec.h
-@@ -132,6 +132,8 @@ static inline void cec_msg_init(struct c
-  * Set the msg destination to the orig initiator and the msg initiator to the
-  * orig destination. Note that msg and orig may be the same pointer, in which
-  * case the change is done in place.
-+ *
-+ * It also zeroes the reply, timeout and flags fields.
-  */
- static inline void cec_msg_set_reply_to(struct cec_msg *msg,
- 					struct cec_msg *orig)
-@@ -139,7 +141,9 @@ static inline void cec_msg_set_reply_to(
- 	/* The destination becomes the initiator and vice versa */
- 	msg->msg[0] = (cec_msg_destination(orig) << 4) |
- 		      cec_msg_initiator(orig);
--	msg->reply = msg->timeout = 0;
-+	msg->reply = 0;
-+	msg->timeout = 0;
-+	msg->flags = 0;
- }
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 6c76503edc200..2a375247b3c09 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -223,28 +223,19 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 		prev_type = 0;
+ 		attr = Add2Ptr(rec, off);
+ 	} else {
+-		/* Check if input attr inside record. */
++		/*
++		 * We don't need to check previous attr here. There is
++		 * a bounds checking in the previous round.
++		 */
+ 		off = PtrOffset(rec, attr);
+-		if (off >= used)
+-			return NULL;
  
- /* cec_msg flags field */
+ 		asize = le32_to_cpu(attr->size);
+-		if (asize < SIZEOF_RESIDENT) {
+-			/* Impossible 'cause we should not return such attribute. */
+-			return NULL;
+-		}
+-
+-		/* Overflow check. */
+-		if (off + asize < off)
+-			return NULL;
+ 
+ 		prev_type = le32_to_cpu(attr->type);
+ 		attr = Add2Ptr(attr, asize);
+ 		off += asize;
+ 	}
+ 
+-	asize = le32_to_cpu(attr->size);
+-
+ 	/* Can we use the first field (attr->type). */
+ 	if (off + 8 > used) {
+ 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
+@@ -265,6 +256,12 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 	if (t32 < prev_type)
+ 		return NULL;
+ 
++	asize = le32_to_cpu(attr->size);
++	if (asize < SIZEOF_RESIDENT) {
++		/* Impossible 'cause we should not return such attribute. */
++		return NULL;
++	}
++
+ 	/* Check overflow and boundary. */
+ 	if (off + asize < off || off + asize > used)
+ 		return NULL;
+-- 
+2.43.0
+
 
 
 
