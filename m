@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-90038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D095A9BDCCE
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:32:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0879BDCD1
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:32:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 901DD289323
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:32:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C0B21C22500
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2033218929;
-	Wed,  6 Nov 2024 02:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225A1218947;
+	Wed,  6 Nov 2024 02:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcyBhtF3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7IYNrtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87491D6DDA;
-	Wed,  6 Nov 2024 02:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17DC218941;
+	Wed,  6 Nov 2024 02:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859269; cv=none; b=hUa5aRSdHWyRr+MeLKryTfqXkiK0F0iMVMZUZT2eVaVUuFmXLDzbvofDDQr57KU3A4+cbQrCLma3AKkJh7hD0uTpKPZ2b0QJqhBf/auEW71hzRi8mXwlqEtbwlJ0nmvCXuDQUJpntWQvcSHtGJdTSdaukHqL90aDrrHe1pm+9tI=
+	t=1730859272; cv=none; b=EPb2xaiVqjEnazCXW229E4QvkwaqqCS9ev3lMx0UusgNZQGexI3ADLhcOX63aZ6wggdskOg/kwkA8pZtlOkQ2Gm94WepzFPvWzaoRIXMiWz/gHWoRvJ7/KN75oswtLAqH/gqfpuauRBeNV5/RrQjCVRJw0ln4RCfxDc9So52cto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859269; c=relaxed/simple;
-	bh=6d0MtxPG6DkV1p6lLqPpnXiaRpUGvVjVZdS3RY1vEr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GELhbXf0bwkCAy4IV46HWMaWD7nmP6mOkk+3KzXl1KOdW9j6pp91G6eQ6IrpM4rzbAi+2OngUJavLrn1S+8ddep8Z+cKhSFa/bqoC0ubZvCki7gQSDMHEi6H4fJcV4pMbRM7RUWKIj6u10fbQO82KYuuTvANKQMvbImvhAPPCL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcyBhtF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97B1C4CECF;
-	Wed,  6 Nov 2024 02:14:28 +0000 (UTC)
+	s=arc-20240116; t=1730859272; c=relaxed/simple;
+	bh=UKfE9vJU5UQo5tyD+1m/eWkj3dV78IST8DfUfTss1+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q5kA9f1gaJ4e4qxpTQLeGr5jiKUS+Rk1yhVLBnRy678M44NxeUrfHfj/CXHWYWH4IchC4B/PmjvcginZL/f9hfe6k1GIjX3wH1vTK37v1f61xYcmiybo4hINvkVrJ/P4tL1YDCJj4+vcX9SwJUoEMJ0oe4qKf83JAhp1dPGoXBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7IYNrtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1C4C4CECF;
+	Wed,  6 Nov 2024 02:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859269;
-	bh=6d0MtxPG6DkV1p6lLqPpnXiaRpUGvVjVZdS3RY1vEr4=;
+	s=k20201202; t=1730859272;
+	bh=UKfE9vJU5UQo5tyD+1m/eWkj3dV78IST8DfUfTss1+A=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BcyBhtF3wEqVhhV46dnalRbrY9GQTDUtDR9yOof0OTFx9CIS7vUZDBzOphkVVFlBj
-	 gnPWZzqHiiTIe/gMfKF1ihUVhs69cvyzK/f0dEthPyXqDB0n9lWyjsk9h2ACkALEiC
-	 AynAWU0A8M1ceCJSlsHp0TstEEc4t7EUTzHbp44mludov47VxzrQXDaB3Hw5ZxmRSU
-	 xxt6CGeH0m/vhfsurIT9wjzO+T5B/NGatfU2GfIwMWaSCeQ0c6euD18rNypLSms2a9
-	 OHl4HNgtRyBQ4s8is3X/by9yrOg4w+4Ri+sYVaUpRFNmeSkte0Yy+z1gVJ2DyWn1A3
-	 6HHa7andNeAyA==
+	b=C7IYNrtr5YmFyW6HCdVyAhY0ptU+JtZ2Ej6X2cufnE2mc2om976KVOZ5jOUvY5g4d
+	 gFSLVYGME9T05s0auTmGV7pmDfc2jrClIuNYCJ1BHzhCxXv0CqBOBa2e4LEkTqcDiJ
+	 n6kl73PvXkn57YiKXlP5qklbIBTn9XkGUyd+MXC7eQu4q5uIlG4wlLEDd13zac4eco
+	 sB9IrLMvaAt4sNNMWwEGsdhASKk0kjaHAmT8u8vdyyh5g0f/wQc5FrcDsLUQlCyMFi
+	 w0gL0aPGIq6U8J0ZbJtB1zfVgemRfEGr+EO3vYvCHxbg8oVc7GHzfBcYm10IpEbmgZ
+	 G9n+8ZXMydOKw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	kailang@realtek.com
-Cc: Takashi Iwai <tiwai@suse.de>,
-	linux-sound@vger.kernel.org,
+	konishi.ryusuke@gmail.com
+Cc: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-nilfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "ALSA: hda/realtek: Limit internal Mic boost on Dell platform" failed to apply to v4.19-stable tree
-Date: Tue,  5 Nov 2024 21:14:26 -0500
-Message-ID: <20241106021426.184279-1-sashal@kernel.org>
+Subject: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of checked flag" failed to apply to v4.19-stable tree
+Date: Tue,  5 Nov 2024 21:14:29 -0500
+Message-ID: <20241106021430.184316-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,95 +71,49 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 78e7be018784934081afec77f96d49a2483f9188 Mon Sep 17 00:00:00 2001
-From: Kailang Yang <kailang@realtek.com>
-Date: Fri, 18 Oct 2024 13:53:24 +0800
-Subject: [PATCH] ALSA: hda/realtek: Limit internal Mic boost on Dell platform
+From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Fri, 18 Oct 2024 04:33:10 +0900
+Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checked
+ flag
 
-Dell want to limit internal Mic boost on all Dell platform.
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
+
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
+
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/561fc5f5eff04b6cbd79ed173cd1c1db@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ fs/nilfs2/page.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3567b14b52b7c..784ac058418fc 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7521,6 +7521,7 @@ enum {
- 	ALC286_FIXUP_SONY_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_PINCFG_NO_HP_TO_LINEOUT,
- 	ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 	ALC269_FIXUP_DELL2_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_DELL3_MIC_NO_PRESENCE,
- 	ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-@@ -7555,6 +7556,7 @@ enum {
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 	ALC255_FIXUP_DELL2_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_HEADSET_MODE,
- 	ALC255_FIXUP_HEADSET_MODE_NO_HP_MIC,
-@@ -8114,6 +8116,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_HEADSET_MODE
- 	},
-+	[ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc269_fixup_limit_int_mic_boost,
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_DELL1_MIC_NO_PRESENCE
-+	},
- 	[ALC269_FIXUP_DELL2_MIC_NO_PRESENCE] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -8394,6 +8402,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC255_FIXUP_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc269_fixup_limit_int_mic_boost,
-+		.chained = true,
-+		.chain_id = ALC255_FIXUP_DELL1_MIC_NO_PRESENCE
-+	},
- 	[ALC255_FIXUP_DELL2_MIC_NO_PRESENCE] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -11076,6 +11090,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC269_FIXUP_DELL2_MIC_NO_PRESENCE, .name = "dell-headset-dock"},
- 	{.id = ALC269_FIXUP_DELL3_MIC_NO_PRESENCE, .name = "dell-headset3"},
- 	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE, .name = "dell-headset4"},
-+	{.id = ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET, .name = "dell-headset4-quiet"},
- 	{.id = ALC283_FIXUP_CHROME_BOOK, .name = "alc283-dac-wcaps"},
- 	{.id = ALC283_FIXUP_SENSE_COMBO_JACK, .name = "alc283-sense-combo"},
- 	{.id = ALC292_FIXUP_TPT440_DOCK, .name = "tpt440-dock"},
-@@ -11630,16 +11645,16 @@ static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-+	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE_QUIET,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-+	SND_HDA_PIN_QUIRK(0x10ec0236, 0x1028, "Dell", ALC255_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
--	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB,
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC269_FIXUP_DELL1_LIMIT_INT_MIC_BOOST,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
+diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+index 5436eb0424bd1..10def4b559956 100644
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+ 
+ 	folio_clear_uptodate(folio);
+ 	folio_clear_mappedtodisk(folio);
++	folio_clear_checked(folio);
+ 
+ 	head = folio_buffers(folio);
+ 	if (head) {
 -- 
 2.43.0
 
