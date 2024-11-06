@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18BA9BE702
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F52E9BECE2
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6214284FAD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376D51F2323C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B601DF25D;
-	Wed,  6 Nov 2024 12:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1E91F7566;
+	Wed,  6 Nov 2024 13:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDySxxlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9rlZB+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63FC1DE3B8;
-	Wed,  6 Nov 2024 12:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF941F7557;
+	Wed,  6 Nov 2024 13:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894968; cv=none; b=AbwD8zl9q1URruieWevpNFchEtr10B2jgIOQPHnLvKyd9VYWaIShBx1DMp2feL2Sfj+rogxLijMQnqScOO2t5GbPvfB8pPnURKpnMGMB7AfaX04J/35UMmtYItJQg37XsmLHpvSiuLRpYdulpU7iiNT8CcMq9x0X6r86yrte2Gw=
+	t=1730898018; cv=none; b=BcE/rtDLpBYdWvACr2Vb+HgvlIBgfLzaHMF/fCCoZwOKvfeLekjzFBQBwS7cmgqsSfrjoH88TwdmGphgYlEOZIGHVctWpDlEQzsOEDA3guxUdCtndNpC6d82FnhbPaXQ9VClcvHJBRb1S1fA3KngCThnrv/C1TwNaCt4PmsULsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894968; c=relaxed/simple;
-	bh=tEGbv1Apo73rITp0whjjeo8KR16pFUs7Erkph8GGylA=;
+	s=arc-20240116; t=1730898018; c=relaxed/simple;
+	bh=ssawlkmPOR/AgV85GZYdwHsRgtLg730pVDLDlyyzK7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ramkGC0oJvcEfaTSU58IfmTwlpzbCcLy1SF4daBTdE+9V5YfMA2T2JyPMXJnpxwCWMNjpSBVwob/5hG4wNqFL1Ln5VbasQxHSkb6J/fohz4eqV7RQ4rEdg/RWoTUurE5U0HhouTztGH5sknwFtcQ/rZNMbCXcaGC4a1E4c3aCn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDySxxlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60D7C4CECD;
-	Wed,  6 Nov 2024 12:09:27 +0000 (UTC)
+	 MIME-Version; b=D54M5QK7LSl+sMVeTzOLjHXP9OCndj28C4kyC8nlOOJrgP+1SwO+mMF2zAbge23lYgPCD1flCecJJ5CtIxQwmRW5BtR9tANle1wSw84PeKSkraCDOuMiEv6LDXacAteEIHmVwBMcLCdOYhvi6TtzYSyLmQWJN2UwhuNSMGIQWv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9rlZB+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4E4C4CECD;
+	Wed,  6 Nov 2024 13:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894968;
-	bh=tEGbv1Apo73rITp0whjjeo8KR16pFUs7Erkph8GGylA=;
+	s=korg; t=1730898017;
+	bh=ssawlkmPOR/AgV85GZYdwHsRgtLg730pVDLDlyyzK7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDySxxlL9cT/MQkTXbSc/SV8O8AeD7t9pYLoWiEh6J3kA75jhkNMkEeCRt+3cQbjq
-	 MFmNZMkdkliswRcuNAtNY5wTKVq+zBhrjf/C1S7QNbelx4p99+Xad0ZXC5GDXvoRft
-	 NJSX5ZhNeAyV6AVQm/cYKYUzJq+g6q4MA27/OzcA=
+	b=j9rlZB+TwN1sfXmgu3v+bF4jL8C/4HxVO9sNwF7s6wqgokcYavlclcf8miOnHsvX9
+	 vYivCZFp/bwETkoulKf4Y8kEj2b2jh7S3Re1RdMVYN/xdV7eFkp8J3PVfZT+ae7Esj
+	 hMHJ76bvIRqTIkeCKDi4PctpuamgqcHsd0kj95g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Corey Minyard <corey@minyard.net>,
+	yangerkun <yangerkun@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 061/350] ipmi: docs: dont advertise deprecated sysfs entries
+Subject: [PATCH 5.4 096/462] ext4: clear EXT4_GROUP_INFO_WAS_TRIMMED_BIT even mount with discard
 Date: Wed,  6 Nov 2024 12:59:49 +0100
-Message-ID: <20241106120322.399043839@linuxfoundation.org>
+Message-ID: <20241106120333.877854443@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: yangerkun <yangerkun@huawei.com>
 
-[ Upstream commit 64dce81f8c373c681e62d5ffe0397c45a35d48a2 ]
+[ Upstream commit 20cee68f5b44fdc2942d20f3172a262ec247b117 ]
 
-"i2c-adapter" class entries are deprecated since 2009. Switch to the
-proper location.
+Commit 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in
+ext4_group_info") speed up fstrim by skipping trim trimmed group. We
+also has the chance to clear trimmed once there exists some block free
+for this group(mount without discard), and the next trim for this group
+will work well too.
 
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/80c4a898-5867-4162-ac85-bdf7c7c68746@gmail.com
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Message-Id: <20240901090211.3797-2-wsa+renesas@sang-engineering.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+For mount with discard, we will issue dicard when we free blocks, so
+leave trimmed flag keep alive to skip useless trim trigger from
+userspace seems reasonable. But for some case like ext4 build on
+dm-thinpool(ext4 blocksize 4K, pool blocksize 128K), discard from ext4
+maybe unaligned for dm thinpool, and thinpool will just finish this
+discard(see process_discard_bio when begein equals to end) without
+actually process discard. For this case, trim from userspace can really
+help us to free some thinpool block.
+
+So convert to clear trimmed flag for all case no matter mounted with
+discard or not.
+
+Fixes: 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in ext4_group_info")
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240817085510.2084444-1-yangerkun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/IPMI.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/IPMI.txt b/Documentation/IPMI.txt
-index 5ef1047e2e663..f3c6530d9f354 100644
---- a/Documentation/IPMI.txt
-+++ b/Documentation/IPMI.txt
-@@ -518,7 +518,7 @@ at module load time (for a module) with::
- 	[dbg_probe=1]
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index b268dc0e1df44..032e6519865cd 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2836,11 +2836,8 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
+ 	/*
+ 	 * Clear the trimmed flag for the group so that the next
+ 	 * ext4_trim_fs can trim it.
+-	 * If the volume is mounted with -o discard, online discard
+-	 * is supported and the free blocks will be trimmed online.
+ 	 */
+-	if (!test_opt(sb, DISCARD))
+-		EXT4_MB_GRP_CLEAR_TRIMMED(db);
++	EXT4_MB_GRP_CLEAR_TRIMMED(db);
  
- The addresses are normal I2C addresses.  The adapter is the string
--name of the adapter, as shown in /sys/class/i2c-adapter/i2c-<n>/name.
-+name of the adapter, as shown in /sys/bus/i2c/devices/i2c-<n>/name.
- It is *NOT* i2c-<n> itself.  Also, the comparison is done ignoring
- spaces, so if the name is "This is an I2C chip" you can say
- adapter_name=ThisisanI2cchip.  This is because it's hard to pass in
+ 	if (!db->bb_free_root.rb_node) {
+ 		/* No more items in the per group rb tree
+@@ -4962,8 +4959,9 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
+ 					 " group:%d block:%d count:%lu failed"
+ 					 " with %d", block_group, bit, count,
+ 					 err);
+-		} else
+-			EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
++		}
++
++		EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
+ 
+ 		ext4_lock_group(sb, block_group);
+ 		mb_clear_bits(bitmap_bh->b_data, bit, count_clusters);
 -- 
 2.43.0
 
