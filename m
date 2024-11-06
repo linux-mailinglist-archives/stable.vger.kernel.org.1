@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7627D9BE839
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:22:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C359BEC07
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED153B2361B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:22:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 285491C20BFD
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5674A1DF969;
-	Wed,  6 Nov 2024 12:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BF61F130F;
+	Wed,  6 Nov 2024 12:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzI2+SND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySVJsgGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131021DF726;
-	Wed,  6 Nov 2024 12:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312B21E0DFD;
+	Wed,  6 Nov 2024 12:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895751; cv=none; b=LzX0DOr68BOTN7U0w7vERO/GQDJPgTq+u8OnSwBAOIh/e5UKQIhpdEWpkdZZiY3iIH/rnlFQPLGN6jJRohsp8cwtjZkvwJdA9NPdQ1/RyNDeVie5ctQ06zDgnxX0BrR79A2Hhlb9FV0oSVft94uE7cNpn+f9pVGq7Q5QTOGVc20=
+	t=1730897468; cv=none; b=sYil+CHCDRrwzFsHWKexly1PcVNTxSRTWVf5QJGbrX3n+OFbYhBo+am7Nfq39DJjGF0MuzLTsNUfq4QdRXh7PHn61dLRTT8hnGhMlEvjlgUZTEXHBsrj5Ac4qa+4XiqYAjCqNpBsdeYYLmI7KcjPy3r+2+cir+KJtUBvlK7NVs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895751; c=relaxed/simple;
-	bh=DRFdhs9eB6eIA17lPQc7a5wnBbLBLkInBxCjbUOmXnA=;
+	s=arc-20240116; t=1730897468; c=relaxed/simple;
+	bh=pM9oBtNt7EZoKEQWFvQS7bQleHMEdiAZ7RtSKLt82WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YngNekR5A9rD5CLXSCQiCKWShq8zJYAcybANOJW1mI/ho8ehZuxhka/UMjEp8pqmF4SS0+V0GKrt0gS0k3q7gYSIt5A3BEOIuFQqtWvcISsbVUGJoCfodAt5rIcAG0zchwA5CXrief8wtyHYqk7nvIiJo2nHbVAHbu06q7SwC3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzI2+SND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85448C4CECD;
-	Wed,  6 Nov 2024 12:22:30 +0000 (UTC)
+	 MIME-Version; b=Norpkw4x23TIvatheqcui1/qDXNT3lw/j9B0RyNXj/q4j/Hq9DZrquxntQtGYgTKEjrudXb52QMSBAykkCxvT9O1UnTS5lOMgeCo1Kn4PeNENaFhEPT9ebYXKmLJoWKQYdRdc5XAv2NP7fabLyKEPiEPN7VEJWyPRsbOqvO8NfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySVJsgGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A937EC4CECD;
+	Wed,  6 Nov 2024 12:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895750;
-	bh=DRFdhs9eB6eIA17lPQc7a5wnBbLBLkInBxCjbUOmXnA=;
+	s=korg; t=1730897468;
+	bh=pM9oBtNt7EZoKEQWFvQS7bQleHMEdiAZ7RtSKLt82WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzI2+SNDShaUEqr4wmHLWThFdV/tQw6ZGRYA4Wo7lfnRaYCxXm0g3iqZQeVYeCZZw
-	 VwJzSUktMSbVH8skZsWbVcUdOoxCWc63vzAE9L0KM+i6e6KpmvQ2o9Knsn1db8s9pp
-	 F59IiAkhMxWVvzFb5LKFYekSkdv4Rq3ecvlCDpvk=
+	b=ySVJsgGT3RWYQ8JRY5wlagQQ8UXVoX20zSEvNP8AqP4gmGhXHmu4uV4jteHnAqCOo
+	 8YhEJ7+hN+6v/mYdj+PPKbA3Kn7F+CRqvkbLgSnKxo2MAJIekoQgcnnGh7c99iiGO4
+	 0B8JENmamp/wUbN/uAPMDg2xjoxvqEs2IGf9Pa8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc39f136925517aed571@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Antony Antony <antony.antony@secunet.com>,
+	syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 322/350] xfrm: validate new SAs prefixlen using SA family when sel.family is unset
+Subject: [PATCH 6.6 062/151] fs/ntfs3: Fix general protection fault in run_is_mapped_full
 Date: Wed,  6 Nov 2024 13:04:10 +0100
-Message-ID: <20241106120328.699864824@linuxfoundation.org>
+Message-ID: <20241106120310.547159245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 3f0ab59e6537c6a8f9e1b355b48f9c05a76e8563 ]
+[ Upstream commit a33fb016e49e37aafab18dc3c8314d6399cb4727 ]
 
-This expands the validation introduced in commit 07bf7908950a ("xfrm:
-Validate address prefix lengths in the xfrm selector.")
+Fixed deleating of a non-resident attribute in ntfs_create_inode()
+rollback.
 
-syzbot created an SA with
-    usersa.sel.family = AF_UNSPEC
-    usersa.sel.prefixlen_s = 128
-    usersa.family = AF_INET
-
-Because of the AF_UNSPEC selector, verify_newsa_info doesn't put
-limits on prefixlen_{s,d}. But then copy_from_user_state sets
-x->sel.family to usersa.family (AF_INET). Do the same conversion in
-verify_newsa_info before validating prefixlen_{s,d}, since that's how
-prefixlen is going to be used later on.
-
-Reported-by: syzbot+cc39f136925517aed571@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
+Reported-by: syzbot+9af29acd8f27fbce94bc@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 5892ff68d1680..8146ef538ab3d 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -148,6 +148,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			     struct nlattr **attrs)
- {
- 	int err;
-+	u16 family = p->sel.family;
- 
- 	err = -EINVAL;
- 	switch (p->family) {
-@@ -166,7 +167,10 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 		goto out;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 20988ef3dc2ec..52b80fd159147 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1703,7 +1703,10 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
+ 	if (attr && attr->non_res) {
+ 		/* Delete ATTR_EA, if non-resident. */
+-		attr_set_size(ni, ATTR_EA, NULL, 0, NULL, 0, NULL, false, NULL);
++		struct runs_tree run;
++		run_init(&run);
++		attr_set_size(ni, ATTR_EA, NULL, 0, &run, 0, NULL, false, NULL);
++		run_close(&run);
  	}
  
--	switch (p->sel.family) {
-+	if (!family && !(p->flags & XFRM_STATE_AF_UNSPEC))
-+		family = p->family;
-+
-+	switch (family) {
- 	case AF_UNSPEC:
- 		break;
- 
+ 	if (rp_inserted)
 -- 
 2.43.0
 
