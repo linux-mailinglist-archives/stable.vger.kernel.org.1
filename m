@@ -1,100 +1,179 @@
-Return-Path: <stable+bounces-90063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD6F9BDEA5
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:16:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5658D9BDEC4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 07:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04FC5B20BBC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D89286A23
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 06:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F333191494;
-	Wed,  6 Nov 2024 06:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5722A1922E5;
+	Wed,  6 Nov 2024 06:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fTkmcG0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlgup1Rs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B1C36C;
-	Wed,  6 Nov 2024 06:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E77A1917EB;
+	Wed,  6 Nov 2024 06:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730873778; cv=none; b=I4//3pmFUSngBkaX7lfDLWQQZc6cK5eD1XRiQm8abpHBPwH3Zu2h8XBgtAOfRw60M/tucj3F25v/A2Bgml+APM8got4yRy19VVY1UJKupBFOhKZbooBDXsmOaFkp6LK6/DYApwK9FEXGHNbIoTbIQVnj8gUB91cuyobdgnX5NOQ=
+	t=1730874120; cv=none; b=EvHziiimYY40wCciRd1VNtdUiE7Yknemtf25QkRWc6oOHDgh9mO2JTUunVsmEO+k2FZMRlCD+cHZj+TS3AKmpFYcUkRenB0EisXjBOheGtTrib5a4D1R5BOHOH4zrjKE088623PY57oZtViMM0jeqmP6LitY447MwBYznKsew5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730873778; c=relaxed/simple;
-	bh=pQlq7hHPU1Y1m8Iq0RTWGhBrUrFVOfLg2Zpy9RE9zsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JNf05SuadmXuW1R1VqvpCRvZgDuHpQ7p3zrsOHjjmm7fYK41ZFKYWzNF/e0aJUmdKZk4GXhWIhRUxbobMdF9UJFPrdn16kDOHi1E6dPZa0vIlADCwApZEdFtclAj2iPi4LvZKux8SX8zYyUnQ3jDjKKuYAfm4X4H5etSOsDqnXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fTkmcG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2CAC4CECD;
-	Wed,  6 Nov 2024 06:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730873778;
-	bh=pQlq7hHPU1Y1m8Iq0RTWGhBrUrFVOfLg2Zpy9RE9zsU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1fTkmcG0N/uvrisql3iDehlDzBNxDNe9oSfkHDOaITMwxsTkdkYbtTOC9lGFg1dwl
-	 eMRGjVGRQcsNNJJ3jMsXvMea55ta6/60nim8jexRPhGVrhD/NnBNGv5hgahleeqztB
-	 pR75KwmvLCaR4VCYlltAkgEgUf3CMOSWOzvwUlZQ=
-Date: Wed, 6 Nov 2024 07:16:00 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: stable@vger.kernel.org, harry.wentland@amd.com, sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com, alexander.deucher@amd.com,
-	christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-	daniel@ffwll.ch, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	hughd@google.com, willy@infradead.org, sashal@kernel.org,
-	srinivasan.shanmugam@amd.com, chiahsuan.chung@amd.com,
-	mingo@kernel.org, mgorman@techsingularity.net, yukuai3@huawei.com,
-	chengming.zhou@linux.dev, zhangpeng.00@bytedance.com,
-	chuck.lever@oracle.com, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, yi.zhang@huawei.com, yangerkun@huawei.com
-Subject: Re: [PATCH 6.6 00/28] fix CVE-2024-46701
-Message-ID: <2024110625-earwig-deport-d050@gregkh>
-References: <20241024132009.2267260-1-yukuai1@huaweicloud.com>
+	s=arc-20240116; t=1730874120; c=relaxed/simple;
+	bh=O/cUlyYRf4qBVOAkAVveGj+vqGwayVw5xDMV6YK9F28=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eCisbjWzj3LAnLmbZla+TBG7zDgb5xOmJ0OiX3cxFsQoaiRI3S4FcNWyd0DeADgheshs7pTTzVvRcFJo7xwv0/xOKwjGF1AVyU2gbNfPyurii/NZDjuzlIuv2Lf51UTLnVs/1bIl5MJ29c2Sna3NOntCq8pQX5/012xCPOu3TBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlgup1Rs; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539f4d8ef66so7767972e87.1;
+        Tue, 05 Nov 2024 22:21:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730874116; x=1731478916; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4RejKctGhgr2tUM2Ujce98Zo87UHbuwdHrfsjVKA58=;
+        b=dlgup1RsY9pXYmhWSxskpLMAGmZGAjOfKHrbc3kLKWzgoy/f4v3sdn1+tZB+uBdKiu
+         gc6mgzlVT9cAgmTtdegctlmPRzW3Wx7Wr/LXX34WoNRhdBlIhU4C+u2VVXUlE4V3sLis
+         +JwwkkkzlRAcCURqVnOTrdwCjU/Ob4n6Dce9oTDvhTTD7pyxE+IN8WQ+6y+S6LrdixJv
+         QlYLpaWoh98SrY3pvz8XvMjLxoggurGdTr3VNpmd0vBCYT4iT5AKaEvy4CTHlmeL9NOX
+         bcyMXv3hPZKmI3T1dpyJtDxx4uWO3k0GxKp4eWeRRohvfcbJTaq4MalV8q1p53UnZeFc
+         H+Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730874116; x=1731478916;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X4RejKctGhgr2tUM2Ujce98Zo87UHbuwdHrfsjVKA58=;
+        b=aae6B3ILV/4hvGUvzV1sEDR/NEed3E5+iviGk1p5fbKGvGWLoI4vb4D7LX5Zr9U+Yh
+         /KRJwdB63ThNYDVBmocVU8khbvOeA+qaQ8eyYtVSUPahCtTmjzVhoY/vFUjqJnuVNGQr
+         En+DvLpfB/QxBJ9oGg7upXgwnG7X/u3ii3Uq1V5SR2RtdaW7c1neyuqnqZb4uW/Mr2Zf
+         Z9XhfHKrTHUeWnhO9iZkkPvlrQQcSKJc/3LHs2ryTHlcwzaggV0qZL2Mp958ceTT4CTM
+         lxpbfVFe5dgXHSP7e2tP4jpDJke58AqZyS1aj63yvWKhgG5sTYowdpv8B4038agExNTP
+         O7cg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBHugM2KQw/pvo1hkt+JgwCYj17HQIHM0FY3msD2Kiyx0nJBjwNCwaKw//t4Raa7I4w3cV9r9qzQ9qSuQ=@vger.kernel.org, AJvYcCW4ppNVbfYD9EDO7+rph3xkE4iVdtYwQf4aoRw092NokJpRUcg4Xodwje+G/iEXOmifOBmJysYoZ6CI1s8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbvAmlnejfUDVQ5JjRdNUko9oXujagVsbtLdGPRGwMn2GLytFl
+	Dd59dtlQRzh3iAaLScQRCaqZUhmG/VlTdtflRykOYklnAEykgGGDN8h6iqve5mLFIIVW7vOwdOV
+	ZsgUDleaxt/yv5/nNtE3/+H6Dq9c=
+X-Google-Smtp-Source: AGHT+IEvKh+Sp7Huza/Zh9EGZQqBXB7TIVxq/oSWi8PtymfsjZO3rCvDcFIcAP7GwILu2ZplO+I2GPPor53N/xj2yP4=
+X-Received: by 2002:a05:6512:2c85:b0:53c:7377:3338 with SMTP id
+ 2adb3069b0e04-53c73773415mr11432621e87.36.1730874116102; Tue, 05 Nov 2024
+ 22:21:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024132009.2267260-1-yukuai1@huaweicloud.com>
+References: <20241106020945.172057-1-sashal@kernel.org>
+In-Reply-To: <20241106020945.172057-1-sashal@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Wed, 6 Nov 2024 15:21:39 +0900
+Message-ID: <CAKFNMomd0cxe-hP0CoNH7ERvrPCDhz22sRs=8086-j3H=OqOxg@mail.gmail.com>
+Subject: Re: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of
+ checked flag" failed to apply to v6.6-stable tree
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-nilfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 24, 2024 at 09:19:41PM +0800, Yu Kuai wrote:
-> From: Yu Kuai <yukuai3@huawei.com>
-> 
-> Fix patch is patch 27, relied patches are from:
-> 
->  - patches from set [1] to add helpers to maple_tree, the last patch to
-> improve fork() performance is not backported;
+Hi Sasha
 
-So things slowed down?
+About 6 hours ago, I posted an adjusted patch to the list (and to
+Greg) that allows for backporting of this patch to 6.6-stable and
+earlier.
 
->  - patches from set [2] to change maple_tree, and follow up fixes;
->  - patches from set [3] to convert offset_ctx from xarray to maple_tree;
-> 
-> Please notice that I'm not an expert in this area, and I'm afraid to
-> make manual changes. That's why patch 16 revert the commit that is
-> different from mainline and will cause conflict backporting new patches.
-> patch 28 pick the original mainline patch again.
-> 
-> (And this is what we did to fix the CVE in downstream kernels).
-> 
-> [1] https://lore.kernel.org/all/20231027033845.90608-1-zhangpeng.00@bytedance.com/
-> [2] https://lore.kernel.org/all/20231101171629.3612299-2-Liam.Howlett@oracle.com/T/
-> [3] https://lore.kernel.org/all/170820083431.6328.16233178852085891453.stgit@91.116.238.104.host.secureserver.net/
+The patch is titled  "[PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix
+kernel bug due to missing clearing of checked flag".
 
-This series looks rough.  I want to have the maintainers of these
-files/subsystems to ack this before being able to take them.
+(or https://lkml.kernel.org/r/20241105235654.15044-1-konishi.ryusuke@gmail.=
+com )
 
-thanks,
+Normally, Greg would pick up the adjusted patch and apply it, and it
+would be backported without any problems, but if the backport of the
+adjusted patch I requested has been rejected, I would like to ask for
+your confirmation.
 
-greg k-h
+If it is a misunderstanding, I will wait for Greg's work, but is the
+process different from usual?
+
+Thank you in advance.
+
+Ryusuke Konishi
+
+On Wed, Nov 6, 2024 at 11:09=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> The patch below does not apply to the v6.6-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> Thanks,
+> Sasha
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
+> From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> Date: Fri, 18 Oct 2024 04:33:10 +0900
+> Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checke=
+d
+>  flag
+>
+> Syzbot reported that in directory operations after nilfs2 detects
+> filesystem corruption and degrades to read-only,
+> __block_write_begin_int(), which is called to prepare block writes, may
+> fail the BUG_ON check for accesses exceeding the folio/page size,
+> triggering a kernel bug.
+>
+> This was found to be because the "checked" flag of a page/folio was not
+> cleared when it was discarded by nilfs2's own routine, which causes the
+> sanity check of directory entries to be skipped when the directory
+> page/folio is reloaded.  So, fix that.
+>
+> This was necessary when the use of nilfs2's own page discard routine was
+> applied to more than just metadata files.
+>
+> Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gma=
+il.com
+> Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after re=
+mount in RO mode because of driver's internal error or metadata corruption"=
+)
+> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dd6ca2daf692c7a82f959
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>  fs/nilfs2/page.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+> index 5436eb0424bd1..10def4b559956 100644
+> --- a/fs/nilfs2/page.c
+> +++ b/fs/nilfs2/page.c
+> @@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+>
+>         folio_clear_uptodate(folio);
+>         folio_clear_mappedtodisk(folio);
+> +       folio_clear_checked(folio);
+>
+>         head =3D folio_buffers(folio);
+>         if (head) {
+> --
+> 2.43.0
+>
+>
+>
+>
 
