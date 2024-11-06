@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-91515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE919BEE53
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABE19BEE5F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 424C32860D4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22D111F25988
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7221EC01C;
-	Wed,  6 Nov 2024 13:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B171EE01C;
+	Wed,  6 Nov 2024 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTaYAn2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2ww7kbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7C81E0B84;
-	Wed,  6 Nov 2024 13:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5328854765;
+	Wed,  6 Nov 2024 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898959; cv=none; b=JaR7J4LUI6PnKFLvrbw4uL2vfj7d9x/jRCdAHM1iWkca7EP2n2E2airfRmReuDjo96J3f5lGszD1FJYsb8T8yMkRtsTaENFn5XJ9liQy2jHScGoe4niU4EezATIhM9giC6XG5XAtK1r6+Ja2lFpRJwOmYSB1SUJPzR14y01bcPs=
+	t=1730898991; cv=none; b=npfsfwo0U3Ni5fS94IuSiMMbXgRtOEWjfmfeQl1mtJ4jyJvGiUIdDkA9KlsfWGwzE24zxPzdBGaa8y28mpLxn7irazOZPBp/8sN/rc2zNGqugfDID0lNwGzscNe8vUWn2xLJdRBQYlQy/MhC/ijx7JWxMt0DHBbgERSx3PhLiP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898959; c=relaxed/simple;
-	bh=MgYn1fmL/m+rRhTflWyCGODsKIXMxvY+ovqXMJzOCQo=;
+	s=arc-20240116; t=1730898991; c=relaxed/simple;
+	bh=5hp6BSZbxZj2Pr+QPPZZs67WB8/x2xvYNNb8anOXj0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsGFVhT3HaTneILO8DIuoSfirExLvqxQmWDJKplmYqeZCP6p/Bp8owSPzgiwfFZ5bdoHvkxg3/bL6uMx+RntoIzLIILd30rMYrlUzbPxnNj4pqZWgSMaB7vbu6bkWk44cOYDwgQulUi2oZ9RL4aZ6tP20ZQb49m/3ShwEuDn5kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTaYAn2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A51FC4CECD;
-	Wed,  6 Nov 2024 13:15:58 +0000 (UTC)
+	 MIME-Version; b=jkMG1OZm/28mkuueAQ1ENzEB/2obOb0SoOJg/AWckMtTYs8OKA9g//N5HHoJaOlLot2+bIJPSOgcExx+yE56dOoHP7KlyqQ2BfE7fNSdlFXIv0CTgboSXebj/+QMkU4HNen4as843N/5rzsguB5tV+ghb9zn4V08hcC2juzMUjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2ww7kbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFF2C4CECD;
+	Wed,  6 Nov 2024 13:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898958;
-	bh=MgYn1fmL/m+rRhTflWyCGODsKIXMxvY+ovqXMJzOCQo=;
+	s=korg; t=1730898991;
+	bh=5hp6BSZbxZj2Pr+QPPZZs67WB8/x2xvYNNb8anOXj0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTaYAn2LqoQa9BrSzHoYLTdpr4XBGKyUs2lLG+9u9T+YZKAcizzDHxszDfrlRVrBV
-	 vqd1ucZ4893cfmtuPjtXe9n1Qt6Ck7KnEHPQfug//D8BiG+br+2vMxyoJOYpy1I3vR
-	 QjT4GClr1dqtKfLlBpGTgAl8WGNu2nKAoAd7jNw0=
+	b=X2ww7kbv6327mB9PpAucBP9WUSAr9mUJQn2Efigd0uo4iazRmxemGurhc3K1M+Ym1
+	 /gtlWnlAkybGXbAS53ClkJa/DHxUUcNSa7doA0HOzddwqRnqqS8OEaCEgICeTUx22o
+	 OhX2+aGV2eoDH6kg5orEO8cYcF8VfZjNd0sFu4G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Klink <flokli@flokli.de>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 386/462] ARM: dts: bcm2837-rpi-cm3-io3: Fix HDMI hpd-gpio pin
-Date: Wed,  6 Nov 2024 13:04:39 +0100
-Message-ID: <20241106120341.059009888@linuxfoundation.org>
+Subject: [PATCH 5.4 387/462] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
+Date: Wed,  6 Nov 2024 13:04:40 +0100
+Message-ID: <20241106120341.084072643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -67,40 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Klink <flokli@flokli.de>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit dc7785e4723510616d776862ddb4c08857a1bdb2 ]
+[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
 
-HDMI_HPD_N_1V8 is connected to GPIO pin 0, not 1.
+ip_dev_find() always returns real net_device address, whether traffic is
+running on a vlan or real device, if traffic is over vlan, filling
+endpoint struture with real ndev and an attempt to send a connect request
+will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
+issue by using vlan_dev_real_dev().
 
-This fixes HDMI hotplug/output detection.
-
-See https://datasheets.raspberrypi.com/cm/cm3-schematics.pdf
-
-Signed-off-by: Florian Klink <flokli@flokli.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20240715230311.685641-1-flokli@flokli.de
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Fixes: a54fe8a6cf66 ("ARM: dts: add Raspberry Pi Compute Module 3 and IO board")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
+Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-index 3dfce4312dfc4..a2ef43c2105aa 100644
---- a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-+++ b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-@@ -77,7 +77,7 @@
- };
- 
- &hdmi {
--	hpd-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+	hpd-gpios = <&expgpio 0 GPIO_ACTIVE_LOW>;
- 	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
- 	status = "okay";
- };
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index 01750eb5458e0..38e2fbf84e276 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 	err = -ENOMEM;
+ 	if (n->dev->flags & IFF_LOOPBACK) {
+ 		if (iptype == 4)
+-			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
++			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
+ 		else if (IS_ENABLED(CONFIG_IPV6))
+ 			for_each_netdev(&init_net, pdev) {
+ 				if (ipv6_chk_addr(&init_net,
+@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 			err = -ENODEV;
+ 			goto out;
+ 		}
++		if (is_vlan_dev(pdev))
++			pdev = vlan_dev_real_dev(pdev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+ 					n, pdev, rt_tos2priority(tos));
+-		if (!ep->l2t) {
+-			dev_put(pdev);
++		if (!ep->l2t)
+ 			goto out;
+-		}
+ 		ep->mtu = pdev->mtu;
+ 		ep->tx_chan = cxgb4_port_chan(pdev);
+ 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
+@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
+ 			cxgb4_port_idx(pdev) * step];
+ 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
+-		dev_put(pdev);
+ 	} else {
+ 		pdev = get_real_dev(n->dev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
 -- 
 2.43.0
 
