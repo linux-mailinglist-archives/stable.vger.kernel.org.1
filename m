@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-90370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3832B9BE7FA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5439BE920
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1BDD284EA6
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:19:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551921F2210B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E219A1DF75A;
-	Wed,  6 Nov 2024 12:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BE5198E96;
+	Wed,  6 Nov 2024 12:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+XSye62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoR82tso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE2D1DF721;
-	Wed,  6 Nov 2024 12:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD08D6088F;
+	Wed,  6 Nov 2024 12:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895570; cv=none; b=joZcAResTXPrBpkgl8WdIOXqAF9E2+Mk/fVJZBcR8n99C6Y5ASMoFsE3Q4zciHZQq2IipoI8rnjPGtCrPf9LAGxUAojD56RQbu8Winc4kUPfTTLdom/1bXfW5hmtxKe9wqpjTMUcC7jyAda0V8cYQZyccwIEB/Z9+bpLeBuoVI4=
+	t=1730896244; cv=none; b=dJIo68Cjv2CwccXI6Lrgph47FUfdUcrpIYNwYXrFWoEgZ1ToEasQkT/fp4gJBYqUvtk2VdZJuWDA7wc9SjPZhRx1FQvUeMTMi2beVBoekuInAF9XYeSS+FsSmGV22lOSi4Uz4mWKRHX6ipfpU7Ct3EoNFfW3ZCee+JAwQFXGYZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895570; c=relaxed/simple;
-	bh=vhK/DeCt/aF/i05ofFUwDZsAS50MKGbJQ3gcQTVEcO8=;
+	s=arc-20240116; t=1730896244; c=relaxed/simple;
+	bh=5sLTHDGyob/IznoMa1ZR9YwTKibZ4OutxfoGfCb7kuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHGJQieR1/K2uqdzHAVe7kIe1K4ha13Kf2LgEERWQapXB6yjuxZw9wj1GC3G0HY6OkznfsiUSVf6Tk0v7v1dHeYN0vgVbrtOTs6LB1rR+eLCxe/Clhg1vQXB2vv+BI7s478brU21bdqryJXtVwVPij0XSOGcWK7it8PfOmvrs7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+XSye62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2517BC4CECD;
-	Wed,  6 Nov 2024 12:19:29 +0000 (UTC)
+	 MIME-Version; b=qDV0zvsb0dm527Xvt+/sw6i3YiB39qMFSUO5HuDqae5/+NQkXZ9MozMJgf3Nqdw1/C5Lf6egJGfvdqokK9GmLpIYQ9bLPSdYTwmX/3dFN89TlipwPrqNUgybkWMs3Alvm//2LK0B/fuM0B3yQlqJ3w/n9aMdp6T3/Tk0BUVjIWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoR82tso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE74DC4CECD;
+	Wed,  6 Nov 2024 12:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895570;
-	bh=vhK/DeCt/aF/i05ofFUwDZsAS50MKGbJQ3gcQTVEcO8=;
+	s=korg; t=1730896244;
+	bh=5sLTHDGyob/IznoMa1ZR9YwTKibZ4OutxfoGfCb7kuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+XSye62GaU89rEP6bW+P4+m/qOTAduLN1u7LmClyLX9r3ZpodqlDpDyD6cW6FyDZ
-	 gifC257Izhb/3az9lMd4sZUFZisedUE2x1EPxpP8SlM5f2/NrnXWcFIism69AOMH85
-	 TAPC5bDpuX6xREX2Wfj36t6svv6rOR1yHEtnulKM=
+	b=XoR82tsomC4S97DrYJegJbXkU5Ah8W4SJosYNMNqmYsbcBokVQk17anOIMDdvxclk
+	 4K1E32vbwelia7GCqCClFdlWDPTjph0MR0ssBd+125ltsutGgzCnk2PHKFLqKo9i7R
+	 Vv6B1Ve9Kh46k5w1UeJVeF255/Ly7QKNA9iVkbHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wade Wang <wade.wang@hp.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 4.19 263/350] HID: plantronics: Workaround for an unexcepted opposite volume key
+	Chen Ridong <chenridong@huawei.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Wang Weiyang <wangweiyang2@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 138/245] mm: shrinker: avoid memleak in alloc_shrinker_info
 Date: Wed,  6 Nov 2024 13:03:11 +0100
-Message-ID: <20241106120327.396522020@linuxfoundation.org>
+Message-ID: <20241106120322.626040519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +69,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wade Wang <wade.wang@hp.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 87b696209007b7c4ef7bdfe39ea0253404a43770 upstream.
+commit 15e8156713cc38031642fafc8baf7d53f19f2e83 upstream.
 
-Some Plantronics headset as the below send an unexcept opposite
-volume key's HID report for each volume key press after 200ms, like
-unecepted Volume Up Key following Volume Down key pressed by user.
-This patch adds a quirk to hid-plantronics for these devices, which
-will ignore the second unexcepted opposite volume key if it happens
-within 220ms from the last one that was handled.
-    Plantronics EncorePro 500 Series  (047f:431e)
-    Plantronics Blackwire_3325 Series (047f:430c)
+A memleak was found as below:
 
-The patch was tested on the mentioned model, it shouldn't affect
-other models, however, this quirk might be needed for them too.
-Auto-repeat (when a key is held pressed) is not affected per test
-result.
+unreferenced object 0xffff8881010d2a80 (size 32):
+  comm "mkdir", pid 1559, jiffies 4294932666
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  @...............
+  backtrace (crc 2e7ef6fa):
+    [<ffffffff81372754>] __kmalloc_node_noprof+0x394/0x470
+    [<ffffffff813024ab>] alloc_shrinker_info+0x7b/0x1a0
+    [<ffffffff813b526a>] mem_cgroup_css_online+0x11a/0x3b0
+    [<ffffffff81198dd9>] online_css+0x29/0xa0
+    [<ffffffff811a243d>] cgroup_apply_control_enable+0x20d/0x360
+    [<ffffffff811a5728>] cgroup_mkdir+0x168/0x5f0
+    [<ffffffff8148543e>] kernfs_iop_mkdir+0x5e/0x90
+    [<ffffffff813dbb24>] vfs_mkdir+0x144/0x220
+    [<ffffffff813e1c97>] do_mkdirat+0x87/0x130
+    [<ffffffff813e1de9>] __x64_sys_mkdir+0x49/0x70
+    [<ffffffff81f8c928>] do_syscall_64+0x68/0x140
+    [<ffffffff8200012f>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wade Wang <wade.wang@hp.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+alloc_shrinker_info(), when shrinker_unit_alloc() returns an errer, the
+info won't be freed.  Just fix it.
+
+Link: https://lkml.kernel.org/r/20241025060942.1049263-1-chenridong@huaweicloud.com
+Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for shrinker_info::{map, nr_deferred}")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Wang Weiyang <wangweiyang2@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h         |    2 ++
- drivers/hid/hid-plantronics.c |   23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ mm/shrinker.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -916,6 +916,8 @@
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES	0xc056
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES	0xc057
- #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES	0xc058
-+#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES	0x430c
-+#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES		0x431e
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -76,19 +76,21 @@ void free_shrinker_info(struct mem_cgrou
  
- #define USB_VENDOR_ID_PANASONIC		0x04da
- #define USB_DEVICE_ID_PANABOARD_UBT780	0x1044
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -41,8 +41,10 @@
- 			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
+ int alloc_shrinker_info(struct mem_cgroup *memcg)
+ {
+-	struct shrinker_info *info;
+ 	int nid, ret = 0;
+ 	int array_size = 0;
  
- #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
-+#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
- 
- #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
-+#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
- 
- struct plt_drv_data {
- 	unsigned long device_type;
-@@ -140,6 +142,21 @@ static int plantronics_event(struct hid_
- 
- 		drv_data->last_volume_key_ts = cur_ts;
+ 	mutex_lock(&shrinker_mutex);
+ 	array_size = shrinker_unit_size(shrinker_nr_max);
+ 	for_each_node(nid) {
+-		info = kvzalloc_node(sizeof(*info) + array_size, GFP_KERNEL, nid);
++		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
++							   GFP_KERNEL, nid);
+ 		if (!info)
+ 			goto err;
+ 		info->map_nr_max = shrinker_nr_max;
+-		if (shrinker_unit_alloc(info, NULL, nid))
++		if (shrinker_unit_alloc(info, NULL, nid)) {
++			kvfree(info);
+ 			goto err;
++		}
+ 		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
  	}
-+	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
-+		unsigned long prev_ts, cur_ts;
-+
-+		/* Usages are filtered in plantronics_usages. */
-+
-+		if (!value) /* Handle key presses only. */
-+			return 0;
-+
-+		prev_ts = drv_data->last_volume_key_ts;
-+		cur_ts = jiffies;
-+		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
-+			return 1; /* Ignore the followed opposite volume key. */
-+
-+		drv_data->last_volume_key_ts = cur_ts;
-+	}
- 
- 	return 0;
- }
-@@ -213,6 +230,12 @@ static const struct hid_device_id plantr
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
- 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
- 		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
-+					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
-+		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
- 	{ }
- };
+ 	mutex_unlock(&shrinker_mutex);
 
 
 
