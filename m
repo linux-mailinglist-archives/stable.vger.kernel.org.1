@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-91102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD509BEC7F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:05:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428059BEB28
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF47C1C23B7A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:05:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF59E1F26C18
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF99E1FC7F4;
-	Wed,  6 Nov 2024 12:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25DC1E25F6;
+	Wed,  6 Nov 2024 12:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukemfsWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLCvTnHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE851E1A27;
-	Wed,  6 Nov 2024 12:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05861E22EF;
+	Wed,  6 Nov 2024 12:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897744; cv=none; b=Kv1L+JhdTw98kPztZ6D+yzvpiax5UUr1guzB9z31+23kwnaxYGu6kp8ZMai/O0TIorU7a8FAxBndyPM6E/ypU2lgoksop9U9YnyUTv7q86iQaNIYxFXn4dJKzlqXtd+k1klVjQC/mnBCAER4zyyC8l3K5nBNYf20VhNsgQmDRQ0=
+	t=1730896880; cv=none; b=DIVGY+863510BrVtrgKRDzlRjtbRr41dwvTAIsdxWRlqThMI7bHZV6lNzqSoZPk1OT+vKPxYVJhSFOvzN+n9Fj/GUyzICtYVe6kGnKLdzaXo8rTLDgFduG+odnX6boVSZB/qufpU4kDouE1IXYwIOPccjJRCdGpWFzxUBC6CkvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897744; c=relaxed/simple;
-	bh=mXLY+fiz24fK57FuGxA+78/Im1P1Y4ZteShMYDDniXA=;
+	s=arc-20240116; t=1730896880; c=relaxed/simple;
+	bh=KRwqJOa5GcrA1QSI7uXg9zSBogcCgk5/Bah9H5+lGLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbXcScR9S+XmwRRdKPAuw7W0HCEFl+SFHHdW+EkpE8wk2oCBzHmYDi5pMjLW9Dcv83GZtQLyr8t/5Dt4Fd+sbRvfI23nH4qQRSKawJaJCDtgMM+37HDsNDkH2K9NWtmzMJDsPvCqCBIQLEBajrLgdmKuKO+KTxavXVjb9rd6+LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukemfsWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F01C4CECD;
-	Wed,  6 Nov 2024 12:55:43 +0000 (UTC)
+	 MIME-Version; b=uqPuU7Zr1xK8Pn12CBBx3agpk29aNbM0L9CLzJ62i7Gwm3iuJXRuyOsTyUuJnxRB0ax1JlkJg1QHRZnVi5+8ZbetkCI4qcPz8v2okh9+x4J6FzEg4x0LIlffnHS4m7R3bGDWAZrjMBNR1bdt1XTdY8CtAaJFSWZB+jrnnY4Y5wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLCvTnHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A042C4CECD;
+	Wed,  6 Nov 2024 12:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897744;
-	bh=mXLY+fiz24fK57FuGxA+78/Im1P1Y4ZteShMYDDniXA=;
+	s=korg; t=1730896880;
+	bh=KRwqJOa5GcrA1QSI7uXg9zSBogcCgk5/Bah9H5+lGLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukemfsWcPOFwkhWHDbbwl2k+2/MhDUftyLSddM+IWNlQ045w3iV4unr5lclp8MfhD
-	 tV5VcdewqLyrXgHHVlHyJ6VdwglLSjuUdmsmHR/DuYjlRTSUvOrdXJ2mBcyQgkSrBP
-	 2XALP/wVdoPQMkQk5nXgFBPxf44g4sHhPRQPa0TI=
+	b=lLCvTnHkfW1jmb9ZhXAfuy3X6jCoW4MqmnCYKwVHUWtLUHB5fNOuI+z/fF6a9ne85
+	 q91ZymY69ajYR/yyLzQ4P8/Kt2oJOItGRIUOPNlxy/coVXruNoXXoLUt82to0zXhel
+	 qWxWclFSbgp7ANds9A9/8bO7tSUp1LMfRKw+bqKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/151] riscv: Remove duplicated GET_RM
-Date: Wed,  6 Nov 2024 13:05:07 +0100
-Message-ID: <20241106120312.139781023@linuxfoundation.org>
+Subject: [PATCH 5.10 102/110] riscv: Remove duplicated GET_RM
+Date: Wed,  6 Nov 2024 13:05:08 +0100
+Message-ID: <20241106120305.992309571@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 deletions(-)
 
 diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index e867fe465164e..edae2735ebe34 100644
+index b246c3dc69930..d548d6992d988 100644
 --- a/arch/riscv/kernel/traps_misaligned.c
 +++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -132,8 +132,6 @@
+@@ -131,8 +131,6 @@
  #define REG_PTR(insn, pos, regs)	\
  	(ulong *)((ulong)(regs) + REG_OFFSET(insn, pos))
  
