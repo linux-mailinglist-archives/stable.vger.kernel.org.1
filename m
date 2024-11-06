@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-91422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18C49BEDE9
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656BF9BEDE8
 	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C3CEB23728
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A3E62865B8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D3E1F4FCC;
-	Wed,  6 Nov 2024 13:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E843D1D619E;
+	Wed,  6 Nov 2024 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR2gQBuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSL4t/I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A671E1C38;
-	Wed,  6 Nov 2024 13:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FA11E0480;
+	Wed,  6 Nov 2024 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898689; cv=none; b=QSVOpf2Mz/rAaxYGJ9ZezU3uXugZqAq+3bn07oEiKGRAw+fot/pcOBt9AQ6XH+7xeCmNwoCgco0DmeA1RqoErmaZotrNOtlFXDzJ622fv5zv4tzG8+TMJsjA9TsULWzQhUTTDR05G0M6oiMLCTe9f1Ux2JL947tAe9p1lOOnWxQ=
+	t=1730898695; cv=none; b=Ij0gZJLFI0XWeg8czjGTuxINnW2qDQX3r/DrXBIpcTvS3ejHJATHFPo8C2fRQ7jFAlQ5PlIMeeNEgHzTOZymyi3CaNtUNOyUdOtAdIwLucxyA1lJkl5mIirexElhPg9v4urszfYfiENFeUfd0PvMsjJ19votkApmX+iZGQEWjZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898689; c=relaxed/simple;
-	bh=R4GI0U3gCt6bRb74RQjUQ3nok4gGobx2Bfr7ykpS3Is=;
+	s=arc-20240116; t=1730898695; c=relaxed/simple;
+	bh=l9VVBZwM+jS3OiQzXVSQLHr062jsC1uwTe0a567ZfqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4waYOAkubyzXOfNsDgjbSYXglrmBCL4g4quc2UkFITyXmcaB6Eh/zDFZjz82AAtqJFazcSGAhB7lU0mVCiHqtSp64lILK1+FLV1DnoAf84TLnJzF4+pTJA0/u5/or4CfJCBbzZsweW/kPGr3WNgQZQczB04jpWDl+l/4eu3k0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR2gQBuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFBAC4CECD;
-	Wed,  6 Nov 2024 13:11:29 +0000 (UTC)
+	 MIME-Version; b=AAnh9XmthlaDfekx7SNF3bM8OaLc8yGmuEs7DYSkQeXRG1OQiLOvWl/Z28xb4c0GU2Unhmwkko/Yls51bdkJN1wBzXAy4v3aLz1ta78G8teeWZcsoyN7tCnt4sgBmgA9GB///qnckW0/GrOT6kpGAyPKqP2qSRSZxE8BS3IUWD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSL4t/I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E415C4CECD;
+	Wed,  6 Nov 2024 13:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898689;
-	bh=R4GI0U3gCt6bRb74RQjUQ3nok4gGobx2Bfr7ykpS3Is=;
+	s=korg; t=1730898695;
+	bh=l9VVBZwM+jS3OiQzXVSQLHr062jsC1uwTe0a567ZfqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xR2gQBuR+jgp/n0azL0f8fWBqfwkN07H3yptcErD901D6paTVPB5iGM1NluSmlerl
-	 zjoEAYFr+OqUMqTTQXuJpUp0yclWM+jp6OBaHMjxtoqinzsO8B+0G3tCy9AdgCDSUe
-	 D4JnDxHoUAdc4Ul7ATqh5n+WK3V0ifmAXGIOecK8=
+	b=JSL4t/I+0eDS7HE/QSk8sJB74zBoywN5MZtrGAAEj5v7p3EEkyZrKafVDNec09ml2
+	 5N038srsNB/peaMs0gdTYd0eIZpBQNqRohKsOU65jDPeMMHnRX6pERxcVOEwSQGsl7
+	 ysqbGsqbr0xbmKsFtSVLhNTWdvnrkMQVVV1BAxtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Geumhwan Yu <geumhwan.yu@samsung.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 323/462] SUNRPC: Fix integer overflow in decode_rc_list()
-Date: Wed,  6 Nov 2024 13:03:36 +0100
-Message-ID: <20241106120339.507244355@linuxfoundation.org>
+Subject: [PATCH 5.4 324/462] tcp: fix to allow timestamp undo if no retransmits were sent
+Date: Wed,  6 Nov 2024 13:03:37 +0100
+Message-ID: <20241106120339.531386951@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -66,35 +69,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit 6dbf1f341b6b35bcc20ff95b6b315e509f6c5369 ]
+[ Upstream commit e37ab7373696e650d3b6262a5b882aadad69bb9e ]
 
-The math in "rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t)" could have an
-integer overflow.  Add bounds checking on rc_list->rcl_nrefcalls to fix
-that.
+Fix the TCP loss recovery undo logic in tcp_packet_delayed() so that
+it can trigger undo even if TSQ prevents a fast recovery episode from
+reaching tcp_retransmit_skb().
 
-Fixes: 4aece6a19cf7 ("nfs41: cb_sequence xdr implementation")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Geumhwan Yu <geumhwan.yu@samsung.com> recently reported that after
+this commit from 2019:
+
+commit bc9f38c8328e ("tcp: avoid unconditional congestion window undo
+on SYN retransmit")
+
+...and before this fix we could have buggy scenarios like the
+following:
+
++ Due to reordering, a TCP connection receives some SACKs and enters a
+  spurious fast recovery.
+
++ TSQ prevents all invocations of tcp_retransmit_skb(), because many
+  skbs are queued in lower layers of the sending machine's network
+  stack; thus tp->retrans_stamp remains 0.
+
++ The connection receives a TCP timestamp ECR value echoing a
+  timestamp before the fast recovery, indicating that the fast
+  recovery was spurious.
+
++ The connection fails to undo the spurious fast recovery because
+  tp->retrans_stamp is 0, and thus tcp_packet_delayed() returns false,
+  due to the new logic in the 2019 commit: commit bc9f38c8328e ("tcp:
+  avoid unconditional congestion window undo on SYN retransmit")
+
+This fix tweaks the logic to be more similar to the
+tcp_packet_delayed() logic before bc9f38c8328e, except that we take
+care not to be fooled by the FLAG_SYN_ACKED code path zeroing out
+tp->retrans_stamp (the bug noted and fixed by Yuchung in
+bc9f38c8328e).
+
+Note that this returns the high-level behavior of tcp_packet_delayed()
+to again match the comment for the function, which says: "Nothing was
+retransmitted or returned timestamp is less than timestamp of the
+first retransmission." Note that this comment is in the original
+2005-04-16 Linux git commit, so this is evidently long-standing
+behavior.
+
+Fixes: bc9f38c8328e ("tcp: avoid unconditional congestion window undo on SYN retransmit")
+Reported-by: Geumhwan Yu <geumhwan.yu@samsung.com>
+Diagnosed-by: Geumhwan Yu <geumhwan.yu@samsung.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241001200517.2756803-2-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/callback_xdr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_input.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/callback_xdr.c b/fs/nfs/callback_xdr.c
-index 04d27f0ed39ac..1b860995e6bcf 100644
---- a/fs/nfs/callback_xdr.c
-+++ b/fs/nfs/callback_xdr.c
-@@ -372,6 +372,8 @@ static __be32 decode_rc_list(struct xdr_stream *xdr,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index cf6221e9fda50..75e954590bdd5 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2294,8 +2294,22 @@ static bool tcp_skb_spurious_retrans(const struct tcp_sock *tp,
+  */
+ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
+ {
+-	return tp->retrans_stamp &&
+-	       tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
++	const struct sock *sk = (const struct sock *)tp;
++
++	if (tp->retrans_stamp &&
++	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
++		return true;  /* got echoed TS before first retransmission */
++
++	/* Check if nothing was retransmitted (retrans_stamp==0), which may
++	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
++	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
++	 * retrans_stamp even if we had retransmitted the SYN.
++	 */
++	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
++	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
++		return true;  /* nothing was retransmitted */
++
++	return false;
+ }
  
- 	rc_list->rcl_nrefcalls = ntohl(*p++);
- 	if (rc_list->rcl_nrefcalls) {
-+		if (unlikely(rc_list->rcl_nrefcalls > xdr->buf->len))
-+			goto out;
- 		p = xdr_inline_decode(xdr,
- 			     rc_list->rcl_nrefcalls * 2 * sizeof(uint32_t));
- 		if (unlikely(p == NULL))
+ /* Undo procedures. */
 -- 
 2.43.0
 
