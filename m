@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522DD9BE797
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C679BE8B5
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A57D1F250E9
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 702A11F20594
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF7F1DF24A;
-	Wed,  6 Nov 2024 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157721DF756;
+	Wed,  6 Nov 2024 12:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOBpcdQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrZEKele"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A751922DB;
-	Wed,  6 Nov 2024 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A91DED58;
+	Wed,  6 Nov 2024 12:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895353; cv=none; b=HDebIV+oMnFfPVSiV29WCwse3IA0TaEFXyY4/IWqOc6sEGHwD36c3BzqSWorTN05sPDo9ll9dfPzRKPPRypCkoLvkF3OEsgjl01bTqxaKtHbjniOkWMZveTi8Q+4uXVx/r2VbC7/eZvij4PVNIA51Lm6JnUgWSOo/rGD5X3/aIY=
+	t=1730896024; cv=none; b=sjbZbR8ZfzW+dXnA1+bsYhsBZH5wuV1dv3JflRk9XGobwaXLIe8xOkEYDrbQSag5C8bTbb2Fd31MQQgBCY8G0CdMVF8IXyYQfkbfAuEZTSU7++3Svot1oOdoIjN0IApLlvNw9CaBpiro3R5+KpzpMJ2OL1f1xrKHWmGoNertatI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895353; c=relaxed/simple;
-	bh=AS81y26eVlgUsmw5W3S6/JDgeA5vsXbvMMD4+BQ8zig=;
+	s=arc-20240116; t=1730896024; c=relaxed/simple;
+	bh=zLs9yJvZ9b8TPhARydtbZs/NgH0oA2GX7uhAA1Psdk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idzNMokmYa5aTF2h32CsUnNrvkBqj5pnvnsFs8ICelVy6+Zs5XlubmL3r3/CGwT8ff59+wulEl3a8evhfOcYrBz1azI67c9iNNdgk2QeXdisMR6QVm5YwO4aZ1lOTsaKyWfuDoB2jsEHcxORajh5wEj0AN3Y+CMXzOWI6uqEoFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOBpcdQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBA0C4CECD;
-	Wed,  6 Nov 2024 12:15:52 +0000 (UTC)
+	 MIME-Version; b=US+3jJg8y4YxlqZBhJ2lFRLakllZXJjpN5KXhSiOMjMq1WLZuaFq1Vmx3ZavglpMF3DorxiMlP+eeVfFuOMwuMuUTpQAYwr6UST2mllDJ+QAsVIsAx6xNCaZ2KhJ+LXlYE9qIAn2/T12AXWka0GK9Xr0sN9d8LVRbrGpe6uY1k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrZEKele; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB10C4CECD;
+	Wed,  6 Nov 2024 12:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895353;
-	bh=AS81y26eVlgUsmw5W3S6/JDgeA5vsXbvMMD4+BQ8zig=;
+	s=korg; t=1730896024;
+	bh=zLs9yJvZ9b8TPhARydtbZs/NgH0oA2GX7uhAA1Psdk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOBpcdQw7w15S1O8dZf8zN+xBRUl3j+WstkHGwDTYf6dqeJaDLML2KDbmaKh5Wl9f
-	 YtIvOwzm6RNqb6WinjlZL7HDz5o7HPwTF8Y076sw6qippjL8bAB73A7eHOquEIFZV+
-	 23NaSTHJBnIkA9LeB4cmG3nnKEKGQsSj+ju/JtDI=
+	b=lrZEKelemfn+8fJZ4hsM9P81uSh8SJ9Jlwv5ZjwdVdP+4oBnqGUyuG1qxFFbbN5VA
+	 00UaowaSbfPZdQ97LjqA4uY3uzz7Ht7koJ6gc71A+/GWvr8qT/X+R2Jn3P+RMjyTAb
+	 fhmW03NY5yfAh67zL9LDaE4PCZJYpIWEJzPG0EyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 189/350] ext4: propagate errors from ext4_find_extent() in ext4_insert_range()
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 064/245] firmware: arm_sdei: Fix the input parameter of cpuhp_remove_state()
 Date: Wed,  6 Nov 2024 13:01:57 +0100
-Message-ID: <20241106120325.626148095@linuxfoundation.org>
+Message-ID: <20241106120320.782220101@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
 
-commit 369c944ed1d7c3fb7b35f24e4735761153afe7b3 upstream.
+[ Upstream commit c83212d79be2c9886d3e6039759ecd388fd5fed1 ]
 
-Even though ext4_find_extent() returns an error, ext4_insert_range() still
-returns 0. This may confuse the user as to why fallocate returns success,
-but the contents of the file are not as expected. So propagate the error
-returned by ext4_find_extent() to avoid inconsistencies.
+In sdei_device_freeze(), the input parameter of cpuhp_remove_state() is
+passed as 'sdei_entry_point' by mistake. Change it to 'sdei_hp_state'.
 
-Fixes: 331573febb6a ("ext4: Add support FALLOC_FL_INSERT_RANGE for fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-11-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d2c48b2387eb ("firmware: arm_sdei: Fix sleep from invalid context BUG")
+Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20241016084740.183353-1-wangxiongfeng2@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/arm_sdei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5731,6 +5731,7 @@ int ext4_insert_range(struct inode *inod
- 	path = ext4_find_extent(inode, offset_lblk, NULL, 0);
- 	if (IS_ERR(path)) {
- 		up_write(&EXT4_I(inode)->i_data_sem);
-+		ret = PTR_ERR(path);
- 		goto out_stop;
- 	}
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 285fe7ad490d1..3e8051fe82965 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -763,7 +763,7 @@ static int sdei_device_freeze(struct device *dev)
+ 	int err;
  
+ 	/* unregister private events */
+-	cpuhp_remove_state(sdei_entry_point);
++	cpuhp_remove_state(sdei_hp_state);
+ 
+ 	err = sdei_unregister_shared();
+ 	if (err)
+-- 
+2.43.0
+
 
 
 
