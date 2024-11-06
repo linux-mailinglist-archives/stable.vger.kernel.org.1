@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0E79BE947
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:32:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E799BEB4B
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C12301C21690
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F3F11F2730F
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD9D1DED4F;
-	Wed,  6 Nov 2024 12:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AC11F7086;
+	Wed,  6 Nov 2024 12:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znscjzMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRK7TLDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3F1DE3B8;
-	Wed,  6 Nov 2024 12:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19851E04A6;
+	Wed,  6 Nov 2024 12:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896346; cv=none; b=DzouP7NKNWMnyqChLo2dWE91pm72ojPkuSgKXnM+eY6PbCFG2iT0rHFDTcvps6QkQZ5fghjv0McharcZdPpUz3t6FElAvNe4b494NmHWit1fSuPbjZ0kseOeXhtVgSUQFNj/DeG06Eq25wAhKf8uX2iLnHdgGyLxxvOkuWBtayA=
+	t=1730896974; cv=none; b=UfcONHQv18c7+wsirEIO3TjJNwNrpXSFEu3PEDZ6+bTrq6pLf3Sxyb+4ZIP4ZrdcgATWJ12m5wJNaMIU+uPtuXN/0viDFYC5palHm3sE792cFJ71a7FsjndqXX/r7bHE+vvTFTQs18VRST57rw/xi5J4xiUn6ROhJNSa6sJQFG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896346; c=relaxed/simple;
-	bh=UeZrigwor1AVJXJn68Y8/b57siSAy7+pEkKdN0MNTB0=;
+	s=arc-20240116; t=1730896974; c=relaxed/simple;
+	bh=K8POy4QKFwdC/B5pphEpeP0UT5BrgjQEqgDXnKFxJYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzdtBAQNXetLZfctARopDf5iuNg6G1Gt7eo7L0HPq1cofVn4FcZYS6j6UN8wbFDYBrepj6MscTZKhx1lmFnCCGgaf+AYBHaBTXG0JOSX8HHcxwGdg5/B0DG4KS56CRJz+Rhhs5Vb8WNYgdxdyX5ONBJjb5Mym9YLShrK6QBPRvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znscjzMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254F6C4CECD;
-	Wed,  6 Nov 2024 12:32:25 +0000 (UTC)
+	 MIME-Version; b=X6jHgnUFdkOFGDq3uLwJQz6bM2ZIInqxIxlvaPx1GjcQJiEuCxibccbM8li0gB0xzI7gP7ikgU+v9qGEd9LD79U5bR67C+W79aRhjnjLrp/R4hQjyDw1HhZDFRUlTOimmeVbxLVDYooFOih9HvpxfVA8UBfe4a/Bq7AUp2WpH6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRK7TLDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE09AC4CED4;
+	Wed,  6 Nov 2024 12:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896346;
-	bh=UeZrigwor1AVJXJn68Y8/b57siSAy7+pEkKdN0MNTB0=;
+	s=korg; t=1730896974;
+	bh=K8POy4QKFwdC/B5pphEpeP0UT5BrgjQEqgDXnKFxJYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znscjzMPfgISyFZkahipfZxa3yafJq6sQMIBEbb7bWR9N+1C5Yth/kW8bWJE6Ffi1
-	 kG/ocD9mtfTnkFPohFnbJ8wrP8bhTbfEV2QI5ypI7vqRlSCru9uLArEEVgklSjhM4x
-	 5WlMfPx8KgU/9QM/7lQzjNVf88ihOq+g0YT8FCUA=
+	b=uRK7TLDgJQ2vrSD5H5mCQUQyZu2Fsucy5+AmCdiwWG/rTvZsDXEpHaYmTTOxAv780
+	 oBCIhI25FojodwKqLROYoGD/6C6Q/Wv0Jn6OMGrh+U8KZ8oEKnZgN/hG+K3fY6fT8m
+	 iLjS+8/3BbfttRxhH3ukf13g/ZXCMUsbm2czvmbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 172/245] mptcp: init: protect sched with rcu_read_lock
+Subject: [PATCH 6.1 024/126] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
 Date: Wed,  6 Nov 2024 13:03:45 +0100
-Message-ID: <20241106120323.472489384@linuxfoundation.org>
+Message-ID: <20241106120306.751314841@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 3deb12c788c385e17142ce6ec50f769852fcec65 ]
+[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
 
-Enabling CONFIG_PROVE_RCU_LIST with its dependence CONFIG_RCU_EXPERT
-creates this splat when an MPTCP socket is created:
+There are code paths from which the function is called without holding
+the RCU read lock, resulting in a suspicious RCU usage warning [1].
 
-  =============================
-  WARNING: suspicious RCU usage
-  6.12.0-rc2+ #11 Not tainted
-  -----------------------------
-  net/mptcp/sched.c:44 RCU-list traversed in non-reader section!!
+Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
+the RCU read lock before calling
+l3mdev_master_upper_ifindex_by_index_rcu().
 
-  other info that might help us debug this:
+[1]
+WARNING: suspicious RCU usage
+6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
+-----------------------------
+net/core/dev.c:876 RCU-list traversed in non-reader section!!
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  no locks held by mptcp_connect/176.
+other info that might help us debug this:
 
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 176 Comm: mptcp_connect Not tainted 6.12.0-rc2+ #11
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  Call Trace:
-   <TASK>
-   dump_stack_lvl (lib/dump_stack.c:123)
-   lockdep_rcu_suspicious (kernel/locking/lockdep.c:6822)
-   mptcp_sched_find (net/mptcp/sched.c:44 (discriminator 7))
-   mptcp_init_sock (net/mptcp/protocol.c:2867 (discriminator 1))
-   ? sock_init_data_uid (arch/x86/include/asm/atomic.h:28)
-   inet_create.part.0.constprop.0 (net/ipv4/af_inet.c:386)
-   ? __sock_create (include/linux/rcupdate.h:347 (discriminator 1))
-   __sock_create (net/socket.c:1576)
-   __sys_socket (net/socket.c:1671)
-   ? __pfx___sys_socket (net/socket.c:1712)
-   ? do_user_addr_fault (arch/x86/mm/fault.c:1419 (discriminator 1))
-   __x64_sys_socket (net/socket.c:1728)
-   do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by ip/361:
+ #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
 
-That's because when the socket is initialised, rcu_read_lock() is not
-used despite the explicit comment written above the declaration of
-mptcp_sched_find() in sched.c. Adding the missing lock/unlock avoids the
-warning.
+stack backtrace:
+CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
+Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ lockdep_rcu_suspicious.cold+0x4f/0xd6
+ dev_get_by_index_rcu+0x1d3/0x210
+ l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
+ ip_tunnel_bind_dev+0x72f/0xa00
+ ip_tunnel_newlink+0x368/0x7a0
+ ipgre_newlink+0x14c/0x170
+ __rtnl_newlink+0x1173/0x19c0
+ rtnl_newlink+0x6c/0xa0
+ rtnetlink_rcv_msg+0x3cc/0xf60
+ netlink_rcv_skb+0x171/0x450
+ netlink_unicast+0x539/0x7f0
+ netlink_sendmsg+0x8c1/0xd80
+ ____sys_sendmsg+0x8f9/0xc20
+ ___sys_sendmsg+0x197/0x1e0
+ __sys_sendmsg+0x122/0x1f0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 1730b2b2c5a5 ("mptcp: add sched in mptcp_sock")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/523
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241021-net-mptcp-sched-lock-v1-1-637759cf061c@kernel.org
+Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/ip_tunnels.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index d4b3bc46cdaaf..ec87b36f0d451 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2864,8 +2864,10 @@ static int mptcp_init_sock(struct sock *sk)
- 	if (unlikely(!net->mib.mptcp_statistics) && !mptcp_mib_alloc(net))
- 		return -ENOMEM;
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 0cc077c3dda30..f1ba369306fee 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -252,7 +252,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
+ 	memset(fl4, 0, sizeof(*fl4));
  
-+	rcu_read_lock();
- 	ret = mptcp_init_sched(mptcp_sk(sk),
- 			       mptcp_sched_find(mptcp_get_scheduler(net)));
-+	rcu_read_unlock();
- 	if (ret)
- 		return ret;
- 
+ 	if (oif) {
+-		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
++		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
+ 		/* Legacy VRF/l3mdev use case */
+ 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
+ 	}
 -- 
 2.43.0
 
