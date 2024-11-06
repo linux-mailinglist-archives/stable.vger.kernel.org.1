@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-90265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E50D9BE774
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D579BE781
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81705B231F8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2A1B1C235A6
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCD41DEFF5;
-	Wed,  6 Nov 2024 12:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57EF1DE8A2;
+	Wed,  6 Nov 2024 12:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRi9yW3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6pCjkjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297E41DF24A;
-	Wed,  6 Nov 2024 12:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641401DF27F;
+	Wed,  6 Nov 2024 12:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895262; cv=none; b=UyaKcyn3RP/Uo/oGszHT5dv06FtsEkKaV1PfWiUUT7UxfL3Atz7zvtGi41dQMJ7AQRRu1OhI9x3tD6M//JolLaz5KS9zScJIlEV4Rf2egPR+lKlRAcsjvmAQjZuPK/ksYIGqQM5cJ7hqu3QbXPwLR345E3ZMU+DXgGKqrdp3j6A=
+	t=1730895294; cv=none; b=tNUZ6nKpAf4jgOiV5JPEbzjD/9UoRAkyssCYiH88awqFs/OfUWukor/yatubYCERPU/5973JA4Q0nxbF34Da0c/OwiQwRNBC8UnPEhLME52oKy3Yz1XZu9iz/cOB4hayqethl97aJqWYuDqkkWyRwRNZgOfBvpxY7uZnIgUdF1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895262; c=relaxed/simple;
-	bh=MwYlmtWBB9VNj6sfwjnlLarUfbFckMNbtD4ipo3fa20=;
+	s=arc-20240116; t=1730895294; c=relaxed/simple;
+	bh=IhmiM3uixbZgyPtmL9ftxPCq4cpBp7SCrJm8NRXa7Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUhueNpycaAv0UjSX9eouXIg/K+LYdqX48XQKIrfQMwdrCMiA2ZciFkE4G2xT3iO77g1YT7op8PNrlr623cQoo3J3UAKiNySRIw1G0HMJU9lMmBxR5oUAeG4z4YGzgg4Yqq5xsfIpK7JEvmSKPHXxjo1m1sU2BtqhMx/W1BH6eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRi9yW3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E997C4CED2;
-	Wed,  6 Nov 2024 12:14:21 +0000 (UTC)
+	 MIME-Version; b=et30YukSt/DeHa1nnQaHwL/sitGBqIeQFL/01fP0kHxCrbNakeLkKLRfS3elxqVDp2wAJfXtm0M/Tsyl+8xgU/jeUWpcSW+iL8q/zLcoZDdX/eNO1EHYzCODcLOC9BHWSlmtvJI6f3MphuvHW93Pd5scbddul6x6D5snukhfp5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6pCjkjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D410DC4CECD;
+	Wed,  6 Nov 2024 12:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895261;
-	bh=MwYlmtWBB9VNj6sfwjnlLarUfbFckMNbtD4ipo3fa20=;
+	s=korg; t=1730895294;
+	bh=IhmiM3uixbZgyPtmL9ftxPCq4cpBp7SCrJm8NRXa7Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRi9yW3La2rWGxxD81BImRlf1UjUKUDyDZkH4aP6T+5NuByshoOsFnxau4+VUFFn/
-	 8PJ7Grn1tFsRQjsD8U1aAFZMVPNVTf8tVQkzFbLwEkrpYjN2Nrcujpasc/8lfrPbBd
-	 ZhLM3ARiQQOFC0W7JJYW/0TkLBoVGNhwCUzr8Ibo=
+	b=a6pCjkjLlv/W+TLF90+u8Sitdh8FcXwrHfkzS8+rGILPWmc+/HviJZyVnlQxNr5CO
+	 22hunVfyxlxT/vXYmChEa5Vwasa+y8fFaDobH7svSX+R3hi2jIC792lK+BqNOn4TW+
+	 2/+Ii9H+8+UUvpjYiaDRKbJ6Zsz0vFwMsobEfvGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 4.19 131/350] usb: yurex: Fix inconsistent locking bug in yurex_read()
-Date: Wed,  6 Nov 2024 13:00:59 +0100
-Message-ID: <20241106120324.142492133@linuxfoundation.org>
+	Liao Chen <liaochen4@huawei.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 132/350] mailbox: rockchip: fix a typo in module autoloading
+Date: Wed,  6 Nov 2024 13:01:00 +0100
+Message-ID: <20241106120324.165703884@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
 References: <20241106120320.865793091@linuxfoundation.org>
@@ -66,37 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-commit e7d3b9f28654dbfce7e09f8028210489adaf6a33 upstream.
+[ Upstream commit e92d87c9c5d769e4cb1dd7c90faa38dddd7e52e3 ]
 
-Unlock before returning on the error path.
+MODULE_DEVICE_TABLE(of, rockchip_mbox_of_match) could let the module
+properly autoloaded based on the alias from of_device_id table. It
+should be 'rockchip_mbox_of_match' instead of 'rockchp_mbox_of_match',
+just fix it.
 
-Fixes: 86b20af11e84 ("usb: yurex: Replace snprintf() with the safer scnprintf() variant")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202312170252.3udgrIcP-lkp@intel.com/
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20231219063639.450994-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f70ed3b5dc8b ("mailbox: rockchip: Add Rockchip mailbox driver")
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/yurex.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mailbox/rockchip-mailbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -414,8 +414,10 @@ static ssize_t yurex_read(struct file *f
- 		return -ENODEV;
- 	}
+diff --git a/drivers/mailbox/rockchip-mailbox.c b/drivers/mailbox/rockchip-mailbox.c
+index d702a204f5c10..bf09ab923d1e2 100644
+--- a/drivers/mailbox/rockchip-mailbox.c
++++ b/drivers/mailbox/rockchip-mailbox.c
+@@ -167,7 +167,7 @@ static const struct of_device_id rockchip_mbox_of_match[] = {
+ 	{ .compatible = "rockchip,rk3368-mailbox", .data = &rk3368_drv_data},
+ 	{ },
+ };
+-MODULE_DEVICE_TABLE(of, rockchp_mbox_of_match);
++MODULE_DEVICE_TABLE(of, rockchip_mbox_of_match);
  
--	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
-+	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN)) {
-+		mutex_unlock(&dev->io_mutex);
- 		return -EIO;
-+	}
- 
- 	spin_lock_irq(&dev->lock);
- 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+ static int rockchip_mbox_probe(struct platform_device *pdev)
+ {
+-- 
+2.43.0
+
 
 
 
