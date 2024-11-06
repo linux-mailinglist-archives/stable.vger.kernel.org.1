@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-91516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0B99BEE54
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 504B89BEE9E
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FFC7286255
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E07D286C00
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5451EC01E;
-	Wed,  6 Nov 2024 13:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD901E04BF;
+	Wed,  6 Nov 2024 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vffrdmR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhWVOQBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23154765;
-	Wed,  6 Nov 2024 13:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F3C1DFE1E;
+	Wed,  6 Nov 2024 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898962; cv=none; b=XPz68BgsKrKaSRZGftfUmeTbUovgNcV/AAXuO/TeVJqbPSLPnSmt/FepkcAUs7ndtHU599DwCEBV2Z4bs8iQhAq6F1rK/MOgAvdkQ2BGLYNgX92+mjPnAzJ2K6dYFtd4YsFPWcQKOoBVbSlgxtuCTO9x18Xg4WR89UEIdtmIqog=
+	t=1730899144; cv=none; b=uRnFUFz0hsfphEYEwaiYNCwkB4YDGxSssCisCXWADNKBi8nyn8oZ/ltnDza99zi8+fi+0z7WIOlkB4lPsWdrvHdKMEFwzFNVA30VYoWU8Sy0/0A002E+PrKbcGlkcZwH8pXZQOp0C8Xx+nvoY4/scUVs6eW+0OI05yVOd6iVyq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898962; c=relaxed/simple;
-	bh=8TQ8LPosmLYMaCeJ1M0oFxsd/oS6bnJ++9kcql0Oqdo=;
+	s=arc-20240116; t=1730899144; c=relaxed/simple;
+	bh=Jxvu7JJbnvY4sABwvWtlvoAvHCAc4oQPHIxBtIDfPKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPb0M6ir3l2YXBDeI/LT/zhe9f0YLuk/QPrdrfA6JxRmVI4MLedXXplK/fcvf8BgpDnvZtXyEQg9oaiAPfaEwn13/+4bzmi9XkL0pX7p4ltA/dzorxeV7ihUhbop2bwRpQsFC9AMvqRe8TqS3Q6lGG5QEMtTMVjK+Ren6qJg/Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vffrdmR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843C9C4CECD;
-	Wed,  6 Nov 2024 13:16:01 +0000 (UTC)
+	 MIME-Version; b=B6fehV7AYhpOP4t1atnmrV65QGmdC5KfRc1HeaRduft4hpeHGm3Ihk3CBr2xYz/nLfe2lEqyjxCfu6QWzPlUA+JKCKdQ6nXc9AHy3nfpHirhWDvPkwqyutJw+gxFqe7t1Amgpo5WThaUHE+Nz2aAhF9eIPoB2OK3HxtU7xzuq7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhWVOQBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EEEC4CED3;
+	Wed,  6 Nov 2024 13:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898961;
-	bh=8TQ8LPosmLYMaCeJ1M0oFxsd/oS6bnJ++9kcql0Oqdo=;
+	s=korg; t=1730899144;
+	bh=Jxvu7JJbnvY4sABwvWtlvoAvHCAc4oQPHIxBtIDfPKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vffrdmR7fQkweh8aaH75PYWXWxv5A2Jvkqldh3u3gT12qYIgsa85YGKp29793lO6Q
-	 z3e3aOdombYI5ahUMpKtEZPBtkHjJHGxvp/FTP06oS2TNTLXQP/U/WdtdXoOGBFLEy
-	 EK+YmCow3ro//imDD4dtiVsPoMpdJ4kldRE/XoZ0=
+	b=NhWVOQBmD1BMzombZzIUzIdlg3F3JzA4zn3ycwW9V/UtE6zc1zd466LvVLHQoMzjR
+	 MuJ2iR28+31gkxRCDFjDa7UmL0SYNqQpmil1YgP+nZ+b/o4gfAWB/EHRiD2EqWUph+
+	 8Dqvan9CscW/+O+VU88VokJwUbwqZG663rPfZrpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atlas Yu <atlas.yu@canonical.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 413/462] r8169: avoid unsolicited interrupts
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 02/73] ksmbd: fix user-after-free from session log off
 Date: Wed,  6 Nov 2024 13:05:06 +0100
-Message-ID: <20241106120341.720097188@linuxfoundation.org>
+Message-ID: <20241106120300.032987470@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+References: <20241106120259.955073160@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
+[ Upstream commit 7aa8804c0b67b3cb263a472d17f2cb50d7f1a930 ]
 
-It was reported that after resume from suspend a PCI error is logged
-and connectivity is broken. Error message is:
-PCI error (cmd = 0x0407, status_errs = 0x0000)
-The message seems to be a red herring as none of the error bits is set,
-and the PCI command register value also is normal. Exception handling
-for a PCI error includes a chip reset what apparently brakes connectivity
-here. The interrupt status bit triggering the PCI error handling isn't
-actually used on PCIe chip versions, so it's not clear why this bit is
-set by the chip. Fix this by ignoring this bit on PCIe chip versions.
+There is racy issue between smb2 session log off and smb2 session setup.
+It will cause user-after-free from session log off.
+This add session_lock when setting SMB2_SESSION_EXPIRED and referece
+count to session struct not to free session while it is being used.
 
-Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
-Tested-by: Atlas Yu <atlas.yu@canonical.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25282
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ksmbd/mgmt/user_session.c | 26 +++++++++++++++++++++-----
+ fs/ksmbd/mgmt/user_session.h |  4 ++++
+ fs/ksmbd/server.c            |  2 ++
+ fs/ksmbd/smb2pdu.c           |  8 +++++++-
+ 4 files changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index bb5f70ce63b3d..14bac7c0e6f90 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -6237,7 +6237,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- 	    !(status & tp->irq_mask))
- 		return IRQ_NONE;
+diff --git a/fs/ksmbd/mgmt/user_session.c b/fs/ksmbd/mgmt/user_session.c
+index 15f68ee050894..844db95e66511 100644
+--- a/fs/ksmbd/mgmt/user_session.c
++++ b/fs/ksmbd/mgmt/user_session.c
+@@ -176,9 +176,10 @@ static void ksmbd_expire_session(struct ksmbd_conn *conn)
  
--	if (unlikely(status & SYSErr)) {
-+	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
-+	if (unlikely(status & SYSErr &&
-+	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
- 		rtl8169_pcierr_interrupt(tp->dev);
- 		goto out;
+ 	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+-		if (sess->state != SMB2_SESSION_VALID ||
+-		    time_after(jiffies,
+-			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
++		if (atomic_read(&sess->refcnt) == 0 &&
++		    (sess->state != SMB2_SESSION_VALID ||
++		     time_after(jiffies,
++			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
+ 			xa_erase(&conn->sessions, sess->id);
+ 			hash_del(&sess->hlist);
+ 			ksmbd_session_destroy(sess);
+@@ -268,8 +269,6 @@ struct ksmbd_session *ksmbd_session_lookup_slowpath(unsigned long long id)
+ 
+ 	down_read(&sessions_table_lock);
+ 	sess = __session_lookup(id);
+-	if (sess)
+-		sess->last_active = jiffies;
+ 	up_read(&sessions_table_lock);
+ 
+ 	return sess;
+@@ -288,6 +287,22 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
+ 	return sess;
+ }
+ 
++void ksmbd_user_session_get(struct ksmbd_session *sess)
++{
++	atomic_inc(&sess->refcnt);
++}
++
++void ksmbd_user_session_put(struct ksmbd_session *sess)
++{
++	if (!sess)
++		return;
++
++	if (atomic_read(&sess->refcnt) <= 0)
++		WARN_ON(1);
++	else
++		atomic_dec(&sess->refcnt);
++}
++
+ struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
+ 						    u64 sess_id)
+ {
+@@ -356,6 +371,7 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	xa_init(&sess->rpc_handle_list);
+ 	sess->sequence_number = 1;
+ 	rwlock_init(&sess->tree_conns_lock);
++	atomic_set(&sess->refcnt, 1);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+diff --git a/fs/ksmbd/mgmt/user_session.h b/fs/ksmbd/mgmt/user_session.h
+index 63cb08fffde84..ce91b1d698e71 100644
+--- a/fs/ksmbd/mgmt/user_session.h
++++ b/fs/ksmbd/mgmt/user_session.h
+@@ -61,6 +61,8 @@ struct ksmbd_session {
+ 	struct ksmbd_file_table		file_table;
+ 	unsigned long			last_active;
+ 	rwlock_t			tree_conns_lock;
++
++	atomic_t			refcnt;
+ };
+ 
+ static inline int test_session_flag(struct ksmbd_session *sess, int bit)
+@@ -101,4 +103,6 @@ void ksmbd_release_tree_conn_id(struct ksmbd_session *sess, int id);
+ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name);
+ void ksmbd_session_rpc_close(struct ksmbd_session *sess, int id);
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id);
++void ksmbd_user_session_get(struct ksmbd_session *sess);
++void ksmbd_user_session_put(struct ksmbd_session *sess);
+ #endif /* __USER_SESSION_MANAGEMENT_H__ */
+diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
+index 63b01f7d97031..09ebcf39d5bcb 100644
+--- a/fs/ksmbd/server.c
++++ b/fs/ksmbd/server.c
+@@ -238,6 +238,8 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
+ 	} while (is_chained == true);
+ 
+ send:
++	if (work->sess)
++		ksmbd_user_session_put(work->sess);
+ 	if (work->tcon)
+ 		ksmbd_tree_connect_put(work->tcon);
+ 	smb3_preauth_hash_rsp(work);
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 089dc2f51229a..54f7cf7a98b2b 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -606,8 +606,10 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 
+ 	/* Check for validity of user session */
+ 	work->sess = ksmbd_session_lookup_all(conn, sess_id);
+-	if (work->sess)
++	if (work->sess) {
++		ksmbd_user_session_get(work->sess);
+ 		return 1;
++	}
+ 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
+ 	return -ENOENT;
+ }
+@@ -1761,6 +1763,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 		}
+ 
+ 		conn->binding = true;
++		ksmbd_user_session_get(sess);
+ 	} else if ((conn->dialect < SMB30_PROT_ID ||
+ 		    server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
+ 		   (req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
+@@ -1787,6 +1790,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 		}
+ 
+ 		conn->binding = false;
++		ksmbd_user_session_get(sess);
  	}
+ 	work->sess = sess;
+ 
+@@ -2235,7 +2239,9 @@ int smb2_session_logoff(struct ksmbd_work *work)
+ 	}
+ 
+ 	ksmbd_destroy_file_table(&sess->file_table);
++	down_write(&conn->session_lock);
+ 	sess->state = SMB2_SESSION_EXPIRED;
++	up_write(&conn->session_lock);
+ 
+ 	ksmbd_free_user(sess->user);
+ 	sess->user = NULL;
 -- 
 2.43.0
 
