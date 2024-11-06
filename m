@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-91503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F829BEE47
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33DB9BEE4A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5EF1C2471A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 431C21F24F5A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1B21E909C;
-	Wed,  6 Nov 2024 13:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E261EB9EC;
+	Wed,  6 Nov 2024 13:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPWZ4CA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfNNKWC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD3A54765;
-	Wed,  6 Nov 2024 13:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0DE54765;
+	Wed,  6 Nov 2024 13:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898923; cv=none; b=dEVAqDMnNRV0aWiBqDk19+erWu/96VEp4sop+BmiOcu7UndYUO2Knu1xkiq9ODm/x1uUzFcwoK1phx4/V/CHIQDF7AeP+LwxJISRzdNreNYgsmf57LAHRMwl0+qA//jpfipKEzfBnKUqEFAjXQEwUtYp5QKSISk1x/6bOGFUGpE=
+	t=1730898930; cv=none; b=ci5Cvd23wRzsuQ9SkSIJeg7MAnKyowKc+Bx/Yw9U7WBgKP4qPNHBfFtgDTUEKfI5GFp0BhQaw0oHB//Wwtt8bK7ZR1A4dImsiQcIGh+/25SinAvqPB9ScVCZPfYORih1tlk9AE4EuiiaR9s//y3HNterWieLuQV2i/ZLYdoCVWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898923; c=relaxed/simple;
-	bh=YaJ6R0NDWL4FteninoEqt18IjMNFhNWVI4TGEaqVZkI=;
+	s=arc-20240116; t=1730898930; c=relaxed/simple;
+	bh=PMy6djEGFM6wm/i9aF3cNzI7R+bsRj8IwGclrxtYtS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ykdo1EFraO7MdNa3q76Ppr/BwJK/i2lh6bxfS1Zu5KJXJ0tGHjqzhfNjaUzyTi/EIx9BJy1lMPct/cvQxt3ei9ORSYWtj2dc2WcsBgZKE0tnOd1iuLugdf2g/imdYeBZoLGyGMzlud/10ucYaar+5GK679y7Bvbav4kibDwP3Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPWZ4CA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F292C4CECD;
-	Wed,  6 Nov 2024 13:15:23 +0000 (UTC)
+	 MIME-Version; b=TOO6srwb47bTQ+72zpL7nbqxsYNJfklFeZPM11Jgy82RSomjZSHMnBkM22Owl7UKqyyNrKZgg7qZvXLWoOvCpIZoepLn01BQM+zAyCy8/kDTYcIuzh00PqAebk11XDOQpTClPp6CeNv/kbgA1f+w+snlseXVywiFNGUlfnPW4KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfNNKWC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B14C4CECD;
+	Wed,  6 Nov 2024 13:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730898923;
-	bh=YaJ6R0NDWL4FteninoEqt18IjMNFhNWVI4TGEaqVZkI=;
+	s=korg; t=1730898929;
+	bh=PMy6djEGFM6wm/i9aF3cNzI7R+bsRj8IwGclrxtYtS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPWZ4CA7TpoXDgazQbgOloS6kQHGTwMgbojKgjFW9JjYsKp1JZ8u4N06GrFo0H6yU
-	 oORW3JPw2Uem/34VvIifl9YOMEDiYN1bGIc6DwWJA84hbbwWL+KxglA3S9nAN92JME
-	 klfdaV9irmB22pskNWk2iy1BIvxWpvmVa2QrGB9o=
+	b=EfNNKWC3ONt0Ur1cdPHBlWabgHwRGUyIzDdZMC2Tr3Dv8/HU/eZjsgLbDEvEK/Nfz
+	 PEfyFOn+Jxxr59+64Ye2QYNHAN2ZDhDeuHB570TPyUVooGyj5wBX7QvgSVwoHgGAo1
+	 5lMBKmeB/mMG7miw/7L+M6GGmg5kkCofTC8ZAsFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Janosch Frank <frankja@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 402/462] KVM: s390: gaccess: Cleanup access to guest pages
-Date: Wed,  6 Nov 2024 13:04:55 +0100
-Message-ID: <20241106120341.451478454@linuxfoundation.org>
+Subject: [PATCH 5.4 403/462] KVM: s390: gaccess: Check if guest address is in memslot
+Date: Wed,  6 Nov 2024 13:04:56 +0100
+Message-ID: <20241106120341.475505881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
 References: <20241106120331.497003148@linuxfoundation.org>
@@ -68,73 +67,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-[ Upstream commit bad13799e0305deb258372b7298a86be4c78aaba ]
+[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
 
-Introduce a helper function for guest frame access.
+Previously, access_guest_page() did not check whether the given guest
+address is inside of a memslot. This is not a problem, since
+kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
 
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-4-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+However, -EFAULT is also returned when copy_to/from_user fails.
+
+When emulating a guest instruction, the address being outside a memslot
+usually means that an addressing exception should be injected into the
+guest.
+
+Failure in copy_to/from_user however indicates that something is wrong
+in userspace and hence should be handled there.
+
+To be able to distinguish these two cases, return PGM_ADDRESSING in
+access_guest_page() when the guest address is outside guest memory. In
+access_guest_real(), populate vcpu->arch.pgm.code such that
+kvm_s390_inject_prog_cond() can be used in the caller for injecting into
+the guest (if applicable).
+
+Since this adds a new return value to access_guest_page(), we need to make
+sure that other callers are not confused by the new positive return value.
+
+There are the following users of access_guest_page():
+- access_guest_with_key() does the checking itself (in
+  guest_range_to_gpas()), so this case should never happen. Even if, the
+  handling is set up properly.
+- access_guest_real() just passes the return code to its callers, which
+  are:
+    - read_guest_real() - see below
+    - write_guest_real() - see below
+
+There are the following users of read_guest_real():
+- ar_translation() in gaccess.c which already returns PGM_*
+- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
+  return -EFAULT on read_guest_read() nonzero return - no change
+- shadow_crycb(), handle_stfle() always present this as validity, this
+  could be handled better but doesn't change current behaviour - no change
+
+There are the following users of write_guest_real():
+- kvm_s390_store_status_unloaded() always returns -EFAULT on
+  write_guest_real() failure.
+
+Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/s390/kvm/gaccess.c |  4 ++++
+ arch/s390/kvm/gaccess.h | 14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index d4fe5db5984dd..6ba82fe0776f8 100644
+index 6ba82fe0776f8..11ddac5e3e923 100644
 --- a/arch/s390/kvm/gaccess.c
 +++ b/arch/s390/kvm/gaccess.c
-@@ -866,6 +866,20 @@ static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
- 	return 0;
- }
+@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
+ 	const gfn_t gfn = gpa_to_gfn(gpa);
+ 	int rc;
  
-+static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
-+			     void *data, unsigned int len)
-+{
-+	const unsigned int offset = offset_in_page(gpa);
-+	const gfn_t gfn = gpa_to_gfn(gpa);
-+	int rc;
-+
-+	if (mode == GACC_STORE)
-+		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
-+	else
-+		rc = kvm_read_guest_page(kvm, gfn, data, offset, len);
-+	return rc;
-+}
-+
- int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
-@@ -896,10 +910,7 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
--		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
--		else
--			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpas[idx], data, fragment_len);
- 		len -= fragment_len;
- 		data += fragment_len;
- 	}
-@@ -920,10 +931,7 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 	while (len && !rc) {
- 		gpa = kvm_s390_real_to_abs(vcpu, gra);
- 		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
--		if (mode)
--			rc = write_guest_abs(vcpu, gpa, data, fragment_len);
--		else
--			rc = read_guest_abs(vcpu, gpa, data, fragment_len);
-+		rc = access_guest_page(vcpu->kvm, mode, gpa, data, fragment_len);
- 		len -= fragment_len;
++	if (!gfn_to_memslot(kvm, gfn))
++		return PGM_ADDRESSING;
+ 	if (mode == GACC_STORE)
+ 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
+ 	else
+@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
  		gra += fragment_len;
  		data += fragment_len;
+ 	}
++	if (rc > 0)
++		vcpu->arch.pgm.code = rc;
+ 	return rc;
+ }
+ 
+diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+index 4c56de5429608..6c97cde8623a4 100644
+--- a/arch/s390/kvm/gaccess.h
++++ b/arch/s390/kvm/gaccess.h
+@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest low address and key protection are not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying from @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to guest memory.
+  */
+@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest key protection is not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying to @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to kernel space.
+  */
 -- 
 2.43.0
 
