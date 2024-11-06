@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-90337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626F99BE7CD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:18:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487499BE8F9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2691928473F
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F316C1F21EDC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81101DF73E;
-	Wed,  6 Nov 2024 12:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939121DE4EA;
+	Wed,  6 Nov 2024 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw4gelhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EP7xqQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449D1DED5C;
-	Wed,  6 Nov 2024 12:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528911D2784;
+	Wed,  6 Nov 2024 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895474; cv=none; b=RQRuO0kAplHOA08q/dq/ML6q7gsDNEFE18XjL8DO10od1T92heFNzf33nd5rQ2awjNhsi+Z98bPKwwxcjh3YLozl3Lj39xWYqXxPEx/AaBbZvn8q+D94seCwbq4BV8aJ8QTW/kF+5RFC5H5fDJDGiKbe5vGzWsJYoVn09ycEm/g=
+	t=1730896147; cv=none; b=mEsk7ZpM/NPjo3dfUQSJGLAVGnj37l6dfp41BqsEiPvVi9qjaPWOmzJYizvSJEBYbGaXI8DEFD8IBwCJc7pH8qLz4N8fNyYvRPgLSB07sy7iZmAZOoFJ6YgEd4EVu6vqsMwNn6lkNBnxHMs12lF3xyUnQRrS+Kd6HkKs6M8B8is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895474; c=relaxed/simple;
-	bh=p3r2UhGLVAPBAoPHuwOvsDg6alY1U0xChfViQT5OqPI=;
+	s=arc-20240116; t=1730896147; c=relaxed/simple;
+	bh=4zHnNJApI2T2y9h5pLXsS4pzhh2fI4lZW21MljLBQEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7Kyo+3GNf5OLER8lZmA7uQ6dQCcmxxQ/gyEn+hK+AAAEyr5aA2u3EQOF5NJwK7Fex20Zkhth2uFryT8F1x5SGw/aBarGZysZJDTGPpXi+Y1TYa1CHQ7COVuMJCeFjwqPw3rCcIL/rjz/gM5OYYXeL+WObyapkEiCU+i7BJLeHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw4gelhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED068C4CED2;
-	Wed,  6 Nov 2024 12:17:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cCsvNhsul8Y6JkS3KESC5OKHSB9pkhHU/UC1y7Vz2qqt1eHHpNppWETI6PZePNKGoLNFE3B+OHYkTvTUzqjc5LAhFx5VMwnMtSn6BacQ0N0hE3aWSMYIgPqLGoOv9T0px5PbTNFAm6vo/nT6xvj8QK/k73gl98tI6UYy7xy/IUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EP7xqQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCF8C4CECD;
+	Wed,  6 Nov 2024 12:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895474;
-	bh=p3r2UhGLVAPBAoPHuwOvsDg6alY1U0xChfViQT5OqPI=;
+	s=korg; t=1730896147;
+	bh=4zHnNJApI2T2y9h5pLXsS4pzhh2fI4lZW21MljLBQEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dw4gelhNu51I7bPDIWZocvl90BBju3dIXrb9/qAp+RG7/EMd8885uX1CPgMQIkJRK
-	 a4/b+3MWEiCH3MOnOLJiTOl2zG4ZQ5iwcYUUyFqMdaXRKnKy+EOAaZjSoG8qZthu9E
-	 wdRZmb8sg1a9dwFcO4QTrdr5LsYGjDB9rJ9lQIok=
+	b=0EP7xqQSvty1nUTkDN9g/U1JgK7FIgl1GmVaL4L8+4SNP8qIKntFusa660RuNtARK
+	 1BGH9tAkh9hJ2S5SzuP2EA/JKE33t9UaL9US6SwA0urbDfIitTCLeGbS0IA1d1yxo5
+	 esS2kujybg5JxoxGivf6lIELZlETDLZIlY4ddNe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Sean Paul <seanpaul@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 230/350] drm: Move drm_mode_setcrtc() local re-init to failure path
+	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 105/245] ALSA: usb-audio: Add quirks for Dell WD19 dock
 Date: Wed,  6 Nov 2024 13:02:38 +0100
-Message-ID: <20241106120326.659697923@linuxfoundation.org>
+Message-ID: <20241106120321.799810217@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Paul <seanpaul@chromium.org>
+From: Jan Schär <jan@jschaer.ch>
 
-[ Upstream commit c232e9f41b136c141df9938024e521191a7b910d ]
+commit 4413665dd6c528b31284119e3571c25f371e1c36 upstream.
 
-Instead of always re-initializing the variables we need to clean up on
-out, move the re-initialization into the branch that goes back to retry
-label.
+The WD19 family of docks has the same audio chipset as the WD15. This
+change enables jack detection on the WD19.
 
-This is a lateral move right now, but will allow us to pull out the
-modeset locking into common code. I kept this change separate to make
-things easier to review.
+We don't need the dell_dock_mixer_init quirk for the WD19. It is only
+needed because of the dell_alc4020_map quirk for the WD15 in
+mixer_maps.c, which disables the volume controls. Even for the WD15,
+this quirk was apparently only needed when the dock firmware was not
+updated.
 
-Changes in v2:
-- None
-
-Reviewed-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20181129150423.239081-2-sean@poorly.run
-Stable-dep-of: b6802b61a9d0 ("drm/crtc: fix uninitialized variable use even harder")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029221249.15661-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ sound/usb/mixer_quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index 22eba10af165d..82ad38ee3fea7 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -567,9 +567,9 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_crtc *crtc_req = data;
- 	struct drm_crtc *crtc;
- 	struct drm_plane *plane;
--	struct drm_connector **connector_set, *connector;
--	struct drm_framebuffer *fb;
--	struct drm_display_mode *mode;
-+	struct drm_connector **connector_set = NULL, *connector;
-+	struct drm_framebuffer *fb = NULL;
-+	struct drm_display_mode *mode = NULL;
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
-@@ -601,10 +601,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	mutex_lock(&crtc->dev->mode_config.mutex);
- 	drm_modeset_acquire_init(&ctx, DRM_MODESET_ACQUIRE_INTERRUPTIBLE);
- retry:
--	connector_set = NULL;
--	fb = NULL;
--	mode = NULL;
--
- 	ret = drm_modeset_lock_all_ctx(crtc->dev, &ctx);
- 	if (ret)
- 		goto out;
-@@ -767,6 +763,12 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	}
- 	kfree(connector_set);
- 	drm_mode_destroy(dev, mode);
-+
-+	/* In case we need to retry... */
-+	connector_set = NULL;
-+	fb = NULL;
-+	mode = NULL;
-+
- 	if (ret == -EDEADLK) {
- 		ret = drm_modeset_backoff(&ctx);
- 		if (!ret)
--- 
-2.43.0
-
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3880,6 +3880,9 @@ int snd_usb_mixer_apply_create_quirk(str
+ 			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
++	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
++		err = dell_dock_mixer_create(mixer);
++		break;
+ 
+ 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
+ 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
 
 
 
