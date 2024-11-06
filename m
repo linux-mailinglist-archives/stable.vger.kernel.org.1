@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-90771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2B39BEAC4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:51:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779D29BE97A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1701C20A83
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD2C2855E8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030421FF5F8;
-	Wed,  6 Nov 2024 12:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7B81DFDB3;
+	Wed,  6 Nov 2024 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogwcox5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yL/9Cbvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF87C1F130F;
-	Wed,  6 Nov 2024 12:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C1D1DF99A;
+	Wed,  6 Nov 2024 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896763; cv=none; b=oBA5LhRFINHrAdUvXlQl4eO+oBKJAF8Ual1a9Jra6DVkoAcl69oTqIVVX6K1WAB95CDES4HuZP0DTS1wgVLVsox7mxC9pW9UKJZO/kv51oujPWZxVYJAPs6QuEianD5XBK98zJP4etwSR53y0tJc18bmHWDtm/zP4Lap6TC6jhc=
+	t=1730896480; cv=none; b=Uw2+adMWD8sxzsUYJoVqoQrrDHcaKauV28vIaMsr1Qerme7qQdfUX+e55cUEDwHVsqM8VrKrUd5wMhx6mN2wpnTGt25DeX72fgtVwB783hE1fw36bYG9FqTe/Qw+AyfQgky7LTVqreKu8R92i2Eh56nK5kteqCctkyLTTK+er8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896763; c=relaxed/simple;
-	bh=dSLiZLGxjUMR6LMF/j1c33vZyfb8+ZM1i2JHwSzJB5w=;
+	s=arc-20240116; t=1730896480; c=relaxed/simple;
+	bh=4KuJjlypflaElCwustt2mt3PQDpPZz7j8WcB0J5WxGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3Ulzp7u7q9DtkV7gq2Cf+OttoemCI6vVQ+x6HGJvDhPscq0ZJ2GjcLaw0jokreMawcmAVxisyA0MsUD0Q2dN5LI7C15ktXoyUyaSLRnDxJ80olXpgzw7tt9DvSgmEfMkXjlfpCvJNz2Rymrt6+q6ggr8NN/rs/L2epAnHnHUA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogwcox5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE70C4CED5;
-	Wed,  6 Nov 2024 12:39:22 +0000 (UTC)
+	 MIME-Version; b=E6Puv1PDNG55PaSP9YHRVRQK4Udptd+BvEtNBtcsKVA5d/SlBfw6eecdZlYuwOsR9jHgz2JE9RmIygJrbzBsj88n6i+rE4xozIzTuTqNE8eLLu4AWbEqS4MeI3MlJM1hH4LPAxXHwbLGj0vM0sR9CstOiIroPaIA8xbavzKXlLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yL/9Cbvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD81C4CED6;
+	Wed,  6 Nov 2024 12:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896763;
-	bh=dSLiZLGxjUMR6LMF/j1c33vZyfb8+ZM1i2JHwSzJB5w=;
+	s=korg; t=1730896480;
+	bh=4KuJjlypflaElCwustt2mt3PQDpPZz7j8WcB0J5WxGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogwcox5TY5dPd3dCmIAAiy+Q1zJy2mI66rNxph4TMcAV740QLOI6JudGlKU9UepAc
-	 BMXWhr2RC09FtG9udFjLVJucxKRDWLYkUO0VlA2U5UgBqK7VOXKUrOPaNh4t4rwaIn
-	 m9yLQnlbqs5P8hUP1fyGoY7RZgwTu/0yGlglVZLg=
+	b=yL/9CbvzpsPF/Sq/njJqx+sSbAnsNX/x3SOnCvwF+wesuFkiBSMMWXkcvdQ5mSuOo
+	 paZ31SNkcKnVBnSSNB0W7VZbpi5jonc+A4krytfGN4v9nO1x8DEvCfbwtkqdCmm99v
+	 UMZtbmmcl2HhrVGsLDC4IOBc4Qk276Xm1EMr/Ng4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/110] RDMA/mlx5: Round max_rd_atomic/max_dest_rd_atomic up instead of down
+	Abel Vesa <abel.vesa@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 216/245] arm64: dts: qcom: x1e80100-qcp: fix nvme regulator boot glitch
 Date: Wed,  6 Nov 2024 13:04:29 +0100
-Message-ID: <20241106120304.936755477@linuxfoundation.org>
+Message-ID: <20241106120324.571746872@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 78ed28e08e74da6265e49e19206e1bcb8b9a7f0d ]
+commit 717f0637ffc6a6a59f838df94a7d61e643c98d62 upstream.
 
-After the cited commit below max_dest_rd_atomic and max_rd_atomic values
-are being rounded down to the next power of 2. As opposed to the old
-behavior and mlx4 driver where they used to be rounded up instead.
+The NVMe regulator has been left enabled by the boot firmware. Mark it
+as such to avoid disabling the regulator temporarily during boot.
 
-In order to stay consistent with older code and other drivers, revert to
-using fls round function which rounds up to the next power of 2.
-
-Fixes: f18e26af6aba ("RDMA/mlx5: Convert modify QP to use MLX5_SET macros")
-Link: https://patch.msgid.link/r/d85515d6ef21a2fa8ef4c8293dce9b58df8a6297.1728550179.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eb57cbe730d1 ("arm64: dts: qcom: x1e80100: Describe the PCIe 6a resources")
+Cc: stable@vger.kernel.org	# 6.11
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241016145112.24785-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index e3cc856e70e5d..e0db91d1e7492 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3940,14 +3940,14 @@ static int __mlx5_ib_modify_qp(struct ib_qp *ibqp,
- 		MLX5_SET(qpc, qpc, retry_count, attr->retry_cnt);
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+index 1c3a6a7b3ed6..5ef030c60abe 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -253,6 +253,8 @@ vreg_nvme: regulator-nvme {
  
- 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
--		MLX5_SET(qpc, qpc, log_sra_max, ilog2(attr->max_rd_atomic));
-+		MLX5_SET(qpc, qpc, log_sra_max, fls(attr->max_rd_atomic - 1));
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&nvme_reg_en>;
++
++		regulator-boot-on;
+ 	};
+ };
  
- 	if (attr_mask & IB_QP_SQ_PSN)
- 		MLX5_SET(qpc, qpc, next_send_psn, attr->sq_psn);
- 
- 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
- 		MLX5_SET(qpc, qpc, log_rra_max,
--			 ilog2(attr->max_dest_rd_atomic));
-+			 fls(attr->max_dest_rd_atomic - 1));
- 
- 	if (attr_mask & (IB_QP_ACCESS_FLAGS | IB_QP_MAX_DEST_RD_ATOMIC)) {
- 		err = set_qpc_atomic_flags(qp, attr, attr_mask, qpc);
 -- 
-2.43.0
+2.47.0
 
 
 
