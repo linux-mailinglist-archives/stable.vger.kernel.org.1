@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-91179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18C09BECD2
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871DC9BE6F8
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3FB11C23E6C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F3B1C234BA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BE61F706D;
-	Wed,  6 Nov 2024 12:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0531DF25E;
+	Wed,  6 Nov 2024 12:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKWo38yj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/xoWsVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DB21F7069;
-	Wed,  6 Nov 2024 12:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534041DEFF4;
+	Wed,  6 Nov 2024 12:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897973; cv=none; b=r/iSiktpcuf22wf8rapF8vDFwKG4CASdGN/ByR3JgWbAGpycRb7xMOxYaU7u1kuUoRS1aPxNV7w8UccVBntIXNzhvsjQav7lR+qCN8Bi3sABxMRce6VM4s41pDrZoMYKlkTTSWaklqtFtWTkXfeXqni1RlseuKtzW8N5fIGAWAU=
+	t=1730894936; cv=none; b=tH5aXrdu1+1stoeQct3iJjxQ/VGnD/2zcy8a04EwLOPAofBXBObhRMDTENL+okwMyGf56khW/M2odZ/6vL5sOU/SUwJM+OE0RtS+ctQKWt77esuJunE5XYms1xtaY6nwUlesDtyz2eiia9n9PEYToFQPQz1eqMSa0kBLWnts7t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897973; c=relaxed/simple;
-	bh=+LInmZ5Q7T6RKVbPQDpJaNlVS66ibrZLC7Nr80rA2Rk=;
+	s=arc-20240116; t=1730894936; c=relaxed/simple;
+	bh=besn7WLQUEeo2E8AMDwVVx0xpskszqr9PQCi3QyDPLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfpUtIq5M2ThwznhjpvPBsZ0tc9BSbBsAXUdrn/ltNPvmSYwXvBrNAYehCK+5s7QAJSVovDOple6SOte4lU+GlhygZzd6NkgMDLdKFSyxn9u49U1QoF5jgwEGcyncsx3NOmPpXXH5k+xEmdWp1tZNvewbCDRju4Mp41OEjuv2ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKWo38yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33583C4CECD;
-	Wed,  6 Nov 2024 12:59:33 +0000 (UTC)
+	 MIME-Version; b=ERRBfx89IYs2Q3zsSr/xLFGv8y39TwBee9cKG1okY9XukQXglNtu9XxGI+E47yZxQMYrTjuTpqMyAx6tMsh1tfIXZvIkDfd7bp6wCGksW+sko5JnuuEPNW6Wx0PO0inCo3USs9KijK/Wnvc/BDcfeaF3tWmn02KLeT2UzfxbyRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/xoWsVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9A9C4CECD;
+	Wed,  6 Nov 2024 12:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897973;
-	bh=+LInmZ5Q7T6RKVbPQDpJaNlVS66ibrZLC7Nr80rA2Rk=;
+	s=korg; t=1730894936;
+	bh=besn7WLQUEeo2E8AMDwVVx0xpskszqr9PQCi3QyDPLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKWo38yjHQ9+fOpiM0riDLMHMY9NGPMlJ0T7pcEzlJ4rH/kW0ym9XSRNFO6FML9dh
-	 u5Vur8AzoRbt3VpoxWrzsjYGpy+CF/wGp0ovswAna/YRpJ5iee5V42Ei6D/LFA0Vyg
-	 +qJ465qRD2D++fQQpX3W0Ap1n8T72StRqK3XwylI=
+	b=h/xoWsVoanz84nJnS4N5i95szkKGX4qUXFc7IqIeevnY3E0UoJBL6GcX2+1vbcNbs
+	 wtxSWLr73T38RTu8zz9UcYSRQ+4j4q9uUIr/2qAzCv79XB2+Agg7tt2ZP8j4OheNWE
+	 zZxkHr+bARwxAzVPjZP4qoLBIfTYwuheYhhLd0Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Corey Minyard <corey@minyard.net>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Henrik Grimler <henrik@grimler.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/462] ipmi: docs: dont advertise deprecated sysfs entries
-Date: Wed,  6 Nov 2024 12:59:35 +0100
-Message-ID: <20241106120333.533178340@linuxfoundation.org>
+Subject: [PATCH 4.19 048/350] power: supply: max17042_battery: Fix SOC threshold calc w/ no current sense
+Date: Wed,  6 Nov 2024 12:59:36 +0100
+Message-ID: <20241106120322.075716610@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
-References: <20241106120331.497003148@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 64dce81f8c373c681e62d5ffe0397c45a35d48a2 ]
+[ Upstream commit 3a3acf839b2cedf092bdd1ff65b0e9895df1656b ]
 
-"i2c-adapter" class entries are deprecated since 2009. Switch to the
-proper location.
+Commit 223a3b82834f ("power: supply: max17042_battery: use VFSOC for
+capacity when no rsns") made it so that capacity on systems without
+current sensing would be read from VFSOC instead of RepSOC. However,
+the SOC threshold calculation still read RepSOC to get the SOC
+regardless of the current sensing option state.
 
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/80c4a898-5867-4162-ac85-bdf7c7c68746@gmail.com
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Message-Id: <20240901090211.3797-2-wsa+renesas@sang-engineering.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fix this by applying the same conditional to determine which register
+should be read.
+
+This also seems to be the intended behavior as per the datasheet - SOC
+alert config value in MiscCFG on setups without current sensing is set
+to a value of 0b11, indicating SOC alerts being generated based on
+VFSOC, instead of 0b00 which indicates SOC alerts being generated based
+on RepSOC.
+
+This fixes an issue on the Galaxy S3/Midas boards, where the alert
+interrupt would be constantly retriggered, causing high CPU usage
+on idle (around ~12%-15%).
+
+Fixes: e5f3872d2044 ("max17042: Add support for signalling change in SOC")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Henrik Grimler <henrik@grimler.se>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240817-max17042-soc-threshold-fix-v1-1-72b45899c3cc@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/IPMI.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/max17042_battery.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/IPMI.txt b/Documentation/IPMI.txt
-index 5ef1047e2e663..f3c6530d9f354 100644
---- a/Documentation/IPMI.txt
-+++ b/Documentation/IPMI.txt
-@@ -518,7 +518,7 @@ at module load time (for a module) with::
- 	[dbg_probe=1]
- 
- The addresses are normal I2C addresses.  The adapter is the string
--name of the adapter, as shown in /sys/class/i2c-adapter/i2c-<n>/name.
-+name of the adapter, as shown in /sys/bus/i2c/devices/i2c-<n>/name.
- It is *NOT* i2c-<n> itself.  Also, the comparison is done ignoring
- spaces, so if the name is "This is an I2C chip" you can say
- adapter_name=ThisisanI2cchip.  This is because it's hard to pass in
+diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
+index 33fbb0fc952b4..6d3ad453e6092 100644
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -848,7 +848,10 @@ static void max17042_set_soc_threshold(struct max17042_chip *chip, u16 off)
+ 	/* program interrupt thesholds such that we should
+ 	 * get interrupt for every 'off' perc change in the soc
+ 	 */
+-	regmap_read(map, MAX17042_RepSOC, &soc);
++	if (chip->pdata->enable_current_sense)
++		regmap_read(map, MAX17042_RepSOC, &soc);
++	else
++		regmap_read(map, MAX17042_VFSOC, &soc);
+ 	soc >>= 8;
+ 	soc_tr = (soc + off) << 8;
+ 	if (off < soc)
 -- 
 2.43.0
 
