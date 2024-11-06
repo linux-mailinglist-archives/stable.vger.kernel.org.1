@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-90802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C309BEB20
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B5A9BEBA9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365362819CF
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D5B5B247B7
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F231F585E;
-	Wed,  6 Nov 2024 12:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AD91F8F0A;
+	Wed,  6 Nov 2024 12:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQoPxyUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEoO7SLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DBF1E0480;
-	Wed,  6 Nov 2024 12:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB7E1EE004;
+	Wed,  6 Nov 2024 12:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896857; cv=none; b=qaIU6f95JHwW0HjWsNUPkDlAOAVI1hge7lCXXPGIyEzyAUjo3uROz1Ii6HicfySy/okBggQYVQ+zKs8cNiXSo8MRPWNBRPOKkPObzxELZAmTqxcy01YfO3z+oI0OnKQe1Y2gX9s2bBbE/6hlTIwPRhQeR+5yB56jgddIB0NeEyY=
+	t=1730897200; cv=none; b=M713T0KbBcudxgi6c70sTsYnvMiwx9mQPB7KIDpOdavT+B/GWtpMP+ILl5lPLtbPLA3dqIZoxXTg+rXwgKOHLjAcFfxDDSl4bkuZDulsP4OcptWodmfBbAkXee1UTLWY8EeE6gsr+QbIX92PAfD1yPW1pPpLN3hrpsvdYuNFbR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896857; c=relaxed/simple;
-	bh=VstKwF9gCsr1xZQ4o1Q/VzcgZ4LBF/Cjy2+8smYkcPA=;
+	s=arc-20240116; t=1730897200; c=relaxed/simple;
+	bh=kVVgSZFfmIaR07UR2S+oCL7D/shoE07My4gmBbIuZ8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+u22oYJ6AHgLfc3cn20M/tLsrqiXd/o3BTUzi0thFUP6hxh8hQLuFPLjps08uv6bQvjmzvII5bZRZ/bBpQ3LXmJDzTOMOyD9wrXnSASJGOxXSZdcQ6miiVSSy1+NZpbIm265rXPJYzHGpGQt9fkVRsoUaLUCPVsobpgbXP/E/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQoPxyUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C8FC4CECD;
-	Wed,  6 Nov 2024 12:40:56 +0000 (UTC)
+	 MIME-Version; b=btuPCcF7wqRJp/xEWzaeD7liyLz0KYjXlUuy6T1K+9UwLzCDSwIhMqaetqMa0ZRuUYuBIc+SlnkkBGDNvm8DQIMZy5w7VNWG4sU0hwfm5AUwe5+CXnt7o/rRvJQIUoc7wrWzWLCFGTTzhpzqtAhYtwqgxcNGIVRexfK36FpR32E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEoO7SLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75EC4CECD;
+	Wed,  6 Nov 2024 12:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896856;
-	bh=VstKwF9gCsr1xZQ4o1Q/VzcgZ4LBF/Cjy2+8smYkcPA=;
+	s=korg; t=1730897200;
+	bh=kVVgSZFfmIaR07UR2S+oCL7D/shoE07My4gmBbIuZ8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQoPxyUaCwERVFPiYj4/ycDvPW+fXMTUx2pPAeP+uHuPkAkGEMmyHaO44AIAgl+7s
-	 wPWV+FsE9zox/FsswZ0ipAicP8JK1V1FkrNsybumogTlhTlWLOUbV0sNcv32bTspYW
-	 L60JGE+kqBGno2sLuYgS8bDUyKVLuDaLizkFgxSI=
+	b=xEoO7SLBrXPasJvIVQn72gcEy6Uu/4Ek2XvyPUOHrc8Vv2uamzPWOY9JrC/NSvBYV
+	 Q1f+aKSiBZSNaVOtdZVsYiHBP9s5Qw8/k8QwPkZSYBAJnTG34mJC8zA+i91Oy0ZCRJ
+	 wMpak0H+H3RNyhCVY/wLgOA05ibUUxwXX3xC386Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 095/110] nilfs2: fix potential deadlock with newly created symlinks
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 100/126] kasan: remove vmalloc_percpu test
 Date: Wed,  6 Nov 2024 13:05:01 +0100
-Message-ID: <20241106120305.807553529@linuxfoundation.org>
+Message-ID: <20241106120308.765735102@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit b3a033e3ecd3471248d474ef263aadc0059e516a upstream.
+[ Upstream commit 330d8df81f3673d6fb74550bbc9bb159d81b35f7 ]
 
-Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
-memory reclamation involving the filesystem layer, which can result in
-circular lock dependencies among the reader/writer semaphore
-nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
-fs_reclaim pseudo lock.
+Commit 1a2473f0cbc0 ("kasan: improve vmalloc tests") added the
+vmalloc_percpu KASAN test with the assumption that __alloc_percpu always
+uses vmalloc internally, which is tagged by KASAN.
 
-This is because after commit 21fc61c73c39 ("don't put symlink bodies in
-pagecache into highmem"), the gfp flags of the page cache for symbolic
-links are overwritten to GFP_KERNEL via inode_nohighmem().
+However, __alloc_percpu might allocate memory from the first per-CPU
+chunk, which is not allocated via vmalloc().  As a result, the test might
+fail.
 
-This is not a problem for symlinks read from the backing device, because
-the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
-when a new symlink is created with nilfs_symlink(), the gfp flags remain
-overwritten to GFP_KERNEL.  Then, memory allocation called from
-page_symlink() etc.  triggers memory reclamation including the FS layer,
-which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
-cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
+Remove the test until proper KASAN annotation for the per-CPU allocated
+are added; tracked in https://bugzilla.kernel.org/show_bug.cgi?id=215019.
 
-Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
-of newly created symlinks in the same way that nilfs_new_inode() and
-__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
-scope consistently or improve the locking constraints.
-
-Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
-Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
-Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/20241022160706.38943-1-andrey.konovalov@linux.dev
+Fixes: 1a2473f0cbc0 ("kasan: improve vmalloc tests")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/all/4a245fff-cc46-44d1-a5f9-fd2f1c3764ae@sifive.com/
+Reported-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Link: https://lore.kernel.org/all/CACzwLxiWzNqPBp4C1VkaXZ2wDwvY3yZeetCi1TLGFipKW77drA@mail.gmail.com/
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/namei.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/kasan/kasan_test.c | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -156,6 +156,9 @@ static int nilfs_symlink(struct inode *d
- 	/* slow symlink */
- 	inode->i_op = &nilfs_symlink_inode_operations;
- 	inode_nohighmem(inode);
-+	mapping_set_gfp_mask(inode->i_mapping,
-+			     mapping_gfp_constraint(inode->i_mapping,
-+						    ~__GFP_FS));
- 	inode->i_mapping->a_ops = &nilfs_aops;
- 	err = page_symlink(inode, symname, l);
- 	if (err)
+diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
+index cef683a2e0d2e..df9658299a08a 100644
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -1260,32 +1260,6 @@ static void vm_map_ram_tags(struct kunit *test)
+ 	free_pages((unsigned long)p_ptr, 1);
+ }
+ 
+-static void vmalloc_percpu(struct kunit *test)
+-{
+-	char __percpu *ptr;
+-	int cpu;
+-
+-	/*
+-	 * This test is specifically crafted for the software tag-based mode,
+-	 * the only tag-based mode that poisons percpu mappings.
+-	 */
+-	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_SW_TAGS);
+-
+-	ptr = __alloc_percpu(PAGE_SIZE, PAGE_SIZE);
+-
+-	for_each_possible_cpu(cpu) {
+-		char *c_ptr = per_cpu_ptr(ptr, cpu);
+-
+-		KUNIT_EXPECT_GE(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_MIN);
+-		KUNIT_EXPECT_LT(test, (u8)get_tag(c_ptr), (u8)KASAN_TAG_KERNEL);
+-
+-		/* Make sure that in-bounds accesses don't crash the kernel. */
+-		*c_ptr = 0;
+-	}
+-
+-	free_percpu(ptr);
+-}
+-
+ /*
+  * Check that the assigned pointer tag falls within the [KASAN_TAG_MIN,
+  * KASAN_TAG_KERNEL) range (note: excluding the match-all tag) for tag-based
+@@ -1439,7 +1413,6 @@ static struct kunit_case kasan_kunit_test_cases[] = {
+ 	KUNIT_CASE(vmalloc_oob),
+ 	KUNIT_CASE(vmap_tags),
+ 	KUNIT_CASE(vm_map_ram_tags),
+-	KUNIT_CASE(vmalloc_percpu),
+ 	KUNIT_CASE(match_all_not_assigned),
+ 	KUNIT_CASE(match_all_ptr_tag),
+ 	KUNIT_CASE(match_all_mem_tag),
+-- 
+2.43.0
+
 
 
 
