@@ -1,138 +1,92 @@
-Return-Path: <stable+bounces-91666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FC19BF175
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:21:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AD59BF188
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 16:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78C621F21E30
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:21:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BB9DB235EA
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 15:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C14720127C;
-	Wed,  6 Nov 2024 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173302036EB;
+	Wed,  6 Nov 2024 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBSgmgGh"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="DsQnJREY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6CD1E0480;
-	Wed,  6 Nov 2024 15:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E51DF738;
+	Wed,  6 Nov 2024 15:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730906477; cv=none; b=U9UgnFsePw5nMvYhdfPQzoANKAwhf9chhE9s7T5oyQd8dhjx8InTbUY/E5DHk4TU8KkZSIz/gEtJVTqqJwMK+QLpTg3+dvMIcmilAX7tmmm2tw5jxYgv25vIcFPI1vzzeX2HrEyWHugVvj5gxOTBUSRArY40N2aaQukRnAW4PJk=
+	t=1730906670; cv=none; b=FQoRju9p81MI5k+O/ewmUNBBNMR9F9R8iz3+HrqlWfrxWYHqo7XGfPM7WmKyTPZsTXt7kBKJwEefA7Miiw44Wm8Snz0zERN63GGm/bz8BQ8bZbKPRMf6990jXu27/HEq+KJzcpbGXYhUZs6veTYVsB1TRyi/Vq6fSAvLxLJa07I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730906477; c=relaxed/simple;
-	bh=iJSFfu/7mDUN+APdZbNmZkyP0R97PoistfqOwZ9X8hM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jczxUPV5Vmfc9eqFcgTX4Ay8sFmSgfjJ1MT84wAhxVxqrM1oX6fMU+MCDp/4dgl6rh0dTq8yHo8nLMYXqpJ6mdl8uaqsg2yAAT8jT2Qw27I95zsVsv3cH08b0sbLkM/pvtYhojRNCDIK3Dr/aYihV1/8JpbhRHXKCxCMmMgpb2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBSgmgGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33989C4CEC6;
-	Wed,  6 Nov 2024 15:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730906476;
-	bh=iJSFfu/7mDUN+APdZbNmZkyP0R97PoistfqOwZ9X8hM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tBSgmgGhYQarahcJvidaF3o/1pYi+Kgfn0Zv/soCRYug5MYHEenUi6bVchu0qLzTc
-	 uX7EJ7SWXY34Olg4+mT9C1PjBOpHwPOWZOS0CHxtKQCsK9dpbXJ5LpeYNYwUEYiTHT
-	 9m2gHC5kXmbpjZn2VVp9MED+lzhDCjVV3DACDfwVjb98N+s/uhXcIAFqTZiJFgcQga
-	 huRhD1YemOxB1PMmKtjCU+9AOak0gnl8sc7+2ZDZ6CjVbMKZtewBB/Xqulhorp3D6T
-	 f5P4hAZQQyICro5VeJnLtWFRT9uesccfxFEZuS4+FNs++th3E7DNlQ9BSX4xFSF7em
-	 Rc3MiqibMaT7A==
-Date: Wed, 6 Nov 2024 08:21:14 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev, patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in
- 32-bit files with clang
-Message-ID: <20241106152114.GA2738371@thelio-3990X>
-References: <20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org>
- <884cf694-09c7-4082-a6b1-6de987025bf8@csgroup.eu>
- <20241106133752.GG29862@gate.crashing.org>
+	s=arc-20240116; t=1730906670; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=A4MKGPvPZIbKpw/w4oFuMdJ9M0twXuClZkd9yWkPARJNmTEnNjH3rEidl2uHw5piIdIjUEi02iTagrxmN3PVkej5fjh1kgOm/y4v8Rt8Iy+8jr2Y424uPmhKlV2UcQWCh/MrghkrDwcDGTDLsuK8FMIC8illXMUzBjY1sQqO+s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=DsQnJREY; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1730906664; x=1731511464; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=DsQnJREYxnlHSr7bsdV2W29Yoqhl53xbUfjhc7l0yQL26A/Ct7SSYLYZdFsOFtda
+	 vAUd7o+dX82PhPU7/7yJXXfxa04WJRAAJV9dyua7EkoStbmGbtS0VCijtAPj2bUB3
+	 cMwRYabRUNjyCbirIjsI8ny+gnobL8hG5oaB8MA1D5h4/FRHHDtMp/j6XGoCfsb8c
+	 8TQwD1fnUG+k4YrHQoc0zt7WRhtoNGQn44vG26OWIu69r91+VBUtZa/LHP+dsitW6
+	 swRBOwfad0OKq9znW8jXpRqNJI2Wyhw4wx4tE6ZRf9zXILjQH/0/BwJ9yaZ8/0Ofr
+	 CZjq7PWiW3QTSdOwHg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.156]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MsHru-1twfuk34Ju-017BTn; Wed, 06
+ Nov 2024 16:24:24 +0100
+Message-ID: <024966d6-4ca2-488d-b6b8-3bce03ff567a@gmx.de>
+Date: Wed, 6 Nov 2024 16:24:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241106133752.GG29862@gate.crashing.org>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.11 000/245] 6.11.7-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:VRABcj8Yvhk3vepw3MIVukLoM5h8lUmffN3inXaZwaFH4F66Fsn
+ 94sGlhRc4h7gzRn4OgtxUWpviVE5GPV6e6sJiRKqJI6x+qtIguluuYYFhS15+uLA9pCoDAw
+ hITMQ9KylE1wSJlIzB5D5QmYMI0wwIvoFjyM4dKsHvJG54OftEg16CHP3HWzhzBvrZIGoGR
+ mfDkTXH5fMGC9eQJUvH2w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:J/ddG8lXA7w=;4/5Efb5RG4IZl9z8aOEYiZ9Swkh
+ 4WPelJmCZmqi9M/b3O8v7I4aF7bGPhLOGIolQWVp0yX8jDOrpI0T0lxnHh/dkI61WxUNsj6Mu
+ 0sqxbrch/rx8aQQs0o1qYzNsDSH0GrTV/vK9+V8j2tG2CAP4kADtnbNcHv0/7fS/s7bSk54ol
+ 5c/JpBwiABax2VVmhTBn2g83vjMVRYXUyfGeZkq+JUVatJs7tJBjH4VbMJyMyzU7/P3BV4Slg
+ z9hqY1a0/Kwr1Sr6QNYZSnZLCvGpAtPDRgX4Yjx7PguTts0Fqq2iz4NPUUymlD8XpvKgC/ABs
+ rCQa+3y/g7KnljGBqc4sFtG6gVphAefqxyfhQFx0qZAF6inAW74YRJNsp4nCn4TiyRma9KE37
+ Hd/Fo1oJzLC1Wl4d5oKHWs6rv+3BclfO/zd4ZO1detcrqksP+IniqobqTCKPCzMDVVfVjNQgK
+ 69hHdvNDIxoQqAdt6Y8/Uc/mIEdRo4oTDgLJEZf2vl3MbVnWtnsYMLyShQomslMAhP0N9vY04
+ JXleIXGliU2eO1RPHY/0j3lS2J73p61pfmAbm2B1kgaGyMIf5AX8AP5FCK4vgSGG7aSjyGtD3
+ K2wf3d/DZex0GrsLIWAmIKpAh+qiBN9fkVD4l/WhNIwYT6yFB28P/lBjkSFAGupuyaP8ZyM1l
+ aqXFiPc9RBYgsh3Mqi0UlI2VayUYDpJYH7shq0zS4dr2NnXLuplXRfuFkGaBj3SIWTSEtXRrG
+ 9t+PXE/DV1+Mg6gfgSKmumV5WcrHE84QJ/TmKxGJVoMK7MPpVABVLORWC7FsOgUvqAdGcIn+p
+ tLcOt9fwevipql0Ep1NebdhQ==
 
-Hi Christophe and Segher,
+Hi Greg
 
-On Wed, Nov 06, 2024 at 07:37:52AM -0600, Segher Boessenkool wrote:
-> On Wed, Nov 06, 2024 at 09:55:58AM +0100, Christophe Leroy wrote:
-> > Le 30/10/2024 à 19:41, Nathan Chancellor a écrit :
-> > >Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-> > >end up in the 32-bit vDSO flags, resulting in build failures due to the
-> > >structure of clang's argument parsing of the stack protector options,
-> > >which validates the arguments of the stack protector guard flags
-> > >unconditionally in the frontend, choking on the 64-bit values when
-> > >targeting 32-bit:
-> > >
-> > >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
-> > >   expected one of: r2
-> > >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
-> > >   expected one of: r2
-> > >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: 
-> > >   arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-> > >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: 
-> > >   arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
-> > >
-> > >Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-> > >already handles situations similar to this. Additionally, reformat and
-> > >align a comment better for the expanding CONFIG_CC_IS_CLANG block.
-> > 
-> > Is the problem really exclusively for 32-bit VDSO on 64-bit kernel ?
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-As far as I can tell, yes, as I do not think there are any other places
-where flags for targeting one word size were being used when targeting
-the other word size.
+Thanks
 
-> > In any case, it is just wrong to have anything related to stack 
-> > protection in VDSO, for this reason we have the following in Makefile:
-> > 
-> > ccflags-y += $(call cc-option, -fno-stack-protector)
-> > 
-> > If it is not enough, should we have more complete ?
-
-That should be enough to disable the stack protector from my
-understanding. It is just that clang's argument validation happens even
-with -fno-stack-protector, so the flags need to contain valid values for
-the target. This is true for GCC as well, it just supports any base
-register like Segher mentions below so it does not hit any issue here:
-
-  $ powerpc64-linux-gcc -fno-stack-protector -mstack-protector-guard=tls -mstack-protector-guard-reg=r50 -c -o /dev/null -x c /dev/null
-  cc1: error: 'r50' is not a valid base register in '-mstack-protector-guard-reg='
-  cc1: error: '-mstack-protector-guard=tls' needs a valid base register
-
-> The -mstack-protector-guard-reg= doesn't do anything if you aren't
-> doing stack protection.  It allows any base register (so, r1..r31).
-> Setting it to any valid reg should be fine and not do anything harmful,
-> unless perhaps you *do* enable stack protector, then it better be the
-> expected stuff ;-)
-> 
-> Apparently clang does not implement it correctly?  This is just a clang
-> bug, please report it with them?
-> 
-> (r2 is the default for -m32, r13 is the default for -m64, it appears
-> that clang does not implement this option at all, it simply checks if
-> you set the default, and explodes if not).
-
-Not sure that I would say it has not been implemented correctly, more
-that it has not been implemented in the same manner as GCC. Keith chose
-not to open up support for arbitrary registers to keep the
-implementation of this option in LLVM simple:
-
-https://lore.kernel.org/linuxppc-dev/87o73uvaq5.fsf@keithp.com/
-
-Cheers,
-Nathan
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
