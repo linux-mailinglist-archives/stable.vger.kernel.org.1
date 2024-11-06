@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-90812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B997B9BEB2A
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7D89BEC45
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721001F26C49
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EC72285A06
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348321E2601;
-	Wed,  6 Nov 2024 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A765C1FB3F6;
+	Wed,  6 Nov 2024 12:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEKnDcFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiZOCKci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40641E103C;
-	Wed,  6 Nov 2024 12:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C071F426E;
+	Wed,  6 Nov 2024 12:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896887; cv=none; b=KPanQyqa9tcl5Y0TOIE2EoWP4N1GxAIvEE9YA+AHJGKkosZV21WLM2NuYSIHrSjJY081wVZlTqrRfxBPPj33+a0mif0Kqgm07QVZAIs/HXuV2Jyfj/mmjQ9tRw98pX/tJB9cb7nte5apMg0Hh2l/3N6ubyOAank7fO+1eGcFwzo=
+	t=1730897640; cv=none; b=ruVAb8mRgxu/zw72cAAomqQt9R32Hym560gQQIZQ0kEOpfI1ssBRY8o3scb07K1iVaFlsAMwRb9N2mP1s3YzBzXOHynpO19ecoelCGDJ9aqO2biMVL0rQFaw8M9CJiPWa+5Rcy8mYbhiCG0MPYu1GBrnFUYIWBw+kzjvGWZvAKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896887; c=relaxed/simple;
-	bh=eXvWHLIVjvzQCjHzM1lkKEWmp545DsXfQqePglv29nE=;
+	s=arc-20240116; t=1730897640; c=relaxed/simple;
+	bh=LU8K3uISj+S73M1eftBZKrULqkAa0wQu3srLAsu/Nk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9RNJSOBAB8Z4xhhloOvSzZq5XJACcJnFedpx7kWFLYs1Gw41ejXFb7F7dJsM7HL2pKUDXI7Yy7D6vTqzfFeHHjHDd/L9d8HyYng1uX9wPf1R/S+ESCO8tJD+0Fevw67abTOcDMTyPD9U9OLXhkbJWsm5Gl71QnNdqQhNkF0K/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEKnDcFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9CDC4CECD;
-	Wed,  6 Nov 2024 12:41:25 +0000 (UTC)
+	 MIME-Version; b=nXsTUC3kWjufkewIzUMQ9ssCx934Sa+wRHVrMNpEUoLylNZ5/qlbSe3PvrdOjgLZmUm3Afko0JdrlJJ6YzPCTTTp2o4QICLKU/DlrJvAAPdT1H28b/es862r+2jbi1xn8mHvL+gD5Pl04qMz24Md3wOf6OqY9EJkqyY387pGDpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiZOCKci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4617C4CECD;
+	Wed,  6 Nov 2024 12:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896886;
-	bh=eXvWHLIVjvzQCjHzM1lkKEWmp545DsXfQqePglv29nE=;
+	s=korg; t=1730897640;
+	bh=LU8K3uISj+S73M1eftBZKrULqkAa0wQu3srLAsu/Nk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEKnDcFp6+5wKn+AJ9coeORa7FA8/xbDzATYzgHgXqtH4mTHVbGUiLCcwA8wNZV32
-	 8tNnJYcT6rjGqZxkSi83ccpUDW9qpFLvF4jd6P1oNB5Kq/xM1bXL7swVTK3L0wu1ug
-	 f77fclW/F0cXfVF5i6Uuo7qpRpR4F5r3XhcAXIeA=
+	b=XiZOCKciQ+D5tN/Te0hbQbjD4b9yEUpWEu+zhl9IH7ZVk0EMJ1A9N4AWnqcvpdxv7
+	 yiEKJ1F9ajORfAv3oTpD5ZEw6EfFjG4rArX8IkULWpBQfGPi6Pz2nAAAx4WGjjPjbC
+	 BBmvWWjeyrr1eh6mOmtLQR/qGU3auVygB2NaVEeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Gill <rtgill82@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.10 104/110] x86/bugs: Use code segment selector for VERW operand
+	Shawn Wang <shawnwang@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/151] sched/numa: Fix the potential null pointer dereference in task_numa_work()
 Date: Wed,  6 Nov 2024 13:05:10 +0100
-Message-ID: <20241106120306.045406897@linuxfoundation.org>
+Message-ID: <20241106120312.220005822@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+References: <20241106120308.841299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Shawn Wang <shawnwang@linux.alibaba.com>
 
-commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
+[ Upstream commit 9c70b2a33cd2aa6a5a59c5523ef053bd42265209 ]
 
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
+When running stress-ng-vm-segv test, we found a null pointer dereference
+error in task_numa_work(). Here is the backtrace:
 
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
+  [323676.066985] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+  ......
+  [323676.067108] CPU: 35 PID: 2694524 Comm: stress-ng-vm-se
+  ......
+  [323676.067113] pstate: 23401009 (nzCv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=--)
+  [323676.067115] pc : vma_migratable+0x1c/0xd0
+  [323676.067122] lr : task_numa_work+0x1ec/0x4e0
+  [323676.067127] sp : ffff8000ada73d20
+  [323676.067128] x29: ffff8000ada73d20 x28: 0000000000000000 x27: 000000003e89f010
+  [323676.067130] x26: 0000000000080000 x25: ffff800081b5c0d8 x24: ffff800081b27000
+  [323676.067133] x23: 0000000000010000 x22: 0000000104d18cc0 x21: ffff0009f7158000
+  [323676.067135] x20: 0000000000000000 x19: 0000000000000000 x18: ffff8000ada73db8
+  [323676.067138] x17: 0001400000000000 x16: ffff800080df40b0 x15: 0000000000000035
+  [323676.067140] x14: ffff8000ada73cc8 x13: 1fffe0017cc72001 x12: ffff8000ada73cc8
+  [323676.067142] x11: ffff80008001160c x10: ffff000be639000c x9 : ffff8000800f4ba4
+  [323676.067145] x8 : ffff000810375000 x7 : ffff8000ada73974 x6 : 0000000000000001
+  [323676.067147] x5 : 0068000b33e26707 x4 : 0000000000000001 x3 : ffff0009f7158000
+  [323676.067149] x2 : 0000000000000041 x1 : 0000000000004400 x0 : 0000000000000000
+  [323676.067152] Call trace:
+  [323676.067153]  vma_migratable+0x1c/0xd0
+  [323676.067155]  task_numa_work+0x1ec/0x4e0
+  [323676.067157]  task_work_run+0x78/0xd8
+  [323676.067161]  do_notify_resume+0x1ec/0x290
+  [323676.067163]  el0_svc+0x150/0x160
+  [323676.067167]  el0t_64_sync_handler+0xf8/0x128
+  [323676.067170]  el0t_64_sync+0x17c/0x180
+  [323676.067173] Code: d2888001 910003fd f9000bf3 aa0003f3 (f9401000)
+  [323676.067177] SMP: stopping secondary CPUs
+  [323676.070184] Starting crashdump kernel...
 
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
+stress-ng-vm-segv in stress-ng is used to stress test the SIGSEGV error
+handling function of the system, which tries to cause a SIGSEGV error on
+return from unmapping the whole address space of the child process.
 
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
+Normally this program will not cause kernel crashes. But before the
+munmap system call returns to user mode, a potential task_numa_work()
+for numa balancing could be added and executed. In this scenario, since the
+child process has no vma after munmap, the vma_next() in task_numa_work()
+will return a null pointer even if the vma iterator restarts from 0.
 
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
+Recheck the vma pointer before dereferencing it in task_numa_work().
 
-[ mingo: Fixed the SOB chain. ]
-
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: stable@vger.kernel.org # 5.10+
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 214dbc428137 ("sched: convert to vma iterator")
+Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v6.2+
+Link: https://lkml.kernel.org/r/20241025022208.125527-1-shawnwang@linux.alibaba.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -199,7 +199,16 @@
-  */
- .macro CLEAR_CPU_BUFFERS
- 	ALTERNATIVE "jmp .Lskip_verw_\@", "", X86_FEATURE_CLEAR_CPU_BUF
--	verw _ASM_RIP(mds_verw_sel)
-+#ifdef CONFIG_X86_64
-+	verw mds_verw_sel(%rip)
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	verw %cs:mds_verw_sel
-+#endif
- .Lskip_verw_\@:
- .endm
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5eb4807bad209..db59bf549c644 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3314,7 +3314,7 @@ static void task_numa_work(struct callback_head *work)
+ 		vma = vma_next(&vmi);
+ 	}
  
+-	do {
++	for (; vma; vma = vma_next(&vmi)) {
+ 		if (!vma_migratable(vma) || !vma_policy_mof(vma) ||
+ 			is_vm_hugetlb_page(vma) || (vma->vm_flags & VM_MIXEDMAP)) {
+ 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UNSUITABLE);
+@@ -3434,7 +3434,7 @@ static void task_numa_work(struct callback_head *work)
+ 		 */
+ 		if (vma_pids_forced)
+ 			break;
+-	} for_each_vma(vmi, vma);
++	}
+ 
+ 	/*
+ 	 * If no VMAs are remaining and VMAs were skipped due to the PID
+-- 
+2.43.0
+
 
 
 
