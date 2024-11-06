@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64D99BE895
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:26:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CC69BE778
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF11B24B90
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:26:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E42BB2365D
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BFF1E0096;
-	Wed,  6 Nov 2024 12:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421531DF254;
+	Wed,  6 Nov 2024 12:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6ge5/2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruuatcOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338D71E0091;
-	Wed,  6 Nov 2024 12:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3721DF260;
+	Wed,  6 Nov 2024 12:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895939; cv=none; b=TPzjtmOPultJfVMn2d6wzyz0VNySskMzgYLeZv6wUpY2jF+dMvG33jemzYb5P1lLhlYZSBADC9ldKy/vMIiTgj2OSAolL52WhkAns/BEwg7ZpOq0+YtpKN/XWMv6pIoNkyGEy32Clq1DpcKl6zuyPtoejxNw1FE6FiWWLoOHgvs=
+	t=1730895271; cv=none; b=rS0MPM+yj/K0noQmXXrJdK2Yjt7uCnx60+ILLaASzYn1mLgKXVnEdOByVtAW4pNTCo8hssYyGBrbM38jIP0qbTtiNfOBgXDmCj9bWM0IZWkp7UUnlkEKiBYtMYxNxVZoBx3aNNS+X3F7E42HB6JvisKCzxkEHUGaqzIykqkV/O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895939; c=relaxed/simple;
-	bh=jTsI71qFIjpYODNyqXNRVy6XesB/fd78E6sH5n8i0FY=;
+	s=arc-20240116; t=1730895271; c=relaxed/simple;
+	bh=6lH8lOjiIH/0eYM90d/dyeBfrkwj171xE9bQ/qe9MM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzQmQj7ZXk/NfKDzcIo6Uhyuj0aqX38ca2E038NDEvs3bXVCjDYuStAqgjfcovR9o5l3P+zBLpp0apnqe5dle/W1mV9GUGGywyppkX17glF5i5Ti83ObY11cwAloWD422ib29cwbO0YEQMHLYIOt+TdkiYXIeWt40Ab8OQSU2UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6ge5/2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD38CC4CECD;
-	Wed,  6 Nov 2024 12:25:38 +0000 (UTC)
+	 MIME-Version; b=T4F937JGlb2hIxmlaqFP4/EG6n1Z8QXKcpa8NES5UvYM3N5KzHR7wbMPgeOc+X56tsv5aCkvCDxQHFvG/T/Ryoa+anX5TudQRvU/wcwC1hKoJjl2F0+1cIJCMrJoNlVC2zTf99tDzF0RF72MyrYB1oKnLEhq+se5dkL51pByEsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruuatcOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3705CC4CECD;
+	Wed,  6 Nov 2024 12:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895939;
-	bh=jTsI71qFIjpYODNyqXNRVy6XesB/fd78E6sH5n8i0FY=;
+	s=korg; t=1730895270;
+	bh=6lH8lOjiIH/0eYM90d/dyeBfrkwj171xE9bQ/qe9MM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6ge5/2u2dCy/cuvMkGhs/996EX0RsfgcTssuQ10gTHl9i3nCIbg1T0O00p/bSh4O
-	 Fyw1YfV8ysE4BDiLwuMh3Y9QZxUz+tMU+XeIOc5FxSRZx4po5ae63f+QJc38TtFJRC
-	 WdOCRGB62Vjx/WgfkpzxpxKkmjx4koNH5EVEy71g=
+	b=ruuatcOQYk7HymU42UEKKloQ57DD6p+uvGKO4614jN3pKtdtqLDPt2tAUFrQaK58G
+	 eO5hcAWGXfyromF6pb+Ni8vQBsSjDL6myzP87WdD9lC6fE2O7pZGYqqf33yqylQSB4
+	 P8ekNG6nXHOjGZsNbnNifmLWM/gpDTPZZN7NnIOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 034/245] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_init_flow()
-Date: Wed,  6 Nov 2024 13:01:27 +0100
-Message-ID: <20241106120320.066089488@linuxfoundation.org>
+Subject: [PATCH 4.19 160/350] ACPICA: iasl: handle empty connection_node
+Date: Wed,  6 Nov 2024 13:01:28 +0100
+Message-ID: <20241106120324.872670902@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit ad4a3ca6a8e886f6491910a3ae5d53595e40597d ]
+[ Upstream commit a0a2459b79414584af6c46dd8c6f866d8f1aa421 ]
 
-There are code paths from which the function is called without holding
-the RCU read lock, resulting in a suspicious RCU usage warning [1].
+ACPICA commit 6c551e2c9487067d4b085333e7fe97e965a11625
 
-Fix by using l3mdev_master_upper_ifindex_by_index() which will acquire
-the RCU read lock before calling
-l3mdev_master_upper_ifindex_by_index_rcu().
-
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gac8f72681cf2 #141 Not tainted
------------------------------
-net/core/dev.c:876 RCU-list traversed in non-reader section!!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/361:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 361 Comm: ip Not tainted 6.12.0-rc3-custom-gac8f72681cf2 #141
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- dev_get_by_index_rcu+0x1d3/0x210
- l3mdev_master_upper_ifindex_by_index_rcu+0x2b/0xf0
- ip_tunnel_bind_dev+0x72f/0xa00
- ip_tunnel_newlink+0x368/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241022063822.462057-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/acpica/acpica/commit/6c551e2c
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/exprep.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 1db2417b8ff52..35d1e09940b27 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -354,7 +354,7 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
- 	memset(fl4, 0, sizeof(*fl4));
+diff --git a/drivers/acpi/acpica/exprep.c b/drivers/acpi/acpica/exprep.c
+index 228feeea555f1..91143bcfe0904 100644
+--- a/drivers/acpi/acpica/exprep.c
++++ b/drivers/acpi/acpica/exprep.c
+@@ -437,6 +437,9 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
  
- 	if (oif) {
--		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index_rcu(net, oif);
-+		fl4->flowi4_l3mdev = l3mdev_master_upper_ifindex_by_index(net, oif);
- 		/* Legacy VRF/l3mdev use case */
- 		fl4->flowi4_oif = fl4->flowi4_l3mdev ? 0 : oif;
- 	}
+ 		if (info->connection_node) {
+ 			second_desc = info->connection_node->object;
++			if (second_desc == NULL) {
++				break;
++			}
+ 			if (!(second_desc->common.flags & AOPOBJ_DATA_VALID)) {
+ 				status =
+ 				    acpi_ds_get_buffer_arguments(second_desc);
 -- 
 2.43.0
 
