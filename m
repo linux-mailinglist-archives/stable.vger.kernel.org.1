@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0369A9BEB98
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5279BE9A9
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCDF8284F50
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC881C23479
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85DF1F892A;
-	Wed,  6 Nov 2024 12:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925AB1DFE04;
+	Wed,  6 Nov 2024 12:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9NbyPtz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmceVlBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7730F1F8925;
-	Wed,  6 Nov 2024 12:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5B818C00E;
+	Wed,  6 Nov 2024 12:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897166; cv=none; b=UM7M8k0zHFm0t2oEvLXddEeSYQwGMpJCVku0NQZz11jKP43LF+RxvEBqUvaJ8eLMqcnWEptfR/xcQoHMGhUrMUWcvU4LhDqBDgs6KGQ1n554NuG9NNDjaN9sMeShQ+cVNh5Q0DqOyb+dAHE5AoUvjY6Dn/q7o+tJJQVekVZfdmA=
+	t=1730896571; cv=none; b=N4JgOQZU9he3jtDBgVb2LgKlo/fF/NgwYtsGOXZwwOFEGYI20mR3P8rbXg2wB367NOZ2DY0842xQgE27cUE9ab6cgAcrwHOKC/xbdfUl3xJl0bIfQ8fjl0vzUBMNIqu616ChOZvncIYODWZvS9a2CGdNQN+gK65pkUGF3R/9e+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897166; c=relaxed/simple;
-	bh=PfXJ3qFShqWRd9tY9kF2nQFe9NGcNEuk3R8zXSdPUpI=;
+	s=arc-20240116; t=1730896571; c=relaxed/simple;
+	bh=lPi+UEM6GGWJ/DKWYD0QItarQK7ZKkx1AthHertTUhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sa5Cdw6xL2WvoG4vm3TvwvAkLMTjv6npA2VDZL9kBJsDGVG2tqJJXOexZMKovyckcMv6AtzgrqmFl0ubDVbhF+9CwoSELBbt2nSSeJ2ML1h1sBF/FWvjuPLT0nm8BF1G1g/+BedE1khXQ1WzNpy9haDlKDGrMCR8zceceSl61M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9NbyPtz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96180C4CECD;
-	Wed,  6 Nov 2024 12:46:04 +0000 (UTC)
+	 MIME-Version; b=qFYLbZAJQUSBmiS/gVVA/3yK6Tf8UFiykab0pJVPVnFDMY6VbLlyNo46l4Oq5dNs1ixPSxvXiBz3Lm3qfUsH4aSC7UJj0om73PvmYBYMUnc8SnXYst6H3sfVWqvluUDdv7RR+UIyLTrKrcq4lk0qJ8K6hdhIhHuo2Ol3SJSfOwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmceVlBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BC3C4CECD;
+	Wed,  6 Nov 2024 12:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897165;
-	bh=PfXJ3qFShqWRd9tY9kF2nQFe9NGcNEuk3R8zXSdPUpI=;
+	s=korg; t=1730896571;
+	bh=lPi+UEM6GGWJ/DKWYD0QItarQK7ZKkx1AthHertTUhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9NbyPtzs3do+VaFZJuEcmRotjzu3WMTVXSBEG/9FqLpLAgsAcLPPxLqlAwRGfJK/
-	 FN7Su5V93agcq3/vdSqIcsF5MWisDMQoXko66xJXlLT1P+TfbASbc8nZ+ECUIyhVcb
-	 c+/YviuY5iXsLoI54862NCHeeKllIhDdlH5yIkEo=
+	b=gmceVlBqu1wwM/NjlLDhB75RZD4QGmouFmnTb/n3yAtHTfrerYd1FqfyhIufIfr4+
+	 /PX2aB2yNwusyFT33hCIjAYcORPsDh7fj4J41cbUW5WGurmFDKiIbQTq9ZBIwyPcPA
+	 kka64TYG6yWOB9SKas5HraWsMXbLpFPTvbEWxUzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/126] cxl/port: Fix cxl_bus_rescan() vs bus_rescan_devices()
+	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 237/245] drm/xe/xe2hpg: Introduce performance tuning changes for Xe2_HPG
 Date: Wed,  6 Nov 2024 13:04:50 +0100
-Message-ID: <20241106120308.475997830@linuxfoundation.org>
+Message-ID: <20241106120325.101340490@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
-References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
 
-[ Upstream commit 3d6ebf16438de5d712030fefbb4182b46373d677 ]
+commit e4ac526c440af8aa94d2bdfe6066339dd93b4db2 upstream.
 
-It turns out since its original introduction, pre-2.6.12,
-bus_rescan_devices() has skipped devices that might be in the process of
-attaching or detaching from their driver. For CXL this behavior is
-unwanted and expects that cxl_bus_rescan() is a probe barrier.
+Add performance tuning changes for Xe2_HPG
 
-That behavior is simple enough to achieve with bus_for_each_dev() paired
-with call to device_attach(), and it is unclear why bus_rescan_devices()
-took the position of lockless consumption of dev->driver which is racy.
-
-The "Fixes:" but no "Cc: stable" on this patch reflects that the issue
-is merely by inspection since the bug that triggered the discovery of
-this potential problem [1] is fixed by other means.  However, a stable
-backport should do no harm.
-
-Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
-Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/172964781104.81806.4277549800082443769.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Bspec: 72161
+Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240724121521.2347524-1-sai.teja.pottumuttu@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/port.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    1 +
+ drivers/gpu/drm/xe/xe_tuning.c       |    8 ++++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index f0875fa86c616..20f052d3759e0 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -1786,11 +1786,18 @@ static void cxl_bus_remove(struct device *dev)
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -109,6 +109,7 @@
  
- static struct workqueue_struct *cxl_bus_wq;
+ #define FF_MODE					XE_REG_MCR(0x6210)
+ #define   DIS_TE_AUTOSTRIP			REG_BIT(31)
++#define   VS_HIT_MAX_VALUE_MASK			REG_GENMASK(25, 20)
+ #define   DIS_MESH_PARTIAL_AUTOSTRIP		REG_BIT(16)
+ #define   DIS_MESH_AUTOSTRIP			REG_BIT(15)
  
--static void cxl_bus_rescan_queue(struct work_struct *w)
-+static int cxl_rescan_attach(struct device *dev, void *data)
- {
--	int rc = bus_rescan_devices(&cxl_bus_type);
-+	int rc = device_attach(dev);
+--- a/drivers/gpu/drm/xe/xe_tuning.c
++++ b/drivers/gpu/drm/xe/xe_tuning.c
+@@ -93,6 +93,14 @@ static const struct xe_rtp_entry_sr lrc_
+ 				   REG_FIELD_PREP(L3_PWM_TIMER_INIT_VAL_MASK, 0x7f)))
+ 	},
+ 
++	/* Xe2_HPG */
 +
-+	dev_vdbg(dev, "rescan: %s\n", rc ? "attach" : "detached");
- 
--	pr_debug("CXL bus rescan result: %d\n", rc);
-+	return 0;
-+}
++	{ XE_RTP_NAME("Tuning: vs hit max value"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(FIELD_SET(FF_MODE, VS_HIT_MAX_VALUE_MASK,
++				   REG_FIELD_PREP(VS_HIT_MAX_VALUE_MASK, 0x3f)))
++	},
 +
-+static void cxl_bus_rescan_queue(struct work_struct *w)
-+{
-+	bus_for_each_dev(&cxl_bus_type, NULL, NULL, cxl_rescan_attach);
- }
+ 	{}
+ };
  
- void cxl_bus_rescan(void)
--- 
-2.43.0
-
 
 
 
