@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91FC9BE82D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:21:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810039BE95A
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51AE4B2325B
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3794F1F23336
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C476C1DF961;
-	Wed,  6 Nov 2024 12:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FE21DF98D;
+	Wed,  6 Nov 2024 12:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/3ppQvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaPMgXVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814061DF73E;
-	Wed,  6 Nov 2024 12:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EA71DF974;
+	Wed,  6 Nov 2024 12:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895712; cv=none; b=Xb8zmwcp6+y9KCXiJP8RRdh4rF89xCQh1hFqzIBXRx5JOi9949LFw8BcL31RrNm/n9oroOuvAGB7b47OuYSOS/bpTMMl4KCUc/mMCMYhrpXjq1BuKD4V1nXS8w4fOgw9+9S6d21Uf8Ti/PFoc71qTpbWNovP+1PbHcGuenLqOrU=
+	t=1730896390; cv=none; b=pxEK2gpwwz3u2OZmuD7hWoS2rt6h3YCG7CN248N+bXuqqs2endBQGExUy3AzK/cV5nzHEct03mM7wPkitw80XdPvShjPpVk2etFfQ7llayko7EykjwMwNjeeQuY/xWYeR4Y7vOfcfKPBskXnkQO6dJfqGk69hPPGOexUMdDanMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895712; c=relaxed/simple;
-	bh=WnZPTphLgA3JfmQGxIFIBmg4LEfLorAeE55R6/p92q8=;
+	s=arc-20240116; t=1730896390; c=relaxed/simple;
+	bh=wjTDGp0OC62NqMX9GQDo5ExmdyvCi5Dr7BklEMs6xoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpN5V0ifhg5gB4vmSgFUwoVZ740SZ+L6dq5bapPb7d8KY/MMTDwaSA6HJvnm3QPUimI68s10lX5x/W2QMOO9f9rWrHwjPqw87jy/OV/NNXVTh53++dTLUAuOZNz3yM+NxJ8E3fdCuZZl6dSK0Qws1wtCifh7H8kk2yyu2HIOg0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/3ppQvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC71C4CECD;
-	Wed,  6 Nov 2024 12:21:51 +0000 (UTC)
+	 MIME-Version; b=TaGOOyeIlwYUjmCJz1PwaMBp6bZ1qOujpWGH0k8YKllb3AAHluPkW78Wv3Kqj2eUZfvCYe3DD944b1h8EGrUVYpXgRtpMrXKXp6YeRH+vG7S3Hj7VkyN/EMSFlyNMKGoqYjlKcNI0tSMgIOFx2f1s2uPpEW2flQJg4lnM9xvBMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaPMgXVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB11C4CECD;
+	Wed,  6 Nov 2024 12:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895712;
-	bh=WnZPTphLgA3JfmQGxIFIBmg4LEfLorAeE55R6/p92q8=;
+	s=korg; t=1730896390;
+	bh=wjTDGp0OC62NqMX9GQDo5ExmdyvCi5Dr7BklEMs6xoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/3ppQvxejndPhPRr8G9O9kiZ9VPvVeC8zz3avYunOP9sbkV1Hp2vj9Aq4M1i3t2z
-	 7FrITGSNGcz5ltxVEOo+mVPgChkVQ187kW27yB1CYBMnEk6mLxEx0IAFOu9RFFO91u
-	 ExC8+xX6IcKjfwrADNLH8KyFy98kU63gi56s180Y=
+	b=aaPMgXVF2oD2VKVWxBoMZ7/vQ6UdnmyaLrYl0AWqGyHN7+NXFxpys1Cy+Xq0X0YCV
+	 ksiXqKhDx9gw11F+zswCSDo0lNYA1U8UGgVG/VONQdjomHh5fWkIxZ+nJvKFr0hr6l
+	 MZuP2gJ4+kl9XHZQ7o4HhzpUoVmIQgpEzmQX0Xbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 310/350] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
+Subject: [PATCH 6.11 185/245] ALSA: hda/realtek: Fix headset mic on TUXEDO Gemini 17 Gen3
 Date: Wed,  6 Nov 2024 13:03:58 +0100
-Message-ID: <20241106120328.433066224@linuxfoundation.org>
+Message-ID: <20241106120323.795706194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
+[ Upstream commit 0b04fbe886b4274c8e5855011233aaa69fec6e75 ]
 
-The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb() to fix it.
+Quirk is needed to enable headset microphone on missing pin 0x19.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241029151653.80726-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ sound/pci/hda/patch_realtek.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index e0c9fee4e1e65..7948d59b96282 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -1015,6 +1015,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
- 	if(skb->len > XMIT_BUFF_SIZE)
- 	{
- 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
-+		dev_kfree_skb(skb);
- 		return NETDEV_TX_OK;
- 	}
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 8d6f446d507c2..25d4c417d3c07 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10729,6 +10729,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1558, 0x1404, "Clevo N150CU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x14a1, "Clevo L141MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x2624, "Clevo L240TU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x28c1, "Clevo V370VND", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1558, 0x4018, "Clevo NV40M[BE]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4019, "Clevo NV40MZ", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x4020, "Clevo NV40MB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 -- 
 2.43.0
 
