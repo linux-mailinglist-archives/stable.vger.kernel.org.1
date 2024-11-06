@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-90789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD3C9BEB0C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:55:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E75F9BEB91
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:59:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F20F1C20BCC
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CADBA1F27A83
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC65B1E1C37;
-	Wed,  6 Nov 2024 12:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A32E1F81BD;
+	Wed,  6 Nov 2024 12:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeX6oAnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4lK34Jq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7768F204F85;
-	Wed,  6 Nov 2024 12:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3066C1DB520;
+	Wed,  6 Nov 2024 12:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896818; cv=none; b=I0Rg/JJACzKkOo7ksn3iHv9aXw7DW7E2+grykELKeVcWGFpjMKiIaeKMhAOHtlxTpVspzKwTpGEMBUUWrQ/xjhAyQrePLidDFebmQjxUkuqFFaT0XOBGLZ4JN9OTi55ImrYKncw+e/XRbaKpDzNxji90E6L+HaAjMnZ4dMF+D34=
+	t=1730897162; cv=none; b=fRFa7SPC1y6NUtzx/ZSE7uC/LbtG5/VhzqZDaxTyxfXPRA6wpe/eqPJmJ9dnjhPYIF1YTpl/FewLcDwsdL/IwI8trTCovok6b5QBYk1E48XRF4BhRuQyKXIv4QkZhJY8MN21qq1ASKRCnEFMVQVRw9YtYP61dU5U5cRw4dcqz5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896818; c=relaxed/simple;
-	bh=jOFIL3t70iBOeQjmsm4zijHh81e4aTWf8Zr9mgoOZVo=;
+	s=arc-20240116; t=1730897162; c=relaxed/simple;
+	bh=tdERx2KfG9hyPVxEbBoFmwFfiFDoh74AiH2wkTTWV38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9znwCcHbLOUscb/C0lr7fx6LZr5/D0E//bOr1JTP77pK1s5aZDUNszhHKKDiVJ5i7LGmY7tgEG8XRN/3CTWmcAZ5YfhSE7tgAqjM6jvHXJ1rL8ostZVBGfYZ8+nlz4MZm6XG0fDCpvPMarpk9FQ30ObtqCpCKnaWGK1f8aBFWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeX6oAnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F021AC4CED3;
-	Wed,  6 Nov 2024 12:40:17 +0000 (UTC)
+	 MIME-Version; b=Gs60fCxLsL25Gr8wC2L7SZgdIs4JnXVsx6chVGCpw7T5zwNDc+S9HCC+0PH3XcZC/Ul/N3ZiZmJ5Njh2aLMSXHP7bfQHeMCM597xaET6sOANqiM0TayKkCS9t9aehTBavoRovxZwcDQX0InXR/v0DRe5emd/6iTXTC3trGa0yg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4lK34Jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F65C4CECD;
+	Wed,  6 Nov 2024 12:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896818;
-	bh=jOFIL3t70iBOeQjmsm4zijHh81e4aTWf8Zr9mgoOZVo=;
+	s=korg; t=1730897162;
+	bh=tdERx2KfG9hyPVxEbBoFmwFfiFDoh74AiH2wkTTWV38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jeX6oAnNknWF1dIG/j568kVHXU9HmgUYSufKiXdhe4pour3kn2+bcighq3fmgMTv0
-	 IH1NuUFIGCbNtutP1C+r1tqKnoCC4jg3+T3IPBL89e1R+gwgLs3EngVqBJZt7szyuD
-	 Pt0btx8xak14vFBGj6RaaLgxD2OTQyll4t3Cm6oc=
+	b=q4lK34Jq29tOfpCTfY5S+Je8p6w450Ivn3j14Xc8mPzUn+ilzQpB0J0v2Z/EtsgZD
+	 RGBrv6FdkgVBlZ7lxF/fsEhq3ixLiIyWVYls+TpTgP+mPUu55MDcQaSgi2Sdsf7Lnx
+	 RGiefTUVAPgl2NjvRm/uAvFq/2nbNVjBB9RPNWG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Robert Richter <rrichter@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/110] NFS: remove revoked delegation from servers delegation list
+Subject: [PATCH 6.1 088/126] cxl/acpi: Move rescan to the workqueue
 Date: Wed,  6 Nov 2024 13:04:49 +0100
-Message-ID: <20241106120305.481332845@linuxfoundation.org>
+Message-ID: <20241106120308.451385062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+References: <20241106120306.038154857@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 7ef60108069b7e3cc66432304e1dd197d5c0a9b5 ]
+[ Upstream commit 4029c32fb601d505dfb92bdf0db9fdcc41fe1434 ]
 
-After the delegation is returned to the NFS server remove it
-from the server's delegations list to reduce the time it takes
-to scan this list.
+Now that the cxl_mem driver has a need to take the root device lock, the
+cxl_bus_rescan() needs to run outside of the root lock context. That
+need arises from RCH topologies and the locking that the cxl_mem driver
+does to attach a descendant to an upstream port. In the RCH case the
+lock needed is the CXL root device lock [1].
 
-Network trace captured while running the below script shows the
-time taken to service the CB_RECALL increases gradually due to
-the overhead of traversing the delegation list in
-nfs_delegation_find_inode_server.
-
-The NFS server in this test is a Solaris server which issues
-CB_RECALL when receiving the all-zero stateid in the SETATTR.
-
-mount=/mnt/data
-for i in $(seq 1 20)
-do
-   echo $i
-   mkdir $mount/testtarfile$i
-   time  tar -C $mount/testtarfile$i -xf 5000_files.tar
-done
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Link: http://lore.kernel.org/r/166993045621.1882361.1730100141527044744.stgit@dwillia2-xfh.jf.intel.com [1]
+Tested-by: Robert Richter <rrichter@amd.com>
+Link: http://lore.kernel.org/r/166993042884.1882361.5633723613683058881.stgit@dwillia2-xfh.jf.intel.com
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 3d6ebf16438d ("cxl/port: Fix cxl_bus_rescan() vs bus_rescan_devices()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cxl/acpi.c      | 17 +++++++++++++++--
+ drivers/cxl/core/port.c | 19 +++++++++++++++++--
+ drivers/cxl/cxl.h       |  3 ++-
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index c15188d0b6b33..02d9af026ad15 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -960,6 +960,11 @@ void nfs_delegation_mark_returned(struct inode *inode,
- 	}
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index dd610556a3afa..d7d789211c173 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -509,7 +509,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
+ 		return rc;
  
- 	nfs_mark_delegation_revoked(delegation);
-+	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
-+	spin_unlock(&delegation->lock);
-+	if (nfs_detach_delegation(NFS_I(inode), delegation, NFS_SERVER(inode)))
-+		nfs_put_delegation(delegation);
-+	goto out_rcu_unlock;
+ 	/* In case PCI is scanned before ACPI re-trigger memdev attach */
+-	return cxl_bus_rescan();
++	cxl_bus_rescan();
++	return 0;
+ }
  
- out_clear_returning:
- 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
+ static const struct acpi_device_id cxl_acpi_ids[] = {
+@@ -533,7 +534,19 @@ static struct platform_driver cxl_acpi_driver = {
+ 	.id_table = cxl_test_ids,
+ };
+ 
+-module_platform_driver(cxl_acpi_driver);
++static int __init cxl_acpi_init(void)
++{
++	return platform_driver_register(&cxl_acpi_driver);
++}
++
++static void __exit cxl_acpi_exit(void)
++{
++	platform_driver_unregister(&cxl_acpi_driver);
++	cxl_bus_drain();
++}
++
++module_init(cxl_acpi_init);
++module_exit(cxl_acpi_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_IMPORT_NS(CXL);
+ MODULE_IMPORT_NS(ACPI);
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 1f1483a9e5252..f0875fa86c616 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1786,12 +1786,27 @@ static void cxl_bus_remove(struct device *dev)
+ 
+ static struct workqueue_struct *cxl_bus_wq;
+ 
+-int cxl_bus_rescan(void)
++static void cxl_bus_rescan_queue(struct work_struct *w)
+ {
+-	return bus_rescan_devices(&cxl_bus_type);
++	int rc = bus_rescan_devices(&cxl_bus_type);
++
++	pr_debug("CXL bus rescan result: %d\n", rc);
++}
++
++void cxl_bus_rescan(void)
++{
++	static DECLARE_WORK(rescan_work, cxl_bus_rescan_queue);
++
++	queue_work(cxl_bus_wq, &rescan_work);
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_bus_rescan, CXL);
+ 
++void cxl_bus_drain(void)
++{
++	drain_workqueue(cxl_bus_wq);
++}
++EXPORT_SYMBOL_NS_GPL(cxl_bus_drain, CXL);
++
+ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
+ {
+ 	return queue_work(cxl_bus_wq, &cxlmd->detach_work);
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 7750ccb7652db..827fa94cddda1 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -564,7 +564,8 @@ struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+ 				   struct cxl_dport *parent_dport);
+ struct cxl_port *find_cxl_root(struct device *dev);
+ int devm_cxl_enumerate_ports(struct cxl_memdev *cxlmd);
+-int cxl_bus_rescan(void);
++void cxl_bus_rescan(void);
++void cxl_bus_drain(void);
+ struct cxl_port *cxl_mem_find_port(struct cxl_memdev *cxlmd,
+ 				   struct cxl_dport **dport);
+ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd);
 -- 
 2.43.0
 
