@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-90465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67389BE875
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0645A9BE971
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7791F2417C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCDA2854FC
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3AC1DFE37;
-	Wed,  6 Nov 2024 12:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB571DFD89;
+	Wed,  6 Nov 2024 12:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL9utSqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuxHd4K9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE641DFD84;
-	Wed,  6 Nov 2024 12:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB751DF974;
+	Wed,  6 Nov 2024 12:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895854; cv=none; b=Kqi4IQT7LxeIPvgE/tYzXsd/00umwmSphgUCKzOfAykmOtf4YQJmQ/XcWfgZVooL+eg0QC2YWY3UwjDKKtQcyXiQC2RGB+0HmRRw/Xb0TidJ2G2muDfYdLeao3vP41fkhf5OoA8m5SLMpf7HvfqTJWguB9Se5dOK12OBkodeTWc=
+	t=1730896457; cv=none; b=Cg8UoSSr8fmIsJU3YdW6llJapA+5BAR/OEORrxOQ+zic5b2o9Px0YaRyct4bxWQCtWAmPiS85g4VsJ/culVv/YXtrcFlh7Nvv16EmaV+4xR9jOLalD6WFXCUHY2YIRVwufVdHSZ5CSKS0N/YAz3xnVlWNs9/TR8WXsHh+slRVZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895854; c=relaxed/simple;
-	bh=jMGysyijyD33upc99PUJAw31VB6N/oh6K6y3oIZWlVg=;
+	s=arc-20240116; t=1730896457; c=relaxed/simple;
+	bh=8bQuBepsDmv6FkRue6ATJ2udTf79nY8eeJtoPR/V+Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf/nIK/HNxJQ0vK4CsFpUIduj5I0fuXCRfxHljmghIbcYfNRWvz+tPHy4evuQ5/HaFTwrarDDlwE2xN0dUvbaG+mAk2x2gWVG3Gy3cYn45Dbq6UDjNDUAwySbHObgbIDeEloEsiRGHj2k9vfXHVSlCbkXgp5iwQjw4YEXns0LJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL9utSqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F0BC4CECD;
-	Wed,  6 Nov 2024 12:24:13 +0000 (UTC)
+	 MIME-Version; b=ZTH4VzXMTnQzGdlukDEl0LyIc6DsuD92JLwNTu8xZqN6m5sGLAtzkOrj7M2F2krojoZRC9joQvqhj0/cLAwPZDq/F5v65Nk0Qc4ge0fwL+n+5twWGYZf45677x9g7xD+XtXt6Z8jnhGkMcHeIZktYUPtGxuUwCOt2mGkTZzs76A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuxHd4K9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7010EC4CECD;
+	Wed,  6 Nov 2024 12:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895853;
-	bh=jMGysyijyD33upc99PUJAw31VB6N/oh6K6y3oIZWlVg=;
+	s=korg; t=1730896456;
+	bh=8bQuBepsDmv6FkRue6ATJ2udTf79nY8eeJtoPR/V+Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tL9utSqIyfzSKrtLoX5tdG1FBXLmPFaRpqKFYNQOYuDIdHmpkTuALblTu5p5AKrm+
-	 c4HG9XF9cUtaFMKEbj/xjQo0EQ1lnhgtJFJa+IHAHS1qDeLXj5RtxqBqjXHRPFz49U
-	 Wa/GYTgC1kdU/MddL0b+E+CSFQke91GtahtltsGM=
+	b=iuxHd4K9k6+Y3S02kU09CIX13OZyl2BADNFKUS63maq1v4VMbHWT2OTPvCgbfaNfc
+	 R80eU401zv5wjMzKdq/1XU2DAfpPbMMyr2sk/PGnPdcud1fl0AtSvcSyti/HpfcXxo
+	 9KhetCfGfNrimPGA9+Ns8odMbBJBu7XFVLP/1y5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 333/350] net: support ip generic csum processing in skb_csum_hwoffload_help
-Date: Wed,  6 Nov 2024 13:04:21 +0100
-Message-ID: <20241106120328.943258143@linuxfoundation.org>
+	E Shattow <e@freeshell.de>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.11 209/245] riscv: dts: starfive: Update ethernet phy0 delay parameter values for Star64
+Date: Wed,  6 Nov 2024 13:04:22 +0100
+Message-ID: <20241106120324.397627867@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: E Shattow <e@freeshell.de>
 
-[ Upstream commit 62fafcd63139920eb25b3fbf154177ce3e6f3232 ]
+commit 825bb69228c8ab85637d21cdf4d44207937130b6 upstream.
 
-NETIF_F_IP|IPV6_CSUM feature flag indicates UDP and TCP csum offload
-while NETIF_F_HW_CSUM feature flag indicates ip generic csum offload
-for HW, which includes not only for TCP/UDP csum, but also for other
-protocols' csum like GRE's.
+Improve function of Star64 bottom network port phy0 with updated delay values.
+Initial upstream patches supporting Star64 use the same vendor board support
+package parameters known to result in an unreliable bottom network port.
 
-However, in skb_csum_hwoffload_help() it only checks features against
-NETIF_F_CSUM_MASK(NETIF_F_HW|IP|IPV6_CSUM). So if it's a non TCP/UDP
-packet and the features doesn't support NETIF_F_HW_CSUM, but supports
-NETIF_F_IP|IPV6_CSUM only, it would still return 0 and leave the HW
-to do csum.
+Success acquiring DHCP lease and no dropped packets to ping LAN address:
+rx  900: tx 1500 1650 1800 1950
+rx  750: tx      1650 1800 1950
+rx  600: tx           1800 1950
+rx 1050: tx      1650 1800 1950
+rx 1200: tx 1500 1650 1800 1950
+rx 1350: tx 1500 1650 1800 1950
+rx 1500: tx 1500 1650 1800 1950
+rx 1650: tx 1500 1650 1800 1950
+rx 1800: tx 1500 1650 1800 1950
+rx 1900: tx                1950
+rx 1950: tx                1950
 
-This patch is to support ip generic csum processing by checking
-NETIF_F_HW_CSUM for all protocols, and check (NETIF_F_IP_CSUM |
-NETIF_F_IPV6_CSUM) only for TCP and UDP.
+Failure acquiring DHCP lease or many dropped packets:
+rx  450: tx                1500      1800 1950
+rx  600: tx      1200 1350      1650
+rx  750: tx           1350 1500
+rx  900: tx      1200 1350
+rx 1050: tx 1050 1200 1350 1500
+rx 1200: tx           1350
+rx 1350: tx           1350
+rx 1500: tx      1200 1350
+rx 1650: tx 1050 1200 1350
+rx 1800: tx 1050 1200 1350
+rx 1900: tx                1500 1650 1800
+rx 1950: tx      1200 1350
 
-Note that we're using skb->csum_offset to check if it's a TCP/UDP
-proctol, this might be fragile. However, as Alex said, for now we
-only have a few L4 protocols that are requesting Tx csum offload,
-we'd better fix this until a new protocol comes with a same csum
-offset.
+Non-functional:
+rx    0: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
+rx  150: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
+rx  300: tx 0  150  300  450  600  750  900 1050 1200 1350 1500 1650 1800 1950
+rx  450: tx 0  150  300  450  600  750  900 1050 1200 1350      1650
+rx  600: tx 0  150  300  450  600  750  900 1050
+rx  750: tx 0  150  300  450  600  750  900 1050 1200
+rx  900: tx 0  150  300  450  600  750  900 1050
+rx 1050: tx 0  150  300  450  600  750  900
+rx 1200: tx 0  150  300  450  600  750  900 1050 1200
+rx 1350: tx 0  150  300  450  600  750  900 1050 1200
+rx 1500: tx 0  150  300  450  600  750  900 1050
+rx 1650: tx 0  150  300  450  600  750  900
+rx 1800: tx 0  150  300  450  600  750  900
+rx 1900: tx 0  150  300  450  600  750  900 1050 1200 1350
+rx 1950: tx 0  150  300  450  600  750  900 1050
 
-v1->v2:
-  - not extend skb->csum_not_inet, but use skb->csum_offset to tell
-    if it's an UDP/TCP csum packet.
-v2->v3:
-  - add a note in the changelog, as Willem suggested.
+Selecting the median of all working rx delay values 1500 combined with tx delay
+values 1500, 1650, 1800, and 1950 only the tx delay value of 1950 (default) is
+reliable as tested in both Linux 6.11.2 and U-Boot v2024.10
 
-Suggested-by: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: E Shattow <e@freeshell.de>
+CC: stable@vger.kernel.org
+Fixes: 2606bf583b962 ("riscv: dts: starfive: add Star64 board devicetree")
+Acked-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0409c051ed5d4..fb48a6b1301fb 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3323,7 +3323,18 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
- 		return !!(features & NETIF_F_SCTP_CRC) ? 0 :
- 			skb_crc32c_csum_help(skb);
+--- a/arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts
++++ b/arch/riscv/boot/dts/starfive/jh7110-pine64-star64.dts
+@@ -44,8 +44,7 @@
+ };
  
--	return !!(features & NETIF_F_CSUM_MASK) ? 0 : skb_checksum_help(skb);
-+	if (features & NETIF_F_HW_CSUM)
-+		return 0;
-+
-+	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-+		switch (skb->csum_offset) {
-+		case offsetof(struct tcphdr, check):
-+		case offsetof(struct udphdr, check):
-+			return 0;
-+		}
-+	}
-+
-+	return skb_checksum_help(skb);
- }
- EXPORT_SYMBOL(skb_csum_hwoffload_help);
- 
--- 
-2.43.0
-
+ &phy0 {
+-	rx-internal-delay-ps = <1900>;
+-	tx-internal-delay-ps = <1500>;
++	rx-internal-delay-ps = <1500>;
+ 	motorcomm,rx-clk-drv-microamp = <2910>;
+ 	motorcomm,rx-data-drv-microamp = <2910>;
+ 	motorcomm,tx-clk-adj-enabled;
 
 
 
