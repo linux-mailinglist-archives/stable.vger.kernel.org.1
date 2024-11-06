@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-89995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4A79BDC60
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:21:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2862A9BDC63
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 03:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3AF1F252CB
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:21:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DB91C21189
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 02:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDD21B6D09;
-	Wed,  6 Nov 2024 02:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915081DF257;
+	Wed,  6 Nov 2024 02:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/k58Tsc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Re+NKPPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BF31C1AD2;
-	Wed,  6 Nov 2024 02:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA119049B;
+	Wed,  6 Nov 2024 02:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859119; cv=none; b=ChFiVRp2XYkPu5BxHXkuOLkM472QkfFuow0Dci10vllg1qodXTMFWwUV3cZ6iZg8dqHWcIG8lmzLEo0eLXl3KzMQzbECPvpFMQtRdmAfDVbP8hyQ5t2H0hRUF6+IsliSgD17dVcrQcQZ4YMK3kuQvsvya9S1yilNzgSd3c0PiRU=
+	t=1730859123; cv=none; b=VbTJON+0lvgy7UlWpc4JvhnkZFGeFTFFlxD/BcNqYdW9z4aaUW+2V/qhaD73S3gSBGxYoGo/y9es3SK1Xp7qGGtS8rB2CzTDpNmL1V/cvEaTjDyrZjbMlur4SXx5OLx9diqwjqNfno5gxj59B1BYtCN8fCfMdbahdHoMKwFEsK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859119; c=relaxed/simple;
-	bh=k+7E2zyJ87EO3wjKg5cLr9eOYD5s7vCJPX53WjPth+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QMivHyBPNAX0mVwpUjD1hw/5TDEAnBVDYbYfE+hy6JJYy5AA+JHrUB+OUu5mQw8XtGAAf8AW4hi7/vUrba6HmxWmKzxioqCp+yvyU3j48mECuuc5HUJ3yJHaRw5cdNjwAkL2a1VSWM65y0ABTQYkk79Gzhh9gENhVyGWrthPo+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/k58Tsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE35AC4CECF;
-	Wed,  6 Nov 2024 02:11:57 +0000 (UTC)
+	s=arc-20240116; t=1730859123; c=relaxed/simple;
+	bh=s5pww47MAPQozDd3hmUkgIR6Hr/gQ7mIcYl+0/uI4GI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iNlut+iKy8rZ4q7vTYSafAbCTKhuG2s5SvCaDEoQVJo6AlUf7R+GfhLDVK9kXHkkMEoW6ov+MgOigqFl8uGwsCESFWrJXo/8FLkOka4hw54U6LpRGsrlnGG7HRpS7jOUgIPQHODmWOlKZi4XiD3c2enJ/dewd06Sxg3CLenb0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Re+NKPPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76676C4CECF;
+	Wed,  6 Nov 2024 02:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859119;
-	bh=k+7E2zyJ87EO3wjKg5cLr9eOYD5s7vCJPX53WjPth+s=;
+	s=k20201202; t=1730859123;
+	bh=s5pww47MAPQozDd3hmUkgIR6Hr/gQ7mIcYl+0/uI4GI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=a/k58Tscz8s/EN/gtyBb9PkIhvem8dPidOA4WaI5GSWqNca4gRzPGIw/bxY6S7OAa
-	 N/HoH4HOXFXAcxMSLTBx1WfuqC2/vEhzfobaxtnvGU1fq/XjwNG7P+HJscZzg9jo8c
-	 +zR0hMH3CswnUStgzfK3yJYHPRZ4USMmOaoOMPFiNG5A6NwX5AkxuSR3FyAhwlWwVU
-	 IeLXNyMFnZkKHaHBT67vKzv+kkewftWqma9d8xwdych49w3fcfMRFnDr1RalwbyVLh
-	 uIu5JutiOoCt/17KBBK9i7q6MjVj5GZUC1d5zIT5UQT9OSbvKJhg//hMZjSEnWHjqW
-	 +ewm3Eh4bIM1g==
+	b=Re+NKPPnxVkQ8Sg8s8amQSLcBf+uJuStJvg83w5z26BoYEEzFF2y2W/ejIbXikUlq
+	 iXyLw7PgKI/8kfHa26udxWaWd4htAh6LeXPsGQNBsC+y/zR47i9Cra/JFcmZ1tJkCw
+	 7daCJEyHN0Xn0878mDqdHgKqVGk6Sk19xTZFDmA4NmDO9CWsVmMjo2R8/8Hvfn7Ple
+	 ad53oQEYdsOuM0ci6a5pFWjOrIYGB0gMZbARMnC6MPZKLkOE+hPrAyyz9vrduC+udi
+	 EyQSfhBGl4nQ+18EdwXPaVDXKRmRpv46DVAaRQnwdarkWcu8CK10GRUDAxElvmBE3q
+	 D6p4HlZdzJb7A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	konishi.ryusuke@gmail.com
-Cc: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	gourry@gourry.net
+Cc: Yang Shi <shy828301@gmail.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Wei Xu <weixugc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-nilfs@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "nilfs2: fix kernel bug due to missing clearing of checked flag" failed to apply to v5.15-stable tree
-Date: Tue,  5 Nov 2024 21:11:55 -0500
-Message-ID: <20241106021156.182576-1-sashal@kernel.org>
+Subject: FAILED: Patch "vmscan,migrate: fix page count imbalance on node stats when demoting pages" failed to apply to v5.15-stable tree
+Date: Tue,  5 Nov 2024 21:11:59 -0500
+Message-ID: <20241106021159.182619-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,49 +77,73 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41e192ad2779cae0102879612dfe46726e4396aa Mon Sep 17 00:00:00 2001
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Fri, 18 Oct 2024 04:33:10 +0900
-Subject: [PATCH] nilfs2: fix kernel bug due to missing clearing of checked
- flag
+From 35e41024c4c2b02ef8207f61b9004f6956cf037b Mon Sep 17 00:00:00 2001
+From: Gregory Price <gourry@gourry.net>
+Date: Fri, 25 Oct 2024 10:17:24 -0400
+Subject: [PATCH] vmscan,migrate: fix page count imbalance on node stats when
+ demoting pages
 
-Syzbot reported that in directory operations after nilfs2 detects
-filesystem corruption and degrades to read-only,
-__block_write_begin_int(), which is called to prepare block writes, may
-fail the BUG_ON check for accesses exceeding the folio/page size,
-triggering a kernel bug.
+When numa balancing is enabled with demotion, vmscan will call
+migrate_pages when shrinking LRUs.  migrate_pages will decrement the
+the node's isolated page count, leading to an imbalanced count when
+invoked from (MG)LRU code.
 
-This was found to be because the "checked" flag of a page/folio was not
-cleared when it was discarded by nilfs2's own routine, which causes the
-sanity check of directory entries to be skipped when the directory
-page/folio is reloaded.  So, fix that.
+The result is dmesg output like such:
 
-This was necessary when the use of nilfs2's own page discard routine was
-applied to more than just metadata files.
+$ cat /proc/sys/vm/stat_refresh
 
-Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+[77383.088417] vmstat_refresh: nr_isolated_anon -103212
+[77383.088417] vmstat_refresh: nr_isolated_file -899642
+
+This negative value may impact compaction and reclaim throttling.
+
+The following path produces the decrement:
+
+shrink_folio_list
+  demote_folio_list
+    migrate_pages
+      migrate_pages_batch
+        migrate_folio_move
+          migrate_folio_done
+            mod_node_page_state(-ve) <- decrement
+
+This path happens for SUCCESSFUL migrations, not failures.  Typically
+callers to migrate_pages are required to handle putback/accounting for
+failures, but this is already handled in the shrink code.
+
+When accounting for migrations, instead do not decrement the count when
+the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
+is the only source of MR_DEMOTION.
+
+Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
+Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Wei Xu <weixugc@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/nilfs2/page.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
-index 5436eb0424bd1..10def4b559956 100644
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -401,6 +401,7 @@ void nilfs_clear_folio_dirty(struct folio *folio)
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7e520562d421a..fab84a7760889 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1178,7 +1178,7 @@ static void migrate_folio_done(struct folio *src,
+ 	 * not accounted to NR_ISOLATED_*. They can be recognized
+ 	 * as __folio_test_movable
+ 	 */
+-	if (likely(!__folio_test_movable(src)))
++	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
+ 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
+ 				    folio_is_file_lru(src), -folio_nr_pages(src));
  
- 	folio_clear_uptodate(folio);
- 	folio_clear_mappedtodisk(folio);
-+	folio_clear_checked(folio);
- 
- 	head = folio_buffers(folio);
- 	if (head) {
 -- 
 2.43.0
 
