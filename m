@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-90707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01599BE9AD
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:36:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8578E9BEB11
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 747D3B20F99
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:36:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A581282710
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912EA1DFE27;
-	Wed,  6 Nov 2024 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90B9205AC7;
+	Wed,  6 Nov 2024 12:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0p+5BBzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0JSQeQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA7818C00E;
-	Wed,  6 Nov 2024 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B7A1F4FCE;
+	Wed,  6 Nov 2024 12:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896574; cv=none; b=iIAJ4eVMYaAKthoJxotXw2oDnqKM+I7WjQYA83yN9+xtnUfZnsOCPAMArJSuhU9YzLhwCIX7+Fz6kW7eWIWrnry/vOOhSkFTx2Fn7Jur5jBSCp0dn+V4ZVWpb6i64HwxZNPZ3qtdJVx3nJG+BxBpeGn1INP7vwAQHLwQGzqiUXc=
+	t=1730896824; cv=none; b=ZT3ROtl1EvTtIBsBMbSoDM3GMOn+dVMrZObBpS0WwrWVKe/e7wI2P1BkBWz09JJSNin8Fh0FbcDjrkSsghJX7jDrIFY/105c4syb1EOQtDKy1D2FiaT9fMRKl71hlSzXIha0uBnNG7z9LkqcskTrb8Gk7czpk5d+ZakGoYW05Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896574; c=relaxed/simple;
-	bh=becQgweGYlG0BTGLNbemcb40RJxrm+siogthUpkD5jU=;
+	s=arc-20240116; t=1730896824; c=relaxed/simple;
+	bh=xRbehLLNjlt5GQF9gKax/awK1jbtcO+44cywhVn3tZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8sB0qzY5bYqfT5Q52m2vPGu/4TdzUjcBsrY+87HUsSbNbDfVksSLTMgOju1thMIPhx2Hq/tafdM04Aa1rWZ7ze0HsyWYGWGsYJxUv0kK+/jFhL7UKTiDnRu5cnJU6gDvZFXZYUOsj/R/mWSwIiRGXfiJqkXZPCxE40Ej8IQl+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p+5BBzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AB4C4CECD;
-	Wed,  6 Nov 2024 12:36:13 +0000 (UTC)
+	 MIME-Version; b=GmF1uxKpFwCovhxE2Eye3DUGQS+A6Iadho65+Kk2mck9dnJT4uGqDn2xOedoHCeAVAdTeGtgiVV6fpjEs1gdfkFclz+qoiq4Ww5zOciVr1E33omxCCM8ZQJNYBOyWUr3RiGT8J2H3ZfA6R5OWiqkdY+6489AIMrpqgzT7+1xEfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0JSQeQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE2FC4CECD;
+	Wed,  6 Nov 2024 12:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896574;
-	bh=becQgweGYlG0BTGLNbemcb40RJxrm+siogthUpkD5jU=;
+	s=korg; t=1730896824;
+	bh=xRbehLLNjlt5GQF9gKax/awK1jbtcO+44cywhVn3tZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0p+5BBzqG5bP0x0qC4d3gtwboZ3cBBfFb6R/mCANsU7jYJc/A75jLmUTVW2WXkSTV
-	 HOZ8Ynz1i/M/Q9IVJSDd7jl3GhAb35zEIOa+AyAcyPLUnYiSlaXDlVXFuKsZBl2BiX
-	 2Dap4UtqCNRmNPdoVJQJOuYqyTBL+SurWgXv14z8=
+	b=L0JSQeQ0bMGPzdjNTMh7D5ytNQTgmZqn+EBoJiP4LfEg9SkodV3qCVvV4Mskdbpz2
+	 nYEYyKuc5HOyhBA0JRHyXmUN+4J+eopi+pVtpj3huV1wqUcYh0Ref6djJSPfoCJIhH
+	 YyCFAVrm/DdJxjr9NwMi8hMltY1Tc7WBrn1y9kmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 238/245] drm/xe/xe2: Introduce performance changes
+	Hongren Zheng <i@zenithal.me>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH 5.10 085/110] usbip: tools: Fix detach_port() invalid port error path
 Date: Wed,  6 Nov 2024 13:04:51 +0100
-Message-ID: <20241106120325.124458445@linuxfoundation.org>
+Message-ID: <20241106120305.536900947@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
-References: <20241106120319.234238499@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-commit 2009e808bc3e0df6d4d83e2271bc25ae63a4ac05 upstream.
+commit e7cd4b811c9e019f5acbce85699c622b30194c24 upstream.
 
-Add Compression Performance Improvement Changes in Xe2
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-v2: Rebase
-
-v3: Rebase, updated as per latest changes on bspec,
-    Removed unnecessary default actions (Matt)
-    formatting nits (Tejas)
-
-v4: Formatting nits, removed default set action for bit 14 (Matt)
-
-Bspec: 72161
-Signed-off-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c2dd753fdc55df6a6432026f2df9c2684a0d25c1.1722607628.git.akshata.jahagirdar@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241024022700.1236660-1-min_halo@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h |    3 +++
- drivers/gpu/drm/xe/xe_tuning.c       |    5 +++++
- 2 files changed, 8 insertions(+)
+ tools/usb/usbip/src/usbip_detach.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -368,6 +368,9 @@
- #define XEHP_L3NODEARBCFG			XE_REG_MCR(0xb0b4)
- #define   XEHP_LNESPARE				REG_BIT(19)
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
+ 	}
  
-+#define L3SQCREG2				XE_REG_MCR(0xb104)
-+#define   COMPMEMRD256BOVRFETCHEN		REG_BIT(20)
-+
- #define L3SQCREG3				XE_REG_MCR(0xb108)
- #define   COMPPWOVERFETCHEN			REG_BIT(28)
- 
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -45,6 +45,11 @@ static const struct xe_rtp_entry_sr gt_t
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
- 	  XE_RTP_ACTIONS(SET(L3SQCREG3, COMPPWOVERFETCHEN))
- 	},
-+	{ XE_RTP_NAME("Tuning: L2 Overfetch Compressible Only"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
-+	  XE_RTP_ACTIONS(SET(L3SQCREG2,
-+			     COMPMEMRD256BOVRFETCHEN))
-+	},
- 	{}
- };
- 
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 
 
 
