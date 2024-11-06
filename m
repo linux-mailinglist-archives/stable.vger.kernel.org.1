@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871DC9BE6F8
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:09:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88C49BECD3
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F3B1C234BA
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B114285EBF
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0531DF25E;
-	Wed,  6 Nov 2024 12:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029ED1F706C;
+	Wed,  6 Nov 2024 12:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/xoWsVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIhDs4NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534041DEFF4;
-	Wed,  6 Nov 2024 12:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25441DFE3B;
+	Wed,  6 Nov 2024 12:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730894936; cv=none; b=tH5aXrdu1+1stoeQct3iJjxQ/VGnD/2zcy8a04EwLOPAofBXBObhRMDTENL+okwMyGf56khW/M2odZ/6vL5sOU/SUwJM+OE0RtS+ctQKWt77esuJunE5XYms1xtaY6nwUlesDtyz2eiia9n9PEYToFQPQz1eqMSa0kBLWnts7t0=
+	t=1730897976; cv=none; b=uFlMtkdqSJXcg8Fc4kSEfR/nTm8MRpXZ4cEEjbyejVxxFXkK4y1OhroJuUrxwqnthdewWuGy6LEYZlVWpevMtyeL34sz0Pns5qUcf6tI3WemkIEDiFrNjE6bqOxFMr7v2CiKOT/vSW/ENNykMZA8GERN2p0hifFg8NFbYfFXC90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730894936; c=relaxed/simple;
-	bh=besn7WLQUEeo2E8AMDwVVx0xpskszqr9PQCi3QyDPLg=;
+	s=arc-20240116; t=1730897976; c=relaxed/simple;
+	bh=xhR+pYITDjnLsk8+sr/LvJQrdmfgiEm8YfHRxg5QSoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERRBfx89IYs2Q3zsSr/xLFGv8y39TwBee9cKG1okY9XukQXglNtu9XxGI+E47yZxQMYrTjuTpqMyAx6tMsh1tfIXZvIkDfd7bp6wCGksW+sko5JnuuEPNW6Wx0PO0inCo3USs9KijK/Wnvc/BDcfeaF3tWmn02KLeT2UzfxbyRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/xoWsVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9A9C4CECD;
-	Wed,  6 Nov 2024 12:08:55 +0000 (UTC)
+	 MIME-Version; b=tnf7slnnvsEHEaMUEalqRg4rwQqeklXuBUmhOA0ScpD28WQJnLykG+vZTevfo30BzklecLebmh1jqiarUv5qK3rkNocUU+tVPM8ZKtI7LY5lKU+zKhANNVE92Eh9KskSq0AWe+4pZxpFc7x3DM5WgFBJpceded29yHlmI6WXSsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIhDs4NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35828C4CECD;
+	Wed,  6 Nov 2024 12:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730894936;
-	bh=besn7WLQUEeo2E8AMDwVVx0xpskszqr9PQCi3QyDPLg=;
+	s=korg; t=1730897976;
+	bh=xhR+pYITDjnLsk8+sr/LvJQrdmfgiEm8YfHRxg5QSoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/xoWsVoanz84nJnS4N5i95szkKGX4qUXFc7IqIeevnY3E0UoJBL6GcX2+1vbcNbs
-	 wtxSWLr73T38RTu8zz9UcYSRQ+4j4q9uUIr/2qAzCv79XB2+Agg7tt2ZP8j4OheNWE
-	 zZxkHr+bARwxAzVPjZP4qoLBIfTYwuheYhhLd0Ww=
+	b=jIhDs4NXo8zD/UKTmE9Q8TWTBJPXDXTJX3iLy7r1IInicAsc/3dX4xSAp34d32k0f
+	 AJu4DxkTPkBezyEhjkcl4/knAbh8tX/24bjwk1rnvx0Su1axDotryX5TZO3Mn4r4KO
+	 N0ZIPojN6KSNhhDPhBbhwBA5pAoj6ZxBCqkyMQBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Henrik Grimler <henrik@grimler.se>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 048/350] power: supply: max17042_battery: Fix SOC threshold calc w/ no current sense
+Subject: [PATCH 5.4 083/462] drm/msm: fix %s null argument error
 Date: Wed,  6 Nov 2024 12:59:36 +0100
-Message-ID: <20241106120322.075716610@linuxfoundation.org>
+Message-ID: <20241106120333.557459850@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120331.497003148@linuxfoundation.org>
+References: <20241106120331.497003148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Sherry Yang <sherry.yang@oracle.com>
 
-[ Upstream commit 3a3acf839b2cedf092bdd1ff65b0e9895df1656b ]
+[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
 
-Commit 223a3b82834f ("power: supply: max17042_battery: use VFSOC for
-capacity when no rsns") made it so that capacity on systems without
-current sensing would be read from VFSOC instead of RepSOC. However,
-the SOC threshold calculation still read RepSOC to get the SOC
-regardless of the current sensing option state.
+The following build error was triggered because of NULL string argument:
 
-Fix this by applying the same conditional to determine which register
-should be read.
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
+BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
+BUILDSTDERR:       |                                                   ^~
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
 
-This also seems to be the intended behavior as per the datasheet - SOC
-alert config value in MiscCFG on setups without current sensing is set
-to a value of 0b11, indicating SOC alerts being generated based on
-VFSOC, instead of 0b00 which indicates SOC alerts being generated based
-on RepSOC.
+This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
+warnings by default across the subsystem"). Using "(null)" instead
+to fix it.
 
-This fixes an issue on the Galaxy S3/Midas boards, where the alert
-interrupt would be constantly retriggered, causing high CPU usage
-on idle (around ~12%-15%).
-
-Fixes: e5f3872d2044 ("max17042: Add support for signalling change in SOC")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Henrik Grimler <henrik@grimler.se>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240817-max17042-soc-threshold-fix-v1-1-72b45899c3cc@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/611071/
+Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max17042_battery.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
-index 33fbb0fc952b4..6d3ad453e6092 100644
---- a/drivers/power/supply/max17042_battery.c
-+++ b/drivers/power/supply/max17042_battery.c
-@@ -848,7 +848,10 @@ static void max17042_set_soc_threshold(struct max17042_chip *chip, u16 off)
- 	/* program interrupt thesholds such that we should
- 	 * get interrupt for every 'off' perc change in the soc
- 	 */
--	regmap_read(map, MAX17042_RepSOC, &soc);
-+	if (chip->pdata->enable_current_sense)
-+		regmap_read(map, MAX17042_RepSOC, &soc);
-+	else
-+		regmap_read(map, MAX17042_VFSOC, &soc);
- 	soc >>= 8;
- 	soc_tr = (soc + off) << 8;
- 	if (off < soc)
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+index b31cfb554fa23..a1cc205192f34 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+@@ -358,7 +358,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p)
+ 
+ 			drm_printf(p, "%s:%d\t%d\t%s\n",
+ 				pipe2name(pipe), j, inuse,
+-				plane ? plane->name : NULL);
++				plane ? plane->name : "(null)");
+ 
+ 			total += inuse;
+ 		}
 -- 
 2.43.0
 
