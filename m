@@ -1,158 +1,233 @@
-Return-Path: <stable+bounces-91793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6859C0440
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:37:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF479C0473
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C29F1F21714
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:37:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 185A5B22FA8
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B19820EA39;
-	Thu,  7 Nov 2024 11:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD29920011B;
+	Thu,  7 Nov 2024 11:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Svxb2kEu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QQa5UWVl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F2F20B203;
-	Thu,  7 Nov 2024 11:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3941F4FBC
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 11:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730979398; cv=none; b=OfCoM14muA98k50RQ80CIOz8/kKObsV+kCCeV4mGo66RBw9ctUJ6+agTmLcep4zhMRzJN+Kx9PV9CDauHT3X1mm4paVugeGyo3BW/aKqIJQddD7GXZVVTj9zcmBMy1AfKGlyMVtSJghInSCr8cN85Ow8/0tcQHdNKLdQ54dtyMI=
+	t=1730979965; cv=none; b=DcNfLq9uBkk94S3aeayPfC7fvJAJntQ4tkB4uz9/rrBLKe06h5linuVsBN8chH0UTjNRyKUXap9zJgXshZv7+FjXEbNwYXv8I0hIWmsJICppO46UZzecYA7HVsl97V2T/+lWpa6K2iAIFTuk9J4OWS12Xy6rZsD36judSdcmvvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730979398; c=relaxed/simple;
-	bh=CH9/StpZNFG7diJjUclrLq77fIQV4JcsqmIb9ctfqzc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=rFsSIkI88wfb9dCrY+dRWzLuGaZmq4bAhBaq4j521c25IxBmPcK2U6fj2Xc1vsbI6ywyVcN1LaVusmdPx+lDC9Wfhwdu9IfUkYhZiva9J0rExuFmG+BUzhp4t03PpCjfT6YWNm9zsMB/NLxTbqLtgmcDnKsaxllX3cKN0qhTS14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Svxb2kEu; arc=none smtp.client-ip=209.85.210.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-71e953f4e7cso600730b3a.3;
-        Thu, 07 Nov 2024 03:36:36 -0800 (PST)
+	s=arc-20240116; t=1730979965; c=relaxed/simple;
+	bh=wC0dbBRtbrAeN+fJ+d/gH5t/Z+cCqsSulIC2DhQYfT8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XrYfbEUweyFJP+SpiWXIJ3dNd7XtomwNPRRZpjeem8tm+RQJxVXFNzng2oiIjQUHO9t5Zi7h23iE2GKHaaxW5/VOVmnODrkIYJ0qPI0iuOSwiRP46s2d4qC/z/UxBZ9xaoiQl+GXVyZznHGbcbZ7pi7N8BvaRTDp5z590tvVMOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QQa5UWVl; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5139cd01814so388916e0c.0
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 03:46:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730979396; x=1731584196; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/dHPzNyDc2NVhT2Ee5/qj52DYW2lrGGJfwE7Y0Tb8o=;
-        b=Svxb2kEuBsixhTUk7xwrnvOzREnLK5EeAI8XfO2JxaXn031N4ReEqEOg10IYjidm7a
-         YSg11IFj8ozgJfSA6IoT3fmnhfhBGsLvtIQa9kPTOSn4d9Ljr8/wJtWeNyiBpG5lF/Yo
-         5mKwHDQj6UQZq24bAukwJOHeA2zmeyQLQwJIvA/Qmdu+K2c4y8AgY/6TmoEW92gpCJrq
-         HYWdCh13aIyCxb4dLqfsHGTpB5tB6L25xFfEwzIpwyMH7oK63u1VvTqXFDx5Qv+ptVMs
-         Aylm+XmX2ZmYD8AsZDmMdBNjy9iGg6oy3oKGlAfeiSJLqsNH14WkBqcPJ5z1f9r3Hkzv
-         GoEg==
+        d=linaro.org; s=google; t=1730979963; x=1731584763; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mCktawUadk5I3Ui5sjhCsvj1qspJCjEOYVbOqkLtmDo=;
+        b=QQa5UWVl/Q18Qp9KPcyD2uhzjIqxcFR696w5MbUqV3LuVK0cZfv6W60aDF0OBLcpo/
+         mZhF4pN0etv8KYQ5NiazUUvmjMt/CtmJEtXFgeufue3epxydaL5I28SOh2Q9RvdqRQc+
+         S4WjAwZOvyWpW+lSqM22RXAvz3RB8y1ky2lAzTJ5Y7Vh5R9u4l9sZF4Lhwc1l+NK2Cqh
+         wy/Mh1pY6r4S/GRfFR8Phcy+PXvdUpqKdoB4wwecH9+DzncRYpuMx4BWMTSYaw4tjQQY
+         jUFsoVtfx23DNx01DLK9knd58g1PLcLJf10Btx1CTmp9RgMPj3d7TcPZLyPZwtkGEKWy
+         rB+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730979396; x=1731584196;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g/dHPzNyDc2NVhT2Ee5/qj52DYW2lrGGJfwE7Y0Tb8o=;
-        b=ueHsmB5bWp6lLbvrLedPz1bhYbvPshJrkmKoDozfg77+ArU91EM0AMqy4xXiuPdQIT
-         l4bBcVzrDspFTKaB7nkk1buJod4Cd6vQ0xnibLjaxnsuuHBmFxDDHqUf0VBTNSEl+PFk
-         axzyFi9gf6kq+mD1AY3IfgKuV/7pD8djTrwp5UMYYNDBLl6ukF+ro9tmcnwPibpSItKE
-         kstw+lfuw9DmXGbcemh9axgTCkNBCVawrsIIK4EzaouKwkvTpSDWuo6O4Us3FYUnCdO2
-         W2iOJlwXW06EndOWawEirBZe0wG1i6BZvhNOVFB8zlF9gYAQw0y05G8CxeLz+hfXQWK2
-         tIZA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8g9wGmP6pLZGK2XjpbzR+d0MJSixOpkRnjhImWpOTkktfaN7Mr8D+AbrgA7UfyUW7Gu/mjIFG@vger.kernel.org, AJvYcCXqzyt9C6GB0aM56VKjz4RgSadujgmx3Ve9HvidlEMLqHXwh+gfytuiiQjY1tnWJ83lBaNqRiHdrdUBC0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5YYq4dnhDwCLMXfzxPVo47AaRszK1eoCmvkLfjtTdp4q/h5vQ
-	q+I5zMjS+dUtf0hrXEI6TeFMKdnFh9i1yDUB0/VVgxd+/h4BtJTX
-X-Google-Smtp-Source: AGHT+IFa2Wu97Lm75h658e6+rqtkORVJfrOpgQg5JYbUu/snDirRgqMf3mfBvsxHmTWk9BbsNmxLOw==
-X-Received: by 2002:a05:6a20:d805:b0:1d9:1ceb:a4de with SMTP id adf61e73a8af0-1dba533098bmr30895498637.27.1730979395827;
-        Thu, 07 Nov 2024 03:36:35 -0800 (PST)
-Received: from tom-QiTianM540-A739.. ([106.39.42.118])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a5ea27sm1266383b3a.177.2024.11.07.03.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 03:36:35 -0800 (PST)
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
-To: linuxdrivers@attotech.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com
-Cc: linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] [SCSI] esas2r: fix possible buffer overflow caused by bad DMA value in esas2r_process_vda_ioctl()
-Date: Thu,  7 Nov 2024 19:36:17 +0800
-Message-Id: <20241107113617.402343-1-chenqiuji666@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1730979963; x=1731584763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mCktawUadk5I3Ui5sjhCsvj1qspJCjEOYVbOqkLtmDo=;
+        b=JhYBmdLYA+gaPGxXZASsiBHH9Nv7Yvjnq+lCkQrw4y7UF9FpjX0NBk/axy45X3kM+o
+         cmPDvloASOCyI1C/QXgfiVxzJNbaqqilg8ess+zQ9IjLKfdvu/i43MxXe3iF91niLCn6
+         dX4y5ZwX3pcEZ/JF8OKP/hsiId4/wGGHo8oXUwxv8M2HpMqwyBJP5qWNDe+70xkPVK0O
+         uAA0YnOzgVXLskadbxyW+pjju1aZU8K26qzxb2q99aPr0OeIbUOcpgDQcOlxNaS4DvLC
+         +ZuGm8Q3ZmQM/01cGZn12ogxwJrNH9DztvEYz9ZOUGY48jU2BqlVTiJG+f+YcXyNDxkj
+         kgbQ==
+X-Gm-Message-State: AOJu0YyIS3ris7Wkmj5MZLJnzswnDvM+VOblo7okqAH02A2oIggupC3B
+	CHXEPQRAajUwjtp7voc/sbxAiFR0fOdcbcX5kauHm/dXDYfsGyMQBl1Dwrz6chn1sf4l3qJOcrX
+	wsZ/OXJc6v0RJuL1qC/Mws+JasrYv9LXwkdY16g==
+X-Google-Smtp-Source: AGHT+IEwNFkllsRapImy9s6NO7BR7FJd1K8pYIzeIKnABE215cUBZo3UBfhHCQwvCiO9z4nEwHJ1SFmnvxqTSC1Vwk0=
+X-Received: by 2002:a05:6122:a18:b0:50d:3ec1:1531 with SMTP id
+ 71dfb90a1353d-510150e1e84mr42209137e0c.8.1730979961942; Thu, 07 Nov 2024
+ 03:46:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 7 Nov 2024 11:45:50 +0000
+Message-ID: <CA+G9fYvk8HbUW7j9bDUm1oDZrQCd6bnvRozAE=ZgEk-vhLvKOA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/151] 6.6.60-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In line 1854 of the file esas2r_ioctl.c, the function 
-esas2r_process_vda_ioctl() is called with the parameter vi being assigned 
-the value of a->vda_buffer. On line 1892, a->vda_buffer is stored in DMA 
-memory with the statement 
-a->vda_buffer = dma_alloc_coherent(&a->pcid->dev, ..., indicating that the 
-parameter vi passed to the function is also stored in DMA memory. This 
-suggests that the parameter vi could be altered at any time by malicious 
-hardware. If vi’s value is changed after the first conditional check 
-if (vi->function >= vercnt), it is likely that an array out-of-bounds 
-access could occur in the subsequent check 
-if (vi->version > esas2r_vdaioctl_versions[vi_function]), leading to 
-serious issues.
+On Wed, 6 Nov 2024 at 12:50, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.60 release.
+> There are 151 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.60-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-To fix this issue, we will store the value of vi->function in a local 
-variable to ensure that the subsequent checks remain valid.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: 26780d9e12ed ("[SCSI] esas2r: ATTO Technology ExpressSAS 6G SAS/SATA RAID Adapter Driver")
----
- drivers/scsi/esas2r/esas2r_vda.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/drivers/scsi/esas2r/esas2r_vda.c b/drivers/scsi/esas2r/esas2r_vda.c
-index 30028e56df63..48af8c05b01d 100644
---- a/drivers/scsi/esas2r/esas2r_vda.c
-+++ b/drivers/scsi/esas2r/esas2r_vda.c
-@@ -70,16 +70,17 @@ bool esas2r_process_vda_ioctl(struct esas2r_adapter *a,
- 	u32 datalen = 0;
- 	struct atto_vda_sge *firstsg = NULL;
- 	u8 vercnt = (u8)ARRAY_SIZE(esas2r_vdaioctl_versions);
-+	u8 vi_function = vi->function;
- 
- 	vi->status = ATTO_STS_SUCCESS;
- 	vi->vda_status = RS_PENDING;
- 
--	if (vi->function >= vercnt) {
-+	if (vi_function >= vercnt) {
- 		vi->status = ATTO_STS_INV_FUNC;
- 		return false;
- 	}
- 
--	if (vi->version > esas2r_vdaioctl_versions[vi->function]) {
-+	if (vi->version > esas2r_vdaioctl_versions[vi_function]) {
- 		vi->status = ATTO_STS_INV_VERSION;
- 		return false;
- 	}
-@@ -89,14 +90,14 @@ bool esas2r_process_vda_ioctl(struct esas2r_adapter *a,
- 		return false;
- 	}
- 
--	if (vi->function != VDA_FUNC_SCSI)
-+	if (vi_function != VDA_FUNC_SCSI)
- 		clear_vda_request(rq);
- 
--	rq->vrq->scsi.function = vi->function;
-+	rq->vrq->scsi.function = vi_function;
- 	rq->interrupt_cb = esas2r_complete_vda_ioctl;
- 	rq->interrupt_cx = vi;
- 
--	switch (vi->function) {
-+	switch (vi_function) {
- 	case VDA_FUNC_FLASH:
- 
- 		if (vi->cmd.flash.sub_func != VDA_FLASH_FREAD
--- 
-2.34.1
+## Build
+* kernel: 6.6.60-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 2daffc45f6370a4bc2ed3736053d864ad7324f3e
+* git describe: v6.6.57-484-g2daffc45f637
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.5=
+7-484-g2daffc45f637
 
+## Test Regressions (compared to v6.6.57-334-g02900c91433b)
+
+## Metric Regressions (compared to v6.6.57-334-g02900c91433b)
+
+## Test Fixes (compared to v6.6.57-334-g02900c91433b)
+
+## Metric Fixes (compared to v6.6.57-334-g02900c91433b)
+
+## Test result summary
+total: 149914, pass: 123278, fail: 1553, skip: 24990, xfail: 93
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 28 total, 26 passed, 2 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 35 passed, 1 failed
+* riscv: 19 total, 19 passed, 0 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
