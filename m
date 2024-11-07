@@ -1,129 +1,177 @@
-Return-Path: <stable+bounces-91738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287179BFAFB
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 01:54:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E3D9BFB05
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 01:57:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18D9283696
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:54:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B58F61C21D9D
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253C28831;
-	Thu,  7 Nov 2024 00:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Kh4gNvkt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A85B6FBF;
+	Thu,  7 Nov 2024 00:57:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10011301.me.com (pv50p00im-ztdg10011301.me.com [17.58.6.40])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFADFC0B
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 00:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4019D79D0;
+	Thu,  7 Nov 2024 00:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730940824; cv=none; b=CbfLNe+Xg+0hriqmDWeW5rXgjcOErd/RejwVk6d+rCARhnss8Mi5RIS7n1z0gsQWO/cSIM3+NSjzq8MUu52/oV4Hqkt87dfM6WjWRiwHahYA7ycoXMQZ2P54Xczk2k4jfkRktgkRrmmw/zpCNqUnO7Bgr/IE1m2t2oJtu9Gl4nI=
+	t=1730941056; cv=none; b=PuFrtVEylRHtYQahoGi9ZzNAFxRx9lKQGYm0nt6/VqQjGISPeTSi4TDpO8ZObWZG3kzK9fKM8pCBixPeToaJtiZSnkhEeogEyoMix68oCRuS+R3KGkxy4sYlecrNb9xLjFOjHUmix9HDDBbmFNQfrlkukCYfjD45gfk892d0WTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730940824; c=relaxed/simple;
-	bh=evPvsvxnVfmrQbhMoGVPg1oJmOdp7EpHgCk9OlRy3Zk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rDVQjdatexFkJ+qeBZ/MaPCWvcZfYqz4VfEFyCoCPw/SOd/RXph9NxFMDT2LTwar0RgUSJawLt2/qS2U1WPin9nLpUSWe6N+ktLF//z5wmpF32FgAF7lxtsw/OHJd+e9teSXXu+HNSnR5IGof4YYb2PU1JYx8KLd+0/ZkzqEAys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Kh4gNvkt; arc=none smtp.client-ip=17.58.6.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730940823;
-	bh=9Dqeet4LyQ9jgJSzTKaTkyK6p277/iOQ8TDxpGj80qk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=Kh4gNvktfktYmZTKzY3WzysTVDdVHgQgdWtFOYBPYCx+AQC9USclyBqsYgwGJHPW2
-	 3PPqX9p403D/zqsC6RD98G3u9XoX0KbQDRT9rP7t/rMJuQBn9PMIJe4e0BSKe5F/Xf
-	 f4fcpdZ9NTK8SumbE6PAs+vs+jS/IHyqTdDDQwgDJ5V5FEubRNFVtyfk35U+7Co0J0
-	 /ezBOKbMQJnanAzhL990EXvz0vDMOkykrrjZGR6ZEv6Eq3ja4vX4YO2k7M9YP53Y74
-	 WE7kQNytqBLnmSpCZEjtduQVTRh/aKW6dSwVRkrUMBcZdewG9xQarnTFsplQIV0Kt2
-	 8vrUlVfQDVr1w==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10011301.me.com (Postfix) with ESMTPSA id 2250818020B;
-	Thu,  7 Nov 2024 00:53:37 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Thu, 07 Nov 2024 08:53:09 +0800
-Subject: [PATCH v2 2/2] PCI: endpoint: Fix API pci_epc_remove_epf()
- cleaning up wrong EPC of EPF
+	s=arc-20240116; t=1730941056; c=relaxed/simple;
+	bh=ArEGzs21LgB4PFU5jHdCGFhDjiQ12PvoV2JHv3V3voM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=rJTKcgBH/pT0gnE5ySumZ3t+WIY5R4bia8ZR4UNIWU833IqOgIv3fKp9hVIJNbdbBlgGZAvhb8U89ZPJ6T4zKBHjMLfqY7AGRgy1ONJjSPuD8GGNhTfNDmxUkqViWMaJpR+aj3wXUXskcXeVJQfqGVVeQdJ02G8vUs5qsH4sAxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XkNvb1TwZz4f3kJt;
+	Thu,  7 Nov 2024 08:57:15 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 1916F1A0568;
+	Thu,  7 Nov 2024 08:57:28 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+	by APP4 (Coremail) with SMTP id gCh0CgCHYoZzECxnGnRCBA--.54616S3;
+	Thu, 07 Nov 2024 08:57:25 +0800 (CST)
+Subject: Re: [PATCH 6.6 00/28] fix CVE-2024-46701
+To: Chuck Lever III <chuck.lever@oracle.com>,
+ Yu Kuai <yukuai1@huaweicloud.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+ linux-stable <stable@vger.kernel.org>,
+ "harry.wentland@amd.com" <harry.wentland@amd.com>,
+ "sunpeng.li@amd.com" <sunpeng.li@amd.com>,
+ "Rodrigo.Siqueira@amd.com" <Rodrigo.Siqueira@amd.com>,
+ "alexander.deucher@amd.com" <alexander.deucher@amd.com>,
+ "christian.koenig@amd.com" <christian.koenig@amd.com>,
+ "Xinhui.Pan@amd.com" <Xinhui.Pan@amd.com>,
+ "airlied@gmail.com" <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Liam Howlett <liam.howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Sasha Levin <sashal@kernel.org>,
+ "srinivasan.shanmugam@amd.com" <srinivasan.shanmugam@amd.com>,
+ "chiahsuan.chung@amd.com" <chiahsuan.chung@amd.com>,
+ "mingo@kernel.org" <mingo@kernel.org>,
+ "mgorman@techsingularity.net" <mgorman@techsingularity.net>,
+ "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+ "zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
+ "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ "maple-tree@lists.infradead.org" <maple-tree@lists.infradead.org>,
+ linux-mm <linux-mm@kvack.org>, "yi.zhang@huawei.com" <yi.zhang@huawei.com>,
+ yangerkun <yangerkun@huawei.com>, "yukuai (C)" <yukuai3@huawei.com>
+References: <20241024132009.2267260-1-yukuai1@huaweicloud.com>
+ <2024110625-earwig-deport-d050@gregkh>
+ <7AB98056-93CC-4DE5-AD42-49BA582D3BEF@oracle.com>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <8bdd405e-0086-5441-e185-3641446ba49d@huaweicloud.com>
+Date: Thu, 7 Nov 2024 08:57:23 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-epc_rfc-v2-2-da5b6a99a66f@quicinc.com>
-References: <20241107-epc_rfc-v2-0-da5b6a99a66f@quicinc.com>
-In-Reply-To: <20241107-epc_rfc-v2-0-da5b6a99a66f@quicinc.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Zijun Hu <zijun_hu@icloud.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: DJEibPQ7cXraeHJ-a1j94JMbbY7YE3lR
-X-Proofpoint-GUID: DJEibPQ7cXraeHJ-a1j94JMbbY7YE3lR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-06_19,2024-11-06_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=970 phishscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411070004
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+In-Reply-To: <7AB98056-93CC-4DE5-AD42-49BA582D3BEF@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgCHYoZzECxnGnRCBA--.54616S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFy8CryxXw1UtrWkXFWxCrg_yoW8tF4Upa
+	yfJ3Z8Kr47ur18Gws7tayjvay0kan5X345urn5K345ZF1Y9FySgrWI9F15uF97GrsxCr17
+	KF1aqwn7J3WUJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWrXVW3AwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRJMa0UUUUU
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+Hi,
 
-It is wrong for pci_epc_remove_epf(..., epf, SECONDARY_INTERFACE) to
-clean up @epf->epc obviously.
+在 2024/11/06 23:19, Chuck Lever III 写道:
+> 
+> 
+>> On Nov 6, 2024, at 1:16 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Thu, Oct 24, 2024 at 09:19:41PM +0800, Yu Kuai wrote:
+>>> From: Yu Kuai <yukuai3@huawei.com>
+>>>
+>>> Fix patch is patch 27, relied patches are from:
+> 
+> I assume patch 27 is:
+> 
+> libfs: fix infinite directory reads for offset dir
+> 
+> https://lore.kernel.org/stable/20241024132225.2271667-12-yukuai1@huaweicloud.com/
+> 
+> I don't think the Maple tree patches are a hard
+> requirement for this fix. And note that libfs did
+> not use Maple tree originally because I was told
+> at that time that Maple tree was not yet mature.
+> 
+> So, a better approach might be to fit the fix
+> onto linux-6.6.y while sticking with xarray.
 
-Fix by cleaning up @epf->sec_epc instead of @epf->epc for
-SECONDARY_INTERFACE.
+The painful part is that using xarray is not acceptable, the offet
+is just 32 bit and if it overflows, readdir will read nothing. That's
+why maple_tree has to be used.
 
-Fixes: 63840ff53223 ("PCI: endpoint: Add support to associate secondary EPC with EPF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/pci/endpoint/pci-epc-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks,
+Kuai
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index bcc9bc3d6df5..62f7dff43730 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -660,18 +660,18 @@ void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
- 	if (IS_ERR_OR_NULL(epc) || !epf)
- 		return;
- 
-+	mutex_lock(&epc->list_lock);
- 	if (type == PRIMARY_INTERFACE) {
- 		func_no = epf->func_no;
- 		list = &epf->list;
-+		epf->epc = NULL;
- 	} else {
- 		func_no = epf->sec_epc_func_no;
- 		list = &epf->sec_epc_list;
-+		epf->sec_epc = NULL;
- 	}
--
--	mutex_lock(&epc->list_lock);
- 	clear_bit(func_no, &epc->function_num_map);
- 	list_del(list);
--	epf->epc = NULL;
- 	mutex_unlock(&epc->list_lock);
- }
- EXPORT_SYMBOL_GPL(pci_epc_remove_epf);
-
--- 
-2.34.1
+> 
+> This is the first I've heard of this CVE. It
+> would help if the patch authors got some
+> notification when these are filed.
+> 
+> 
+>>> - patches from set [1] to add helpers to maple_tree, the last patch to
+>>> improve fork() performance is not backported;
+>>
+>> So things slowed down?
+>>
+>>> - patches from set [2] to change maple_tree, and follow up fixes;
+>>> - patches from set [3] to convert offset_ctx from xarray to maple_tree;
+>>>
+>>> Please notice that I'm not an expert in this area, and I'm afraid to
+>>> make manual changes. That's why patch 16 revert the commit that is
+>>> different from mainline and will cause conflict backporting new patches.
+>>> patch 28 pick the original mainline patch again.
+>>>
+>>> (And this is what we did to fix the CVE in downstream kernels).
+>>>
+>>> [1] https://lore.kernel.org/all/20231027033845.90608-1-zhangpeng.00@bytedance.com/
+>>> [2] https://lore.kernel.org/all/20231101171629.3612299-2-Liam.Howlett@oracle.com/T/
+>>> [3] https://lore.kernel.org/all/170820083431.6328.16233178852085891453.stgit@91.116.238.104.host.secureserver.net/
+>>
+>> This series looks rough.  I want to have the maintainers of these
+>> files/subsystems to ack this before being able to take them.
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
+> --
+> Chuck Lever
+> 
+> 
 
 
