@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-91873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B819C1193
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 23:15:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C24B9C1194
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 23:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6380D1F23D6B
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BB19284A99
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE86D21948A;
-	Thu,  7 Nov 2024 22:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A91E2194AC;
+	Thu,  7 Nov 2024 22:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cnLqVMdY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ulAIpCci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C26218D6F;
-	Thu,  7 Nov 2024 22:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF52217447;
+	Thu,  7 Nov 2024 22:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731017733; cv=none; b=lgCOt3VDle1kCIcHvRu9bLw0wG5DAW6AjetUgNpWzy7C+mXjwSDmLMdBy3q2CDWuiJGy/fze+kOAWZQhHliFPKVXIsBKJSp6Hx3b/yhKLSwsiXsyyCwZJDn3QFFKewN8nxQ0aGgRvwW9KKau773kN0N9IRNfvO/HhF4TztLFIS0=
+	t=1731017735; cv=none; b=pzkHumGmzdvYl4yc2g7XK28aJG1nzghjkWSAStuRhFdTGE0z473xiNnzvrCSL93LREkqBOWsk1UR7T2B70BomX1H/lzyn2KG5LA+bFAV9ryIPVblMypE3DhZCK2WDg67SWveFJyxb2809Qs+U7sPJPDbCamBnIr1WU9Ftr2uzbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731017733; c=relaxed/simple;
-	bh=B6wDQeQ9NUtq/ASwyAwKY/iEJa/RPkJHBzyhrs6t/ZQ=;
-	h=Date:To:From:Subject:Message-Id; b=WPFLvceHbXbDI1a85/3OXYVLFevPF5WHuUzaMDu0Gtbhk/wDA9a7hPvtAb8wLgUShMojrHl8koRvusF4shUocYFjOR2KsbA7Q7bnQ8MiE57gNG5WSc1FzaXlPTb1Zox2WSnJGyr3zmfS4rV8sIzmSzALnkz0TwWGAFSDL7DJjCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cnLqVMdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FCBC4CED4;
-	Thu,  7 Nov 2024 22:15:32 +0000 (UTC)
+	s=arc-20240116; t=1731017735; c=relaxed/simple;
+	bh=CGp8HBCqssB5vm+9F5oC/kgwQhZ4iE5pQoKj/q0kzFU=;
+	h=Date:To:From:Subject:Message-Id; b=SzTYmajHqOalvmna1WObn7T8Q+nA3RRf/TBmGsJXDqELMjm2zZ7/N43697jrqBk9lQ+huuS7UHnzvOEhgwuwViDhTBTvgIM6VuW4tM+g/Ag5Jf/C4wpEFyUnPdD5k9Qd/Dti1dgHXIRG0M+OMUJfQ4GahbZZUWE9+3yZG7YoUHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ulAIpCci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B86C4CECE;
+	Thu,  7 Nov 2024 22:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731017732;
-	bh=B6wDQeQ9NUtq/ASwyAwKY/iEJa/RPkJHBzyhrs6t/ZQ=;
+	s=korg; t=1731017734;
+	bh=CGp8HBCqssB5vm+9F5oC/kgwQhZ4iE5pQoKj/q0kzFU=;
 	h=Date:To:From:Subject:From;
-	b=cnLqVMdYWX5uhZYQHKRwOaMyXLTmc7mfZ4A116l2qo8fmXJDKG6mXrpiVtHKDv3B5
-	 zseqw3YWi1+g1XuFVf3BuDiYLw/6l0CIKcrR7ZS0s+4o9XOcTEMDBt1oaW3Y69/y8i
-	 N00mkrl0oCZRpVyHe/aujobXfVmZ4Sqm6TPr7vJY=
-Date: Thu, 07 Nov 2024 14:15:32 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,oleg@redhat.com,legion@kernel.org,kees@kernel.org,ebiederm@xmission.com,avagin@google.com,akpm@linux-foundation.org
+	b=ulAIpCciyeh7YPueHSyNHXo1nsIT1S/kEqe5VjrDNAjg7SPFWfygjYDh+ZA+EMnsX
+	 C9hfrIe4rMjf31rhc95qH3Uipo6yzPc+/wDkn9Vdyjw6WsdRiX7YrbeTo5L5Y77qLK
+	 wa+Yz7u7RIIENvMq1Jtuxi9SVr7xP55qRajKRJN4=
+Date: Thu, 07 Nov 2024 14:15:34 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,oleg@redhat.com,legion@kernel.org,kees@kernel.org,ebiederm@xmission.com,avagin@google.com,roman.gushchin@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ucounts-fix-counter-leak-in-inc_rlimit_get_ucounts.patch removed from -mm tree
-Message-Id: <20241107221532.D3FCBC4CED4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] signal-restore-the-override_rlimit-logic.patch removed from -mm tree
+Message-Id: <20241107221534.B5B86C4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,63 +50,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ucounts: fix counter leak in inc_rlimit_get_ucounts()
+     Subject: signal: restore the override_rlimit logic
 has been removed from the -mm tree.  Its filename was
-     ucounts-fix-counter-leak-in-inc_rlimit_get_ucounts.patch
+     signal-restore-the-override_rlimit-logic.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Andrei Vagin <avagin@google.com>
-Subject: ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Date: Fri, 1 Nov 2024 19:19:40 +0000
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Subject: signal: restore the override_rlimit logic
+Date: Mon, 4 Nov 2024 19:54:19 +0000
 
-The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-then checks its limit.  If the value exceeds the limit, the function
-returns an error without decrementing the counter.
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
+signals.  However now it's enforced unconditionally, even if
+override_rlimit is set.  This behavior change caused production issues.  
 
-Link: https://lkml.kernel.org/r/20241101191940.3211128-1-roman.gushchin@linux.dev
-Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Co-developed-by: Roman Gushchin <roman.gushchin@linux.dev>
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with siginfo. 
+This prevents the process from correctly identifying the fault address and
+handling the error.  From the user-space perspective, applications are
+unaware that the limit has been reached and that the siginfo is
+effectively 'corrupted'.  This can lead to unpredictable behavior and
+crashes, as we observed with java applications.
+
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
+the comparison to max there if override_rlimit is set.  This effectively
+restores the old behavior.
+
+Link: https://lkml.kernel.org/r/20241104195419.3962584-1-roman.gushchin@linux.dev
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 Acked-by: Alexey Gladkov <legion@kernel.org>
 Cc: Kees Cook <kees@kernel.org>
-Cc: Andrei Vagin <avagin@google.com>
 Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/ucount.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/user_namespace.h |    3 ++-
+ kernel/signal.c                |    3 ++-
+ kernel/ucount.c                |    6 ++++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/kernel/ucount.c~ucounts-fix-counter-leak-in-inc_rlimit_get_ucounts
+--- a/include/linux/user_namespace.h~signal-restore-the-override_rlimit-logic
++++ a/include/linux/user_namespace.h
+@@ -141,7 +141,8 @@ static inline long get_rlimit_value(stru
+ 
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+--- a/kernel/signal.c~signal-restore-the-override_rlimit-logic
++++ a/kernel/signal.c
+@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+--- a/kernel/ucount.c~signal-restore-the-override_rlimit-logic
 +++ a/kernel/ucount.c
-@@ -317,7 +317,7 @@ long inc_rlimit_get_ucounts(struct ucoun
- 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
- 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
- 		if (new < 0 || new > max)
--			goto unwind;
-+			goto dec_unwind;
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 			goto dec_unwind;
  		if (iter == ucounts)
  			ret = new;
- 		max = get_userns_rlimit_max(iter->ns, type);
-@@ -334,7 +334,6 @@ long inc_rlimit_get_ucounts(struct ucoun
- dec_unwind:
- 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
- 	WARN_ON_ONCE(dec < 0);
--unwind:
- 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
- 	return 0;
- }
+-		max = get_userns_rlimit_max(iter->ns, type);
++		if (!override_rlimit)
++			max = get_userns_rlimit_max(iter->ns, type);
+ 		/*
+ 		 * Grab an extra ucount reference for the caller when
+ 		 * the rlimit count was previously 0.
 _
 
-Patches currently in -mm which might be from avagin@google.com are
+Patches currently in -mm which might be from roman.gushchin@linux.dev are
 
+mm-page_alloc-move-mlocked-flag-clearance-into-free_pages_prepare.patch
 
 
