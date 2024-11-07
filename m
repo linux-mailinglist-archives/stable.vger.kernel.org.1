@@ -1,161 +1,232 @@
-Return-Path: <stable+bounces-91783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE96F9C02A8
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:43:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66D99C0370
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94482281E7C
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:43:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB035B21099
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B17E1EF94F;
-	Thu,  7 Nov 2024 10:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F68E1F4263;
+	Thu,  7 Nov 2024 11:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8OZ3wlc"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="jAola1dZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23631EBFF4;
-	Thu,  7 Nov 2024 10:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730976166; cv=none; b=FOrS2z8DESv+D3bN5TjjLyhisWskdt7x11mk5GSZxYQDVzt43CHNGkEPZReHYHAstQ9VXxmBI+zLOTOtGBVseTNua7AAEpq8T2681YfngzUOf7fvZnV/76zx6lhinxUiiNSKTNuJlOEMhmtPhhahsqfJIkJu4F6hz7l/Y0RPzvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730976166; c=relaxed/simple;
-	bh=zRpLMPauPAGsguakIW/QvonIxsET1BLwl9GokVEGwV0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UscnuOP0SY8di2oBSuxUov4J13BwQwhVtqu+oBiyspO2l1tQpSk0fChaOvMccTsMcJeR9T01RH3iE7VvjQ4PY2hmNGw3GryNvFe2F2dXn0+9EogX0U4dz38ojuD9qUyH/QZzjo43l7wbdsofC2frF4NhOfzU/p48RhxJStVHtdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8OZ3wlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00357C4CED5;
-	Thu,  7 Nov 2024 10:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730976166;
-	bh=zRpLMPauPAGsguakIW/QvonIxsET1BLwl9GokVEGwV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M8OZ3wlcajF1rIxpljzudGvrLEbmx5u37+maFP1H89DCtImzheudXJ9KP8hwt0en4
-	 BTuWP8KiNnbSWlylUFeQjMN1vkwX1JCQAkCmSjy3SS4OS4N3VpRYZpDvOOPEsH9+DV
-	 N0nW4yjp0oGu1o4YEBuZwGmHLSwC+62y2zBLsMt0H5WTTf86WUK+SJFJQEjN5Z2ySz
-	 4XqQM5yWzkN+68L6sxJVJLChcYTplT3PW6KKO0OjyGLLPNfBoyqxR3+pPfgHEKqJRA
-	 WOolivOhB2caeqtonBa0wZhEieWhRemKVnA44Yihy2mQFS7CmE3LB7/uWfj0pwxZtI
-	 XkFzE6GwCqCFA==
-Date: Thu, 7 Nov 2024 11:42:43 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, bsegall@google.com,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
- on clone" failed to apply to v6.6-stable tree
-Message-ID: <ZyyZo7cFy0xvfcJr@pavilion.home>
-References: <20241106020901.164614-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275A51EE00C
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 11:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730977732; cv=pass; b=XoMulj0BgWujz1ra84vEGLK3zw+w1mAZE2CHyCjYG0u/UUYnYkLTJvaQ9QC/ldgiDJE1wu3kWKZ4ushunOO/ikmBEAtHMSQmrWX6c00tUVcHlic2nvSFyVu9tqdjcSwNQoTk97861uDwVeiH8uGTVplXqPytxViymDjik3fNmEg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730977732; c=relaxed/simple;
+	bh=JkHvu85HJlQ/TrMLj2dhBxzs4doiMdJ/hIMmVZnIpV4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mVi0zs7h76RTsEQbIZG+LIu06iSkHQHtWNLnaHKFuB4hOidM7yIaXHlnqRk3Ktqn2MqF7Vw5ILt61u9Wy02uuw0P8QYCs6UjppAzkS9Cdch5H+J45QsjLojZat9TV+Wdk0OM/1ydFrlotvn24ufPYSrJiawoQSKs/C5UJEAuAr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=jAola1dZ; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: martin-eric.racine)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4XkfT54vl6z49QFQ
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 13:08:41 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1730977721; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZzyxtAbtNG6GyT9iqf9QZI/qjZ0+BnzsW2+Prr6BSVQ=;
+	b=jAola1dZ/7/Okd34RSkihYd6Z+F+kUMav9I8NsZnmXv5cKShgZVuz/eyg62RShdUXa+FtF
+	s0GcYdIs+bC9aIqCBT4LvEb93FuQpb93r/FdIzhj2zrlWq/1MUQWgMryDukRnAud745J65
+	xO6yw4uzPorpH75AcmYqLwhdJ/Ul4ixwaGC/RxG1KDzUu+mtAtckq57ttnuGPggubq49Lr
+	njKdYfcBJFohJkECJ6BlkKvo7Is42+QLUE+Bbb0QqVWEr+Mg0PGyCjOuVfj2XOuRjwSamk
+	xeWQrl++yjDb7Iu6k7xRUMwZaPBncxa7zABgXGBCJAhU4dkaSPdJ+SlpbpHJaQ==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1730977721; a=rsa-sha256;
+	cv=none;
+	b=Z+rEMDCmCO47tA/MG/8EP5cpCFoX2+/sAwzM+bE6x5Z0WbXjxRGKskn8wcOMojsSuIPXjr
+	w3zvh73SVE1n0QW7F5gxA1jT+xqHL0/+Ae7dOk2gmDiPsdwcqIyEM8ls8bTp1Ujc90WVHA
+	h2vA0p8kxb0FQ+8baNw3aTR1saV6OAFZ5lxmEMki8jiqMXYxZDPrf3EIlu24268CwU+SAF
+	Fil5we0OUGfcgC5FvljuEewZ6rq/n6pFNg8brcxFP5KfBJca2/Xt0XkZ6nvj+72LmfV72I
+	7tAzfRw6ckre8l23ZHLU1QXJbGJWFh0IXhtrQ5us5r2xHf3hgCy+P2/U60MVcg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=martin-eric.racine smtp.mailfrom=martin-eric.racine@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1730977721;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZzyxtAbtNG6GyT9iqf9QZI/qjZ0+BnzsW2+Prr6BSVQ=;
+	b=WUtE6pvfnuY3T/qTpeQUocGH97GtlMkNmBrdwcAbaSiLBW4WTkqEDwbQLN0R4SklQz2+hx
+	fBoVkH4mmyuqtGCqAzyTRnyQ8kxtK7ztj8uJfgwfx3QobqBjW/kjJMjcU3j5GrXjr/9S0e
+	chg7N+yBQlhysLCsNXgv3p8wh+HQ891PzDhCbmJ/FSxuwfB/nV//QkWd0LYvxpRP0LBx56
+	8Z1gnSZ01LENj2tYwuZg9veTQvSpdKUXIasKNjeHBjvXlodur972fLQQ2zkXbBgSahpCoN
+	y8j/YkXlmeYKF4rPylfAT80A0Xtmc/+NNYimN+Wcc5TkFBbttmng/wVSVVnQKQ==
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4315e62afe0so7435335e9.1
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 03:08:41 -0800 (PST)
+X-Gm-Message-State: AOJu0YwKU14ITCzDMGl0qQtn7YQ2G6bPmC4IbIGR8MjDeYm6eaidD4rJ
+	ooaPfqsC2rqJk7rFfnclw1PLwaTYEdhOT7j/tq+kfLiQ8XFIlcOEO2BfX00QzArUyJrECD0syBr
+	rldAplDNZGPEuuuqPIe7p2nErP4w=
+X-Google-Smtp-Source: AGHT+IEC1v/bHHqQvzS7SMppJ6Vp61ZWG0NG33xBhJlhNJvSvPAIWpt0NOho6ZGAz6Ltvzjlgf3lc4NBTRCiI0NUB64=
+X-Received: by 2002:a05:600c:4fcb:b0:426:5269:1a50 with SMTP id
+ 5b1f17b1804b1-4319ac9c15fmr358610065e9.11.1730977721129; Thu, 07 Nov 2024
+ 03:08:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241106020901.164614-1-sashal@kernel.org>
+References: <20241106120319.234238499@linuxfoundation.org> <20241106120319.473879944@linuxfoundation.org>
+In-Reply-To: <20241106120319.473879944@linuxfoundation.org>
+Reply-To: martin-eric.racine@iki.fi
+From: =?UTF-8?Q?Martin=2D=C3=89ric_Racine?= <martin-eric.racine@iki.fi>
+Date: Thu, 7 Nov 2024 13:08:29 +0200
+X-Gmail-Original-Message-ID: <CAPZXPQessspMxh1Lc2EeHEwMFLsvWF71waz2=LjZ4W3MVdWx2A@mail.gmail.com>
+Message-ID: <CAPZXPQessspMxh1Lc2EeHEwMFLsvWF71waz2=LjZ4W3MVdWx2A@mail.gmail.com>
+Subject: Re: [PATCH 6.11 009/245] wifi: iwlegacy: Fix "field-spanning write"
+ warning in il_enqueue_hcmd()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Ben Hutchings <ben@decadent.org.uk>, Brandon Nielsen <nielsenb@jetfuse.net>, 
+	Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le Tue, Nov 05, 2024 at 09:09:00PM -0500, Sasha Levin a écrit :
-> The patch below does not apply to the v6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> Thanks,
-> Sasha
+Applies cleanly to 6.11.6 and fixes the kernel oops.
 
-Please try this one instead:
-
-From eb2b3ebf29a859e788fe1cee9ca67d8e7ee580e9 Mon Sep 17 00:00:00 2001
-From: Benjamin Segall <bsegall@google.com>
-Date: Fri, 25 Oct 2024 18:35:35 -0700
-Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
-
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
-
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
-
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
-
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
-
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
-
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 9459fef5b857..9701c571a5cf 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -252,12 +252,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -291,6 +298,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 32ffbc1c96ba..525937981971 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -99,6 +99,7 @@
- #include <linux/stackprotector.h>
- #include <linux/user_events.h>
- #include <linux/iommu.h>
-+#include <linux/tick.h>
- 
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2417,6 +2418,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
- 
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
- 
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
--- 
-2.46.0
+ke 6. marrask. 2024 klo 14.26 Greg Kroah-Hartman
+(gregkh@linuxfoundation.org) kirjoitti:
+>
+> 6.11-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>
+> ------------------
+>
+> From: Ben Hutchings <ben@decadent.org.uk>
+>
+> [ Upstream commit d4cdc46ca16a5c78b36c5b9b6ad8cac09d6130a0 ]
+>
+> iwlegacy uses command buffers with a payload size of 320
+> bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
+> describes the default buffers and there is no separate type describing
+> the huge buffers.
+>
+> The il_enqueue_hcmd() function works with both default and huge
+> buffers, and has a memcpy() to the buffer payload.  The size of
+> this copy may exceed 320 bytes when using a huge buffer, which
+> now results in a run-time warning:
+>
+>     memcpy: detected field-spanning write (size 1014) of single field "&o=
+ut_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170 (=
+size 320)
+>
+> To fix this:
+>
+> - Define a new struct type for huge buffers, with a correctly sized
+>   payload field
+> - When using a huge buffer in il_enqueue_hcmd(), cast the command
+>   buffer pointer to that type when looking up the payload field
+>
+> Reported-by: Martin-=C3=89ric Racine <martin-eric.racine@iki.fi>
+> References: https://bugs.debian.org/1062421
+> References: https://bugzilla.kernel.org/show_bug.cgi?id=3D219124
+> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy()=
+")
+> Tested-by: Martin-=C3=89ric Racine <martin-eric.racine@iki.fi>
+> Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> Link: https://patch.msgid.link/ZuIhQRi/791vlUhE@decadent.org.uk
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/net/wireless/intel/iwlegacy/common.c | 13 ++++++++++++-
+>  drivers/net/wireless/intel/iwlegacy/common.h | 12 ++++++++++++
+>  2 files changed, 24 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/w=
+ireless/intel/iwlegacy/common.c
+> index 9d33a66a49b59..4616293ec0cf4 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/common.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
+> @@ -3122,6 +3122,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_=
+cmd *cmd)
+>         struct il_cmd_meta *out_meta;
+>         dma_addr_t phys_addr;
+>         unsigned long flags;
+> +       u8 *out_payload;
+>         u32 idx;
+>         u16 fix_size;
+>
+> @@ -3157,6 +3158,16 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host=
+_cmd *cmd)
+>         out_cmd =3D txq->cmd[idx];
+>         out_meta =3D &txq->meta[idx];
+>
+> +       /* The payload is in the same place in regular and huge
+> +        * command buffers, but we need to let the compiler know when
+> +        * we're using a larger payload buffer to avoid "field-
+> +        * spanning write" warnings at run-time for huge commands.
+> +        */
+> +       if (cmd->flags & CMD_SIZE_HUGE)
+> +               out_payload =3D ((struct il_device_cmd_huge *)out_cmd)->c=
+md.payload;
+> +       else
+> +               out_payload =3D out_cmd->cmd.payload;
+> +
+>         if (WARN_ON(out_meta->flags & CMD_MAPPED)) {
+>                 spin_unlock_irqrestore(&il->hcmd_lock, flags);
+>                 return -ENOSPC;
+> @@ -3170,7 +3181,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_=
+cmd *cmd)
+>                 out_meta->callback =3D cmd->callback;
+>
+>         out_cmd->hdr.cmd =3D cmd->id;
+> -       memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
+> +       memcpy(out_payload, cmd->data, cmd->len);
+>
+>         /* At this point, the out_cmd now has all of the incoming cmd
+>          * information */
+> diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/w=
+ireless/intel/iwlegacy/common.h
+> index 69687fcf963fc..027dae5619a37 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/common.h
+> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
+> @@ -560,6 +560,18 @@ struct il_device_cmd {
+>
+>  #define TFD_MAX_PAYLOAD_SIZE (sizeof(struct il_device_cmd))
+>
+> +/**
+> + * struct il_device_cmd_huge
+> + *
+> + * For use when sending huge commands.
+> + */
+> +struct il_device_cmd_huge {
+> +       struct il_cmd_header hdr;       /* uCode API */
+> +       union {
+> +               u8 payload[IL_MAX_CMD_SIZE - sizeof(struct il_cmd_header)=
+];
+> +       } __packed cmd;
+> +} __packed;
+> +
+>  struct il_host_cmd {
+>         const void *data;
+>         unsigned long reply_page;
+> --
+> 2.43.0
+>
+>
+>
 
