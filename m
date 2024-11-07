@@ -1,117 +1,113 @@
-Return-Path: <stable+bounces-91735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B229BFAEC
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 01:51:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BDB9BFAF5
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 01:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2C11F22740
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42E941C218D8
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 00:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181F16AA7;
-	Thu,  7 Nov 2024 00:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E77B6FB0;
+	Thu,  7 Nov 2024 00:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="tL5w9RZD"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="N8COT8m2"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-ztdg10011301.me.com (pv50p00im-ztdg10011301.me.com [17.58.6.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4F72F43;
-	Thu,  7 Nov 2024 00:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD24C96
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 00:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730940704; cv=none; b=U1cPi/AdwFLj4ZcXllVWL/ErcVSeyV+u7my0x2J6xHaFZhM2uII+Jc1pvqyL/mfWzpbc4rb1TCAXpe3X2K5b9x1bSIj3NomCWPHmkJbTJOeljJqllp+rlqHSKUd6HzIAOO+TgpNy9SvD4xOy8EmiXg7eZSGcTlZGprcu7Ux/QcU=
+	t=1730940811; cv=none; b=gMU3SMf1JVpQ5e+aBT7UYwnmkv84+0y5CylGLaOenm8jASCeB70m3aaJqPNRvrDCwRXO0+5mUN17WCOWHpt7l77pkIpShELfjXSZa49cgYs2jni7IPt1k8g99b3bNQlJlCy8ss4vkSQK5rzfUY28GkZE+JUMv4d3Htw06nLG/4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730940704; c=relaxed/simple;
-	bh=Wvy2wDlUkblN0oqr9mTEbTAnKuA3vbKbf4LmvZ5IQqY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nkPjOIR1AfibkaQhujtzD4sDQp8lGjUqjNR84zAUKTtKzt1HF6rvwsMu277012Xrn0UlQ/dJZEy6TdTZ5LCaj1gWjW6OsKW4fmNZl108Dc+6yb0xgCrkUkvTUTdf08NMSS69G+sRRWUohpUN5wCk2u9vM3/gVRjf2VeKc73qMKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=tL5w9RZD; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A70pPigD3605158, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730940685; bh=Wvy2wDlUkblN0oqr9mTEbTAnKuA3vbKbf4LmvZ5IQqY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=tL5w9RZDnsEbebe9GF3/RvYN+xi6Yzggbah3K7fR0jcrPqongbn7Z+4Uz9krCww1V
-	 SuhD813QtYRvN5Fn7Yn8kdv8gsxsXNwOJ9jjninrbzUY1vvUtNL2KP2+TSzjmWNMDr
-	 mGxK1FlUCqcGktnTleZ6dJd8U06iJuHQw6BDPbNhouMwiu8fi0/xqNi+/oL7UWL+FS
-	 SqAQb1C9ayAPYOkq1/d8DOBabRErIFPqUcQmzwWc9ZEp8Bf6TvnZ2Ve6qoH1ulIIQb
-	 qnecrO8ardvsFNYWQi7r7Yx3pyoNM3ELLFFfQjw0U+KPKCQN1G0By+gjEtPr+H+hlK
-	 2Ggw1AS7mrGqA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A70pPigD3605158
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Nov 2024 08:51:25 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 7 Nov 2024 08:51:26 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 7 Nov 2024 08:51:25 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Thu, 7 Nov 2024 08:51:25 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Colin Ian King <colin.i.king@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-        Su
- Hui <suhui@nfschina.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
-Thread-Topic: [PATCH] wifi: rtlwifi: rtl8821ae: phy: restore removed code to
- fix infinite loop
-Thread-Index: AQHbMGMXfuZ/iKxCEEO3RYMeZbQJPLKq/I0w
-Date: Thu, 7 Nov 2024 00:51:25 +0000
-Message-ID: <c39feb8063924701b99965e6b650c993@realtek.com>
-References: <20241106154642.1627886-1-colin.i.king@gmail.com>
-In-Reply-To: <20241106154642.1627886-1-colin.i.king@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1730940811; c=relaxed/simple;
+	bh=MrdZR5eu1M2nFnB/YdbF/PX8tuoD+PLdZKXphLgoFqU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UgMOLfsmkNBb/Ndq7KxtlG1LdTrEWxl77dRqywzSji+CPPaMJhdbaQBUB0vfQTtpPBtnHccqQTzi8ImrjZkQqmIMj4JY1M6wnw6lHd1A73SU9I03hpr8bihqqI/Q3oIAwk3vd0mQpqtncuuU8WzbVx0oP7LcCspyTQRLv4pSeXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=N8COT8m2; arc=none smtp.client-ip=17.58.6.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1730940809;
+	bh=OC8I3JRIV3yaS/vVDQBYjtUQm+4rbt+D6iTS7uiIaBA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:
+	 x-icloud-hme;
+	b=N8COT8m2GkjD0eFI97D8CNwjzkzFRsYr8FpR2VGY+R6m03s3oSuGpi/iWSV4+lRvV
+	 GPd0P+iJhVB2Et9oN67lt5fQboOUOx7iH3D1X3xafwsU6PnQptJzgFZL//JrqHWUcv
+	 nnzZ5c/X7DL+esvQURPFKghiRliHvbIdwWl3VIDypvyX6bhI5btmEzl8MN+oHAVF2F
+	 GDP12wcXwB+eJol8zvx8TsrpeoyK6g7nk6ixR+1N0WVvx1vVYAxCRuusgno3dJWlwQ
+	 zfu9mcfI0LKNFbsDTgfyYqJoJxmcwyDQ5TkfWMyu422Y3gjfGdycGINXUhLeu4YZuM
+	 l74pUYeC2soqQ==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10011301.me.com (Postfix) with ESMTPSA id 3903C1800D8;
+	Thu,  7 Nov 2024 00:53:22 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v2 0/2] PCI: endpoint: fix bugs for both API
+ pci_epc_destroy() and pci_epc_remove_epf()
+Date: Thu, 07 Nov 2024 08:53:07 +0800
+Message-Id: <20241107-epc_rfc-v2-0-da5b6a99a66f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHMPLGcC/2XMSw7CMAxF0a1UHhNkuwQJRuwDVQgcl3pAPwlEo
+ Kp7J3TK8D49nRmSRtMEx2qGqNmSDX0J3lQg3bW/q7NQGhh5R4TsdJRLbMUphUPAOnhCgvIeo7b
+ 2XqVzU7qz9BziZ4Uz/dZ/I5ND55H3NXNo/U1O08vEetnK8IBmWZYva0gtV6AAAAA=
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, Jingoo Han <jingoohan1@gmail.com>, 
+ Marek Vasut <marek.vasut+renesas@gmail.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Shawn Lin <shawn.lin@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: D0AqXRSHqq08mNOJ1_LrveuaQxzbT9q3
+X-Proofpoint-GUID: D0AqXRSHqq08mNOJ1_LrveuaQxzbT9q3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-06_19,2024-11-06_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxlogscore=441 phishscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2411070004
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-Q29saW4gSWFuIEtpbmcgPGNvbGluLmkua2luZ0BnbWFpbC5jb20+IHdyb3RlOg0KPiBBIHByZXZp
-b3VzIGNsZWFuLXVwIGZpeCByZW1vdmVkIHRoZSBhc3NpZ25tZW50IG9mIHYyIGluc2lkZSBhIHdo
-aWxlIGxvb3ANCj4gdGhhdCB0dXJuZWQgaXQgaW50byBhbiBpbmZpbml0ZSBsb29wLiBGaXggdGhp
-cyBieSByZXN0b3JpbmcgdGhlIGFzc2lnbm1lbnQNCj4gb2YgdjIgZnJvbSBhcnJheVtdIHNvIHRo
-YXQgdjIgaXMgdXBkYXRlZCBpbnNpZGUgdGhlIGxvb3AuDQo+IA0KPiBGaXhlczogY2RhMzc0NDU3
-MThkICgid2lmaTogcnRsd2lmaTogcnRsODgyMWFlOiBwaHk6IHJlbW92ZSBzb21lIHVzZWxlc3Mg
-Y29kZSIpDQo+IFNpZ25lZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxjb2xpbi5pLmtpbmdAZ21h
-aWwuY29tPg0KDQpJIHRlc3RlZCBSVEw4ODEyQUUvODgyMUFFLiBMdWNraWx5LCBwYXJzaW5nIGN1
-cnJlbnQgUEhZIHJlZ2lzdGVyIHBhcmFtZXRlcnMNCm5ldmVyIGZhbGxzIGludG8gdGhlIGNoZWNr
-IGNvbmRpdGlvbi4gDQoNClRlc3RlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5j
-b20+DQoNCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRs
-ODgyMWFlL3BoeS5jIHwgNCArKystDQo+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCsp
-LCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydGx3aWZpL3J0bDg4MjFhZS9waHkuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnRsd2lmaS9ydGw4ODIxYWUvcGh5LmMNCj4gaW5kZXggMWJlNTFlYTNmM2M4Li4w
-ZDRkNzg3ZThiZTUgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnRsd2lmaS9ydGw4ODIxYWUvcGh5LmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDg4MjFhZS9waHkuYw0KPiBAQCAtMjAzMyw4ICsyMDMzLDEwIEBAIHN0
-YXRpYyBib29sIF9ydGw4ODIxYWVfcGh5X2NvbmZpZ19iYl93aXRoX3BnaGVhZGVyZmlsZShzdHJ1
-Y3QgaWVlZTgwMjExX2h3ICpodywNCj4gICAgICAgICAgICAgICAgICAgICAgICAgaWYgKCFfcnRs
-ODgyMWFlX2NoZWNrX2NvbmRpdGlvbihodywgdjEpKSB7DQo+ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgaSArPSAyOyAvKiBza2lwIHRoZSBwYWlyIG9mIGV4cHJlc3Npb24qLw0KPiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHYyID0gYXJyYXlbaSsxXTsNCj4gLSAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB3aGlsZSAodjIgIT0gMHhERUFEKQ0KPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHdoaWxlICh2MiAhPSAweERFQUQpIHsNCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGkgKz0gMzsNCj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHYyID0gYXJyYXlbaSArIDFdOw0KPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICAgICAgICAgICAgICAgICAgfQ0K
-PiAgICAgICAgICAgICAgICAgfQ0KPiAgICAgICAgIH0NCj4gLS0NCj4gMi4zOS41DQoNCg==
+This patch series is to fix bugs for below 2 APIs:
+pci_epc_destroy()
+pci_epc_remove_epf()
+
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Changes in v2:
+- Correct title and commit messages, and remove RFC tag
+- Link to v1: https://lore.kernel.org/r/20241102-epc_rfc-v1-0-5026322df5bc@quicinc.com
+
+---
+Zijun Hu (2):
+      PCI: endpoint: Fix API pci_epc_destroy() releasing domain_nr ID faults
+      PCI: endpoint: Fix API pci_epc_remove_epf() cleaning up wrong EPC of EPF
+
+ drivers/pci/endpoint/pci-epc-core.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+---
+base-commit: ad5df4a631fa7eeb8eb212d21ab3f6979fd1926e
+change-id: 20241102-epc_rfc-e1d9d03d5101
+
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
