@@ -1,137 +1,160 @@
-Return-Path: <stable+bounces-91819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D69C0761
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:29:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9315C9C07A1
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6041C22A64
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408661F219F3
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212A3212644;
-	Thu,  7 Nov 2024 13:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F2C20F5A5;
+	Thu,  7 Nov 2024 13:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mY0nfKNy"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="o7sDvttj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F6321263B;
-	Thu,  7 Nov 2024 13:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4472F1DDA3B;
+	Thu,  7 Nov 2024 13:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986117; cv=none; b=RVDbt3BFtSuUApPANpJ/vDx1orRj95aDC/N20ro9HL5GLKoEGKL1YvDMcV8GtmPYNx39JW+0MmPNNklAGBhH8DQyC457yzdflUCr3ERzMShX9jLmppIIrw8O1zy/lPAg1DHhN7lXUREACAB5oGd5TOXYgQ28P31bg6k9oCzdiko=
+	t=1730986527; cv=none; b=e3aY1uNbqYyZeTvnTuGxa32CUSLH7StPKsvDABX31g8TKD6Ge/YptpcyVT3kAkfTFXuSRlDkb7GC9vHLGtIy3ewDH4PBBQMeUJQy1tcBC9rYp4b2i0vO20BrwdlxLWTs8kM93eHWlH0CFBmOaCXKMtTnK9viPh0wd78uUnb8Gxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986117; c=relaxed/simple;
-	bh=2RAOkOtx/XBod3JHE2lakxJkE+9T16g9xaMC6BRX4co=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aAm2Rv7WjwQ+ZzFJZOTOXXa/j02V9ADaS2O/XQdvFk1lqR6IVuZotrUdTndLnNhf1mEmF9pLwnFgV+DEHeKwHMnuz54snPDbl8f6jeldnTgYkym5FzZhG6VRloUzQxaqKL69zdIBaQhn3yAMFcbpx1M19xl7CjPYwE5yZZxUFQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mY0nfKNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23E9C4CECC;
-	Thu,  7 Nov 2024 13:28:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730986117;
-	bh=2RAOkOtx/XBod3JHE2lakxJkE+9T16g9xaMC6BRX4co=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mY0nfKNymB/WReNI2oBhlEzK7AoxSEYZfc2NYMj+HWKA2a+2FQCpKi98Pr1H5tzYS
-	 vDHNZO482Y822JtaEafGVaJwKpriEVD+tNa63IMEGH9ZymM2s2qzRWsZOvRW00xw0d
-	 z4ZsD9VzhqphDiSGyqGaCHX3bhSpJ+UctmtZMhnd49m6L2CGMM9FstJJFJGvecvJ9O
-	 N1bITDe9mho5EWrFkmSClYRBOilyyAlBKPHT6cqY0SiG9r5blnL6HkgxlNuOioG/Gn
-	 iBudpSHeaUiICKPUAysfAc3owi8EkCuROXqgj7xGg69InjJv9g6k0SsUoJlv/Ix8Qg
-	 yV8mt6BaTRVrw==
-Date: Thu, 7 Nov 2024 13:28:30 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hagar@microsoft.com, chris.paterson2@renesas.com
-Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
-Message-ID: <7a791358-63ff-41e1-b7f0-e687df21047b@sirena.org.uk>
-References: <20241107064547.006019150@linuxfoundation.org>
- <Zyy4mfTry2gNQBH+@duo.ucw.cz>
+	s=arc-20240116; t=1730986527; c=relaxed/simple;
+	bh=t/8insjH7bY+cYWvmL+WQJVYVpnLLyzddSxl6LIwJJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jO3FcsTnqb6SqBBZ2ASNgiwk9lbgf2Tt9VKLW3tL9jjSZeC8JJKl+hVOGywMcngKN5NZm1Rfrx4a+X5g7FTuS7HzPi3QKbj/mTsxYNLprvCdBOPJlpKs+9OzBVkTo+MrseXBQawbKqjmVxMMWEDk75MVWD+4Gq0gf2Mf9r11c34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=o7sDvttj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A794YCn003803;
+	Thu, 7 Nov 2024 13:35:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	LZIOvvGsRXn0/wnKpU8mvrnl8iQ5RNd08gSeOGXnT9w=; b=o7sDvttjUN7UssHT
+	i48jDHvj4uysSK9ZEvPsnMtKyoUckcVoLlZzS8yWksVVV7alnscV2Uoq1afpGq6/
+	C02DR5pzPJBsbeEdqi11NJmM/4eIvp+V6NZqvU8UcOYLbjKptMNXpWZI5Yu09/Zr
+	j53aADYYPdkqGxjMQLPed0QTPWjmQ08OUIwHSEoujRdqlovUEv7ClOjPnhFg2pj0
+	a52qKmAnX0G8eNhis/9et3Nf2qhc/F8dCWHbr/u7nc1LJ02gwaSNF3cDK0J0UqcN
+	n3/anhlguEARNUpR2M88CTb/1iubdv4qH+lkWeO0KPdV0FrNtm+nRU4EPIi7Z9a1
+	qx5CCQ==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42qfdx7p0x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 13:35:21 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A7DZLgt008228
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 7 Nov 2024 13:35:21 GMT
+Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 7 Nov 2024
+ 05:35:18 -0800
+Message-ID: <781ea2fd-637f-b896-aad4-d70f43ad245c@quicinc.com>
+Date: Thu, 7 Nov 2024 19:05:15 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sfWKd7weCYNoidnb"
-Content-Disposition: inline
-In-Reply-To: <Zyy4mfTry2gNQBH+@duo.ucw.cz>
-X-Cookie: Professional driver on closed track.
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Content-Language: en-US
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+ <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
+ <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
+ <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
+ <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
+ <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
+ <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ccWNCJ483Y6ywBFH9EoYBJhldZv5z73l
+X-Proofpoint-ORIG-GUID: ccWNCJ483Y6ywBFH9EoYBJhldZv5z73l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=810
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070105
 
 
---sfWKd7weCYNoidnb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 11/7/2024 6:52 PM, Dmitry Baryshkov wrote:
+> On Thu, Nov 07, 2024 at 06:32:33PM +0530, Vikash Garodia wrote:
+>>
+>> On 11/7/2024 5:37 PM, Bryan O'Donoghue wrote:
+>>> On 07/11/2024 10:41, Dmitry Baryshkov wrote:
+>>>>> init_codecs() parses the payload received from firmware and . I don't think we
+>>>>> can control this part when we have something like this from a malicious firmware
+>>>>> payload
+>>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>>>> ...
+>>>>> Limiting it to second iteration would restrict the functionality when property
+>>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
+>>>> If you can have a malicious firmware (which is owned and signed by
+>>>> Qualcomm / OEM), then you have to be careful and skip duplicates. So
+>>>> instead of just adding new cap to core->caps, you have to go through
+>>>> that array, check that you are not adding a duplicate (and report a
+>>>> [Firmware Bug] for duplicates), check that there is an empty slot, etc.
+>>>>
+>>>> Just ignoring the "extra" entries is not enough.
+>> Thinking of something like this
+>>
+>> for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+>>     if (core->codecs_count >= MAX_CODEC_NUM)
+>>         return;
+>>     cap = &caps[core->codecs_count++];
+>>     if (cap->codec == BIT(bit)) --> each code would have unique bitfield
+>>         return;
+> 
+> This won't work and it's pretty obvious why.
+Could you please elaborate what would break in above logic ?
 
-On Thu, Nov 07, 2024 at 01:54:49PM +0100, Pavel Machek wrote:
-> Hi!
->=20
-> > This is the start of the stable review cycle for the 6.11.7 release.
-> > There are 249 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
->=20
-> CIP testing has problem with BeagleBone Black on 6.11:
->=20
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linu=
-x-6.11.y
+> 
+>>> +1
+>>>
+>>> This is a more rational argument. If you get a second message, you should surely
+>>> reinit the whole array i.e. update the array with the new list, as opposed to
+>>> throwing away the second message because it over-indexes your local storage..
+>> That would be incorrect to overwrite the array with new list, whenever new
+>> payload is received.
+> 
+> I'd say, don't overwrite the array. Instead the driver should extend it
+> with the new information.
+That is exactly the existing patch is currently doing.
 
-My Beaglebone Black jobs ran fairly happily, eg:
-
-   https://lava.sirena.org.uk/scheduler/job/951530
-
-Looking at your logs:
-
-   https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/829=
-5477303
-
-you seem to be seeing an infrastructure issue:
-
-* lava.pdu-reboot [pass]
-* lava.bootloader-commands [fail]
-* lava.uboot-commands [fail]
-* lava.uboot-action [fail]
-* lava.power-off [pass]
-* lava.job [fail]
-
-The job is failing in the bootloader:
-
-   https://lava.ciplatform.org/scheduler/job/1218595
-
-shows:
-
-| =3D> bootz 0x82000000 - 0x88000000
-| zimage: Bad magic!
-
-I didn't check but this almost always indicates that the download to the
-board was corrupted due to some image size having grown large enough to
-overwrite the adjacent image, you'll need to adjust the load addresses.
-
---sfWKd7weCYNoidnb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcswH4ACgkQJNaLcl1U
-h9BTXgf/Qp1HWuz+6JhL02Q+Qyah6EQftFxlkp0Pkpf2JGMlXKeMLOK/HbkilDo+
-diu7v2Y3TUrI35cxUQt19AgvrXkJn/Qz+RvoFmozjlONamTnYD47c/thpvr8BYV9
-OqnfKDUQGazNYLEl7M0q3E1yAlpzw2qZhzjdDmpoI0gtk11p/RkK5r44sCG5RhJE
-M0ikqZE4MRwFZTLLTIyssLmMl7zUUpYF3IMUGODUz/hAh8DFhesSN+JpcG2+2vv9
-2qwKXjKazKhgTfOgdVx8LA8b5LrqZpXbhQK7H/iroBhTKw3N7FU84hepU2IFyvX4
-LaxHUWKQoP9gp211zOKBP1RgBnK8vw==
-=bZFp
------END PGP SIGNATURE-----
-
---sfWKd7weCYNoidnb--
+Regards,
+Vikash
+> 
+>>
+>> Regards,
+>> Vikash
+> 
 
