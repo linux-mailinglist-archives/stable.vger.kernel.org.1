@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-91759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47BD9BFE85
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 07:35:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072559BFE99
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 07:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A707B2836C6
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 06:35:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DD5D1C2219F
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 06:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35E618E762;
-	Thu,  7 Nov 2024 06:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700F9194A40;
+	Thu,  7 Nov 2024 06:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5PtJax/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liDr7jlK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C4A1426C
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 06:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19508D53F;
+	Thu,  7 Nov 2024 06:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730961353; cv=none; b=DKLeXwcgbDG1aiu7YIcytd9E2L2w2N7gxiiZ1VLhrWYee42L1q3l1xCE6f1mKiGZJ7lRHD7hEoOj/KteoY7MUgUUn1evJ54aB3ULmCuvYIg70J+fdG0Mlh8ZtHsoMisxxit+M5EoW+RW3WlKie/1szMLoeUOOW1XOXfwxaYH0dU=
+	t=1730961482; cv=none; b=sEtyeoDrdsXIYWcRTE4DwZcJDUXygueBrO5nKQvoRxyWL4vyU1mt2ndH62yjCoyadWfZvDibnBHsZVPjp+ObEQGzjFstjKfCDkLHZLjHYq7gGbq1qr1peh2oNHpwIM7i07QYka5FkImbQv9a12T5o566LNrIWzD+l4QZc9oRya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730961353; c=relaxed/simple;
-	bh=BVm5VeByFaDDVeYK5MYQLd1E5dIfWp+N9ad/3n19vZQ=;
+	s=arc-20240116; t=1730961482; c=relaxed/simple;
+	bh=T4TgS+4aaAOaTl1qmoEDzqZ6WyctMMKHQz5ckqGi+vg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kco/5BSnde537bITiHI5QvbZbQv5/y5HnaK4vD/rlszm1ZtI31musfU4ZQAtyYbM4VyW03VoTASvksJ66rVdrlWKoRnhg9+YP9gLc6SXDlAElnwhqlbsWYGBzJrzNm63G8jcmpp2+fEcqo6WrP5h54v3IdyJKsdWYW3CEliob6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5PtJax/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20E9C4CECC;
-	Thu,  7 Nov 2024 06:35:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=np+jCn+zgIT/c1RgkXdRB/bwl0OdBRToZBPGBnfXDYGH6fMB7j1qKewTNx+9TIdP0Rcg43MJwFxIte8BdNzJ2TrJTe7M/49q5+4H7InlsT28tZGWy/Rt0Vi7cBy1O/Wnij9yT7dwEmHevG9rptT+JggEnNbqdNqcuehB8tDqVpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liDr7jlK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41775C4CECC;
+	Thu,  7 Nov 2024 06:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730961353;
-	bh=BVm5VeByFaDDVeYK5MYQLd1E5dIfWp+N9ad/3n19vZQ=;
+	s=korg; t=1730961481;
+	bh=T4TgS+4aaAOaTl1qmoEDzqZ6WyctMMKHQz5ckqGi+vg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m5PtJax/osC2JUpX3KoS/uhLi8zLFMwnIcwckAOfQdmRpunLbmAZEPUlLUtW6UCW9
-	 26sVN7wuIB6qvULo+jabRYG+qeVYVAhDAZVrC+gqf6kXdi4Qx8jkuuBRtcDDlrR2/U
-	 0qaoTA6xT4s8tMTXpjgEwBtyGtSwPINwMG7+32as=
-Date: Thu, 7 Nov 2024 07:35:35 +0100
+	b=liDr7jlKUzEU5NYMq1aabaGqP1o3eoYWS5UZJOIQH3KuGxu4dp8Yg/S27wZBvRazV
+	 JlS7yHpZyxPvIv+uJnTzgSUPaex0XqFXFY6bJYePGjBeiU0xlYdb9HeN9njld0ONb3
+	 5a7paBP2tczwDFVv/ZVdfudjs2tmzDMc7sxNxkHg=
+Date: Thu, 7 Nov 2024 07:37:43 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
-	linux-riscv@lists.infradead.org,
-	Jason Montleon <jmontleo@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [for 6.11 PATCH] RISC-V: disallow gcc + rust builds
-Message-ID: <2024110724-sleek-emptiness-24b3@gregkh>
-References: <20241106-happily-unknotted-9984b07a414e@spud>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, fw@strlen.de, urezki@gmail.com,
+	vbabka@suse.cz, greearb@candelatech.com, kent.overstreet@linux.dev,
+	stable@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v2 6.11.y 1/2] rcu/kvfree: Add kvfree_rcu_barrier() API
+Message-ID: <2024110700-undertone-coastline-7484@gregkh>
+References: <20241106170927.130996-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,15 +55,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241106-happily-unknotted-9984b07a414e@spud>
+In-Reply-To: <20241106170927.130996-1-surenb@google.com>
 
-On Wed, Nov 06, 2024 at 01:11:29PM +0000, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
+On Wed, Nov 06, 2024 at 09:09:26AM -0800, Suren Baghdasaryan wrote:
+> From: Uladzislau Rezki <urezki@gmail.com>
 > 
-> commit 33549fcf37ec461f398f0a41e1c9948be2e5aca4 upstream
+> commit 3c5d61ae919cc377c71118ccc76fa6e8518023f8 upstream.
 
-Thanks for the backport, now queued up.
+No, that's not the right git id :(
+
+This should be 2b55d6a42d14c8675e38d6d9adca3014fdf01951, right?  Let me
+go change this...
+
+thanks,
 
 greg k-h
-
 
