@@ -1,125 +1,91 @@
-Return-Path: <stable+bounces-91805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E8B9C054C
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E6F9C0584
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 864802829C3
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:08:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2ED283272
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763D920F5D3;
-	Thu,  7 Nov 2024 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12121DE4F0;
+	Thu,  7 Nov 2024 12:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V5hSW08C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8V8HpJI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEEE20C499
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 12:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616031DE4F1
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 12:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730981277; cv=none; b=fPB8rqeKjWBL+e73ml/OzbUDTvy1auY/5fQua0E/LeH812uxMvoBCCPmsxqffDL7EoZdA7hX4jYObNS19tEAbbM1PSRmbE4i6v4plAesdn32sw+tLHQu023mJmpDEcWqJTKGhju419AqUeWrmNlmRtSMWzjtze2Tz+8XlSUC+tM=
+	t=1730981975; cv=none; b=NAH6OJ+LOiVzFeTVDVsxmpr8uzo/mgSpEMFpG3YXC7qpm20XDEY9WZj+it1OFEX+cLLYeAnc3+whPGzJTW1FNH2ql+YVJ9jlbrmPEGO2QxLYuGSNYNgul7XZIYzR/QZ1Uzl5PGwE8e4H1QELj13FUfPVim70pcFmlOuHOzXvS/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730981277; c=relaxed/simple;
-	bh=rKbiX0VIxrlLI+Q9P5b/AZEQ9UB2kI1F2AvhStrh5jU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kUg65Y5nffcpMelyctKPYhHbNwB+vn0KCq9t/wm62jnHT9PBLqfUCIyxHZwuyJfWYyPWWvCpi9kQd0xhdWlHUFAXtZYU1q1Rw4EjLU33IYnv0YwPSUu1hIcbuDOThV7rOxJO1/r9OGS6JP6PYrTmxV+lj1Lo8xUW0SQGjG/6NN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V5hSW08C; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4315e62afe0so7928215e9.1
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 04:07:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730981274; x=1731586074; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hAbn1Ykfp9his+u2uJIIvTrMc5YEiO1rQix+MP16MdI=;
-        b=V5hSW08CxTRHpnGrMua0u5xJDFUFtemXuMEYbZH5EB+KgW/WyULtQJZ1pKTPyQ4E4Y
-         +ztffunDMug5OBAntPcVllbVTn1JRARdi19QA5+Fm791IqtEprATHEjwMSH8qzXr+0i0
-         dEQ+RYHV+pUb+bWcOVffw6/fTpfixk05vlrEwmk7LDLXa5Q2C51OjxNze6KBJmNNJzE/
-         iw6xBWXN8IgXG+f6ePYDdIow6qmNmTFSXSYFKxPPDE69OirLDvx3bs5dNMaOl2cUx9QI
-         kj6Fk/SYo4P8WuPpDp4bG8C7pPajSQI3+aernUbSEV13rR+iu3wYuIS/ICTEKzyGYIKd
-         vzoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730981274; x=1731586074;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hAbn1Ykfp9his+u2uJIIvTrMc5YEiO1rQix+MP16MdI=;
-        b=goRLZYnXoMbbGH7lUI0AhaWMbqakn0tLzGtBXyg/x+uyK/11AOGLHh1IrY6mAqg6d/
-         jh1FJyTlr0/TByiEB6o91Gkla4Q7oNyuEpiBW1MnGEPt24Brg/OOxwyrAR0Fkz6S9pBq
-         Zuie2uHqwrRPQyEvtJCmG1rMBmVWZIxGBD4w648KP27LX2//iyjPvOsw9UejlkJs2PUg
-         qVtvpt1o5jWNz5Ub+f9NedlQtGuWo6/OUhhciPMmfGE6uSo7SmXDt/WIN/EddwHuAKzC
-         7eAo9VdwlqZNqzgwkKKdRnQAn5nV+uEBxsBVJRDa8Ao2xPM+Gab5MjihJXPdjf0bgZ3t
-         xajg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZcGjRJsxTkXEw8FBwAMTlvEaQJC6usZMFnbKkodFVh7hyQhm154J6PvNTowbWqvIkd5830iE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgqmKrh9uFsP3KDtz4RR8sLZVAbRGknCF3/Nx/+gx832RGbkpv
-	VlPN/A4P8HXcAqdZ+weFHNE8E1OCAPs8u9rowb8TTPkfkLCJWGmcDhRoiOSgk78=
-X-Google-Smtp-Source: AGHT+IHC6ikPOTItf1oVoB8X5+KaaDLzrKVpzqSOI+8Bg2xedEwzv5KM2i7ux46gHe49N/Qx305z0A==
-X-Received: by 2002:a5d:6508:0:b0:37d:5084:b667 with SMTP id ffacd0b85a97d-380611593b8mr27756363f8f.33.1730981274007;
-        Thu, 07 Nov 2024 04:07:54 -0800 (PST)
-Received: from [172.16.24.72] ([89.101.134.25])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed9719easm1599755f8f.9.2024.11.07.04.07.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 04:07:53 -0800 (PST)
-Message-ID: <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
-Date: Thu, 7 Nov 2024 12:07:52 +0000
+	s=arc-20240116; t=1730981975; c=relaxed/simple;
+	bh=PMG+rqlABVBz+TqA6nHYjw0V4WbjciJIqXhw0ydeDBo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A1DNG8pPBDhTv0Eaw99gtQvay+itgfHR56o31Oc40UjHD+p75DaLHorB4on1gshuOrWVM4wbFh1h73VuEGSpaIz6bXocQKucTcXUzi4BK24D2Y4YFkNxwkHpe2KW7WEByzUPaaBxcx1chSe6r1mbnQFfNZ8doTRR0t0o1thct6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8V8HpJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDA1C4CECC;
+	Thu,  7 Nov 2024 12:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730981974;
+	bh=PMG+rqlABVBz+TqA6nHYjw0V4WbjciJIqXhw0ydeDBo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=H8V8HpJITTPmja2fujD4n7zRSQFfnm6FOleJVFliFEYtzsasJyxzs8n+ITApVzsZL
+	 +y+HLeswGO8p5X3x7XoCANdaked5j0Imcxpb5c+Njfa15INmW8jhLLbxo7B464PmN3
+	 /dKGfdgwBA5udEd4cyTHcBNuSRN5i1uEEwryLaQ5cQNfzQZOZF9sU9DwdSEEC30GJI
+	 9CxKT754rhYdr/Z6PrzgWCaOwEWEqOSHSPdInsBkjuY9ua6Mf0QMM2rlxowQRdEdL1
+	 iy5nZmF2SBMVVqTGUmuVZQWJtnPEluxhpJa9XyUwuJ7Wi6JuG5y6+/qbFeUIvRajvC
+	 ux9Cz3MLRwxuQ==
+From: Will Deacon <will@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	Mark Rutland <mark.rutland@arm.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	ardb@kernel.org,
+	broonie@kernel.org,
+	maz@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Kconfig: Make SME depend on BROKEN for now
+Date: Thu,  7 Nov 2024 12:19:27 +0000
+Message-Id: <173097843612.164342.13696404397428904701.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20241106164220.2789279-1-mark.rutland@arm.com>
+References: <20241106164220.2789279-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
- <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
- <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
- <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 07/11/2024 10:41, Dmitry Baryshkov wrote:
->> init_codecs() parses the payload received from firmware and . I don't think we
->> can control this part when we have something like this from a malicious firmware
->> payload
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> ...
->> Limiting it to second iteration would restrict the functionality when property
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
-> If you can have a malicious firmware (which is owned and signed by
-> Qualcomm / OEM), then you have to be careful and skip duplicates. So
-> instead of just adding new cap to core->caps, you have to go through
-> that array, check that you are not adding a duplicate (and report a
-> [Firmware Bug] for duplicates), check that there is an empty slot, etc.
+On Wed, 06 Nov 2024 16:42:20 +0000, Mark Rutland wrote:
+> Although support for SME was merged in v5.19, we've since uncovered a
+> number of issues with the implementation, including issues which might
+> corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
+> patches to address some of these issues, ongoing review has highlighted
+> additional functional problems, and more time is necessary to analyse
+> and fix these.
 > 
-> Just ignoring the "extra" entries is not enough.
+> [...]
 
-+1
+Applied to arm64 (for-next/fixes), thanks!
 
-This is a more rational argument. If you get a second message, you 
-should surely reinit the whole array i.e. update the array with the new 
-list, as opposed to throwing away the second message because it 
-over-indexes your local storage..
+[1/1] arm64: Kconfig: Make SME depend on BROKEN for now
+      https://git.kernel.org/arm64/c/81235ae0c846
 
----
-bod
+Cheers,
+-- 
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
