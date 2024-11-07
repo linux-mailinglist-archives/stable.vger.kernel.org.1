@@ -1,117 +1,134 @@
-Return-Path: <stable+bounces-91837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079279C08DC
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:26:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FA29C08DE
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75C6DB230E5
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:26:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 982F51F23555
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665FF212D0A;
-	Thu,  7 Nov 2024 14:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SPzde+DZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9602821264A;
+	Thu,  7 Nov 2024 14:28:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBE721218A;
-	Thu,  7 Nov 2024 14:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8011229CF4;
+	Thu,  7 Nov 2024 14:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730989601; cv=none; b=gOlWSOTqRL8Jk/6nrQGNizpN39V2Fk9c1fOy9WSh1doc5XI9G3rxzC0HBQVrLIjiQxRaUB06tKUY1B7XgSiMN+bhs2rw7nr5BeTgsHWlodB+B+HDFsZqkYroCQAlaEDfmOqqFIXsSjicWpdmV7sfz3Bxn8A9uwdzdIWFU3w7KPo=
+	t=1730989696; cv=none; b=AVAvIJ/HhUjNGASceHwDd0zfWVmjm9KTUU36eqJ1DMel6US1l9j8fZc34DgJffd5W2r1kwtDRgOUGc4ZAHiOg8UcaFL4fEgEld8pg6ZYGh9FZ6ImPhO362LZwQBzXfaxQDR0Qqz09I3+fhwOKQFYqyC2y7Z05eYE4IbRbeaaQaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730989601; c=relaxed/simple;
-	bh=IZ1L6Ihm8Joep60ZOkXArh7N57MsF6DTK72afzXGdrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mSzERs734Z8pvDNHo+H/SNwnD7F6mNkzpEb4hLsZCtOQSXmoDCkQ52MWIesLCfmxrSA2C4in0g8LFhHM2T9lXBpwqH65OzQYaUtmY6YFYTtJMXNp6qEJhH4wgDZrFcRTqh8gvdWXDOVzk8ueLwXDjubVSjxma6PJU2lUgmUWmt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SPzde+DZ; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso9347065e9.0;
-        Thu, 07 Nov 2024 06:26:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1730989598; x=1731594398; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4lWe+8OTr1x391V84LUEUDWwUDsOdkE6GAj381Q8PLc=;
-        b=SPzde+DZwfOeHiCfvN3xxk2YQBzs7PaBTq/g3NFo3l6Yz5x+xg1E/HGyKUmmp/+yZG
-         i1UgvKKy91rRBjzXriHsK/vxDVOGDYVgGwQYs34VbyUPipovURJehs+DvUZUNmmpR54T
-         X7EdftOZ0ONPIB3S6EGp9km+cjL5FWBfQaouuQTxM7NI+LnK47fY6ZAp8AgpGCQv6/Sv
-         x12S+QXltID08PxFeFIvZ8ItudfUeCHdjYV0mF7gWYf75t1C64Dr2zGOF2kgyGumkoXU
-         hV8E2QnBjZAf+mfQ0OPvxJq1O1OOaBIKdPsGRv0RQ4E0zihhLvUmeoIghEfbg7E7zJod
-         LwkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730989598; x=1731594398;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4lWe+8OTr1x391V84LUEUDWwUDsOdkE6GAj381Q8PLc=;
-        b=hRHsCci5d1GZ0kpYUN9lRgrIvVlNJmiJl4BZelH3ffOVgVVNy5AmsLML9V9AY7+o7h
-         acag58hzvhLOrsgei38DccZXcP7W4n+Y0fCgL3ZOqEZ+DijljGIvbiHg43ZUdeBg3nZe
-         EqscKsOY4RS7hcLsEg5gjTwPI9WCU7Jipb5ReZXMi6A2tq1tv6XQYyqhi7LYuef3ncUU
-         cIm86N9bwzMuODyhfX5/+hPeKuHIy/AcNpkNmXX8bDBJi/nPHet0zVtOGtepp+XMUXDu
-         G2eYDwzyAejhmx9PcIWJwjf7Nn9oy59HCt404Sy/ZkazbjUsJxpSdEv2uFCU4bQ85db5
-         DTNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMEjglyCwz1kRVBFPkqBiXOFzEdWBCm44X+dfhdW0cRNG+3PYa42hRZpYQyl8lUE1ufW0sZMTCO7r5g7s=@vger.kernel.org, AJvYcCWi92+cNwLwcslqvKCWAvMORCeyov8LDiJijkbAkevNkpHtzXdhHoOo40Qf49pQWcZ6NxtOd3OH@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTdN/nBcSOGI3yA1x8xPH7Ke/ygCTwEfd9igNbgnUV2xsfygMN
-	I0XBjr1exeBc0yaA92ZuBePvVf1zKSUcAoKK3kFS1XgPBu+IseQ=
-X-Google-Smtp-Source: AGHT+IHL0wi7WKTvPc5hxP5ofUXYUbtQb+bUpSZkX57u5JK3fnO3kXSjXOKKaPT73hDp1BFuoTcl6w==
-X-Received: by 2002:a05:600c:1d09:b0:431:5f3b:6ae4 with SMTP id 5b1f17b1804b1-43283255a5bmr214848015e9.17.1730989597555;
-        Thu, 07 Nov 2024 06:26:37 -0800 (PST)
-Received: from [192.168.1.3] (p5b2ac486.dip0.t-ipconnect.de. [91.42.196.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05c2161sm26038635e9.31.2024.11.07.06.26.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 06:26:36 -0800 (PST)
-Message-ID: <6f515d2c-80dd-4868-893f-194dd8e2963f@googlemail.com>
-Date: Thu, 7 Nov 2024 15:26:35 +0100
+	s=arc-20240116; t=1730989696; c=relaxed/simple;
+	bh=F010ownv3bBnqIQ8ilTKry8FD6vEzGw6XQJgHJD1qU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ngZFHtWvrqh1vucRAskDMf4tD2g43Cq+SJ5g5uJROxxU/tCGsoGiqAUM8GOqCLnTAW2jYRqgX+T7F1RQeyrQEOUu0kMLB2E8eaoJvhJtU3Jf9ZEBOAL3b8lFub0CZWw6RmvJcIgJum/SgIE/3+nlW1mKnEN94Q3n3Yy+eSJeDvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 89CDC1C00A0; Thu,  7 Nov 2024 15:28:12 +0100 (CET)
+Date: Thu, 7 Nov 2024 15:28:12 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: Pavel Machek <pavel@denx.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hagar@microsoft.com, chris.paterson2@renesas.com
+Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
+Message-ID: <ZyzOfIPHTEjq5W1+@duo.ucw.cz>
+References: <20241107064547.006019150@linuxfoundation.org>
+ <Zyy4mfTry2gNQBH+@duo.ucw.cz>
+ <7a791358-63ff-41e1-b7f0-e687df21047b@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, broonie@kernel.org
-References: <20241107064547.006019150@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="hYyuC9AgkQKiubg2"
+Content-Disposition: inline
+In-Reply-To: <7a791358-63ff-41e1-b7f0-e687df21047b@sirena.org.uk>
 
-Am 07.11.2024 um 07:47 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.11.7 release.
-> There are 249 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+--hYyuC9AgkQKiubg2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Hi!
 
-Beste Grüße,
-Peter Schneider
+> > > This is the start of the stable review cycle for the 6.11.7 release.
+> > > There are 249 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
+> >=20
+> > CIP testing has problem with BeagleBone Black on 6.11:
+> >=20
+> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/li=
+nux-6.11.y
+>=20
+> My Beaglebone Black jobs ran fairly happily, eg:
+>=20
+>    https://lava.sirena.org.uk/scheduler/job/951530
+>=20
+> Looking at your logs:
+>=20
+>    https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/8=
+295477303
+>=20
+> you seem to be seeing an infrastructure issue:
+>=20
+> * lava.pdu-reboot [pass]
+> * lava.bootloader-commands [fail]
+> * lava.uboot-commands [fail]
+> * lava.uboot-action [fail]
+> * lava.power-off [pass]
+> * lava.job [fail]
+>=20
+> The job is failing in the bootloader:
+>=20
+>    https://lava.ciplatform.org/scheduler/job/1218595
+>=20
+> shows:
+>=20
+> | =3D> bootz 0x82000000 - 0x88000000
+> | zimage: Bad magic!
+>=20
+> I didn't check but this almost always indicates that the download to the
+> board was corrupted due to some image size having grown large enough to
+> overwrite the adjacent image, you'll need to adjust the load addresses.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Yep, thanks, it does not seem to be kernel issue. People from our Q&A
+team are investigating.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Best regards,
+								Pavel
+
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--hYyuC9AgkQKiubg2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZyzOfAAKCRAw5/Bqldv6
+8gR9AJ0cLQIcPjjUH2FMKyyHT0t1aa95WgCeI0Cvrur4op9pQlGunOhuhRZLt8E=
+=E2Fh
+-----END PGP SIGNATURE-----
+
+--hYyuC9AgkQKiubg2--
 
