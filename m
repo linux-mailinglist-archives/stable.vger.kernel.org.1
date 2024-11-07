@@ -1,261 +1,201 @@
-Return-Path: <stable+bounces-91803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D5D9C0527
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:03:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EA99C0538
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EF41F22170
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:03:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9F3280A83
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DAB2076A5;
-	Thu,  7 Nov 2024 12:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754951DDA3B;
+	Thu,  7 Nov 2024 12:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iKTCuXB+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KBjduNja"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EED1DE8A4
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 12:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CAA20F5B9
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 12:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730981023; cv=none; b=CFVwwf4Doi7XXjaGS+Mcp5ILzhCAwSRr+Oan6kjQ15N3sJThIlN5ep+U5c1HEY2RIz4uzPI2+CaiCCZkaiGTSLy+pDDDvhBxaCvUTrcin+nvRQqBBtmPo7gtpLMkf63AJE6GQUpVZcH+Vah+Blsr4wG4FkpL2QLzbWRX7npkP0Q=
+	t=1730981080; cv=none; b=DSpXPC/kfh+GPcsV8zaiNOb2Or3eA+puWwiCbWSMcayIs9u75n9wtOtczJ/xJ6a7D78DjTFuEGoUMnaKSX67JMJc4KJfV3FGk7nbN+bRNrId4QkGBWPeiwLybAV4/ZYagZOF+FLmABNryPyblanTKnzhpVOiQz3YPibPzxBlkfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730981023; c=relaxed/simple;
-	bh=IHosAZVePfA6j/L2D13dnEQ/Ic9W8mSBmvs6TFc9t0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kaNbmyZgU8njKoCO3E1jan0xj5OfrHP+3oSvqZ/RjdFQeCshlvQnS5i1NPUYKNZESL6+Gc9txsZZ1R0r67MNT4TUXLDXSEqQTZxjCh25lV/ERd1l/JhDpTFe+BN1uxbulZXU5/JEcO5Dr0XInRSuzj+b586p0R94wTtsJL0+gfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iKTCuXB+; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7180e07185bso392951a34.3
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 04:03:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730981020; x=1731585820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r+NR8Ybu826lRz0YdDfbD41eoh3Xb5mDE+JZUUs10lA=;
-        b=iKTCuXB+7DWK8+YfQxs05mXWDXEZ5oRCl8HRIUPJEbP60JVDSrEoL9OSJxOvzafv7z
-         B4AZTWj5Z0ZvzIOB1qWTrjiwJokyfOvcwMhuYNEh2FQ3urEbKiqFcaNUuenipEfO9HEU
-         +CvMUHNPx9fKpCgzxEKmPyaGeDx+R0m/NFPHzX+K+K/eyZuwSaTkUzhdRwpnRUtpmwZp
-         sDiVxybuesTeaRw7rOAdeDRXOcETNjV/cyJa5ny+DqgX+qTUtHANuM4C7sYlAAkhx7dA
-         0ct6xyHvfwf8+l9FDFfRONw97lDh+Wv8CVJATHLIi9dR1zlB/dUMGG30b2yOrs1fak2z
-         uQWw==
+	s=arc-20240116; t=1730981080; c=relaxed/simple;
+	bh=AzJOLBzYiO/aaprDLbfnvaUSgq/KldF/W0iqEHK+o4w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WzMcI/qQssXP7Q33vrTQl8lEVWJM9YAEuE9YcywXQzVWZY3xMsP6TxL4lKK+sjaqlnjp3Uxb8bcjU42DOn5iUVs3VHhPLAWP7lGBiYB595g/xtbjMVpDhaokh2QP92QpEXkd4U8EQwIXFXPqmg2MVRPFC4TqsVPmkhkVasS8ShA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KBjduNja; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730981076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=B5+vZDmkrf1avaWGcD/MhpIJkSW85xJ3HGW972ay+qs=;
+	b=KBjduNjaqJrTIb1duZD5DAssgLRF7vpxgj94FUXkL9sJ3w0T14jh7HSsgZumhVTddT8GuI
+	9P2m+wQqDyQkDK3ZHenh+b1u9CDkRwNp32F/4U6DTeVlDfvTMMLH3pZ22wmlMIJbY0qIYt
+	WOMZgUtoHZEOi4SNStIUGu8p0/oRunM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-ujR9KHZINIKBD945Gu6bNQ-1; Thu, 07 Nov 2024 07:04:35 -0500
+X-MC-Unique: ujR9KHZINIKBD945Gu6bNQ-1
+X-Mimecast-MFC-AGG-ID: ujR9KHZINIKBD945Gu6bNQ
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4315eaa3189so8190315e9.1
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 04:04:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730981020; x=1731585820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r+NR8Ybu826lRz0YdDfbD41eoh3Xb5mDE+JZUUs10lA=;
-        b=M7rggG+GOYLnROtUCPvRDU36bZna3SjK6e80FhTjcozODAnXnMgKmj5KWuHEAFtAUF
-         9gW/ecAcuOfokhybIormEyPrDcGwcalJnCLGbwP82OLT4Ao+C5MIUVn12GEjGicxT/k2
-         fru84v9VqU2b8vv076bPnthpTly3jTqsVMcl8dZ4BSEs4h6sBySQjHrEwpdXA30Kvm2p
-         ldrYIodHd4cXrFRRZ4fpqdhEA/Y5HEw01LHT5Ffx7wgvW8+Ux9SMGYlOHU5lMzbiEJLn
-         xbflb2lbMKZQ/vsG+0EKNUdTx4TE4hyI4Ec6GhGyEsQs3EoW2Q/3pOBwD5ZBKeUr1+AO
-         Fk+Q==
-X-Gm-Message-State: AOJu0Yxf6+We4Ffi3ijhyYjHG4yopI6xYvcj5bYKLEDr/VWlA40txcGF
-	0nM+IWgzfvPbNsRmpmUrxJllrCYbJDVK636xAOxcaoOuAFSK5Ej4y0Bz8n2gbuQdVJu39oZtyu4
-	YXDRzkCseBvt0t+OCqNNp1fsYLsI7Tu21jW5gQg==
-X-Google-Smtp-Source: AGHT+IEKoyvJ/cov0WtFF6wWofUTQy58nUtFI4fWiBL3gWCsT5hXlIPqU6bdph9K0DRsV5d5pc4VjFe8An7V8XID1eI=
-X-Received: by 2002:a05:6358:d59b:b0:1c6:1d18:7cd8 with SMTP id
- e5c5f4694b2df-1c61d187d50mr876504555d.1.1730981020545; Thu, 07 Nov 2024
- 04:03:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730981074; x=1731585874;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=B5+vZDmkrf1avaWGcD/MhpIJkSW85xJ3HGW972ay+qs=;
+        b=d64zvNhmxb1xBasLPToU84m+7Xqpkjki1Ub9sHPDvzl1thf9yeCSCd0yBexQv5Ss9k
+         hLNsG7BDuZOvV3w73TzqclT1U7rtQ2dNv0NV7H5pZfQTe1zco8q3JrO28C6mLm58KTtT
+         QXZf4ms8hxHSUa1ch5YcUuU40pLNU06gnf004oC9Rm/v2hO3ytCQ43Hvm3I84rQyGnW5
+         amDxwpvQSGeqd7dFtZBtf5mJz1w7leROKeiLo4we7rlGhgQQY4UDHoSr5XM9PxS57zA1
+         Hzw7zGu4oxlK4GPdWjAwI/1ZFJnOuh3/XiMvrjpJEFWtlPEYnNGY3rxAaLeTSJgTwhPO
+         lxow==
+X-Forwarded-Encrypted: i=1; AJvYcCVqz1dbIyPVeiTXYYtAeJcWtymqFxRSBEhr5MnwIYAZ1bZFSZclq46TCpmUkSC5OB53WMlWyLQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpFeu/bx9UTXKmNFlbEbltusbnD7xEp9SexOotwQo08jPZCEmq
+	DsVIRZQJCJj/sZ47rU7fVWJK0zWK24eKZNZGrT/U6yNA4o5VFwww52e0GVAEqegssdFh2newYC0
+	3vbRbO6/fapNFBH7y7YR8ZGLPEPePrBLZRugIIFhDELqSxf47Ph9iFg==
+X-Received: by 2002:a05:600c:444d:b0:42f:75e0:780e with SMTP id 5b1f17b1804b1-4328324ad00mr242896885e9.10.1730981074008;
+        Thu, 07 Nov 2024 04:04:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG3lXGq6xDxKBR/CQvZy5DO6U1eWql6WfDOCx037KzREk66lI1J4aMmIQDDc9WaWiP/L6MQEg==
+X-Received: by 2002:a05:600c:444d:b0:42f:75e0:780e with SMTP id 5b1f17b1804b1-4328324ad00mr242896655e9.10.1730981073664;
+        Thu, 07 Nov 2024 04:04:33 -0800 (PST)
+Received: from ?IPV6:2003:cb:c708:7900:b88e:c72a:abbd:d3d9? (p200300cbc7087900b88ec72aabbdd3d9.dip0.t-ipconnect.de. [2003:cb:c708:7900:b88e:c72a:abbd:d3d9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6c037bsm57190955e9.22.2024.11.07.04.04.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2024 04:04:32 -0800 (PST)
+Message-ID: <2a3d6cd7-ee80-4a60-939c-129e7d3e169d@redhat.com>
+Date: Thu, 7 Nov 2024 13:04:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241106120259.955073160@linuxfoundation.org>
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 7 Nov 2024 12:03:29 +0000
-Message-ID: <CA+G9fYtgOA-5y73G1YEixQ+OjmG=awBQjdKjK+b0qLNYvAAVpQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/73] 5.15.171-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
-	broonie@kernel.org, kobak@nvidia.com, Arnd Bergmann <arnd@arndb.de>, mochs@nvidia.com, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rui.zhang@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: fix a possible null pointer dereference in
+ setup_zone_pageset()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+ stable@vger.kernel.org
+References: <20241107113447.402194-1-chenqiuji666@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241107113447.402194-1-chenqiuji666@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 6 Nov 2024 at 13:19, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.171 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.171-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 07.11.24 12:34, Qiu-ji Chen wrote:
+> The function call alloc_percpu() returns a pointer to the memory address,
+> but it hasn't been checked. Our static analysis tool indicates that null
+> pointer dereference may exist in pointer zone->per_cpu_pageset. It is
+> always safe to judge the null pointer before use.
+> 
+> Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 9420f89db2dd ("mm: move most of core MM initialization to mm/mm_init.c")
+> ---
+>   mm/page_alloc.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 8afab64814dc..5deae1193dc3 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5703,8 +5703,14 @@ void __meminit setup_zone_pageset(struct zone *zone)
+>   	/* Size may be 0 on !SMP && !NUMA */
+>   	if (sizeof(struct per_cpu_zonestat) > 0)
+>   		zone->per_cpu_zonestats = alloc_percpu(struct per_cpu_zonestat);
+> +	if (!zone->per_cpu_pageset)
+> +		return;
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Don't we initialize this for all with &boot_pageset? How could this ever 
+happen?
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>   
+>   	zone->per_cpu_pageset = alloc_percpu(struct per_cpu_pages);
+> +	if (!zone->per_cpu_pageset) {
+> +		free_percpu(zone->per_cpu_pageset);
+> +		return;
 
-NOTE:
-----
-The following build warnings have been noticed on x86_64 with
-various build configs.
+If it's NULL, we free it. Why?
 
-drivers/acpi/prmt.c:144:29: warning: passing 1-byte aligned argument
-to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Walign-mismatch]
-  144 |                         (void *)efi_pa_va_lookup(&th->guid,
-handler_info->handler_address);
-      |                                                  ^
-drivers/acpi/prmt.c:147:21: warning: passing 1-byte aligned argument
-to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Walign-mismatch]
-  147 |                         efi_pa_va_lookup(&th->guid,
-handler_info->static_data_buffer_address);
-      |                                          ^
-drivers/acpi/prmt.c:150:21: warning: passing 1-byte aligned argument
-to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Walign-mismatch]
-  150 |                         efi_pa_va_lookup(&th->guid,
-handler_info->acpi_param_buffer_address);
-      |                                          ^
-3 warnings generated.
+> +	}
+>   	for_each_possible_cpu(cpu) {
+>   		struct per_cpu_pages *pcp;
+>   		struct per_cpu_zonestat *pzstats;
 
-Links:
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTjBf6W7vsijHrkw=
-8ZdOnL9Iby/
+Also, how could core code ever recover if this function would return 
+early, leaving something partially initialized?
 
-## Build
-* kernel: 5.15.171-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 7a95f8fff07f7c8bab8da252016221fad81e010c
-* git describe: v5.15.168-239-g7a95f8fff07f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.168-239-g7a95f8fff07f
 
-## Test Regressions (compared to v5.15.168-164-gcebe213d2a87)
+The missing NULL check is concerning, but looking into alloc_percpu() we 
+treat these as atomic allocations and would print a warning in case this 
+would ever happen. So likely it never really happens in practice.
 
-## Metric Regressions (compared to v5.15.168-164-gcebe213d2a87)
+I wonder if we simply want to leave it unmodified (IOW set to 
+&boot_pageset) in case the allocation fails. We'd already print a 
+warning in this unexpected scenario.
 
-## Test Fixes (compared to v5.15.168-164-gcebe213d2a87)
+-- 
+Cheers,
 
-## Metric Fixes (compared to v5.15.168-164-gcebe213d2a87)
+David / dhildenb
 
-## Test result summary
-total: 60712, pass: 45080, fail: 1728, skip: 13822, xfail: 82
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 102 total, 102 passed, 0 failed
-* arm64: 29 total, 29 passed, 0 failed
-* i386: 23 total, 23 passed, 0 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 24 total, 24 passed, 0 failed
-* riscv: 8 total, 8 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 25 total, 25 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
