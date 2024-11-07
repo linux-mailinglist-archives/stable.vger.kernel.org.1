@@ -1,111 +1,142 @@
-Return-Path: <stable+bounces-91815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7349C06C8
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:06:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171C79C06DE
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81DAB1F213ED
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D1F1C2526A
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711E6215F49;
-	Thu,  7 Nov 2024 12:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA59212183;
+	Thu,  7 Nov 2024 13:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iD63z4HW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mhWrCUDK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E672101A1;
-	Thu,  7 Nov 2024 12:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C852318FDAF;
+	Thu,  7 Nov 2024 13:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730984348; cv=none; b=trDtV2cqoFq9dbBfRg/HB0XdP++V3ziJMBSi6Y7k59DcBxozZNI+R59WAKKTQsNmHd338RRdJgVwLf6AxBZh1CidB1uuAjcrdTGKuWLCV82V6jnndepM65ZhQ/gGlso7DHJYW1crnyq0P4NpU8HCc2icnc2PqqpmHzNHfjQet9M=
+	t=1730984565; cv=none; b=cm7625cdOxyDbDe8TMLb4iq1so/La/a1X78luQyk4UNwYGkEJTsH4JGqC2fgAwiniEjwnMvUoNbERQv24Wa7YiG9Y8v/3fC/TTVvacq+KeTovmGsjCLj7Qa6el0obUnz2qoTX/DSOztir7sNfFXzO12n/nwCFW+HuxAK4Xdwbzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730984348; c=relaxed/simple;
-	bh=O2jEPTTUJi8YuBrD4uo+6+5CJE7GCRdzMd3WNJyIb5Y=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=t4cwznAuAehwUFU9S+2q5s7305TCIeWFYv9F+imj+nnqj9Rby9Sam3YFF892ArXz/3Jyd2Kc1durds2lWasL1jfHU2E1jrn+v0by+Rm/9/C73cY+iovs68ll9cSmhgPR1Ru3WuerWlhWkRkZFZDRv3eFFavZsF1kqJTBOtfjLPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iD63z4HW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC64C4CED0;
-	Thu,  7 Nov 2024 12:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730984347;
-	bh=O2jEPTTUJi8YuBrD4uo+6+5CJE7GCRdzMd3WNJyIb5Y=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=iD63z4HWcMWir7bHC1m9R+CT/cgDL1VVsJnEYKSEV2jU7HGI+2dVFuZypj0yOnSMM
-	 mn3gjCdYb+BdncyjpsM7aAENfKfDqDXnjHN+2pZzXcAtNKO7WmYhwE7RzeUBCUKw2h
-	 Nup1Iz0s1HgQ3Gb4OUa/iOOIVQiZ4CeVgWd2UBMnORr7GbcAdAEXM1MgcLuoSUbXms
-	 X6tG5gVUTPfyBUebk8mkJuHitQAqBK1utoJ6fBjCahU4wIHzJtNHElOGwm7LDcPfaW
-	 MRn8cczXOJQV1BRqGDf6dCM2YXKLjO2zUv3syEb+P+BmVoRQB7n7BShvU1hPmmuX3Q
-	 BivsrE6XS583g==
-Date: Thu, 7 Nov 2024 13:59:04 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Heiko Stuebner <heiko@sntech.de>
-cc: lee@kernel.org, jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-    conor+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net, 
-    srinivas.pandruvada@linux.intel.com, bentiss@kernel.org, 
-    dmitry.torokhov@gmail.com, pavel@ucw.cz, ukleinek@debian.org, 
-    devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
-    linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale platform-data
- on remove
-In-Reply-To: <20241107114712.538976-2-heiko@sntech.de>
-Message-ID: <nycvar.YFH.7.76.2411071358210.20286@cbobk.fhfr.pm>
-References: <20241107114712.538976-1-heiko@sntech.de> <20241107114712.538976-2-heiko@sntech.de>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1730984565; c=relaxed/simple;
+	bh=Q5eJ21ao+jRGGxWc8MkbOwkHyJAqCopFmQVRGsteduI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XV5+ZM7uBb6zcFo7VPJSSpBG5dGnMH1mmgQgwnJpCMk51fpkmsUOwstoiC6xf7aAzvT61uTWBE1yAVu7ekXF1reY0SMxJ+sGmuVwaOd/qzDslqWlQmgjuLC7bApG8Ukyz2D0A/Tmea/Nt4s8dv2OaVnf1828ExVUznfFUHuSM8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mhWrCUDK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7BSA0g026843;
+	Thu, 7 Nov 2024 13:02:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zjMEzIwO5XRwVmt4k+ipj4p9aNaB01gtFhf9NaL+N5A=; b=mhWrCUDKop9hs+NZ
+	FK/gLuUi50SNzuXC9bK+jzaQfCyRBk+ux+eTrMzP9cTjLvWyC+jvfrptFxL8sOrS
+	kJ7VBDsUQOxPSmRjwwQdVhmc4y0f15kwBYK/hArT/DfSOdiOiE3g7rjpx3qov/r3
+	wwoZQldoo1t8MWRuceG/xXbmV2iav4PpnizCH2m26fCTQGn9YW0k5zA2Nme3S2Wk
+	nNUVkboN/X7g8Ly4m5+91Jf5VzHAelaxYAW+cyMj/uraP9+z95oOIgDkeVIXaepP
+	spHwMh1IY4Vl29cOyrFxIwhcTm3GA3Evd5iAXOzUYcYuvgwuZigR6B2lmwQIaA04
+	42WM7Q==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42qfdx7kj2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 13:02:39 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A7D2cgk015298
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 7 Nov 2024 13:02:38 GMT
+Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 7 Nov 2024
+ 05:02:36 -0800
+Message-ID: <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
+Date: Thu, 7 Nov 2024 18:32:33 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Content-Language: en-US
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>
+CC: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+ <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
+ <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
+ <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
+ <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: xS44rOyOJjeonwoRVjXVxmDm_vV352QC
+X-Proofpoint-ORIG-GUID: xS44rOyOJjeonwoRVjXVxmDm_vV352QC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 mlxlogscore=750
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070101
 
-On Thu, 7 Nov 2024, Heiko Stuebner wrote:
 
-> The hid-sensor-hub creates the individual device structs and transfers them
-> to the created mfd platform-devices via the platform_data in the mfd_cell.
+On 11/7/2024 5:37 PM, Bryan O'Donoghue wrote:
+> On 07/11/2024 10:41, Dmitry Baryshkov wrote:
+>>> init_codecs() parses the payload received from firmware and . I don't think we
+>>> can control this part when we have something like this from a malicious firmware
+>>> payload
+>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+>>> ...
+>>> Limiting it to second iteration would restrict the functionality when property
+>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
+>> If you can have a malicious firmware (which is owned and signed by
+>> Qualcomm / OEM), then you have to be careful and skip duplicates. So
+>> instead of just adding new cap to core->caps, you have to go through
+>> that array, check that you are not adding a duplicate (and report a
+>> [Firmware Bug] for duplicates), check that there is an empty slot, etc.
+>>
+>> Just ignoring the "extra" entries is not enough.
+Thinking of something like this
+
+for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+    if (core->codecs_count >= MAX_CODEC_NUM)
+        return;
+    cap = &caps[core->codecs_count++];
+    if (cap->codec == BIT(bit)) --> each code would have unique bitfield
+        return;
+> +1
 > 
-> Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-> the sensor-hub was managing access centrally, with one "completion" in the
-> hub's data structure, which needed to be finished on removal at the latest.
-> 
-> The mentioned commit then moved this central management to each hid sensor
-> device, resulting on a completion in each struct hid_sensor_hub_device.
-> The remove procedure was adapted to go through all sensor devices and
-> finish any pending "completion".
-> 
-> What this didn't take into account was, platform_device_add_data() that is
-> used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
-> platform-data. So the data the platform-device gets is a copy of the
-> original data, meaning that the device worked on a different completion
-> than what sensor_hub_remove() currently wants to access.
-> 
-> To fix that, use device_for_each_child() to go through each child-device
-> similar to how mfd_remove_devices() unregisters the devices later and
-> with that get the live platform_data to finalize the correct completion.
-> 
-> Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-> Cc: stable@vger.kernel.org
-> Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> This is a more rational argument. If you get a second message, you should surely
+> reinit the whole array i.e. update the array with the new list, as opposed to
+> throwing away the second message because it over-indexes your local storage..
+That would be incorrect to overwrite the array with new list, whenever new
+payload is received.
 
-Acked-by: Jiri Kosina <jkosina@suse.com>
-
-Are you planning to merge this together with the rest of the set, or do 
-you want me to expedite it? I'll be happy to apply it separately as a 
-proper fix.
-
-Thanks,
-
--- 
-Jiri Kosina
-SUSE Labs
-
+Regards,
+Vikash
 
