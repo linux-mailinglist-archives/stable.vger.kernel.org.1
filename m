@@ -1,288 +1,165 @@
-Return-Path: <stable+bounces-91784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C299C02AA
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:43:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651239C029F
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270C71F23AF5
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4FA9B21481
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7B1EF0A7;
-	Thu,  7 Nov 2024 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230FD1EF0AD;
+	Thu,  7 Nov 2024 10:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="FvDZ6rW+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IlvFFYB4"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977711EE034
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 10:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204481EE039
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 10:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730976194; cv=none; b=qFKj138f1FdFGwgDCHQNyBcQBoNOnqMKhIjP5yP/K8AwmtstNjSOd/SX/Kjos1XpFDjSXfn62B5sjYasARchwEolHJ2uXjBuEi43o4HRPjwD929Vqf0Qbjq6VCrk/DPUR+ihkpLClFEYg6WeLP8vzRJpeo2X1cMPXdXmegjTtfY=
+	t=1730976098; cv=none; b=QA64PFcYXyD+XdXc3cgIoKQX8jpKDLlMBWSTjeq4qWed+pat4WlE5Izg+0rZ5dlAHgihJwZ548G2J09xX+ACjYSMCBnslgbzvP2q0pl5s6RImuVqp+Wdqof7NwBvI1Nl81N2PrVBpsilH2sedevjA7bbqSPjWCHWBJkhX28aQb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730976194; c=relaxed/simple;
-	bh=6yUva44wOz2QnXUgFEN8GYdCcWOGCHhMm0Me1rwpUKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=sJ2QWRPXu25g5E6Rfa/SahD60Vo6v5JQRgt9IF7RUmk+m/ikHhUxwPJG5vsQDGAut/LX4SDYNCAKUarwD4N314UVp83HvVm3QUh4DAMPzsrVOUDG4iyoP6QlXHb9SseI6lSUCapewxMTUKumYVJM/LGO2lP3XoHodoLh86uRdrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=FvDZ6rW+; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20241107104309epoutp02e57094fccbedd27698f0aa464e4d8000~FqaxMnsBf0748307483epoutp02E
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 10:43:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20241107104309epoutp02e57094fccbedd27698f0aa464e4d8000~FqaxMnsBf0748307483epoutp02E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1730976189;
-	bh=i/nto/EFjsbi80AnBzWHwrshWpst7RUnTbbo1TyJalc=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=FvDZ6rW+2zMaq967TvFkU7tXObJlm0BZlnoCkBXFhzXQB9gGLANHeceXzkv6nk3yT
-	 BVdXFUmqM5ySPLgdJsFCNdymXDXSAOoOrNA3BSx7yJXlYI+d20Znp6ZQCS86/cYthz
-	 B8O4+w732Qlx9s43GI+HlgwLAphiiqYjNm/DvpEM=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-	20241107104308epcas5p392842ae5725da2ef3500c942fbd81f4c~FqawT3VQG0246702467epcas5p3a;
-	Thu,  7 Nov 2024 10:43:08 +0000 (GMT)
-Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.179]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4Xkdvb0ywxz4x9Q1; Thu,  7 Nov
-	2024 10:43:07 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	C4.FA.08574.AB99C276; Thu,  7 Nov 2024 19:43:07 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20241107104306epcas5p136bea5d14a1bb3fe9ba1a7830bf366c6~Fqauv4CTs1298512985epcas5p1F;
-	Thu,  7 Nov 2024 10:43:06 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20241107104306epsmtrp2682304394b1964b08d9007c0cbc78fd2~Fqauu9-Wa3199131991epsmtrp2F;
-	Thu,  7 Nov 2024 10:43:06 +0000 (GMT)
-X-AuditID: b6c32a44-93ffa7000000217e-d2-672c99ba09fe
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	B8.72.08227.AB99C276; Thu,  7 Nov 2024 19:43:06 +0900 (KST)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20241107104304epsmtip23020754976b1b194a62d731110ca25a8~FqaskUF9i2599225992epsmtip2T;
-	Thu,  7 Nov 2024 10:43:04 +0000 (GMT)
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
-	quic_akakum@quicinc.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
-	akash.m5@samsung.com, rc93.raju@samsung.com, taehyun.cho@samsung.com,
-	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>, stable@vger.kernel.org
-Subject: [PATCH] usb: dwc3: gadget: Add TxFIFO resizing supports for single
- port RAM
-Date: Thu,  7 Nov 2024 16:10:35 +0530
-Message-ID: <20241107104040.502-1-selvarasu.g@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1730976098; c=relaxed/simple;
+	bh=QECnrlhEo0g/m1ZDdYxK8RSdXfVd21AqjJ11RgZfD6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZtW6VHkpcMdjjy6ZMInlbOGReGnFH7vpT5SNNs6gk2KZfwRyzzjLtJxlHKWDCCVtNlsp31JOZ7hpM2a0VhvuBw6m9Ex66l8EYFvRnXBwP9GU1w1tEpt4kQqBR0dvqIsC0mhyLBOEZR+kjL32XxUBNpY9/B1FFa9q+53m14xlK/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IlvFFYB4; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-539f84907caso716674e87.3
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 02:41:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730976095; x=1731580895; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c7KReAliAf79+AjubgGO0WiomDZK/ncBq6RlPdn2qVc=;
+        b=IlvFFYB49y6VNInybnGaOPx84uOlTk3+Xg1bYTCYfKLpalWs0UwBUPhY1rc3pd1sme
+         KwXK5u6m8BED+hK+96WpA/qVIroNtTdnNsxW/UTaH57J5kesQNA5iHaWtbanRzhf+j6F
+         y2gsC9j5cHkvF4dsOsfZ2iBgokvXs0huRCSQY7DaLglyHAOrmD07QOGqXWbDXdvH3Hke
+         XtfdWnkNxHFwYHdIll+Fu5SfM+3t8UCgvxUBUyTc6h1PXGmF0OYr8OZASDgADuupkqcV
+         iLSm2j37zx5baE4i8YVQsEO4dzAYvZ8GeIso18O82FhjZGCr1lqJR4b3q415eITIpmH2
+         H2Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730976095; x=1731580895;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c7KReAliAf79+AjubgGO0WiomDZK/ncBq6RlPdn2qVc=;
+        b=qxKwQ7UnwvKOZy4gA9wIXSescSZ9nPXTpbGTM5/fIkGdxZdWVx9BbB4tcNSDvW3Wmx
+         Di0oHaRT5MojReovueGM6OsuJnN9ie0BJEz6TlF+vyj5cxQnlww1z42i49IqEsoSrCcn
+         zg0tMmPqSvsqBBIteuryv6W4sKa6iBlt1F2IIsJrT1McVcAH0uat2saUQEFP7KHTUAt0
+         YhDdv2QdbwbvzIrxIuW5Y5y9rEkFIxhgpPTS7CsaLT2C18omGuczmTOEvsbEvpoWPQNd
+         Pjtc0Xv1f2qX/mPJvlo1uTDYKEOwrH36FI807O9IBV6oWnrVtgQGRhENbjq2s+644Ku1
+         o0oA==
+X-Forwarded-Encrypted: i=1; AJvYcCXodUBNbHSBJXL7pvRo2x0x/wxSklS5IzTUAQ0C3OJ7Fv54k67bhTskb8z6mcxv02kIopbK8dU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKh2D9n2cRJjkzaieojIMJYFA7K1No7qkXlz0PFDCvpK/KhrBZ
+	VBvzofiRFMjkTpAoU8eB0KcLFhtWGyDFWW+ijg/3dJ7ar1itpfy2olCOONl1RCA=
+X-Google-Smtp-Source: AGHT+IF1JKbTSQOAWtXN3cGHaoKEwR23LSRff0Im78vByO1IMeLg4BpL/UDHVls5wpBlL0/+UBeZRw==
+X-Received: by 2002:a05:6512:660f:b0:53c:74de:3cd2 with SMTP id 2adb3069b0e04-53c74de3e61mr10768915e87.18.1730976095149;
+        Thu, 07 Nov 2024 02:41:35 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826a72f2sm161858e87.145.2024.11.07.02.41.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 02:41:33 -0800 (PST)
+Date: Thu, 7 Nov 2024 12:41:31 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Vikash Garodia <quic_vgarodia@quicinc.com>
+Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Message-ID: <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+ <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
+ <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrAJsWRmVeSWpSXmKPExsWy7bCmuu7umTrpBu8+MVm8ubqK1eLOgmlM
-	FqeWL2SyaF68ns1i0p6tLBZ3H/5gsbi8aw6bxaJlrcwWn47+Z7W4/Wcvq8WqzjksFkeWf2Sy
-	uPx9J7PFgo2PGC0mHRS1WLXgALuDgMf+uWvYPSbuqfPo27KK0WPL/s+MHp83yQWwRmXbZKQm
-	pqQWKaTmJeenZOal2yp5B8c7x5uaGRjqGlpamCsp5CXmptoqufgE6Lpl5gBdrKRQlphTChQK
-	SCwuVtK3synKLy1JVcjILy6xVUotSMkpMCnQK07MLS7NS9fLSy2xMjQwMDIFKkzIzlj2/AhL
-	wQ6Niql7hRsYPyp0MXJySAiYSLR0dDF1MXJxCAnsZpSY9XMrK4TziVHi2sM5UJlvjBIL135m
-	gmn5v3UPC0RiL6PE3rZuZgjnO6PEpglbgKo4ONgEDCWenbABiYsI9DNKPF/0lBmkm1lgAZNE
-	62xtEFtYIEziwbWXYHEWAVWJO/fesYPYvAJWEtvOP2eF2KYpsXbvHiaIuKDEyZlPWCDmyEs0
-	b50NtlhCYCqHRGfzSxaQxRICLhJTbihB9ApLvDq+hR3ClpL4/G4vG4SdLLFn0heoeIbEoVWH
-	mCFse4nVC86wgoxhBtq7fpc+xCo+id7fT5ggpvNKdLQJQVSrSpxqvAw1UVri3pJrUBd7SBzZ
-	ewpsupBArMSPSbsZJzDKzULywCwkD8xCWLaAkXkVo2RqQXFuemqyaYFhXmo5PCqT83M3MYKT
-	qpbLDsYb8//pHWJk4mA8xCjBwawkwusfpZ0uxJuSWFmVWpQfX1Sak1p8iNEUGKoTmaVEk/OB
-	aT2vJN7QxNLAxMzMzMTS2MxQSZz3devcFCGB9MSS1OzU1ILUIpg+Jg5OqQamI43/ryzcNrfo
-	3ym2/1esf16d9EKiyOxdb63mHLG9Kjy6OU/U2xbO0bo/Y8sLwclsXNrKE+LXxEY4Gr+2u3pn
-	nVjaimM7Jlvmy+1aXZpvLhq4tELsr3nT23k5IfkP3uU47vx3KWypZfnkrwlbLwUvZcu1uPzQ
-	SXR37rdTpfsi/66bEiT2M3+eR8b1n7yOC177nf+XmRLJVCHzJ/agp9Tk/wzddy8nTf/qYaRw
-	TfRzzfPe92+UTh5e8+2pWWbNg3r71C33tCYsZ9l0dVH+7dkfLTc/sF0zIVs2hvnoqn+bpmr9
-	nqi/9Xew5Son/toSs0yd7b914kydko/VB4deCQxoK4y2sUtIXeq3I+Tx2s1nPyuxFGckGmox
-	FxUnAgCjjNssMwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrFLMWRmVeSWpSXmKPExsWy7bCSvO6umTrpBpseK1m8ubqK1eLOgmlM
-	FqeWL2SyaF68ns1i0p6tLBZ3H/5gsbi8aw6bxaJlrcwWn47+Z7W4/Wcvq8WqzjksFkeWf2Sy
-	uPx9J7PFgo2PGC0mHRS1WLXgALuDgMf+uWvYPSbuqfPo27KK0WPL/s+MHp83yQWwRnHZpKTm
-	ZJalFunbJXBlLHt+hKVgh0bF1L3CDYwfFboYOTkkBEwk/m/dw9LFyMUhJLCbUeLGoxVsEAlp
-	idezuhghbGGJlf+es0MUfWWUeNh3HaiDg4NNwFDi2QkbkLiIwGRGiclHz4EVMQusY5KYffwJ
-	M0i3sECIxN3Ts1lAbBYBVYk7996xg9i8AlYS284/Z4XYoCmxdu8eJoi4oMTJmU/A6pkF5CWa
-	t85mnsDINwtJahaS1AJGplWMkqkFxbnpucWGBUZ5qeV6xYm5xaV56XrJ+bmbGMHBr6W1g3HP
-	qg96hxiZOBgPMUpwMCuJ8PpHaacL8aYkVlalFuXHF5XmpBYfYpTmYFES5/32ujdFSCA9sSQ1
-	OzW1ILUIJsvEwSnVwJQsETZ5fbbGmY+FvtqpayaamRgZTHvqL3j/8cWJy+Iv+yjxqgj47f36
-	oeKF1PrA7UFsGyuDP0xeuzF+utruHR3vo0MOmjBunVbz2GPBz53TFXSmOZ4M/6Iu06SzeKvd
-	hw920i1fT4reks5ba2+emGi6+unFGpvpNq9MeLit2afN8OffectZ94PveWV52a/vbke9uhd2
-	xjEsqtBulnvrySvRPuuLq5Ydqty4nj+ixG1dr+GW+YnibHq5F1RMTuy33zfxcdydQ7de2QiI
-	TdX5VvE3cr6itFb7zbUNOSWPGkU8WYstm51sDXSVd2yLM96ceuyQbynXBZXlpZbmvHrvDth+
-	PPLN/2naG/FAwSlXfimxFGckGmoxFxUnAgDQAzFd7QIAAA==
-X-CMS-MailID: 20241107104306epcas5p136bea5d14a1bb3fe9ba1a7830bf366c6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20241107104306epcas5p136bea5d14a1bb3fe9ba1a7830bf366c6
-References: <CGME20241107104306epcas5p136bea5d14a1bb3fe9ba1a7830bf366c6@epcas5p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
 
-This commit adds support for resizing the TxFIFO in USB2.0-only mode
-where using single port RAM, and limit the use of extra FIFOs for bulk
-transfers in non-SS mode. It prevents the issue of limited RAM size
-usage.
+On Thu, Nov 07, 2024 at 01:47:20PM +0530, Vikash Garodia wrote:
+> 
+> On 11/5/2024 7:25 PM, Dmitry Baryshkov wrote:
+> > On Tue, Nov 05, 2024 at 02:24:54PM +0530, Vikash Garodia wrote:
+> >> There is a possibility that init_codecs is invoked multiple times during
+> >> manipulated payload from video firmware. In such case, if codecs_count
+> >> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+> >> access. Keep a check for max accessible memory before accessing it.
+> > 
+> > No. Please make sure that init_codecs() does a correct thing, so that
+> > core->codecs_count isn't incremented that much (or even better that
+> > init_codecs() doesn't do anything if it is executed second time).
+> init_codecs() parses the payload received from firmware and . I don't think we
+> can control this part when we have something like this from a malicious firmware
+> payload
+> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
+> ...
+> Limiting it to second iteration would restrict the functionality when property
+> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
 
-Fixes: fad16c823e66 ("usb: dwc3: gadget: Refine the logic for resizing Tx FIFOs")
-Cc: stable@vger.kernel.org # 6.12.x: fad16c82: usb: dwc3: gadget: Refine the logic for resizing Tx FIFOs
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
----
- drivers/usb/dwc3/core.h   |  4 +++
- drivers/usb/dwc3/gadget.c | 56 ++++++++++++++++++++++++++++++---------
- 2 files changed, 48 insertions(+), 12 deletions(-)
+If you can have a malicious firmware (which is owned and signed by
+Qualcomm / OEM), then you have to be careful and skip duplicates. So
+instead of just adding new cap to core->caps, you have to go through
+that array, check that you are not adding a duplicate (and report a
+[Firmware Bug] for duplicates), check that there is an empty slot, etc.
 
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index eaa55c0cf62f..8306b39e5c64 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -915,6 +915,7 @@ struct dwc3_hwparams {
- #define DWC3_MODE(n)		((n) & 0x7)
- 
- /* HWPARAMS1 */
-+#define DWC3_SPRAM_TYPE(n)	(((n) >> 23) & 1)
- #define DWC3_NUM_INT(n)		(((n) & (0x3f << 15)) >> 15)
- 
- /* HWPARAMS3 */
-@@ -925,6 +926,9 @@ struct dwc3_hwparams {
- #define DWC3_NUM_IN_EPS(p)	(((p)->hwparams3 &		\
- 			(DWC3_NUM_IN_EPS_MASK)) >> 18)
- 
-+/* HWPARAMS6 */
-+#define DWC3_RAM0_DEPTH(n)	(((n) & (0xffff0000)) >> 16)
-+
- /* HWPARAMS7 */
- #define DWC3_RAM1_DEPTH(n)	((n) & 0xffff)
- 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 2fed2aa01407..d3e25f7d7cd0 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -687,6 +687,42 @@ static int dwc3_gadget_calc_tx_fifo_size(struct dwc3 *dwc, int mult)
- 	return fifo_size;
- }
- 
-+/**
-+ * dwc3_gadget_calc_ram_depth - calculates the ram depth for txfifo
-+ * @dwc: pointer to the DWC3 context
-+ */
-+static int dwc3_gadget_calc_ram_depth(struct dwc3 *dwc)
-+{
-+	int ram_depth;
-+	int fifo_0_start;
-+	bool spram_type;
-+	int tmp;
-+
-+	/* Check supporting RAM type by HW */
-+	spram_type = DWC3_SPRAM_TYPE(dwc->hwparams.hwparams1);
-+
-+	/* If a single port RAM is utilized, then allocate TxFIFOs from
-+	 * RAM0. otherwise, allocate them from RAM1.
-+	 */
-+	ram_depth = spram_type ? DWC3_RAM0_DEPTH(dwc->hwparams.hwparams6) :
-+			DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
-+
-+
-+	/* In a single port RAM configuration, the available RAM is shared
-+	 * between the RX and TX FIFOs. This means that the txfifo can begin
-+	 * at a non-zero address.
-+	 */
-+	if (spram_type) {
-+		/* Check if TXFIFOs start at non-zero addr */
-+		tmp = dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(0));
-+		fifo_0_start = DWC3_GTXFIFOSIZ_TXFSTADDR(tmp);
-+
-+		ram_depth -= (fifo_0_start >> 16);
-+	}
-+
-+	return ram_depth;
-+}
-+
- /**
-  * dwc3_gadget_clear_tx_fifos - Clears txfifo allocation
-  * @dwc: pointer to the DWC3 context
-@@ -753,7 +789,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
- {
- 	struct dwc3 *dwc = dep->dwc;
- 	int fifo_0_start;
--	int ram1_depth;
-+	int ram_depth;
- 	int fifo_size;
- 	int min_depth;
- 	int num_in_ep;
-@@ -773,7 +809,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
- 	if (dep->flags & DWC3_EP_TXFIFO_RESIZED)
- 		return 0;
- 
--	ram1_depth = DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
-+	ram_depth = dwc3_gadget_calc_ram_depth(dwc);
- 
- 	switch (dwc->gadget->speed) {
- 	case USB_SPEED_SUPER_PLUS:
-@@ -792,10 +828,6 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
- 			break;
- 		}
- 		fallthrough;
--	case USB_SPEED_FULL:
--		if (usb_endpoint_xfer_bulk(dep->endpoint.desc))
--			num_fifos = 2;
--		break;
- 	default:
- 		break;
- 	}
-@@ -809,7 +841,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
- 
- 	/* Reserve at least one FIFO for the number of IN EPs */
- 	min_depth = num_in_ep * (fifo + 1);
--	remaining = ram1_depth - min_depth - dwc->last_fifo_depth;
-+	remaining = ram_depth - min_depth - dwc->last_fifo_depth;
- 	remaining = max_t(int, 0, remaining);
- 	/*
- 	 * We've already reserved 1 FIFO per EP, so check what we can fit in
-@@ -835,9 +867,9 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
- 		dwc->last_fifo_depth += DWC31_GTXFIFOSIZ_TXFDEP(fifo_size);
- 
- 	/* Check fifo size allocation doesn't exceed available RAM size. */
--	if (dwc->last_fifo_depth >= ram1_depth) {
-+	if (dwc->last_fifo_depth >= ram_depth) {
- 		dev_err(dwc->dev, "Fifosize(%d) > RAM size(%d) %s depth:%d\n",
--			dwc->last_fifo_depth, ram1_depth,
-+			dwc->last_fifo_depth, ram_depth,
- 			dep->endpoint.name, fifo_size);
- 		if (DWC3_IP_IS(DWC3))
- 			fifo_size = DWC3_GTXFIFOSIZ_TXFDEP(fifo_size);
-@@ -3090,7 +3122,7 @@ static int dwc3_gadget_check_config(struct usb_gadget *g)
- 	struct dwc3 *dwc = gadget_to_dwc(g);
- 	struct usb_ep *ep;
- 	int fifo_size = 0;
--	int ram1_depth;
-+	int ram_depth;
- 	int ep_num = 0;
- 
- 	if (!dwc->do_fifo_resize)
-@@ -3113,8 +3145,8 @@ static int dwc3_gadget_check_config(struct usb_gadget *g)
- 	fifo_size += dwc->max_cfg_eps;
- 
- 	/* Check if we can fit a single fifo per endpoint */
--	ram1_depth = DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
--	if (fifo_size > ram1_depth)
-+	ram_depth = dwc3_gadget_calc_ram_depth(dwc);
-+	if (fifo_size > ram_depth)
- 		return -ENOMEM;
- 
- 	return 0;
+Just ignoring the "extra" entries is not enough.
+
+> 
+> Regards,
+> Vikash
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+> >> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+> >> ---
+> >>  drivers/media/platform/qcom/venus/hfi_parser.c | 4 ++++
+> >>  1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+> >> index 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..27d0172294d5154f4839e8cef172f9a619dfa305 100644
+> >> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
+> >> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+> >> @@ -23,6 +23,8 @@ static void init_codecs(struct venus_core *core)
+> >>  		return;
+> >>  
+> >>  	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+> >> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> >> +			return;
+> >>  		cap = &caps[core->codecs_count++];
+> >>  		cap->codec = BIT(bit);
+> >>  		cap->domain = VIDC_SESSION_TYPE_DEC;
+> >> @@ -30,6 +32,8 @@ static void init_codecs(struct venus_core *core)
+> >>  	}
+> >>  
+> >>  	for_each_set_bit(bit, &core->enc_codecs, MAX_CODEC_NUM) {
+> >> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> >> +			return;
+> >>  		cap = &caps[core->codecs_count++];
+> >>  		cap->codec = BIT(bit);
+> >>  		cap->domain = VIDC_SESSION_TYPE_ENC;
+> >>
+> >> -- 
+> >> 2.34.1
+> >>
+> > 
+
 -- 
-2.17.1
-
+With best wishes
+Dmitry
 
