@@ -1,163 +1,195 @@
-Return-Path: <stable+bounces-91753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8443B9BFD54
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 05:18:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A869BFD5F
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 05:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A79661C21314
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 04:18:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35DA22839B9
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 04:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBC1156C6A;
-	Thu,  7 Nov 2024 04:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A1018FC9D;
+	Thu,  7 Nov 2024 04:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b="Ae+uZ+VP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nPn467A4"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B1A80603
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 04:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA24185B5F;
+	Thu,  7 Nov 2024 04:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730953112; cv=none; b=itb80fKHkNfacS2iJ5bU7xE01mXmCYsHF1ZX0IQ/+S4gtlZ92sedNJFRBxF0e/mQ8nThP3znzJl+JxQ4CQee5NTKDQcYFiQv1vlQM4dqUcq2cIZ/+22E09SUUE6Rf2qhhqnY2T9eKmD1G7yLy8m0IksXhNEyislGytJhVW41NLk=
+	t=1730953322; cv=none; b=TfdeRt1+xyhL5yxdjgS4iY8p7R5nyNqkxvgw6447pGUxUgvXHJORd1XuPICTrmpVkCZr2PRGOcSAAUSVo9wm9Sr3PdT4J6WQbmqOLiCh6R5DFRYiXeH7DX0Kyp8JZHBt1DjwB2KdSzeJ8lWkD/lLPYuX/LguqrX+SgnIh/40Sog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730953112; c=relaxed/simple;
-	bh=6dnQkQqfHh1sOcickMpv1JDUan6dh4Wu1yIDrpH/GKU=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BxETS8+4RLpjCbCpNQyb5de3bwy15KVAJOo0XYhNQzWcdFQD+2VVjup9Rk4rsZ9HTxiXXkEzZNEa1SCO9es+gyc1oHlIp7gpkZq4nPC7cD5cMnbmM5XeFZIJx+XV2qippZk6Q47bMFZJNmLH41gKA4BNtd93zJZcpCjBLi94W+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com; spf=pass smtp.mailfrom=linumiz.com; dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b=Ae+uZ+VP; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linumiz.com
-Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
-	by cmsmtp with ESMTPS
-	id 8MC6t8wVrumtX8tyQtIMxs; Thu, 07 Nov 2024 04:18:22 +0000
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-	by cmsmtp with ESMTPS
-	id 8tyNt4SrOjcdm8tyOtlmUV; Thu, 07 Nov 2024 04:18:20 +0000
-X-Authority-Analysis: v=2.4 cv=DrWd+3/+ c=1 sm=1 tr=0 ts=672c3f8c
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=kofhyyBXuK/oEhdxNjf66Q==:17
- a=IkcTkHD0fZMA:10 a=VlfZXiiP6vEA:10 a=-pn6D5nKLtMA:10 a=VwQbUJbxAAAA:8
- a=7CQSdrXTAAAA:8 a=vU9dKmh3AAAA:8 a=rQIMLdAWvKoWWgQMOJcA:9 a=QEXdDO2ut3YA:10
- a=a-qgeE7W1pNrGK8U0ZQC:22 a=rsP06fVo5MYu2ilr0aT5:22 a=ZCPYImcxYIQFgLOT52_G:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:To:Subject:Cc:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1yLSujXjZ1vWyoNhn9Q/+EnZQtwboxPDVegByiRGcUI=; b=Ae+uZ+VP8cnIBy/ygVfCll2Z2h
-	1Aqzf+23wPlMaOpCuvSlLqS9smUrQC9QISA+tkOzEKoLfUnU09AWYs3lIQRojNJOm3caBBIurcKzi
-	iMeSsWbskf4cQIru86EXaXX1A7RaBE9mQGg26z6Buwe39AB33Sdaa+f6T0HuGIr15bWRqUYRItaQE
-	la1LDTaIuFLQUzIT/mNxz+2EcJHnC9XV2H6Rak0PozS2rWtRvPPGWHDPu/JBbh9MA9E0j5E9Ky00A
-	FqzPxSOgIxlWUAgcFNliQ9lCzxXHZBMnWusNWs3At6uI4iWNCwSKN3f7FV6pv1RGXMXtz1zVQ5llb
-	pxjLd1yA==;
-Received: from [122.165.245.213] (port=38142 helo=[192.168.1.5])
-	by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <parthiban@linumiz.com>)
-	id 1t8tyI-0040BA-0J;
-	Thu, 07 Nov 2024 09:48:14 +0530
-Message-ID: <411e2025-6e2c-4755-bb44-d2388ed5058e@linumiz.com>
-Date: Thu, 7 Nov 2024 09:48:11 +0530
+	s=arc-20240116; t=1730953322; c=relaxed/simple;
+	bh=x1GdMOh3arTXFvBx2uNVn2vtEdkSMO/HtDKxEyTy4g0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tDap+vgIO8w83dZ8EzNtuvxAvozbnMiWPwzMDaEgYT73NJRha0EqM9TEJRkjKaVukQT9e5YICwp7ceYrREGnKnlQ+zbUXmBsORjgmetWTJckiIFuYuaFYifMtZ7zay4Vc1iiXTYOWu8J7WMrAd5IEbgZyAroFdYY0rmYYWQRX7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nPn467A4; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730953321; x=1762489321;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x1GdMOh3arTXFvBx2uNVn2vtEdkSMO/HtDKxEyTy4g0=;
+  b=nPn467A4HPRBmnxrZ99NEvfR3rGXYt/1b7qvS/rtw5YJRiGTr4yGshjQ
+   ATTeXaCt9ddmhuxSShTsaGB0kh9qavEKYsvhkLQ7DprBcF1x/xVTiEj3s
+   p5efX5vJijYPIRdmXAOVh5StYNf+QmWi2PpeGNF/W2bzdRicgbyUUK9ls
+   7nCjIMK+SARhUSHUHVCO5rpQWmwoxrhts4qMt5FrODh/QIv4E9LvGvSXG
+   v3RhKljLBhv65ayJnMjTdEyzE9b+9cLrD3uKevoGd1AG9YqEF3XC5TELi
+   /UR/ilhvC7/Bp9tJ6uBO5f+irEq4tat5n9teGp1t+CHJnTD0v/5OVcw+f
+   w==;
+X-CSE-ConnectionGUID: zZ6VmV8ETKWV6Dg51DftXw==
+X-CSE-MsgGUID: J/pOHhrCRmmZh8YFLUQYYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="34557140"
+X-IronPort-AV: E=Sophos;i="6.11,264,1725346800"; 
+   d="scan'208";a="34557140"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 20:22:00 -0800
+X-CSE-ConnectionGUID: VNw69FuVREWsBZMH8gQ3eQ==
+X-CSE-MsgGUID: I7THNe+oQu2XtDn3yfgL3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,264,1725346800"; 
+   d="scan'208";a="89750882"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 06 Nov 2024 20:21:56 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t8u1p-000pow-0Q;
+	Thu, 07 Nov 2024 04:21:53 +0000
+Date: Thu, 7 Nov 2024 12:21:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ivan Delalande <colona@arista.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Boris Pismenny <borisp@nvidia.com>,
+	John Fastabend <john.fastabend@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	mptcp@lists.linux.dev, Dmitry Safonov <0x7f454c46@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/6] net/diag: Do not race on dumping MD5 keys with
+ adding new MD5 keys
+Message-ID: <202411071218.G7g6a8JG-lkp@intel.com>
+References: <20241106-tcp-md5-diag-prep-v1-1-d62debf3dded@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: parthiban@linumiz.com, linux-mmc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Yangtao Li <tiny.windzz@gmail.com>, Cody Eksal <masterr3c0rd@epochal.quest>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mmc: sunxi-mmc: Fix A100 compatible description
-To: Andre Przywara <andre.przywara@arm.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>
-References: <20241107014240.24669-1-andre.przywara@arm.com>
-Content-Language: en-US
-From: Parthiban <parthiban@linumiz.com>
-Organization: Linumiz
-In-Reply-To: <20241107014240.24669-1-andre.przywara@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 122.165.245.213
-X-Source-L: No
-X-Exim-ID: 1t8tyI-0040BA-0J
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.1.5]) [122.165.245.213]:38142
-X-Source-Auth: parthiban@linumiz.com
-X-Email-Count: 1
-X-Org: HG=dishared_whb_net_legacy;ORG=directi;
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfH+GeKiQ/3wizSx+MMiFDUNevWnDm64nHaon8lyN6XTt1rPURj9UHTlnnqMMQM3BqUvapmvuRS9LXcNziwKjQo/6c6i0HsAgPTvk9p/6M6MojG1ZMCb1
- rWXS+/F1iHvdreeN5v0tzdNU9ZezoquJ2oSuNWbMDfpNzgR3HeR40rIfdghAaru0yflKhVcNTQ8Vl7jPrRBODJoqYmbAPWLkzw0=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106-tcp-md5-diag-prep-v1-1-d62debf3dded@gmail.com>
 
-On 11/7/24 7:12 AM, Andre Przywara wrote:
-> It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
-> blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
-> And while this alone would make a trivial fix, the H616 falls back to
-> the A100 compatible string, so we have to now match the H616 compatible
-> string explicitly against the description advertising 64K DMA blocks.
-> 
-> As the A100 is now compatible with the D1 description, let the A100
-> compatible string point to that block instead, and introduce an explicit
-> match against the H616 string, pointing to the old description.
-> Also remove the redundant setting of clk_delays to NULL on the way.
-> 
-> Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Tested working with SD card in mmc0.
+Hi Dmitry,
 
-Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
+kernel test robot noticed the following build warnings:
 
-Thanks,
-Parthiban
+[auto build test WARNING on 2e1b3cc9d7f790145a80cb705b168f05dab65df2]
 
-> ---
->  drivers/mmc/host/sunxi-mmc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-> index d3bd0ac99ec46..e0ab5fd635e6c 100644
-> --- a/drivers/mmc/host/sunxi-mmc.c
-> +++ b/drivers/mmc/host/sunxi-mmc.c
-> @@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
->  	.needs_new_timings = true,
->  };
->  
-> -static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
-> +static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
->  	.idma_des_size_bits = 16,
->  	.idma_des_shift = 2,
-> -	.clk_delays = NULL,
->  	.can_calibrate = true,
->  	.mask_data0 = true,
->  	.needs_new_timings = true,
-> @@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
->  	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
->  	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
->  	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
-> -	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
-> +	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
->  	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
-> +	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+url:    https://github.com/intel-lab-lkp/linux/commits/Dmitry-Safonov-via-B4-Relay/net-diag-Do-not-race-on-dumping-MD5-keys-with-adding-new-MD5-keys/20241107-025054
+base:   2e1b3cc9d7f790145a80cb705b168f05dab65df2
+patch link:    https://lore.kernel.org/r/20241106-tcp-md5-diag-prep-v1-1-d62debf3dded%40gmail.com
+patch subject: [PATCH net 1/6] net/diag: Do not race on dumping MD5 keys with adding new MD5 keys
+config: arm64-randconfig-003-20241107 (https://download.01.org/0day-ci/archive/20241107/202411071218.G7g6a8JG-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241107/202411071218.G7g6a8JG-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411071218.G7g6a8JG-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from net/ipv4/tcp_diag.c:9:
+   In file included from include/linux/net.h:24:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> net/ipv4/tcp_diag.c:70:3: warning: variable 'md5sig_count' is uninitialized when used here [-Wuninitialized]
+      70 |                 md5sig_count++;
+         |                 ^~~~~~~~~~~~
+   net/ipv4/tcp_diag.c:60:36: note: initialize the variable 'md5sig_count' to silence this warning
+      60 |         unsigned int attrlen, md5sig_count;
+         |                                           ^
+         |                                            = 0
+   5 warnings generated.
+
+
+vim +/md5sig_count +70 net/ipv4/tcp_diag.c
+
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  54  
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  55  static int tcp_diag_put_md5sig(struct sk_buff *skb,
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  56  			       const struct tcp_md5sig_info *md5sig,
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  57  			       struct nlmsghdr *nlh)
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  58  {
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  59  	size_t key_size = sizeof(struct tcp_diag_md5sig);
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  60  	unsigned int attrlen, md5sig_count;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  61  	const struct tcp_md5sig_key *key;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  62  	struct tcp_diag_md5sig *info;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  63  	struct nlattr *attr;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  64  
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  65  	/*
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  66  	 * Userspace doesn't like to see zero-filled key-values, so
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  67  	 * allocating too large attribute is bad.
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  68  	 */
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  69  	hlist_for_each_entry_rcu(key, &md5sig->head, node)
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31 @70  		md5sig_count++;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  71  	if (md5sig_count == 0)
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  72  		return 0;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  73  
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  74  	attrlen = skb_availroom(skb) - NLA_HDRLEN;
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  75  	md5sig_count = min(md5sig_count, attrlen / key_size);
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  76  	attr = nla_reserve(skb, INET_DIAG_MD5SIG, md5sig_count * key_size);
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  77  	if (!attr)
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  78  		return -EMSGSIZE;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  79  
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  80  	info = nla_data(attr);
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  81  	memset(info, 0, md5sig_count * key_size);
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  82  	hlist_for_each_entry_rcu(key, &md5sig->head, node) {
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  83  		/* More keys on a socket than pre-allocated space available */
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  84  		if (md5sig_count-- == 0) {
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  85  			nlh->nlmsg_flags |= NLM_F_DUMP_INTR;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  86  			break;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  87  		}
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  88  		tcp_diag_md5sig_fill(info++, key);
+4a6144fbc706b3c Dmitry Safonov 2024-11-06  89  	}
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  90  
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  91  	return 0;
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  92  }
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  93  #endif
+c03fa9bcacd9ac0 Ivan Delalande 2017-08-31  94  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
