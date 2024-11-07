@@ -1,197 +1,133 @@
-Return-Path: <stable+bounces-91831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46729C07DD
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:44:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFC29C0824
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41140B219A9
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:44:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C085D1C22FD7
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23612101BF;
-	Thu,  7 Nov 2024 13:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0272212D30;
+	Thu,  7 Nov 2024 13:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rmvDk99G"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="UL9C46wI"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2052.outbound.protection.outlook.com [40.107.101.52])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EA02101BC;
-	Thu,  7 Nov 2024 13:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730987046; cv=fail; b=k02UJFVzDzVCUYVF29ZRVbhj4Kwbv2cFlQnholrUxOYBIxbjQYdJ+fGBtw/2pKa/OALRUVEjS/t4TcGVdqcxStHeDvj2mNS8CaVDm3ipfUTIG4cxMrAAMDi1oBr0jG1M6DwJbesEk0Hazy/AtsHP7dlk/+zfuQ7X12p2lozDcLA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730987046; c=relaxed/simple;
-	bh=3Hpyqx6Ra+nie0mPUDM3Cw28x79usYgKDEKEdi0P/Cg=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=LPcb9f8OdS1wqYTPMar3JPLnHYq/24Yt5l5hB+ZQeqs2GSLItXSc0B/WB6B4NAb3ZH1VIrefPzJMlu6Owr5Es7lH4x7YTeMWx/M6Q9Oclhm2egIWPF/Vdr5yfIZAM3MVBUiSWwHsdcDT37hAahrLm/9BWchQ+xQruPiMPG/zWCw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rmvDk99G; arc=fail smtp.client-ip=40.107.101.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hk13u8FEDsbrJmrzahtevMfIGybE8QFgehmlyvftBqhi3na+Vdg/BG0E0CAR301PJ5AuLJBJiNxFWiFw3bNqqk2ZQRtQnS/OMryj4Ja/+unpOmTVkeo6EfywZW3gW8OCEGDJ+mpmRLKK+XxMdo8YMxCepoYSf+1ww7QgCRmR0ceaqCmx/32DKXlbvxEMgJqZ+8k3f59TDxR9olcgdWmwnCKUk7zKG+CbDQnH4fYLUmVRGh7lR+2BTdN7ibTfGKeeSJubNh6Wnd1i9SIL2Taqf+weq9yvGi3REt2QAzHt1zgEmSqDFZyisDMspCxr8LEAfk/9jalGBkW1hntyVsqoQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9FDi3P9/rL6wU0tPPx2P1WUYAS4j5jHhUOaTW+84U20=;
- b=Jb/7L9RloDW81ZcBQwzBxKzNZzvjR43CSwpgewEdwFYgBY2GDvQG23S7R6JoQQ2n6VqIEeYrJilabZ1o6B4HxXP3Cy6B4kb5Wo/HXOb8zQXlFC3OQkhrHbT3M+JI1VUtRamDMcbMHn3syuKJCve5WtyUr4tDlmGJKeZdxI/aFf47+IyxOlC1NQa+TT+CvmSBjLjSnidaiV+zRqlWHJgLmd4yv8riefAoHUMDaa6reBIz80Ak8ZfSzWF/rwpbw8yAh1XPEbTwrP6RHLfhIjhZUNGdx/hWDNAF+QMDprPwkF9pZ385DXm4/Vzr5IJtjLcerUiOP37sPOPt07s1LSsPDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9FDi3P9/rL6wU0tPPx2P1WUYAS4j5jHhUOaTW+84U20=;
- b=rmvDk99GEwzeczg1lkLEMR7gLBp5n+RT9FPBKK2UM66YOZMdcpOGcEAK+Hmy4BRQ98bA36gi5W6hc6Ll65WUDqC08wldELnuLlB98LsNJ/xIITO0u1G8h/YI9qDCAzAD/HxQo+8y5vGT5zBSHUnhwrr6eScIjenJd4ix91WC+mPCOZ6PM7ZGAbHTyTYtDGIwCKHB6I0tAaYAhEOHi8xj5KpPIeMP27MIa7YZ1y8auuVDeoJkBOb2ji8wwSDb04lIil8m8lHcKHyyFuFJRPeNSwi/EaP4zox39+vUuOvUy8qiyfdMKKp9mnWD7SzO6pe007nbkigMEMFsyMqx8pLInA==
-Received: from MN0P222CA0014.NAMP222.PROD.OUTLOOK.COM (2603:10b6:208:531::21)
- by DM4PR12MB7743.namprd12.prod.outlook.com (2603:10b6:8:101::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Thu, 7 Nov
- 2024 13:43:58 +0000
-Received: from BN1PEPF0000468C.namprd05.prod.outlook.com
- (2603:10b6:208:531:cafe::99) by MN0P222CA0014.outlook.office365.com
- (2603:10b6:208:531::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19 via Frontend
- Transport; Thu, 7 Nov 2024 13:43:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN1PEPF0000468C.mail.protection.outlook.com (10.167.243.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8137.17 via Frontend Transport; Thu, 7 Nov 2024 13:43:58 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 7 Nov 2024
- 05:43:48 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 7 Nov 2024 05:43:48 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Thu, 7 Nov 2024 05:43:48 -0800
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hagar@microsoft.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
-In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
-References: <20241107064547.006019150@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A583212649;
+	Thu,  7 Nov 2024 13:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730987491; cv=none; b=nKQ6yz5jYMevNac8AEQTWv7BuuTHdp9sElDUY3KoMWFG9wZXBIijIBgiE32rYoNqNvLtVqu5dHXRvzfhzW5pgMyBsfn5L3eLGP5MKWjWDkNmdgxF0KNQQHXq4V7HZLbKBcXDqTK/bH4FZJp1elBDoTMbMfZFG4t+1kLm2NHo+ZI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730987491; c=relaxed/simple;
+	bh=zTRFksBbsZzucVoizkgeACRdDVFfkWx96qifjGvnPlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pp9HgXCgeWlXbNy34fso9WfD5q5DGxh3kccDFPlmxDS5kOTvimC8rAueR0NFzqiO3BOgIEepj4Oqs3S2i3FgsWxGDjoRu+C2iIVByX7IFfzGgqImEx8HmYo1qIqp5CYp+pUQGCUKCYPnSGwBrcSfCYJUzv8UkzY5mhiaToUuC7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=UL9C46wI; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=HX5GOJc4ky/+VuvmS4Zsp8lqZ9shMfpMhaTLW2ZnQSg=; b=UL9C46wIqeoRxhjiykWkxyJJxP
+	LxD3vx0burgeau+IFu4BtQ1bd4iQaUyO8wGDlQFjSSzjVim1OAyTgxSELRPGo8NRGhfsf9CjlP9N3
+	HZTKi77yo+zIhDj1Fs+nyPuU3dJSBv53oWw85C7IQpdGW8nNn4/cUfpr347PIVIKysgAkAn8oUyuK
+	Hctki9lGI0O4ZDVyFcaMj6PkPZrhXzkcqblrCpgJ74TIT4fuuiap/C/FQxWP4HkbUq7YQae/QqSKN
+	PeMmvMI4MJH0LmDVpHAvSu/9Jl/cXF/ipe+/DuG8tzexcAe7/T3M8DSjsk+1OcFjFznnygLIABiM+
+	ihKq9SpQ==;
+Received: from i53875b28.versanet.de ([83.135.91.40] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1t92ua-0006Xa-JT; Thu, 07 Nov 2024 14:51:00 +0100
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Jiri Kosina <jikos@kernel.org>
+Cc: lee@kernel.org, jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+ srinivas.pandruvada@linux.intel.com, bentiss@kernel.org,
+ dmitry.torokhov@gmail.com, pavel@ucw.cz, ukleinek@debian.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale platform-data on
+ remove
+Date: Thu, 07 Nov 2024 14:50:59 +0100
+Message-ID: <4934964.GXAFRqVoOG@diego>
+In-Reply-To: <nycvar.YFH.7.76.2411071358210.20286@cbobk.fhfr.pm>
+References:
+ <20241107114712.538976-1-heiko@sntech.de>
+ <20241107114712.538976-2-heiko@sntech.de>
+ <nycvar.YFH.7.76.2411071358210.20286@cbobk.fhfr.pm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <db5a1c31-bd26-46f4-ae25-12646627eb54@drhqmail203.nvidia.com>
-Date: Thu, 7 Nov 2024 05:43:48 -0800
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468C:EE_|DM4PR12MB7743:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1e55d2b-9ff7-4ccd-936d-08dcff323b25
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q3JpRlluQ1BwdmpnRFFsaE15WDAzK1EwbW1NYURQUXZTY3dIS0VBSXVBTUxB?=
- =?utf-8?B?SnhUdGV0TFVIZzB1ZDJ2RGZlN3JRWkVVRytRSEY3NXpra09TekpZdHBNT3Rp?=
- =?utf-8?B?bmRJQnFjVnlhaSthdlFSdG1Gb0kxWXRLMiszdFNwUDNYOEI5dGhBQjkzVzRn?=
- =?utf-8?B?OHdycWFHcGREUkc5aVQ3bFI3czRnNXRlVkNSeWNkWTcya0V1WlFtbzB0MW03?=
- =?utf-8?B?Z2tDVHBvZTBJMEtGSmNRNzU3Y1NWWmlSRENZMmpUdDlvQXJRTFlvZER6NCs2?=
- =?utf-8?B?ZTVYa2QxZWxJSEUzQjlXRnJJSE9lWWVhODRkTVBmWkJvT3Z4aWpMb2NzeEk3?=
- =?utf-8?B?N2JGbHJ1L1pEYUN6ZTFLRWxJSVdZZEtIYXQvMGxBRVBObmozNkFBc3JqQkND?=
- =?utf-8?B?cithZ0dPdlRFQmNaUk5VV0FyYm5hK1NrR2ZaUHZnNlNJYUVVOHcxOGZ0enlE?=
- =?utf-8?B?ZmJveTIxeU1mcDZYZ01Xb3M2b0ZMOE9XM3NkMnJkSmNoekE3cnNLTzZoU3dy?=
- =?utf-8?B?MnJXWWsvL091RCtIZmhVQUlHdmdYSldOR3ptTGErL3FvMkozOWI4ci9JVnNq?=
- =?utf-8?B?aEVLdjdyRDdFSnVKb3lMVnNmcFBCNXpncEZ5N2hsWmtsOXVpcU1uNUFXaUow?=
- =?utf-8?B?d1l4UEJ2TWQwa2hiY0JBV3hZUVYvbkFES1dqMEk5azNvMWM5eTA3eCtQZitF?=
- =?utf-8?B?TmlCcEs3KzJTK3cyMFc2citVUjJET0xpSWJMa0xadXJXQ1lMQ2ptOERJRG55?=
- =?utf-8?B?MWFiMWNYTlhnSzV6V1l6eUYrOC9pL3BnOXF4NDM1R3JRQUQxbStTNUMxRnlU?=
- =?utf-8?B?ZHpQcUJxLzFDV0RVSjJDcXFwZUFtMVpXMXFXUkk4WVdnYSs2Q2I5bzJsaTJN?=
- =?utf-8?B?cVpmSUpiRWNKcWNBMC9STWxGaUZCVXpXNXU1NHMvVzErWFVrbnI1dHpxLzdu?=
- =?utf-8?B?bzFZTzlUY0VhM0dGWG5mYTdLNWNmbW83TXUxZWdFQ3NyVzhUTGtjRTVJcW5y?=
- =?utf-8?B?UVJvMVMzQkwrWE93bkNRWjRoUGJ0Uy8reDQzM00zMmpzaUxjVlNqSGo2ZER3?=
- =?utf-8?B?Mks1bWdxQTFjTkJRQzFwUXJmaTdLTDdvakkwSHdzWWZZYzgrRGx4RjZ4TWhD?=
- =?utf-8?B?NjVLV1dHNW5oZnE5V2hFN1M5L2d5Rml1UVRmVUsyTFNOdkpscVVYT2c1V1Zh?=
- =?utf-8?B?MXFRUzNHWXdVYStwKzlwTUdpYkpzNmc3UXo1WWtBVytERDdWY3JoOUZGaFJl?=
- =?utf-8?B?eVdjbFBFb0lHSFNkdXZEYzBZRG94TjFwQmFVdmNlZjZiVlhUNUJTZjhxUnNI?=
- =?utf-8?B?cWVnQVR6dGZmT2I5V2JWdWZvZitMWGhTTU5WcVdPeXJDN3g5eTZwZ29Cdzly?=
- =?utf-8?B?aW5jTGlmK0lwMGNhT214LzNjUXdVb2J3dXFSdlBrVEJGM0J5OFZKRFprT0d2?=
- =?utf-8?B?NmlBNkl2NGdVbHJMMklkK3BycldEaUcwVU5HTzhWNGJJeDVEYTRkZTk0cVQv?=
- =?utf-8?B?eDJJTmtFME1Xa0xIamRqOHdOS25zY0NROE5RYytRZnpuL29INUZmejc1dE10?=
- =?utf-8?B?aWZ3ZTcxTmc1V3gvaWFVWm5PTld1ZWVuTm1vc3VJL2dYZStiZVlQc3N5dnVT?=
- =?utf-8?B?bWtvWVg2Z3NOTkNIWFJJOU9KaHp1MG94bUlLZTdQeDdzT3ZOZ0Q3NFZjNVdU?=
- =?utf-8?B?SVNVYmJpZW5kRjN4QlZUanJaYk9hRHl6dmpmNlRFT01VWXNrcXlGWHNUWlc2?=
- =?utf-8?B?b00xcUxFMmVKZk9KWk5hd1NVTSs1SXV0VHRZeXJtODd2Mnl1OXdqdzZ5anl0?=
- =?utf-8?B?ZkxjZWdqU2MwMTZTOU9sYUpOZHhFTnJ2YXFvVUFjbWJxQ1ZMQm9kN2tLNU4z?=
- =?utf-8?B?RFowaURLUVJmQ0FnSldPZUtKYjhMcGFHSzRGcW84K1lWZGc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 13:43:58.3502
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1e55d2b-9ff7-4ccd-936d-08dcff323b25
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468C.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7743
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 07 Nov 2024 07:47:28 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.7 release.
-> There are 249 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Jiri,
+
+Am Donnerstag, 7. November 2024, 13:59:04 CET schrieb Jiri Kosina:
+> On Thu, 7 Nov 2024, Heiko Stuebner wrote:
 > 
-> Responses should be made by Sat, 09 Nov 2024 06:45:18 +0000.
-> Anything received after that time might be too late.
+> > The hid-sensor-hub creates the individual device structs and transfers them
+> > to the created mfd platform-devices via the platform_data in the mfd_cell.
+> > 
+> > Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+> > the sensor-hub was managing access centrally, with one "completion" in the
+> > hub's data structure, which needed to be finished on removal at the latest.
+> > 
+> > The mentioned commit then moved this central management to each hid sensor
+> > device, resulting on a completion in each struct hid_sensor_hub_device.
+> > The remove procedure was adapted to go through all sensor devices and
+> > finish any pending "completion".
+> > 
+> > What this didn't take into account was, platform_device_add_data() that is
+> > used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+> > platform-data. So the data the platform-device gets is a copy of the
+> > original data, meaning that the device worked on a different completion
+> > than what sensor_hub_remove() currently wants to access.
+> > 
+> > To fix that, use device_for_each_child() to go through each child-device
+> > similar to how mfd_remove_devices() unregisters the devices later and
+> > with that get the live platform_data to finalize the correct completion.
+> > 
+> > Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+> > Cc: stable@vger.kernel.org
+> > Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+> > Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.7-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
+> Acked-by: Jiri Kosina <jkosina@suse.com>
 > 
-> thanks,
-> 
-> greg k-h
+> Are you planning to merge this together with the rest of the set, or do 
+> you want me to expedite it? I'll be happy to apply it separately as a 
+> proper fix.
 
-All tests passing for Tegra ...
+This change was more or less a surprise find, because I wanted to make
+the platform_data pointer in the mfd_cell struct const and this the hid
+sensor hub stood out as doing something strange ;-) .
 
-Test results for stable-v6.11:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+So patch 2 of this series actually depends on this change to not cause
+build errors.
 
-Linux version:	6.11.7-rc2-g504b1103618a
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+But seeing that we're after -rc6 alredy, I would assume the brunt of the
+mcu series might need to wait after 6.13-rc1 anyway - but I guess that
+depends on how Lee sees things ;-) .
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Jon
+Heiko
+
+
 
