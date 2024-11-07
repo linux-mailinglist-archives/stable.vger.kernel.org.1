@@ -1,108 +1,98 @@
-Return-Path: <stable+bounces-91845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE919C0937
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:48:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1879C095F
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C45EB23B9C
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:48:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBAE1C239A8
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A722E3EB;
-	Thu,  7 Nov 2024 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8BB20FA81;
+	Thu,  7 Nov 2024 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O5G3Ekie"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwabX0Bt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A913120ADDC
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 14:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F761DFDB8;
+	Thu,  7 Nov 2024 14:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730990921; cv=none; b=XWMMLqvJONA6nt4+6ClYQA0ZPJeEoF/xrfY1xHdQaLG5FNcZKbqoygGfG3yPKKYtLKAkdDY58+F3xZ7d/GFUL/5+06ZJBOzSNzVWIrHZw55Kb2CrGSnCSMRJ3tJc68TMdYI7Ywlw9UfurBk6pAJQ8Nm+VWg/C7CBhSKdRHOGozk=
+	t=1730991319; cv=none; b=ZMRnql0ifdCHCObUXbOqJ2rhFVoDE7x4WNcHoLEOge/PeLdJ6AVRpviDB6XqxjVBGn6CGAgedkzVPn0zWhOA9eXzab7iVFGH7oULR3AiV5h5k/XlKpu1BxDiy/jnxKxiKo3iNuj6guZNc306YHXH1IQQ9NLJX7XGyErv0479c8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730990921; c=relaxed/simple;
-	bh=obhoIviuaHhyC0A/b6MUfz2+yt0S4BGH+02rVk3sulM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cG43V44czIYJ6LqwDy+ZLwt0kFfDqXuewJPoDtVC02pRklxugsjPKUejWKiS+ytIV8/fJYzGXCmCeJAiyrdicqKEx9cZL7jKpGZdo4OeFZZzZ+TnSE21ikzj7fjp/uX1gLwtBFegs3N4M/iEemeJ9x1YFUEqvmB7KW1q5OoBcWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O5G3Ekie; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-460b295b9eeso204701cf.1
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 06:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730990918; x=1731595718; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=obhoIviuaHhyC0A/b6MUfz2+yt0S4BGH+02rVk3sulM=;
-        b=O5G3EkieW9L0MQfe8C66bOQaypazCsfoQ54cmZq/jKsw+P60LAPgn2erRJgbAfIKxT
-         cvNe30JeYxDj4jmo/RCxDmJq0hhyeiXJHowq4n9IGVMt25sNSFnxwiZB20at3fHj6Nvi
-         dYKAxVZHyjZO/bCDEARf1ge36SbkwcSpMH4PbtwHTIpI4aosnJqTFylNF6OfLeGhEEFa
-         nQgTv8/SsztI3Hv7lDjacctPOsdocehWYQjpjdcqjkCbKEtWhiwckUkbII8f56YIX1Fg
-         RnjFtX0pcCi+i/0WhBl1pKtHfhuvvPUpZbPt1sFkcLvEPbd8MtgxhwmSYLPXymjqXyy0
-         IUuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730990918; x=1731595718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=obhoIviuaHhyC0A/b6MUfz2+yt0S4BGH+02rVk3sulM=;
-        b=tFepMEF5jjJYjpwryEoCWQ9GBmYVOSCsNY6YXRhf+g+sJ5WnruUFqZ7a8P5Q5b9ObG
-         tSoJRiX7dt9irRBMjCkYRgJyKzOAPvLIE5wB6C7RLDe1WE5++LFCn/mWFtPy5Kg/hpBP
-         h+FoQBsn0qp5o+mF5sb1zYQ846BJYc+krnz8MITifR4PSRo7BCkI0yuRbewXEaEglDkk
-         VjF3nvdCQpAg7FhzVJpEip+pqipbuqigww6fAShqpBzOBMpPY5oHCp/WfpTynuueJj5/
-         gBmiU+A+1FnUVnRXczqXdHamNapwdwQ/MgS6ZiksNGb0EkzmOA9DPqdhK7Y8qMaESPUJ
-         uWRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcNfmBHs1CYNmIHiBwl93yDbTzl1zFZitn0+iUHHX2ok3UEAIsYxby0t4oRT/UR9v5ll0wioE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGxwA27AhgBoXXlRlnQ1vs349ZkPMUJRktyK2QyZOY0MRr8zMJ
-	f4qxZkC93deCj98q9Cr4Ntu3OKc5AvTReMX6q8cOvTT/1T4ak3hwVPCyoHKfSFQy8UGXVyGd+7I
-	rd8VgIc391e4/foG1iWjI94n4TO4lJH4oUxudq/B91TbteK0kt3iW
-X-Gm-Gg: ASbGnctgL6p0S6j4UpmlwBck6+lauMTetRpTOU7pTrGlT60SWFff/+npQNLruw6C1Py
-	6mwdhSXuWPlswl2xMkehQqHGnuSISbu5JRxMB37JoRHXX5qO5Ri12jv2fsvt7
-X-Google-Smtp-Source: AGHT+IFUtxSOl7YCdaawpBadONVmwESllKbqlKdDYg3jdy0lj0KRfJTQJdUdOzWNrbgKvlM+eMv7ydh90ffq9ljzyjQ=
-X-Received: by 2002:a05:622a:528b:b0:461:3e03:738b with SMTP id
- d75a77b69052e-462fa619d72mr4247661cf.19.1730990918259; Thu, 07 Nov 2024
- 06:48:38 -0800 (PST)
+	s=arc-20240116; t=1730991319; c=relaxed/simple;
+	bh=K5+gjFHFUygX0x3HkOo96uYxYFByfgO4woehcB3CLcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LToLFlk6+AC+nJxjKXOVCaCmoDlSm86MBlEPtmX6/eRGRkt7Qscipq6sr/jogMmWdFPABqEmNtvAJ2D5ZeF9HA336hLw1yNkwCVwPgduszwKXay+SvaiyhG1EPe3dsZ+unLsTvIBP4Ls+/xyywvjm339M7w1pXaFK/RXhfZv5JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwabX0Bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFD0C4CECC;
+	Thu,  7 Nov 2024 14:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730991318;
+	bh=K5+gjFHFUygX0x3HkOo96uYxYFByfgO4woehcB3CLcE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gwabX0Bt3r9b/wEYR2LijvJ9TbY6clKCOV+tUc8Uz7aIdmmksaSERHaKFMq0DnKS8
+	 ZDKuHgspcp1t3w6V5jVEKCyes+oN7Xr4KX9HosFYNuU6QNFlEV8Rdbz/k1TRnlncsQ
+	 Z/rg2AK3hT03kdyageX10zr3112y+mvFur5OJs+ZtmSKIjB2N82SZr6Vt87phG+uRz
+	 oxBKWy/qgv2WJYnmKuA8oSkN2LGHHB0QHih9Y6hH8UHdU6VZPdxTis2MUTmf1kBGP1
+	 JhgOMgxnvZV18xlI47L4zP8dEdNpPvdbyBmWNr/piOiX+pMGdmBiaPMHsQEiJ+AHQx
+	 n6TFcgbCt/4aA==
+Date: Thu, 7 Nov 2024 14:55:12 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hagar@microsoft.com
+Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
+Message-ID: <df4c9a3b-7fb2-42fd-ab10-94cfa7e70979@sirena.org.uk>
+References: <20241107064547.006019150@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241106170927.130996-1-surenb@google.com> <2024110700-undertone-coastline-7484@gregkh>
- <2024110725-goofiness-release-bd30@gregkh>
-In-Reply-To: <2024110725-goofiness-release-bd30@gregkh>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 7 Nov 2024 06:48:26 -0800
-Message-ID: <CAJuCfpFRH_TMJ4v+KsaLMi__yaHg9Agg-HdyUFdHzc=3MeMTnA@mail.gmail.com>
-Subject: Re: [PATCH v2 6.11.y 1/2] rcu/kvfree: Add kvfree_rcu_barrier() API
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: akpm@linux-foundation.org, fw@strlen.de, urezki@gmail.com, vbabka@suse.cz, 
-	greearb@candelatech.com, kent.overstreet@linux.dev, stable@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IUTVW+fggAyrcTk5"
+Content-Disposition: inline
+In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
+X-Cookie: Professional driver on closed track.
 
-On Wed, Nov 6, 2024 at 10:46=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Nov 07, 2024 at 07:37:43AM +0100, Greg KH wrote:
-> > On Wed, Nov 06, 2024 at 09:09:26AM -0800, Suren Baghdasaryan wrote:
-> > > From: Uladzislau Rezki <urezki@gmail.com>
-> > >
-> > > commit 3c5d61ae919cc377c71118ccc76fa6e8518023f8 upstream.
-> >
-> > No, that's not the right git id :(
->
-> But it is the git id of the fixup patch that I also need to take, so now
-> grabbed, thanks for making me look :)
 
-Sorry for the confusion. Sounds like you sorted it out :)
+--IUTVW+fggAyrcTk5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->
-> greg k-h
+On Thu, Nov 07, 2024 at 07:47:28AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.7 release.
+> There are 249 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--IUTVW+fggAyrcTk5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcs1M8ACgkQJNaLcl1U
+h9Ct0Qf/WZL5vpyyXrZS9JZqKeUYwjJtFkwo1GFXPKOSBifK9MG8hmHHQVLbLmj6
+VUuutYsYJgry35r4NPCw3mGTqg+P3zyY3MIDPZYhXlv7figi9a0NabbHe4QEC/Ti
+0ExFu5oIuJq2XfWyzG+1WCpURuPNVh6+wuv+POg6ufnN37ODQu7NjMOyYDqc/F0H
+E71YdviNzQ+ljILNxZeV0GstCmjQ8ak4L8vuJoC1kBN8SkQqvdR3QEz0DLy/hBxz
+WrBhu5Uk3jIZsycj0NkSHHt59HmY9v8TLXh/MOcF3w+JTjQUgrPXxIQGtNvHukvJ
+MjCqfOVk6PZ8pggPFl3u0O6OAWoR3A==
+=PX4Z
+-----END PGP SIGNATURE-----
+
+--IUTVW+fggAyrcTk5--
 
