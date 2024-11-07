@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-91871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F89C1191
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 23:15:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950269C1192
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 23:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6E01C22287
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:15:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5DE1C22279
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17F5219487;
-	Thu,  7 Nov 2024 22:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20772194A2;
+	Thu,  7 Nov 2024 22:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yLAodZYy"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XQZ23+k4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754D3217916;
-	Thu,  7 Nov 2024 22:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5F7218D6F;
+	Thu,  7 Nov 2024 22:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731017730; cv=none; b=tvxl/Me2hNSpIXEq5+lKpxTYX4D2bNzAWKkTZBKIWuhU1arom4Sex87Ts5NHLObcsAPJAv1Vp3I4H85xX58AbQ5F6dBLdc6CkXJALS2W9B2wX0bWT4gvzARMUCT9FNIAQSvexATwhbQJG1ZuGQxdO7E24ihMA8mgqFGKoGGK974=
+	t=1731017732; cv=none; b=K4jTNjO7rm/Q/P3hs5wu0vxuTiKUID0WgctUcGI31J/IadXlHveXIUftRh71Ym/fHaTuP1PM7YuMTs7ixz8l/pq//ZUnJMrEcUAsyomSz0Eyth8Me4R1nzo8/wZFZfcYRGSOyJZ30px4O5dqDpTHe7xAx3WJqVZrUFQJynJbXKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731017730; c=relaxed/simple;
-	bh=uO0iuNbkrnND2QDK2dCe7e8Jx/us+EzUepdSAZp+2Ng=;
-	h=Date:To:From:Subject:Message-Id; b=HXV+6kQJPda1Tm1yXn6tKi6nGDyd/qmadB4t99HgHLfwn7Yzm5miy7xrKpJciC6+9/kRSpfI+VKUeK2JugFvH/N8AT/307l8zqfaemh4xlD+OJPn+Io7aa3jSspg745Qp9o10YO42qGkelFftDmduPXdTYly078Yck1lOhURyYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yLAodZYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3919C4CECC;
-	Thu,  7 Nov 2024 22:15:29 +0000 (UTC)
+	s=arc-20240116; t=1731017732; c=relaxed/simple;
+	bh=fhxwnsqenNHL1v16W2Mb1XPqeJ3+IY5yeh82gTYDn0g=;
+	h=Date:To:From:Subject:Message-Id; b=h5+XcyMhyQg+bgNKp6du5K+4qcNhjOrIipYS/JjqtLxNV2C10SKHh5hLRisynxpnu1j0+rJSaYubVeprI4fmrP3Pw2E6/h3fX6fmARwdgLI93r8dBD0D5XgwD/pt4Sk8HL8wjAOQEwB4EJ4qUWbZy2tpB3Oq73g9If9BcdGvQSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XQZ23+k4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1662C4CECC;
+	Thu,  7 Nov 2024 22:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731017730;
-	bh=uO0iuNbkrnND2QDK2dCe7e8Jx/us+EzUepdSAZp+2Ng=;
+	s=korg; t=1731017731;
+	bh=fhxwnsqenNHL1v16W2Mb1XPqeJ3+IY5yeh82gTYDn0g=;
 	h=Date:To:From:Subject:From;
-	b=yLAodZYyPiwZ9Roe0Z7hYhdviRhj1jVGEkqr8o84FFHLuDLNngW5b3kxqyfSaOdgo
-	 u2CIlCCz1tiYu2UFN09KryS3HR7oMddw7mUsarkaiGToRcE68ZeqQGB8n6nkZGqEk2
-	 OMssYutC7yS+QqaqMzy89kOUApPUUQ8ONgoFMxyw=
-Date: Thu, 07 Nov 2024 14:15:29 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,linux@roeck-us.net,sj@kernel.org,akpm@linux-foundation.org
+	b=XQZ23+k4l4mV5dAKxZhwDlnzdH88DBePUh03AYefQPfCbTpY3yZEfVTXgXQY+sDFN
+	 aUW9kNF6+UDlHVm0EXfKdemUgwIKFEXuAIv7TZA0St+ETxdsVvosnCSfUp9vIMJy7J
+	 VaeQ7o15a3BIgAck0liLV1bxfH28gkcdVTzz3Kd8=
+Date: Thu, 07 Nov 2024 14:15:31 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,donettom@linux.ibm.com,usama.anjum@collabora.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-core-avoid-overflow-in-damon_feed_loop_next_input.patch removed from -mm tree
-Message-Id: <20241107221529.F3919C4CECC@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-hugetlb_dio-check-for-initial-conditions-to-skip-in-the-start.patch removed from -mm tree
+Message-Id: <20241107221531.D1662C4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,94 +50,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/damon/core: avoid overflow in damon_feed_loop_next_input()
+     Subject: selftests: hugetlb_dio: check for initial conditions to skip in the start
 has been removed from the -mm tree.  Its filename was
-     mm-damon-core-avoid-overflow-in-damon_feed_loop_next_input.patch
+     selftests-hugetlb_dio-check-for-initial-conditions-to-skip-in-the-start.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: avoid overflow in damon_feed_loop_next_input()
-Date: Thu, 31 Oct 2024 09:12:03 -0700
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: selftests: hugetlb_dio: check for initial conditions to skip in the start
+Date: Fri, 1 Nov 2024 19:15:57 +0500
 
-damon_feed_loop_next_input() is inefficient and fragile to overflows. 
-Specifically, 'score_goal_diff_bp' calculation can overflow when 'score'
-is high.  The calculation is actually unnecessary at all because 'goal' is
-a constant of value 10,000.  Calculation of 'compensation' is again
-fragile to overflow.  Final calculation of return value for under-achiving
-case is again fragile to overflow when the current score is
-under-achieving the target.
+The test should be skipped if initial conditions aren't fulfilled in the
+start instead of failing and outputting non-compliant TAP logs.  This kind
+of failure pollutes the results.  The initial conditions are:
 
-Add two corner cases handling at the beginning of the function to make the
-body easier to read, and rewrite the body of the function to avoid
-overflows and the unnecessary bp value calcuation.
+- The test should only execute if /tmp file can be allocated.
+- The test should only execute if huge pages are free.
 
-Link: https://lkml.kernel.org/r/20241031161203.47751-1-sj@kernel.org
-Fixes: 9294a037c015 ("mm/damon/core: implement goal-oriented feedback-driven quota auto-tuning")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/944f3d5b-9177-48e7-8ec9-7f1331a3fea3@roeck-us.net
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Cc: <stable@vger.kernel.org>	[6.8.x]
+Before:
+TAP version 13
+1..4
+Bail out! Error opening file
+: Read-only file system (30)
+ # Planned tests != run tests (4 != 0)
+ # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+After:
+TAP version 13
+1..0 # SKIP Unable to allocate file: Read-only file system
+
+Link: https://lkml.kernel.org/r/20241101141557.3159432-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Fixes: 3a103b5315b7 ("selftest: mm: Test if hugepage does not get leaked during __bio_release_pages()")
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/core.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/hugetlb_dio.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/mm/damon/core.c~mm-damon-core-avoid-overflow-in-damon_feed_loop_next_input
-+++ a/mm/damon/core.c
-@@ -1456,17 +1456,31 @@ static unsigned long damon_feed_loop_nex
- 		unsigned long score)
+--- a/tools/testing/selftests/mm/hugetlb_dio.c~selftests-hugetlb_dio-check-for-initial-conditions-to-skip-in-the-start
++++ a/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -44,13 +44,6 @@ void run_dio_using_hugetlb(unsigned int
+ 	if (fd < 0)
+ 		ksft_exit_fail_perror("Error opening file\n");
+ 
+-	/* Get the free huge pages before allocation */
+-	free_hpage_b = get_free_hugepages();
+-	if (free_hpage_b == 0) {
+-		close(fd);
+-		ksft_exit_skip("No free hugepage, exiting!\n");
+-	}
+-
+ 	/* Allocate a hugetlb page */
+ 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
+ 	if (orig_buffer == MAP_FAILED) {
+@@ -94,8 +87,20 @@ void run_dio_using_hugetlb(unsigned int
+ int main(void)
  {
- 	const unsigned long goal = 10000;
--	unsigned long score_goal_diff = max(goal, score) - min(goal, score);
--	unsigned long score_goal_diff_bp = score_goal_diff * 10000 / goal;
--	unsigned long compensation = last_input * score_goal_diff_bp / 10000;
- 	/* Set minimum input as 10000 to avoid compensation be zero */
- 	const unsigned long min_input = 10000;
-+	unsigned long score_goal_diff, compensation;
-+	bool over_achieving = score > goal;
+ 	size_t pagesize = 0;
++	int fd;
  
--	if (goal > score)
-+	if (score == goal)
-+		return last_input;
-+	if (score >= goal * 2)
-+		return min_input;
+ 	ksft_print_header();
 +
-+	if (over_achieving)
-+		score_goal_diff = score - goal;
-+	else
-+		score_goal_diff = goal - score;
++	/* Open the file to DIO */
++	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
++	if (fd < 0)
++		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
++	close(fd);
 +
-+	if (last_input < ULONG_MAX / score_goal_diff)
-+		compensation = last_input * score_goal_diff / goal;
-+	else
-+		compensation = last_input / goal * score_goal_diff;
++	/* Check if huge pages are free */
++	if (!get_free_hugepages())
++		ksft_exit_skip("No free hugepage, exiting\n");
 +
-+	if (over_achieving)
-+		return max(last_input - compensation, min_input);
-+	if (last_input < ULONG_MAX - compensation)
- 		return last_input + compensation;
--	if (last_input > compensation + min_input)
--		return last_input - compensation;
--	return min_input;
-+	return ULONG_MAX;
- }
+ 	ksft_set_plan(4);
  
- #ifdef CONFIG_PSI
+ 	/* Get base page size */
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from usama.anjum@collabora.com are
 
-selftests-damon-huge_count_read_write-remove-unnecessary-debugging-message.patch
-selftests-damon-_debugfs_common-hide-expected-error-message-from-test_write_result.patch
-selftests-damon-debugfs_duplicate_context_creation-hide-errors-from-expected-file-write-failures.patch
-mm-damon-kconfig-update-dbgfs_kunit-prompt-copy-for-sysfs_kunit.patch
-mm-damon-tests-dbgfs-kunit-fix-the-header-double-inclusion-guarding-ifdef-comment.patch
-docs-mm-damon-recommend-academic-papers-to-read-and-or-cite.patch
-maintainers-memory-management-add-document-files-for-mm.patch
 
 
