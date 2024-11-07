@@ -1,169 +1,175 @@
-Return-Path: <stable+bounces-91833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884AF9C082D
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:54:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5601E9C0888
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1872F1F2333B
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA62B1F22173
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010EA21262B;
-	Thu,  7 Nov 2024 13:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A64F20FAA9;
+	Thu,  7 Nov 2024 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X8sXirSQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OAz8AVST"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E8620F5AA
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 13:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5822139CE
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 14:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730987665; cv=none; b=o9/oEsRVaREYPwmm9NEeyNYv9nhgvcTP5wBip5+VJPhI8xOSLJUlRKjONxU2I+ozIsL1WFXNakQ9cfQn22JX0aLtHcOUVEqDbCqveXAMUt/kwr8ZIMvWRT04g9mmmiIiGkRWF+Akqc25dMbFr7fMSY9CY4RPKyuxW7BVI2FKZXg=
+	t=1730988522; cv=none; b=A7t/xxQZtqU0oWLFpGydHrbMI9neTS56LKJiWHOTL6P+N6UZBIpbP/h75491hg3u6GF2lt2SSlty3gBytZSc6OfYi+Y191JgC+tdSjV6RUsmj+pcLXs6iThVkRM/66fGY4em+PE4QLEUZN7o6sddw7px/S9W1rWmSERxZpRW7jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730987665; c=relaxed/simple;
-	bh=WDtG+Uw/Tg4d2g2YL62aFl4cx3NGv/7L5FNFJllSVOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=suk39g9bETAFXyVwQCsJKosxHntmNHKJHRhhwEWjBZuo2S51u3QxkMCqF0R5sfmtDQgjyuEqyiPhhBKUbxT8Wr7OM3vSvImbnAC2P4Yb9n4QSRj1K7dVwGESdsopSiNeLpvGUBa/ADjxNG9E3n7XZjuSMqw0sKw40E0g9PUePjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X8sXirSQ; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fb49510250so9461301fa.0
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 05:54:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730987662; x=1731592462; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dqkLHRwMfOuIIkMo8bsDyfGocgP/YAuYLDUWFqFkeAw=;
-        b=X8sXirSQo2oTuAsGtR5rX61px1ff3/lTnMGMSQzY5ISopfjjUjKDY3bl4v+gp4m2yc
-         450sBY4QMnjYw1xI67LxGpxzTUwYVwG0Lro4ouqUiPIBjoqPbs3/RD7jkbtYFklRzzgU
-         pNyKw7XKI3FFTQ6yKvKFtAPypmCeqUC6BVBlJ5YFFesF4XMsmVAHuS7FNptaCPQE/Q3A
-         xtSQ1CoLEcsQI12sxBzSMCInnFHsVZmRePkafvvEhtYUZEh8aYasEklkASEsjCfpdijj
-         Jc6V/9HRJGNgrmD8ymhNi6a35XuZebwwvRalBbibvaa5W1zPvqrifmiKvm9KyyR53X4B
-         MVlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730987662; x=1731592462;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dqkLHRwMfOuIIkMo8bsDyfGocgP/YAuYLDUWFqFkeAw=;
-        b=lvRqS5dFS6pW+716LQq8g9pcBnHzWc5zEVeqml5vWSHSc0Pxl1vYeuoOGJus/qnJoF
-         q+VrhpIzQ7YDeakWPKqoS3bGAilatHPqcN06D8RiO54mbFJgHYOGJ3lQj1T9UFgB1/dM
-         w6GLc1ppsF98ejZjjvIfDbtn5Qa0zVpsqYPPAgePekXXRXhObOW206CHh29I4Zibiy6Y
-         y8Ql1Vc3oKBo0LXUaqhejdvVRdB42QebalRkDzIbUdHXoxBe331VgelzE991rvgndOw6
-         ELzili1ukxA3oOyhny5teV8bDNF5NuY7Ykz90WMpr7wDYywHsWcdKB5nypgSoJyZsCnE
-         w2Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCVJACdQUgGvC1vBh2TSX5TXyks90ubXTIVzxesJMgI+1KbACKzg/MDPTEgSuEsgHHurNQxtImE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg4Le20UasKfrDJThFpxXtcsJLxPxWLhxDUV5iQ7Gf9VKU4OK+
-	6KoyEuJo0m3Q1uX8hRmLW+j0zrCeKDmKppfojr+p4NdrWXIUWCs8kcPAJBBFwD0=
-X-Google-Smtp-Source: AGHT+IGwbjFXniYs7nPBr8auQ3EmU4tHkPv1GfD8lppp7jc/jPpCTXpLOWeSs8Y7Krc+M9SzIGJVuQ==
-X-Received: by 2002:a2e:b887:0:b0:2fb:6277:71d0 with SMTP id 38308e7fff4ca-2ff1e8d9203mr306091fa.22.1730987662216;
-        Thu, 07 Nov 2024 05:54:22 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff178df94bsm2256731fa.8.2024.11.07.05.54.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 05:54:20 -0800 (PST)
-Date: Thu, 7 Nov 2024 15:54:18 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-Message-ID: <oxbpd3tfemwci6aiv5gs6rleg6lmsuabvvccqibbqddczjklpi@aln6hfloqizo>
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
- <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
- <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
- <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
- <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
- <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
- <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
- <781ea2fd-637f-b896-aad4-d70f43ad245c@quicinc.com>
+	s=arc-20240116; t=1730988522; c=relaxed/simple;
+	bh=D3ljhn7qjmseQFmuvPw1O27iVyerP7UaDkhnvF2efAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AEwXE6ygq6YjqrHs18FsO9R7IbXJBdwqsqbppNS7Y9zQenU5Q/vg2XUkZHvXm04XDuPi4gj0kfV0jgIeh6skkLlaf+LX5Ehs+RCo7DjcoGdKw78pFXzt1poeMfgW6lIlJ5g1ZoUpFZzc1bw4LKQ+y6Rks0USE/Bj5wWJ62Il9JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OAz8AVST; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730988518;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0C+f/ubZjrbw/VEKlipKj/ninn9aeQ+N0DCISscUuno=;
+	b=OAz8AVSTptvZoH6BYrs13dpuc//gk/zJKRhmVx7uIA+WBm4SMl4gFT2J9DB4RzRBN7Qna9
+	aUHJLpZSMxPEVlX9VhboRU6ITwpGKFih99NPFCxe9iXROOs4NMrh9Kb7ROc8L1xxaYcjCX
+	fxTw9/w0tHmNzMTUuESdRBcc+/Zu/tM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-XHXYR6GENs2rGSjTU_JH0Q-1; Thu,
+ 07 Nov 2024 09:08:37 -0500
+X-MC-Unique: XHXYR6GENs2rGSjTU_JH0Q-1
+X-Mimecast-MFC-AGG-ID: XHXYR6GENs2rGSjTU_JH0Q
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 333691955E87;
+	Thu,  7 Nov 2024 14:08:36 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.194.177])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 600E31956054;
+	Thu,  7 Nov 2024 14:08:34 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org,
+	Peter Robinson <pbrobinson@gmail.com>
+Subject: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+Date: Thu,  7 Nov 2024 15:08:33 +0100
+Message-ID: <20241107140833.274986-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <781ea2fd-637f-b896-aad4-d70f43ad245c@quicinc.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Thu, Nov 07, 2024 at 07:05:15PM +0530, Vikash Garodia wrote:
-> 
-> On 11/7/2024 6:52 PM, Dmitry Baryshkov wrote:
-> > On Thu, Nov 07, 2024 at 06:32:33PM +0530, Vikash Garodia wrote:
-> >>
-> >> On 11/7/2024 5:37 PM, Bryan O'Donoghue wrote:
-> >>> On 07/11/2024 10:41, Dmitry Baryshkov wrote:
-> >>>>> init_codecs() parses the payload received from firmware and . I don't think we
-> >>>>> can control this part when we have something like this from a malicious firmware
-> >>>>> payload
-> >>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>>>> ...
-> >>>>> Limiting it to second iteration would restrict the functionality when property
-> >>>>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
-> >>>> If you can have a malicious firmware (which is owned and signed by
-> >>>> Qualcomm / OEM), then you have to be careful and skip duplicates. So
-> >>>> instead of just adding new cap to core->caps, you have to go through
-> >>>> that array, check that you are not adding a duplicate (and report a
-> >>>> [Firmware Bug] for duplicates), check that there is an empty slot, etc.
-> >>>>
-> >>>> Just ignoring the "extra" entries is not enough.
-> >> Thinking of something like this
-> >>
-> >> for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
-> >>     if (core->codecs_count >= MAX_CODEC_NUM)
-> >>         return;
-> >>     cap = &caps[core->codecs_count++];
-> >>     if (cap->codec == BIT(bit)) --> each code would have unique bitfield
-> >>         return;
-> > 
-> > This won't work and it's pretty obvious why.
-> Could you please elaborate what would break in above logic ?
+The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
+except for the following 10, add these to the untested section so they
+can be used with the rtl8xxxu as the rtl8192cu are well supported.
 
-After the "cap=&caps[core->codecs_count++]" line 'cap' will point to the
-new entry, which should not contain valid data.
+This fixes these wifi modules not working on distributions which have
+disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
+like Fedora.
 
-Instead, when processing new 'bit' you should loop over the existing
-caps and check that there is no match. And only if there is no match
-the code should be allocating new entry, checking that codecs_count
-doesn't overflow, etc.
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+Cc: stable@vger.kernel.org
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-> 
-> > 
-> >>> +1
-> >>>
-> >>> This is a more rational argument. If you get a second message, you should surely
-> >>> reinit the whole array i.e. update the array with the new list, as opposed to
-> >>> throwing away the second message because it over-indexes your local storage..
-> >> That would be incorrect to overwrite the array with new list, whenever new
-> >> payload is received.
-> > 
-> > I'd say, don't overwrite the array. Instead the driver should extend it
-> > with the new information.
-> That is exactly the existing patch is currently doing.
-
-_new_ information, not a copy of the existing information.
-
-> 
-> Regards,
-> Vikash
-> > 
-> >>
-> >> Regards,
-> >> Vikash
-> > 
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 7891c988dd5f..bd8e0076baac 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -8145,6 +8145,8 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x817e, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8186, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818a, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x317f, 0xff, 0xff, 0xff),
+@@ -8155,12 +8157,18 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1102, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x11f2, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9043, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ba, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x1e1e, 0xff, 0xff, 0xff),
+@@ -8177,6 +8185,10 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3357, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3358, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3359, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330b, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0x4902, 0xff, 0xff, 0xff),
+@@ -8191,6 +8203,8 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x4856, 0x0091, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x9846, 0x9041, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0xcdab, 0x8010, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x04f2, 0xaff7, 0xff, 0xff, 0xff),
+@@ -8216,6 +8230,8 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x341f, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe035, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ab, 0xff, 0xff, 0xff),
+@@ -8224,6 +8240,8 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0070, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0077, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016d, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07aa, 0x0056, 0xff, 0xff, 0xff),
+@@ -8246,6 +8264,8 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330a, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330d, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab2b, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x624d, 0xff, 0xff, 0xff),
 -- 
-With best wishes
-Dmitry
+2.47.0
+
 
