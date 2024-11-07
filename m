@@ -1,202 +1,163 @@
-Return-Path: <stable+bounces-91752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C3C9BFD13
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 04:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8443B9BFD54
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 05:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800241C21C06
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 03:53:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A79661C21314
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 04:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D48F17B402;
-	Thu,  7 Nov 2024 03:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBC1156C6A;
+	Thu,  7 Nov 2024 04:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="WntTDZwM"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b="Ae+uZ+VP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D218BEC;
-	Thu,  7 Nov 2024 03:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B1A80603
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 04:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730951617; cv=none; b=pFccPe6/EW72b/u7cb1EHiEAwcelQITmAfMppqUKb3Vl7F7RRVaTCMQ0EPXSpHn/vX37dvjOka0DfbFVg4FR0YFgzbkxEykMb8/Q9ihXOsAy5c4USYjo6CcHjuRKkUShLKUyZnzfufVMvrCD052nSjkWJQ5YEnBa2QAPALgHRFY=
+	t=1730953112; cv=none; b=itb80fKHkNfacS2iJ5bU7xE01mXmCYsHF1ZX0IQ/+S4gtlZ92sedNJFRBxF0e/mQ8nThP3znzJl+JxQ4CQee5NTKDQcYFiQv1vlQM4dqUcq2cIZ/+22E09SUUE6Rf2qhhqnY2T9eKmD1G7yLy8m0IksXhNEyislGytJhVW41NLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730951617; c=relaxed/simple;
-	bh=fNBzH+ehpVvC6j0AIj+7ga742STXZolR0UGIQ3BzUDs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QUof481vzKtK8M/LDTxF4P2MzlbHB7Gb+GE2d5mbnmompW36pBKe0mJFgpH21ZHq+ml3LqIrHP9hBVaav9TQALnIsYTUhdd1e0jZZSN8v7dPM+AZClp3TMlcoNImN2RNB+GkM4DwOOEGTITyOj+LzkwFLTutl8o5tPfzr0y/WOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=WntTDZwM; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A722ojG007809;
-	Thu, 7 Nov 2024 03:53:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pps0720; bh=y3AScQJQ1dUFE
-	BaGOnwifpUCr3+cWWYTvmur2UwtFUY=; b=WntTDZwMmwsd8qA+CmmNpRZChWay3
-	A6ehFzmxV1L9sgcyL9Stemzc/83mDxWwYgXn2hEA01sRhYONrLd8zKG9i7o8A31+
-	fA7wgZqQOCPT5qZ/ku2uOzHWsrezpJyTnDvRlesCEMskFAGFgSGX4mDaIe4rteRn
-	gZIrcKiPB+ufxXZFXxIe+V6uLITz8m06xAiCtUAWihiuFVbJT04luP2QTnZxRnXR
-	BzpUvXLfRDVUcOgAQFvrKNdTRvtnJae+MCD+mVsZ5Y9IeGW5vh1TtgZuWg7C+yNs
-	kyrllqddJOBMzlWkiWTsMNvHcmpMrie4lrhnweGwE8NhfBPRoxjQ9zlyQ==
-Received: from p1lg14878.it.hpe.com ([16.230.97.204])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 42rg8j2h3w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 03:53:10 +0000 (GMT)
-Received: from localhost (unknown [192.58.206.35])
-	by p1lg14878.it.hpe.com (Postfix) with ESMTP id 57BBFD27E;
-	Thu,  7 Nov 2024 03:53:07 +0000 (UTC)
-From: Matt Muggeridge <Matt.Muggeridge@hpe.com>
-To: idosch@idosch.org
-Cc: Matt.Muggeridge@hpe.com, davem@davemloft.net, dsahern@kernel.org,
-        edumazet@google.com, horms@kernel.org, kuba@kernel.org,
-        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default Routes
-Date: Wed,  6 Nov 2024 22:53:03 -0500
-Message-Id: <20241107035303.24057-1-Matt.Muggeridge@hpe.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <ZytjEINNRmtpadr_@shredder>
-References: <ZytjEINNRmtpadr_@shredder>
+	s=arc-20240116; t=1730953112; c=relaxed/simple;
+	bh=6dnQkQqfHh1sOcickMpv1JDUan6dh4Wu1yIDrpH/GKU=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BxETS8+4RLpjCbCpNQyb5de3bwy15KVAJOo0XYhNQzWcdFQD+2VVjup9Rk4rsZ9HTxiXXkEzZNEa1SCO9es+gyc1oHlIp7gpkZq4nPC7cD5cMnbmM5XeFZIJx+XV2qippZk6Q47bMFZJNmLH41gKA4BNtd93zJZcpCjBLi94W+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com; spf=pass smtp.mailfrom=linumiz.com; dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b=Ae+uZ+VP; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linumiz.com
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id 8MC6t8wVrumtX8tyQtIMxs; Thu, 07 Nov 2024 04:18:22 +0000
+Received: from md-in-79.webhostbox.net ([43.225.55.182])
+	by cmsmtp with ESMTPS
+	id 8tyNt4SrOjcdm8tyOtlmUV; Thu, 07 Nov 2024 04:18:20 +0000
+X-Authority-Analysis: v=2.4 cv=DrWd+3/+ c=1 sm=1 tr=0 ts=672c3f8c
+ a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=kofhyyBXuK/oEhdxNjf66Q==:17
+ a=IkcTkHD0fZMA:10 a=VlfZXiiP6vEA:10 a=-pn6D5nKLtMA:10 a=VwQbUJbxAAAA:8
+ a=7CQSdrXTAAAA:8 a=vU9dKmh3AAAA:8 a=rQIMLdAWvKoWWgQMOJcA:9 a=QEXdDO2ut3YA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22 a=rsP06fVo5MYu2ilr0aT5:22 a=ZCPYImcxYIQFgLOT52_G:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:To:Subject:Cc:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1yLSujXjZ1vWyoNhn9Q/+EnZQtwboxPDVegByiRGcUI=; b=Ae+uZ+VP8cnIBy/ygVfCll2Z2h
+	1Aqzf+23wPlMaOpCuvSlLqS9smUrQC9QISA+tkOzEKoLfUnU09AWYs3lIQRojNJOm3caBBIurcKzi
+	iMeSsWbskf4cQIru86EXaXX1A7RaBE9mQGg26z6Buwe39AB33Sdaa+f6T0HuGIr15bWRqUYRItaQE
+	la1LDTaIuFLQUzIT/mNxz+2EcJHnC9XV2H6Rak0PozS2rWtRvPPGWHDPu/JBbh9MA9E0j5E9Ky00A
+	FqzPxSOgIxlWUAgcFNliQ9lCzxXHZBMnWusNWs3At6uI4iWNCwSKN3f7FV6pv1RGXMXtz1zVQ5llb
+	pxjLd1yA==;
+Received: from [122.165.245.213] (port=38142 helo=[192.168.1.5])
+	by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <parthiban@linumiz.com>)
+	id 1t8tyI-0040BA-0J;
+	Thu, 07 Nov 2024 09:48:14 +0530
+Message-ID: <411e2025-6e2c-4755-bb44-d2388ed5058e@linumiz.com>
+Date: Thu, 7 Nov 2024 09:48:11 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: h7OfoSKdb63qSwJqsyYUmVJOHxsJJbif
-X-Proofpoint-ORIG-GUID: h7OfoSKdb63qSwJqsyYUmVJOHxsJJbif
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_03,2024-10-04_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=999 impostorscore=0 adultscore=0 malwarescore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411070028
+User-Agent: Mozilla Thunderbird
+Cc: parthiban@linumiz.com, linux-mmc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ Yangtao Li <tiny.windzz@gmail.com>, Cody Eksal <masterr3c0rd@epochal.quest>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: sunxi-mmc: Fix A100 compatible description
+To: Andre Przywara <andre.przywara@arm.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>
+References: <20241107014240.24669-1-andre.przywara@arm.com>
+Content-Language: en-US
+From: Parthiban <parthiban@linumiz.com>
+Organization: Linumiz
+In-Reply-To: <20241107014240.24669-1-andre.przywara@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - linumiz.com
+X-BWhitelist: no
+X-Source-IP: 122.165.245.213
+X-Source-L: No
+X-Exim-ID: 1t8tyI-0040BA-0J
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.5]) [122.165.245.213]:38142
+X-Source-Auth: parthiban@linumiz.com
+X-Email-Count: 1
+X-Org: HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfH+GeKiQ/3wizSx+MMiFDUNevWnDm64nHaon8lyN6XTt1rPURj9UHTlnnqMMQM3BqUvapmvuRS9LXcNziwKjQo/6c6i0HsAgPTvk9p/6M6MojG1ZMCb1
+ rWXS+/F1iHvdreeN5v0tzdNU9ZezoquJ2oSuNWbMDfpNzgR3HeR40rIfdghAaru0yflKhVcNTQ8Vl7jPrRBODJoqYmbAPWLkzw0=
 
-Hi Ido,
-
-> >>> Is the problem that fib6_table_lookup() chooses a reachable
-> >>> nexthop and then fib6_select_path() overrides it with an unreachable
-> >>> one?
+On 11/7/24 7:12 AM, Andre Przywara wrote:
+> It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
+> blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
+> And while this alone would make a trivial fix, the H616 falls back to
+> the A100 compatible string, so we have to now match the H616 compatible
+> string explicitly against the description advertising 64K DMA blocks.
 > 
-> >> I'm afraid I don't know.
-> >>
-> > We need to understand the current behavior before adding a new interface
-> > that we will never be able to remove. It is possible we can improve /
-> > fix the current code. I won't have time to look into it myself until
-> > next week.
-
-I am grateful that you want to look into it. Thank you! And I look forward to
-learning what you discover.
-
-You probably already know how to reproduce it, but in case it helps, I still
-have the packet captures and can share them with you. Let me know if you'd
-like me to share them (and how to share them).
-
-> > 
-> > The objective is to allow IPv6 Netlink clients to be able to create default
-> > routes from RAs in the same way the kernel creates default routes from RAs.
-> > Essentially, I'm trying to have Netlink and Kernel behaviors match.
+> As the A100 is now compatible with the D1 description, let the A100
+> compatible string point to that block instead, and introduce an explicit
+> match against the H616 string, pointing to the old description.
+> Also remove the redundant setting of clk_delays to NULL on the way.
 > 
-> I understand, but it's essentially an extension for the legacy IPv6
-> multipath API which we are trying to move away from towards the nexthop
-> API (see more below).
+> Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Tested working with SD card in mmc0.
 
-Very interesting, I wasn't aware of this movement.
+Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
 
-While this change is an extension of the legacy IPv6 multipath API, won't it
-still need to support Netlink clients that have been designed around it? I
-imagine that transitioning Netlink clients to the NH API will take many years?
+Thanks,
+Parthiban
 
-As such, it still seems appropriate (to me) that this be implemented in the
-legacy API as well as ensuring it works with the NH API.
-
-Another consideration...
-
-Will the kernel RA processing go through the same nh pathway? The reason I
-ask is because I faced several challenges with IPv6 Logo certification due to
-Netlink clients being unable to achieve the same as the kernel's behavior.
-
-As long as the kernel is creating RA routes in a way that meets RFC4861, then
-I'd hope that  Netlink clients would be able to leverage that for 'free'.
-
-> > 
-> > My analysis led me to the need for Netlink clients to set the kernel's
-> > fib6_config flags RTF_RA_ROUTER, where:
-> > 
-> >     #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
-> > 
-> >>> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
-> >>> +		cfg->fc_flags |= RTF_RA_ROUTER;
-> >>> +
-> >> 
-> >> It is possible there are user space programs out there that set this bit
-> >> (knowingly or not) when sending requests to the kernel and this change
-> >> will result in a behavior change for them. So, if we were to continue in
-> >> this path, this would need to be converted to a new netlink attribute to
-> >> avoid such potential problems.
-> >> 
-> > 
-> > Is this a mandated approach to implementing unspecified bits in a flag?
-> > 
-> > I'm a little surprised by this consideration. If we account for poorly
-> > written buggy user-programs, doesn't this open any API to an explosion
-> > of new attributes or other odd extensions? I'd imagine the same argument
-> > would be applicable to ioctl flags, socket flags, and so on. Why would we
-> > treat implementing unspecified Netlink bits differently to implementing
-> > unspecified ioctl bits, etc.
-> > 
-> > Naturally, if this is the mandated approach, then I'll reimplement it with
-> > a new Netlink attribute. I'm just trying to understand what is the
-> > Linux-lore, here?
+> ---
+>  drivers/mmc/host/sunxi-mmc.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Using this bit could have been valid if previously the kernel rejected
-> requests with this bit set, but as evident by your patch the kernel does
-> not do it. It is therefore possible that there are user space programs
-> out there that are working perfectly fine right now and they will break
-> / misbehave after this change.
-> 
+> diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+> index d3bd0ac99ec46..e0ab5fd635e6c 100644
+> --- a/drivers/mmc/host/sunxi-mmc.c
+> +++ b/drivers/mmc/host/sunxi-mmc.c
+> @@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
+>  	.needs_new_timings = true,
+>  };
+>  
+> -static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
+> +static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
+>  	.idma_des_size_bits = 16,
+>  	.idma_des_shift = 2,
+> -	.clk_delays = NULL,
+>  	.can_calibrate = true,
+>  	.mask_data0 = true,
+>  	.needs_new_timings = true,
+> @@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
+>  	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
+>  	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+>  	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+> -	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
+> +	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
+>  	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
+> +	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 
-Understood and I agree.
-
-> > 
-> >> BTW, you can avoid the coalescing problem by using the nexthop API (man
-> >> ip-nexthop).
-> > 
-> > I'm not sure how that would help in this case. We need the nexthop to be
-> > determined according to its REACHABILITY and other considerations described
-> > in RFC4861.
-> 
-> Using your example:
-> 
-> # ip nexthop add id 1 via fe80::200:10ff:fe10:1060 dev enp0s9
-> # ip -6 route add default nhid 1 expires 600 proto ra
-> # ip nexthop add id 2 via fe80::200:10ff:fe10:1061 dev enp0s9
-> # ip -6 route append default nhid 2 expires 600 proto ra
-> # ip -6 route
-> fe80::/64 dev enp0s9 proto kernel metric 256 pref medium
-> default nhid 1 via fe80::200:10ff:fe10:1060 dev enp0s9 proto ra metric 1024 expires 563sec pref medium
-> default nhid 2 via fe80::200:10ff:fe10:1061 dev enp0s9 proto ra metric 1024 expires 594sec pref medium
-
-Thanks! That looks like it should work. I'll raise this with the the developers
-of systemd-networkd.
-
-Just to confirm; are these two nhid routes equivalent to having two separate
-default routes that are created when the kernel processes IPv6 RAs?
-
-Specifically, if one of these nhid routes becomes UNREACHABLE, will that be
-taken into consideration during the routing decision? (I'm guessing so?)
-
-Thank you for your interest in this.
-
-Regards,
-Matt.
 
