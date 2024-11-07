@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-91825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA3C9C07CC
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0FE9C07CB
 	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 261C2B237DE
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B897C1F2156C
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623C82101AE;
-	Thu,  7 Nov 2024 13:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EB3210188;
+	Thu,  7 Nov 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k4uriV7R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ka5aKrJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E0620EA3C;
-	Thu,  7 Nov 2024 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615DA20FAB4;
+	Thu,  7 Nov 2024 13:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986996; cv=none; b=doiFvLAQoZ+zhk9Qc7Zqqg0SMqA1JDhCyQG0woWIm8bRZFxh/9nbkj2/4sii0L7Wey74ZLPHofjRkrwewQFU3Gi/lasqmJE0RIF5rSm9X9gSNUuFZPG2jlAs66+CH3p63FPKGpEKtzdcUs4vNq0GRjK6YiwWvlX3b0S6yUyV59k=
+	t=1730986998; cv=none; b=Fx4msy7zwjK/0YHHDA+LyzDVfWLVXGOCK1SJCC0+tNxt33jhRceGA8NBg8RW2Drq3CnTVPlYspqgIgPVkw5IGCDdqGNlW520jxODzsl9WlzCo02/SbJJVU6jx6biMTT2Z9iwMmJjFLX8dZGomrqbuBhHeIlrd0bTnU9j9BFwbXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986996; c=relaxed/simple;
-	bh=ny3OTEwMNeFJZnyUrGXZzNkltCMnSYkuaDnuh0n+10M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mnGpghcwL5uUcgLWcMpSgNeTsIKT8wjlLFOK/UFbo4S6xkascZtkb7OduziBfhjVQVAh3LfkM+Q1I2KLn1FasFFoPqVrR7gOYSm+ejByw4LonVqWj1cnThadaHtwZ+lKhhUhJRfiFBm3MmCXzQQQosCQ1W0kJ+/8jTE4hVP8NWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k4uriV7R; arc=none smtp.client-ip=198.175.65.15
+	s=arc-20240116; t=1730986998; c=relaxed/simple;
+	bh=2BlsdBJChCstmGMmVv8EtRoLmNdjk249JBdgHPL8c0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I3OAAanfYc/iEYA5sUq8ecIC/Y+cI8VqVnM/b98u0JkmntaU8H0MCoJyk01tsp32MWL6YsrBC7B51Xd80/RbmPCchQEl4jbWxLt2FHbaUNNpwKQeWEZB8E+FSmo4ECBvClO0+ufWvnpzWUFhTbQaLydbThGbutkkGuTX10dMHFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ka5aKrJQ; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730986995; x=1762522995;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ny3OTEwMNeFJZnyUrGXZzNkltCMnSYkuaDnuh0n+10M=;
-  b=k4uriV7RH5kI2urtow6KdDle+MzM2v821LOXVVUZaEiEYYm96VyTl4Dy
-   RtxI0rMnP2P9ar6hgmL5NUmeY5DmQ0VeyYno2KmyIRLPUh5Qzy9kUShur
-   vpMmSd1zLSp54iqPMd+s/7Qdb+/yjek0GIMvWKEySBklxIdQwWHpODOpI
-   VSL7pu1f7TW3GHdjhG63O2YdIfPxVWidX1v/t26FtX6FNxe5Mx1i+IQKy
-   Sje9Owo5h/ZnGBlfV5lSXJqyeUX8SG3Mw29ndYFsKmixD2mH5jlKeP3Xb
-   soN8Ztt3EzFVmvQ3gb4MDU6gCH3PxX+spZejCMv7GFFlpst0x3aN2q4lk
-   Q==;
-X-CSE-ConnectionGUID: 0WQ6oSWDSVC0Iv9CwyFy5g==
-X-CSE-MsgGUID: 6GwNCSkWTZeE5ol2mD2CQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34522530"
+  t=1730986998; x=1762522998;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=2BlsdBJChCstmGMmVv8EtRoLmNdjk249JBdgHPL8c0M=;
+  b=ka5aKrJQy2iNv2NEHDYw+EqqYrDlB29igGBoq+cEup159EZRtfJALfWA
+   vbXdkGnkFSneF3vGRLaYLz/IaVcZdc2ZjWBRFHHLYMd3AD28P1LY2DVqk
+   Lj8jvRVv6gD+ey/b2jqSQegk7DGR6mCtwXJGwlpv51SkalxXkydttICDm
+   mSzYpHDMwzZH3BjiBfGZsPTrUldEbcTS4iQiJVLbRLlDq7bR/2nLhgOOr
+   GdZ890qeGrz2FoKwpi6MiLlqA8x4nQRRoqnlXLKP5YDMaRkB1pvRVCTUO
+   x0uiPAIDTKpzCCwQScn3XnvSQ7B3s5EPLE9b3JT8K/efJaOUgXbjeW0sd
+   w==;
+X-CSE-ConnectionGUID: yc8/6Cu8S0aiiA6rujEUFQ==
+X-CSE-MsgGUID: 9d45E5LsSya5CCUyDijrWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34522537"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="34522530"
+   d="scan'208";a="34522537"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 05:43:15 -0800
-X-CSE-ConnectionGUID: nGrVKZIBRReXyTmOZoFCxQ==
-X-CSE-MsgGUID: F2GLIvRgRle5GROrm8rFRQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 05:43:17 -0800
+X-CSE-ConnectionGUID: gyBzaGFYR+OGlg6pb81Znw==
+X-CSE-MsgGUID: LgZAO4C0SIS4gKLNbyBlBw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="115920690"
+   d="scan'208";a="115920696"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.244.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 05:43:11 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 05:43:14 -0800
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org
@@ -69,10 +70,12 @@ Cc: linux-sound@vger.kernel.org,
 	cujomalainey@chromium.org,
 	daniel.baluta@nxp.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2 0/2] ASoC: SOF: Correct sps->stream and cstream nullity management
-Date: Thu,  7 Nov 2024 15:43:06 +0200
-Message-ID: <20241107134308.23844-1-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH v2 1/2] ASoC: SOF: stream-ipc: Check for cstream nullity in sof_ipc_msg_data()
+Date: Thu,  7 Nov 2024 15:43:07 +0200
+Message-ID: <20241107134308.23844-2-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241107134308.23844-1-peter.ujfalusi@linux.intel.com>
+References: <20241107134308.23844-1-peter.ujfalusi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,27 +84,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+The nullity of sps->cstream should be checked similarly as it is done in
+sof_set_stream_data_offset() function.
+Assuming that it is not NULL if sps->stream is NULL is incorrect and can
+lead to NULL pointer dereference.
 
-Changes since v1:
-- Cc stable
-
-The nullity of sps->cstream needs to be checked in sof_ipc_msg_data()
-and not assume that it is not NULL.
-The sps->stream must be cleared to NULL on close since this is used
-as a check to see if we have active PCM stream.
-
-Regards,
-Peter
+Fixes: ef8ba9f79953 ("ASoC: SOF: Add support for compress API for stream data/offset")
+Cc: stable@vger.kernel.org
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Closes: https://github.com/thesofproject/linux/pull/5214
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
 ---
-Peter Ujfalusi (2):
-  ASoC: SOF: stream-ipc: Check for cstream nullity in sof_ipc_msg_data()
-  ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
-
- sound/soc/sof/pcm.c        | 2 ++
  sound/soc/sof/stream-ipc.c | 6 +++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/sound/soc/sof/stream-ipc.c b/sound/soc/sof/stream-ipc.c
+index 794c7bbccbaf..8262443ac89a 100644
+--- a/sound/soc/sof/stream-ipc.c
++++ b/sound/soc/sof/stream-ipc.c
+@@ -43,7 +43,7 @@ int sof_ipc_msg_data(struct snd_sof_dev *sdev,
+ 				return -ESTRPIPE;
+ 
+ 			posn_offset = stream->posn_offset;
+-		} else {
++		} else if (sps->cstream) {
+ 
+ 			struct sof_compr_stream *sstream = sps->cstream->runtime->private_data;
+ 
+@@ -51,6 +51,10 @@ int sof_ipc_msg_data(struct snd_sof_dev *sdev,
+ 				return -ESTRPIPE;
+ 
+ 			posn_offset = sstream->posn_offset;
++
++		} else {
++			dev_err(sdev->dev, "%s: No stream opened\n", __func__);
++			return -EINVAL;
+ 		}
+ 
+ 		snd_sof_dsp_mailbox_read(sdev, posn_offset, p, sz);
 -- 
 2.47.0
 
