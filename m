@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-91758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5679F9BFE82
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 07:34:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47BD9BFE85
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 07:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 904121C2115F
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 06:34:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A707B2836C6
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 06:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3185193429;
-	Thu,  7 Nov 2024 06:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35E618E762;
+	Thu,  7 Nov 2024 06:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j47O1zFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5PtJax/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BBC2B9DD;
-	Thu,  7 Nov 2024 06:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C4A1426C
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 06:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730961247; cv=none; b=P+sMzB5gtYsA3sT2UXSbVU3uit35m5Xda3I7R8c+vwLXU9rtk3I/WPD483LygLmxrt4TnJGh6prPNJ+wU18v008WezfDJL834OQBeHKV/QhKm7wYPpWTpdGk8kQ3GYmkxAZc8w4PziP11YhAN+jdr1tKovQJ6Cdrn7LLiQgQMRo=
+	t=1730961353; cv=none; b=DKLeXwcgbDG1aiu7YIcytd9E2L2w2N7gxiiZ1VLhrWYee42L1q3l1xCE6f1mKiGZJ7lRHD7hEoOj/KteoY7MUgUUn1evJ54aB3ULmCuvYIg70J+fdG0Mlh8ZtHsoMisxxit+M5EoW+RW3WlKie/1szMLoeUOOW1XOXfwxaYH0dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730961247; c=relaxed/simple;
-	bh=9aeMmwmnUEyjV483wWngqqK394BMN3bdiS3/vaO0WvY=;
+	s=arc-20240116; t=1730961353; c=relaxed/simple;
+	bh=BVm5VeByFaDDVeYK5MYQLd1E5dIfWp+N9ad/3n19vZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mOCPDb6F1P4SVYnPZBGQdaCTG79GpZCrb9SZMbPJpHjrkVikVIsGYl66udom5EB5NEmevgpUtjK0CpluoEV1KFrr6bp778veyz+zSXPVCgb1/CTIg6zwfwyHdfSSZluqkV0yvGdWAuyP8cIKvoenYJ3R1zYZuZWCztLrAXQLfCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j47O1zFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791BBC4CECC;
-	Thu,  7 Nov 2024 06:34:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kco/5BSnde537bITiHI5QvbZbQv5/y5HnaK4vD/rlszm1ZtI31musfU4ZQAtyYbM4VyW03VoTASvksJ66rVdrlWKoRnhg9+YP9gLc6SXDlAElnwhqlbsWYGBzJrzNm63G8jcmpp2+fEcqo6WrP5h54v3IdyJKsdWYW3CEliob6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5PtJax/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20E9C4CECC;
+	Thu,  7 Nov 2024 06:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730961247;
-	bh=9aeMmwmnUEyjV483wWngqqK394BMN3bdiS3/vaO0WvY=;
+	s=korg; t=1730961353;
+	bh=BVm5VeByFaDDVeYK5MYQLd1E5dIfWp+N9ad/3n19vZQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j47O1zFatkbjdobXFWlnTGifosynnwTAkVp69Y8OFit3ipqY6/dm5pa2yC83la0Lt
-	 YxjuwfwkOQdE/hEjGqTXJ7HAuVL733fBGwHi4PAtx4InNi3Uy8XPSUhmI+HY61l3W6
-	 hltuPnrI+h0GzCSRI8lvxOhVXTM28ZWFnzgTNQ5U=
-Date: Thu, 7 Nov 2024 07:33:48 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hagar@microsoft.com, broonie@kernel.org, Chris Mason <clm@fb.com>,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	Linux btrfs <linux-btrfs@vger.kernel.org>,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH 6.11 000/245] 6.11.7-rc1 review
-Message-ID: <2024110735-exhume-overhang-ca61@gregkh>
-References: <20241106120319.234238499@linuxfoundation.org>
- <CA+G9fYtjpUJFFV=FdqvW+5K+JL5ZYN4sPfVDjQovqzd7cib39w@mail.gmail.com>
- <20241106160708.GE31418@suse.cz>
+	b=m5PtJax/osC2JUpX3KoS/uhLi8zLFMwnIcwckAOfQdmRpunLbmAZEPUlLUtW6UCW9
+	 26sVN7wuIB6qvULo+jabRYG+qeVYVAhDAZVrC+gqf6kXdi4Qx8jkuuBRtcDDlrR2/U
+	 0qaoTA6xT4s8tMTXpjgEwBtyGtSwPINwMG7+32as=
+Date: Thu, 7 Nov 2024 07:35:35 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+	linux-riscv@lists.infradead.org,
+	Jason Montleon <jmontleo@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [for 6.11 PATCH] RISC-V: disallow gcc + rust builds
+Message-ID: <2024110724-sleek-emptiness-24b3@gregkh>
+References: <20241106-happily-unknotted-9984b07a414e@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,52 +58,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241106160708.GE31418@suse.cz>
+In-Reply-To: <20241106-happily-unknotted-9984b07a414e@spud>
 
-On Wed, Nov 06, 2024 at 05:07:08PM +0100, David Sterba wrote:
-> On Wed, Nov 06, 2024 at 03:12:46PM +0000, Naresh Kamboju wrote:
-> > On Wed, 6 Nov 2024 at 12:26, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 6.11.7 release.
-> > > There are 245 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.7-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > 
-> > The mips gcc-12 allmodconfig build failed on the Linux stable-rc
-> > linux-6.11.y branch.
-> > 
-> > 
-> > First seen on Linux stable-rc v6.11.4-642-g0e21c72fc970
-> > 
-> >   Good: v6.11.4-397-g4ccf0b49d5b6
-> >   Bad:   v6.11.4-642-g0e21c72fc970
-> > 
-> > mips:
-> >   build:
-> >     * gcc-12-allmodconfig
-> > 
-> > Build errors:
-> > -------------
-> > ERROR: modpost: "__cmpxchg_small" [fs/btrfs/btrfs.ko] undefined!
+On Wed, Nov 06, 2024 at 01:11:29PM +0000, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
 > 
-> The patch "btrfs: fix error propagation of split bios" needs
-> 90a88784cdb7 ("MIPS: export __cmpxchg_small()")
+> commit 33549fcf37ec461f398f0a41e1c9948be2e5aca4 upstream
 
-Thanks, I"ll queue that up now and push out a -rc2 soon.
+Thanks for the backport, now queued up.
 
 greg k-h
+
 
