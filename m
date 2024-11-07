@@ -1,136 +1,261 @@
-Return-Path: <stable+bounces-91801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24DF9C050F
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:58:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D5D9C0527
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8981F22F62
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EF41F22170
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 12:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0A120EA47;
-	Thu,  7 Nov 2024 11:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DAB2076A5;
+	Thu,  7 Nov 2024 12:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndTVSh5K"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iKTCuXB+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF3D20C48E;
-	Thu,  7 Nov 2024 11:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EED1DE8A4
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 12:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730980696; cv=none; b=VJvXhCw5FBo23X+270Joodj2LKiLyECdaSRm6NOEvPJDV9qU/njr33ylp9Ml+rdUiFsR25RxXrNdumfmvHiRy/EUIIm8/IZl9U2SFXJxNNPiGJCn2Q2dOd6pVo8RNfgtpFCRDgqFlrLOe5T5k0vpf0LzaW2VQK4LDypnIxHQihc=
+	t=1730981023; cv=none; b=CFVwwf4Doi7XXjaGS+Mcp5ILzhCAwSRr+Oan6kjQ15N3sJThIlN5ep+U5c1HEY2RIz4uzPI2+CaiCCZkaiGTSLy+pDDDvhBxaCvUTrcin+nvRQqBBtmPo7gtpLMkf63AJE6GQUpVZcH+Vah+Blsr4wG4FkpL2QLzbWRX7npkP0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730980696; c=relaxed/simple;
-	bh=a0ycLHX32lthYYvuPhQaJWZI+SHyq+QSK7Hxoq+vmgI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TzPbLt5vHqSByFtdexOaIegBq8n6KzALrCmODf85VYkx+038yman/f56ANepeu9GFwy5qYF5nR3nA43QJM5JKvTfRJXUBSVXc9ZSbf1nWhUi9+w+RgvUOQ+X3D+kepXxkvXKVLbFEDIJmUdSi81yCtY5SAS/b9+5ifc+jDGR5Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndTVSh5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D0E08C4CED6;
-	Thu,  7 Nov 2024 11:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730980695;
-	bh=a0ycLHX32lthYYvuPhQaJWZI+SHyq+QSK7Hxoq+vmgI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ndTVSh5KOfkTxmzKvSiQVxTkasb6+J8blBs+UQsy1Z+XspZOBD0U3nBTkmsvDnkHD
-	 /zFAjV8notv5v8+xHE4frXFbFPaQpFDRVR9QebS3jGlTKJbgPHDO8qy/TqR3B1/IGQ
-	 k6icSAW7A93+limCQN8LdqzK5N3DZoQ+hfHpmIMq8DE6DTfMulb0700I9O7hfMV222
-	 WDKJ+ACFLtH9gYJ2cCR73eqU1qmGcsX2Jolsy5KQ5mGY98XPY4anv9GoW0pjbjykNj
-	 aDWof5NamV2vBbIVvmhfYirIRD2pUSaTqQZi78/VOfaqb0p/Mod7o0/RCa5h+vX6Ry
-	 VcYCQ0ZQxwrpg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8E62D43354;
-	Thu,  7 Nov 2024 11:58:15 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Thu, 07 Nov 2024 11:58:10 +0000
-Subject: [PATCH 2/2] clk: qcom: gcc-sm8650: Keep UFS PHY GDSCs ALWAYS_ON
+	s=arc-20240116; t=1730981023; c=relaxed/simple;
+	bh=IHosAZVePfA6j/L2D13dnEQ/Ic9W8mSBmvs6TFc9t0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kaNbmyZgU8njKoCO3E1jan0xj5OfrHP+3oSvqZ/RjdFQeCshlvQnS5i1NPUYKNZESL6+Gc9txsZZ1R0r67MNT4TUXLDXSEqQTZxjCh25lV/ERd1l/JhDpTFe+BN1uxbulZXU5/JEcO5Dr0XInRSuzj+b586p0R94wTtsJL0+gfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iKTCuXB+; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7180e07185bso392951a34.3
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 04:03:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730981020; x=1731585820; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r+NR8Ybu826lRz0YdDfbD41eoh3Xb5mDE+JZUUs10lA=;
+        b=iKTCuXB+7DWK8+YfQxs05mXWDXEZ5oRCl8HRIUPJEbP60JVDSrEoL9OSJxOvzafv7z
+         B4AZTWj5Z0ZvzIOB1qWTrjiwJokyfOvcwMhuYNEh2FQ3urEbKiqFcaNUuenipEfO9HEU
+         +CvMUHNPx9fKpCgzxEKmPyaGeDx+R0m/NFPHzX+K+K/eyZuwSaTkUzhdRwpnRUtpmwZp
+         sDiVxybuesTeaRw7rOAdeDRXOcETNjV/cyJa5ny+DqgX+qTUtHANuM4C7sYlAAkhx7dA
+         0ct6xyHvfwf8+l9FDFfRONw97lDh+Wv8CVJATHLIi9dR1zlB/dUMGG30b2yOrs1fak2z
+         uQWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730981020; x=1731585820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r+NR8Ybu826lRz0YdDfbD41eoh3Xb5mDE+JZUUs10lA=;
+        b=M7rggG+GOYLnROtUCPvRDU36bZna3SjK6e80FhTjcozODAnXnMgKmj5KWuHEAFtAUF
+         9gW/ecAcuOfokhybIormEyPrDcGwcalJnCLGbwP82OLT4Ao+C5MIUVn12GEjGicxT/k2
+         fru84v9VqU2b8vv076bPnthpTly3jTqsVMcl8dZ4BSEs4h6sBySQjHrEwpdXA30Kvm2p
+         ldrYIodHd4cXrFRRZ4fpqdhEA/Y5HEw01LHT5Ffx7wgvW8+Ux9SMGYlOHU5lMzbiEJLn
+         xbflb2lbMKZQ/vsG+0EKNUdTx4TE4hyI4Ec6GhGyEsQs3EoW2Q/3pOBwD5ZBKeUr1+AO
+         Fk+Q==
+X-Gm-Message-State: AOJu0Yxf6+We4Ffi3ijhyYjHG4yopI6xYvcj5bYKLEDr/VWlA40txcGF
+	0nM+IWgzfvPbNsRmpmUrxJllrCYbJDVK636xAOxcaoOuAFSK5Ej4y0Bz8n2gbuQdVJu39oZtyu4
+	YXDRzkCseBvt0t+OCqNNp1fsYLsI7Tu21jW5gQg==
+X-Google-Smtp-Source: AGHT+IEKoyvJ/cov0WtFF6wWofUTQy58nUtFI4fWiBL3gWCsT5hXlIPqU6bdph9K0DRsV5d5pc4VjFe8An7V8XID1eI=
+X-Received: by 2002:a05:6358:d59b:b0:1c6:1d18:7cd8 with SMTP id
+ e5c5f4694b2df-1c61d187d50mr876504555d.1.1730981020545; Thu, 07 Nov 2024
+ 04:03:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-ufs-clk-fix-v1-2-6032ff22a052@linaro.org>
-References: <20241107-ufs-clk-fix-v1-0-6032ff22a052@linaro.org>
-In-Reply-To: <20241107-ufs-clk-fix-v1-0-6032ff22a052@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>, 
- Nitin Rawat <quic_nitirawa@quicinc.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1726;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=FYMKCEEuacXk+42R8P6zQhXoxh2cvI/j+fmsSrjKCbU=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnLKtWTSaVN7myne/t1gzjS1A1koyo4Svt/P6RF
- qn/vo26NbCJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZyyrVgAKCRBVnxHm/pHO
- 9YJhCACEM11P1PgwtQ5SOpPd5K0j4R0YiML/G5exG9X1Il6TFhcWi1gOKtfe4Qxa7PV18rq871H
- Xxt4v9fyAZrR/sO4kIzKE9UE4VjUOx7uEQLx0mfHjYVhSfmFOA1+IwvNz0QSJZxSmJbMA4Ngl+N
- 3fytbwtVJfLD+L9+Sj0jrezK4xc9JdTSEETyRcPXhKIcQxEY98Y8uUuzpsR8SOWuu7mtyAYUgcz
- pFh8mQwrmT+8zHpPb5PYhmHc91rJjy1c99aflBgmCL2X66hc7UuL4LMwBK5XTtuf48lKjxEMcVC
- jdv+PWToC5RWqj30LLEY2qpW8fWoRw4isIOtSEm2Si7KmCfi
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@linaro.org/default with auth_id=185
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reply-To: manivannan.sadhasivam@linaro.org
+References: <20241106120259.955073160@linuxfoundation.org>
+In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 7 Nov 2024 12:03:29 +0000
+Message-ID: <CA+G9fYtgOA-5y73G1YEixQ+OjmG=awBQjdKjK+b0qLNYvAAVpQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/73] 5.15.171-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
+	broonie@kernel.org, kobak@nvidia.com, Arnd Bergmann <arnd@arndb.de>, mochs@nvidia.com, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rui.zhang@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Wed, 6 Nov 2024 at 13:19, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.171 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.171-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-In SM8650, UFS PHY GDSCs doesn't support hardware retention. So using
-RETAIN_FF_ENABLE is wrong. Moreover, without ALWAYS_ON flag, GDSCs will get
-powered down during suspend, causing the UFS PHY to loose its state. And
-this will lead to UFS error similar to below during resume:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
-ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
-ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
-ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
-ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Cc: stable@vger.kernel.org # 6.8
-Fixes: c58225b7e3d7 ("clk: qcom: add the SM8650 Global Clock Controller driver, part 1")
-Suggested-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/clk/qcom/gcc-sm8650.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+NOTE:
+----
+The following build warnings have been noticed on x86_64 with
+various build configs.
 
-diff --git a/drivers/clk/qcom/gcc-sm8650.c b/drivers/clk/qcom/gcc-sm8650.c
-index fd9d6544bdd5..ddc38caf7160 100644
---- a/drivers/clk/qcom/gcc-sm8650.c
-+++ b/drivers/clk/qcom/gcc-sm8650.c
-@@ -3480,7 +3480,7 @@ static struct gdsc ufs_phy_gdsc = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
-+	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
- };
- 
- static struct gdsc ufs_mem_phy_gdsc = {
-@@ -3489,7 +3489,7 @@ static struct gdsc ufs_mem_phy_gdsc = {
- 		.name = "ufs_mem_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
-+	.flags = POLL_CFG_GDSCR | ALWAYS_ON,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
+drivers/acpi/prmt.c:144:29: warning: passing 1-byte aligned argument
+to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Walign-mismatch]
+  144 |                         (void *)efi_pa_va_lookup(&th->guid,
+handler_info->handler_address);
+      |                                                  ^
+drivers/acpi/prmt.c:147:21: warning: passing 1-byte aligned argument
+to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Walign-mismatch]
+  147 |                         efi_pa_va_lookup(&th->guid,
+handler_info->static_data_buffer_address);
+      |                                          ^
+drivers/acpi/prmt.c:150:21: warning: passing 1-byte aligned argument
+to 4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Walign-mismatch]
+  150 |                         efi_pa_va_lookup(&th->guid,
+handler_info->acpi_param_buffer_address);
+      |                                          ^
+3 warnings generated.
 
--- 
-2.25.1
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2oTjBf6W7vsijHrkw=
+8ZdOnL9Iby/
 
+## Build
+* kernel: 5.15.171-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 7a95f8fff07f7c8bab8da252016221fad81e010c
+* git describe: v5.15.168-239-g7a95f8fff07f
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.168-239-g7a95f8fff07f
 
+## Test Regressions (compared to v5.15.168-164-gcebe213d2a87)
+
+## Metric Regressions (compared to v5.15.168-164-gcebe213d2a87)
+
+## Test Fixes (compared to v5.15.168-164-gcebe213d2a87)
+
+## Metric Fixes (compared to v5.15.168-164-gcebe213d2a87)
+
+## Test result summary
+total: 60712, pass: 45080, fail: 1728, skip: 13822, xfail: 82
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 102 total, 102 passed, 0 failed
+* arm64: 29 total, 29 passed, 0 failed
+* i386: 23 total, 23 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 25 total, 25 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
