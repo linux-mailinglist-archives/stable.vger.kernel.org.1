@@ -1,135 +1,122 @@
-Return-Path: <stable+bounces-91767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0D09BFFE9
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:24:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6023C9C0024
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515AA284484
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 08:24:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FEF1C20F86
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 08:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF4B1DB372;
-	Thu,  7 Nov 2024 08:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NHHb/LY+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EEF1D5CCD;
+	Thu,  7 Nov 2024 08:38:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B631D9A41;
-	Thu,  7 Nov 2024 08:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A915C2ED;
+	Thu,  7 Nov 2024 08:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730967865; cv=none; b=KPVPibPz0nHQ26X3mWZebHBQt1NHUef2OcfFTb1Cht7CoMhEG7zBrpFpM15MRD0VvlpASlcGyMNJb2jYViJ2dVMlxQ2vHqhKvKnihBAEarhy+6QUGC1SZDDis8SxrbrIFr9UkCdcdy7jKSSijDzTODkXPsP2CiN3hZ9+tdFhhec=
+	t=1730968688; cv=none; b=nnXTSwMdndwO1ai9WQrCa5YRKbb/Jviuwgp0OBrsILxRixfqAblWzKGRG4oxqok9AuVBa9cabTgD2jdDoLwjla6jUJA6TYw7j1S6VyYnOFmY4uMwyBwthUG4dz/pWKv2hgxcARrRfMdtzIU6sx388y0KELCTalGq2iLz1mPGrJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730967865; c=relaxed/simple;
-	bh=ZtErKcyBvKlUjFKcadq0MkUgvpGH0gPnGcyK4+5rQCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SIrQcK8pp/5Dy0SRtQmMHv++Z/qTf5gJzoK1cIMRzPkK+4Y22VpoGTR6md6W+lBQJlobZM9C1k4aMPQPlDtU0ifDglemfMHrpHJ6t2zBln6Ywj8LnPEu2aZ+uCfhHRyeUmC2CFBLuYrQdUsmqGhb9m6qDhvLUW6RmcK/bwAwNHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NHHb/LY+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A77DjC2013243;
-	Thu, 7 Nov 2024 08:24:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7TrpguMEdSksTaqBAC65MSDO/ym6FXsg7gAMIzCbcrU=; b=NHHb/LY+6FKlCmVG
-	QYm+fBWa+xRpEWWwsXtcgZv25h7Jg7r/Kd8BaTE/Ied4TLwEpi9bY0ElJlWO5EvR
-	qpUqhidS7biGQv34Bfv74wskiZDEevVP8rLgQxHg3nPPQZEUuVUwDIVYMegE3sP7
-	mQ01hBfrnJlHLc971J89TKzcM0BdehAMupzcdsb5IZGS2lZRCPGxZFpmsopGwciC
-	sV9DbMPzDKLF3+/Nh0vR7AHHi4kw37gvSSxWl/axyUAnsG7lBnH+W6Nhm4T+37xi
-	U8cPWJl3ccUfPzNOiLKfw7dmRnKQjRyoQV3EaVj+EZ6yFaxOOL+DgW835QQkrFrw
-	Vu/9xg==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42qp2rwmn9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 08:24:19 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A78OIlY032387
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 7 Nov 2024 08:24:18 GMT
-Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 7 Nov 2024
- 00:24:15 -0800
-Message-ID: <647a32b9-94e4-ce9d-ed9a-771d32fe7784@quicinc.com>
-Date: Thu, 7 Nov 2024 13:54:13 +0530
+	s=arc-20240116; t=1730968688; c=relaxed/simple;
+	bh=5K9RBw/syKo/ToA0mTS9h7O9ZvRiBwpEZbv4gIcFtbU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uOHmyzkDXlIUCFwAWJ8EbeFdw+7g9OrytIFHmkOZJkyqmFoLNIjxzgKBUSBiPnmWh57jp1SwLTCEVRUFPXjnNBv41tAZwPuxoN2hOnm+4cnt031FtuT2ZhdSQLJoeTR7f+J10oQ5zZgzzO5Tv4CSXJQqv4W8q4++E/U/ppMbYZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e30eca40dedso660773276.3;
+        Thu, 07 Nov 2024 00:38:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730968684; x=1731573484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5qIkpxX8mie6S98MLU//bN6Dn5DgRJ3nz9AaO+MRWEA=;
+        b=TSigyAEcQMrRkAKRc61iKelsmqofoSXq3TU/O0KksqXMtjlB/GqFlpc/YRd8Sit7Pz
+         //8tyL93hjtntoLbTYDJQEOcWqrVSUYJyRcMu/xckLIx+jAAsZWTfeRv2Gg1qdzEk0wi
+         NfMyjHNAsejoXm6UU6S71xwfj7uqvPAmQfZG+NhTgQiOT/WbJlJIOYgw55Gt//GB3q15
+         F3w99jWgDeO3RjsqJIl92PxinyzKGwPwctwZX4lNYSEBReS1Ks8kJdUiQ/0gFzZfB5w+
+         7257k5n27SZbjlwEn9ZbPvxy080TxMJyQyQ2hQEHPOzX9pPTT5NR1XzKQAfrgvtDASom
+         7FTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiEej7tA95R1Fkc8mz4GIVp54lQ3NpW+6T/rhL0GIHrjrdM429tXUEKr4OQqEGG/cXm85hBqv1nquUEDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA9yT2GHbpsMn36vaGbQlENQEhchlqpF7q62AjXJVS+Bc/To/C
+	v7xjpwMTK6EVEiGA9CTRVJ5pdk0MUB4SBlNdyBeFz+6HYm14PJOpV8pHgp9P
+X-Google-Smtp-Source: AGHT+IG2olxERWCpX331xNjCDkE9qS3jern++gAIXhaBDRTMTteLQ2i5oXbyIVmOHyUJmt4WC//tyQ==
+X-Received: by 2002:a05:6902:70d:b0:e33:1717:ebb0 with SMTP id 3f1490d57ef6-e331717ece6mr17128311276.52.1730968684555;
+        Thu, 07 Nov 2024 00:38:04 -0800 (PST)
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com. [209.85.128.179])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e336f1ed085sm181566276.52.2024.11.07.00.38.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2024 00:38:03 -0800 (PST)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6ea5003deccso7200567b3.0;
+        Thu, 07 Nov 2024 00:38:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWuy3jN5F6lECvKsBVCpLmdav89zPtqq+gYG0hSpcmxrTLiDHlLBDnIcgRyQJLdWoZWmz/Ii9WeoJy2mG0=@vger.kernel.org
+X-Received: by 2002:a05:690c:6f8e:b0:685:3ca1:b9d8 with SMTP id
+ 00721157ae682-6ea64bdd307mr238656597b3.30.1730968683252; Thu, 07 Nov 2024
+ 00:38:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov
-	<stanimir.k.varbanov@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
- <640fe933-078d-4bf5-815c-7db0eb8b9de4@linaro.org>
- <7f350d73-65dd-097e-8b4a-e9a23472aa28@quicinc.com>
- <d39c7613-fda1-417c-a205-daddbc378bc3@linaro.org>
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-In-Reply-To: <d39c7613-fda1-417c-a205-daddbc378bc3@linaro.org>
+References: <20241107063342.964868073@linuxfoundation.org>
+In-Reply-To: <20241107063342.964868073@linuxfoundation.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 7 Nov 2024 09:37:51 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUi=gLLJp2zLgq4bQ-PMXdB1hOZus-5zRSKYS-71cQJsA@mail.gmail.com>
+Message-ID: <CAMuHMdUi=gLLJp2zLgq4bQ-PMXdB1hOZus-5zRSKYS-71cQJsA@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/349] 4.19.323-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: rfWd1Ona_nvMTFFel25ZTW8fvzs638V2
-X-Proofpoint-ORIG-GUID: rfWd1Ona_nvMTFFel25ZTW8fvzs638V2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- bulkscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- mlxlogscore=977 suspectscore=0 spamscore=0 mlxscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411070063
+Content-Transfer-Encoding: quoted-printable
+
+Hi Greg,
+
+On Thu, Nov 7, 2024 at 7:47=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> This is the start of the stable review cycle for the 4.19.323 release.
+> There are 349 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 09 Nov 2024 06:33:12 +0000.
+> Anything received after that time might be too late.
+
+> Biju Das <biju.das@bp.renesas.com>
+>     dt-bindings: power: Add r8a774b1 SYSC power domain definitions
+
+Same question as yesterday: why is this being backported (to multiple
+stable trees)? It is (only a small subset of) new hardware support.
+
+> Stable-dep-of: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
+
+This is completely unrelated?
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 
-On 11/6/2024 3:53 PM, Bryan O'Donoghue wrote:
-> On 06/11/2024 07:25, Vikash Garodia wrote:
->>>>            cap = &caps[core->codecs_count++];
->>>>            cap->codec = BIT(bit);
->>>>            cap->domain = VIDC_SESSION_TYPE_ENC;
->>>>
->>> I don't see how codecs_count could be greater than the control, since you
->>> increment by one on each loop but >= is fine too I suppose.
->> Assume the payload from malicious firmware is packed like below
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
->> .....
->> for 32 or more instances of above type
-> 
-> But you do this
-> 
->           cap = &caps[core->codecs_count++];
-> 
-> for each bit.
-Yes. Let say that packet is written more than 32 times in the payload response
-from bad firmware and each has 1 bit set. core->codecs_count would be
-incremented beyond the allocated space.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-Regards,
-Vikash
-
-> 
-> Anyway consider Dmitry's input re only calling this function once instead.
-> 
-> ---
-> bod
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
