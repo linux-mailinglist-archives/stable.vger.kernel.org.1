@@ -1,229 +1,166 @@
-Return-Path: <stable+bounces-91775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCE29C01E5
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:08:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277009C0208
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34A7F1F220D3
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:08:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A351C20DB3
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E303A1E909C;
-	Thu,  7 Nov 2024 10:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FB51EABB4;
+	Thu,  7 Nov 2024 10:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="B6oc96/Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rdhp+9da"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70711E8834
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 10:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A541E8856;
+	Thu,  7 Nov 2024 10:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730974097; cv=none; b=N3tG90/rTeaHAB7nAB5u6mq4Q7tqN0rzFXlxEgnJykOIcgQLsnwoy7Kecl40bskRR9Y6ZF9m92UuTSR+vt97vKBwXtOiJTuGczgdqfmZJf9/9WU2EE7hLJoo2cSBPQeBuHtHFkD8wR4cBYIofhVVyrIaQ5rdPCI2riSr+2GWfgI=
+	t=1730974496; cv=none; b=okwR2INAHm5ywsU5k5m5tVTJe3G5MU2GO3GKs9nrsd/SwYYt7yZHgVGrrjLfT2/2OqRQRzjC+igsBSxiyQ++Ue14Yf/3z2kgIqIXDsc8o11cRBGVyos0sifjZ8dk8+aaG2zOJ04o8j43l+sKws1nqewJ+ejiT81YAi0l7tBsB4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730974097; c=relaxed/simple;
-	bh=xXUQOBT01T3MRKyJrdapfNykchj8nZNKVHCLYH+d/Cs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PXoZ+U2LsXciT93NTQ3Com6DQzu7JmFTJ7kUfKqyn+G2RolcpZ60CmuqC6pkOK7LmXXoD5nDDo9zuJyy52tgngmV40KcHUwyWaE1OWi5+KByeS/uAUL5vh1I7+M31C7buzeO99504xPoOnAfFkMzdUlEUiIH3/yf3kEW3Qk6bCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=B6oc96/Y; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so6799875e9.1
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 02:08:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1730974094; x=1731578894; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3aX9aU5kbUCffF9rM+ueXGTR+/RvfCfDMyT/aMZR86s=;
-        b=B6oc96/YAgpINz8oJmoArIRKtTbM1I/msINUpD3GOp2QDUCDmIVgtb2eYefgwYOmwv
-         /GEvgdGbKFIUq3zl1VJzKVUfONUAUrOOXyD4ZrKMvTPBYZftJHxVpUrbSfCDR1NqklLu
-         cGhP80CqcZ6idRjOY2ymYfAvDFifw7v0K0yozumbmS5t1Tj16Fwrp6TjIcfTSKf5Y2k9
-         pzrHj3CZ58diIepema7cQ8A0QshAVczkm9Z1ZyddGYwBuKaSBMrCrPcjKVeUMlptgtIH
-         J/1Fneyuw7nbqVaVbxi27c+DLG8pZiY2RftShSDO/jItH58VoD3nkSAw2I+iIy+emFSR
-         pcjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730974094; x=1731578894;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3aX9aU5kbUCffF9rM+ueXGTR+/RvfCfDMyT/aMZR86s=;
-        b=pnFi2xNIwY43C3K+QiYUYZsnQZ/qG/BXDX234oNSHVDVYhoobw+fJx+owAtTPP95KM
-         EJ2Ag4+lHBXQGLaDngHNJvLS54xfzXeq7BL1dZ86x6aqkegCc4SrzpcClgxLru02caNl
-         tFOauYtSGEO5zXdw/eM+q3HhkSILY1wzRfkKtrAmnVxHf9Fpxxgm8SlnEbH/dfS9zFR9
-         keyVr+65EKqC8fUq4NDZyhUv974izxYDmFs40thtJFHINjCdA7FrQ+zY6T0j3G15cZMX
-         OYZqDr9hmOvdlQPzHRG/DlLqUyjI0uixTHC2dtDk3rzD5xpzxHSFill7d1Q6m0YSCaVW
-         N6Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCWrcZGtZ5+AtRttPbwB5/7nzK5tv1RwbKenvni3kO50V45R6Oe/INlrQAXXGumUdacE6Gzj/4Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/UNBVYai4qjxCKC6y9oQcbrMZpv675a0zL8KYN2J/1NWveROK
-	+QgWo/w5G+r/jsxewrf7MrBu9RDWWAjh3mVYnMZfEA3OuNYZaqvXH1VXDSmy4zQ=
-X-Google-Smtp-Source: AGHT+IGWGYFHOONG1Xs6QvgE6Y/vND7Lhs5RD0DMYTtylzW3x3ufq+tfvPgtCHz10wJS3sE+Pr8Zbg==
-X-Received: by 2002:a05:6000:1865:b0:37d:5129:f45e with SMTP id ffacd0b85a97d-381ef6ba599mr518574f8f.20.1730974093942;
-        Thu, 07 Nov 2024 02:08:13 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97ec9fsm1304952f8f.42.2024.11.07.02.08.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 02:08:13 -0800 (PST)
-Message-ID: <26618787-7eb7-40a6-b849-33016956ef03@tuxon.dev>
-Date: Thu, 7 Nov 2024 12:08:10 +0200
+	s=arc-20240116; t=1730974496; c=relaxed/simple;
+	bh=w5g82WZeZTzWD79OqJf1UTmTavO98j4tPfUoxbpEwQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckfVaL0tkWSxjZ0I1xjIWBrZl/fSWM8NoEKEM6mxEvij/DA9Sino3wCRo/bq8WjVXvw3komhqSMm6sKAdQZzfyQNa+9gTtXdX78ZBV7jEsnFICh8QczQ0FO7svhSPamkT/+d3pKeyQ8Z4YN2fIQHMrky1ymtGgVn/NosoKGW0bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rdhp+9da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F4EC4CED2;
+	Thu,  7 Nov 2024 10:14:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730974495;
+	bh=w5g82WZeZTzWD79OqJf1UTmTavO98j4tPfUoxbpEwQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rdhp+9daubb7PiW1j9ix67RZN+smC9IvZ+YXxVYxT76Xv22mO9/e47Vicp5aHctle
+	 GGL0ZMwC2u4zM2vIg9j8P3jlNrD9/nFtyzftPktwI3GVCQ2gICfpsCe2QTLyV4yb2m
+	 ggNGKqt02AqlqyVeD/Xr/z1rZwfWryZuE6lTxL5Ql6tPUX+udDxqcjtrcEN4ATPTjy
+	 tSZ3w/sYHEN4R46ejmuapnMYIz9gahX4Vwm2wUUvqTFidPORSnLxy7IDidnwiao2TB
+	 G5iBxwBXUOA8NM/g/ud6dPcWIpjBL4D4r5QbmBdQEP6hKL+XW6TDc+cnuBUH3w42Pi
+	 CS0RYZKH99rcA==
+Date: Thu, 7 Nov 2024 11:14:52 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, bsegall@google.com,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
+ on clone" failed to apply to v6.1-stable tree
+Message-ID: <ZyyTHGkchGzeHBx3@pavilion.home>
+References: <20241106021018.179970-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] serial: sh-sci: Check if TX data was written to
- device in .tx_empty()
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: geert+renesas@glider.be, magnus.damm@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
- sboyd@kernel.org, jirislaby@kernel.org, p.zabel@pengutronix.de,
- lethal@linux-sh.org, g.liakhovetski@gmx.de, ysato@users.sourceforge.jp,
- ulrich.hecht+renesas@gmail.com, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-serial@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
- <20241106120118.1719888-3-claudiu.beznea.uj@bp.renesas.com>
- <2024110747-kite-pacemaker-6216@gregkh>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <2024110747-kite-pacemaker-6216@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241106021018.179970-1-sashal@kernel.org>
 
-Hi, Greg,
+Hi,
 
-On 07.11.2024 10:47, Greg KH wrote:
-> On Wed, Nov 06, 2024 at 02:01:11PM +0200, Claudiu wrote:
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
->> is called. The uart_suspend_port() calls 3 times the
->> struct uart_port::ops::tx_empty() before shutting down the port.
->>
->> According to the documentation, the struct uart_port::ops::tx_empty()
->> API tests whether the transmitter FIFO and shifter for the port is
->> empty.
->>
->> The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
->> transmit FIFO through the FDR (FIFO Data Count Register). The data units
->> in the FIFOs are written in the shift register and transmitted from there.
->> The TEND bit in the Serial Status Register reports if the data was
->> transmitted from the shift register.
->>
->> In the previous code, in the tx_empty() API implemented by the sh-sci
->> driver, it is considered that the TX is empty if the hardware reports the
->> TEND bit set and the number of data units in the FIFO is zero.
->>
->> According to the HW manual, the TEND bit has the following meaning:
->>
->> 0: Transmission is in the waiting state or in progress.
->> 1: Transmission is completed.
->>
->> It has been noticed that when opening the serial device w/o using it and
->> then switch to a power saving mode, the tx_empty() call in the
->> uart_port_suspend() function fails, leading to the "Unable to drain
->> transmitter" message being printed on the console. This is because the
->> TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
->> TEND=0 has double meaning (waiting state, in progress) we can't
->> determined the scenario described above.
->>
->> Add a software workaround for this. This sets a variable if any data has
->> been sent on the serial console (when using PIO) or if the DMA callback has
->> been called (meaning something has been transmitted).
->>
->> Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->> ---
->>  drivers/tty/serial/sh-sci.c | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
->> index df523c744423..8e2d534401fa 100644
->> --- a/drivers/tty/serial/sh-sci.c
->> +++ b/drivers/tty/serial/sh-sci.c
->> @@ -153,6 +153,7 @@ struct sci_port {
->>  	int				rx_trigger;
->>  	struct timer_list		rx_fifo_timer;
->>  	int				rx_fifo_timeout;
->> +	atomic_t			first_time_tx;
-> 
-> Don't use an atomic variable for an informational thing like this, it is
-> racy and doesn't work properly.  Either use a real lock (because you
-> care about the locking stuff here), or just use a boolean and live with
-> any potential races.
-
-OK, I'll drop it and use a boolean.
-
-> 
-> 
-> 
->>  	u16				hscif_tot;
->>  
->>  	bool has_rtscts;
->> @@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
->>  {
->>  	struct tty_port *tport = &port->state->port;
->>  	unsigned int stopped = uart_tx_stopped(port);
->> +	struct sci_port *s = to_sci_port(port);
->>  	unsigned short status;
->>  	unsigned short ctrl;
->>  	int count;
->> @@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
->>  		}
->>  
->>  		sci_serial_out(port, SCxTDR, c);
->> +		atomic_set(&s->first_time_tx, 1);
->>  
->>  		port->icount.tx++;
->>  	} while (--count > 0);
->> @@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
->>  	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
->>  		uart_write_wakeup(port);
->>  
->> +	atomic_set(&s->first_time_tx, 1);
->> +
->>  	if (!kfifo_is_empty(&tport->xmit_fifo)) {
->>  		s->cookie_tx = 0;
->>  		schedule_work(&s->work_tx);
->> @@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port *port)
->>  {
->>  	unsigned short status = sci_serial_in(port, SCxSR);
->>  	unsigned short in_tx_fifo = sci_txfill(port);
->> +	struct sci_port *s = to_sci_port(port);
->> +
->> +	if (!atomic_read(&s->first_time_tx))
->> +		return TIOCSER_TEMT;
-> 
-> See, what happens here if the value changes right after you check it?
-
-I agree. I am aware if it.
-
-I chose this approach (w/o locking) as I noticed (as of my code checking)
-that this function is called in kernel through uart_ioctl(),
-uart_wait_until_sent(), uart_suspend_port().
-
-The uart_wait_until_sent(), uart_suspend_port() are implementing a multiple
-try approach when checking the ops::tx_timeout() return value.
-
-I haven't checked any user space application but considered that it might
-work in a similar way.
-
-I will switch to a boolean in the next version.
-
-Thank you,
-Claudiu Beznea
+Le Tue, Nov 05, 2024 at 09:10:17PM -0500, Sasha Levin a écrit :
+> The patch below does not apply to the v6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
 
-> Being an atomic doesn't mean anything :(
-> 
-> thanks,
-> 
-> greg k-h
+Can you try with this updated version on the failing trees?
+
+Thanks.
+
+---
+From b5b62a0c48448c4bf7cc0ff8c3f3736ced489939 Mon Sep 17 00:00:00 2001
+From: Benjamin Segall <bsegall@google.com>
+Date: Fri, 25 Oct 2024 18:35:35 -0700
+Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+
+When cloning a new thread, its posix_cputimers are not inherited, and
+are cleared by posix_cputimers_init(). However, this does not clear the
+tick dependency it creates in tsk->tick_dep_mask, and the handler does
+not reach the code to clear the dependency if there were no timers to
+begin with.
+
+Thus if a thread has a cputimer running before clone/fork, all
+descendants will prevent nohz_full unless they create a cputimer of
+their own.
+
+Fix this by entirely clearing the tick_dep_mask in copy_process().
+(There is currently no inherited state that needs a tick dependency)
+
+Process-wide timers do not have this problem because fork does not copy
+signal_struct as a baseline, it creates one from scratch.
+
+Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+---
+ include/linux/tick.h | 8 ++++++++
+ kernel/fork.c        | 2 ++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 9459fef5b857..9701c571a5cf 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -252,12 +252,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_set_task(tsk, bit);
+ }
++
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_clear_task(tsk, bit);
+ }
++
++static inline void tick_dep_init_task(struct task_struct *tsk)
++{
++	atomic_set(&tsk->tick_dep_mask, 0);
++}
++
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+@@ -291,6 +298,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 				     enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
++static inline void tick_dep_init_task(struct task_struct *tsk) { }
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_signal(struct signal_struct *signal,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 8dd46baee4c3..09a935724bd9 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -97,6 +97,7 @@
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ #include <linux/bpf.h>
++#include <linux/tick.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -2183,6 +2184,7 @@ static __latent_entropy struct task_struct *copy_process(
+ 	acct_clear_integrals(p);
+ 
+ 	posix_cputimers_init(&p->posix_cputimers);
++	tick_dep_init_task(p);
+ 
+ 	p->io_context = NULL;
+ 	audit_set_context(p, NULL);
+-- 
+2.46.0
+
 
