@@ -1,186 +1,117 @@
-Return-Path: <stable+bounces-91836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78ABB9C08CF
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:23:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079279C08DC
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FA71F2419F
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:23:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75C6DB230E5
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E1221218A;
-	Thu,  7 Nov 2024 14:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665FF212D0A;
+	Thu,  7 Nov 2024 14:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lKxv7Qlo"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SPzde+DZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE304212164;
-	Thu,  7 Nov 2024 14:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBE721218A;
+	Thu,  7 Nov 2024 14:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730989390; cv=none; b=iDZqgytjzhJdTPeRH+xhUBw5yg3uqVbuwYkEItoovqvnryupVOfsH97Sz4KAITvtlEn2DVZ5zKIuJIcAoCnJ0HstfDqSXXaHiuSzGXULUe1piVy6zfyvGw+c09wiKA+D6KIAfqvbijyvu048hwJiV3nn7UA73HuUMWoKg5sP1uw=
+	t=1730989601; cv=none; b=gOlWSOTqRL8Jk/6nrQGNizpN39V2Fk9c1fOy9WSh1doc5XI9G3rxzC0HBQVrLIjiQxRaUB06tKUY1B7XgSiMN+bhs2rw7nr5BeTgsHWlodB+B+HDFsZqkYroCQAlaEDfmOqqFIXsSjicWpdmV7sfz3Bxn8A9uwdzdIWFU3w7KPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730989390; c=relaxed/simple;
-	bh=1vS1iTnD6kK4Vka3ccpXTZnspc8FPKXdaTMnnwk/7ZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iW/3ejjmrsB+2RskZB7qVZU9Xl/BPz9uItL9F433dyVhzquUVx8IhhMwN/5iPkEy5cfzy7ZYnCtyXi2DZUQnrEjLIy5FJ1W/zISaPpRJOMVykELR+SHeCm/qx6OGp7+zZFeEqjy+9s6aaYE1PHvjuC7eJmr65d1aT53T5Al8oIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lKxv7Qlo; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2fb3da341c9so10037891fa.2;
-        Thu, 07 Nov 2024 06:23:08 -0800 (PST)
+	s=arc-20240116; t=1730989601; c=relaxed/simple;
+	bh=IZ1L6Ihm8Joep60ZOkXArh7N57MsF6DTK72afzXGdrw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mSzERs734Z8pvDNHo+H/SNwnD7F6mNkzpEb4hLsZCtOQSXmoDCkQ52MWIesLCfmxrSA2C4in0g8LFhHM2T9lXBpwqH65OzQYaUtmY6YFYTtJMXNp6qEJhH4wgDZrFcRTqh8gvdWXDOVzk8ueLwXDjubVSjxma6PJU2lUgmUWmt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SPzde+DZ; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso9347065e9.0;
+        Thu, 07 Nov 2024 06:26:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730989387; x=1731594187; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUgnIDdh1cnD0LhNQIlH/p+vDLHIa3VLvsqit2GvoCs=;
-        b=lKxv7QloqV8mAWVPG5Ts/5fReg07+eXjWW/vN/x+ZWvVK+GqhAyko2urUtes95Wnr3
-         uQ8FMQqHwP9o1TRZqKpsnDBfgffL+La4FE2ovSdHvAteLcvHfT5F12BvtDVNR4aJwiVU
-         lkPQUGPSyw9HAI59hHhaR5N2d5r6E2nUsrusDGnfZbydvO6cg7V/jG1GNxR+pBEkgzF9
-         2+zLiJmulCsoKWLCchywABeuX0rrGcjLWFJEIfxg/FTK+ILxv08qT0sjUlUeZeQuhUn9
-         5WevkcrkNWMtCknryIktHSWfDbELZVPK8ahh18X4CDBCVBHI8a6HDIIPNrC/te3Yru4S
-         C2sA==
+        d=googlemail.com; s=20230601; t=1730989598; x=1731594398; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4lWe+8OTr1x391V84LUEUDWwUDsOdkE6GAj381Q8PLc=;
+        b=SPzde+DZwfOeHiCfvN3xxk2YQBzs7PaBTq/g3NFo3l6Yz5x+xg1E/HGyKUmmp/+yZG
+         i1UgvKKy91rRBjzXriHsK/vxDVOGDYVgGwQYs34VbyUPipovURJehs+DvUZUNmmpR54T
+         X7EdftOZ0ONPIB3S6EGp9km+cjL5FWBfQaouuQTxM7NI+LnK47fY6ZAp8AgpGCQv6/Sv
+         x12S+QXltID08PxFeFIvZ8ItudfUeCHdjYV0mF7gWYf75t1C64Dr2zGOF2kgyGumkoXU
+         hV8E2QnBjZAf+mfQ0OPvxJq1O1OOaBIKdPsGRv0RQ4E0zihhLvUmeoIghEfbg7E7zJod
+         LwkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730989387; x=1731594187;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KUgnIDdh1cnD0LhNQIlH/p+vDLHIa3VLvsqit2GvoCs=;
-        b=U75GMYazqf7+4oG/N/RNIdyg65FP62SJYgM5TJGuADZdr7pKbsC91KqOmnLfIJHC4a
-         0bdqTSWPYEncC6U49mSKFEDxDGtZGrulWgES8aDSuht/yoGrMaZRkVDrenaLdOApwxix
-         qXO54j9/b409Ct4J5tJN5w0h7edIHcG8NN1TH0xI3RRtAvBOkELyZAcY/l+pxjtaM7yP
-         BRl5IjJznWbOQreG0vBEiVf4JBW6jDdYAJQfayaF/plwsXPqwIfkBi5KaORB1H2k8W2W
-         Z/6b6VbS6iZhLNcbiM8lqqTCAqn8AWPvrc5XppoYnMo/zj3Rli00hsAi/luQOXmHdbeI
-         22eg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5tZ/JOcQa6z470OdS5eQIjeHMHvB9GQGqhtTZSou4DbFhn8QQAOYVkmlWRuJx7MMJjaykRly9TFhAeOVN5Q==@vger.kernel.org, AJvYcCVVFXOonDVXQ1vSs1jZQoP16khTpXETTHlNnOJjKi0c3ksvVDJITGMD5wzcxl9WolXyZ5ok5i0M@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyyMGKXDaNCSMenY+h2FvZyGK5VziM6/Z+Os3nEZwH4v4SsEmd
-	eNOEhQ/NOvYGMNdNCHocHXZZKYl3zF/y+dlnYfslV9Z+LsoI89g0d4cFMUFeM8xkZ80eBc7hPb7
-	rPqDCBbfriYmlROsOzveeQWO+g2I=
-X-Google-Smtp-Source: AGHT+IEUEm3f71Y+xcPEHsVfb+45JuNmoETWADbk+LZEUtK440SzmhyijTfpIVOoxaoBy19kekKKnMEtDcPAFd5vmcY=
-X-Received: by 2002:a2e:bea0:0:b0:2fa:bad7:70fc with SMTP id
- 38308e7fff4ca-2fedb7d8ae8mr133468261fa.29.1730989386881; Thu, 07 Nov 2024
- 06:23:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730989598; x=1731594398;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4lWe+8OTr1x391V84LUEUDWwUDsOdkE6GAj381Q8PLc=;
+        b=hRHsCci5d1GZ0kpYUN9lRgrIvVlNJmiJl4BZelH3ffOVgVVNy5AmsLML9V9AY7+o7h
+         acag58hzvhLOrsgei38DccZXcP7W4n+Y0fCgL3ZOqEZ+DijljGIvbiHg43ZUdeBg3nZe
+         EqscKsOY4RS7hcLsEg5gjTwPI9WCU7Jipb5ReZXMi6A2tq1tv6XQYyqhi7LYuef3ncUU
+         cIm86N9bwzMuODyhfX5/+hPeKuHIy/AcNpkNmXX8bDBJi/nPHet0zVtOGtepp+XMUXDu
+         G2eYDwzyAejhmx9PcIWJwjf7Nn9oy59HCt404Sy/ZkazbjUsJxpSdEv2uFCU4bQ85db5
+         DTNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMEjglyCwz1kRVBFPkqBiXOFzEdWBCm44X+dfhdW0cRNG+3PYa42hRZpYQyl8lUE1ufW0sZMTCO7r5g7s=@vger.kernel.org, AJvYcCWi92+cNwLwcslqvKCWAvMORCeyov8LDiJijkbAkevNkpHtzXdhHoOo40Qf49pQWcZ6NxtOd3OH@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTdN/nBcSOGI3yA1x8xPH7Ke/ygCTwEfd9igNbgnUV2xsfygMN
+	I0XBjr1exeBc0yaA92ZuBePvVf1zKSUcAoKK3kFS1XgPBu+IseQ=
+X-Google-Smtp-Source: AGHT+IHL0wi7WKTvPc5hxP5ofUXYUbtQb+bUpSZkX57u5JK3fnO3kXSjXOKKaPT73hDp1BFuoTcl6w==
+X-Received: by 2002:a05:600c:1d09:b0:431:5f3b:6ae4 with SMTP id 5b1f17b1804b1-43283255a5bmr214848015e9.17.1730989597555;
+        Thu, 07 Nov 2024 06:26:37 -0800 (PST)
+Received: from [192.168.1.3] (p5b2ac486.dip0.t-ipconnect.de. [91.42.196.134])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05c2161sm26038635e9.31.2024.11.07.06.26.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2024 06:26:36 -0800 (PST)
+Message-ID: <6f515d2c-80dd-4868-893f-194dd8e2963f@googlemail.com>
+Date: Thu, 7 Nov 2024 15:26:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107140833.274986-1-hdegoede@redhat.com>
-In-Reply-To: <20241107140833.274986-1-hdegoede@redhat.com>
-From: Peter Robinson <pbrobinson@gmail.com>
-Date: Thu, 7 Nov 2024 14:22:55 +0000
-Message-ID: <CALeDE9PXj+gD=CzwaANLPThbDMFx-Y0AiGYfFmeMb9jJVu=Ynw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>, 
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, broonie@kernel.org
+References: <20241107064547.006019150@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 7 Nov 2024 at 14:08, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
-> except for the following 10, add these to the untested section so they
-> can be used with the rtl8xxxu as the rtl8192cu are well supported.
->
-> This fixes these wifi modules not working on distributions which have
-> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
-> like Fedora.
->
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
-> Cc: stable@vger.kernel.org
-> Cc: Peter Robinson <pbrobinson@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Am 07.11.2024 um 07:47 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.11.7 release.
+> There are 249 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/core.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> index 7891c988dd5f..bd8e0076baac 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> @@ -8145,6 +8145,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x817e, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8186, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818a, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x317f, 0xff, 0xff, 0xff),
-> @@ -8155,12 +8157,18 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1102, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x11f2, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9043, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ba, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x1e1e, 0xff, 0xff, 0xff),
-> @@ -8177,6 +8185,10 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3357, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3358, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3359, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330b, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0x4902, 0xff, 0xff, 0xff),
-> @@ -8191,6 +8203,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x4856, 0x0091, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x9846, 0x9041, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0xcdab, 0x8010, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x04f2, 0xaff7, 0xff, 0xff, 0xff),
-> @@ -8216,6 +8230,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x341f, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe035, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ab, 0xff, 0xff, 0xff),
-> @@ -8224,6 +8240,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0070, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0077, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016d, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x07aa, 0x0056, 0xff, 0xff, 0xff),
-> @@ -8246,6 +8264,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330a, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330d, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab2b, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x624d, 0xff, 0xff, 0xff),
-> --
-> 2.47.0
->
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
