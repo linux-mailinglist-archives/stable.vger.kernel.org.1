@@ -1,148 +1,210 @@
-Return-Path: <stable+bounces-91866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAEC9C10D9
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:20:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAB39C1144
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F1B1F228B0
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 21:20:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC9B8B2248D
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 21:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C450D218308;
-	Thu,  7 Nov 2024 21:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC93C2185B3;
+	Thu,  7 Nov 2024 21:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWuMjLjl"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="E8EmcCXB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE46194C92;
-	Thu,  7 Nov 2024 21:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD3B215C75;
+	Thu,  7 Nov 2024 21:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731014417; cv=none; b=VDO42k5g1gNFp+tEwKNdKn9khFB592pSB6hnHKrUzx/ZNTzOPtKm7Cxo7Sx+gVQfc9OacdFnLxEykHMQJgX1IdOdPOqSf+c9c9TuDMJmbWrjDkeYwMg66Fb3ovWCfxuNQGki40fOrOyEtJ1NBXvSHgYRbdduzPZJCEuQpg+coWA=
+	t=1731016130; cv=none; b=lTuc0CAtL+PBxlt8o2W4HT9gUdVMuvhxzVkJKETwhYTWUc2y9ESKcYhKjsg8IvK6Q3Bl1WuELpZt5DLjM416625vcgvbU1cZySqxt3cqmNm+jDItSU6plwkkpsfxg64q8xBcdUWGxYS69oowCgOHvujt4ZX4tHgcQebWb1Jpe4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731014417; c=relaxed/simple;
-	bh=VCt/pcm7n80NySooeazyHzSqGEiYNbdJgAkOBvhyJmY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ux21k8UkZMm/tCWV4Ug6iC9CCd6LlCdWjLalX/2pBjyNtl2sbARFPJUvYskFpTvj8DQHBTLf/sqzfeakbZW+zPKZAXLP4H+DfDImHEbUPS0AKW3JlXROFv0rT1RXyBFlzoLRCAXet9JFd/Hpyfvg+y0hRPetBpmXnoZkJLUvbiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWuMjLjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 15737C4CECC;
-	Thu,  7 Nov 2024 21:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731014417;
-	bh=VCt/pcm7n80NySooeazyHzSqGEiYNbdJgAkOBvhyJmY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=kWuMjLjlBVsyvpNxrBfL6iXB6yAkpzkQLODBfn6iIBVTMR7UIf2AYqnxJmmiefujy
-	 ms+VMydsXpJVSXZwhZxtIQRThZZp5oemlDY8mpDblXx4/Rkjb+TnN4SWNBo/NsnYAU
-	 MF8v5FsA6vxTuloAXL1ay+EgiWOWaK0OL/0Rh5IIVQEpFTozj0vzCefFgY8kTCuwHg
-	 oyZkBK41LgeU3C4i7IQOkwfULDj8swnCoXMcB7zLQo39BzXHVpi77fSfj/Air1e1GR
-	 726YYrpOI+KUwB6xS90DMAQ4BLKBwAg/hQVxjTrwxrm2+kdMaSJpZHOnj36vsBK1o0
-	 oNmIKhLsZFh8A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05977D5D68A;
-	Thu,  7 Nov 2024 21:20:17 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Thu, 07 Nov 2024 22:20:06 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix spi burst write not supported
+	s=arc-20240116; t=1731016130; c=relaxed/simple;
+	bh=PeQlXo2Ahx/xh5UvvNM1rbtLq5tpIaIE8VYhMvhm39Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ua0jbqfbcXAqqvMZqg/49CocAKeBj3qafVs0i1+Y2idVdUOJfQ3UGCoxW+M4zGif6lIKkp8TyFkM44AmazsRoevqtVBw5gw3+A5yIID5auaeVvVD2adEPob8JQ/KbSrdiKphhAahdesJXOSiI/7t4lmUHqFgs1y8zf3HtDOmEps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=E8EmcCXB; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4488222A;
+	Thu,  7 Nov 2024 22:48:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1731016117;
+	bh=PeQlXo2Ahx/xh5UvvNM1rbtLq5tpIaIE8VYhMvhm39Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E8EmcCXBPQLn2G8m3bndqJh2vq27Fal3Jcdai/2AjpmVWno6i5K2w3/N6VeEwOf6M
+	 WQk108+cZS5u+DDvdCXijHMwhSNeAcVN8zYfYIezrks9WwCkx3/ZZ6u0g7jRvdDo/m
+	 PdiMnGoa0t3pYs/9rSA4e7/Fqcgv3qw0HIAl6jt4=
+Date: Thu, 7 Nov 2024 23:48:39 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v6] media: uvcvideo: Fix crash during unbind if gpio unit
+ is in use
+Message-ID: <20241107214839.GG31474@pendragon.ideasonboard.com>
+References: <20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com>
-X-B4-Tracking: v=1; b=H4sIAAUvLWcC/x2NQQ6CMBAAv0L27CZtQap+hXBAuuAebJvdgiaEv
- 9t4nMPMHKAkTAqP5gChnZVTrGAvDcyvKa6EHCqDM66z1njkuCPP7871xuDCX9TM+NxEC36EC2F
- MBXXLOUmhgLSQvwXf+vt0hRrNQlX6D4fxPH9mAghhgAAAAA==
-X-Change-ID: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731014416; l=2772;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=eEsvkfouCdMgwkJJdk752XAqwbz3MkUlI7SGBMxVUEA=;
- b=rGRs/voApe1d3FHAtobH1O1wnVlfw8ltZ85xR27K9NB5sP2Y6y0Ko+FLzwKAKK1tSmud64sjq
- 8rH/UkcvuMHBG90IpziZBixkIu53Rx/IjT5HG3d7/SkMxXT7fmT59R5
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org>
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Hi Ricardo,
 
-Burst write with SPI is not working for all icm42600 chips. It was
-only used for setting user offsets with regmap_bulk_write.
+Thank you for the patch.
 
-Allow tweak of common regmap_config for using only single write for
-spi.
+On Wed, Nov 06, 2024 at 08:36:07PM +0000, Ricardo Ribalda wrote:
+> We used the wrong device for the device managed functions. We used the
+> usb device, when we should be using the interface device.
+> 
+> If we unbind the driver from the usb interface, the cleanup functions
+> are never called. In our case, the IRQ is never disabled.
+> 
+> If an IRQ is triggered, it will try to access memory sections that are
+> already free, causing an OOPS.
+> 
+> We cannot use the function devm_request_threaded_irq here. The devm_*
+> clean functions may be called after the main structure is released by
+> uvc_delete.
+> 
+> Luckily this bug has small impact, as it is only affected by devices
+> with gpio units and the user has to unbind the device, a disconnect will
+> not trigger this error.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      | 2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  | 3 +++
- 3 files changed, 5 insertions(+), 2 deletions(-)
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 3a07e43e4cf154f3107c015c30248330d8e677f8..36a3b0795fb7d6cb0c178fadd93896fbc346ba0d 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -402,7 +402,7 @@ struct inv_icm42600_sensor_state {
- 
- typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
- 
--extern const struct regmap_config inv_icm42600_regmap_config;
-+extern struct regmap_config inv_icm42600_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
- 
- const struct iio_mount_matrix *
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..680373f6267b37d386e4e7bda543ba4efe97e66b 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -74,7 +74,7 @@ static const struct regmap_access_table inv_icm42600_regmap_rd_noinc_accesses[]
- 	},
- };
- 
--const struct regmap_config inv_icm42600_regmap_config = {
-+struct regmap_config inv_icm42600_regmap_config = {
- 	.name = "inv_icm42600",
- 	.reg_bits = 8,
- 	.val_bits = 8,
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index 3b6d05fce65d544524b25299c6d342af92cfd1e0..73cacfd157a4538ae8c9d1c8d97157afa28aa672 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -59,6 +59,9 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	chip = (uintptr_t)match;
- 
-+	/* spi doesn't support burst write */
-+	inv_icm42600_regmap_config.use_single_write = true;
-+
- 	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
+> ---
+> Changes in v6:
+> - Rename cleanup as deinit
+> - Move cleanup to the beginning of the uvc_unregister_video.
+> - Fix commit message.
+> - Link to v5: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v5-1-8623fa51a74f@chromium.org
+> 
+> Changes in v5:
+> - Revert non refcount, that belongs to a different set
+> - Move cleanup to a different function
+> - Link to v4: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v4-0-410e548f097a@chromium.org
+> 
+> Changes in v4: Thanks Laurent.
+> - Remove refcounted cleaup to support devres.
+> - Link to v3: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v3-1-c0959c8906d3@chromium.org
+> 
+> Changes in v3: Thanks Sakari.
+> - Rename variable to initialized.
+> - Other CodeStyle.
+> - Link to v2: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v2-1-547ce6a6962e@chromium.org
+> 
+> Changes in v2: Thanks to Laurent.
+> - The main structure is not allocated with devres so there is a small
+>   period of time where we can get an irq with the structure free. Do not
+>   use devres for the IRQ.
+> - Link to v1: https://lore.kernel.org/r/20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 28 +++++++++++++++++++++-------
+>  drivers/media/usb/uvc/uvcvideo.h   |  1 +
+>  2 files changed, 22 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index a96f6ca0889f..cd13bf01265d 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  	struct gpio_desc *gpio_privacy;
+>  	int irq;
+>  
+> -	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
+> +	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+>  					       GPIOD_IN);
+>  	if (IS_ERR_OR_NULL(gpio_privacy))
+>  		return PTR_ERR_OR_ZERO(gpio_privacy);
+>  
+>  	irq = gpiod_to_irq(gpio_privacy);
+>  	if (irq < 0)
+> -		return dev_err_probe(&dev->udev->dev, irq,
+> +		return dev_err_probe(&dev->intf->dev, irq,
+>  				     "No IRQ for privacy GPIO\n");
+>  
+>  	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+> @@ -1329,15 +1329,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  static int uvc_gpio_init_irq(struct uvc_device *dev)
+>  {
+>  	struct uvc_entity *unit = dev->gpio_unit;
+> +	int ret;
+>  
+>  	if (!unit || unit->gpio.irq < 0)
+>  		return 0;
+>  
+> -	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+> -					 uvc_gpio_irq,
+> -					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+> -					 IRQF_TRIGGER_RISING,
+> -					 "uvc_privacy_gpio", dev);
+> +	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
+> +				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+> +				   IRQF_TRIGGER_RISING,
+> +				   "uvc_privacy_gpio", dev);
+> +
+> +	unit->gpio.initialized = !ret;
+> +
+> +	return ret;
+> +}
+> +
+> +static void uvc_gpio_deinit(struct uvc_device *dev)
+> +{
+> +	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
+> +		return;
+> +
+> +	free_irq(dev->gpio_unit->gpio.irq, dev);
+>  }
+>  
+>  /* ------------------------------------------------------------------------
+> @@ -1934,6 +1946,8 @@ static void uvc_unregister_video(struct uvc_device *dev)
+>  {
+>  	struct uvc_streaming *stream;
+>  
+> +	uvc_gpio_deinit(dev);
+> +
+>  	list_for_each_entry(stream, &dev->streams, list) {
+>  		/* Nothing to do here, continue. */
+>  		if (!video_is_registered(&stream->vdev))
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 07f9921d83f2..965a789ed03e 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -234,6 +234,7 @@ struct uvc_entity {
+>  			u8  *bmControls;
+>  			struct gpio_desc *gpio_privacy;
+>  			int irq;
+> +			bool initialized;
+>  		} gpio;
+>  	};
+>  
+> 
+> ---
+> base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
+> change-id: 20241031-uvc-crashrmmod-666de3fc9141
 
----
-base-commit: c9f8285ec18c08fae0de08835eb8e5953339e664
-change-id: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-
-Best regards,
 -- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Regards,
 
-
+Laurent Pinchart
 
