@@ -1,153 +1,144 @@
-Return-Path: <stable+bounces-91862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71819C0F7A
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 20:57:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A325A9C0F88
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 21:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A412D282694
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 19:57:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D243B211FE
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 20:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F72185B56;
-	Thu,  7 Nov 2024 19:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B75217463;
+	Thu,  7 Nov 2024 20:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mi+CeQPx"
+	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="I++vinjj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124B6212647;
-	Thu,  7 Nov 2024 19:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836BF2161EB
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 20:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731009432; cv=none; b=WUvZrVFHtuXF0GOAYoiGn2bjl8i4qzmJdfC3VJFDqgY0hTWF8dbfqwicxkNDHqEBrATd5qt/jKjHAMMQ9WStxlhjiAigG1bVkiQnGz836TnZcJX5yNgNBvhVn9aNmZi6pA54ku51OQJy7FioGR/jgJfgmtIBn8z5VTDT4DnX4ws=
+	t=1731009849; cv=none; b=Jrdk2KjigFdNog4gwMESjLdHW+bhCfakSznyOXkZeo4p4OWkXavXuqQBhi3FJnQZ2nKqocwd3W9b9qxlil8lP/RaYCPH0TLNwdTWCFaY/trjtGyNxDG2Ip8f4Uzrq2S881pMgda8tHDzTnxeJM7Xj7wcf8crnUja6Axr97wQvco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731009432; c=relaxed/simple;
-	bh=BKWOZyhPqGJkAHWy1pq16mZS1iO2g6Wx9wjSOBnY9zM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bF0SfJJwKDB0tCNr5Efm0Od02qYB3r77u1jt7qVGruUTsPVL2SCeALAADae2rfQSWf+89ARM9icx0yYgIEsGys2gpF2FQ1UlbXfmDkWFcTQXaJEEQbwQVziOrntJMuwHPNgkVduY1Li9G2MAbBm6NXPHoKDUrdGviYZUKHqsN9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mi+CeQPx; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7ee020ec76dso1083112a12.3;
-        Thu, 07 Nov 2024 11:57:10 -0800 (PST)
+	s=arc-20240116; t=1731009849; c=relaxed/simple;
+	bh=Elp7y14xBOB4diE3acIW3Dc2vPvxtedgKHGsmmGj7Tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qU7GMtc3PnHnpHiWVFr2b48khadsoMWmg3lIW+H5d86IW8CZJ7yNyh38iMbBcIvikQedtX+czjiijeQ6j+mpW0Mc1hyLDme3zI9PqFuAMFYIDciL7GayBCgrJkmxQ2WgjeZjp0yVmIcNdn5X6JGjeVpKk69I6rlxlOnfAB1/xyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=I++vinjj; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e4c2e36d5so173044b3a.2
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 12:04:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731009430; x=1731614230; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=an2BYNiIr73igzGk85ed/xzWIMGUOMf6NrRC8wQUZs8=;
-        b=Mi+CeQPx1KUprxWtNzto6GxcoyBnKjPnJhWgrgWN+8RVMUBqj++3bIdHdmurqrAAfW
-         otkmc4W0yd2ePhC8qSRxDlzGfAMuz2IJoafuj688yP2AIA/tlR4tu2CuBIQ5WZNqDl1P
-         dN2k2S7PNnOkHt/ONmVJPlmNCTROJtDKVvaali2CxHXDA5X2pCXjUZ4nL3Sd67Sv+kcp
-         e4POmaIpoiKo491Q++83EK9ZPYBpKNyTYbzW/5cdahisC4laBBYtiluBO4ErALF9YUre
-         WpkgQRlnjPoKsy6PAw7E9uETRHoWfg63K9z7+hDDpZ6lwd6Mj9m6dgwwPRdPiQGRRAhG
-         K2/A==
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1731009848; x=1731614648; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YWUmKGMjr/6BN+GiYS1kBbGj8WMSXJNpnH1lTl9Nl5E=;
+        b=I++vinjjWCn0ZMC81x/5+zGBb8HdvUu52YA/eW8uhims5gI/PQF884eQJUr5PmoQkm
+         97xTTQ1UYPED0axcr3DsQxeKkiGBxydQHEM/DRyfjOVQGLA6a9EVxw9YZHIbsWIZGjdR
+         Ee7yqZ6R8KeM5welX71HsrsCOtYdAzLQOOsiUHWP4S/143IFyyhcMHRGDuffKNqD9Mj4
+         ofIKx4ITiqdcLPAPQK8UmF5xlWNWhbE53VVzPb8WS2pn9NJEJ4vqU0PKQIgZR5yXx7Fp
+         q9A/Poy3OABfT1h1h34E3Z133ZKsJWavgvERa5jK3G/5dv3iLtaM94nE3kGmvDfKxiMG
+         ocgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731009430; x=1731614230;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1731009848; x=1731614648;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=an2BYNiIr73igzGk85ed/xzWIMGUOMf6NrRC8wQUZs8=;
-        b=Kn3OaGc2BZB4HYbujyJBK435iC0+h/MoFf9q0A4IKyOphBg4QRZ+9g0kzLlEiJsY6R
-         KxGWs+Z+dE2Qypi1owGHyCKFtx5nNWWok2Gev1htbSEV/BZv6IJmgc0/lC2uICgK9wjz
-         I9WIoD+cVKtvhMXJwR6t74IpHFtwSbedPI9vWDXA91+4W0JzJd/4d7oebjIA9N46vkGo
-         d50TDkFQboNZnUlhXW7TQ7ZFBnq8TeW7TjNA0pKO/IgaMJqz31MnYxUgo3UyybL7zmZm
-         J4g3bhsB+BiTJvjwxPzpI2Mpo/DT2v4Bf+1X8sBjKZQkgeMF1U48GApipNvNqkasRRZN
-         EHNg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjw65a6lGcuEGl0G/96aJglSLf22B4ltEjw9Vw7OzKDcjiCzB+7HUY5LEaAbhx5rCH1NfXhlID@vger.kernel.org, AJvYcCVIr52N6EwXkzW7bD70OBp7gYDot0S2VJsb0DjuXak9lDpuYUc6u++PRvkxCi9qInCdduf5mN6kV4RoxNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5iFTBa3nNtPHWkcDPguMIwAXhm2RZyBZ/lZOn5vdmqHiL75K9
-	WSguhuX+HXYl6wQFQU5ScA/EVpbPJkLVXz6ByePfE5FZvaOQJXb1
-X-Google-Smtp-Source: AGHT+IGWKkyQMuhl6Kr/q78tAwrtwpl4iyFS4D6+f3uYixcQQxdahlH8PTYfYlM1ueNiXKuIDzqkvg==
-X-Received: by 2002:a05:6a20:244f:b0:1d7:3d:6008 with SMTP id adf61e73a8af0-1dc2292f687mr306169637.13.1731009429534;
-        Thu, 07 Nov 2024 11:57:09 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e99a55bf59sm3965802a91.29.2024.11.07.11.57.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 11:57:08 -0800 (PST)
-Message-ID: <c4d2f6eb-c29c-4f1f-a5ec-217c12d29051@gmail.com>
-Date: Thu, 7 Nov 2024 11:57:07 -0800
+        bh=YWUmKGMjr/6BN+GiYS1kBbGj8WMSXJNpnH1lTl9Nl5E=;
+        b=MuU1Veq8kqGjmTvX6bo/kQyqS6Ap3K/C1UCi14YXcmVEgFpXpxx+60Vb+x/Zb4P+Qv
+         VuxTGHtLYvMXvGb4g8MFvRcP36V8+CxIrnYVBGXA0BPPlhjLGuhUl49VZ8NUuwdVvepw
+         6mcFtf2RusKJelVzZHzTpWVLgkVrPVqMVFD7Ka2JndqBB7qcsId+85nnnR8EinswV71l
+         TW6RteldPLX5YAlma9AU4Q06Piz5a7QWcP2I71lG8I0nrqBJyYdqP5xTHcDpWVebTmYj
+         QfFsJ05a72ah3zzAlt1QWen4x9DyKkwtsjI9bVdTBHhjxCMzCccW6++OdiPh6g6THPfQ
+         x2Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWk8l9vKm1q2Y7H/OhZq+zJEbzSjKlYOjO+8Evm19dGa7haWur2jALi+qQhd/ExMSPFJhe6ha0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpPrWJ0Qc/YXYMtU53vhLosXWL7O0DjBVUrped8oJ4h9kZGyZt
+	ppKcsLTcN3ah/p8Oi7kGhufPT8QPit+2Fci5/ratzVakx1lQREx8c7lyipTC+fTCUNb0KkLPfN6
+	o
+X-Google-Smtp-Source: AGHT+IF6P0+yerU0FHqW/gSF+wzFyJeaPm8UMmSFVr4Moj/eVfBEHxBKds5yvhJlYTNJ1Em/fE2s2A==
+X-Received: by 2002:a05:6a00:18a1:b0:71e:5132:da7b with SMTP id d2e1a72fcca58-72413359755mr178409b3a.3.1731009847784;
+        Thu, 07 Nov 2024 12:04:07 -0800 (PST)
+Received: from telecaster ([2620:10d:c090:400::5:5e37])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724078a89f4sm2097962b3a.61.2024.11.07.12.04.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 12:04:06 -0800 (PST)
+Date: Thu, 7 Nov 2024 12:04:05 -0800
+From: Omar Sandoval <osandov@osandov.com>
+To: Jiri Olsa <olsajiri@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: Fix build ID parsing logic in stable trees
+Message-ID: <Zy0dNahbYlHISjkU@telecaster>
+References: <20241104175256.2327164-1-jolsa@kernel.org>
+ <2024110536-agonizing-campus-21f0@gregkh>
+ <ZyniGMz5QLhGVWSY@krava>
+ <2024110636-rebound-chip-f389@gregkh>
+ <ZytZrt31Y1N7-hXK@krava>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hagar@microsoft.com, broonie@kernel.org
-References: <20241107064547.006019150@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZytZrt31Y1N7-hXK@krava>
 
-On 11/6/24 22:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.7 release.
-> There are 249 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
+> On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
+> > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
+> > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
+> > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
+> > > > > hi,
+> > > > > sending fix for buildid parsing that affects only stable trees
+> > > > > after merging upstream fix [1].
+> > > > > 
+> > > > > Upstream then factored out the whole buildid parsing code, so it
+> > > > > does not have the problem.
+> > > > 
+> > > > Why not just take those patches instead?
+> > > 
+> > > I guess we could, but I thought it's too big for stable
+> > > 
+> > > we'd need following 2 changes to fix the issue:
+> > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+> > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
+> > > 
+> > > and there's also few other follow ups:
+> > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
+> > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
+> > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() API
+> > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
+> > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
+> > > 
+> > > which I guess are not strictly needed
+> > 
+> > Can you verify what exact ones are needed here?  We'll be glad to take
+> > them if you can verify that they work properly.
 > 
-> Responses should be made by Sat, 09 Nov 2024 06:45:18 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.7-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> ok, will check
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Hello,
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+I noticed that the BUILD-ID field in vmcoreinfo is broken on
+stable/longterm kernels and found this thread. Can we please get this
+fixed soon?
+
+I tried cherry-picking the patches mentioned above ("lib/buildid: add
+single folio-based file reader abstraction" and "lib/buildid: take into
+account e_phoff when fetching program headers"), but they don't apply
+cleanly before 6.11, and they'd need to be reworked for 5.15, which was
+before folios were introduced. Jiri's minimal fix works for me and seems
+like a much safer option.
+
+Tested-by: Omar Sandoval <osandov@fb.com>
+
+Thanks,
+Omar
 
