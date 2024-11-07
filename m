@@ -1,145 +1,158 @@
-Return-Path: <stable+bounces-91818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB189C0729
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:22:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CF69C0781
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022B41F22E7A
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:22:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 457171C227BA
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 13:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5E720FA9A;
-	Thu,  7 Nov 2024 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52B9212D01;
+	Thu,  7 Nov 2024 13:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FLRNk7Rt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T0kNrvQd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2611DEFDC
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 13:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C829921218E
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 13:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730985742; cv=none; b=LO49mtmP7m0mzfU2Gxwiv+9CQy3Exy4+vilYaDQ7crqWm/VvuATo5MtcPJGrtkXlKPXEeFUZbVxj2t8qCiclws0gcC4PpIWaDmtXjtgCSslzyrrDJIwPpr2d2B9oPMscreEuJcUMQYDTfjJR6vFCh+B1Jh4IAwlSEie8F+m8dys=
+	t=1730986243; cv=none; b=m0VUOBlACtqg2nsF43i7Cy+MRQ8nLZymx/lxuDexZaZrZd6eA+unUWb0m98D7MVKnaF9MibDN14xX2hKWg+KCB+Ah4uteL5A+uZ5BenpVzZaruLddXqQCd4rpUjAmYUI6ZZWE6tkO/uAlbO9gxR/kN2T8izYxhauvwx2RPETR1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730985742; c=relaxed/simple;
-	bh=tafXy6T8mvGXw1f1p//OoV2OKeMhQpmhKK+Y05sbk70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AAljgNuGRiiYT5bo7guOvWBF+GhTYYaaVzhuPIcdbzKJitWZXIwMTpWCrnBmRi2LvrJgx+FVyBeR6I3iy72PmXoZNj2sd9UvAUcj7Mbr2xtlU4r0C4WY8ENMtROCV/1PcTCtX+Dd6RWzauba4s26BI9QyMMapFYsfJ/yxtD3nZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FLRNk7Rt; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539f84907caso902752e87.3
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 05:22:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730985739; x=1731590539; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O78jUSo2VAB2jjaBqcpu1sFn5+Qacu329/7bBRcH7BY=;
-        b=FLRNk7RtRik1FSeRpfxV5jPbKsShu0GFrIE/FKEo6HUKyFcYKNmMYTPLYN5V80wO2p
-         vBCXF5Fta7yIQ6aUv2VEHYsyGwOepiaW3LsleMNmQfOFde5gbo9uZBj3UUnaPN6svRk7
-         eVtg6gpODJOcCjIl3IWX+6+LSiGGdheSY8yFtoSiFpGPb0AnjqgeCrSIf5XDNyegsnjy
-         qgqHL3vW0Z7YxpoKzguUW1xZDfFVboF62QoOOpZjmJITr9F7MNmWqXPitvBZlwl8Ha5O
-         EH/fpKbfNJK2JMHnRFfWCO4S8XXhGqOH7FEzRjbQy4JRRI48MFNPa8n7G0CPeLURnF9h
-         N+Cg==
+	s=arc-20240116; t=1730986243; c=relaxed/simple;
+	bh=E77wMyDqW63P+XFKQ3TQvYxb9vQ4lGABnqBCg3OT0gA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ATLq+HTk/zl7TuyzUF4+kc8BxapQtTyxx0fFHXDvzucGQ2wjgJ3+yMXkasDQlxvKfQf5HZEuAb2gj3cb15iPWFnXLzJh+Hjsppcq6sF0Z3aFMMti4dqPO4Nh3Y2+Z1i6Npnvz1r6RGbABxRpCMPQITwzmPpsdk+w8x9XMnxZ+zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T0kNrvQd; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730986240;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PCN+ExloXIAXcKjChXoBTfCokzR0UPDeZjXHxUwlHj4=;
+	b=T0kNrvQdhnRSm7Z6agMpScB2NrQzaCL8F1AsDiPMsWlCAf7IiotjhKdrbWhGX+CdBVJcTr
+	+bbPyWlyGFAfSQF8KVmLlSaaEJr82uon8e6sKpaXX7SR0dOCT6qHUeG/cUoFsOMOMUR8VR
+	rTk+3PtdSdZpvRjN2MkWXjnj7Za17BA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-7-gfy3-GzRPYKB5p0qF0qpBw-1; Thu, 07 Nov 2024 08:30:39 -0500
+X-MC-Unique: gfy3-GzRPYKB5p0qF0qpBw-1
+X-Mimecast-MFC-AGG-ID: gfy3-GzRPYKB5p0qF0qpBw
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43163a40ee0so6409065e9.0
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 05:30:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730985739; x=1731590539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O78jUSo2VAB2jjaBqcpu1sFn5+Qacu329/7bBRcH7BY=;
-        b=RpNTEC/LKZyx9JLuAdLK+eZEJjcSErOg63qT63kv3cO9nfcyL8Usr/Wwxx0RNJ6+kV
-         pXJ3tP54psLaKoK4435qD9fYz3C5rcCtBVdLMtuHIKJwHWOs0KK8QvUbBlBY9ipZIThT
-         q6/h9p4BU0NeS5z8vsDiigM1IrX64biYvTqNedV8SXDQjlmvsAtb2KgbsgSqoagXtI5+
-         aRztZRSJcMtonhLecd0WxpO0rGbEsaZp7CzVRF0vv1OutPAb+Bnl5JWx4FRaHpCKmsEu
-         2wchZH1k2Uk5cbTy3U1Ftp/Ol/BRAUrhqegGc99gg5TT7+YXk8/UGizpOnVyNKtEBmTV
-         9X4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUWq6zkqCi9AM0NdGnJk+W2NYPfCs0Q0ougMWtTzxbD+RntD70WUg8wVL7JeNZD4iF/NILfuP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy/0e5oONhUyJMjtkrwoRldk1Hghslpxg0ehA9ElDJFvi69UEn
-	6rKKTRM5OxsQN2+80aR2Yi1YKNiNOeJ+szv8HDknc68B0cNlwuZjPgZ1Gs+KnJQ=
-X-Google-Smtp-Source: AGHT+IE7iCnTN6cJcxYydY0LNjIyPayqcFupD1/fQ2SNQljIoWv7ce8HamPJfCQEBawmCBwWNzoUXQ==
-X-Received: by 2002:a05:6512:3981:b0:539:eb2f:a026 with SMTP id 2adb3069b0e04-53b34921a44mr22822155e87.33.1730985739182;
-        Thu, 07 Nov 2024 05:22:19 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d82686327sm215610e87.102.2024.11.07.05.22.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 05:22:17 -0800 (PST)
-Date: Thu, 7 Nov 2024 15:22:15 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-Message-ID: <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
- <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
- <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
- <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
- <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
- <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
+        d=1e100.net; s=20230601; t=1730986238; x=1731591038;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PCN+ExloXIAXcKjChXoBTfCokzR0UPDeZjXHxUwlHj4=;
+        b=dOyre6upxsjhG0f8qk8jYBEA1sf0+Dpj6d+j0+frLVbSB2SFyXvOYjXClHj+lC6kYU
+         KwGRhr4QQM6bvf+DGTcu9ibWm5N5HedvX7bxn/WBn9sDqsl7IsV53IJpCBN2bae1EIKR
+         +5QE0CQQs0onuKbUdkjtUbKpNbBmuMm58B4Mfy4G/U+shxD8v0WJr26J2R+YG7XZmpIx
+         kQ2ukibHTxtgg5HCPaQmq+pwObrvGN5gzZKei3uGVjk4+ja12aaApr/ke6csF4oqrZmq
+         VwOsbgKwp8so89zNyelngnvTrYoU1BX1lNSTk9rcI5kmxplcW+eOLAX9R/aJYT3subyG
+         ipeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3ioIG7SVnOdTcvvXHvOq3Yy6Re68RnlFdKH9GH0/5JyfWsdsr39SWvPm1bp/G0FXM8LrnuAY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyhr7lRTaTHmR8C4M7DUrGMjKIBzzyizXWC88GkI5DPSJwP0aPK
+	igfEtDJspMAj21HGmUYXAGaNiQniKcFU8Ra16f3RE7vU/AqUukq/HxzhCzakUcbX7JxKYxCY6bL
+	ajylyHlF5YZmNyeH9k/7J0MGQwecLkvpUgbgC/vy19I1DMx7CeyXEwg==
+X-Received: by 2002:a05:600c:4f4a:b0:42c:b9c8:2bb0 with SMTP id 5b1f17b1804b1-4319ac70637mr367015915e9.4.1730985891127;
+        Thu, 07 Nov 2024 05:24:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFNS0ZHdj3v4rgcUtH3LParnJOoo25k5Q1DI6jzvHkwxLvo4duavqNNufMK+dzjLkUoWxHquQ==
+X-Received: by 2002:a05:600c:4f4a:b0:42c:b9c8:2bb0 with SMTP id 5b1f17b1804b1-4319ac70637mr367015675e9.4.1730985890777;
+        Thu, 07 Nov 2024 05:24:50 -0800 (PST)
+Received: from ?IPV6:2003:cb:c708:7900:b88e:c72a:abbd:d3d9? (p200300cbc7087900b88ec72aabbdd3d9.dip0.t-ipconnect.de. [2003:cb:c708:7900:b88e:c72a:abbd:d3d9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa709ec7sm62306215e9.35.2024.11.07.05.24.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2024 05:24:49 -0800 (PST)
+Message-ID: <b309a3e5-95b7-4935-bb0d-b83cfb30e988@redhat.com>
+Date: Thu, 7 Nov 2024 14:24:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: fix a possible null pointer dereference in
+ setup_zone_pageset()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, stable@vger.kernel.org
+References: <20241107124116.579108-1-chenqiuji666@gmail.com>
+ <00d84e12-4c14-4a6b-a5cd-83d81ac90855@redhat.com>
+ <CANgpojUf53ncbYqQRmfMG6R9WYQHSyPGU=LkWVK-MonNDGa8gQ@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <CANgpojUf53ncbYqQRmfMG6R9WYQHSyPGU=LkWVK-MonNDGa8gQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 07, 2024 at 06:32:33PM +0530, Vikash Garodia wrote:
-> 
-> On 11/7/2024 5:37 PM, Bryan O'Donoghue wrote:
-> > On 07/11/2024 10:41, Dmitry Baryshkov wrote:
-> >>> init_codecs() parses the payload received from firmware and . I don't think we
-> >>> can control this part when we have something like this from a malicious firmware
-> >>> payload
-> >>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED
-> >>> ...
-> >>> Limiting it to second iteration would restrict the functionality when property
-> >>> HFI_PROPERTY_PARAM_CODEC_SUPPORTED is sent for supported number of codecs.
-> >> If you can have a malicious firmware (which is owned and signed by
-> >> Qualcomm / OEM), then you have to be careful and skip duplicates. So
-> >> instead of just adding new cap to core->caps, you have to go through
-> >> that array, check that you are not adding a duplicate (and report a
-> >> [Firmware Bug] for duplicates), check that there is an empty slot, etc.
-> >>
-> >> Just ignoring the "extra" entries is not enough.
-> Thinking of something like this
-> 
-> for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
->     if (core->codecs_count >= MAX_CODEC_NUM)
->         return;
->     cap = &caps[core->codecs_count++];
->     if (cap->codec == BIT(bit)) --> each code would have unique bitfield
->         return;
+On 07.11.24 14:09, Qiu-ji Chen wrote:
+> Hello, the previous patch did not correctly check and release the
+> relevant pointers. Version 2 has fixed these issues. Thank you for
+> your response.
 
-This won't work and it's pretty obvious why.
-
-> > +1
-> > 
-> > This is a more rational argument. If you get a second message, you should surely
-> > reinit the whole array i.e. update the array with the new list, as opposed to
-> > throwing away the second message because it over-indexes your local storage..
-> That would be incorrect to overwrite the array with new list, whenever new
-> payload is received.
-
-I'd say, don't overwrite the array. Instead the driver should extend it
-with the new information.
-
-> 
-> Regards,
-> Vikash
+I'm afraid I'm missing how my review feedback was addresses :/
 
 -- 
-With best wishes
-Dmitry
+Cheers,
+
+David / dhildenb
+
 
