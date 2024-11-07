@@ -1,192 +1,250 @@
-Return-Path: <stable+bounces-91773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4D69C00F2
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:17:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA3F9C0190
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18F10B21D8A
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:17:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C1C11F236CE
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6A91DC05D;
-	Thu,  7 Nov 2024 09:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868211EF096;
+	Thu,  7 Nov 2024 09:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IfmGvCzR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C63192B73;
-	Thu,  7 Nov 2024 09:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3EB1DB54B;
+	Thu,  7 Nov 2024 09:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730971041; cv=none; b=FC4IKH4sREazhcStCxiOFxZ7RU+eWQWeiFzPbXgtxx5SGYcCFnCX9CBbzwOFXypIXuGXj4JylRC/95sJct7IzusdW+1sD7n0DhgqrBVYOX6FrwkySAL17hCv8z4MT76MIFS2nyYlVbdrbGJ5s5cw2O1copqgkLdH/J0RnFqTxKY=
+	t=1730973152; cv=none; b=KDakeALobYGigG0tVc3J7FGZluccgtSMxpKV7FwnDB88vfrL00vejcywV4EyPgscb6nYG7Gz0aXGARjiJCROPgntV12Qy9FDPsGV3S0/Jh+EOtOEzntoplpiOR3hQ/CV2uw7NiKkA4WeX8q5DZ69gUoaEKXSl7JlwR5IPm008es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730971041; c=relaxed/simple;
-	bh=SkfFvecVs2l+s2XYosQTMeR4oTOSQgmyAuYa8UD0azU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pp9zutdRka1BGMtmWUYpxOpqUbpNU02Oz851T0HsQU7pFzww7QoJMzurxUAJkUorekLCfMAPWw0vZTypoEYCENjF9/Wx0slDUuD/ZLo2ZHznTBOVdUMUZkgmZm+AH3+ZJDsrHJrCP4+Wa46LLebS8OTJYGBkzNeGJYh8XU/6BG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28FBC4CECC;
-	Thu,  7 Nov 2024 09:17:18 +0000 (UTC)
-Message-ID: <94f7c775-10bd-46d5-bc89-a18533dcab68@xs4all.nl>
-Date: Thu, 7 Nov 2024 10:17:16 +0100
+	s=arc-20240116; t=1730973152; c=relaxed/simple;
+	bh=VztDLWxUXtgG25+i0M5xW2ZyIXyhdWw+s6kVl5FgXyU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wys5HwTgQxDjiR/Eq15BbREIW5eLXJg9nhpOnmGN3NFzMxp64FZW8Uo8KEUNsdffPDaucODwZNpj9rNOXPNLjdglYvNv7BLg1fQ4OFu1v5ReI4tzyxQWKws5E9yap04KeUXKL3Iq9wGlK74mg+P2rb6bNbq0AepDvRS6MejeCv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IfmGvCzR; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1E70513806A8;
+	Thu,  7 Nov 2024 04:52:29 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 07 Nov 2024 04:52:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1730973149; x=1731059549; bh=03kWA3JRtu4T5mhalhuq/QQtAHUUB9dIoXw
+	69Q0F+bw=; b=IfmGvCzRvu8A8fkvtA6BDh5T4X44JDv6lSUc61gfeKwAJ5+GBJG
+	f3UBAEYhCuIx++qFsRnsWGnhCUudBE5l6i0YCERtA9llieSl/Q+R/TlqMZSX53fJ
+	LbFFW7qRaZhtlPnTiEPKFydl7B1NZwiBTBAYmG9IEj5ZM6EaevLhlyBby8clzlE2
+	SfrKcgbD4XvXGBMv0/d658kXpe8lH9A/os7T4k1/H9twaqt8UanssSEhBPy042qy
+	zrODgSHNf6vjb/cCrMIWx1T0OV61BRNBYxPbHz4KxWfZ5+MdLFLoKhR/+OPrlZQB
+	Lms32NjnS+qRrf8bm8zziD0+DlFUoHOGZXg==
+X-ME-Sender: <xms:3I0sZ64PywGHYmqOoHxShgKMMQJLHQsMyYdqS90td-6Hy4NPAdhpCg>
+    <xme:3I0sZz4d6tNJmeYXblPyDoFWypaGfdkp9jNsabq52gL2fuKc3x16SlVhNcLLymDkW
+    zRK4FiThbdfjIY>
+X-ME-Received: <xmr:3I0sZ5d_fEEM2YDXtK2fkVqL-v5kFY_EAAq3O8GHHESVSrfbMgyRXBIQcDnslYiwMFitAE3XAXiveQS1JC4jxvJvhZI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdeggddtlecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpefhffejgefhjeehjeevheevhfetveevfefgueduueei
+    vdeijeeihfegheeljefgueenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehi
+    ughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopehmrghtthdrmhhughhgvghrihgughgvsehhphgvrdgtohhmpdhrtghp
+    thhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegushgrhh
+    gvrhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhg
+    lhgvrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrphhi
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
+    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:3I0sZ3Jpu5K849KnOSdz-22lJUFsubxt_CBXYObVco061E4PNr6p5g>
+    <xmx:3I0sZ-IV5CcIPlOW8MbrsExHySQNSF822SI_XZYqxTaolhjlRbXHlw>
+    <xmx:3I0sZ4z5BJFcQKdreAno6VmFyBoouSvuqwQkhq1cv76U7tINEljAdQ>
+    <xmx:3I0sZyKa_x4-qNHAYfc73sLegu2rPIIn0Ddm5QpsL90eHPPTmPRm9A>
+    <xmx:3Y0sZ7Dk4yNdFj49Sq0YA3BAQmpvlcKcdmqMMTz6xD77Gb6Zzdl26s7r>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Nov 2024 04:52:28 -0500 (EST)
+Date: Thu, 7 Nov 2024 11:52:25 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+	horms@kernel.org, kuba@kernel.org, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default
+ Routes
+Message-ID: <ZyyN2bSgrpbhbkpp@shredder>
+References: <ZytjEINNRmtpadr_@shredder>
+ <20241107035303.24057-1-Matt.Muggeridge@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: videobuf2-core: copy vb planes unconditionally
-To: Tomasz Figa <tfiga@chromium.org>, Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: m.szyprowski@samsung.com, mchehab@kernel.org, yunkec@chromium.org,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, andre.draszik@linaro.org,
- kernel-team@android.com, willmcvicker@google.com, stable@vger.kernel.org
-References: <20241106121802.2939237-1-tudor.ambarus@linaro.org>
- <CAAFQd5B51wa1dD3FzHKxsg4VaA_bHzUrFGmA19q8jUybsMuS0Q@mail.gmail.com>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <CAAFQd5B51wa1dD3FzHKxsg4VaA_bHzUrFGmA19q8jUybsMuS0Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107035303.24057-1-Matt.Muggeridge@hpe.com>
 
-On 07/11/2024 00:41, Tomasz Figa wrote:
-> On Wed, Nov 6, 2024 at 9:18 PM Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
->>
->> Copy the relevant data from userspace to the vb->planes unconditionally
->> as it's possible some of the fields may have changed after the buffer
->> has been validated.
->>
->> Keep the dma_buf_put(planes[plane].dbuf) calls in the first
->> `if (!reacquired)` case, in order to be close to the plane validation code
->> where the buffers were got in the first place.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 95af7c00f35b ("media: videobuf2-core: release all planes first in __prepare_dmabuf()")
->> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
->> ---
->>  .../media/common/videobuf2/videobuf2-core.c   | 28 ++++++++++---------
->>  1 file changed, 15 insertions(+), 13 deletions(-)
->>
+On Wed, Nov 06, 2024 at 10:53:03PM -0500, Matt Muggeridge wrote:
+> Hi Ido,
 > 
-> Thanks for the fix.
+> > >>> Is the problem that fib6_table_lookup() chooses a reachable
+> > >>> nexthop and then fib6_select_path() overrides it with an unreachable
+> > >>> one?
+> > 
+> > >> I'm afraid I don't know.
+> > >>
+> > > We need to understand the current behavior before adding a new interface
+> > > that we will never be able to remove. It is possible we can improve /
+> > > fix the current code. I won't have time to look into it myself until
+> > > next week.
 > 
-> Acked-by: Tomasz Figa <tfiga@chromium.org>
+> I am grateful that you want to look into it. Thank you! And I look forward to
+> learning what you discover.
 > 
-> (We probably need some tests to verify this behavior... It seems like
-> the way v4l2-compliance is implemented [1] would only trigger the
-> !reacquired case on most drivers.)
-> 
-> [1] https://git.linuxtv.org/v4l-utils.git/tree/utils/v4l2-compliance/v4l2-test-buffers.cpp#n2071
-> (just queuing all imported buffers in order and re-queuing them
-> exactly as they are dequeued [2])
-> [2] https://git.linuxtv.org/v4l-utils.git/tree/utils/v4l2-compliance/v4l2-test-buffers.cpp#n1299
+> You probably already know how to reproduce it, but in case it helps, I still
+> have the packet captures and can share them with you. Let me know if you'd
+> like me to share them (and how to share them).
 
-I'll see if I can improve that test.
+It would be best if you could provide a reproducer using iproute2:
+Configure a dummy device using ip-link, install the multipath route
+using ip-route, configure the neighbour table using ip-neigh and then
+perform route queries using "ip route get ..." showing the problem. We
+can then use it as the basis for a new test case in
+tools/testing/selftests/net/fib_tests.sh 
 
-Regards,
-
-	Hans
+BTW, do you have CONFIG_IPV6_ROUTER_PREF=y in your config?
 
 > 
-> Best regards,
-> Tomasz
+> > > 
+> > > The objective is to allow IPv6 Netlink clients to be able to create default
+> > > routes from RAs in the same way the kernel creates default routes from RAs.
+> > > Essentially, I'm trying to have Netlink and Kernel behaviors match.
+> > 
+> > I understand, but it's essentially an extension for the legacy IPv6
+> > multipath API which we are trying to move away from towards the nexthop
+> > API (see more below).
 > 
->> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
->> index f07dc53a9d06..c0cc441b5164 100644
->> --- a/drivers/media/common/videobuf2/videobuf2-core.c
->> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
->> @@ -1482,18 +1482,23 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
->>                         }
->>                         vb->planes[plane].dbuf_mapped = 1;
->>                 }
->> +       } else {
->> +               for (plane = 0; plane < vb->num_planes; ++plane)
->> +                       dma_buf_put(planes[plane].dbuf);
->> +       }
->>
->> -               /*
->> -                * Now that everything is in order, copy relevant information
->> -                * provided by userspace.
->> -                */
->> -               for (plane = 0; plane < vb->num_planes; ++plane) {
->> -                       vb->planes[plane].bytesused = planes[plane].bytesused;
->> -                       vb->planes[plane].length = planes[plane].length;
->> -                       vb->planes[plane].m.fd = planes[plane].m.fd;
->> -                       vb->planes[plane].data_offset = planes[plane].data_offset;
->> -               }
->> +       /*
->> +        * Now that everything is in order, copy relevant information
->> +        * provided by userspace.
->> +        */
->> +       for (plane = 0; plane < vb->num_planes; ++plane) {
->> +               vb->planes[plane].bytesused = planes[plane].bytesused;
->> +               vb->planes[plane].length = planes[plane].length;
->> +               vb->planes[plane].m.fd = planes[plane].m.fd;
->> +               vb->planes[plane].data_offset = planes[plane].data_offset;
->> +       }
->>
->> +       if (reacquired) {
->>                 /*
->>                  * Call driver-specific initialization on the newly acquired buffer,
->>                  * if provided.
->> @@ -1503,9 +1508,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
->>                         dprintk(q, 1, "buffer initialization failed\n");
->>                         goto err_put_vb2_buf;
->>                 }
->> -       } else {
->> -               for (plane = 0; plane < vb->num_planes; ++plane)
->> -                       dma_buf_put(planes[plane].dbuf);
->>         }
->>
->>         ret = call_vb_qop(vb, buf_prepare, vb);
->> --
->> 2.47.0.199.ga7371fff76-goog
->>
+> Very interesting, I wasn't aware of this movement.
+> 
+> While this change is an extension of the legacy IPv6 multipath API, won't it
+> still need to support Netlink clients that have been designed around it? I
+> imagine that transitioning Netlink clients to the NH API will take many years?
 
+FRR already supports it and I saw that there is some support for nexthop
+objects in systemd:
+
+https://github.com/systemd/systemd/pull/13735
+
+> 
+> As such, it still seems appropriate (to me) that this be implemented in the
+> legacy API as well as ensuring it works with the NH API.
+
+As I understand it you currently get different results because the
+kernel installs two default routes whereas user space can only create
+one default multipath route. Before adding a new uAPI I want to
+understand the source of the difference and see if we can improve / fix
+the current multipath code so that the two behave the same. If we can
+get them to behave the same then I don't think user space will care
+about two default routes versus one default multipath route.
+
+> 
+> Another consideration...
+> 
+> Will the kernel RA processing go through the same nh pathway? The reason I
+> ask is because I faced several challenges with IPv6 Logo certification due to
+> Netlink clients being unable to achieve the same as the kernel's behavior.
+
+If you are asking if the kernel can install RA routes using nexthop
+objects, then the answer is no. Only user space can create nexthop
+objects and I don't think we want to allow the kernel to do that.
+
+> 
+> As long as the kernel is creating RA routes in a way that meets RFC4861, then
+> I'd hope that  Netlink clients would be able to leverage that for 'free'.
+> 
+> > > 
+> > > My analysis led me to the need for Netlink clients to set the kernel's
+> > > fib6_config flags RTF_RA_ROUTER, where:
+> > > 
+> > >     #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
+> > > 
+> > >>> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
+> > >>> +		cfg->fc_flags |= RTF_RA_ROUTER;
+> > >>> +
+> > >> 
+> > >> It is possible there are user space programs out there that set this bit
+> > >> (knowingly or not) when sending requests to the kernel and this change
+> > >> will result in a behavior change for them. So, if we were to continue in
+> > >> this path, this would need to be converted to a new netlink attribute to
+> > >> avoid such potential problems.
+> > >> 
+> > > 
+> > > Is this a mandated approach to implementing unspecified bits in a flag?
+> > > 
+> > > I'm a little surprised by this consideration. If we account for poorly
+> > > written buggy user-programs, doesn't this open any API to an explosion
+> > > of new attributes or other odd extensions? I'd imagine the same argument
+> > > would be applicable to ioctl flags, socket flags, and so on. Why would we
+> > > treat implementing unspecified Netlink bits differently to implementing
+> > > unspecified ioctl bits, etc.
+> > > 
+> > > Naturally, if this is the mandated approach, then I'll reimplement it with
+> > > a new Netlink attribute. I'm just trying to understand what is the
+> > > Linux-lore, here?
+> > 
+> > Using this bit could have been valid if previously the kernel rejected
+> > requests with this bit set, but as evident by your patch the kernel does
+> > not do it. It is therefore possible that there are user space programs
+> > out there that are working perfectly fine right now and they will break
+> > / misbehave after this change.
+> > 
+> 
+> Understood and I agree.
+> 
+> > > 
+> > >> BTW, you can avoid the coalescing problem by using the nexthop API (man
+> > >> ip-nexthop).
+> > > 
+> > > I'm not sure how that would help in this case. We need the nexthop to be
+> > > determined according to its REACHABILITY and other considerations described
+> > > in RFC4861.
+> > 
+> > Using your example:
+> > 
+> > # ip nexthop add id 1 via fe80::200:10ff:fe10:1060 dev enp0s9
+> > # ip -6 route add default nhid 1 expires 600 proto ra
+> > # ip nexthop add id 2 via fe80::200:10ff:fe10:1061 dev enp0s9
+> > # ip -6 route append default nhid 2 expires 600 proto ra
+> > # ip -6 route
+> > fe80::/64 dev enp0s9 proto kernel metric 256 pref medium
+> > default nhid 1 via fe80::200:10ff:fe10:1060 dev enp0s9 proto ra metric 1024 expires 563sec pref medium
+> > default nhid 2 via fe80::200:10ff:fe10:1061 dev enp0s9 proto ra metric 1024 expires 594sec pref medium
+> 
+> Thanks! That looks like it should work. I'll raise this with the the developers
+> of systemd-networkd.
+> 
+> Just to confirm; are these two nhid routes equivalent to having two separate
+> default routes that are created when the kernel processes IPv6 RAs?
+> 
+> Specifically, if one of these nhid routes becomes UNREACHABLE, will that be
+> taken into consideration during the routing decision? (I'm guessing so?)
+
+I didn't test it, but I don't see a reason for these two routes to
+behave differently than two default routes installed with legacy
+nexthops.
 
