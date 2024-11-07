@@ -1,88 +1,174 @@
-Return-Path: <stable+bounces-91769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919159C004C
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:45:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D257D9C005E
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4ED9B22DD8
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 08:45:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E2781C2186D
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 08:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D191DC05F;
-	Thu,  7 Nov 2024 08:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6B11D86CB;
+	Thu,  7 Nov 2024 08:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="f07FxH7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEyYs2Nz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223BA1D9665
-	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 08:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FA4FBF0;
+	Thu,  7 Nov 2024 08:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730969107; cv=none; b=pPK/rRGchdw/GbtHwW3WA6zQG1ZwQ3sMRtM85vWK1Envra10vZlHsErN76hADPbCocsBESH+bK99iBl3ahSuTo+vaIoV9nKgMEmA8fc5U/OOobg/9UaVZmPDKS7CwVd+kf/gjnM4fDgPnwPSdifgjd29nAhRqFtxYHekGVZKlkU=
+	t=1730969245; cv=none; b=QbWcDJYkeqVNyb1VSNJGyrlDYkDjKiwc2HpLIh6lWqxwOea3kROo+rUS7lbNv/PM6XPzA2exaAyKxFNTX7gmXL+o9OBgEa48P7slPSan+GL+ZGWoeprGHnd9U+GZbyrRytC1cpjHLF48t0lhXFyxj+0D2DSjuGoWcqy5wRuaDK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730969107; c=relaxed/simple;
-	bh=U+nLWayBgZ453pBfHpZ4axu4m9FMdz5QY/yaatT2KNc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sUCxLpxRocHP/7zw8OpUzn3VwKzWCzSzMbspPJrnVU234loF1PDanlqVO0fmFTdzMtyHNk+2VQXmuV7huMy9/XMZ8+GQzBOyKJKRYPQw6tp+A+E1WMO5z/n27suTXsZ5s63exnyTuBG8STWt9fNp8WrXm1T4LkhbqK74Yp366zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=f07FxH7f; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730969102;
-	bh=v2eWMiptyDtzPkjPBE+lL4CiTwJcR2mPcVzcmcVQwG4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=f07FxH7fhzQx2+i8p2lpvbpFrg9vJisXSrolMJLtXR29iZy5cSwJSmTG/i1QL/FUA
-	 tPmnvtW79vy3noD04AD78xOyb2eKtjcgIondWh9rrYxDHQa1VyeuhzcJaiPvygmtvT
-	 nd8W4I81NYn+O5CJPIb+E5GGBZnxqy34YxI4pr6MPlIyw3nSPBRG0ojGUnmwmxkd5H
-	 E703KTbvhw2gXUEqFhKZCJtrqbCwI/mVY17YNjZCMNUp7J5MogtnXloj4qj9NIXfWc
-	 IghDWxBmo00S4Q68LaCagMVJCJvoVpo9FNRo5NuBZe6J/Vuv1IpXDpCN8vMTqSMA6q
-	 AH8TpX+qHNZMg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkbHK50pyz4xG0;
-	Thu,  7 Nov 2024 19:45:01 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Keith Packard <keithp@keithp.com>, linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-In-Reply-To: <20241009-powerpc-fix-stackprotector-test-clang-v2-0-12fb86b31857@kernel.org>
-References: <20241009-powerpc-fix-stackprotector-test-clang-v2-0-12fb86b31857@kernel.org>
-Subject: Re: [PATCH v2 0/2] powerpc: Prepare for clang's per-task stack protector support
-Message-Id: <173096894645.18315.12963917579657771949.b4-ty@ellerman.id.au>
-Date: Thu, 07 Nov 2024 19:42:26 +1100
+	s=arc-20240116; t=1730969245; c=relaxed/simple;
+	bh=9/KGz9Eqf8L6AckABuzu+EnLUD9DwMieaH9zCgdF3uY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOflHzBPrHCpSpaivq6D4nBwfIh8CHiJf8eSNJdZ1XayXyLQI8vGlYnQI67xd+vnOX6xNYBy3ZxJbtVf/Wc+QVTkpvtQe07yCu8xTNOrfg/jjyYplOy9BY/zLE77ZQ+m58t9K0xBF7sqPU321LWg5l6vKNITKbu1ZT93AzEz0mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEyYs2Nz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5117C4CECC;
+	Thu,  7 Nov 2024 08:47:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730969245;
+	bh=9/KGz9Eqf8L6AckABuzu+EnLUD9DwMieaH9zCgdF3uY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iEyYs2NzyAXwOllRBBtt61ypuqxImxlWvXnXclkI+SY0H11AsXGNwgA4M28QqrGx1
+	 cTP6PdDqgbXb/ad96I9TiWi4/nFjzo245/xxRb1HYzvT8a20x0obqGnSVnu4vgrPdT
+	 WUqBeuazkGU+kk8ysYcvbheWdPOl/e7uyTJxviJg=
+Date: Thu, 7 Nov 2024 09:47:05 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: geert+renesas@glider.be, magnus.damm@gmail.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
+	sboyd@kernel.org, jirislaby@kernel.org, p.zabel@pengutronix.de,
+	lethal@linux-sh.org, g.liakhovetski@gmx.de,
+	ysato@users.sourceforge.jp, ulrich.hecht+renesas@gmail.com,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/9] serial: sh-sci: Check if TX data was written to
+ device in .tx_empty()
+Message-ID: <2024110747-kite-pacemaker-6216@gregkh>
+References: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241106120118.1719888-3-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106120118.1719888-3-claudiu.beznea.uj@bp.renesas.com>
 
-On Wed, 09 Oct 2024 12:26:07 -0700, Nathan Chancellor wrote:
-> This series prepares the powerpc Kconfig and Kbuild files for clang's
-> per-task stack protector support. clang requires
-> '-mstack-protector-guard-offset' to always be passed with the other
-> '-mstack-protector-guard' flags, which does not always happen with the
-> powerpc implementation, unlike arm, arm64, and riscv implementations.
-> This series brings powerpc in line with those other architectures, which
-> allows clang's support to work right away when it is merged.
-> Additionally, there is one other fix needed for the Kconfig test to work
-> correctly when targeting 32-bit.
+On Wed, Nov 06, 2024 at 02:01:11PM +0200, Claudiu wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 > 
-> [...]
+> On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
+> is called. The uart_suspend_port() calls 3 times the
+> struct uart_port::ops::tx_empty() before shutting down the port.
+> 
+> According to the documentation, the struct uart_port::ops::tx_empty()
+> API tests whether the transmitter FIFO and shifter for the port is
+> empty.
+> 
+> The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
+> transmit FIFO through the FDR (FIFO Data Count Register). The data units
+> in the FIFOs are written in the shift register and transmitted from there.
+> The TEND bit in the Serial Status Register reports if the data was
+> transmitted from the shift register.
+> 
+> In the previous code, in the tx_empty() API implemented by the sh-sci
+> driver, it is considered that the TX is empty if the hardware reports the
+> TEND bit set and the number of data units in the FIFO is zero.
+> 
+> According to the HW manual, the TEND bit has the following meaning:
+> 
+> 0: Transmission is in the waiting state or in progress.
+> 1: Transmission is completed.
+> 
+> It has been noticed that when opening the serial device w/o using it and
+> then switch to a power saving mode, the tx_empty() call in the
+> uart_port_suspend() function fails, leading to the "Unable to drain
+> transmitter" message being printed on the console. This is because the
+> TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
+> TEND=0 has double meaning (waiting state, in progress) we can't
+> determined the scenario described above.
+> 
+> Add a software workaround for this. This sets a variable if any data has
+> been sent on the serial console (when using PIO) or if the DMA callback has
+> been called (meaning something has been transmitted).
+> 
+> Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> ---
+>  drivers/tty/serial/sh-sci.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+> index df523c744423..8e2d534401fa 100644
+> --- a/drivers/tty/serial/sh-sci.c
+> +++ b/drivers/tty/serial/sh-sci.c
+> @@ -153,6 +153,7 @@ struct sci_port {
+>  	int				rx_trigger;
+>  	struct timer_list		rx_fifo_timer;
+>  	int				rx_fifo_timeout;
+> +	atomic_t			first_time_tx;
 
-Applied to powerpc/next.
+Don't use an atomic variable for an informational thing like this, it is
+racy and doesn't work properly.  Either use a real lock (because you
+care about the locking stuff here), or just use a boolean and live with
+any potential races.
 
-[1/2] powerpc: Fix stack protector Kconfig test for clang
-      https://git.kernel.org/powerpc/c/46e1879deea22eed31e9425d58635895fc0e8040
-[2/2] powerpc: Adjust adding stack protector flags to KBUILD_CLAGS for clang
-      https://git.kernel.org/powerpc/c/bee08a9e6ab03caf14481d97b35a258400ffab8f
 
-cheers
+
+>  	u16				hscif_tot;
+>  
+>  	bool has_rtscts;
+> @@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
+>  {
+>  	struct tty_port *tport = &port->state->port;
+>  	unsigned int stopped = uart_tx_stopped(port);
+> +	struct sci_port *s = to_sci_port(port);
+>  	unsigned short status;
+>  	unsigned short ctrl;
+>  	int count;
+> @@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+>  		}
+>  
+>  		sci_serial_out(port, SCxTDR, c);
+> +		atomic_set(&s->first_time_tx, 1);
+>  
+>  		port->icount.tx++;
+>  	} while (--count > 0);
+> @@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
+>  	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+>  		uart_write_wakeup(port);
+>  
+> +	atomic_set(&s->first_time_tx, 1);
+> +
+>  	if (!kfifo_is_empty(&tport->xmit_fifo)) {
+>  		s->cookie_tx = 0;
+>  		schedule_work(&s->work_tx);
+> @@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+>  {
+>  	unsigned short status = sci_serial_in(port, SCxSR);
+>  	unsigned short in_tx_fifo = sci_txfill(port);
+> +	struct sci_port *s = to_sci_port(port);
+> +
+> +	if (!atomic_read(&s->first_time_tx))
+> +		return TIOCSER_TEMT;
+
+See, what happens here if the value changes right after you check it?
+Being an atomic doesn't mean anything :(
+
+thanks,
+
+greg k-h
 
