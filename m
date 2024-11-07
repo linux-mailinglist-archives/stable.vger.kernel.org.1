@@ -1,210 +1,125 @@
-Return-Path: <stable+bounces-91867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAB39C1144
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:49:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8C89C118E
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 23:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC9B8B2248D
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 21:48:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AFB282770
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 22:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC93C2185B3;
-	Thu,  7 Nov 2024 21:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE97218D8A;
+	Thu,  7 Nov 2024 22:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="E8EmcCXB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kbNLKp2L"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD3B215C75;
-	Thu,  7 Nov 2024 21:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE8E217447;
+	Thu,  7 Nov 2024 22:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731016130; cv=none; b=lTuc0CAtL+PBxlt8o2W4HT9gUdVMuvhxzVkJKETwhYTWUc2y9ESKcYhKjsg8IvK6Q3Bl1WuELpZt5DLjM416625vcgvbU1cZySqxt3cqmNm+jDItSU6plwkkpsfxg64q8xBcdUWGxYS69oowCgOHvujt4ZX4tHgcQebWb1Jpe4A=
+	t=1731017727; cv=none; b=QMZr8JcWhri0+/JwkY3F7xyOuChJnffGKHq6pUTmJ0PYCEV7NofPAMv5TPK4fkm/x142IuH5Kmu1OHX8wbC4DXDyoKiTBNeTB6GnQLkKJQurUOy8sQdISyrjkNk8CIWziUHMDzhoBBDnMREoqM7CRj7wtTOIMUC3M0n9wUvasas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731016130; c=relaxed/simple;
-	bh=PeQlXo2Ahx/xh5UvvNM1rbtLq5tpIaIE8VYhMvhm39Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ua0jbqfbcXAqqvMZqg/49CocAKeBj3qafVs0i1+Y2idVdUOJfQ3UGCoxW+M4zGif6lIKkp8TyFkM44AmazsRoevqtVBw5gw3+A5yIID5auaeVvVD2adEPob8JQ/KbSrdiKphhAahdesJXOSiI/7t4lmUHqFgs1y8zf3HtDOmEps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=E8EmcCXB; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4488222A;
-	Thu,  7 Nov 2024 22:48:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1731016117;
-	bh=PeQlXo2Ahx/xh5UvvNM1rbtLq5tpIaIE8VYhMvhm39Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E8EmcCXBPQLn2G8m3bndqJh2vq27Fal3Jcdai/2AjpmVWno6i5K2w3/N6VeEwOf6M
-	 WQk108+cZS5u+DDvdCXijHMwhSNeAcVN8zYfYIezrks9WwCkx3/ZZ6u0g7jRvdDo/m
-	 PdiMnGoa0t3pYs/9rSA4e7/Fqcgv3qw0HIAl6jt4=
-Date: Thu, 7 Nov 2024 23:48:39 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v6] media: uvcvideo: Fix crash during unbind if gpio unit
- is in use
-Message-ID: <20241107214839.GG31474@pendragon.ideasonboard.com>
-References: <20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org>
+	s=arc-20240116; t=1731017727; c=relaxed/simple;
+	bh=uJc4C/47j7E5Xqkgw44LmQywUlBjlezpwo+5+ONbFeM=;
+	h=Date:To:From:Subject:Message-Id; b=YIgUUBlrEJ4ANuAt9PyG31Jycv6XJkjHcZFE8CttsenWenMNqNc5C0L72iEL6UE5U176FaYehgkhBCX51MbcCL55W6NoeK0KBNTJ41+7IjyOgKpzMnrzJR+4oGMnS0BBDrIj0aTVMVgZGXemg3xLe63TqyBnandYu3MLxvDta1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kbNLKp2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316FEC4CECC;
+	Thu,  7 Nov 2024 22:15:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1731017727;
+	bh=uJc4C/47j7E5Xqkgw44LmQywUlBjlezpwo+5+ONbFeM=;
+	h=Date:To:From:Subject:From;
+	b=kbNLKp2L8DfmGSnr9xpO9MOTRo0H1Y69+ocz9iiUZeEe3esGB1ETi9PO31QKFl1D3
+	 27eFJ+aZAY86vAI64QHSO3qd5ElC8YKyWtQXuqGwGQ+VmCT3Ebb/WmAhpLLsA0op7s
+	 9GaKOBt7kfwKLnAv4px8v3pOr6HHZIM/Q25HFrpc=
+Date: Thu, 07 Nov 2024 14:15:26 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,jannh@google.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-mlock-set-the-correct-prev-on-failure.patch removed from -mm tree
+Message-Id: <20241107221527.316FEC4CECC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org>
 
-Hi Ricardo,
 
-Thank you for the patch.
+The quilt patch titled
+     Subject: mm/mlock: set the correct prev on failure
+has been removed from the -mm tree.  Its filename was
+     mm-mlock-set-the-correct-prev-on-failure.patch
 
-On Wed, Nov 06, 2024 at 08:36:07PM +0000, Ricardo Ribalda wrote:
-> We used the wrong device for the device managed functions. We used the
-> usb device, when we should be using the interface device.
-> 
-> If we unbind the driver from the usb interface, the cleanup functions
-> are never called. In our case, the IRQ is never disabled.
-> 
-> If an IRQ is triggered, it will try to access memory sections that are
-> already free, causing an OOPS.
-> 
-> We cannot use the function devm_request_threaded_irq here. The devm_*
-> clean functions may be called after the main structure is released by
-> uvc_delete.
-> 
-> Luckily this bug has small impact, as it is only affected by devices
-> with gpio units and the user has to unbind the device, a disconnect will
-> not trigger this error.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+------------------------------------------------------
+From: Wei Yang <richard.weiyang@gmail.com>
+Subject: mm/mlock: set the correct prev on failure
+Date: Sun, 27 Oct 2024 12:33:21 +0000
 
-> ---
-> Changes in v6:
-> - Rename cleanup as deinit
-> - Move cleanup to the beginning of the uvc_unregister_video.
-> - Fix commit message.
-> - Link to v5: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v5-1-8623fa51a74f@chromium.org
-> 
-> Changes in v5:
-> - Revert non refcount, that belongs to a different set
-> - Move cleanup to a different function
-> - Link to v4: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v4-0-410e548f097a@chromium.org
-> 
-> Changes in v4: Thanks Laurent.
-> - Remove refcounted cleaup to support devres.
-> - Link to v3: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v3-1-c0959c8906d3@chromium.org
-> 
-> Changes in v3: Thanks Sakari.
-> - Rename variable to initialized.
-> - Other CodeStyle.
-> - Link to v2: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v2-1-547ce6a6962e@chromium.org
-> 
-> Changes in v2: Thanks to Laurent.
-> - The main structure is not allocated with devres so there is a small
->   period of time where we can get an irq with the structure free. Do not
->   use devres for the IRQ.
-> - Link to v1: https://lore.kernel.org/r/20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org
-> ---
->  drivers/media/usb/uvc/uvc_driver.c | 28 +++++++++++++++++++++-------
->  drivers/media/usb/uvc/uvcvideo.h   |  1 +
->  2 files changed, 22 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> index a96f6ca0889f..cd13bf01265d 100644
-> --- a/drivers/media/usb/uvc/uvc_driver.c
-> +++ b/drivers/media/usb/uvc/uvc_driver.c
-> @@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
->  	struct gpio_desc *gpio_privacy;
->  	int irq;
->  
-> -	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
-> +	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
->  					       GPIOD_IN);
->  	if (IS_ERR_OR_NULL(gpio_privacy))
->  		return PTR_ERR_OR_ZERO(gpio_privacy);
->  
->  	irq = gpiod_to_irq(gpio_privacy);
->  	if (irq < 0)
-> -		return dev_err_probe(&dev->udev->dev, irq,
-> +		return dev_err_probe(&dev->intf->dev, irq,
->  				     "No IRQ for privacy GPIO\n");
->  
->  	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
-> @@ -1329,15 +1329,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
->  static int uvc_gpio_init_irq(struct uvc_device *dev)
->  {
->  	struct uvc_entity *unit = dev->gpio_unit;
-> +	int ret;
->  
->  	if (!unit || unit->gpio.irq < 0)
->  		return 0;
->  
-> -	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
-> -					 uvc_gpio_irq,
-> -					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
-> -					 IRQF_TRIGGER_RISING,
-> -					 "uvc_privacy_gpio", dev);
-> +	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
-> +				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
-> +				   IRQF_TRIGGER_RISING,
-> +				   "uvc_privacy_gpio", dev);
-> +
-> +	unit->gpio.initialized = !ret;
-> +
-> +	return ret;
-> +}
-> +
-> +static void uvc_gpio_deinit(struct uvc_device *dev)
-> +{
-> +	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
-> +		return;
-> +
-> +	free_irq(dev->gpio_unit->gpio.irq, dev);
->  }
->  
->  /* ------------------------------------------------------------------------
-> @@ -1934,6 +1946,8 @@ static void uvc_unregister_video(struct uvc_device *dev)
->  {
->  	struct uvc_streaming *stream;
->  
-> +	uvc_gpio_deinit(dev);
-> +
->  	list_for_each_entry(stream, &dev->streams, list) {
->  		/* Nothing to do here, continue. */
->  		if (!video_is_registered(&stream->vdev))
-> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> index 07f9921d83f2..965a789ed03e 100644
-> --- a/drivers/media/usb/uvc/uvcvideo.h
-> +++ b/drivers/media/usb/uvc/uvcvideo.h
-> @@ -234,6 +234,7 @@ struct uvc_entity {
->  			u8  *bmControls;
->  			struct gpio_desc *gpio_privacy;
->  			int irq;
-> +			bool initialized;
->  		} gpio;
->  	};
->  
-> 
-> ---
-> base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
-> change-id: 20241031-uvc-crashrmmod-666de3fc9141
+After commit 94d7d9233951 ("mm: abstract the vma_merge()/split_vma()
+pattern for mprotect() et al."), if vma_modify_flags() return error, the
+vma is set to an error code.  This will lead to an invalid prev be
+returned.
 
--- 
-Regards,
+Generally this shouldn't matter as the caller should treat an error as
+indicating state is now invalidated, however unfortunately
+apply_mlockall_flags() does not check for errors and assumes that
+mlock_fixup() correctly maintains prev even if an error were to occur.
 
-Laurent Pinchart
+This patch fixes that assumption.
+
+[lorenzo.stoakes@oracle.com: provide a better fix and rephrase the log]
+Link: https://lkml.kernel.org/r/20241027123321.19511-1-richard.weiyang@gmail.com
+Fixes: 94d7d9233951 ("mm: abstract the vma_merge()/split_vma() pattern for mprotect() et al.")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mlock.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+--- a/mm/mlock.c~mm-mlock-set-the-correct-prev-on-failure
++++ a/mm/mlock.c
+@@ -725,14 +725,17 @@ static int apply_mlockall_flags(int flag
+ 	}
+ 
+ 	for_each_vma(vmi, vma) {
++		int error;
+ 		vm_flags_t newflags;
+ 
+ 		newflags = vma->vm_flags & ~VM_LOCKED_MASK;
+ 		newflags |= to_add;
+ 
+-		/* Ignore errors */
+-		mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
+-			    newflags);
++		error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
++				    newflags);
++		/* Ignore errors, but prev needs fixing up. */
++		if (error)
++			prev = vma;
+ 		cond_resched();
+ 	}
+ out:
+_
+
+Patches currently in -mm which might be from richard.weiyang@gmail.com are
+
+maple_tree-print-empty-for-an-empty-tree-on-mt_dump.patch
+maple_tree-the-return-value-of-mas_root_expand-is-not-used.patch
+maple_tree-not-necessary-to-check-index-last-again.patch
+maple_tree-refine-mas_store_root-on-storing-null.patch
+maple_tree-add-a-test-checking-storing-null.patch
+
 
