@@ -1,98 +1,87 @@
-Return-Path: <stable+bounces-91846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1879C095F
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:55:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455CB9C0966
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 15:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBAE1C239A8
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:55:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2A2B1F245B9
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8BB20FA81;
-	Thu,  7 Nov 2024 14:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CCD210186;
+	Thu,  7 Nov 2024 14:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwabX0Bt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=meirisoda.online header.i=@meirisoda.online header.b="iSptoqF+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F761DFDB8;
-	Thu,  7 Nov 2024 14:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A427420ADDC
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 14:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730991319; cv=none; b=ZMRnql0ifdCHCObUXbOqJ2rhFVoDE7x4WNcHoLEOge/PeLdJ6AVRpviDB6XqxjVBGn6CGAgedkzVPn0zWhOA9eXzab7iVFGH7oULR3AiV5h5k/XlKpu1BxDiy/jnxKxiKo3iNuj6guZNc306YHXH1IQQ9NLJX7XGyErv0479c8Y=
+	t=1730991362; cv=none; b=joohQYsa1l//gmaIKqSGHqOSNDgM4+XbiCoohEiydO6nsZK1DL93bKCfAB+k4758V24fouQpagCa7kM53akVwwYK7GR45m9umvSNGubTN5o/WGRXK+m8B16sEUZyrt4Xq38EEZiG1BW391CdUbF3qoFNlq1tBLM6IwGeD82RmVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730991319; c=relaxed/simple;
-	bh=K5+gjFHFUygX0x3HkOo96uYxYFByfgO4woehcB3CLcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LToLFlk6+AC+nJxjKXOVCaCmoDlSm86MBlEPtmX6/eRGRkt7Qscipq6sr/jogMmWdFPABqEmNtvAJ2D5ZeF9HA336hLw1yNkwCVwPgduszwKXay+SvaiyhG1EPe3dsZ+unLsTvIBP4Ls+/xyywvjm339M7w1pXaFK/RXhfZv5JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwabX0Bt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFD0C4CECC;
-	Thu,  7 Nov 2024 14:55:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730991318;
-	bh=K5+gjFHFUygX0x3HkOo96uYxYFByfgO4woehcB3CLcE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gwabX0Bt3r9b/wEYR2LijvJ9TbY6clKCOV+tUc8Uz7aIdmmksaSERHaKFMq0DnKS8
-	 ZDKuHgspcp1t3w6V5jVEKCyes+oN7Xr4KX9HosFYNuU6QNFlEV8Rdbz/k1TRnlncsQ
-	 Z/rg2AK3hT03kdyageX10zr3112y+mvFur5OJs+ZtmSKIjB2N82SZr6Vt87phG+uRz
-	 oxBKWy/qgv2WJYnmKuA8oSkN2LGHHB0QHih9Y6hH8UHdU6VZPdxTis2MUTmf1kBGP1
-	 JhgOMgxnvZV18xlI47L4zP8dEdNpPvdbyBmWNr/piOiX+pMGdmBiaPMHsQEiJ+AHQx
-	 n6TFcgbCt/4aA==
-Date: Thu, 7 Nov 2024 14:55:12 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hagar@microsoft.com
-Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
-Message-ID: <df4c9a3b-7fb2-42fd-ab10-94cfa7e70979@sirena.org.uk>
-References: <20241107064547.006019150@linuxfoundation.org>
+	s=arc-20240116; t=1730991362; c=relaxed/simple;
+	bh=HQT6sSXxZ4+IzIT0kZfCvJG79/FhOL/fF37+8Asgz2g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AJa1yNKPXKeB6L/k5x6ZCo1Fp2v5fnTof8gfMxvR91nt2KSzv49a3OtCRHQF9aQGAO0su8MX1vjT4uQGZbHhppg4yZ6K8BYkvsiJidKpdHdIMHKY9oEj9xrYMldOaS1hJKn4VXrftpCFu4hgoiuOSnYwGqDnoNjQ+R37Pgc5++A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=meirisoda.online; spf=none smtp.mailfrom=meirisoda.online; dkim=pass (2048-bit key) header.d=meirisoda.online header.i=@meirisoda.online header.b=iSptoqF+; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=meirisoda.online
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=meirisoda.online
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meirisoda.online;
+	s=protonmail2; t=1730991358; x=1731250558;
+	bh=+Y7pVHk71hhLP46ETcmPhfbaVehxJr7d90LURWm4ZmE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=iSptoqF+AGC67qae1HOgmVUvdvr6U/fcopGmorHOAy9nUvAyK2J5vsnS4m+fXOafv
+	 dTRJTHRwHHLmPBAvTCo+J3l/9D95GQVEUoB83ewfEMu+fG3DEpFOTlI/yR4CU+Hdj/
+	 c+1K9MFnBOWXCxoRi91eWcz/QEwWrR2HEGWszFtx8Z9gSyP1vWPvU47jFEB7Y5+mU+
+	 j+3CoSjzifP0gUVSHT2UcKArLOoryQV0RiZcDsSTAeH8/KFCUhgqxJ7lz2ilFzzZAW
+	 VFO5uJ2lpWSXTLB6hRZ2qDKV3ULhD7YN4jmVS+JK9c5CAkiXaSR5HnjQY8ET0NCkES
+	 uDWbQ8UPjiq/Q==
+Date: Thu, 07 Nov 2024 14:55:57 +0000
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+From: me@meirisoda.online
+Cc: "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: Kernel 6.11 breaks power-profiles-daemon on NixOS unstable
+Message-ID: <Xw3BDSu6nGp8D43shw707_3JcIzRhictWhTjZpThlOWIyF69jtxhq11eV2ExaObroqAhGypRaS86DmN2f2e2IgmGSC4U1AFRW95qOLometo=@meirisoda.online>
+In-Reply-To: <tRrhWMFNiTeCGps2p7WCa6mrpbeCMCgYfeXGsJNOjttrbCyth-0_5EsgpkAZ9zqeMBR4kS6axOZrZxJwnA3LhYtGMgmRnmL2-xrpI0oVkxk=@meirisoda.online>
+References: <tRrhWMFNiTeCGps2p7WCa6mrpbeCMCgYfeXGsJNOjttrbCyth-0_5EsgpkAZ9zqeMBR4kS6axOZrZxJwnA3LhYtGMgmRnmL2-xrpI0oVkxk=@meirisoda.online>
+Feedback-ID: 108323841:user:proton
+X-Pm-Message-ID: a062c34edfdad8f4ce98d74a180b88d46dd18944
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IUTVW+fggAyrcTk5"
-Content-Disposition: inline
-In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
-X-Cookie: Professional driver on closed track.
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Upgrading to kernel version 6.11 breaks the ability to switch between power=
+ modes on KDE Plasma 6.2.2 and NixOS 24.11 (unstable). I am using a ROG Zep=
+hyrus 14 GA401 with a 4060.
 
---IUTVW+fggAyrcTk5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I thought it may be Nvidia acting up so I've tried:
 
-On Thu, Nov 07, 2024 at 07:47:28AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.7 release.
-> There are 249 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+    Re-enabling power-profiles-daemon in my NixOS configuration (did not fi=
+x the issues)
+    Disabling supergfxctl on NixOS configuration (did not fix the issue)
+    Switching between nvidia latest and beta (did not fix the issue)
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Switching back to kernel version 6.10 fixes the issue. Since 6.10 is consid=
+ered EOL upstream, I had to manually switch back to a specific commit hash =
+to get 6.10 to work.
 
---IUTVW+fggAyrcTk5
-Content-Type: application/pgp-signature; name="signature.asc"
+Hoping this gets fixed on 6.11.
 
------BEGIN PGP SIGNATURE-----
+Thank you,
+soda
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcs1M8ACgkQJNaLcl1U
-h9Ct0Qf/WZL5vpyyXrZS9JZqKeUYwjJtFkwo1GFXPKOSBifK9MG8hmHHQVLbLmj6
-VUuutYsYJgry35r4NPCw3mGTqg+P3zyY3MIDPZYhXlv7figi9a0NabbHe4QEC/Ti
-0ExFu5oIuJq2XfWyzG+1WCpURuPNVh6+wuv+POg6ufnN37ODQu7NjMOyYDqc/F0H
-E71YdviNzQ+ljILNxZeV0GstCmjQ8ak4L8vuJoC1kBN8SkQqvdR3QEz0DLy/hBxz
-WrBhu5Uk3jIZsycj0NkSHHt59HmY9v8TLXh/MOcF3w+JTjQUgrPXxIQGtNvHukvJ
-MjCqfOVk6PZ8pggPFl3u0O6OAWoR3A==
-=PX4Z
------END PGP SIGNATURE-----
+Sent with Proton Mail secure email.
 
---IUTVW+fggAyrcTk5--
 
