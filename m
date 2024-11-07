@@ -1,137 +1,118 @@
-Return-Path: <stable+bounces-91856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CC79C0D0A
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 18:37:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9B49C0DDB
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 19:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D1028558D
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 17:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8741F234D4
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 18:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0934F2170C9;
-	Thu,  7 Nov 2024 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937F2215F6E;
+	Thu,  7 Nov 2024 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KhmX1nKt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jSUkStWt"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F4918FDAF;
-	Thu,  7 Nov 2024 17:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E536C19412E
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 18:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731001014; cv=none; b=QAqQZre1lgs51y0l4PN9Gm8f2nU+2E7JhH8rGZSiyrfCuulzA35GaTsOmu1I8XcYfGCtHL/6hTD+7kdjJZhEQX1eRaw67gcpkKewnfXaiYsDc7q38OE1JHRpECQg3AOhm3qDaBv3hg4/lRwouXjZhQqe7u+cFSyKzyzPle8xOfg=
+	t=1731004495; cv=none; b=uZi1xN17OS5e13W0aIPOEWAHgGVrqInH9iO/NDyrJ0j6Igarbmh6+OEn6ZDkm1j+GQ8xYx9yJHJVwr30dFS7AKPWuSv9MAzSBbMx9ike8kYIx0Ny76xFTe06cLSkReMPdUMIdr0uGbO9WXav6LSqEY3Bx75yr+BtqTBfEhAJThU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731001014; c=relaxed/simple;
-	bh=cVWXsWREldHGvAnkQzjYTNrGacOlXfarZYKSjY8dOdU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKd3Mfn6XhF74BX5kW6/ZSPYQc5p486v9I1dC48aM6hVPbhG1mzUDlyP5LQ1GzKZigGV7CBMcL5CDTc9qzHzI8GlFYBq3GgQdgA+X9beRM6dVlDAdFNLfpl7/WRhsChwX3tYN/upigHZgSp5xRXJ5YNb2c4qGhrQqTf35LL3zPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KhmX1nKt; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fMOEMQkzH0c9rkq40/WN60OYh9eTdzYKpSbLvnHZRCo=; b=KhmX1nKtkrOGhCb068/ZQakPU/
-	Hrbnlm43lRLeEDtLuwnkIrjjQuTJkMMLCPM2ffsaw25s2js+zdlNrfo/qpiW83NlV6clpIbLwjdC3
-	rIb0yGXi4d44ev7+tvuYeIIODL778bDwVr3/mLBp96PuYKE+qzAhsdrhSYSIEvCxqhy4BuekkUe1w
-	7AOY/Y9s3nD9rpsSGKHrNngO45w6DGchmnkZMcE9YsgMO180fydxOCZoQviLBJLmMhetHxgHQQiL3
-	vJU7ahw4/5vC8MBQYww+O7hIToG2P+NlcknIWDHFK5i6LV5Pca4CXJ3J2evYck3gY3DaGfVjMH2Lz
-	/FmyjvNQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48932)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1t96Qr-0003YX-0w;
-	Thu, 07 Nov 2024 17:36:33 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1t96Qo-0001SH-14;
-	Thu, 07 Nov 2024 17:36:30 +0000
-Date: Thu, 7 Nov 2024 17:36:30 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Dan Murphy <dmurphy@ti.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: phy: dp83869: fix status reporting for
- 1000base-x autonegotiation
-Message-ID: <Zyz6nolj9-9bjyx8@shell.armlinux.org.uk>
-References: <20241104-dp83869-1000base-x-v2-1-f97e39a778bf@bootlin.com>
+	s=arc-20240116; t=1731004495; c=relaxed/simple;
+	bh=x3Hue5Jr3BEWlql6LAsAjH+PurZFdaVhPDfK9DjOcEg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VTkd5KOC+AaQslg3alAMH4S1mFISfwO5EgpZuZKN+4KGH3wKFjHz1JNCCDLpGtQTFkfQTIwtIRwa7FSllEGPpkS4RuMcXnNGg3W53c3xnaM9fxjKQjUpbguPLJ3yyLaQoozl8DrhNqjns6csVPG1d4DHGsjExoKpVV1s0EsRYVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jSUkStWt; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6ea8794f354so23802197b3.2
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 10:34:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731004493; x=1731609293; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nmEBU3YeKw/iHBk5W+DIb15XVTngg+/xscNH9lNBj4E=;
+        b=jSUkStWtiWeqigntVDDA9ZIoJiNzh2KggkaLnLFbujvIrmoRl3+zqLCFYE4wvUIVR6
+         /4SgcPUckrKsgqkG9xC8oWIZIZS4NlcOaYs+MvMGQLjnkuD3aJIeHqfZVhWT9ZpXtbny
+         zSSGL7j0wrcZpTCrWhmDh+4Mb5cwn8aWNoNeCba8nR3fKwsFRgo91n/hJtiH07WMQfXo
+         5+8EVfu71b/3qHfLSym94jraLEvCxrwCzOC2B1uh4OJIUYkLK+vWUvHg1OnJugrtagQb
+         MTXVeR5yyQnl3IWjYQB2FWumxpAu9CYm61PSCy6iXXCsM45TEZBZO9q52VQwx7R9DEOL
+         xv/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731004493; x=1731609293;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nmEBU3YeKw/iHBk5W+DIb15XVTngg+/xscNH9lNBj4E=;
+        b=LOS4ykWBUxx57caO8Q/tSgYSMM6xhXB987Q2X1cthbKe+tQRQWOLovDCB54Bk/lMv8
+         AF12Lms+jgz7OaF7t+5FOLN5FOVD/SKCXSJJyZDxgER4bfT+4ymezpLndWbOXBXbqgu2
+         EtJF/TLMLShsXNupFPVKWa6Yy77SQdX1iLW6Q9SGKnnsgvKSH2rcNeUWKKHMG70d5JgC
+         A5Gy+IsiiTBMJ1P3SisUpVMbkeWOy5uSMPONonMQoz0c6s1tecRxIUaJm41wlDSX0LoC
+         ad3vBIyXwmrWCw5tIH27pDzFXSYhArWLW9PCC+QLoJwMq07+i25AbKFUNzhVpiVeMHZc
+         OB9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWUaEyUKRW4PW0pYplG5XYv3HJR0ZY7pIMXqfvary+8+SHDn3dP569uETn/dmScOPGMjM4p4cg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPO3GKBDMmx/hsDQuUHPUE+LI0Hu2mu+zFZpQmloCs441+ZDeM
+	q2Wyo4KjfVF5RO4FCXOMqRRVn7JhfMIz8qOj/f1ha2c2mOjYqIFCuHvDWeDKtUm7q+WNauB4cTu
+	2p7AVl37kdQ==
+X-Google-Smtp-Source: AGHT+IExrCnTsQKsIbR08ANldMywBPSMtSnN+oCe+Bx1qFn4EZcC5RZUqmu6l55CqDGF+uGcKLG+fyNVEXZ5Rg==
+X-Received: from jeroendb9128802.sea.corp.google.com ([2620:15c:11c:202:dbff:8920:eb2e:2484])
+ (user=jeroendb job=sendgmr) by 2002:a25:c705:0:b0:e03:53a4:1a7 with SMTP id
+ 3f1490d57ef6-e337e46b447mr372276.10.1731004492913; Thu, 07 Nov 2024 10:34:52
+ -0800 (PST)
+Date: Thu,  7 Nov 2024 10:34:31 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104-dp83869-1000base-x-v2-1-f97e39a778bf@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
+Message-ID: <20241107183431.1270772-1-jeroendb@google.com>
+Subject: [PATCH net] gve: Flow steering trigger reset only for timeout error
+From: Jeroen de Borst <jeroendb@google.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	stable@vger.kernel.org, pabeni@redhat.com, jeroendb@google.com, 
+	pkaligineedi@google.com, shailend@google.com, andrew+netdev@lunn.ch, 
+	willemb@google.com, hramamurthy@google.com, ziweixiao@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 04, 2024 at 09:52:32AM +0100, Romain Gantois wrote:
-> The DP83869 PHY transceiver supports converting from RGMII to 1000base-x.
-> In this operation mode, autonegotiation can be performed, as described in
-> IEEE802.3.
-> 
-> The DP83869 has a set of fiber-specific registers located at offset 0xc00.
-> When the transceiver is configured in RGMII-to-1000base-x mode, these
-> registers are mapped onto offset 0, which should, in theory, make reading
-> the autonegotiation status transparent.
-> 
-> However, the fiber registers at offset 0xc04 and 0xc05 do not follow the
-> bit layout of their standard counterparts. Thus, genphy_read_status()
-> doesn't properly read the capabilities advertised by the link partner,
-> resulting in incorrect link parameters.
+From: Ziwei Xiao <ziweixiao@google.com>
 
-This description is wrong. The format of registers 4 and 5 depends on
-the media.
+When configuring flow steering rules, the driver is currently going
+through a reset for all errors from the device. Instead, the driver
+should only reset when there's a timeout error from the device.
 
-In twisted-pair ethernet, then:
+Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_adminq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-ADVERTISE_PAUSE_ASYM / LPA_PAUSE_ASYM
-ADVERTISE_PAUSE_CAP / LPA_PAUSE_CAP
-ADVERTISE_100FULL / LPA_100FULL
-ADVERTISE_100HALF / LPA_100HALF
-ADVERTISE_10FULL / LPA_10FULL
-ADVERTISE_10HALF / LPA_10HALF
-ADVERTISE_CSMA
-
-apply. In 1000base-X:
-
-ADVERTISE_1000XPSE_ASYM / LPA_1000XPAUSE_ASYM
-ADVERTISE_1000XPAUSE / LPA_1000XPAUSE
-ADVERTISE_1000XHALF / LPA_1000XHALF
-ADVERTISE_1000XFULL / LPA_1000XFULL
-
-apply - these being bits 8, 7, 6, 5:
-
-> +#define DP83869_LPA_1000FULL   BIT(5)
-> +#define DP83869_LPA_PAUSE_CAP  BIT(7)
-> +#define DP83869_LPA_PAUSE_ASYM BIT(8)
-> +#define DP83869_LPA_LPACK      BIT(14)
-
-so these are just reimplementing definitions we already have. Please
-use the existing definitions. Even better, use mii_lpa_mod_linkmode_x()
-and linkmode_adv_to_mii_adv_x() which we already have in your code.
-
-Same likely goes for DP83869_BP_*
-
-Thanks.
-
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index e44e8b139633..060e0e674938 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -1248,10 +1248,10 @@ gve_adminq_configure_flow_rule(struct gve_priv *priv,
+ 			sizeof(struct gve_adminq_configure_flow_rule),
+ 			flow_rule_cmd);
+ 
+-	if (err) {
++	if (err == -ETIME) {
+ 		dev_err(&priv->pdev->dev, "Timeout to configure the flow rule, trigger reset");
+ 		gve_reset(priv, true);
+-	} else {
++	} else if (!err) {
+ 		priv->flow_rules_cache.rules_cache_synced = false;
+ 	}
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.47.0.277.g8800431eea-goog
+
 
