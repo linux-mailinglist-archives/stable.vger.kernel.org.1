@@ -1,250 +1,229 @@
-Return-Path: <stable+bounces-91774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA3F9C0190
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCE29C01E5
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 11:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C1C11F236CE
-	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 09:54:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34A7F1F220D3
+	for <lists+stable@lfdr.de>; Thu,  7 Nov 2024 10:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868211EF096;
-	Thu,  7 Nov 2024 09:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E303A1E909C;
+	Thu,  7 Nov 2024 10:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IfmGvCzR"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="B6oc96/Y"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3EB1DB54B;
-	Thu,  7 Nov 2024 09:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70711E8834
+	for <stable@vger.kernel.org>; Thu,  7 Nov 2024 10:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730973152; cv=none; b=KDakeALobYGigG0tVc3J7FGZluccgtSMxpKV7FwnDB88vfrL00vejcywV4EyPgscb6nYG7Gz0aXGARjiJCROPgntV12Qy9FDPsGV3S0/Jh+EOtOEzntoplpiOR3hQ/CV2uw7NiKkA4WeX8q5DZ69gUoaEKXSl7JlwR5IPm008es=
+	t=1730974097; cv=none; b=N3tG90/rTeaHAB7nAB5u6mq4Q7tqN0rzFXlxEgnJykOIcgQLsnwoy7Kecl40bskRR9Y6ZF9m92UuTSR+vt97vKBwXtOiJTuGczgdqfmZJf9/9WU2EE7hLJoo2cSBPQeBuHtHFkD8wR4cBYIofhVVyrIaQ5rdPCI2riSr+2GWfgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730973152; c=relaxed/simple;
-	bh=VztDLWxUXtgG25+i0M5xW2ZyIXyhdWw+s6kVl5FgXyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wys5HwTgQxDjiR/Eq15BbREIW5eLXJg9nhpOnmGN3NFzMxp64FZW8Uo8KEUNsdffPDaucODwZNpj9rNOXPNLjdglYvNv7BLg1fQ4OFu1v5ReI4tzyxQWKws5E9yap04KeUXKL3Iq9wGlK74mg+P2rb6bNbq0AepDvRS6MejeCv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IfmGvCzR; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1E70513806A8;
-	Thu,  7 Nov 2024 04:52:29 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 07 Nov 2024 04:52:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1730973149; x=1731059549; bh=03kWA3JRtu4T5mhalhuq/QQtAHUUB9dIoXw
-	69Q0F+bw=; b=IfmGvCzRvu8A8fkvtA6BDh5T4X44JDv6lSUc61gfeKwAJ5+GBJG
-	f3UBAEYhCuIx++qFsRnsWGnhCUudBE5l6i0YCERtA9llieSl/Q+R/TlqMZSX53fJ
-	LbFFW7qRaZhtlPnTiEPKFydl7B1NZwiBTBAYmG9IEj5ZM6EaevLhlyBby8clzlE2
-	SfrKcgbD4XvXGBMv0/d658kXpe8lH9A/os7T4k1/H9twaqt8UanssSEhBPy042qy
-	zrODgSHNf6vjb/cCrMIWx1T0OV61BRNBYxPbHz4KxWfZ5+MdLFLoKhR/+OPrlZQB
-	Lms32NjnS+qRrf8bm8zziD0+DlFUoHOGZXg==
-X-ME-Sender: <xms:3I0sZ64PywGHYmqOoHxShgKMMQJLHQsMyYdqS90td-6Hy4NPAdhpCg>
-    <xme:3I0sZz4d6tNJmeYXblPyDoFWypaGfdkp9jNsabq52gL2fuKc3x16SlVhNcLLymDkW
-    zRK4FiThbdfjIY>
-X-ME-Received: <xmr:3I0sZ5d_fEEM2YDXtK2fkVqL-v5kFY_EAAq3O8GHHESVSrfbMgyRXBIQcDnslYiwMFitAE3XAXiveQS1JC4jxvJvhZI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdeggddtlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
-    hgqeenucggtffrrghtthgvrhhnpefhffejgefhjeehjeevheevhfetveevfefgueduueei
-    vdeijeeihfegheeljefgueenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehi
-    ughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuth
-    dprhgtphhtthhopehmrghtthdrmhhughhgvghrihgughgvsehhphgvrdgtohhmpdhrtghp
-    thhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegushgrhh
-    gvrhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhg
-    lhgvrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrphhi
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:3I0sZ3Jpu5K849KnOSdz-22lJUFsubxt_CBXYObVco061E4PNr6p5g>
-    <xmx:3I0sZ-IV5CcIPlOW8MbrsExHySQNSF822SI_XZYqxTaolhjlRbXHlw>
-    <xmx:3I0sZ4z5BJFcQKdreAno6VmFyBoouSvuqwQkhq1cv76U7tINEljAdQ>
-    <xmx:3I0sZyKa_x4-qNHAYfc73sLegu2rPIIn0Ddm5QpsL90eHPPTmPRm9A>
-    <xmx:3Y0sZ7Dk4yNdFj49Sq0YA3BAQmpvlcKcdmqMMTz6xD77Gb6Zzdl26s7r>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 Nov 2024 04:52:28 -0500 (EST)
-Date: Thu, 7 Nov 2024 11:52:25 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Matt Muggeridge <Matt.Muggeridge@hpe.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	horms@kernel.org, kuba@kernel.org, linux-api@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default
- Routes
-Message-ID: <ZyyN2bSgrpbhbkpp@shredder>
-References: <ZytjEINNRmtpadr_@shredder>
- <20241107035303.24057-1-Matt.Muggeridge@hpe.com>
+	s=arc-20240116; t=1730974097; c=relaxed/simple;
+	bh=xXUQOBT01T3MRKyJrdapfNykchj8nZNKVHCLYH+d/Cs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PXoZ+U2LsXciT93NTQ3Com6DQzu7JmFTJ7kUfKqyn+G2RolcpZ60CmuqC6pkOK7LmXXoD5nDDo9zuJyy52tgngmV40KcHUwyWaE1OWi5+KByeS/uAUL5vh1I7+M31C7buzeO99504xPoOnAfFkMzdUlEUiIH3/yf3kEW3Qk6bCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=B6oc96/Y; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so6799875e9.1
+        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 02:08:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1730974094; x=1731578894; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3aX9aU5kbUCffF9rM+ueXGTR+/RvfCfDMyT/aMZR86s=;
+        b=B6oc96/YAgpINz8oJmoArIRKtTbM1I/msINUpD3GOp2QDUCDmIVgtb2eYefgwYOmwv
+         /GEvgdGbKFIUq3zl1VJzKVUfONUAUrOOXyD4ZrKMvTPBYZftJHxVpUrbSfCDR1NqklLu
+         cGhP80CqcZ6idRjOY2ymYfAvDFifw7v0K0yozumbmS5t1Tj16Fwrp6TjIcfTSKf5Y2k9
+         pzrHj3CZ58diIepema7cQ8A0QshAVczkm9Z1ZyddGYwBuKaSBMrCrPcjKVeUMlptgtIH
+         J/1Fneyuw7nbqVaVbxi27c+DLG8pZiY2RftShSDO/jItH58VoD3nkSAw2I+iIy+emFSR
+         pcjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730974094; x=1731578894;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3aX9aU5kbUCffF9rM+ueXGTR+/RvfCfDMyT/aMZR86s=;
+        b=pnFi2xNIwY43C3K+QiYUYZsnQZ/qG/BXDX234oNSHVDVYhoobw+fJx+owAtTPP95KM
+         EJ2Ag4+lHBXQGLaDngHNJvLS54xfzXeq7BL1dZ86x6aqkegCc4SrzpcClgxLru02caNl
+         tFOauYtSGEO5zXdw/eM+q3HhkSILY1wzRfkKtrAmnVxHf9Fpxxgm8SlnEbH/dfS9zFR9
+         keyVr+65EKqC8fUq4NDZyhUv974izxYDmFs40thtJFHINjCdA7FrQ+zY6T0j3G15cZMX
+         OYZqDr9hmOvdlQPzHRG/DlLqUyjI0uixTHC2dtDk3rzD5xpzxHSFill7d1Q6m0YSCaVW
+         N6Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWrcZGtZ5+AtRttPbwB5/7nzK5tv1RwbKenvni3kO50V45R6Oe/INlrQAXXGumUdacE6Gzj/4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/UNBVYai4qjxCKC6y9oQcbrMZpv675a0zL8KYN2J/1NWveROK
+	+QgWo/w5G+r/jsxewrf7MrBu9RDWWAjh3mVYnMZfEA3OuNYZaqvXH1VXDSmy4zQ=
+X-Google-Smtp-Source: AGHT+IGWGYFHOONG1Xs6QvgE6Y/vND7Lhs5RD0DMYTtylzW3x3ufq+tfvPgtCHz10wJS3sE+Pr8Zbg==
+X-Received: by 2002:a05:6000:1865:b0:37d:5129:f45e with SMTP id ffacd0b85a97d-381ef6ba599mr518574f8f.20.1730974093942;
+        Thu, 07 Nov 2024 02:08:13 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97ec9fsm1304952f8f.42.2024.11.07.02.08.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Nov 2024 02:08:13 -0800 (PST)
+Message-ID: <26618787-7eb7-40a6-b849-33016956ef03@tuxon.dev>
+Date: Thu, 7 Nov 2024 12:08:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241107035303.24057-1-Matt.Muggeridge@hpe.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/9] serial: sh-sci: Check if TX data was written to
+ device in .tx_empty()
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: geert+renesas@glider.be, magnus.damm@gmail.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, mturquette@baylibre.com,
+ sboyd@kernel.org, jirislaby@kernel.org, p.zabel@pengutronix.de,
+ lethal@linux-sh.org, g.liakhovetski@gmx.de, ysato@users.sourceforge.jp,
+ ulrich.hecht+renesas@gmail.com, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-serial@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20241106120118.1719888-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241106120118.1719888-3-claudiu.beznea.uj@bp.renesas.com>
+ <2024110747-kite-pacemaker-6216@gregkh>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <2024110747-kite-pacemaker-6216@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 06, 2024 at 10:53:03PM -0500, Matt Muggeridge wrote:
-> Hi Ido,
-> 
-> > >>> Is the problem that fib6_table_lookup() chooses a reachable
-> > >>> nexthop and then fib6_select_path() overrides it with an unreachable
-> > >>> one?
-> > 
-> > >> I'm afraid I don't know.
-> > >>
-> > > We need to understand the current behavior before adding a new interface
-> > > that we will never be able to remove. It is possible we can improve /
-> > > fix the current code. I won't have time to look into it myself until
-> > > next week.
-> 
-> I am grateful that you want to look into it. Thank you! And I look forward to
-> learning what you discover.
-> 
-> You probably already know how to reproduce it, but in case it helps, I still
-> have the packet captures and can share them with you. Let me know if you'd
-> like me to share them (and how to share them).
+Hi, Greg,
 
-It would be best if you could provide a reproducer using iproute2:
-Configure a dummy device using ip-link, install the multipath route
-using ip-route, configure the neighbour table using ip-neigh and then
-perform route queries using "ip route get ..." showing the problem. We
-can then use it as the basis for a new test case in
-tools/testing/selftests/net/fib_tests.sh 
-
-BTW, do you have CONFIG_IPV6_ROUTER_PREF=y in your config?
-
+On 07.11.2024 10:47, Greg KH wrote:
+> On Wed, Nov 06, 2024 at 02:01:11PM +0200, Claudiu wrote:
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
+>> is called. The uart_suspend_port() calls 3 times the
+>> struct uart_port::ops::tx_empty() before shutting down the port.
+>>
+>> According to the documentation, the struct uart_port::ops::tx_empty()
+>> API tests whether the transmitter FIFO and shifter for the port is
+>> empty.
+>>
+>> The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
+>> transmit FIFO through the FDR (FIFO Data Count Register). The data units
+>> in the FIFOs are written in the shift register and transmitted from there.
+>> The TEND bit in the Serial Status Register reports if the data was
+>> transmitted from the shift register.
+>>
+>> In the previous code, in the tx_empty() API implemented by the sh-sci
+>> driver, it is considered that the TX is empty if the hardware reports the
+>> TEND bit set and the number of data units in the FIFO is zero.
+>>
+>> According to the HW manual, the TEND bit has the following meaning:
+>>
+>> 0: Transmission is in the waiting state or in progress.
+>> 1: Transmission is completed.
+>>
+>> It has been noticed that when opening the serial device w/o using it and
+>> then switch to a power saving mode, the tx_empty() call in the
+>> uart_port_suspend() function fails, leading to the "Unable to drain
+>> transmitter" message being printed on the console. This is because the
+>> TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
+>> TEND=0 has double meaning (waiting state, in progress) we can't
+>> determined the scenario described above.
+>>
+>> Add a software workaround for this. This sets a variable if any data has
+>> been sent on the serial console (when using PIO) or if the DMA callback has
+>> been called (meaning something has been transmitted).
+>>
+>> Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>> ---
+>>  drivers/tty/serial/sh-sci.c | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>
+>> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+>> index df523c744423..8e2d534401fa 100644
+>> --- a/drivers/tty/serial/sh-sci.c
+>> +++ b/drivers/tty/serial/sh-sci.c
+>> @@ -153,6 +153,7 @@ struct sci_port {
+>>  	int				rx_trigger;
+>>  	struct timer_list		rx_fifo_timer;
+>>  	int				rx_fifo_timeout;
+>> +	atomic_t			first_time_tx;
 > 
-> > > 
-> > > The objective is to allow IPv6 Netlink clients to be able to create default
-> > > routes from RAs in the same way the kernel creates default routes from RAs.
-> > > Essentially, I'm trying to have Netlink and Kernel behaviors match.
-> > 
-> > I understand, but it's essentially an extension for the legacy IPv6
-> > multipath API which we are trying to move away from towards the nexthop
-> > API (see more below).
-> 
-> Very interesting, I wasn't aware of this movement.
-> 
-> While this change is an extension of the legacy IPv6 multipath API, won't it
-> still need to support Netlink clients that have been designed around it? I
-> imagine that transitioning Netlink clients to the NH API will take many years?
+> Don't use an atomic variable for an informational thing like this, it is
+> racy and doesn't work properly.  Either use a real lock (because you
+> care about the locking stuff here), or just use a boolean and live with
+> any potential races.
 
-FRR already supports it and I saw that there is some support for nexthop
-objects in systemd:
-
-https://github.com/systemd/systemd/pull/13735
-
-> 
-> As such, it still seems appropriate (to me) that this be implemented in the
-> legacy API as well as ensuring it works with the NH API.
-
-As I understand it you currently get different results because the
-kernel installs two default routes whereas user space can only create
-one default multipath route. Before adding a new uAPI I want to
-understand the source of the difference and see if we can improve / fix
-the current multipath code so that the two behave the same. If we can
-get them to behave the same then I don't think user space will care
-about two default routes versus one default multipath route.
-
-> 
-> Another consideration...
-> 
-> Will the kernel RA processing go through the same nh pathway? The reason I
-> ask is because I faced several challenges with IPv6 Logo certification due to
-> Netlink clients being unable to achieve the same as the kernel's behavior.
-
-If you are asking if the kernel can install RA routes using nexthop
-objects, then the answer is no. Only user space can create nexthop
-objects and I don't think we want to allow the kernel to do that.
+OK, I'll drop it and use a boolean.
 
 > 
-> As long as the kernel is creating RA routes in a way that meets RFC4861, then
-> I'd hope that  Netlink clients would be able to leverage that for 'free'.
 > 
-> > > 
-> > > My analysis led me to the need for Netlink clients to set the kernel's
-> > > fib6_config flags RTF_RA_ROUTER, where:
-> > > 
-> > >     #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
-> > > 
-> > >>> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
-> > >>> +		cfg->fc_flags |= RTF_RA_ROUTER;
-> > >>> +
-> > >> 
-> > >> It is possible there are user space programs out there that set this bit
-> > >> (knowingly or not) when sending requests to the kernel and this change
-> > >> will result in a behavior change for them. So, if we were to continue in
-> > >> this path, this would need to be converted to a new netlink attribute to
-> > >> avoid such potential problems.
-> > >> 
-> > > 
-> > > Is this a mandated approach to implementing unspecified bits in a flag?
-> > > 
-> > > I'm a little surprised by this consideration. If we account for poorly
-> > > written buggy user-programs, doesn't this open any API to an explosion
-> > > of new attributes or other odd extensions? I'd imagine the same argument
-> > > would be applicable to ioctl flags, socket flags, and so on. Why would we
-> > > treat implementing unspecified Netlink bits differently to implementing
-> > > unspecified ioctl bits, etc.
-> > > 
-> > > Naturally, if this is the mandated approach, then I'll reimplement it with
-> > > a new Netlink attribute. I'm just trying to understand what is the
-> > > Linux-lore, here?
-> > 
-> > Using this bit could have been valid if previously the kernel rejected
-> > requests with this bit set, but as evident by your patch the kernel does
-> > not do it. It is therefore possible that there are user space programs
-> > out there that are working perfectly fine right now and they will break
-> > / misbehave after this change.
-> > 
 > 
-> Understood and I agree.
+>>  	u16				hscif_tot;
+>>  
+>>  	bool has_rtscts;
+>> @@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
+>>  {
+>>  	struct tty_port *tport = &port->state->port;
+>>  	unsigned int stopped = uart_tx_stopped(port);
+>> +	struct sci_port *s = to_sci_port(port);
+>>  	unsigned short status;
+>>  	unsigned short ctrl;
+>>  	int count;
+>> @@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+>>  		}
+>>  
+>>  		sci_serial_out(port, SCxTDR, c);
+>> +		atomic_set(&s->first_time_tx, 1);
+>>  
+>>  		port->icount.tx++;
+>>  	} while (--count > 0);
+>> @@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
+>>  	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+>>  		uart_write_wakeup(port);
+>>  
+>> +	atomic_set(&s->first_time_tx, 1);
+>> +
+>>  	if (!kfifo_is_empty(&tport->xmit_fifo)) {
+>>  		s->cookie_tx = 0;
+>>  		schedule_work(&s->work_tx);
+>> @@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+>>  {
+>>  	unsigned short status = sci_serial_in(port, SCxSR);
+>>  	unsigned short in_tx_fifo = sci_txfill(port);
+>> +	struct sci_port *s = to_sci_port(port);
+>> +
+>> +	if (!atomic_read(&s->first_time_tx))
+>> +		return TIOCSER_TEMT;
 > 
-> > > 
-> > >> BTW, you can avoid the coalescing problem by using the nexthop API (man
-> > >> ip-nexthop).
-> > > 
-> > > I'm not sure how that would help in this case. We need the nexthop to be
-> > > determined according to its REACHABILITY and other considerations described
-> > > in RFC4861.
-> > 
-> > Using your example:
-> > 
-> > # ip nexthop add id 1 via fe80::200:10ff:fe10:1060 dev enp0s9
-> > # ip -6 route add default nhid 1 expires 600 proto ra
-> > # ip nexthop add id 2 via fe80::200:10ff:fe10:1061 dev enp0s9
-> > # ip -6 route append default nhid 2 expires 600 proto ra
-> > # ip -6 route
-> > fe80::/64 dev enp0s9 proto kernel metric 256 pref medium
-> > default nhid 1 via fe80::200:10ff:fe10:1060 dev enp0s9 proto ra metric 1024 expires 563sec pref medium
-> > default nhid 2 via fe80::200:10ff:fe10:1061 dev enp0s9 proto ra metric 1024 expires 594sec pref medium
-> 
-> Thanks! That looks like it should work. I'll raise this with the the developers
-> of systemd-networkd.
-> 
-> Just to confirm; are these two nhid routes equivalent to having two separate
-> default routes that are created when the kernel processes IPv6 RAs?
-> 
-> Specifically, if one of these nhid routes becomes UNREACHABLE, will that be
-> taken into consideration during the routing decision? (I'm guessing so?)
+> See, what happens here if the value changes right after you check it?
 
-I didn't test it, but I don't see a reason for these two routes to
-behave differently than two default routes installed with legacy
-nexthops.
+I agree. I am aware if it.
+
+I chose this approach (w/o locking) as I noticed (as of my code checking)
+that this function is called in kernel through uart_ioctl(),
+uart_wait_until_sent(), uart_suspend_port().
+
+The uart_wait_until_sent(), uart_suspend_port() are implementing a multiple
+try approach when checking the ops::tx_timeout() return value.
+
+I haven't checked any user space application but considered that it might
+work in a similar way.
+
+I will switch to a boolean in the next version.
+
+Thank you,
+Claudiu Beznea
+
+
+> Being an atomic doesn't mean anything :(
+> 
+> thanks,
+> 
+> greg k-h
 
