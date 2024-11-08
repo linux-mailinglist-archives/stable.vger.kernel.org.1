@@ -1,99 +1,221 @@
-Return-Path: <stable+bounces-91911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683D09C197B
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 10:46:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14EB9C19D6
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 11:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C5FC283F03
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:46:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39E391F22838
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 10:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C181DFE3F;
-	Fri,  8 Nov 2024 09:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF39C1E2856;
+	Fri,  8 Nov 2024 10:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lcVXJlS7"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="ZPhnPxJ5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDEC193060
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 09:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFB21E22F8
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 10:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731059161; cv=none; b=B2CzW7BdecEGKTYGtXOjxtzqCYXBYg/3u1LxQcF3fg/Ucv4iVNUn09j5Lk83QyBWkRyE4ANtA4yDkBp8nOpvRZlAzafp115nDiwson7ogzM+QigqOcTxwe1FgN1BvwZ4riR+fKJgZp/yWemzwEVl+m28ScVLTjEC/+J8BXNlyBI=
+	t=1731060331; cv=none; b=YgjGgkwHqe+aON7dh97qqEXpBfVg5fDFIkSatFKv87u+tfUEzhPbQirzaTkz6CNQoGEoKnMdKzt0I/E0FReMI5+dyfrc8GdkRRQ7x0Sgy8A0zfWc7YR7xCMK1RkAKjZTSqwusJTF7Z2FRYmT4I8RPmB6WSOVzg35ibM+mcnhrkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731059161; c=relaxed/simple;
-	bh=XWLHBu5ep21al5qhSca2w9xbi6vzV3nJZox+0jJptQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ttPyOlj28T7x9RCdP4DwfWi2s7P6IQh0ClExRDlEdgKkuhENhtvUQOfQAuFhBOI7MAK/AvhJMFFNW/IGdXq/4D1IvhzB68FBBwT347fo/Ils7KtSCYhpHmeKi27qKrPEwJIU9BkH/EjY08zi59pwdDhijyDoy0nFAhUE9C5UiR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lcVXJlS7; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731059160; x=1762595160;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=XWLHBu5ep21al5qhSca2w9xbi6vzV3nJZox+0jJptQ4=;
-  b=lcVXJlS7wPYERYe8pOEo9byjB6kZwlLDQ6gFFzHsSZs93P3MO1PKcpVa
-   4UD/k/ve/jGpXMOr/5Tx1B17uYZuVkvp+a3h79khnLDlzMg3oL2t57ZXl
-   9Qtp3JAU0aGFtSODDLdBjeb2epTgZLWqgGBncPHRjkFpdEPp8MQUFJR+n
-   N0tRkAuJuCQV64ooph4RWcYni8M7WUDPYUftLrpVNdBH+8qByVgETqjCU
-   BLfc0v9FxJcnQFE41KdkAdrKDyBekhGJUW703Y/nnVkOJcLNAY4bUxVwx
-   xDTcSkeOamfn45jtEk6wCnhKkBqbqmttxllgmnNGCM1ys4z2koUbOxALO
-   w==;
-X-CSE-ConnectionGUID: 3OsrQYFGRKWB2Hf9BoA6Xg==
-X-CSE-MsgGUID: QeJsn8bTRtyBh/4c1O05Ig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="34874599"
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="34874599"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:45:59 -0800
-X-CSE-ConnectionGUID: QRKrxpKmTdq/iPDGYT3XYw==
-X-CSE-MsgGUID: I2o+kIeySZmfMZPv1zd6vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="90119340"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 08 Nov 2024 01:45:58 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t9LYy-000rHW-0O;
-	Fri, 08 Nov 2024 09:45:56 +0000
-Date: Fri, 8 Nov 2024 17:45:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rex Nie <rex.nie@jaguarmicro.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] USB: core: remove dead code in do_proc_bulk()
-Message-ID: <Zy3dtuBq-EPJ1Efo@7253daef1eba>
+	s=arc-20240116; t=1731060331; c=relaxed/simple;
+	bh=BgOPSQ7c0J4d6ewxUtdYFmLo2T0PX3nx4z8vFiy0Dzk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UIyHA0eRYSrpBboXRiWCXINq2iReFydauUHvfShdC7eg3zPdu6qvnLkGqz8ufvJsnc4m9z+F7CtNEjdYILelPX8xeSqDHbfwoD9YL6LsTj/wDE3GFAUkJYi7vOG4iJXqoE2TDm2LtooLvyTYY1yTCISMhdtjFpyVpkQHlddvDcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=ZPhnPxJ5; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5cb6ca2a776so2847980a12.0
+        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 02:05:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1731060328; x=1731665128; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EUv28lbMsyBChqctRtrz1p3A2PKo+pEzM5ucEbUVEb8=;
+        b=ZPhnPxJ5wORAjRtCXyX08P/0Dr/AeDdyRw0e6/UYsCcyuIBkot8PrIoIqy8972+Wm8
+         msZAu3Wtmcn8fDA2DXEy/oHIw9FT+BMt/9N5Vd2l5ZFmE/BSXi+oA2P97tOxf5d7Uz3v
+         ++TIql+A80iLP7krOXN/dfGlUAw3FdhBqRmy3e856B84dA+xjgSRfqLP23jcaXxD5S7+
+         h9gIf6SI0PkP6krr/rLvfR7sry/TB25H7pznZXPEAUcCMS1VUyNvGNbmUgtl84xjM320
+         CHPGfygtY+ZL9kSsOb3ixMJdfzlD51MwpqkYq2j96l4y4F1S+/NkFFsgliS6QtdeFPGT
+         XMTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731060328; x=1731665128;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EUv28lbMsyBChqctRtrz1p3A2PKo+pEzM5ucEbUVEb8=;
+        b=SobiZHcJAPvAzjYOHPIXC2jXS6umnznOifbDDhw6RSwe3WQYTHAyMkrSDP1cq1tbD2
+         4m0qVcU+glB+D/0lH/4w4Hrkk/jcE5g6FO4Xck1yWRcH1MChvf0UNCSfXoSI0qahwLRu
+         NFPTxTAI7novAwZYV3xkkrZ/M3e7D2FQl8BMr3HXtVUmUeTE8FrWkzbIJftJJxHEzP4f
+         Y67NVaA53I7q9L1tZ+Etl1LIdREh7XXq7Oq3vFVSUp6UTEX4TE6u0BDZb9NAbSF8Yddx
+         aQzJEXPnShhhwVk2j3tmkh27dzkhMP1eFVVkXUtDuk/0Lha+axJBr4fGphY1DCyoosST
+         akjg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEjw0h+Smnw7Rx5kDEUJgH6/raohusq6Tn16PVabQa9hY06V1Kd1xTMktnJ4OFysdx7fRrDMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyD/+o07SdxK1Yuud6A+vl0xQWAxDcDki6uKn8mUtFaSUNyLBV
+	reP0oc/ey9vYEeTDBaKLs+G4CvPYz30EOYLDfkDpWDKNaqPJ0JUprFnNtnTTleU=
+X-Google-Smtp-Source: AGHT+IF+h9p5JumX4emsZBdvGGEPis1TD0I5veqSjZLmqOsxOYeukhqk+3FKjeU7y12hCI0Mg88X5w==
+X-Received: by 2002:a05:6402:35cd:b0:5cb:7594:9ece with SMTP id 4fb4d7f45d1cf-5cf0a3261a4mr1638069a12.17.1731060327733;
+        Fri, 08 Nov 2024 02:05:27 -0800 (PST)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.28])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c4f0bdsm1775959a12.56.2024.11.08.02.05.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 02:05:27 -0800 (PST)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	p.zabel@pengutronix.de,
+	g.liakhovetski@gmx.de,
+	lethal@linux-sh.org
+Cc: linux-renesas-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	claudiu.beznea@tuxon.dev,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 2/8] serial: sh-sci: Check if TX data was written to device in .tx_empty()
+Date: Fri,  8 Nov 2024 12:05:07 +0200
+Message-Id: <20241108100513.2814957-3-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241108100513.2814957-1-claudiu.beznea.uj@bp.renesas.com>
+References: <20241108100513.2814957-1-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241108094255.2133-1-rex.nie@jaguarmicro.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Thanks for your patch.
+On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
+is called. The uart_suspend_port() calls 3 times the
+struct uart_port::ops::tx_empty() before shutting down the port.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+According to the documentation, the struct uart_port::ops::tx_empty()
+API tests whether the transmitter FIFO and shifter for the port is
+empty.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
+transmit FIFO through the FDR (FIFO Data Count Register). The data units
+in the FIFOs are written in the shift register and transmitted from there.
+The TEND bit in the Serial Status Register reports if the data was
+transmitted from the shift register.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] USB: core: remove dead code in do_proc_bulk()
-Link: https://lore.kernel.org/stable/20241108094255.2133-1-rex.nie%40jaguarmicro.com
+In the previous code, in the tx_empty() API implemented by the sh-sci
+driver, it is considered that the TX is empty if the hardware reports the
+TEND bit set and the number of data units in the FIFO is zero.
 
+According to the HW manual, the TEND bit has the following meaning:
+
+0: Transmission is in the waiting state or in progress.
+1: Transmission is completed.
+
+It has been noticed that when opening the serial device w/o using it and
+then switch to a power saving mode, the tx_empty() call in the
+uart_port_suspend() function fails, leading to the "Unable to drain
+transmitter" message being printed on the console. This is because the
+TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
+TEND=0 has double meaning (waiting state, in progress) we can't
+determined the scenario described above.
+
+Add a software workaround for this. This sets a variable if any data has
+been sent on the serial console (when using PIO) or if the DMA callback has
+been called (meaning something has been transmitted).
+
+Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
+
+Changes in v2:
+- use bool type instead of atomic_t
+
+ drivers/tty/serial/sh-sci.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 136e0c257af1..65514d37bfe2 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -157,6 +157,7 @@ struct sci_port {
+ 
+ 	bool has_rtscts;
+ 	bool autorts;
++	bool first_time_tx;
+ };
+ 
+ #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
+@@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
+ {
+ 	struct tty_port *tport = &port->state->port;
+ 	unsigned int stopped = uart_tx_stopped(port);
++	struct sci_port *s = to_sci_port(port);
+ 	unsigned short status;
+ 	unsigned short ctrl;
+ 	int count;
+@@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+ 		}
+ 
+ 		sci_serial_out(port, SCxTDR, c);
++		s->first_time_tx = true;
+ 
+ 		port->icount.tx++;
+ 	} while (--count > 0);
+@@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
+ 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
+ 
++	s->first_time_tx = true;
++
+ 	if (!kfifo_is_empty(&tport->xmit_fifo)) {
+ 		s->cookie_tx = 0;
+ 		schedule_work(&s->work_tx);
+@@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+ {
+ 	unsigned short status = sci_serial_in(port, SCxSR);
+ 	unsigned short in_tx_fifo = sci_txfill(port);
++	struct sci_port *s = to_sci_port(port);
++
++	if (!s->first_time_tx)
++		return TIOCSER_TEMT;
+ 
+ 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
+ }
+@@ -2247,6 +2256,7 @@ static int sci_startup(struct uart_port *port)
+ 
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
+ 
++	s->first_time_tx = false;
+ 	sci_request_dma(port);
+ 
+ 	ret = sci_request_irq(s);
+@@ -2267,6 +2277,7 @@ static void sci_shutdown(struct uart_port *port)
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
+ 
+ 	s->autorts = false;
++	s->first_time_tx = false;
+ 	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
+ 
+ 	uart_port_lock_irqsave(port, &flags);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.39.2
 
 
