@@ -1,132 +1,153 @@
-Return-Path: <stable+bounces-91901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEAE9C16FF
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:24:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE74B9C170F
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8404B22005
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 07:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D91285011
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 07:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32201D0E35;
-	Fri,  8 Nov 2024 07:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3956A1D1308;
+	Fri,  8 Nov 2024 07:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="X0vfjyDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPrbu+2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0131F5FA
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 07:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5341D12E9;
+	Fri,  8 Nov 2024 07:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731050639; cv=none; b=WKuBbbb0kqZUJgrTOJ27xTE2G9e1mugRchGMXaBpk7/UYaOdLKBolpUYbzMGuaFhcKM/UVTphs8kpnit0ZSYrMhF4it2Q+Zhji1W4DyUwY5Bpzk3UvbO5+IKMLzo1UiD7WfNqa88piXyhl4k0DANx79V/yOi7F+x3Aw4Ike6UWA=
+	t=1731051328; cv=none; b=fHjdjn8kz6SuBSBzeUo7P9Ejn+B/yUC7vKsT8V6CdJ2TrKLYS8v07KIbYqxBdOFh2MWrdPn/dJEJrLaAqs27+4zTGu1zVBiKJMU8EAoZvAxhigiCwchGQzaqvdHH6zr9lXbjSAdR5SFY3dlzi1nddhPuTFhwsxuMRxEW1a/FBTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731050639; c=relaxed/simple;
-	bh=ht9l2ZSUWXc5h2NR9cMi0Gb1yeSAariDbq8iV0J2AZo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lSzhRjKQCCQUiiEQwBXTxsh70uQaFrgkpK9dRLr9BxCJOWydM2lQLo9a/v/2Oy80bwOoj/FHvdDzD5k+Jo36FG3TiJnHEfDdLdVG6kqcxuvG8laZwLPmUOE/xA8FpkICgMZoU3+tmMxs5YMUYJEwFluuSqZet6AtbgIBDWLZ05w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=X0vfjyDu; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71e4e481692so1685569b3a.1
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 23:23:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1731050637; x=1731655437; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsX92SEPfX9pZYxHimQ3VDSrQrPgT/IDDI/YMUQaqAk=;
-        b=X0vfjyDud8Rwh5WNQDmp4PZLXdsdf0D4LuLO4yDVC/My47bsDeLaGSdGxTRSG07Dms
-         sXAX3mYGajdv2mZW5A5k8gD1RZgc743lNeDVCFfrNuGt288LbjRksxMzZSPfz+tJA61a
-         ikLJLyrPhQurO1P4Z/EqHIdzteCs8Z/KswGbo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731050637; x=1731655437;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZsX92SEPfX9pZYxHimQ3VDSrQrPgT/IDDI/YMUQaqAk=;
-        b=QaVSPZdfr9l5oNCkr0qM3hTtrkTetTbv7shWbbiO/bq2ilbG1xuMCkmFBshK0b7ZQs
-         PFmcfzyenYBkDuQMZL1HzFMvZRoyFwL+KaIa+MtNmZI7dlpQJHy3xQEvnErzmfO7XbeT
-         MNjaI6k3/p7zJ9WE9DJq7uZ1bBGVG0qNIntj3ETlK2bLljb7GpDIIGvEJIuetu84wWWC
-         Qrp2Ii8XIziu+xCf0tgj1/s98X7H0jysQh7eywW62BBs5DUQCZFqEgetL+oZjvxL7u1F
-         a62kasVUYxwsrvdhWZAvfHzVa7RSB+AqV5QSAswwbXJZQ+Y1p3+QSx4n0Z+r9LMeGGIG
-         h8og==
-X-Forwarded-Encrypted: i=1; AJvYcCVC3N+d7rsgZJX+osoWrrCFDAj2NlPdoJvCkz9zju9YH6fD3XEfmmcKMjRwfKmiakazY20lTxU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc8Vmn/iR6fJiIkCcCD+DdA0XNgdWwJZJbSXwDd+BCg8oywJnG
-	W7D7wlyMkC/ui6wx+suLGLneU0FnTvy/bjp8ohgnOjSWe0dfGR7fhXqGL+FlTlQV+Ds/pcFrNhg
-	=
-X-Google-Smtp-Source: AGHT+IEevya9vfzb7PjGi5XZUsQP20UBXN6RCLf/34zBQ2fRmL/XIC6m5+JeZJRKNknAcfaXSLFyiQ==
-X-Received: by 2002:a05:6a00:2d9c:b0:71d:fe19:83ee with SMTP id d2e1a72fcca58-724132a62f4mr2795056b3a.10.1731050637060;
-        Thu, 07 Nov 2024 23:23:57 -0800 (PST)
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com. [209.85.216.47])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724079a3d29sm3075703b3a.123.2024.11.07.23.23.55
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 23:23:56 -0800 (PST)
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2e2e8c8915eso1459341a91.3
-        for <stable@vger.kernel.org>; Thu, 07 Nov 2024 23:23:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXfdQgd9gc9MDyFPdRGyIXgdVIELmksnR0H3xI9t8ziqv8KTFmrAsXZtwyzPXoCAdGmzl22FB8=@vger.kernel.org
-X-Received: by 2002:a17:90b:3847:b0:2e2:e159:8f7b with SMTP id
- 98e67ed59e1d1-2e9b16e6415mr2416277a91.3.1731050635305; Thu, 07 Nov 2024
- 23:23:55 -0800 (PST)
+	s=arc-20240116; t=1731051328; c=relaxed/simple;
+	bh=JFPQHfMfRHmJuaiD5Io50N6l60lWhMea8yWRnZhrYFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUs0uwQeVuqYA2CC2c/h22w7tMe2HQp3oL2oGXp49mdStrv9fjLvfF42EJAV0ox0fTl677YGQ/hr73U2JeQAQWARQBMYPPpPuF/L8Y9XiVSlhxQ1nYVUTnpfWQmKsvb59edybo8iCPfMWE4yytnf+avGm7Z6Vk1ylANJ0MIKbn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPrbu+2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB60CC4CECE;
+	Fri,  8 Nov 2024 07:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731051327;
+	bh=JFPQHfMfRHmJuaiD5Io50N6l60lWhMea8yWRnZhrYFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QPrbu+2ZxtxlsEHyCJezxqzzAWCr1cb44XjndpumsCKCjuxR11QRA29j2FSx+/LTd
+	 3oEV3i9KVoTzWhkM7J7Uh3tzxpexWf8W7Bk14cwsq15gYdbTagJDkuwH9Cicilel3h
+	 Hy7ONNLqSNdMEl1WWtILAPEBZuh7QGxdzs9f2OMk=
+Date: Fri, 8 Nov 2024 08:35:07 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Wander Lairson Costa <wander@redhat.com>,
+	Yuying Ma <yuma@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>
+Subject: Re: [PATCH 6.11 030/245] igb: Disable threaded IRQ for igb_msix_other
+Message-ID: <2024110856-mandolin-unbutton-110e@gregkh>
+References: <20241106120319.234238499@linuxfoundation.org>
+ <20241106120319.970840571@linuxfoundation.org>
+ <358ba32f-99f6-4a60-a25f-922a9b2273d2@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107235130.31372-1-laurent.pinchart@ideasonboard.com>
-In-Reply-To: <20241107235130.31372-1-laurent.pinchart@ideasonboard.com>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 8 Nov 2024 08:23:43 +0100
-X-Gmail-Original-Message-ID: <CANiDSCtUR16eJUOaiQ7VatAk5rTy4WMmxUmtCZv=0mUxSES_kQ@mail.gmail.com>
-Message-ID: <CANiDSCtUR16eJUOaiQ7VatAk5rTy4WMmxUmtCZv=0mUxSES_kQ@mail.gmail.com>
-Subject: Re: [PATCH] media: uvcvideo: Fix double free in error path
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Ming Lei <tom.leiming@gmail.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <358ba32f-99f6-4a60-a25f-922a9b2273d2@siemens.com>
 
-On Fri, 8 Nov 2024 at 00:51, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> If the uvc_status_init() function fails to allocate the int_urb, it will
-> free the dev->status pointer but doesn't reset the pointer to NULL. This
-> results in the kfree() call in uvc_status_cleanup() trying to
-> double-free the memory. Fix it by resetting the dev->status pointer to
-> NULL after freeing it.
->
-> Fixes: a31a4055473b ("V4L/DVB:usbvideo:don't use part of buffer for USB transfer #4")
-> Cc: stable@vger.kernel.org
-Reviewed by: Ricardo Ribalda <ribalda@chromium.org>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
->  drivers/media/usb/uvc/uvc_status.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/media/usb/uvc/uvc_status.c b/drivers/media/usb/uvc/uvc_status.c
-> index 02c90acf6964..d269d163b579 100644
-> --- a/drivers/media/usb/uvc/uvc_status.c
-> +++ b/drivers/media/usb/uvc/uvc_status.c
-> @@ -269,6 +269,7 @@ int uvc_status_init(struct uvc_device *dev)
->         dev->int_urb = usb_alloc_urb(0, GFP_KERNEL);
->         if (!dev->int_urb) {
->                 kfree(dev->status);
-> +               dev->status = NULL;
->                 return -ENOMEM;
->         }
->
->
-> base-commit: ed61c59139509f76d3592683c90dc3fdc6e23cd6
-> --
-> Regards,
->
-> Laurent Pinchart
->
+On Fri, Nov 08, 2024 at 08:01:12AM +0100, Jan Kiszka wrote:
+> On 06.11.24 13:01, Greg Kroah-Hartman wrote:
+> > 6.11-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Wander Lairson Costa <wander@redhat.com>
+> > 
+> > [ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
+> > 
+> > During testing of SR-IOV, Red Hat QE encountered an issue where the
+> > ip link up command intermittently fails for the igbvf interfaces when
+> > using the PREEMPT_RT variant. Investigation revealed that
+> > e1000_write_posted_mbx returns an error due to the lack of an ACK
+> > from e1000_poll_for_ack.
+> > 
+> > The underlying issue arises from the fact that IRQs are threaded by
+> > default under PREEMPT_RT. While the exact hardware details are not
+> > available, it appears that the IRQ handled by igb_msix_other must
+> > be processed before e1000_poll_for_ack times out. However,
+> > e1000_write_posted_mbx is called with preemption disabled, leading
+> > to a scenario where the IRQ is serviced only after the failure of
+> > e1000_write_posted_mbx.
+> > 
+> > To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
+> > ensuring that the kernel handles it immediately, thereby preventing
+> > the aforementioned error.
+> > 
+> > Reproducer:
+> > 
+> >     #!/bin/bash
+> > 
+> >     # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
+> >     ipaddr_vlan=3
+> >     nic_test=ens14f0
+> >     vf=${nic_test}v0
+> > 
+> >     while true; do
+> > 	    ip link set ${nic_test} mtu 1500
+> > 	    ip link set ${vf} mtu 1500
+> > 	    ip link set $vf up
+> > 	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
+> > 	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
+> > 	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
+> > 	    if ! ip link show $vf | grep 'state UP'; then
+> > 		    echo 'Error found'
+> > 		    break
+> > 	    fi
+> > 	    ip link set $vf down
+> >     done
+> > 
+> > Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+> > Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+> > Reported-by: Yuying Ma <yuma@redhat.com>
+> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> > Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+> > Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> > Reviewed-by: Simon Horman <horms@kernel.org>
+> > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+> > index f1d0881687233..b83df5f94b1f5 100644
+> > --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> > +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> > @@ -907,7 +907,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
+> >  	int i, err = 0, vector = 0, free_vector = 0;
+> >  
+> >  	err = request_irq(adapter->msix_entries[vector].vector,
+> > -			  igb_msix_other, 0, netdev->name, adapter);
+> > +			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
+> >  	if (err)
+> >  		goto err_out;
+> >  
+> 
+> This is scheduled for being reverted upstream [1]. Please drop from all 
+> stable queues.
 
+Now dropped from all of them, thanks.
 
--- 
-Ricardo Ribalda
+greg k-h
 
