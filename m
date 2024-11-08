@@ -1,57 +1,87 @@
-Return-Path: <stable+bounces-91903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DE79C1750
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:51:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B32D9C1818
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D651C2249B
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 07:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACF5282B3D
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B741DD53D;
-	Fri,  8 Nov 2024 07:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8181E1DE899;
+	Fri,  8 Nov 2024 08:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdBYMvYq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAaDdgms"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E911D2F54;
-	Fri,  8 Nov 2024 07:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EE71F5FA;
+	Fri,  8 Nov 2024 08:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731052252; cv=none; b=JqHP7E2acvCOti/UI7SOz5ydpHHwMbVC521mwN04crdSkEteVWBMLvMPZoe3SbQtHV+fyn7nL7U/uTfYQmqXwCRChrrXULC94NvMKaXNgyjDv0LlIdD7Xfepz/+OoylHLZR8lijpXaxU32vksccquHj/dKu1aTHnccitrOC3Icc=
+	t=1731054940; cv=none; b=T8C7wwEmvbZmY0DoR1On2q9zqt1zHgFCM4ZUQuc4JLgy3n+LB37WGru1jZigqlBG9k/opmfE0gm31T5khDV8CzfiCQ2buegry8XEjnd840mLqmsWsMcK9/dHesXjia7OZX7ZB6BLsZJI2suX5Ueide3DxrXJYhqxhJ34GV+Qc+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731052252; c=relaxed/simple;
-	bh=PidCOc5vam5FIUslcJaLD9YUGnOw3EfiaT/M3s5atqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hnyZdV9TX53hzfWc/cBdNL6yYwoyeRMED3IpQk2tttuXrUIYDIjSoIBBYy09W5bJeFPds2xFyVIUHzfZrleZTbVBWdlG7guRZD2IBlW+LRgFDqFd/aGOQcpP0I2y5HdcAwhXahVvg3uRJt1ZKiKU3PEuy6Wyc1/Wowi0cHFnF7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdBYMvYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558AFC4CECE;
-	Fri,  8 Nov 2024 07:50:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731052251;
-	bh=PidCOc5vam5FIUslcJaLD9YUGnOw3EfiaT/M3s5atqk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QdBYMvYq4Jbk51kd714CXMpJdgnw3V2SYQDUcIzQspywKEJQEdo+y+CSDIow1AEUc
-	 OywSSlv45J8DHb6AH/LqP3z1ddfzU+PhIr33lGY+yXmGchC61vgxPCE/AVsKuESlRC
-	 Angg1LHb4c6FXoNvDyTKWIdYB/dwnDdTV4LnDdig=
-Date: Fri, 8 Nov 2024 08:50:49 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hagar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.4 000/461] 5.4.285-rc2 review
-Message-ID: <2024110817-ozone-tanning-0df8@gregkh>
-References: <20241107063341.146657755@linuxfoundation.org>
- <05671820-dee5-4b31-b585-5e1f034e65f6@gmail.com>
+	s=arc-20240116; t=1731054940; c=relaxed/simple;
+	bh=O+/+S076NvjXKoCnCGtPzOmgOPCrXENMgPUPkH5hqPQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hy7z29wOSaGQxDNxAfgWo6bdRbfVZI6JAtu9gLl0/eend3JtxG7gEqn+cbIWS6X4icNuvYOzkNELDzsiY1mw7T4mpkP4UDZPohFGQ3rvA8bux+o6sjmE5pm1w6a1rhG+LPER8jYxrfBgJQgM+N2vg6wPUQluYq8aufk+2ee/DlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAaDdgms; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5cec7cde922so2403588a12.3;
+        Fri, 08 Nov 2024 00:35:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731054937; x=1731659737; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/E2JQn1w8PZb9OK5WGvb8o22/47bYA0PR0jq9rxm3pc=;
+        b=hAaDdgms3dlOnx3RwVbogn8Npj+Q8biD92zPpAfNEXnzhefrygvYGiBdcpjPB2KfAo
+         xVemvXErXZrBWEgudPAlu/v7N5E+/Ia8qSY/J2qPISCjqzC6vcH8vbnRK188G8GgPuVv
+         cJ0A+MXepYPsmFicAZBdpVh1tgBZNKHKEY9PL8ejZCqUZ3Z84f6rLDXPcr/KtHeNUxSN
+         vqoTT2eJSpNStpvtgum8xNfQYlrXbgSpx4a46k0DrWiyaJ3w19VfKKxbZz1h+qAwaMOE
+         ejjeXhC3GY1O9lsN8wKPu+HqHCXOQcntB72iCIawT59rwrJWqNP923C4z59PDMOWFvbT
+         km7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731054937; x=1731659737;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/E2JQn1w8PZb9OK5WGvb8o22/47bYA0PR0jq9rxm3pc=;
+        b=ReDQHAEGbC7HOb9Kr8yF/YIExoGeoZANkLszH0rNsONSj7DaZEzawI+XnOOOSJVzyo
+         b4EQN9JKbxUsGRfOfiWk4uGu7gxMbdb8ZiuzIWhMgMJFKpMVJOXtVniZ2TjdFSvm5/an
+         hoFclIb37iZbFv/+rO1oMWiTlg3ExMhoc3vyV9HyYKg8nD7maE7DgTwYORW7R6rN8JMG
+         fTALNCgUo4igN6c5n+phOrs4iRE5+6b3yyJT79e8Zbp4vnvGh4q2EkFt0PLezazT6QAu
+         /xEGZV40KpnM3GROAS6bUSZn21Y4Gd/futFdGQlFF3E98LLYEfO6WcrFaolDBkgXI1Jw
+         nRow==
+X-Forwarded-Encrypted: i=1; AJvYcCUnUv/gkDPJN0J4nCQUaWcCdID10Ad4OMefWjxs/LxgCOpdTt7thynp4r5k+M83hcJpAxg=@vger.kernel.org, AJvYcCXosZ1/gNxOUNvpt3PDOHR14zxBFeSwnepfnj7pXMjoUsBUjktcz38PnOjY6Co+9d1Lya8WkVY0@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/LzeZ+kqo0dVJAhFU5qGrcI3xZwNeF1nzWrY6kPMdXNp2TXd5
+	PIfiB+jNLB7ZnATuuvCutjWF8t+4FPx6G3o8coEII0Crw/y1V7znBrYOyA==
+X-Google-Smtp-Source: AGHT+IFdIUe113pQ9aBMOx/Kec2tqsyE4hd//z7X6rppgZT+x1Cc7dpwlCSlJ6Hm7EO+IR6epmXO6Q==
+X-Received: by 2002:a05:6402:d0d:b0:5c2:439d:90d4 with SMTP id 4fb4d7f45d1cf-5cf0a45f22bmr1352065a12.30.1731054936670;
+        Fri, 08 Nov 2024 00:35:36 -0800 (PST)
+Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c4ecd5sm1724334a12.59.2024.11.08.00.35.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 00:35:36 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Fri, 8 Nov 2024 09:35:34 +0100
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: Fix build ID parsing logic in stable trees
+Message-ID: <Zy3NVkewYPO9ZSDx@krava>
+References: <20241104175256.2327164-1-jolsa@kernel.org>
+ <2024110536-agonizing-campus-21f0@gregkh>
+ <ZyniGMz5QLhGVWSY@krava>
+ <2024110636-rebound-chip-f389@gregkh>
+ <ZytZrt31Y1N7-hXK@krava>
+ <Zy0dNahbYlHISjkU@telecaster>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,90 +90,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <05671820-dee5-4b31-b585-5e1f034e65f6@gmail.com>
+In-Reply-To: <Zy0dNahbYlHISjkU@telecaster>
 
-On Thu, Nov 07, 2024 at 08:39:39AM -0800, Florian Fainelli wrote:
-> 
-> 
-> On 11/6/2024 10:47 PM, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.4.285 release.
-> > There are 461 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+On Thu, Nov 07, 2024 at 12:04:05PM -0800, Omar Sandoval wrote:
+> On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
+> > On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
+> > > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
+> > > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
+> > > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
+> > > > > > hi,
+> > > > > > sending fix for buildid parsing that affects only stable trees
+> > > > > > after merging upstream fix [1].
+> > > > > > 
+> > > > > > Upstream then factored out the whole buildid parsing code, so it
+> > > > > > does not have the problem.
+> > > > > 
+> > > > > Why not just take those patches instead?
+> > > > 
+> > > > I guess we could, but I thought it's too big for stable
+> > > > 
+> > > > we'd need following 2 changes to fix the issue:
+> > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+> > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
+> > > > 
+> > > > and there's also few other follow ups:
+> > > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
+> > > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
+> > > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() API
+> > > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
+> > > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
+> > > > 
+> > > > which I guess are not strictly needed
+> > > 
+> > > Can you verify what exact ones are needed here?  We'll be glad to take
+> > > them if you can verify that they work properly.
 > > 
-> > Responses should be made by Sat, 09 Nov 2024 06:32:59 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.285-rc2.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
+> > ok, will check
 > 
-> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
-> BMIPS_GENERIC:
+> Hello,
 > 
-> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> I noticed that the BUILD-ID field in vmcoreinfo is broken on
+> stable/longterm kernels and found this thread. Can we please get this
+> fixed soon?
 > 
-> There are however new build warnings, on 32-bit:
-> 
-> In file included from ./include/linux/mm.h:29,
->                  from ./include/linux/pagemap.h:8,
->                  from ./include/linux/buffer_head.h:14,
->                  from fs/udf/udfdecl.h:12,
->                  from fs/udf/inode.c:32:
-> fs/udf/inode.c: In function 'udf_current_aext':
-> ./include/linux/overflow.h:61:22: warning: comparison of distinct pointer
-> types lacks a cast
->    61 |         (void) (&__a == __d);                   \
->       |                      ^~
-> fs/udf/inode.c:2202:21: note: in expansion of macro 'check_add_overflow'
->  2202 |                 if (check_add_overflow(sizeof(struct allocExtDesc),
->       |                     ^~~~~~~~~~~~~~~~~~
-> 
-> 
-> On 64-bit:
-> 
-> fs/udf/inode.c: In function 'udf_current_aext':
-> ./include/linux/overflow.h:60:15: warning: comparison of distinct pointer
-> types lacks a cast
->   (void) (&__a == &__b);   \
->                ^~
-> fs/udf/inode.c:2202:7: note: in expansion of macro 'check_add_overflow'
->    if (check_add_overflow(sizeof(struct allocExtDesc),
->        ^~~~~~~~~~~~~~~~~~
-> ./include/linux/overflow.h:61:15: warning: comparison of distinct pointer
-> types lacks a cast
->   (void) (&__a == __d);   \
->                ^~
-> fs/udf/inode.c:2202:7: note: in expansion of macro 'check_add_overflow'
->    if (check_add_overflow(sizeof(struct allocExtDesc),
->        ^~~~~~~~~~~~~~~~~~
-> 
-> In file included from ./include/linux/mm.h:29,
->                  from ./include/linux/pagemap.h:8,
->                  from ./include/linux/buffer_head.h:14,
->                  from fs/udf/udfdecl.h:12,
->                  from fs/udf/super.c:41:
-> fs/udf/super.c: In function 'udf_fill_partdesc_info':
-> ./include/linux/overflow.h:60:15: warning: comparison of distinct pointer
-> types lacks a cast
->   (void) (&__a == &__b);   \
->                ^~
-> fs/udf/super.c:1162:7: note: in expansion of macro 'check_add_overflow'
->    if (check_add_overflow(map->s_partition_len,
->        ^~~~~~~~~~~~~~~~~~
+> I tried cherry-picking the patches mentioned above ("lib/buildid: add
+> single folio-based file reader abstraction" and "lib/buildid: take into
+> account e_phoff when fetching program headers"), but they don't apply
+> cleanly before 6.11, and they'd need to be reworked for 5.15, which was
+> before folios were introduced. Jiri's minimal fix works for me and seems
+> like a much safer option.
 
-Yes, this is due to commit d219d2a9a92e ("overflow: Allow mixed type
-arguments") not being backported to 5.4 and 5.10.y trees.  If people
-want to see these warnings removed, perhaps someone can provide a
-working backport of this commit :)
+hi,
+thanks for testing
 
-thanks,
+I think for 6.11 we could go with backport of:
+  de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+  60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
 
-greg k-h
+and with the small fix for the rest
+
+but I still need to figure out why also 60c845b4896b is needed
+to fix the issue on 6.11.. hopefully today
+
+jirka
+
+> 
+> Tested-by: Omar Sandoval <osandov@fb.com>
+> 
+> Thanks,
+> Omar
 
