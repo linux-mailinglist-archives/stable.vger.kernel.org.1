@@ -1,207 +1,396 @@
-Return-Path: <stable+bounces-91964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EDE9C24D4
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 19:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4398B9C25B4
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 20:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A603E282D5A
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 18:22:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E21281E52
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 19:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABC6194A49;
-	Fri,  8 Nov 2024 18:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D5F1AA1E4;
+	Fri,  8 Nov 2024 19:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNJXERGQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZir36Bj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD43233D60;
-	Fri,  8 Nov 2024 18:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731090125; cv=none; b=fIQz4q6SX/wBKtMsnp6I5uC/6E9Qu29M/VbhrYNT2on+ZlKoDA7/ai1sBHLEepu6fWM30d2aP/CMk9pV6MrtgkdbAQRMq/zHpHLX9YYQq86j2d3bZBQ80zSv3BzaX9BhiSq/T2g269cgGCFwlp6u9zkWO8zV7RUWG8x1RFp1Ka4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731090125; c=relaxed/simple;
-	bh=uSbhMMNXHlsMSzCdJptCATaZ8Ww+L2KbwXDPpWyMELc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=nzFe4JCV18xYH+0EBnK0nO35QuI8tATJ0HI8rMrQhrwgNogS1AH56CVae21UdMfCOr4naclqJ5wYY4zXxvEQBbEk3H7Lp+2Ui8SaaoRveLrmtVEQqYYW8NnWrtlj+yTEfdHlnamQrNUt0GtS2LkQ2QcTyw9Yawm9zmrqgafclVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNJXERGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04088C4CECD;
-	Fri,  8 Nov 2024 18:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731090124;
-	bh=uSbhMMNXHlsMSzCdJptCATaZ8Ww+L2KbwXDPpWyMELc=;
-	h=Date:To:Cc:From:Subject:From;
-	b=BNJXERGQde9LzwMDtEYyxf4jQdMXY4FLQADYMkmnjpB/woYao/4OInEPnzSDezJxQ
-	 Q1NUbA6L6RVsVEiiQs48N2P9OYJN9oAf6+DZXwDybyvLX6TN6YZ06CJOje8bNfsS1b
-	 LUc7AtFr3JHDxVI3HnDGBuSnuZ/wZXpcf2BR8pHR9/lOhN7vupLtQEqkOBkNWbKd/M
-	 kviLEMcOkF7bY1xwd0litkU7qQe7qfnLB5CYFxNY5cDHHmWm3Q5xiyKfhFka16p2vt
-	 9LkbHeXlCRGMGxhC+CcMuAgOr7TnswGBg6xGLoQ0bNRyhDCuvuYQlMppGQ4KwhpH8h
-	 t4xXzhYeOPE9A==
-Message-ID: <ff870428-6375-4125-83bd-fc960b3c109b@kernel.org>
-Date: Fri, 8 Nov 2024 19:21:59 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71281AA1E0
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 19:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731094953; cv=fail; b=F83X6NjE1zSbLzloFkSzicLLw3KaMR9wC9fKdqvckys//Y9gkd3t+Pp9OrXSdAM/lL7kqdJcnCgsIn1hY6BmXOVGkSs1y9uxLKNsbStx5lXtCAzx+4pzFLmThsu7Hjw8XFg4lMxiMYdGttkBYTIQ4PPjjzLTq6k7zaIHJ7HELpo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731094953; c=relaxed/simple;
+	bh=dta8AeFAtrrnKC9uY6+1lMtEgIBCBDlpZMrz7YgaR5U=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GqLRtwo4MDUYRzcCT87nB2SJsvBaJQzmwPgP9m3gt6hHMfML2wh+AlZegQnYkLh1jzoZzFnMriFDMeyEJ45zpc4EmvpWhk3TBkFclQ2UoMdn0An+Kn2965/pLNt8AlpiZhArxcJPTXV49lW79G7TGb+NMQdfXWyKYOzjzBMtVdQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZir36Bj; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731094951; x=1762630951;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=dta8AeFAtrrnKC9uY6+1lMtEgIBCBDlpZMrz7YgaR5U=;
+  b=FZir36Bj0ZdC8XnQzvGQla5IbPCD0siCl87zhKbzIZX4AjBs4xf9CkOM
+   cwrf6EyW+Bp3GNQTYh2rdec2JU+Kp9cRAvg/TA8APtuq3vLcpMWGtjm10
+   cEZJaWWEjQWR+cqg3T9/g8SOGxIFKiz510hMtIAz38GkNLsNFWBQplxN0
+   m5tSTWxBqIZqd3wyRYqMwjGzQ83DvGjeMFcrK+7bXg0qUVJhmAaBEF5yj
+   NyAfwldnwbL6JeNw8cuScrwF4kAOIrfyJ7qtNTAN8Xmw0kWvJfM5WNXNu
+   yQ1uAddFoMoLFv9Su3V+xYXY5TL67u3WYJ8/bzg7zTH2/0ypgD/ePd46l
+   g==;
+X-CSE-ConnectionGUID: Ymjc9K3sR+uSXo4usIlEuQ==
+X-CSE-MsgGUID: 3WrBkXz/S2SMT+ScKxobvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="33850225"
+X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; 
+   d="scan'208";a="33850225"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 11:42:30 -0800
+X-CSE-ConnectionGUID: Biw6cbnpSLyzNkCLGL4f8w==
+X-CSE-MsgGUID: 7mgPkIN6QYCxRbZEiCE0VQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,138,1728975600"; 
+   d="scan'208";a="85314343"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 08 Nov 2024 11:42:31 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 8 Nov 2024 11:42:30 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Fri, 8 Nov 2024 11:42:30 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.46) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 8 Nov 2024 11:42:29 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ddEcajUhWkZMn/b7/kBKsKPQXaxyu8/h6or3wX+oyL/VKkaeP3chRB+emuXmzzdx2jJSLmxxvkjaDRM6nicK8HX/hQg934u0pfncghkChv62CXeiOIXsGUeGDNo5LIKVCRKJAAbDuIpx7SFqIvtPh4CIuQitnzoeBqe7T8EitFfs5Jq+oWIfqkj1CKdO1RY+uHsT85kOTh2OmED1JGOmX3ho6HcVNDBk3C2a/7LYRYy5HwbsOvt2Y+V/2RZFJN3EMqy2wWGmfz7sK/38sRrDVLgQVBK6Kd4JlXH3ueVACffa2zhJH3d2d1cR7Z/1RCSBh/TntIUplbMpaJ472nj1QQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DNrLM+0hG4YxpR0odaRV+vE6dh5HVldCMtK7bawkpkc=;
+ b=jT/iDvDA8rJu2S9XDATAnhkGvBloOZJXRmZ9cghD9XVGBLN5h/We8eSt2rqAwf/1P4QSEt2bnOT5c1wgO2MiNVOhXskehKgtlsYUnMJUfLvAks9c1F/3VellBEMM05zekWu4GevMxB+RyvZhbZRtBBL/+HjZiudKSY4GZ9ufr7FIGdnwUCikAHXI810eNqH3/qi8hzXcfaTQyOy9ICfaa9qxPFPDyMPY5AGWknnGFhn0cqOLhCvG5RpSWYqQfXrYjVzVUUJWIGPLdAN+TR/OVJq96zk6OensgzmDly2afjMsPBnDrTIfprWMqQHeB31AlCJ95utB3FgkqY+4GCSTSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by CO1PR11MB4851.namprd11.prod.outlook.com (2603:10b6:303:9b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.21; Fri, 8 Nov
+ 2024 19:42:23 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8137.018; Fri, 8 Nov 2024
+ 19:42:22 +0000
+Date: Fri, 8 Nov 2024 13:42:18 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+CC: Matthew Auld <matthew.auld@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<stable@vger.kernel.org>, <ulisses.furquim@intel.com>
+Subject: Re: [PATCH v2] drm/xe: improve hibernation on igpu
+Message-ID: <u6gqllfd7gq5cg5o2pwljzmg54qbyow33vdzymxzclf4hgaxrr@uu3rr5wstwqq>
+References: <20241101170156.213490-2-matthew.auld@intel.com>
+ <o3edyxjyz4fd5n53dmi2hntoacioufr3rqelxpn5mkbp6vvaue@v4nxwlz6gpte>
+ <ZyUpAwD3jzlW+hbA@lstrano-desk.jf.intel.com>
+ <zwfqm64323vefwfugk3tcjvhz4mnowbz6ekixeyinh5bmeap5k@hts3jqvzmwvj>
+ <ZypgCGh/bCP8K7aK@lstrano-desk.jf.intel.com>
+ <huirzn2ia4hs372ov7r77awhjun4fpezltrxcwfxgzzz4r3pga@h5jprda4zrir>
+ <ZypxenMNvxL17mau@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ZypxenMNvxL17mau@lstrano-desk.jf.intel.com>
+X-ClientProxiedBy: MW4PR04CA0188.namprd04.prod.outlook.com
+ (2603:10b6:303:86::13) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Content-Language: en-GB
-To: Linux Kernel Functional Testing <lkft@linaro.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
- Kernel Selftests <linux-kselftest@vger.kernel.org>,
- Netdev <netdev@vger.kernel.org>, Linux Kernel
- <linux-kernel@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>, Ido Schimmel
- <idosch@nvidia.com>, stable@vger.kernel.org
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-Subject: LKFT CI: improving Networking selftests results when validating
- stable kernels
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CO1PR11MB4851:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa39d198-12e9-46fb-36ba-08dd002d76ed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?MC5YLSxiH6p35rI1Y34VMeVlBhcf7S0Hml4E4VRCEBBuqJ3OuRmGXj+wMgOw?=
+ =?us-ascii?Q?MX9/nXFacFAMZXk4w9InkYXgOqqlC9CTi0mc1UNinLx1I68HAcNSCw4SHKrB?=
+ =?us-ascii?Q?nHDKnOVikxyciiC5Nn+X7StxJ0Tr10tnuMW8k+ePt3gx5W5JfZPqZN3NPGjR?=
+ =?us-ascii?Q?szYH+hti24PaxfoCMV3CKZX7yEJdklMo4A/mmdhWQeJREVvDXmX7n4pmmDRr?=
+ =?us-ascii?Q?rdi+Qlc1gObBndmB4gRxQCKz0KZ79A7y620td0dmP1TPqgetxHa7MACdXOF7?=
+ =?us-ascii?Q?Oj+fA1DdoFlUtUlJbTNePFYhqX49rdPUSZbr/Y/XPj2vnyAoIVfVtKzivHBP?=
+ =?us-ascii?Q?gB5c27Jimyqh9WtkQuKnXwfNWweRoqCydm067xukqNPBaQfxsW2nvWl7BzK9?=
+ =?us-ascii?Q?876003B3nTe8cf/eS4GXJGb+a+6gYb8WhGb8Lr4WnuVlZDE2pP5A4MRrd4Y2?=
+ =?us-ascii?Q?Oyr+2+NRNImE/RHw8mbGXvFbIwGBhZ5Azh29xxqcHPxNg4dgs8/EjZo4kStu?=
+ =?us-ascii?Q?f/vgndJ57Vz74ez11CehNTJgr5Ub3M093m2SFiz2t/RZXmHEK44DkViyL3/h?=
+ =?us-ascii?Q?EimuoBuzpkUVSFees69LNP4A5gWijzljQ8SQQ0kUi/+kzob4L699qp9Qi2lg?=
+ =?us-ascii?Q?tkXTHuep1emeZfKmYj5hoBlzdpbKOkFK1dsR/gYml0hviXwRzPqUHBlx9d3/?=
+ =?us-ascii?Q?2AUb0pj6wVNL0UhBG917eUcWn9pt0Fb0ylEvrxXnvaYRfmIrDO0ArnwXv/Gh?=
+ =?us-ascii?Q?JJI0soOBf174/rNdre35ZZEKhnUOQ27beCzkXlvMM7Wys6PnnhQXCTNPsKUi?=
+ =?us-ascii?Q?i91av3DHwFxZ2EdAtLA4FVg+GovKECdx+NLRSaBoF3avBZOOY1R4TcKRyrPz?=
+ =?us-ascii?Q?ogWiAYGHF59Br+DejL369JhqAPDoqA2YwZtHQ8NiV0b7Dn8e1qP3lA7JldYc?=
+ =?us-ascii?Q?DcBUs8WWtghflzSueJYRRGI7BElA3ec97BNBP006Fed5cunYddNZjTasRGL4?=
+ =?us-ascii?Q?9WncJ4LFSF3MAnI+PQv31+gnKFcohHOhWGCWS1NuMGFbJ79KAfS0TMt7/ETM?=
+ =?us-ascii?Q?rYJETWzmn9DHjk25EiClA+bczPl9HmRvGKkFWwwfzZbW0MdZO9T0nR5duvuE?=
+ =?us-ascii?Q?hVMXPiOPdLs/CqIGwsdxR2MOL5Gq2gKtWSgnXy9CTkW0zLeQxQncrJiilJpn?=
+ =?us-ascii?Q?P7cXNut+fyG41IXo8K7j74Ig9BK4Fd6L0813mc8l4Hra2wsjsKiGnJwKv0+4?=
+ =?us-ascii?Q?Y9aNPCBFEAO6zcHFx1wX?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kp56fmjhRpApSZQUllXknbnIBBDYyF5qQ7keFFnk7XII7JTuIvvAbdSBedQH?=
+ =?us-ascii?Q?fLuMtXkaqMKS74d0Sn/aM56J+Wap3KGtGajFw7C17fMdxvRWGMLW6/8pnJUb?=
+ =?us-ascii?Q?No6iYwuNXDxliIwvOF80bjNG6asxiW5UnSuFquFr+hz7X4KlnyA2rRPuOPiX?=
+ =?us-ascii?Q?IhdfrKFPfDbIe35fAIiT6aavp8kZqwhdZawfuId0yq40TMmKz6/2EfbAGW4r?=
+ =?us-ascii?Q?NJZ4Tjou5WpnOyhHwNzdboAfzLGPEwa2YLQozCnK9kKNh1cqDLnQbFbRwdY2?=
+ =?us-ascii?Q?IOJl5GrZY61O9bnb2f9WCiMp59xgoN+pnrFydoGoTVMno3PMc4tfRibL/Je0?=
+ =?us-ascii?Q?MDSnfFjRsO+qic9IA0ncw09IoI8ag9V05O4HE87Bfa237oTrehBEmmRnQJDu?=
+ =?us-ascii?Q?8m7nYuKTsdrhHk5aT3kmUCTsi6LMVmpKo4RXz9tqRvMMsQFIsV8wgLRIEc7k?=
+ =?us-ascii?Q?yw4X99kmJ9vdKfp95ZtF6gpObU444vDylcSsMZWF+cf4v3omtPWdy+4N/M+K?=
+ =?us-ascii?Q?eLn7aQlFzld+6YeJMR2uhLflgHXmTuyBW8PT9TzlIt2LVhC85Z/Oh3A2JF6U?=
+ =?us-ascii?Q?xuAHCw5v5028JlsTiQxUeG2EluQpmSsyQHthgB8/CuI3L6wibZCPPLDTq//N?=
+ =?us-ascii?Q?BwuQ4hnf0vI82NcUdE0+jiIRTL9zM1GOo+vD1hUpPACKhC+wRYNhWN3VeEZE?=
+ =?us-ascii?Q?2lxDYHVU+7YNPJ2yPx+IxQc9KggEbqU8bCL1+FobY+YkYdOpXdkLWSIgGNmm?=
+ =?us-ascii?Q?4wQcl1QX3ifRfBSM33v5hTZAw+YusF3WU3IPbEQlm1gMmdUglFKkYOBrVWz0?=
+ =?us-ascii?Q?vZTiGbjtZ+17Im3gxFgC3W4fqmQ5n990u3eXBCAr9lGkFF08/dwJ7fodAuNm?=
+ =?us-ascii?Q?boj8IjPMy8L4dGygVsASZb/V7fzp15Z/mY7nEfetovhTZ9Oqib/YQSMJNmHw?=
+ =?us-ascii?Q?PuUiLW+UhmT6+jvo52uuBdmPJt3Oqh+LQmQCODo/fW5D8QCUZr8ARaPEM+Cb?=
+ =?us-ascii?Q?kVJ3OHZ6cRR8pJkW8i0V3dnf8F7A3slYoW2A+OslvbD9Ph3NGBYfSbYcMRjD?=
+ =?us-ascii?Q?eteU47VXoRPE9QuUJkISFm/htFFfHAphBYGIWYUvcq5F4050k0er3HKXEEcD?=
+ =?us-ascii?Q?18NmxI5alATXAqCPmSJVoVMAHGmm4tM05UVWCVwEvgG6aW6OgyzNW19GpVCi?=
+ =?us-ascii?Q?zp1zc5qPGSj9frIby+Wio/ydelcADHmnB47NqOnUaVoaFRP3RLEqLdrLh+wj?=
+ =?us-ascii?Q?UV9Bddm/p2BQITIBUV/FiZkkI/B/Gvy8OD1wsrkmaPUU9f2oeU3FDVZN/auV?=
+ =?us-ascii?Q?OXMC+ktzeiGhvH2sogrlp85z6kLisSsL3kTy11S7flWZdExLgimTQOHSjAvw?=
+ =?us-ascii?Q?VBKtRK4c7c7lsUgCsxX6n4SMT8jyp6N+dWhwiut2Llk6NZH2lZ2bLcf9fL1j?=
+ =?us-ascii?Q?exumzsqq+4WBdPzFskE6nNcxchv8jwfTxU6TTEIEmoM4DowY71LwAs7hu71o?=
+ =?us-ascii?Q?8gA2xLgCfycQAUcA8XXK/5GCfjgryMIDlHVG/MaZBI/eMrojP1YuHQE5QGBX?=
+ =?us-ascii?Q?CbHwxzXNboVexgc2nibvAst4x1pU4z9DUeHakQuh1pUpQDkz+y5vtzI7fhI2?=
+ =?us-ascii?Q?cw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa39d198-12e9-46fb-36ba-08dd002d76ed
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 19:42:22.7988
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9JulgzbcOQT5k2W0PlSXIFtPpZ+pAcFGKFl4iw8w0gj0HjT9qug/NIjRa1ByGW/O3CoXxa2/rjp61R4796T9lWYQ5tRL1s+lXOHfyKbKHHY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4851
+X-OriginatorOrg: intel.com
 
-Hello LKFT maintainers, CI operators,
+On Tue, Nov 05, 2024 at 11:26:50AM -0800, Matthew Brost wrote:
+>On Tue, Nov 05, 2024 at 01:18:27PM -0600, Lucas De Marchi wrote:
+>> On Tue, Nov 05, 2024 at 10:12:24AM -0800, Matthew Brost wrote:
+>> > On Tue, Nov 05, 2024 at 11:32:37AM -0600, Lucas De Marchi wrote:
+>> > > On Fri, Nov 01, 2024 at 12:16:19PM -0700, Matthew Brost wrote:
+>> > > > On Fri, Nov 01, 2024 at 12:38:19PM -0500, Lucas De Marchi wrote:
+>> > > > > On Fri, Nov 01, 2024 at 05:01:57PM +0000, Matthew Auld wrote:
+>> > > > > > The GGTT looks to be stored inside stolen memory on igpu which is not
+>> > > > > > treated as normal RAM.  The core kernel skips this memory range when
+>> > > > > > creating the hibernation image, therefore when coming back from
+>> > > > >
+>> > > > > can you add the log for e820 mapping to confirm?
+>> > > > >
+>> > > > > > hibernation the GGTT programming is lost. This seems to cause issues
+>> > > > > > with broken resume where GuC FW fails to load:
+>> > > > > >
+>> > > > > > [drm] *ERROR* GT0: load failed: status = 0x400000A0, time = 10ms, freq = 1250MHz (req 1300MHz), done = -1
+>> > > > > > [drm] *ERROR* GT0: load failed: status: Reset = 0, BootROM = 0x50, UKernel = 0x00, MIA = 0x00, Auth = 0x01
+>> > > > > > [drm] *ERROR* GT0: firmware signature verification failed
+>> > > > > > [drm] *ERROR* CRITICAL: Xe has declared device 0000:00:02.0 as wedged.
+>> > > > >
+>> > > > > it seems the message above is cut short. Just above these lines don't
+>> > > > > you have a log with __xe_guc_upload? Which means: we actually upload the
+>> > > > > firmware again to stolen and it doesn't matter that we lost it when
+>> > > > > hibernating.
+>> > > > >
+>> > > >
+>> > > > The image is always uploaded. The upload logic uses a GGTT address to
+>> > > > find firmware image in SRAM...
+>> > > >
+>> > > > See snippet from uc_fw_xfer:
+>> > > >
+>> > > > 821         /* Set the source address for the uCode */
+>> > > > 822         src_offset = uc_fw_ggtt_offset(uc_fw) + uc_fw->css_offset;
+>> > > > 823         xe_mmio_write32(mmio, DMA_ADDR_0_LOW, lower_32_bits(src_offset));
+>> > > > 824         xe_mmio_write32(mmio, DMA_ADDR_0_HIGH,
+>> > > > 825                         upper_32_bits(src_offset) | DMA_ADDRESS_SPACE_GGTT);
+>> > > >
+>> > > > If the GGTT mappings are in stolen and not restored we will not be
+>> > > > uploading the correct data for the image.
+>> > > >
+>> > > > See the gitlab issue, this has been confirmed to fix a real problem from
+>> > > > a customer.
+>> > >
+>> > > I don't doubt it fixes it, but the justification here is not making much
+>> > > sense.  AFAICS it doesn't really correspond to what the patch is doing.
+>> > >
+>> > > >
+>> > > > Matt
+>> > > >
+>> > > > > It'd be good to know the size of the rsa key in the failing scenarios.
+>> > > > >
+>> > > > > Also it seems this is also reproduced in DG2 and I wonder if it's the
+>> > > > > same issue or something different:
+>> > > > >
+>> > > > > 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000064 [0x32/00]
+>> > > > > 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000072 [0x39/00]
+>> > > > > 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000086 [0x43/00]
+>> > > > > 	[drm] *ERROR* GT0: load failed: status = 0x400000A0, time = 5ms, freq = 1700MHz (req 2050MHz), done = -1
+>> > > > > 	[drm] *ERROR* GT0: load failed: status: Reset = 0, BootROM = 0x50, UKernel = 0x00, MIA = 0x00, Auth = 0x01
+>> > > > > 	[drm] *ERROR* GT0: firmware signature verification failed
+>> > > > >
+>> > > > > Cc Ulisses.
+>> > > > >
+>> > > > > >
+>> > > > > > Current GGTT users are kernel internal and tracked as pinned, so it
+>> > > > > > should be possible to hook into the existing save/restore logic that we
+>> > > > > > use for dgpu, where the actual evict is skipped but on restore we
+>> > > > > > importantly restore the GGTT programming.  This has been confirmed to
+>> > > > > > fix hibernation on at least ADL and MTL, though likely all igpu
+>> > > > > > platforms are affected.
+>> > > > > >
+>> > > > > > This also means we have a hole in our testing, where the existing s4
+>> > > > > > tests only really test the driver hooks, and don't go as far as actually
+>> > > > > > rebooting and restoring from the hibernation image and in turn powering
+>> > > > > > down RAM (and therefore losing the contents of stolen).
+>> > > > >
+>> > > > > yeah, the problem is that enabling it to go through the entire sequence
+>> > > > > we reproduce all kind of issues in other parts of the kernel and userspace
+>> > > > > env leading to flaky tests that are usually red in CI. The most annoying
+>> > > > > one is the network not coming back so we mark the test as failure
+>> > > > > (actually abort. since we stop running everything).
+>> > > > >
+>> > > > >
+>> > > > > >
+>> > > > > > v2 (Brost)
+>> > > > > > - Remove extra newline and drop unnecessary parentheses.
+>> > > > > >
+>> > > > > > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+>> > > > > > Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3275
+>> > > > > > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> > > > > > Cc: Matthew Brost <matthew.brost@intel.com>
+>> > > > > > Cc: <stable@vger.kernel.org> # v6.8+
+>> > > > > > Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+>> > > > > > ---
+>> > > > > > drivers/gpu/drm/xe/xe_bo.c       | 37 ++++++++++++++------------------
+>> > > > > > drivers/gpu/drm/xe/xe_bo_evict.c |  6 ------
+>> > > > > > 2 files changed, 16 insertions(+), 27 deletions(-)
+>> > > > > >
+>> > > > > > diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+>> > > > > > index 8286cbc23721..549866da5cd1 100644
+>> > > > > > --- a/drivers/gpu/drm/xe/xe_bo.c
+>> > > > > > +++ b/drivers/gpu/drm/xe/xe_bo.c
+>> > > > > > @@ -952,7 +952,10 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+>> > > > > > 	if (WARN_ON(!xe_bo_is_pinned(bo)))
+>> > > > > > 		return -EINVAL;
+>> > > > > >
+>> > > > > > -	if (WARN_ON(xe_bo_is_vram(bo) || !bo->ttm.ttm))
+>> > > > > > +	if (WARN_ON(xe_bo_is_vram(bo)))
+>> > > > > > +		return -EINVAL;
+>> > > > > > +
+>> > > > > > +	if (WARN_ON(!bo->ttm.ttm && !xe_bo_is_stolen(bo)))
+>> > > > > > 		return -EINVAL;
+>> > > > > >
+>> > > > > > 	if (!mem_type_is_vram(place->mem_type))
+>> > > > > > @@ -1774,6 +1777,7 @@ int xe_bo_pin_external(struct xe_bo *bo)
+>> > > > > >
+>> > > > > > int xe_bo_pin(struct xe_bo *bo)
+>> > > > > > {
+>> > > > > > +	struct ttm_place *place = &bo->placements[0];
+>> > > > > > 	struct xe_device *xe = xe_bo_device(bo);
+>> > > > > > 	int err;
+>> > > > > >
+>> > > > > > @@ -1804,8 +1808,6 @@ int xe_bo_pin(struct xe_bo *bo)
+>> > > > > > 	 */
+>> > > > > > 	if (IS_DGFX(xe) && !(IS_ENABLED(CONFIG_DRM_XE_DEBUG) &&
+>> > > > > > 	    bo->flags & XE_BO_FLAG_INTERNAL_TEST)) {
+>> > > > > > -		struct ttm_place *place = &(bo->placements[0]);
+>> > > > > > -
+>> > > > > > 		if (mem_type_is_vram(place->mem_type)) {
+>> > > > > > 			xe_assert(xe, place->flags & TTM_PL_FLAG_CONTIGUOUS);
+>> > > > > >
+>> > > > > > @@ -1813,13 +1815,12 @@ int xe_bo_pin(struct xe_bo *bo)
+>> > > > > > 				       vram_region_gpu_offset(bo->ttm.resource)) >> PAGE_SHIFT;
+>> > > > > > 			place->lpfn = place->fpfn + (bo->size >> PAGE_SHIFT);
+>> > > > > > 		}
+>> > > > > > +	}
+>> > > > > >
+>> > > > > > -		if (mem_type_is_vram(place->mem_type) ||
+>> > > > > > -		    bo->flags & XE_BO_FLAG_GGTT) {
+>> > > > > > -			spin_lock(&xe->pinned.lock);
+>> > > > > > -			list_add_tail(&bo->pinned_link, &xe->pinned.kernel_bo_present);
+>> > > > > > -			spin_unlock(&xe->pinned.lock);
+>> > > > > > -		}
+>> > > > > > +	if (mem_type_is_vram(place->mem_type) || bo->flags & XE_BO_FLAG_GGTT) {
+>> > >
+>> > >
+>> > > again... why do you say we are restoring the GGTT itself? this seems
+>> > > rather to allow pinning and then restoring anything that has
+>> > > the XE_BO_FLAG_GGTT - that's any BO that uses the GGTT, not the GGTT.
+>> > >
+>> >
+>> > I think what you are sayings is right - the patch restores every BOs
+>> > GGTT mappings rather than restoring the entire contents of the GGTT.
+>> >
+>> > This might be a larger problem then as I think the scratch GGTT entries
+>> > will not be restored - this is problem for both igpu and dgfx devices.
+>> >
+>> > This patch should help but is not complete.
+>> >
+>> > I think we need a follow up to either...
+>> >
+>> > 1. Setup all scratch pages in the GGTT prior to calling
+>> > xe_bo_restore_kernel and use this flow to restore individual BOs GGTTs.
+>>
+>> yes, but for BOs already in system memory we don't need this flow - we
+>> only need them to be mapped again.
+>>
+>
+>Right. xe_bo_restore_pinned short circuits on a BO not being in VRAM. We could
+>move that check out into xe_bo_restore_kernel though to avoid grabbing a system
 
-First, I would like to say thank you to the people behind the LKFT
-project for validating stable kernels (and more), and including some
-Network selftests in their tests suites.
+Ok. Let's get this in then. I was worried we'd copy the BOs elsewhere
+and then restore and remap them. Now I see this short-circuit you
+talked about.
 
-A lot of improvements around the networking kselftests have been done
-this year. At the last Netconf [1], we discussed how these tests were
-validated on stable kernels from CIs like the LKFT one, and we have some
-suggestions to improve the situation.
+I still think it would be more desirable to actually save/restore the
+page in question rather than go through this route that generates it
+back by remapping the BOs.
 
+Anyway, it fixes the bug and uses infra that was already there for
+discrete.
 
-KSelftests from the same version
---------------------------------
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-According to the doc [2], kselftests should support all previous kernel
-versions. The LKFT CI is then using the kselftests from the last stable
-release to validate all stable versions. Even if there are good reasons
-to do that, we would like to ask for an opt-out for this policy for the
-networking tests: this is hard to maintain with the increased
-complexity, hard to validate on all stable kernels before applying
-patches, and hard to put in place in some situations. As a result, many
-tests are failing on older kernels, and it looks like it is a lot of
-work to support older kernels, and to maintain this.
+thanks
+Lucas De Marchi
 
-Many networking tests are validating the internal behaviour that is not
-exposed to the userspace. A typical example: some tests look at the raw
-packets being exchanged during a test, and this behaviour can change
-without modifying how the userspace is interacting with the kernel. The
-kernel could expose capabilities, but that's not something that seems
-natural to put in place for internal behaviours that are not exposed to
-end users. Maybe workarounds could be used, e.g. looking at kernel
-symbols, etc. Nut that doesn't always work, increase the complexity, and
-often "false positive" issue will be noticed only after a patch hits
-stable, and will cause a bunch of tests to be ignored.
-
-Regarding fixes, ideally they will come with a new or modified test that
-can also be backported. So the coverage can continue to grow in stable
-versions too.
-
-Do you think that from the kernel v6.12 (or before?), the LKFT CI could
-run the networking kselftests from the version that is being validated,
-and not from a newer one? So validating the selftests from v6.12.1 on a
-v6.12.1, and not the ones from a future v6.16.y on a v6.12.42.
-
-
-Skipped tests
--------------
-
-It looks like many tests are skipped:
-
-- Some have been in a skip file [3] for a while: maybe they can be removed?
-
-- Some are skipped because of missing tools: maybe they can be added?
-e.g. iputils, tshark, ipv6toolkit, etc.
-
-- Some tests are in 'net', but in subdirectories, and hence not tested,
-e.g. forwarding, packetdrill, netfilter, tcp_ao. Could they be tested too?
-
-How can we change this to increase the code coverage using existing tests?
-
-
-KVM
----
-
-It looks like different VMs are being used to execute the different
-tests. Do these VMs benefit from any accelerations like KVM? If not,
-some tests might fail because the environment is too slow.
-
-The KSFT_MACHINE_SLOW=yes env var can be set to increase some
-tolerances, timeout or to skip some parts, but that might not be enough
-for some tests.
-
-
-Notifications
--------------
-
-In case of new regressions, who is being notified? Are the people from
-the MAINTAINERS file, and linked to the corresponding selftests being
-notified or do they need to do the monitoring on their side?
-
-
-Looking forward to improving the networking selftests results when
-validating stable kernels!
-
-
-[1] https://netdev.bots.linux.dev/netconf/2024/
-[2] https://docs.kernel.org/dev-tools/kselftest.html
-[3]
-https://github.com/Linaro/test-definitions/blob/master/automated/linux/kselftest/skipfile-lkft.yaml
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+>BOs dma-resv lock though. In either VRAM or system case xe_ggtt_map_bo is
+>called.
+>
+>Matt
+>
+>> >
+>> > 2. Drop restoring of individual BOs GGTTs entirely and save / restore
+>> > the GGTTs contents.
+>>
+>> ... if we don't risk adding entries to discarded BOs. As long as the
+>> save happens after invalidating the entries, I think it could work.
+>>
+>> >
+>> > Does this make sense?
+>>
+>> yep, thanks.
+>>
+>> Lucas De Marchi
 
