@@ -1,162 +1,101 @@
-Return-Path: <stable+bounces-91904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B32D9C1818
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:35:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6779C183C
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACF5282B3D
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:35:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4A8282ADF
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 08:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8181E1DE899;
-	Fri,  8 Nov 2024 08:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D717E1DF271;
+	Fri,  8 Nov 2024 08:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAaDdgms"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="d0LMu0C3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EE71F5FA;
-	Fri,  8 Nov 2024 08:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719631401B;
+	Fri,  8 Nov 2024 08:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731054940; cv=none; b=T8C7wwEmvbZmY0DoR1On2q9zqt1zHgFCM4ZUQuc4JLgy3n+LB37WGru1jZigqlBG9k/opmfE0gm31T5khDV8CzfiCQ2buegry8XEjnd840mLqmsWsMcK9/dHesXjia7OZX7ZB6BLsZJI2suX5Ueide3DxrXJYhqxhJ34GV+Qc+8=
+	t=1731055295; cv=none; b=ZNN9mIxJCpb1MGQebs/91EaMt14qF2EJ0qI+t5dlzNiUBfro/qOFThnEHRDe8P5UGaZDeHG+2rfqX9Do7mGgzJm0lMmkbie2bf+VrKPBgeF9AdGs8vCMoM45KWyt8bETG4jJgVuYDy4Kp5+FHkd0fw7K1rtIPgCa27btmDZAFtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731054940; c=relaxed/simple;
-	bh=O+/+S076NvjXKoCnCGtPzOmgOPCrXENMgPUPkH5hqPQ=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hy7z29wOSaGQxDNxAfgWo6bdRbfVZI6JAtu9gLl0/eend3JtxG7gEqn+cbIWS6X4icNuvYOzkNELDzsiY1mw7T4mpkP4UDZPohFGQ3rvA8bux+o6sjmE5pm1w6a1rhG+LPER8jYxrfBgJQgM+N2vg6wPUQluYq8aufk+2ee/DlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAaDdgms; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5cec7cde922so2403588a12.3;
-        Fri, 08 Nov 2024 00:35:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731054937; x=1731659737; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/E2JQn1w8PZb9OK5WGvb8o22/47bYA0PR0jq9rxm3pc=;
-        b=hAaDdgms3dlOnx3RwVbogn8Npj+Q8biD92zPpAfNEXnzhefrygvYGiBdcpjPB2KfAo
-         xVemvXErXZrBWEgudPAlu/v7N5E+/Ia8qSY/J2qPISCjqzC6vcH8vbnRK188G8GgPuVv
-         cJ0A+MXepYPsmFicAZBdpVh1tgBZNKHKEY9PL8ejZCqUZ3Z84f6rLDXPcr/KtHeNUxSN
-         vqoTT2eJSpNStpvtgum8xNfQYlrXbgSpx4a46k0DrWiyaJ3w19VfKKxbZz1h+qAwaMOE
-         ejjeXhC3GY1O9lsN8wKPu+HqHCXOQcntB72iCIawT59rwrJWqNP923C4z59PDMOWFvbT
-         km7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731054937; x=1731659737;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/E2JQn1w8PZb9OK5WGvb8o22/47bYA0PR0jq9rxm3pc=;
-        b=ReDQHAEGbC7HOb9Kr8yF/YIExoGeoZANkLszH0rNsONSj7DaZEzawI+XnOOOSJVzyo
-         b4EQN9JKbxUsGRfOfiWk4uGu7gxMbdb8ZiuzIWhMgMJFKpMVJOXtVniZ2TjdFSvm5/an
-         hoFclIb37iZbFv/+rO1oMWiTlg3ExMhoc3vyV9HyYKg8nD7maE7DgTwYORW7R6rN8JMG
-         fTALNCgUo4igN6c5n+phOrs4iRE5+6b3yyJT79e8Zbp4vnvGh4q2EkFt0PLezazT6QAu
-         /xEGZV40KpnM3GROAS6bUSZn21Y4Gd/futFdGQlFF3E98LLYEfO6WcrFaolDBkgXI1Jw
-         nRow==
-X-Forwarded-Encrypted: i=1; AJvYcCUnUv/gkDPJN0J4nCQUaWcCdID10Ad4OMefWjxs/LxgCOpdTt7thynp4r5k+M83hcJpAxg=@vger.kernel.org, AJvYcCXosZ1/gNxOUNvpt3PDOHR14zxBFeSwnepfnj7pXMjoUsBUjktcz38PnOjY6Co+9d1Lya8WkVY0@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/LzeZ+kqo0dVJAhFU5qGrcI3xZwNeF1nzWrY6kPMdXNp2TXd5
-	PIfiB+jNLB7ZnATuuvCutjWF8t+4FPx6G3o8coEII0Crw/y1V7znBrYOyA==
-X-Google-Smtp-Source: AGHT+IFdIUe113pQ9aBMOx/Kec2tqsyE4hd//z7X6rppgZT+x1Cc7dpwlCSlJ6Hm7EO+IR6epmXO6Q==
-X-Received: by 2002:a05:6402:d0d:b0:5c2:439d:90d4 with SMTP id 4fb4d7f45d1cf-5cf0a45f22bmr1352065a12.30.1731054936670;
-        Fri, 08 Nov 2024 00:35:36 -0800 (PST)
-Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c4ecd5sm1724334a12.59.2024.11.08.00.35.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 00:35:36 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 8 Nov 2024 09:35:34 +0100
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Jiri Olsa <olsajiri@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: Fix build ID parsing logic in stable trees
-Message-ID: <Zy3NVkewYPO9ZSDx@krava>
-References: <20241104175256.2327164-1-jolsa@kernel.org>
- <2024110536-agonizing-campus-21f0@gregkh>
- <ZyniGMz5QLhGVWSY@krava>
- <2024110636-rebound-chip-f389@gregkh>
- <ZytZrt31Y1N7-hXK@krava>
- <Zy0dNahbYlHISjkU@telecaster>
+	s=arc-20240116; t=1731055295; c=relaxed/simple;
+	bh=OsFRds6OPpoG8AA7rFEzaKv1H/MG7E4kD2sLMLACbRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yu7PwcW2p/ulIbeeDfI75QYHLnVBWAxiaoRQ6ROeTir0QYHu89ldDH4qNaZMibtaj2Ec+x/0hBgMGlag7xoGdu6WazYdIMnrSkCxwsUaM44zFKgBZABL0NYjh4r84eObm/ACyuexs+JOPm9uZ3Pns7p9u4+MqJRSnWLHshmxihE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=d0LMu0C3; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc (unknown [10.10.165.14])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 6EE4440777D1;
+	Fri,  8 Nov 2024 08:41:22 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6EE4440777D1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1731055282;
+	bh=Uk80vGjgWp6Fxep+YeO772imLKH4td0IcPsl8vw7KAM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d0LMu0C3eBPV8ZPaCpCjBnvgJlwo0yDarLXsnswskz4BDfMTQCn6q8+4zx2fsnE3m
+	 wxEJ7s6HsIn2zmQW9uw0wI0wvnluMUkN7R/u+4Xq4R52obqrQj4FZHDw7QiMiNEqeR
+	 QIK+lxvTMkjBamAUHslZdW2CSKnjEajbmdlwceDo=
+Date: Fri, 8 Nov 2024 11:41:18 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	"Pan, Xinhui" <Xinhui.Pan@amd.com>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>, Wayne Lin <wayne.lin@amd.com>,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Jonathan Gray <jsg@jsg.id.au>
+Subject: Re: [PATCH 0/1] On DRM -> stable process
+Message-ID: <20241108-267fb65587d32642092cea40-pchelkin@ispras.ru>
+References: <20241029133141.45335-1-pchelkin@ispras.ru>
+ <ZyDvOdEuxYh7jK5l@sashalap>
+ <20241029-3ca95c1f41e96c39faf2e49a-pchelkin@ispras.ru>
+ <20241104-61da90a19c561bb5ed63141b-pchelkin@ispras.ru>
+ <2024110521-mummify-unloved-4f5d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Zy0dNahbYlHISjkU@telecaster>
+In-Reply-To: <2024110521-mummify-unloved-4f5d@gregkh>
 
-On Thu, Nov 07, 2024 at 12:04:05PM -0800, Omar Sandoval wrote:
-> On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
-> > On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
-> > > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
-> > > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
-> > > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
-> > > > > > hi,
-> > > > > > sending fix for buildid parsing that affects only stable trees
-> > > > > > after merging upstream fix [1].
-> > > > > > 
-> > > > > > Upstream then factored out the whole buildid parsing code, so it
-> > > > > > does not have the problem.
-> > > > > 
-> > > > > Why not just take those patches instead?
-> > > > 
-> > > > I guess we could, but I thought it's too big for stable
-> > > > 
-> > > > we'd need following 2 changes to fix the issue:
-> > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-> > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-> > > > 
-> > > > and there's also few other follow ups:
-> > > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
-> > > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
-> > > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() API
-> > > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
-> > > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
-> > > > 
-> > > > which I guess are not strictly needed
-> > > 
-> > > Can you verify what exact ones are needed here?  We'll be glad to take
-> > > them if you can verify that they work properly.
-> > 
-> > ok, will check
+On Tue, 05. Nov 07:57, Greg Kroah-Hartman wrote:
+> On Mon, Nov 04, 2024 at 05:55:28PM +0300, Fedor Pchelkin wrote:
+> > It is just strange that the (exact same) change made by the commits is
+> > duplicated by backporting tools. As it is not the first case where DRM
+> > patches are involved per Greg's statement [1], I wonder if something can be
+> > done on stable-team's side to avoid such odd behavior in future.
 > 
-> Hello,
+> No, all of this mess needs to be fixed up on the drm developer's side,
+> they are the ones doing this type of crazy "let's commit the same patch
+> to multiple branches and then reference a commit that will show up at an
+> unknown time in the future and hope for the best!" workflow.
 > 
-> I noticed that the BUILD-ID field in vmcoreinfo is broken on
-> stable/longterm kernels and found this thread. Can we please get this
-> fixed soon?
-> 
-> I tried cherry-picking the patches mentioned above ("lib/buildid: add
-> single folio-based file reader abstraction" and "lib/buildid: take into
-> account e_phoff when fetching program headers"), but they don't apply
-> cleanly before 6.11, and they'd need to be reworked for 5.15, which was
-> before folios were introduced. Jiri's minimal fix works for me and seems
-> like a much safer option.
+> I'm amazed it works at all, they get to keep fixing up this mess as this
+> is entirely self-inflicted.
 
-hi,
-thanks for testing
+Thanks for reply, I get your remark. DRM people are mostly CC'ed here,
+hopefully it won't be that difficult to tune their established workflow to
+make the stable process easier and more straightforward.
 
-I think for 6.11 we could go with backport of:
-  de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
-  60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
-
-and with the small fix for the rest
-
-but I still need to figure out why also 60c845b4896b is needed
-to fix the issue on 6.11.. hopefully today
-
-jirka
-
-> 
-> Tested-by: Omar Sandoval <osandov@fb.com>
-> 
-> Thanks,
-> Omar
+As of now, would you mind to take the revert for 6.1? It's [PATCH 1/1] in
+this thread. No point to keep it there, and the duplicated commits were
+already reverted from the fresher stable kernels.
 
