@@ -1,112 +1,157 @@
-Return-Path: <stable+bounces-91962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F9D9C2430
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 18:53:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD299C247B
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 19:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DD06B26F0D
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 17:53:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D980F1C27590
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 18:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BD720B7E6;
-	Fri,  8 Nov 2024 17:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECEC1AA1D6;
+	Fri,  8 Nov 2024 17:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="E3Bi/Sjy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtWceFXJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB47A206E7C;
-	Fri,  8 Nov 2024 17:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B6A1AA1D5;
+	Fri,  8 Nov 2024 17:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731087696; cv=none; b=RwH9Hp+Qzt6VAmQhYaE2GtRPQHR5kFO4kA2LhjXSXthpYqWIxYCpr1yJzuQDXhBV+glkiv3DzgrFACKpdj6eajBP6fxs2G1nEICzDDV1nArVV2MwTuGNhTHFXwKbkhASQR4VAshW7pRYEc2d+8LUQXum4owfMEOh8cmcsFHOLs0=
+	t=1731088537; cv=none; b=gzVPzWc6gb49+J7YB6XDS5CPojSPLap666Q6sIYLHcwCH6tb7T6U90eOvsNcjyOKTmoxmmvWEtJX3UaWzKPq4DZ5rSsdK+Swp7yUgbdoD7VAze+0auWHw86KBaLJIrcsogL4cbAmpw904k2/QBxF5ip7JklqSn49dWzrP9dTgII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731087696; c=relaxed/simple;
-	bh=xTBJQ3DHiqjQGaHvCuOnOqcxQvtxoUV/KnD4Xz/Z1lM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cV0zAVEqcWWaxZSlz97V61G+gKrj2zqHXnzxQKh2SG1rcu9o/VbRrdU+TB0P1tpDpVs5UM0zalRbnpYalb7IG9rEXm8YhqWxrvuqLKk7I9MUXGePFMR9xZUp7ajHWqYLkgYZkRCRRhoMBGxJR7vaJYymHT4hJJ06f6jl3A4K7tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=E3Bi/Sjy; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=wBB+8hCTyd2m7Z6GTXu25olXNiRTxVMEW+Jjw45zRYQ=; b=E3Bi/SjyYTGX8PGyP5yMVmcZEi
-	Vk14b7t/g8S6znduaPSiyT8TdaF5dglB1h3Cq2qdgdbC+ZK2VTTAyrk7hlltdu6qEq8mgkpzyn2kL
-	EsAOmn+ExKStIAXH+GKT+4bb7mQYlGcIq1cnRIpXPrf1XWwf+9hU+fNlRlv2Tot0ZP5RUUpXweMmv
-	Uh1/5SZUXcLaVIWKJVD3f0ckM+SAuYPB9ly4UY1r3Db6oLUczjudKiIs1iXEDPgK1BuGfSmwdN1rf
-	9uXVYdnaaxTB5lIBYRlu9PuRKdWhr7t5nOfPF8y0DuI7+MT0uoTegyvgRb3T8yxT9OQsJpCu10OjI
-	1Hut1v2A==;
-Date: Fri, 8 Nov 2024 18:41:18 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
- module
-Message-ID: <20241108184118.5ee8114c@akair>
-In-Reply-To: <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
-References: <20241107225100.1803943-1-andreas@kemnade.info>
-	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731088537; c=relaxed/simple;
+	bh=6Be2zZmok8+FJyIvngjK5YwbjHdQXMXGAmDpwlg5kHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GMo/h2ihxBfmu+bZMq5yvu+LrrH+cydOpgstKhMWpcXDoUSnp53i/EKK8BjdaMzpuQtu16OlIv4NvtY7QqAvfHMZp03VLonyp3/EutEVVUytzzHcddtZ1tbzQ7s5PNmk1NdwOAms2SSKHkNiSK/x7b70fb0XrKGuF41fiAtnZqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtWceFXJ; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7ea7e2ff5ceso1776583a12.2;
+        Fri, 08 Nov 2024 09:55:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731088535; x=1731693335; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ceiSDlz8Fam1FXwnYY+imkYK7NIk6M/pjIik182t3g0=;
+        b=LtWceFXJNQnYj3vHYPMjkCsjBhGYPkJE5vXrPgx5yckuUSBUvvRenMHMRUp2xk63Uq
+         J81tCpVp9eKTwjs91pzEbQaV062xSkDzNwdK4HVYZddEhWhfWT4dm+YBt2nwtoWNam8K
+         ulG6ZsLNkUsLjw7megbpnVCbe4I7qeXBlmVER7qgsLNl6hOI7Ppjf06JAIAh3VFj7Hf/
+         4nQVkM3Cddur3AOLqCeZ9ty35goZRZ8pY2+T2B+o2tNX6S6eVFPwNumA1IEfRrYFbuWw
+         bRT45g2h5w3Fcq2WjOr1p+/z3NWElYqLxohgNnVM2D9fvr9hLLUjBV0Yvq5LLFkMKlps
+         v51g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731088535; x=1731693335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ceiSDlz8Fam1FXwnYY+imkYK7NIk6M/pjIik182t3g0=;
+        b=p2AmfzmpBLLwxpAaDbCrHz4xwm9GXx0wBXoa5B98BlZ7b/MRfJIBJQ4hQ/1pjWwgZ2
+         2cy3kfJZzZP5OqmgRbNF5fivIeRMDjGN9mTOMiewKHLF6E0JncksQfUypmWWudZWJo5j
+         s6axhFrFHqY1devpTuG0PUdyriRUEheqheX9SM227KCQFe08exHQK1a/Hzthra+nRo1j
+         dZTnglaJfj6FgYbJeH0N8fv0OPZPnJ04kRAy/0V8PPRiG8Br27rt/vl/3YmkAhuszSGk
+         hfUTHSt5B0ppCSejl8+fAEoy7d+wrC51R1RSeWbUgBN6576s+4oQtqhSZGxSVzaMqZaX
+         O2eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXFiDawB5aWX1VT1hRTkFp04pYBbzDbVvMVthmrp7RE1p5Jz3a6fPDu2HiITNC1JXvfPCKzj2t@vger.kernel.org, AJvYcCWX6oFdDXdxAEWjyWCOG/1eUG6+dNhUazkABfn2bGD/RXsqiyrPpIAUrhUdpopUdK/xhqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGc76aLRFCezMYpBAnDO4HRoIykc183Y1JqVLCF6P/FYPtCqoN
+	A0M1w8nOyvJxKXo2HXZBwWOCMQUSAG5HICrPUyGhWDyNQKiNgFCqxOozNptPhHBH33w+ueBMw14
+	+wp3obQRPc9o95TJKNhQZvHLDVeI=
+X-Google-Smtp-Source: AGHT+IFRIe9RCqzw4cD4O7BE9acjg0FmuHFwCXKuUCTchs3hqT2UI4LxphL9lFIDM0j9I8o88+S4SS5JUMcJ9q/E+6E=
+X-Received: by 2002:a17:90b:4b11:b0:2e0:7560:9334 with SMTP id
+ 98e67ed59e1d1-2e9b1748a44mr4622999a91.36.1731088534759; Fri, 08 Nov 2024
+ 09:55:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20241104175256.2327164-1-jolsa@kernel.org> <2024110536-agonizing-campus-21f0@gregkh>
+ <ZyniGMz5QLhGVWSY@krava> <2024110636-rebound-chip-f389@gregkh>
+ <ZytZrt31Y1N7-hXK@krava> <Zy0dNahbYlHISjkU@telecaster>
+In-Reply-To: <Zy0dNahbYlHISjkU@telecaster>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 8 Nov 2024 09:55:22 -0800
+Message-ID: <CAEf4Bzb9G6owbNapP_9tv=kK+CCL8boSmf1pGBTQ9K9U5r6=vA@mail.gmail.com>
+Subject: Re: Fix build ID parsing logic in stable trees
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, bpf@vger.kernel.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am Fri, 8 Nov 2024 14:42:14 +0200
-schrieb Roger Quadros <rogerq@kernel.org>:
+On Thu, Nov 7, 2024 at 12:04=E2=80=AFPM Omar Sandoval <osandov@osandov.com>=
+ wrote:
+>
+> On Wed, Nov 06, 2024 at 12:57:34PM +0100, Jiri Olsa wrote:
+> > On Wed, Nov 06, 2024 at 07:12:05AM +0100, Greg KH wrote:
+> > > On Tue, Nov 05, 2024 at 10:15:04AM +0100, Jiri Olsa wrote:
+> > > > On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
+> > > > > On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
+> > > > > > hi,
+> > > > > > sending fix for buildid parsing that affects only stable trees
+> > > > > > after merging upstream fix [1].
+> > > > > >
+> > > > > > Upstream then factored out the whole buildid parsing code, so i=
+t
+> > > > > > does not have the problem.
+> > > > >
+> > > > > Why not just take those patches instead?
+> > > >
+> > > > I guess we could, but I thought it's too big for stable
+> > > >
+> > > > we'd need following 2 changes to fix the issue:
+> > > >   de3ec364c3c3 lib/buildid: add single folio-based file reader abst=
+raction
+> > > >   60c845b4896b lib/buildid: take into account e_phoff when fetching=
+ program headers
+> > > >
+> > > > and there's also few other follow ups:
+> > > >   5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id=
+_parse()
+> > > >   cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the f=
+irst page in ELF
+> > > >   ad41251c290d lib/buildid: implement sleepable build_id_parse() AP=
+I
+> > > >   45b8fc309654 lib/buildid: rename build_id_parse() into build_id_p=
+arse_nofault()
+> > > >   4e9d360c4cdf lib/buildid: remove single-page limit for PHDR searc=
+h
+> > > >
+> > > > which I guess are not strictly needed
+> > >
+> > > Can you verify what exact ones are needed here?  We'll be glad to tak=
+e
+> > > them if you can verify that they work properly.
+> >
+> > ok, will check
+>
+> Hello,
+>
+> I noticed that the BUILD-ID field in vmcoreinfo is broken on
+> stable/longterm kernels and found this thread. Can we please get this
+> fixed soon?
+>
+> I tried cherry-picking the patches mentioned above ("lib/buildid: add
+> single folio-based file reader abstraction" and "lib/buildid: take into
+> account e_phoff when fetching program headers"), but they don't apply
+> cleanly before 6.11, and they'd need to be reworked for 5.15, which was
+> before folios were introduced. Jiri's minimal fix works for me and seems
+> like a much safer option.
 
-> > diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
-> > index 3661340009e7a..11f8af34498b1 100644
-> > --- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
-> > +++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
-> > @@ -612,19 +612,23 @@ &i2c3 {
-> >  };
-> >  
-> >  &mcspi1 {
-> > -	status = "disabled";  
-> 
-> But according to commit a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage"),
-> these mcspi modules are not used. So it doesn't make sense to enable them even if it
-> seems to solve the power management issue?
-> 
-They are not used, if they are just disabled, kernel does not touch
-them, so if it is there, the kernel can handle
-pm. At least as long as it is not under ti,sysc.
+I second that. Custom fix is minimal and keeps the rest of build ID
+logic the same without involving all the folio conversions. I'd just
+apply that.
 
-There are probably cleaner solutions for this, but for a CC: stable I
-would prefer something less invasive.
-
-I can try a ti-sysc based fix in parallel.
-
-> Does bootloader leave the mcspi modules in a unwanted state?
-
-Or at least something related to them. 
-As said, for the blamed patch I checked only for CM_IDLEST1_CORE
-and CM_FCLKEN1_CORE.
-
-> Would it make sense for the bus driver to explicitly turn off all modules?
-
-Hmm, not very clear what you mean. AFAIK everything below ti-sysc gets
-turned off if a disable is in the child node. Explicitly disabling such
-stuff in the dtsi and enable it in the board dts sound sane
-to me at first glance. I think it is a common pattern. The question is
-whether that causes confusion with not ti-sysc stuff. Well, having
-status=okay everywhere in the dts should not harm.
-But as said for a regression fix some overhaul affecting every device 
-is out of scope.
-
-Regards,
-Andreas
+>
+> Tested-by: Omar Sandoval <osandov@fb.com>
+>
+> Thanks,
+> Omar
 
