@@ -1,137 +1,131 @@
-Return-Path: <stable+bounces-91890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B549C13FD
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 03:21:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2DA9C1400
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 03:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1871C2282D
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 02:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028CB1F240B8
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 02:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88AF14A90;
-	Fri,  8 Nov 2024 02:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A02529408;
+	Fri,  8 Nov 2024 02:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="EdMY6z8d"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="cwADBkU5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75FA41;
-	Fri,  8 Nov 2024 02:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D10F17591
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 02:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731032458; cv=none; b=BUGkOeCBrwU8H2iTyQP3AZdQI8Ze3SbDEK+hMOF7Pa6KpXuqHeS3eQ4kUZy2AKXjyAyZyAfDvdg1amT3HsOf99nac+4PPqT/gVUN76sJ20DMU3ezQHNIxdR1K+SuyteYA0xhb1nLMHjgH0BeEAzCYvLJ8XxuR7SjGpQty0WUdus=
+	t=1731032494; cv=none; b=uKtdVPSkuhGChxZkw2nRbLApNwB5aNF0Tv9l59dG5S6/kSsLNU0EsVE7au2DMvzQUHzqp0OAUyJxK5oh1ZvjSYgztLA3ysNGld2itRfn+OyxcpYhtAD/zR5c7a6kutummdWUAPJsvtxkkrv013zW3i2Xf9XvGWrEUzFZnu7A7QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731032458; c=relaxed/simple;
-	bh=CwnYD3eGDcHqYbgF65Xbn0OHrKz2s4QD6/hWNWb3Ch0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jiNShNOVb/BuOxEG/TDWGxnuhBNwl5QcoIikNWRxIne4Q+rV5Q6mhANFv132koWmeUARFdy9G3higdbPJZFHlUon0yjVbBUuyuCk0lDfnVqmU9BmS2p0cMNtwhXqnAzX3JWuRVA6LK6QWegM2lCzQIYeGE+NkYbxdiSof+/NCKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=EdMY6z8d; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7MdPY8025702;
-	Fri, 8 Nov 2024 02:20:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pps0720; bh=Al+1eFcwD1Jl3
-	Gag56B47fYEjUBMMgK+F9iQqJ74Q5w=; b=EdMY6z8dVXWgQtkZjhk0eRRX/jLCq
-	Y+baaYel0c0ILdnDFuKUDK2dmGDNleSP5EUh7AImOKSSZon48chSXxLwHzz4De/8
-	hkx6faYmYsiJwrPebqrIchc+ah+HjR3fYYuvd8BrosVnGeFP5WgL88ZpwLMB8kdR
-	aOgj9g7juCan82A2UlG5Uja+fC3C8Vzen5Mcqw2zMEEHEKjs/7jr0uHkphPwIB+t
-	pctPo5zn8cV1nkkQyt2rdLMP+LHW9BA56ZQoFZo+z1+ktFc8uQD1b18MSEXs5TGN
-	LhL/maUZntlYJ+fgVfhtAATboKVX4ktcCMlLJGjGvAFLObP66HKmjqVOw==
-Received: from p1lg14878.it.hpe.com ([16.230.97.204])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 42s6h9sd36-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Nov 2024 02:20:38 +0000 (GMT)
-Received: from localhost (unknown [192.58.206.38])
-	by p1lg14878.it.hpe.com (Postfix) with ESMTP id 3B4D2295E7;
-	Fri,  8 Nov 2024 02:20:36 +0000 (UTC)
-From: Matt Muggeridge <Matt.Muggeridge@hpe.com>
-To: idosch@idosch.org
-Cc: Matt.Muggeridge@hpe.com, davem@davemloft.net, dsahern@kernel.org,
-        edumazet@google.com, horms@kernel.org, kuba@kernel.org,
-        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default Routes
-Date: Thu,  7 Nov 2024 21:20:26 -0500
-Message-Id: <20241108022026.58907-1-Matt.Muggeridge@hpe.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <ZyyN2bSgrpbhbkpp@shredder>
-References: <ZyyN2bSgrpbhbkpp@shredder>
+	s=arc-20240116; t=1731032494; c=relaxed/simple;
+	bh=TlLG0E+Gk7Ud4oTUhU5ZNtTpISP7K6CVavS1Q3Jdaek=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=ojxarGk7lOy/IeaTQeovJXHEV9egLI5DRruMpzDQSdDN6cM42n+jNJ/IOHx1HU9HF1NyTtg/MWz0gMuEnwSoDr6w5XlbRp+m88P00TKaWqBhC1dFYYd1rqPnrqgNRjeoc35d9z0OSAsUNWNBXhqPMXr34JRv9ntKqh/COYif37w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=cwADBkU5; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id 9CNGt1tcsiA199EcttRaFZ; Fri, 08 Nov 2024 02:21:31 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 9EcstNnodjcdm9Ecstzf6K; Fri, 08 Nov 2024 02:21:31 +0000
+X-Authority-Analysis: v=2.4 cv=DrWd+3/+ c=1 sm=1 tr=0 ts=672d75ab
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=VlfZXiiP6vEA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=J9EI1liLPhN1/o0apZDZs7AMnukcex+KigNNu2Vnf9Y=; b=cwADBkU5LP4JXuH20/bSW/Zepl
+	hsn3IGMWUSGKp928xtGZMNnw+nAPgwgIebREBZsSr1EGia9TkwK+tFLevkJ9cIuPX+lgebuXYJv6B
+	Q490YfryqjFU2cqJH5skLCMTzGKMzsNSKWHJiUH6ZEBqXc0UCecDYHJCFeA4FNnF9ugHubntYXDWQ
+	qK7b78wx3OCAM6ApGHvh3S/i/FAE7Rudss1P0GrKGK443G2CWD40fneJA9BBoe8mchmnk66APcVoP
+	yFL82R5DDxHeUu8w1jt5TUUpV2zsDbFU0UC+3se5BKPwFMhUOSqdNuDcLDQ5kS5QgHWs8iQN2J5f/
+	VoMOinIw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:35498 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1t9Ecq-001Uht-1Y;
+	Thu, 07 Nov 2024 19:21:28 -0700
+Subject: Re: [PATCH 6.1 000/126] 6.1.116-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, broonie@kernel.org
+References: <20241106120306.038154857@linuxfoundation.org>
+In-Reply-To: <20241106120306.038154857@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <353f828e-0ed4-44f0-7285-8320ee7396a6@w6rz.net>
+Date: Thu, 7 Nov 2024 18:21:24 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: wL657nGIBtMxv2dhOrIYI__izIcFG8c7
-X-Proofpoint-ORIG-GUID: wL657nGIBtMxv2dhOrIYI__izIcFG8c7
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_02,2024-10-04_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 mlxscore=0 phishscore=0
- priorityscore=1501 spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411080018
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1t9Ecq-001Uht-1Y
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:35498
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 40
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfK3GlCG+ERFqmJTEWLoK51gL+XYOMgBQ1gvykziYHFJCJU1X9Hr3GJffpuoAjbjU2URSKlyxDZxJ966XlWmLzloY9lPhBMfatXX5B1t9VJSGTkKeYu8j
+ YBnj/z426yhD5xhWTfgciI0I14UUwFhlZWJiRvr5jmoJMYWR1sF14jfS2FERBHqtCAMItiIye6Tyog==
 
-> > You probably already know how to reproduce it, but in case it helps, I still
-> > have the packet captures and can share them with you. Let me know if you'd
-> > like me to share them (and how to share them).
-> 
-> It would be best if you could provide a reproducer using iproute2:
-> Configure a dummy device using ip-link, install the multipath route
-> using ip-route, configure the neighbour table using ip-neigh and then
-> perform route queries using "ip route get ..." showing the problem. We
-> can then use it as the basis for a new test case in
-> tools/testing/selftests/net/fib_tests.sh 
+On 11/6/24 4:03 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.116 release.
+> There are 126 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.116-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I'll try to do that next week.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> BTW, do you have CONFIG_IPV6_ROUTER_PREF=y in your config?
+Tested-by: Ron Economos <re@w6rz.net>
 
-Yes.
-
-$ gunzip -c /proc/config.gz | grep ROUTER_PREF
-CONFIG_IPV6_ROUTER_PREF=y
-
-> > 
-> > As such, it still seems appropriate (to me) that this be implemented in the
-> > legacy API as well as ensuring it works with the NH API.
-> 
-> As I understand it you currently get different results because the
-> kernel installs two default routes whereas user space can only create
-> one default multipath route.
-
-Yes, that's the end result of an underlying problem.
-
-Perhaps more to the point, the fact that a coalesced, INCOMPLETE, multipath
-route is selected when a REACHABLE alternative exists, is what prevents us
-from using coalesced multipath routes. This seems like a bug, since it violates
-RFC4861 6.3.6, bullet 1.
-
-Imagine adding a 2nd router to an IPv6 network for added resiliency, but when
-one becomes unreachable, some network flows keep choosing the unreachable
-router. This is what is happening with ECMP routes. It doesn't happen with
-multiple default routes.
-
-I'll just reiterate earlier comments, this doesn't happen all of the time.
-It seems I have a 50/50 chance of the INCOMPLETE route being selected.
-
-> Before adding a new uAPI I want to
-> understand the source of the difference and see if we can improve / fix
-> the current multipath code so that the two behave the same. If we can
-> get them to behave the same then I don't think user space will care
-> about two default routes versus one default multipath route.
-
-Exactly, I totally support that approach.
-
-Regards,
-Matt.
 
