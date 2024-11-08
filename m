@@ -1,131 +1,171 @@
-Return-Path: <stable+bounces-91892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803DF9C1415
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 03:32:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC66B9C145C
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 03:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 378371F23EAD
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 02:32:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E991C2102E
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 02:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119961BC3F;
-	Fri,  8 Nov 2024 02:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6977770F5;
+	Fri,  8 Nov 2024 02:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="1So7GurT"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="QCzCMMBG"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CEEB674
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 02:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232B8EBE;
+	Fri,  8 Nov 2024 02:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731033124; cv=none; b=YMrcNdmmJk5x8RnGy4IQxeo3XAHC3yVJto/xbcgt+Iu2PrcTlvj3kVCFapD2w2biF0KojHSf/PISNAF5VJGNimDJnBNO4Kgl49i/FC++bIuoSNmXZ2n2rxzFS0PnQvfyavUiqCnf7eUOeWqmRrFKrVjNGaVZjnvo1ICGPAakgG0=
+	t=1731034728; cv=none; b=uhGGqcgMqZAvZMSxRYB8lcZSafBpj/JGss06sdRGF+5jbu7lnRwSWMJA/vKeziFdNU2hXIoP7B8lxvgqFIsaT7Ca2bl5lq22nk+3R3vaX0o9hcwtWURqHqtScHDnwN2+25p6jvQctVxMnxHyq6emt6GJ8+CsOYjNdRHt8ma/vPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731033124; c=relaxed/simple;
-	bh=JZxU7EdmSyU3mDjSFBFW+Lsymc/oEijZ96r60AEVT50=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=h6l6b+55SOIDMy3LRMqeXhJDSX7wuKvs9nZXt9PrXe8HgJWDENriRPIEBeAdHtmzpifYaZxr9/0A4i5JWCeG5/hL5HXA+tIlKjTAUJ0SjoFnpsWpwhzOrwDnGYLxfOyJb1m+4suICf/uQx7MmKxLE9YQrYOQ9bNppmv3Ts8w360=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=1So7GurT; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-	by cmsmtp with ESMTPS
-	id 983htKpYYumtX9En4tRKZg; Fri, 08 Nov 2024 02:32:02 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 9En3tTsQPKigF9En3trKgM; Fri, 08 Nov 2024 02:32:01 +0000
-X-Authority-Analysis: v=2.4 cv=UYRXSrSN c=1 sm=1 tr=0 ts=672d7821
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=VlfZXiiP6vEA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sIkp7sDcOhjFBrpxN1Wrnx14UkcVrWM+xwL03vB8BB4=; b=1So7GurTkCANW20i48CgVBuSiz
-	QLLTwAXECn2sJvuHFeN0zGtBQtVjihii3fX6k29hEvh7vvD4PC05p3C/1iUZTXoORGzBD+HdzjJsC
-	wj1PiiSFBh6jxlguyA5KnnmWnY1lEurhGY/2d654kYYgkRhx49GMfr3X/NE2VlMXBggyICPOjb9l4
-	8qz2+x9o4ZOEV6cR+Eg1u/UW3Z+eghbYxmDeYbLINJXQmWrKHaUwZFM9dBQuvEh+xIkQqb02IgrE2
-	sseDMMZPuDQdlQNLoMQIbKABtNeUHI1bUSOFy2gUvb4hFkevGWmTqGpTu+9HxGQs9Tf6mw5hpRlRi
-	3tSluimg==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:35506 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1t9En1-001YQM-19;
-	Thu, 07 Nov 2024 19:31:59 -0700
-Subject: Re: [PATCH 5.15 00/73] 5.15.171-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, broonie@kernel.org
-References: <20241106120259.955073160@linuxfoundation.org>
-In-Reply-To: <20241106120259.955073160@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <9392c4dd-25dd-b828-6a2c-1645093dd758@w6rz.net>
-Date: Thu, 7 Nov 2024 18:31:56 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1731034728; c=relaxed/simple;
+	bh=RRbWmNOXdYVlv6WNGhx+DUWPGotPHAWZVcDIx4lJOT8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qxwZReCDqamx5j38rV5jTcWFuEvixLewX3Zn52IammYbGtNGae9aW2H9dOjnCgS/4GVAQbssLvh8DagUO3LCOofgjXV7AqkGbx9Y1NHCLol06wD1CdO6Q3FRLt+WGO77cRksBKIp4wM+qsWdttHiHX9G3/DVVHGGFVXrJIkmbgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=QCzCMMBG; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A82wYY811269055, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1731034714; bh=RRbWmNOXdYVlv6WNGhx+DUWPGotPHAWZVcDIx4lJOT8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=QCzCMMBGPMq4FZaf9aVpnPAIZJoXlmUPUdkvNv9f4/3oYAkozrCHDpkXDf0Wu97ht
+	 +xN2qeLlV7mEI/ML1zDR7IrG/mWCzHiQn/OfmbLc9tvwVcruTP6Nc2uYl9fXM6sZ3U
+	 2g8R9BqLxO2iQ2SfpDnQY0CQiJGkdfIL7eHfayi4mJNKfIV6lQTzbdxWqILd+gSeAe
+	 hYuQTPGUv12LYzI6O4YyAeO1Zgxdy0ph1+6c/rLNtMU3SDoT2c/qdSdZhZNTkbkjwp
+	 lodOvpzwpuuxeqQiGdw8O23YwojJlV09Q4Dcz9pcXJtV6DL+Lzx9JxIvWW7HY4bFqu
+	 vCje6PfoN6usQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A82wYY811269055
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Nov 2024 10:58:34 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 8 Nov 2024 10:58:34 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 8 Nov 2024 10:58:34 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Fri, 8 Nov 2024 10:58:34 +0800
+From: Kailang <kailang@realtek.com>
+To: Dean Matthew Menezes <dean.menezes@utexas.edu>,
+        Takashi Iwai
+	<tiwai@suse.de>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Jaroslav Kysela
+	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Linux Sound System
+	<linux-sound@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: RE: No sound on speakers X1 Carbon Gen 12
+Thread-Topic: No sound on speakers X1 Carbon Gen 12
+Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAhkBggAVELQCAAGMKAIABHpMAgBUeUJA=
+Date: Fri, 8 Nov 2024 02:58:33 +0000
+Message-ID: <f42f84204f8d413ea79f13f9c1d745d9@realtek.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+ <2024101613-giggling-ceremony-aae7@gregkh>
+ <433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+ <87bjzktncb.wl-tiwai@suse.de>
+ <CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+ <87cyjzrutw.wl-tiwai@suse.de>
+ <CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+ <87ttd8jyu3.wl-tiwai@suse.de>
+ <CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+ <87h697jl6c.wl-tiwai@suse.de>
+ <CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+ <87ed4akd2a.wl-tiwai@suse.de> <87bjzekcva.wl-tiwai@suse.de>
+ <CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+ <877ca2j60l.wl-tiwai@suse.de> <43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
+ <87ldyh6eyu.wl-tiwai@suse.de> <18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+ <87h6956dgu.wl-tiwai@suse.de> <c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
+ <CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
+ <87ldyctzwt.wl-tiwai@suse.de>
+ <CAEkK70RAek2Y-syVt3S+3Q-kiriO24e8qQGDTrqC-Xt4kHzbCA@mail.gmail.com>
+In-Reply-To: <CAEkK70RAek2Y-syVt3S+3Q-kiriO24e8qQGDTrqC-Xt4kHzbCA@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1t9En1-001YQM-19
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:35506
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfIfYQObmkc9TH/zMWdJHTgXdF9bUnxhbtDelY/SyciWQ25rY/Wr4WPYgaNaaMl3L/Cqdpvuy4CGnDcM+4tOMCcqBuc8tGzp33UtB7GH2Q4+Dd4Cv/yXF
- w3OyW6wgtcndt95X5ycBnmGRrKT/VawgpwAsbPjNGtZcuboyaQ+l2ctWdGBSMEdDHTyUAbeW9qHsag==
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 11/6/24 4:05 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.171 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 08 Nov 2024 12:02:47 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.171-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
-
-Tested-by: Ron Economos <re@w6rz.net>
-
+SGkgRGVhbiwNCg0KSSBjaGVjayBpc3N1ZXMgd2l0aCBvdXIgc2l0ZSBtYWNoaW5lLg0KSSBndWVz
+cyB5b3VyIEJJT1MgZGlkbid0IHVwZGF0ZSB0byBuZXdlciB2ZXJzaW9uLg0KDQpJZiBCSU9TIG5v
+IHVwZGF0ZSwgeW91IG5lZWQgdG8gYWRkIGJlbG93IHBhdGNoLg0KDQpkaWZmIC0tZ2l0IGEvc291
+bmQvcGNpL2hkYS9wYXRjaF9yZWFsdGVrLmMgYi9zb3VuZC9wY2kvaGRhL3BhdGNoX3JlYWx0ZWsu
+Yw0KaW5kZXggNzRjYTBiYjZjMDkxLi4xMjZiNjgxNDBlN2UgMTAwNjQ0DQotLS0gYS9zb3VuZC9w
+Y2kvaGRhL3BhdGNoX3JlYWx0ZWsuYw0KKysrIGIvc291bmQvcGNpL2hkYS9wYXRjaF9yZWFsdGVr
+LmMNCkBAIC03NDUwLDcgKzc0NTAsNiBAQCBzdGF0aWMgdm9pZCBhbGMyODdfYWxjMTMxOF9wbGF5
+YmFja19wY21faG9vayhzdHJ1Y3QgaGRhX3BjbV9zdHJlYW0gKmhpbmZvLA0KIAkJCQkgICBzdHJ1
+Y3Qgc25kX3BjbV9zdWJzdHJlYW0gKnN1YnN0cmVhbSwNCiAJCQkJICAgaW50IGFjdGlvbikNCiB7
+DQotCWFsY193cml0ZV9jb2VmX2lkeChjb2RlYywgMHgxMCwgMHg4ODA2KTsgLyogQ2hhbmdlIE1M
+SyB0byBHUElPMyAqLw0KIAlzd2l0Y2ggKGFjdGlvbikgew0KIAljYXNlIEhEQV9HRU5fUENNX0FD
+VF9PUEVOOg0KIAkJYWxjX3dyaXRlX2NvZWZleF9pZHgoY29kZWMsIDB4NWEsIDB4MDAsIDB4OTU0
+Zik7IC8qIHdyaXRlIGdwaW8zIHRvIGhpZ2ggKi8NCkBAIC03NDY0LDcgKzc0NjMsNiBAQCBzdGF0
+aWMgdm9pZCBhbGMyODdfYWxjMTMxOF9wbGF5YmFja19wY21faG9vayhzdHJ1Y3QgaGRhX3BjbV9z
+dHJlYW0gKmhpbmZvLA0KIHN0YXRpYyB2b2lkIGFsYzI4N19zNF9wb3dlcl9ncGlvM19kZWZhdWx0
+KHN0cnVjdCBoZGFfY29kZWMgKmNvZGVjKQ0KIHsNCiAJaWYgKGlzX3M0X3N1c3BlbmQoY29kZWMp
+KSB7DQotCQlhbGNfd3JpdGVfY29lZl9pZHgoY29kZWMsIDB4MTAsIDB4ODgwNik7IC8qIENoYW5n
+ZSBNTEsgdG8gR1BJTzMgKi8NCiAJCWFsY193cml0ZV9jb2VmZXhfaWR4KGNvZGVjLCAweDVhLCAw
+eDAwLCAweDU1NGYpOyAvKiB3cml0ZSBncGlvMyBhcyBkZWZhdWx0IHZhbHVlICovDQogCX0NCiB9
+DQpAQCAtNzQ3Myw5ICs3NDcxLDE3IEBAIHN0YXRpYyB2b2lkIGFsYzI4N19maXh1cF9sZW5vdm9f
+dGhpbmtwYWRfd2l0aF9hbGMxMzE4KHN0cnVjdCBoZGFfY29kZWMgKmNvZGVjLA0KIAkJCSAgICAg
+ICBjb25zdCBzdHJ1Y3QgaGRhX2ZpeHVwICpmaXgsIGludCBhY3Rpb24pDQogew0KIAlzdHJ1Y3Qg
+YWxjX3NwZWMgKnNwZWMgPSBjb2RlYy0+c3BlYzsNCisgICAgICAgIHN0YXRpYyBjb25zdCBzdHJ1
+Y3QgY29lZl9mdyBjb2Vmc1tdID0gew0KKyAgICAgICAgICAgICAgICBXUklURV9DT0VGKDB4MjQs
+IDB4MDAxMyksIFdSSVRFX0NPRUYoMHgyNSwgMHgwMDAwKSwgV1JJVEVfQ09FRigweDI2LCAweEMz
+MDApLA0KKyAgICAgICAgICAgICAgICBXUklURV9DT0VGKDB4MjgsIDB4MDAwMSksIFdSSVRFX0NP
+RUYoMHgyOSwgMHhiMDIzKSwNCisgICAgICAgICAgICAgICAgV1JJVEVfQ09FRigweDI0LCAweDAw
+MTMpLCBXUklURV9DT0VGKDB4MjUsIDB4MDAwMCksIFdSSVRFX0NPRUYoMHgyNiwgMHhDMzAxKSwN
+CisgICAgICAgICAgICAgICAgV1JJVEVfQ09FRigweDI4LCAweDAwMDEpLCBXUklURV9DT0VGKDB4
+MjksIDB4YjAyMyksDQorICAgICAgICB9Ow0KIA0KIAlpZiAoYWN0aW9uICE9IEhEQV9GSVhVUF9B
+Q1RfUFJFX1BST0JFKQ0KIAkJcmV0dXJuOw0KKyAgICAgICAgYWxjX3VwZGF0ZV9jb2VmX2lkeChj
+b2RlYywgMHgxMCwgMTw8MTEsIDE8PDExKTsNCisgICAgICAgIGFsY19wcm9jZXNzX2NvZWZfZnco
+Y29kZWMsIGNvZWZzKTsNCiAJc3BlYy0+cG93ZXJfaG9vayA9IGFsYzI4N19zNF9wb3dlcl9ncGlv
+M19kZWZhdWx0Ow0KIAlzcGVjLT5nZW4ucGNtX3BsYXliYWNrX2hvb2sgPSBhbGMyODdfYWxjMTMx
+OF9wbGF5YmFja19wY21faG9vazsNCiB9DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0N
+Cj4gRnJvbTogRGVhbiBNYXR0aGV3IE1lbmV6ZXMgPGRlYW4ubWVuZXplc0B1dGV4YXMuZWR1Pg0K
+PiBTZW50OiBTYXR1cmRheSwgT2N0b2JlciAyNiwgMjAyNCA4OjIzIEFNDQo+IFRvOiBUYWthc2hp
+IEl3YWkgPHRpd2FpQHN1c2UuZGU+DQo+IENjOiBLYWlsYW5nIDxrYWlsYW5nQHJlYWx0ZWsuY29t
+Pjsgc3RhYmxlQHZnZXIua2VybmVsLm9yZzsNCj4gcmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2
+OyBKYXJvc2xhdiBLeXNlbGEgPHBlcmV4QHBlcmV4LmN6PjsgVGFrYXNoaSBJd2FpDQo+IDx0aXdh
+aUBzdXNlLmNvbT47IExpbnV4IFNvdW5kIFN5c3RlbSA8bGludXgtc291bmRAdmdlci5rZXJuZWwu
+b3JnPjsgR3JlZw0KPiBLSCA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQo+IFN1YmplY3Q6
+IFJlOiBObyBzb3VuZCBvbiBzcGVha2VycyBYMSBDYXJib24gR2VuIDEyDQo+IA0KPiANCj4gRXh0
+ZXJuYWwgbWFpbC4NCj4gDQo+IA0KPiANCj4gSSBnZXQgdGhlIHNhbWUgb3V0cHV0OiBheGlvbSAv
+aG9tZS9kZWFuICMgaGRhLXZlcmIgL2Rldi9zbmQvaHdDMEQwIDB4NWENCj4gU0VUX0NPRUZfSU5E
+RVggMHgwMCBuaWQgPSAweDVhLCB2ZXJiID0gMHg1MDAsIHBhcmFtID0gMHgwIHZhbHVlID0gMHgw
+DQo+IGF4aW9tIC9ob21lL2RlYW4gIyBoZGEtdmVyYiAvZGV2L3NuZC9od0MwRDAgMHg1YSBHRVRf
+UFJPQ19DT0VGIDB4MDANCj4gbmlkID0gMHg1YSwgdmVyYiA9IDB4YzAwLCBwYXJhbSA9IDB4MCB2
+YWx1ZSA9IDB4MA0KPiANCj4gT24gRnJpLCAyNSBPY3QgMjAyNCBhdCAwMjoxNiwgVGFrYXNoaSBJ
+d2FpIDx0aXdhaUBzdXNlLmRlPiB3cm90ZToNCj4gPg0KPiA+IE9uIEZyaSwgMjUgT2N0IDIwMjQg
+MDM6MjI6MzggKzAyMDAsDQo+ID4gRGVhbiBNYXR0aGV3IE1lbmV6ZXMgd3JvdGU6DQo+ID4gPg0K
+PiA+ID4gSSBnZXQgdGhlIHNhbWUgdmFsdWVzIGZvciBib3RoDQo+ID4gPg0KPiA+ID4gYXhpb20g
+L2hvbWUvZGVhbi9saW51eC02LjExLjMvc291bmQvcGNpL2hkYSAjIGhkYS12ZXJiDQo+ID4gPiAv
+ZGV2L3NuZC9od0MwRDAgMHg1YSBTRVRfQ09FRl9JTkRFWCAweDAwIG5pZCA9IDB4NWEsIHZlcmIg
+PSAweDUwMCwNCj4gPiA+IHBhcmFtID0gMHgwIHZhbHVlID0gMHgwDQo+ID4NCj4gPiBIZXJlIE9L
+LCBidXQuLi4NCj4gPg0KPiA+ID4gYXhpb20gL2hvbWUvZGVhbi9saW51eC02LjExLjMvc291bmQv
+cGNpL2hkYSAjIGhkYS12ZXJiDQo+ID4gPiAvZGV2L3NuZC9od0MwRDAgMHg1YSBTRVRfUFJPQ19D
+T0VGIDB4MDANCj4gPg0KPiA+IC4uLiBoZXJlIHJ1biBHRVRfUFJPQ19DT0VGIGluc3RlYWQsIGku
+ZS4gdG8gcmVhZCB0aGUgdmFsdWUuDQo+ID4NCj4gPg0KPiA+IHRoYW5rcywNCj4gPg0KPiA+IFRh
+a2FzaGkNCg==
 
