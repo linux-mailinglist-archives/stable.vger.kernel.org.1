@@ -1,151 +1,140 @@
-Return-Path: <stable+bounces-91932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B36F9C1F00
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:18:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68079C1F5B
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB29EB224C8
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 14:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F6061C231E6
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 14:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869651EB9F7;
-	Fri,  8 Nov 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEDC1F4701;
+	Fri,  8 Nov 2024 14:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mID9JvHS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GK4G7ioP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EEE1E1312
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 14:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634CA1EBA00;
+	Fri,  8 Nov 2024 14:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731075511; cv=none; b=F+eUrSzKdrOR3zyWESGVT9wPRZptMWXWZaOsD+JlC5pqDs6qwXAPRioFlpfD8nAnjAvYg1TV21Fbm8DKsULG032ZwrkYI78Nzc48xWeg9dCZ14c8M1lS0Nxzq1VQkpcsAN1j0kLQDgOHJQkNogdTqiADCMWHqDKf52lGr1x6XrA=
+	t=1731076503; cv=none; b=DlgGk3zqJSrYQ94Y8NMC3mbTD+S3PWf4C4XaRud0Hiu9/iXh23+1hItqEs4SEelBGCUiv19p1REjQzGuDYxLVrf74uj0pdZuB8PE8cx/WVdsOVhDzRwW8aaSRDzWhfBulP6qQfOWsyfZaAGJyw+s1nfl2ZKW4XJKlRW88CtQR4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731075511; c=relaxed/simple;
-	bh=VUYfrH7Vq7Lidzdo6j2YqZeIfj1IW2MCYvcHFVUX6EU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=MSIyAOihbfh73hucxAHoSgFNR6guT8rPNR5tt1VKw+Uvgq9eCcNBk/ab7PSei9/mumfnPhAgYeBB0ggCQR5/kyrT5iMJtxUPV6UGxFAzb8E8LNiHjmvhm0kcfkjD6g4NTCAWRHvmt70b+MA5gxDUBAByzlVl7Ewvds6PaqhSnK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mID9JvHS; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71e5130832aso1750639b3a.0
-        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 06:18:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731075509; x=1731680309; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/BQL8RJCjStFEA1vUZRU0MMoqsNGEVVN9P8ZLRL5OQ=;
-        b=mID9JvHSVk6os0JIn/PraypjXljyLBCrnF2ZPzDtsZ2pWVOJd2mF7qqljHcVhRTtEY
-         GA39GsjkLl3JFY8c4pUZVTgXVmYNWJJ1SElWvFvssoZE1FynPrk+xZNV9rd7LKk2AAU4
-         v5KJZBwc/ybiQUwithYVddoUfyUu7iNmvWE0Et7PK5WDueSev3Hq0Yjsgo2SDX72+6v2
-         tpoqzf2p7wMw/HEFwT9vyLNPMFZ6f1psKLpbMMX3sd9z/Emyr2cnuVMM7GkeQEUypCwh
-         q+exL9zsNAbO0jJwqwFWHlx2gB6naQ1Br09cEHNwe2Axrb6CbGcbCXyB8075SthnQ0rE
-         vkxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731075509; x=1731680309;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9/BQL8RJCjStFEA1vUZRU0MMoqsNGEVVN9P8ZLRL5OQ=;
-        b=sy22hdBmSKeV6P08MWLhn4trpi7KJpVAH/HLeMhAwRixvY5hlkGp8mEhFmoqgcnk2q
-         P9XxrH5CPzgMC+QuqeZ02H2x0WoYxBn24B6jjdVtozosOjkCRCKMGWMWbOcYrYh5TKsg
-         CxkF6d3ih548yKZ/9z0Oa8YB75qI/DNbxmwLGvjaUuQ3B0FpdnUBiU6AVoUQ6j4f/+U+
-         St7GcQgkIAwBAobR5O4bBb+ycXda/mmVXHuJb2BM6BWbu7y5he1CW1wn6aYC8TwrmE3F
-         09Rub77EQZ2GHyb0sfR+QtnqUc2x7fH9PKGC7U/Jpx1+rcSry6UozFPp8psM7SAa53LV
-         aJkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXF7fxrkslnpDt5E9qTgTIH4zZGJp1aFj7gfsUm3dlYBHXiIxcO3w33WbJGelm6JFWooG5ANYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwbZbMNK8ppl3/GU1/txm15c3tqJnu83zMAGtuGO+lnnp+Ihba
-	Fvsrw5PC2O5QDXPuvK0Ny/GuFzL+VWpbl0vZhSeIEvOLo3mklSKM
-X-Google-Smtp-Source: AGHT+IH3c+D72JKSguP5iqxfgtjBvAQWEHR9kwn6DYiM3w5E4T3SEt40wE+/cjQnrEqyPgiCAu/b6w==
-X-Received: by 2002:a05:6a21:788e:b0:1db:eb76:578d with SMTP id adf61e73a8af0-1dc22b1b587mr4246234637.36.1731075509147;
-        Fri, 08 Nov 2024 06:18:29 -0800 (PST)
-Received: from localhost.localdomain ([183.193.178.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a18f51sm3706516b3a.155.2024.11.08.06.18.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 Nov 2024 06:18:28 -0800 (PST)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: willy@infradead.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Yafang Shao <laoar.shao@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/readahead: Fix large folio support in async readahead
-Date: Fri,  8 Nov 2024 22:17:10 +0800
-Message-Id: <20241108141710.9721-1-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+	s=arc-20240116; t=1731076503; c=relaxed/simple;
+	bh=pUEhCn+4P7Xg02QPD1FD2qtHE5A3e7Wh3P7mZhnsn5I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R/RqsKlRp1L8rW+cI2SxHLmkFpj45r+OI6Tf5+zWZALQTfrWkN52vbYmObAV3FPg42LoFJogQPtZ4uNkWOv9z2/M9BiqQe6IEY34n0p6k9l8oOBYYrssOo3ANQxYBJfswPS/0pRePccX5RcEg/REr/0G4bu1U2lcNpFl5xy9D2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GK4G7ioP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB087C4CECF;
+	Fri,  8 Nov 2024 14:35:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731076503;
+	bh=pUEhCn+4P7Xg02QPD1FD2qtHE5A3e7Wh3P7mZhnsn5I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GK4G7ioPCVir+o84R7aPK4eUHbINSaDtd9PAvoN3RTPPDsQlSXY5gwSzLXN4RzvBX
+	 i1DipKivNx9hbHEENtiyh0ZxKIXhGWTyua4Ki3yJz/SIQHW2+Q0+MXW0gqjjvF/Qpf
+	 hiuzTc+D+LlkNAeTzESQ+OA2CE4Ok3uPtaS8pRMiK0NUKc3XFsz6YJoBUHbvtbw8ZD
+	 OyD+w2aLVUl1IRrQRXWBLRs5v/Eoj/FC2LG8eKtR5wbofn4lUU/w+DGvbsP3DI6Faa
+	 dP2uP5fKOTsmmVbL3yZB3fXuNesqpv2iqSHZTw22sqcx/V2Jb1gXdQZjX+DamYYY0c
+	 SdbXNACq+vskg==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-28896d9d9deso1127562fac.2;
+        Fri, 08 Nov 2024 06:35:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUMiRR01hu5SjpauRPkvO5ULfquGBGcytXvTZuvXXidT/i5XAhjo9qBm+NTO+AUEdE+4mEHxQYn@vger.kernel.org, AJvYcCWNtMUACJp0FHaowTy3KS/VvgLqLrLpuzq8xYQHRpUWWxOn1HfNMdtW98eam7eeHyOF2WsHss6LgzxT1x8=@vger.kernel.org, AJvYcCXKS487FG7h8xl7rKkfEJMesKC16niEolVtUrMS+CDeqxxBQV4h+gOXHYffuw6t7US6KlEPiGZpjrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCG+Ea9j/AmTFyigfPS885qzWqAltj7zybHZgq17ejUVfMjvNd
+	RbigArypiiTld8IaKpMyJfm89V7tULLJyf5feU1dDuVoHctHQdrKFY0yPCADTq5O9W2WPXoBq8F
+	DM67QdLKtwDON6UClWcoNHvvg+Ic=
+X-Google-Smtp-Source: AGHT+IHfFfKeeVdnnVUY5JIR0kOdoMx12kU5yui8JN93qq2UcB8njWMZVUdNWOx0Stjg7aytAbQ9HUMJXuI1YPofVz4=
+X-Received: by 2002:a05:6870:e38c:b0:277:f5d8:b77b with SMTP id
+ 586e51a60fabf-295602a56e3mr3402140fac.32.1731076502221; Fri, 08 Nov 2024
+ 06:35:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241108135206.435793-1-lenb@kernel.org> <20241108135206.435793-3-lenb@kernel.org>
+In-Reply-To: <20241108135206.435793-3-lenb@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 8 Nov 2024 15:34:51 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ixYR-tsSfcotc=ezwpcX3a79bC_hDQPFLGF1zjk4yLOg@mail.gmail.com>
+Message-ID: <CAJZ5v0ixYR-tsSfcotc=ezwpcX3a79bC_hDQPFLGF1zjk4yLOg@mail.gmail.com>
+Subject: Re: [PATCH] x86/cpu: Add INTEL_LUNARLAKE_M to X86_BUG_MONITOR
+To: Len Brown <lenb@kernel.org>
+Cc: peterz@infradead.org, x86@kernel.org, rafael@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Len Brown <len.brown@intel.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When testing large folio support with XFS on our servers, we observed that
-only a few large folios are mapped when reading large files via mmap.
-After a thorough analysis, I identified it was caused by the
-`/sys/block/*/queue/read_ahead_kb` setting. On our test servers, this
-parameter is set to 128KB. After I tune it to 2MB, the large folio can
-work as expected. However, I believe the large folio behavior should not be
-dependent on the value of read_ahead_kb. It would be more robust if the
-kernel can automatically adopt to it.
+On Fri, Nov 8, 2024 at 2:52=E2=80=AFPM Len Brown <lenb@kernel.org> wrote:
+>
+> From: Len Brown <len.brown@intel.com>
+>
+> Under some conditions, MONITOR wakeups on Lunar Lake processors
+> can be lost, resulting in significant user-visible delays.
+>
+> Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+> always sends an IPI, avoiding this potential delay.
+>
+> Also update the X86_BUG_MONITOR workaround to handle
+> the new smp_kick_mwait_play_dead() path.
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219364
+>
+> Cc: stable@vger.kernel.org # 6.11
+> Signed-off-by: Len Brown <len.brown@intel.com>
 
-With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
-sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
-/proc/meminfo are as follows:
+Overall
 
-- before this patch
-  FileHugePages:     18432 kB
-  FilePmdMapped:      4096 kB
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-- after this patch
-  FileHugePages:   1067008 kB
-  FilePmdMapped:   1048576 kB
+> ---
+>  arch/x86/kernel/cpu/intel.c | 3 ++-
+>  arch/x86/kernel/smpboot.c   | 3 +++
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+> index e7656cbef68d..aa63f5f780a0 100644
+> --- a/arch/x86/kernel/cpu/intel.c
+> +++ b/arch/x86/kernel/cpu/intel.c
+> @@ -586,7 +586,8 @@ static void init_intel(struct cpuinfo_x86 *c)
+>              c->x86_vfm =3D=3D INTEL_WESTMERE_EX))
+>                 set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+>
+> -       if (boot_cpu_has(X86_FEATURE_MWAIT) && c->x86_vfm =3D=3D INTEL_AT=
+OM_GOLDMONT)
+> +       if (boot_cpu_has(X86_FEATURE_MWAIT) &&
+> +                       (c->x86_vfm =3D=3D INTEL_ATOM_GOLDMONT || c->x86_=
+vfm =3D=3D INTEL_LUNARLAKE_M))
+>                 set_cpu_bug(c, X86_BUG_MONITOR);
+>
+>  #ifdef CONFIG_X86_64
+> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+> index 766f092dab80..910cb2d72c13 100644
+> --- a/arch/x86/kernel/smpboot.c
+> +++ b/arch/x86/kernel/smpboot.c
+> @@ -1377,6 +1377,9 @@ void smp_kick_mwait_play_dead(void)
+>                 for (i =3D 0; READ_ONCE(md->status) !=3D newstate && i < =
+1000; i++) {
+>                         /* Bring it out of mwait */
+>                         WRITE_ONCE(md->control, newstate);
+> +                       /* If MONITOR unreliable, send IPI */
+> +                       if (boot_cpu_has_bug(X86_BUG_MONITOR))
+> +                               __apic_send_IPI(cpu, RESCHEDULE_VECTOR);
 
-This shows that after applying the patch, the entire 1GB file is mapped to
-huge pages. The stable list is CCed, as without this patch, large folios
-don’t function optimally in the readahead path. 
+The  __apic_send_IPI() call could be wrapped into something like
+__native_smp_send_reschedule() to underline the analogy between this
+and what happens in native_smp_send_reschedule().
 
-It's worth noting that if read_ahead_kb is set to a larger value that isn't
-aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail to map
-to hugepages.
+It is still fine as is though IMV.
 
-Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: stable@vger.kernel.org
-
----
- mm/readahead.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-Changes:
-v1->v2:
-- Drop the align (Matthew)
-- Improve commit log (Andrew)
-
-RFC->v1: https://lore.kernel.org/linux-mm/20241106092114.8408-1-laoar.shao@gmail.com/
-- Simplify the code as suggested by Matthew
-
-RFC: https://lore.kernel.org/linux-mm/20241104143015.34684-1-laoar.shao@gmail.com/
-
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 3dc6c7a128dd..9b8a48e736c6 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -385,6 +385,8 @@ static unsigned long get_next_ra_size(struct file_ra_state *ra,
- 		return 4 * cur;
- 	if (cur <= max / 2)
- 		return 2 * cur;
-+	if (cur > max)
-+		return cur;
- 	return max;
- }
- 
--- 
-2.43.5
-
+>                         udelay(5);
+>                 }
+>
+> --
 
