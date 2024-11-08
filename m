@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-91942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4CC9C20FA
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 16:48:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CA39C2143
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 16:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF241C20F18
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:48:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D8E1F23D47
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27DC21B42F;
-	Fri,  8 Nov 2024 15:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73ACF21A712;
+	Fri,  8 Nov 2024 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q692Ehgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbJcvIpc"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD0021A71E
-	for <Stable@vger.kernel.org>; Fri,  8 Nov 2024 15:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312AA1F5820
+	for <Stable@vger.kernel.org>; Fri,  8 Nov 2024 15:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731080875; cv=none; b=Kv/kInAJrNhkRkDjk81foZyn9qn/wnlm9D2lnSuCJ9YwOt4Cpz4j7reetGeF5EkynGtsguW0H9x7wZab1Nc9moIb7G13fHHpXGkulynvwaUuxQKgD2c+l0u4cZo5oBL3lksUZnG4PobkGP4lXoVoPF9E2qsgyFq7ka9jt4S0gHY=
+	t=1731081404; cv=none; b=rTqTnAJMYOwk+pg1xwP9zWB500HStl5UkkH4o9/YSDH/p+dvm1oenVTZpD89FVRPN2FbPM+Nlwt8LImrdt78HthVYftcLmFudLxrpqHe0+2Ta0XBIkiHMSXwvmIxGYzBN48iM9M8oz2EqIMIiPbdlu1CU+NmqbUgAx1t7lxgQyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731080875; c=relaxed/simple;
-	bh=9fYkTpqCM11J2IIc1RIU+EA6WF0MtCfCfMCRbOR/PvI=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=j41U2Jd5oiVTqsK483yATBh7PfgVPMs2kOmlooGkVHLCQqL5iCfjuTX6goE/O6cPYmyiKfXGcP9JqZEpLDJLCP95osqr070JQCjmD7a4FFdvs5/OjxfQFuhFXSNtt7y6nEFgy66qrE5wceRIt1/YzcfUDtYo65KjflyHXly6vlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q692Ehgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73F5C4CECD;
-	Fri,  8 Nov 2024 15:47:54 +0000 (UTC)
+	s=arc-20240116; t=1731081404; c=relaxed/simple;
+	bh=RrBV4c/5dFj7qrrTWMoOD/YsdvuV/x0ewJ+wkcD3gGM=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=nbJSuxle47u6r6A3t4R2KR7AbU75NOos53GFZaiphbZhNO8F3ENu4OpbaO4gWc4iw0/iB5vSzNjJ3fLA7oPCU7NkKcEB6LHunUskmdyPq1tpx44lyyF47RY7/FiwxYHjpGbcu0y+I0Vxiws7yjjuxquJ9l9Tiwd5i9KeV/wtepY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbJcvIpc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540E8C4CECD;
+	Fri,  8 Nov 2024 15:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731080875;
-	bh=9fYkTpqCM11J2IIc1RIU+EA6WF0MtCfCfMCRbOR/PvI=;
+	s=korg; t=1731081403;
+	bh=RrBV4c/5dFj7qrrTWMoOD/YsdvuV/x0ewJ+wkcD3gGM=;
 	h=Subject:To:From:Date:From;
-	b=Q692EhgvvUIk2GHtVYaOTeqQqcX2ZQNsKQsf4+buA7NvQsniDMAqfAg5uxbsivb2G
-	 QQsCpeg1j1bgVfcCVAXH1o9pXU1Sqd5GPR6xdtiMPU4ceZ/3eBQnpErmdU19fq7w4I
-	 pMGJaaK0fsWI8nyW/kIi8Pnw5K4wpG03FH7c40Ls=
-Subject: patch "iio: accel: kx022a: Fix raw read format" added to char-misc-testing
+	b=xbJcvIpcfxMF4bsNRbNUkvRyyOwvPppMy3wwmIDOSlgY3APjNUdo7bP16osXFpICz
+	 k6bacJ2T4VmISl2ExDaaCAM9Uxbh6HDJ8Ed6PbF841FL+K4Z0A8fTIW/5KcnKQLp57
+	 73WFdzNyYt4wjlniEI6HUXH5QBsElARKxhFZPTxI=
+Subject: patch "iio: accel: kx022a: Fix raw read format" added to char-misc-next
 To: mazziesaccount@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,kaleposti@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 08 Nov 2024 16:47:17 +0100
-Message-ID: <2024110817-disclose-opacity-176b@gregkh>
+Date: Fri, 08 Nov 2024 16:56:06 +0100
+Message-ID: <2024110806-swell-entitle-e8df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
