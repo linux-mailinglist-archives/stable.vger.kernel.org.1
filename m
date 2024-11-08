@@ -1,137 +1,234 @@
-Return-Path: <stable+bounces-91919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AF59C1C5E
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 12:44:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D299E9C1C6C
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 12:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A33D28694B
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 11:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023341C22F41
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 11:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F711E5700;
-	Fri,  8 Nov 2024 11:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD31E47CC;
+	Fri,  8 Nov 2024 11:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d3lAuRG6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QMUtDzlh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107B1E47AF
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 11:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2011E9090
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 11:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731066236; cv=none; b=sucuesD3b1+gfGqKJyMrPRTtzHDO/qaDfbPQTgTVZjd7ZMmf3k6kObbcV+RJ2f1swHy8kzWC8auDdee7MoJmBreUSlCWv6zaBRkgs1moOGDmLKGdLebmZNf8mmRIBDxV0BF9t0S25ehpnLmsgEYzVfor2jqUlEeb20a35Idzs68=
+	t=1731066282; cv=none; b=QtGhov/7dH4d8xPEwqQA0D8eJiHl1iQgghNo8S4T14OSPaKVKhepD6vdzUcuGqq3Ix/azaJKiAbRxiTI9u/EULbciItsmgzGRHl62kKsEfQ1psG1AEnFgg1Qqe1cAhOIEGb6KeLG4D3JELzPqEFIlc0ZqK+1i6ZQ740ryjm6bYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731066236; c=relaxed/simple;
-	bh=qjv8Nskk+avwjBuYyWopHdeHY0bXMOaLNpB/xYD+XcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qVdP/UJX1elGEBZZeFpMPJTcY7CkmoHMKg66PZohxi94DZ1fpmgomhsjJbumy922JDiQcY0pBMlMTwU2sHleZf7TmQJtViBIROchqkd5unXkrpeWkdeCfGdpEgyqMGIAVUPi+RR9eBS10nKIdH1c4OF+tSn6y+fKZ2gmPh4POPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d3lAuRG6; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1731066282; c=relaxed/simple;
+	bh=+OKAoz88ppfKCnr6rPAI6mS9UizP4kyupQi780jyc5o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P59SN6l/WDpY4GXsE/XNJC6YO0Y/cGhHNrHhplNNFZ9hYkjPbKKCSdt8OGbMfkPC/IyQu6cbDoGlyvoUMnRY8AL+AHCZsJiHPQdvvOyVrRTXXd4No0WMfh9QaAeGayLsqeJsm9u7b/0x6DguPwu2gQmC/4Kw+g+Wtyp/q/69oOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QMUtDzlh; arc=none smtp.client-ip=209.85.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4315eeb2601so23817355e9.2
-        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 03:43:53 -0800 (PST)
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-50c9f4efd09so809081e0c.2
+        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 03:44:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731066232; x=1731671032; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0ouVSbkAT3+S3WMSHYg6HVwCj00MU4w8dzA4pzxSauU=;
-        b=d3lAuRG6hA9xd+PYJBznZkyI1cz/xYM1tqJkqaJdCHlr8K39DYX0opc9h+xQQ373nH
-         qLotlvCaW2g2YuAUHs5sB8eeP2kk0Xqy9hAA91vII5yTn+/wHM52tr0Gm2xd+Hb51YhL
-         b8Yo1U+ChMlJh3aHOW3zV3LPsWbWdb55F/vpVlyGtAJn16evmRd63aKDw1JWFoUJsRoG
-         tQVK/p7qJyrUzcaDIcT/6teccvBFW6tUTxBEQpxzKn6S2veyjmaagP+/SuDQ0QsQ/zai
-         QIWdV8znnMWQF6wKtV/NXtOSUGg0wLhBA3hq7RA4k+glwkKvEJrEAuTHaHeQoPXOE6SL
-         0lgg==
+        d=linaro.org; s=google; t=1731066279; x=1731671079; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MkHXmgDAc7wSG/2nmCt5dHpGxnoKoPhVGd8Ic3kCUA=;
+        b=QMUtDzlhE45tqJHkajZ14vzU8yTmQV2ti9R+DTF/Q+t5qn7+uC4l6VouVfDfd+kEeU
+         HFo/ToGwMAPqFyZYwHYwy8QDyIL2m8LBVGuRhA7qFn3epxi6RD2Sn1WcgQRHmmLMsdMB
+         h5O+7gZuYz/Cj2ma3lqQdZb9a0ado5tjnxi7IsyE3YBXsrNeofNeai+IdmJLaTN+Lgez
+         XvPdITjrePJHSZFmwjFpA5Sc2JD6b3+iAO6puNRh3yCpjxyU//Fh1gT8yQeDDvrgQaWI
+         cw27Zea2JMMPPML66ctFp0Zn44FlN6sEmio8ryIIJfJeox6Yl0jdwXXA4O/7sRoccQ/n
+         5XuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731066232; x=1731671032;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ouVSbkAT3+S3WMSHYg6HVwCj00MU4w8dzA4pzxSauU=;
-        b=gfYfsOSqgdJWj1/1lZ+ZcZE7mPfVbHZ397SMy4/vRocgVtbgEchlCUMPrzVGzCpYem
-         XOaJElkRIogUXfHXj4W+BHgh20EgtL6jjQSd5tEJ7MEuKNKGM338wQ4wiYGb1PsnEy3N
-         fgHVGxgQRhmqnpluqVKlWdWVU+Y1KT2ZVrHdG3N0BowJow/W8BV9ID54iqUCjKbZ69JY
-         IFNqat1/HEFVBoyDBkpnfqFC70fQ8FzJ+9pvXYt6Z1QFi/KmtCi5/9JtX/xYhWCAJwZQ
-         zO+9nCiMW/r5c8ae/WOXgTcYavtwGZt3VB3aNRPAGCue2rsOSgc09jCIE+efZIm289Ya
-         2jZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhCfe4+p5wIUaAUcHvLcGqhb7DswQsOKo3RTRI0cQH2/JxDyQoYAf3cvFbS+vFwHU2RqXxeEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPDzVvbOeyqH/0JBvmJV4KXIhukzM3SZfNCRUhkkVxM5kkWro1
-	XDFxj4Ht7MPp79n/ZeHN8BJ67i5vg9q84BXR6t1y+D3w/0OKPC/TvcRj/kc6Q34=
-X-Google-Smtp-Source: AGHT+IHenYE2IrQEIw1RwXn2xALrnPWJbFU0VRWzYGh03YSwh3hgPhVUGtDNitZVrXDo/IEmoPy9YA==
-X-Received: by 2002:a05:6000:1541:b0:37d:2ea4:bfcc with SMTP id ffacd0b85a97d-381f186bc9bmr2308261f8f.13.1731066232510;
-        Fri, 08 Nov 2024 03:43:52 -0800 (PST)
-Received: from [172.16.24.72] ([89.101.134.25])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05e5871sm60742135e9.37.2024.11.08.03.43.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Nov 2024 03:43:52 -0800 (PST)
-Message-ID: <37982a05-2057-45f4-923e-7562c683706d@linaro.org>
-Date: Fri, 8 Nov 2024 11:43:56 +0000
+        d=1e100.net; s=20230601; t=1731066279; x=1731671079;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5MkHXmgDAc7wSG/2nmCt5dHpGxnoKoPhVGd8Ic3kCUA=;
+        b=UHfbGMt6AroHnv2lmtdhJ2tJrt3Vb6rNCL+Mv1X6piN+WKEDRzVEToPSFT/+8zoB9V
+         GaRCvqY2ArUhA9pgxC9bADPsxRMy/XohwbkU2MiORxI4v4qr7IRBH00N/7DYZmDisg87
+         Nx0iW6/SDnVi5eBNgmbfUUB9RlRzbOMRkEvY/AVaLCScwZGcYldCqezRUtiYBpC7G93u
+         WwQf66Sb+AqrQsNkGaLNYwTWXXB8jhSGtc5Zf2E9YlKf5jWshWXfByrEwzifOdzU44XY
+         YxCYAEvWxTWqcFrkVgpyXfZSAFIFoMT+eKZuoBMe/OPGPZ/5raCUrZTISnWHViOe8OMs
+         ADKA==
+X-Gm-Message-State: AOJu0Yy9ZzuadB8EiDwL9eLHXqGrC7qGwXjK3GzxVGJKH8YJlSKMV/WT
+	Nd1d4WoGzRZzGIqFQDTkGxt1PVaQ3gu2nOik6IzQRJIuaC3HmAeDioy2hUO/58sa0WC20GJOXSj
+	we0BMlYoVCgQh5d4on9Tyv+wCKLL/DpwemXXcEg==
+X-Google-Smtp-Source: AGHT+IFAZTqKzcVIqRu2qUNfmV1XxJQHNHEolKZ0j+1gbYX4fXqaE1L7s9c3g5QIBoKkgQslJmlu4ncQztgHZ+I8dIc=
+X-Received: by 2002:a05:6122:3c56:b0:510:185:5d89 with SMTP id
+ 71dfb90a1353d-51401ecb673mr2320465e0c.12.1731066278880; Fri, 08 Nov 2024
+ 03:44:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
- <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
- <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
- <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
- <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
- <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
- <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
- <781ea2fd-637f-b896-aad4-d70f43ad245c@quicinc.com>
- <oxbpd3tfemwci6aiv5gs6rleg6lmsuabvvccqibbqddczjklpi@aln6hfloqizo>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <oxbpd3tfemwci6aiv5gs6rleg6lmsuabvvccqibbqddczjklpi@aln6hfloqizo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241107064547.006019150@linuxfoundation.org>
+In-Reply-To: <20241107064547.006019150@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 8 Nov 2024 11:44:27 +0000
+Message-ID: <CA+G9fYtr2V+noAMBzyCafOMOeZf33bo6DKMcGOqsH0-C+0xPEw@mail.gmail.com>
+Subject: Re: [PATCH 6.11 000/249] 6.11.7-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hagar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 07/11/2024 13:54, Dmitry Baryshkov wrote:
->>> I'd say, don't overwrite the array. Instead the driver should extend it
->>> with the new information.
->> That is exactly the existing patch is currently doing.
-> _new_ information, not a copy of the existing information.
+On Thu, 7 Nov 2024 at 06:47, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.11.7 release.
+> There are 249 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 09 Nov 2024 06:45:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.11.7-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.11.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-But is this _really_ new information or is it guarding from "malicious" 
-additional messages ?
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-@Vikash is it even a valid use-case for firmware to send one set of 
-capabilities and then send a new set ?
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-It seems to me this should only happen once when the firmware starts up 
-- the firmware won't acquire any new abilities once it has enumerated 
-its set to APSS.
+## Build
+* kernel: 6.11.7-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 504b1103618a4532bbbf6558d80cdf3545a2c591
+* git describe: v6.11.4-646-g504b1103618a
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.11.y/build/v6.11=
+.4-646-g504b1103618a
 
-So why is it valid to process an additional message at all ?
+## Test Regressions (compared to v6.11.4-397-g4ccf0b49d5b6)
 
-Shouldn't we instead be throwing away redundant updates either silently 
-or with some kind of complaint ?
+## Metric Regressions (compared to v6.11.4-397-g4ccf0b49d5b6)
 
-If there's no new data - then this is data we shouldn't bother processing.
+## Test Fixes (compared to v6.11.4-397-g4ccf0b49d5b6)
 
-If it is new data then surely it should be the _current_ and _only_ 
-valid set of data.
+## Metric Fixes (compared to v6.11.4-397-g4ccf0b49d5b6)
 
-And if the update is considered "invalid" then why _would_ we accept the 
-update ?
+## Test result summary
+total: 610158, pass: 505466, fail: 6987, skip: 97705, xfail: 0
 
-I get we're fixing the OOB but I think we should be clear on the 
-validity of the content of the packet.
+## Build Summary
+* arc: 20 total, 20 passed, 0 failed
+* arm: 524 total, 516 passed, 8 failed
+* arm64: 172 total, 172 passed, 0 failed
+* i386: 72 total, 64 passed, 8 failed
+* mips: 104 total, 100 passed, 4 failed
+* parisc: 16 total, 16 passed, 0 failed
+* powerpc: 144 total, 140 passed, 4 failed
+* riscv: 64 total, 60 passed, 4 failed
+* s390: 56 total, 52 passed, 4 failed
+* sh: 20 total, 20 passed, 0 failed
+* sparc: 16 total, 12 passed, 4 failed
+* x86_64: 140 total, 140 passed, 0 failed
 
----
-bod
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cv[
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
