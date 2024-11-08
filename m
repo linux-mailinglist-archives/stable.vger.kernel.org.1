@@ -1,102 +1,145 @@
-Return-Path: <stable+bounces-91927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3CB9C1E2F
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 14:34:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD469C1E92
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 14:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E59C1C20D3F
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 13:34:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 989D31C2259B
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 13:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F371EE02B;
-	Fri,  8 Nov 2024 13:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D871F12F5;
+	Fri,  8 Nov 2024 13:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeSE79hD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b9li45IT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019781EBA19;
-	Fri,  8 Nov 2024 13:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2301F5FA;
+	Fri,  8 Nov 2024 13:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731072871; cv=none; b=SWGSEtkHXFibWRQbKUIGrcqVb/AHuA3FkVqiQim4O+XiOfqk4uAkpKqHodeFlb4Q8CiYNB57cNgj+7JPBZFRSr7FUdYyRLcOaoFCXhAmeKZy2JOHZi+sO4lX0GNEtOsvciAvwvTzdtxCIc/JGb8pjRtv8BWN5aTHrDDrORsHFSY=
+	t=1731073955; cv=none; b=hMX+vY/42BU0+ykVF7Fmz82S++kxX3yXMskkVmZPs5a7CCjUjUu181lRiEN4uMPnCPhj0xwN22cdjwQjI/kWGgI6XgaQLwHqNTJR+BkS16HdTJjcGtQmXLV5FsOMksQELqj6c+Jj+CqEbOQehTqEgwF2c0CeIZ26RjwIC6NiJgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731072871; c=relaxed/simple;
-	bh=AtxMtrEHHxcVFmFm9RI+3XLvH70jNaNHwS+z9N8IfLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NiKOKoXg+TK93lYzwzDWQTZgmwHc82MsD+aKmXg4gHi40yXRqrQpeidFtxMHzF1gjgHfJPrDfJebWnDo6LSnRbKXwBPpdqsabqYUy0xzRB5r8YhlVhLPj3CQ7vPts3kr9JQMc2lIXxw3m4YoX4ModhzCsWJ5yLLvdOlPyTojUcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeSE79hD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D1BC4CECE;
-	Fri,  8 Nov 2024 13:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731072870;
-	bh=AtxMtrEHHxcVFmFm9RI+3XLvH70jNaNHwS+z9N8IfLU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aeSE79hDcvAqptNjZPD7DMg6aXot9BeQtiyg7VIjrnyUn/noYrP/icMQWCMgTZTAR
-	 hk55fgEzBdTec9gGTFvofpeRICyXqMl6xoqeOi17OZgYUE6/0pB0eX6nnE+ggCyDth
-	 RQoLv9R1Uig5xAohT72K+GLo1tdtQcUGFkN6Z/w6dS0MBTwD83WcS5m9cJeFiR8a9W
-	 ZsnSXBVgx1q6A4LvW2B1iW4F3JsAGHYdMVPUIfOdco0SeH0ILvKv8sJKmfxb212/kj
-	 Ivn8G5J41VWEi1EeOmIzqvhUHJTg0GHPvFLeaOH08+VL6goAcpfrbdJwzUzTBEebL4
-	 22Co6PqUMeIGA==
-Date: Fri, 8 Nov 2024 13:34:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
-	liam.r.girdwood@intel.com, cujomalainey@chromium.org,
-	daniel.baluta@nxp.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ASoC: SOF: stream-ipc: Check for cstream nullity
- in sof_ipc_msg_data()
-Message-ID: <f3e486b6-8b33-4f68-a6b8-ab63edb5341b@sirena.org.uk>
-References: <20241107134308.23844-1-peter.ujfalusi@linux.intel.com>
- <20241107134308.23844-2-peter.ujfalusi@linux.intel.com>
+	s=arc-20240116; t=1731073955; c=relaxed/simple;
+	bh=xJ8I+JIxbh+5VlOOd/NToL3hdqC9hxpCPEPSeiLe5BM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KPtdSVysQ+Vf5mmSdYiwauvIKyHT0tlD9EGC253hg/rGwJvZkspJNLDsHF+WineMt+B8Ng4LLf+Ky/5e5W2Sfhsf+WIS/omduPgiqf8+uvQMhtj2oqHbIhzbqP6YDirlU/DkF2q1TzN+ljXuQLPMQ93V87svlE20E2E3uqVXMDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b9li45IT; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7b14554468fso128312285a.1;
+        Fri, 08 Nov 2024 05:52:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731073953; x=1731678753; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X6hA/sEvIdJtDmv5th9L5y/Cue9Nm5ViWOOgqRkDOM0=;
+        b=b9li45IT1M4mJG9Yqv7QSa2sPyyBq8MmmfLwcjFmsfMerI6Fe//BIhXQOLQ0XKeSVo
+         Z+ahW7S7xy38wC8096nddopBIS7fqU5tCY5e0nqigw0Nz77a+Wb4HiBbhgVG95BXGqjs
+         rCW+sOoA9w4YyT388IZxT2QNlY0IZAhzBEF90lceGu0zb420QxQAiuPOIT9enoIWcUQa
+         0bmuUiFru5mi0eALZdb7ViB4qmSUCQqpWMl/zrn52FJKC/o9dWLpOxqFtIC6LHd+xpRz
+         3UMyGl2TlzasQqbAB8g593ZjCa99/zDSaC8s4uVkNWpHONRUjHCwHk9CuXDgLurPLsxM
+         Ng/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731073953; x=1731678753;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X6hA/sEvIdJtDmv5th9L5y/Cue9Nm5ViWOOgqRkDOM0=;
+        b=UFj1iDcQQIxCfYyPAbslPevLVCj/6nelLri9ebeqp7F/ZTFuMQPXtw8wi0V9G3mrTF
+         E9KPAfn6mNpFkgvIhl6JUebU8U3vD3ZziWqGo2CuAc07TuspyhZRyqds6fGfb9esCZBe
+         7Bxew5i5C0Vutn151ZovXvkE+VXaW+rkfRDFFZvUFzTk1FaCZcv9j3O6xLKEUJO5AMrV
+         3WdL4j/GIS8DEbF7hjHDjCYQ1CdkwLB4iVYlPH81+aFr/6FwAOdq6YjZSCEXKpD8diAJ
+         kKCjzV9TWJl1hfHP9qGqgesl2EteFNRyw95b3j2lkDQicNhlLQNcHI7hDRLAHrJbnJ2w
+         pFqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAQgXJ0faIDUd7SaX8isoWBt6YXqUUKtudbBDh3xnFaYhyDDvbwnbDlgxIMuHUWpokDm+1rwdAZlU=@vger.kernel.org, AJvYcCUvkPpObR5pSnc5o5BPpP1JRpQbqDe3YQJLH/607JBz+q4Az6/yl/wE29Ixmdws6Nfz3Ij0I551@vger.kernel.org, AJvYcCW71wlmXBKc0USPrDWudvJicLHseOaJmEGQRC2yQ6HR8DY2yM6EC1uu7JErYSN5hzN83ijNkqZ1BsPu81g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9Tt4ZYCtbt6kM7sADzKGAUb9J/wrbYqXTAl5WJrYhzy6NiEY4
+	WIYTPyDOFx/yLOyhBepr8EHWKQZmPYdCf9S0x8w8eh0fqL/KUYOq
+X-Google-Smtp-Source: AGHT+IGplhmHakc2nOBAGsmUIiRduEp949/Rq00UioCzSO4JtufZzsNtZ0qNUfv1AmCb3fEycLjY3Q==
+X-Received: by 2002:a05:620a:2688:b0:7b1:8cda:6f4c with SMTP id af79cd13be357-7b331e95ac7mr336935785a.3.1731073953095;
+        Fri, 08 Nov 2024 05:52:33 -0800 (PST)
+Received: from lenb-Thinkpad-T16-Gen-3.mynetworksettings.com ([2600:1006:a022:33ba:65ef:6111:c43:42a7])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32ac54e5fsm160431285a.49.2024.11.08.05.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 05:52:32 -0800 (PST)
+Sender: Len Brown <lenb417@gmail.com>
+From: Len Brown <lenb@kernel.org>
+To: peterz@infradead.org,
+	x86@kernel.org
+Cc: rafael@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Len Brown <len.brown@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH backport to 6.10] x86/cpu: Add INTEL_FAM6_LUNARLAKE_M to X86_BUG_MONITOR
+Date: Fri,  8 Nov 2024 08:49:30 -0500
+Message-ID: <20241108135206.435793-2-lenb@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241108135206.435793-1-lenb@kernel.org>
+References: <20241108135206.435793-1-lenb@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3Y54nW98UoZ6e8Yr"
-Content-Disposition: inline
-In-Reply-To: <20241107134308.23844-2-peter.ujfalusi@linux.intel.com>
-X-Cookie: Send some filthy mail.
+Content-Transfer-Encoding: 8bit
 
+From: Len Brown <len.brown@intel.com>
 
---3Y54nW98UoZ6e8Yr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Under some conditions, MONITOR wakeups on Lunar Lake processors
+can be lost, resulting in significant user-visible delays.
 
-On Thu, Nov 07, 2024 at 03:43:07PM +0200, Peter Ujfalusi wrote:
-> The nullity of sps->cstream should be checked similarly as it is done in
-> sof_set_stream_data_offset() function.
-> Assuming that it is not NULL if sps->stream is NULL is incorrect and can
-> lead to NULL pointer dereference.
->=20
-> Fixes: ef8ba9f79953 ("ASoC: SOF: Add support for compress API for stream =
-data/offset")
+Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+always sends an IPI, avoiding this potential delay.
+Update the X86_BUG_MONITOR workaround to handle
+the new smp_kick_mwait_play_dead() path.
 
-This commit, also referenced in the second patch, doesn't exist.
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219364
 
---3Y54nW98UoZ6e8Yr
-Content-Type: application/pgp-signature; name="signature.asc"
+Cc: stable@vger.kernel.org # 6.10
+Signed-off-by: Len Brown <len.brown@intel.com>
+---
+This is a backport of the upstream patch to Linux-6.10 and earlier
+---
+ arch/x86/kernel/cpu/intel.c | 3 ++-
+ arch/x86/kernel/smpboot.c   | 3 +++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 3ef4e0137d21..e6f4c16c0267 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -583,7 +583,8 @@ static void init_intel(struct cpuinfo_x86 *c)
+ 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+ 
+ 	if (c->x86 == 6 && boot_cpu_has(X86_FEATURE_MWAIT) &&
+-		((c->x86_model == INTEL_FAM6_ATOM_GOLDMONT)))
++		((c->x86_model == INTEL_FAM6_ATOM_GOLDMONT) ||
++		(c->x86_model == INTEL_FAM6_LUNARLAKE_M)))
+ 		set_cpu_bug(c, X86_BUG_MONITOR);
+ 
+ #ifdef CONFIG_X86_64
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 0c35207320cb..ca9358acc626 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1376,6 +1376,9 @@ void smp_kick_mwait_play_dead(void)
+ 		for (i = 0; READ_ONCE(md->status) != newstate && i < 1000; i++) {
+ 			/* Bring it out of mwait */
+ 			WRITE_ONCE(md->control, newstate);
++			/* If MWAIT unreliable, send IPI */
++			if (boot_cpu_has_bug(X86_BUG_MONITOR))
++				__apic_send_IPI(cpu, RESCHEDULE_VECTOR);
+ 			udelay(5);
+ 		}
+ 
+-- 
+2.43.0
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcuE2AACgkQJNaLcl1U
-h9COEAf+LJuaNjyluvIuC9HFzDpQsFqK6NwpFxXENAP9p0u9A5shTfa9LOWfVMtR
-l6xETzyNJkLExh3lYmKBPuSvb2NlGUHqBe9xjWucM2jr3TpS5agFJr9s3Y1nvBh7
-sz40P0OaLx9rzyzu+/SHjCa+29mtcPnKPIfPLhl2Plrco+Jn2cXIJLRiJAlpPkCN
-3SWijMpxUrRXwRM3UoIZmgs2NFBCXR4/6F+ieC1hEpMOzHKJBk5fAYLSQ1OgSEGN
-vCsOeaWpY19bhq759RG4D7eUtXG12kzaCFLGAOZFxhosI4gCHqrEACcRxGGtCJJC
-LfiP67H3JIp0MfHv03PnYRjv38Hqxg==
-=dPpx
------END PGP SIGNATURE-----
-
---3Y54nW98UoZ6e8Yr--
 
