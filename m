@@ -1,98 +1,131 @@
-Return-Path: <stable+bounces-91941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835CB9C20F7
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 16:48:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4CC9C20FA
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 16:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D5E1C23683
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF241C20F18
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 15:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA1521C163;
-	Fri,  8 Nov 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27DC21B42F;
+	Fri,  8 Nov 2024 15:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+AZ9eV1"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q692Ehgv"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963641F4FA2;
-	Fri,  8 Nov 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD0021A71E
+	for <Stable@vger.kernel.org>; Fri,  8 Nov 2024 15:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731080835; cv=none; b=rpgmfs/GawOiQGd0+Q05cuMsiv2Pq6YFVoZpF2ehM2pbR/RK4Mjo/7TgHmnT1n5K1m6W5msOs54Vjb4zIdmRxrOUe4nntDI+gER4IDmWWIEoFofxoMrX1fersXYSFxfjaGyeOf12xRxvSbDHhuEtvwhN/WXpVwpZ/dR0oWUvSPY=
+	t=1731080875; cv=none; b=Kv/kInAJrNhkRkDjk81foZyn9qn/wnlm9D2lnSuCJ9YwOt4Cpz4j7reetGeF5EkynGtsguW0H9x7wZab1Nc9moIb7G13fHHpXGkulynvwaUuxQKgD2c+l0u4cZo5oBL3lksUZnG4PobkGP4lXoVoPF9E2qsgyFq7ka9jt4S0gHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731080835; c=relaxed/simple;
-	bh=V4sN8c5UMc7TF/GLnT31+BpkP2tlxqfCtebPqzVlW6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gWEfhQwDUl9rmRx8gNan4DNxgWBn4mGgQfEl1sbYCWC4C4ARiSDdgEtg63RrpeElKYoK03/IoVGlbcyenVcGFrDN7JS3I9jRxnS5j4f3ubQg8dPBefJF9jGHvmqC/bHD4CBJDIMQjbudlp804npAjySKdDEshlfhcMH0wBCb5t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+AZ9eV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D4AC4CECD;
-	Fri,  8 Nov 2024 15:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731080835;
-	bh=V4sN8c5UMc7TF/GLnT31+BpkP2tlxqfCtebPqzVlW6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R+AZ9eV1312iFUV6O1Jc25xaZTip6kKMBnMb5xGabvbu1iDkCwWMPKzSXfoJJlUmU
-	 6kYwUt0lZXmij6GLtgvqYh8Eadp5Em9eCh5ZkiKY6UzdP9LQTKcUmD+U3eAu+6rxTg
-	 wZm1j96WHcpBYKjA5csgKtVYVzmQZAdXJUHHyd8zrEME2TD1/OfWGac2raiNfrBXqh
-	 JgC2kzqmre3AET1FtPKYxtr0EiQePDePiVyxf0yEy9AYuxn8lzZmuSIoJ+969r+dK9
-	 xFrW1AeRtqQ75wwMtfZwl9gnrQrT5rT108f/fE70YP0DRdx/N6WaoqskQzY2pOxuZd
-	 jI8IqTRfH7ZUw==
-Date: Fri, 8 Nov 2024 15:47:08 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hagar@microsoft.com
-Subject: Re: [PATCH 5.10 000/110] 5.10.229-rc1 review
-Message-ID: <d74e3e72-d264-4824-8d4e-f6e762eec1de@sirena.org.uk>
-References: <20241106120303.135636370@linuxfoundation.org>
+	s=arc-20240116; t=1731080875; c=relaxed/simple;
+	bh=9fYkTpqCM11J2IIc1RIU+EA6WF0MtCfCfMCRbOR/PvI=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=j41U2Jd5oiVTqsK483yATBh7PfgVPMs2kOmlooGkVHLCQqL5iCfjuTX6goE/O6cPYmyiKfXGcP9JqZEpLDJLCP95osqr070JQCjmD7a4FFdvs5/OjxfQFuhFXSNtt7y6nEFgy66qrE5wceRIt1/YzcfUDtYo65KjflyHXly6vlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q692Ehgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73F5C4CECD;
+	Fri,  8 Nov 2024 15:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731080875;
+	bh=9fYkTpqCM11J2IIc1RIU+EA6WF0MtCfCfMCRbOR/PvI=;
+	h=Subject:To:From:Date:From;
+	b=Q692EhgvvUIk2GHtVYaOTeqQqcX2ZQNsKQsf4+buA7NvQsniDMAqfAg5uxbsivb2G
+	 QQsCpeg1j1bgVfcCVAXH1o9pXU1Sqd5GPR6xdtiMPU4ceZ/3eBQnpErmdU19fq7w4I
+	 pMGJaaK0fsWI8nyW/kIi8Pnw5K4wpG03FH7c40Ls=
+Subject: patch "iio: accel: kx022a: Fix raw read format" added to char-misc-testing
+To: mazziesaccount@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,kaleposti@gmail.com
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 08 Nov 2024 16:47:17 +0100
+Message-ID: <2024110817-disclose-opacity-176b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tJJd7voXMsJzlhc+"
-Content-Disposition: inline
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-X-Cookie: Do not overtax your powers.
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
---tJJd7voXMsJzlhc+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is a note to let you know that I've just added the patch titled
 
-On Wed, Nov 06, 2024 at 01:03:26PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.229 release.
-> There are 110 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+    iio: accel: kx022a: Fix raw read format
 
-Tested-by: Mark Brown <broonie@kernel.org>
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
 
---tJJd7voXMsJzlhc+
-Content-Type: application/pgp-signature; name="signature.asc"
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
------BEGIN PGP SIGNATURE-----
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcuMnwACgkQJNaLcl1U
-h9BkQQf+JV+iOsaQS4jDnwiP0KTx2bAQIP0qxlx24kLBE8f2Lp1xdQVnnQV5SEMd
-2RvZv1dp+G4h9uGhrIWVx0cxVuN8nXtxsW+NMboguRjEzC7wSD3+zLp6immYHqoo
-9ehZKzHW6aXjfP3cz008qAQRVRfjZ9+T8y+bq5CsHyqY/xpoMjbrAPUAc58xKJ6K
-EGi9DoBCvL7vllypQeCvwag54B5wEKKl+uznVn+Q8Lj3Qw5j8e3lJInw0csO6JlJ
-oy4lBiUCU7a347RjcOLNXBZ+4nlboiwd0UODnV3RRF7MmrFma0hhkmL5S7/2/+2Y
-/0zlhZcJlbgh2V6Hp9sGtzANlJQkcg==
-=pxoP
------END PGP SIGNATURE-----
+If you have any questions about this process, please let me know.
 
---tJJd7voXMsJzlhc+--
+
+From b7d2bc99b3bdc03fff9b416dd830632346d83530 Mon Sep 17 00:00:00 2001
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+Date: Wed, 30 Oct 2024 15:16:11 +0200
+Subject: iio: accel: kx022a: Fix raw read format
+
+The KX022A provides the accelerometer data in two subsequent registers.
+The registers are laid out so that the value obtained via bulk-read of
+these registers can be interpreted as signed 16-bit little endian value.
+The read value is converted to cpu_endianes and stored into 32bit integer.
+The le16_to_cpu() casts value to unsigned 16-bit value, and when this is
+assigned to 32-bit integer the resulting value will always be positive.
+
+This has not been a problem to users (at least not all users) of the sysfs
+interface, who know the data format based on the scan info and who have
+converted the read value back to 16-bit signed value. This isn't
+compliant with the ABI however.
+
+This, however, will be a problem for those who use the in-kernel
+interfaces, especially the iio_read_channel_processed_scale().
+
+The iio_read_channel_processed_scale() performs multiplications to the
+returned (always positive) raw value, which will cause strange results
+when the data from the sensor has been negative.
+
+Fix the read_raw format by casting the result of the le_to_cpu() to
+signed 16-bit value before assigning it to the integer. This will make
+the negative readings to be correctly reported as negative.
+
+This fix will be visible to users by changing values returned via sysfs
+to appear in correct (negative) format.
+
+Reported-by: Kalle Niemi <kaleposti@gmail.com>
+Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Tested-by: Kalle Niemi <kaleposti@gmail.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://patch.msgid.link/ZyIxm_zamZfIGrnB@mva-rohm
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/accel/kionix-kx022a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+index 53d59a04ae15..b6a828a6df93 100644
+--- a/drivers/iio/accel/kionix-kx022a.c
++++ b/drivers/iio/accel/kionix-kx022a.c
+@@ -594,7 +594,7 @@ static int kx022a_get_axis(struct kx022a_data *data,
+ 	if (ret)
+ 		return ret;
+ 
+-	*val = le16_to_cpu(data->buffer[0]);
++	*val = (s16)le16_to_cpu(data->buffer[0]);
+ 
+ 	return IIO_VAL_INT;
+ }
+-- 
+2.47.0
+
+
 
