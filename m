@@ -1,190 +1,122 @@
-Return-Path: <stable+bounces-91966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155B29C2762
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 23:14:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3029C278F
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 23:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79101B22160
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 22:14:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6518DB21616
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 22:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF3720B815;
-	Fri,  8 Nov 2024 22:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65C71E203F;
+	Fri,  8 Nov 2024 22:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MRkFtVkY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K90bZHWP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F49720B806
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 22:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8C81A9B51
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 22:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731104013; cv=none; b=kUMTyupAqPr+IISDAgpmSG9t8dyqjGBfrV4aMZj1Qfy4UCOF8CrhEiZjI8vu8n/XL64g+bB8dQGRp96Es4+u0i+5fzDKepB7Z94/Th+JLkUhxp47//pGYOXPbC4+feReZ9JBi9wdjq4RNCQOyYbLwgJ5EEqF1wsN8WI7ITu2fcw=
+	t=1731104956; cv=none; b=OQoslaNwaKp8cqBu0W29uBUp53gh8di/hi1DN/v1uylLlji9gP0ALQZiQ4fLya/NJ7helL7Ir3r76QO+YykfV3MtX+i35lqVVKEZJ9Vml94IZwNUzd5C+IOpjwRI6KLG/KQSWB4G7vizjXs7B/IKrAVArw5NShCgGGYdMFKfWm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731104013; c=relaxed/simple;
-	bh=ikCgVYAtTIEdmp1kK+1Azwf7P/QUizVefMuASSNdAIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R+dmNeISfjT4P6iXmazKdmdmNohZgzbtd4tUtOd/yK2FNc42Cw0p2FcISDBFqw/JaV2pqvDXbzlT2QbC4rVDznXl+79BhU//vzNKqfvIZ86/ebPIkk7JSkI0ZqVsNRTDetWJkMKEAqUWd+hQk0JIoNi/B7xJO7YM5qEjPvWSLDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MRkFtVkY; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9ef275b980so199945366b.0
-        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 14:13:31 -0800 (PST)
+	s=arc-20240116; t=1731104956; c=relaxed/simple;
+	bh=aHyY9gMPQDfeKmEy7LSeN+zZi+bC+Kj9cSMN7Xos+d8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tYsBVI5pzGE/Yz91KPWYCINHLlpGqInT90QXX8o4v3aUx2uosUfMTcw0PfVPf4YEQNFXeBdZsANSD+3vlR5iaSdsoFMO6aIUweA4OO8jVh4FfeDJwZYYrV1uR1B1OfYuNezT5jPlyZEzPqJkFqqHAEK2cHma0vvsp5heVA0KSZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K90bZHWP; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20caccadbeeso29358025ad.2
+        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 14:29:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731104010; x=1731708810; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XOfw7YpH370Zx1QaWqZUGVYJAXKMxoYRsgHinQRISWo=;
-        b=MRkFtVkYHH3QxJMAgZrLU2OYn57DGm3AFCI1mcIkOSMJ07F96CRZ5YsaRfVBL1uYQ/
-         pXv3djzkoV1AjMypRZ7BlN/tBjCOGOFAeaHTnGGpytuOreAUvpdeQRqKILYwnRQlQlmz
-         oQD0ry4/DVirXB5jWfzVCNHHISOGnKwkr7DpahoW1xkcvyN4sOxGLBtRGsyvhF+8AGRq
-         CBkJT1wkkxQGc4+0qg/c8qGEO1ATwv/cvO2Kp+cCewwsXukaHk83QJLOSRG00vyJFoT4
-         bblZYRz1H/Fka6RB3b+Oz80uPHA3xoghPx/4akQGxRZaNUYH0uRvw0pDr4yV8GCGuG5/
-         k/EA==
+        d=gmail.com; s=20230601; t=1731104954; x=1731709754; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tj0d84oBofIEIDvNao3ns8H2WxtU3MqpnpN3A73IJOw=;
+        b=K90bZHWPs2umm4es1u70arQIwgzmhKIP4vvcArpMo50FQhCWu+Ta53cOMyduGgvW7F
+         JnRMySqZso3fCpwqPw+aFVnJkIpPhLUAu+/H1CnLyXgyQg8xWisJXw1wYQQYCDTUo+/3
+         gj+CQnyfBQTlZl5mltmaQipVjlv/bEqeG28QQrfu0XXXXFY2RRhMUvIUbaxgig5a9gSQ
+         W6Y3SOLR0QTqC9+K8AoYNIxLZ+GHy+wRaVGFMzFmkhajBOBOHe5FQ8ZlJM/Nd8Fi2ZhQ
+         gzXjTihjgzbWGMh4di5p4DEO/N0fnccLNpfg/kiUvPWtjsx61DYAfY3D4Bv8tNTusowV
+         qF7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731104010; x=1731708810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XOfw7YpH370Zx1QaWqZUGVYJAXKMxoYRsgHinQRISWo=;
-        b=xK1dXMqtxMTe7vQez4Iw++DtPvKmcd6FD1FLHytKsmvJS1tOdRSCOdwh6Ai7KC0U+o
-         JxA3uhhnkPjxVvJZc7gN6rbEOhpfOaBrb/Q8/kTztutabVjVuVPk96w5oc9lo72K4AIf
-         OCiH/fIT11nRB5LH4dwd63q1MsNqHbZCCitWAPuil7F6IZN1pTccYMq5IQdu32fQ+moC
-         zP3y6HjV4M/tslFudfqLyks+SJQfWawMJB/cHGnjDlUc+Ixc6x5RULDUVjUSpLX6ULsY
-         pDSIPes0y3ZPp/o/oz9OfMUqmY/l9p6mC02OhFXmdrZauYbV8/gYEqJTln+ZNdrsPRnm
-         fqzg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9UH3KhD16CaM89dKtQeNJN4LTwBqkh44qLgGs9PAebHm7sIXCwSDKO9XgmMk4rE3phRJcFH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPqFO07OjZlxkhB5p7/b/RzzwdBwnLahJWJnAS3C2yjR0b3tJt
-	hecUs/7OaZVadKwIS2YoPHFHwJP2/bpm/L53RZpzG5w9nHN1fffV3kGjyAWoxWZjXQad81GTzm9
-	7I/2hi85qGYwLHWQAq1KxeRG51O85v35VtJ+l
-X-Google-Smtp-Source: AGHT+IFhcXVJlkiYHUMpF/vhtrTeeySy0abkep3ztaxdn2fr4cbguFSFdKc5xYVAtXJHxI4cPorFAk1Ncayz4PsKpLE=
-X-Received: by 2002:a17:907:9603:b0:a9e:b281:a212 with SMTP id
- a640c23a62f3a-a9ef00100a8mr435785766b.51.1731104009663; Fri, 08 Nov 2024
- 14:13:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731104954; x=1731709754;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tj0d84oBofIEIDvNao3ns8H2WxtU3MqpnpN3A73IJOw=;
+        b=O+F9USpDbYgSZqX33cCj7b8gIYQZukO1yDXGwIN3W0Q78dULUbqpszmGIZAtmLbrxL
+         wwWz3U5UzYpUVgSP+WcvyyxnVrCDYCpyaZ1UAPACXwjzpGaeEn4VHtZFQsswbGVlHVXr
+         jKB2idz3stQczAdos7NwdnfPgzREQW6zleuR0/JIpblnH22giuJA+92JU+tZcev3NBQ5
+         54zPpbhtK0egGMhVdU3gIjt+A4VJKNd2HWtRsDOKPlx7LZqptxY3ZQt0SXOb41+bxDhA
+         QmBh2r0v2zcIyzC9tUlngHpzn6KPZA9VEgmeqDUxkxlZHBvq7ZSgVmY4Baq7xjoLvG5I
+         QBsw==
+X-Forwarded-Encrypted: i=1; AJvYcCXKpDV5mQIDKoC5bIKd0B2JoNnuRJzga1PXt5gEwBlzx0RJOzsFqbUtaqfLIlnIVSFckDqBVHs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9ZLz1NKX2pQkuUuzucrdECmVIOHHl7VT8xLe5j5bsI4kE+wn7
+	km8iJfbULpbnUXS7xC+qFFTnQjPvBfTx9N3hPV4+V7LwiUP+QBVq
+X-Google-Smtp-Source: AGHT+IHCTwP1JxMlTUvRwhHQEwpeVarcG4hNXGPXy1QEQIYpnJQaRTnVT1DK4itvXZyHolX4IgMaIA==
+X-Received: by 2002:a17:903:190:b0:20e:5ab1:2c80 with SMTP id d9443c01a7336-211834e00c3mr57153205ad.7.1731104954233;
+        Fri, 08 Nov 2024 14:29:14 -0800 (PST)
+Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f41f645847sm4073785a12.65.2024.11.08.14.29.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 14:29:13 -0800 (PST)
+Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
+	id AC579DB5131; Sat,  9 Nov 2024 07:29:06 +0900 (JST)
+From: Hajime Tazaki <thehajime@gmail.com>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: maple-tree@lists.infradead.org,
+	Liam.Howlett@Oracle.com,
+	Hajime Tazaki <thehajime@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] nommu: pass NULL argument to vma_iter_prealloc()
+Date: Sat,  9 Nov 2024 07:28:34 +0900
+Message-ID: <20241108222834.3625217-1-thehajime@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107232457.4059785-1-dionnaglaze@google.com>
- <20241107232457.4059785-5-dionnaglaze@google.com> <6642c244-3360-9347-3836-59c5cda5834f@amd.com>
-In-Reply-To: <6642c244-3360-9347-3836-59c5cda5834f@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 8 Nov 2024 14:13:18 -0800
-Message-ID: <CAAH4kHYWCaE+s_-rzDS3YHy2yMPj=d=64bZHoFSpDxzJnDVL6g@mail.gmail.com>
-Subject: Re: [PATCH v5 04/10] crypto: ccp: Fix uapi definitions of PSP errors
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ashish Kalra <ashish.kalra@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, Michael Roth <michael.roth@amd.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, linux-coco@lists.linux.dev, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, John Allen <john.allen@amd.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Danilo Krummrich <dakr@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, stable@vger.kernel.org, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 8, 2024 at 8:15=E2=80=AFAM Tom Lendacky <thomas.lendacky@amd.co=
-m> wrote:
->
-> On 11/7/24 17:24, Dionna Glaze wrote:
-> > Additions to the error enum after the explicit 0x27 setting for
-> > SEV_RET_INVALID_KEY leads to incorrect value assignments.
-> >
-> > Use explicit values to match the manufacturer specifications more
-> > clearly.
-> >
-> > Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
-> >
-> > CC: Sean Christopherson <seanjc@google.com>
-> > CC: Paolo Bonzini <pbonzini@redhat.com>
-> > CC: Thomas Gleixner <tglx@linutronix.de>
-> > CC: Ingo Molnar <mingo@redhat.com>
-> > CC: Borislav Petkov <bp@alien8.de>
-> > CC: Dave Hansen <dave.hansen@linux.intel.com>
-> > CC: Ashish Kalra <ashish.kalra@amd.com>
-> > CC: Tom Lendacky <thomas.lendacky@amd.com>
-> > CC: John Allen <john.allen@amd.com>
-> > CC: Herbert Xu <herbert@gondor.apana.org.au>
-> > CC: "David S. Miller" <davem@davemloft.net>
-> > CC: Michael Roth <michael.roth@amd.com>
-> > CC: Luis Chamberlain <mcgrof@kernel.org>
-> > CC: Russ Weight <russ.weight@linux.dev>
-> > CC: Danilo Krummrich <dakr@redhat.com>
-> > CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > CC: "Rafael J. Wysocki" <rafael@kernel.org>
-> > CC: Tianfei zhang <tianfei.zhang@intel.com>
-> > CC: Alexey Kardashevskiy <aik@amd.com>
-> > CC: stable@vger.kernel.org
-> >
-> > From: Alexey Kardashevskiy <aik@amd.com>
->
-> It looks like you used the patch command to apply Alexey's patch, which
-> will end up making you the author.
->
-> You'll need to use git to make Alexey the author or use git to import the
-> patch from Alexey. Then you would just have Alexey's signed off followed
-> by yours as you have below without having to specify the From: in the
-> commit message.
->
+When deleting a vma entry from a maple tree, it has to pass NULL to
+vma_iter_prealloc() in order to calculate internal state of the tree,
+but it passed a wrong argument.  As a result, nommu kernels crashed upon
+accessing a vma iterator, such as acct_collect() reading the size of
+vma entries after do_munmap().
 
-Ah, okay. Amended with --author=3D"Alexey Kardashevskiy <aik@amd.com>"
+This commit fixes this issue by passing a right argument to the
+preallocation call.
 
+Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
+Cc: stable@vger.kernel.org
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+---
+ mm/nommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Thanks,
-> Tom
->
-> > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> > Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> > ---
-> >  include/uapi/linux/psp-sev.h | 21 ++++++++++++++-------
-> >  1 file changed, 14 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.=
-h
-> > index 832c15d9155bd..eeb20dfb1fdaa 100644
-> > --- a/include/uapi/linux/psp-sev.h
-> > +++ b/include/uapi/linux/psp-sev.h
-> > @@ -73,13 +73,20 @@ typedef enum {
-> >       SEV_RET_INVALID_PARAM,
-> >       SEV_RET_RESOURCE_LIMIT,
-> >       SEV_RET_SECURE_DATA_INVALID,
-> > -     SEV_RET_INVALID_KEY =3D 0x27,
-> > -     SEV_RET_INVALID_PAGE_SIZE,
-> > -     SEV_RET_INVALID_PAGE_STATE,
-> > -     SEV_RET_INVALID_MDATA_ENTRY,
-> > -     SEV_RET_INVALID_PAGE_OWNER,
-> > -     SEV_RET_INVALID_PAGE_AEAD_OFLOW,
-> > -     SEV_RET_RMP_INIT_REQUIRED,
-> > +     SEV_RET_INVALID_PAGE_SIZE          =3D 0x0019,
-> > +     SEV_RET_INVALID_PAGE_STATE         =3D 0x001A,
-> > +     SEV_RET_INVALID_MDATA_ENTRY        =3D 0x001B,
-> > +     SEV_RET_INVALID_PAGE_OWNER         =3D 0x001C,
-> > +     SEV_RET_AEAD_OFLOW                 =3D 0x001D,
-> > +     SEV_RET_EXIT_RING_BUFFER           =3D 0x001F,
-> > +     SEV_RET_RMP_INIT_REQUIRED          =3D 0x0020,
-> > +     SEV_RET_BAD_SVN                    =3D 0x0021,
-> > +     SEV_RET_BAD_VERSION                =3D 0x0022,
-> > +     SEV_RET_SHUTDOWN_REQUIRED          =3D 0x0023,
-> > +     SEV_RET_UPDATE_FAILED              =3D 0x0024,
-> > +     SEV_RET_RESTORE_REQUIRED           =3D 0x0025,
-> > +     SEV_RET_RMP_INITIALIZATION_FAILED  =3D 0x0026,
-> > +     SEV_RET_INVALID_KEY                =3D 0x0027,
-> >       SEV_RET_MAX,
-> >  } sev_ret_code;
-> >
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 385b0c15add8..0c708f85408d 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -573,7 +573,7 @@ static int delete_vma_from_mm(struct vm_area_struct *vma)
+ 	VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
+ 
+ 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
+-	if (vma_iter_prealloc(&vmi, vma)) {
++	if (vma_iter_prealloc(&vmi, NULL)) {
+ 		pr_warn("Allocation of vma tree for process %d failed\n",
+ 		       current->pid);
+ 		return -ENOMEM;
+-- 
+2.43.0
 
-
-
---
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
 
