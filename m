@@ -1,151 +1,99 @@
-Return-Path: <stable+bounces-91909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5C59C196A
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 10:42:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683D09C197B
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 10:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0DB41F24611
-	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:42:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C5FC283F03
+	for <lists+stable@lfdr.de>; Fri,  8 Nov 2024 09:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11191E1A31;
-	Fri,  8 Nov 2024 09:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C181DFE3F;
+	Fri,  8 Nov 2024 09:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XR0saLoa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lcVXJlS7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B511E0DE2
-	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 09:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDEC193060
+	for <stable@vger.kernel.org>; Fri,  8 Nov 2024 09:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731058964; cv=none; b=oiBzEIFUDwSI3IBz46u+gLDKCZzNg9KPygJ26YvrQzylpHhHwtrfUaCrQJaZ3mTsBtd32mXmoFStcy7lPc5iSZQRYXDicLDqPpuZTR8HBkcSO7RUJdk7qvQnO3+Nkd5PiCtEdZkRTZJJzkku3Tt6Pz3MYNWDocEbrYwf5pMF36c=
+	t=1731059161; cv=none; b=B2CzW7BdecEGKTYGtXOjxtzqCYXBYg/3u1LxQcF3fg/Ucv4iVNUn09j5Lk83QyBWkRyE4ANtA4yDkBp8nOpvRZlAzafp115nDiwson7ogzM+QigqOcTxwe1FgN1BvwZ4riR+fKJgZp/yWemzwEVl+m28ScVLTjEC/+J8BXNlyBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731058964; c=relaxed/simple;
-	bh=jWCpeLpkpA4YVoOMmIryFg1kg6ULL3RS7k8t4Z+C5X0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nEwsKSuybWtZDMqqYp5bhEesSdZG3xCaLqLDYbhfBSnNTk4J88d+Spy0NZsgdykSufih4dwnz36J2cycIUEhNNPYkeVewJEIsuPO+Z4u0tpbU/Yz4RSs4LGN3r5C52TTr1looUqiSaMAlJyJLUX1i3KqfUM5V83gAlKKbjVicw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XR0saLoa; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9a977d6cc7so123964866b.3
-        for <stable@vger.kernel.org>; Fri, 08 Nov 2024 01:42:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1731058959; x=1731663759; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=edr4i5ZXuzi2MqMxkWzTe9XDLfbB9N2JCAr3MU/xkAQ=;
-        b=XR0saLoa0ONaS3dhsQouwcbhFB1/EfQETF2IRDWoymrBj8tkGjHaEc3e1eM7qTMKxG
-         wnFTyFchqpr3NeD5qJKQY8r/FcpkZDGHulOip3CT4BgKDbbjjCLNkpzJDOJvBqUee2/n
-         mSlvCMV6N602vvCPAr4eanj89VlvXbisQNdgto913yJ2/xznvTwxwmWC8supDKouwhwz
-         V0ah+sgaaLvI4kmJVvCmgy4LKyVeWEcqtZ2RHPx5kiSMAUEJ6XEwxZIhpgfa/zs99p6K
-         Eo/4NA3QqO+bPmonVuxgD32dF6xxThKMGDx08eTHpztjK2VJC8ot+kO2PjVqiaAbbk4K
-         Je9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731058959; x=1731663759;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=edr4i5ZXuzi2MqMxkWzTe9XDLfbB9N2JCAr3MU/xkAQ=;
-        b=JhuWR+siSc7dsDUF6ZnmukoV94tRFysBtavhbOwAK0Hr4EJb7CiMclrAKGg5tFd/F5
-         AsQqKZHrB0HQ3UvdZ1j20mJfBF6dfh+3QgpCmK4guNF1cKmTPgwPy0JA/0QMqN0VQWSY
-         0gWw+rqZ1+d6DbZrEMRIX+Jw+nRCSyeDCo1jhn5H8u+KsTaXc5OhZ1HJl+omXmXzUPg1
-         L1AuXzDs7u3oqBnEpMsd2u8VnxCNiXYRZLilfIvE4xF84XRIIFHl9UGJ9F/VMnq8uUw+
-         b2D/jPNum0HosaafBOxyI+0mH26aH76iRGVm1eovxG5FsZZdERVw6RHaH7dhJs8b70kb
-         /q4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVGnbiiyONDJY+j96mKiNhzdf51htJUrUn+Md7sWukt/yIxlvx9THrACpD2W8k9JUFDosf/If4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywsG2P8n2CtoTxboa59V/cG/f+eD02u53Ut/3SWzZS6x0/ujlj
-	PRkfFpnL/BFfO+qXlYR6T29nBPhAaIIZGbvs8UchUlM4htftg1RACOO5gKTMKaI=
-X-Google-Smtp-Source: AGHT+IGmVFg6dGCdJ94MvP+GtpTJm4h6Vp+aWc3AX4E8KZIkMCx5imWZRQaFghSdUOFYkB1RH36WSQ==
-X-Received: by 2002:a05:6402:3510:b0:5c9:34b4:69a8 with SMTP id 4fb4d7f45d1cf-5cf0a2fb6f9mr2077935a12.6.1731058959540;
-        Fri, 08 Nov 2024 01:42:39 -0800 (PST)
-Received: from localhost (host-79-35-211-193.retail.telecomitalia.it. [79.35.211.193])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c4ed68sm1765328a12.63.2024.11.08.01.42.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 01:42:39 -0800 (PST)
-From: Andrea della Porta <andrea.porta@suse.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczynski <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: Andrea della Porta <andrea.porta@suse.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI: of_property: Assign PCI instead of CPU bus address to dynamic PCI nodes
-Date: Fri,  8 Nov 2024 10:42:56 +0100
-Message-ID: <20241108094256.28933-1-andrea.porta@suse.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1731059161; c=relaxed/simple;
+	bh=XWLHBu5ep21al5qhSca2w9xbi6vzV3nJZox+0jJptQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ttPyOlj28T7x9RCdP4DwfWi2s7P6IQh0ClExRDlEdgKkuhENhtvUQOfQAuFhBOI7MAK/AvhJMFFNW/IGdXq/4D1IvhzB68FBBwT347fo/Ils7KtSCYhpHmeKi27qKrPEwJIU9BkH/EjY08zi59pwdDhijyDoy0nFAhUE9C5UiR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lcVXJlS7; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731059160; x=1762595160;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=XWLHBu5ep21al5qhSca2w9xbi6vzV3nJZox+0jJptQ4=;
+  b=lcVXJlS7wPYERYe8pOEo9byjB6kZwlLDQ6gFFzHsSZs93P3MO1PKcpVa
+   4UD/k/ve/jGpXMOr/5Tx1B17uYZuVkvp+a3h79khnLDlzMg3oL2t57ZXl
+   9Qtp3JAU0aGFtSODDLdBjeb2epTgZLWqgGBncPHRjkFpdEPp8MQUFJR+n
+   N0tRkAuJuCQV64ooph4RWcYni8M7WUDPYUftLrpVNdBH+8qByVgETqjCU
+   BLfc0v9FxJcnQFE41KdkAdrKDyBekhGJUW703Y/nnVkOJcLNAY4bUxVwx
+   xDTcSkeOamfn45jtEk6wCnhKkBqbqmttxllgmnNGCM1ys4z2koUbOxALO
+   w==;
+X-CSE-ConnectionGUID: 3OsrQYFGRKWB2Hf9BoA6Xg==
+X-CSE-MsgGUID: QeJsn8bTRtyBh/4c1O05Ig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="34874599"
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="34874599"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:45:59 -0800
+X-CSE-ConnectionGUID: QRKrxpKmTdq/iPDGYT3XYw==
+X-CSE-MsgGUID: I2o+kIeySZmfMZPv1zd6vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="90119340"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 08 Nov 2024 01:45:58 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t9LYy-000rHW-0O;
+	Fri, 08 Nov 2024 09:45:56 +0000
+Date: Fri, 8 Nov 2024 17:45:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rex Nie <rex.nie@jaguarmicro.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] USB: core: remove dead code in do_proc_bulk()
+Message-ID: <Zy3dtuBq-EPJ1Efo@7253daef1eba>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241108094255.2133-1-rex.nie@jaguarmicro.com>
 
-When populating "ranges" property for a PCI bridge or endpoint,
-of_pci_prop_ranges() incorrectly use the CPU bus address of the resource.
-In such PCI nodes, the window should instead be in PCI address space. Call
-pci_bus_address() on the resource in order to obtain the PCI bus
-address.
+Hi,
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Herve Codina <herve.codina@bootlin.com>
----
-This patch, originally preparatory for a bigger patchset (see [1]), has
-been splitted in a standalone one for better management and because it
-contains a bugfix which is probably of interest to stable branch.
+Thanks for your patch.
 
- drivers/pci/of_property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index 5a0b98e69795..886c236e5de6 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -126,7 +126,7 @@ static int of_pci_prop_ranges(struct pci_dev *pdev, struct of_changeset *ocs,
- 		if (of_pci_get_addr_flags(&res[j], &flags))
- 			continue;
- 
--		val64 = res[j].start;
-+		val64 = pci_bus_address(pdev, &res[j] - pdev->resource);
- 		of_pci_set_address(pdev, rp[i].parent_addr, val64, 0, flags,
- 				   false);
- 		if (pci_is_bridge(pdev)) {
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] USB: core: remove dead code in do_proc_bulk()
+Link: https://lore.kernel.org/stable/20241108094255.2133-1-rex.nie%40jaguarmicro.com
+
 -- 
-2.35.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
