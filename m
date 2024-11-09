@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-91972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3C59C28CF
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 01:28:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF989C28F2
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 01:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 128A5B20CB6
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 00:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BBD9281BF4
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 00:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1452879CF;
-	Sat,  9 Nov 2024 00:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CE11F5FD;
+	Sat,  9 Nov 2024 00:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejaddrhx"
+	dkim=pass (2048-bit key) header.d=epochal.quest header.i=@epochal.quest header.b="PAY0hWXQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from thales.epochal.quest (thales.epochal.quest [51.222.15.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA10CA6B;
-	Sat,  9 Nov 2024 00:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694811E871;
+	Sat,  9 Nov 2024 00:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.222.15.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731112111; cv=none; b=vC56IqRl1+H6wOfCvseQzPR35f+DQVCte6B9XNV4qwdZqoqqX8+Fq7gdezha/FZw5laY6ja5DeR06Fk53DszbKBna0wqIXt4Qc8K4MI2VscoaDb9B+2lWLHhKGkfLL7jeyQFAQUnlhGc4eULBTCj7N+gbdo5Qh8fNFeaSL/pOr4=
+	t=1731112713; cv=none; b=h+w/Y7fy4ME4se6Grv4eHaKUJXZz53b9ljsZAT97EmS7zTWIw5B/k40IdDRFjJ6f8kPjgYKEQnmT3y4PtLZ6wVrkCbgRZUjcNAyNlQdFaZoYdiywFHpvYWQ/kNeM7RGO/2YfDUFX/T6oQqkwnR9wfll9bt00hIPdZlYLwZkAeWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731112111; c=relaxed/simple;
-	bh=C7SFj4q4lLbVbx3tVScA0zWrHnfokGjWtxuW3ZW984w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8NKfiYcmXOky89JJcGVzodaPEzMP0qYb1c7euqHNNQ/YjvsRscyYqDuyGdBtl/fKj86SSu+ikPWKNN8+shGd0qrcwfvt+tsJ/U/MuHuEPc/X7oWvtJFFFeoQpXQh8qDTlvSOasS4jORJMag4Fj89nAg+Er8FFjSPCOpFdR1elM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejaddrhx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4544C4CED2;
-	Sat,  9 Nov 2024 00:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731112111;
-	bh=C7SFj4q4lLbVbx3tVScA0zWrHnfokGjWtxuW3ZW984w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejaddrhxiuI6LbManrPYzvNdJtUX5+WsYnFFqOdK2SzvKPBiuK15KyZpBSYXDuRHo
-	 dEBJflmyG5Im66K/Qd/fLtM90rWjEYxX28uLULVzb04PlS4h0yN9XnKyJtKR5cuk4i
-	 ut5PuNMJ0OhQiKePYM6PTDEdI77j9hopNaQYbx83oTpw0tjgR3RaYtuctcBNwErlXM
-	 L84FHUN+zOE8Up3ioQ04CCDdDzELSO8NpQZXpFrC+4QS/M5yJaG4IPqLcepXQ65q7J
-	 7K0IYHy0IXVPOXw4bkUYdeJHobcRTxELnxNrmjG+zGY/fQWR6IU8+clPgd6jlbU3mF
-	 fiiWEzVaJDLZQ==
-From: Stephen Boyd <sboyd@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	s=arc-20240116; t=1731112713; c=relaxed/simple;
+	bh=+tH5r8cLpo1I9/b6hjipeQzb5fcbOBVbjlOj13fMT2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hv39N3W5FfovVl+2fjHT+VHSdXe8ALNwlq3tYOiJeTQlRjvdUY1vU6fWK75Fz7phspN7sK854sdu17BuRBoBjujeGo+8uiBLZoSKTxLBYqm06gsqRS2nXlUQgK1vX+3lQtRP1ayE00CXKYA9r9Bx570g+q3BrQk6OqvfXrh2dyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epochal.quest; spf=pass smtp.mailfrom=epochal.quest; dkim=pass (2048-bit key) header.d=epochal.quest header.i=@epochal.quest header.b=PAY0hWXQ; arc=none smtp.client-ip=51.222.15.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epochal.quest
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=epochal.quest
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=epochal.quest;
+	s=default; t=1731112704;
+	bh=+tH5r8cLpo1I9/b6hjipeQzb5fcbOBVbjlOj13fMT2g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PAY0hWXQfER7OCQRqiwOo0vfS/sROfzIpwW4hL9HKldH1/EfbsY580Q6zeFYojFyA
+	 zOJ/iQOdWpuHur2yGZbN4ShDvPkMecYq92G9w6R/W0Fztwej6zT5sOji4jX/1zXjEF
+	 N9pKWypZqcUN51miEXH64Di7jY6TX3J3EaTGBVPQZxt4KRaLa1qairAAUmkjQwze6Y
+	 6lk6n59mwXWQsmRTXSKSRNbO2jg3C6SnSm77sUd6eJBzhTUUfWX8usM4jAZlO/YXmB
+	 zX512cwTfABjJooNT1MCYX5aCIkOba151xrr+Blio/SkgXb4qx1/qYoaRIOp528x2z
+	 eHAvtL5Fa8EAQ==
+X-Virus-Scanned: by epochal.quest
+From: Cody Eksal <masterr3c0rd@epochal.quest>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Yangtao Li <frank@allwinnertech.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Rob Herring <robh@kernel.org>
+Cc: Cody Eksal <masterr3c0rd@epochal.quest>,
+	linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 1/3] spmi: pmic-arb: fix return path in for_each_available_child_of_node()
-Date: Fri,  8 Nov 2024 16:28:26 -0800
-Message-ID: <20241109002829.160973-2-sboyd@kernel.org>
-X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-In-Reply-To: <20241109002829.160973-1-sboyd@kernel.org>
-References: <20241109002829.160973-1-sboyd@kernel.org>
+	Parthiban <parthiban@linumiz.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] clk: sunxi-ng: a100: enable MMC clock reparenting
+Date: Fri,  8 Nov 2024 20:37:37 -0400
+Message-ID: <20241109003739.3440904-1-masterr3c0rd@epochal.quest>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,47 +70,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+While testing the MMC nodes proposed in [1], it was noted that mmc0/1
+would fail to initialize, with "mmc: fatal err update clk timeout" in
+the kernel logs. A closer look at the clock definitions showed that the MMC
+MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
+adding this flag in the first place, and its original purpose is unknown,
+but it doesn't seem to make sense and results in severe limitations to MMC
+speeds. Thus, remove this flag from the 3 MMC MPs.
 
-This loop requires explicit calls to of_node_put() upon early exits
-(break, goto, return) to decrement the child refcounter and avoid memory
-leaks if the child is not required out of the loop.
+[1] https://msgid.link/20241024170540.2721307-10-masterr3c0rd@epochal.quest
 
-A more robust solution is using the scoped variant of the macro, which
-automatically calls of_node_put() when the child goes out of scope.
-
+Fixes: fb038ce4db55 ("clk: sunxi-ng: add support for the Allwinner A100 CCU")
 Cc: stable@vger.kernel.org
-Fixes: 979987371739 ("spmi: pmic-arb: Add multi bus support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241001-spmi-pmic-arb-scoped-v1-1-5872bab34ed6@gmail.com
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Cody Eksal <masterr3c0rd@epochal.quest>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
 ---
- drivers/spmi/spmi-pmic-arb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a100.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spmi/spmi-pmic-arb.c b/drivers/spmi/spmi-pmic-arb.c
-index 9ba9495fcc4b..ea843159b745 100644
---- a/drivers/spmi/spmi-pmic-arb.c
-+++ b/drivers/spmi/spmi-pmic-arb.c
-@@ -1763,14 +1763,13 @@ static int spmi_pmic_arb_register_buses(struct spmi_pmic_arb *pmic_arb,
- {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *node = dev->of_node;
--	struct device_node *child;
- 	int ret;
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
+index bbaa82978716..a59e420b195d 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
+@@ -436,7 +436,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc0_clk, "mmc0", mmc_parents, 0x830,
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
- 	/* legacy mode doesn't provide child node for the bus */
- 	if (of_device_is_compatible(node, "qcom,spmi-pmic-arb"))
- 		return spmi_pmic_arb_bus_init(pdev, node, pmic_arb);
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
+ 					  0, 4,		/* M */
+@@ -444,7 +444,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
--	for_each_available_child_of_node(node, child) {
-+	for_each_available_child_of_node_scoped(node, child) {
- 		if (of_node_name_eq(child, "spmi")) {
- 			ret = spmi_pmic_arb_bus_init(pdev, child, pmic_arb);
- 			if (ret)
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
+ 					  0, 4,		/* M */
+@@ -452,7 +452,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
+ 
+ static SUNXI_CCU_GATE(bus_mmc0_clk, "bus-mmc0", "ahb3", 0x84c, BIT(0), 0);
+ static SUNXI_CCU_GATE(bus_mmc1_clk, "bus-mmc1", "ahb3", 0x84c, BIT(1), 0);
 -- 
-https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/
-https://git.kernel.org/pub/scm/linux/kernel/git/sboyd/spmi.git
+2.47.0
 
 
