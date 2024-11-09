@@ -1,170 +1,86 @@
-Return-Path: <stable+bounces-92007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A558B9C2DE5
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 15:54:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3D79C2DE8
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 15:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33179B20F09
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 14:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D50C1F21AC8
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 14:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0961619753F;
-	Sat,  9 Nov 2024 14:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kGlzBDF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BFE1487DC;
+	Sat,  9 Nov 2024 14:54:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BBB1E4B2;
-	Sat,  9 Nov 2024 14:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927C71991CA
+	for <stable@vger.kernel.org>; Sat,  9 Nov 2024 14:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731164054; cv=none; b=rMfm0LUqECEp3ckgthMKTv0KzHl17s/SyICa/QsJGLobL1RI/2XzDl4yy4Vqhts7XfnVQSVErvAYbf2phy03WyfZkFr7YVv1AGwvp+aaCezSAS2O6rClDfH7SATFO6p4vUBF79jR+VhZAx5WmEHBGiOOj6FpqFky3vgjJAfm6ec=
+	t=1731164082; cv=none; b=VqszHenZF1kJ+FwF10y9LnsYjLj6YoQRHmNzWQiktPG10yYHfvGUOsrscQlzIClB3OCRdf6Mhdqe3LUxIJqKfkkWlr8LQcSm2TYuZ0Bh4ee1OzQEPflvEz3M4VRLvaySWJxFIBDvFUhU56PdpNLEmfbvkan/WMddMyJYZdp3tZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731164054; c=relaxed/simple;
-	bh=wIzwSHJaB0B/G/7q4P5Ri7GUMQc2eTFEc5Hx8l1HXVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mc8VUmGfGkKRLzQW4RnCLXi/EmZipbHplh4K8vfwWFy3PYWK5F/E9uuTyBULf4RhU40L1vSpEq1nwNow/Ug3ro/500vjViO25mrMMSyQ5ZD2Ba1r9Ixx4QH+IdeChht40hVMWpVleTcRyMpxSEKGlSUeeywHEXhPbLs3b7NsEH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kGlzBDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B6FC4CECE;
-	Sat,  9 Nov 2024 14:54:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731164053;
-	bh=wIzwSHJaB0B/G/7q4P5Ri7GUMQc2eTFEc5Hx8l1HXVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1kGlzBDFb/Cktyk88KTzHuHdG0LJzJQHhEdE6KBoEFMwDTpv+GMcTxVJsG10RN2kx
-	 WqSvr0JVyOktoGZYG967QqBxbeEZ0kvWvGCdClFOGp2rmkm4Eh1IV0jece2oESo+NI
-	 9XqcE0ixz03YU5f6ngpbGLL0V8Q2OAczT59AwVQs=
-Date: Sat, 9 Nov 2024 15:54:09 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	bsegall@google.com, Thomas Gleixner <tglx@linutronix.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
- on clone" failed to apply to v4.19-stable tree
-Message-ID: <2024110957-anaconda-papaya-2f0a@gregkh>
-References: <20241106021416.184155-1-sashal@kernel.org>
- <ZyyVHAwmFIyTc3rR@pavilion.home>
+	s=arc-20240116; t=1731164082; c=relaxed/simple;
+	bh=iYifo8ZvWHr/K4r81W2teRDYrrpPR7lszO+IvzWuG20=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bXp6rMWk5engB97y0y5R00kPnWMDjezkCAZkEEPKxIpKb8Zfiu+lYv5CRvXgeuiGRl/miE9tZAbti7gGZgkRGLyokbbblGFhHTBk/qh/DAWHbB10AKWpFQlEPgVB/48jAPEjMDgoFz1/L2JHWoICzLrwI64fWpOwUFvi2ylrpaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+From: =?utf-8?Q?Ulrich_M=C3=BCller?= <ulm@gentoo.org>
+To: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
+Cc: Ulrich =?utf-8?Q?M=C3=BCller?= <ulm@gentoo.org>,
+  stable@vger.kernel.org,  Linux
+ regressions mailing list <regressions@lists.linux.dev>,  He Lugang
+ <helugang@uniontech.com>,  Jiri Kosina <jkosina@suse.com>
+Subject: Re: [REGRESSION] ThinkPad L15 Gen 4 touchpad no longer works
+In-Reply-To: <a4b1bae4-5235-4f19-bcdb-5ed9b67449b1@leemhuis.info> (Linux
+	regression tracking's message of "Sat, 9 Nov 2024 13:42:21 +0100")
+References: <uikt4wwpw@gentoo.org>
+	<a4b1bae4-5235-4f19-bcdb-5ed9b67449b1@leemhuis.info>
+Date: Sat, 09 Nov 2024 15:54:36 +0100
+Message-ID: <ucyj4h2z7@gentoo.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZyyVHAwmFIyTc3rR@pavilion.home>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 07, 2024 at 11:23:24AM +0100, Frederic Weisbecker wrote:
-> Le Tue, Nov 05, 2024 at 09:14:15PM -0500, Sasha Levin a écrit :
-> > The patch below does not apply to the v4.19-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > Thanks,
-> > Sasha
-> 
-> Please try this:
-> 
-> ---
-> >From ee0d95090203b7ee4cb1f29c586cd7d0dbf79fff Mon Sep 17 00:00:00 2001
-> From: Benjamin Segall <bsegall@google.com>
-> Date: Fri, 25 Oct 2024 18:35:35 -0700
-> Subject: [PATCH] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
-> 
-> When cloning a new thread, its posix_cputimers are not inherited, and
-> are cleared by posix_cputimers_init(). However, this does not clear the
-> tick dependency it creates in tsk->tick_dep_mask, and the handler does
-> not reach the code to clear the dependency if there were no timers to
-> begin with.
-> 
-> Thus if a thread has a cputimer running before clone/fork, all
-> descendants will prevent nohz_full unless they create a cputimer of
-> their own.
-> 
-> Fix this by entirely clearing the tick_dep_mask in copy_process().
-> (There is currently no inherited state that needs a tick dependency)
-> 
-> Process-wide timers do not have this problem because fork does not copy
-> signal_struct as a baseline, it creates one from scratch.
-> 
-> Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-> Signed-off-by: Ben Segall <bsegall@google.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
-> ---
->  include/linux/tick.h | 8 ++++++++
->  kernel/fork.c        | 2 ++
->  2 files changed, 10 insertions(+)
-> 
-> diff --git a/include/linux/tick.h b/include/linux/tick.h
-> index 443726085f6c..832381b812c2 100644
-> --- a/include/linux/tick.h
-> +++ b/include/linux/tick.h
-> @@ -233,12 +233,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
->  	if (tick_nohz_full_enabled())
->  		tick_nohz_dep_set_task(tsk, bit);
->  }
-> +
->  static inline void tick_dep_clear_task(struct task_struct *tsk,
->  				       enum tick_dep_bits bit)
->  {
->  	if (tick_nohz_full_enabled())
->  		tick_nohz_dep_clear_task(tsk, bit);
->  }
-> +
-> +static inline void tick_dep_init_task(struct task_struct *tsk)
-> +{
-> +	atomic_set(&tsk->tick_dep_mask, 0);
-> +}
-> +
->  static inline void tick_dep_set_signal(struct signal_struct *signal,
->  				       enum tick_dep_bits bit)
->  {
-> @@ -272,6 +279,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
->  				     enum tick_dep_bits bit) { }
->  static inline void tick_dep_clear_task(struct task_struct *tsk,
->  				       enum tick_dep_bits bit) { }
-> +static inline void tick_dep_init_task(struct task_struct *tsk) { }
->  static inline void tick_dep_set_signal(struct signal_struct *signal,
->  				       enum tick_dep_bits bit) { }
->  static inline void tick_dep_clear_signal(struct signal_struct *signal,
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index b65871600507..1fb06d8952bc 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -91,6 +91,7 @@
->  #include <linux/kcov.h>
->  #include <linux/livepatch.h>
->  #include <linux/thread_info.h>
-> +#include <linux/tick.h>
->  
->  #include <asm/pgtable.h>
->  #include <asm/pgalloc.h>
-> @@ -1829,6 +1830,7 @@ static __latent_entropy struct task_struct *copy_process(
->  	acct_clear_integrals(p);
->  
->  	posix_cpu_timers_init(p);
-> +	tick_dep_init_task(p);
->  
->  	p->io_context = NULL;
->  	audit_set_context(p, NULL);
-> -- 
-> 2.46.0
-> 
-> 
+>>>>> On Sat, 09 Nov 2024, Linux regression tracking (Thorsten Leemhuis) wr=
+ote:
 
-What is the git id of this in Linus's tree?
+> On 03.11.24 09:24, Ulrich M=C3=BCller wrote:
+>> After upgrading from 6.6.52 to 6.6.58, tapping on the touchpad stopped
+>> working. The problem is still present in 6.6.59.
+>>=20
+>> I see the following in dmesg output; the first line was not there
+>> previously:
+>>=20
+>> [    2.129282] hid-multitouch 0018:27C6:01E0.0001: The byte is not expec=
+ted for fixing the report descriptor. It's possible that the touchpad firmw=
+are is not suitable for applying the fix. got: 9
+>> [    2.137479] input: GXTP5140:00 27C6:01E0 as /devices/platform/AMDI001=
+0:00/i2c-0/i2c-GXTP5140:00/0018:27C6:01E0.0001/input/input10
+>> [    2.137680] input: GXTP5140:00 27C6:01E0 as /devices/platform/AMDI001=
+0:00/i2c-0/i2c-GXTP5140:00/0018:27C6:01E0.0001/input/input11
+>> [    2.137921] hid-multitouch 0018:27C6:01E0.0001: input,hidraw0: I2C HI=
+D v1.00 Mouse [GXTP5140:00 27C6:01E0] on i2c-GXTP5140:00
+>>=20
+>> Hardware is a Lenovo ThinkPad L15 Gen 4.
+>>=20
+>> The problem goes away when reverting this commit:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
+t/drivers/hid/hid-multitouch.c?id=3D251efae73bd46b097deec4f9986d926813aed744
 
-thanks,
+> Thx for the report. Is this a 6.6.y specific thing, or does it happen
+> with 6.12-rc6 or later as well?  And if it does: does the revert fix it
+> there, too?
 
-greg k-h
+It still happens with 6.12-rc6, and the revert fixes it.
 
