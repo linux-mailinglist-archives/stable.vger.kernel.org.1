@@ -1,98 +1,145 @@
-Return-Path: <stable+bounces-92002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2E19C2D30
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 13:42:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBCC9C2D8C
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 14:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2001C20D58
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E06881F21EDC
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 13:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AC6155726;
-	Sat,  9 Nov 2024 12:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579901922F1;
+	Sat,  9 Nov 2024 13:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="eiuF4VH1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h992DfQX"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640F513D899;
-	Sat,  9 Nov 2024 12:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C28613B297;
+	Sat,  9 Nov 2024 13:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731156147; cv=none; b=lAFxjcnvJnx7/SdJVT7xyChENxU82XksGXXn5gtZF4A2UZ+EF3/vAC/PUI8wsW9C5J6X/5mIqxGR2mE78KhntsM8OnyOpSWZ9L+2rIp2Vgusn6PU+JjHz0kuU4Zso354CBIz2pw6sR0ySMNMAezto4CYmd03oWCq8Gl1wzPcqc8=
+	t=1731159206; cv=none; b=jiS2TbYiCDUNBlp/ATovnwfRcmT+0aFNSKkUOvLt1d4Fgl98IX+SodLiyEwEfjJpxRwrh/H1o05rwU1N+fQGqywTwn9/9WImPEU8QX9bAt+n1uu6fOXDjC9fxDAeBa/8KSnW5DVu0XHlo1j8BPmRGfm3WpWMvJgtB0+j0GZwues=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731156147; c=relaxed/simple;
-	bh=VoHbs/oGgMDe6Okkb5VlTaPby3/ftiV1xiKBHFymen8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ph3x581rNC1JfbitHeg3KaQzcCbDQm4mQKh+v3cCubYaOV5l1RYB1VFpTwzDUO6YoGS0GWG+I7aYv2Tnta/s8NYi0J/HUvP4Mu+Xz8LnUZzYf9mfIBeZ2cZXsCF8WyF110ccLILlbU6fiL9fVMPwKSljoFM/TrrZpmNwdGxprTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=eiuF4VH1; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=D+SrTdTv7+IX+LsrCgrUD+JvGB8+Q5Z9Xvua9pHws3Y=;
-	t=1731156145; x=1731588145; b=eiuF4VH1a2JZvYBEElnNyuJW0Meudqoohd5rjfDp/P8W+8B
-	RTTc7tnz8e21JuIYleOInU32k8qoIDuvfdyM5Rmc3TaOF/m+o4XUQDMfxsmNzwCXsHr7R1zKrVKNW
-	aTjGNZ2kkcj6AKT6S3vnVcx2JEUmYjy2BG6LyAHrQOXtiaodDX+SC3iiUfs+UmZ4y0LrMsMo8s1A8
-	vF9GkY/tQNFES3978s80kVgEOkd8thEOM86+rV+NlRrlGTBZPw5hi5kQwZY0ijwVQ7+aliBxuxPV0
-	GEGG20dJsIiaxvIC3ZIOl8A0RS8Syzu0/KUV9Xndft8GolW7lzg1neGUTZQ+S1Lw==;
-Received: from [2a02:8108:8980:2478:87e9:6c79:5f84:367d]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t9knG-0002T9-0V; Sat, 09 Nov 2024 13:42:22 +0100
-Message-ID: <a4b1bae4-5235-4f19-bcdb-5ed9b67449b1@leemhuis.info>
-Date: Sat, 9 Nov 2024 13:42:21 +0100
+	s=arc-20240116; t=1731159206; c=relaxed/simple;
+	bh=Nxkc10fbSrQ53EfsDaKKNPb1mzlkOX8gplEMSQFbHm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rQsvC6MFbMjmS3MaXesbsPsFktFoTgou1vtp9R0pdBw+iVTg7aLI/xRm6GwVUxeyTFwpcGyimSrGkfqPMvUU3LjK+tJluGqwVyxLTT3R/c0wqhGngzGIgIlkn5omL+rrenDM0WRNUNFUC1Y4i0hkG3//RT+gN5crY+aLqEV6Bco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h992DfQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBEEC4CECE;
+	Sat,  9 Nov 2024 13:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731159205;
+	bh=Nxkc10fbSrQ53EfsDaKKNPb1mzlkOX8gplEMSQFbHm4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=h992DfQXcWXxcAb3eX0928/bBjPl/XOEbQ2UlThV3xDRBcEmxUOdI6E2NoXF8NbUG
+	 8zG9/iK/UpjdmU7ah4UlxVKPqg5HZ+chGG1o+28AjHIl9WFhsVsQNPivvaDQ1/FtMK
+	 CRbMAgumiQr2VgQ8Xj6FwN+4eHs5t/+Essv8G3diva8ZCya+tqHscoJJ4/wauIutJf
+	 m0Jjxz9Xfjk3hIu0oMVf4AldEv4tDRs0bdRZDNzEOeI5h6gWq3/OAUdT2S13xQkni8
+	 /dSTVSDPYu/lkSdx/5jDfDcazkKPJfgoXoNoghzgb+pPWDF0J7rMDdHU5XJFq3X0cQ
+	 diH+8FrURpFNw==
+Date: Sat, 9 Nov 2024 13:33:17 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
+ Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: inv_icm42600: fix spi burst write not
+ supported
+Message-ID: <20241109133317.0616252d@jic23-huawei>
+In-Reply-To: <20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com>
+References: <20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] ThinkPad L15 Gen 4 touchpad no longer works
-To: =?UTF-8?Q?Ulrich_M=C3=BCller?= <ulm@gentoo.org>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, He Lugang <helugang@uniontech.com>,
- Jiri Kosina <jkosina@suse.com>
-References: <uikt4wwpw@gentoo.org>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-MW
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <uikt4wwpw@gentoo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1731156145;a07a1ff0;
-X-HE-SMSGID: 1t9knG-0002T9-0V
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 03.11.24 09:24, Ulrich Müller wrote:
-> After upgrading from 6.6.52 to 6.6.58, tapping on the touchpad stopped
-> working. The problem is still present in 6.6.59.
-> 
-> I see the following in dmesg output; the first line was not there
-> previously:
-> 
-> [    2.129282] hid-multitouch 0018:27C6:01E0.0001: The byte is not expected for fixing the report descriptor. It's possible that the touchpad firmware is not suitable for applying the fix. got: 9
-> [    2.137479] input: GXTP5140:00 27C6:01E0 as /devices/platform/AMDI0010:00/i2c-0/i2c-GXTP5140:00/0018:27C6:01E0.0001/input/input10
-> [    2.137680] input: GXTP5140:00 27C6:01E0 as /devices/platform/AMDI0010:00/i2c-0/i2c-GXTP5140:00/0018:27C6:01E0.0001/input/input11
-> [    2.137921] hid-multitouch 0018:27C6:01E0.0001: input,hidraw0: I2C HID v1.00 Mouse [GXTP5140:00 27C6:01E0] on i2c-GXTP5140:00
-> 
-> Hardware is a Lenovo ThinkPad L15 Gen 4.
-> 
-> The problem goes away when reverting this commit:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/hid/hid-multitouch.c?id=251efae73bd46b097deec4f9986d926813aed744
+On Thu, 07 Nov 2024 22:20:06 +0100
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-Thx for the report. Is this a 6.6.y specific thing, or does it happen
-with 6.12-rc6 or later as well?  And if it does: does the revert fix it
-there, too?
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Burst write with SPI is not working for all icm42600 chips. It was
+> only used for setting user offsets with regmap_bulk_write.
+> 
+> Allow tweak of common regmap_config for using only single write for
+> spi.
+> 
+> Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Hi Jean-Baptiste,
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+You need to copy the regmap before modifying.
+Otherwise the case were someone has two IMUs only one of which needs this
+will set it for both.
+
+Probably better to just have two regmap_config const structures and pick between
+them based on the compatible.
+
+Jonathan
+
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600.h      | 2 +-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 2 +-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  | 3 +++
+>  3 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> index 3a07e43e4cf154f3107c015c30248330d8e677f8..36a3b0795fb7d6cb0c178fadd93896fbc346ba0d 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> @@ -402,7 +402,7 @@ struct inv_icm42600_sensor_state {
+>  
+>  typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+>  
+> -extern const struct regmap_config inv_icm42600_regmap_config;
+> +extern struct regmap_config inv_icm42600_regmap_config;
+>  extern const struct dev_pm_ops inv_icm42600_pm_ops;
+>  
+>  const struct iio_mount_matrix *
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..680373f6267b37d386e4e7bda543ba4efe97e66b 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> @@ -74,7 +74,7 @@ static const struct regmap_access_table inv_icm42600_regmap_rd_noinc_accesses[]
+>  	},
+>  };
+>  
+> -const struct regmap_config inv_icm42600_regmap_config = {
+> +struct regmap_config inv_icm42600_regmap_config = {
+>  	.name = "inv_icm42600",
+>  	.reg_bits = 8,
+>  	.val_bits = 8,
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> index 3b6d05fce65d544524b25299c6d342af92cfd1e0..73cacfd157a4538ae8c9d1c8d97157afa28aa672 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> @@ -59,6 +59,9 @@ static int inv_icm42600_probe(struct spi_device *spi)
+>  		return -EINVAL;
+>  	chip = (uintptr_t)match;
+>  
+> +	/* spi doesn't support burst write */
+> +	inv_icm42600_regmap_config.use_single_write = true;
+> +
+>  	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
+>  	if (IS_ERR(regmap))
+>  		return PTR_ERR(regmap);
+> 
+> ---
+> base-commit: c9f8285ec18c08fae0de08835eb8e5953339e664
+> change-id: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
+> 
+> Best regards,
+
 
