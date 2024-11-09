@@ -1,82 +1,178 @@
-Return-Path: <stable+bounces-91986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739D99C2C44
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:50:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAF19C2C4C
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D3282B06
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12DA282F29
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862181465B1;
-	Sat,  9 Nov 2024 11:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B21154BEA;
+	Sat,  9 Nov 2024 11:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLEAawyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXUvEHZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40025433BB;
-	Sat,  9 Nov 2024 11:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFB21870
+	for <stable@vger.kernel.org>; Sat,  9 Nov 2024 11:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731153040; cv=none; b=gKqgkJBOStrxuvc4LM9Y9O3sNKSj1cor15YuLoSxc2fYmn925cHjSwjecb5FjSN0yqOXmfeFQniaqnie+KhTucjyKaTAGbXmMJpeRl7KDcUdVCvQe/bOSbI/AjS1OD76s+WLMWPZn9gfsaucfnI2HyN1yA36TDgbd9Ngh6sY8Ps=
+	t=1731153299; cv=none; b=e+WIj9/jaTQau5AAbkCgaTbNZos9qjVGFMvhq3agQK098vajsiS5ArqVmYLXGliWA5aFC/15H48rDDadRcpDEUwipaZwdO17//fRu3E8ZVAS0qOwl/LGeGxrjqv2mPEbdzLbBC3MsHqMGEu/7mCkLJvIyqn0aKlwZckG2al5a3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731153040; c=relaxed/simple;
-	bh=eaxmgObWLM6CdEAKEpPmHeyMuOW5lMJyIr1SWJK8la0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rBA+9bh6TxIvwQR0RSnLZhuF2L1iCJ2yDvpaJe8CgdIsO9lwvgPgmSlPMDtOPGQJZ9wXXsyfUrrOzpE1qswOxq7T+238b+emopIi8a80f2JWC4iIS0IzEg4+Fv3hCV7UHexO6advk/rQWx/nFMmfn3000tRZFAiAAkDrdWf5tmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLEAawyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4C5C4CECE;
-	Sat,  9 Nov 2024 11:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731153039;
-	bh=eaxmgObWLM6CdEAKEpPmHeyMuOW5lMJyIr1SWJK8la0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XLEAawyYweiFFmPBJ/isbowd+alEARgKHdnO6f8H8Q9apyrva3cNrGxzH1wVXS0nU
-	 wTx+KJ0t4rdyTyp+hIosqkCGCFkx1rYwP20xt+b1d940AxaFV8P7TGbR4di9Eqiljz
-	 HaWFbIz5FoGbhivivtbUwvTf9LCc4J9/Z29c2uGcdNwQsyLVeDOu7kKl3P+GyOamdJ
-	 2YrZNGYaHbXeLPrMa/Jfpfgod0dgf1MGgkYJCpx7IFZH/0U05Ry2e1ru/90j3LjtzM
-	 6imvwfh4Z7d89gGAuLSQAkW+KMx7BpXrUoGHJ3qz9BDueb9/JL+m8jI9BmxugPs2vl
-	 QeX0Qidm3W3tQ==
-Date: Sat, 9 Nov 2024 06:50:39 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org, bsegall@google.com,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
- on clone" failed to apply to v6.1-stable tree
-Message-ID: <Zy9Mj3-aapIyw8Nu@sashalap>
-References: <20241106021018.179970-1-sashal@kernel.org>
- <ZyyTHGkchGzeHBx3@pavilion.home>
+	s=arc-20240116; t=1731153299; c=relaxed/simple;
+	bh=Zw9qFx0oKBA/DzDfEUinuhFV3o/LERTWCoOyELfzqgY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R2OgpaaapIlTVO99JOHU1iP9om9owEinHFC9G0rTIbkPIu7ic8dnIGbFynuThOQ6He5E9NEeesMTLFu/xp+bpgVdJkXnn8qUp4wd3Xom6vFwTCaLmpFKIUJdqhY5lgnTxMIJGSVOBFypMeOTGTxAs4AmAeIOGB+vfcF9MQiX/Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXUvEHZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747EDC4CECE;
+	Sat,  9 Nov 2024 11:54:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731153298;
+	bh=Zw9qFx0oKBA/DzDfEUinuhFV3o/LERTWCoOyELfzqgY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=uXUvEHZB2cI4lmUIEn1XvYGoRT++K6c46idAaJFcijpknOME/4tjyoClZAjQxqF+A
+	 Hxf9nAfbiIEq5t8yKsI/5ZsUBCVRXs8GAE3Sc8Q6HqlS5n2N/3geQaeTwuU/+ZEnik
+	 yXODL6yLAzTLs/Cpwn003fPYv6YeQwZvdQJPZY68=
+Subject: FAILED: patch "[PATCH] media: av7110: fix a spectre vulnerability" failed to apply to 6.1-stable tree
+To: mchehab+huawei@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 09 Nov 2024 12:54:47 +0100
+Message-ID: <2024110947-probing-conform-ac38@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZyyTHGkchGzeHBx3@pavilion.home>
 
-On Thu, Nov 07, 2024 at 11:14:52AM +0100, Frederic Weisbecker wrote:
->Hi,
->
->Le Tue, Nov 05, 2024 at 09:10:17PM -0500, Sasha Levin a écrit :
->> The patch below does not apply to the v6.1-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
->
->
->Can you try with this updated version on the failing trees?
 
-Queued up, thanks!
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
--- 
-Thanks,
-Sasha
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 458ea1c0be991573ec436aa0afa23baacfae101a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110947-probing-conform-ac38@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 458ea1c0be991573ec436aa0afa23baacfae101a Mon Sep 17 00:00:00 2001
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Tue, 15 Oct 2024 09:24:24 +0200
+Subject: [PATCH] media: av7110: fix a spectre vulnerability
+
+As warned by smatch:
+	drivers/staging/media/av7110/av7110_ca.c:270 dvb_ca_ioctl() warn: potential spectre issue 'av7110->ci_slot' [w] (local cap)
+
+There is a spectre-related vulnerability at the code. Fix it.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/drivers/staging/media/av7110/av7110.h b/drivers/staging/media/av7110/av7110.h
+index ec461fd187af..b584754f4be0 100644
+--- a/drivers/staging/media/av7110/av7110.h
++++ b/drivers/staging/media/av7110/av7110.h
+@@ -88,6 +88,8 @@ struct infrared {
+ 	u32			ir_config;
+ };
+ 
++#define MAX_CI_SLOTS	2
++
+ /* place to store all the necessary device information */
+ struct av7110 {
+ 	/* devices */
+@@ -163,7 +165,7 @@ struct av7110 {
+ 
+ 	/* CA */
+ 
+-	struct ca_slot_info	ci_slot[2];
++	struct ca_slot_info	ci_slot[MAX_CI_SLOTS];
+ 
+ 	enum av7110_video_mode	vidmode;
+ 	struct dmxdev		dmxdev;
+diff --git a/drivers/staging/media/av7110/av7110_ca.c b/drivers/staging/media/av7110/av7110_ca.c
+index 6ce212c64e5d..fce4023c9dea 100644
+--- a/drivers/staging/media/av7110/av7110_ca.c
++++ b/drivers/staging/media/av7110/av7110_ca.c
+@@ -26,23 +26,28 @@
+ 
+ void CI_handle(struct av7110 *av7110, u8 *data, u16 len)
+ {
++	unsigned slot_num;
++
+ 	dprintk(8, "av7110:%p\n", av7110);
+ 
+ 	if (len < 3)
+ 		return;
+ 	switch (data[0]) {
+ 	case CI_MSG_CI_INFO:
+-		if (data[2] != 1 && data[2] != 2)
++		if (data[2] != 1 && data[2] != MAX_CI_SLOTS)
+ 			break;
++
++		slot_num = array_index_nospec(data[2] - 1, MAX_CI_SLOTS);
++
+ 		switch (data[1]) {
+ 		case 0:
+-			av7110->ci_slot[data[2] - 1].flags = 0;
++			av7110->ci_slot[slot_num].flags = 0;
+ 			break;
+ 		case 1:
+-			av7110->ci_slot[data[2] - 1].flags |= CA_CI_MODULE_PRESENT;
++			av7110->ci_slot[slot_num].flags |= CA_CI_MODULE_PRESENT;
+ 			break;
+ 		case 2:
+-			av7110->ci_slot[data[2] - 1].flags |= CA_CI_MODULE_READY;
++			av7110->ci_slot[slot_num].flags |= CA_CI_MODULE_READY;
+ 			break;
+ 		}
+ 		break;
+@@ -262,15 +267,19 @@ static int dvb_ca_ioctl(struct file *file, unsigned int cmd, void *parg)
+ 	case CA_GET_SLOT_INFO:
+ 	{
+ 		struct ca_slot_info *info = (struct ca_slot_info *)parg;
++		unsigned int slot_num;
+ 
+ 		if (info->num < 0 || info->num > 1) {
+ 			mutex_unlock(&av7110->ioctl_mutex);
+ 			return -EINVAL;
+ 		}
+-		av7110->ci_slot[info->num].num = info->num;
+-		av7110->ci_slot[info->num].type = FW_CI_LL_SUPPORT(av7110->arm_app) ?
+-							CA_CI_LINK : CA_CI;
+-		memcpy(info, &av7110->ci_slot[info->num], sizeof(struct ca_slot_info));
++		slot_num = array_index_nospec(info->num, MAX_CI_SLOTS);
++
++		av7110->ci_slot[slot_num].num = info->num;
++		av7110->ci_slot[slot_num].type = FW_CI_LL_SUPPORT(av7110->arm_app) ?
++						 CA_CI_LINK : CA_CI;
++		memcpy(info, &av7110->ci_slot[slot_num],
++		       sizeof(struct ca_slot_info));
+ 		break;
+ 	}
+ 
+
 
