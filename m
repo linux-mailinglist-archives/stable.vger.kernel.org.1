@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-91996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E682D9C2C59
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:57:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573A89C2C5A
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00667B216AE
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096801F214C0
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B0B14D456;
-	Sat,  9 Nov 2024 11:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B9F14D456;
+	Sat,  9 Nov 2024 11:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kgeX4Z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCJKqKNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7408912F5B1
-	for <stable@vger.kernel.org>; Sat,  9 Nov 2024 11:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6723212F5B1
+	for <stable@vger.kernel.org>; Sat,  9 Nov 2024 11:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731153422; cv=none; b=piilHOJm3GERRw88gzwk7sJ0nqgYA+rzhiiewpCgnWZdMAkGFkltZMNuErapskWTlgAKGOQksIKae4w70iBBx5wvROoB7PzRPs5algnXLK41LS+XXvkcd1+gsrqmTCPAzAzHuTeF5FWbDRjeMTH872M0/durZhgI8YSI4yjvapY=
+	t=1731153433; cv=none; b=MVOkx2Ua9m/w81LPOzlWjf2dTV8w9KS/BKn/K2+RsCBQ62mKwinA2rmv+Qiwg6zLgh9P0BWDfQ5Ya6wq6zNWwaIDT0KLaJTK1FcX37eHOua/s+CvQaTiI3/PDukoRn3CEoumRJXBRYBpiC6Fg6Pmmc1XYJHRGpbm1z3HhKFavj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731153422; c=relaxed/simple;
-	bh=/jpykJFGOLVS/3Qura8W9dhPrtQXQQiGJFFURzf542U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VibFKIjtRGb2zqW9pJBX/d6dAwYR5Fp+HhtcntWa+4zLKGTSqPsSKtd8B+v0BSK26NjZiJSEGagw3ojQ5mQdCVki4VJkYX4jeoBTGrc3DWkDaq184gGW+j+T7ovYY1k+/P80Pj39Ks+TQwLNNb6nRMtKasM36ZPujoiguX6Ulew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kgeX4Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C088AC4CECE;
-	Sat,  9 Nov 2024 11:57:01 +0000 (UTC)
+	s=arc-20240116; t=1731153433; c=relaxed/simple;
+	bh=Rcf8R2vZXVQWsjyYqAK+OLRAwfeTEur1rrurzMRlMJM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dC5XTSCr90IX8TfTebYKzzlnmIaDzky8/ZI279DRZV5u7tEZlUS+vNSWRY1mNkJfQhy7R3OjlASWXiH2vhk4VW9Z8ae7wfEJVG+yIt0G7jDNsCYsSd5dvzuiSAkeDDc153xLZ1Vpe76cq4FblQESLnYUxxVxUSeiKfg4qvwFBhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCJKqKNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AC1C4CECE;
+	Sat,  9 Nov 2024 11:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731153422;
-	bh=/jpykJFGOLVS/3Qura8W9dhPrtQXQQiGJFFURzf542U=;
+	s=korg; t=1731153433;
+	bh=Rcf8R2vZXVQWsjyYqAK+OLRAwfeTEur1rrurzMRlMJM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2kgeX4Z/QvuR8GoQ/2VhGqzJlQEmRX9j7R1Kxa8RN8GB2BJudFst0Znnc6R8XpSMj
-	 xX6s9zz/ZZo/Ca2AUp7NtFpKQcr998d4WcP5fHZdl++000vh41KaVDSidTzaNBhStu
-	 ItbirdSID0b6cj/hPJdqRo88rGx59lz+6M7fUQmg=
-Subject: FAILED: patch "[PATCH] ksmbd: check outstanding simultaneous SMB operations" failed to apply to 5.15-stable tree
-To: linkinjeon@kernel.org,norbert@doyensec.com,stfrench@microsoft.com
+	b=cCJKqKNU59Rir5LH6UlSLJY3sWTUY9hjWQLGSWSy6VZiR04LRdtjXkQ4vBojj0Ybf
+	 ebEczx1ziRUIQtNMZZLG8amnTKgoVk0iRBseqfwg38jrgHZjj7ta50yQQUaDBfMxLN
+	 FLjqxOjA2nYkLN/XelXm7VpLnaK7n3fy1KI4g91w=
+Subject: FAILED: patch "[PATCH] ksmbd: Fix the missing xa_store error check" failed to apply to 5.15-stable tree
+To: ruanjinjie@huawei.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Nov 2024 12:56:46 +0100
-Message-ID: <2024110945-emission-stegosaur-f847@gregkh>
+Date: Sat, 09 Nov 2024 12:56:57 +0100
+Message-ID: <2024110956-unwired-hence-eb8d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0a77d947f599b1f39065015bec99390d0c0022ee
+git cherry-pick -x 3abab905b14f4ba756d413f37f1fb02b708eee93
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110945-emission-stegosaur-f847@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110956-unwired-hence-eb8d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,140 +77,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0a77d947f599b1f39065015bec99390d0c0022ee Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Mon, 4 Nov 2024 13:43:06 +0900
-Subject: [PATCH] ksmbd: check outstanding simultaneous SMB operations
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 3abab905b14f4ba756d413f37f1fb02b708eee93 Mon Sep 17 00:00:00 2001
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+Date: Mon, 28 Oct 2024 08:28:30 +0900
+Subject: [PATCH] ksmbd: Fix the missing xa_store error check
 
-If Client send simultaneous SMB operations to ksmbd, It exhausts too much
-memory through the "ksmbd_work_cache”. It will cause OOM issue.
-ksmbd has a credit mechanism but it can't handle this problem. This patch
-add the check if it exceeds max credits to prevent this problem by assuming
-that one smb request consumes at least one credit.
+xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
+be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
+so check error for xa_store() to fix it.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index aa2a37a7ce84..e6a72f75ab94 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -70,6 +70,7 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
- 	atomic_set(&conn->req_running, 0);
- 	atomic_set(&conn->r_count, 0);
- 	atomic_set(&conn->refcnt, 1);
-+	atomic_set(&conn->mux_smb_requests, 0);
- 	conn->total_credits = 1;
- 	conn->outstanding_credits = 0;
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 1e4624e9d434..9756a4bbfe54 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
  
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index b379ae4fdcdf..8ddd5a3c7baf 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -107,6 +107,7 @@ struct ksmbd_conn {
- 	__le16				signing_algorithm;
- 	bool				binding;
- 	atomic_t			refcnt;
-+	atomic_t			mux_smb_requests;
- };
- 
- struct ksmbd_conn_ops {
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index e7f14f8df943..e6cfedba9992 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -270,6 +270,7 @@ static void handle_ksmbd_work(struct work_struct *wk)
- 
- 	ksmbd_conn_try_dequeue_request(work);
- 	ksmbd_free_work_struct(work);
-+	atomic_dec(&conn->mux_smb_requests);
- 	/*
- 	 * Checking waitqueue to dropping pending requests on
- 	 * disconnection. waitqueue_active is safe because it
-@@ -291,6 +292,15 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
- 	struct ksmbd_work *work;
- 	int err;
- 
-+	err = ksmbd_init_smb_server(conn);
-+	if (err)
-+		return 0;
-+
-+	if (atomic_inc_return(&conn->mux_smb_requests) >= conn->vals->max_credits) {
-+		atomic_dec_return(&conn->mux_smb_requests);
-+		return -ENOSPC;
-+	}
-+
- 	work = ksmbd_alloc_work_struct();
- 	if (!work) {
- 		pr_err("allocation for work failed\n");
-@@ -301,12 +311,6 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
- 	work->request_buf = conn->request_buf;
- 	conn->request_buf = NULL;
- 
--	err = ksmbd_init_smb_server(work);
--	if (err) {
--		ksmbd_free_work_struct(work);
--		return 0;
--	}
--
- 	ksmbd_conn_enqueue_request(work);
- 	atomic_inc(&conn->r_count);
- 	/* update activity on connection */
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index a2ebbe604c8c..75b4eb856d32 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -388,6 +388,10 @@ static struct smb_version_ops smb1_server_ops = {
- 	.set_rsp_status = set_smb1_rsp_status,
- };
- 
-+static struct smb_version_values smb1_server_values = {
-+	.max_credits = SMB2_MAX_CREDITS,
-+};
-+
- static int smb1_negotiate(struct ksmbd_work *work)
+ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
  {
- 	return ksmbd_smb_negotiate_common(work, SMB_COM_NEGOTIATE);
-@@ -399,18 +403,18 @@ static struct smb_version_cmds smb1_server_cmds[1] = {
+-	struct ksmbd_session_rpc *entry;
++	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+ 	int method;
  
- static int init_smb1_server(struct ksmbd_conn *conn)
- {
-+	conn->vals = &smb1_server_values;
- 	conn->ops = &smb1_server_ops;
- 	conn->cmds = smb1_server_cmds;
- 	conn->max_cmds = ARRAY_SIZE(smb1_server_cmds);
- 	return 0;
- }
+@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
+ 	entry->id = ksmbd_ipc_id_alloc();
+ 	if (entry->id < 0)
+ 		goto free_entry;
+-	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	if (xa_is_err(old))
++		goto free_id;
  
--int ksmbd_init_smb_server(struct ksmbd_work *work)
-+int ksmbd_init_smb_server(struct ksmbd_conn *conn)
- {
--	struct ksmbd_conn *conn = work->conn;
- 	__le32 proto;
+ 	resp = ksmbd_rpc_open(sess, entry->id);
+ 	if (!resp)
+-		goto free_id;
++		goto erase_xa;
  
--	proto = *(__le32 *)((struct smb_hdr *)work->request_buf)->Protocol;
-+	proto = *(__le32 *)((struct smb_hdr *)conn->request_buf)->Protocol;
- 	if (conn->need_neg == false) {
- 		if (proto == SMB1_PROTO_NUMBER)
- 			return -EINVAL;
-diff --git a/fs/smb/server/smb_common.h b/fs/smb/server/smb_common.h
-index cc1d6dfe29d5..a3d8a905b07e 100644
---- a/fs/smb/server/smb_common.h
-+++ b/fs/smb/server/smb_common.h
-@@ -427,7 +427,7 @@ bool ksmbd_smb_request(struct ksmbd_conn *conn);
- 
- int ksmbd_lookup_dialect_by_id(__le16 *cli_dialects, __le16 dialects_count);
- 
--int ksmbd_init_smb_server(struct ksmbd_work *work);
-+int ksmbd_init_smb_server(struct ksmbd_conn *conn);
- 
- struct ksmbd_kstat;
- int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work,
+ 	kvfree(resp);
+ 	return entry->id;
+-free_id:
++erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
++free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
 
 
