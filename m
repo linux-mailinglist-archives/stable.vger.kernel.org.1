@@ -1,111 +1,82 @@
-Return-Path: <stable+bounces-91985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A469C2C3F
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:47:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739D99C2C44
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 12:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EF9C282B69
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D3282B06
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 11:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0544C1547C0;
-	Sat,  9 Nov 2024 11:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862181465B1;
+	Sat,  9 Nov 2024 11:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqOCxaCV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLEAawyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9E5433BB;
-	Sat,  9 Nov 2024 11:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40025433BB;
+	Sat,  9 Nov 2024 11:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731152831; cv=none; b=NWrD18aalf7LIkHzBhLe3JXB34AeyhxyB7eHRuENot1LXY5S6i9eoKdwQmc7Emh6I0EBkZAFnL1lb9oWJyYOW+9Ra07fZr4MG1EtgEt1+LYfA/1hKUnlJGNnB0S7G1zr5ZuQWfsZztJoa80MyXEcxdGewj+HqcP/7oIjFfP/Aa0=
+	t=1731153040; cv=none; b=gKqgkJBOStrxuvc4LM9Y9O3sNKSj1cor15YuLoSxc2fYmn925cHjSwjecb5FjSN0yqOXmfeFQniaqnie+KhTucjyKaTAGbXmMJpeRl7KDcUdVCvQe/bOSbI/AjS1OD76s+WLMWPZn9gfsaucfnI2HyN1yA36TDgbd9Ngh6sY8Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731152831; c=relaxed/simple;
-	bh=PkNaX/onq2nxjMaz+CMLZrEXUmFc3MMTQGZC1r6OsDg=;
+	s=arc-20240116; t=1731153040; c=relaxed/simple;
+	bh=eaxmgObWLM6CdEAKEpPmHeyMuOW5lMJyIr1SWJK8la0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QDCFhUPcGvJHjDQO0YoftlnNuoJnxPYNDlvEE1C02XfBf/5XxrMUKz9Z0KMhTN3USNQIk8GZpR/SuiMSsjYVBi8UqprdXWo/jtrPhLyBd7UVqYUA2ErQbbvVX9+DdaJ1pYmZhzCwCaPXVPiCC5q8fTwSgHSaNenWLMEhRA6shs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqOCxaCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB2AC4CECE;
-	Sat,  9 Nov 2024 11:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731152831;
-	bh=PkNaX/onq2nxjMaz+CMLZrEXUmFc3MMTQGZC1r6OsDg=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=rBA+9bh6TxIvwQR0RSnLZhuF2L1iCJ2yDvpaJe8CgdIsO9lwvgPgmSlPMDtOPGQJZ9wXXsyfUrrOzpE1qswOxq7T+238b+emopIi8a80f2JWC4iIS0IzEg4+Fv3hCV7UHexO6advk/rQWx/nFMmfn3000tRZFAiAAkDrdWf5tmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLEAawyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4C5C4CECE;
+	Sat,  9 Nov 2024 11:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731153039;
+	bh=eaxmgObWLM6CdEAKEpPmHeyMuOW5lMJyIr1SWJK8la0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zqOCxaCVXQwLD5bFkXtatvnMn81wuo0PqdiTb2lHDQxlKTdScatXdtA6SeVana6Rp
-	 6fG+jHy1d7eY96y2mQBL9k7UJ4cJcAP8+cO2X79neiUY91ulFJcegqdbKc1HgI2qDK
-	 O/OPtTfMhFQ2BN8+CviJUsviIvQShjQUDMk6ATsk=
-Date: Sat, 9 Nov 2024 12:47:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Rex Nie <rex.nie@jaguarmicro.com>
-Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Angus Chen <angus.chen@jaguarmicro.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: =?utf-8?B?562U5aSN?= =?utf-8?Q?=3A?= [PATCH v2] USB: core:
- remove dead code in do_proc_bulk()
-Message-ID: <2024110911-professor-obnoxious-f411@gregkh>
-References: <20241109021140.2174-1-rex.nie@jaguarmicro.com>
- <2024110947-umpire-unwell-ac00@gregkh>
- <KL1PR0601MB5773F9F97A6AFC7E5D987323E65E2@KL1PR0601MB5773.apcprd06.prod.outlook.com>
+	b=XLEAawyYweiFFmPBJ/isbowd+alEARgKHdnO6f8H8Q9apyrva3cNrGxzH1wVXS0nU
+	 wTx+KJ0t4rdyTyp+hIosqkCGCFkx1rYwP20xt+b1d940AxaFV8P7TGbR4di9Eqiljz
+	 HaWFbIz5FoGbhivivtbUwvTf9LCc4J9/Z29c2uGcdNwQsyLVeDOu7kKl3P+GyOamdJ
+	 2YrZNGYaHbXeLPrMa/Jfpfgod0dgf1MGgkYJCpx7IFZH/0U05Ry2e1ru/90j3LjtzM
+	 6imvwfh4Z7d89gGAuLSQAkW+KMx7BpXrUoGHJ3qz9BDueb9/JL+m8jI9BmxugPs2vl
+	 QeX0Qidm3W3tQ==
+Date: Sat, 9 Nov 2024 06:50:39 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: stable@vger.kernel.org, bsegall@google.com,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER
+ on clone" failed to apply to v6.1-stable tree
+Message-ID: <Zy9Mj3-aapIyw8Nu@sashalap>
+References: <20241106021018.179970-1-sashal@kernel.org>
+ <ZyyTHGkchGzeHBx3@pavilion.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <KL1PR0601MB5773F9F97A6AFC7E5D987323E65E2@KL1PR0601MB5773.apcprd06.prod.outlook.com>
+In-Reply-To: <ZyyTHGkchGzeHBx3@pavilion.home>
 
-On Sat, Nov 09, 2024 at 11:38:43AM +0000, Rex Nie wrote:
-> 
-> 
-> > -----邮件原件-----
-> > 发件人: Greg KH <gregkh@linuxfoundation.org>
-> > 发送时间: 2024年11月9日 14:59
-> > 收件人: Rex Nie <rex.nie@jaguarmicro.com>
-> > 抄送: linux-usb@vger.kernel.org; linux-kernel@vger.kernel.org; Angus Chen
-> > <angus.chen@jaguarmicro.com>; stable@vger.kernel.org
-> > 主题: Re: [PATCH v2] USB: core: remove dead code in do_proc_bulk()
-> > 
-> > External Mail: This email originated from OUTSIDE of the organization!
-> > Do not click links, open attachments or provide ANY information unless you
-> > recognize the sender and know the content is safe.
-> > 
-> > 
-> > On Sat, Nov 09, 2024 at 10:11:41AM +0800, Rex Nie wrote:
-> > > Since len1 is unsigned int, len1 < 0 always false. Remove it keep code
-> > > simple.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: ae8709b296d8 ("USB: core: Make do_proc_control() and
-> > > do_proc_bulk() killable")
-> > > Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
-> > > ---
-> > > changes in v2:
-> > > - Add "Cc: stable@vger.kernel.org" (kernel test robot)
-> > 
-> > Why is this relevant for the stable kernels?  What bug is being fixed that
-> > users would hit that this is needed to resolve?
-> HI Greg k-h, I got a email from lkp@intel.com let me add Cc tag yesterday, so I apply v2 patch.
+On Thu, Nov 07, 2024 at 11:14:52AM +0100, Frederic Weisbecker wrote:
+>Hi,
+>
+>Le Tue, Nov 05, 2024 at 09:10:17PM -0500, Sasha Levin a �crit :
+>> The patch below does not apply to the v6.1-stable tree.
+>> If someone wants it applied there, or to any other stable or longterm
+>> tree, then please email the backport, including the original git commit
+>> id to <stable@vger.kernel.org>.
+>
+>
+>Can you try with this updated version on the failing trees?
 
-That was because you cc: stable and yet did not tag it as such.  That's
-not passing a judgement call on if it should have been done at all,
-which is what I am asking here.
+Queued up, thanks!
 
-> Although this shouldn't bother users, the expression len1 < 0 in the if condition doesn't make sense,
-> and removing it makes the code more simple and efficient. The original email from kernel robot test
-> shows as follows. I think it no need a cc tag either.
-
-Does this follow the patches as per the documentation for what should be
-accepted for stable kernels?
-
-thanks,
-
-greg k-h
+-- 
+Thanks,
+Sasha
 
