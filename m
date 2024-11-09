@@ -1,175 +1,83 @@
-Return-Path: <stable+bounces-92028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D5D9C2EAD
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 18:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 072279C2EB2
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 18:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0C91C20D79
-	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 17:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361A91C20C07
+	for <lists+stable@lfdr.de>; Sat,  9 Nov 2024 17:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66DE19D8AC;
-	Sat,  9 Nov 2024 17:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A959CECF;
+	Sat,  9 Nov 2024 17:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="lcesHJDj"
+	dkim=pass (2048-bit key) header.d=epochal.quest header.i=@epochal.quest header.b="bTOFOFM+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from thales.epochal.quest (thales.epochal.quest [51.222.15.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C9119B5A9;
-	Sat,  9 Nov 2024 17:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88E919D082;
+	Sat,  9 Nov 2024 17:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.222.15.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731172526; cv=none; b=RtW6undWOnxDLh9HOwAKA5rI5QsuFQX5v81N+gICunha4+z3zkg1HFIWHfIGfjWcI4dXgFkmu4Qt6uCEZytfoBRo7hm7RkcIOPIqYINtN+halDTmUM7N7ehahvhDtrXWT4Q+Ufi9lpPzFYep8GNTcMeITX5dvM32BJOB/AephlM=
+	t=1731172657; cv=none; b=B0LjnIZ6a4YCpubQmiXbv4To6vIz2z2xPfdozlt4BK4jDwdg/LXGad5MRkJwXfsOGaWUyL1CadqiDL7XOL+403ZgM8QVlnavpIVN8GSmHtHWbZ/XTUeTUQY+ar7Obx1AnZhMl4+0U5zLu8zD4p4lu6f9sKQSqBrl9NYQQ/lFsvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731172526; c=relaxed/simple;
-	bh=6S0TuVkzqkc7ysyQHic+w6BGYlvdyTKD6XWIUkancIM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AJp4aDCps67TE39B5oVzLp5zMWDt6xXSO31jLedqq/EVDpDfmtw/OZ2j8lbjynPKdZsBLUbizi9I17wdVKSI/bRqryNfBh3lGrKNP0KIKfdbAw+tMYBHhzYUwZRAiL6GjmnERoxHERRUXmpvPfyTybbKJEJZIIORk96a5rcu5Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=lcesHJDj; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.14])
-	by mail.ispras.ru (Postfix) with ESMTPSA id DEB9B40B228D;
-	Sat,  9 Nov 2024 17:15:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru DEB9B40B228D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1731172522;
-	bh=VW35dz2P8QIlcF2UimhEjmmVGp+q1vXGSeRLP7WbgQU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lcesHJDjCd/NBEIZHAewF98TPBmLV/HikclZ3rr73Mz/nzNEBuakraRG2mqN17njT
-	 avmBSoh5rE15+a0GC96cStURGiuAgmUUaFWuoKEWJqEYyiGDhoA14Y9YcO41MMaa+V
-	 tWXfzZ0wDAFx/laPYIYzRssnVLiNwkbEM5WNFG9g=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1] Revert "wifi: mac80211: fix RCU list iterations"
-Date: Sat,  9 Nov 2024 20:15:13 +0300
-Message-Id: <20241109171513.1641079-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1731172657; c=relaxed/simple;
+	bh=TMDsyqDQ0pHvp2k1/uQnLMixLG+oX5cPjrDKtufuaPE=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=XomFbIPV/QUVlTqy6tb2Xm9JubTWLjnA0/RsCUNWXCIzjrzahqIOBR1s84Niq4Ilq0Ys465iX9YtlHczfgIUMdW4OqgvKMd+pOo1cM0/RI7WUvj3JoNlPiwIDfF9huJ3N2z3ibGhF7o227QqjpInU/SOxwCLykJiVrZICGGDKkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epochal.quest; spf=pass smtp.mailfrom=epochal.quest; dkim=pass (2048-bit key) header.d=epochal.quest header.i=@epochal.quest header.b=bTOFOFM+; arc=none smtp.client-ip=51.222.15.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epochal.quest
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=epochal.quest
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=epochal.quest;
+	s=default; t=1731172654;
+	bh=TMDsyqDQ0pHvp2k1/uQnLMixLG+oX5cPjrDKtufuaPE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bTOFOFM+V+Vjnfh6JFW/4AI7emhyGc9yKxXwgL9v2C0SAPbobCZRpCWvbK8jAh0CG
+	 JgnaQDy0f7JnKDvq6owZa9n5GlgsmwAzliEyWdIdYyLSjf3gO4WNWq8F+Fcckpr7Em
+	 i58rutDcD6To0pOmyWxVyOwb2wb7E7QyziVBOUlYhV6OG2z7JBoAscQV/0Br2bJTRt
+	 +ajvY6ebHAU1/Ir+cl1zFhAhBI1JRdcTTPiSPBI+gXyYQc15Eu5+t4/+jW0E/M4/C6
+	 ZitB/n6phl+HjeGfBtUB/9O7nAWF4r+3KDVB0rOxfXtnM0KaQE++9+ZMh2qevj8A01
+	 vYouC3PadruzQ==
+X-Virus-Scanned: by epochal.quest
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sat, 09 Nov 2024 13:17:32 -0400
+From: Cody Eksal <masterr3c0rd@epochal.quest>
+To: wens@csie.org
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel
+ Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>, Rob
+ Herring <robh@kernel.org>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Parthiban <parthiban@linumiz.com>, Andre
+ Przywara <andre.przywara@arm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] clk: sunxi-ng: a100: enable MMC clock reparenting
+In-Reply-To: <CAGb2v663xMyiEx4BpPkuRew9t8fAgbz6EENEj--8Y57E87Lgcg@mail.gmail.com>
+References: <20241109003739.3440904-1-masterr3c0rd@epochal.quest>
+ <CAGb2v663xMyiEx4BpPkuRew9t8fAgbz6EENEj--8Y57E87Lgcg@mail.gmail.com>
+Message-ID: <ad31f44044d56dda935698012c0dd595@epochal.quest>
+X-Sender: masterr3c0rd@epochal.quest
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This reverts commit b0b2dc1eaa7ec509e07a78c9974097168ae565b7 which is
-commit ac35180032fbc5d80b29af00ba4881815ceefcb6 upstream.
+On 2024/11/09 12:02 pm, Chen-Yu Tsai wrote:
+> You should still keep the version number from the original series if
+> resending or increment it if changes were made.
+Noted, sorry; still getting used to LKML norms. Since I was resubmitting just
+this patch for stable, I wasn't sure what the norms were.
 
-The reverted commit is based heavily on wiphy locking changes made by the
-"wifi: cfg80211/mac80211: locking cleanups" series [1] introduced since
-6.7 kernel and not supposed to be backported to old stable branches.
+The contents of the patch are unchanged from my series; the only modifications
+made were modifying the commit message and adding stable tags.
 
-It breaks locking rules in the context of old stables leading e.g. to the
-following lockdep splat there - ieee80211_get_max_required_bw() is
-actually called under RCU reader lock in 6.1/6.6, not the wiphy mutex.
-
-WARNING: CPU: 3 PID: 8711 at net/mac80211/chan.c:248 ieee80211_get_max_required_bw+0x423/0x4e0 net/mac80211/chan.c:248
-Modules linked in:
-CPU: 3 PID: 8711 Comm: kworker/u8:6 Not tainted 6.1.113-syzkaller-00105-g9859ec205cfa #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-Workqueue: phy155 ieee80211_iface_work
-RIP: 0010:ieee80211_get_max_required_bw+0x423/0x4e0 net/mac80211/chan.c:248
-Call Trace:
- <TASK>
- ieee80211_get_chanctx_vif_max_required_bw net/mac80211/chan.c:294 [inline]
- ieee80211_get_chanctx_max_required_bw net/mac80211/chan.c:336 [inline]
- _ieee80211_recalc_chanctx_min_def+0x5e6/0xf30 net/mac80211/chan.c:381
- ieee80211_recalc_chanctx_min_def+0x21/0x80 net/mac80211/chan.c:462
- ieee80211_recalc_min_chandef+0x17a/0x590 net/mac80211/util.c:2908
- sta_info_move_state+0x748/0x8c0 net/mac80211/sta_info.c:2301
- ieee80211_assoc_success net/mac80211/mlme.c:5001 [inline]
- ieee80211_rx_mgmt_assoc_resp.cold+0x1335/0x69ec net/mac80211/mlme.c:5201
- ieee80211_sta_rx_queued_mgmt+0x40f/0x2270 net/mac80211/mlme.c:5831
- ieee80211_iface_process_skb net/mac80211/iface.c:1665 [inline]
- ieee80211_iface_work+0xa31/0xd30 net/mac80211/iface.c:1722
- process_one_work+0xa72/0x1590 kernel/workqueue.c:2292
- worker_thread+0x632/0x1240 kernel/workqueue.c:2439
- kthread+0x2e1/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:295
-
-[1]: https://lore.kernel.org/linux-wireless/20230828115927.116700-41-johannes@sipsolutions.net/
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- net/mac80211/chan.c | 4 +---
- net/mac80211/mlme.c | 2 +-
- net/mac80211/scan.c | 2 +-
- net/mac80211/util.c | 4 +---
- 4 files changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 807bea1a7d3c..f07e34bed8f3 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -245,9 +245,7 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata,
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
- 
--	lockdep_assert_wiphy(sdata->local->hw.wiphy);
--
--	list_for_each_entry(sta, &sdata->local->sta_list, list) {
-+	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
- 		if (sdata != sta->sdata &&
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ee9ec74b9553..9a5530ca2f6b 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -660,7 +660,7 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 		bool disable_mu_mimo = false;
- 		struct ieee80211_sub_if_data *other;
- 
--		list_for_each_entry(other, &local->interfaces, list) {
-+		list_for_each_entry_rcu(other, &local->interfaces, list) {
- 			if (other->vif.bss_conf.mu_mimo_owner) {
- 				disable_mu_mimo = true;
- 				break;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index edbf468e0bea..f1147d156c1f 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -501,7 +501,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
- 	 * the scan was in progress; if there was none this will
- 	 * just be a no-op for the particular interface.
- 	 */
--	list_for_each_entry(sdata, &local->interfaces, list) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
- 			ieee80211_queue_work(&sdata->local->hw, &sdata->work);
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 3fe15089b24f..738f1f139a90 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -767,9 +767,7 @@ static void __iterate_interfaces(struct ieee80211_local *local,
- 	struct ieee80211_sub_if_data *sdata;
- 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
- 
--	list_for_each_entry_rcu(sdata, &local->interfaces, list,
--				lockdep_is_held(&local->iflist_mtx) ||
--				lockdep_is_held(&local->hw.wiphy->mtx)) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
- 		switch (sdata->vif.type) {
- 		case NL80211_IFTYPE_MONITOR:
- 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
--- 
-2.39.5
-
+Thanks!
+- Cody
+>
+> ChenYu
 
