@@ -1,96 +1,99 @@
-Return-Path: <stable+bounces-92032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACB19C30E5
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 05:56:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72669C30EC
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 06:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AFD281D35
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 04:56:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73361B211F2
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 05:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475951474B7;
-	Sun, 10 Nov 2024 04:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DDC149C47;
+	Sun, 10 Nov 2024 05:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEZEdUKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3Iom15d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E6D8467;
-	Sun, 10 Nov 2024 04:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B54323D;
+	Sun, 10 Nov 2024 05:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731214589; cv=none; b=GakX7YNw3Jt4fHuqEhtR8K9yadN4fJXx8s8TUArDtKQHD7aBL885MxABMOZaouDivsBhQSVlp0wMJqxmonvU6nZ+9CRhA+NlvtZ8igxI/w3UdCWU55wFkgFEo/35c3EMsqAm/1k6bD412R2Mkv7SvTvvdsH78ELJnnzi6YASFUo=
+	t=1731215351; cv=none; b=r9fHOWUe/PM88QhEYGgkZwAuVKkln1QEwPrgZSP7uDcVv4z4cEs1QOgepBDbOUG5w7P4S37kPZxv7lStLmU/2/rP9vZ9TPhT1oy8MHqH0ofXqCTwrbC2vFdepQ4Gf87a9aC0wNn0gujVZYTx7cknWsMw5EZhQVt6Yoqm/sbZIAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731214589; c=relaxed/simple;
-	bh=mHSSYEAag1NBQNaX4d1CsjdgZdhOEG3BYJVwxJd3hgM=;
+	s=arc-20240116; t=1731215351; c=relaxed/simple;
+	bh=k5u10GCFt8NE83qY1EHHB7fYCBerlFuScuCvt7K9X30=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tk+KzdIY998sbzRxhogiD0RdlO8W+USWGnH65bLT6WlUVReZNrQ5ItsSVC31JD6pCzYBwNOTIhlZzTMIpVx192V8qFuAFJYocnekrbks0zrueKjQuNCMI3eKKsPb/B+GxQv0fgjSVDDpg5pWBLyEKbt7Si5iCnM44J8eGcGE3sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEZEdUKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34E7C4CECD;
-	Sun, 10 Nov 2024 04:56:27 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=XKkor/hqjwHiLgDls+rtTETlRVkAUPYQu8Yu+fOirVfs3t/CqFkqVhdFC7foy49+uTiZIddpxzsgzlkam3MfdwPuj6D2KxrdZcxrGwJPF6vHuh3BTl9BrcipfKbvo10hM9qYCQ7rd9Ybj75RCy3anqq+o14Y31pay2zuS5cQX+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3Iom15d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF42C4CECD;
+	Sun, 10 Nov 2024 05:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731214588;
-	bh=mHSSYEAag1NBQNaX4d1CsjdgZdhOEG3BYJVwxJd3hgM=;
+	s=korg; t=1731215350;
+	bh=k5u10GCFt8NE83qY1EHHB7fYCBerlFuScuCvt7K9X30=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OEZEdUKyDXBO4KPkCkNbcvt6opidOZBaxc1HXV0AWrnEEOzjCo3w+e/Ip6CE8U/p6
-	 1I8fN3eQYdlZ4eY/1rnwcVxn2J6YAk/NgX6cgUFmg/B4zpK6ueubzVOYiNYL2X53wG
-	 Qj0Ug7FLklA9hNi0MYBYF9FD5Xirdhg0MFPgk/aE=
-Date: Sun, 10 Nov 2024 05:56:24 +0100
+	b=V3Iom15dejENVld0ztiul6iV0n17uTEtJPWr/Xvv0gIO42bsJT0H/+KbF4Z8Mpwsw
+	 uYwUcj0LM+oc3i02Yk7Hb/QVQrKWyo6inr5yX/ZhOUZ1+YlnDM0y6b+SX5t9xHyiZo
+	 xdif+pwP9Uo3emzAW4C1duv40gpYWY7bm3u7SO5g=
+Date: Sun, 10 Nov 2024 06:08:20 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Hardik Gohil <hgohil@mvista.com>
-Cc: stable@vger.kernel.org, broonie@kernel.org, linux-spi@vger.kernel.org,
-	u.kleine-koenig@pengutronix.de
-Subject: Re: [PATCH] spi: Fix deadlock when adding SPI controllers on SPI
- buses
-Message-ID: <2024111013-foster-tipped-3f12@gregkh>
-References: <1729781771-14089-1-git-send-email-hgohil@mvista.com>
+To: Christian Ebner <c.ebner@proxmox.com>
+Cc: dhowells@redhat.com, jlayton@kernel.org, stable@vger.kernel.org,
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before
+ netfs_clear_unread() tail clean
+Message-ID: <2024111053-expectant-moodiness-6118@gregkh>
+References: <20241027114315.730407-1-c.ebner@proxmox.com>
+ <2024110644-audible-canine-30ca@gregkh>
+ <7e364258-e643-4656-9233-f89f1c4b1a66@proxmox.com>
+ <2024110625-blot-uncooked-48f9@gregkh>
+ <fac697e2-22aa-40e5-942a-a6e40efee0b2@proxmox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1729781771-14089-1-git-send-email-hgohil@mvista.com>
+In-Reply-To: <fac697e2-22aa-40e5-942a-a6e40efee0b2@proxmox.com>
 
-On Thu, Oct 24, 2024 at 08:26:11PM +0530, Hardik Gohil wrote:
-> From: Mark Brown <broonie@kernel.org>
+On Thu, Nov 07, 2024 at 12:51:14PM +0100, Christian Ebner wrote:
+> On 11/6/24 09:35, Greg KH wrote:
+> > On Wed, Nov 06, 2024 at 09:26:46AM +0100, Christian Ebner wrote:
+> > 
+> > Please try testing the original fixes and providing them as a patch
+> > series and send them for us to review.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> [ Upstream commit 6098475d4cb48d821bdf453c61118c56e26294f0 ]
+> Hi Greg,
 > 
-> Currently we have a global spi_add_lock which we take when adding new
-> devices so that we can check that we're not trying to reuse a chip
-> select that's already controlled.  This means that if the SPI device is
-> itself a SPI controller and triggers the instantiation of further SPI
-> devices we trigger a deadlock as we try to register and instantiate
-> those devices while in the process of doing so for the parent controller
-> and hence already holding the global spi_add_lock.  Since we only care
-> about concurrency within a single SPI bus move the lock to be per
-> controller, avoiding the deadlock.
-> 
-> This can be easily triggered in the case of spi-mux.
-> 
-> Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Hardik Gohil <hgohil@mvista.com>
-> ---
-> This fix was not backported to v5.4 and 5.10
-> 
-> Along with this fix please also apply this fix on top of this
-> 
-> spi: fix use-after-free of the add_lock mutex
-> commit 6c53b45c71b4920b5e62f0ea8079a1da382b9434 upstream.
-> 
-> Commit 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on
-> SPI buses") introduced a per-controller mutex. But mutex_unlock() of
-> said lock is called after the controller is already freed:
+> as mentioned, the original series does not apply on stable-6.11.y and
+> securely and correctly back-porting this is out of scope for us, given
+> resource and time constraints.
 
-Now both queued up, thanks.
+Please note that taking one-off backports to stable trees, increases our
+workload over time and almost always is not the correct thing to do as
+it diverges code streams.  So while this seems simpler "up front", from
+a maintaince point of view, is almost always the wrong thing.
+
+> The main intend was to contribute back a patch which is also back-portable
+> to older kernels. This seems unfeasible with the huge original patch series.
+> The submitted patch has successfully been tested on our side and fixes the
+> issue for affected customers which were willing to test the patch.
+
+That's great, but we really would want the original commits here, OR
+approval from the relevant maintainers that "yes, this is really the
+only way this can be done for stable trees".
+
+thanks,
 
 greg k-h
 
