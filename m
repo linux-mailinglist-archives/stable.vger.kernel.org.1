@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-92050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1819C343C
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 19:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3B79C3440
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 19:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D54472811DA
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 18:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C4332811E7
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 18:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7041F13C690;
-	Sun, 10 Nov 2024 18:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644AB13775E;
+	Sun, 10 Nov 2024 18:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="CCJKo2cW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvRtKEHF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648DF1C6A3;
-	Sun, 10 Nov 2024 18:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1910C381AF;
+	Sun, 10 Nov 2024 18:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731264280; cv=none; b=ufUEDI1qkdoqFqS4+QnjhVjG0ej09/4EOMjTT8+G5gI8es14ItInIov0FSzgbfl+8257V6NEmgupFi+sctXDbVH0fTPshgLMI9IlEDWqDahAxIAQgBkqEIcxep0nWEUW92/0JXb+n+2ESf0/uAimtSlaafc7zcRLL8NrL7F6dbg=
+	t=1731264344; cv=none; b=d4s8dD2Bv7mN8IQ20NlzVrmJOCzFQ7zMPyGP4E8bbMZwlkWQHv0X8xNW61eOaoRYA9OvqCnTQ9NUCZAw0pFsavxQ6pOPYf4CBrnffoyGs85KOVaBvqOWzT9oNA97G6AHrf9nELCTllc8JgpAWPadE81zx98mdQ/BI2nZFIy/7Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731264280; c=relaxed/simple;
-	bh=4DPPfyk5xcDCf169kuJcfoSFcqIk8wwFT07QI+IzsMg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=faojolV1mEaZl+QT/7jUwLfC2ISp+Wb3V3RtjSi4PR1wcclw/4AVQlTrW7nQZqT4HpbN9Yu+e1etwJ1vJcNwC3pjBi6dhk/SUgMC1exE3xz/Ay/39C0y7b2IVVYYAtKIPM4NaFJGGhLP9e9uENCpRhZX1J3hEjT+mjJYWtgn83A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=CCJKo2cW; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-From: Dragan Simic <dsimic@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1731264275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=X6EGSkrXWrC2versQkLjecqlYEVZvqpe//AxlHQPJPQ=;
-	b=CCJKo2cWjI4Mxc4eGn3IUgNYzhD53NPu8INSky9AsCs5fEs+ftNK/ZXkAtInhwlVQ4VzW5
-	oomFijPvRBOuL0HLmU9WkXoGx7JqEMbKoXbYI4GszQ8ToisntDvgB0IAkt0QtJRIRmRO0K
-	xLLbDV2kctwiu7JV01v5pt9/e0s9Jy8gSnndcFIzLEbatVKmLozM4WE99KOdJnGcZxuCi8
-	ARQmYbuvWX0sDmcHlO04bs+Sz4SGJOmLY0aWjOVp5zG7Drvwb78JL1LwX3J8RSGcJvGHhR
-	5JBsoGFz1IuJrvOHJ3z4Sm7p2MAi8weGEGFPOlTkb38B0hLV9MJTt5lDx/q8qg==
-To: linux-rockchip@lists.infradead.org
-Cc: heiko@sntech.de,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: rockchip: Fix vdd_gpu voltage constraints on PinePhone Pro
-Date: Sun, 10 Nov 2024 19:44:31 +0100
-Message-Id: <0718feb8e95344a0b615f61e6d909f6e105e3bf9.1731264205.git.dsimic@manjaro.org>
+	s=arc-20240116; t=1731264344; c=relaxed/simple;
+	bh=xZ1UQMVFcdJBnOqYi4Z9od0d1zAGea+kLBbkARztQzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jujBEgTm0VppMO3GL/bPRri+bBkuUmQYGgzcLlizyybdYpjF8553rIjfv6B0nCvWez/iZNnZdxxtOVKgwrtl15sStX2WEKtpSAHazGZrAwUzojT4LmXkseLfyldlCaWawwI7akzBE7+TvuoZF7TFaJJJaW5C2nPsIc4NRcuF26s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvRtKEHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B133DC4CECD;
+	Sun, 10 Nov 2024 18:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731264343;
+	bh=xZ1UQMVFcdJBnOqYi4Z9od0d1zAGea+kLBbkARztQzQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MvRtKEHFrfLLEHC+pzZWTWzpgGCkNeToNqmNdaIDuTSQDKdXOD5Ie16m76G34Zzgb
+	 swFIyp+NRFhvlI6R4a6ed4SbRu1blJL4QsS1AkCLcN4lKnQp3A5A9F72KzMXxFa7EX
+	 PtY1P4N/WwToew5W4GRqWu/Bpwe34HeyBtz1GEtcZomQ/rr8TFRHLcnnq6d0Htba0f
+	 CRbwijHNTlWeEcbikgszGk5H3ruqO76K3bNktr3Qxf4KJR55gAaMk5yzcLJ23q9xin
+	 8lVL5ERwKpCsJWNwXXbbN+MRuXwbM6gQxIjBgvSdtS8gN8G5TQ5VwD16GhX+2zjTt2
+	 n3F5hcZEgmkVw==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: Neil Brown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	<linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Cedric Blancher <cedric.blancher@gmail.com>,
+	Dan Shelton <dan.f.shelton@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>
+Subject: [PATCH 5.4] NFSD: Fix NFSv4's PUTPUBFH operation
+Date: Sun, 10 Nov 2024 13:45:10 -0500
+Message-ID: <20241110184510.20129-1-cel@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,51 +63,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-The regulator-{min,max}-microvolt values for the vdd_gpu regulator in the
-PinePhone Pro device dts file are too restrictive, which prevents the highest
-GPU OPP from being used, slowing the GPU down unnecessarily.  Let's fix that
-by making the regulator-{min,max}-microvolt values less strict, using the
-voltage range that the Silergy SYR838 chip used for the vdd_gpu regulator is
-actually capable of producing. [1][2]
+From: Chuck Lever <chuck.lever@oracle.com>
 
-This also eliminates the following error messages from the kernel log:
+[ Upstream commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae ]
 
-  core: _opp_supported_by_regulators: OPP minuV: 1100000 maxuV: 1150000, not supported by regulator
-  panfrost ff9a0000.gpu: _opp_add: OPP not supported by regulators (800000000)
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-These changes to the regulator-{min,max}-microvolt values make the PinePhone
-Pro device dts consistent with the dts files for other Rockchip RK3399-based
-boards and devices.  It's possible to be more strict here, by specifying the
-regulator-{min,max}-microvolt values that don't go outside of what the GPU
-actually may use, as the consumer of the vdd_gpu regulator, but those changes
-are left for a later directory-wide regulator cleanup.
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
 
-[1] https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
-[2] https://www.t-firefly.com/download/Firefly-RK3399/docs/Chip%20Specifications/DC-DC_SYR837_838.pdf
+PUTPUBFH should now behave just like PUTROOTFH.
 
-Fixes: 78a21c7d5952 ("arm64: dts: rockchip: Add initial support for Pine64 PinePhone Pro")
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+[ cel: adjusted to apply to origin/linux-5.4.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index 1a44582a49fb..956d64f5b271 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -410,8 +410,8 @@ vdd_gpu: regulator@41 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vsel2_pin>;
- 		regulator-name = "vdd_gpu";
--		regulator-min-microvolt = <875000>;
--		regulator-max-microvolt = <975000>;
-+		regulator-min-microvolt = <712500>;
-+		regulator-max-microvolt = <1500000>;
- 		regulator-ramp-delay = <1000>;
- 		regulator-always-on;
- 		regulator-boot-on;
+In response to:
+
+https://lore.kernel.org/stable/2024100703-decorated-bodacious-fa3c@gregkh/
+
+here is a version of upstream commit 202f39039a11 ("NFSD: Fix
+NFSv4's PUTPUBFH operation") that applies to both origin/linux-5.4.y
+and origin/linux-4.19.y.
+
+
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 1d24fff2709c..55b18c145390 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1068,14 +1068,6 @@ nfsd4_decode_putfh(struct nfsd4_compoundargs *argp, struct nfsd4_putfh *putfh)
+ 	DECODE_TAIL;
+ }
+ 
+-static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, void *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+ static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, struct nfsd4_read *read)
+ {
+@@ -1825,7 +1817,7 @@ static const nfsd4_dec nfsd4_dec_ops[] = {
+ 	[OP_OPEN_CONFIRM]	= (nfsd4_dec)nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= (nfsd4_dec)nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= (nfsd4_dec)nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= (nfsd4_dec)nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= (nfsd4_dec)nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= (nfsd4_dec)nfsd4_decode_noop,
+ 	[OP_READ]		= (nfsd4_dec)nfsd4_decode_read,
+ 	[OP_READDIR]		= (nfsd4_dec)nfsd4_decode_readdir,
+-- 
+2.47.0
+
 
