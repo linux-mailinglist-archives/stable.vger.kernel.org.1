@@ -1,134 +1,190 @@
-Return-Path: <stable+bounces-92041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D5D9C3197
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 11:26:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4707A9C31BF
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 12:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0530281858
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 10:26:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4422BB20DED
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 11:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444731534FB;
-	Sun, 10 Nov 2024 10:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="br8mmspl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD2153BC1;
+	Sun, 10 Nov 2024 11:15:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9489A2563;
-	Sun, 10 Nov 2024 10:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F8E145A07;
+	Sun, 10 Nov 2024 11:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731234406; cv=none; b=kEa15K7Ght64ik/0UspEdc4Z/7kFOMb/D6IyE2JlOpJUZy30LQy+YiztDVD9CJ3hEJxZ6SMpqQT3jCbAwKHITxpgt2gmDPv9oJ9JBOmNC36M7YnEXs1oUPSDQKnmlt+7g5zpCW3quXhAz60B+yE4NXhd/q2xBf08o7FmULiIUeQ=
+	t=1731237300; cv=none; b=e/Zif3KxNkhiWAG4vXIUzegQbCCqlKztogpjwT5yfJDO/2O+q7fYGShaMsITYVLPt4EAv842obbEYH3p6xIwgegEU0iLXX03TGWhtn7YJk6E5wsqymiwgacFpDc6VHByvOPPq/TJbj/0QrHaWd9hAy7TJBhM1WjAjdelNp6lGE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731234406; c=relaxed/simple;
-	bh=wQOv0aeFJkP0HQGoyJPbQy8QR3cjiVEYaq96KdGGOFk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bxKTXAq3BYZq2zM2ekBw+DnzHZa4mxeqRLXNH8XWJbIWUptoe7xcXYECcpfPbYiujFhj4ix5AUtkXtfLbXnK/tpB5ETlZs36TQ91t/B1cM8xYBZ+GoTDaG3hXzOZbBA5RMoi7jV6Eif6o/31FROn1u9VSNHGwzlE7DOmEEdUeac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=br8mmspl; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1731234394; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Hh5TIo8Adsd0UnRdLeMY3JjG1/I6mNeYfACCJ18JKXg=;
-	b=br8mmsplOsHQZnSi1WaaM3RjnXExdjW1vwjz2j35HhSKCOW8XpzYc1KpdWjaBX1Bz6QYt5EUBTrXy6gGKolVWgXx7IRDBGFJLUHNQMDMykXag13JmuvUFYXkcod/BCCnZ7Hs2PObWX50vBWPRiEAbQG6kkndmrXHmzm+AKeNcKw=
-Received: from 30.246.162.170(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WJ2WP0m_1731234391 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 10 Nov 2024 18:26:32 +0800
-Message-ID: <7a0fc6f4-f185-4d5e-b532-c9e04b0a48c4@linux.alibaba.com>
-Date: Sun, 10 Nov 2024 18:26:30 +0800
+	s=arc-20240116; t=1731237300; c=relaxed/simple;
+	bh=CzCi9Otcx7wBj+IOqPBCkkgOcTbk4IzILMus9tvE5KQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bN7ZfG2F6Viz3Ccg0tgYNRa+fwB2jl0dL1Y8nRIdgQcx2J87apxNMbYFJ1UIbN88HrxoIK0yiwyzS67UXd3E8TDB3byIi0RP3wgeyy7lBJ1xIdmGGzjfY/+6T5V/DjOkDYKg1te1nUThrjUUR+kR2ab9ByjyeNDp3wv4yPQ4tiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53a097aa3daso3411482e87.1;
+        Sun, 10 Nov 2024 03:14:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731237294; x=1731842094;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HGpnRGebtces+H0p57KZ/VOg+pG46erIWNYz0tqupxk=;
+        b=BQZ0cnJ5pUsdlFb8Cg+WrQjN8r3EV/DK+1lFkTdv5hddVIiSO4lLxGkf/olc8MOQXi
+         AMhnEnBhKbEPy6RHXBE/wQEzDNnMnZsIKdIg6oZiq4Jl/I0aJYhjmvsdIkwe92o0EzOG
+         X8Pag4MWk9vdknWamxgcCbA6gaRBXS/8ltAH6Um0qRwOty7O/LIXdBOD+OpWIxqt8DCP
+         IqzGyiZ34+UAY3hit83kcs1djfIRw5WklcEUP4LRWIV9eqEkG5HecBDhzI1pP7LqQkNv
+         V3rLCQTwnMRftX28cnSxtJl1V42puIS+0+QaCMuCvNVRNfCwRMWagtpAUnwDOF0TTTjh
+         blQA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4dElpH+3NtC9oLmyAdYK220NzhsVzZeacru/nzAp+vDrcJOmj4PlHREOfpL6nnW3AQf3qWXFg@vger.kernel.org, AJvYcCWyxQXXL5fg/BIWGo1ho5eBlQSnoTze9kFsM0qGgVaI9EYvUD7HsFz3YdH0BFAKf1gTSrHo50MRy7g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNjRQF77mN7JPvLdUiK3/OeQqY2A+pFDDwajCjFy3X0VUs/RTw
+	y+E8baCyvAaaFI7oO+EWY8K0crJyS5qmOYRWctdK0V322slpblPI60I0WBdz
+X-Google-Smtp-Source: AGHT+IE0EqNb9utjhZMu4xN7ujFVLhHTfQU0BnvONGRi43ypqgOacClhuQD4XvGiapc7cJy4Qdjomg==
+X-Received: by 2002:a05:6512:1382:b0:530:ae99:c7fa with SMTP id 2adb3069b0e04-53d862b35d7mr4054426e87.10.1731237293995;
+        Sun, 10 Nov 2024 03:14:53 -0800 (PST)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826a7157sm1176275e87.152.2024.11.10.03.14.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Nov 2024 03:14:53 -0800 (PST)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53a0c160b94so4377743e87.2;
+        Sun, 10 Nov 2024 03:14:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU1otFEMVclk1pnPzNu7Y6GAXY2uXdvH3ZDYZH3Lm4gvFT0u1g6urKrLJHzgsy7RkU1saIzjXw6@vger.kernel.org, AJvYcCU8kk1vJo1ZXADP5FENAy2DPZpXZ1aL0XeYUMtiXtWHRtC4zG95wRDKqVItbbDwVt4203NKlX1s9o8=@vger.kernel.org
+X-Received: by 2002:a05:6512:238b:b0:535:6cde:5c4d with SMTP id
+ 2adb3069b0e04-53d862b35a5mr3583802e87.3.1731237292733; Sun, 10 Nov 2024
+ 03:14:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10.y 0/2] Fixed perf abort when taken branch stack
- sampling enabled
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, acme@kernel.org, adrian.hunter@intel.com,
- alexander.shishkin@linux.intel.com, irogers@google.com,
- mark.rutland@arm.com, namhyung@kernel.org, peterz@infradead.org,
- acme@redhat.com, kprateek.nayak@amd.com, ravi.bangoria@amd.com,
- sandipan.das@amd.com, anshuman.khandual@arm.com, german.gomez@arm.com,
- james.clark@arm.com, terrelln@fb.com, seanjc@google.com,
- changbin.du@huawei.com, liuwenyu7@huawei.com, yangjihong1@huawei.com,
- mhiramat@kernel.org, ojeda@kernel.org, song@kernel.org, leo.yan@linaro.org,
- kjain@linux.ibm.com, ak@linux.intel.com, kan.liang@linux.intel.com,
- atrajeev@linux.vnet.ibm.com, siyanteng@loongson.cn, liam.howlett@oracle.com,
- pbonzini@redhat.com, jolsa@kernel.org
-References: <20241104112736.28554-1-xueshuai@linux.alibaba.com>
- <2024111029-gorged-humiliate-f0bb@gregkh>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <2024111029-gorged-humiliate-f0bb@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241107014240.24669-1-andre.przywara@arm.com>
+ <CAGb2v64HUp4Xwgc3fw1fMVTBQFV2kHSVbs7=XBufzJpQ9hkuzg@mail.gmail.com> <20241110102157.2703463e@minigeek.lan>
+In-Reply-To: <20241110102157.2703463e@minigeek.lan>
+Reply-To: wens@csie.org
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Sun, 10 Nov 2024 19:14:41 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65J=1xpNJtC0tba6yQKpE3ZYiHDppdWcoXN5EnaHdnGPw@mail.gmail.com>
+Message-ID: <CAGb2v65J=1xpNJtC0tba6yQKpE3ZYiHDppdWcoXN5EnaHdnGPw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sunxi-mmc: Fix A100 compatible description
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, linux-mmc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Yangtao Li <tiny.windzz@gmail.com>, Cody Eksal <masterr3c0rd@epochal.quest>, 
+	Parthiban <parthiban@linumiz.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, Nov 10, 2024 at 6:22=E2=80=AFPM Andre Przywara <andre.przywara@arm.=
+com> wrote:
+>
+> On Sun, 10 Nov 2024 17:04:08 +0800
+> Chen-Yu Tsai <wens@csie.org> wrote:
+>
+> Hi,
+>
+> > On Thu, Nov 7, 2024 at 9:43=E2=80=AFAM Andre Przywara <andre.przywara@a=
+rm.com> wrote:
+> > >
+> > > It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
+> > > blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
+> > > And while this alone would make a trivial fix, the H616 falls back to
+> > > the A100 compatible string, so we have to now match the H616 compatib=
+le
+> > > string explicitly against the description advertising 64K DMA blocks.
+> >
+> > Would be nice to know how this was discovered, and how the correct size
+> > was determined. As far as I could find, the A133 user manual says its
+> > 64K.
+>
+> Mmh, my copy (Revision 1.1, Jul.14, 2020) only mentions bits[12:0] in
+> the DES1 DMA descriptor details, unconditional of SMHC0/1/2. And yes,
 
+I see. I was looking at SMHC_BLKSIZ, which had 16 bits.
 
-在 2024/11/10 13:12, Greg KH 写道:
-> On Mon, Nov 04, 2024 at 07:27:34PM +0800, Shuai Xue wrote:
->> On x86 platform, kernel v5.10.228, perf-report command aborts due to "free():
->> invalid pointer" when perf-record command is run with taken branch stack
->> sampling enabled. This regression can be reproduced with the following steps:
->>
->> 	- sudo perf record -b
->> 	- sudo perf report
->>
->> The root cause is that bi[i].to.ms.maps does not always point to thread->maps,
->> which is a buffer dynamically allocated by maps_new(). Instead, it may point to
->> &machine->kmaps, while kmaps is not a pointer but a variable. The original
->> upstream commit c1149037f65b ("perf hist: Add missing puts to
->> hist__account_cycles") worked well because machine->kmaps had been refactored to
->> a pointer by the previous commit 1a97cee604dc ("perf maps: Use a pointer for
->> kmaps").
->>
->> The memory leak issue, which the reverted patch intended to fix, has been solved
->> by commit cf96b8e45a9b ("perf session: Add missing evlist__delete when deleting
->> a session"). The root cause is that the evlist is not being deleted on exit in
->> perf-report, perf-script, and perf-data. Consequently, the reference count of
->> the thread increased by thread__get() in hist_entry__init() is not decremented
->> in hist_entry__delete(). As a result, thread->maps is not properly freed.
->>
->> To this end,
->>
->> - PATCH 1/2 reverts commit a83fc293acd5c5050a4828eced4a71d2b2fffdd3 to fix the
->>    abort regression.
->> - PATCH 2/2 backports cf96b8e45a9b ("perf session: Add missing evlist__delete
->>    when deleting a session") to fix memory leak issue.
->>
->> Riccardo Mancini (1):
->>    perf session: Add missing evlist__delete when deleting a session
->>
->> Shuai Xue (1):
->>    Revert "perf hist: Add missing puts to hist__account_cycles"
->>
->>   tools/perf/util/hist.c    | 10 +++-------
->>   tools/perf/util/session.c |  5 ++++-
->>   2 files changed, 7 insertions(+), 8 deletions(-)
-> 
-> perf actually works and builds on this kernel tree?  That's news to me,
-> but hey, I'll take these now as obviously someone is still trying to run
-> it.
+> this is in contradiction to the prose section in "5.3.1. Overview",
+> which mentions a "Block size of 1 to 65535 bytes".
+> Also that matches the observation: eMMC was working fine (as it was
+> already limited to 8K), and the SD card was *somewhat* working: I could
+> mount a FAT filesystem, and even list the (rather short) root
+> directory, but any further action (reading file, benchmarking) would
+> hang. Which would make sense given that the first actions probably
+> don't ask for a block larger than 8K.
 
+Thanks for explaining it.
 
-Yes, it does. Commit cf96b8e45a9b ("perf session: Add missing evlist__delete
-when deleting a session") addresses a memory leak issue but is not applicable
-for the 5.10-stable tree.
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
 
-
-> But why not just use the latest version of perf instead?
-
-Yes, the lastest verison of perf works well. There are many distribution are
-based on the upstream 5.10-stable tree, and this issue breaks the perf usage.
-So IMHO, it could be fixed in upstream.
-
-Best Regards,
-Shuai
+> Cheers,
+> Andre
+>
+>
+>
+> >
+> > ChenYu
+> >
+> > > As the A100 is now compatible with the D1 description, let the A100
+> > > compatible string point to that block instead, and introduce an expli=
+cit
+> > > match against the H616 string, pointing to the old description.
+> > > Also remove the redundant setting of clk_delays to NULL on the way.
+> > >
+> > > Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller=
+")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+> > > ---
+> > >  drivers/mmc/host/sunxi-mmc.c | 6 +++---
+> > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mm=
+c.c
+> > > index d3bd0ac99ec46..e0ab5fd635e6c 100644
+> > > --- a/drivers/mmc/host/sunxi-mmc.c
+> > > +++ b/drivers/mmc/host/sunxi-mmc.c
+> > > @@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_e=
+mmc_cfg =3D {
+> > >         .needs_new_timings =3D true,
+> > >  };
+> > >
+> > > -static const struct sunxi_mmc_cfg sun50i_a100_cfg =3D {
+> > > +static const struct sunxi_mmc_cfg sun50i_h616_cfg =3D {
+> > >         .idma_des_size_bits =3D 16,
+> > >         .idma_des_shift =3D 2,
+> > > -       .clk_delays =3D NULL,
+> > >         .can_calibrate =3D true,
+> > >         .mask_data0 =3D true,
+> > >         .needs_new_timings =3D true,
+> > > @@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_m=
+atch[] =3D {
+> > >         { .compatible =3D "allwinner,sun20i-d1-mmc", .data =3D &sun20=
+i_d1_cfg },
+> > >         { .compatible =3D "allwinner,sun50i-a64-mmc", .data =3D &sun5=
+0i_a64_cfg },
+> > >         { .compatible =3D "allwinner,sun50i-a64-emmc", .data =3D &sun=
+50i_a64_emmc_cfg },
+> > > -       { .compatible =3D "allwinner,sun50i-a100-mmc", .data =3D &sun=
+50i_a100_cfg },
+> > > +       { .compatible =3D "allwinner,sun50i-a100-mmc", .data =3D &sun=
+20i_d1_cfg },
+> > >         { .compatible =3D "allwinner,sun50i-a100-emmc", .data =3D &su=
+n50i_a100_emmc_cfg },
+> > > +       { .compatible =3D "allwinner,sun50i-h616-mmc", .data =3D &sun=
+50i_h616_cfg },
+> > >         { /* sentinel */ }
+> > >  };
+> > >  MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+> > > --
+> > > 2.46.2
+> > >
+> >
+>
 
