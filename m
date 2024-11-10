@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-92035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B2C9C3103
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 07:08:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803B39C3106
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 07:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29586281C9F
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 06:08:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832E11C20A51
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 06:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE8214658D;
-	Sun, 10 Nov 2024 06:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895411487E9;
+	Sun, 10 Nov 2024 06:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cqh99Dp8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qI0hVz2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD41113D29A;
-	Sun, 10 Nov 2024 06:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373F313B58F;
+	Sun, 10 Nov 2024 06:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731218933; cv=none; b=HFsfNQaabYOT+spHPFd/BgTw/b38Eno/2to1OurJt8VZs1GaXmqfKW3O9JZcpRFpRMB02UGWPC9e2vJh5qSJayS3hN0q/z9xvp/p04rHY6wJDT/NHXAZukS/tBeP2UF5CgA28M64py93OEDJIyDEu+KVCWvF8sAOpo8q8ZS0ygk=
+	t=1731219168; cv=none; b=VBvVwavOob6CYqEdhTxEh/Ztyn3FWPcF/1cnbR8CaGRKftd0eas2HUI5Qy07RK87TNpNgsE2O4pRcZMtk5KIkbu1vTCrBXWn4tXfNQ5azRI1v7azKTZLMgzgpbKURRTxyU2VwDlsRwbijAJ5e2YJnaEq2vJcN6ZElfv85iSY2kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731218933; c=relaxed/simple;
-	bh=wy79TuJ2a/ajLjOa8f7cpFQV6aT8x76jlquZrtIaC+8=;
-	h=Date:To:From:Subject:Message-Id; b=lBCWw6IXwCVJGH3k5LyG2GtxWYnGk65rHkN2DFubTbIYp5WOkMpaYp1+a8OuG4rHSujYiO850iWiLUhC3emmnzmLMohQ0CevpIz8RUE098hXX9u7+yowwfYajNvALVglbM7orWj3HhzRrE2UldZWaDR9HsviY7Z+jsIx6ocxIVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cqh99Dp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAB3C4CECD;
-	Sun, 10 Nov 2024 06:08:52 +0000 (UTC)
+	s=arc-20240116; t=1731219168; c=relaxed/simple;
+	bh=MXjhEee1Cb0fgC1Vt0pa51qmQzHST0qk35mgn3YyL14=;
+	h=Date:To:From:Subject:Message-Id; b=UhuxTJ7UWz22hkCleDEQX8kl7KXgg6vfVu6iuB1yC1jevRAwDEx4ha8sR+Xhw1ietElauplv60YMUIMiYUJxR8TiCdBFlOpAg182FOyGkw74ciArUtEm8cfKHQaj3TYXtM+c90DVQf4XGLd3eIsKh37CKU+gylJpnjPvextH4YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qI0hVz2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8E9C4CECD;
+	Sun, 10 Nov 2024 06:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731218932;
-	bh=wy79TuJ2a/ajLjOa8f7cpFQV6aT8x76jlquZrtIaC+8=;
+	s=korg; t=1731219167;
+	bh=MXjhEee1Cb0fgC1Vt0pa51qmQzHST0qk35mgn3YyL14=;
 	h=Date:To:From:Subject:From;
-	b=cqh99Dp82rJRhtJhXw44coKkK7qUxyzLJNcB3xVCYuShWenveZnpcTlUaRfze+APi
-	 PXOJ1TWbK4fuAVs902UDpnEbachFvac7zF1DXvD/2hMMZvtNLuFFnwUQj09H63SUH5
-	 tSn0y9NjrxUswXi7uwkebVVcJ+C+ZrX+wnd6Tmqo=
-Date: Sat, 09 Nov 2024 22:08:51 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,Liam.Howlett@Oracle.com,thehajime@gmail.com,akpm@linux-foundation.org
+	b=qI0hVz2UymdPd6W7Drme21rM8/6a25t13tHu6pmMa0rwQA0MvmbXNDdoPKu/wytJ9
+	 am4rvVGMTLTWBmmHOd7F89gyTaJPuEvc8JVKp4th+dZCOSqcmsg9aayKH5aeGoRe7M
+	 GqKLv+TUKMSuI2C9PNc4sFCJSiO6+iMrdrSPRBKk=
+Date: Sat, 09 Nov 2024 22:12:47 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,laoar.shao@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nommu-pass-null-argument-to-vma_iter_prealloc.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241110060852.3BAB3C4CECD@smtp.kernel.org>
+Subject: + mm-readahead-fix-large-folio-support-in-async-readahead.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241110061247.BF8E9C4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: nommu: pass NULL argument to vma_iter_prealloc()
+     Subject: mm/readahead: fix large folio support in async readahead
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nommu-pass-null-argument-to-vma_iter_prealloc.patch
+     mm-readahead-fix-large-folio-support-in-async-readahead.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nommu-pass-null-argument-to-vma_iter_prealloc.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-readahead-fix-large-folio-support-in-async-readahead.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,45 +73,65 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Hajime Tazaki <thehajime@gmail.com>
-Subject: nommu: pass NULL argument to vma_iter_prealloc()
-Date: Sat, 9 Nov 2024 07:28:34 +0900
+From: Yafang Shao <laoar.shao@gmail.com>
+Subject: mm/readahead: fix large folio support in async readahead
+Date: Fri, 8 Nov 2024 22:17:10 +0800
 
-When deleting a vma entry from a maple tree, it has to pass NULL to
-vma_iter_prealloc() in order to calculate internal state of the tree, but
-it passed a wrong argument.  As a result, nommu kernels crashed upon
-accessing a vma iterator, such as acct_collect() reading the size of vma
-entries after do_munmap().
+When testing large folio support with XFS on our servers, we observed that
+only a few large folios are mapped when reading large files via mmap. 
+After a thorough analysis, I identified it was caused by the
+`/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
+parameter is set to 128KB.  After I tune it to 2MB, the large folio can
+work as expected.  However, I believe the large folio behavior should not
+be dependent on the value of read_ahead_kb.  It would be more robust if
+the kernel can automatically adopt to it.
 
-This commit fixes this issue by passing a right argument to the
-preallocation call.
+With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
+sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
+/proc/meminfo are as follows:
 
-Link: https://lkml.kernel.org/r/20241108222834.3625217-1-thehajime@gmail.com
-Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+- before this patch
+  FileHugePages:     18432 kB
+  FilePmdMapped:      4096 kB
+
+- after this patch
+  FileHugePages:   1067008 kB
+  FilePmdMapped:   1048576 kB
+
+This shows that after applying the patch, the entire 1GB file is mapped to
+huge pages.  The stable list is CCed, as without this patch, large folios
+don't function optimally in the readahead path.
+
+It's worth noting that if read_ahead_kb is set to a larger value that
+isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
+to map to hugepages.
+
+Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.com
+Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/nommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/readahead.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/nommu.c~nommu-pass-null-argument-to-vma_iter_prealloc
-+++ a/mm/nommu.c
-@@ -573,7 +573,7 @@ static int delete_vma_from_mm(struct vm_
- 	VMA_ITERATOR(vmi, vma->vm_mm, vma->vm_start);
+--- a/mm/readahead.c~mm-readahead-fix-large-folio-support-in-async-readahead
++++ a/mm/readahead.c
+@@ -385,6 +385,8 @@ static unsigned long get_next_ra_size(st
+ 		return 4 * cur;
+ 	if (cur <= max / 2)
+ 		return 2 * cur;
++	if (cur > max)
++		return cur;
+ 	return max;
+ }
  
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
--	if (vma_iter_prealloc(&vmi, vma)) {
-+	if (vma_iter_prealloc(&vmi, NULL)) {
- 		pr_warn("Allocation of vma tree for process %d failed\n",
- 		       current->pid);
- 		return -ENOMEM;
 _
 
-Patches currently in -mm which might be from thehajime@gmail.com are
+Patches currently in -mm which might be from laoar.shao@gmail.com are
 
-nommu-pass-null-argument-to-vma_iter_prealloc.patch
+mm-readahead-fix-large-folio-support-in-async-readahead.patch
 
 
