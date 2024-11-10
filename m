@@ -1,190 +1,116 @@
-Return-Path: <stable+bounces-92042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4707A9C31BF
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 12:15:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA0B9C31E6
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 13:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4422BB20DED
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 11:15:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50EAAB20EFF
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 12:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD2153BC1;
-	Sun, 10 Nov 2024 11:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD9415443F;
+	Sun, 10 Nov 2024 12:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="da4XQwh/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.113.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F8E145A07;
-	Sun, 10 Nov 2024 11:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CBD1494DC;
+	Sun, 10 Nov 2024 12:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.113.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731237300; cv=none; b=e/Zif3KxNkhiWAG4vXIUzegQbCCqlKztogpjwT5yfJDO/2O+q7fYGShaMsITYVLPt4EAv842obbEYH3p6xIwgegEU0iLXX03TGWhtn7YJk6E5wsqymiwgacFpDc6VHByvOPPq/TJbj/0QrHaWd9hAy7TJBhM1WjAjdelNp6lGE8=
+	t=1731240944; cv=none; b=LZi5UI7JmTMNzOkHPkqSAHw0sX84A0btpoCxy6i1wP1bMybH9fmQaEWGmkteClKVk+1yJ+DbkahmLuichalifaDGjo9tTLfk02gvJQktTmCPU1g1pKTowCvCYJiSMsyWcEISvyqayWqrIzqllbNoUETKKfyNdbiEtVatFXQlfbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731237300; c=relaxed/simple;
-	bh=CzCi9Otcx7wBj+IOqPBCkkgOcTbk4IzILMus9tvE5KQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bN7ZfG2F6Viz3Ccg0tgYNRa+fwB2jl0dL1Y8nRIdgQcx2J87apxNMbYFJ1UIbN88HrxoIK0yiwyzS67UXd3E8TDB3byIi0RP3wgeyy7lBJ1xIdmGGzjfY/+6T5V/DjOkDYKg1te1nUThrjUUR+kR2ab9ByjyeNDp3wv4yPQ4tiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53a097aa3daso3411482e87.1;
-        Sun, 10 Nov 2024 03:14:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731237294; x=1731842094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HGpnRGebtces+H0p57KZ/VOg+pG46erIWNYz0tqupxk=;
-        b=BQZ0cnJ5pUsdlFb8Cg+WrQjN8r3EV/DK+1lFkTdv5hddVIiSO4lLxGkf/olc8MOQXi
-         AMhnEnBhKbEPy6RHXBE/wQEzDNnMnZsIKdIg6oZiq4Jl/I0aJYhjmvsdIkwe92o0EzOG
-         X8Pag4MWk9vdknWamxgcCbA6gaRBXS/8ltAH6Um0qRwOty7O/LIXdBOD+OpWIxqt8DCP
-         IqzGyiZ34+UAY3hit83kcs1djfIRw5WklcEUP4LRWIV9eqEkG5HecBDhzI1pP7LqQkNv
-         V3rLCQTwnMRftX28cnSxtJl1V42puIS+0+QaCMuCvNVRNfCwRMWagtpAUnwDOF0TTTjh
-         blQA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4dElpH+3NtC9oLmyAdYK220NzhsVzZeacru/nzAp+vDrcJOmj4PlHREOfpL6nnW3AQf3qWXFg@vger.kernel.org, AJvYcCWyxQXXL5fg/BIWGo1ho5eBlQSnoTze9kFsM0qGgVaI9EYvUD7HsFz3YdH0BFAKf1gTSrHo50MRy7g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNjRQF77mN7JPvLdUiK3/OeQqY2A+pFDDwajCjFy3X0VUs/RTw
-	y+E8baCyvAaaFI7oO+EWY8K0crJyS5qmOYRWctdK0V322slpblPI60I0WBdz
-X-Google-Smtp-Source: AGHT+IE0EqNb9utjhZMu4xN7ujFVLhHTfQU0BnvONGRi43ypqgOacClhuQD4XvGiapc7cJy4Qdjomg==
-X-Received: by 2002:a05:6512:1382:b0:530:ae99:c7fa with SMTP id 2adb3069b0e04-53d862b35d7mr4054426e87.10.1731237293995;
-        Sun, 10 Nov 2024 03:14:53 -0800 (PST)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826a7157sm1176275e87.152.2024.11.10.03.14.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Nov 2024 03:14:53 -0800 (PST)
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53a0c160b94so4377743e87.2;
-        Sun, 10 Nov 2024 03:14:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU1otFEMVclk1pnPzNu7Y6GAXY2uXdvH3ZDYZH3Lm4gvFT0u1g6urKrLJHzgsy7RkU1saIzjXw6@vger.kernel.org, AJvYcCU8kk1vJo1ZXADP5FENAy2DPZpXZ1aL0XeYUMtiXtWHRtC4zG95wRDKqVItbbDwVt4203NKlX1s9o8=@vger.kernel.org
-X-Received: by 2002:a05:6512:238b:b0:535:6cde:5c4d with SMTP id
- 2adb3069b0e04-53d862b35a5mr3583802e87.3.1731237292733; Sun, 10 Nov 2024
- 03:14:52 -0800 (PST)
+	s=arc-20240116; t=1731240944; c=relaxed/simple;
+	bh=v0HN/FED+TT7/gvTHHTC20H9BDfo2Jlpr2rIPHK6WFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NAWuKcLcvQ1mGpuNIP2ZMdt+Ptm1elLQ1qZqn/hT3E6eScGbqN/bWKPWC7BLgf3VUljNI++QYxWsOiYN8sP3HKBjnNb2A6ClYJwVsn5MBpKfJlBPLpmUjHVAQ7NypzAby4U7XPe7HWXK5f9TdNOJcnw973vE8TCl+kVp2tfufwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=da4XQwh/; arc=none smtp.client-ip=195.154.113.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+	Subject:Cc:To:From:Content-Type:From:Reply-To:Subject:Content-ID:
+	Content-Description:In-Reply-To:References:X-Debbugs-Cc;
+	bh=qvK83CYVvOTn6ti8fkhXE4YiU4NnTKoBN9s7aChfpTU=; b=da4XQwh/NWeANyMxlEa8KPZF7h
+	vqRo/ljnFVJSr4rIBLZs+ZVnU7N5tYN7DGxtAFvaNWdO2vMmdkZf4lMKqEHZoTNfmX0HqHJ97Ot5d
+	B3xlCsBuBnrEWUqVIiONDO7FgWrR9SKHtkkyF1mkRYbMEv9lj1/s5HDl77pIK9+MGTjePpKL5iRu0
+	LVet9FiK1V8+WxmHXLErbC7wKqmmTSAnD//oX3afbU0QHIDsuVVxsLDbGmWG1V1HTKOEYpGDQTRaa
+	Iab8mA5P8P6HpEsqScbOttA3k7vfbR0td0b+wnJw4E4/9QTyZo0MwzP7fJPDQKTeo+0h+QHAPpydZ
+	+9fkQCKw==;
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::2] helo=ohm.rr44.fr)
+	by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1tA6Pm-005bzm-05;
+	Sun, 10 Nov 2024 12:47:34 +0100
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: linux-kernel@vger.kernel.org,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	linux-mmc@vger.kernel.org (open list:SYNOPSYS DESIGNWARE MMC/SD/SDIO DRIVER)
+Cc: Ron Economos <re@w6rz.net>,
+	Adam Green <greena88@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	stable@vger.kernel.org
+Subject: [PATCH] Revert "mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K"
+Date: Sun, 10 Nov 2024 12:46:36 +0100
+Message-ID: <20241110114700.622372-1-aurelien@aurel32.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107014240.24669-1-andre.przywara@arm.com>
- <CAGb2v64HUp4Xwgc3fw1fMVTBQFV2kHSVbs7=XBufzJpQ9hkuzg@mail.gmail.com> <20241110102157.2703463e@minigeek.lan>
-In-Reply-To: <20241110102157.2703463e@minigeek.lan>
-Reply-To: wens@csie.org
-From: Chen-Yu Tsai <wens@csie.org>
-Date: Sun, 10 Nov 2024 19:14:41 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65J=1xpNJtC0tba6yQKpE3ZYiHDppdWcoXN5EnaHdnGPw@mail.gmail.com>
-Message-ID: <CAGb2v65J=1xpNJtC0tba6yQKpE3ZYiHDppdWcoXN5EnaHdnGPw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sunxi-mmc: Fix A100 compatible description
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, linux-mmc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Yangtao Li <tiny.windzz@gmail.com>, Cody Eksal <masterr3c0rd@epochal.quest>, 
-	Parthiban <parthiban@linumiz.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 10, 2024 at 6:22=E2=80=AFPM Andre Przywara <andre.przywara@arm.=
-com> wrote:
->
-> On Sun, 10 Nov 2024 17:04:08 +0800
-> Chen-Yu Tsai <wens@csie.org> wrote:
->
-> Hi,
->
-> > On Thu, Nov 7, 2024 at 9:43=E2=80=AFAM Andre Przywara <andre.przywara@a=
-rm.com> wrote:
-> > >
-> > > It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
-> > > blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
-> > > And while this alone would make a trivial fix, the H616 falls back to
-> > > the A100 compatible string, so we have to now match the H616 compatib=
-le
-> > > string explicitly against the description advertising 64K DMA blocks.
-> >
-> > Would be nice to know how this was discovered, and how the correct size
-> > was determined. As far as I could find, the A133 user manual says its
-> > 64K.
->
-> Mmh, my copy (Revision 1.1, Jul.14, 2020) only mentions bits[12:0] in
-> the DES1 DMA descriptor details, unconditional of SMHC0/1/2. And yes,
+The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
+bigger than 4K") increased the max_req_size, even for 4K pages, causing
+various issues:
+- Panic booting the kernel/rootfs from an SD card on Rockchip RK3566
+- Panic booting the kernel/rootfs from an SD card on StarFive JH7100
+- "swiotlb buffer is full" and data corruption on StarFive JH7110
 
-I see. I was looking at SMHC_BLKSIZ, which had 16 bits.
+At this stage no fix have been found, so it's probably better to just
+revert the change.
 
-> this is in contradiction to the prose section in "5.3.1. Overview",
-> which mentions a "Block size of 1 to 65535 bytes".
-> Also that matches the observation: eMMC was working fine (as it was
-> already limited to 8K), and the SD card was *somewhat* working: I could
-> mount a FAT filesystem, and even list the (rather short) root
-> directory, but any further action (reading file, benchmarking) would
-> hang. Which would make sense given that the first actions probably
-> don't ask for a block larger than 8K.
+This reverts commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890.
 
-Thanks for explaining it.
+Cc: stable@vger.kernel.org
+Cc: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
+Closes: https://lore.kernel.org/linux-mmc/614692b4-1dbe-31b8-a34d-cb6db1909bb7@w6rz.net/
+Closes: https://lore.kernel.org/linux-mmc/CAC8uq=Ppnmv98mpa1CrWLawWoPnu5abtU69v-=G-P7ysATQ2Pw@mail.gmail.com/
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+---
+ drivers/mmc/host/dw_mmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+I have posted a patch to fix the issue, but unfortunately it only fixes
+the JH7110 case:
+https://lore.kernel.org/linux-mmc/20241020142931.138277-1-aurelien@aurel32.net/
 
-> Cheers,
-> Andre
->
->
->
-> >
-> > ChenYu
-> >
-> > > As the A100 is now compatible with the D1 description, let the A100
-> > > compatible string point to that block instead, and introduce an expli=
-cit
-> > > match against the H616 string, pointing to the old description.
-> > > Also remove the redundant setting of clk_delays to NULL on the way.
-> > >
-> > > Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller=
-")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-> > > ---
-> > >  drivers/mmc/host/sunxi-mmc.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mm=
-c.c
-> > > index d3bd0ac99ec46..e0ab5fd635e6c 100644
-> > > --- a/drivers/mmc/host/sunxi-mmc.c
-> > > +++ b/drivers/mmc/host/sunxi-mmc.c
-> > > @@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_e=
-mmc_cfg =3D {
-> > >         .needs_new_timings =3D true,
-> > >  };
-> > >
-> > > -static const struct sunxi_mmc_cfg sun50i_a100_cfg =3D {
-> > > +static const struct sunxi_mmc_cfg sun50i_h616_cfg =3D {
-> > >         .idma_des_size_bits =3D 16,
-> > >         .idma_des_shift =3D 2,
-> > > -       .clk_delays =3D NULL,
-> > >         .can_calibrate =3D true,
-> > >         .mask_data0 =3D true,
-> > >         .needs_new_timings =3D true,
-> > > @@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_m=
-atch[] =3D {
-> > >         { .compatible =3D "allwinner,sun20i-d1-mmc", .data =3D &sun20=
-i_d1_cfg },
-> > >         { .compatible =3D "allwinner,sun50i-a64-mmc", .data =3D &sun5=
-0i_a64_cfg },
-> > >         { .compatible =3D "allwinner,sun50i-a64-emmc", .data =3D &sun=
-50i_a64_emmc_cfg },
-> > > -       { .compatible =3D "allwinner,sun50i-a100-mmc", .data =3D &sun=
-50i_a100_cfg },
-> > > +       { .compatible =3D "allwinner,sun50i-a100-mmc", .data =3D &sun=
-20i_d1_cfg },
-> > >         { .compatible =3D "allwinner,sun50i-a100-emmc", .data =3D &su=
-n50i_a100_emmc_cfg },
-> > > +       { .compatible =3D "allwinner,sun50i-h616-mmc", .data =3D &sun=
-50i_h616_cfg },
-> > >         { /* sentinel */ }
-> > >  };
-> > >  MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
-> > > --
-> > > 2.46.2
-> > >
-> >
->
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index 41e451235f637..e9f6e4e622901 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2957,8 +2957,8 @@ static int dw_mci_init_slot(struct dw_mci *host)
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
+-		mmc->max_seg_size = mmc->max_req_size;
++		mmc->max_seg_size = 0x1000;
++		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
+-- 
+2.45.2
+
 
