@@ -1,95 +1,141 @@
-Return-Path: <stable+bounces-92047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6FA9C341C
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 18:46:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F04B9C3422
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 18:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C017B20ACA
-	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 17:46:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABA11F216ED
+	for <lists+stable@lfdr.de>; Sun, 10 Nov 2024 17:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BA91C28E;
-	Sun, 10 Nov 2024 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B8F135A53;
+	Sun, 10 Nov 2024 17:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="Egw9mr+U"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mMWLfBKj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32A117C69
-	for <stable@vger.kernel.org>; Sun, 10 Nov 2024 17:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0EC77111;
+	Sun, 10 Nov 2024 17:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731260758; cv=none; b=ZNKUDNXqHMfKNI/usqrSmzHPkT6GFiARqr3xo96lCWGr4iYX8SXtGjoZ2HkEwX1YJPVbHdaGNQRz9vAaeg6VMQ1sF7S5wjIPd7HzFQQJyiDwIU9iIWnxkpqCCzxEBHEGJaRv9LUoXpiakVy9cIR5bM+lCC5TND4OBMfOQRqmnos=
+	t=1731261567; cv=none; b=VlGPZCpyQhoAdtjf712thr0Q+gdGOhUp4kmbJHkhQyTBorodC41WWhQ3OJ8QjnFAGBKc8EIZeQ3ohZhO+IB0yUg6G8Erv6ALP3q/3O5DcqOGIRa4anB89NONeq0X2VhxKkSUi4B98JbAWe0NSuPNk790urBUIbfTAJOJyWvTWQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731260758; c=relaxed/simple;
-	bh=0jB8Je3YfNNIQmGlOym7It5QY+n05RMBFKWnmdPcCA4=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=ZPuZNkXTrZWxG8PTdZoo33Bsy++3xVp18ZoyJSI1XrwNXWxUhShgqeqV9WGKNUxtRtlHQ+ZGoVXpxczM7N9gJY+Rxopr2kaNgCrUIg1GjNFf3TAf+DI/plBwUnOtykTglofBTkXB6lWLtyCNoQlYL0o3mc4DJf9cNZAgG1nj2iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=Egw9mr+U; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Xmfwn2KkNz9sq9;
-	Sun, 10 Nov 2024 18:36:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1731260169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vNOFihfIY3UkN4wDwkkwwTxTFierH+79nleSATYud54=;
-	b=Egw9mr+UetEoSPNZgqKBJasKbQG+wMW2JdvfZGm2OSgC/JB7wWSkxl388rw+ovw9AILocV
-	hkxauSsqVvt8ryG8W3u7lYs+segys/3VttGoXPKvsz4F4iy99fOxcfcPAFne8FLwdntpsH
-	8HYLxs+J0ECTgXa5vXFXO2vCdIdITscj0ju0jtNrMhPmJHCz/MDqtlk/a5w8iiVL8bhoTG
-	RwddgT9Gep3vpbArDCAFzXhzcIosY04K2L1agH+3sT48Xy6UiwzPoHVcMmg/o8BC+tMQvO
-	RaysopTm77Pr4XAOZakzAI0XZYhRibnDVIroHE3+NZ7vSZU/oZZbWEI+193WEA==
-Message-ID: <8e759d2a-423f-4e26-b4c2-098965c50f9e@hauke-m.de>
-Date: Sun, 10 Nov 2024 18:36:08 +0100
+	s=arc-20240116; t=1731261567; c=relaxed/simple;
+	bh=gP0LyPTk1K9ldk25ShgNbUfkLy4CMQwovmYapa/+6nw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oWtZxw5yYzpPOXl9fi3xARNpLnFWbCExqQTy39bLR5bcn+7c1KNQPz+KRowRSaqpghKo3htHwN09XpEhZk/NcFu+qZe+1Oj/F2SxKEooGJqlHkQaKBROI0Fa59HwVNGaUMi4EzfbriMZkTwKzpNCTOyRdAbqwDLjUMmr+nsl7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=mMWLfBKj; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731261565; x=1762797565;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qriQr7A7vdEU9JH1OJ7IVxAGZbKMJJpRoQgwNdcsaRQ=;
+  b=mMWLfBKj0ZAuehlf0t52oCK/8qb7gVABtBcVtl66w4nBA9VCO3caQk0s
+   n8OPsJl3jua2WUZ1bWBuu4ndthB1lmqFvfyV1XRGMSTZ0CLVWV4/zn6E9
+   UHyCzc9Qh35FS1jflCK8Y+F5AHDs5JZNW7231HapuWkcF8DidcnrhhTvv
+   k=;
+X-IronPort-AV: E=Sophos;i="6.12,143,1728950400"; 
+   d="scan'208";a="146039670"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2024 17:59:23 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.10.100:50883]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.22.102:2525] with esmtp (Farcaster)
+ id c392b481-9aba-45bc-b262-f61f404f42f0; Sun, 10 Nov 2024 17:59:21 +0000 (UTC)
+X-Farcaster-Flow-ID: c392b481-9aba-45bc-b262-f61f404f42f0
+Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Sun, 10 Nov 2024 17:59:21 +0000
+Received: from 3c06303d853a (10.187.171.33) by EX19D026EUB004.ant.amazon.com
+ (10.252.61.64) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34; Sun, 10 Nov 2024
+ 17:59:18 +0000
+Date: Sun, 10 Nov 2024 09:59:13 -0800
+From: Andrew Paniakin <apanyaki@amazon.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+CC: Christian Heusel <christian@heusel.eu>, <pc@cjr.nz>,
+	<stfrench@microsoft.com>, <sashal@kernel.org>, <pc@manguebit.com>,
+	<stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
+	<abuehaze@amazon.com>, <simbarb@amazon.com>, <benh@amazon.com>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+Message-ID: <ZzD0cW4gbQnbI9Gm@3c06303d853a>
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+ <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+ <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
+ <ZnyRlEUqgZ_m_pu-@3c06303d853a>
+ <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
+ <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
+ <ZpHy4V6P-pawTG2f@3c06303d853a.ant.amazon.com>
+ <Zp7-gl5mMFCb4UWa@3c06303d853a.ant.amazon.com>
+ <fb4c481d-91ba-46b8-b11a-534597a2b467@leemhuis.info>
+ <ZxAm4rvmWp2MMt4b@3c06303d853a.ant.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: stable@vger.kernel.org
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: backport "udf: Allocate name buffer in directory iterator on heap" to
- 5.15
-Cc: jack@suse.com
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4Xmfwn2KkNz9sq9
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZxAm4rvmWp2MMt4b@3c06303d853a.ant.amazon.com>
+X-ClientProxiedBy: EX19D042UWA002.ant.amazon.com (10.13.139.17) To
+ EX19D026EUB004.ant.amazon.com (10.252.61.64)
 
-Hi,
-
-I am running into this compile error in 5.15.171 in OpenWrt on 32 bit 
-systems. This problem was introduced with kernel 5.15.169.
-```
-fs/udf/namei.c: In function 'udf_rename':
-fs/udf/namei.c:878:1: error: the frame size of 1144 bytes is larger than 
-1024 bytes [-Werror=frame-larger-than=]
-   878 | }
-       | ^
-cc1: all warnings being treated as errors
-make[2]: *** [scripts/Makefile.build:289: fs/udf/namei.o] Error 1
-make[1]: *** [scripts/Makefile.build:552: fs/udf] Error 2
-```
-
-This is fixed by this upstream commit:
-commit 0aba4860b0d0216a1a300484ff536171894d49d8
-Author: Jan Kara <jack@suse.cz>
-Date:   Tue Dec 20 12:38:45 2022 +0100
-
-     udf: Allocate name buffer in directory iterator on heap
-
-
-Please backport this patch to 5.15 too.
-It was already backported to kernel 6.1.
-
-Hauke
+On 16/10/2024, Andrew Paniakin wrote:
+> On 27/09/2024, Linux regression tracking (Thorsten Leemhuis) wrote:
+> > On 23.07.24 02:51, Andrew Paniakin wrote:
+> > > On 12/07/2024, Andrew Paniakin wrote:
+> > >> On 11/07/2024, Linux regression tracking (Thorsten Leemhuis) wrote:
+> > >>> On 27.06.24 22:16, Christian Heusel wrote:
+> > >>>> On 24/06/26 03:09PM, Andrew Paniakin wrote:
+> > >>>>> On 25/06/2024, Christian Heusel wrote:
+> > >>>>>> On 24/06/24 10:59AM, Andrew Paniakin wrote:
+> > >>>>>>> On 19/06/2024, Andrew Paniakin wrote:
+> > >>>>>>>> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+> > >>
+> > >>> Hmmm, unless I'm missing something it seems nobody did so. Andrew, could
+> > >>> you take care of that to get this properly fixed to prevent others from
+> > >>> running into the same problem?
+> > >>
+> > >> We got the confirmation from requesters that the kernel with this patch
+> > >> works properly, our regression tests also passed, so I submitted
+> > >> backport request:
+> > >> https://lore.kernel.org/stable/20240713031147.20332-1-apanyaki@amazon.com/
+> > >
+> > > There was an issue with backporting the follow-up fix for this patch:
+> > > https://lore.kernel.org/all/20240716152749.667492414@linuxfoundation.org/
+> > > I'll work on fixing this issue and send new patches again for the next cycle.
+> > 
+> > Andrew, was there any progress? From here it looks like this fell
+> > through the cracks, but I might be missing something.
+> > 
+> > Ciao, Thorsten
+> 
+> Hi Thorsten, sorry for delay in reply.
+> I had to do one step back and update my development setup, in order to
+> prevent rebase process breaking: created script to use crosstool [1] to
+> test my future backports on all platforms and make sure to search
+> follow-up fixes for the patch I'm porting, found kernel.dance [2] for
+> it. Now I'm trying to reproduce issue mentioned in follow-up fix [3] to
+> have clear red/green test results. I think I should be able to send
+> tested fixes in next 2 weeks.
+> 
+> [1] https://cdn.kernel.org/pub/tools/crosstool/
+> [2] https://kernel.dance/
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5a863a153e90996ab2aef6b9e08d509f4d5662b
+Hi Thorsten,
+Last weeks I had to work on few urgent internal issues, so this work got
+delayed. I got confirmation from the manager to make this task my
+priority until it's done. To progress faster I setup systemtap and was
+able find the reason why my reproducer didn't work.
 
