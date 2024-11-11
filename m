@@ -1,114 +1,238 @@
-Return-Path: <stable+bounces-92142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7677A9C4128
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:41:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F68E9C412C
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C751C218F7
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 523721C21939
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D929D19F10A;
-	Mon, 11 Nov 2024 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549D119F10A;
+	Mon, 11 Nov 2024 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OW+KAPjd"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gfAyNpjJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5492714EC55
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 14:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A96214EC55
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 14:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731336073; cv=none; b=A8d840n6x5OU1wWfy1eZS72b2ctgFXqyVZWcu+AW333K1q4dwdl7awMvMe/o36eU13SSa1WMF8qrzPC5oDluXbbFKTYGP5Zil0XWabPAtaX/eYfLJ3Y6R6yTMGMzxIra+pjK9FQIUxuc/pGqwApc57psWIf8avecuZu5+qELFR0=
+	t=1731336152; cv=none; b=jS0M4IOks5AkgjLw1R098ZOOOn7oKPFOLbwsn/3XgSMwv04/kgB0Vvw8QSndEpdEhE+Po8dacKFfT+O90rNjJqVeVZSHZfmxC2Y/xDMn855In8r+XTFOlx/SIXlN0M2mYCaIa4ovGjXFU9NKLJn0fq8BM53tWj4Q4zaHmsziVJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731336073; c=relaxed/simple;
-	bh=QC6ViF4IkpA7VCOBhetwyFyQO8qDfwObi+1D1VM2vtw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qEnU78aU/pK/vBcKj++vCrKCoh/0Is/v2lm4iU0fgpGyAGiAceuLeFAG0fvpbsi8dRReDVHDc+4C/WAucsKBNoSMgf4U6xaKYKMH55MbddGeQnlLAk/FrQs+UpvvFBnnFoHy9mXbiBZpKvEZstXUCzGluZ1AxiOGC1VZW28IJr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OW+KAPjd; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731336071; x=1762872071;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=QC6ViF4IkpA7VCOBhetwyFyQO8qDfwObi+1D1VM2vtw=;
-  b=OW+KAPjdc0wbEvPy2OVsvya7QQCoE+Fx3cH0StTfv50ZoQtHH6mzOcr7
-   WOTwHCth3txaY0ZVOtXkrDIKizEuR54Ac/vBi0YL0CMO3d0RYSZEz+z8c
-   aGFbvkTIyjvQjwdKGwfP4sXSIVb3SmtGAf2Izg+K4qjFepi5aqePFpGwg
-   O/+z152T1xD65VVXhFoo7mvq4Pv8YffPfI+2xfQLr8P92OGaRsBTvMz0/
-   onA2QiT2CrE9+SuJIw0TyWuC10pAJ+TbefPOCGmD0y2vFlXNAFeqzbSwO
-   DWoCzMiDx45CruAC1k/cRK1g78MWExJALFiAjBDdQ2lofVr2icINeFUr/
-   w==;
-X-CSE-ConnectionGUID: ZR4VBar9RxWXIBH7MK7HMg==
-X-CSE-MsgGUID: UTHwnGKUSAurKs1ccMf7wA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="41772020"
-X-IronPort-AV: E=Sophos;i="6.12,145,1728975600"; 
-   d="scan'208";a="41772020"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 06:41:10 -0800
-X-CSE-ConnectionGUID: qzaX9EvWQue5xFFr0a2tfw==
-X-CSE-MsgGUID: +0jsyEwVRhq2JDaq6Z2XUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,145,1728975600"; 
-   d="scan'208";a="91725322"
-Received: from carterle-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.75])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 06:41:07 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Huacai Chen <chenhuacai@loongson.cn>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Huacai Chen <chenhuacai@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, Huacai Chen <chenhuacai@loongson.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm: Remove redundant statement in
- drm_crtc_helper_set_mode()
-In-Reply-To: <20241111132149.1113736-1-chenhuacai@loongson.cn>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20241111132149.1113736-1-chenhuacai@loongson.cn>
-Date: Mon, 11 Nov 2024 16:41:04 +0200
-Message-ID: <87o72lde9r.fsf@intel.com>
+	s=arc-20240116; t=1731336152; c=relaxed/simple;
+	bh=JzNTnC4Y6H6CouYn3Rqd/lfeeYb1FNb3OtZz+Qh03Lc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g8Prc6jE9trPImv6erTEOxL02Gud1J9fBBdJsTE/TnbGnWMYb7Ssetvg+jApo1gFV0mlQ7qBI/EiGfgmbE/629Cgc87ewxe/CvAlv+pDPnghqe7h6xdlJbXMgvzppaz0gHeOERuzosK17BI6vwd0wtXVxSd2Xj5YBfU9Oc0nsBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gfAyNpjJ; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731336151; x=1762872151;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PEDvC31sSU8KTuYUcSONd4ZUqlkM6OydgVl1G8e1fXM=;
+  b=gfAyNpjJ/I71oWScXMbAeuL4D7+splK+7wMfnH+BgniTtBMEeLonGei4
+   BKL4nWH9Yrm2865uwFzBO48CtqSuluQxepxwcWUMcRfuOW6zJHvPh41jV
+   p/Bv4BBbsRsigxAZp7tYm8hipRqR9tY0nFhvbLW79lLlewKjCO1zncetI
+   E=;
+X-IronPort-AV: E=Sophos;i="6.12,145,1728950400"; 
+   d="scan'208";a="40465911"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 14:42:27 +0000
+Received: from EX19MTAUEC002.ant.amazon.com [10.0.0.204:40050]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.28.135:2525] with esmtp (Farcaster)
+ id dc1b4fb3-1f66-4d1c-9bdf-ae05f9bf8dd7; Mon, 11 Nov 2024 14:42:25 +0000 (UTC)
+X-Farcaster-Flow-ID: dc1b4fb3-1f66-4d1c-9bdf-ae05f9bf8dd7
+Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
+ EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 11 Nov 2024 14:42:25 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
+ EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 11 Nov 2024 14:42:25 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-c1559d0e.us-west-2.amazon.com
+ (10.124.125.2) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 14:42:25 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-pdx-all-2b-c1559d0e.us-west-2.amazon.com (Postfix) with ESMTP id 8241D40448;
+	Mon, 11 Nov 2024 14:42:24 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id 163482246B; Mon, 11 Nov 2024 14:42:24 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Zheng Yejian <zhengyejian1@huawei.com>,
+	<mhiramat@kernel.org>, <mark.rutland@arm.com>,
+	<mathieu.desnoyers@efficios.com>, Steven Rostedt <rostedt@goodmis.org>, Hagar
+ Hemdan <hagarhem@amazon.com>
+Subject: [PATCH] ftrace: Fix possible use-after-free issue in ftrace_location()
+Date: Mon, 11 Nov 2024 14:42:06 +0000
+Message-ID: <20241111144206.25201-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-On Mon, 11 Nov 2024, Huacai Chen <chenhuacai@loongson.cn> wrote:
-> Commit dbbfaf5f2641a ("drm: Remove bridge support from legacy helpers")
-> removes the drm_bridge_mode_fixup() call in drm_crtc_helper_set_mode(),
-> which makes the subsequent "encoder_funcs = encoder->helper_private" be
-> redundant, so remove it.
->
-> Cc: stable@vger.kernel.org
-> Fixes: dbbfaf5f2641a ("drm: Remove bridge support from legacy helpers")
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-IMO not necessary because nothing's broken, it's just redundant.
+commit e60b613df8b6253def41215402f72986fee3fc8d upstream.
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+KASAN reports a bug:
 
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->  drivers/gpu/drm/drm_crtc_helper.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/drm_crtc_helper.c b/drivers/gpu/drm/drm_crtc_helper.c
-> index 0955f1c385dd..39497493f74c 100644
-> --- a/drivers/gpu/drm/drm_crtc_helper.c
-> +++ b/drivers/gpu/drm/drm_crtc_helper.c
-> @@ -334,7 +334,6 @@ bool drm_crtc_helper_set_mode(struct drm_crtc *crtc,
->  		if (!encoder_funcs)
->  			continue;
->  
-> -		encoder_funcs = encoder->helper_private;
->  		if (encoder_funcs->mode_fixup) {
->  			if (!(ret = encoder_funcs->mode_fixup(encoder, mode,
->  							      adjusted_mode))) {
+  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
+  Read of size 8 at addr ffff888141d40010 by task insmod/424
+  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+
+  [...]
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x68/0xa0
+   print_report+0xcf/0x610
+   kasan_report+0xb5/0xe0
+   ftrace_location+0x90/0x120
+   register_kprobe+0x14b/0xa40
+   kprobe_init+0x2d/0xff0 [kprobe_example]
+   do_one_initcall+0x8f/0x2d0
+   do_init_module+0x13a/0x3c0
+   load_module+0x3082/0x33d0
+   init_module_from_file+0xd2/0x130
+   __x64_sys_finit_module+0x306/0x440
+   do_syscall_64+0x68/0x140
+   entry_SYSCALL_64_after_hwframe+0x71/0x79
 
+The root cause is that, in ftrace_location_range(), ftrace record of some address
+is being searched in ftrace pages of some module, but those ftrace pages
+at the same time is being freed in ftrace_release_mod() as the
+corresponding module is being deleted:
+
+           CPU1                       |      CPU2
+  register_kprobes() {                | delete_module() {
+    check_kprobe_address_safe() {     |
+      arch_check_ftrace_location() {  |
+        ftrace_location() {           |
+          lookup_rec() // USE!        |   ftrace_release_mod() // Free!
+
+To fix this issue:
+  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();
+  2. Use ftrace_location_range() instead of lookup_rec() in
+     ftrace_location();
+  3. Call synchronize_rcu() before freeing any ftrace pages both in
+     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240509192859.1273558-1-zhengyejian1@huawei.com
+
+Cc: stable@vger.kernel.org
+Cc: <mhiramat@kernel.org>
+Cc: <mark.rutland@arm.com>
+Cc: <mathieu.desnoyers@efficios.com>
+Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[Hagar: Modified to apply on v5.4.y]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+only compile tested.
+---
+ kernel/trace/ftrace.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 412505d94865..60bf8a6d55ce 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1552,7 +1552,9 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+ 	struct ftrace_page *pg;
+ 	struct dyn_ftrace *rec;
+ 	struct dyn_ftrace key;
++	unsigned long ip = 0;
+ 
++	rcu_read_lock();
+ 	key.ip = start;
+ 	key.flags = end;	/* overload flags, as it is unsigned long */
+ 
+@@ -1565,10 +1567,13 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+ 			      sizeof(struct dyn_ftrace),
+ 			      ftrace_cmp_recs);
+ 		if (rec)
+-			return rec->ip;
++		{
++			ip = rec->ip;
++			break;
++		}
+ 	}
+-
+-	return 0;
++	rcu_read_unlock();
++	return ip;
+ }
+ 
+ /**
+@@ -5736,6 +5741,8 @@ static int ftrace_process_locs(struct module *mod,
+ 	/* We should have used all pages unless we skipped some */
+ 	if (pg_unuse) {
+ 		WARN_ON(!skipped);
++		/* Need to synchronize with ftrace_location_range() */
++		synchronize_rcu();
+ 		ftrace_free_pages(pg_unuse);
+ 	}
+ 	return ret;
+@@ -5889,6 +5896,9 @@ void ftrace_release_mod(struct module *mod)
+  out_unlock:
+ 	mutex_unlock(&ftrace_lock);
+ 
++	/* Need to synchronize with ftrace_location_range() */
++	if (tmp_page)
++		synchronize_rcu();
+ 	for (pg = tmp_page; pg; pg = tmp_page) {
+ 
+ 		/* Needs to be called outside of ftrace_lock */
+@@ -6196,6 +6206,7 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+ 	unsigned long start = (unsigned long)(start_ptr);
+ 	unsigned long end = (unsigned long)(end_ptr);
+ 	struct ftrace_page **last_pg = &ftrace_pages_start;
++	struct ftrace_page *tmp_page = NULL;
+ 	struct ftrace_page *pg;
+ 	struct dyn_ftrace *rec;
+ 	struct dyn_ftrace key;
+@@ -6239,12 +6250,8 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+ 		ftrace_update_tot_cnt--;
+ 		if (!pg->index) {
+ 			*last_pg = pg->next;
+-			if (pg->records) {
+-				free_pages((unsigned long)pg->records, pg->order);
+-				ftrace_number_of_pages -= 1 << pg->order;
+-			}
+-			ftrace_number_of_groups--;
+-			kfree(pg);
++			pg->next = tmp_page;
++			tmp_page = pg;
+ 			pg = container_of(last_pg, struct ftrace_page, next);
+ 			if (!(*last_pg))
+ 				ftrace_pages = pg;
+@@ -6261,6 +6268,11 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+ 		clear_func_from_hashes(func);
+ 		kfree(func);
+ 	}
++	/* Need to synchronize with ftrace_location_range() */
++	if (tmp_page) {
++		synchronize_rcu();
++		ftrace_free_pages(tmp_page);
++	}
+ }
+ 
+ void __init ftrace_free_init_mem(void)
 -- 
-Jani Nikula, Intel
+2.40.1
+
 
