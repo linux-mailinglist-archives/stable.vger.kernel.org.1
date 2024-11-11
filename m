@@ -1,183 +1,156 @@
-Return-Path: <stable+bounces-92133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D539C3FBC
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:43:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D319C4029
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CBB2B20FE9
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 13:43:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E1EC2829B6
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CF819D067;
-	Mon, 11 Nov 2024 13:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE2F19E819;
+	Mon, 11 Nov 2024 14:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OSQ/dXHc"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ahgggQo+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379B51865E0
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 13:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24D218BBA8;
+	Mon, 11 Nov 2024 14:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731332626; cv=none; b=AdHoyg3ohOEovxNloPRLr/OjJ9mKdQOZvT6PIgnnai0pgXM5lJU0gTubH4aoGIziOocaAIgv4VOhCUdGnR8ZY/mcCRXUOYBomGGxoCFGR9onGEhHxiLDZkn083zY56MlUvUFRtxR2savftbEfe08EMgSVeUx6aytYIMctuQ5KfY=
+	t=1731333786; cv=none; b=PD8K5wBnwMORYP6A3O/0DTyW2i0/9SSfeWAQmworsnATynY2xumZpR/1q6xbGnlnvghgVYl4WS/VUhHqLNJx2J9Kq6JnjHsddAFysr8B0p5x7+dg26wocch6HeK8RtQYBuRoAJ+44raP+6zKDyov9CiZIkw6RQB9vW06vGaWTaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731332626; c=relaxed/simple;
-	bh=jYvLQr8HkhBTMi8Vwwvm/H234TJAgq+I/opC9vwgbeI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ku4nL+opHcTCzTO5mty8ouF4b0iaRa6lWuT76JMmKBLJvV0DTgE66HFwTDOXSPAv//KbignIg9H67TOllaIDWo9J998G831CX5GmVGBViCbC2/UdwdAvlLUqZ7N6QNkldt3jmZnqsDhZ77ja6RBxA4sCI3Ep6llHIkwlEhBg8RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OSQ/dXHc; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20c87b0332cso280205ad.1
-        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 05:43:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731332623; x=1731937423; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xDP+cDmyXee8Hd/DZmVZMRbGxd+UGKc4TIK2uER3Dco=;
-        b=OSQ/dXHcmTiszrItgfstTXYtywBaD2kgFxd1NgLPM+xdrlmnWtw7fANGHzDffG4C1X
-         BKxPye6HyxBC/hp9sKv5QwPi26YfTkldAgGh/SM+zBvMA6rBGgapbA30YEhBLJ70ZbI7
-         zLFl8eY0EhIkAsygBB8mMbOs/mO3nSAEcmBsFfOUwPmX8JfjCM5bavqvih+saU1wW9Pj
-         yBy0UtEDgenm9oYZNmhNDoJyEzwoQMJ/xB2kKJuOgqj+HLGcUjOnrf7QQocKyb9lJXGJ
-         PAv+Chz3roB0NcAjkKb0b11xN5KRC/KXEvw/MpOoggIqhqh/sYzx1KR9JSDn/0rYXs2P
-         C5Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731332623; x=1731937423;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xDP+cDmyXee8Hd/DZmVZMRbGxd+UGKc4TIK2uER3Dco=;
-        b=NJedyiR/Lhen5RH3cgkqHJm++CUxHGxOxzZEwscgsuW+EPS3nDTJMGMs3OPEsE083v
-         ZLkwEFszoRLnpcmE1ILXVPUUzAsP1XSMzLNc8HdxfLQwEN83RFaYP8oxNVxIrph8TM4g
-         Ve6PQ8Q2bAD5kG8Avb5DII7c3HIg7Hb6wWiM5pYNJzyvGOizRwDCublVy5Rh+ysbbeS9
-         RKBga+kIL9/Jf4je/Ea3Fgj2ioe6rDKZTS9dA54E1NGSrUT74zbpOJJTh2fmsJGx7P/B
-         IOM0VuppLgaxbbCraqOHm8MaN1K1Ef795pxEyxV0YOs36KFMQNb5pc7yx5nHiUkQc/PE
-         eJQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZkHX7TB9hYyvxVBrDkgKJSjWWytgszzyBiL5orihghVSmb7eXamT5d6oQMAs884NwaC85ilM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf9Nb8FzKLZNpaqLQYgUsAnqpF4egLJjNmt1pyfophQPrAr03f
-	VYAYYG17AGJg9xRCHBWD3RD2oz9Ph3nU540V5hmGWE8ci+mTHtL4qTTqltonXH0LI1viLB2EUhP
-	ZQGlsJwzmH0RJmnLhdHInjki9etuVoSdYeorn
-X-Gm-Gg: ASbGncsD60v1t69bo2JJP80D4r57W5LRtK+/W52kQ/Ck3+NXzpuVNyhmtIWwv0aV9mn
-	vAfYSvFKC0AcItsBF+ULev+mwT3uwYA==
-X-Google-Smtp-Source: AGHT+IETPc+SVHj47N7mDi3y9b3P39arT7614Q9JWIkwIq84hMAFtIcLJ/cZOvbHbBU+mSpbxKQJa4AQPdsxtagSf6Q=
-X-Received: by 2002:a17:903:2292:b0:20b:5e34:1850 with SMTP id
- d9443c01a7336-2118f1c8c0cmr3154185ad.23.1731332623385; Mon, 11 Nov 2024
- 05:43:43 -0800 (PST)
+	s=arc-20240116; t=1731333786; c=relaxed/simple;
+	bh=HaaDV+WLpR0Ia/MD/rolnSMvCpQVGSdfRgdfsEk7FwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nrTGDdjYJkReDCtQfPfHcZubmO2FXsDkfRIUU3IUWvMsFDiwZ5pX4ABSKM8TgzybuozoAY3qoRFvRW4oxw2LCsCA3vmo/0HPv/pI2k5Z5TJWxGvYKPHijSYNefsHn92dScBSrLiJ+X/qWM1+G7jl6N+ngQsVpN2BPJXqqj+soRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ahgggQo+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ABDDgIM000996;
+	Mon, 11 Nov 2024 14:03:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1rvycK1m43BFAJNc0igbgy2/qw11w87AKvHkvR3c3LM=; b=ahgggQo+xE2P5k62
+	Z7anENshxFQ1LHRr15yJY2VbdyPfnSk7JS2P+it2cbndwBH1VD6FzNWDCQXguJ00
+	TgJ1jq2n4XFuMGStl8w7X/adyZQ3wAmaZcl0t8qnKPW0tjncWMn6H9DySmKNG2KB
+	07sI30kMbByZqkw5/DymNo2EmviDZc6v7KmCEqJpiK1udogicyEwVd4Y0e8oL/dD
+	aouBShAwkFZKLyBPL2Qd0dAgVxs+vIZguz9QKN6rLBK06jKOn7ZXgi1RSr8Mx4pv
+	0BJxVER+V6LepQUKqcPQHsdBvR0Hf6tLkZTT2FyH82JHka83z8nPjVa24PxUskru
+	qRrLOA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42t0wjv7g8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Nov 2024 14:02:59 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ABE2xHW005786
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Nov 2024 14:02:59 GMT
+Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 11 Nov
+ 2024 06:02:56 -0800
+Message-ID: <e2b31dbc-2681-1bd8-e013-d65ec52bbf1a@quicinc.com>
+Date: Mon, 11 Nov 2024 19:32:53 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241111082832.CB6B3C4CED0@smtp.kernel.org> <CADyq12zz+Di3FDANsZo1F79EvSSvUZt6fdRMDqG0tqbWoHq+rg@mail.gmail.com>
-In-Reply-To: <CADyq12zz+Di3FDANsZo1F79EvSSvUZt6fdRMDqG0tqbWoHq+rg@mail.gmail.com>
-From: Brian Geffon <bgeffon@google.com>
-Date: Mon, 11 Nov 2024 08:43:07 -0500
-Message-ID: <CADyq12wbX6Jn0aPgm4EpMtFcE1d=K7qAWan=g9L7RtQ674Escw@mail.gmail.com>
-Subject: Re: [merged mm-stable] zram-clear-idle-flag-after-recompression.patch
- removed from -mm tree
-To: Andrew Morton <akpm@linux-foundation.org>, "# v4 . 10+" <stable@vger.kernel.org>
-Cc: mm-commits@vger.kernel.org, minchan@kernel.org, kawasin@google.com, 
-	senozhatsky@chromium.org
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Content-Language: en-US
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>
+CC: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+ <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
+ <81d6a054-e02a-7c98-0479-0e17076fabd7@quicinc.com>
+ <ndlf4bsijb723cctkvd7hkwmo7plbzr3q2dhqc3tpyujbfcr3z@g4rvg5p7vhfs>
+ <975f4ecd-2029-469a-8ecf-fbd6397547d4@linaro.org>
+ <57544d01-a7c6-1ea6-d408-ffe1678e0b5e@quicinc.com>
+ <ql6hftuo7udkqachofws6lcpwx7sbjakonoehm7zsh43kqndsf@rwmiwqngldn2>
+ <781ea2fd-637f-b896-aad4-d70f43ad245c@quicinc.com>
+ <oxbpd3tfemwci6aiv5gs6rleg6lmsuabvvccqibbqddczjklpi@aln6hfloqizo>
+ <37982a05-2057-45f4-923e-7562c683706d@linaro.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <37982a05-2057-45f4-923e-7562c683706d@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mH0y1_oUWsPqZ4a-YRUqNnErAZQGOabM
+X-Proofpoint-ORIG-GUID: mH0y1_oUWsPqZ4a-YRUqNnErAZQGOabM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ malwarescore=0 mlxlogscore=999 spamscore=0 impostorscore=0 adultscore=0
+ phishscore=0 suspectscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411110116
 
-On Mon, Nov 11, 2024 at 8:42=E2=80=AFAM Brian Geffon <bgeffon@google.com> w=
-rote:
->
-> On Mon, Nov 11, 2024 at 3:28=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> >
-> > The quilt patch titled
-> >      Subject: zram: clear IDLE flag after recompression
-> > has been removed from the -mm tree.  Its filename was
-> >      zram-clear-idle-flag-after-recompression.patch
-> >
-> > This patch was dropped because it was merged into the mm-stable branch
-> > of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> >
-> > ------------------------------------------------------
-> > From: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > Subject: zram: clear IDLE flag after recompression
-> > Date: Tue, 29 Oct 2024 00:36:14 +0900
-> >
-> > Patch series "zram: IDLE flag handling fixes", v2.
-> >
-> > zram can wrongly preserve ZRAM_IDLE flag on its entries which can resul=
-t
-> > in premature post-processing (writeback and recompression) of such
-> > entries.
-> >
-> >
-> > This patch (of 2)
-> >
-> > Recompression should clear ZRAM_IDLE flag on the entries it has accesse=
-d,
-> > because otherwise some entries, specifically those for which recompress=
-ion
-> > has failed, become immediate candidate entries for another post-process=
-ing
-> > (e.g.  writeback).
-> >
-> > Consider the following case:
-> > - recompression marks entries IDLE every 4 hours and attempts
-> >   to recompress them
-> > - some entries are incompressible, so we keep them intact and
-> >   hence preserve IDLE flag
-> > - writeback marks entries IDLE every 8 hours and writebacks
-> >   IDLE entries, however we have IDLE entries left from
-> >   recompression, so writeback prematurely writebacks those
-> >   entries.
-> >
-> > The bug was reported by Shin Kawamura.
-> >
-> > Link: https://lkml.kernel.org/r/20241028153629.1479791-1-senozhatsky@ch=
-romium.org
-> > Link: https://lkml.kernel.org/r/20241028153629.1479791-2-senozhatsky@ch=
-romium.org
-> > Fixes: 84b33bf78889 ("zram: introduce recompress sysfs knob")
-> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > Reported-by: Shin Kawamura <kawasin@google.com>
-> > Acked-by: Brian Geffon <bgeffon@google.com>
-> > Cc: Minchan Kim <minchan@kernel.org>
-Cc: stable@vger.kernel.org
 
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> >
-> >  drivers/block/zram/zram_drv.c |    7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > --- a/drivers/block/zram/zram_drv.c~zram-clear-idle-flag-after-recompre=
-ssion
-> > +++ a/drivers/block/zram/zram_drv.c
-> > @@ -1864,6 +1864,13 @@ static int recompress_slot(struct zram *
-> >         if (ret)
-> >                 return ret;
-> >
-> > +       /*
-> > +        * We touched this entry so mark it as non-IDLE. This makes sur=
-e that
-> > +        * we don't preserve IDLE flag and don't incorrectly pick this =
-entry
-> > +        * for different post-processing type (e.g. writeback).
-> > +        */
-> > +       zram_clear_flag(zram, index, ZRAM_IDLE);
-> > +
-> >         class_index_old =3D zs_lookup_class_index(zram->mem_pool, comp_=
-len_old);
-> >         /*
-> >          * Iterate the secondary comp algorithms list (in order of prio=
-rity)
-> > _
-> >
-> > Patches currently in -mm which might be from senozhatsky@chromium.org a=
-re
-> >
-> >
+On 11/8/2024 5:13 PM, Bryan O'Donoghue wrote:
+> On 07/11/2024 13:54, Dmitry Baryshkov wrote:
+>>>> I'd say, don't overwrite the array. Instead the driver should extend it
+>>>> with the new information.
+>>> That is exactly the existing patch is currently doing.
+>> _new_ information, not a copy of the existing information.
+> 
+> But is this _really_ new information or is it guarding from "malicious"
+> additional messages ?
+> 
+> @Vikash is it even a valid use-case for firmware to send one set of capabilities
+> and then send a new set ?
+> 
+> It seems to me this should only happen once when the firmware starts up - the
+> firmware won't acquire any new abilities once it has enumerated its set to APSS.
+> 
+> So why is it valid to process an additional message at all ?
+> 
+> Shouldn't we instead be throwing away redundant updates either silently or with
+> some kind of complaint ?
+> 
+> If there's no new data - then this is data we shouldn't bother processing.
+> 
+> If it is new data then surely it should be the _current_ and _only_ valid set of
+> data.
+> 
+> And if the update is considered "invalid" then why _would_ we accept the update ?
+> 
+> I get we're fixing the OOB but I think we should be clear on the validity of the
+> content of the packet.
+The payload [1] is all about 2 u32s each for decoder and encoder bit masks,
+while each bit signifies which codec each supports. So in a good case, it would
+be always first iteration which would be sufficient. Its a very hypothetical
+case where a good case would that there are 8 payloads (consider there are 8
+supported codecs) with one bit set in each of those 8 payloads. I was initially
+thinking to cover for this case as well, seems could be a bit of over designing.
+
+Maybe set core->codecs_count (to 0) in the beginning of the API should cover the
+working case. In malicious case, let it continue to override ?
+
+Regards,
+Vikash
+
+[1]
+https://elixir.bootlin.com/linux/v6.12-rc7/source/drivers/media/platform/qcom/venus/hfi_parser.c#L193
 
