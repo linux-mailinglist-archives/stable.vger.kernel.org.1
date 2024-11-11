@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-92132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2778C9C3FB9
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:43:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D539C3FBC
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593B91C21843
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 13:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CBB2B20FE9
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 13:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0911919E7E2;
-	Mon, 11 Nov 2024 13:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CF819D067;
+	Mon, 11 Nov 2024 13:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="riSR2RXx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OSQ/dXHc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5926714D70E
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 13:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379B51865E0
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 13:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731332581; cv=none; b=iX9tZ0wFcXicOCthNdLx8Ek6gEeIafUavNrZqQUe8AIju9UILwluk5/Y+iLa8mdxkiHHE/+9yFkFx6yxWo8G6ovaTbHOoRNi9KkULgExJWK2YYlj2+5ErBuVMxxDHAaEwB++CWp9xcyT84k1NaGj11CiluwfEbP0DFr6QnmtN7Y=
+	t=1731332626; cv=none; b=AdHoyg3ohOEovxNloPRLr/OjJ9mKdQOZvT6PIgnnai0pgXM5lJU0gTubH4aoGIziOocaAIgv4VOhCUdGnR8ZY/mcCRXUOYBomGGxoCFGR9onGEhHxiLDZkn083zY56MlUvUFRtxR2savftbEfe08EMgSVeUx6aytYIMctuQ5KfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731332581; c=relaxed/simple;
-	bh=gF6/BtnCKdtkeAzG+8E09gcLV3K8e5RynRf2hWztlPs=;
+	s=arc-20240116; t=1731332626; c=relaxed/simple;
+	bh=jYvLQr8HkhBTMi8Vwwvm/H234TJAgq+I/opC9vwgbeI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/9MPsmrq+iwoOwT9dk0cWrp9ItmPtdKjLoEuzNmL/OPRyX3lQoNliFcUy3gcf4oD1RpYyWqD3a0no62rpvyvlCSwNMVMZ8pWbDQIGY/pS1ED3eMVBNIcCv461FRTcH8FZjVFAFURFK5G7yKaw4J+xQq4DaQuNiSe/Q44BTBscA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=riSR2RXx; arc=none smtp.client-ip=209.85.214.177
+	 To:Cc:Content-Type; b=Ku4nL+opHcTCzTO5mty8ouF4b0iaRa6lWuT76JMmKBLJvV0DTgE66HFwTDOXSPAv//KbignIg9H67TOllaIDWo9J998G831CX5GmVGBViCbC2/UdwdAvlLUqZ7N6QNkldt3jmZnqsDhZ77ja6RBxA4sCI3Ep6llHIkwlEhBg8RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OSQ/dXHc; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20c8ac50b79so256605ad.0
-        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 05:43:00 -0800 (PST)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20c87b0332cso280205ad.1
+        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 05:43:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731332580; x=1731937380; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731332623; x=1731937423; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=72liP3ILJcYy/3S9j69iqKfolSFq3Nj0JuCOpKZPINY=;
-        b=riSR2RXxH/1eCEFDvtgh4ZoAxP5ov89ZSmsTm0hytuPv7rGK6gGST61dEpiN61Mxw3
-         vAn4qWM3bhWk3D75e3IVEXZbDYWbTEzNuaxukEkTuwROVX34YUiYeyZNuzj6TRtuRXPE
-         CBSfbdOpyTKNX+0oqfMmAEIudhAMEgGoIFGBV8U7l8Ub+zDh8G5fLSquPlKkT3nHyJRs
-         RQ4XJ4fVidmdS8FSzEkLT35qQaVMnI9jTEgnoqBjZVIXqUbQgZh9MBdkFsmn0sIeIiS6
-         8sPFNgxPCw0rxa7X4uSeeU0QiCw5e5wroZjZ6j/qGYScHI6W4h0SO6E2gBWvYe9TDbhW
-         Pe4g==
+        bh=xDP+cDmyXee8Hd/DZmVZMRbGxd+UGKc4TIK2uER3Dco=;
+        b=OSQ/dXHcmTiszrItgfstTXYtywBaD2kgFxd1NgLPM+xdrlmnWtw7fANGHzDffG4C1X
+         BKxPye6HyxBC/hp9sKv5QwPi26YfTkldAgGh/SM+zBvMA6rBGgapbA30YEhBLJ70ZbI7
+         zLFl8eY0EhIkAsygBB8mMbOs/mO3nSAEcmBsFfOUwPmX8JfjCM5bavqvih+saU1wW9Pj
+         yBy0UtEDgenm9oYZNmhNDoJyEzwoQMJ/xB2kKJuOgqj+HLGcUjOnrf7QQocKyb9lJXGJ
+         PAv+Chz3roB0NcAjkKb0b11xN5KRC/KXEvw/MpOoggIqhqh/sYzx1KR9JSDn/0rYXs2P
+         C5Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731332580; x=1731937380;
+        d=1e100.net; s=20230601; t=1731332623; x=1731937423;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=72liP3ILJcYy/3S9j69iqKfolSFq3Nj0JuCOpKZPINY=;
-        b=wvRKVLSD3XijTQkRloCHAc4hkPkvy7tZeSuBSlkqUPF8M3Kt+eck2RxcKUfvcEB4aK
-         gLXz1kqGa2e9eVXEGWQ7venHyBtRsGi1jwS9I1q3ZQabH0SdRcD3N0t+804MRigDNnQe
-         t2gWeb/Hm728qxi/YXIkFml0wfFkd93KgSmOFEspMLNNJcY8JxqfZFekR8CJEB+OQYHt
-         PAWIKn+h6tTd1BUvCD8LSxxEfnGGeic6Xoybu0JJeOka7BTrtKbNq8SDyv3icYkX0IDm
-         /cwGqKzM4G51KH9V+xsidaMy0kT1kIPYDG4L1lgmfNLWSI/vigt/6UehYl4ds92clep0
-         Bh2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW9mXbgKaXc16uuuyDkZjUpNNosvsmzBkdKr9Bg8kEIGSutwG9dh0CcqVIZAAuzvg//sQJzxxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmnjF8E9YSzrhg5zr24HZS0xRftRG+rYQ39hOAz53mnLlGPbxa
-	tPWSFUE7YbDe/U1hpXIvLXOencyYmjbO+wQENn48dDT6jJTmzPYGMhoC3Bvc0wmYNfwDZfwaeTW
-	aTQr4CMzuPyjhgri+HhgkSaTkz9M1CvzlhSDy
-X-Gm-Gg: ASbGnct8BMO5++/aTRP6N8/xlz2TV5B0SvE4mBiyyAaTddGZ/qZ9rvaSvtboMpa7aRK
-	4yIY90ujo/HoAJn+SoxKC7Q2ecFQ4cw==
-X-Google-Smtp-Source: AGHT+IEJ+gVjHu6IDY7Kal6ws0MNoRNSbw1jsXvGRBX21ZRJfNzenUgKv9qTzqFUAN5RlMjCZlLITYHan3TVQo57grE=
-X-Received: by 2002:a17:902:dac9:b0:20c:f3cf:50e9 with SMTP id
- d9443c01a7336-2118dea0987mr3600665ad.4.1731332579476; Mon, 11 Nov 2024
- 05:42:59 -0800 (PST)
+        bh=xDP+cDmyXee8Hd/DZmVZMRbGxd+UGKc4TIK2uER3Dco=;
+        b=NJedyiR/Lhen5RH3cgkqHJm++CUxHGxOxzZEwscgsuW+EPS3nDTJMGMs3OPEsE083v
+         ZLkwEFszoRLnpcmE1ILXVPUUzAsP1XSMzLNc8HdxfLQwEN83RFaYP8oxNVxIrph8TM4g
+         Ve6PQ8Q2bAD5kG8Avb5DII7c3HIg7Hb6wWiM5pYNJzyvGOizRwDCublVy5Rh+ysbbeS9
+         RKBga+kIL9/Jf4je/Ea3Fgj2ioe6rDKZTS9dA54E1NGSrUT74zbpOJJTh2fmsJGx7P/B
+         IOM0VuppLgaxbbCraqOHm8MaN1K1Ef795pxEyxV0YOs36KFMQNb5pc7yx5nHiUkQc/PE
+         eJQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZkHX7TB9hYyvxVBrDkgKJSjWWytgszzyBiL5orihghVSmb7eXamT5d6oQMAs884NwaC85ilM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf9Nb8FzKLZNpaqLQYgUsAnqpF4egLJjNmt1pyfophQPrAr03f
+	VYAYYG17AGJg9xRCHBWD3RD2oz9Ph3nU540V5hmGWE8ci+mTHtL4qTTqltonXH0LI1viLB2EUhP
+	ZQGlsJwzmH0RJmnLhdHInjki9etuVoSdYeorn
+X-Gm-Gg: ASbGncsD60v1t69bo2JJP80D4r57W5LRtK+/W52kQ/Ck3+NXzpuVNyhmtIWwv0aV9mn
+	vAfYSvFKC0AcItsBF+ULev+mwT3uwYA==
+X-Google-Smtp-Source: AGHT+IETPc+SVHj47N7mDi3y9b3P39arT7614Q9JWIkwIq84hMAFtIcLJ/cZOvbHbBU+mSpbxKQJa4AQPdsxtagSf6Q=
+X-Received: by 2002:a17:903:2292:b0:20b:5e34:1850 with SMTP id
+ d9443c01a7336-2118f1c8c0cmr3154185ad.23.1731332623385; Mon, 11 Nov 2024
+ 05:43:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241111082834.22492C4CED0@smtp.kernel.org>
-In-Reply-To: <20241111082834.22492C4CED0@smtp.kernel.org>
+References: <20241111082832.CB6B3C4CED0@smtp.kernel.org> <CADyq12zz+Di3FDANsZo1F79EvSSvUZt6fdRMDqG0tqbWoHq+rg@mail.gmail.com>
+In-Reply-To: <CADyq12zz+Di3FDANsZo1F79EvSSvUZt6fdRMDqG0tqbWoHq+rg@mail.gmail.com>
 From: Brian Geffon <bgeffon@google.com>
-Date: Mon, 11 Nov 2024 08:42:23 -0500
-Message-ID: <CADyq12z8Yqm1C8d1OMMz8N2H1LQ6Wj3L+pnMzCqmdbt-40AG_Q@mail.gmail.com>
-Subject: Re: [merged mm-stable] zram-clear-idle-flag-in-mark_idle.patch
+Date: Mon, 11 Nov 2024 08:43:07 -0500
+Message-ID: <CADyq12wbX6Jn0aPgm4EpMtFcE1d=K7qAWan=g9L7RtQ674Escw@mail.gmail.com>
+Subject: Re: [merged mm-stable] zram-clear-idle-flag-after-recompression.patch
  removed from -mm tree
 To: Andrew Morton <akpm@linux-foundation.org>, "# v4 . 10+" <stable@vger.kernel.org>
 Cc: mm-commits@vger.kernel.org, minchan@kernel.org, kawasin@google.com, 
@@ -86,67 +86,98 @@ Cc: mm-commits@vger.kernel.org, minchan@kernel.org, kawasin@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 11, 2024 at 3:28=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Mon, Nov 11, 2024 at 8:42=E2=80=AFAM Brian Geffon <bgeffon@google.com> w=
+rote:
 >
->
-> The quilt patch titled
->      Subject: zram: clear IDLE flag in mark_idle()
-> has been removed from the -mm tree.  Its filename was
->      zram-clear-idle-flag-in-mark_idle.patch
->
-> This patch was dropped because it was merged into the mm-stable branch
-> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-I think this also needs to be Cc'd to stable.
-
->
-> ------------------------------------------------------
-> From: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Subject: zram: clear IDLE flag in mark_idle()
-> Date: Tue, 29 Oct 2024 00:36:15 +0900
->
-> If entry does not fulfill current mark_idle() parameters, e.g.  cutoff
-> time, then we should clear its ZRAM_IDLE from previous mark_idle()
-> invocations.
->
-> Consider the following case:
-> - mark_idle() cutoff time 8h
-> - mark_idle() cutoff time 4h
-> - writeback() idle - will writeback entries with cutoff time 8h,
->   while it should only pick entries with cutoff time 4h
->
-> The bug was reported by Shin Kawamura.
->
-> Link: https://lkml.kernel.org/r/20241028153629.1479791-3-senozhatsky@chro=
-mium.org
-> Fixes: 755804d16965 ("zram: introduce an aged idle interface")
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Reported-by: Shin Kawamura <kawasin@google.com>
-> Acked-by: Brian Geffon <bgeffon@google.com>
-> Cc: Minchan Kim <minchan@kernel.org>
+> On Mon, Nov 11, 2024 at 3:28=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> >
+> > The quilt patch titled
+> >      Subject: zram: clear IDLE flag after recompression
+> > has been removed from the -mm tree.  Its filename was
+> >      zram-clear-idle-flag-after-recompression.patch
+> >
+> > This patch was dropped because it was merged into the mm-stable branch
+> > of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> >
+> > ------------------------------------------------------
+> > From: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > Subject: zram: clear IDLE flag after recompression
+> > Date: Tue, 29 Oct 2024 00:36:14 +0900
+> >
+> > Patch series "zram: IDLE flag handling fixes", v2.
+> >
+> > zram can wrongly preserve ZRAM_IDLE flag on its entries which can resul=
+t
+> > in premature post-processing (writeback and recompression) of such
+> > entries.
+> >
+> >
+> > This patch (of 2)
+> >
+> > Recompression should clear ZRAM_IDLE flag on the entries it has accesse=
+d,
+> > because otherwise some entries, specifically those for which recompress=
+ion
+> > has failed, become immediate candidate entries for another post-process=
+ing
+> > (e.g.  writeback).
+> >
+> > Consider the following case:
+> > - recompression marks entries IDLE every 4 hours and attempts
+> >   to recompress them
+> > - some entries are incompressible, so we keep them intact and
+> >   hence preserve IDLE flag
+> > - writeback marks entries IDLE every 8 hours and writebacks
+> >   IDLE entries, however we have IDLE entries left from
+> >   recompression, so writeback prematurely writebacks those
+> >   entries.
+> >
+> > The bug was reported by Shin Kawamura.
+> >
+> > Link: https://lkml.kernel.org/r/20241028153629.1479791-1-senozhatsky@ch=
+romium.org
+> > Link: https://lkml.kernel.org/r/20241028153629.1479791-2-senozhatsky@ch=
+romium.org
+> > Fixes: 84b33bf78889 ("zram: introduce recompress sysfs knob")
+> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > Reported-by: Shin Kawamura <kawasin@google.com>
+> > Acked-by: Brian Geffon <bgeffon@google.com>
+> > Cc: Minchan Kim <minchan@kernel.org>
 Cc: stable@vger.kernel.org
 
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  drivers/block/zram/zram_drv.c |    2 ++
->  1 file changed, 2 insertions(+)
->
-> --- a/drivers/block/zram/zram_drv.c~zram-clear-idle-flag-in-mark_idle
-> +++ a/drivers/block/zram/zram_drv.c
-> @@ -410,6 +410,8 @@ static void mark_idle(struct zram *zram,
->  #endif
->                 if (is_idle)
->                         zram_set_flag(zram, index, ZRAM_IDLE);
-> +               else
-> +                       zram_clear_flag(zram, index, ZRAM_IDLE);
->                 zram_slot_unlock(zram, index);
->         }
->  }
-> _
->
-> Patches currently in -mm which might be from senozhatsky@chromium.org are
->
->
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > ---
+> >
+> >  drivers/block/zram/zram_drv.c |    7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > --- a/drivers/block/zram/zram_drv.c~zram-clear-idle-flag-after-recompre=
+ssion
+> > +++ a/drivers/block/zram/zram_drv.c
+> > @@ -1864,6 +1864,13 @@ static int recompress_slot(struct zram *
+> >         if (ret)
+> >                 return ret;
+> >
+> > +       /*
+> > +        * We touched this entry so mark it as non-IDLE. This makes sur=
+e that
+> > +        * we don't preserve IDLE flag and don't incorrectly pick this =
+entry
+> > +        * for different post-processing type (e.g. writeback).
+> > +        */
+> > +       zram_clear_flag(zram, index, ZRAM_IDLE);
+> > +
+> >         class_index_old =3D zs_lookup_class_index(zram->mem_pool, comp_=
+len_old);
+> >         /*
+> >          * Iterate the secondary comp algorithms list (in order of prio=
+rity)
+> > _
+> >
+> > Patches currently in -mm which might be from senozhatsky@chromium.org a=
+re
+> >
+> >
 
