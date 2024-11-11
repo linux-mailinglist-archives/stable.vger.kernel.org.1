@@ -1,161 +1,140 @@
-Return-Path: <stable+bounces-92154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6317C9C42BA
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 17:37:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 295DE9C4414
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 18:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A51CB211E6
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 16:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE024280FCB
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 17:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10511A0AEA;
-	Mon, 11 Nov 2024 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE7E1AA782;
+	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TY/LXh8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfD79ezb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9234119C569
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877501A0B15;
+	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731342813; cv=none; b=g4PkhXMxglcSj/okqqoeplybLTGuunHRSvl9cjJztY7Uh27TBDYhg2lFFaF8N614osDAClSPa1lZLRwSx0zoiLDZHXUDV9ReXcXcZO0QMcVt0YS16cufzm+hENNmFTR4c8JVvEPWFR2q1qBpXBrctorkeYqilNXUqlNa+vxBLV8=
+	t=1731347318; cv=none; b=NOcqThDy5vuMM1wPQgWcXyDvX8m1UjGJ+88l7oYNcE8wJDGOSRUPKJ6pyl7XVfqVXtApE/dJG4DQ2AhyA6b29hlM2WvpqcdY/TGjMbindVV7y/Q56BUyx1/D1QZHuPalZPfAHzB59RN4c2lDEpvs1kuJfO/910kz1bdrJiZ5lZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731342813; c=relaxed/simple;
-	bh=w+DAYX9zHFqf3vaiP5etjX17t1fp0jEoxaAGLz7gSC0=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RhoLenUBubG1IE6nl70PXl142zi8vqtEPr8CQc169l548BvMpXKU0ppGOnx8nm3UAUsWjGQSmQmIlvRi/+D18l28pXaE2vT0/5XtbwOyuk/I2xA+fcPfH1SEr0p0ZKU2gffuE4iEk7XLGwE7jGPCdX1d5A8n4pA9b6lXpQZnkSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TY/LXh8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A43C4CECF;
-	Mon, 11 Nov 2024 16:33:31 +0000 (UTC)
+	s=arc-20240116; t=1731347318; c=relaxed/simple;
+	bh=Y+khpFiawXKLU/+l8e747ZP6KaaIIh+gTXQA+EIkgkY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DPvJemRwQJoQxtD+/E94bhT9QN6+UU1LAdIPV6I7E1YQg/QNDiOQGtiBMWXP/AWvW8M62xESym5SXM1C6xUn12aYWRhLmWobeje5FRusJjdF4dS/5QWxWsJ5vmzUY6/cHF/Be5CAIcX5FpYOiv2aT0Bv2qJHAm6LcgAgFyG0JQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfD79ezb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 143CEC4CECF;
+	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731342813;
-	bh=w+DAYX9zHFqf3vaiP5etjX17t1fp0jEoxaAGLz7gSC0=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=TY/LXh8Ko0huPVH5T+Avyt0mIu51E3dFQzCuPqBndCYf6H1gNICInf468rosXy/Ww
-	 wtcBJkUpcI8aq59uMMx4REkFrYpOYu0D60pBkPHrB8fIRoxqNKUPMfVMc1mc0G3Rip
-	 nd4Ya8EHEzpCJRfLBE+n/4KvJEN3vVoC2SboujtJ9L5Zsft/scZmYCQBoCM0ee7kiP
-	 71gqoyn0m/g/4J9CfrogCnKAjI180H6u+pgSUVx/AG6Sdcsqqd92TwDgmSdD+fJEB5
-	 KaGVqIWdG6wHyPYf1Gou/ffVs7MgmPjvpZQ4aGvfoA+2/66LZncYbLP8/dWGa3HFdj
-	 PjY071uWlQgKQ==
-Date: Mon, 11 Nov 2024 16:33:28 +0000
-From: Lee Jones <lee@kernel.org>
-To: stable@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 1/1] net: sched: use RCU read-side critical section
- in taprio_dump()
-Message-ID: <20241111163328.GB8552@google.com>
-References: <20241111161701.284694-1-lee@kernel.org>
+	s=k20201202; t=1731347318;
+	bh=Y+khpFiawXKLU/+l8e747ZP6KaaIIh+gTXQA+EIkgkY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=gfD79ezbyqAT5rvKeu/bcNk+MqWjLhBgv82QIF/tIbz1tWRuHXO2hqhXMblEdVPjh
+	 uLWSskpTn0NmbCS8ovAvPJNwmOCD+sEvFuY5H39CXkmtdFWd5YC2nEieNxQRc/I99o
+	 U7IQ0t8lfGL6a9x7XtdAvZul3zH6DbCJ4SHk4BNHxN4qMgByWrPQNh+GNmgGwLVMFW
+	 5kFUqPoQTKfdsOEBglpmjDw8gP+n70gDwcBkSKANJClp4+04sSwRjT77we8vHjhqgq
+	 0YvS2zBf6EmIbdDpX54lBKmW1z/IT8syb8Ns1cZ4VY6Zjr0qNNt+7l5WToJMnaGMYb
+	 cYYNgkm1oOPEg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF3C7D3ABD9;
+	Mon, 11 Nov 2024 17:48:37 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
+Subject: [PATCH 0/5] scsi: ufs: Bug fixes for ufs core and platform drivers
+Date: Mon, 11 Nov 2024 23:18:29 +0530
+Message-Id: <20241111-ufs_bug_fix-v1-0-45ad8b62f02e@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241111161701.284694-1-lee@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG1DMmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDINAtTSuOTypNj0/LrNA1SzE0TzO2TExLTDRRAuooKEoFCoNNi46trQU
+ ADEBy810AAAA=
+To: Alim Akhtar <alim.akhtar@samsung.com>, 
+ Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Mike Bi <mikebi@micron.com>, Bean Huo <beanhuo@micron.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Luca Porzio <lporzio@micron.com>, Asutosh Das <quic_asutoshd@quicinc.com>, 
+ Can Guo <quic_cang@quicinc.com>, Pedro Sousa <pedrom.sousa@synopsys.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, Peter Wang <peter.wang@mediatek.com>, 
+ Stanley Jhu <chu.stanley@gmail.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Santosh Y <santoshsy@gmail.com>, Namjae Jeon <linkinjeon@gmail.com>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1532;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=Y+khpFiawXKLU/+l8e747ZP6KaaIIh+gTXQA+EIkgkY=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnMkNyVRymijja4WYsMTq3UufBBioidTEf49F/G
+ g6j4UfgEmiJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZzJDcgAKCRBVnxHm/pHO
+ 9d0jB/449IToaB9ZcYdJONBd23MdNRpN9XTjoQ3UaKzzkCrBwemdD8ACugH5wLUaPzsStvYYt3C
+ 6oYkky5KzIlqwZMoQVr4rSs7t0C+05tD/fKah7PQkWE2sWw6qy5weu7aZdzMMLT4eewC1jVW+OJ
+ 6sDx7OKs23eLysMs5PpefkS/XDYDkowgBvPz0f1E11UQDoA4Ra1Wd84CkcdyqTh0XDMC0EV4D0p
+ fGBOBK0Tpegsz2LI686Q6vrLJQBtn6pZNWAx2GHhNxEGbg97Rg5kF/7FtcnvVdgcDc0CDrxeyOu
+ HAIwSVg9lV19dgsYP/y7m/iTY4qce8LrwLtHgy5oTwjONKG5
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@linaro.org/default with auth_id=185
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reply-To: manivannan.sadhasivam@linaro.org
 
-On Mon, 11 Nov 2024, Lee Jones wrote:
+Hi,
 
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> 
-> [ Upstream commit b22db8b8befe90b61c98626ca1a2fbb0505e9fe3 ]
-> 
-> Fix possible use-after-free in 'taprio_dump()' by adding RCU
-> read-side critical section there. Never seen on x86 but
-> found on a KASAN-enabled arm64 system when investigating
-> https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa:
-> 
-> [T15862] BUG: KASAN: slab-use-after-free in taprio_dump+0xa0c/0xbb0
-> [T15862] Read of size 4 at addr ffff0000d4bb88f8 by task repro/15862
-> [T15862]
-> [T15862] CPU: 0 UID: 0 PID: 15862 Comm: repro Not tainted 6.11.0-rc1-00293-gdefaf1a2113a-dirty #2
-> [T15862] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-20240524-5.fc40 05/24/2024
-> [T15862] Call trace:
-> [T15862]  dump_backtrace+0x20c/0x220
-> [T15862]  show_stack+0x2c/0x40
-> [T15862]  dump_stack_lvl+0xf8/0x174
-> [T15862]  print_report+0x170/0x4d8
-> [T15862]  kasan_report+0xb8/0x1d4
-> [T15862]  __asan_report_load4_noabort+0x20/0x2c
-> [T15862]  taprio_dump+0xa0c/0xbb0
-> [T15862]  tc_fill_qdisc+0x540/0x1020
-> [T15862]  qdisc_notify.isra.0+0x330/0x3a0
-> [T15862]  tc_modify_qdisc+0x7b8/0x1838
-> [T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
-> [T15862]  netlink_rcv_skb+0x1f8/0x3d4
-> [T15862]  rtnetlink_rcv+0x28/0x40
-> [T15862]  netlink_unicast+0x51c/0x790
-> [T15862]  netlink_sendmsg+0x79c/0xc20
-> [T15862]  __sock_sendmsg+0xe0/0x1a0
-> [T15862]  ____sys_sendmsg+0x6c0/0x840
-> [T15862]  ___sys_sendmsg+0x1ac/0x1f0
-> [T15862]  __sys_sendmsg+0x110/0x1d0
-> [T15862]  __arm64_sys_sendmsg+0x74/0xb0
-> [T15862]  invoke_syscall+0x88/0x2e0
-> [T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
-> [T15862]  do_el0_svc+0x44/0x60
-> [T15862]  el0_svc+0x50/0x184
-> [T15862]  el0t_64_sync_handler+0x120/0x12c
-> [T15862]  el0t_64_sync+0x190/0x194
-> [T15862]
-> [T15862] Allocated by task 15857:
-> [T15862]  kasan_save_stack+0x3c/0x70
-> [T15862]  kasan_save_track+0x20/0x3c
-> [T15862]  kasan_save_alloc_info+0x40/0x60
-> [T15862]  __kasan_kmalloc+0xd4/0xe0
-> [T15862]  __kmalloc_cache_noprof+0x194/0x334
-> [T15862]  taprio_change+0x45c/0x2fe0
-> [T15862]  tc_modify_qdisc+0x6a8/0x1838
-> [T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
-> [T15862]  netlink_rcv_skb+0x1f8/0x3d4
-> [T15862]  rtnetlink_rcv+0x28/0x40
-> [T15862]  netlink_unicast+0x51c/0x790
-> [T15862]  netlink_sendmsg+0x79c/0xc20
-> [T15862]  __sock_sendmsg+0xe0/0x1a0
-> [T15862]  ____sys_sendmsg+0x6c0/0x840
-> [T15862]  ___sys_sendmsg+0x1ac/0x1f0
-> [T15862]  __sys_sendmsg+0x110/0x1d0
-> [T15862]  __arm64_sys_sendmsg+0x74/0xb0
-> [T15862]  invoke_syscall+0x88/0x2e0
-> [T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
-> [T15862]  do_el0_svc+0x44/0x60
-> [T15862]  el0_svc+0x50/0x184
-> [T15862]  el0t_64_sync_handler+0x120/0x12c
-> [T15862]  el0t_64_sync+0x190/0x194
-> [T15862]
-> [T15862] Freed by task 6192:
-> [T15862]  kasan_save_stack+0x3c/0x70
-> [T15862]  kasan_save_track+0x20/0x3c
-> [T15862]  kasan_save_free_info+0x4c/0x80
-> [T15862]  poison_slab_object+0x110/0x160
-> [T15862]  __kasan_slab_free+0x3c/0x74
-> [T15862]  kfree+0x134/0x3c0
-> [T15862]  taprio_free_sched_cb+0x18c/0x220
-> [T15862]  rcu_core+0x920/0x1b7c
-> [T15862]  rcu_core_si+0x10/0x1c
-> [T15862]  handle_softirqs+0x2e8/0xd64
-> [T15862]  __do_softirq+0x14/0x20
-> 
-> Fixes: 18cdd2f0998a ("net/sched: taprio: taprio_dump and taprio_change are protected by rtnl_mutex")
-> Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Link: https://patch.msgid.link/20241018051339.418890-2-dmantipov@yandex.ru
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> (cherry picked from commit 5d282467245f267c0b9ada3f7f309ff838521536)
-> [Lee: Backported from linux-6.6.y to linux-6.1.y and fixed conflicts]
-> Signed-off-by: Lee Jones <lee@kernel.org>
+This series has several bug fixes that I encountered when the ufs-qcom driver
+was removed and inserted back. But the fixes are applicable to other platform
+glue drivers as well.
 
-This patch should have made it into linux-6.1.y but there were
-merge-conflicts.  I fixed them and this is the result.
+This series is tested on Qcom RB5 development board based on SM8250 SoC.
 
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+Manivannan Sadhasivam (5):
+      scsi: ufs: core: Cancel RTC work during ufshcd_remove()
+      scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
+      scsi: ufs: pltfrm: Disable runtime PM during removal of glue drivers
+      scsi: ufs: pltfrm: Drop PM runtime reference count after ufshcd_remove()
+      scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()
+
+ drivers/ufs/core/ufshcd.c             |  1 +
+ drivers/ufs/host/cdns-pltfrm.c        |  4 +---
+ drivers/ufs/host/tc-dwc-g210-pltfrm.c |  5 +----
+ drivers/ufs/host/ufs-exynos.c         |  3 +--
+ drivers/ufs/host/ufs-hisi.c           |  4 +---
+ drivers/ufs/host/ufs-mediatek.c       |  5 +----
+ drivers/ufs/host/ufs-qcom.c           |  7 ++++---
+ drivers/ufs/host/ufs-renesas.c        |  4 +---
+ drivers/ufs/host/ufs-sprd.c           |  5 +----
+ drivers/ufs/host/ufshcd-pltfrm.c      | 16 ++++++++++++++++
+ drivers/ufs/host/ufshcd-pltfrm.h      |  1 +
+ 11 files changed, 29 insertions(+), 26 deletions(-)
+---
+base-commit: 59b723cd2adbac2a34fc8e12c74ae26ae45bf230
+change-id: 20241111-ufs_bug_fix-6d17f39afaa4
+
+Best regards,
 -- 
-Lee Jones [李琼斯]
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+
 
