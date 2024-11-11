@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-92143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F68E9C412C
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F329C4132
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 523721C21939
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:42:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 156271C21A18
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549D119F10A;
-	Mon, 11 Nov 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB7719F104;
+	Mon, 11 Nov 2024 14:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="gfAyNpjJ"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="OFaNYnxx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A96214EC55
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 14:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4D419F10A
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 14:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731336152; cv=none; b=jS0M4IOks5AkgjLw1R098ZOOOn7oKPFOLbwsn/3XgSMwv04/kgB0Vvw8QSndEpdEhE+Po8dacKFfT+O90rNjJqVeVZSHZfmxC2Y/xDMn855In8r+XTFOlx/SIXlN0M2mYCaIa4ovGjXFU9NKLJn0fq8BM53tWj4Q4zaHmsziVJw=
+	t=1731336297; cv=none; b=erp+xCPHfEZ6wjuFJ0PLXWELvGziPWJQKwTOBSVTDVpgqK015sFMdnNLC7O2be9wirGTpxyIesSDlJ5eoxSmPZfHtWM0aNUJ4TyLSLUCirNbjKu1QvyqJVats+qUEcS04RKdWKi33kcvnPMSH7KvhZE9ulyvkd8eF2x5XNQvAkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731336152; c=relaxed/simple;
+	s=arc-20240116; t=1731336297; c=relaxed/simple;
 	bh=JzNTnC4Y6H6CouYn3Rqd/lfeeYb1FNb3OtZz+Qh03Lc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g8Prc6jE9trPImv6erTEOxL02Gud1J9fBBdJsTE/TnbGnWMYb7Ssetvg+jApo1gFV0mlQ7qBI/EiGfgmbE/629Cgc87ewxe/CvAlv+pDPnghqe7h6xdlJbXMgvzppaz0gHeOERuzosK17BI6vwd0wtXVxSd2Xj5YBfU9Oc0nsBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=gfAyNpjJ; arc=none smtp.client-ip=52.119.213.152
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nuRmYu7gvM8HJLP6IYtXu4paNU59ZVX4HhLbJJntyfHho+EeJc2ATkGubz2AWBSuLBnY9Vmk2SFx1X7lPfEKqySoczCTojqgqPOrA1yIr7Wuj50kU2tmQe4zuydoHqZx8+3ItpCtaz7uEFR/gYp4SXjS4Ur4iYsO94zQbxSi9Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=OFaNYnxx; arc=none smtp.client-ip=52.119.213.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731336151; x=1762872151;
+  t=1731336296; x=1762872296;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=PEDvC31sSU8KTuYUcSONd4ZUqlkM6OydgVl1G8e1fXM=;
-  b=gfAyNpjJ/I71oWScXMbAeuL4D7+splK+7wMfnH+BgniTtBMEeLonGei4
-   BKL4nWH9Yrm2865uwFzBO48CtqSuluQxepxwcWUMcRfuOW6zJHvPh41jV
-   p/Bv4BBbsRsigxAZp7tYm8hipRqR9tY0nFhvbLW79lLlewKjCO1zncetI
-   E=;
+  b=OFaNYnxxqfLfbtj0GH05iSeVGFaVr1PrwSe6067U7+1uxulalREdyAW+
+   tOKKuQnW8HUrp1lix/snvAubMeWKkIXhlCG4iev0hF+gfbcyjo0ctMoIs
+   HjzJKlVtDe2jYw+BWPqDjxVop+MZ/yYJ4qPueZyUM0yEatZsKbYpYIxR2
+   Q=;
 X-IronPort-AV: E=Sophos;i="6.12,145,1728950400"; 
-   d="scan'208";a="40465911"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 14:42:27 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [10.0.0.204:40050]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.28.135:2525] with esmtp (Farcaster)
- id dc1b4fb3-1f66-4d1c-9bdf-ae05f9bf8dd7; Mon, 11 Nov 2024 14:42:25 +0000 (UTC)
-X-Farcaster-Flow-ID: dc1b4fb3-1f66-4d1c-9bdf-ae05f9bf8dd7
-Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
+   d="scan'208";a="246364844"
+Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 14:44:53 +0000
+Received: from EX19MTAUEA001.ant.amazon.com [10.0.29.78:11568]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.13.234:2525] with esmtp (Farcaster)
+ id 065f62f7-3107-4edf-8d76-2c636aa6b7d9; Mon, 11 Nov 2024 14:44:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 065f62f7-3107-4edf-8d76-2c636aa6b7d9
+Received: from EX19EXOUEB002.ant.amazon.com (10.252.135.74) by
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 14:42:25 +0000
+ Mon, 11 Nov 2024 14:44:52 +0000
 Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
- EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
+ EX19EXOUEB002.ant.amazon.com (10.252.135.74) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 11 Nov 2024 14:42:25 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-c1559d0e.us-west-2.amazon.com
+ Mon, 11 Nov 2024 14:44:51 +0000
+Received: from email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com
  (10.124.125.2) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 14:42:25 +0000
+ 15.2.1258.34 via Frontend Transport; Mon, 11 Nov 2024 14:44:51 +0000
 Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-pdx-all-2b-c1559d0e.us-west-2.amazon.com (Postfix) with ESMTP id 8241D40448;
-	Mon, 11 Nov 2024 14:42:24 +0000 (UTC)
+	by email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com (Postfix) with ESMTP id 7732540711;
+	Mon, 11 Nov 2024 14:44:51 +0000 (UTC)
 Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id 163482246B; Mon, 11 Nov 2024 14:42:24 +0000 (UTC)
+	id 3535F224B1; Mon, 11 Nov 2024 14:44:51 +0000 (UTC)
 From: Hagar Hemdan <hagarhem@amazon.com>
 To:
 CC: <stable@vger.kernel.org>, Zheng Yejian <zhengyejian1@huawei.com>,
 	<mhiramat@kernel.org>, <mark.rutland@arm.com>,
 	<mathieu.desnoyers@efficios.com>, Steven Rostedt <rostedt@goodmis.org>, Hagar
  Hemdan <hagarhem@amazon.com>
-Subject: [PATCH] ftrace: Fix possible use-after-free issue in ftrace_location()
-Date: Mon, 11 Nov 2024 14:42:06 +0000
-Message-ID: <20241111144206.25201-1-hagarhem@amazon.com>
+Subject: [PATCH 5.4] ftrace: Fix possible use-after-free issue in ftrace_location()
+Date: Mon, 11 Nov 2024 14:44:45 +0000
+Message-ID: <20241111144445.27428-1-hagarhem@amazon.com>
 X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
