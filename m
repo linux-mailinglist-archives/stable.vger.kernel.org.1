@@ -1,82 +1,65 @@
-Return-Path: <stable+bounces-92084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3246B9C3C0A
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C34C9C3C71
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55C161C216AB
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 10:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02B41C222E7
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 10:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F419517B51A;
-	Mon, 11 Nov 2024 10:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BCE158555;
+	Mon, 11 Nov 2024 10:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hSJQGwzn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQi/vOmT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415E8156676
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 10:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D14D184542
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 10:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731321227; cv=none; b=A9M0bC6+DrHpCWWZQweqVEswIqWvLAqJLUsZ1PKlfjdf3q6MAgtQXdrMxLMjkaW8i9A0zPJWQxiojdaHcvUXyak4czBwqUBzb3geN42LMGqmcZ9B+vCpDvMziwYoxAyoGCHBeVZQE0GIXFXlHqhyZ4P/1/cu5a8uQqUeQwIASYw=
+	t=1731322344; cv=none; b=FGoNtzF1A2HEHkazK7a4siZgHSeFvHbJDAxCKL5qw+puZaD2Fvk7kwP+ucEymDLOUo7T09VidOJoLc+AC4VFLkxqC3+BvJdHju7gtjrFMAUYV3i0q0J7QarECcEzNMRVcN+jUUWa5txSrli5iTmpVssqPIF7n4HeY7whMadsRV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731321227; c=relaxed/simple;
-	bh=nkTiLitoCz0j79MxFwJGUEcQFxOksA+r8B4LuJzWaHg=;
+	s=arc-20240116; t=1731322344; c=relaxed/simple;
+	bh=OHcjLUvY9SuGHn5wUkXuhCKVulChLfLMK9DYpyDHWaE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tENvzXtnMHeM4cKmyVyS/GhOcZiSocORxC88FOcApk10pzAuyHKoQT7VZYa6pUvr1H/a4Vwj+nlgifOulONZ8c4Ja+4GYGEQOKiJ+m8q6dns9CTcdWFWO7y9NSYOKFgdjvvNCJKPtPZqs8CI7jZuJKUgQ0PYSUI+uLNNWzzkkoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hSJQGwzn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731321224;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UG96reEjGpmStIAjzddjyH3tkwNOTgH/uQ2TqmwJHjA=;
-	b=hSJQGwznnvUQidphwUxYAMXF2AnyTWxdKARtdQpALXqfPxbiXnDP6lzl3x8enJHGBS6kkO
-	KmkchuTLX3tfO0B1YNlqw+m6SGbvEQV+Id/lFWLXL54EROnL8IvZUqHO3WkBLp17BMeGTp
-	yELallb+cz2oWFuxt60cgqy9BdrIE9A=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-f5SL1fd8PdOaoWqQcJC8nA-1; Mon, 11 Nov 2024 05:33:42 -0500
-X-MC-Unique: f5SL1fd8PdOaoWqQcJC8nA-1
-X-Mimecast-MFC-AGG-ID: f5SL1fd8PdOaoWqQcJC8nA
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso29465665e9.1
-        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 02:33:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731321221; x=1731926021;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UG96reEjGpmStIAjzddjyH3tkwNOTgH/uQ2TqmwJHjA=;
-        b=mavqDwiitfKPCsRvkW1mR7znJDPu0JAsWgeFd2uB/i74U1hQfSwxzUmZCGAvjGGA+O
-         zzBivQ2dhimNjalB5iYqKPtZKzSfnHxMcDFT3OKaS+zVSQsnYE3YtMkUu4Kk8TnAN02f
-         mHYoM3xXpBEucZ2xD13QTSp0pIaIU1FCyHDsi1RFmNybsl0JaqiNy8UqaHpErNA7wQT0
-         iqtD6FRuWNuozZ1rTaq8xX3i/siqMTrMa4/UQeXJduMQOwUgpIdxrm4IuHurDw2+ytbL
-         4THEiXMC5ywj2uNK52Fsp+z73ViLT0ORmwlKMamPVaOK0n556/PWFYfowr5jZzjtiskL
-         IJ+A==
-X-Forwarded-Encrypted: i=1; AJvYcCUcPGT1zDIkgTzd9ymiZr1H7ouh6o8rG+oYEoLAZyY7T9fbW3Q8LDHiD3QrvlYJzQSjxuInbIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmgFsU07T7lEZr2hHgYfUnzLV8VZ1kKVSFftu1V+CHP+rU4Qos
-	dAiRlbJbJLHK/rkWM5DK3X9fSC+tAJrYAwilXJTG4FMRxQuHupKGddv0HZZMwXttUHaKs1Zm5ZF
-	Wm6HH+lnGePiBP53RUKWLnGX4/F1P7IxLEh1RQkeUzVPQjse07uaAQw==
-X-Received: by 2002:a05:600c:3b09:b0:431:3bf9:3ebb with SMTP id 5b1f17b1804b1-432b7518365mr99473785e9.24.1731321221177;
-        Mon, 11 Nov 2024 02:33:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmOK132Rd3omd+xYjBgijs0Ys5mpaNoZZlMVOUcsXMsbgkjv+TrglKeIaOUCZvlCKis7NxSg==
-X-Received: by 2002:a05:600c:3b09:b0:431:3bf9:3ebb with SMTP id 5b1f17b1804b1-432b7518365mr99473565e9.24.1731321220757;
-        Mon, 11 Nov 2024 02:33:40 -0800 (PST)
-Received: from ?IPV6:2003:cb:c730:4300:18eb:6c63:a196:d3a2? (p200300cbc730430018eb6c63a196d3a2.dip0.t-ipconnect.de. [2003:cb:c730:4300:18eb:6c63:a196:d3a2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b0566544sm166915385e9.24.2024.11.11.02.33.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 02:33:40 -0800 (PST)
-Message-ID: <85cfc467-320f-4388-b027-2cbad85dfbed@redhat.com>
-Date: Mon, 11 Nov 2024 11:33:38 +0100
+	 In-Reply-To:Content-Type; b=UgoBidWdxHN1dzdI45u7JI5lw/lf2EmUGZ2rVfMKnuk4tPQKk6kHPwRvb4fxAHwVz61GIgrRuR++n1UbJlar06T1lbDvVeOYbef6E3K9aEaleoDnOcAnk1HYFWzF8wyMKViX1bv4tgGTC8IrsaoiCgd8ir3xv8pPLXQ2JoHYkCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQi/vOmT; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731322341; x=1762858341;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OHcjLUvY9SuGHn5wUkXuhCKVulChLfLMK9DYpyDHWaE=;
+  b=JQi/vOmT2fjfKa2/r0728bf9lQmYaWyW0oHBloewPW+TsGWwS7yfYM6o
+   7hI6CnHVbYMrd4J9vMiWZzTGK1Z9ANoFLI9bSspjueVVbAQhikYyDF2VV
+   e5IE4YToVG9wfoEnSsJaH31Ugt7o679tDNVHQwxL1NEsJk3sFM/YHqcGl
+   UKp02mZGkT14jz5IiqTIZSg3TCynOmrBi7wSo/iO03JgrdUGJubsB6Poy
+   ELIcq2lel1JrFt3ese18zZtr2UDVmpL6FINk0H2xs1/ojxttnjd2yx4BV
+   k7m/VtGUlrp+XEnGJXNUgF2AnKcrjk5gy4836jWsfjIV5EIBOS092rUT2
+   Q==;
+X-CSE-ConnectionGUID: KDMOV37cRBCSJuRsuoH0RQ==
+X-CSE-MsgGUID: FKdGqLYjTB+G4ayIqS7f5Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11252"; a="30521176"
+X-IronPort-AV: E=Sophos;i="6.12,144,1728975600"; 
+   d="scan'208";a="30521176"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 02:52:21 -0800
+X-CSE-ConnectionGUID: UlpSIoPKRXqxvAQVu5Eyaw==
+X-CSE-MsgGUID: EAuf3Fo6SzepiY2vtBxbhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,144,1728975600"; 
+   d="scan'208";a="86819592"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.91]) ([10.245.244.91])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 02:52:20 -0800
+Message-ID: <690673f2-12c7-4b9a-b7d9-a3e6751661b1@intel.com>
+Date: Mon, 11 Nov 2024 10:52:18 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,166 +67,263 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/readahead: Fix large folio support in async
- readahead
-To: Yafang Shao <laoar.shao@gmail.com>, willy@infradead.org,
- akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20241108141710.9721-1-laoar.shao@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20241108141710.9721-1-laoar.shao@gmail.com>
+Subject: Re: [PATCH v2] drm/xe: improve hibernation on igpu
+To: Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: intel-xe@lists.freedesktop.org, stable@vger.kernel.org,
+ ulisses.furquim@intel.com
+References: <20241101170156.213490-2-matthew.auld@intel.com>
+ <o3edyxjyz4fd5n53dmi2hntoacioufr3rqelxpn5mkbp6vvaue@v4nxwlz6gpte>
+ <ZyUpAwD3jzlW+hbA@lstrano-desk.jf.intel.com>
+ <zwfqm64323vefwfugk3tcjvhz4mnowbz6ekixeyinh5bmeap5k@hts3jqvzmwvj>
+ <ZypgCGh/bCP8K7aK@lstrano-desk.jf.intel.com>
+ <huirzn2ia4hs372ov7r77awhjun4fpezltrxcwfxgzzz4r3pga@h5jprda4zrir>
+ <ZypxenMNvxL17mau@lstrano-desk.jf.intel.com>
+ <u6gqllfd7gq5cg5o2pwljzmg54qbyow33vdzymxzclf4hgaxrr@uu3rr5wstwqq>
+ <Zy6fACI72B1ERMEs@lstrano-desk.jf.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <Zy6fACI72B1ERMEs@lstrano-desk.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 08.11.24 15:17, Yafang Shao wrote:
-> When testing large folio support with XFS on our servers, we observed that
-> only a few large folios are mapped when reading large files via mmap.
-> After a thorough analysis, I identified it was caused by the
-> `/sys/block/*/queue/read_ahead_kb` setting. On our test servers, this
-> parameter is set to 128KB. After I tune it to 2MB, the large folio can
-> work as expected. However, I believe the large folio behavior should not be
-> dependent on the value of read_ahead_kb. It would be more robust if the
-> kernel can automatically adopt to it.
+On 08/11/2024 23:30, Matthew Brost wrote:
+> On Fri, Nov 08, 2024 at 01:42:18PM -0600, Lucas De Marchi wrote:
+>> On Tue, Nov 05, 2024 at 11:26:50AM -0800, Matthew Brost wrote:
+>>> On Tue, Nov 05, 2024 at 01:18:27PM -0600, Lucas De Marchi wrote:
+>>>> On Tue, Nov 05, 2024 at 10:12:24AM -0800, Matthew Brost wrote:
+>>>>> On Tue, Nov 05, 2024 at 11:32:37AM -0600, Lucas De Marchi wrote:
+>>>>>> On Fri, Nov 01, 2024 at 12:16:19PM -0700, Matthew Brost wrote:
+>>>>>>> On Fri, Nov 01, 2024 at 12:38:19PM -0500, Lucas De Marchi wrote:
+>>>>>>>> On Fri, Nov 01, 2024 at 05:01:57PM +0000, Matthew Auld wrote:
+>>>>>>>>> The GGTT looks to be stored inside stolen memory on igpu which is not
+>>>>>>>>> treated as normal RAM.  The core kernel skips this memory range when
+>>>>>>>>> creating the hibernation image, therefore when coming back from
+>>>>>>>>
+>>>>>>>> can you add the log for e820 mapping to confirm?
+>>>>>>>>
+>>>>>>>>> hibernation the GGTT programming is lost. This seems to cause issues
+>>>>>>>>> with broken resume where GuC FW fails to load:
+>>>>>>>>>
+>>>>>>>>> [drm] *ERROR* GT0: load failed: status = 0x400000A0, time = 10ms, freq = 1250MHz (req 1300MHz), done = -1
+>>>>>>>>> [drm] *ERROR* GT0: load failed: status: Reset = 0, BootROM = 0x50, UKernel = 0x00, MIA = 0x00, Auth = 0x01
+>>>>>>>>> [drm] *ERROR* GT0: firmware signature verification failed
+>>>>>>>>> [drm] *ERROR* CRITICAL: Xe has declared device 0000:00:02.0 as wedged.
+>>>>>>>>
+>>>>>>>> it seems the message above is cut short. Just above these lines don't
+>>>>>>>> you have a log with __xe_guc_upload? Which means: we actually upload the
+>>>>>>>> firmware again to stolen and it doesn't matter that we lost it when
+>>>>>>>> hibernating.
+>>>>>>>>
+>>>>>>>
+>>>>>>> The image is always uploaded. The upload logic uses a GGTT address to
+>>>>>>> find firmware image in SRAM...
+>>>>>>>
+>>>>>>> See snippet from uc_fw_xfer:
+>>>>>>>
+>>>>>>> 821         /* Set the source address for the uCode */
+>>>>>>> 822         src_offset = uc_fw_ggtt_offset(uc_fw) + uc_fw->css_offset;
+>>>>>>> 823         xe_mmio_write32(mmio, DMA_ADDR_0_LOW, lower_32_bits(src_offset));
+>>>>>>> 824         xe_mmio_write32(mmio, DMA_ADDR_0_HIGH,
+>>>>>>> 825                         upper_32_bits(src_offset) | DMA_ADDRESS_SPACE_GGTT);
+>>>>>>>
+>>>>>>> If the GGTT mappings are in stolen and not restored we will not be
+>>>>>>> uploading the correct data for the image.
+>>>>>>>
+>>>>>>> See the gitlab issue, this has been confirmed to fix a real problem from
+>>>>>>> a customer.
+>>>>>>
+>>>>>> I don't doubt it fixes it, but the justification here is not making much
+>>>>>> sense.  AFAICS it doesn't really correspond to what the patch is doing.
+>>>>>>
+>>>>>>>
+>>>>>>> Matt
+>>>>>>>
+>>>>>>>> It'd be good to know the size of the rsa key in the failing scenarios.
+>>>>>>>>
+>>>>>>>> Also it seems this is also reproduced in DG2 and I wonder if it's the
+>>>>>>>> same issue or something different:
+>>>>>>>>
+>>>>>>>> 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000064 [0x32/00]
+>>>>>>>> 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000072 [0x39/00]
+>>>>>>>> 	[drm:__xe_guc_upload.isra.0 [xe]] GT0: load still in progress, timeouts = 0, freq = 1700MHz (req 2050MHz), status = 0x00000086 [0x43/00]
+>>>>>>>> 	[drm] *ERROR* GT0: load failed: status = 0x400000A0, time = 5ms, freq = 1700MHz (req 2050MHz), done = -1
+>>>>>>>> 	[drm] *ERROR* GT0: load failed: status: Reset = 0, BootROM = 0x50, UKernel = 0x00, MIA = 0x00, Auth = 0x01
+>>>>>>>> 	[drm] *ERROR* GT0: firmware signature verification failed
+>>>>>>>>
+>>>>>>>> Cc Ulisses.
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Current GGTT users are kernel internal and tracked as pinned, so it
+>>>>>>>>> should be possible to hook into the existing save/restore logic that we
+>>>>>>>>> use for dgpu, where the actual evict is skipped but on restore we
+>>>>>>>>> importantly restore the GGTT programming.  This has been confirmed to
+>>>>>>>>> fix hibernation on at least ADL and MTL, though likely all igpu
+>>>>>>>>> platforms are affected.
+>>>>>>>>>
+>>>>>>>>> This also means we have a hole in our testing, where the existing s4
+>>>>>>>>> tests only really test the driver hooks, and don't go as far as actually
+>>>>>>>>> rebooting and restoring from the hibernation image and in turn powering
+>>>>>>>>> down RAM (and therefore losing the contents of stolen).
+>>>>>>>>
+>>>>>>>> yeah, the problem is that enabling it to go through the entire sequence
+>>>>>>>> we reproduce all kind of issues in other parts of the kernel and userspace
+>>>>>>>> env leading to flaky tests that are usually red in CI. The most annoying
+>>>>>>>> one is the network not coming back so we mark the test as failure
+>>>>>>>> (actually abort. since we stop running everything).
+>>>>>>>>
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> v2 (Brost)
+>>>>>>>>> - Remove extra newline and drop unnecessary parentheses.
+>>>>>>>>>
+>>>>>>>>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+>>>>>>>>> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3275
+>>>>>>>>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>> Cc: <stable@vger.kernel.org> # v6.8+
+>>>>>>>>> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>> ---
+>>>>>>>>> drivers/gpu/drm/xe/xe_bo.c       | 37 ++++++++++++++------------------
+>>>>>>>>> drivers/gpu/drm/xe/xe_bo_evict.c |  6 ------
+>>>>>>>>> 2 files changed, 16 insertions(+), 27 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+>>>>>>>>> index 8286cbc23721..549866da5cd1 100644
+>>>>>>>>> --- a/drivers/gpu/drm/xe/xe_bo.c
+>>>>>>>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
+>>>>>>>>> @@ -952,7 +952,10 @@ int xe_bo_restore_pinned(struct xe_bo *bo)
+>>>>>>>>> 	if (WARN_ON(!xe_bo_is_pinned(bo)))
+>>>>>>>>> 		return -EINVAL;
+>>>>>>>>>
+>>>>>>>>> -	if (WARN_ON(xe_bo_is_vram(bo) || !bo->ttm.ttm))
+>>>>>>>>> +	if (WARN_ON(xe_bo_is_vram(bo)))
+>>>>>>>>> +		return -EINVAL;
+>>>>>>>>> +
+>>>>>>>>> +	if (WARN_ON(!bo->ttm.ttm && !xe_bo_is_stolen(bo)))
+>>>>>>>>> 		return -EINVAL;
+>>>>>>>>>
+>>>>>>>>> 	if (!mem_type_is_vram(place->mem_type))
+>>>>>>>>> @@ -1774,6 +1777,7 @@ int xe_bo_pin_external(struct xe_bo *bo)
+>>>>>>>>>
+>>>>>>>>> int xe_bo_pin(struct xe_bo *bo)
+>>>>>>>>> {
+>>>>>>>>> +	struct ttm_place *place = &bo->placements[0];
+>>>>>>>>> 	struct xe_device *xe = xe_bo_device(bo);
+>>>>>>>>> 	int err;
+>>>>>>>>>
+>>>>>>>>> @@ -1804,8 +1808,6 @@ int xe_bo_pin(struct xe_bo *bo)
+>>>>>>>>> 	 */
+>>>>>>>>> 	if (IS_DGFX(xe) && !(IS_ENABLED(CONFIG_DRM_XE_DEBUG) &&
+>>>>>>>>> 	    bo->flags & XE_BO_FLAG_INTERNAL_TEST)) {
+>>>>>>>>> -		struct ttm_place *place = &(bo->placements[0]);
+>>>>>>>>> -
+>>>>>>>>> 		if (mem_type_is_vram(place->mem_type)) {
+>>>>>>>>> 			xe_assert(xe, place->flags & TTM_PL_FLAG_CONTIGUOUS);
+>>>>>>>>>
+>>>>>>>>> @@ -1813,13 +1815,12 @@ int xe_bo_pin(struct xe_bo *bo)
+>>>>>>>>> 				       vram_region_gpu_offset(bo->ttm.resource)) >> PAGE_SHIFT;
+>>>>>>>>> 			place->lpfn = place->fpfn + (bo->size >> PAGE_SHIFT);
+>>>>>>>>> 		}
+>>>>>>>>> +	}
+>>>>>>>>>
+>>>>>>>>> -		if (mem_type_is_vram(place->mem_type) ||
+>>>>>>>>> -		    bo->flags & XE_BO_FLAG_GGTT) {
+>>>>>>>>> -			spin_lock(&xe->pinned.lock);
+>>>>>>>>> -			list_add_tail(&bo->pinned_link, &xe->pinned.kernel_bo_present);
+>>>>>>>>> -			spin_unlock(&xe->pinned.lock);
+>>>>>>>>> -		}
+>>>>>>>>> +	if (mem_type_is_vram(place->mem_type) || bo->flags & XE_BO_FLAG_GGTT) {
+>>>>>>
+>>>>>>
+>>>>>> again... why do you say we are restoring the GGTT itself? this seems
+>>>>>> rather to allow pinning and then restoring anything that has
+>>>>>> the XE_BO_FLAG_GGTT - that's any BO that uses the GGTT, not the GGTT.
+>>>>>>
+>>>>>
+>>>>> I think what you are sayings is right - the patch restores every BOs
+>>>>> GGTT mappings rather than restoring the entire contents of the GGTT.
+>>>>>
+>>>>> This might be a larger problem then as I think the scratch GGTT entries
+>>>>> will not be restored - this is problem for both igpu and dgfx devices.
+>>>>>
+>>>>> This patch should help but is not complete.
+>>>>>
+>>>>> I think we need a follow up to either...
+>>>>>
+>>>>> 1. Setup all scratch pages in the GGTT prior to calling
+>>>>> xe_bo_restore_kernel and use this flow to restore individual BOs GGTTs.
+>>>>
+>>>> yes, but for BOs already in system memory we don't need this flow - we
+>>>> only need them to be mapped again.
+>>>>
+>>>
+>>> Right. xe_bo_restore_pinned short circuits on a BO not being in VRAM. We could
+>>> move that check out into xe_bo_restore_kernel though to avoid grabbing a system
+>>
+>> Ok. Let's get this in then. I was worried we'd copy the BOs elsewhere
+>> and then restore and remap them. Now I see this short-circuit you
+>> talked about.
+>>
+>> I still think it would be more desirable to actually save/restore the
+>> page in question rather than go through this route that generates it
+>> back by remapping the BOs.
+>>
+>> Anyway, it fixes the bug and uses infra that was already there for
+>> discrete.
+>>
+> 
+> Agree. May take stab at completely fixing our BO backup / restore to
+> be not actually BO based at all...
+> 
+> Rather...
+> 
+> Backend entire GGTT in shim.
+> Backend user VRAM in shim via GPU
+> Backend kernel VRAM in shim via GPU.
+> 
+> Restore GGTT via shim + memcpy.
+> Restore kernel VRAM via shim + memcpy.
+> Restore user VRAM via shim via GPU.
+> 
+> I think this would be safer and make Thomas happy to not abuse TTM /
+> take dma-resv locks in our suspend / resume code.
+> 
+> Anyways I pushed this one to drm-xe-next in hopes getting this in 6.12.
 
-Now I am extremely confused.
-
-Documentation/ABI/stable/sysfs-block:
-
-"[RW] Maximum number of kilobytes to read-ahead for filesystems on this 
-block device."
-
-
-So, with your patch, will we also be changing the readahead size to 
-exceed that, or simply allocate larger folios and not exceeding the 
-readahead size (e.g., leaving them partially non-filled)?
-
-If you're also changing the readahead behavior to exceed the 
-configuration parameter it would sound to me like "I am pushing the 
-brake pedal and my care brakes; fix the brakes to adopt whether to brake 
-automatically" :)
-
-Likely I am missing something here, and how the read_ahead_kb parameter 
-is used after your patch.
-
+Back from some time off, thanks for taking care of this. I think we have 
+some more issues with LNL: 
+https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3409. Currently 
+investigating this, but current thinking is that this is related to 
+compression. I believe ccs state will also be in stolen memory, so 
+likely we are also missing decompression or saving/restoring the ccs 
+during hibernation...
 
 > 
-> With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
-> sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
-> /proc/meminfo are as follows:
+> Matt
 > 
-> - before this patch
->    FileHugePages:     18432 kB
->    FilePmdMapped:      4096 kB
-> 
-> - after this patch
->    FileHugePages:   1067008 kB
->    FilePmdMapped:   1048576 kB
-> 
-> This shows that after applying the patch, the entire 1GB file is mapped to
-> huge pages. The stable list is CCed, as without this patch, large folios
-> don’t function optimally in the readahead path.
- >> It's worth noting that if read_ahead_kb is set to a larger value 
-that isn't
-> aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail to map
-> to hugepages.
-> 
-> Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Cc: stable@vger.kernel.org
-> 
-> ---
->   mm/readahead.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> Changes:
-> v1->v2:
-> - Drop the align (Matthew)
-> - Improve commit log (Andrew)
-> 
-> RFC->v1: https://lore.kernel.org/linux-mm/20241106092114.8408-1-laoar.shao@gmail.com/
-> - Simplify the code as suggested by Matthew
-> 
-> RFC: https://lore.kernel.org/linux-mm/20241104143015.34684-1-laoar.shao@gmail.com/
-> 
-> diff --git a/mm/readahead.c b/mm/readahead.c
-> index 3dc6c7a128dd..9b8a48e736c6 100644
-> --- a/mm/readahead.c
-> +++ b/mm/readahead.c
-> @@ -385,6 +385,8 @@ static unsigned long get_next_ra_size(struct file_ra_state *ra,
->   		return 4 * cur;
->   	if (cur <= max / 2)
->   		return 2 * cur;
-> +	if (cur > max)
-> +		return cur;
->   	return max;
-
-Maybe something like
-
-return max_t(unsigned long, cur, max);
-
-might be more readable (likely "max()" cannot be used because of the 
-local variable name "max" ...).
-
-
-... but it's rather weird having a "max" and then returning something 
-larger than the "max" ... especially with code like
-
-"ra->size = get_next_ra_size(ra, max_pages);"
-
-
-Maybe we can improve that by renaming "max_pages" / "max" to what it 
-actually is supposed to be (which I haven't quite understood yet).
-
--- 
-Cheers,
-
-David / dhildenb
+>> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>
+>> thanks
+>> Lucas De Marchi
+>>
+>>> BOs dma-resv lock though. In either VRAM or system case xe_ggtt_map_bo is
+>>> called.
+>>>
+>>> Matt
+>>>
+>>>>>
+>>>>> 2. Drop restoring of individual BOs GGTTs entirely and save / restore
+>>>>> the GGTTs contents.
+>>>>
+>>>> ... if we don't risk adding entries to discarded BOs. As long as the
+>>>> save happens after invalidating the entries, I think it could work.
+>>>>
+>>>>>
+>>>>> Does this make sense?
+>>>>
+>>>> yep, thanks.
+>>>>
+>>>> Lucas De Marchi
 
 
