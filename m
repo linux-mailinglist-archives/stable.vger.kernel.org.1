@@ -1,132 +1,113 @@
-Return-Path: <stable+bounces-92159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE9A9C4420
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 18:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1C49C44FC
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 19:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8691F25AEF
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 17:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9EF1F20F01
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 18:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EB41AB515;
-	Mon, 11 Nov 2024 17:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8151A9B43;
+	Mon, 11 Nov 2024 18:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2yPXxfU"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="90k0phcN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79E71A76DA;
-	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4537B145B16;
+	Mon, 11 Nov 2024 18:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731347318; cv=none; b=dq6RjEa12aJQYZZmOSk22SOtpZmJuMyVhpOjo7JXvxM3E7U+D/N6ji8c5GeQySbL0vDAs7pfq17N9imsmyhwlU9fHHChbXeqLrH0MI19HRM3SL1Gfcil3NiYAjiSjygbMDxNe5RUaw267HZJt+Cx4/Ss5Zxm9/ocYvxlbGc1owE=
+	t=1731349893; cv=none; b=dcnHGH+zfr3EDleaTvg7rN2EO1EyjHt9XZn9IIZjv570e0QEyMwnSC2sBW0QNDPU2FBeqhmT9D2KJ2GLuy/IFVGfJzaG5axhw0CN5SAipVmfDtsR8x3OYnj7KjiwQGAZ3Dfc51h1iVtTEHBPMNrdvdxte/TLKRca8eqSegGrZ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731347318; c=relaxed/simple;
-	bh=9AGnp6ItSWGEIvcEPYHznGFKAqdl+UeCsmI5khCjdS4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CXOm7OIK919H1U/3CxP+PvgbIdgoMoBHnHaksop7VooWKgPluz8Vvri5vIyLbPeyFsQmLpCGGljF4NC7HXHAe4VZn2n6FeYurGOS5Ym1zEagT4ATiO8TsHGUSLaWBOYCWvq9TB/gPhkduZvriqGFKSaASCdk2PkLBRFxlNFZ4qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2yPXxfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E462C4CED4;
-	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731347318;
-	bh=9AGnp6ItSWGEIvcEPYHznGFKAqdl+UeCsmI5khCjdS4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=c2yPXxfUHlgwnZrp7qGKCLwqQZc+L/+2ddJpo751E4RCy8EIs4Ij7Ka8P3CxN0rgM
-	 JV0JkMFh83ttQ4ajP/K3Q87yt+g5CZWBQOxj8AAE0SBeXg6T4NHcHE3Gb9bybL/smS
-	 uPpgH6DjmDqUljRvBXspip4Pc9w3ocTEseJn4X9indc3hcj/s/jdwoGWT+l5TruKrx
-	 sUzNvn3eLVILCLlS+ImDoqSZa5Iv7xX5k8Q78jUk5BhSGh3M0+tf2nozGfxZ+Y9CG0
-	 +2L/1YOD6Ul71mcvdcHaYeGyAHaIvVAiXaUYUzh7pA4PMa5wbuU40lwG1LL9h0ejxp
-	 +vxbc+hVknnBw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 745DCD3ABDC;
-	Mon, 11 Nov 2024 17:48:38 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Mon, 11 Nov 2024 23:18:34 +0530
-Subject: [PATCH 5/5] scsi: ufs: pltfrm: Dellocate HBA during
- ufshcd_pltfrm_remove()
+	s=arc-20240116; t=1731349893; c=relaxed/simple;
+	bh=JlHLtm5tmJMubSWHbX9llC7OekmRlU82Oeut3JnZmdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P1jfWNs/ewRav6fM8rf2NO8XhOMt6LAcLxJhflln3oR/NhXrryP31UuAqFexmSVOoefExftQ5jB1h5T2wnvtiN10gcAiw00qaGcbYtvuOaxGvpq6GMqsSUhbHk8pvfXKufQeiKsTA0u34XfHvuNHJ2/qOLIiDPBW6W2MEMKAOSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=90k0phcN; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=p8dN0XjuNZkdV5wGrWWUH+hCEPSo2ov7b9o7jmj3OLE=; b=90k0phcNtpqV44Ho2GYQnAYND5
+	dxcDexJhEH1+Bd40Mvb1H7P+fifQdKLQ53/xBj2h+PVyax1Kkq/XeTHcSGmNwcf9C15PVj6tD/jyn
+	sw2/vop3GCmFycvT6HMbaSdaqg4AP3sNqOdTLJGE31h6vHDtD+V8rWFgK7GOLUM66pMmraNAflWRu
+	Dyc5+X0rD1DuuwRqBm1/iT2W6nfH6iOS48Cphc6T83ltMKikbDmRU0tPKazkBjzqIrqYvSIr5HiAu
+	xR63bPnuKWQBpNKSRJTPXfNCRPhKwtOZz7NlH5AOMeXXGDgoy4F++8LknTVm58rlJ3Fvg10xyzow4
+	gYOcvaAQ==;
+Date: Mon, 11 Nov 2024 19:31:17 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Roger Quadros <rogerq@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241111193117.5a5f5ecb@akair>
+In-Reply-To: <20241111150953.GA23206@atomide.com>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+	<20241108184118.5ee8114c@akair>
+	<20241111150953.GA23206@atomide.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241111-ufs_bug_fix-v1-5-45ad8b62f02e@linaro.org>
-References: <20241111-ufs_bug_fix-v1-0-45ad8b62f02e@linaro.org>
-In-Reply-To: <20241111-ufs_bug_fix-v1-0-45ad8b62f02e@linaro.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Mike Bi <mikebi@micron.com>, Bean Huo <beanhuo@micron.com>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- Luca Porzio <lporzio@micron.com>, Asutosh Das <quic_asutoshd@quicinc.com>, 
- Can Guo <quic_cang@quicinc.com>, Pedro Sousa <pedrom.sousa@synopsys.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, Peter Wang <peter.wang@mediatek.com>, 
- Stanley Jhu <chu.stanley@gmail.com>, 
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Santosh Y <santoshsy@gmail.com>, Namjae Jeon <linkinjeon@gmail.com>
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=858;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=Ni+UMeWf+BGon+9C+5L79ezS+b3LAVE2IIekW3iQ9ww=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnMkNz9MkYBdX398GAmfAQsbBw3ppRcumSjtutx
- sOoQ3zoTZSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZzJDcwAKCRBVnxHm/pHO
- 9VkjB/49ADTQJu1nV/d8/ynBuBn+ItayJXBzyHg85nSVkxMlnER5vFjUX6+uT2sZalqVXL/QI8o
- 3OX7c+Wq8TTYC69nVWpjgtcBWy0B/ppoGuhVdk62pN1guua37AURco5SSqzjrJCBheHwQJkTa+s
- uIoNZuFlJhQT/wAUu/f6zmX6aMToz3Cz4NLYPC3mkyhLlZQ2CMY7lvqpRmVpFkGb8EZVcOc1RP6
- q1BB36FdG4dvO5e3jqx/ALyfnfapbycjFzXYZHXu9CNyUlesnt/Eglfz9XvclcQIzpgusXtqRxW
- 3+zVfvcoGPZP1DfDfFedH8LuL2Ykimb6v6PRL7/ry3dN066b
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@linaro.org/default with auth_id=185
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reply-To: manivannan.sadhasivam@linaro.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Am Mon, 11 Nov 2024 17:09:53 +0200
+schrieb Tony Lindgren <tony@atomide.com>:
 
-This will ensure that the scsi host is cleaned up properly using
-scsi_host_dev_release(). Otherwise, it may lead to memory leaks.
+> * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:
+> > They are not used, if they are just disabled, kernel does not touch
+> > them, so if it is there, the kernel can handle
+> > pm. At least as long as it is not under ti,sysc.
+> > 
+> > There are probably cleaner solutions for this, but for a CC: stable I
+> > would prefer something less invasive.  
+> 
+> For unused devices, it's best to configure things to use ti-sysc, and
+> then set status disabled (or reserved) for the child devices only. This
+> way the parent interconnect target module is PM runtime managed by
+> Linux, and it's power domain gets properly idled for the unused devices
+> too.
+> 
+Hmm, we also have omap_hwmod_setup_all() which is still called if
+without device nodes being available.
 
-Cc: stable@vger.kernel.org # 4.4
-Fixes: 03b1781aa978 ("[SCSI] ufs: Add Platform glue driver for ufshcd")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/ufs/host/ufshcd-pltfrm.c | 1 +
- 1 file changed, 1 insertion(+)
+Converting mcspi to ti-sysc is more than 100 lines. So it does not
+qualify for stable.
 
-diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-index b8dadd0a2f4c..505572d4fa87 100644
---- a/drivers/ufs/host/ufshcd-pltfrm.c
-+++ b/drivers/ufs/host/ufshcd-pltfrm.c
-@@ -534,6 +534,7 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 	ufshcd_remove(hba);
-+	ufshcd_dealloc_host(hba);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- }
+> > I can try a ti-sysc based fix in parallel.  
+> 
+> Yeah that should be trivial hopefully :)
+> 
+I played around, got pm issues too, tried to force-enable things (via
+power/control),
+watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
+or reset.
 
--- 
-2.25.1
+but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
 
+I test from initramfs, so no mmc activity involved
 
+removing status = "disabled" from mcspi3 solves things.
+With and without ti-sysc conversion. removing status = "disabled" from
+mcspi4 seems not to help.
+
+That all cannot be... I will retry tomorrow.
+
+Regards,
+Andreas
 
