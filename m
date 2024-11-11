@@ -1,270 +1,128 @@
-Return-Path: <stable+bounces-92138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D74A9C4112
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:36:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F5B9C4125
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:41:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1BE41F23E2C
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:36:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBF3282784
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC5C19F133;
-	Mon, 11 Nov 2024 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A054C1A073F;
+	Mon, 11 Nov 2024 14:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Se5irdY5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7hHkCCo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0953014EC55;
-	Mon, 11 Nov 2024 14:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2C81A08B2
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 14:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731335784; cv=none; b=jrwQvGObug7ZOgodtP03ey00dLHx7PPc109U6W2rSMXEcZ+vknWKMgn27XcuxQ3zJishKDSelcd44aYGHgtxM2bUKRHorr/vrZuCwFSyYpgrmWvTup2kChIJ8VVHwaNxD+iNE1mp1ieOrdbnINqW0YJd/XsKZ7HN/xaUm1Tf/4A=
+	t=1731336047; cv=none; b=aFPhOFS0fy3P9kX4x5uCbPrDTuqeNUjiLuVZFz7DgbT72oyd0MF0J7bohrHqBCIE2+TTTw2DzdUrsilHfI6NMyWYGfwIwG5avBKFdgVfDD55dxyr7XH9dW32GtaGHPUpxzSV/6m8YTI5HmSzHkF+F0S9CqWZVJoAvojN/X8ogOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731335784; c=relaxed/simple;
-	bh=tB+KD7zTi2f1hi6GxLePQ8a5nPfNIZ/EWne+PunmC2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QA9IRzNvhXv5Yb5XIPyVolLK3+dDPMy1jW//tuxU7uhdw3dLwNXi7KVYP4zCTtItuD0hw+WDonSe2v5rTbd24XUMn835XyHbvGoJGmqgSQwzUNhauWcOyCoAr23vSvDqRWCnVKPuzorFddgN0YkNQ0ZpfUx3yGwdaPoeSCoH+WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Se5irdY5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ABCBP2e007341;
-	Mon, 11 Nov 2024 14:36:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8P259kAHltHcyLSDTVL2UZ/hP1y2gwLMMSlMpDppz3c=; b=Se5irdY5sisHJT00
-	01ghIdyB/1Qq8pwEJcf9rSj3LkaUGhADTrpl32unv21w2prqi77JCr6OUko8lxIA
-	PrRsnncV2jfDNgfnWuXDqmAACdvp1dYXA7htd5zWMUrI7gCHwouNQ7ruOgUAtbMj
-	wb6uDvluTlaLb1A8hTwPGWMvk8uIv+CGkTwph509pV1SSohsD70FHAlim0w+ubzI
-	Pw+GIyWL/cjIUVOv6Bazi2Xh4GVUC3YhjLY/L+JKgLmBhlnQm1givmTrYZMC+70i
-	9lVOZBQUjbfwGDd/mzRnlv0Hs8JMM0bzWGd1aoH1CTZrV16dG+MB0XQFWYuShTSX
-	6IaPUg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42sweecky7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Nov 2024 14:36:17 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ABEa5Rv018903
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Nov 2024 14:36:05 GMT
-Received: from [10.204.100.69] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 11 Nov
- 2024 06:36:03 -0800
-Message-ID: <9098b8ef-76e0-f976-2f4e-1c6370caf59e@quicinc.com>
-Date: Mon, 11 Nov 2024 20:06:00 +0530
+	s=arc-20240116; t=1731336047; c=relaxed/simple;
+	bh=YRfx2RwrY/GC6eMboeKeX+qKO85k9ZGQ0LJty+vQBuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=giaqklRG33psfB9cGIPo7lIxncJ8HmDQSyHZJCmTKlPnBF5ULCmHEXaAmvs3x8uji3xiWXzIEjX1fFU5OOSqxENzAq8FZzg5wWPAVlWz1UGyC5hqBlhMEaLHYt3VZY358bLyynkGYQRECv3aLWcCkEKSQ1D6KJazHeaytggLNiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7hHkCCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FB8C4CED5;
+	Mon, 11 Nov 2024 14:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731336046;
+	bh=YRfx2RwrY/GC6eMboeKeX+qKO85k9ZGQ0LJty+vQBuA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U7hHkCCof2OBBCjWD3813BowggFzA6RpZnTuEigmj4Eroi8WHLdPCu5DDyTExTV3Y
+	 KVc+fORDe42XS1VSOPYsJUVMsqkkWq/iyfTQpS0iTI8rlXZPqiEU4BUiQAeQWRrW+q
+	 upHBKNud0qWd3II7I8bvTNC2MjsHkH4igCWtcsE2n9TClfVyN/0FrjtuzI6UIfbmNo
+	 CjmcRa3vrsPEor1h3XVtqRf2LrJEzufib4eWZJzfT91usElW9uEw0+U9jDCvx9oew/
+	 /SSKZKVdkrJIM4yuJfNIO05AV6RJo4e6m9KgTUh6anu9XBj8fqWyJ9GSb7ixV6zKWA
+	 sCqmIeFJYvXKQ==
+From: Nathan Chancellor <nathan@kernel.org>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: nathan@kernel.org,
+	naresh.kamboju@linaro.org,
+	stable@vger.kernel.org
+Subject: [PATCH 5.15] ACPI: PRM: Clean up guid type in struct prm_handler_info
+Date: Mon, 11 Nov 2024 07:37:32 -0700
+Message-ID: <20241111143730.845068-3-nathan@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <CA+G9fYtgOA-5y73G1YEixQ+OjmG=awBQjdKjK+b0qLNYvAAVpQ@mail.gmail.com>
+References: <CA+G9fYtgOA-5y73G1YEixQ+OjmG=awBQjdKjK+b0qLNYvAAVpQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 2/4] media: venus: hfi_parser: avoid OOB access beyond
- payload word count
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov
-	<stanimir.k.varbanov@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-2-8d4feedfe2bb@quicinc.com>
- <474d3c62-5747-45b9-b5c3-253607b0c17a@linaro.org>
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-In-Reply-To: <474d3c62-5747-45b9-b5c3-253607b0c17a@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: E_qPzhYrSEEDDrOqgOK7QpFe_OjE27F1
-X-Proofpoint-GUID: E_qPzhYrSEEDDrOqgOK7QpFe_OjE27F1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- mlxscore=0 bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411110121
 
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-On 11/5/2024 4:45 PM, Bryan O'Donoghue wrote:
-> On 05/11/2024 08:54, Vikash Garodia wrote:
->> words_count denotes the number of words in total payload, while data
->> points to payload of various property within it. When words_count
->> reaches last word, data can access memory beyond the total payload.
->> Avoid this case by not allowing the loop for the last word count.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
->> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
->> ---
->>   drivers/media/platform/qcom/venus/hfi_parser.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c
->> b/drivers/media/platform/qcom/venus/hfi_parser.c
->> index
->> 27d0172294d5154f4839e8cef172f9a619dfa305..20d9ea3626e9c4468d5f7dbd678743135f027c86 100644
->> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
->> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
->> @@ -303,7 +303,7 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst
->> *inst, void *buf,
->>           memset(core->caps, 0, sizeof(core->caps));
->>       }
->>   -    while (words_count) {
->> +    while (words_count > 1) {
->>           data = word + 1;
->>             switch (*word) {
->>
-> 
-> How is it the right thing to do to _not_ process the last u32 ?
-> 
-> How does this overrun ? while (words_count) should be fine because it decrements
-> at the bottom of the loop...
-> 
-> assuming your buffer is word aligned obvs
-> 
-> =>
-> 
-> #include <stdio.h>
-> #include <stdint.h>
-> 
-> char somebuf[64];
-> 
-> void init(char *buf, int len)
-> {
->         int i;
->         char c = 0;
-> 
->         for (i = 0; i < len; i++)
->                 buf[i] = c++;
-> }
-> 
-> int hfi_parser(void *buf, int size)
-> {
->         int word_count = size >> 2;
->         uint32_t *my_word = (uint32_t*)buf;
-Make this as below and it should lead to OOB
-uint32_t *my_word = (uint32_t*)buf + 1
+commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
 
-Regards,
-Vikash
-> 
->         printf("Size %d word_count %d\n", size, word_count);
-> 
->         while(word_count) {
->                 printf("Myword %d == 0x%08x\n", word_count, *my_word);
->                 my_word++;
->                 word_count--;
->         }
-> }
-> 
-> int main(int argc, char *argv[])
-> {
->         int i;
-> 
->         init(somebuf, sizeof(somebuf));
->         for (i = 0; i < sizeof(somebuf); i++)
->                 printf("%x = %x\n", i, somebuf[i]);
-> 
->         hfi_parser(somebuf, sizeof(somebuf));
-> 
->         return 0;
-> }
-> 
-> 0 = 0
-> 1 = 1
-> 2 = 2
-> 3 = 3
-> 4 = 4
-> 5 = 5
-> 6 = 6
-> 7 = 7
-> 8 = 8
-> 9 = 9
-> a = a
-> b = b
-> c = c
-> d = d
-> e = e
-> f = f
-> 10 = 10
-> 11 = 11
-> 12 = 12
-> 13 = 13
-> 14 = 14
-> 15 = 15
-> 16 = 16
-> 17 = 17
-> 18 = 18
-> 19 = 19
-> 1a = 1a
-> 1b = 1b
-> 1c = 1c
-> 1d = 1d
-> 1e = 1e
-> 1f = 1f
-> 20 = 20
-> 21 = 21
-> 22 = 22
-> 23 = 23
-> 24 = 24
-> 25 = 25
-> 26 = 26
-> 27 = 27
-> 28 = 28
-> 29 = 29
-> 2a = 2a
-> 2b = 2b
-> 2c = 2c
-> 2d = 2d
-> 2e = 2e
-> 2f = 2f
-> 30 = 30
-> 31 = 31
-> 32 = 32
-> 33 = 33
-> 34 = 34
-> 35 = 35
-> 36 = 36
-> 37 = 37
-> 38 = 38
-> 39 = 39
-> 3a = 3a
-> 3b = 3b
-> 3c = 3c
-> 3d = 3d
-> 3e = 3e
-> 3f = 3f
-> Size 64 word_count 16
-> Myword 16 == 0x03020100
-> Myword 15 == 0x07060504
-> Myword 14 == 0x0b0a0908
-> Myword 13 == 0x0f0e0d0c
-> Myword 12 == 0x13121110
-> Myword 11 == 0x17161514
-> Myword 10 == 0x1b1a1918
-> Myword 9 == 0x1f1e1d1c
-> Myword 8 == 0x23222120
-> Myword 7 == 0x27262524
-> Myword 6 == 0x2b2a2928
-> Myword 5 == 0x2f2e2d2c
-> Myword 4 == 0x33323130
-> Myword 3 == 0x37363534
-> Myword 2 == 0x3b3a3938
-> Myword 1 == 0x3f3e3d3c
-> 
-> ---
-> bod
+Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
+
+drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
+4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Werror,-Walign-mismatch]
+  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+      |                                                  ^
+
+The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
+is a regular guid_t.  The difference between the two types is the
+alignment.  efi_guid_t is a typedef.
+
+	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+
+It's possible that this a bug in Clang 19.  Even though the alignment of
+&th->guid is not explicitly specified, it will still end up being aligned
+at 4 or 8 bytes.
+
+Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
+and that also makes the warning go away.
+
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[nathan: Fix conflicts due to lack of e38abdab441c]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+This resolves the warning that Naresh reported, which breaks the build
+with CONFIG_WERROR=y:
+
+https://lore.kernel.org/CA+G9fYtgOA-5y73G1YEixQ+OjmG=awBQjdKjK+b0qLNYvAAVpQ@mail.gmail.com/
+https://storage.tuxsuite.com/public/clangbuiltlinux/continuous-integration2/builds/2ogNnyGv40aCb0Jqybv8RlPt3S7/build.log
+---
+ drivers/acpi/prmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 63ead3f1d294..890c74c52beb 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -52,7 +52,7 @@ struct prm_context_buffer {
+ static LIST_HEAD(prm_module_list);
+ 
+ struct prm_handler_info {
+-	guid_t guid;
++	efi_guid_t guid;
+ 	void *handler_addr;
+ 	u64 static_data_buffer_addr;
+ 	u64 acpi_param_buffer_addr;
+
+base-commit: 3c17fc4839052076b9f27f22551d0d0bd8557822
+-- 
+2.47.0
+
 
