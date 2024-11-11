@@ -1,314 +1,241 @@
-Return-Path: <stable+bounces-92147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49D49C41C0
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 16:20:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAF69C41CB
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 16:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63EC3283DC8
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ADB5284DB2
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 15:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA3F130E27;
-	Mon, 11 Nov 2024 15:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BFE49625;
+	Mon, 11 Nov 2024 15:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cww/RLff"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7271BC58;
-	Mon, 11 Nov 2024 15:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C5153389
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 15:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731338432; cv=none; b=LAH6GZky2wP++ddGpdxkOLpansrOo9R7FOg+TO1tfrdeOfn8FIdkjRFQfWAOMagTWlepQtlzkCAch/l/d1trmnMr5pkeZwdGIE/LgKpLRa3S5hFOxmrQy2W4FD1xl2eskwBPpeyu5FJaxuuQHwE+MgeXPK0nuE22c4wUIAFiktI=
+	t=1731338779; cv=none; b=IxDees5h5bo6ttQP4NGeM9o6Fc8SRcZZ3ePtoRy5B2XAvoWz53EkDb+vRGrSH2R4zW4MsKzImnm0IHDqqqsrMOfBHWndUtAe4bl4EJOMz2F2mP9o9CmVRBDndnGj0JVql1CGD0ylY4gFEk0TunUwV60zYtW8Pp3NBdhJHrvbOEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731338432; c=relaxed/simple;
-	bh=cnqbt/Xh8UvrMdtmDUPR9+kGBZQFXIwEQu6Z9OrYXr4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gx+ZdOnLpcINQAtgylyNHe08kxeqs5ONTDI5HQ3R/MscJuHbhCmrS81ORTLinglK65+NO9Y6HvqXXG2LxIWVLNzHDwjp9DiRaW126X2U9qXO0A38AX9PJ0N7BrNEsiWXnCUrYGepI0HfHug7r7wzLqmpjV3/jkr+Sao9g5rQ/sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XnCsL26CRz4f3jsX;
-	Mon, 11 Nov 2024 23:20:06 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 712481A0194;
-	Mon, 11 Nov 2024 23:20:24 +0800 (CST)
-Received: from [10.174.177.210] (unknown [10.174.177.210])
-	by APP4 (Coremail) with SMTP id gCh0CgB3U4exIDJn3+D7BQ--.18810S3;
-	Mon, 11 Nov 2024 23:20:19 +0800 (CST)
-Message-ID: <73a05cb9-569c-9b3c-3359-824e76b14461@huaweicloud.com>
-Date: Mon, 11 Nov 2024 23:20:17 +0800
+	s=arc-20240116; t=1731338779; c=relaxed/simple;
+	bh=Fydw77vXbRFV9RH9lH4MqtCszn7+i/pbvTq7cgzg1t8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=W6hOIkWHZjWZQqHtuGXGkNQJPAi0K5b8fh1MuqsmIhq3QYEbZRdczXXg4scKYqIGG9tubhcS/KunJPTM30lTQe/N+W3cH64UYdrt38DLuxVtbRTVONrTYAMhwQAXJOQEYjARhmI7dWtbdvrQ6gQ7DcD2+jEbXX2+aGMPd/OBRKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cww/RLff; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731338776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+nycZMjhWDh3vO36kpuEhW9kVC30oxcyFbYQDlbddPk=;
+	b=cww/RLffafWm2ElwvNYsWCANo5Oyg2M4KGwUEmmgTwXDOMUXaDQWfSW9R7Ise6oezSyKQF
+	OKqWIChpZkffsygxSepRoWzHytz+Y/HDpiKxKoMGfi2S4BtixPfwKX/RNz2f9tOeNc+MGp
+	+5TnJ/UfXur3mgkRSn7RwNcvdumHw5w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-481-mpTsBrAJMYufawR8cBdZhA-1; Mon, 11 Nov 2024 10:26:15 -0500
+X-MC-Unique: mpTsBrAJMYufawR8cBdZhA-1
+X-Mimecast-MFC-AGG-ID: mpTsBrAJMYufawR8cBdZhA
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43157e3521dso32821115e9.1
+        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 07:26:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731338774; x=1731943574;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+nycZMjhWDh3vO36kpuEhW9kVC30oxcyFbYQDlbddPk=;
+        b=nSflIHDtEOqcctD7y6Uh/r5U41wxfeAGFQKMIDC+uc6SP1y6Ey3E6IlbFdMfKd1XDO
+         UbXqJmPCxP4zQY3kaO2mAxsJjpu+5sNAHA+grkGlo9kl4JekZRcREZiM9wcJUaN2GB9d
+         6IIHPAaj4GFSMFEncnqxBMXf7VB7vRKZIEBRRzHnn1QQz7t1+3aFmeCehSl4uXyDww3P
+         80jN2vhSTWCKZqGsVCM5uXrwbXST7/GuUbIFLTdL1enaWUQPN6mq7ZhgexEzhzj3vciN
+         PYvmbzfUOZWeA9QZXoa1uQwoqwt8DmAJyl50QlzUDGMzx2Bn/jmQirNjSYmHqSavQpCk
+         EIqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXOncOuG8FjLHcRoW+8KGdY/cvSj2YzvK4ydtln+jmbAw/sUAxkNWlDXF6bnDo1U0fHQd8woQk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze0DuBxX/L/jFPXpZIvttCTEKDEHSeHVloePjrckdolVg6UQSN
+	Ra1Wq6S7X0FKFZvhR/xT3O1gv9V63GHgDcmwFKk5cQVXFfOFDztDQ3yZPkaptsMjLCwBrznDrbT
+	fmHxBgk2jZqjG3r9GbUKNbKlcvnwBqj8c05+E3smXHjmSPyGlpO3F1A==
+X-Received: by 2002:a5d:47ae:0:b0:37d:481e:8e29 with SMTP id ffacd0b85a97d-381f186bfdemr10591597f8f.25.1731338773914;
+        Mon, 11 Nov 2024 07:26:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFk+/3Aoj5VAHD1rke9vbvpH/Q7jKzsHC7BMeQVpaQKOcPAIQgVb1txMY5ccP6/JbOPGGiocQ==
+X-Received: by 2002:a5d:47ae:0:b0:37d:481e:8e29 with SMTP id ffacd0b85a97d-381f186bfdemr10591586f8f.25.1731338773575;
+        Mon, 11 Nov 2024 07:26:13 -0800 (PST)
+Received: from ?IPV6:2003:cb:c730:4300:18eb:6c63:a196:d3a2? (p200300cbc730430018eb6c63a196d3a2.dip0.t-ipconnect.de. [2003:cb:c730:4300:18eb:6c63:a196:d3a2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432bc472a48sm65206655e9.0.2024.11.11.07.26.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 07:26:12 -0800 (PST)
+Message-ID: <b18d9e88-efe3-4051-b7de-6390a699fe30@redhat.com>
+Date: Mon, 11 Nov 2024 16:26:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [RFC PATCH 6/6 6.6] libfs: fix infinite directory reads for
- offset dir
-To: Chuck Lever III <chuck.lever@oracle.com>,
- Yu Kuai <yukuai1@huaweicloud.com>
-Cc: Chuck Lever <cel@kernel.org>, linux-stable <stable@vger.kernel.org>,
- "harry.wentland@amd.com" <harry.wentland@amd.com>,
- "sunpeng.li@amd.com" <sunpeng.li@amd.com>,
- "Rodrigo.Siqueira@amd.com" <Rodrigo.Siqueira@amd.com>,
- "alexander.deucher@amd.com" <alexander.deucher@amd.com>,
- "christian.koenig@amd.com" <christian.koenig@amd.com>,
- "Xinhui.Pan@amd.com" <Xinhui.Pan@amd.com>,
- "airlied@gmail.com" <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Liam Howlett <liam.howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- "srinivasan.shanmugam@amd.com" <srinivasan.shanmugam@amd.com>,
- "chiahsuan.chung@amd.com" <chiahsuan.chung@amd.com>,
- "mingo@kernel.org" <mingo@kernel.org>,
- "mgorman@techsingularity.net" <mgorman@techsingularity.net>,
- "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
- "zhangpeng.00@bytedance.com" <zhangpeng.00@bytedance.com>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- "maple-tree@lists.infradead.org" <maple-tree@lists.infradead.org>,
- linux-mm <linux-mm@kvack.org>, "yi.zhang@huawei.com" <yi.zhang@huawei.com>,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20241111005242.34654-1-cel@kernel.org>
- <20241111005242.34654-7-cel@kernel.org>
- <278433c2-611c-6c8e-7964-5c11977b68b7@huaweicloud.com>
- <96A93064-8DCE-4B78-9F2A-CF6E7EEABEB1@oracle.com>
-From: yangerkun <yangerkun@huaweicloud.com>
-In-Reply-To: <96A93064-8DCE-4B78-9F2A-CF6E7EEABEB1@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/readahead: Fix large folio support in async
+ readahead
+From: David Hildenbrand <david@redhat.com>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, linux-mm@kvack.org,
+ stable@vger.kernel.org
+References: <20241108141710.9721-1-laoar.shao@gmail.com>
+ <85cfc467-320f-4388-b027-2cbad85dfbed@redhat.com>
+ <CALOAHbAe8GSf2=+sqzy32pWM2jtENmDnZcMhBEYruJVyWa_dww@mail.gmail.com>
+ <fe1b512e-a9ba-454a-b4ac-d4471f1b0c6e@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <fe1b512e-a9ba-454a-b4ac-d4471f1b0c6e@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgB3U4exIDJn3+D7BQ--.18810S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxKw48Ar4xCFW5tF45Wr48JFb_yoW3JF17pF
-	Z8Gan8Krs7X34UGr4vv3WDZFyS93Z7Kr45XrZ5W34UJr9Fqr43KF1Iyr4Y9a4UArs3Cr12
-	qF45K343Zw45CrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWrXVW3AwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRJMa0UUUUU
-X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
 
-
-
-在 2024/11/11 22:39, Chuck Lever III 写道:
-> 
-> 
->> On Nov 10, 2024, at 9:36 PM, Yu Kuai <yukuai1@huaweicloud.com> wrote:
+On 11.11.24 16:05, David Hildenbrand wrote:
+> On 11.11.24 15:28, Yafang Shao wrote:
+>> On Mon, Nov 11, 2024 at 6:33 PM David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>> On 08.11.24 15:17, Yafang Shao wrote:
+>>>> When testing large folio support with XFS on our servers, we observed that
+>>>> only a few large folios are mapped when reading large files via mmap.
+>>>> After a thorough analysis, I identified it was caused by the
+>>>> `/sys/block/*/queue/read_ahead_kb` setting. On our test servers, this
+>>>> parameter is set to 128KB. After I tune it to 2MB, the large folio can
+>>>> work as expected. However, I believe the large folio behavior should not be
+>>>> dependent on the value of read_ahead_kb. It would be more robust if the
+>>>> kernel can automatically adopt to it.
+>>>
+>>> Now I am extremely confused.
+>>>
+>>> Documentation/ABI/stable/sysfs-block:
+>>>
+>>> "[RW] Maximum number of kilobytes to read-ahead for filesystems on this
+>>> block device."
+>>>
+>>>
+>>> So, with your patch, will we also be changing the readahead size to
+>>> exceed that, or simply allocate larger folios and not exceeding the
+>>> readahead size (e.g., leaving them partially non-filled)?
 >>
->> Hi,
+>> Exceeding the readahead size for the MADV_HUGEPAGE case is
+>> straightforward; this is what the current patch accomplishes.
 >>
->> 在 2024/11/11 8:52, cel@kernel.org 写道:
->>> From: yangerkun <yangerkun@huawei.com>
->>> [ Upstream commit 64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a ]
->>> After we switch tmpfs dir operations from simple_dir_operations to
->>> simple_offset_dir_operations, every rename happened will fill new dentry
->>> to dest dir's maple tree(&SHMEM_I(inode)->dir_offsets->mt) with a free
->>> key starting with octx->newx_offset, and then set newx_offset equals to
->>> free key + 1. This will lead to infinite readdir combine with rename
->>> happened at the same time, which fail generic/736 in xfstests(detail show
->>> as below).
->>> 1. create 5000 files(1 2 3...) under one dir
->>> 2. call readdir(man 3 readdir) once, and get one entry
->>> 3. rename(entry, "TEMPFILE"), then rename("TEMPFILE", entry)
->>> 4. loop 2~3, until readdir return nothing or we loop too many
->>>     times(tmpfs break test with the second condition)
->>> We choose the same logic what commit 9b378f6ad48cf ("btrfs: fix infinite
->>> directory reads") to fix it, record the last_index when we open dir, and
->>> do not emit the entry which index >= last_index. The file->private_data
+> 
+> Okay, so this only applies with MADV_HUGEPAGE I assume. Likely we should
+> also make that clearer in the subject.
+> 
+> mm/readahead: allow exceeding configured read_ahead_kb with MADV_HUGEPAGE
+> 
+> 
+> If this is really a fix, especially one that deserves CC-stable, I
+> cannot tell. Willy is the obvious expert :)
+> 
+>>>
+>>> If you're also changing the readahead behavior to exceed the
+>>> configuration parameter it would sound to me like "I am pushing the
+>>> brake pedal and my care brakes; fix the brakes to adopt whether to brake
+>>> automatically" :)
+>>>
+>>> Likely I am missing something here, and how the read_ahead_kb parameter
+>>> is used after your patch.
 >>
->> Please notice this requires last_index should never overflow, otherwise
->> readdir will be messed up.
+>> The read_ahead_kb parameter continues to function for
+>> non-MADV_HUGEPAGE scenarios, whereas special handling is required for
+>> the MADV_HUGEPAGE case. It appears that we ought to update the
+>> Documentation/ABI/stable/sysfs-block to reflect the changes related to
+>> large folios, correct?
 > 
-> It would help your cause if you could be more specific
-> than "messed up".
+> Yes, how it related to MADV_HUGEPAGE. I would assume that it would get
+> ignored, but ...
 > 
+> ... staring at get_next_ra_size(), it's not quite ignored, because we
+> still us it as a baseline to detect how much we want to bump up the
+> limit when the requested size is small? (*2 vs *4 etc) :/
 > 
->>> now used in offset dir can use directly to do this, and we also update
->>> the last_index when we llseek the dir file.
->>> Fixes: a2e459555c5f ("shmem: stable directory offsets")
->>> Signed-off-by: yangerkun <yangerkun@huawei.com>
->>> Link: https://lore.kernel.org/r/20240731043835.1828697-1-yangerkun@huawei.com
->>> Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
->>> [brauner: only update last_index after seek when offset is zero like Jan suggested]
->>> Signed-off-by: Christian Brauner <brauner@kernel.org>
->>> Link: https://nvd.nist.gov/vuln/detail/CVE-2024-46701
->>> [ cel: adjusted to apply to origin/linux-6.6.y ]
->>> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
->>> ---
->>>   fs/libfs.c | 37 +++++++++++++++++++++++++------------
->>>   1 file changed, 25 insertions(+), 12 deletions(-)
->>> diff --git a/fs/libfs.c b/fs/libfs.c
->>> index a87005c89534..b59ff0dfea1f 100644
->>> --- a/fs/libfs.c
->>> +++ b/fs/libfs.c
->>> @@ -449,6 +449,14 @@ void simple_offset_destroy(struct offset_ctx *octx)
->>>    xa_destroy(&octx->xa);
->>>   }
->>>   +static int offset_dir_open(struct inode *inode, struct file *file)
->>> +{
->>> + struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
->>> +
->>> + file->private_data = (void *)ctx->next_offset;
->>> + return 0;
->>> +}
->>
->> Looks like xarray is still used.
-> 
-> That's not going to change, as several folks have already
-> explained.
-> 
-> 
->> I'm in the cc list ,so I assume you saw my set, then I don't know why
->> you're ignoring my concerns.
-> 
->> 1) next_offset is 32-bit and can overflow in a long-time running
->> machine.
->> 2) Once next_offset overflows, readdir will skip the files that offset
->> is bigger.
-> 
+> So the semantics are really starting to get weird, unless I am missing
+> something important.
+Likely what I am missing is that the value of get_next_ra_size() will never be relevant
+in that case. I assume the following would end up doing the same:
 
-I'm sorry, I'm a little busy these days, so I haven't responded to this
-series of emails.
+iff --git a/mm/readahead.c b/mm/readahead.c
+index 475d2940a1edb..cc7f883f83d86 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -668,7 +668,12 @@ void page_cache_async_ra(struct readahead_control *ractl,
+         ra->start = start;
+         ra->size = start - index;       /* old async_size */
+         ra->size += req_count;
+-       ra->size = get_next_ra_size(ra, max_pages);
++       /*
++        * Allow the actual size to exceed the readahead window for
++        * MADV_HUGEPAGE.
++        */
++       if (ra->size < max_pages)
++               ra->size = get_next_ra_size(ra, max_pages);
+         ra->async_size = ra->size;
+  readit:
+         ractl->_index = ra->start;
 
-> In that case, that entry won't be visible via getdents(3)
-> until the directory is re-opened or the process does an
-> lseek(fd, 0, SEEK_SET).
 
-Yes.
+So maybe it should just be in get_next_ra_size() where we clarify what "max_pages"
+means and why we simply decide to ignore the value ...
 
-> 
-> That is the proper and expected behavior. I suspect you
-> will see exactly that behavior with ext4 and 32-bit
-> directory offsets, for example.
+-- 
+Cheers,
 
-Emm...
-
-For this case like this:
-
-1. mkdir /tmp/dir and touch /tmp/dir/file1 /tmp/dir/file2
-2. open /tmp/dir with fd1
-3. readdir and get /tmp/dir/file1
-4. rm /tmp/dir/file2
-5. touch /tmp/dir/file2
-4. loop 4~5 for 2^32 times
-5. readdir /tmp/dir with fd1
-
-For tmpfs now, we may see no /tmp/dir/file2, since the offset has been 
-overflow, for ext4 it is ok... So we think this will be a problem.
-
-> 
-> Does that not directly address your concern? Or do you
-> mean that Erkun's patch introduces a new issue?
-
-Yes, to be honest, my personal feeling is a problem. But for 64bit, it 
-may never been trigger.
-
-> 
-> If there is a problem here, please construct a reproducer
-> against this patch set and post it.
-> 
-> 
->> Thanks,
->> Kuai
->>
->>> +
->>>   /**
->>>    * offset_dir_llseek - Advance the read position of a directory descriptor
->>>    * @file: an open directory whose position is to be updated
->>> @@ -462,6 +470,9 @@ void simple_offset_destroy(struct offset_ctx *octx)
->>>    */
->>>   static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
->>>   {
->>> + struct inode *inode = file->f_inode;
->>> + struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
->>> +
->>>    switch (whence) {
->>>    case SEEK_CUR:
->>>    offset += file->f_pos;
->>> @@ -475,8 +486,9 @@ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
->>>    }
->>>      /* In this case, ->private_data is protected by f_pos_lock */
->>> - file->private_data = NULL;
->>> - return vfs_setpos(file, offset, U32_MAX);
->>> + if (!offset)
->>> + file->private_data = (void *)ctx->next_offset;
->>> + return vfs_setpos(file, offset, LONG_MAX);
->>>   }
->>>     static struct dentry *offset_find_next(struct xa_state *xas)
->>> @@ -505,7 +517,7 @@ static bool offset_dir_emit(struct dir_context *ctx, struct dentry *dentry)
->>>      inode->i_ino, fs_umode_to_dtype(inode->i_mode));
->>>   }
->>>   -static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
->>> +static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx, long last_index)
->>>   {
->>>    struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
->>>    XA_STATE(xas, &so_ctx->xa, ctx->pos);
->>> @@ -514,17 +526,21 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
->>>    while (true) {
->>>    dentry = offset_find_next(&xas);
->>>    if (!dentry)
->>> - return ERR_PTR(-ENOENT);
->>> + return;
->>> +
->>> + if (dentry2offset(dentry) >= last_index) {
->>> + dput(dentry);
->>> + return;
->>> + }
->>>      if (!offset_dir_emit(ctx, dentry)) {
->>>    dput(dentry);
->>> - break;
->>> + return;
->>>    }
->>>      dput(dentry);
->>>    ctx->pos = xas.xa_index + 1;
->>>    }
->>> - return NULL;
->>>   }
->>>     /**
->>> @@ -551,22 +567,19 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
->>>   static int offset_readdir(struct file *file, struct dir_context *ctx)
->>>   {
->>>    struct dentry *dir = file->f_path.dentry;
->>> + long last_index = (long)file->private_data;
->>>      lockdep_assert_held(&d_inode(dir)->i_rwsem);
->>>      if (!dir_emit_dots(file, ctx))
->>>    return 0;
->>>   - /* In this case, ->private_data is protected by f_pos_lock */
->>> - if (ctx->pos == DIR_OFFSET_MIN)
->>> - file->private_data = NULL;
->>> - else if (file->private_data == ERR_PTR(-ENOENT))
->>> - return 0;
->>> - file->private_data = offset_iterate_dir(d_inode(dir), ctx);
->>> + offset_iterate_dir(d_inode(dir), ctx, last_index);
->>>    return 0;
->>>   }
->>>     const struct file_operations simple_offset_dir_operations = {
->>> + .open = offset_dir_open,
->>>    .llseek = offset_dir_llseek,
->>>    .iterate_shared = offset_readdir,
->>>    .read = generic_read_dir,
-> 
-> 
-> --
-> Chuck Lever
-> 
-> 
+David / dhildenb
 
 
