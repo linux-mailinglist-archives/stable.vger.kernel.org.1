@@ -1,108 +1,135 @@
-Return-Path: <stable+bounces-92067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36B49C3727
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 04:48:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7389C382B
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 07:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4608282689
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 03:48:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A0EB1C2143A
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 06:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E5E146D6B;
-	Mon, 11 Nov 2024 03:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAA47F477;
+	Mon, 11 Nov 2024 06:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e3DvrBT/"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="k0F/JygU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5832184F
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 03:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E83D2914;
+	Mon, 11 Nov 2024 06:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731296933; cv=none; b=TTae0188btN8OkOaiLfotr8ecDlPPetgbAEWKkSafxlotMrJTESgdNdXCwr8XTr3vUtxnc8Q4OzuacxplPgn3+xkylmzJzBzbVU3SUXX9XOhQt4Vn3FaC5RxOPtthDbtmAJrc/4h2IWmjs8EvHNNVebvZry6Uk0nN/YMRO+zRu0=
+	t=1731305132; cv=none; b=Qq3hPKZlReezGk/bexGJNtbHOB3rUQe8k/vO/Bxgd9dDjJntRrQMYeJuKGKQn0jIoGd11Z136JtxJx4L8O6Ya0VxUvVpAP+wfrF/o+axOk424K9te8YhI/GCDp9E5MBWJE2pm6LOsPVYU75UddjDXtcBTp95/cCKyV6VC1FI6v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731296933; c=relaxed/simple;
-	bh=DAqC1m0UzBkEna+kh4qJ5m7WFoRARHIRxJyd6v1CUH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cfwqm14L3v50ryrn2xlsZM/kKhZQi+TldzZRTXpunYJ9UMj7WX+oGAZRVt2kCF+uIHDKT0O0i07RDdCT/aXr7s25DfnNQDiUHHD7OsO7siqGzvt+Hszg0wpg8L+GEayeduTBT6AVIT9KiTQ2jyVhr2mOYmhn+48ovr4VY0mE8sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e3DvrBT/; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e2e050b1c3so3823165a91.0
-        for <stable@vger.kernel.org>; Sun, 10 Nov 2024 19:48:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731296931; x=1731901731; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cyBoacIe/beqOmXqqDNGWcJXEOI0SPSE7QTB0nEVwZQ=;
-        b=e3DvrBT/J+Htj8XjSxfaDDW04HOp1eS2HphyVdXSYkGtn3fZiUTrmXQ3SbxispmDTp
-         KN/Z4Rpvj+syXIsD1zK2DbcmrBOssx+3eHZJ1X7txi+9rqgqwktv5oileP2rTJibWki1
-         mi4zv+GYszyYnVVO2GwuZ7CK9+n+cu4MatDW6a7DhdiUDF4mUxZUC1VOFn9VzAgvhbId
-         xCo3IBjwn9gk+alVOXnVKcpd22s9Q4g4PRvcZI+S5dlRUIcqdsmP67Ok6bJWbSdSDKwW
-         1L5fghlHRNXhJdADYithh0e8l5MVN1+qBK4DyY5nbUgvoMV43QL1c+t/KOcnicVHmXB3
-         0lCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731296931; x=1731901731;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cyBoacIe/beqOmXqqDNGWcJXEOI0SPSE7QTB0nEVwZQ=;
-        b=Ah28OiB/b5Hc3q2ikYXPWbxG1AzJejZJGUj3jHe9ZkGZcVTD6x8uO2Fp7Jn4qfT+MZ
-         nKJx0MfVcYrDRIZXhPJ2Z9e7Mi/Q31SbmH0gUsPOtOAhOkqgdzrL1vqhQJUjT6Tstnlb
-         pVb0ZLaqPabNJBn5dTZs+DL3rAIEevXyCyrrrnr7CyhAKoIrzRtJbtguNsR82J4B455u
-         /CXDGNZJ+Xs5i6qTyWv5i7zv2KZewOz04lb8XwLRoTCA1qHnY+cFyH2JWHVDHuarb95u
-         bOtdW76L2CCrXhweJd/wT+FJzHFZZCz6tHrItQKdStpQNrDTKNRQplBH/Tkkfgj+5qCN
-         p5oA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2tgISdDOBO6hkfXNsrOltimKGknvRiCMpevPSpl5GQqUuZIDaBXsHdRqra0PDiTN1XLT2APk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwUHyBcTnW0BG6eytYzrQuFA5nh0NTJGGsIjXJY43Gvny9OPDG
-	6USRwzjUzbSc3VVp+BH+kl0frqdHsWvwLNiMAf5v0j9GUBNsJFGZaK3+aMZuNXs=
-X-Google-Smtp-Source: AGHT+IGYrXj9oPlPSmY8T67CTPIqdUFk8LRkxz3VZqL+QyxxAM/tx5DxSPFaPEc+Y36IKUhOf2R9rw==
-X-Received: by 2002:a17:90b:39c5:b0:2d8:b043:9414 with SMTP id 98e67ed59e1d1-2e9b1f8e54emr14638700a91.18.1731296931268;
-        Sun, 10 Nov 2024 19:48:51 -0800 (PST)
-Received: from localhost ([122.172.86.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9a5fd180fsm7451733a91.33.2024.11.10.19.48.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Nov 2024 19:48:50 -0800 (PST)
-Date: Mon, 11 Nov 2024 09:18:48 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Sibi Sankar <quic_sibis@quicinc.com>
-Cc: sudeep.holla@arm.com, cristian.marussi@arm.com, rafael@kernel.org,
-	morten.rasmussen@arm.com, dietmar.eggemann@arm.com,
-	lukasz.luba@arm.com, pierre.gondois@arm.com,
-	vincent.guittot@linaro.org, linux-arm-kernel@lists.infradead.org,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	quic_mdtipton@quicinc.com, linux-arm-msm@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH V7 1/2] cpufreq: scmi: Fix cleanup path when boost
- enablement fails
-Message-ID: <20241111034848.wyryvgeqvu33jilm@vireshk-i7>
-References: <20241031132745.3765612-1-quic_sibis@quicinc.com>
- <20241031132745.3765612-2-quic_sibis@quicinc.com>
+	s=arc-20240116; t=1731305132; c=relaxed/simple;
+	bh=ZoX4DfujTWf4Xgazp2bMtl7zPsqKlwuVL+3Q9ihSeSQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kTAHZqCVNJNUnF3fjurVJA+JIj3DXXD8pSOYzN3oyFFWxT73LMOfonL1AZ1Dk0JCdz8cs8ZskhLd3K+RXdE8qm5NxM2HqbOcUNK92CUNklMhpKH64EZtpIXf7QOg8CBFOokw4ybnEYmZVuCuO/d+Q2PJIZaAf84tFlb3/3rZSus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=k0F/JygU; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4AB657aO070047;
+	Mon, 11 Nov 2024 00:05:07 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1731305107;
+	bh=0hVGZIeT+VhLtZFZlIPIFnU8Y8lw0yVpS9k09J/ynv0=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=k0F/JygUH264hMcNU9Ijz2vjd/XgdEv0YGCIHAiizMpjgZ0QfjX65T//9Vr7eDPvj
+	 r4FtReMySvlejZsymtbdpcwgo1o688+4R8DjJ8BcLpfqMl8M6MkJwYqiJHSJ55Ja1Q
+	 RIXVTVDB0sM6kJBH0TGUPvDrVWuu9ZJgpyrmBJuQ=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AB657Li101387;
+	Mon, 11 Nov 2024 00:05:07 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 11
+ Nov 2024 00:05:06 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 11 Nov 2024 00:05:06 -0600
+Received: from [172.24.227.94] (uda0132425.dhcp.ti.com [172.24.227.94])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AB65472130668;
+	Mon, 11 Nov 2024 00:05:04 -0600
+Message-ID: <fd344c80-13f6-40fc-8169-28819e8ae69a@ti.com>
+Date: Mon, 11 Nov 2024 11:35:03 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031132745.3765612-2-quic_sibis@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] watchdog: rti: of: honor timeout-sec property
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>,
+        <linux-watchdog@vger.kernel.org>
+CC: Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck
+	<linux@roeck-us.net>, Judith Mendez <jm@ti.com>,
+        Tero Kristo
+	<t-kristo@ti.com>, <stable@vger.kernel.org>
+References: <20241107203830.1068456-1-alexander.sverdlin@siemens.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Content-Language: en-US
+In-Reply-To: <20241107203830.1068456-1-alexander.sverdlin@siemens.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 31-10-24, 18:57, Sibi Sankar wrote:
-> Include free_cpufreq_table in the cleanup path when boost enablement fails.
+
+
+On 08/11/24 02:08, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > 
-> cc: stable@vger.kernel.org
-> Fixes: a8e949d41c72 ("cpufreq: scmi: Enable boost support")
-> Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+> Currently "timeout-sec" Device Tree property is being silently ignored:
+> even though watchdog_init_timeout() is being used, the driver always passes
+> "heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
+> 
+> Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+> and passing real module parameter value to watchdog_init_timeout() (which
+> may now be 0 if not specified).
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > ---
->  drivers/cpufreq/scmi-cpufreq.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  drivers/watchdog/rti_wdt.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
+> index f410b6e39fb6f..58c9445c0f885 100644
+> --- a/drivers/watchdog/rti_wdt.c
+> +++ b/drivers/watchdog/rti_wdt.c
+> @@ -61,7 +61,7 @@
+>  
+>  #define MAX_HW_ERROR		250
+>  
+> -static int heartbeat = DEFAULT_HEARTBEAT;
+> +static int heartbeat;
+>  
+>  /*
+>   * struct to hold data for each WDT device
+> @@ -252,6 +252,7 @@ static int rti_wdt_probe(struct platform_device *pdev)
+>  	wdd->min_timeout = 1;
+>  	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+>  		wdt->freq * 1000;
+> +	wdd->timeout = DEFAULT_HEARTBEAT;
+>  	wdd->parent = dev;
+>  
+>  	watchdog_set_drvdata(wdd, wdt);
 
-Applied. Thanks.
+
+LGTM. Thanks for the fix!
+
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+
 
 -- 
-viresh
+Regards
+Vignesh
 
