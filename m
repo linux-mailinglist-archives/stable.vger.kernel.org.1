@@ -1,165 +1,156 @@
-Return-Path: <stable+bounces-92070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAFD9C38C4
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 07:58:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33159C38D4
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 08:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56BCEB21302
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 06:58:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7971C282317
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 07:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D51156230;
-	Mon, 11 Nov 2024 06:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6369156C72;
+	Mon, 11 Nov 2024 07:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sdlUlG1g"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=pm.me header.i=@pm.me header.b="mF7Rmlt3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C5A1547F5;
-	Mon, 11 Nov 2024 06:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EA71BC4E
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 07:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731308317; cv=none; b=dwtVGmoOlz8BZcCtocYRcUdvOn7bZYF42N6SZbiUIQLQk46FXor/enT5S2WOf0qMnlBdxuAmes+2ZROS/9ZUoP4xWIWVIOSUVHys4Gg8mWd4uU9eSAJqDpi6i0bY9oxrudSFoOG8fL/KUKkLz6iM7s9qcwPuS/U6C+XP8rtYE5U=
+	t=1731308648; cv=none; b=IPUvXGTnwDkxEwIkn/X8rEJWNreIIZRBZLJlPi3TWxliWXSDqGkJz4Pr/BGlMQ7aOoCL7TijuiTDVVam7SNk02NN6LZxIWRb2btxvIGlskjSLtugAa77yzRLV+WpgWKowHTu7jAEXnnCKW0uuuqlhE/2a37RNyKG4JF151pqB8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731308317; c=relaxed/simple;
-	bh=iiGqctAArRjmCn+XYc5FF9rdR+3ATCKDY9oRyMWFeS0=;
-	h=Date:To:From:Subject:Message-Id; b=EyexXpJ4xeNe3KnAUm+OQo1NHHKp0NLdwKEkXD1XaC72v+9hRRBI96A9KAEnUtNHqIbeaXA7ix/spOGdCcruC7amGDzz8VdHQFejb2AsGRULWsfBQbfCLZkm/oWSQmef6u25v38hve2lKLCvDPQEP8M3/jS3mXD4BwIYD2+atVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sdlUlG1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BCBC4CED0;
-	Mon, 11 Nov 2024 06:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731308317;
-	bh=iiGqctAArRjmCn+XYc5FF9rdR+3ATCKDY9oRyMWFeS0=;
-	h=Date:To:From:Subject:From;
-	b=sdlUlG1gchVfy9NChQ58PB5RNzR/3RrCr40YSci7ygtCheA6ekv57nk12JtrRu/td
-	 qni2bQbapqlMcaUa5z2ZL382LULkZ5GQ0UvegtostCjYd2Bs7jpCPRyXOK+9GiMpmN
-	 X+5EPtJ24RGRAedIl8+3egKKAs8LLrEFy69SzJkQ=
-Date: Sun, 10 Nov 2024 22:58:36 -0800
-To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,donettom@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241111065837.46BCBC4CED0@smtp.kernel.org>
+	s=arc-20240116; t=1731308648; c=relaxed/simple;
+	bh=h1Lp+74v5Gp0xfm8d1Kqc/OCw/eQjiZYqPWs4HmGNDY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JtyNmEnHgikEpKGHW47saeHPnbFrP0emxXwhGdYMQddz6fj2l9b+PGFHy8553udXMM3ziwW8OgiQ6/irGmJPq3OCR7I+AWmRrk3EDG91M0n9vk/nRbqg+Rtr1OPKXzqv4PfELj1WwRAcv1800a2e/njBvr/lDHzyruc/kIP/WfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=mF7Rmlt3; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1731308638; x=1731567838;
+	bh=TPL79cIiJp3je7o1IBHWDuduVOSHunt1XT5WlRAkT2E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=mF7Rmlt38j+DD24dC/ZUhCkebUPOeizLvfXr73JOt3fXwU9Of5+of5Km8AocdaN9z
+	 8rygN3XvrukXN7+/x/kPp7YFNa0VzWJAk0Z0q1hV5bN4uK9uKlC/eSPJm2UKVPCBpU
+	 TctteTJIhcXibXSn3xPjOBIFu+Y9QrkQXgcGe2IC0CON/WYsHiYkgpYWG4vLGn7U/J
+	 uVjQOHbxMpLEyaduIetOxKuDkkdmomXpUAQSRadSxuBoRGoH8aiMy8zs0QJk508bDk
+	 XNrZQyvusLKLYUIMCwUiCO48pOY7IqG2hSNqB0By72T/QMgc2SgFh9cMrOvUzTlttX
+	 i5qXwmBnMEHVw==
+Date: Mon, 11 Nov 2024 07:03:51 +0000
+To: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
+From: "Michael C. Pratt" <mcpratt@pm.me>
+Cc: "Michael C . Pratt" <mcpratt@pm.me>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH RESEND 2 1/1] sched/syscalls: Allow setting niceness using sched_param struct
+Message-ID: <20241111070152.9781-2-mcpratt@pm.me>
+In-Reply-To: <20241111070152.9781-1-mcpratt@pm.me>
+References: <20241111070152.9781-1-mcpratt@pm.me>
+Feedback-ID: 27397442:user:proton
+X-Pm-Message-ID: cad3d90d2f5de12067301438db8b714478bcc4fe
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+From userspace, spawning a new process with, for example,
+posix_spawn(), only allows the user to work with
+the scheduling priority value defined by POSIX
+in the sched_param struct.
 
-The patch titled
-     Subject: selftests: hugetlb_dio: fixup check for initial conditions to skip in the start
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch
+However, sched_setparam() and similar syscalls lead to
+__sched_setscheduler() which rejects any new value
+for the priority other than 0 for non-RT schedule classes,
+a behavior that existed since Linux 2.6 or earlier.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch
+Linux translates the usage of the sched_param struct
+into it's own internal sched_attr struct during the syscall,
+but the user currently has no way to manage the other values
+within the sched_attr struct using only POSIX functions.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The only other way to adjust niceness when using posix_spawn()
+would be to set the value after the process has started,
+but this introduces the risk of the process being dead
+before the syscall can set the priority afterward.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+To resolve this, allow the use of the priority value
+originally from the POSIX sched_param struct in order to
+set the niceness value instead of rejecting the priority value.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Edit the sched_get_priority_*() POSIX syscalls
+in order to reflect the range of values accepted.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Donet Tom <donettom@linux.ibm.com>
-Subject: selftests: hugetlb_dio: fixup check for initial conditions to skip in the start
-Date: Sun, 10 Nov 2024 00:49:03 -0600
-
-This test verifies that a hugepage, used as a user buffer for DIO
-operations, is correctly freed upon unmapping.  To test this, we read the
-count of free hugepages before and after the mmap, DIO, and munmap
-operations, then check if the free hugepage count is the same.
-
-Reading free hugepages before the test was removed by commit 0268d4579901
-('selftests: hugetlb_dio: check for initial conditions to skip at the
-start'), causing the test to always fail.
-
-This patch adds back reading the free hugepages before starting the test. 
-With this patch, the tests are now passing.
-
-Test results without this patch:
-
-./tools/testing/selftests/mm/hugetlb_dio
-TAP version 13
-1..4
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 1 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 2 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 3 : Huge pages not freed!
- # No. Free pages before allocation : 0
- # No. Free pages after munmap : 100
-not ok 4 : Huge pages not freed!
- # Totals: pass:0 fail:4 xfail:0 xpass:0 skip:0 error:0
-
-Test results with this patch:
-
-/tools/testing/selftests/mm/hugetlb_dio
-TAP version 13
-1..4
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 1 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 2 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 3 : Huge pages freed successfully !
-# No. Free pages before allocation : 100
-# No. Free pages after munmap : 100
-ok 4 : Huge pages freed successfully !
-
-# Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Link: https://lkml.kernel.org/r/20241110064903.23626-1-donettom@linux.ibm.com
-Fixes: 0268d4579901 ("selftests: hugetlb_dio: check for initial conditions to skip in the start")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # Apply to kernel/sched/core.c
+Signed-off-by: Michael C. Pratt <mcpratt@pm.me>
 ---
+ kernel/sched/syscalls.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
- tools/testing/selftests/mm/hugetlb_dio.c |    7 +++++++
- 1 file changed, 7 insertions(+)
-
---- a/tools/testing/selftests/mm/hugetlb_dio.c~selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start
-+++ a/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -44,6 +44,13 @@ void run_dio_using_hugetlb(unsigned int
- 	if (fd < 0)
- 		ksft_exit_fail_perror("Error opening file\n");
- 
-+	/* Get the free huge pages before allocation */
-+	free_hpage_b = get_free_hugepages();
-+	if (free_hpage_b == 0) {
-+		close(fd);
-+		ksft_exit_skip("No free hugepage, exiting!\n");
-+	}
+diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
+index 24f9f90b6574..43eb283e6281 100644
+--- a/kernel/sched/syscalls.c
++++ b/kernel/sched/syscalls.c
+@@ -785,6 +785,19 @@ static int _sched_setscheduler(struct task_struct *p, =
+int policy,
+ =09=09attr.sched_policy =3D policy;
+ =09}
+=20
++=09if (attr.sched_priority > MAX_PRIO-1)
++=09=09return -EINVAL;
 +
- 	/* Allocate a hugetlb page */
- 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
- 	if (orig_buffer == MAP_FAILED) {
-_
++=09/*
++=09 * If priority is set for SCHED_NORMAL or SCHED_BATCH,
++=09 * set the niceness instead, but only for user calls.
++=09 */
++=09if (check && attr.sched_priority > MAX_RT_PRIO-1 &&
++=09   ((policy !=3D SETPARAM_POLICY && fair_policy(policy)) || fair_policy=
+(p->policy))) {
++=09=09attr.sched_nice =3D PRIO_TO_NICE(attr.sched_priority);
++=09=09attr.sched_priority =3D 0;
++=09}
++
+ =09return __sched_setscheduler(p, &attr, check, true);
+ }
+ /**
+@@ -1532,9 +1545,11 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
+ =09case SCHED_RR:
+ =09=09ret =3D MAX_RT_PRIO-1;
+ =09=09break;
+-=09case SCHED_DEADLINE:
+ =09case SCHED_NORMAL:
+ =09case SCHED_BATCH:
++=09=09ret =3D MAX_PRIO-1;
++=09=09break;
++=09case SCHED_DEADLINE:
+ =09case SCHED_IDLE:
+ =09case SCHED_EXT:
+ =09=09ret =3D 0;
+@@ -1560,9 +1575,11 @@ SYSCALL_DEFINE1(sched_get_priority_min, int, policy)
+ =09case SCHED_RR:
+ =09=09ret =3D 1;
+ =09=09break;
+-=09case SCHED_DEADLINE:
+ =09case SCHED_NORMAL:
+ =09case SCHED_BATCH:
++=09=09ret =3D MAX_RT_PRIO;
++=09=09break;
++=09case SCHED_DEADLINE:
+ =09case SCHED_IDLE:
+ =09case SCHED_EXT:
+ =09=09ret =3D 0;
 
-Patches currently in -mm which might be from donettom@linux.ibm.com are
+base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+--=20
+2.30.2
 
-selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch
 
 
