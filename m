@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-92168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD17A9C47E8
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 22:19:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12B09C4868
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 22:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640A81F21A2C
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 21:19:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1861F225E8
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 21:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC411A76C7;
-	Mon, 11 Nov 2024 21:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313FE1BA272;
+	Mon, 11 Nov 2024 21:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/GJQKE3"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="bb51wzHW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1AE1EB36
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 21:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1D338F83;
+	Mon, 11 Nov 2024 21:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731359982; cv=none; b=Nz4fc3g/sKR+Q3a8dbERE27gXBRDd9M2Vo6MMXO4DoPmP/qN20f/mO6ZJ3XjlVzcB0iZ6lYUluC4dioBFLZqLGC5sWU13tPDHjac6vhlNOx81E3Bd17Rt9/dNLzEgHZTr9c7WXXW8cU3GE8HSpOBXAmUpejjImo1dRmtO8P/43A=
+	t=1731361556; cv=none; b=A5Nbs7Gp/h5xdOBgITuSx5mzBVrUCeDvbKje5Si0vBXHpAppDSYxxCXQA0qtMJQuVhFJxtNGD3BqUV+ncHwnnsVuK1mZ7NPkdvyRLosV45BWGQxQdnevVL0Gvyq3gPXmX4P8LlZg49JdVfajh3xXZTyh5UT/6vTCpVfeSfkyfLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731359982; c=relaxed/simple;
-	bh=giSWVpBEmguoJxo2aiQ9E42mznDsKXSnmtDmDlBjPbA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SKqP6Sijq8B7J9CA5CCs/1UUxKlrtnqPVxvUOrwU4GWjGeuj4qwCFvzmcGtiBZE/UFBV7EGqFO2ZqGdZY4wAJn3TWmE6xzVe4LfaspFSqyte69a7+iL7sofZV1RAslW9cSO7Xfi2uC/AZMxhjRR0qJafoqyb41g/NiIy3O9+rpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/GJQKE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8F2C4CECF;
-	Mon, 11 Nov 2024 21:19:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731359981;
-	bh=giSWVpBEmguoJxo2aiQ9E42mznDsKXSnmtDmDlBjPbA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/GJQKE3bAw2YYTppfgKo392aLmmI4IMebXXhwpmEgzUzjvwqdIJ+p++hL46903ae
-	 7fNzRCA2SyAAM9PjQpf89JfpF0xHnpGdGSk8vztzixYtO5y1qNhYkyTx0U66HdN+C8
-	 7iYYmrQJqQSOzmjSl7uJB3sX4cc8lEdhaYDyUEVRTyLRuqrX/l9jX557a+r3SXVvJG
-	 5Mo9G5tSYNugrOaAeRQVvHChaWqceYDaa6pYXfK6zr4YalVP2D7siw9IZ6fpLuf7oS
-	 pghjfxdSvNOfklNlW3Tkk6Ky4pznXL5Cqd3rlDOt34r85uxaMGbSETnuNORyo54u7S
-	 o/z4Yj51sixZA==
-From: SeongJae Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/damon/core: handle zero {aggregation,ops_update} intervals
-Date: Mon, 11 Nov 2024 13:19:34 -0800
-Message-Id: <20241111211934.75731-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2024111132-portal-crowbar-256b@gregkh>
-References: <2024111132-portal-crowbar-256b@gregkh>
+	s=arc-20240116; t=1731361556; c=relaxed/simple;
+	bh=/QcdVL9/s6BJAFtlQB1eSf6sVXEKx5ReS/QVGGoAkRE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U/8orrvxhq7BNBvoVXIGqG0LWIPkg9KlxYHZ3kteXOGThKppy8VxAlsoT9RDhvpt94rfo1DVakGIK5HfFAsG//l9+3vhLxOPcNpJmm4pDQ9tS6jiswt6n1BXOjGutOxpnZLZaNHd9lo0iZaNqMtMZCsv1/P0VkxIJB5ZXvkaOGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=bb51wzHW; arc=none smtp.client-ip=207.171.190.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731361555; x=1762897555;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+lvJGqbZfbvBaaWJTX53EKmiKD/WU9HXAriXSxhtuk4=;
+  b=bb51wzHWdbwTk4v/WBm8jpWmO/riVrMTtrJu0aX0dpSLaPaC7kZBJp01
+   14xoAxzl7aSACQuzEURNIq4UbqC/qe1uP/GxLe4EGg/giJzsHZtivJOwb
+   /d9qg5OaKZe/3fYpbQESrd+CbZdfLwlOLtv9MMQsN0X7T5W0VLZ4TV88m
+   w=;
+X-IronPort-AV: E=Sophos;i="6.12,146,1728950400"; 
+   d="scan'208";a="384348002"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 21:45:49 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.17.79:53463]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.35.184:2525] with esmtp (Farcaster)
+ id 2e9b8229-e7d4-477c-9a5f-375d0e157a4e; Mon, 11 Nov 2024 21:45:47 +0000 (UTC)
+X-Farcaster-Flow-ID: 2e9b8229-e7d4-477c-9a5f-375d0e157a4e
+Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 11 Nov 2024 21:45:47 +0000
+Received: from dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com (10.13.235.138)
+ by EX19D004EUC001.ant.amazon.com (10.252.51.190) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 11 Nov 2024 21:45:42 +0000
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Sai Praneeth
+	<sai.praneeth.prakhya@intel.com>, Matt Fleming <matt@codeblueprint.co.uk>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stanspas@amazon.de>, <nh-open-source@amazon.com>, Nicolas Saenz Julienne
+	<nsaenz@amazon.com>, <stable@vger.kernel.org>
+Subject: [PATCH] x86/efi: Apply EFI Memory Attributes after kexec
+Date: Mon, 11 Nov 2024 21:45:27 +0000
+Message-ID: <20241111214527.18289-1-nsaenz@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,83 +76,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D037UWC001.ant.amazon.com (10.13.139.197) To
+ EX19D004EUC001.ant.amazon.com (10.252.51.190)
 
-Patch series "mm/damon/core: fix handling of zero non-sampling intervals".
+Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
+routine, kexec_enter_virtual_mode(), that replays the mappings made by
+the original kernel. Unfortunately, the function fails to reinstate
+EFI's memory attributes and runtime memory protections, which would've
+otherwise been set after entering virtual mode. Remediate this by
+calling efi_runtime_update_mappings() from it.
 
-DAMON's internal intervals accounting logic is not correctly handling
-non-sampling intervals of zero values for a wrong assumption.  This could
-cause unexpected monitoring behavior, and even result in infinite hang of
-DAMON sysfs interface user threads in case of zero aggregation interval.
-Fix those by updating the intervals accounting logic.  For details of the
-root case and solutions, please refer to commit messages of fixes.
+Cc: stable@vger.kernel.org
+Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TABLE")
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-This patch (of 2):
-
-DAMON's logics to determine if this is the time to do aggregation and ops
-update assumes next_{aggregation,ops_update}_sis are always set larger
-than current passed_sample_intervals.  And therefore it further assumes
-continuously incrementing passed_sample_intervals every sampling interval
-will make it reaches to the next_{aggregation,ops_update}_sis in future.
-The logic therefore make the action and update
-next_{aggregation,ops_updaste}_sis only if passed_sample_intervals is same
-to the counts, respectively.
-
-If Aggregation interval or Ops update interval are zero, however,
-next_aggregation_sis or next_ops_update_sis are set same to current
-passed_sample_intervals, respectively.  And passed_sample_intervals is
-incremented before doing the next_{aggregation,ops_update}_sis check.
-Hence, passed_sample_intervals becomes larger than
-next_{aggregation,ops_update}_sis, and the logic says it is not the time
-to do the action and update next_{aggregation,ops_update}_sis forever,
-until an overflow happens.  In other words, DAMON stops doing aggregations
-or ops updates effectively forever, and users cannot get monitoring
-results.
-
-Based on the documents and the common sense, a reasonable behavior for
-such inputs is doing an aggregation and an ops update for every sampling
-interval.  Handle the case by removing the assumption.
-
-Note that this could incur particular real issue for DAMON sysfs interface
-users, in case of zero Aggregation interval.  When user starts DAMON with
-zero Aggregation interval and asks online DAMON parameter tuning via DAMON
-sysfs interface, the request is handled by the aggregation callback.
-Until the callback finishes the work, the user who requested the online
-tuning just waits.  Hence, the user will be stuck until the
-passed_sample_intervals overflows.
-
-Link: https://lkml.kernel.org/r/20241031183757.49610-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20241031183757.49610-2-sj@kernel.org
-Fixes: 4472edf63d66 ("mm/damon/core: use number of passed access sampling as a timer")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.7.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/damon/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ae55f20835b0..dc8bda943673 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1407,7 +1407,7 @@ static int kdamond_fn(void *data)
+Notes:
+- I tested the Memory Attributes path using QEMU/OVMF.
+
+- Although care is taken to make sure the memory backing the EFI Memory
+  Attributes table is preserved during runtime and reachable after kexec
+  (see efi_memattr_init()). I don't see the same happening for the EFI
+  properties table. Maybe it's just unnecessary as there's an assumption
+  that the table will fall in memory preserved during runtime? Or for
+  another reason? Otherwise, we'd need to make sure it isn't possible to
+  set EFI_NX_PE_DATA on kexec.
+
+ arch/x86/platform/efi/efi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 88a96816de9a..b9b17892c495 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -784,6 +784,7 @@ static void __init kexec_enter_virtual_mode(void)
  
- 		sample_interval = ctx->attrs.sample_interval ?
- 			ctx->attrs.sample_interval : 1;
--		if (ctx->passed_sample_intervals == next_aggregation_sis) {
-+		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
- 			ctx->next_aggregation_sis = next_aggregation_sis +
- 				ctx->attrs.aggr_interval / sample_interval;
- 			kdamond_merge_regions(ctx,
-@@ -1424,7 +1424,7 @@ static int kdamond_fn(void *data)
- 				ctx->ops.reset_aggregated(ctx);
- 		}
+ 	efi_sync_low_kernel_mappings();
+ 	efi_native_runtime_setup();
++	efi_runtime_update_mappings();
+ #endif
+ }
  
--		if (ctx->passed_sample_intervals == next_ops_update_sis) {
-+		if (ctx->passed_sample_intervals >= next_ops_update_sis) {
- 			ctx->next_ops_update_sis = next_ops_update_sis +
- 				ctx->attrs.ops_update_interval /
- 				sample_interval;
 -- 
-2.39.5
+2.40.1
 
 
