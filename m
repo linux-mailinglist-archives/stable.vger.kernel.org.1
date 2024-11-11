@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-92087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEE29C3CCA
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 12:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100F19C3CD4
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 12:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76BFF1F21EDC
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EB71F21080
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6BB189BBF;
-	Mon, 11 Nov 2024 11:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD490184556;
+	Mon, 11 Nov 2024 11:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="OnwcAa7i"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="RFe5ho+3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9048815687C
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 11:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5078156F44
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 11:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731323740; cv=none; b=Tvz2+27B0tMfeIYSBuiV01cd9inKQtTtQGA4Kn6Df6w6tzmbXVbWV7yTL9omzrTMB67nca5MpEibceV+7KeqbIpFpZPFIhRqquxnKuXOJE6u92idFj6VH7Bgsob7PqP9osYIkyM4vXCipNDbRZXGWcUxUXrfjeXNvKepzYROB/8=
+	t=1731323776; cv=none; b=O/eVIzfBxMRjkKlKW9GqVT/0OHJfmfTrC1WNnIgKtczQSDjvLB38MSp7Q4rkJfKZocCJT0gz0qfvIkf2eBujbupstqZNxzGWO+Fa7HbdwfEXOu0tu1gLGn+YV7Nlp4hp1szDZEtzP9+5h4BEzE4X2ggIaXqHgNJK+a1xoJLBqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731323740; c=relaxed/simple;
-	bh=UVMY3jncP8KlbJgHSOQbnrh0HSPCD2duUy36Ssl4JeY=;
+	s=arc-20240116; t=1731323776; c=relaxed/simple;
+	bh=driMdGrMh2CQU3EhaccQrwFYyIsDDb/uDW3/8Wb/CZc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Om55O6zpg6JOSox5jJAJArIgNgy455zwz+ULKLjFbtNVLtIQkfxrVlC1OWZ/5a4Pn99P+AvkwoGx7ysazCl9ohJCQTAN7TBSkauOAPys6SyBHvn0Lfh7+g6wEHaHnBC6B0ZNC9j9UhpM6rTBEEL52S/fk5jGMm3RC3HjztTiRqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=OnwcAa7i; arc=none smtp.client-ip=209.85.218.51
+	 In-Reply-To:Content-Type; b=dJ62UyDOJE+8aThvqxcFsjl4YsPwvEfTotIzaGQoPlj8yCywNbgIUlb8uSm3OU9gEuTVgWJ8paFUEpPtAT/YgYL8kPCG512jstlawgfyE+LvsJYwty1b+FiBtaPHpzopFI7CqcWLe+XV9MA5Do2Hwiv5SkUjQG7CKtzXWVT2Eto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=RFe5ho+3; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9ed49ec0f1so766620466b.1
-        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 03:15:38 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9eb68e0bd1so625209866b.3
+        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 03:16:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1731323737; x=1731928537; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1731323772; x=1731928572; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bhZZuPjatSrdZhX9k+zXeie/9aFPE96IB3h2Z1yS2Hc=;
-        b=OnwcAa7iFccdMPXmNNfuo+XSwSVwwhr08r0lXMAp/OEFWu00qv7wHWnONDdCu/5q7C
-         W+/EI+WP3Z4aGv/Ppvei6+w6/cbz/ivJ1SatoGSfcVKgMOCcmzaLKkwV1G11XNH6ap7P
-         4csA/TfJeSCCpI9ss7PEYectSu1/wz3ulgSj62rdCy3uN3X/rG3ip6lo302p20aszzWf
-         J7j5szIPJqSllJjvLBWecWqsy9XqeDSJLTBldqwznATzvsQT9vUSJGUcbQ6+bY4if8Y4
-         HOBtESNHHgYU2Ok3fGARnCPQDliwu771U7Z11sWnW0I+BBPQ1Gd6PZSkb3JN8n72IqO/
-         AXCw==
+        bh=ymcL/BmbTqU8qfDUCoVyraAtY6xWOZahvC7lOWoyBMo=;
+        b=RFe5ho+3CKXVrNqbTNxvWa0N7t7htxFN003LZo5VhmJnf/rpIjbJlwJSuSDMCk34HT
+         ym6NvcChK8jlHp1xmwcUF/sollyFfXuyI2aJhHO5vgEBTZi+hyUNwOdcer02RyNG95rQ
+         zkrnQfHhVFxjO2M50eMNe5imd6UR62YiAbwRBK0XrQgv8cB6LEs+MmUel1rsjcmzVkcQ
+         Y6B0DI9cIhuakDYR329jKK8rLZOf3kIZScynlsYNig1wh5C+L5G8WjOoeoRtdiwjhaQt
+         MLp9Grht7RMNPitkE3Bf8PUAG2IsbGWZdRu3iNcEPZJTKWGdAM8Jp31KdqX/mrg6mkLi
+         2hew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731323737; x=1731928537;
+        d=1e100.net; s=20230601; t=1731323772; x=1731928572;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bhZZuPjatSrdZhX9k+zXeie/9aFPE96IB3h2Z1yS2Hc=;
-        b=qHOgsbYT9srbvZbukCMTRBfDmqgdNBrXYzGkh/StB15AHsX6fxFgWh2U19ASu5Qig/
-         w5HXGAdoPppiwf05bH6ZHkitSnnwFPGcBLct5LF1ffw32iAoH1Xakg1F8hT5zS0MNcMH
-         bgpay8EKEwlcUVeQiIjAAbzwc19bAB5t9ua6ot0Ma8YkQS3WdqOxASQk/Rf5JKtLxci1
-         3M3VTSzbwXOvYe7/pLt9pae2raRjefGzURZ4KSXviTJ7P20/Viibc2lnObd8xbabc6P5
-         JLWeTaZ4k7FIUzwScsxvuwO/SGIoIoEbnNdNtB200EeVJ/8x6M9KxjRuXAHhqxSyLWD+
-         rZXA==
-X-Forwarded-Encrypted: i=1; AJvYcCU31UsKnuhZND7EbHFdfSBWBzxvC9/jEAQVkk0/XMv7xHTOc/SIogxe8Hd64lECPzft5eEsAew=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoOQLoqn7rFo/GKbvIdbrY+Ds9bMxtPX5rDj25ovV+qPUoAgDt
-	AvFkThnbx+IfAL0xzWEzZz1M6oljWRVrJVkWy3bLiHQ2Ia7Z8LWXl1RE7Ss17I8=
-X-Google-Smtp-Source: AGHT+IFbp4VgcqWBYLe3U0yCi4vd7nmqSuzbqzRywA4zlYZMwP+tOs/p2A4kYUW8+VEuOgG9xmufbQ==
-X-Received: by 2002:a17:907:6d02:b0:a9a:60c1:136d with SMTP id a640c23a62f3a-a9eeff0e570mr1147950966b.22.1731323736778;
-        Mon, 11 Nov 2024 03:15:36 -0800 (PST)
+        bh=ymcL/BmbTqU8qfDUCoVyraAtY6xWOZahvC7lOWoyBMo=;
+        b=Y7Y+CcuTdC04Ln45K5zz5619axYVTaQM58Cfo0P7wvohzT3hqmAtRCScqKmbDHtIUg
+         P7Kx/4HqRWlFZ9BkJjydcWV2/pDvlErFWo2J7jZEBrVF0u1Z7jOrLgedI79Ww89CGDZH
+         3vmTeS8sVUt4JVpWpD7hm4+FEknytCIFZ2vjwhBBXT+QKQkh020ngEINOGnXCRRr6c4e
+         Oo4w/qz4J6q4tG/coem6OV9VqnCur4SG4JZxo+E0/dSeWRz6cLMUFMMWOzpkij3qYech
+         1sigv4PAA28Y0Orq5aSeMtw2qZDw83K5rxqZrq6+1pRPDwaEI3NmgGN6tZORT7lrVUdq
+         AOgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbhg8DdRttlJlnfriONhbfB5acoS/cN8RTW8f/hJ0osbxW0ep9/l0JTWP/5kiqDbXpttukgaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+colCTfWMGktwxf7TzKwr5atnHJ1P7wZ9Z/66Tr7GV9h4nYq+
+	V3jbLEajODzfFdyGZ6w+mB9gw/kpg+FvpzmDpuvdv0MPZFnXz614u5QYgaQIr1g=
+X-Google-Smtp-Source: AGHT+IEIXXKEeW8AK/XEUpMILAea87VIswegaWQL9LSGa2DctrGMApRhmo53B5f76Sl4Kpl0fHqtKw==
+X-Received: by 2002:a17:907:94ca:b0:a99:2ab0:d973 with SMTP id a640c23a62f3a-a9ef001b427mr1296793366b.55.1731323771938;
+        Mon, 11 Nov 2024 03:16:11 -0800 (PST)
 Received: from [192.168.50.4] ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a176cbsm593593066b.23.2024.11.11.03.15.34
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a176cbsm593593066b.23.2024.11.11.03.16.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 03:15:36 -0800 (PST)
-Message-ID: <9ef0d9df-3d6c-470a-913c-55698148d00e@tuxon.dev>
-Date: Mon, 11 Nov 2024 13:15:32 +0200
+        Mon, 11 Nov 2024 03:16:11 -0800 (PST)
+Message-ID: <42c5da73-466e-4238-8862-dbe727d3bf3f@tuxon.dev>
+Date: Mon, 11 Nov 2024 13:16:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,102 +79,57 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 06/25] ASoC: sh: rz-ssi: Terminate all the DMA
  transactions
 Content-Language: en-US
-To: Biju Das <biju.das.jz@bp.renesas.com>,
- "geert+renesas@glider.be" <geert+renesas@glider.be>,
- "mturquette@baylibre.com" <mturquette@baylibre.com>,
- "sboyd@kernel.org" <sboyd@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "magnus.damm@gmail.com" <magnus.damm@gmail.com>,
- "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
- "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>,
- "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>
-Cc: "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
- "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: geert+renesas@glider.be, mturquette@baylibre.com, sboyd@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ biju.das.jz@bp.renesas.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ lgirdwood@gmail.com, broonie@kernel.org, magnus.damm@gmail.com,
+ linus.walleij@linaro.org, perex@perex.cz, tiwai@suse.com,
+ p.zabel@pengutronix.de, linux-renesas-soc@vger.kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-gpio@vger.kernel.org, Claudiu Beznea
+ <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
 References: <20241108104958.2931943-1-claudiu.beznea.uj@bp.renesas.com>
  <20241108104958.2931943-7-claudiu.beznea.uj@bp.renesas.com>
- <TYCPR01MB1133233B458F3AC5F7C3602B3865F2@TYCPR01MB11332.jpnprd01.prod.outlook.com>
+ <87ldxqmwdc.wl-kuninori.morimoto.gx@renesas.com>
 From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <TYCPR01MB1133233B458F3AC5F7C3602B3865F2@TYCPR01MB11332.jpnprd01.prod.outlook.com>
+In-Reply-To: <87ldxqmwdc.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi, Biju,
+Hi, Kuninori,
 
-On 10.11.2024 10:37, Biju Das wrote:
+On 11.11.2024 02:45, Kuninori Morimoto wrote:
 > 
+> Hi Claudiu
 > 
->> -----Original Message-----
->> From: Claudiu <claudiu.beznea@tuxon.dev>
->> Sent: 08 November 2024 10:50
->> To: geert+renesas@glider.be; mturquette@baylibre.com; sboyd@kernel.org; robh@kernel.org;
->> krzk+dt@kernel.org; conor+dt@kernel.org; Biju Das <biju.das.jz@bp.renesas.com>; Prabhakar Mahadev Lad
->> <prabhakar.mahadev-lad.rj@bp.renesas.com>; lgirdwood@gmail.com; broonie@kernel.org;
->> magnus.damm@gmail.com; linus.walleij@linaro.org; perex@perex.cz; tiwai@suse.com;
->> p.zabel@pengutronix.de
->> Cc: linux-renesas-soc@vger.kernel.org; linux-clk@vger.kernel.org; devicetree@vger.kernel.org; linux-
->> kernel@vger.kernel.org; linux-sound@vger.kernel.org; linux-gpio@vger.kernel.org; Claudiu.Beznea
->> <claudiu.beznea@tuxon.dev>; Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>; stable@vger.kernel.org
->> Subject: [PATCH v2 06/25] ASoC: sh: rz-ssi: Terminate all the DMA transactions
->>
 >> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 >>
->> In case of full duplex the 1st closed stream doesn't benefit from the dmaengine_terminate_async().
->> Call it after the companion stream is closed.
+>> In case of full duplex the 1st closed stream doesn't benefit from the
+>> dmaengine_terminate_async(). Call it after the companion stream is
+>> closed.
 >>
 >> Fixes: 26ac471c5354 ("ASoC: sh: rz-ssi: Add SSI DMAC support")
-> 
-> Maybe add fixes tag for full duplex case as the separation of 
-> Playback/ Capture is introduced in that patch.
-
-OK
-
-> 
 >> Cc: stable@vger.kernel.org
 >> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> 
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-> 
-> Cheers,
-> Biju
-> 
->> ---
->>
->> Changes in v2:
->> - none
->>
+> (snip)
 >>  sound/soc/renesas/rz-ssi.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/sound/soc/renesas/rz-ssi.c b/sound/soc/renesas/rz-ssi.c index 6efd017aaa7f..2d8721156099
->> 100644
->> --- a/sound/soc/renesas/rz-ssi.c
->> +++ b/sound/soc/renesas/rz-ssi.c
->> @@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
->>  	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
->>
->>  	/* Cancel all remaining DMA transactions */
->> -	if (rz_ssi_is_dma_enabled(ssi))
->> -		dmaengine_terminate_async(strm->dma_ch);
->> +	if (rz_ssi_is_dma_enabled(ssi)) {
->> +		if (ssi->playback.dma_ch)
->> +			dmaengine_terminate_async(ssi->playback.dma_ch);
->> +		if (ssi->capture.dma_ch)
->> +			dmaengine_terminate_async(ssi->capture.dma_ch);
->> +	}
->>
->>  	rz_ssi_set_idle(ssi);
->>
->> --
->> 2.39.2
 > 
+> We are now using "renesas" dir, so, you want to use "ASoC: renesas:"
+> instead of "ASoC: sh:" in Subject ?
+
+You're right! I'll update it.
+
+Thank you,
+Claudiu Beznea
+
+
+> 
+> 
+> Thank you for your help !!
+> 
+> Best regards
+> ---
+> Kuninori Morimoto
 
