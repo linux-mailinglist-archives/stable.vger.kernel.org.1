@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-92101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998269C3D7E
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 12:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C039C3D7F
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 12:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3421F21CD8
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:38:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C041F211CF
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 11:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015A41885B0;
-	Mon, 11 Nov 2024 11:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47020188905;
+	Mon, 11 Nov 2024 11:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8uVFXwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIQOWHcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5115A84E
-	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 11:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058F715A84E
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 11:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731325079; cv=none; b=CFZvNNjUg8dvaSQO733LCiGMLzEzYy2sr4HZ6FzwP3P3SxvNiIrEann2khIUNMe1zCse4QC/PSY405OeBy1f9tvCcU8CLZ+AqEodGX68Vq1ZBkfbOU0Udw+6y9tIiLpMzzhLm9+pH1xqIzpvwKCv6u0EFWRlEO1znF42FPhtwjU=
+	t=1731325083; cv=none; b=GkPS1D+64Ckw9HttoJdOKBGgYtcuI3JpEiBMiWy0EjiDw6HuDiqWC+sQjFthVQ5cU3QzQmxNQb76PNyAi+QJkhaxe29xI0MuuvTHm9mZkL9wZFdSuUsfkN3UMyWElnaz+/MJBCrzFNqOznY+IWNcMkzE2Y7b96W6n9+mzfsh2D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731325079; c=relaxed/simple;
-	bh=BcYIMaOFhlk3Kv/Bir61yoI0O6Yivm6STHOJLhdd5vQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jCRuLVlyPYpQJmBmPLi7/o0zfcfZyxBZiAh0Ijf70lWBDFne+HRlnzfs/Y1oPJGL32n6/q5TYmH0/m9z3kQZ3sgs/tbEY3OyuNgaMAwXI6qMIQPY7kNmA8U83sdWBk7JVhsopw9qLN5xxuCrO9YQlrMbL49+l/ClIPUOQNucmsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8uVFXwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1A7C4CED5;
-	Mon, 11 Nov 2024 11:37:58 +0000 (UTC)
+	s=arc-20240116; t=1731325083; c=relaxed/simple;
+	bh=D2AhId8HcIGvJbSKwM6raA5p3oV/zPWHX8eYQxfwJDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U4D4qDQixDcFa1TA45/Sju0ifEK64npK3uYSmZyArOmBQ0ndXxWnwrfNGXcaQePrjrSd57Hd4QVFVczWBUloTNlGGNB0ruaI5s8s6BGHwXSSeuIFHQZpmDoIwhSxlFgoHYaoqPhhNa7CWFEkV6ufz4YY+jpFatTwQOD5ZAiU1oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIQOWHcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2B3C4CECF;
+	Mon, 11 Nov 2024 11:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731325079;
-	bh=BcYIMaOFhlk3Kv/Bir61yoI0O6Yivm6STHOJLhdd5vQ=;
+	s=korg; t=1731325082;
+	bh=D2AhId8HcIGvJbSKwM6raA5p3oV/zPWHX8eYQxfwJDE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Z8uVFXwa2sUsGhhI5YD05VHjxrSVXSKuqAsFhOwPL5ItXxVGdhpdRxdFyeI/YEFFa
-	 s1yjdnX9bwT+vxVo9nnlLwvVX0S32Ip/zoceiJXiUfUptMds+NvnuaHrpfF6yIeu+x
-	 w/3/0R4Vr3YJkSX6kumzgzN/KkKgXIZBTEDN4to4=
-Subject: FAILED: patch "[PATCH] mm: avoid unsafe VMA hook invocation when error arises on" failed to apply to 5.10-stable tree
+	b=rIQOWHcum9k2zltvDyXVe3NL+lZGFxYfyQOfpRL6ZzbHy4CiPTsNTbhCAVn/cA4EJ
+	 CpbekZ7HiNbY5Ppbf3ZQ5yHa4pXbXtWBh3XE5qQggr6UrIhEdL31GKdHQ+ocJs2a35
+	 ncpIAEk6s9IiAXqmItPKZRuUbtcBw+qoIPk7pbRg=
+Subject: FAILED: patch "[PATCH] mm: unconditionally close VMAs on error" failed to apply to 6.11-stable tree
 To: lorenzo.stoakes@oracle.com,James.Bottomley@HansenPartnership.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org,andreas@gaisler.com,broonie@kernel.org,catalin.marinas@arm.com,davem@davemloft.net,deller@gmx.de,jannh@google.com,peterx@redhat.com,stable@vger.kernel.org,torvalds@linux-foundation.org,vbabka@suse.cz,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Nov 2024 12:37:47 +0100
-Message-ID: <2024111146-visiting-designing-ea20@gregkh>
+Date: Mon, 11 Nov 2024 12:37:54 +0100
+Message-ID: <2024111154-upwind-corroding-eca2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.11-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3dd6ed34ce1f2356a77fb88edafb5ec96784e3cf
+git cherry-pick -x 4080ef1579b2413435413988d14ac8c68e4d42c8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111146-visiting-designing-ea20@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111154-upwind-corroding-eca2@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,74 +77,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3dd6ed34ce1f2356a77fb88edafb5ec96784e3cf Mon Sep 17 00:00:00 2001
+From 4080ef1579b2413435413988d14ac8c68e4d42c8 Mon Sep 17 00:00:00 2001
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Date: Tue, 29 Oct 2024 18:11:44 +0000
-Subject: [PATCH] mm: avoid unsafe VMA hook invocation when error arises on
- mmap hook
+Date: Tue, 29 Oct 2024 18:11:45 +0000
+Subject: [PATCH] mm: unconditionally close VMAs on error
 
-Patch series "fix error handling in mmap_region() and refactor
-(hotfixes)", v4.
+Incorrect invocation of VMA callbacks when the VMA is no longer in a
+consistent state is bug prone and risky to perform.
 
-mmap_region() is somewhat terrifying, with spaghetti-like control flow and
-numerous means by which issues can arise and incomplete state, memory
-leaks and other unpleasantness can occur.
+With regards to the important vm_ops->close() callback We have gone to
+great lengths to try to track whether or not we ought to close VMAs.
 
-A large amount of the complexity arises from trying to handle errors late
-in the process of mapping a VMA, which forms the basis of recently
-observed issues with resource leaks and observable inconsistent state.
+Rather than doing so and risking making a mistake somewhere, instead
+unconditionally close and reset vma->vm_ops to an empty dummy operations
+set with a NULL .close operator.
 
-This series goes to great lengths to simplify how mmap_region() works and
-to avoid unwinding errors late on in the process of setting up the VMA for
-the new mapping, and equally avoids such operations occurring while the
-VMA is in an inconsistent state.
+We introduce a new function to do so - vma_close() - and simplify existing
+vms logic which tracked whether we needed to close or not.
 
-The patches in this series comprise the minimal changes required to
-resolve existing issues in mmap_region() error handling, in order that
-they can be hotfixed and backported.  There is additionally a follow up
-series which goes further, separated out from the v1 series and sent and
-updated separately.
+This simplifies the logic, avoids incorrect double-calling of the .close()
+callback and allows us to update error paths to simply call vma_close()
+unconditionally - making VMA closure idempotent.
 
-
-This patch (of 5):
-
-After an attempted mmap() fails, we are no longer in a situation where we
-can safely interact with VMA hooks.  This is currently not enforced,
-meaning that we need complicated handling to ensure we do not incorrectly
-call these hooks.
-
-We can avoid the whole issue by treating the VMA as suspect the moment
-that the file->f_ops->mmap() function reports an error by replacing
-whatever VMA operations were installed with a dummy empty set of VMA
-operations.
-
-We do so through a new helper function internal to mm - mmap_file() -
-which is both more logically named than the existing call_mmap() function
-and correctly isolates handling of the vm_op reassignment to mm.
-
-All the existing invocations of call_mmap() outside of mm are ultimately
-nested within the call_mmap() from mm, which we now replace.
-
-It is therefore safe to leave call_mmap() in place as a convenience
-function (and to avoid churn).  The invokers are:
-
-     ovl_file_operations -> mmap -> ovl_mmap() -> backing_file_mmap()
-    coda_file_operations -> mmap -> coda_file_mmap()
-     shm_file_operations -> shm_mmap()
-shm_file_operations_huge -> shm_mmap()
-            dma_buf_fops -> dma_buf_mmap_internal -> i915_dmabuf_ops
-	                    -> i915_gem_dmabuf_mmap()
-
-None of these callers interact with vm_ops or mappings in a problematic
-way on error, quickly exiting out.
-
-Link: https://lkml.kernel.org/r/cover.1730224667.git.lorenzo.stoakes@oracle.com
-Link: https://lkml.kernel.org/r/d41fd763496fd0048a962f3fd9407dc72dd4fd86.1730224667.git.lorenzo.stoakes@oracle.com
+Link: https://lkml.kernel.org/r/28e89dda96f68c505cb6f8e9fc9b57c3e9f74b42.1730224667.git.lorenzo.stoakes@oracle.com
 Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
 Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Reported-by: Jann Horn <jannh@google.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Reviewed-by: Jann Horn <jannh@google.com>
 Cc: Andreas Larsson <andreas@gaisler.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -159,95 +119,147 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 diff --git a/mm/internal.h b/mm/internal.h
-index 16c1f3cd599e..4eab2961e69c 100644
+index 4eab2961e69c..64c2eb0b160e 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -108,6 +108,33 @@ static inline void *folio_raw_mapping(const struct folio *folio)
- 	return (void *)(mapping & ~PAGE_MAPPING_FLAGS);
+@@ -135,6 +135,24 @@ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ 	return err;
  }
  
 +/*
-+ * This is a file-backed mapping, and is about to be memory mapped - invoke its
-+ * mmap hook and safely handle error conditions. On error, VMA hooks will be
-+ * mutated.
-+ *
-+ * @file: File which backs the mapping.
-+ * @vma:  VMA which we are mapping.
-+ *
-+ * Returns: 0 if success, error otherwise.
++ * If the VMA has a close hook then close it, and since closing it might leave
++ * it in an inconsistent state which makes the use of any hooks suspect, clear
++ * them down by installing dummy empty hooks.
 + */
-+static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
++static inline void vma_close(struct vm_area_struct *vma)
 +{
-+	int err = call_mmap(file, vma);
++	if (vma->vm_ops && vma->vm_ops->close) {
++		vma->vm_ops->close(vma);
 +
-+	if (likely(!err))
-+		return 0;
-+
-+	/*
-+	 * OK, we tried to call the file hook for mmap(), but an error
-+	 * arose. The mapping is in an inconsistent state and we most not invoke
-+	 * any further hooks on it.
-+	 */
-+	vma->vm_ops = &vma_dummy_vm_ops;
-+
-+	return err;
++		/*
++		 * The mapping is in an inconsistent state, and no further hooks
++		 * may be invoked upon it.
++		 */
++		vma->vm_ops = &vma_dummy_vm_ops;
++	}
 +}
 +
  #ifdef CONFIG_MMU
  
  /* Flags for folio_pte_batch(). */
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 9841b41e3c76..6e3b25f7728f 100644
+index 6e3b25f7728f..ac0604f146f6 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1422,7 +1422,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 	/*
- 	 * clear PTEs while the vma is still in the tree so that rmap
- 	 * cannot race with the freeing later in the truncate scenario.
--	 * This is also needed for call_mmap(), which is why vm_ops
-+	 * This is also needed for mmap_file(), which is why vm_ops
- 	 * close function is called.
- 	 */
- 	vms_clean_up_area(&vms, &mas_detach);
-@@ -1447,7 +1447,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+@@ -1573,8 +1573,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
+ 	return addr;
  
- 	if (file) {
- 		vma->vm_file = get_file(file);
--		error = call_mmap(file, vma);
-+		error = mmap_file(file, vma);
- 		if (error)
- 			goto unmap_and_free_vma;
+ close_and_free_vma:
+-	if (file && !vms.closed_vm_ops && vma->vm_ops && vma->vm_ops->close)
+-		vma->vm_ops->close(vma);
++	vma_close(vma);
  
-@@ -1470,7 +1470,7 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 
- 		vma_iter_config(&vmi, addr, end);
- 		/*
--		 * If vm_flags changed after call_mmap(), we should try merge
-+		 * If vm_flags changed after mmap_file(), we should try merge
- 		 * vma again as we may succeed this time.
- 		 */
- 		if (unlikely(vm_flags != vma->vm_flags && vmg.prev)) {
+ 	if (file || vma->vm_file) {
+ unmap_and_free_vma:
+@@ -1934,7 +1933,7 @@ void exit_mmap(struct mm_struct *mm)
+ 	do {
+ 		if (vma->vm_flags & VM_ACCOUNT)
+ 			nr_accounted += vma_pages(vma);
+-		remove_vma(vma, /* unreachable = */ true, /* closed = */ false);
++		remove_vma(vma, /* unreachable = */ true);
+ 		count++;
+ 		cond_resched();
+ 		vma = vma_next(&vmi);
 diff --git a/mm/nommu.c b/mm/nommu.c
-index 385b0c15add8..f9ccc02458ec 100644
+index f9ccc02458ec..635d028d647b 100644
 --- a/mm/nommu.c
 +++ b/mm/nommu.c
-@@ -885,7 +885,7 @@ static int do_mmap_shared_file(struct vm_area_struct *vma)
+@@ -589,8 +589,7 @@ static int delete_vma_from_mm(struct vm_area_struct *vma)
+  */
+ static void delete_vma(struct mm_struct *mm, struct vm_area_struct *vma)
  {
- 	int ret;
+-	if (vma->vm_ops && vma->vm_ops->close)
+-		vma->vm_ops->close(vma);
++	vma_close(vma);
+ 	if (vma->vm_file)
+ 		fput(vma->vm_file);
+ 	put_nommu_region(vma->vm_region);
+diff --git a/mm/vma.c b/mm/vma.c
+index b21ffec33f8e..7621384d64cf 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -323,11 +323,10 @@ static bool can_vma_merge_right(struct vma_merge_struct *vmg,
+ /*
+  * Close a vm structure and free it.
+  */
+-void remove_vma(struct vm_area_struct *vma, bool unreachable, bool closed)
++void remove_vma(struct vm_area_struct *vma, bool unreachable)
+ {
+ 	might_sleep();
+-	if (!closed && vma->vm_ops && vma->vm_ops->close)
+-		vma->vm_ops->close(vma);
++	vma_close(vma);
+ 	if (vma->vm_file)
+ 		fput(vma->vm_file);
+ 	mpol_put(vma_policy(vma));
+@@ -1115,9 +1114,7 @@ void vms_clean_up_area(struct vma_munmap_struct *vms,
+ 	vms_clear_ptes(vms, mas_detach, true);
+ 	mas_set(mas_detach, 0);
+ 	mas_for_each(mas_detach, vma, ULONG_MAX)
+-		if (vma->vm_ops && vma->vm_ops->close)
+-			vma->vm_ops->close(vma);
+-	vms->closed_vm_ops = true;
++		vma_close(vma);
+ }
  
--	ret = call_mmap(vma->vm_file, vma);
-+	ret = mmap_file(vma->vm_file, vma);
- 	if (ret == 0) {
- 		vma->vm_region->vm_top = vma->vm_region->vm_end;
- 		return 0;
-@@ -918,7 +918,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
- 	 * happy.
- 	 */
- 	if (capabilities & NOMMU_MAP_DIRECT) {
--		ret = call_mmap(vma->vm_file, vma);
-+		ret = mmap_file(vma->vm_file, vma);
- 		/* shouldn't return success if we're not sharing */
- 		if (WARN_ON_ONCE(!is_nommu_shared_mapping(vma->vm_flags)))
- 			ret = -ENOSYS;
+ /*
+@@ -1160,7 +1157,7 @@ void vms_complete_munmap_vmas(struct vma_munmap_struct *vms,
+ 	/* Remove and clean up vmas */
+ 	mas_set(mas_detach, 0);
+ 	mas_for_each(mas_detach, vma, ULONG_MAX)
+-		remove_vma(vma, /* = */ false, vms->closed_vm_ops);
++		remove_vma(vma, /* unreachable = */ false);
+ 
+ 	vm_unacct_memory(vms->nr_accounted);
+ 	validate_mm(mm);
+@@ -1684,8 +1681,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	return new_vma;
+ 
+ out_vma_link:
+-	if (new_vma->vm_ops && new_vma->vm_ops->close)
+-		new_vma->vm_ops->close(new_vma);
++	vma_close(new_vma);
+ 
+ 	if (new_vma->vm_file)
+ 		fput(new_vma->vm_file);
+diff --git a/mm/vma.h b/mm/vma.h
+index 55457cb68200..75558b5e9c8c 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -42,7 +42,6 @@ struct vma_munmap_struct {
+ 	int vma_count;                  /* Number of vmas that will be removed */
+ 	bool unlock;                    /* Unlock after the munmap */
+ 	bool clear_ptes;                /* If there are outstanding PTE to be cleared */
+-	bool closed_vm_ops;		/* call_mmap() was encountered, so vmas may be closed */
+ 	/* 1 byte hole */
+ 	unsigned long nr_pages;         /* Number of pages being removed */
+ 	unsigned long locked_vm;        /* Number of locked pages */
+@@ -198,7 +197,6 @@ static inline void init_vma_munmap(struct vma_munmap_struct *vms,
+ 	vms->unmap_start = FIRST_USER_ADDRESS;
+ 	vms->unmap_end = USER_PGTABLES_CEILING;
+ 	vms->clear_ptes = false;
+-	vms->closed_vm_ops = false;
+ }
+ #endif
+ 
+@@ -269,7 +267,7 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
+ 		  unsigned long start, size_t len, struct list_head *uf,
+ 		  bool unlock);
+ 
+-void remove_vma(struct vm_area_struct *vma, bool unreachable, bool closed);
++void remove_vma(struct vm_area_struct *vma, bool unreachable);
+ 
+ void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+ 		struct vm_area_struct *prev, struct vm_area_struct *next);
 
 
