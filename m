@@ -1,93 +1,92 @@
-Return-Path: <stable+bounces-92129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2FA9C3DFE
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 13:09:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622979C3F07
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 14:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52D72283205
-	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 12:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3811F22B04
+	for <lists+stable@lfdr.de>; Mon, 11 Nov 2024 13:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6E319C56B;
-	Mon, 11 Nov 2024 12:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29201A0AE1;
+	Mon, 11 Nov 2024 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iiINp8/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJAalIm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2433C19B3D3;
-	Mon, 11 Nov 2024 12:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863681A072A
+	for <stable@vger.kernel.org>; Mon, 11 Nov 2024 12:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731326945; cv=none; b=BJf4iUgeh1oOuAdsnOwyLs0w63IKTfi1XI58YLic5NDKg7p28Hv+yfsHoFFD3HEBnX87eLnVhs8KS50ZdAIKZnyd0P2PW3j1xN+412r55VR7E7BR13lScJ/4TnR4ZuKH0/RNNTwWYQJl4atFgK6KfiTNTdhotUhHe6QeVsiuOQs=
+	t=1731329880; cv=none; b=V7uEia1TIj4ADNhBiJytrQnAriBbe56ctgc0U+dcWbV8jDAvN95JSBVH4S9qfq8vuIO73wn+ZT56NnIjRTyDOpJi2rKUulrpvv0dtJrKege1NmMtIavN3otHQV5r9F4F7lq/I7lOglyGAHq5kOQz5zNLtprazOfiPLUU/W+Uz5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731326945; c=relaxed/simple;
-	bh=A+exTM+c4WEHboinnAW9kh9VZ91dw3lFctLT90geLgk=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=X2Rjcfpg8B+mhoESKnpbcjuwMyppmrQxcMO19wwKqLuW26iVC8xjI3iicYTxRCkTfxxgKreoAo5RAY1LUBz8jdNidqvVMSAGWfgvhCxRkoWbOXuZXnreFqv8syMcnOFlsJpQ1eDUdfO/NI6y8Dw8kkpPPvrDZb1GU43uzJchuB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iiINp8/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8277FC4CECF;
-	Mon, 11 Nov 2024 12:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731326945;
-	bh=A+exTM+c4WEHboinnAW9kh9VZ91dw3lFctLT90geLgk=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=iiINp8/Kc0BLa7lGG+Ox+hgHiTm+WclhaeF3NCjvFX/pTfBqzhv8yA+WwBjqmMrLH
-	 fKGM+iarEdfHexU9Oor4ecfAqHtX6y1j3vkC8S/mJC1a+St/1A3Xba6+ifBmsVTCYx
-	 qZ55V9La+xTiWIRVkwverlBSTJ0PYfUZdRp161XgkuMbnEGoRC4ksJf2HFHSyhRmld
-	 wzswPVwkPq/a4LsnQc764v9qhX2TpgFafQARLhuwnxqON93B0G5evGdHISBqlNhWT/
-	 1HyoDJUZqIGL0VbD/WDi23WDDtvfRV05igvEwyni2VEMQRd3YrsWEXajCujn/zZ5Cr
-	 MuDU1ZzaHm5Pw==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1731329880; c=relaxed/simple;
+	bh=QnFbhLJNbWM3LMfzzeqjzNvRhNmdWczJLcDWMuyWHFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vEmLjm9JZdHHubwUjz1FZXHCT37SunqykAVC9MyU+jSDoCIyOcukXFTIPVdaj2RG4jPvSoZCV78OMV/gql3X8/FO/E/EuCVKPQdncJaR0PxUyloSinVT9EGoh86DRATcM/fLdDi3bbPiJK7hURRilEMq74oss6wUG728GvQbqY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJAalIm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CBEC4CECF;
+	Mon, 11 Nov 2024 12:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731329879;
+	bh=QnFbhLJNbWM3LMfzzeqjzNvRhNmdWczJLcDWMuyWHFc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bJAalIm7Bjld5wYrADk0ho0xkxYSE4NpOgFqO7Hfjg3va460br597nWfkZuuAnsp2
+	 5yn9IPmbwP79n9pHr1iUIvPDmLN9fgkzsz9Iy5fAWOrSGMAAvRc3hxDdIHadvl5p4Y
+	 HpZFhykfN1+8WVVzwLA7UuubChVsPS92fk8sUzI0=
+Date: Mon, 11 Nov 2024 13:57:56 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: stable@vger.kernel.org, jack@suse.com
+Subject: Re: backport "udf: Allocate name buffer in directory iterator on
+ heap" to 5.15
+Message-ID: <2024111134-empirical-snowcap-8357@gregkh>
+References: <8e759d2a-423f-4e26-b4c2-098965c50f9e@hauke-m.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net] wifi: brcmfmac: release 'root' node in all execution
- paths
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com>
-References: <20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Hector Martin <marcan@marcan.st>,
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173132694092.852485.14071383005445209117.kvalo@kernel.org>
-Date: Mon, 11 Nov 2024 12:09:02 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e759d2a-423f-4e26-b4c2-098965c50f9e@hauke-m.de>
 
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-
-> The fixed patch introduced an additional condition to enter the scope
-> where the 'root' device_node is released (!settings->board_type,
-> currently 'err'), which avoid decrementing the refcount with a call to
-> of_node_put() if that second condition is not satisfied.
+On Sun, Nov 10, 2024 at 06:36:08PM +0100, Hauke Mehrtens wrote:
+> Hi,
 > 
-> Move the call to of_node_put() to the point where 'root' is no longer
-> required to avoid leaking the resource if err is not zero.
+> I am running into this compile error in 5.15.171 in OpenWrt on 32 bit
+> systems. This problem was introduced with kernel 5.15.169.
+> ```
+> fs/udf/namei.c: In function 'udf_rename':
+> fs/udf/namei.c:878:1: error: the frame size of 1144 bytes is larger than
+> 1024 bytes [-Werror=frame-larger-than=]
+>   878 | }
+>       | ^
+> cc1: all warnings being treated as errors
+> make[2]: *** [scripts/Makefile.build:289: fs/udf/namei.o] Error 1
+> make[1]: *** [scripts/Makefile.build:552: fs/udf] Error 2
+> ```
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> This is fixed by this upstream commit:
+> commit 0aba4860b0d0216a1a300484ff536171894d49d8
+> Author: Jan Kara <jack@suse.cz>
+> Date:   Tue Dec 20 12:38:45 2022 +0100
+> 
+>     udf: Allocate name buffer in directory iterator on heap
+> 
+> 
+> Please backport this patch to 5.15 too.
+> It was already backported to kernel 6.1.
 
-Patch applied to wireless-next.git, thanks.
+I tried to take it as-is, but it broek the build.  Can you please submit
+a tested version that actually works?
 
-2e19a3b590eb wifi: brcmfmac: release 'root' node in all execution paths
+thanks,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+greg k-h
 
