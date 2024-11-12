@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381039C55A9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864EE9C542C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D4B28F0F7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F471F20FA6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98940218D69;
-	Tue, 12 Nov 2024 10:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC42216E1E;
+	Tue, 12 Nov 2024 10:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f9v/4HO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTxhf2AX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B77213138;
-	Tue, 12 Nov 2024 10:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4D8216E0A;
+	Tue, 12 Nov 2024 10:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408249; cv=none; b=e88uBbFc3rug2cQnj93O9V7EsOG7I0Q1xEiClqZZ3Kp87+bPhrtdBzBs+MINUeb53KlAsoWoDxQMiYLn0jBOQRep0xcmJJ1eBnQX7JR1PLUSWuEJ1R8KVcNe5bu4ynxxHdBOFvvyrwYd6bE7CdZe6XPFbGw374rT5mdW3mfrZUg=
+	t=1731407706; cv=none; b=sCHKpAViLMuGlXFlWoHQrvuTefnokyxxml/OT5h7tw8P6+5E/tL3YcAK6QkjrHk9usRbn0nIMcwq0xoCYDMavPiLMELzFDAtrip3H0HFF8KFEfcimubzat5PpbMMdZlqHUl/DiA5+JGmwJNqs54OMLBE14zaCROWvy7FQcaCztQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408249; c=relaxed/simple;
-	bh=nvJ80p1/qAx9dWT49vn7cHo+hAjv0Sl0S2YdBGk/Gz0=;
+	s=arc-20240116; t=1731407706; c=relaxed/simple;
+	bh=dTboJT77+WrOVsbETKIMcmmchE3jPBDcRu5U3fmBLeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtoyN3V6aYEk8+MQDU9JYKMg5vEgHC/iL5IgLGQw6JvU7marTrvQXPuzqQLA2uxSHeJu44sxAVAEGyLczapvwzpGGZfEZod+xcyArBQoj3NpFPzAqOMvD32F055hqsyWSHcKO1KJKEsrYRc4gE9GFSu5K517XSuq5MCh5SCoKUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f9v/4HO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5629C4CECD;
-	Tue, 12 Nov 2024 10:44:08 +0000 (UTC)
+	 MIME-Version; b=EX0PUmeZagQnclMlTwpxT8RJCnZqVsW/suHAtA7bFvOyjI/TH42hqgOdUwPU71tE8/pLwRvDTfe5B/HBObMBxj+GrWVFxU6d1QlZhsz+Zb9Fqqy2pQ4st5jgBElImz5tSRuSGDb9yDWyekwpNLIySOx64fqF61DtBzAkgbH1gKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTxhf2AX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04C1C4CECD;
+	Tue, 12 Nov 2024 10:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408249;
-	bh=nvJ80p1/qAx9dWT49vn7cHo+hAjv0Sl0S2YdBGk/Gz0=;
+	s=korg; t=1731407706;
+	bh=dTboJT77+WrOVsbETKIMcmmchE3jPBDcRu5U3fmBLeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1f9v/4HOlWSsMEng7fiskRNd5FtQu9tVtDTwBSRAH0xidZ/1bjVpmNh3mxuxbEtWY
-	 pGSssRW4F1jzGXLbEP+1SJqULUMTNAHJl2Ff43aMaI4dPjNL2pVxygCu54DjnL44NB
-	 aj5yatlYn54yvW549RqUyJyuwjPchNEyX9ULuu3w=
+	b=qTxhf2AX8z2+i0jv6JyOLQMERB8iTZZNy7HwKYeeg7NAkmhHhf9kj89vVeQEBQVba
+	 yxXT2AtHpWnBeC4Ss4POi27NBMrEUnexqbfA4sAIr7TFiZbXI0kbKRlx+dRYrY9Hq1
+	 n+wFxTKOdDrA4H5bZ52Chj8T0amx4d+kth6UmQHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH 6.11 106/184] drm/panthor: Be stricter about IO mapping flags
+	Murad Masimov <m.masimov@maxima.ru>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 056/119] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
 Date: Tue, 12 Nov 2024 11:21:04 +0100
-Message-ID: <20241112101904.937667532@linuxfoundation.org>
+Message-ID: <20241112101850.857770720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-commit f432a1621f049bb207e78363d9d0e3c6fa2da5db upstream.
+[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
 
-The current panthor_device_mmap_io() implementation has two issues:
+If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
+though it's supposed to return error code, which is checked inside
+init_stream() in file tascam-stream.c.
 
-1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
-   panthor_device_mmap_io() bails if VM_WRITE is set, but does not clear
-   VM_MAYWRITE. That means userspace can use mprotect() to make the mapping
-   writable later on. This is a classic Linux driver gotcha.
-   I don't think this actually has any impact in practice:
-   When the GPU is powered, writes to the FLUSH_ID seem to be ignored; and
-   when the GPU is not powered, the dummy_latest_flush page provided by the
-   driver is deliberately designed to not do any flushes, so the only thing
-   writing to the dummy_latest_flush could achieve would be to make *more*
-   flushes happen.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which are
-   mappings without the VM_SHARED flag).
-   MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA has
-   copy-on-write semantics, which for VM_PFNMAP are semi-supported but
-   fairly cursed.
-   In particular, in such a mapping, the driver can only install PTEs
-   during mmap() by calling remap_pfn_range() (because remap_pfn_range()
-   wants to **store the physical address of the mapped physical memory into
-   the vm_pgoff of the VMA**); installing PTEs later on with a fault
-   handler (as panthor does) is not supported in private mappings, and so
-   if you try to fault in such a mapping, vmf_insert_pfn_prot() splats when
-   it hits a BUG() check.
-
-Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH_ID
-doesn't make sense) and requiring VM_SHARED (copy-on-write semantics for
-the FLUSH_ID don't make sense).
-
-Reproducers for both scenarios are in the notes of my patch on the mailing
-list; I tested that these bugs exist on a Rock 5B machine.
-
-Note that I only compile-tested the patch, I haven't tested it; I don't
-have a working kernel build setup for the test machine yet. Please test it
-before applying it.
-
-Cc: stable@vger.kernel.org
-Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/firewire/tascam/amdtp-tascam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 4082c8f2951d..6fbff516c1c1 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -390,11 +390,15 @@ int panthor_device_mmap_io(struct panthor_device *ptdev, struct vm_area_struct *
- {
- 	u64 offset = (u64)vma->vm_pgoff << PAGE_SHIFT;
+diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
+index 0b42d65590081..079afa4bd3811 100644
+--- a/sound/firewire/tascam/amdtp-tascam.c
++++ b/sound/firewire/tascam/amdtp-tascam.c
+@@ -238,7 +238,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
+ 	err = amdtp_stream_init(s, unit, dir, flags, fmt,
+ 			process_ctx_payloads, sizeof(struct amdtp_tscm));
+ 	if (err < 0)
+-		return 0;
++		return err;
  
-+	if ((vma->vm_flags & VM_SHARED) == 0)
-+		return -EINVAL;
-+
- 	switch (offset) {
- 	case DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET:
- 		if (vma->vm_end - vma->vm_start != PAGE_SIZE ||
- 		    (vma->vm_flags & (VM_WRITE | VM_EXEC)))
- 			return -EINVAL;
-+		vm_flags_clear(vma, VM_MAYWRITE);
- 
- 		break;
- 
+ 	if (dir == AMDTP_OUT_STREAM) {
+ 		// Use fixed value for FDF field.
 -- 
-2.47.0
+2.43.0
 
 
 
