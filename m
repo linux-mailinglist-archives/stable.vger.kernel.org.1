@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-92563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E3D9C553C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:02:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811169C55F1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D875B3E629
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383AF1F247BA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074541F7793;
-	Tue, 12 Nov 2024 10:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315D421C19A;
+	Tue, 12 Nov 2024 10:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz8SaGqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUDgLstK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E8B3DAC0A;
-	Tue, 12 Nov 2024 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44B419E992;
+	Tue, 12 Nov 2024 10:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407889; cv=none; b=n/bBrUZpFzNAtGSXLaWp1sqGqgxRmXksBJxUYX/j+22RbKxv75MAdbvIOIh5Ot4sfGFbo70oCNV2Kf/ZyC8C6OWaHfF5aEBX1wbp9CnBCEvCNirBu2FEBpgMO1JVTsG49nAptIekCwO4L/RAKInO7NsOUKH2Gt+rT/CfH7ZUGs0=
+	t=1731408514; cv=none; b=E/uBGKHF6JF+4Vkvi3U3TB7rUPcBv4cWVq+XVnqNQHx8//37SVj2di4Wty45oeDcQ5bIhihKmEOTleofgkTACXKqyvVYFVCLg8qRS8CaK5LIJgJZdrtzVF+aB3qw8LREB0NItFWbxWPNq8jIIxFHAyNLGNxdsGBYYQ/C7t+fAf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407889; c=relaxed/simple;
-	bh=te3jFZO7O5noiNDzzpVMytHIm8OeoB4x0Z+jdTEM8Ng=;
+	s=arc-20240116; t=1731408514; c=relaxed/simple;
+	bh=Kcll9nRJS5MCSDL/eJGFa02clpK7Qett7lbyjKxp9IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTboTu5mUIQSBYZBgbhheCLeXDZJHmdUi+ncbXZtWTCAtHDVFgdw9b4OHp5ihLtaaO8MDS7aZNkZUxeYQMqUi0GfvVsU2LjMCSv71uf8r1zXnSGNsFGfwhFb5eB+64FRYvPepBN+ON/Xd2u/mvodrKqHAWjeRXau0NjkROSWr48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz8SaGqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC12C4CECD;
-	Tue, 12 Nov 2024 10:38:08 +0000 (UTC)
+	 MIME-Version; b=HdLL472mHO0AgQMRtdfJNUppkyy1w/kykJfaIiSPUKyXVPYypxXGxZN9Dk09KxWagZmDlfGEXa2DV1WZiOcTOKLWvmmDQkZ5En7uX7OZYNotZxUHl+Hpyo8DgA01I4bkBIYQC6N1aI/gy/Wc+Ibks7w3MWIOJhJ1hTh0se1cpO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUDgLstK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B292C4CECD;
+	Tue, 12 Nov 2024 10:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407889;
-	bh=te3jFZO7O5noiNDzzpVMytHIm8OeoB4x0Z+jdTEM8Ng=;
+	s=korg; t=1731408513;
+	bh=Kcll9nRJS5MCSDL/eJGFa02clpK7Qett7lbyjKxp9IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jz8SaGqKLCK4/dmwMUzdDDEQOK03ndTjThdbyX5zYMju0U3/N+j/wWN0O/Rhx8KHF
-	 IOjCjeEtwjww6pq2ymo8iXfTZ6uTUUMzup6vENuzL9evZpoBiAoiY+jrQP0jHCI2FZ
-	 n6M9Cw2x+miFZ6BikyTdmW2CSLqvc2kikamTND7Q=
+	b=HUDgLstK7dTLB7Vy97y1XUusv9aMcac8yw6GjmJv2MjabF9uuPCj5KsfRkL8yIkaO
+	 PgAt2EDGONuEnSSoaCe/P1dW0vvLe/uDEwKxbdjg/6vGja3LKweLIiZLSPgfl+D84d
+	 lFTwrF928VaQDmVnJGFR1mIHHzwZgawbwLKGBdBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 114/119] irqchip/gic-v3: Force propagation of the active state with a read-back
-Date: Tue, 12 Nov 2024 11:22:02 +0100
-Message-ID: <20241112101853.073013530@linuxfoundation.org>
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Qiang Yu <quic_qianyu@quicinc.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 165/184] clk: qcom: gcc-x1e80100: Fix halt_check for pipediv2 clocks
+Date: Tue, 12 Nov 2024 11:22:03 +0100
+Message-ID: <20241112101907.200628689@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Qiang Yu <quic_qianyu@quicinc.com>
 
-commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
+commit bf0a800415a7397617765fe5f5278a645195c75a upstream.
 
-Christoffer reports that on some implementations, writing to
-GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
-issuing a deactivation of that interrupt via the system register interface.
+The pipediv2_clk's source from the same mux as pipe clock. So they have
+same limitation, which is that the PHY sequence requires to enable these
+local CBCs before the PHY is actually outputting a clock to them. This
+means the clock won't actually turn on when we vote them. Hence, let's
+skip the halt bit check of the pipediv2_clk, otherwise pipediv2_clk may
+stuck at off state during bootup.
 
-There are multiple reasons to this:
-
- - this uses an early write-acknoledgement memory type (nGnRE), meaning
-   that the write may only have made it as far as some interconnect
-   by the time the store is considered "done"
-
- - the GIC itself is allowed to buffer the write until it decides to
-   take it into account (as long as it is in finite time)
-
-The effects are that the activation may not have taken effect by the time
-the kernel enters the guest, forcing an immediate exit, or that a guest
-deactivation occurs before the interrupt is active, doing nothing.
-
-In order to guarantee that the write to the ISACTIVER register has taken
-effect, read back from it, forcing the interconnect to propagate the write,
-and the GIC to process the write before returning the read.
-
-Reported-by: Christoffer Dall <christoffer.dall@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Christoffer Dall <christoffer.dall@arm.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Suggested-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241011104142.1181773-6-quic_qianyu@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/clk/qcom/gcc-x1e80100.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -468,6 +468,13 @@ static int gic_irq_set_irqchip_state(str
- 	}
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 0f578771071f..81ba5ceab342 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -3123,7 +3123,7 @@ static struct clk_branch gcc_pcie_3_pipe_clk = {
  
- 	gic_poke_irq(d, reg);
-+
-+	/*
-+	 * Force read-back to guarantee that the active state has taken
-+	 * effect, and won't race with a guest-driven deactivation.
-+	 */
-+	if (reg == GICD_ISACTIVER)
-+		gic_peek_irq(d, reg);
- 	return 0;
- }
+ static struct clk_branch gcc_pcie_3_pipediv2_clk = {
+ 	.halt_reg = 0x58060,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52020,
+ 		.enable_mask = BIT(5),
+@@ -3248,7 +3248,7 @@ static struct clk_branch gcc_pcie_4_pipe_clk = {
  
+ static struct clk_branch gcc_pcie_4_pipediv2_clk = {
+ 	.halt_reg = 0x6b054,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52010,
+ 		.enable_mask = BIT(27),
+@@ -3373,7 +3373,7 @@ static struct clk_branch gcc_pcie_5_pipe_clk = {
+ 
+ static struct clk_branch gcc_pcie_5_pipediv2_clk = {
+ 	.halt_reg = 0x2f054,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52018,
+ 		.enable_mask = BIT(19),
+@@ -3511,7 +3511,7 @@ static struct clk_branch gcc_pcie_6a_pipe_clk = {
+ 
+ static struct clk_branch gcc_pcie_6a_pipediv2_clk = {
+ 	.halt_reg = 0x31060,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52018,
+ 		.enable_mask = BIT(28),
+@@ -3649,7 +3649,7 @@ static struct clk_branch gcc_pcie_6b_pipe_clk = {
+ 
+ static struct clk_branch gcc_pcie_6b_pipediv2_clk = {
+ 	.halt_reg = 0x8d060,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52010,
+ 		.enable_mask = BIT(28),
+-- 
+2.47.0
+
 
 
 
