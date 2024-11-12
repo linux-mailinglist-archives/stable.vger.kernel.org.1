@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-92722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3573E9C55CB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027209C544A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED8462833D3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CACC1B35DFC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD42521A4A3;
-	Tue, 12 Nov 2024 10:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAA02144A4;
+	Tue, 12 Nov 2024 10:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLbZgZr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMpWAiaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949DF20F5AF;
-	Tue, 12 Nov 2024 10:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD10213124;
+	Tue, 12 Nov 2024 10:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408377; cv=none; b=XxGjZ/oY4pAEpveKGo0wxEaG/1n8AHU4Sr7F7NA6RYkPFb43CYnaEWwoxiT5sUuojrdArRuJWsPyc1kSSTypLAgd9+a5RTUP7gz6gAZHZvC0jCrLsHXWvDzu77oSZptM5LJR3UWVCAYiOPHiEieCvBSF+fxAMMl3uco3uBifyaY=
+	t=1731407475; cv=none; b=iSMYDWRecV75KkRAdTkR399mpPno2lEzYYDvYMxXTc7W7fORtm+Npu3+iYZJbs9bFZUGKN/4HHeWZ6/LHVc5hSz8d2DT+FX2kIGCfWePYR7zh27v5H/Fqag5FZTLS8870JSZPMG+dX/2FpxESxKyOZMsQCjdLfahrzNm6RPBSX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408377; c=relaxed/simple;
-	bh=Ug6NTG0GazGnMETjYa/rn9I6dTY71fgeJvkcU1MF61g=;
+	s=arc-20240116; t=1731407475; c=relaxed/simple;
+	bh=S4rmLpUYsutORoL7XppGqHUb+011SSGrR+KvqCmb8Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaAixEIQ9nqIVuEW0c4qUMODrBV1EYY1FyNY+rAeRCB+Wl0WXEOy1KUuJV+BM0TG1pIVxHkv+CtEwv7CH6WVcCpxlMDESWlGbdVfjnEKgX+NQAow2Ouv/2QuD97hP956V3DUINtCNsOswqmc9YtJU0IsT62wVdmaRu1LJEMc0uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLbZgZr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839A4C4CECD;
-	Tue, 12 Nov 2024 10:46:16 +0000 (UTC)
+	 MIME-Version; b=I3wmJV/bGEB7O7aivBP0iVsgROsRpLjxqM7gNh2piiIrh6jJD3b+kRdL85kJiofNRFa6HDnUGmcsT7+jzSf0UIUj/wzhmYG85h/0O3YP2DKYXWobCaRPSPby7ge6umkQ6Dao1Tp0ydzNGjzFkrGZWXSCZRTmYJv30BXPlJXUBxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMpWAiaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C04CC4CECD;
+	Tue, 12 Nov 2024 10:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408377;
-	bh=Ug6NTG0GazGnMETjYa/rn9I6dTY71fgeJvkcU1MF61g=;
+	s=korg; t=1731407474;
+	bh=S4rmLpUYsutORoL7XppGqHUb+011SSGrR+KvqCmb8Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLbZgZr8k9wkkoBpJbu/dFzZFIsPUJhKiDX+d5O/5a68yDv8ktAdf2e6NqmQFupD/
-	 jScQ73PnPIh7twgcXPwjbR2Q7WpZAtoadX5e5rRIgBda7H0I082uxHpn+63BhoX9F4
-	 EcaVKhUvF9lV9ZC2MrmHHA90dmmfYd+20HzacRtQ=
+	b=bMpWAiaIoSuhUJsZzs+Qk53WZT1i1r+HQ7oTOCBAVzVJdBegpcBUZJ4xwKl2Dh6TF
+	 TvOyyGQnxuAraGbCe7AIpY34OuoIP63k+sa0BJZenhmLdYS/erBWV9/HBGuO4SDjRn
+	 Oi+v5qVOl2fDDcdTl7Vy7WhJH2wxx4kuPxkG4o/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaowu Ding <xiaowu.ding@jaguarmicro.com>,
-	Angus Chen <angus.chen@jaguarmicro.com>,
-	Liu Peibao <loven.liu@jaguarmicro.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.11 144/184] i2c: designware: do not hold SCL low when I2C_DYNAMIC_TAR_UPDATE is not set
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 87/98] USB: serial: io_edgeport: fix use after free in debug printk
 Date: Tue, 12 Nov 2024 11:21:42 +0100
-Message-ID: <20241112101906.398423298@linuxfoundation.org>
+Message-ID: <20241112101847.564682788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Peibao <loven.liu@jaguarmicro.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8de3e97f3d3d62cd9f3067f073e8ac93261597db upstream.
+commit 37bb5628379295c1254c113a407cab03a0f4d0b4 upstream.
 
-When the Tx FIFO is empty and the last command has no STOP bit
-set, the master holds SCL low. If I2C_DYNAMIC_TAR_UPDATE is not
-set, BIT(13) MST_ON_HOLD of IC_RAW_INTR_STAT is not enabled,
-causing the __i2c_dw_disable() timeout. This is quite similar to
-commit 2409205acd3c ("i2c: designware: fix __i2c_dw_disable() in
-case master is holding SCL low"). Also check BIT(7)
-MST_HOLD_TX_FIFO_EMPTY in IC_STATUS, which is available when
-IC_STAT_FOR_CLK_STRETCH is set.
+The "dev_dbg(&urb->dev->dev, ..." which happens after usb_free_urb(urb)
+is a use after free of the "urb" pointer.  Store the "dev" pointer at the
+start of the function to avoid this issue.
 
-Fixes: 2409205acd3c ("i2c: designware: fix __i2c_dw_disable() in case master is holding SCL low")
-Co-developed-by: Xiaowu Ding <xiaowu.ding@jaguarmicro.com>
-Signed-off-by: Xiaowu Ding <xiaowu.ding@jaguarmicro.com>
-Co-developed-by: Angus Chen <angus.chen@jaguarmicro.com>
-Signed-off-by: Angus Chen <angus.chen@jaguarmicro.com>
-Signed-off-by: Liu Peibao <loven.liu@jaguarmicro.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 984f68683298 ("USB: serial: io_edgeport.c: remove dbg() usage")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-common.c |    6 ++++--
- drivers/i2c/busses/i2c-designware-core.h   |    1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/serial/io_edgeport.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-designware-common.c
-+++ b/drivers/i2c/busses/i2c-designware-common.c
-@@ -442,7 +442,7 @@ err_release_lock:
- void __i2c_dw_disable(struct dw_i2c_dev *dev)
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
+@@ -770,11 +770,12 @@ static void edge_bulk_out_data_callback(
+ static void edge_bulk_out_cmd_callback(struct urb *urb)
  {
- 	struct i2c_timings *t = &dev->timings;
--	unsigned int raw_intr_stats;
-+	unsigned int raw_intr_stats, ic_stats;
- 	unsigned int enable;
- 	int timeout = 100;
- 	bool abort_needed;
-@@ -450,9 +450,11 @@ void __i2c_dw_disable(struct dw_i2c_dev
- 	int ret;
+ 	struct edgeport_port *edge_port = urb->context;
++	struct device *dev = &urb->dev->dev;
+ 	int status = urb->status;
  
- 	regmap_read(dev->map, DW_IC_RAW_INTR_STAT, &raw_intr_stats);
-+	regmap_read(dev->map, DW_IC_STATUS, &ic_stats);
- 	regmap_read(dev->map, DW_IC_ENABLE, &enable);
+ 	atomic_dec(&CmdUrbs);
+-	dev_dbg(&urb->dev->dev, "%s - FREE URB %p (outstanding %d)\n",
+-		__func__, urb, atomic_read(&CmdUrbs));
++	dev_dbg(dev, "%s - FREE URB %p (outstanding %d)\n", __func__, urb,
++		atomic_read(&CmdUrbs));
  
--	abort_needed = raw_intr_stats & DW_IC_INTR_MST_ON_HOLD;
-+	abort_needed = (raw_intr_stats & DW_IC_INTR_MST_ON_HOLD) ||
-+			(ic_stats & DW_IC_STATUS_MASTER_HOLD_TX_FIFO_EMPTY);
- 	if (abort_needed) {
- 		if (!(enable & DW_IC_ENABLE_ENABLE)) {
- 			regmap_write(dev->map, DW_IC_ENABLE, DW_IC_ENABLE_ENABLE);
---- a/drivers/i2c/busses/i2c-designware-core.h
-+++ b/drivers/i2c/busses/i2c-designware-core.h
-@@ -117,6 +117,7 @@
- #define DW_IC_STATUS_RFNE			BIT(3)
- #define DW_IC_STATUS_MASTER_ACTIVITY		BIT(5)
- #define DW_IC_STATUS_SLAVE_ACTIVITY		BIT(6)
-+#define DW_IC_STATUS_MASTER_HOLD_TX_FIFO_EMPTY	BIT(7)
  
- #define DW_IC_SDA_HOLD_RX_SHIFT			16
- #define DW_IC_SDA_HOLD_RX_MASK			GENMASK(23, 16)
+ 	/* clean up the transfer buffer */
+@@ -784,8 +785,7 @@ static void edge_bulk_out_cmd_callback(s
+ 	usb_free_urb(urb);
+ 
+ 	if (status) {
+-		dev_dbg(&urb->dev->dev,
+-			"%s - nonzero write bulk status received: %d\n",
++		dev_dbg(dev, "%s - nonzero write bulk status received: %d\n",
+ 			__func__, status);
+ 		return;
+ 	}
 
 
 
