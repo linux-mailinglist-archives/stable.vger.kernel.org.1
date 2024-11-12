@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-92760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D639C55EC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E3D9C553C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCE8D2847D0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D875B3E629
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B075721C17F;
-	Tue, 12 Nov 2024 10:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074541F7793;
+	Tue, 12 Nov 2024 10:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tWvHKyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz8SaGqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E91721C17A;
-	Tue, 12 Nov 2024 10:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E8B3DAC0A;
+	Tue, 12 Nov 2024 10:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408500; cv=none; b=Vms0/Ifm+3Z6MblfDgQYi9zJoLLWbi/X22F5pm/g0YCfAB4rc/87eJnm9wUd9vRCYMupRzrE/4vWUDp73gt5C8XlXJ0k4Xpu4fffpK7p4wei0KXIaxPP8J+ZY6qDdpz6fWDG2MG3tR6e0Y1xaYtvRw2sk4pXWGBanLYDwx5Vy1M=
+	t=1731407889; cv=none; b=n/bBrUZpFzNAtGSXLaWp1sqGqgxRmXksBJxUYX/j+22RbKxv75MAdbvIOIh5Ot4sfGFbo70oCNV2Kf/ZyC8C6OWaHfF5aEBX1wbp9CnBCEvCNirBu2FEBpgMO1JVTsG49nAptIekCwO4L/RAKInO7NsOUKH2Gt+rT/CfH7ZUGs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408500; c=relaxed/simple;
-	bh=UU4qgRgAyUIptpNVzlqao+R4kD3KIcZfvrHplap8vAo=;
+	s=arc-20240116; t=1731407889; c=relaxed/simple;
+	bh=te3jFZO7O5noiNDzzpVMytHIm8OeoB4x0Z+jdTEM8Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1IBhjD7Dpddg/XacayPrVypA0L8pqJbNbTiaUtbdQdN20HQ+Q939ZjT7Mpedfd+twycBgaRF0cP8qyionf+WhHvhsEiFdhOQJldUc/rB4KdoLp15XLN9rhuMvY5dACsIYOZmZNl93XeroGNISir1j9vHQ/xNL8c1VerLFVRrH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tWvHKyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1B2C4CECD;
-	Tue, 12 Nov 2024 10:48:19 +0000 (UTC)
+	 MIME-Version; b=iTboTu5mUIQSBYZBgbhheCLeXDZJHmdUi+ncbXZtWTCAtHDVFgdw9b4OHp5ihLtaaO8MDS7aZNkZUxeYQMqUi0GfvVsU2LjMCSv71uf8r1zXnSGNsFGfwhFb5eB+64FRYvPepBN+ON/Xd2u/mvodrKqHAWjeRXau0NjkROSWr48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz8SaGqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC12C4CECD;
+	Tue, 12 Nov 2024 10:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408500;
-	bh=UU4qgRgAyUIptpNVzlqao+R4kD3KIcZfvrHplap8vAo=;
+	s=korg; t=1731407889;
+	bh=te3jFZO7O5noiNDzzpVMytHIm8OeoB4x0Z+jdTEM8Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tWvHKyuyaGcFMl1bnbsAJ1Tyz9e1Lzlb9KyjawTaDqo1j5Wi/aSiixBNVmK5yiLE
-	 MczW7YEaFJGiifakfNN9OoDn1Eh/tRYn57vt+EfLqkS5JqUiYV8d695VlbamoxN2EG
-	 2GFG0tpjnNqjDlCYdjeMxxgxFJnyu6DOAiMwUGW4=
+	b=Jz8SaGqKLCK4/dmwMUzdDDEQOK03ndTjThdbyX5zYMju0U3/N+j/wWN0O/Rhx8KHF
+	 IOjCjeEtwjww6pq2ymo8iXfTZ6uTUUMzup6vENuzL9evZpoBiAoiY+jrQP0jHCI2FZ
+	 n6M9Cw2x+miFZ6BikyTdmW2CSLqvc2kikamTND7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jagadeesh Kona <quic_jkona@quicinc.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Steev Klimaszewski <steev@kali.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.11 164/184] clk: qcom: videocc-sm8350: use HW_CTRL_TRIGGER for vcodec GDSCs
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 114/119] irqchip/gic-v3: Force propagation of the active state with a read-back
 Date: Tue, 12 Nov 2024 11:22:02 +0100
-Message-ID: <20241112101907.163241432@linuxfoundation.org>
+Message-ID: <20241112101853.073013530@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit f903663a8dcd6e1656e52856afbf706cc14cbe6d upstream.
+commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
 
-A recent change in the venus driver results in a stuck clock on the
-Lenovo ThinkPad X13s, for example, when streaming video in firefox:
+Christoffer reports that on some implementations, writing to
+GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
+issuing a deactivation of that interrupt via the system register interface.
 
-	video_cc_mvs0_clk status stuck at 'off'
-	WARNING: CPU: 6 PID: 2885 at drivers/clk/qcom/clk-branch.c:87 clk_branch_wait+0x144/0x15c
-	...
-	Call trace:
-	 clk_branch_wait+0x144/0x15c
-	 clk_branch2_enable+0x30/0x40
-	 clk_core_enable+0xd8/0x29c
-	 clk_enable+0x2c/0x4c
-	 vcodec_clks_enable.isra.0+0x94/0xd8 [venus_core]
-	 coreid_power_v4+0x464/0x628 [venus_core]
-	 vdec_start_streaming+0xc4/0x510 [venus_dec]
-	 vb2_start_streaming+0x6c/0x180 [videobuf2_common]
-	 vb2_core_streamon+0x120/0x1dc [videobuf2_common]
-	 vb2_streamon+0x1c/0x6c [videobuf2_v4l2]
-	 v4l2_m2m_ioctl_streamon+0x30/0x80 [v4l2_mem2mem]
-	 v4l_streamon+0x24/0x30 [videodev]
+There are multiple reasons to this:
 
-using the out-of-tree sm8350/sc8280xp venus support. [1]
+ - this uses an early write-acknoledgement memory type (nGnRE), meaning
+   that the write may only have made it as far as some interconnect
+   by the time the store is considered "done"
 
-Update also the sm8350/sc8280xp GDSC definitions so that the hw control
-mode can be changed at runtime as the venus driver now requires.
+ - the GIC itself is allowed to buffer the write until it decides to
+   take it into account (as long as it is in finite time)
 
-Fixes: ec9a652e5149 ("venus: pm_helpers: Use dev_pm_genpd_set_hwmode to switch GDSC mode on V6")
-Link: https://lore.kernel.org/lkml/20230731-topic-8280_venus-v1-0-8c8bbe1983a5@linaro.org/ # [1]
-Cc: Jagadeesh Kona <quic_jkona@quicinc.com>
-Cc: Taniya Das <quic_tdas@quicinc.com>
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>
+The effects are that the activation may not have taken effect by the time
+the kernel enters the guest, forcing an immediate exit, or that a guest
+deactivation occurs before the interrupt is active, doing nothing.
+
+In order to guarantee that the write to the ISACTIVER register has taken
+effect, read back from it, forcing the interconnect to propagate the write,
+and the GIC to process the write before returning the read.
+
+Reported-by: Christoffer Dall <christoffer.dall@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Christoffer Dall <christoffer.dall@arm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Link: https://lore.kernel.org/r/20240901093024.18841-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/videocc-sm8350.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/qcom/videocc-sm8350.c b/drivers/clk/qcom/videocc-sm8350.c
-index 5bd6fe3e1298..874d4da95ff8 100644
---- a/drivers/clk/qcom/videocc-sm8350.c
-+++ b/drivers/clk/qcom/videocc-sm8350.c
-@@ -452,7 +452,7 @@ static struct gdsc mvs0_gdsc = {
- 	.pd = {
- 		.name = "mvs0_gdsc",
- 	},
--	.flags = HW_CTRL | RETAIN_FF_ENABLE,
-+	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
- 	.pwrsts = PWRSTS_OFF_ON,
- };
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -468,6 +468,13 @@ static int gic_irq_set_irqchip_state(str
+ 	}
  
-@@ -461,7 +461,7 @@ static struct gdsc mvs1_gdsc = {
- 	.pd = {
- 		.name = "mvs1_gdsc",
- 	},
--	.flags = HW_CTRL | RETAIN_FF_ENABLE,
-+	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
- 	.pwrsts = PWRSTS_OFF_ON,
- };
+ 	gic_poke_irq(d, reg);
++
++	/*
++	 * Force read-back to guarantee that the active state has taken
++	 * effect, and won't race with a guest-driven deactivation.
++	 */
++	if (reg == GICD_ISACTIVER)
++		gic_peek_irq(d, reg);
+ 	return 0;
+ }
  
--- 
-2.47.0
-
 
 
 
