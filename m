@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013B19C5344
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0819C53A3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA121F236FA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F77D28441A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCBA2139B5;
-	Tue, 12 Nov 2024 10:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2E6213EEE;
+	Tue, 12 Nov 2024 10:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La4SAII1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiDDHyKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE320D4E3;
-	Tue, 12 Nov 2024 10:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB74170A3A;
+	Tue, 12 Nov 2024 10:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407081; cv=none; b=JTkk5j9c7TuqfVFuToTDfYuOVYS+UBoznxUeMsPwozgLbp1tZS8qPkhDD8Kj2xKq42UsU3AlB0o9RD8Xg6YS5SPlmXdtUZAHKEaT3gKRHSdDY6hB/6ZxU8yRE0gvFsFRsJm1zMa+bL5EdgquMi7UNG8vX7bz75DEug2Dc162s9g=
+	t=1731407363; cv=none; b=fnEUNuov4fNi6MaBHukgiGUiWGeXBXLQrxcg+0EpbmzCnDfi1BP8Gti7JcMZW+0LHi21u2QjpIOwC6AS4iMSmsTeqYdDpMru/U9Nh5NPAo0P/CGtZ9zydkCjFVHIplE6o7qxGpN55wKjYDTWpMAsTpNIrEsEbzLsYrQG+zwaAUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407081; c=relaxed/simple;
-	bh=X1Z1IEkHUbY+bKF4prBAG4ymXFPCHkru0dO4UtN/Y2U=;
+	s=arc-20240116; t=1731407363; c=relaxed/simple;
+	bh=v42vZgvRONYsAWWRzuL6rWLcaUHXfde/4O9U3NYQvQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Neog024OpS9/cJzxkWyfvfN8jpJ0jSOm0wzaI3/kfC0YVdS4WsLqrIbzsQYfeig2AxNouK7Oig2xJmh64+urirnmenZ+BE0zFzmqU9dq95NKz8cewYIoE1rGqE1Hy61W+goSP1Vlh60Oq/zM1DKUYGXbno2bOk7kSpmNmpnS2jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La4SAII1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B7C4CECD;
-	Tue, 12 Nov 2024 10:24:40 +0000 (UTC)
+	 MIME-Version; b=GIZ8wQHx7fDmMh0mMW3OXR9l5nkQca9qS4OlyKYLmSXRhmY/ZN7/g6Z3YiSvRphPy9m63qW5tYm++QVLLMcW8gDbYc8Ff8rL9+WabvDGmsFdZGDv8h4H3iDyEd2t+g8q7nMzZGEddDAVOg9QkStflivgcTDY/2YGNfsGjLf8wCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiDDHyKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295C4C4CECD;
+	Tue, 12 Nov 2024 10:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407081;
-	bh=X1Z1IEkHUbY+bKF4prBAG4ymXFPCHkru0dO4UtN/Y2U=;
+	s=korg; t=1731407363;
+	bh=v42vZgvRONYsAWWRzuL6rWLcaUHXfde/4O9U3NYQvQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=La4SAII1rvcf1QqP8AzDmKFw70eXcnwNR1YMDL9uHxZIwOtQAS5hCaFow0mxYJARU
-	 LpGeQs0iwkD7GLmCsONZVX30SglP9Ziw3BxvYWN7hTHWoglAsGwEcJpId+Wy6kC84I
-	 Ui5W/5hxXzJb2RBZ5IIKK3lVxsVWDA9bnbZV2ABg=
+	b=qiDDHyKYw01WB/U2/eJxb84JWz1papLgADVAdrzyutDxo7qwgcuqFLznK+DO3R6uY
+	 UhzZC3MP/J4kLHz3wIg4RL6M5WepQ7Ii5Rd6hHt+4PVTH8Rmr5OHXX/KCsdVY+YJrR
+	 i9+sOZgGlHWYjkZ7Z9wCFxafc48hzdpAnwXc97LU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.15 44/76] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 54/98] ksmbd: fix slab-use-after-free in smb3_preauth_hash_rsp
 Date: Tue, 12 Nov 2024 11:21:09 +0100
-Message-ID: <20241112101841.461553592@linuxfoundation.org>
+Message-ID: <20241112101846.325797643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 792227719725497ce10a8039803bec13f89f8910 upstream.
+commit b8fc56fbca7482c1e5c0e3351c6ae78982e25ada upstream.
 
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access.
+ksmbd_user_session_put should be called under smb3_preauth_hash_rsp().
+It will avoid freeing session before calling smb3_preauth_hash_rsp().
 
-Reproduce steps:
-
-1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
-   access to the dirty bitset (offset 0x80)
-
-dmsetup suspend cache
-dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
-  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc900000f3000, ffffc900000f5000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                     ^
-   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by making the index post-incremented.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/server.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2891,13 +2891,13 @@ static bool can_resize(struct cache *cac
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
- 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		new_size = to_cblock(from_cblock(new_size) + 1);
- 		if (is_dirty(cache, new_size)) {
- 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
- 			      cache_device_name(cache),
- 			      (unsigned long long) from_cblock(new_size));
- 			return false;
- 		}
-+		new_size = to_cblock(from_cblock(new_size) + 1);
- 	}
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -238,11 +238,11 @@ static void __handle_ksmbd_work(struct k
+ 	} while (is_chained == true);
  
- 	return true;
+ send:
+-	if (work->sess)
+-		ksmbd_user_session_put(work->sess);
+ 	if (work->tcon)
+ 		ksmbd_tree_connect_put(work->tcon);
+ 	smb3_preauth_hash_rsp(work);
++	if (work->sess)
++		ksmbd_user_session_put(work->sess);
+ 	if (work->sess && work->sess->enc && work->encrypted &&
+ 	    conn->ops->encrypt_resp) {
+ 		rc = conn->ops->encrypt_resp(work);
 
 
 
