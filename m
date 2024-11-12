@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-92596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D1D9C577C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3369C5820
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:45:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE3C1B41C55
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57DC2B34E4F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9737422EE7E;
-	Tue, 12 Nov 2024 10:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F6121765D;
+	Tue, 12 Nov 2024 10:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajQM3bAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nib+dnYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5329B22EE70;
-	Tue, 12 Nov 2024 10:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BA220E31D;
+	Tue, 12 Nov 2024 10:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407967; cv=none; b=mTi6N07kmn6LSHEeScJfGjFMF5HR7FmPggJyWV2ZkFf9Ip4nU+5bLqJ7QdCseEaDPVCI93bCdQknqhMSGLBR5zna2OgAiayQpBzyWNxx8WldfLzoRV9toD8zzwez8IHrUmxpo0KuwRc8yzx/Gjnj9CvoF3b9fqCsflNzbYSJUJI=
+	t=1731408113; cv=none; b=TzcZ/eFPzyorn89vTezDoSIu2JjKlUTNw0vhvE+SF4VQk1sr9xtx8lWflGf/rGI9sVBDI59SdnU+LDTIiocU87WacRxfzVJzC/alpIcL16xmeTwzEKU68orP+ZPzPNeLnoIDNsapg3mhiK14Kf38/e4iA9YsPgBkATh1FzCCPPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407967; c=relaxed/simple;
-	bh=sE0riKMpkD6jAtws+Py/DLDmNDaIYbbOi9PDV58L4Fg=;
+	s=arc-20240116; t=1731408113; c=relaxed/simple;
+	bh=LH2YYkfyEbi7DF3UOSoqzdHGhScENDCVZRVMPjxkmDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2ae5/XjmXT9vFxEyqpGQkGdDtbzVeUGPGfPwSCtpD0TiPyVDiJNFNJvLvxkiywDcePauM3HXcdz1j6+lJo7BtY8cmtN3oEME3Kl/RwHnT8OyL8JqfIUoL3ZIQJB+8PAoEIlzPkdq8DGbfmP77GiVJmSOJk2yqQ6A+6WAWJZg7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajQM3bAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF1DC4CECD;
-	Tue, 12 Nov 2024 10:39:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qZIaERM517C17a4F0oWjhBMX16s9YF0RK2aCKah0PZyvO2fTcb4bWaun+kHV0TgqyiXoBsT1ROPm9LnflaIQOJvyQ3//XyVStPSB9863/jGgbZuv/Mrzujxx/5QEQRZOhwrh6rJorqhCjREhvpFtT9JFEQd1uJytWEiNZbxPQwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nib+dnYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0296AC4CECD;
+	Tue, 12 Nov 2024 10:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407967;
-	bh=sE0riKMpkD6jAtws+Py/DLDmNDaIYbbOi9PDV58L4Fg=;
+	s=korg; t=1731408113;
+	bh=LH2YYkfyEbi7DF3UOSoqzdHGhScENDCVZRVMPjxkmDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajQM3bAw2aAiKsA16Y3HgqqFjvoy7tuO5qGHxeD2h+OaXv876xrW/mcS720n28v/F
-	 9mDH91uQfXxM8l0XNn5Uxiw/g2f2+lwpGFsB2t78fqwCYLbz4ja1y9OJsYODFaVEzy
-	 cdQBKw7F4eg2zAGUMCtGOySCAoE9P9VO9gUvMqOM=
+	b=Nib+dnYXEjFsB8RXo6TvQODFSbhFlhNL2dAooci0ses/LoOrcED2lAfq7XvEN+0Uf
+	 dWocZPodugTSjD/e6tUMqj4g2uh1nvq4vB/I0AJs8xEouhMZG0ViJ/3O8cpFdE4bdQ
+	 9Gcm6kKwSlLO0D5GM7tPCG5gxi6juaLOFqtNM4I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bostandzhyan <jin@mediatomb.cc>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 019/184] arm64: dts: rockchip: remove num-slots property from rk3328-nanopi-r2s-plus
-Date: Tue, 12 Nov 2024 11:19:37 +0100
-Message-ID: <20241112101901.607504978@linuxfoundation.org>
+Subject: [PATCH 6.11 032/184] HID: core: zero-initialize the report buffer
+Date: Tue, 12 Nov 2024 11:19:50 +0100
+Message-ID: <20241112101902.098990588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -61,44 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit b1f8d3b81d9289e171141a7120093ddefe7bd2f4 ]
+[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
 
-num-slots was not part of the dw-mmc binding and the last slipage of
-one of them seeping in from the vendor kernel was removed way back in
-2017. Somehow the nanopi-r2s-plus managed to smuggle another on in the
-kernel, so remove that as well.
+Since the report buffer is used by all kinds of drivers in various ways, let's
+zero-initialize it during allocation to make sure that it can't be ever used
+to leak kernel memory via specially-crafted report.
 
-Fixes: b8c028782922 ("arm64: dts: rockchip: Add DTS for FriendlyARM NanoPi R2S Plus")
-Cc: Sergey Bostandzhyan <jin@mediatomb.cc>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-9-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 27ce405039bf ("HID: fix data access in implement()")
+Reported-by: Benoît Sevens <bsevens@google.com>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/hid/hid-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
-index 3093f607f282e..4b9ced67742d2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
-@@ -24,7 +24,6 @@
- 	disable-wp;
- 	mmc-hs200-1_8v;
- 	non-removable;
--	num-slots = <1>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&emmc_clk &emmc_cmd &emmc_bus8>;
- 	status = "okay";
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 988d0acbdf04d..3fcf098f4f569 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1875,7 +1875,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
+ 
+ 	u32 len = hid_report_len(report) + 7;
+ 
+-	return kmalloc(len, flags);
++	return kzalloc(len, flags);
+ }
+ EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
+ 
 -- 
 2.43.0
 
