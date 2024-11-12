@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-92660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BBD9C5593
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AFE9C5328
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F8C1F21178
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74E831F229B0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01E82185AD;
-	Tue, 12 Nov 2024 10:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D184213124;
+	Tue, 12 Nov 2024 10:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHh/5umg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r773zbja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D30D212F1D;
-	Tue, 12 Nov 2024 10:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5E2123FF;
+	Tue, 12 Nov 2024 10:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408170; cv=none; b=p4sQqArBqkwgbkMzJQZRfn0GE5QRRPdxDmgqMbx/4Aj85eGgvNjPFYn5BFyAZFKZgptyl4SiEMviUXy1WuyaqMsWEPE0Fva2DL22sZJSCNHIjpVsb0PFXqmR1wwu8uxGuguqt9cVwZKviQZeWdcn71dNZhIpL75UoYpVvFh022I=
+	t=1731406980; cv=none; b=o09TBbU1eEwesqszfuCY30lsyzPddFzEqKUz9LHlCSqq5jSIQjyZGGr5KFQFBg3HFmPOaltdfRPmYmC25JVDwPzrV96F9L3omRe5LYEIU8no79b24p//1kbkObUtHY1p4lrjL8j5uybpHxVJ9KyTf7kuL/rHRlqQSsuG8MoqTnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408170; c=relaxed/simple;
-	bh=CnP/KTIy+tX7exKRa9EVxOA6SdCvuff4Wk/kfq4sYoc=;
+	s=arc-20240116; t=1731406980; c=relaxed/simple;
+	bh=yN1r+OM4IOkXrOUOcRgqAn98PrQ4G51Dh27HTvqCq3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8AxKsduOu7hPRuLWkX0LT+lT+sgM2NnXlD8cXG9Vc5SdUEQozr1eZSbkiin6S/mcGliiUJv1bSKbtp/RbHzP47MO4GT/KwZunx6np1R0GedcIqjmf0YCh4ObL5j1FU+nrQ79jYezMJy2erH9MxUOLB9R+qLO2fKqvadh1rcCnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHh/5umg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF160C4CECD;
-	Tue, 12 Nov 2024 10:42:49 +0000 (UTC)
+	 MIME-Version; b=YG4Z38tblWlChKIg/A1HPoDuQc8Ex3JuxI9MnLaai6lFE6IlcGg09WpSZeXRZ4m/oOnwD3DurVOyMWA1OxIE227CsA+h/at+M2RZj8Rc2CYO7JyRueMyxKOuDcbHPaX/F/roSBi2PGwldpQGvngbsJtZEIhhe/PglH6/9EOOpBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r773zbja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BD1C4CECD;
+	Tue, 12 Nov 2024 10:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408170;
-	bh=CnP/KTIy+tX7exKRa9EVxOA6SdCvuff4Wk/kfq4sYoc=;
+	s=korg; t=1731406980;
+	bh=yN1r+OM4IOkXrOUOcRgqAn98PrQ4G51Dh27HTvqCq3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHh/5umghYR2EmRQKzzWcxjXHxYzcSq0BxWXJfkJotPHbWGwUXQieUKLla8PgFU2h
-	 yhY6sgMZoKMt8IUvdTXGqEpfhksNhETql7WnXPh6v72xoXhXfpZJaTGJOPU3BdX4K3
-	 6o57SiveigldS8ojn/W0a/I9L0xQWwxAVScUacGs=
+	b=r773zbjaL3QSshy0p7sQvJPQ7X0At4jv6Hpse76GMwzXTWTPukOHp3V9gmt3C27sQ
+	 OiW5pU7H6LfGRCDYKAxLBh2EcQJQTXAs7lJK59JGVgb56aUb4NmGSn/aP6rmV7HZoa
+	 HOVj/6YMvNEYCS0QGqSXywK/05pIVjZZQtfomHgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.11 081/184] media: pulse8-cec: fix data timestamp at pulse8_setup()
-Date: Tue, 12 Nov 2024 11:20:39 +0100
-Message-ID: <20241112101903.968684081@linuxfoundation.org>
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 15/76] nfs: avoid i_lock contention in nfs_clear_invalid_mapping
+Date: Tue, 12 Nov 2024 11:20:40 +0100
+Message-ID: <20241112101840.362126459@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit ba9cf6b430433e57bfc8072364e944b7c0eca2a4 upstream.
+[ Upstream commit 867da60d463bb2a3e28c9235c487e56e96cffa00 ]
 
-As pointed by Coverity, there is a hidden overflow condition there.
-As date is signed and u8 is unsigned, doing:
+Multi-threaded buffered reads to the same file exposed significant
+inode spinlock contention in nfs_clear_invalid_mapping().
 
-	date = (data[0] << 24)
+Eliminate this spinlock contention by checking flags without locking,
+instead using smp_rmb and smp_load_acquire accordingly, but then take
+spinlock and double-check these inode flags.
 
-With a value bigger than 07f will make all upper bits of date
-0xffffffff. This can be demonstrated with this small code:
+Also refactor nfs_set_cache_invalid() slightly to use
+smp_store_release() to pair with nfs_clear_invalid_mapping()'s
+smp_load_acquire().
 
-<code>
-typedef int64_t time64_t;
-typedef uint8_t u8;
+While this fix is beneficial for all multi-threaded buffered reads
+issued by an NFS client, this issue was identified in the context of
+surprisingly low LOCALIO performance with 4K multi-threaded buffered
+read IO.  This fix dramatically speeds up LOCALIO performance:
 
-int main(void)
-{
-	u8 data[] = { 0xde ,0xad , 0xbe, 0xef };
-	time64_t date;
+before: read: IOPS=1583k, BW=6182MiB/s (6482MB/s)(121GiB/20002msec)
+after:  read: IOPS=3046k, BW=11.6GiB/s (12.5GB/s)(232GiB/20001msec)
 
-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Invalid data = 0x%08lx\n", date);
-
-	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Expected data = 0x%08lx\n", date);
-
-	return 0;
-}
-</code>
-
-Fix it by converting the upper bit calculation to unsigned.
-
-Fixes: cea28e7a55e7 ("media: pulse8-cec: reorganize function order")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17dfeb911339 ("NFS: Fix races in nfs_revalidate_mapping")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/pulse8/pulse8-cec.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/inode.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
-+++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-@@ -685,7 +685,7 @@ static int pulse8_setup(struct pulse8 *p
- 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
- 	if (err)
- 		return err;
--	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-+	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
- 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index edf59f809ded9..eb549a66a748e 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -212,12 +212,15 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
+ 		nfs_fscache_invalidate(inode);
+ 	flags &= ~(NFS_INO_REVAL_PAGECACHE | NFS_INO_REVAL_FORCED);
  
- 	dev_dbg(pulse8->dev, "Persistent config:\n");
+-	nfsi->cache_validity |= flags;
++	flags |= nfsi->cache_validity;
++	if (inode->i_mapping->nrpages == 0)
++		flags &= ~NFS_INO_INVALID_DATA;
+ 
+-	if (inode->i_mapping->nrpages == 0) {
+-		nfsi->cache_validity &= ~NFS_INO_INVALID_DATA;
+-		nfs_ooo_clear(nfsi);
+-	} else if (nfsi->cache_validity & NFS_INO_INVALID_DATA) {
++	/* pairs with nfs_clear_invalid_mapping()'s smp_load_acquire() */
++	smp_store_release(&nfsi->cache_validity, flags);
++
++	if (inode->i_mapping->nrpages == 0 ||
++	    nfsi->cache_validity & NFS_INO_INVALID_DATA) {
+ 		nfs_ooo_clear(nfsi);
+ 	}
+ 	trace_nfs_set_cache_invalid(inode, 0);
+@@ -1350,6 +1353,13 @@ int nfs_clear_invalid_mapping(struct address_space *mapping)
+ 					 nfs_wait_bit_killable, TASK_KILLABLE);
+ 		if (ret)
+ 			goto out;
++		smp_rmb(); /* pairs with smp_wmb() below */
++		if (test_bit(NFS_INO_INVALIDATING, bitlock))
++			continue;
++		/* pairs with nfs_set_cache_invalid()'s smp_store_release() */
++		if (!(smp_load_acquire(&nfsi->cache_validity) & NFS_INO_INVALID_DATA))
++			goto out;
++		/* Slow-path that double-checks with spinlock held */
+ 		spin_lock(&inode->i_lock);
+ 		if (test_bit(NFS_INO_INVALIDATING, bitlock)) {
+ 			spin_unlock(&inode->i_lock);
+-- 
+2.43.0
+
 
 
 
