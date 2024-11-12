@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-92342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C656A9C53A1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDD69C559F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6421F21224
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8286B28F0C0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D697213EDF;
-	Tue, 12 Nov 2024 10:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B6E218D6B;
+	Tue, 12 Nov 2024 10:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xndEgl7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in+H0txX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F81212D21;
-	Tue, 12 Nov 2024 10:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A8F214411;
+	Tue, 12 Nov 2024 10:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407343; cv=none; b=CetTO6w/nupEozfJRVlHMEtXfFz7Ggk+H0rsR19O5meKr4eOKMc0XPpu5e09+30taWqxH4fotDl7GsUzAYNcbJxwXYA/KwSUlHrBmG1dS+y+40Ml6hlTsxsGljRtS5fPtrK1f3iJp/EVb+zbu+CQGK1+M0nBbg2TDxY9CZrKd+M=
+	t=1731408219; cv=none; b=WX+coJ5uq9+Fg35AYdx3ti48iOqqmg04t6mwrgjAE4m/EUo/xyyUSHTcuOF8ayiH0K/0EbvSj37BDWK4Fw+NhIrh8Ifdg+lncbyB0XSINVlFaXd+2A0m2+dhxnB/2PmBDVNZjkLqccp1+AZSBovvp5jtKa85pf9e6vPpIMx5DpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407343; c=relaxed/simple;
-	bh=PicbhKi0hBxcnl7C81+IvFU/39sPKEWsqRAlGU+iock=;
+	s=arc-20240116; t=1731408219; c=relaxed/simple;
+	bh=jhezMph3gOdpz+xS/Iz/POpEfYnjY6M9wQYKhcVrG0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4i6uVbXWmI2tZ74xg5a694odt4gaJtbg8ZE838TpC3cbUJGx7HmUHrDNYyiT6rYAZKSTi5+Xwiy4FkjTqaiPp51YUlLjrKtxb36hSjC+7Io4s6OIZPUqIDOTMB8LfdZhlLyUtSHoO/yzd1F1bx1LEi7EJjsZ3O/mnJDXqnf5wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xndEgl7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32034C4CECD;
-	Tue, 12 Nov 2024 10:29:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g13/cRzQPROJjxv6MbvKi0xR9mdkZNRokTcqA92b9c3+cwmZ7izGBsTde4fF0oSWeHKHzgiF0fwshdChnfYEK4YM8K35TODXmrIArfnAekUS5LjPjvMwxEWwGzjJaQRl/ZzOjimkb1ap+hk7TLzZNPx0lHmevS0IPKXFnpPiKng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in+H0txX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01DAC4CECD;
+	Tue, 12 Nov 2024 10:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407343;
-	bh=PicbhKi0hBxcnl7C81+IvFU/39sPKEWsqRAlGU+iock=;
+	s=korg; t=1731408219;
+	bh=jhezMph3gOdpz+xS/Iz/POpEfYnjY6M9wQYKhcVrG0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xndEgl7Bxo6KlThNdWvmCIlXxi4z62mkEEdGKIrPbFb99QH477cUHcbhvTw3El89p
-	 k4CIde9qEo5lf88OLyho0qhyfKt51Z+xZbnnPsysb48O1HPmsXztfDBjiekRTepC7c
-	 y0oVPmjrVzSImlluzwvrVo4fqBVmHcexBncn08IA=
+	b=in+H0txX7vTpaWMD0d3PxAu/un7ROlN0iNRcYr8c2tlhcmV678eHp/llTybxcWyQ2
+	 G5yGjtSA26hUMqf+8LQO4/Fh+01b2pFlClsbc7qVBMmyweesrU2gZDTpBOG8gMUmx3
+	 7kUChjoCIy5P3Zv7RjWmSJOTGEEkM6YYPDn96ggU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/98] arm64: dts: rockchip: Fix LED triggers on rk3308-roc-cc
+	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 064/184] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
 Date: Tue, 12 Nov 2024 11:20:22 +0100
-Message-ID: <20241112101844.549478091@linuxfoundation.org>
+Message-ID: <20241112101903.320628868@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Jarosław Janik <jaroslaw.janik@gmail.com>
 
-[ Upstream commit 3a53a7187f41ec3db12cf4c2cb0db4ba87c2f3a1 ]
+commit c9363bbb0f68dd1ddb8be7bbfe958cdfcd38d851 upstream.
 
-There are two LEDs on the board, power and user events.
-Currently both are assigned undocumented IR(-remote)
-triggers that are probably only part of the vendor-kernel.
+Commit 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend /
+shutdown") mutes speakers on system shutdown or whenever HDA controller
+is suspended by PM; this however interacts badly with Thinkpad's ACPI
+firmware behavior which uses beeps to signal various events (enter/leave
+suspend or hibernation, AC power connect/disconnect, low battery, etc.);
+now those beeps are either muted altogether (for suspend/hibernate/
+shutdown related events) or work more or less randomly (eg. AC
+plug/unplug is only audible when you are playing music at the moment,
+because HDA device is likely in suspend mode otherwise).
 
-To make dtbs check happier, assign the power-led to a generic
-default-on trigger and the user led to the documented rc-feedback
-trigger that should mostly match its current usage.
+Since the original bug report mentioned in 4f61c8fe3520 complained about
+Lenovo's Thinkpad laptop - revert this commit altogether.
 
-Fixes: 4403e1237be3 ("arm64: dts: rockchip: Add devicetree for board roc-rk3308-cc")
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-8-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend / shutdown")
+Signed-off-by: Jarosław Janik <jaroslaw.janik@gmail.com>
+Link: https://patch.msgid.link/20241030171813.18941-2-jaroslaw.janik@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_conexant.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-index 7ea48167747c6..70aeca428b380 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-@@ -36,14 +36,14 @@
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -205,8 +205,6 @@ static void cx_auto_shutdown(struct hda_
+ {
+ 	struct conexant_spec *spec = codec->spec;
  
- 		power_led: led-0 {
- 			label = "firefly:red:power";
--			linux,default-trigger = "ir-power-click";
-+			linux,default-trigger = "default-on";
- 			default-state = "on";
- 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
- 		};
- 
- 		user_led: led-1 {
- 			label = "firefly:blue:user";
--			linux,default-trigger = "ir-user-click";
-+			linux,default-trigger = "rc-feedback";
- 			default-state = "off";
- 			gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_HIGH>;
- 		};
--- 
-2.43.0
-
+-	snd_hda_gen_shutup_speakers(codec);
+-
+ 	/* Turn the problematic codec into D3 to avoid spurious noises
+ 	   from the internal speaker during (and after) reboot */
+ 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
 
 
 
