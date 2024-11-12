@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A84C9C5584
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 849719C5568
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D018728EDF4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BD671F23B0B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578E920E31D;
-	Tue, 12 Nov 2024 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B13230980;
+	Tue, 12 Nov 2024 10:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtDLtBgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVldyUA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1542E213120;
-	Tue, 12 Nov 2024 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3317621744D;
+	Tue, 12 Nov 2024 10:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408123; cv=none; b=d6zf1+j/aa9olTNgiuw0WfqEe7x5HOgdRQao+1A7qJf4vGLXqbWTrGOc6izheHztGzOu/QMI2ahoFM26Hq3Sqf3waLXzYfo+55XfQ0PVQHdG5SBclEpQgPU5ygTZCzFhjXgsyr6mUogJUTXXNirnswmVwgJClVHxvJZO5b41Nlo=
+	t=1731408016; cv=none; b=DJnGT0lGeDKARzNgNKWMk5vcVgvbksxYI18UoOywyJTBW6gsnCCyJIaZtTLbwePewz4mbq4bMaY6mUrnQL/GSmfH5T/9KR8wjAacLThbwQ2YVc7KNw15w6qyxgMvRoyfWzW2wP5RY8cMhhq1de4l7q3btRSedhoIPo/rIVq+V6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408123; c=relaxed/simple;
-	bh=V90/5f0vM2WVnzWRMOczzYxGmJFmpzxybS/HsCY1m24=;
+	s=arc-20240116; t=1731408016; c=relaxed/simple;
+	bh=ccmC89so6d6cNW94E/YN2h/e0CO0C3ETc0eLjEDgyvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+oeH1VoxLM9VlWI30Zp5ZF5u2ibVq8PNhf4hF1vPZANTe79fJoc41Hj/iI9dZnkDrzXbMMCG4XNO4FULMrlniSdJSz/WQjo2thSnZa53Z/vimkO2BIo8pUXMCzIS0Zxl7ETYe/ZtvIIPoyv/5BbMKV9E2L77Ki3NIF3y78cP6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtDLtBgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C7C4CED6;
-	Tue, 12 Nov 2024 10:42:02 +0000 (UTC)
+	 MIME-Version; b=pnrc7EFnGwCMjAEsMVmOgVmLk6Ew+4tQLLyuXFuvXw3VToMKzuqGOfUwZdPtWnGMtoJmLh8lEWUW74P+6mmNkcG7bqQJm0scykyDkUndOv7q+McsCj6/XberDVCqpwZP3JWTFGeMIO059nVEepaq/o9SaLadkGi+hD7oQmXOieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVldyUA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7337DC4CECD;
+	Tue, 12 Nov 2024 10:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408123;
-	bh=V90/5f0vM2WVnzWRMOczzYxGmJFmpzxybS/HsCY1m24=;
+	s=korg; t=1731408015;
+	bh=ccmC89so6d6cNW94E/YN2h/e0CO0C3ETc0eLjEDgyvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtDLtBgbp0OG0Q6d0z7C+jJ23+NuVRxYMRyrdIzMTKlVrOC/6wuJmztmq6r6YyOeM
-	 UE0N1uOwVqx2EXC2XbKOlSwCOyH4AOJ4/mw/ELNTnSh8uF7TbrXzafKX1SOD3e8Zsa
-	 adodS0yFC8oSzbsuxRApSmgbv7LXNg6FeQ6qLE6g=
+	b=SVldyUA89/HTfjytPA6SQLBc8aFzohhONZMJS2WVM5mfOu9340lxCVdGvN1nLkylf
+	 PhIUYf4MXqpnuR6q86ZM/Xbj0VpNZ3JrO7MYxycbjyYqo/ORitW3NjXZXzJXerD822
+	 R6JQ3TNMAPDrQpTeI95o2aBOX8RyaQiq9COCO4iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingqing Zhou <quic_qqzhou@quicinc.com>,
-	Kuldeep Singh <quic_kuldsing@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Martijn Braam <martijn@brixit.nl>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 025/184] firmware: qcom: scm: Return -EOPNOTSUPP for unsupported SHM bridge enabling
-Date: Tue, 12 Nov 2024 11:19:43 +0100
-Message-ID: <20241112101901.833194343@linuxfoundation.org>
+Subject: [PATCH 6.11 026/184] arm64: dts: rockchip: remove orphaned pinctrl-names from pinephone pro
+Date: Tue, 12 Nov 2024 11:19:44 +0100
+Message-ID: <20241112101901.871917452@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -69,74 +69,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qingqing Zhou <quic_qqzhou@quicinc.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit f489f6c6eb26482010470d77bad3901a3de1b166 ]
+[ Upstream commit 3577d5e2bc1ff78808cbe2f233ae1837ee2ce84c ]
 
-When enabling SHM bridge, QTEE returns 0 and sets error 4 in result to
-qcom_scm for unsupported platforms. Currently, tzmem interprets this as
-an unknown error rather than recognizing it as an unsupported platform.
+The patch adding display support for the pinephone pro introduced two
+regulators that contain pinctrl-names props but no pinctrl-assignments.
 
-Error log:
-[    0.177224] qcom_scm firmware:scm: error (____ptrval____): Failed to enable the TrustZone memory allocator
-[    0.177244] qcom_scm firmware:scm: probe with driver qcom_scm failed with error 4
+Looks like someone forgot the pinctrl settings, so remove the orphans
+for now, until that changes.
 
-To address this, modify the function call qcom_scm_shm_bridge_enable()
-to remap result to indicate an unsupported error. This way, tzmem will
-correctly identify it as an unsupported platform case instead of
-reporting it as an error.
-
-Fixes: 178e19c0df1b ("firmware: qcom: scm: add support for SHM bridge operations")
-Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
-Co-developed-by: Kuldeep Singh <quic_kuldsing@quicinc.com>
-Signed-off-by: Kuldeep Singh <quic_kuldsing@quicinc.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Link: https://lore.kernel.org/r/20241022192148.1626633-1-quic_kuldsing@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 3e987e1f22b9 ("arm64: dts: rockchip: Add internal display support to rk3399-pinephone-pro")
+Cc: Martijn Braam <martijn@brixit.nl>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Ondrej Jirman <megi@xff.cz>
+Reviewed-by: Ondrej Jirman <megi@xff.cz>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-11-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index a50d8e8d0f1b8..6436bd09587a5 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -112,6 +112,7 @@ enum qcom_scm_qseecom_tz_cmd_info {
- };
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+index ef754ea30a940..855e0ca92270b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+@@ -167,7 +167,6 @@
+ 		regulator-max-microvolt = <1800000>;
+ 		vin-supply = <&vcc3v3_sys>;
+ 		gpio = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>;
+-		pinctrl-names = "default";
+ 	};
  
- #define QSEECOM_MAX_APP_NAME_SIZE		64
-+#define SHMBRIDGE_RESULT_NOTSUPP		4
+ 	/* MIPI DSI panel 2.8v supply */
+@@ -179,7 +178,6 @@
+ 		regulator-max-microvolt = <2800000>;
+ 		vin-supply = <&vcc3v3_sys>;
+ 		gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
+-		pinctrl-names = "default";
+ 	};
  
- /* Each bit configures cold/warm boot address for one of the 4 CPUs */
- static const u8 qcom_scm_cpu_cold_bits[QCOM_SCM_BOOT_MAX_CPUS] = {
-@@ -1353,6 +1354,8 @@ EXPORT_SYMBOL_GPL(qcom_scm_lmh_dcvsh_available);
- 
- int qcom_scm_shm_bridge_enable(void)
- {
-+	int ret;
-+
- 	struct qcom_scm_desc desc = {
- 		.svc = QCOM_SCM_SVC_MP,
- 		.cmd = QCOM_SCM_MP_SHM_BRIDGE_ENABLE,
-@@ -1365,7 +1368,15 @@ int qcom_scm_shm_bridge_enable(void)
- 					  QCOM_SCM_MP_SHM_BRIDGE_ENABLE))
- 		return -EOPNOTSUPP;
- 
--	return qcom_scm_call(__scm->dev, &desc, &res) ?: res.result[0];
-+	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+
-+	if (ret)
-+		return ret;
-+
-+	if (res.result[0] == SHMBRIDGE_RESULT_NOTSUPP)
-+		return -EOPNOTSUPP;
-+
-+	return res.result[0];
- }
- EXPORT_SYMBOL_GPL(qcom_scm_shm_bridge_enable);
- 
+ 	vibrator {
 -- 
 2.43.0
 
