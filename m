@@ -1,133 +1,121 @@
-Return-Path: <stable+bounces-92805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848769C5C06
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 16:36:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2688B9C5F01
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A56284915
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:36:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0CD8B3C2C2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4859D201117;
-	Tue, 12 Nov 2024 15:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83F443AA1;
+	Tue, 12 Nov 2024 14:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwTrH+G1"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Xu+Rt82N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms11p00im-qufo17281601.me.com (ms11p00im-qufo17281601.me.com [17.58.38.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06270201011;
-	Tue, 12 Nov 2024 15:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6B920126E
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 14:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731425808; cv=none; b=pJK+WF8jEa/qBVBBUMTZbYzowks4ZMn+HYzC92p6k6mZCkekNTMWrC7TVCG+MwPKd8msyUKK5SS/ccztOB+ahF3iIn3v6+Ab5ALL4o+H4uKW9LE/0E5KR6ebq+A2uhu5Bx7q0t1UNnLzGhzwDWYJEO+m3IYVyxre7sA/ZUd6VbY=
+	t=1731423518; cv=none; b=gvZoJHOXEpIcr/ji626OOAoZqXu4iU0IVX3wT90fcK4YaTiED4GLNCO7tYFzTU5dvjqpY2XjLwQVwb9hUEJdokHXUa+fUxZdaHRaWsblw5Rx9ejzg5ccM5hIvT584PbO93psSkFb90tEWCKxzeC1JM71cZSo9H3nXWoy6HQRGUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731425808; c=relaxed/simple;
-	bh=kMlXDmOWUKzRt5dKs6VeajTwf8T192AMUztsAE4cSR8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bcgKb6pIdT6Hxtwbt1nXx2kF9I9vkfaatcNqak0TOcdQm+cbqZKOxopQsxjfT9BLFSReaoRSbXBDe//UqohrkW7ZmyPNGKHyqSDAs/bFqa4Lv0241ps7lS53iMvEgQ1ZddsxJ4ldbO6je2P401TJ6sPoook95t8/lEhYP4CWeCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwTrH+G1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C4DC4CECD;
-	Tue, 12 Nov 2024 15:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731425807;
-	bh=kMlXDmOWUKzRt5dKs6VeajTwf8T192AMUztsAE4cSR8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DwTrH+G1idF+vu7kt7bAW1UZTwhhr3WIfAwE5SNwKz1lnxMqjesjq5NlBXp9Znc1+
-	 3iGSGKU1dy2tA1PI/X3oPKYlvXAYGl0yzdDq4+egcpM6UMUr2tw4mai6Fa3U+lR7kE
-	 VeabQ/Pt/uq+ZfcQp1PxYKF9vFWfd31vQTUJFNNSJDRJXgIcBsB/2+H+VBw1k0gF3R
-	 tbwtRdDBgWyRTh2NKAzfVMfDdnd0Ro4ks1sGXImP2HshKrotiRJQiJsqAqD71nDqNY
-	 4x3/x0yBc5jfk4aFb4zQ0yDDNnLpHsQyeV8Y6l9x0q8FbtFXu6Jed3Oo6kWDVREswz
-	 Dwj93il8qlMYw==
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	David Howells <dhowells@redhat.com>,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] iov_iter: fix copy_page_from_iter_atomic() for highmem
-Date: Tue, 12 Nov 2024 16:36:11 +0100
-Message-ID: <20241112-geregelt-hirte-ab810337e3c0@brauner>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1731423518; c=relaxed/simple;
+	bh=yRmtPN0TFHkU99Flp+fEchW2OsR8PBdDUPKHR2odiLQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M3kSKcILlj2QU9dV7intxJH2cLn9Y5oy6GPV4+XbiU43QGTsHPyYZzrizJQZzdMaT4MuEux8a+L9VEAkUaKp7M1fQdseeXAOlxKW7O1oK94F0/1y7Ri1pe042yQ8lfB2xjEashwSUhIO97e5yAhKazauIEd4zY+DVwhp0nix2ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Xu+Rt82N; arc=none smtp.client-ip=17.58.38.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1731423516;
+	bh=Eh44U3KL7qWcwQYFzXUwloAPncqESfrGkSg2LByutzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=Xu+Rt82NWGawAyXcrKqEmFdwZC5k+gTO5JOqa3bSrzaWqn1fFShXHLV9r6lg/9Yk2
+	 sT8svgev72ExV2fA/yzfehaNCzBJep1PkNN/M11mcVqFhNkx7cVxMhC6rVIV8FX+Q/
+	 KFMAyG+5dBouzUKoqcuKluy2wEAzynME2DsUpf0fNPj3ywBtxnpA0cJJrV/clGbUew
+	 uBLz5DFK/MdgYFRDmQCtSsridVTsz6g4T64oc7lgPIewyCNVHi2CG39q9UIEyS7w4H
+	 kxsGMUGacUM0O7tEwDQJVaZzRWVp3XdjlIcS7FZK00NSJvxCGkOplreNIF82YIvKy/
+	 kZBsCu+QqaEuw==
+Received: from [192.168.1.26] (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
+	by ms11p00im-qufo17281601.me.com (Postfix) with ESMTPSA id DD7FFAA00C9;
+	Tue, 12 Nov 2024 14:58:32 +0000 (UTC)
+Message-ID: <2682bae5-9ae6-4781-8d57-47587084a58f@icloud.com>
+Date: Tue, 12 Nov 2024 22:58:29 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2199; i=brauner@kernel.org; h=from:subject:message-id; bh=P/6/Ri9l3HPEWisxKk3LYAQbScVl0oRh/0ntUpxUuS4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQbl75bZZCYctHTWyigp0N2yxEuSb8PSuKb/nBKCGVMM njx8+/njlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImw5zL898lkaTw/5Un+y0OH p6y2NP84fcPtnhPJMjY3bXrzOIumxjIybNjSlt1n9qRim+0nxyn61QmMXG7nM4RMPVktb8/yYVz MBgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] PM: domains: Fix return value of API
+ dev_pm_get_subsys_data()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+ stable@vger.kernel.org
+References: <20241028-fix_dev_pm_get_subsys_data-v1-1-20385f4b1e17@quicinc.com>
+ <2024111257-collide-finalist-7a0c@gregkh>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <2024111257-collide-finalist-7a0c@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 0ab2Ysty0ejJwHjOS-IKdzmmv4mTLVK4
+X-Proofpoint-ORIG-GUID: 0ab2Ysty0ejJwHjOS-IKdzmmv4mTLVK4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-12_05,2024-11-12_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxscore=0 clxscore=1015 spamscore=0 mlxlogscore=905 phishscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2411120120
 
-When fixing copy_page_from_iter_atomic() in c749d9b7ebbc ("iov_iter: fix
-copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP") the check for
-PageHighMem() got moved out of the loop. If copy_page_from_iter_atomic()
-crosses page boundaries it will use a stale PageHighMem() check for an
-earlier page.
+On 2024/11/12 19:46, Greg Kroah-Hartman wrote:
+> On Mon, Oct 28, 2024 at 08:31:11PM +0800, Zijun Hu wrote:
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>> dev_pm_get_subsys_data() has below 2 issues under condition
+>> (@dev->power.subsys_data != NULL):
+>>
+>> - it will do unnecessary kzalloc() and kfree().
+> 
+> But that's ok, everything still works, right?
 
-Fixes: 908a1ad89466 ("iov_iter: Handle compound highmem pages in copy_page_from_iter_atomic()")
-Fixes: c749d9b7ebbc ("iov_iter: fix copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP")
-Cc: stable@vger.kernel.org
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
-Hey Linus,
+yes.
 
-I think the original fix was buggy but then again my knowledge of
-highmem isn't particularly detailed. Compile tested only. If correct, I
-would ask you to please apply it directly.
+> 
+>> - it will return -ENOMEM if the kzalloc() fails, that is wrong
+>>   since the kzalloc() is not needed.
+> 
+> But it's ok to return the proper error if the system is that broken.
 
-Thanks!
-Christian
----
- lib/iov_iter.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+IMO, the API should return 0 (success) instead of -ENOMEM since it does
+not need to do kzalloc().
 
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index 908e75a28d90..e90a5ababb11 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -457,12 +457,16 @@ size_t iov_iter_zero(size_t bytes, struct iov_iter *i)
- }
- EXPORT_SYMBOL(iov_iter_zero);
- 
-+static __always_inline bool iter_atomic_uses_kmap(struct page *page)
-+{
-+	return IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
-+	       PageHighMem(page);
-+}
-+
- size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
- 		size_t bytes, struct iov_iter *i)
- {
- 	size_t n, copied = 0;
--	bool uses_kmap = IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
--			 PageHighMem(page);
- 
- 	if (!page_copy_sane(page, offset, bytes))
- 		return 0;
-@@ -473,7 +477,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
- 		char *p;
- 
- 		n = bytes - copied;
--		if (uses_kmap) {
-+		if (iter_atomic_uses_kmap(page)) {
- 			page += offset / PAGE_SIZE;
- 			offset %= PAGE_SIZE;
- 			n = min_t(size_t, n, PAGE_SIZE - offset);
-@@ -484,7 +488,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
- 		kunmap_atomic(p);
- 		copied += n;
- 		offset += n;
--	} while (uses_kmap && copied != bytes && n > 0);
-+	} while (iter_atomic_uses_kmap(page) && copied != bytes && n > 0);
- 
- 	return copied;
- }
--- 
-2.45.2
+Different return value should impact caller's logic.
+
+> 
+>>
+>> Fixed by not doing kzalloc() and returning 0 for the condition.
+>>
+>> Fixes: ef27bed1870d ("PM: Reference counting of power.subsys_data")
+>> Cc: stable@vger.kernel.org
+> 
+> Why is this relevant for stable kernels?
+
+you can remove both Fix and stable tag directly if you like this change.(^^)
+
+> 
+> thanks,
+> 
+> greg k-h
 
 
