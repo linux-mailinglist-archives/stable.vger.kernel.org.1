@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D589C56C1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8127B9C561D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7985B39181
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:42:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA696B300F8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08471218D7A;
-	Tue, 12 Nov 2024 10:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5271621B426;
+	Tue, 12 Nov 2024 10:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfWRLfw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zm/N7y+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D00219C87;
-	Tue, 12 Nov 2024 10:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F68B20E307;
+	Tue, 12 Nov 2024 10:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407786; cv=none; b=NgTgHNzJUZ6aC6DoceInvnVH4BI04svrEsOqDcnab/GNv4wM0Ipkw2VoTaQizqB5hT0796jtwi1AeRBMhLg3lYCe90Du82YdqQc8biU5v6VG+/Cvci6KWOVoixE1g1QvTdGBZAFSBg4MURXaK1uaeT2wYphnETAhYn0/zFcWqFY=
+	t=1731408442; cv=none; b=dOZFGDX1jFdzLuqiiQBR0amCwwxXVB7gPwbje/EypSv+ovSyM+Lsq2cDWCtZUIyr+5eJCUkiXmfEIyUKE54Y1TPjdnK+NNq6giGlS9AfQtCOQW63oLqSFSAeTMFe7Gwx/GJOTJOLKJSg2QBVnghm9DOGhJOZri2AkHZVFiHWfYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407786; c=relaxed/simple;
-	bh=bWFKmbzhbxgSqAZG8ZdBa5juIyADcj7ESSh+Kz/en90=;
+	s=arc-20240116; t=1731408442; c=relaxed/simple;
+	bh=S0RXicJi/HoPDwsvlxX06mIilJHvnlJ0qW1O+eWDMBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKsef6h0ZPeFBHVu+ORZHm4JCKibz90U0kRTqOeAR1yTDJs7XV1Ro3L1mMwSY13dKOrhYGiftJT+ZC5LO+JUiUzvkmujjoX2cXuc00VKFP9y1qDJhoLDT2Ek+rbzzPh741cPD4paHruBRfJyYl38vGF/H1hHAHhIRLrEbwhCC9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfWRLfw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F24DC4CECD;
-	Tue, 12 Nov 2024 10:36:26 +0000 (UTC)
+	 MIME-Version; b=fEg7MRSZnaDhSVaPJcHYcvmnkp4B2xcIMNm9rmm6bnDVHniEc3HTlNRYCeZFk/CxSHVaahvNr+IG2qg5ZEQ+70AHPsdSWQuz5gTqDbvnz09e75XfOT2Ut8FeYaew99ymE+jm7YUpJrdEk00CILw5rFozEvJoCM5lSK3xy6GofBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zm/N7y+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89104C4CECD;
+	Tue, 12 Nov 2024 10:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407786;
-	bh=bWFKmbzhbxgSqAZG8ZdBa5juIyADcj7ESSh+Kz/en90=;
+	s=korg; t=1731408441;
+	bh=S0RXicJi/HoPDwsvlxX06mIilJHvnlJ0qW1O+eWDMBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfWRLfw9/5qf17l8aGzLSrM5mY2EbaIzSMl+8o4n8rSPxhed2ZwSPGLoVilxAw/Lq
-	 ddQY67APsiiaVeeIBBfobN6mSSS30XyuY6AgoUiO75bZXTCxVt7TvWfA/74uVhfcpe
-	 WaqKrIzq6i8xZZctey7x6Ru9KJHNa3mKLb3kSxlw=
+	b=Zm/N7y+L35QafO53Cc81LGv0cKfRYqKge4qIl0pNxi7vnsMok17qys+s2gGSzp8R0
+	 ShLory6ne4VBd0yO1K3h+9Qg0Ox3sFxzdp3TiIDVUyE53rbJLf3ZL2Jx0ZbOzPSCGa
+	 csp7vjDfIjFgrEcMTbB+knafcx9L8F3qKFfRHZlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.6 082/119] dm cache: correct the number of origin blocks to match the target length
+	Koichiro Den <koichiro.den@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.11 132/184] mm/slab: fix warning caused by duplicate kmem_cache creation in kmem_buckets_create
 Date: Tue, 12 Nov 2024 11:21:30 +0100
-Message-ID: <20241112101851.849880324@linuxfoundation.org>
+Message-ID: <20241112101905.933255618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Koichiro Den <koichiro.den@gmail.com>
 
-commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
+commit 9c9201afebea1efc7ea4b8f721ee18a05bb8aca1 upstream.
 
-When creating a cache device, the actual size of the cache origin might
-be greater than the specified cache target length. In such case, the
-number of origin blocks should match the cache target length, not the
-full size of the origin device, since access beyond the cache target is
-not possible. This issue occurs when reducing the origin device size
-using lvm, as lvreduce preloads the new cache table before resuming the
-cache origin, which can result in incorrect sizes for the discard bitset
-and smq hotspot blocks.
+Commit b035f5a6d852 ("mm: slab: reduce the kmalloc() minimum alignment
+if DMA bouncing possible") reduced ARCH_KMALLOC_MINALIGN to 8 on arm64.
+However, with KASAN_HW_TAGS enabled, arch_slab_minalign() becomes 16.
+This causes kmalloc_caches[*][8] to be aliased to kmalloc_caches[*][16],
+resulting in kmem_buckets_create() attempting to create a kmem_cache for
+size 16 twice. This duplication triggers warnings on boot:
 
-Reproduce steps:
+[    2.325108] ------------[ cut here ]------------
+[    2.325135] kmem_cache of name 'memdup_user-16' already exists
+[    2.325783] WARNING: CPU: 0 PID: 1 at mm/slab_common.c:107 __kmem_cache_create_args+0xb8/0x3b0
+[    2.327957] Modules linked in:
+[    2.328550] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5mm-unstable-arm64+ #12
+[    2.328683] Hardware name: QEMU QEMU Virtual Machine, BIOS 2024.02-2 03/11/2024
+[    2.328790] pstate: 61000009 (nZCv daif -PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[    2.328911] pc : __kmem_cache_create_args+0xb8/0x3b0
+[    2.328930] lr : __kmem_cache_create_args+0xb8/0x3b0
+[    2.328942] sp : ffff800083d6fc50
+[    2.328961] x29: ffff800083d6fc50 x28: f2ff0000c1674410 x27: ffff8000820b0598
+[    2.329061] x26: 000000007fffffff x25: 0000000000000010 x24: 0000000000002000
+[    2.329101] x23: ffff800083d6fce8 x22: ffff8000832222e8 x21: ffff800083222388
+[    2.329118] x20: f2ff0000c1674410 x19: f5ff0000c16364c0 x18: ffff800083d80030
+[    2.329135] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[    2.329152] x14: 0000000000000000 x13: 0a73747369786520 x12: 79646165726c6120
+[    2.329169] x11: 656820747563205b x10: 2d2d2d2d2d2d2d2d x9 : 0000000000000000
+[    2.329194] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+[    2.329210] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[    2.329226] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+[    2.329291] Call trace:
+[    2.329407]  __kmem_cache_create_args+0xb8/0x3b0
+[    2.329499]  kmem_buckets_create+0xfc/0x320
+[    2.329526]  init_user_buckets+0x34/0x78
+[    2.329540]  do_one_initcall+0x64/0x3c8
+[    2.329550]  kernel_init_freeable+0x26c/0x578
+[    2.329562]  kernel_init+0x3c/0x258
+[    2.329574]  ret_from_fork+0x10/0x20
+[    2.329698] ---[ end trace 0000000000000000 ]---
 
-1. create a cache device consists of 4096 origin blocks
+[    2.403704] ------------[ cut here ]------------
+[    2.404716] kmem_cache of name 'msg_msg-16' already exists
+[    2.404801] WARNING: CPU: 2 PID: 1 at mm/slab_common.c:107 __kmem_cache_create_args+0xb8/0x3b0
+[    2.404842] Modules linked in:
+[    2.404971] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.12.0-rc5mm-unstable-arm64+ #12
+[    2.405026] Tainted: [W]=WARN
+[    2.405043] Hardware name: QEMU QEMU Virtual Machine, BIOS 2024.02-2 03/11/2024
+[    2.405057] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    2.405079] pc : __kmem_cache_create_args+0xb8/0x3b0
+[    2.405100] lr : __kmem_cache_create_args+0xb8/0x3b0
+[    2.405111] sp : ffff800083d6fc50
+[    2.405115] x29: ffff800083d6fc50 x28: fbff0000c1674410 x27: ffff8000820b0598
+[    2.405135] x26: 000000000000ffd0 x25: 0000000000000010 x24: 0000000000006000
+[    2.405153] x23: ffff800083d6fce8 x22: ffff8000832222e8 x21: ffff800083222388
+[    2.405169] x20: fbff0000c1674410 x19: fdff0000c163d6c0 x18: ffff800083d80030
+[    2.405185] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[    2.405201] x14: 0000000000000000 x13: 0a73747369786520 x12: 79646165726c6120
+[    2.405217] x11: 656820747563205b x10: 2d2d2d2d2d2d2d2d x9 : 0000000000000000
+[    2.405233] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+[    2.405248] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[    2.405271] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+[    2.405287] Call trace:
+[    2.405293]  __kmem_cache_create_args+0xb8/0x3b0
+[    2.405305]  kmem_buckets_create+0xfc/0x320
+[    2.405315]  init_msg_buckets+0x34/0x78
+[    2.405326]  do_one_initcall+0x64/0x3c8
+[    2.405337]  kernel_init_freeable+0x26c/0x578
+[    2.405348]  kernel_init+0x3c/0x258
+[    2.405360]  ret_from_fork+0x10/0x20
+[    2.405370] ---[ end trace 0000000000000000 ]---
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+To address this, alias kmem_cache for sizes smaller than min alignment
+to the aligned sized kmem_cache, as done with the default system kmalloc
+bucket.
 
-2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
-
-dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup suspend cache
-dmsetup suspend corig
-dmsetup suspend cdata
-dmsetup suspend cmeta
-dmsetup resume corig
-dmsetup resume cdata
-dmsetup resume cmeta
-dmsetup resume cache
-
-3. shutdown the cache, and check the number of discard blocks in
-   superblock. The value is expected to be 2048, but actually is 4096.
-
-dmsetup remove cache corig cdata cmeta
-dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
-
-Fix by correcting the origin_blocks initialization in cache_create and
-removing the unused origin_sectors from struct cache_args accordingly.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: c6b4fcbad044 ("dm: add cache target")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Fixes: b32801d1255b ("mm/slab: Introduce kmem_buckets_create() and family")
+Cc: <stable@vger.kernel.org> # v6.11+
+Signed-off-by: Koichiro Den <koichiro.den@gmail.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/slab_common.c |   31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2007,7 +2007,6 @@ struct cache_args {
- 	sector_t cache_sectors;
- 
- 	struct dm_dev *origin_dev;
--	sector_t origin_sectors;
- 
- 	uint32_t block_size;
- 
-@@ -2088,6 +2087,7 @@ static int parse_cache_dev(struct cache_
- static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
- 			    char **error)
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -418,8 +418,11 @@ kmem_buckets *kmem_buckets_create(const
+ 				  unsigned int usersize,
+ 				  void (*ctor)(void *))
  {
-+	sector_t origin_sectors;
- 	int r;
++	unsigned long mask = 0;
++	unsigned int idx;
+ 	kmem_buckets *b;
+-	int idx;
++
++	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
  
- 	if (!at_least_one_arg(as, error))
-@@ -2100,8 +2100,8 @@ static int parse_origin_dev(struct cache
- 		return r;
+ 	/*
+ 	 * When the separate buckets API is not built in, just return
+@@ -441,7 +444,7 @@ kmem_buckets *kmem_buckets_create(const
+ 	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
+ 		char *short_size, *cache_name;
+ 		unsigned int cache_useroffset, cache_usersize;
+-		unsigned int size;
++		unsigned int size, aligned_idx;
+ 
+ 		if (!kmalloc_caches[KMALLOC_NORMAL][idx])
+ 			continue;
+@@ -454,10 +457,6 @@ kmem_buckets *kmem_buckets_create(const
+ 		if (WARN_ON(!short_size))
+ 			goto fail;
+ 
+-		cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
+-		if (WARN_ON(!cache_name))
+-			goto fail;
+-
+ 		if (useroffset >= size) {
+ 			cache_useroffset = 0;
+ 			cache_usersize = 0;
+@@ -465,18 +464,28 @@ kmem_buckets *kmem_buckets_create(const
+ 			cache_useroffset = useroffset;
+ 			cache_usersize = min(size - cache_useroffset, usersize);
+ 		}
+-		(*b)[idx] = kmem_cache_create_usercopy(cache_name, size,
++
++		aligned_idx = __kmalloc_index(size, false);
++		if (!(*b)[aligned_idx]) {
++			cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
++			if (WARN_ON(!cache_name))
++				goto fail;
++			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
+ 					0, flags, cache_useroffset,
+ 					cache_usersize, ctor);
+-		kfree(cache_name);
+-		if (WARN_ON(!(*b)[idx]))
+-			goto fail;
++			kfree(cache_name);
++			if (WARN_ON(!(*b)[aligned_idx]))
++				goto fail;
++			set_bit(aligned_idx, &mask);
++		}
++		if (idx != aligned_idx)
++			(*b)[idx] = (*b)[aligned_idx];
  	}
  
--	ca->origin_sectors = get_dev_size(ca->origin_dev);
--	if (ca->ti->len > ca->origin_sectors) {
-+	origin_sectors = get_dev_size(ca->origin_dev);
-+	if (ca->ti->len > origin_sectors) {
- 		*error = "Device size larger than cached device";
- 		return -EINVAL;
- 	}
-@@ -2411,7 +2411,7 @@ static int cache_create(struct cache_arg
+ 	return b;
  
- 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
- 
--	origin_blocks = cache->origin_sectors = ca->origin_sectors;
-+	origin_blocks = cache->origin_sectors = ti->len;
- 	origin_blocks = block_div(origin_blocks, ca->block_size);
- 	cache->origin_blocks = to_oblock(origin_blocks);
+ fail:
+-	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++)
++	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
+ 		kmem_cache_destroy((*b)[idx]);
+ 	kfree(b);
  
 
 
