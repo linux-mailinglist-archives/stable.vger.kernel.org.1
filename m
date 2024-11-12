@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-92702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3545C9C55B7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10179C5353
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF16B28EE9B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5875E287D45
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B493B20EA23;
-	Tue, 12 Nov 2024 10:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9316213129;
+	Tue, 12 Nov 2024 10:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np4kUpgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CPwkdLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCA1219CA1;
-	Tue, 12 Nov 2024 10:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E942123D9;
+	Tue, 12 Nov 2024 10:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408310; cv=none; b=K4207P7q3aAu7tKUt12WIvdb9SX9l4ECcUaGVbwWAjj5ZMTWDFg5y9EFunxgTYaZLzpehr9sORg+pS2447kcGvzXmtnEK2o6Qi76oaWHGstfetKtom6LKFAs8dbIjYhO3ZQPZds6LFJ42hMyxoLveaFchZEN2xcrpxthTFOINY4=
+	t=1731407125; cv=none; b=RguuQ1WuOGlF29OlaTtf1p0mZG4SMIBdA7BqLzhgkcloNL8F+57Ds1hfZO7IszrlwyHm1U/EvdSLVjfbR0v9nnIAQ9TZJFY+JEMdcrv2TVPmzG14wqE11J2jeLQ1f4LCX2lAXJvZSkhHEuiBltrtFjiJAnk032CDXoZaz51CGJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408310; c=relaxed/simple;
-	bh=OEeVy9XabaFem20dzXpojZHfHiygc3PCa2a8SSm8f1Q=;
+	s=arc-20240116; t=1731407125; c=relaxed/simple;
+	bh=R/QoWX9dngFQ+fsGWQDKXJnkr/9QxlVftwIZSniTAlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geXBfvhyvcE0FJ12+23rCX6yLVwW2hRowqqIVPfHsjfKK4Eu+v/1329+OAvh4JN6TAlnMmXdFGuc6grM/gSi5tqw4PanwgKD3iI9qvGLYu9mvd8dqxao/lhboV6gGCS6yOb7Qe7mdKJ5cykkDgqrfeBJl9fOPjpZdCHMyLeMvIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np4kUpgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59BEC4CED6;
-	Tue, 12 Nov 2024 10:45:09 +0000 (UTC)
+	 MIME-Version; b=GlPPf9uZooRi+SE/BhB1716QicJcHyKAd34nq1grXi72NTLxVOJcTirYwMrDDKa8nkWLlQwjCMuJTmZvl2wCOaL8311fcJhR6m9/mPzGqKO8eSJjL1imdpXcZwy0xz/ovmnkcgkkq3a9WXwFuRPYOH84ERrpMjX6QWxYiXIz2Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CPwkdLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C01C4CECD;
+	Tue, 12 Nov 2024 10:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408310;
-	bh=OEeVy9XabaFem20dzXpojZHfHiygc3PCa2a8SSm8f1Q=;
+	s=korg; t=1731407124;
+	bh=R/QoWX9dngFQ+fsGWQDKXJnkr/9QxlVftwIZSniTAlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Np4kUpgMO6umHRcKZmSifThwy814ErV98WiYCxzv6Y4DNQfvX+x/3DeOdR8M1G+yc
-	 jF76UKOR7rZSqg1VgHparyGa+9rE0ia6McHFqWCm2boERVH11BbjQiqFYc48U68OJd
-	 vIPRk/jFDXt83KudGk/J6j97MtrPtChSBH0paxno=
+	b=2CPwkdLBSv7QQE5jW+HWg+DLJaeCjgafcpUh+T7A5kIRn3hTqVDFy3RloEaegHb2P
+	 be+Xk5aw9O0Wf4gaYngCYw9Nz94Dzv+zy88QtZMgDKYux0Svlx9qCqjjsnsukkh4Qb
+	 AjDgXRKZdvokka8KzjBzcYf9TmsS9F6tbyNiOYZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.11 123/184] scsi: ufs: core: Start the RTC update work later
+	syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Randy MacLeod <Randy.MacLeod@windriver.com>
+Subject: [PATCH 5.15 56/76] net: bridge: xmit: make sure we have at least eth header len bytes
 Date: Tue, 12 Nov 2024 11:21:21 +0100
-Message-ID: <20241112101905.586328610@linuxfoundation.org>
+Message-ID: <20241112101841.915611177@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-commit 54c814c8b23bc7617be3d46abdb896937695dbfa upstream.
+commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc upstream.
 
-The RTC update work involves runtime resuming the UFS controller. Hence,
-only start the RTC update work after runtime power management in the UFS
-driver has been fully initialized. This patch fixes the following kernel
-crash:
+syzbot triggered an uninit value[1] error in bridge device's xmit path
+by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
+we can actually pull that amount instead of assuming.
 
-Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
-Workqueue: events ufshcd_rtc_work
-Call trace:
- _raw_spin_lock_irqsave+0x34/0x8c (P)
- pm_runtime_get_if_active+0x24/0x9c (L)
- pm_runtime_get_if_active+0x24/0x9c
- ufshcd_rtc_work+0x138/0x1b4
- process_one_work+0x148/0x288
- worker_thread+0x2cc/0x3d4
- kthread+0x110/0x114
- ret_from_fork+0x10/0x20
+Tested with dropwatch:
+ drop at: br_dev_xmit+0xb93/0x12d0 [bridge] (0xffffffffc06739b3)
+ origin: software
+ timestamp: Mon May 13 11:31:53 2024 778214037 nsec
+ protocol: 0x88a8
+ length: 2
+ original length: 2
+ drop reason: PKT_TOO_SMALL
 
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Closes: https://lore.kernel.org/linux-scsi/0c0bc528-fdc2-4106-bc99-f23ae377f6f5@linaro.org/
-Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-Cc: Bean Huo <beanhuo@micron.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241031212632.2799127-1-bvanassche@acm.org
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[1]
+BUG: KMSAN: uninit-value in br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+ xmit_one net/core/dev.c:3531 [inline]
+ dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
+ __dev_queue_xmit+0x34db/0x5350 net/core/dev.c:4341
+ dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+ __bpf_tx_skb net/core/filter.c:2136 [inline]
+ __bpf_redirect_common net/core/filter.c:2180 [inline]
+ __bpf_redirect+0x14a6/0x1620 net/core/filter.c:2187
+ ____bpf_clone_redirect net/core/filter.c:2460 [inline]
+ bpf_clone_redirect+0x328/0x470 net/core/filter.c:2432
+ ___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
+ __bpf_prog_run512+0xb5/0xe0 kernel/bpf/core.c:2238
+ bpf_dispatcher_nop_func include/linux/bpf.h:1234 [inline]
+ __bpf_prog_run include/linux/filter.h:657 [inline]
+ bpf_prog_run include/linux/filter.h:664 [inline]
+ bpf_test_run+0x499/0xc30 net/bpf/test_run.c:425
+ bpf_prog_test_run_skb+0x14ea/0x1f20 net/bpf/test_run.c:1058
+ bpf_prog_test_run+0x6b7/0xad0 kernel/bpf/syscall.c:4269
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5678
+ __do_sys_bpf kernel/bpf/syscall.c:5767 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5765 [inline]
+ __x64_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5765
+ x64_sys_call+0x96b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Randy MacLeod <Randy.MacLeod@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/bridge/br_device.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8641,6 +8641,14 @@ static int ufshcd_add_lus(struct ufs_hba
- 		ufshcd_init_clk_scaling_sysfs(hba);
- 	}
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -38,6 +38,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *
+ 	const unsigned char *dest;
+ 	u16 vid = 0;
  
-+	/*
-+	 * The RTC update code accesses the hba->ufs_device_wlun->sdev_gendev
-+	 * pointer and hence must only be started after the WLUN pointer has
-+	 * been initialized by ufshcd_scsi_add_wlus().
-+	 */
-+	schedule_delayed_work(&hba->ufs_rtc_update_work,
-+			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
++	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
++		kfree_skb(skb);
++		return NETDEV_TX_OK;
++	}
 +
- 	ufs_bsg_probe(hba);
- 	scsi_scan_host(hba->host);
+ 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
  
-@@ -8800,8 +8808,6 @@ static int ufshcd_device_init(struct ufs
- 	ufshcd_force_reset_auto_bkops(hba);
- 
- 	ufshcd_set_timestamp_attr(hba);
--	schedule_delayed_work(&hba->ufs_rtc_update_work,
--			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
- 
- 	/* Gear up to HS gear if supported */
- 	if (hba->max_pwr_info.is_valid) {
+ 	rcu_read_lock();
 
 
 
