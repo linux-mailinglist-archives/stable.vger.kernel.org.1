@@ -1,135 +1,110 @@
-Return-Path: <stable+bounces-92757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185559C580F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:43:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C099C5777
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 185E5B28D36
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECC4CB3AF00
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E529521C16E;
-	Tue, 12 Nov 2024 10:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1272121F4B0;
+	Tue, 12 Nov 2024 10:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIiM6e1w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEmfR70P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A116621B45B;
-	Tue, 12 Nov 2024 10:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C129E21F4A8;
+	Tue, 12 Nov 2024 10:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408490; cv=none; b=LexxAJ15zigg7uANaO2NYSvGyuhhJtpAeXfnsKWu1QlQGqoGgoq3NI0reCocRtg/od4AtzUoz30EAcbJZGoVBZvmaGamHMLCKOCDucQD4fETf3N8RXc04v25OA+xrSSudytq4pKRUNzOjYgG+VAJXLDkpXqo+uQsk0ejMyLdjCg=
+	t=1731407825; cv=none; b=CjJb1TH1MxK5dBGNf19BanBZH89nc64IE5naYeryc4lr/QQ5//pSfEOaXrXUWd4RfnJbesyPx3NCu0tAlhZ29ponlb+sKnI1mx8OZO7jKKzVRxUtC6CKthmDwOmAcZRQLmv16lMB72pp3Dn/R1ngEVzPAqCu3EfKCXUQfgep7V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408490; c=relaxed/simple;
-	bh=K2Nz6eOKyPslq2VWy5/gWEb0u1m+Lwn9bBYYPKbS5rg=;
+	s=arc-20240116; t=1731407825; c=relaxed/simple;
+	bh=gAEZS/3PgnLxe2AEnAzYsgWFUX6ph7baMJLD1F4z5E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FUoatZ7TLmHp9RUn+m2UncK92TLxdjc/l/EwQk2OyZEyrjPZMd6EYdCQ78pgVCcpSqSNAHg/eHSeMpnC3M2INdhcUKWt9xh0ipNsCRQ5fY/rDeFaT+2b6rVKjtS+m99n9h7YuZ51W9kuTqjGFUcKBMBL29sH3ewNoNemrW5mEGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIiM6e1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2A1C4CECD;
-	Tue, 12 Nov 2024 10:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408490;
-	bh=K2Nz6eOKyPslq2VWy5/gWEb0u1m+Lwn9bBYYPKbS5rg=;
+	 MIME-Version; b=TdvR0sMoCDuPoxeZkqgdfLseDMV+2pbKKYRj39ByiU8XKCxhxbsOe8eoEzwjV+8/uadjQ/UzoPVe6D0HyWkTDNT1JE1att6MNioDLEDD9ziUT5OYS9QqST27QkGphkUFTDGuQaL8YkxewAFtvb4oNbjsRfVtZaEm0ZpnVK/cp1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEmfR70P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FEAC4CECD;
+	Tue, 12 Nov 2024 10:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731407825;
+	bh=gAEZS/3PgnLxe2AEnAzYsgWFUX6ph7baMJLD1F4z5E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIiM6e1w+1DOISHO8Ncdue3ZrgdBeof9j0CporL1RKJ8P7FNIgUuEZaGPbIyfCORp
-	 kKXHD2A5xLeuqTM2CSqA8aylp97wBMxtg/9tNlJYzaRUwa89ecRKB5pybS1dMCpDwo
-	 h4qQouHXBpNWYi6u5WgSC87o1ePp/5IuRwZLK4QA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 179/184] drm/xe/ufence: Flush xe ordered_wq in case of ufence timeout
-Date: Tue, 12 Nov 2024 11:22:17 +0100
-Message-ID: <20241112101907.731215004@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=tEmfR70P9yvPGaHIdbs6tQRmlPMXx1gArFDlVHUknPZWqr+oltqckfePoLeGa1K99
+	 tzeM9qoV2tyfoKyRMFByvqXOHXbHF4BvLSn1wAyR7bN4+5pdxEfZ1lDcbMZq+h0+b8
+	 SZJQfCGU3+nBv/Zsab/3HJHQuWA8PwRGPmyVHzXYADDK4apGIeHQYJUr3IF7YvD/Pr
+	 By3v2ksS9KaleSHoTnW56vK3YakDGykgl3u10KJ+E0Yl5sf4AuZj1cbnsOBEVeyKq8
+	 Ma4TF3UQvTokDjUqfp9uqqUHZmLtysmbSpttN9DmnySKv2WRp6DmtXL1nf5DJHye/A
+	 p1BIF/ez1lLqw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Markus Petri <mp@mpetri.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	mario.limonciello@amd.com,
+	end.to.start@mail.ru,
+	me@jwang.link,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 11/15] ASoC: amd: yc: Support dmic on another model of Lenovo Thinkpad E14 Gen 6
+Date: Tue, 12 Nov 2024 05:36:32 -0500
+Message-ID: <20241112103643.1653381-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241112103643.1653381-1-sashal@kernel.org>
+References: <20241112103643.1653381-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.60
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+From: Markus Petri <mp@mpetri.org>
 
-------------------
+[ Upstream commit 8c21e40e1e481f7fef6e570089e317068b972c45 ]
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+Another model of Thinkpad E14 Gen 6 (21M4)
+needs a quirk entry for the dmic to be detected.
 
-[ Upstream commit 7d1e2580ed166f36949b468373b468d188880cd3 ]
-
-Flush xe ordered_wq in case of ufence timeout which is observed
-on LNL and that points to recent scheduling issue with E-cores.
-
-This is similar to the recent fix:
-commit e51527233804 ("drm/xe/guc/ct: Flush g2h worker in case of g2h
-response timeout") and should be removed once there is a E-core
-scheduling fix for LNL.
-
-v2: Add platform check(Himal)
-    s/__flush_workqueue/flush_workqueue(Jani)
-v3: Remove gfx platform check as the issue related to cpu
-    platform(John)
-v4: Use the Common macro(John) and print when the flush resolves
-    timeout(Matt B)
-
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2754
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241029120117.449694-2-nirmoy.das@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 38c4c8722bd74452280951edc44c23de47612001)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Markus Petri <mp@mpetri.org>
+Link: https://patch.msgid.link/20241107094020.1050935-1-mp@localhost
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_wait_user_fence.c | 7 +++++++
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-index 92f65b9c52801..2bff43c5962e0 100644
---- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
-+++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-@@ -155,6 +155,13 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index e027bc1d35f4f..f5ca5bdb364c7 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -227,6 +227,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21M3"),
  		}
- 
- 		if (!timeout) {
-+			LNL_FLUSH_WORKQUEUE(xe->ordered_wq);
-+			err = do_compare(addr, args->value, args->mask,
-+					 args->op);
-+			if (err <= 0) {
-+				drm_dbg(&xe->drm, "LNL_FLUSH_WORKQUEUE resolved ufence timeout\n");
-+				break;
-+			}
- 			err = -ETIME;
- 			break;
- 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M4"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
-
-
 
 
