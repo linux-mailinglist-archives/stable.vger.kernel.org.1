@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-92667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79299C5599
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8529C559A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D70828F0E4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C948B1F2157F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB05218947;
-	Tue, 12 Nov 2024 10:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E594D213142;
+	Tue, 12 Nov 2024 10:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XG192Rys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p14AW6/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7C3218927;
-	Tue, 12 Nov 2024 10:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F6021894A;
+	Tue, 12 Nov 2024 10:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408193; cv=none; b=a1Mkb3W8C06LZGUMhz9hhEXeXpui6Nts/EUHVKb9EdW0FAgdxpd+Zn4ZmTNtHU++xZirXxnF/jdQDFDI9rkaKvbRug6c1r5N+KsE6nmDRV1v87mcxnxb28KolTw2AED3iVzavzD+zzchVRjYFttFZyrXYkxCgppsX+jk5C5sg6s=
+	t=1731408199; cv=none; b=f02Pn0k7r6rgzaMh1/6pvhI4XlnnfnntzDmpqpADf9s7YEwQ3g5R0Ja4vCgfN9WB3ptl3av3Qa1if6960zvwyZURqW9CMJpI/kkEpAUW8lPgLJNooHJD1fppBs6jlDxjJwdLbeF+lg4n/P42ayzAYbCADWmm0AZNxI7JESoUzMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408193; c=relaxed/simple;
-	bh=BDOqnn/PE2WGx59dZgGeMGkjTj5I685o7cJHsyI3aqM=;
+	s=arc-20240116; t=1731408199; c=relaxed/simple;
+	bh=8+hBto+PJu14FOudWVTO8FG8W3R83wSWgW8t1A0GRV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ptIIvnrWluka40VDf+r6KH1KSR/D4FCh2d+ZIsPFoD6NgyJ56eqfhdb8puhpnzQrtWrJoOS24ert5Rj6OeL2S0NzOaNnxeB5ifMkVAtVTpk4mz9/TWw1M4Fna7V1y4qdbaLS1/ZljQpHoKV6J6leVrhfs5rzVM2O4PAoMdRbiFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XG192Rys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6828BC4CECD;
-	Tue, 12 Nov 2024 10:43:12 +0000 (UTC)
+	 MIME-Version; b=LoBS1AfFoLroWYykIFbgBvyYz/5YaFHCdL+KIjydwVNaH1mwMW7nchBdz8fs8dRqOEnBwtgIZ8yRRK9tsI4AAZQ7Wzb60UuUd2ADb9PegHHJGItGOGSMl3EOKFrip05S5tF0PyKVuSpO993hhe12PjHhu8u58YYbpyj5bLHHmCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p14AW6/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12595C4CECD;
+	Tue, 12 Nov 2024 10:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408193;
-	bh=BDOqnn/PE2WGx59dZgGeMGkjTj5I685o7cJHsyI3aqM=;
+	s=korg; t=1731408199;
+	bh=8+hBto+PJu14FOudWVTO8FG8W3R83wSWgW8t1A0GRV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XG192Rys1t2M27uIeeV/rzb2neCRa9p4DSuByXrvaH9hwQU25yNbzGh6g28BQMFrz
-	 PBARry49l7LDMIYCsPEzmlnvUTGIlyiTDNMJ+bSvJJmc2m5uP8/qvrYxdFAeylu2yr
-	 ulEd/rmMzG3v1p+S1Dvfc1535R7xnY0uu5S+zcwk=
+	b=p14AW6/YQ7BOYEy+s28mfoLTKUll9lh6IPsXMg8I3FxT/SsClSyhmec0PzQ40ynOd
+	 adnVNFgkQGATtxUW6x2JQulKtULmEbw/6mD97POW0LIOFh7wwNjfZp89aIDRaZikIA
+	 EtSdlko2rY9yv7QwttvhAgVjK6HaeQSJt64CJ2dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.11 088/184] can: {cc770,sja1000}_isa: allow building on x86_64
-Date: Tue, 12 Nov 2024 11:20:46 +0100
-Message-ID: <20241112101904.235920877@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.11 089/184] ksmbd: fix slab-use-after-free in ksmbd_smb2_session_create
+Date: Tue, 12 Nov 2024 11:20:47 +0100
+Message-ID: <20241112101904.274189939@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -59,63 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 7b22846f8af5ab2f267de9eb209fb1835ee9978c upstream.
+commit 0a77715db22611df50b178374c51e2ba0d58866e upstream.
 
-The ISA variable is only defined if X86_32 is also defined. However,
-these drivers are still useful and in use on at least some modern 64-bit
-x86 industrial systems as well. With the correct module parameters, they
-work as long as IO port communication is possible, despite their name
-having ISA in them.
+There is a race condition between ksmbd_smb2_session_create and
+ksmbd_expire_session. This patch add missing sessions_table_lock
+while adding/deleting session from global session table.
 
-Fixes: a29689e60ed3 ("net: handle HAS_IOPORT dependencies")
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Link: https://patch.msgid.link/20240919174151.15473-2-tmuehlbacher@posteo.net
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/cc770/Kconfig   | 2 +-
- drivers/net/can/sja1000/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/mgmt/user_session.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/cc770/Kconfig b/drivers/net/can/cc770/Kconfig
-index 467ef19de1c1..aae25c2f849e 100644
---- a/drivers/net/can/cc770/Kconfig
-+++ b/drivers/net/can/cc770/Kconfig
-@@ -7,7 +7,7 @@ if CAN_CC770
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -175,6 +175,7 @@ static void ksmbd_expire_session(struct
+ 	unsigned long id;
+ 	struct ksmbd_session *sess;
  
- config CAN_CC770_ISA
- 	tristate "ISA Bus based legacy CC770 driver"
--	depends on ISA
-+	depends on HAS_IOPORT
- 	help
- 	  This driver adds legacy support for CC770 and AN82527 chips
- 	  connected to the ISA bus using I/O port, memory mapped or
-diff --git a/drivers/net/can/sja1000/Kconfig b/drivers/net/can/sja1000/Kconfig
-index 01168db4c106..2f516cc6d22c 100644
---- a/drivers/net/can/sja1000/Kconfig
-+++ b/drivers/net/can/sja1000/Kconfig
-@@ -87,7 +87,7 @@ config CAN_PLX_PCI
++	down_write(&sessions_table_lock);
+ 	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+ 		if (atomic_read(&sess->refcnt) == 0 &&
+@@ -188,6 +189,7 @@ static void ksmbd_expire_session(struct
+ 		}
+ 	}
+ 	up_write(&conn->session_lock);
++	up_write(&sessions_table_lock);
+ }
  
- config CAN_SJA1000_ISA
- 	tristate "ISA Bus based legacy SJA1000 driver"
--	depends on ISA
-+	depends on HAS_IOPORT
- 	help
- 	  This driver adds legacy support for SJA1000 chips connected to
- 	  the ISA bus using I/O port, memory mapped or indirect access.
--- 
-2.47.0
-
+ int ksmbd_session_register(struct ksmbd_conn *conn,
+@@ -229,7 +231,6 @@ void ksmbd_sessions_deregister(struct ks
+ 			}
+ 		}
+ 	}
+-	up_write(&sessions_table_lock);
+ 
+ 	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+@@ -249,6 +250,7 @@ void ksmbd_sessions_deregister(struct ks
+ 		}
+ 	}
+ 	up_write(&conn->session_lock);
++	up_write(&sessions_table_lock);
+ }
+ 
+ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
 
 
 
