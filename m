@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-92572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4E29C552A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:01:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53EC9C55F4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53DA128424D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:01:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC731F2489B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31A6215F72;
-	Tue, 12 Nov 2024 10:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4A12144CC;
+	Tue, 12 Nov 2024 10:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjbpJlR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU7ywtZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C32722ABF8;
-	Tue, 12 Nov 2024 10:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405502144D2;
+	Tue, 12 Nov 2024 10:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407902; cv=none; b=c5LdKJttptZDI5XS9BvbboFHsPVBA5sB6MO4KYovn96ijHGXe5gjAXmAtcIsjB6zUiDa+ui3lCTk+LqpmO6T/KDTdtmVeRiAtKW4B3p9+T8Eaj1AbzE10HQKc+Dedq62DpJznOLjomNtBEs0KY+7QiVtZN9K4pktD6w+3Cxy3vc=
+	t=1731408524; cv=none; b=ZA9Il3DmCRrD+jtzkDk3B5K8AzT3Ytsx4zGq/LkYDEX2m/1/tUHBHA9nXsLr5dEVQJKfXbYCssoCY3nsLhMbT77OessnyXzh97B+zI0UjXgHJk3aCA9ym6AX+vkaU04RxxQDk+vTCD3v0s9xaYjPGdYHErbFSWtvzNDOujs1CwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407902; c=relaxed/simple;
-	bh=nufo/sIQvFxKhH/ijSRgAHDwBx5G2p/buSwFV/Mn+pU=;
+	s=arc-20240116; t=1731408524; c=relaxed/simple;
+	bh=jz4gqpdeyVvzBKF8Gd5UGnQeYfh/PXEuqfvO5SLqXuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLUTt7sqQ+PprN5bK5Zqir12wunb+BSAar4Sn+SQNXEQWTvAEZGvwYeMuOSx8MffTN6UQbshJh2i9vCA9iHTkTE11EcmBb0+wF0/miDTLG0CKFRS7/5ouOCeEdikpf/X+Q5eXVKijYIYTjxs7B76FjZtz/D8ISy+uGrVp7thVEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjbpJlR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD34BC4CECD;
-	Tue, 12 Nov 2024 10:38:21 +0000 (UTC)
+	 MIME-Version; b=TqyRQQSzqQ8qyXdWxjtoLyuEwTTxanzYbkAMo3Ype4M01Un3ZX9vDbRj1ZuixYGyvRJ49MTWqxTOhMIHIeo3NfZnzGQ4aaUNjq4SycBUqCvDgWYWgiBDpPRw5J597Y902fGZWr3I+dJ/N39Bwg6YEKinVg3kYRJSyUNQWXBTjCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU7ywtZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A78C4CECD;
+	Tue, 12 Nov 2024 10:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407902;
-	bh=nufo/sIQvFxKhH/ijSRgAHDwBx5G2p/buSwFV/Mn+pU=;
+	s=korg; t=1731408523;
+	bh=jz4gqpdeyVvzBKF8Gd5UGnQeYfh/PXEuqfvO5SLqXuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjbpJlR/xakaVYr/GSqO6YzZQeGYkJBE94h7sOV77NDQIRl8UfHsK5a2jv3wfh9Rq
-	 htMnJx4cMkCvYpfIhP+45f2rEbNp0whWBWbE7j3WhuEO56YYklHUplQxyiGD0frWU3
-	 exaalzqS52qQkpMc3Y3mRN1650OeG39mmV5zq3ds=
+	b=zU7ywtZD5ejjur4BKiBsPWQDTwtL4Q3TpPqmBcc19+cE7QsDc8m3U9IhYLqw/DAoh
+	 uZ2tgd7aDehk/qM7J0h8EWM0E+4w8jdQJh46AWqL0g8fASKc5vy6VpOtv6Szjr9gwn
+	 TfgMvRLOpyOA402EY/YdSEElpXud+m+wtx2h+n4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 118/119] hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.11 168/184] staging: vchiq_arm: Use devm_kzalloc() for vchiq_arm_state allocation
 Date: Tue, 12 Nov 2024 11:22:06 +0100
-Message-ID: <20241112101853.224384298@linuxfoundation.org>
+Message-ID: <20241112101907.315123525@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-commit e629295bd60abf4da1db85b82819ca6a4f6c1e79 upstream.
+commit 404b739e895522838f1abdc340c554654d671dde upstream.
 
-When hvs is released, there is a possibility that vsk->trans may not
-be initialized to NULL, which could lead to a dangling pointer.
-This issue is resolved by initializing vsk->trans to NULL.
+The struct vchiq_arm_state 'platform_state' is currently allocated
+dynamically using kzalloc(). Unfortunately, it is never freed and is
+subjected to memory leaks in the error handling paths of the probe()
+function.
 
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To address the issue, use device resource management helper
+devm_kzalloc(), to ensure cleanup after its allocation.
+
+Fixes: 71bad7f08641 ("staging: add bcm2708 vchiq driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20241016130225.61024-2-umang.jain@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -549,6 +549,7 @@ static void hvs_destruct(struct vsock_so
- 		vmbus_hvsock_device_unregister(chan);
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -593,7 +593,7 @@ vchiq_platform_init_state(struct vchiq_s
+ {
+ 	struct vchiq_arm_state *platform_state;
  
- 	kfree(hvs);
-+	vsk->trans = NULL;
- }
+-	platform_state = kzalloc(sizeof(*platform_state), GFP_KERNEL);
++	platform_state = devm_kzalloc(state->dev, sizeof(*platform_state), GFP_KERNEL);
+ 	if (!platform_state)
+ 		return -ENOMEM;
  
- static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
 
 
 
