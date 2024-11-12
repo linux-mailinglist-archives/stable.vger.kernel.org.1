@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C210B9C5346
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31919C53A6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 863C72866B1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB8C1F22AE8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA76C2123F7;
-	Tue, 12 Nov 2024 10:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7486212D16;
+	Tue, 12 Nov 2024 10:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04KoTXgA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwahgCXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75FC21216C;
-	Tue, 12 Nov 2024 10:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CF9213EFA;
+	Tue, 12 Nov 2024 10:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407091; cv=none; b=SRFWxMvw9B5OC6pfx4Kok3Qwh5vtqZHCmnGj1snTPPLPmsiUmG1p3e6/FdEEShCtXsMol18oOWfrT47h9GnDZvrTdzmhN7KWZIjNH24s/5/xj86Mvw25+GpXVFHAqS+54EOlHtToynurVr9C4lj7Y8dDmpTgxb/jrX634BtrUxQ=
+	t=1731407373; cv=none; b=AkZoMO3jnoIb2PJ8tI9SVSB8Rm8trOIRyeMT3deRiwK8J9ODvWYmMNrFIVlqlpvurQ2L9IWT/ZG7nQ/rOp1lhcCiKF9J2K+rHmuL0Dcxz+uDUbM+PnuSbytl7G/ugK7axbE25O/+spZm6hHgxZR3pxFbsp1fWDO85L1zhR1oXmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407091; c=relaxed/simple;
-	bh=eyxlGe0YD21+mOgdH0hmusaUa70joerRlkC0DrwPt9M=;
+	s=arc-20240116; t=1731407373; c=relaxed/simple;
+	bh=uUBryTaza5Ip4ANHud1LigIVhGTPveDrqGLynToXgeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+w5Qy19WdFlEVX9xmdf0YWTV45bv0wsOY3cM2iECOw1cbo9f+0z/d/qQu6jEShN8pGCfrb83F3O09sCEI3sjR9o0NUKfOL929xqSCI5txrkl/WDs/ko1DH5R8EAjpzTFgpV7tvJE6Ua3pk7DRL3vH+o6pqV2wg6k8EeUnMcB0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04KoTXgA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB89C4CECD;
-	Tue, 12 Nov 2024 10:24:50 +0000 (UTC)
+	 MIME-Version; b=DgVgf48oDgoB7l9iFwQAlCtOjqVlMEDiBq4LT4cULPdTlB/jVuN92bsf8Uz5KzhMe1c8MyW3SH7/mM3E6hjpWnjWQvv7bzo3/ww9z1rng2xUEcBqSevew5pRTozVDCeOSAcDEKEi3c7fG1iFuIA42M/eDxjeLQq8O0WGRtH785U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwahgCXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2F8C4CECD;
+	Tue, 12 Nov 2024 10:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407091;
-	bh=eyxlGe0YD21+mOgdH0hmusaUa70joerRlkC0DrwPt9M=;
+	s=korg; t=1731407373;
+	bh=uUBryTaza5Ip4ANHud1LigIVhGTPveDrqGLynToXgeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04KoTXgADZWk2g/Ogaj5EVK+8xqp+0dnqkHx5w0OzmI5loEQ2gXdYgxBy648O7Rba
-	 wfqmMyAtITT9YZnWv5gToZM6YmWlpN6lAanTupStY4VkHV9zHG0Mk/p9D3c/LxHu1l
-	 fTVX/SMbTDxFk18Vf7AFjLS7NYgHutZolFvJmyE8=
+	b=iwahgCXq6Hn6tnLMPbOAP8wFJOEmw0rjFn/3Gzs8h7leKcGoNDsTchpkjx2HHn8Pw
+	 kG7gotgmv7QddRLisbr2I7U74DQeHqmCEe5oUsOUtVB14i0syX0BA1AGvNQsgFkYvC
+	 IRCBR4ND5z/xIGHGG8vCVh+m0eLsfXT1hEnIZ0Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 47/76] dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 57/98] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
 Date: Tue, 12 Nov 2024 11:21:12 +0100
-Message-ID: <20241112101841.576250398@linuxfoundation.org>
+Message-ID: <20241112101846.438790940@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 5a4510c762fc04c74cff264cd4d9e9f5bf364bae upstream.
+commit 4d75b9468021c73108b4439794d69e892b1d24e3 upstream.
 
-This was found by a static analyzer.
-There may be a potential integer overflow issue in
-unstripe_ctr(). uc->unstripe_offset and uc->unstripe_width are
-defined as "sector_t"(uint64_t), while uc->unstripe,
-uc->chunk_size and uc->stripes are all defined as "uint32_t".
-The result of the calculation will be limited to "uint32_t"
-without correct casting.
-So, we recommend adding an extra cast to prevent potential
-integer overflow.
+Avoid a possible buffer overflow if size is larger than 4K.
 
-Fixes: 18a5bf270532 ("dm: add unstriped target")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f5d873f5825b40d886d03bd2aede91d4cf002434)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-unstripe.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-unstripe.c
-+++ b/drivers/md/dm-unstripe.c
-@@ -84,8 +84,8 @@ static int unstripe_ctr(struct dm_target
- 	}
- 	uc->physical_start = start;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -419,7 +419,7 @@ static ssize_t amdgpu_debugfs_regs_pcie_
+ 	ssize_t result = 0;
+ 	int r;
  
--	uc->unstripe_offset = uc->unstripe * uc->chunk_size;
--	uc->unstripe_width = (uc->stripes - 1) * uc->chunk_size;
-+	uc->unstripe_offset = (sector_t)uc->unstripe * uc->chunk_size;
-+	uc->unstripe_width = (sector_t)(uc->stripes - 1) * uc->chunk_size;
- 	uc->chunk_shift = is_power_of_2(uc->chunk_size) ? fls(uc->chunk_size) - 1 : 0;
+-	if (size & 0x3 || *pos & 0x3)
++	if (size > 4096 || size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
- 	tmp_len = ti->len;
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
 
 
 
