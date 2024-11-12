@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1629C55B4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CA69C53AC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E0428F12B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF3828400C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ADE2194B2;
-	Tue, 12 Nov 2024 10:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B902141B6;
+	Tue, 12 Nov 2024 10:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWBtsnz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA4lkynA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5718E213148;
-	Tue, 12 Nov 2024 10:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A4D2141AD;
+	Tue, 12 Nov 2024 10:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408300; cv=none; b=GWVAaMqY9qsApfPuuj6wb7Lot00BzLKfO5weZsbclBkGZEn+9Ufy25vpgVuDnbFcXVV+cRJfmnPwroCWEEoXOqDTcYCo1672mEy9GgSWY1IWKDPKDzdxmJbiPpXYTvbRjNpTjFrcNGz1G8foYcPWgZdoJeirvYyHcjwcoCVfj6s=
+	t=1731407396; cv=none; b=nC+fhi+REHOUDZyz8l+QUhRDuaM/VRdi4No1RzUVeEOD+52pfs9ehGrcIbMZ5TQDgdudZHOsoiygRmgnHySWN4WlNV2mLs9ukrUTe/HFWA7IePqANPzSW1tPPhMZyW5HMF0riJi2rTcJqhhA8qG1Rl1wqHZTN8Zwmd7GTz6YX0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408300; c=relaxed/simple;
-	bh=Ag8pZEq/SLocaaHbuJSPI9KREysLLTNpiQLptWyFU0w=;
+	s=arc-20240116; t=1731407396; c=relaxed/simple;
+	bh=GWd+dqB5V55oLXz/yT2TBXAqDPtbpyHXiqLaZHOM2mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/FHK6g/PH7CS6NhBQblY/pE/dAjsZdSID36Z+VXqo4zKprOmawae+F46rSROBaEfiWDoG8nELAVVPYwejCiLmoqs1M/7m3WxVxajwjkm08y2ITrSmYh9umAjq3hoLuE589ig52PBZNFyDpE//Cx+di2z4T/mZ8oPPF8/wl4joA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWBtsnz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCE2C4CECD;
-	Tue, 12 Nov 2024 10:44:59 +0000 (UTC)
+	 MIME-Version; b=fgjx48N+Q9MBdBibTipD7cblUtGO4MYZpwsRhB8IOkZ+ZkCyboZFMQSfhw5bp1zly8wsslZMclI2QIM7P/Nss8IMou1o0cXzijhGJE+Uqc9uGqtK4gr1RcPhsQVkI87/uLZmTBrsXpiyiuZYFuh5wIS+hN+47bRYvvRi4GKDQBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA4lkynA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23821C4CECD;
+	Tue, 12 Nov 2024 10:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408300;
-	bh=Ag8pZEq/SLocaaHbuJSPI9KREysLLTNpiQLptWyFU0w=;
+	s=korg; t=1731407396;
+	bh=GWd+dqB5V55oLXz/yT2TBXAqDPtbpyHXiqLaZHOM2mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWBtsnz+oSmHprZ4zgA94eLFEXTBcNkrgaaCLdmaSjUXOn6q0B2u5ckzzmQvlnMo8
-	 far+NyrlF2+6Qcqmgb0rkZo5Yj0md4ZcTKBP+T9pIE9mKMfpiQ2OYxszuS7tEIgzpq
-	 DO3ycw+ksFEP2O+klqUvIkJVAWMmJyQZKmjJ/uBw=
+	b=RA4lkynA/mdtogHLz+TYkCy/FZDgvQG6Qbu31z6KqlrFclT/mNXNYkb+an01W+s4Y
+	 jvGt2NSkCa9eyAKS7yZqJhF2OPXSry5YpASrrXzCPET45AZeRVjbLXStudX218SXBs
+	 Lr49sthukH34Bs6cKmVvABEUVVzX8pcf3gFx5hew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ming-Hung Tsai <mtsai@redhat.com>,
 	Mikulas Patocka <mpatocka@redhat.com>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Nitesh Shetty <nj.shetty@samsung.com>
-Subject: [PATCH 6.11 120/184] dm: fix a crash if blk_alloc_disk fails
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.1 63/98] dm cache: optimize dirty bit checking with find_next_bit when resizing
 Date: Tue, 12 Nov 2024 11:21:18 +0100
-Message-ID: <20241112101905.473897989@linuxfoundation.org>
+Message-ID: <20241112101846.662129651@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit fed13a5478680614ba97fc87e71f16e2e197912e upstream.
+commit f484697e619a83ecc370443a34746379ad99d204 upstream.
 
-If blk_alloc_disk fails, the variable md->disk is set to an error value.
-cleanup_mapped_device will see that md->disk is non-NULL and it will
-attempt to access it, causing a crash on this statement
-"md->disk->private_data = NULL;".
+When shrinking the fast device, dm-cache iteratively searches for a
+dirty bit among the cache blocks to be dropped, which is less efficient.
+Use find_next_bit instead, as it is twice as fast as the iterative
+approach with test_bit.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://marc.info/?l=dm-devel&m=172824125004329&w=2
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2290,8 +2290,10 @@ static struct mapped_device *alloc_dev(i
- 	 * override accordingly.
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2888,14 +2888,14 @@ static bool can_resize(struct cache *cac
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
  	 */
- 	md->disk = blk_alloc_disk(NULL, md->numa_node_id);
--	if (IS_ERR(md->disk))
-+	if (IS_ERR(md->disk)) {
-+		md->disk = NULL;
- 		goto bad;
-+	}
- 	md->queue = md->disk->queue;
+-	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		if (is_dirty(cache, new_size)) {
+-			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-			      cache_device_name(cache),
+-			      (unsigned long long) from_cblock(new_size));
+-			return false;
+-		}
+-		new_size = to_cblock(from_cblock(new_size) + 1);
++	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++					   from_cblock(cache->cache_size),
++					   from_cblock(new_size)));
++	if (new_size != cache->cache_size) {
++		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++		      cache_device_name(cache),
++		      (unsigned long long) from_cblock(new_size));
++		return false;
+ 	}
  
- 	init_waitqueue_head(&md->wait);
+ 	return true;
 
 
 
