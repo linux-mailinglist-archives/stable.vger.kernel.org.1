@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-92366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F689C53B4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25079C543D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367761F229AB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAC221F223A2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6870F2123DE;
-	Tue, 12 Nov 2024 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C07212194;
+	Tue, 12 Nov 2024 10:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jV5mXl88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/EsHB0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2526520ADFD;
-	Tue, 12 Nov 2024 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B2F20EA2D;
+	Tue, 12 Nov 2024 10:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407423; cv=none; b=un+GzjDFDz8rG9cYiyMog0RJpP1t1tv2gPFVFyWL31jIX7+trElwJkG+fyeu90gXLJEHHIH0tW+VTwT/ZnDW3IOW+I8pz4YE/fCQskYgfJjn9a7VYdkgCSQ5Zvb6AxaLvGkvzE8r3SzYxMqidupXk2WKTCinun1WtJ6d2SaBeMA=
+	t=1731407767; cv=none; b=uxiLDaj+z1CQeTukwrarOnPr0wW9HugYKjjvbeAtWsX1M24XUtfrHX5Q4NvZS1YHJETJqNYVz/C/ra8ixPW7oQVUzo2THoiDYBHYwNdBVdqxSkGAZL0CsOXYPm07bpNWrKCzwdEYF9PBFIWG8TFnJdvVlScdV2n4IXtbQiCTEVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407423; c=relaxed/simple;
-	bh=d+TuVDKJPD4qO+zOcGpnyQrAfx+HkxevZiTldlzS86w=;
+	s=arc-20240116; t=1731407767; c=relaxed/simple;
+	bh=PSKs06Fxv569QvPQM6shvFiTD40CvAbNCLSePiOkWRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AVMlVWYHf7e2W9yvay3s53SemQdow8sfxWsjhcNMLb1vVqwNt8OzyuHLnJmbW/hw+AsYonRBgcOVnSSnVE7ecoFDr1yqr2mfzxWcrsrNiIX8V1RcqnMBiVObnZoV8qwQvl8+wDDS78xNwncc81d2r224dcND3YdLKQ/JKBRcU/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jV5mXl88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20CAC4CECD;
-	Tue, 12 Nov 2024 10:30:22 +0000 (UTC)
+	 MIME-Version; b=sZJddoUPhKkwPEHYb+CbvUjBb6Nhpb2Z3r4J7qofHApyqiW8edMwkSFwVL+eL0U+/qoBr5AHkjDs9zHzBvMabiKhBJJDS/BA20ToYNMyKMkAEz1jgAfNe3Jrn3Dni1lXebBqNfn42Xil9ZRWq58SnFiWkNs4ppoqthBNvEJHPfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/EsHB0O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B051C4CECD;
+	Tue, 12 Nov 2024 10:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407423;
-	bh=d+TuVDKJPD4qO+zOcGpnyQrAfx+HkxevZiTldlzS86w=;
+	s=korg; t=1731407766;
+	bh=PSKs06Fxv569QvPQM6shvFiTD40CvAbNCLSePiOkWRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jV5mXl8802FHUx0oYQt0ou9AbvTfEeCSIuGEMsMD+BL1GVrBdi7g+U4jTNGGD0KRW
-	 cRj8xSz0GD+DXfUv6B4/oR4QFEeQlixHYSxGZEmU9e8JUyxpV2RBL7RLzWYcgYaTDx
-	 5GntLIgTCVARw4ana73xUnb7rnDMrCfJXWd29rnE=
+	b=C/EsHB0Oxj8/gmUt1f7010PyVV/lcWTaUiJn5ybJYL/DoERVtXgokem0g1ILovEXn
+	 xCggh6iFoW+4Wyw9GGIMIvgyWWTyKnk+tkQ/i71fAIfAE9qZOnQwuCyxmJpKiTiNsd
+	 AJATALHRXz3TR0tIRNd2Onfj+UV4YJUZYjEByZM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 70/98] net: wwan: t7xx: Fix off-by-one error in t7xx_dpmaif_rx_buf_alloc()
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 077/119] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
 Date: Tue, 12 Nov 2024 11:21:25 +0100
-Message-ID: <20241112101846.923995564@linuxfoundation.org>
+Message-ID: <20241112101851.663825391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 3b557be89fc688dbd9ccf704a70f7600a094f13a upstream.
+commit 4d75b9468021c73108b4439794d69e892b1d24e3 upstream.
 
-The error path in t7xx_dpmaif_rx_buf_alloc(), free and unmap the already
-allocated and mapped skb in a loop, but the loop condition terminates when
-the index reaches zero, which fails to free the first allocated skb at
-index zero.
+Avoid a possible buffer overflow if size is larger than 4K.
 
-Check with i-- so that skb at index 0 is freed as well.
-
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f5d873f5825b40d886d03bd2aede91d4cf002434)
 Cc: stable@vger.kernel.org
-Fixes: d642b012df70 ("net: wwan: t7xx: Add data path interface")
-Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20241101025316.3234023-1-ruanjinjie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-@@ -262,7 +262,7 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpma
- 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -402,7 +402,7 @@ static ssize_t amdgpu_debugfs_gprwave_re
+ 	int r;
+ 	uint32_t *data, x;
  
- err_unmap_skbs:
--	while (--i > 0)
-+	while (i--)
- 		t7xx_unmap_bat_skb(dpmaif_ctrl->dev, bat_req->bat_skb, i);
+-	if (size & 0x3 || *pos & 0x3)
++	if (size > 4096 || size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
- 	return ret;
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
 
 
 
