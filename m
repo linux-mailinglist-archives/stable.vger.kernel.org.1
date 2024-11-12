@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-92317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2E69C56AD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DF59C5477
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A1A2B2E658
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A0FB2B3B2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2BA213143;
-	Tue, 12 Nov 2024 10:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173902123F7;
+	Tue, 12 Nov 2024 10:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxMX3oZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hp5OtpBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04982123EF;
-	Tue, 12 Nov 2024 10:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53E320DD62;
+	Tue, 12 Nov 2024 10:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407261; cv=none; b=WPbdsZDzdfXA0A6lTXk14rBhSE/P6g1FIP9eaJBKe+WHR/XIryaWrmbu+l/DBFvFD7PHiR73SQPL3Mc1/t4ytznkto0xhiBS3lgQjhQ5PZ1zk4xa1rKG2cRQ0kqaJmmhbeOS0R+JuclhlHJZ+MqDA9uqBCx4SUKI1BY//NmQ1kI=
+	t=1731406973; cv=none; b=cp80o/x0Bu70jjr4/YmYp6CjRe3wAxkj771KNwLfeirLdXRZQ1TSK8k9i6oytH2dinqa1FXnKO90GlmVWpYR2C4WUKoVWSvxkuixSG3EEh0ESN7Tc9zuNGcMfmkTLp5xIdzifzYFm9kosb5Zpfica3xsBFGnAwfFke7aiT93wtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407261; c=relaxed/simple;
-	bh=/4dSZ1r+ls+bLzEwZiEs2qIFIyTuxLUb2vGpqhOcbmg=;
+	s=arc-20240116; t=1731406973; c=relaxed/simple;
+	bh=OSGVvaKndjAw2Ye1egS7BZPx2UO+WhP4qn4IOInITqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhcN9mkNd29xcaa8MshLc4M64JV0yj4FeQgVKTyg9rjTJDIqhSY9AH/RXRIntwGS1bXwyV7DD9h7nqkeMS67l1ZvJR8SuITTZ66yfO/miZyt4U3Pj2JXz2o0FrPpG8aFK9Gp+XOKgFnJFYrk9IPUtR6GOZiCTUvVuTvAuJFjyZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxMX3oZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B401C4CECD;
-	Tue, 12 Nov 2024 10:27:41 +0000 (UTC)
+	 MIME-Version; b=UWYftfJ7Nro332fg4kQB1MeGQUqM8IW1iCJ88hGjmivwYNnGiEgma8MZCigBujXojQPYae4bexaOVMRyzXOKpKFuA4YPX+ftg+nZsflQuyFB3tSU5nX5QtPlfrVf+90JSoqClYOxjd3hvGilq8B654veL4mFF5wTpeSjG9Kek3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hp5OtpBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEFDC4CECD;
+	Tue, 12 Nov 2024 10:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407261;
-	bh=/4dSZ1r+ls+bLzEwZiEs2qIFIyTuxLUb2vGpqhOcbmg=;
+	s=korg; t=1731406973;
+	bh=OSGVvaKndjAw2Ye1egS7BZPx2UO+WhP4qn4IOInITqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxMX3oZIv+aydYVvkCKdQ20qZRiUXZ+cPDVWKp5BzEExSxgNuA/iikuP/1zSpgLRe
-	 TFwv3lbUo0buXn7tVq2zu3vyEEWysukCVGKHYAvTEBJCeYXT3RRk1h8HrE9EpkurHk
-	 rk+mPJgdH61eU8/qZ/FoebnERs7fRoaZQaboDFt0=
+	b=Hp5OtpBRpLU+StHgbv2OwDxpb2YgVbXw4cK5Q5cg1yUo1uRD2+gY/ifhhh1rh5wpR
+	 Hx8UOeuX9fB12Fy/Cc5OVIpqskuwt4QAJw0IGD3GlBCMRjsZRIW7K4z4WXw+vKKDfK
+	 ABvQU+LdLy1LuGbl3kJgCqafHgdzi4KraWZ9a3hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/98] net: enetc: set MAC address to the VF net_device
+Subject: [PATCH 5.15 13/76] NFS: Add a tracepoint to show the results of nfs_set_cache_invalid()
 Date: Tue, 12 Nov 2024 11:20:38 +0100
-Message-ID: <20241112101845.152309152@linuxfoundation.org>
+Message-ID: <20241112101840.286944596@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit badccd49b93bb945bf4e5cc8707db67cdc5e27e5 ]
+[ Upstream commit 93c2e5e0a9ecfc183ab1204e1ecaa7ee7eb2a61a ]
 
-The MAC address of VF can be configured through the mailbox mechanism of
-ENETC, but the previous implementation forgot to set the MAC address in
-net_device, resulting in the SMAC of the sent frames still being the old
-MAC address. Since the MAC address in the hardware has been changed, Rx
-cannot receive frames with the DMAC address as the new MAC address. The
-most obvious phenomenon is that after changing the MAC address, we can
-see that the MAC address of eno0vf0 has not changed through the "ifconfig
-eno0vf0" command and the IP address cannot be obtained .
+This provides some insight into the client's invalidation behavior to show
+both when the client uses the helper, and the results of calling the
+helper which can vary depending on how the helper is called.
 
-root@ls1028ardb:~# ifconfig eno0vf0 down
-root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
-root@ls1028ardb:~# ifconfig eno0vf0
-eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
-        RX packets 794  bytes 69239 (69.2 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 11  bytes 2226 (2.2 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20241029090406.841836-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 867da60d463b ("nfs: avoid i_lock contention in nfs_clear_invalid_mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/nfs/inode.c    | 1 +
+ fs/nfs/nfstrace.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-index dfcaac302e245..b15db70769e5e 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	struct sockaddr *saddr = addr;
-+	int err;
- 
- 	if (!is_valid_ether_addr(saddr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
--	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	if (err)
-+		return err;
-+
-+	eth_hw_addr_set(ndev, saddr->sa_data);
-+
-+	return 0;
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 48ade92d4ce8c..3861cd056cec3 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -219,6 +219,7 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
+ 					  NFS_INO_DATA_INVAL_DEFER);
+ 	else if (nfsi->cache_validity & NFS_INO_INVALID_DATA)
+ 		nfsi->cache_validity &= ~NFS_INO_DATA_INVAL_DEFER;
++	trace_nfs_set_cache_invalid(inode, 0);
  }
+ EXPORT_SYMBOL_GPL(nfs_set_cache_invalid);
  
- static int enetc_vf_set_features(struct net_device *ndev,
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index 6804ca2efbf99..cbdfe091f56a6 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -162,6 +162,7 @@ DEFINE_NFS_INODE_EVENT_DONE(nfs_writeback_inode_exit);
+ DEFINE_NFS_INODE_EVENT(nfs_fsync_enter);
+ DEFINE_NFS_INODE_EVENT_DONE(nfs_fsync_exit);
+ DEFINE_NFS_INODE_EVENT(nfs_access_enter);
++DEFINE_NFS_INODE_EVENT_DONE(nfs_set_cache_invalid);
+ 
+ TRACE_EVENT(nfs_access_exit,
+ 		TP_PROTO(
 -- 
 2.43.0
 
