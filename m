@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF839C575F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:12:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECCA9C5753
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43290B3BC53
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88AB8B436E2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A80D2229D4;
-	Tue, 12 Nov 2024 10:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCE721A4A0;
+	Tue, 12 Nov 2024 10:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIR/oLHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+IswQBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D704215013;
-	Tue, 12 Nov 2024 10:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0592144A7;
+	Tue, 12 Nov 2024 10:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407846; cv=none; b=MXAvUyCxnPGt6NWZ95jysOuq5b8dyes/uF3Z2qdnFAlnEl7/ET9AWueRbBkyVztauzWYpO4iFOZP120JtN1BKgjAkMZHVX3yycQo9UBgqzNCOgGKW85tzfoPnAle1YcNMuc85mljEJoSCfQIyxEBiJOjovzWNLeSk/+8zMmVQTk=
+	t=1731408373; cv=none; b=kTaoOSZLWq6EJX2aHuCXttQfYUfNy5xie/IfAYm9CwyQxt4eufbJPb3wV2SgpLe54VhvCBeQ7TJdPpzzVH9uwzyyR0to/Jd5DHe5Efbmn9FBr//7C4vpBuJmoidh83ZAlVMqK1n88hKKK+eEHqL3iWwpqouWOPtXlI8waDfjbbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407846; c=relaxed/simple;
-	bh=mBO0Rokf76GLjOuWsSn6ihhrLNh1lLe1btYmrP3XopY=;
+	s=arc-20240116; t=1731408373; c=relaxed/simple;
+	bh=lextF7+kYxEYiH3fOm2YuESwCR0g7T38IrpFRGMdbcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Og8x+1XNNq5Zl2aW3CPzQF+LCwlsLxReXqD117a3WkQ8TY0GU9FkNGf7xuO9UDhXU/RmLp2i3IwxawWA0Z6BpRgenDN+FAzMDG0SvPoP7XzMR8veSFn7a0dL0zWIFW16Tcbp1rBTE+QqlPds0dwNKg1fODSWROuvTbppnR/miJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIR/oLHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8719EC4CED4;
-	Tue, 12 Nov 2024 10:37:25 +0000 (UTC)
+	 MIME-Version; b=Cd+EzP6u/eSCn4BETFKMKJmGDy1EHtnsiGk3S/qDzEIER3o4qko86AlTFjGWBUDEb/HiDsCI+o3+m/LLRL/DuFtQwUVJ4XfcKhqEEPv2WJAarrJjJy7fzKxE12/8dfIDoNkHlVpq88yHQbmKWAdpMLMiC8O/WLrrp+CyNruTzUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+IswQBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40283C4CECD;
+	Tue, 12 Nov 2024 10:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407846;
-	bh=mBO0Rokf76GLjOuWsSn6ihhrLNh1lLe1btYmrP3XopY=;
+	s=korg; t=1731408373;
+	bh=lextF7+kYxEYiH3fOm2YuESwCR0g7T38IrpFRGMdbcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIR/oLHprPKKiayPw8RDBVsp5YaSd45NLgZboxVUbwOnMvtbPpj1V9eYAL7113KZN
-	 7OXufw4tDI4b1z0cGVNUXBZ/dqm8JCySxtm6or/4RqSQWhWYE9VMDHxINuCt9I49Ao
-	 yrY0prUwh8ZQhErWwTtFjMTX4floUHKCGws8M9Ow=
+	b=l+IswQBIS5di+xyoS8xZCK1e9OroO49k8Xju18VIjSY+nr4LfFmYaFfwVKB78pt+K
+	 iR8351nm7bSNt4Z85WleuN5FHW2El/sBfA33I2rAEdJ43yFv8RHEb5WRjxwlqrntpR
+	 YAim3x+i3paWkLAUjWEo3NmSZRw0N5ObMRMEzSDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 093/119] mptcp: use sock_kfree_s instead of kfree
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.11 143/184] filemap: Fix bounds checking in filemap_read()
 Date: Tue, 12 Nov 2024 11:21:41 +0100
-Message-ID: <20241112101852.275018206@linuxfoundation.org>
+Message-ID: <20241112101906.359040403@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 99635c91fb8b860a6404b9bc8b769df7bdaa2ae3 upstream.
+commit ace149e0830c380ddfce7e466fe860ca502fe4ee upstream.
 
-The local address entries on userspace_pm_local_addr_list are allocated
-by sock_kmalloc().
+If the caller supplies an iocb->ki_pos value that is close to the
+filesystem upper limit, and an iterator with a count that causes us to
+overflow that limit, then filemap_read() enters an infinite loop.
 
-It's then required to use sock_kfree_s() instead of kfree() to free
-these entries in order to adjust the allocated size on the sk side.
+This behaviour was discovered when testing xfstests generic/525 with the
+"localio" optimisation for loopback NFS mounts.
 
-Fixes: 24430f8bf516 ("mptcp: add address into userspace pm list")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241104-net-mptcp-misc-6-12-v1-2-c13f2ff1656f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: c2a9737f45e2 ("vfs,mm: fix a dead loop in truncate_inode_pages_range()")
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -90,6 +90,7 @@ static int mptcp_userspace_pm_delete_loc
- 						struct mptcp_pm_addr_entry *addr)
- {
- 	struct mptcp_pm_addr_entry *entry, *tmp;
-+	struct sock *sk = (struct sock *)msk;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2609,7 +2609,7 @@ ssize_t filemap_read(struct kiocb *iocb,
+ 	if (unlikely(!iov_iter_count(iter)))
+ 		return 0;
  
- 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
- 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
-@@ -97,7 +98,7 @@ static int mptcp_userspace_pm_delete_loc
- 			 * be used multiple times (e.g. fullmesh mode).
- 			 */
- 			list_del_rcu(&entry->list);
--			kfree(entry);
-+			sock_kfree_s(sk, entry, sizeof(*entry));
- 			msk->pm.local_addr_used--;
- 			return 0;
- 		}
+-	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
++	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
+ 	folio_batch_init(&fbatch);
+ 
+ 	do {
 
 
 
