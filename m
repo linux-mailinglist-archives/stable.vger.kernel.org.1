@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-92538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09AC9C54DE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:52:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D189C56C3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61A0F28543E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:52:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59A3AB294F5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD38226B91;
-	Tue, 12 Nov 2024 10:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D90227B8D;
+	Tue, 12 Nov 2024 10:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4YgFNSE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXCskZvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D8A226B84;
-	Tue, 12 Nov 2024 10:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912D7227B8F;
+	Tue, 12 Nov 2024 10:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407856; cv=none; b=OCv45o5HEig+5XRqLGKX56+ORdVmECJuijoGVjWgvvgCyYbmZXWlkHY3xuAvVyO4wpnXEZNHjhAKow6OWInPxeRaYNlBkYnjEy/PjpiphVYajUpJL3eqMF0DvD6UIBN7y9bWiMq4mqSVlakQ71AWCMPXKtdBC3UUjpZGVqi9Nhs=
+	t=1731407858; cv=none; b=aE04Ztdi1XpIQTFMnZ6H4ZC6w9KyZdYrZ2ZXli29UIhyWzpqR127qoug+Tw1cjCeGAzbFC4BGp77J/PSp7SdMePHtYShoDE8c/1PiQju6xhJSLBnw9cRmM/ETurvgx5nRoBuo9VFBDPUj+AF524YJEHOnn5EFZ2zjtQ/3EOwWMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407856; c=relaxed/simple;
-	bh=lcduc60GNebFCYDHb+GQvYHyFjg9yhZLS6nfuLgYaqU=;
+	s=arc-20240116; t=1731407858; c=relaxed/simple;
+	bh=P/cWhJSzT3puwSZtlig6ZrMwW8z69zWDYWcHupE6Rt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BX24azmOi1B40L/XRHMp2VGEs+2WYsmpKzQOfarG4B0mkMEz4pb9OGpuEsi2xo22zKgRLAnhT0QnzV8KcdxwmhKHvgqEhTOuL7AKHBYxvv0Pwm+Te2BQvD2UAgVnSYcnZkOmlKphfTh28qJ5zSreb3XjHp06LeRpvv2vghlr08w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4YgFNSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4DDC4CED8;
-	Tue, 12 Nov 2024 10:37:34 +0000 (UTC)
+	 MIME-Version; b=jOwmSzGYYWU6RY07E5vAgGbhPKejq9vMV1wpN7pj/yWJCD0ENpsLGp+scmDELioPcmKNQiimgnm26BDfUEngb7aGRN7bj6OZnv4boyCZBm+gwSFb4BAvOOfSbjMNuCZk5bLPqGDGbbz0pHCV2nzGF4TCP6SnQ04dO754HNR5U08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXCskZvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA76C4CECD;
+	Tue, 12 Nov 2024 10:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407856;
-	bh=lcduc60GNebFCYDHb+GQvYHyFjg9yhZLS6nfuLgYaqU=;
+	s=k20201202; t=1731407858;
+	bh=P/cWhJSzT3puwSZtlig6ZrMwW8z69zWDYWcHupE6Rt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4YgFNSE2Js6HV9ohpgTmgXM/6dmh9kiLnKZceJF5OcdG8vPEG5Gm1eBzMgYW+H0j
-	 WOumfIJDBrCMzUfnu4qLs89rQxOVipXjvlfO92xVg7a53g8SlfIPuTyuYxhV0qTndI
-	 qkTd5mMWfNa3iFc4STkVI8I71Pkf8j8z2dWWlJ/6OqyoFEp7STARqRt07RZL41jYGD
-	 7WpMIrtueFZbpJCh36hOIZeOcOMXd4/WRCNBpyt5Jyl7bBGxo4xezCaLmABw1nLrDl
-	 SCh1mC3U78epy8gUYYYWDmH2xaPbmC5vcnlqS5LqsaDKnRyJ8pXjbg0fqq3BhjDmRB
-	 huQ3nTxhY9SAA==
+	b=aXCskZvcklrVg6zOgYlnxaT9bxAabnQfXkFIXICfqH1LiqjQ58XURu8aZ4pUaDiD3
+	 YMHP/2z9Ws9IfMp/xKD/WLrue7fyGquY9LrCFTTbL50v7c7f+vfUmUps5ZdfSx2EQR
+	 DJ4jbp6rCfHqJQtyRHO/+MUJxfnifaVhYtQ7RP3DoZGFKAAMPDnd929zqAmQg72qKF
+	 pwFT5p2Blnd4uRLjF0OzVh6AyTAv/9KGL4l7RiJBhnsP6mn/GZ9gGv4y92/S3ksFXF
+	 1L3o1PxQObNMUr5H66gBaH0dSl98Efq5Eqnw66fKvn46vMhhiOL3Clqj8eB8su9Xbs
+	 I3otYSaQ0AuEw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Luo Yifan <luoyifan@cmss.chinamobile.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	olivier.moysan@foss.st.com,
 	arnaud.pouliquen@foss.st.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
@@ -58,9 +58,9 @@ Cc: Luo Yifan <luoyifan@cmss.chinamobile.com>,
 	linux-sound@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 09/12] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
-Date: Tue, 12 Nov 2024 05:37:11 -0500
-Message-ID: <20241112103718.1653723-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 10/12] ASoC: stm: Prevent potential division by zero in stm32_sai_get_clk_div()
+Date: Tue, 12 Nov 2024 05:37:12 -0500
+Message-ID: <20241112103718.1653723-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112103718.1653723-1-sashal@kernel.org>
 References: <20241112103718.1653723-1-sashal@kernel.org>
@@ -77,35 +77,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
+[ Upstream commit 23569c8b314925bdb70dd1a7b63cfe6100868315 ]
 
 This patch checks if div is less than or equal to zero (div <= 0). If
 div is zero or negative, the function returns -EINVAL, ensuring the
-division operation (*prate / div) is safe to perform.
+division operation is safe to perform.
 
 Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
+Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241107015936.211902-1-luoyifan@cmss.chinamobile.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index eb31b49e65978..3d237f75e81f5 100644
+index 3d237f75e81f5..0629aa5f2fe4b 100644
 --- a/sound/soc/stm/stm32_sai_sub.c
 +++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -378,8 +378,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
+@@ -317,7 +317,7 @@ static int stm32_sai_get_clk_div(struct stm32_sai_sub_data *sai,
  	int div;
  
- 	div = stm32_sai_get_clk_div(sai, *prate, rate);
--	if (div < 0)
--		return div;
-+	if (div <= 0)
-+		return -EINVAL;
- 
- 	mclk->freq = *prate / div;
- 
+ 	div = DIV_ROUND_CLOSEST(input_rate, output_rate);
+-	if (div > SAI_XCR1_MCKDIV_MAX(version)) {
++	if (div > SAI_XCR1_MCKDIV_MAX(version) || div <= 0) {
+ 		dev_err(&sai->pdev->dev, "Divider %d out of range\n", div);
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
