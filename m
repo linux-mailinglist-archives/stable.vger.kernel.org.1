@@ -1,120 +1,117 @@
-Return-Path: <stable+bounces-92830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDDE9C60D8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:53:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362559C6135
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478FE1F238C9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F078F285CC2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FB921859A;
-	Tue, 12 Nov 2024 18:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EF2219CAC;
+	Tue, 12 Nov 2024 19:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="k5bLdzc4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKTjLnkc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E942178EE;
-	Tue, 12 Nov 2024 18:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CBF20B1F7;
+	Tue, 12 Nov 2024 19:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731437581; cv=none; b=D0hCDkygQ5too9/g8x2lnmRn/0N18NUy5kfIIA+gft+fXUrT1XK4Oums3tZYh12UAt/rlbdpQJk7elXnHldE7b+IPgD+I7thO4DPOR3fAVXtAj7QfPc3G7D2pI5RfD5K7Ox2dh2MTHcbVcE1qIR7ZxajX65C4q+g1X8P7JQVYrY=
+	t=1731439130; cv=none; b=cUh8l4Su0GSExj0+Aq7OS8pmhQ0tmxmN3A/TJWjQkl7kLMKJlMvKIPUn8wtqOIttzk1I2KPBcx3uA8iVlwh8rthiM+6zcmaM6LDMuIuNKVS1+/5/gvdNSsdT4x6sSjah0P9CbpxiLKkeBg7Hyy2yFvpBTI2SsH0iDIqjIgGUbGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731437581; c=relaxed/simple;
-	bh=soKdLg6m2StKZPAIkHLlrKFJ6LJ8jdKERb4khRLnf5Q=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mjn2igTDatPFDlZCl5yg8pQAyhDllyIK4c+N0eOGI4dkJpgDw8I6wztxGuAbzHWihHa4RbEUTFMq8mYfAEfRSZWX/tyzM7GkDfk8Atoo+T5OSvqmyQ4filPNDvjTUoFdNyxNwRz186LDB4zMS7VViZSBN2clb1gR0QrHHIYQsOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.es; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=k5bLdzc4; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731437580; x=1762973580;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5HqiESkiyPRctv1Z5UNmLRjLfERKPs9Ag5PX7DOU980=;
-  b=k5bLdzc4LMvV7dq/Z6uyBDE/3nopwlWSOgbO+jd6f5aO7X1rYbf1u/ca
-   slWyDu7gYac0xEKJq1cOcwy/Mv4RBUVAb9m2KJbMoyDrq21GqX2ArT6Y0
-   7kOnZ4F3WEcu8XYlGxjlk+jQcj4xFqHXj/d1bDrvr0EK3oPuzFnH1GheJ
-   k=;
-X-IronPort-AV: E=Sophos;i="6.12,148,1728950400"; 
-   d="scan'208";a="439046312"
-Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 18:52:59 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:12017]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.38.250:2525] with esmtp (Farcaster)
- id d25e43a4-f818-4195-acb7-15156c42b891; Tue, 12 Nov 2024 18:52:58 +0000 (UTC)
-X-Farcaster-Flow-ID: d25e43a4-f818-4195-acb7-15156c42b891
-Received: from EX19D004EUC001.ant.amazon.com (10.252.51.190) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 12 Nov 2024 18:52:57 +0000
-Received: from dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com (10.13.235.138)
- by EX19D004EUC001.ant.amazon.com (10.252.51.190) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 12 Nov 2024 18:52:53 +0000
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Matt Fleming
-	<matt@codeblueprint.co.uk>, <linux-efi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stanspas@amazon.de>,
-	<nh-open-source@amazon.com>, Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2 2/2] x86/efi: Apply EFI Memory Attributes after kexec
-Date: Tue, 12 Nov 2024 18:52:17 +0000
-Message-ID: <20241112185217.48792-2-nsaenz@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20241112185217.48792-1-nsaenz@amazon.com>
-References: <20241112185217.48792-1-nsaenz@amazon.com>
+	s=arc-20240116; t=1731439130; c=relaxed/simple;
+	bh=t/ULDxIOnVNYpvWy2HWygKMe4lSTaPF0cPuEZyDxLl4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HRbRQYR0RlFlKJbZKSF4zBkzFrRocO5tKuX71BXc/SdWv6kE3zRZSxRn+B+rX1xOoqhtxsw+vodRFaJ8cmPxo273ngW82xAnJh7riGe6IgjzpELL2TaHPJsqxSsWflcQwJ/07vtWnt/3XXhnFMV9wLo777JVQO3PAE59GCZ5aUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKTjLnkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037F8C4CECD;
+	Tue, 12 Nov 2024 19:18:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731439129;
+	bh=t/ULDxIOnVNYpvWy2HWygKMe4lSTaPF0cPuEZyDxLl4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=PKTjLnkc60x6+hpJPk12RssWE/VaWTGWxdo6BkNmTTmLa8XtUB8MUaw19TqPy9Ey2
+	 Wf7IjrRgpmKK3mR5GVSl2evQ/0G8v/VEWYQYVshHFUqRwA1EAeeWGqAvA0BZM4eHjq
+	 gOxV80Qx8jLtN4r4jauHLaRSsCFx0FJWqBcSp+wOiRV493EpdHODtf1QaEKuMzieYd
+	 0bwlsO7P5SOyPlXL2qQlZdDSL5/myQjKahfZMKzcgJfq6gtKF6mr804i1Wd1UXcoXV
+	 LtBhS63WM2TelvCTz6yCR8olFYoUoLvEp72SL2lbVrflb8tRPiYQRaj/VEuXXglQ7d
+	 hwCAiZ52xKphQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/3] mptcp: pm: a few more fixes
+Date: Tue, 12 Nov 2024 20:18:32 +0100
+Message-Id: <20241112-net-mptcp-misc-6-12-pm-v1-0-b835580cefa8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB003.ant.amazon.com (10.13.138.93) To
- EX19D004EUC001.ant.amazon.com (10.252.51.190)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAiqM2cC/x2MQQqAMAzAviI9W1iHOOZXxIPMqj1sjk1EEP9u8
+ ZhA8kDlIlxhaB4ofEmVIylQ20DY57QxyqIM1tiOiCwmPjHmM2SMUgP2qC5H9I5nw4EW7zxonAu
+ vcv/jEbSB6X0/kuGWrG0AAAA=
+X-Change-ID: 20241112-net-mptcp-misc-6-12-pm-97ea0ec1d979
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Kishen Maloor <kishen.maloor@intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1100; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=t/ULDxIOnVNYpvWy2HWygKMe4lSTaPF0cPuEZyDxLl4=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnM6oVkJaEmlDHyOi72cwB7OHlH+J9iqP5AL9L8
+ VmVxpbUPLCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzOqFQAKCRD2t4JPQmmg
+ c5niEACLFCbPPcwtLpfnh8/MaouhA8uEtW67eVX+donESp+LxYp8MN4ypfeJ20DZyTrxxsA7l5u
+ l8010gwld7mEhGVKkVQTtZz2IRZR/Sb8QZa1mlnknZSRLqS2RkJMhuY1/eeNbY2p9tw+DoMkdJ0
+ 7i/cAvWRQps/dUYcCPqJjejH5pYfAsKasiIeGCk/Sywpo05nX1BJI0bABuYxw+wlA1MewahK5tb
+ XdHD+DUSLBnKc+WxdgDXYID7gaI/hDWmaLaF/qinVd36+p2LDYpO0XcqJ29gCDna+Kto3Vr+xps
+ tPNcTJx00f+v9nOt4q/GideEDD8Q/owFvuxDZHQr9rUHICe+YtuEA1uAhYobIVk75R03P3eSRz0
+ C6GqxCi3UfLdrtG2pr7v0vPuf7/IM+WUgbuJlkgOi+9kiRr7PX9WFs6r+K0wIFUJkzLBiZGXyNO
+ MEAVTBX/a5uBb3y4Cj2MftTnxXoJDBazwu6kgHgME7MBvAEccjC3i8Poe3bkkNqPPUO+vwnmwq0
+ NrNQwwVCb8xCHp7Bw7UKHrI7Q/iQUYodG+jRLdXgupSiIHY2Ozc/j+vB53VNdEGii4m14uLnlSh
+ oseBGWU2OUDgeV/Jkyzl39av0D0faO1fRPzr9UxGy9gEuALB2w1U90UoED8zbzE+Ke6uwnh+HxD
+ EtJkjfkYnWeGSjA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Kexec bypasses EFI's switch to virtual mode. In exchange, it has its own
-routine, kexec_enter_virtual_mode(), which replays the mappings made by
-the original kernel. Unfortunately, that function fails to reinstate
-EFI's memory attributes, which would've otherwise been set after
-entering virtual mode. Remediate this by calling
-efi_runtime_update_mappings() within kexec's routine.
+Three small fixes related to the MPTCP path-manager:
 
-Cc: stable@vger.kernel.org
-Fixes: 18141e89a76c ("x86/efi: Add support for EFI_MEMORY_ATTRIBUTES_TABLE")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+- Patch 1: correctly reflect the backup flag to the corresponding local
+  address entry of the userspace path-manager. A fix for v5.19.
 
+- Patch 2: hold the PM lock when deleting an entry from the local
+  addresses of the userspace path-manager to avoid messing up with this
+  list. A fix for v5.19.
+
+- Patch 3: use _rcu variant to iterate the in-kernel path-manager's
+  local addresses list, when under rcu_read_lock(). A fix for v5.17.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
+Geliang Tang (2):
+      mptcp: update local address flags when setting it
+      mptcp: hold pm lock when deleting entry
 
-Notes:
-- Tested with QEMU/OVMF.
+Matthieu Baerts (NGI0) (1):
+      mptcp: pm: use _rcu variant under rcu_read_lock
 
- arch/x86/platform/efi/efi.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c   |  3 ++-
+ net/mptcp/pm_userspace.c | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+---
+base-commit: 20bbe5b802494444791beaf2c6b9597fcc67ff49
+change-id: 20241112-net-mptcp-misc-6-12-pm-97ea0ec1d979
 
-diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-index 375ebd78296a..a7ff189421c3 100644
---- a/arch/x86/platform/efi/efi.c
-+++ b/arch/x86/platform/efi/efi.c
-@@ -765,6 +765,7 @@ static void __init kexec_enter_virtual_mode(void)
- 
- 	efi_sync_low_kernel_mappings();
- 	efi_native_runtime_setup();
-+	efi_runtime_update_mappings();
- #endif
- }
- 
+Best regards,
 -- 
-2.40.1
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
