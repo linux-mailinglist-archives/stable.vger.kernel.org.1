@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-92586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312659C554A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7ED9C555C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB28A28C4D8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBD821F23466
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5E41FA85E;
-	Tue, 12 Nov 2024 10:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3612D2141B2;
+	Tue, 12 Nov 2024 10:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM9pdLIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FS6qYHsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5361FA830;
-	Tue, 12 Nov 2024 10:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B2B20EA35;
+	Tue, 12 Nov 2024 10:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407935; cv=none; b=fiinza0NO06BW7sxwNeexsJPX3g3TkVu7/ppVBrkquzEmDJOdkPImbVlx0/kbZqQEtfOwccVfAk7nfRlRRstFIvFpP5mz5YQYhsekx+v3irk+Fp4GLFWlEJHO4uSARhq22+l/uVCAj4mbcLWXexi1yWFdm6XVuKD5i+YbcrVieM=
+	t=1731407993; cv=none; b=DaTG0cIIaEILiKonrZX3C7cF6wivQ1uOzfWaJt9yuuXqUKnXrFdTcQ1t/Ifg/FCrhSEe2hodXjYQWbZTHc+ro7fg2T9z1Y6Tc7EhIobyR6zw7OhsdkZ/wAe9kWn6XLZJQYl+l0g8MFcNjz0X4pfGMI1u6R4Sg/JqOyVw5Q5H7a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407935; c=relaxed/simple;
-	bh=aMOIr6bvePGdQk4uas3ofXTuiYnvgYGKFvpqt9kwmQk=;
+	s=arc-20240116; t=1731407993; c=relaxed/simple;
+	bh=n22ufafL3chpYc04NuqJb5WZZcRW+B5Y4JMral/SB98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRvOxYBUa+aO52lCYqId1Lz6d091Q23ghFfTWmfkHnu3D+/I+S7HbEKoNlPsYiHFsjWEeEElWdvaS2dwuLu94JgOWpLe24VR5247nEEaDZ6U6OlksXhxOckRFxM7JrXl6wvG4/JFtJRU9lZpHJ35BIE9K0hfgYpRSZWxSJScl34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oM9pdLIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EF6C4CECD;
-	Tue, 12 Nov 2024 10:38:54 +0000 (UTC)
+	 MIME-Version; b=BqIQzdaqhr3sGLYQgHcSmfhw5sd1jZC12gjfmZiubsNvM4ikR0A4LQtszyz5SPuD+6OIgqg1IiyZVLJeA4+z3mmEhssFX6I5p1wxoc3747JE94bMsbmE1FIgVE8DuWC5j/38A959X/wNpGhbjidzhcj3XoVm3U8FkjVIrUes49U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FS6qYHsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C206C4CECD;
+	Tue, 12 Nov 2024 10:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407935;
-	bh=aMOIr6bvePGdQk4uas3ofXTuiYnvgYGKFvpqt9kwmQk=;
+	s=korg; t=1731407992;
+	bh=n22ufafL3chpYc04NuqJb5WZZcRW+B5Y4JMral/SB98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oM9pdLIEmKj42q5N2cuu74Q3KSpXz4+CPRppJVsDqswwbHsMbROiHhglqwoedFDHP
-	 0D3vmx8odlz74PolkoE/h26F/572ZSpObEu7cPVaLA/w5Of1UwmQydNh0geQAXUy1P
-	 hYfphrv9M6bInSWu9KtUji5A82+FHA63OzhgGwHs=
+	b=FS6qYHsLvnMW6U4ynIb1/WFuEVDKnoFFjhZw/NZoxL6mINesO61xtFnbqSWjMUJRB
+	 0NjAVHBLokquXGYb0BxwHFXSB8YNPOzGaRvbY78yCIJBavp0Uq1Yi7rodsuyYTabrh
+	 jWefTR7xXCegBFtfqjvQjAH8JLnMEXfpI8rTZ4jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 001/184] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-eaidk-610
-Date: Tue, 12 Nov 2024 11:19:19 +0100
-Message-ID: <20241112101900.925351545@linuxfoundation.org>
+Subject: [PATCH 6.11 004/184] arm64: dts: rockchip: Start cooling maps numbering from zero on ROCK 5B
+Date: Tue, 12 Nov 2024 11:19:22 +0100
+Message-ID: <20241112101901.038982658@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,36 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 2f39bba3b4f037d6c3c9174eed5befcef1c79abb ]
+[ Upstream commit 6be82067254cba14f7b9ca00613bdb7caac9501f ]
 
-There are no DT bindings and driver support for a "rockchip,rt5651"
-codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
-"simple-audio-card,name" property in the "rt5651-sound" node.
+The package cooling maps for the Radxa ROCK 5B were mistakenly named map1
+and map2.  Their numbering should start from zero instead, because there are
+no package cooling maps defined in the parent RK3588 SoC dtsi file, so let's
+rename these cooling maps to map0 and map1.
 
-Fixes: 904f983256fdd24b ("arm64: dts: rockchip: Add dts for a rk3399 based board EAIDK-610")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/a9877b8b1bd0de279d2ec8294d5be14587203a82.1727358193.git.geert+renesas@glider.be
+Fixes: 4a152231b050 ("arm64: dts: rockchip: enable automatic fan control on Rock 5B")
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/335ecd5841ab55f333e17bb391d0e1264fac257b.1726954592.git.dsimic@manjaro.org
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts b/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
-index 173da81fc2311..ea11d6b86e506 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
-@@ -542,7 +542,7 @@
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
+index 966bbc582d89b..6bd06e46a101d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
+@@ -304,12 +304,12 @@
+ 	};
  
- 	rt5651: audio-codec@1a {
--		compatible = "rockchip,rt5651";
-+		compatible = "realtek,rt5651";
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_I2S_8CH_OUT>;
- 		clock-names = "mclk";
+ 	cooling-maps {
+-		map1 {
++		map0 {
+ 			trip = <&package_fan0>;
+ 			cooling-device = <&fan THERMAL_NO_LIMIT 1>;
+ 		};
+ 
+-		map2 {
++		map1 {
+ 			trip = <&package_fan1>;
+ 			cooling-device = <&fan 2 THERMAL_NO_LIMIT>;
+ 		};
 -- 
 2.43.0
 
