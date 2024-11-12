@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61499C5342
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9531F9C55AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9ED1F23B41
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467781F21FAF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F172123F1;
-	Tue, 12 Nov 2024 10:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E07620E337;
+	Tue, 12 Nov 2024 10:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+VGKeJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5PDg5gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D882123C8;
-	Tue, 12 Nov 2024 10:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3A9213ECF;
+	Tue, 12 Nov 2024 10:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407064; cv=none; b=T1+tAb1GMCMb0QzpbtOoqoFLCn2P+OEEeOgcNK9LtRJslcSgJNayNkM69uJWOP9ykMcXA/o4OZtk3/r5EHSyVkv319fcSkzbzFX3/6/MtW9x++GWhq6iagvAivY4VdQk0tGSgX6NhXdHpe3Gg/HFCv0VTFPsmqNmp99mJVeeKk4=
+	t=1731408256; cv=none; b=aC1+7yzKBDsvjqvOsY9ljLqPVkB8+j4sUiV96QUQmYdPWlMShGD1xLR0+n7v9WOHGqMInOmS6YSTsTeuc0hOYUW+JdbrjqanosqpgcgVfcjrfKwvh3+pUQxwNHEzNWJbgFVbUon7KuxkU/NqBhWKwwmJravz3WRKqwxsBycZ2xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407064; c=relaxed/simple;
-	bh=JK3b3oJIvKWGlV1+SyeD0OKZjfazv7PH3GQcGZ9qpFw=;
+	s=arc-20240116; t=1731408256; c=relaxed/simple;
+	bh=Px1SH6rxMLpms2hsijNfeL17+xnV7ezn1bpN4dqKBGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVnNDn5p3jFP9M170ZG4FR8OezrvChrsm37SpzEP9OpKQAGVnHmUmCt0IpT6XZfFQqwLc3X92ZPFT0ofBx9Vkg4uNseQDNifWDC/LeLbW/PxgCu6OkMHWDOpIcYmtVP42ZVkkSFA1lKoawP/2h/xl//pt47FKq7C4pT5wwR7UEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+VGKeJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25044C4CECD;
-	Tue, 12 Nov 2024 10:24:23 +0000 (UTC)
+	 MIME-Version; b=nseQ6ByXMdo/3puDuR/x0dpR7wc8ATrS8owZn0Ha6AsUj9R0CzcKBA7MPy2brIEu+bifFK4d92huRMAnin8eb3T5NaPU+Y/i0N1LuGlk2S5S0vHlhJSMRzx9KOBp4ha4tt1u/TmaPCIFO6BwFrERrKUdIbWiOyvxZb3FgWD7ABs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5PDg5gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43CBC4CECD;
+	Tue, 12 Nov 2024 10:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407064;
-	bh=JK3b3oJIvKWGlV1+SyeD0OKZjfazv7PH3GQcGZ9qpFw=;
+	s=korg; t=1731408256;
+	bh=Px1SH6rxMLpms2hsijNfeL17+xnV7ezn1bpN4dqKBGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+VGKeJnYgbpk5LGQyGTm+gMM080kkKmdICK3OGigXeWk0xKKNf7Z1GkCZDTTcU78
-	 7zpCfkTY79ITUu+JdgPxyS1at2lpLm0O+1gxDUQa3981tinTZQBufpRNeTPwYeTJEN
-	 qOm4D4sjob6XB75uD082pVsQsl7CNnl7f2ZgVd5w=
+	b=t5PDg5gsDHvLQ9wsSKSO2pUMCXEtwDTKUCVcwrXol4MJkBaMPLIiojghdeCc8bdBu
+	 MUjFuGfp2iLdoRlTo0cEqP3HogSQb/xjYaDJKi/EDh0nHrX0istKm8T0ekrX8XvNOk
+	 Urebkhpp8nqvbVuBug51Yqj39iVs4UUxZ26e8BWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Yang Wang <kevinyang.wang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 40/76] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
-Date: Tue, 12 Nov 2024 11:21:05 +0100
-Message-ID: <20241112101841.310832049@linuxfoundation.org>
+Subject: [PATCH 6.11 108/184] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
+Date: Tue, 12 Nov 2024 11:21:06 +0100
+Message-ID: <20241112101905.011626372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -82,15 +82,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -401,7 +401,7 @@ static ssize_t amdgpu_debugfs_regs_didt_
- 	ssize_t result = 0;
+@@ -402,7 +402,7 @@ static ssize_t amdgpu_debugfs_gprwave_re
  	int r;
+ 	uint32_t *data, x;
  
 -	if (size & 0x3 || *pos & 0x3)
 +	if (size > 4096 || size & 0x3 || *pos & 0x3)
  		return -EINVAL;
  
- 	if (!adev->didt_wreg)
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
 
 
 
