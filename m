@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563BD9C54DF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:52:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EB39C539F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8F4EB36637
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F8641F22A0D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFCA213EE9;
-	Tue, 12 Nov 2024 10:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D9B213ED1;
+	Tue, 12 Nov 2024 10:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Te+T3BE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYL1tYXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892C91CBE8F;
-	Tue, 12 Nov 2024 10:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13009170A3A;
+	Tue, 12 Nov 2024 10:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407589; cv=none; b=QEJvCUzIoqR6w13QBea7vxzrr0moFTfTD0sNhxGkVKSUO7ZgoaC/ssvPA77MmAK3KpsyjahIqGz0ya9XQMN8/GbONMD+f9HWrMHDcBQtneHmbPwQgEXU3P1m1nxZ7q2pAceRPI+6M/nf6XUtpx1s6WMjcISyoOoeBeKZmrW30Hs=
+	t=1731407334; cv=none; b=UKSCiFPf2gKPHLNHu3UZGpPTIBiUuWoDo8ElzqJvciTRoPrD9Gn0jtoS4IoXeMffMwqPIlW+92KatM0nR22NWgCYnMMxZxnIqWlhuV9sII59apFds1QLUGWdiVvF/yqnQdHL0Je5td0mMu42Fr/TihalqWeEqnfkE9hi31s1YCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407589; c=relaxed/simple;
-	bh=7SgRX/AqaNHHT7+XIapkROQEGN6hHN28aFJu/sSnAqM=;
+	s=arc-20240116; t=1731407334; c=relaxed/simple;
+	bh=/18pJu6vInkdd3amG/6+/zl0R8VJa5z4FDTyqSMMzlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o768uUwEGNHkN4QKgUDIIFDKq+t6p+A3n9KeNDCruFFwbefw5D9olf3Xhk3bpyrAYrOMceqS0XyfvE/qWI7t/Llyq7+faVkE1rNUClMKb8YVOkCGgkxvYbSZ4LW4l9lmcGySbJp7Dmv9P/5ruBc25MAp+D2zzVIGtHlSr8X0Sjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Te+T3BE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC809C4CECD;
-	Tue, 12 Nov 2024 10:33:08 +0000 (UTC)
+	 MIME-Version; b=c2NUqPLI/lfax6riYzSXIGTRur3QGSiI5YobEVH39MBUBhZkmIqDXpC2IT0+2NBc0KRHJuBzyl+Eu1OfFEO0Jom2FElsaovWeCjgxm/LyO9E0K2hcFXdrEu0ykBzDzmiBeqvrZovbyuWmpvCITwcGITVE9ZCEqxAsdso/c4fZfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYL1tYXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7457AC4CECD;
+	Tue, 12 Nov 2024 10:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407589;
-	bh=7SgRX/AqaNHHT7+XIapkROQEGN6hHN28aFJu/sSnAqM=;
+	s=korg; t=1731407333;
+	bh=/18pJu6vInkdd3amG/6+/zl0R8VJa5z4FDTyqSMMzlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Te+T3BE+YQFTlEC7ysm/PrR1zTflzmpx+QfM4+RkqpJMULm/rEbP0jewvYDmOCSlN
-	 2PO99JpoGUsqrUD8lM/Bbt9rNUqZnYMlOYV4jDLX2rrNDh/Za6l77CG3yOuDRKGRTl
-	 iiw5hwsLi3gW6b08sKIoTjUVMMwl271wYYcrRNLw=
+	b=MYL1tYXWBf293raWppbwIJm9J3oCgqM/2XfLctBH7Dz5FnidOgltfKlkssMmlz5Z8
+	 fD+wrB0tKHkY0pYpEyF7xX3eMPsvQWEM0arL10yrP2ejARwdyVrLahGbCB37R9WNs7
+	 tfltTXsUbL+vlqhMQvBqEshl/e4nKzhtc1hmyic8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/119] ARM: dts: rockchip: Fix the spi controller on rk3036
+Subject: [PATCH 6.1 14/98] ARM: dts: rockchip: Fix the spi controller on rk3036
 Date: Tue, 12 Nov 2024 11:20:29 +0100
-Message-ID: <20241112101849.523905932@linuxfoundation.org>
+Message-ID: <20241112101844.814456164@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,13 +85,13 @@ Link: https://lore.kernel.org/r/20241008203940.2573684-14-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rockchip/rk3036.dtsi | 6 +++---
+ arch/arm/boot/dts/rk3036.dtsi | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
 index 4e208528eebf2..5bdbadd879fe8 100644
---- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
 @@ -550,11 +550,11 @@
  	};
  
