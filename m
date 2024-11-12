@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410759C5530
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:01:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D069C53FE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47B52B3574D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBABAB32D06
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9019E213EE7;
-	Tue, 12 Nov 2024 10:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611492123E5;
+	Tue, 12 Nov 2024 10:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4kHURQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pef6V4+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D171170A3A;
-	Tue, 12 Nov 2024 10:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAB320E31D;
+	Tue, 12 Nov 2024 10:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407357; cv=none; b=pZ9vUNNvujYFXLTnzrblDNGLGSwKUGQJPemw2qCzTBefOK67ojYt0DEJPNRSpC8U4YUw/8J7+T7kneUxOpnP7Yaw+5zK6ykyTiiMrxrkM4Xbc5XK+ILzyFy0eSFlOab+6GZkccO843z4501M4auxsy92JJwwg4RESlS0AQ8ValY=
+	t=1731407071; cv=none; b=Syf6MJQQWjnD1lvyKdMG/8o0IsuRPu1HriZZFihB0UfdH0Wbnq8oKFmoQVqIyJ0uJQ35ItBMKG9CLu8Xs+KSwt9IBa6Kqk9u6iRHNRLXh4wabTNZDSoVDNr4kYTHCe3PF1eAg+KTZ+ziF15GjA11aOiV/eKX2jJ7Fw1Wmfnwx5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407357; c=relaxed/simple;
-	bh=LIAsy/WC08tWrjNsk88mE2U9VMNjyjuZwbgG7ovoIj0=;
+	s=arc-20240116; t=1731407071; c=relaxed/simple;
+	bh=5ig/JRT2E12im3HxhyH+Kw9i1m9+TUIvhv2ufCh1JVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+uGnlxPqt+CTIoCgNV582x6ep9xMb8KsH2a9A6RPGNJAmGdp87u+lKw6OL5m+RBsIHbAWgrdE9hEuM1r2JGIiNGCF8anFlfWvYJcA3dJi+280HM7JF6o/XE25pxc8kt1izZa6BtROBCjieLlNTtPh6oxgUydLTTokD/gvuLhjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4kHURQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD52C4CECD;
-	Tue, 12 Nov 2024 10:29:16 +0000 (UTC)
+	 MIME-Version; b=lKZjKnH3WioDzlYx3iJccFvPUPVLY8xGUmnjRaAj6DXilGbDKP/KH6Gmu4Z+u1onhq75S+kH8cm9QQK2YWqLW16JKPScZBRk/M2Ggjme93oCVGzmR7DtVGyhl/VX0yQqkfIcPiAHlD83G0OauJI0NL+lfaEuyLHhib0v7OwtifE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pef6V4+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B0DC4CECD;
+	Tue, 12 Nov 2024 10:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407357;
-	bh=LIAsy/WC08tWrjNsk88mE2U9VMNjyjuZwbgG7ovoIj0=;
+	s=korg; t=1731407071;
+	bh=5ig/JRT2E12im3HxhyH+Kw9i1m9+TUIvhv2ufCh1JVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4kHURQZVFGdDmRB2AFv2PLXf7psHSHL1HxjGCTnr0jSZRvfxo3RNv746oSgiEN2k
-	 NXA0xc3vgXf4PMmA6hjcuod7ZCaYHOPZ54uaVjfJJ5JiYdOoinzA9AKMtl65D1KqAY
-	 rc6qITzAte+PUh/A1VrWbgmnKCiXzAkB8B7KWog4=
+	b=Pef6V4+xsltcMaYpDWxzWUbkFXUharsm2nzJvFktB2vWeB9Ne8t92+6vlJDSlRljT
+	 ufDDcqTKfKGz+XFFZhyS5NrAOisB3fye9pLQzHcH65I8CGdqOsdM1m8BGGBzX/YgX9
+	 unUzC48OMoe79sDxlu3tx50ORNALP8fSov3fttnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 52/98] ksmbd: fix slab-use-after-free in ksmbd_smb2_session_create
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.15 42/76] thermal/drivers/qcom/lmh: Remove false lockdep backtrace
 Date: Tue, 12 Nov 2024 11:21:07 +0100
-Message-ID: <20241112101846.249820656@linuxfoundation.org>
+Message-ID: <20241112101841.386429389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 0a77715db22611df50b178374c51e2ba0d58866e upstream.
+commit f16beaaee248eaa37ad40b5905924fcf70ae02e3 upstream.
 
-There is a race condition between ksmbd_smb2_session_create and
-ksmbd_expire_session. This patch add missing sessions_table_lock
-while adding/deleting session from global session table.
+Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
+report possible recursive locking issue between LMH and GIC interrupts.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+For the reference:
+
+       CPU0
+       ----
+  lock(&irq_desc_lock_class);
+  lock(&irq_desc_lock_class);
+
+ *** DEADLOCK ***
+
+Call trace:
+ dump_backtrace+0x98/0xf0
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x90/0xd0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x258/0x348
+ __lock_acquire+0x1078/0x1f44
+ lock_acquire+0x1fc/0x32c
+ _raw_spin_lock_irqsave+0x60/0x88
+ __irq_get_desc_lock+0x58/0x98
+ enable_irq+0x38/0xa0
+ lmh_enable_interrupt+0x2c/0x38
+ irq_enable+0x40/0x8c
+ __irq_startup+0x78/0xa4
+ irq_startup+0x78/0x168
+ __enable_irq+0x70/0x7c
+ enable_irq+0x4c/0xa0
+ qcom_cpufreq_ready+0x20/0x2c
+ cpufreq_online+0x2a8/0x988
+ cpufreq_add_dev+0x80/0x98
+ subsys_interface_register+0x104/0x134
+ cpufreq_register_driver+0x150/0x234
+ qcom_cpufreq_hw_driver_probe+0x2a8/0x388
+ platform_probe+0x68/0xc0
+ really_probe+0xbc/0x298
+ __driver_probe_device+0x78/0x12c
+ driver_probe_device+0x3c/0x160
+ __device_attach_driver+0xb8/0x138
+ bus_for_each_drv+0x84/0xe0
+ __device_attach+0x9c/0x188
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0xac/0xb0
+ deferred_probe_work_func+0x8c/0xc8
+ process_one_work+0x20c/0x62c
+ worker_thread+0x1bc/0x36c
+ kthread+0x120/0x124
+ ret_from_fork+0x10/0x20
+
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241011-lmh-lockdep-v1-1-495cbbe6fef1@linaro.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thermal/qcom/lmh.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -174,6 +174,7 @@ static void ksmbd_expire_session(struct
- 	unsigned long id;
- 	struct ksmbd_session *sess;
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -71,7 +71,14 @@ static struct irq_chip lmh_irq_chip = {
+ static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+ {
+ 	struct lmh_hw_data *lmh_data = d->host_data;
++	static struct lock_class_key lmh_lock_key;
++	static struct lock_class_key lmh_request_key;
  
-+	down_write(&sessions_table_lock);
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
- 		if (atomic_read(&sess->refcnt) == 0 &&
-@@ -187,6 +188,7 @@ static void ksmbd_expire_session(struct
- 		}
- 	}
- 	up_write(&conn->session_lock);
-+	up_write(&sessions_table_lock);
- }
++	/*
++	 * This lock class tells lockdep that GPIO irqs are in a different
++	 * category than their parents, so it won't report false recursion.
++	 */
++	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
+ 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
+ 	irq_set_chip_data(irq, lmh_data);
  
- int ksmbd_session_register(struct ksmbd_conn *conn,
-@@ -228,7 +230,6 @@ void ksmbd_sessions_deregister(struct ks
- 			}
- 		}
- 	}
--	up_write(&sessions_table_lock);
- 
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
-@@ -248,6 +249,7 @@ void ksmbd_sessions_deregister(struct ks
- 		}
- 	}
- 	up_write(&conn->session_lock);
-+	up_write(&sessions_table_lock);
- }
- 
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
 
 
 
