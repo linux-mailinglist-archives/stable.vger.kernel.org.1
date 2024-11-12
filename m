@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-92305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154199C537E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA0B9C53D1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C456A281643
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:30:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27FB11F23037
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FC4215F75;
-	Tue, 12 Nov 2024 10:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A28A212642;
+	Tue, 12 Nov 2024 10:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hL0TnKKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzoRGsj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F52215C66;
-	Tue, 12 Nov 2024 10:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0754220D4E3;
+	Tue, 12 Nov 2024 10:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407224; cv=none; b=ayI3GBE9GBYOSKl4AtOlZJlx817xMNmk6zJHRc1WWRAdrrpQCmTb2YI+1Bn4Kf+onnHeTGtViv5URHp7qw9unSTzJBCzdw5MeGpPmkeRb9SQs/d64NQzgSo6ncCg2DwLNOjakRkhaPFPGtNgZ2UAYqEuzg+zet5MFkB1Hub63bM=
+	t=1731407550; cv=none; b=U+3GY2O1GrRqOl2WwIcNIwqL9ze+l1DZHoPJ70vC3kh/UdtqpailQ6j4OlVxlEwZUR8vxl2G/9Ir1EXZLsZxx9rJL+nG10A919KEgGfnyZPlDVkOUJn2W6Rx+NEE3Z//KrLFsuHu7Fl8wLyf0tsW6ssOGLM6iM31NBowmVkYKiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407224; c=relaxed/simple;
-	bh=Oy6RCSDcQgelv7tLD0cQhaPC/sJxTvlvJyrz6HXPKsg=;
+	s=arc-20240116; t=1731407550; c=relaxed/simple;
+	bh=St6luTUqRiYreUqA8eq/DZLLP1BJCTzNXPkf8cKoiqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceQ3kHqTWZnN52TqsjbWr5W57QZGlU/NGicmbDfbosJ0yxHn53jmaD+6ij8L17Rf8MHOf+L5zPZXTnmcRG981YPNluHhdtR3dSYXNNhRvqQRPKPMpmeSdV1FSr86X+DcTx+vjEG91su4oGdTCMlibIHNxBkm4XO/qRucRuQXDmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hL0TnKKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B35C4CED4;
-	Tue, 12 Nov 2024 10:27:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UjBioHRGE/wAYTFvCmo555LINXChiwFxofFk6TfsKVLqBuy+k78+pA+/+u1wDx0msYeMhZKWxwLAbzX/Ny79/Eg60hMK+VcHctO4NNTKzk7iW+gW5h8TaDrZZ0WvNyIaWAOxmuCuLGWJErgXm7DFCqfQiMXDRqBIxD5qRUZ2+W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzoRGsj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84601C4CECD;
+	Tue, 12 Nov 2024 10:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407223;
-	bh=Oy6RCSDcQgelv7tLD0cQhaPC/sJxTvlvJyrz6HXPKsg=;
+	s=korg; t=1731407549;
+	bh=St6luTUqRiYreUqA8eq/DZLLP1BJCTzNXPkf8cKoiqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hL0TnKKTohv9KCb19d63GSO/6bGRdFxADLY2Z9+bp/s2iXs8Md5MYXNqKmGGsx0mt
-	 FAMuupztZSUfWU4LsBcQCuc9381vO3HEchQoN0VUVC7riyFfZwBIFsBTcyIcUgmzNI
-	 f+WorCs070rVsGrlQ2GrFvkNU4QaAwhUb5INCUss=
+	b=JzoRGsj7zJcYoQX3MOHqMzmnIZ8l5dWhmcIpwD1au8h8gqxtAlaZa/9SJinaJ6VV5
+	 1HkZOHH660p441ac7yLMTA+42zvPs2rUt8VhaLHBkO3/F9+ymlNaDwXfzF5OARjSIQ
+	 g2IhGGX7hG/wMlNCp4Yvyk/vsb5qVSlwC+IuozQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Sergey Bostandzhyan <jin@mediatomb.cc>,
+	Wenhao Cui <lasstp5011@gmail.com>,
+	Andy Yan <andyshrk@163.com>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/98] arm64: dts: rockchip: Remove hdmis 2nd interrupt on rk3328
+Subject: [PATCH 6.6 010/119] arm64: dts: rockchip: Remove undocumented supports-emmc property
 Date: Tue, 12 Nov 2024 11:20:18 +0100
-Message-ID: <20241112101844.398848788@linuxfoundation.org>
+Message-ID: <20241112101849.109929145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit de50a7e3681771c6b990238af82bf1dea9b11b21 ]
+[ Upstream commit 1b670212ee3dd9d14c6d39a042dfe4ae79b49b4e ]
 
-The "synopsys,dw-hdmi.yaml" binding specifies that the interrupts
-property of the hdmi node has 'maxItems: 1', so the hdmi node in
-rk3328.dtsi having 2 is incorrect.
+supports-emmc is an undocumented property that slipped into the mainline
+kernel devicetree for some boards. Drop it.
 
-Paragraph 1.3 ("System Interrupt connection") of the RK3328 TRM v1.1
-page 16 and 17 define the following hdmi related interrupts:
--  67 hdmi_intr
-- 103 hdmi_intr_wakeup
-
-The difference of 32 is due to a different base used in the TRM.
-
-The RK3399 (which uses the same binding) has '23: hdmi_irq' and
-'24: hdmi_wakeup_irq' according to its TRM (page 19).
-The RK3568 (also same binding) has '76: hdmi_wakeup' and '77: hdmi'
-according to page 17 of its TRM.
-In both cases the non-wakeup IRQ was used, so use that too for rk3328.
-
-Helped-by: Heiko Stuebner <heiko@sntech.de>
-Fixes: 725e351c265a ("arm64: dts: rockchip: add rk3328 display nodes")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20241008113344.23957-3-didi.debian@cknow.org
+Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Fixes: b8c028782922 ("arm64: dts: rockchip: Add DTS for FriendlyARM NanoPi R2S Plus")
+Cc: Sergey Bostandzhyan <jin@mediatomb.cc>
+Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
+Cc: Wenhao Cui <lasstp5011@gmail.com>
+Fixes: cdf46cdbabfc ("arm64: dts: rockchip: Add dts for EmbedFire rk3568 LubanCat 2")
+Cc: Andy Yan <andyshrk@163.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-6-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi         | 1 -
+ arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts | 1 -
+ arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts      | 1 -
+ arch/arm64/boot/dts/rockchip/rk3568-lubancat-2.dts      | 1 -
+ 4 files changed, 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 5adb2fbc2aafa..75ea512e9724f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -724,8 +724,7 @@
- 		compatible = "rockchip,rk3328-dw-hdmi";
- 		reg = <0x0 0xff3c0000 0x0 0x20000>;
- 		reg-io-width = <4>;
--		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>,
--			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&cru PCLK_HDMI>,
- 			 <&cru SCLK_HDMI_SFC>,
- 			 <&cru SCLK_RTC32K>;
+diff --git a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+index 12397755830bd..5fcc5f32be2d7 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+@@ -66,7 +66,6 @@
+ 	bus-width = <8>;
+ 	cap-mmc-highspeed;
+ 	mmc-hs200-1_8v;
+-	supports-emmc;
+ 	mmc-pwrseq = <&emmc_pwrseq>;
+ 	non-removable;
+ 	vmmc-supply = <&vcc_3v3>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
+index cb81ba3f23ffd..3093f607f282e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
+@@ -27,6 +27,5 @@
+ 	num-slots = <1>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&emmc_clk &emmc_cmd &emmc_bus8>;
+-	supports-emmc;
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+index 6ecdf5d283390..c1e611c040a2c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+@@ -508,7 +508,6 @@
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
+-	supports-emmc;
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-lubancat-2.dts b/arch/arm64/boot/dts/rockchip/rk3568-lubancat-2.dts
+index a8a4cc190eb32..abc33be2e74dc 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-lubancat-2.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-lubancat-2.dts
+@@ -590,7 +590,6 @@
+ 	non-removable;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
+-	supports-emmc;
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
