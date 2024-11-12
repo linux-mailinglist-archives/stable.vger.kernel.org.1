@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562EE9C55DB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD2F9C54F5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B36D91F24133
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2561B1F252A3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D2621A4D7;
-	Tue, 12 Nov 2024 10:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C222C738;
+	Tue, 12 Nov 2024 10:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VslQO/Z0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHorq1Qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B4120E307;
-	Tue, 12 Nov 2024 10:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F09122C732;
+	Tue, 12 Nov 2024 10:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408432; cv=none; b=cdY2hcHvUkNyhVYtgPAYd0I/A0ZMiF2fUsyagN9C9s3KKPW1CIbuHyzkHWSfURV+SYd9HtTnm8RIMmdqIFqDg3s3HIN7WYars/FugjUGU1Mmkf/rK/H9vr9MJVASxQyurSANj5WVcuKz8tyEr7HcpWlIF4qhH+8SJx78ipUjv9E=
+	t=1731407871; cv=none; b=q9fNqNFD5Oc8QsgV29Vtfaw/zRoOvnq1pAGn+CktSx6vvvhqMk3JG21V/WovQmNmJUDg3dqPtZ33TZfWyfHLmTLJlqyB1vfENErnfYrRkRMdzu8bEfVPwNtaiecRznlC4M89pFo/VbgAos1K1MYWKwcEsMw8/ihoL532g1ovjJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408432; c=relaxed/simple;
-	bh=JsfZ16XgJQslgSp5liTBwh5blbSXcYpqEA9jS336200=;
+	s=arc-20240116; t=1731407871; c=relaxed/simple;
+	bh=GlZ5haYisJUXPR+sDBSiALUte2WC03348wId332PmXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWvXw5+c77x6QB6gjoytxQ6N2f0nXQOldAFmLFy6Uyokxs9xDji10pNOqwiqhJmpncRlilSAKyYzM+03V7ajeogqVdGGiHwsd4HaAsc61yg+r4+n6bRjglqM9DdmxmzPerx0DNg75NJHEDkqI4AAM3Erl86arKVPHCfias78xw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VslQO/Z0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FC3C4CECD;
-	Tue, 12 Nov 2024 10:47:11 +0000 (UTC)
+	 MIME-Version; b=tsBi+1I9n+tsWwsxMn8jZTwFGLQy+lzk4pOBvaRUcQIDZPAOlCqS0mhDXVi92E7I6EkFLwHsBi3/MgLh6XH0mgKARJniLxh0CecLqO1rL7+Wvbs+rfUJNTNyF9eMosUFl8Dx+mxYR1I4m8v2Iiqm6XYqak7gosjKO3V1Z7h+9G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHorq1Qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62EDC4CED6;
+	Tue, 12 Nov 2024 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408432;
-	bh=JsfZ16XgJQslgSp5liTBwh5blbSXcYpqEA9jS336200=;
+	s=korg; t=1731407870;
+	bh=GlZ5haYisJUXPR+sDBSiALUte2WC03348wId332PmXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VslQO/Z0+1ITfuFy9GRMvNX1Tujddgww7B5Rl5LIdpY4HAEjQovuO3xmAL158eXnf
-	 bujZWvfGtR5HIbVNYJp96P9ScGUPnTl3/t8qJB3sNa8+X57UNECmYj1uC0dcF6q/yk
-	 toDnW1wWvEAidFap56AE46OAcyRbXmfzhK7X2NC0=
+	b=AHorq1Qemy/AW4mNPhwa5fN33QDwB+6OVcXqUDusBJdwMoggSkaRQIA6seZ+G2fab
+	 VwlLbqgIqrPjB7aVaRzKUv46q4KgR0oWBx9S3RW2ewsyw4xVOHi6q4MMVxc6VEHLCC
+	 tfa4H7Ij6A2+c9hbV56j6GKAfR91x+UJ02efmf+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.11 159/184] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
+Subject: [PATCH 6.6 109/119] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
 Date: Tue, 12 Nov 2024 11:21:57 +0100
-Message-ID: <20241112101906.973262095@linuxfoundation.org>
+Message-ID: <20241112101852.886137722@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/typec/ucsi/ucsi_ccg.c
 +++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -482,6 +482,8 @@ static void ucsi_ccg_update_set_new_cam_
+@@ -441,6 +441,8 @@ static void ucsi_ccg_update_set_new_cam_
  
  	port = uc->orig;
  	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
