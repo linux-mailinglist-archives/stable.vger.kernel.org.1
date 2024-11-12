@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-92560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84A19C550A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D639C55EC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0AE28A55F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:57:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCE8D2847D0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05F91CD1E0;
-	Tue, 12 Nov 2024 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B075721C17F;
+	Tue, 12 Nov 2024 10:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6UdObje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tWvHKyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808CC3DAC00;
-	Tue, 12 Nov 2024 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E91721C17A;
+	Tue, 12 Nov 2024 10:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407886; cv=none; b=j0gdtmXJZJ6sbaB2GlSW5KYZVURrIOjgxi5efguXYkYuD94nBZP0jBsUDFE0yUO+6VQQew9FexWvvbhBet7F+Kr00oIe5q63cRaO8g87GiSKBcCV+QbXlQQg8rgQ5As2Qsh7UcdhiSmFdSXp2G9kS8Y0pLFz5+wyrgwOuM5dPxQ=
+	t=1731408500; cv=none; b=Vms0/Ifm+3Z6MblfDgQYi9zJoLLWbi/X22F5pm/g0YCfAB4rc/87eJnm9wUd9vRCYMupRzrE/4vWUDp73gt5C8XlXJ0k4Xpu4fffpK7p4wei0KXIaxPP8J+ZY6qDdpz6fWDG2MG3tR6e0Y1xaYtvRw2sk4pXWGBanLYDwx5Vy1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407886; c=relaxed/simple;
-	bh=nJVLcUSJM6Pt6Ux+R15cCCCwRK16flNVmetUSjGQTBg=;
+	s=arc-20240116; t=1731408500; c=relaxed/simple;
+	bh=UU4qgRgAyUIptpNVzlqao+R4kD3KIcZfvrHplap8vAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WyzU58YcSrrxYlXvNE6oumB6yp5E2dHPkJw3xUHKHolWYTQG8Ko9zsLA++0WCTWrxPKqJ8fRNWLg3OuALSJ2TUdOVOfGqHo1sQs1B2f0eeAoftw8TLODh5ryKSju+9F1NV9hZ1lieNiJMqhZmjimC0Tk9QlD9/WAv52u4OreRgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6UdObje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB980C4CED4;
-	Tue, 12 Nov 2024 10:38:05 +0000 (UTC)
+	 MIME-Version; b=l1IBhjD7Dpddg/XacayPrVypA0L8pqJbNbTiaUtbdQdN20HQ+Q939ZjT7Mpedfd+twycBgaRF0cP8qyionf+WhHvhsEiFdhOQJldUc/rB4KdoLp15XLN9rhuMvY5dACsIYOZmZNl93XeroGNISir1j9vHQ/xNL8c1VerLFVRrH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tWvHKyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1B2C4CECD;
+	Tue, 12 Nov 2024 10:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407886;
-	bh=nJVLcUSJM6Pt6Ux+R15cCCCwRK16flNVmetUSjGQTBg=;
+	s=korg; t=1731408500;
+	bh=UU4qgRgAyUIptpNVzlqao+R4kD3KIcZfvrHplap8vAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6UdObje0eEoEPg2C32EQELTutWJzbpAeh71Wf8eH7wdUycVunm9BV53A9f8rgGhI
-	 y/KgOlIaJvwcHq58kOquitvUYxJd34jbheEaW/sgh8TIDD2YG8k2gPhJHvLd91pwZ9
-	 8qFRseR2+7BS0JbJZj4Pi4Invy/CtHj0rSoP+ZSY=
+	b=2tWvHKyuyaGcFMl1bnbsAJ1Tyz9e1Lzlb9KyjawTaDqo1j5Wi/aSiixBNVmK5yiLE
+	 MczW7YEaFJGiifakfNN9OoDn1Eh/tRYn57vt+EfLqkS5JqUiYV8d695VlbamoxN2EG
+	 2GFG0tpjnNqjDlCYdjeMxxgxFJnyu6DOAiMwUGW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 113/119] USB: serial: option: add Quectel RG650V
-Date: Tue, 12 Nov 2024 11:22:01 +0100
-Message-ID: <20241112101853.035535463@linuxfoundation.org>
+	Jagadeesh Kona <quic_jkona@quicinc.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 164/184] clk: qcom: videocc-sm8350: use HW_CTRL_TRIGGER for vcodec GDSCs
+Date: Tue, 12 Nov 2024 11:22:02 +0100
+Message-ID: <20241112101907.163241432@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 3b05949ba39f305b585452d0e177470607842165 upstream.
+commit f903663a8dcd6e1656e52856afbf706cc14cbe6d upstream.
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+A recent change in the venus driver results in a stuck clock on the
+Lenovo ThinkPad X13s, for example, when streaming video in firefox:
 
-T:  Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0122 Rev=05.15
-S:  Manufacturer=Quectel
-S:  Product=RG650V-EU
-S:  SerialNumber=xxxxxxx
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
+	video_cc_mvs0_clk status stuck at 'off'
+	WARNING: CPU: 6 PID: 2885 at drivers/clk/qcom/clk-branch.c:87 clk_branch_wait+0x144/0x15c
+	...
+	Call trace:
+	 clk_branch_wait+0x144/0x15c
+	 clk_branch2_enable+0x30/0x40
+	 clk_core_enable+0xd8/0x29c
+	 clk_enable+0x2c/0x4c
+	 vcodec_clks_enable.isra.0+0x94/0xd8 [venus_core]
+	 coreid_power_v4+0x464/0x628 [venus_core]
+	 vdec_start_streaming+0xc4/0x510 [venus_dec]
+	 vb2_start_streaming+0x6c/0x180 [videobuf2_common]
+	 vb2_core_streamon+0x120/0x1dc [videobuf2_common]
+	 vb2_streamon+0x1c/0x6c [videobuf2_v4l2]
+	 v4l2_m2m_ioctl_streamon+0x30/0x80 [v4l2_mem2mem]
+	 v4l_streamon+0x24/0x30 [videodev]
 
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+using the out-of-tree sm8350/sc8280xp venus support. [1]
+
+Update also the sm8350/sc8280xp GDSC definitions so that the hw control
+mode can be changed at runtime as the venus driver now requires.
+
+Fixes: ec9a652e5149 ("venus: pm_helpers: Use dev_pm_genpd_set_hwmode to switch GDSC mode on V6")
+Link: https://lore.kernel.org/lkml/20230731-topic-8280_venus-v1-0-8c8bbe1983a5@linaro.org/ # [1]
+Cc: Jagadeesh Kona <quic_jkona@quicinc.com>
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Link: https://lore.kernel.org/r/20240901093024.18841-1-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/videocc-sm8350.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_VENDOR_ID			0x2c7c
- /* These Quectel products use Quectel's vendor ID */
- #define QUECTEL_PRODUCT_EC21			0x0121
-+#define QUECTEL_PRODUCT_RG650V			0x0122
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-@@ -1273,6 +1274,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
+diff --git a/drivers/clk/qcom/videocc-sm8350.c b/drivers/clk/qcom/videocc-sm8350.c
+index 5bd6fe3e1298..874d4da95ff8 100644
+--- a/drivers/clk/qcom/videocc-sm8350.c
++++ b/drivers/clk/qcom/videocc-sm8350.c
+@@ -452,7 +452,7 @@ static struct gdsc mvs0_gdsc = {
+ 	.pd = {
+ 		.name = "mvs0_gdsc",
+ 	},
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+@@ -461,7 +461,7 @@ static struct gdsc mvs1_gdsc = {
+ 	.pd = {
+ 		.name = "mvs1_gdsc",
+ 	},
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = HW_CTRL_TRIGGER | RETAIN_FF_ENABLE,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
+ 
+-- 
+2.47.0
+
 
 
 
