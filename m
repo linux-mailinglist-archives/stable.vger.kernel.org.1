@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9949C53CA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34519C5473
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2487D1F22FA7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6522E1F226BF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F172123E8;
-	Tue, 12 Nov 2024 10:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82DC21A4A6;
+	Tue, 12 Nov 2024 10:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEUkvOnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoELLU1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D6719E992;
-	Tue, 12 Nov 2024 10:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9692C21A4A0;
+	Tue, 12 Nov 2024 10:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407519; cv=none; b=KSgb/6Tc2LHoSAQf5weskHvSmw0iGzadC9emrFrwnuBUauOeVaPw6roNo5zQNAPG5gry+qTDdR2mzGKwE8WdHr4fZCcxqStx8/uSlRnHAiIrbSVcoHDM6MlXCsBiDsYS5F3XMkkTsjNRGg4GlVePoAPGUaXoum6dH+EhTY/te+g=
+	t=1731407793; cv=none; b=fprRN4fEHZCYrCA6es0n2o0LaiE4KAWbbsdoA9R0J2+Gy3VPJ1tkFxmM2JblhXiNPtYURWmWxTBu/VFAB2el/oXrqdicBfLjTsxYFW1SyTtjgBv2v6fbeMQFd5B4KGNhTt6qeZ5s5ky+Bnyp3Mdg+ZQ0lE6waw+XYlEjnSPNP5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407519; c=relaxed/simple;
-	bh=edGDVbMNfyaARbh6pJlGGTkQD7hNoOL4x1CxjORzN3I=;
+	s=arc-20240116; t=1731407793; c=relaxed/simple;
+	bh=B5N6AwHln8NBxdUgy4wYrR0qifTXHVpY+TIXdRfrynE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urwQ/OiJJxcN6DB9JaVUfvlmqTSbEHkGSUyFoBLm5kzimnVZ3y4OoW6VQNHfM1NqlEzlpkUK+gZxsQ7YZyH7qUDjskVNGgyc5e98/qa7TxWbspOU7cb9I/iH1CrHsbIfsa3KjugyApWGUCyGmeEIZzLFFTywgBQRNAk937IaFMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEUkvOnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDAAC4CED4;
-	Tue, 12 Nov 2024 10:31:58 +0000 (UTC)
+	 MIME-Version; b=NbgkCF06v4vianLwWqXv78BM+gbwhSrFcApIc4YW6FtTSShNxoVSuSTv+xOriNJTFCbCRBr9mh3u1k67k/WqyB9eFp5QRi0m9TaMzoAnbSoybIyWt5rUfzutlZ+PCO5NHMAIsK1w/NBhGAP2+O8uORO5zcOz7T7rrYcgFoeZ85Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoELLU1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D69FC4CEDA;
+	Tue, 12 Nov 2024 10:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407519;
-	bh=edGDVbMNfyaARbh6pJlGGTkQD7hNoOL4x1CxjORzN3I=;
+	s=korg; t=1731407793;
+	bh=B5N6AwHln8NBxdUgy4wYrR0qifTXHVpY+TIXdRfrynE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEUkvOnlAu0p0x1vbI39NcxjpRqI1QUS4+5BhuilnJ135uzBKrtviCbOBOX8g1Daq
-	 Cv18LgaOqkSdOOlfISAGaSv8h3oml9dq22X2P0V32W5iQng1JzXbAcXPGMtH8Whp/O
-	 rCfQeZa+nJRucpS8OooElTcY82jSrJy6ImrFwsxM=
+	b=CoELLU1NN+1ipIY4WuqHPggagn4qVDCzTyBSPHiseRM2uHOM4v3KhubXh1WLLae4Z
+	 ckSEI+gJY1iBruE4Z2HnnBJlIsXe/x2wimHeZZ3VniC2pmpYHtxFpZmeWyHyDCMa9/
+	 mq1fkYXwjSGlSFZFQDdqE8v9tIPx9cRmcCqhAQnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.1 77/98] Revert "wifi: mac80211: fix RCU list iterations"
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.6 084/119] dm cache: fix out-of-bounds access to the dirty bitset when resizing
 Date: Tue, 12 Nov 2024 11:21:32 +0100
-Message-ID: <20241112101847.188215210@linuxfoundation.org>
+Message-ID: <20241112101851.927466391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-This reverts commit b0b2dc1eaa7ec509e07a78c9974097168ae565b7 which is
-commit ac35180032fbc5d80b29af00ba4881815ceefcb6 upstream.
+commit 792227719725497ce10a8039803bec13f89f8910 upstream.
 
-It should not have been backported here due to lack of other rcu
-changes in the stable branches.
+dm-cache checks the dirty bits of the cache blocks to be dropped when
+shrinking the fast device, but an index bug in bitset iteration causes
+out-of-bounds access.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Reproduce steps:
+
+1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
+   access to the dirty bitset (offset 0x80)
+
+dmsetup suspend cache
+dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
+  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc900000f3000, ffffc900000f5000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                     ^
+   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by making the index post-incremented.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/chan.c |    4 +---
- net/mac80211/mlme.c |    2 +-
- net/mac80211/scan.c |    2 +-
- net/mac80211/util.c |    4 +---
- 4 files changed, 4 insertions(+), 8 deletions(-)
+ drivers/md/dm-cache-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -245,9 +245,7 @@ ieee80211_get_max_required_bw(struct iee
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
- 
--	lockdep_assert_wiphy(sdata->local->hw.wiphy);
--
--	list_for_each_entry(sta, &sdata->local->sta_list, list) {
-+	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
- 		if (sdata != sta->sdata &&
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -660,7 +660,7 @@ static bool ieee80211_add_vht_ie(struct
- 		bool disable_mu_mimo = false;
- 		struct ieee80211_sub_if_data *other;
- 
--		list_for_each_entry(other, &local->interfaces, list) {
-+		list_for_each_entry_rcu(other, &local->interfaces, list) {
- 			if (other->vif.bss_conf.mu_mimo_owner) {
- 				disable_mu_mimo = true;
- 				break;
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -501,7 +501,7 @@ static void __ieee80211_scan_completed(s
- 	 * the scan was in progress; if there was none this will
- 	 * just be a no-op for the particular interface.
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2916,13 +2916,13 @@ static bool can_resize(struct cache *cac
+ 	 * We can't drop a dirty block when shrinking the cache.
  	 */
--	list_for_each_entry(sdata, &local->interfaces, list) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
- 			ieee80211_queue_work(&sdata->local->hw, &sdata->work);
+ 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		new_size = to_cblock(from_cblock(new_size) + 1);
+ 		if (is_dirty(cache, new_size)) {
+ 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+ 			      cache_device_name(cache),
+ 			      (unsigned long long) from_cblock(new_size));
+ 			return false;
+ 		}
++		new_size = to_cblock(from_cblock(new_size) + 1);
  	}
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -767,9 +767,7 @@ static void __iterate_interfaces(struct
- 	struct ieee80211_sub_if_data *sdata;
- 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
  
--	list_for_each_entry_rcu(sdata, &local->interfaces, list,
--				lockdep_is_held(&local->iflist_mtx) ||
--				lockdep_is_held(&local->hw.wiphy->mtx)) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
- 		switch (sdata->vif.type) {
- 		case NL80211_IFTYPE_MONITOR:
- 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
+ 	return true;
 
 
 
