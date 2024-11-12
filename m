@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4917F9C56B7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:36:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766979C54C7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04B0BB2BD93
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A5BB2C2CC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE282141B2;
-	Tue, 12 Nov 2024 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30C11BD031;
+	Tue, 12 Nov 2024 10:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/Og5rhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js3bmw8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3ED213EFC;
-	Tue, 12 Nov 2024 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1163213EE9;
+	Tue, 12 Nov 2024 10:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407393; cv=none; b=PjpPLtW9LV5htsnuSfg80oIX8qKGU5lFfebDUo2BG8ENsGgx0ko4ZS9/oAN/o7mt+2XRAVw9vLA9mh98OVK0yIOufyTLHGtmHTuzuNG40jgFA2XDVyXLuQiow36djV6ppppApTm1P0jbjjgwSnBcSkJ+ffI5LWHpym2p/J8UBTU=
+	t=1731407741; cv=none; b=D3d83wtYWmijpFkHWJkLmW/pwI/ewJNi4mKtAjKBKQYyamhg75lbXBclL1u5KY7ohzYAFJv/TgGycSGbBlWPXF3tKnw/adAuBmL9z8HpbL1aRGufIVmsGhjd7sMbGlz+cF/ny8dHIrSS6B9WEWzJNwUmUFbT8oGOah+Kj9KbsIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407393; c=relaxed/simple;
-	bh=Jb+SK9FkJl1vpNG4SaVso6T90pkUr9y33B7huTxwwT0=;
+	s=arc-20240116; t=1731407741; c=relaxed/simple;
+	bh=rELOO1B+WkT3IP/xXvf6tirTUc4bqHX/8m140Jfpy/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMd2eqnkwhOWIO7PVF5KzkK1f+d3theWV9DPWrIJQXeLbbdJ09RMVdZhkW6wvWJ0F5fpYXrC+K4jl/XGamYRU8PGe/imbN5z9DiqSPhwUC1+p9xBnR6jhdIImwO6L613j5nTaBmrJRMHsqLI04KLxnodYbn7jIweaYxVNOTnWwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Og5rhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD44C4CECD;
-	Tue, 12 Nov 2024 10:29:52 +0000 (UTC)
+	 MIME-Version; b=GBsk7MT0Q0HkH5ypOT3TPviO1RIsa2ctxDPJ8prFoUO/U8PbkKW35NABhClyiZGoCak8ju054IuvVSydrQIvoeUnrR7Juh7fsYe/n/IYla/5TgTQB62FlrcgeYpoP5tu8iI34rbaiVomBrawKTu7PvBPGK7xbaXUUMwXyxI5SOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js3bmw8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21800C4CECD;
+	Tue, 12 Nov 2024 10:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407393;
-	bh=Jb+SK9FkJl1vpNG4SaVso6T90pkUr9y33B7huTxwwT0=;
+	s=korg; t=1731407741;
+	bh=rELOO1B+WkT3IP/xXvf6tirTUc4bqHX/8m140Jfpy/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/Og5rhpAJk34PWWMBi8paZAV0qW0HsQf0wYaCF+UxBEWPuuWeexCbFwzWmSkgVt5
-	 1Pgo5AMN2F2fbPUjXcek+8q3UuviF3L86NGwlAqM52c9RFBd252ngU5b2fLufn4757
-	 Oafe3QWW9rx3Wt7gtFc4Z8Nuh6asmKsA+qtMp1NQ=
+	b=Js3bmw8j23kgNrscULpZO8fiBhVtoi1ha2LyeYgH5cX+sNpdgnGTTPTkDTPr2vPSL
+	 u+30QPT8Bviw6DaLIJAyyYwN5WccUmmhI+7mXaZ+ds730MoPLsMU1nUx5isK654a+6
+	 EJohA51Nj6W+/V1Nb9akrE+IyjclJRKKJ46rpjDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.1 62/98] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+	Simon Horman <horms@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 069/119] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
 Date: Tue, 12 Nov 2024 11:21:17 +0100
-Message-ID: <20241112101846.625138901@linuxfoundation.org>
+Message-ID: <20241112101851.351411528@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 792227719725497ce10a8039803bec13f89f8910 upstream.
+commit eb9a839b3d8a989be5970035a5cf29bcd6ffd24d upstream.
 
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access.
+Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
+when switching from CAN-CC to CAN-FD mode"), the current ring and
+coalescing configuration is passed to can_ram_get_layout(). That fixed
+the issue when switching between CAN-CC and CAN-FD mode with
+configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
+tx-frames-irq).
 
-Reproduce steps:
+However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
+switching from CAN-CC to CAN-FD mode"), introduced a regression when
+switching CAN modes with disabled coalescing configuration: Even if
+the previous CAN mode has no coalescing configured, the new mode is
+configured with active coalescing. This leads to delayed receiving of
+CAN-FD frames.
 
-1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+This comes from the fact, that ethtool uses usecs = 0 and max_frames =
+1 to disable coalescing, however the driver uses internally
+priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
+coalescing.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+Fix the regression by assigning struct ethtool_coalesce
+ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
+the driver as can_ram_get_layout() expects this.
 
-2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
-   access to the dirty bitset (offset 0x80)
-
-dmsetup suspend cache
-dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
-  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc900000f3000, ffffc900000f5000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                     ^
-   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by making the index post-incremented.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Reported-by: https://github.com/vdh-robothania
+Closes: https://github.com/raspberrypi/linux/issues/6407
+Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2889,13 +2889,13 @@ static bool can_resize(struct cache *cac
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
- 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		new_size = to_cblock(from_cblock(new_size) + 1);
- 		if (is_dirty(cache, new_size)) {
- 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
- 			      cache_device_name(cache),
- 			      (unsigned long long) from_cblock(new_size));
- 			return false;
- 		}
-+		new_size = to_cblock(from_cblock(new_size) + 1);
- 	}
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -483,9 +483,11 @@ int mcp251xfd_ring_alloc(struct mcp251xf
+ 		};
+ 		const struct ethtool_coalesce ec = {
+ 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
+-			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
++			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
++				1 : priv->rx_obj_num_coalesce_irq,
+ 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
+-			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
++			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
++				1 : priv->tx_obj_num_coalesce_irq,
+ 		};
+ 		struct can_ram_layout layout;
  
- 	return true;
 
 
 
