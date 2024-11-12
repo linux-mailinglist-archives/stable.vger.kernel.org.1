@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FE09C54CE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:51:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF6E9C5392
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC5AB322AD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C401F215D1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F14920DD7D;
-	Tue, 12 Nov 2024 10:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B272123DC;
+	Tue, 12 Nov 2024 10:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHqPp3eH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKnsgdxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFC82123FF;
-	Tue, 12 Nov 2024 10:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96B320F5B6;
+	Tue, 12 Nov 2024 10:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406984; cv=none; b=KvnoZ0KjPMIALXI+x0VOmfj7eYQNB9782Ac3AL+fV874uZJhcXMiCVYJfI4Z4iFaob1ohYKt1dE9YfIFzHsFgzYkERTOfC5pC5LqvXzBdYoc6yjf1LTB9tjEwyxe9GhJD9Riv681zty9JV0hFYRdJE+32eokQaqjkq0ml9MrA/o=
+	t=1731407271; cv=none; b=I0AXdS7/GNbvOWM0/f2PdRk7S9ati8P/dKqp/hLWnXwa0RKLiTnDiJv6s7gyzbBdIqLuCnxKUVCCJpOGXuiE+GusHEHQnkPmIOveT1k6pUAfIqn2WjKrwvxKVt5gm3ZNCxpRiwwP+m4R45fZJUeQ6zynUqTiBQaEx/MnGHFuE24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406984; c=relaxed/simple;
-	bh=JDNfiVppyiHxFkS9sggbuMOsUr1AC3+IlBcbpkHXNzs=;
+	s=arc-20240116; t=1731407271; c=relaxed/simple;
+	bh=L7QIjf2wxYV9TaeVJTx+RJc5U2NRezECK8bngUA3D7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBgTw+43ZJvkoKhazPHWyG/dU5GxpqrV1msGLsUv7xjurwXlC2f1nVWYOR7Q40vaonVwgk4v8mNQh9oEdVEg6TIQJ2IW14V8lzKYhCr3QIva2gmFa8nPw5J5fBIQqEdjwpB0EEuRBFRdC+8RHSAlX7sPCxIIpzkYx/TZuuCDlbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHqPp3eH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF85C4CECD;
-	Tue, 12 Nov 2024 10:23:02 +0000 (UTC)
+	 MIME-Version; b=YqyI+5219tcUMiaLhfsDLG29xmmrJooZ2ceinStD++wtYq4mrNsxp5rCdMF7kQ+IqVAopgzQ44P8zRZRgOVV91/tOP+1+08lmgJr0U9L4lK3dnn65kmMDHEzpEKmlOoLOQGSN05Fh5jK4da9M8oviwH4R++oVc/LSdeejdCboj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKnsgdxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350BCC4CECD;
+	Tue, 12 Nov 2024 10:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406983;
-	bh=JDNfiVppyiHxFkS9sggbuMOsUr1AC3+IlBcbpkHXNzs=;
+	s=korg; t=1731407271;
+	bh=L7QIjf2wxYV9TaeVJTx+RJc5U2NRezECK8bngUA3D7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHqPp3eHZq6zP50UuLne688JVly6Bn/IRVFwJsCd3v9PRcJZ88A+Ev1zE1806sHni
-	 alUXeC7wkYtkJ/mGM0BLcxuFWIOUQpHjMrFXKs7OFTqa3OWT0vP4sHpcmkc95GenCs
-	 PWgtfnH2MxW4jK3qMIhwgOuVRdYHWfARbghFpSkc=
+	b=yKnsgdxWkBLm4mbM6vtRGgYVXGnIFBKnICN7V3CdKfZs9iZM0uBzla1+GAaU3sjBH
+	 ccmeDJxhJsmB0awK+f9nDdt5zu9rtqDmeQNNmtZ32TurBqKvrCvaAwHdmHhi32wD78
+	 Uw1Bn4cnavl2lMiqUJ2Zs7FixXTOwlX9udzPPyqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com,
-	Chen Ridong <chenridong@huawei.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/76] security/keys: fix slab-out-of-bounds in key_task_permission
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 26/98] ice: change q_index variable type to s16 to store -1 value
 Date: Tue, 12 Nov 2024 11:20:41 +0100
-Message-ID: <20241112101840.401604553@linuxfoundation.org>
+Message-ID: <20241112101845.265093080@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +65,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 
-[ Upstream commit 4a74da044ec9ec8679e6beccc4306b936b62873f ]
+[ Upstream commit 64502dac974a5d9951d16015fa2e16a14e5f2bb2 ]
 
-KASAN reports an out of bounds read:
-BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
-BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
-BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
-security/keys/permission.c:54
-Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
+Fix Flow Director not allowing to re-map traffic to 0th queue when action
+is configured to drop (and vice versa).
 
-CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0x107/0x167 lib/dump_stack.c:123
- print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- __kuid_val include/linux/uidgid.h:36 [inline]
- uid_eq include/linux/uidgid.h:63 [inline]
- key_task_permission+0x394/0x410 security/keys/permission.c:54
- search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
+The current implementation of ethtool callback in the ice driver forbids
+change Flow Director action from 0 to -1 and from -1 to 0 with an error,
+e.g:
 
-This issue was also reported by syzbot.
+ # ethtool -U eth2 flow-type tcp4 src-ip 1.1.1.1 loc 1 action 0
+ # ethtool -U eth2 flow-type tcp4 src-ip 1.1.1.1 loc 1 action -1
+ rmgr: Cannot insert RX class rule: Invalid argument
 
-It can be reproduced by following these steps(more details [1]):
-1. Obtain more than 32 inputs that have similar hashes, which ends with the
-   pattern '0xxxxxxxe6'.
-2. Reboot and add the keys obtained in step 1.
+We set the value of `u16 q_index = 0` at the beginning of the function
+ice_set_fdir_input_set(). In case of "drop traffic" action (which is
+equal to -1 in ethtool) we store the 0 value. Later, when want to change
+traffic rule to redirect to queue with index 0 it returns an error
+caused by duplicate found.
 
-The reproducer demonstrates how this issue happened:
-1. In the search_nested_keyrings function, when it iterates through the
-   slots in a node(below tag ascend_to_node), if the slot pointer is meta
-   and node->back_pointer != NULL(it means a root), it will proceed to
-   descend_to_node. However, there is an exception. If node is the root,
-   and one of the slots points to a shortcut, it will be treated as a
-   keyring.
-2. Whether the ptr is keyring decided by keyring_ptr_is_keyring function.
-   However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as
-   ASSOC_ARRAY_PTR_SUBTYPE_MASK.
-3. When 32 keys with the similar hashes are added to the tree, the ROOT
-   has keys with hashes that are not similar (e.g. slot 0) and it splits
-   NODE A without using a shortcut. When NODE A is filled with keys that
-   all hashes are xxe6, the keys are similar, NODE A will split with a
-   shortcut. Finally, it forms the tree as shown below, where slot 6 points
-   to a shortcut.
+Fix this behaviour by change of the type of field `q_index` from u16 to s16
+in `struct ice_fdir_fltr`. This allows to store -1 in the field in case
+of "drop traffic" action. What is more, change the variable type in the
+function ice_set_fdir_input_set() and assign at the beginning the new
+`#define ICE_FDIR_NO_QUEUE_IDX` which is -1. Later, if the action is set
+to another value (point specific queue index) the variable value is
+overwritten in the function.
 
-                      NODE A
-              +------>+---+
-      ROOT    |       | 0 | xxe6
-      +---+   |       +---+
- xxxx | 0 | shortcut  :   : xxe6
-      +---+   |       +---+
- xxe6 :   :   |       |   | xxe6
-      +---+   |       +---+
-      | 6 |---+       :   : xxe6
-      +---+           +---+
- xxe6 :   :           | f | xxe6
-      +---+           +---+
- xxe6 | f |
-      +---+
-
-4. As mentioned above, If a slot(slot 6) of the root points to a shortcut,
-   it may be mistakenly transferred to a key*, leading to a read
-   out-of-bounds read.
-
-To fix this issue, one should jump to descend_to_node if the ptr is a
-shortcut, regardless of whether the node is root or not.
-
-[1] https://lore.kernel.org/linux-kernel/1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com/
-
-[jarkko: tweaked the commit message a bit to have an appropriate closes
- tag.]
-Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-Reported-by: syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000cbb7860611f61147@google.com/T/
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/keyring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_fdir.h         | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 5e6a907607530..1febc2a8abcf6 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -772,8 +772,11 @@ static bool search_nested_keyrings(struct key *keyring,
- 	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
- 		ptr = READ_ONCE(node->slots[slot]);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+index 1839a37139dc1..b6bbf2376ef5c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -1694,11 +1694,12 @@ static int
+ ice_set_fdir_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
+ 		       struct ice_fdir_fltr *input)
+ {
+-	u16 dest_vsi, q_index = 0;
++	s16 q_index = ICE_FDIR_NO_QUEUE_IDX;
+ 	u16 orig_q_index = 0;
+ 	struct ice_pf *pf;
+ 	struct ice_hw *hw;
+ 	int flow_type;
++	u16 dest_vsi;
+ 	u8 dest_ctl;
  
--		if (assoc_array_ptr_is_meta(ptr) && node->back_pointer)
--			goto descend_to_node;
-+		if (assoc_array_ptr_is_meta(ptr)) {
-+			if (node->back_pointer ||
-+			    assoc_array_ptr_is_shortcut(ptr))
-+				goto descend_to_node;
-+		}
+ 	if (!vsi || !fsp || !input)
+diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
+index b384d2a4ab198..063ea3d516532 100644
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+@@ -50,6 +50,8 @@
+  */
+ #define ICE_FDIR_IPV4_PKT_FLAG_MF		0x20
  
- 		if (!keyring_ptr_is_keyring(ptr))
- 			continue;
++#define ICE_FDIR_NO_QUEUE_IDX			-1
++
+ enum ice_fltr_prgm_desc_dest {
+ 	ICE_FLTR_PRGM_DESC_DEST_DROP_PKT,
+ 	ICE_FLTR_PRGM_DESC_DEST_DIRECT_PKT_QINDEX,
+@@ -181,7 +183,7 @@ struct ice_fdir_fltr {
+ 	u16 flex_fltr;
+ 
+ 	/* filter control */
+-	u16 q_index;
++	s16 q_index;
+ 	u16 orig_q_index;
+ 	u16 dest_vsi;
+ 	u8 dest_ctl;
 -- 
 2.43.0
 
