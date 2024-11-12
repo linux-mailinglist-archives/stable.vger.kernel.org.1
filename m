@@ -1,118 +1,156 @@
-Return-Path: <stable+bounces-92859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A119C650D
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:22:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CE49C6511
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD582839CE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A44C1F24DCD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7D921B449;
-	Tue, 12 Nov 2024 23:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2452A21CF8A;
+	Tue, 12 Nov 2024 23:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5CurPFv"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="COv6p2yz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B32A21A4BA
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 23:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEC421C167
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 23:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731453743; cv=none; b=ZP06rmBZLb7D2W9ZwuFP19vnFlE4EK9IKlbqtn2soUlzLdRRJKYPRumKXJU9RXe+hxYWYjtmJz8TtK5VTbJUgKcO4B06EO8n63upDJvGqxwGzwtDAVlpNNOS3nvZ+cH4rX5NKTiMSTLYG0u+mU3V/Qg3e6+1pLHJgrVr0+hVkuA=
+	t=1731453784; cv=none; b=ul4GaL3QqEpV2Y+u0p9TaoIgp7ARwSIatzj4RA/27ciHmYj//4OoVW2SGjckevqWBTGy6+kTzscfsrpx3AvnWlkhcLUuiDNrYW49zh1kBVQfFAFCqj+2cWZzF7HXVRw8IHxBCxO2AGLrAfjt44RqfWafNstCEpsb8bepdvZNiTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731453743; c=relaxed/simple;
-	bh=NwNK1UsOIIOnZPELwasBAkKZRpPZYiIrk9YgjeocQgE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u4BZJbPKQKbCsSErSXnS33Bu9AfRQvSD1JR5/pwIXrxZ/5h3LZ1gFKuqQHSCtuWBHzFD5ly8LPiRoyOOqCYxG+16HsKDnhXRnw49iM+O31zhpZx5LO2Uz243MzEHuLJeyBSlUU8b5D2mzoPl2414tEw/LiTlMilgC089kfLVkb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5CurPFv; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-83a9be2c028so216410839f.1
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:22:21 -0800 (PST)
+	s=arc-20240116; t=1731453784; c=relaxed/simple;
+	bh=Jb7bsAHuq1g+F+AyFt83enXaiVLr1zlWcNhrBiuDpbE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VqhYII684SaQayivVt+Kd/hxFXV+yONhgFGsm+mCGyzEQ/zyPWcomNjMbR11cDdt04Shg2KUK3VDDFnOHQhkC4KNckaSSgoEzBo6VqWUygGriCcWM/gZvYTyCbNQS/x6tL/XqO4N2CAkU9VS4D/WpMFuLrOyxICQXD1shzYxNxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=COv6p2yz; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e3705b2883so111860327b3.3
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:23:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1731453740; x=1732058540; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q3i82h1dy+1mDKQLcjx5GEyyInNzWC0fLINk9aH6mkU=;
-        b=F5CurPFv3rvt9NXLqQsO3Rrxb2J2brmtqVVSH09vYcxNOh+uafkpa/WIqJs75+3XRA
-         gaaVhUZLMqI4gktZ7xAbaGxnj2PrUFBWo46DITH36TypuW94Ece6ljov+2lC+bXB9LZS
-         uuqXXVYu3a2vlpJFIRC4sUHBn4q1iSZSZM3YI=
+        d=google.com; s=20230601; t=1731453782; x=1732058582; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=te/cfPXpVlK1XxYIx1bZceEtuwPH7dTOHve13FO/vjw=;
+        b=COv6p2yzzlQ/agU37mZSkJBosG1/nDrIxGPXdeoT1e+f7+nXggvri5hb2ZwVDaaGlm
+         QoEuCCvoaicDqhytpFmmFuyey8qSaGcouhcOpZSOA4YC72CckecZ5BYi9UGy6MTk4iEO
+         KU7399Vut3BQH99gDJUIsY/UY7J6DH9+ZZzdrZvSOhzRNa+/2iYtWh1GDs/dNHiIJ1R+
+         DTyIaX+C8JHuYWtkVtOK54QPERIAamyKT5JvIjAK6BkpzVTBwU3QR3qflGn8fKvmgdzA
+         N/WJ1xcQWAFjw1Lt/9DmA4E4gjYJogErJ+7XIAjZZ9mKi3bzbtpUBz9vJloTeaNg9c34
+         xF7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731453740; x=1732058540;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q3i82h1dy+1mDKQLcjx5GEyyInNzWC0fLINk9aH6mkU=;
-        b=FswhhzS5OxhsEQgilqNWl2CCWytb85hAQ32PuxpeIfUQFfKnhF2qbbZrzzyjKXw3ff
-         N61kq3/K4JycYtvpd83vCMu9GA+/Jw7rmUvCWS8sx/jdfxjNzmdCGKL2X5mDu204EpGn
-         /v6D/wkrP+mwD4mmvervUcpfQ6vvOX1fWJ6St2vpXRHThJdAF0gVH0FDowCmVICuZlTE
-         ympg4MPsJaCpfrIzK3DlVxB8m7dwjd1MrMNKa2PM4GaMyCbjVBO4pnBpM4+6UIeB7DsI
-         8oiiPTRFPwo84MKpGDjikr2N+nmuJtpPfsVUE1KJe/EBlNhWm7zyLS7Zh2YUrV80M/qg
-         Lhfg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3yI3329GzIR6+mg9XWGxBT+2ArNMZYXIq85xSB4OwjIUGlKvXjTQEhA9CUWRIuEMLLbgw32Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjN80Zs+VhpCy84213r/+t3HSx5jLFxeOMbsvYWon6ge2NGJnD
-	TSMNKI+GD3ocJuPClynXl0oSj/NyKFZnf5ZfWfajUjRiPn3UW0GD5ESHaEO9VXg=
-X-Google-Smtp-Source: AGHT+IGzLKzOi3wnDvz2whiZjf4QgSZRq9izE8vIf+zuB7DErCoKskY2TnTwp9Uo6MfHt5B8jPVf2Q==
-X-Received: by 2002:a05:6e02:1849:b0:3a3:b527:e809 with SMTP id e9e14a558f8ab-3a6f1a256c6mr212414795ab.14.1731453740488;
-        Tue, 12 Nov 2024 15:22:20 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a6f989b2c7sm24784755ab.79.2024.11.12.15.22.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 15:22:20 -0800 (PST)
-Message-ID: <0372fd67-2f79-4b80-97de-e149bfc533ae@linuxfoundation.org>
-Date: Tue, 12 Nov 2024 16:22:18 -0700
+        d=1e100.net; s=20230601; t=1731453782; x=1732058582;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=te/cfPXpVlK1XxYIx1bZceEtuwPH7dTOHve13FO/vjw=;
+        b=vR961ri/STIkw7kckI2bmnfJMbUkkzo7uXVyzqOG7NgSK+G/MVVgqh2P9Xf8nVQfDC
+         kUoAXCsdQnxqzCrzAXQ/K3FckOhLRnl57qv1M82zKURZiPOz3dx54odWF3WB65dyxl+z
+         t4bNfftGKlA0rjALfiLnnDoMazlKDVzb2qQswLVAvkVs4SH/kRTPfT2WsxhcyQj4u9SA
+         MxnAT6QXdfioBZbD126w1h0r9MQYxHhbyZ98ekkx8CerduCqT3iw8kq69nYZWDICaQ5W
+         7gLnhBCmlhwRWOn7ViLOZPrKgEpgTYteIMjJhl9sMpFxglHQzyx7/3bQ1tr8J0XqKEV+
+         CwMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqjRTjOcw2I+ep7A0387y0/gETfmrFXDTt+RXUWdhTWmm/jrCkD8p4+sLW9TTm3vvmoLb6ubw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCHxeq/UlFnEXyBB+efybb8GHAkdKaaNWBD9J8ZIqZZ6bC0WcP
+	kgBC5Lmztypl7KffXmSFOrFPHjMw9sJ3rDeFHz2JpcaXh53T4xY2QC/ebI3dAxpGkPMwTr13gZU
+	dgWl2wBbxvvaje6B96mEpiQ==
+X-Google-Smtp-Source: AGHT+IH0ZHDJ9RxOoA61xD1ipX9jxEyCm6JJVxkz4PucOgUVx/B+vOpDcYEieZFLPHqw48EsYNAyVJqKyr8eL5q2kw==
+X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:36:e7b8:ac13:c9e8])
+ (user=dionnaglaze job=sendgmr) by 2002:a05:690c:3688:b0:6ea:fa4:a365 with
+ SMTP id 00721157ae682-6eaddfec9efmr1445227b3.8.1731453781898; Tue, 12 Nov
+ 2024 15:23:01 -0800 (PST)
+Date: Tue, 12 Nov 2024 23:22:40 +0000
+In-Reply-To: <20241112232253.3379178-1-dionnaglaze@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/76] 5.15.172-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20241112232253.3379178-1-dionnaglaze@google.com>
+X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
+Message-ID: <20241112232253.3379178-2-dionnaglaze@google.com>
+Subject: [PATCH v6 1/8] KVM: SVM: Fix gctx page leak on invalid inputs
+From: Dionna Glaze <dionnaglaze@google.com>
+To: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>
+Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Danilo Krummrich <dakr@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, stable@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/12/24 03:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.172 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 14 Nov 2024 10:18:19 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.172-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Ensure that snp gctx page allocation is adequately deallocated on
+failure during snp_launch_start.
 
-Compiled and booted on my test system. No dmesg regressions.
+Fixes: 136d8bc931c8 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command")
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+CC: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>
+CC: Thomas Gleixner <tglx@linutronix.de>
+CC: Ingo Molnar <mingo@redhat.com>
+CC: Borislav Petkov <bp@alien8.de>
+CC: Dave Hansen <dave.hansen@linux.intel.com>
+CC: Ashish Kalra <ashish.kalra@amd.com>
+CC: Tom Lendacky <thomas.lendacky@amd.com>
+CC: John Allen <john.allen@amd.com>
+CC: Herbert Xu <herbert@gondor.apana.org.au>
+CC: "David S. Miller" <davem@davemloft.net>
+CC: Michael Roth <michael.roth@amd.com>
+CC: Luis Chamberlain <mcgrof@kernel.org>
+CC: Russ Weight <russ.weight@linux.dev>
+CC: Danilo Krummrich <dakr@redhat.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Tianfei zhang <tianfei.zhang@intel.com>
+CC: Alexey Kardashevskiy <aik@amd.com>
+CC: stable@vger.kernel.org
 
-thanks,
--- Shuah
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+Acked-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index c6c8524859001..357906375ec59 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2212,10 +2212,6 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	if (sev->snp_context)
+ 		return -EINVAL;
+ 
+-	sev->snp_context = snp_context_create(kvm, argp);
+-	if (!sev->snp_context)
+-		return -ENOTTY;
+-
+ 	if (params.flags)
+ 		return -EINVAL;
+ 
+@@ -2230,6 +2226,10 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	if (params.policy & SNP_POLICY_MASK_SINGLE_SOCKET)
+ 		return -EINVAL;
+ 
++	sev->snp_context = snp_context_create(kvm, argp);
++	if (!sev->snp_context)
++		return -ENOTTY;
++
+ 	start.gctx_paddr = __psp_pa(sev->snp_context);
+ 	start.policy = params.policy;
+ 	memcpy(start.gosvw, params.gosvw, sizeof(params.gosvw));
+-- 
+2.47.0.277.g8800431eea-goog
+
 
