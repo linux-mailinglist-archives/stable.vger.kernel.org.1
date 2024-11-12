@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-92279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776729C5355
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005319C55B9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5001F220A4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3FE1F22513
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228D3213142;
-	Tue, 12 Nov 2024 10:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA71213144;
+	Tue, 12 Nov 2024 10:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+yGqjGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrH9s3wd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E3220FAB3;
-	Tue, 12 Nov 2024 10:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B953208239;
+	Tue, 12 Nov 2024 10:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407137; cv=none; b=RVelcEdfbZMUmpkkzu46RLvT547iA8wQQc9AzX/6LNSMi/dktkVLxGbGjqY0+2Al6mFY6BILebmh2ABxOwt8t9MkpkxJiTVWv7hGINwH0uw14c6z6+yrydRgPxcbfPyBwz/eSvKyu1CzeBe8DF34Odc0RXoEtte3/5TrEUhNerY=
+	t=1731408314; cv=none; b=ZCRjCNBWKkLIpUcZVCTExktPuqoDBIVe9Gm1IPu2ru6sdam0hCTSWMUyp1kRVoPgqgX/3XHVhBbnFe7FuI2KNRJaAM4dWRD3k8ThFg4OjuaL/63SkF6XOUKYRSYqStjlWnp8dDOAxnZRLQASfBMNGdFCpRIzNqhWRRvNL41/WYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407137; c=relaxed/simple;
-	bh=FPKZNxCE/VzjYOOOcQdUeNtuszjfGLYsbHWDw3FwX5U=;
+	s=arc-20240116; t=1731408314; c=relaxed/simple;
+	bh=rsLXAjFxW5lU4L5bhuIE/UK+4iBx9b+pjZtTmqcKZBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBHEyQrd/sQyUIvYzMhISQ4nV5KwcfIaazxacs4y+c+winryqpu/LWfZlk/co2H3MJTqret5Ey2pu9hsWueOj8GaFX0zemJVi/LcQ2HRuPiXDUlFAUfOsUEq8mkNmBT9WBVfEIqdqOy39vamCOPbIob0KocORwSAsa41a1fK0qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+yGqjGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43657C4CECD;
-	Tue, 12 Nov 2024 10:25:37 +0000 (UTC)
+	 MIME-Version; b=LnT37WdtQyq/GLaeOlkCJazp/OnofiRq3QM4XjPF3rX/ckfj/45T//m2/ufr6prN0mTXkPlSLzVU6QlpwhDuFhRebvOFDEvQz7uht/xIVYD/WSNwQNKN1y1qL6Q3yW3k3PFNcGav1kN1XhNLiMBqumc5DS5V+7avq3bZMx4YZ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrH9s3wd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BD0C4CECD;
+	Tue, 12 Nov 2024 10:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407137;
-	bh=FPKZNxCE/VzjYOOOcQdUeNtuszjfGLYsbHWDw3FwX5U=;
+	s=korg; t=1731408313;
+	bh=rsLXAjFxW5lU4L5bhuIE/UK+4iBx9b+pjZtTmqcKZBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+yGqjGl4tVHBJ52F2GTWusja7FUStTIg/TC2M19qWPjpYYVSMbcefpQ4JoIhCbhO
-	 8NaSqSAAodDPPtNbxO57U3r1GPZTb+i9LGl6TKZH9zttrn9/F7dSJY3yaP0HIh9pkp
-	 WMmY/rrTLZybwfwSI3voPFSqcZCxA9oSHcwk1J1w=
+	b=GrH9s3wdm3/mFVHZgVYwmrAV0k75+WOxQ85WbLD1/Xdw4VgJyDk0KiWG0PuGJvzD4
+	 g2t4YQ9VEREIKhg9DYeLrNREkMBxbJX0H1lRH/o/96xEXLRPF3DGBIXoNyYq9q3j/X
+	 Ex3U05Lj//cRt1xCjwL3C41U+DBvH/sEEdg9kTaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenru <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/76] scsi: sd_zbc: Use kvzalloc() to allocate REPORT ZONES buffer
+	Mike Seo <mikeseohyungjin@gmail.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.11 097/184] tpm: Lock TPM chip in tpm_pm_suspend() first
 Date: Tue, 12 Nov 2024 11:20:55 +0100
-Message-ID: <20241112101840.935185154@linuxfoundation.org>
+Message-ID: <20241112101904.586023723@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 7ce3e6107103214d354a16729a472f588be60572 ]
+commit 9265fed6db601ee2ec47577815387458ef4f047a upstream.
 
-We have two reports of failed memory allocation in btrfs' code which is
-calling into report zones.
+Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can be racy
+according, as this leaves window for tpm_hwrng_read() to be called while
+the operation is in progress. The recent bug report gives also evidence of
+this behaviour.
 
-Both of these reports have the following signature coming from
-__vmalloc_area_node():
+Aadress this by locking the TPM chip before checking any chip->flags both
+in tpm_pm_suspend() and tpm_hwrng_read(). Move TPM_CHIP_FLAG_SUSPENDED
+check inside tpm_get_random() so that it will be always checked only when
+the lock is reserved.
 
- kworker/u17:5: vmalloc error: size 0, failed to allocate pages, mode:0x10dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NORETRY|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0
-
-Further debugging showed these where allocations of one sector (512
-bytes) and at least one of the reporter's systems where low on memory,
-so going through the overhead of allocating a vm area failed.
-
-Switching the allocation from __vmalloc() to kvzalloc() avoids the
-overhead of vmalloc() on small allocations and succeeds.
-
-Note: the buffer is already freed using kvfree() so there's no need to
-adjust the free path.
-
-Cc: Qu Wenru <wqu@suse.com>
-Cc: Naohiro Aota <naohiro.aota@wdc.com>
-Link: https://github.com/kdave/btrfs-progs/issues/779
-Link: https://github.com/kdave/btrfs-progs/issues/915
-Fixes: 23a50861adda ("scsi: sd_zbc: Cleanup sd_zbc_alloc_report_buffer()")
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20241030110253.11718-1-jth@kernel.org
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.4+
+Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during resume")
+Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219383
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Tested-by: Mike Seo <mikeseohyungjin@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd_zbc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/char/tpm/tpm-chip.c      |    4 ----
+ drivers/char/tpm/tpm-interface.c |   32 ++++++++++++++++++++++----------
+ 2 files changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
-index ed06798983f87..00791a42b8d87 100644
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -168,8 +168,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -525,10 +525,6 @@ static int tpm_hwrng_read(struct hwrng *
+ {
+ 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
  
- 	while (bufsize >= SECTOR_SIZE) {
--		buf = __vmalloc(bufsize,
--				GFP_KERNEL | __GFP_ZERO | __GFP_NORETRY);
-+		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
- 		if (buf) {
- 			*buflen = bufsize;
- 			return buf;
--- 
-2.43.0
-
+-	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
+-	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
+-		return 0;
+-
+ 	return tpm_get_random(chip, data, max);
+ }
+ 
+--- a/drivers/char/tpm/tpm-interface.c
++++ b/drivers/char/tpm/tpm-interface.c
+@@ -370,6 +370,13 @@ int tpm_pm_suspend(struct device *dev)
+ 	if (!chip)
+ 		return -ENODEV;
+ 
++	rc = tpm_try_get_ops(chip);
++	if (rc) {
++		/* Can be safely set out of locks, as no action cannot race: */
++		chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
++		goto out;
++	}
++
+ 	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
+ 		goto suspended;
+ 
+@@ -377,21 +384,19 @@ int tpm_pm_suspend(struct device *dev)
+ 	    !pm_suspend_via_firmware())
+ 		goto suspended;
+ 
+-	rc = tpm_try_get_ops(chip);
+-	if (!rc) {
+-		if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+-			tpm2_end_auth_session(chip);
+-			tpm2_shutdown(chip, TPM2_SU_STATE);
+-		} else {
+-			rc = tpm1_pm_suspend(chip, tpm_suspend_pcr);
+-		}
+-
+-		tpm_put_ops(chip);
++	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
++		tpm2_end_auth_session(chip);
++		tpm2_shutdown(chip, TPM2_SU_STATE);
++		goto suspended;
+ 	}
+ 
++	rc = tpm1_pm_suspend(chip, tpm_suspend_pcr);
++
+ suspended:
+ 	chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
++	tpm_put_ops(chip);
+ 
++out:
+ 	if (rc)
+ 		dev_err(dev, "Ignoring error %d while suspending\n", rc);
+ 	return 0;
+@@ -440,11 +445,18 @@ int tpm_get_random(struct tpm_chip *chip
+ 	if (!chip)
+ 		return -ENODEV;
+ 
++	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
++	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED) {
++		rc = 0;
++		goto out;
++	}
++
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
+ 		rc = tpm2_get_random(chip, out, max);
+ 	else
+ 		rc = tpm1_get_random(chip, out, max);
+ 
++out:
+ 	tpm_put_ops(chip);
+ 	return rc;
+ }
 
 
 
