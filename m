@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-92447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4550B9C5417
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:37:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EBC9C5544
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBEF71F21E72
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:37:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CB09B32BA4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F64C215011;
-	Tue, 12 Nov 2024 10:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C89213154;
+	Tue, 12 Nov 2024 10:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kETMYIFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSTDZREC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2CD215008;
-	Tue, 12 Nov 2024 10:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544032123D2;
+	Tue, 12 Nov 2024 10:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407688; cv=none; b=OKlfLDy5BruY1RiINQaSRjl17mFJtstAUMcdG16UIjPLLphN2ABgRq2LKNKQuTrpkEZgStnuGweW3UN5zafXafKyg0w7Oo6mZtIlOFnOkYVdQvpAbVKNDF2YhcPT684irZZvAliwhuXZBFcvqVXqiOiDrsDFtEM4jwzo/jK4Qn4=
+	t=1731407051; cv=none; b=AOsgZA681t9drDetJ82x1af5r+A1Fk34bMjngHst5F5EF/10Me6dkItkaoETmk+CgDJvcLD7w6Eqty6zaYSdVhwanVmvlV0KHxxJJZUCRYp7a5jt808aYUrr2N3OlAJpAnP01fMZ9nsCP8oTZ9wOTkZMJnLNoKiMUOfIi00kjTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407688; c=relaxed/simple;
-	bh=tgJH/4gorlEWRqP5KEtx71suarzcLBJfbX5RM63zWTc=;
+	s=arc-20240116; t=1731407051; c=relaxed/simple;
+	bh=DNNZuzLSjgw4LBrneyP/7J8GTolqwE+yVo0HyQL+yL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dX1Z3fIWMT/chsti/NwQLHWVTEp8XEig9EG6+qLMlDa8OIDHpSrWAhrlGFfLWyVkaNOdS0N4qmHvGUgl/9GPuUnxMRWX43poQ5McMt4Nj+VqZ4Kk0rYxIIQoBobK4ctUFTbeIsaz7XlAsZsRuGVQzrWbh4quFlVVAz+aajU5yQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kETMYIFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671F7C4CECD;
-	Tue, 12 Nov 2024 10:34:47 +0000 (UTC)
+	 MIME-Version; b=T1Us7I3fJP7FzHVfAzN2T0eBzlPOwLGqZv9xIfYdpkca+8HH0IY24HrptX8+ek/TbZdMRph+O59A9ZAmOINlxLBzWA9jYsF15qXynOUaZNZNdtZBOi5oVe9s5ZW/vGIq3M7Nhkb1gnpy0+iCpJWUwiiDRqNbmKOvHSvDYFXOuHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSTDZREC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD037C4CECD;
+	Tue, 12 Nov 2024 10:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407687;
-	bh=tgJH/4gorlEWRqP5KEtx71suarzcLBJfbX5RM63zWTc=;
+	s=korg; t=1731407051;
+	bh=DNNZuzLSjgw4LBrneyP/7J8GTolqwE+yVo0HyQL+yL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kETMYIFO94WIu9vv8qwkJ29TtXt3/M6Kgjqk+MPsKMff3+VnHzcTrJqJqUiPZ1Vyq
-	 jWRh0DStVpaDQCHLa05KZlfl/ZagPd7KMm311cp0QNhzFIMzoDAZoiLaw89N5NLsLa
-	 Zjdv5Nb1dC1F3tXY39JW7aWC5POJ20if18H2PGGA=
+	b=HSTDZRECMy1bRG8/6667aO+yy9UmYU5qQyEnzzAxiATP8+WxVM/StTcCRhsV6Xv3d
+	 78zEFvIPQtzoNvtm5ocXFpLB/3qwW9keFT/uVP49TA5C49q/hS1EJ9duYVxUvB5+jS
+	 w9aT5Uwih9ZUuGQA1x+xgmrzUe1GVOzjp3BLwc/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/119] media: dvbdev: prevent the risk of out of memory access
-Date: Tue, 12 Nov 2024 11:21:00 +0100
-Message-ID: <20241112101850.705862946@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15 36/76] media: v4l2-tpg: prevent the risk of a division by zero
+Date: Tue, 12 Nov 2024 11:21:01 +0100
+Message-ID: <20241112101841.161898614@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
+commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
 
-The dvbdev contains a static variable used to store dvb minors.
+As reported by Coverity, the logic at tpg_precalculate_line()
+blindly rescales the buffer even when scaled_witdh is equal to
+zero. If this ever happens, this will cause a division by zero.
 
-The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
-or not. When not set, dvb_register_device() won't check for
-boundaries, as it will rely that a previous call to
-dvb_register_adapter() would already be enforcing it.
+Instead, add a WARN_ON_ONCE() to trigger such cases and return
+without doing any precalculation.
 
-On a similar way, dvb_device_open() uses the assumption
-that the register functions already did the needed checks.
-
-This can be fragile if some device ends using different
-calls. This also generate warnings on static check analysers
-like Coverity.
-
-So, add explicit guards to prevent potential risk of OOM issues.
-
-Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
+Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
+Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index b43695bc51e75..14f323fbada71 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -86,10 +86,15 @@ static DECLARE_RWSEM(minor_rwsem);
- static int dvb_device_open(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev;
-+	unsigned int minor = iminor(inode);
-+
-+	if (minor >= MAX_DVB_MINORS)
-+		return -ENODEV;
+--- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
++++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
+@@ -1789,6 +1789,9 @@ static void tpg_precalculate_line(struct
+ 	unsigned p;
+ 	unsigned x;
  
- 	mutex_lock(&dvbdev_mutex);
- 	down_read(&minor_rwsem);
--	dvbdev = dvb_minors[iminor(inode)];
++	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
++		return;
 +
-+	dvbdev = dvb_minors[minor];
- 
- 	if (dvbdev && dvbdev->fops) {
- 		int err = 0;
-@@ -525,7 +530,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
- 		if (!dvb_minors[minor])
- 			break;
--	if (minor == MAX_DVB_MINORS) {
-+	if (minor >= MAX_DVB_MINORS) {
- 		if (new_node) {
- 			list_del(&new_node->list_head);
- 			kfree(dvbdevfops);
-@@ -540,6 +545,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	}
- #else
- 	minor = nums2minor(adap->num, type, id);
-+	if (minor >= MAX_DVB_MINORS) {
-+		dvb_media_device_free(dvbdev);
-+		list_del(&dvbdev->list_head);
-+		kfree(dvbdev);
-+		*pdvbdev = NULL;
-+		mutex_unlock(&dvbdev_register_lock);
-+		return ret;
-+	}
- #endif
- 	dvbdev->minor = minor;
- 	dvb_minors[minor] = dvb_device_get(dvbdev);
--- 
-2.43.0
-
+ 	switch (tpg->pattern) {
+ 	case TPG_PAT_GREEN:
+ 		contrast = TPG_COLOR_100_RED;
 
 
 
