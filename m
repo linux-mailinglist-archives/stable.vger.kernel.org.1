@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-92729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105B39C5607
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:14:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A34069C53C4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4DC2B38A3B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B16E1F228DA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B440921A4BA;
-	Tue, 12 Nov 2024 10:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5B2144C9;
+	Tue, 12 Nov 2024 10:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LEyamfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lI+B7gId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F6021A4A8;
-	Tue, 12 Nov 2024 10:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E7D2144C0;
+	Tue, 12 Nov 2024 10:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408400; cv=none; b=CDw0yKr7KCdMA0DtB1djowu9g3gE6eXGqFe5BY5Oe62RaoJqaaif8RC4R0V3Xdsy8FKNpAqGDBrEy4+JHpaNE+nDwP9kkJL4GtrfJdaQyyKRgFJld+1r3GmxH9vkKol69GXE8taUs7rLxsd2z13QMhxh5Y4wpi7JwHtLrd/ELwE=
+	t=1731407495; cv=none; b=nYfGdDz6bvKqt7xdL45zJjrHAMVX/hfz0ld+Lswh/nmwQhUdTO+ebL7gmZ7eemDLbLSeBNvh1ZdIBczMAaZ1sA/ndzf21zlMxqVA3vR7lsZJScYNqXwZs1b3dWG/xBNPUfPpmNsvVgbZWH29knQpjcVPty9TlMVG4JC8/GWB+Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408400; c=relaxed/simple;
-	bh=s6cUf99GOkXMAXBJ8ooIT7bW42cVL4ZpH9sQ9MYJ9vQ=;
+	s=arc-20240116; t=1731407495; c=relaxed/simple;
+	bh=BweZHoy9Rgl/marJLTfldn4mm9oZW4kQMADyqT9djUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvV9yUfRz8jisvNCu7+ANde4bTh9yxYinKNs3KEiLm3ZdfZiL60/hBCVpnM+N8oMK0Uy+PEiLOuKNnHLHdJc0e1TmcOsWD5MZbBmOZGC2L8+vYgVY+Sogfjf5QX6aOgZn4yjEuLHh7g8jqLEEHPoNuETUSm11/HZanqCHRgTSwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LEyamfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C42C4CECD;
-	Tue, 12 Nov 2024 10:46:39 +0000 (UTC)
+	 MIME-Version; b=u3WoD4ZCJtDV+j50mre2URWQHzre5nSdm5ipx0a/bwPpo38Iy2Sc8zKXskhkS/MitIyKB0kOYlWt3rR6K766eQAcGB5r8cDyCZDVivgTyB/IccWQjSFRUm6RUvlsaqE2Kwc4jmqJlh0uPJNE61JIYFdKeJuXufDem9B3K8nNnIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lI+B7gId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A635C4CED6;
+	Tue, 12 Nov 2024 10:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408400;
-	bh=s6cUf99GOkXMAXBJ8ooIT7bW42cVL4ZpH9sQ9MYJ9vQ=;
+	s=korg; t=1731407495;
+	bh=BweZHoy9Rgl/marJLTfldn4mm9oZW4kQMADyqT9djUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LEyamfd5JTXdflBRaKKYzGKBc/3q4AkB2R0chwUnAHkRRx9IKLZ/L0Wlvebi2+/g
-	 mznzZhxa1R4KE/0d14ac9BULy9j8qP6zzhCwCgBLUySHl37CBiguK3gt/SzzE5meBr
-	 cK8f+0N6LGWjSZGDYUrlJZJ5ba0b5nyW6mnEM2EQ=
+	b=lI+B7gIdfZawEWc5JLO0xmW7QYaK7xmq1dlgNvIAf7iabRxsRXUirsjwqbjKJa3Fx
+	 0YEisaK8h77l3qo11MTU8vPObTH3srt4+N54zhzUD+QHjIktOulpZXHoN5FTCjGx1s
+	 sS4nBoC3VmRrt97ILet12xKvyMpvkMTNW4WBqhfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Andrei Vagin <avagin@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Alexey Gladkov <legion@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 150/184] mm/damon/core: avoid overflow in damon_feed_loop_next_input()
+Subject: [PATCH 6.1 93/98] ucounts: fix counter leak in inc_rlimit_get_ucounts()
 Date: Tue, 12 Nov 2024 11:21:48 +0100
-Message-ID: <20241112101906.626013119@linuxfoundation.org>
+Message-ID: <20241112101847.787688183@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Andrei Vagin <avagin@google.com>
 
-commit 4401e9d10ab0281a520b9f8c220f30f60b5c248f upstream.
+commit 432dc0654c612457285a5dcf9bb13968ac6f0804 upstream.
 
-damon_feed_loop_next_input() is inefficient and fragile to overflows.
-Specifically, 'score_goal_diff_bp' calculation can overflow when 'score'
-is high.  The calculation is actually unnecessary at all because 'goal' is
-a constant of value 10,000.  Calculation of 'compensation' is again
-fragile to overflow.  Final calculation of return value for under-achiving
-case is again fragile to overflow when the current score is
-under-achieving the target.
+The inc_rlimit_get_ucounts() increments the specified rlimit counter and
+then checks its limit.  If the value exceeds the limit, the function
+returns an error without decrementing the counter.
 
-Add two corner cases handling at the beginning of the function to make the
-body easier to read, and rewrite the body of the function to avoid
-overflows and the unnecessary bp value calcuation.
-
-Link: https://lkml.kernel.org/r/20241031161203.47751-1-sj@kernel.org
-Fixes: 9294a037c015 ("mm/damon/core: implement goal-oriented feedback-driven quota auto-tuning")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/944f3d5b-9177-48e7-8ec9-7f1331a3fea3@roeck-us.net
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Cc: <stable@vger.kernel.org>	[6.8.x]
+Link: https://lkml.kernel.org/r/20241101191940.3211128-1-roman.gushchin@linux.dev
+Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Co-developed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Alexey Gladkov <legion@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Alexey Gladkov <legion@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ kernel/ucount.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1450,17 +1450,31 @@ static unsigned long damon_feed_loop_nex
- 		unsigned long score)
- {
- 	const unsigned long goal = 10000;
--	unsigned long score_goal_diff = max(goal, score) - min(goal, score);
--	unsigned long score_goal_diff_bp = score_goal_diff * 10000 / goal;
--	unsigned long compensation = last_input * score_goal_diff_bp / 10000;
- 	/* Set minimum input as 10000 to avoid compensation be zero */
- 	const unsigned long min_input = 10000;
-+	unsigned long score_goal_diff, compensation;
-+	bool over_achieving = score > goal;
- 
--	if (goal > score)
-+	if (score == goal)
-+		return last_input;
-+	if (score >= goal * 2)
-+		return min_input;
-+
-+	if (over_achieving)
-+		score_goal_diff = score - goal;
-+	else
-+		score_goal_diff = goal - score;
-+
-+	if (last_input < ULONG_MAX / score_goal_diff)
-+		compensation = last_input * score_goal_diff / goal;
-+	else
-+		compensation = last_input / goal * score_goal_diff;
-+
-+	if (over_achieving)
-+		return max(last_input - compensation, min_input);
-+	if (last_input < ULONG_MAX - compensation)
- 		return last_input + compensation;
--	if (last_input > compensation + min_input)
--		return last_input - compensation;
--	return min_input;
-+	return ULONG_MAX;
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -318,7 +318,7 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
+ 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
+ 		if (new < 0 || new > max)
+-			goto unwind;
++			goto dec_unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+ 		if (!override_rlimit)
+@@ -336,7 +336,6 @@ long inc_rlimit_get_ucounts(struct ucoun
+ dec_unwind:
+ 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
+ 	WARN_ON_ONCE(dec < 0);
+-unwind:
+ 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
+ 	return 0;
  }
- 
- #ifdef CONFIG_PSI
 
 
 
