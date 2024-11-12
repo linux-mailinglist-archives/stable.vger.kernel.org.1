@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-92612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849719C5568
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:06:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDEE9C5571
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BD671F23B0B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D0028E7EA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B13230980;
-	Tue, 12 Nov 2024 10:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81101217459;
+	Tue, 12 Nov 2024 10:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVldyUA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+QCpvKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3317621744D;
-	Tue, 12 Nov 2024 10:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8492309AE;
+	Tue, 12 Nov 2024 10:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408016; cv=none; b=DJnGT0lGeDKARzNgNKWMk5vcVgvbksxYI18UoOywyJTBW6gsnCCyJIaZtTLbwePewz4mbq4bMaY6mUrnQL/GSmfH5T/9KR8wjAacLThbwQ2YVc7KNw15w6qyxgMvRoyfWzW2wP5RY8cMhhq1de4l7q3btRSedhoIPo/rIVq+V6U=
+	t=1731408052; cv=none; b=BUfnvaXdJKYxc30Mow6q0ryk4oaYQ4NEQpzukpWWurnzXcQ1DYkbQN+TP0auJK1G2+le0gbH2nIDJFBpMlU7L5ECypPckfBgaCpZa/6bXpLA498u6hfl5MhILgdvCgiIa0+HA/fjwX7ZmZ1U8WboKPSnt7uxTryOEV0kEes1kdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408016; c=relaxed/simple;
-	bh=ccmC89so6d6cNW94E/YN2h/e0CO0C3ETc0eLjEDgyvU=;
+	s=arc-20240116; t=1731408052; c=relaxed/simple;
+	bh=fgjZlizKwtBsnod+5vS72iVtx0SdivMqUxINbS9sHnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnrc7EFnGwCMjAEsMVmOgVmLk6Ew+4tQLLyuXFuvXw3VToMKzuqGOfUwZdPtWnGMtoJmLh8lEWUW74P+6mmNkcG7bqQJm0scykyDkUndOv7q+McsCj6/XberDVCqpwZP3JWTFGeMIO059nVEepaq/o9SaLadkGi+hD7oQmXOieg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVldyUA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7337DC4CECD;
-	Tue, 12 Nov 2024 10:40:15 +0000 (UTC)
+	 MIME-Version; b=fam9f7KOD1XS4K5ZR1NaX3QbSuhbe6ySACV/GRcetYAdtmmbJouKl2ylxAGBn51Y3CFVwJMxln3F7cAQkmZOhBlBiD358iC76rrJhU669F0Asjewoa7cUMUcq5GKP5eoOgEP+rjGWH2dwHtKT78h9ZmULLjoMbN1nJYPX3DEe90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+QCpvKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65CAC4CECD;
+	Tue, 12 Nov 2024 10:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408015;
-	bh=ccmC89so6d6cNW94E/YN2h/e0CO0C3ETc0eLjEDgyvU=;
+	s=korg; t=1731408052;
+	bh=fgjZlizKwtBsnod+5vS72iVtx0SdivMqUxINbS9sHnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVldyUA89/HTfjytPA6SQLBc8aFzohhONZMJS2WVM5mfOu9340lxCVdGvN1nLkylf
-	 PhIUYf4MXqpnuR6q86ZM/Xbj0VpNZ3JrO7MYxycbjyYqo/ORitW3NjXZXzJXerD822
-	 R6JQ3TNMAPDrQpTeI95o2aBOX8RyaQiq9COCO4iw=
+	b=1+QCpvKKjFXKSCUMZINJvclkFHhEHj1oc5Iw26PgeFuyNc5/1Hfe7KAa+SCJTnLcQ
+	 ukJz8PvZ5UPo1QzycpUR6peG4MpGF/9eoBYO5Eu0n6jYDJYEo5ucgkd7hGwKZDTGYe
+	 lA+PNhwJyfTvhWt/2rHgCQyyLnqM3Jk/J+rEJeF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martijn Braam <martijn@brixit.nl>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Ondrej Jirman <megi@xff.cz>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 026/184] arm64: dts: rockchip: remove orphaned pinctrl-names from pinephone pro
-Date: Tue, 12 Nov 2024 11:19:44 +0100
-Message-ID: <20241112101901.871917452@linuxfoundation.org>
+Subject: [PATCH 6.11 027/184] ARM: dts: rockchip: fix rk3036 acodec node
+Date: Tue, 12 Nov 2024 11:19:45 +0100
+Message-ID: <20241112101901.909975235@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -71,49 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 3577d5e2bc1ff78808cbe2f233ae1837ee2ce84c ]
+[ Upstream commit c7206853cd7d31c52575fb1dc7616b4398f3bc8f ]
 
-The patch adding display support for the pinephone pro introduced two
-regulators that contain pinctrl-names props but no pinctrl-assignments.
+The acodec node is not conformant to the binding.
 
-Looks like someone forgot the pinctrl settings, so remove the orphans
-for now, until that changes.
+Set the correct nodename, use the correct compatible, add the needed
+#sound-dai-cells and sort the rockchip,grf below clocks properties
+as expected.
 
-Fixes: 3e987e1f22b9 ("arm64: dts: rockchip: Add internal display support to rk3399-pinephone-pro")
-Cc: Martijn Braam <martijn@brixit.nl>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: faea098e1808 ("ARM: dts: rockchip: add core rk3036 dtsi")
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-11-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-12-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/boot/dts/rockchip/rk3036.dtsi | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index ef754ea30a940..855e0ca92270b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -167,7 +167,6 @@
- 		regulator-max-microvolt = <1800000>;
- 		vin-supply = <&vcc3v3_sys>;
- 		gpio = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
+diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+index 96279d1e02fec..37369538483f7 100644
+--- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+@@ -384,12 +384,13 @@
+ 		};
  	};
  
- 	/* MIPI DSI panel 2.8v supply */
-@@ -179,7 +178,6 @@
- 		regulator-max-microvolt = <2800000>;
- 		vin-supply = <&vcc3v3_sys>;
- 		gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
+-	acodec: acodec-ana@20030000 {
+-		compatible = "rk3036-codec";
++	acodec: audio-codec@20030000 {
++		compatible = "rockchip,rk3036-codec";
+ 		reg = <0x20030000 0x4000>;
+-		rockchip,grf = <&grf>;
+ 		clock-names = "acodec_pclk";
+ 		clocks = <&cru PCLK_ACODEC>;
++		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
  	};
  
- 	vibrator {
 -- 
 2.43.0
 
