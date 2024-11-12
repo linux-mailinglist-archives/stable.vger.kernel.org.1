@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-92311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C069C538A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D63BE9C56D9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68018283EE5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 525F8B2F638
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276C9217645;
-	Tue, 12 Nov 2024 10:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E06121791B;
+	Tue, 12 Nov 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+wcdWoJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSu/888R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3332123E8;
-	Tue, 12 Nov 2024 10:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CA2212F00;
+	Tue, 12 Nov 2024 10:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407242; cv=none; b=bo0Zr6l81gxPVAT659CzUZa2P3rUMQYzULuFVzl9008LkT0FMyX+EiCE6cppfroS1IaoZ1EJw7hV7ZTRPA5396JbRpGa1ZfNhjUl6I9QSvsc/Q8B3LWG15EjBhmlRPzCLzsiwVDKVem8xinLQqJGEd3NIMSZfXTbP1TtkPy6sLE=
+	t=1731408145; cv=none; b=aZKNdZNGofFfTJJy7rqdZP4mnOuHn6DvyCIu0WVlGHK1fYnsCCnVGWAly0TuvIlUAqlNtvdtjAaiPdVEWD6IjoAk+OsC0J8OFVjpQsiLWdjNoTBjthUqYG3VT8ZC7CTrX2b825vrbWH76iBz9dsbUA9R3oaHXP8UQsvInEEYTCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407242; c=relaxed/simple;
-	bh=kWijvAlzB3ufQFc0jujhtIzMV6fEHB0RzecDIg2HyWQ=;
+	s=arc-20240116; t=1731408145; c=relaxed/simple;
+	bh=t2ZpYIBq91YuG34TtUslOheSHMjPAPfMdOutRYMhVdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U9/u2UEj1VcGUynCdpCPm4taRo0MaxFhQ23khETkod19dT+QiogJ5A5zZhFUvGpImpF9FycagUiGKXxWuxQIaFLZJkZvou2AFGLKOs79dxh+BMcbz4QGIH2Kwv8vfZP51kUeoNbZvqN4wLP0JVHSOeTvaPs6LJOazJfNVJK3Rwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+wcdWoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B11C4CECD;
-	Tue, 12 Nov 2024 10:27:22 +0000 (UTC)
+	 MIME-Version; b=dtKUt12GyMDspeSeDWUKTmJD7TCYB8uYmPgrjRsMTqzK3CfsZNPEphMMOt9RSt98kRZtLFnjkpdU81kecudNgKBcmefZ3m5iUBW8UVRNOYoZikD01NHhBklWfZCqjG58HKvpKjHzulV3FlIL6jgeIiphgUAznq77AExtEBcWXNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSu/888R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A06EC4CECD;
+	Tue, 12 Nov 2024 10:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407242;
-	bh=kWijvAlzB3ufQFc0jujhtIzMV6fEHB0RzecDIg2HyWQ=;
+	s=korg; t=1731408144;
+	bh=t2ZpYIBq91YuG34TtUslOheSHMjPAPfMdOutRYMhVdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+wcdWoJZyWl0Tp426vUMKyer10EDBZMei2IezCf7zRvvmxvJPoKsCdFaxIRW6buh
-	 WxMeESc0ZivSjTyVSW+E7xcl9RPJHbT8zswrUu3HpHV1bHKRsHecx/vrvH/LYv7121
-	 UyNV7Dca80Zvj/Aq64oXBZ5FXB3RwcGQzQCfY6zE=
+	b=xSu/888Rh2476cIrj7ecLteiGVacTszB51mF54ePXOYFlaYuTRjc4OBt3S+5+I9FM
+	 Ocg5u1JH4/C5QeoJmxzg4BNFhc3RULtUqs0JLrDCQNksQ+aUeSRB7NQNMbSZuRn+DW
+	 g/Iv5euwkVJTD/M2eQRI+hs//x279CfAvyixkXPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Corey Hickey <bugfood-c@fatooh.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Jyri Sarha <jyri.sarha@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/98] platform/x86/amd/pmc: Detect when STB is not available
+Subject: [PATCH 6.11 074/184] ASoC: SOF: sof-client-probes-ipc4: Set param_size extension bits
 Date: Tue, 12 Nov 2024 11:20:32 +0100
-Message-ID: <20241112101844.927378591@linuxfoundation.org>
+Message-ID: <20241112101903.702808908@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Hickey <bugfood-c@fatooh.org>
+From: Jyri Sarha <jyri.sarha@linux.intel.com>
 
-[ Upstream commit bceec87a73804bb4c33b9a6c96e2d27cd893a801 ]
+[ Upstream commit 48b86532c10128cf50c854a90c2d5b1410f4012d ]
 
-Loading the amd_pmc module as:
+Write the size of the optional payload of SOF_IPC4_MOD_INIT_INSTANCE
+message to extension param_size-bits.
 
-    amd_pmc enable_stb=1
+The previous IPC4 version does not set these bits that should indicate
+the size of the optional payload (struct sof_ipc4_probe_cfg). The old
+firmware side component code works well without these bits, but when
+the probes are converted to use the generic module API, this does not
+work anymore.
 
-...can result in the following messages in the kernel ring buffer:
-
-    amd_pmc AMDI0009:00: SMU cmd failed. err: 0xff
-    ioremap on RAM at 0x0000000000000000 - 0x0000000000ffffff
-    WARNING: CPU: 10 PID: 2151 at arch/x86/mm/ioremap.c:217 __ioremap_caller+0x2cd/0x340
-
-Further debugging reveals that this occurs when the requests for
-S2D_PHYS_ADDR_LOW and S2D_PHYS_ADDR_HIGH return a value of 0,
-indicating that the STB is inaccessible. To prevent the ioremap
-warning and provide clarity to the user, handle the invalid address
-and display an error message.
-
-Link: https://lore.kernel.org/platform-driver-x86/c588ff5d-3e04-4549-9a86-284b9b4419ba@amd.com
-Fixes: 3d7d407dfb05 ("platform/x86: amd-pmc: Add support for AMD Spill to DRAM STB feature")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028180241.1341624-1-bugfood-ml@fatooh.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: f5623593060f ("ASoC: SOF: IPC4: probes: Implement IPC4 ops for probes client device")
+Signed-off-by: Jyri Sarha <jyri.sarha@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20241107132840.17386-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/sof/sof-client-probes-ipc4.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
-index eb9fc6cb13e33..f237c1ea8d350 100644
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -878,6 +878,11 @@ static int amd_pmc_s2d_init(struct amd_pmc_dev *dev)
- 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_LOW, &phys_addr_low, STB_SPILL_TO_DRAM, 1);
- 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_HIGH, &phys_addr_hi, STB_SPILL_TO_DRAM, 1);
+diff --git a/sound/soc/sof/sof-client-probes-ipc4.c b/sound/soc/sof/sof-client-probes-ipc4.c
+index 796eac0a2e74f..603aed222480f 100644
+--- a/sound/soc/sof/sof-client-probes-ipc4.c
++++ b/sound/soc/sof/sof-client-probes-ipc4.c
+@@ -125,6 +125,7 @@ static int ipc4_probes_init(struct sof_client_dev *cdev, u32 stream_tag,
+ 	msg.primary |= SOF_IPC4_MSG_TARGET(SOF_IPC4_MODULE_MSG);
+ 	msg.extension = SOF_IPC4_MOD_EXT_DST_MOD_INSTANCE(INVALID_PIPELINE_ID);
+ 	msg.extension |= SOF_IPC4_MOD_EXT_CORE_ID(0);
++	msg.extension |= SOF_IPC4_MOD_EXT_PARAM_SIZE(sizeof(cfg) / sizeof(uint32_t));
  
-+	if (!phys_addr_hi && !phys_addr_low) {
-+		dev_err(dev->dev, "STB is not enabled on the system; disable enable_stb or contact system vendor\n");
-+		return -EINVAL;
-+	}
-+
- 	stb_phys_addr = ((u64)phys_addr_hi << 32 | phys_addr_low);
- 
- 	/* Clear msg_port for other SMU operation */
+ 	msg.data_size = sizeof(cfg);
+ 	msg.data_ptr = &cfg;
 -- 
 2.43.0
 
