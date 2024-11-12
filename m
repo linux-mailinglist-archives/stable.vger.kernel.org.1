@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-92426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576E39C53EF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C069C538A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D436282807
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68018283EE5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283E3213EFD;
-	Tue, 12 Nov 2024 10:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276C9217645;
+	Tue, 12 Nov 2024 10:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOWIF1a4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+wcdWoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96DC213EF8;
-	Tue, 12 Nov 2024 10:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3332123E8;
+	Tue, 12 Nov 2024 10:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407622; cv=none; b=WM1/9uMFx+XWYEYbsmFJYhwa8iqVCSPvRNuWjcsPvGtOuZoAOVcqGKxlHrAiTWMZKxeazRCDBY5eUM8/ie0fWbLS1++TmBrKYXiHO6kfQd/O46fN1ZGR6ju5ueUKgqn3kAyT/8yldC/bUTJPymIl2WbOYeKhd1Vq2QbP7N5clvQ=
+	t=1731407242; cv=none; b=bo0Zr6l81gxPVAT659CzUZa2P3rUMQYzULuFVzl9008LkT0FMyX+EiCE6cppfroS1IaoZ1EJw7hV7ZTRPA5396JbRpGa1ZfNhjUl6I9QSvsc/Q8B3LWG15EjBhmlRPzCLzsiwVDKVem8xinLQqJGEd3NIMSZfXTbP1TtkPy6sLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407622; c=relaxed/simple;
-	bh=ZRDFNyvTOaZLHNyzDkYV6A2rFMz5uuXjF0qUO/yqjPU=;
+	s=arc-20240116; t=1731407242; c=relaxed/simple;
+	bh=kWijvAlzB3ufQFc0jujhtIzMV6fEHB0RzecDIg2HyWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HfhbsTI/CNXXrZzP4HltpDmlU9oUqjtjvFBtUW/6bSVpHEsCNoILCGzr4cM+QOCKO/tpjsgv8HrrnYVpJHCshTVG6qWzOCtmmYIfvXaaTx0FAke/R5V3tEigbNBzYEg6tuDou1rLqR6x4IO6wJAT24joNGyZyKkcjlXHI3uDWkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOWIF1a4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A995C4CECD;
-	Tue, 12 Nov 2024 10:33:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U9/u2UEj1VcGUynCdpCPm4taRo0MaxFhQ23khETkod19dT+QiogJ5A5zZhFUvGpImpF9FycagUiGKXxWuxQIaFLZJkZvou2AFGLKOs79dxh+BMcbz4QGIH2Kwv8vfZP51kUeoNbZvqN4wLP0JVHSOeTvaPs6LJOazJfNVJK3Rwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+wcdWoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B11C4CECD;
+	Tue, 12 Nov 2024 10:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407622;
-	bh=ZRDFNyvTOaZLHNyzDkYV6A2rFMz5uuXjF0qUO/yqjPU=;
+	s=korg; t=1731407242;
+	bh=kWijvAlzB3ufQFc0jujhtIzMV6fEHB0RzecDIg2HyWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOWIF1a4KLcZAilAPnRKK/RgDr4Qm/MZA4dQeFasTvHaj2i9sL+YNR4SvYmy4LdFT
-	 G9FVLjJmx9+/XEbQgIPLgr+Zvd+7s/DXheN88usxrELCr9M4ApCYXbLJH3qBwt0PZ6
-	 muEaXS7AVavilh2H+IA1URZSmbUrg17PKKDZimog=
+	b=z+wcdWoJZyWl0Tp426vUMKyer10EDBZMei2IezCf7zRvvmxvJPoKsCdFaxIRW6buh
+	 WxMeESc0ZivSjTyVSW+E7xcl9RPJHbT8zswrUu3HpHV1bHKRsHecx/vrvH/LYv7121
+	 UyNV7Dca80Zvj/Aq64oXBZ5FXB3RwcGQzQCfY6zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Corey Hickey <bugfood-c@fatooh.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/119] HID: core: zero-initialize the report buffer
+Subject: [PATCH 6.1 17/98] platform/x86/amd/pmc: Detect when STB is not available
 Date: Tue, 12 Nov 2024 11:20:32 +0100
-Message-ID: <20241112101849.636601751@linuxfoundation.org>
+Message-ID: <20241112101844.927378591@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +65,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Corey Hickey <bugfood-c@fatooh.org>
 
-[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
+[ Upstream commit bceec87a73804bb4c33b9a6c96e2d27cd893a801 ]
 
-Since the report buffer is used by all kinds of drivers in various ways, let's
-zero-initialize it during allocation to make sure that it can't be ever used
-to leak kernel memory via specially-crafted report.
+Loading the amd_pmc module as:
 
-Fixes: 27ce405039bf ("HID: fix data access in implement()")
-Reported-by: Benoît Sevens <bsevens@google.com>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+    amd_pmc enable_stb=1
+
+...can result in the following messages in the kernel ring buffer:
+
+    amd_pmc AMDI0009:00: SMU cmd failed. err: 0xff
+    ioremap on RAM at 0x0000000000000000 - 0x0000000000ffffff
+    WARNING: CPU: 10 PID: 2151 at arch/x86/mm/ioremap.c:217 __ioremap_caller+0x2cd/0x340
+
+Further debugging reveals that this occurs when the requests for
+S2D_PHYS_ADDR_LOW and S2D_PHYS_ADDR_HIGH return a value of 0,
+indicating that the STB is inaccessible. To prevent the ioremap
+warning and provide clarity to the user, handle the invalid address
+and display an error message.
+
+Link: https://lore.kernel.org/platform-driver-x86/c588ff5d-3e04-4549-9a86-284b9b4419ba@amd.com
+Fixes: 3d7d407dfb05 ("platform/x86: amd-pmc: Add support for AMD Spill to DRAM STB feature")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20241028180241.1341624-1-bugfood-ml@fatooh.org
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 85ddeb13a3fae..1467c5a732db4 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1875,7 +1875,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
+diff --git a/drivers/platform/x86/amd/pmc.c b/drivers/platform/x86/amd/pmc.c
+index eb9fc6cb13e33..f237c1ea8d350 100644
+--- a/drivers/platform/x86/amd/pmc.c
++++ b/drivers/platform/x86/amd/pmc.c
+@@ -878,6 +878,11 @@ static int amd_pmc_s2d_init(struct amd_pmc_dev *dev)
+ 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_LOW, &phys_addr_low, STB_SPILL_TO_DRAM, 1);
+ 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_HIGH, &phys_addr_hi, STB_SPILL_TO_DRAM, 1);
  
- 	u32 len = hid_report_len(report) + 7;
++	if (!phys_addr_hi && !phys_addr_low) {
++		dev_err(dev->dev, "STB is not enabled on the system; disable enable_stb or contact system vendor\n");
++		return -EINVAL;
++	}
++
+ 	stb_phys_addr = ((u64)phys_addr_hi << 32 | phys_addr_low);
  
--	return kmalloc(len, flags);
-+	return kzalloc(len, flags);
- }
- EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
- 
+ 	/* Clear msg_port for other SMU operation */
 -- 
 2.43.0
 
