@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAAD9C546C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:43:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA99F9C566D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4B9228587A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:43:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8B40B34052
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAF8219E27;
-	Tue, 12 Nov 2024 10:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604A02141B2;
+	Tue, 12 Nov 2024 10:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNOj34lF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1bFDTAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE33219E22;
-	Tue, 12 Nov 2024 10:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75E213127;
+	Tue, 12 Nov 2024 10:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407790; cv=none; b=iDaYphZqDfZyP7rYEje6SqelkG1RspvOVL7IZwAMuu6IPkSN/AsrUqQGb56LtJc8L3GO+J+abDPqxd7qiQDdL5jMGKrv3thRmRvhX1K9azPKHEdrmwkTq4muEBimUdjUIOLG0kijnRcOmrN8xMUJhEKJ4bQVG0IHSg1xH5iHVrc=
+	t=1731407208; cv=none; b=hb9E2pKNcauMwax87EvttHvzCz5RlT7ujJqSrugtzb831Me9bdlVJMSjl9NjpJ0lvMHasKfF8oyFW+gzEoa0Z3uQAXJD1aJkgerwEW3gGej4YotrryFLlLkb7bxyS0bT8ShKiv3NCY1P4RDvvNiy8NKeIwF8G5t+PVA83zfoeMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407790; c=relaxed/simple;
-	bh=IsuiaGyGgyWten6quG/Xpq3A99sNhnqIfCIultg1HdA=;
+	s=arc-20240116; t=1731407208; c=relaxed/simple;
+	bh=pFPcpGA6lz8ZcfUvKtfSKEPQY2J/6wMFbVdLzXRx6A8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfRmWbK0ik6G0XwxfbnJDZmk0BQpCeQHRajFshoh3fPsST+OnFc/0ilEQFxxdmI77vtfGOf2vZaEeHnlmMsJw1BrwuQ81bc6Rhux3kKmg5eP7riwQYV3aDzzpwQ6BzqMEC9yfg05ofrhSw1FCAVFEw0ptPWBuesGDyrZ+jsB3pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNOj34lF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F78C4CECD;
-	Tue, 12 Nov 2024 10:36:29 +0000 (UTC)
+	 MIME-Version; b=E52NVdNlIr6hpAXmCQ5Npyf/pA20MvAngKDy/h/AB062X7xMEGV1imQmnXoq2R9oLKkVQ4ohDocVR3rveed+yoFi5sXVWiXKZ3mn5fuRXl6zv71y8hcKoSIuKbN52+gGluBa1oKFs4Tsk4r5kat/Cj26qJbrf2vMn5l+UGWT/VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1bFDTAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCCBC4CECD;
+	Tue, 12 Nov 2024 10:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407789;
-	bh=IsuiaGyGgyWten6quG/Xpq3A99sNhnqIfCIultg1HdA=;
+	s=korg; t=1731407207;
+	bh=pFPcpGA6lz8ZcfUvKtfSKEPQY2J/6wMFbVdLzXRx6A8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNOj34lFxm8C9irhzzBfTdDueGetrgpEw3bbILIFcOw/5/mAbt6V9MX9N0XA/yyBu
-	 OcgnibfoJ4w/t1+uvVM3q4gJgQ3lA8wJ6IUs1kl83Soun46aR98QOORHblFbhVZnoE
-	 AuZjYg9AgNxco5KyhPsUMkORPatAImeMR7kdQbaI=
+	b=g1bFDTAfZgSOmFJr1DXV3qOPKxVFFr3f02LbUnsWutHAMn5Z5tllzfwetU21Ox/wR
+	 3TV+9/K65FS72EygpseyLP+jLBcZyr5J3kjbv4xBxECYpabHokSsUlHFY0/qq2UYoZ
+	 IBsRta0CNJAojKQJm5cLjxCFSllmaTFGkBnFWo3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.6 083/119] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 66/76] USB: serial: option: add Fibocom FG132 0x0112 composition
 Date: Tue, 12 Nov 2024 11:21:31 +0100
-Message-ID: <20241112101851.888125647@linuxfoundation.org>
+Message-ID: <20241112101842.297516203@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
+commit 393c74ccbd847bacf18865a01b422586fc7341cf upstream.
 
-An unexpected WARN_ON from flush_work() may occur when cache creation
-fails, caused by destroying the uninitialized delayed_work waker in the
-error path of cache_create(). For example, the warning appears on the
-superblock checksum error.
+Add Fibocom FG132 0x0112 composition:
 
-Reproduce steps:
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-Kernel logs:
-
-(snip)
-WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
-
-Fix by pulling out the cancel_delayed_work_sync() from the constructor's
-error path. This patch doesn't affect the use-after-free fix for
-concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
-UAF in destroy()")) as cache_dtr is not changed.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1909,16 +1909,13 @@ static void check_migrations(struct work
-  * This function gets called on the error paths of the constructor, so we
-  * have to cope with a partially initialised struct.
-  */
--static void destroy(struct cache *cache)
-+static void __destroy(struct cache *cache)
- {
--	unsigned int i;
--
- 	mempool_exit(&cache->migration_pool);
- 
- 	if (cache->prison)
- 		dm_bio_prison_destroy_v2(cache->prison);
- 
--	cancel_delayed_work_sync(&cache->waker);
- 	if (cache->wq)
- 		destroy_workqueue(cache->wq);
- 
-@@ -1946,13 +1943,22 @@ static void destroy(struct cache *cache)
- 	if (cache->policy)
- 		dm_cache_policy_destroy(cache->policy);
- 
-+	bioset_exit(&cache->bs);
-+
-+	kfree(cache);
-+}
-+
-+static void destroy(struct cache *cache)
-+{
-+	unsigned int i;
-+
-+	cancel_delayed_work_sync(&cache->waker);
-+
- 	for (i = 0; i < cache->nr_ctr_args ; i++)
- 		kfree(cache->ctr_args[i]);
- 	kfree(cache->ctr_args);
- 
--	bioset_exit(&cache->bs);
--
--	kfree(cache);
-+	__destroy(cache);
- }
- 
- static void cache_dtr(struct dm_target *ti)
-@@ -2565,7 +2571,7 @@ static int cache_create(struct cache_arg
- 	*result = cache;
- 	return 0;
- bad:
--	destroy(cache);
-+	__destroy(cache);
- 	return r;
- }
- 
-@@ -2616,7 +2622,7 @@ static int cache_ctr(struct dm_target *t
- 
- 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
- 	if (r) {
--		destroy(cache);
-+		__destroy(cache);
- 		goto out;
- 	}
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2320,6 +2320,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x30) },	/* Fibocom FG132 Diag */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x40) },	/* Fibocom FG132 AT */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0, 0) },		/* Fibocom FG132 NMEA */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
 
 
 
