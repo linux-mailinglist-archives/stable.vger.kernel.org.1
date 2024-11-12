@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-92381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027209C544A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238C49C553B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CACC1B35DFC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD06E28531E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAA02144A4;
-	Tue, 12 Nov 2024 10:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4931B22D3B8;
+	Tue, 12 Nov 2024 10:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMpWAiaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5AN6yxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD10213124;
-	Tue, 12 Nov 2024 10:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FC422D3B3;
+	Tue, 12 Nov 2024 10:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407475; cv=none; b=iSMYDWRecV75KkRAdTkR399mpPno2lEzYYDvYMxXTc7W7fORtm+Npu3+iYZJbs9bFZUGKN/4HHeWZ6/LHVc5hSz8d2DT+FX2kIGCfWePYR7zh27v5H/Fqag5FZTLS8870JSZPMG+dX/2FpxESxKyOZMsQCjdLfahrzNm6RPBSX4=
+	t=1731407909; cv=none; b=itIawKykmzrBFPNTg3PJ5y6UYHZlNbJiUNLx0nbEftVnZo89cZwGde8eE42E19hrWUujFn5H72wbtlGhXQbUaeu/KF63VhKPwtb5o1btlvrYEs019+pxWzDxX5zokM81ACDSVpHPhpIgrjz7GLPhVlliDHXXEN/vzXmlqIKOnyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407475; c=relaxed/simple;
-	bh=S4rmLpUYsutORoL7XppGqHUb+011SSGrR+KvqCmb8Ro=;
+	s=arc-20240116; t=1731407909; c=relaxed/simple;
+	bh=yebHsAXqfbl656prO2aC4p0UcKCC70BQfQK62CArc3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3wmJV/bGEB7O7aivBP0iVsgROsRpLjxqM7gNh2piiIrh6jJD3b+kRdL85kJiofNRFa6HDnUGmcsT7+jzSf0UIUj/wzhmYG85h/0O3YP2DKYXWobCaRPSPby7ge6umkQ6Dao1Tp0ydzNGjzFkrGZWXSCZRTmYJv30BXPlJXUBxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMpWAiaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C04CC4CECD;
-	Tue, 12 Nov 2024 10:31:14 +0000 (UTC)
+	 MIME-Version; b=eN5DFOfJUGcKp8CXiD6mj9neAPxaeEc/asKL4G4YAtRroPBvhZhxhplIK40g85GiTUWuxVyFaGRXwtiPFYoYAJPFWgy5vZEdi1DMPBt8agnd322EvfT5YxjsISpFPboePiaYIEpxNB/ji+7irZ3qc1UrLT0LONPkw3wMwPCVVlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5AN6yxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C609C4CECD;
+	Tue, 12 Nov 2024 10:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407474;
-	bh=S4rmLpUYsutORoL7XppGqHUb+011SSGrR+KvqCmb8Ro=;
+	s=korg; t=1731407908;
+	bh=yebHsAXqfbl656prO2aC4p0UcKCC70BQfQK62CArc3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMpWAiaIoSuhUJsZzs+Qk53WZT1i1r+HQ7oTOCBAVzVJdBegpcBUZJ4xwKl2Dh6TF
-	 TvOyyGQnxuAraGbCe7AIpY34OuoIP63k+sa0BJZenhmLdYS/erBWV9/HBGuO4SDjRn
-	 Oi+v5qVOl2fDDcdTl7Vy7WhJH2wxx4kuPxkG4o/U=
+	b=J5AN6yxmKcMoQMOtPwXgN5tvG9cqNZVBGeLLOnhrndXQyDtskfl//6Uejy2F5BiP5
+	 83Llh0K+cReFH3VSIOghxIubdovlVRxMLyuMlNimw1pv/UbgvHSm9MXDfq5qT8yaiT
+	 M3u5V4GYGb5t43QnpVdmz3D3IaFRCjvYJG+uTli4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 87/98] USB: serial: io_edgeport: fix use after free in debug printk
-Date: Tue, 12 Nov 2024 11:21:42 +0100
-Message-ID: <20241112101847.564682788@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 095/119] arm64: Kconfig: Make SME depend on BROKEN for now
+Date: Tue, 12 Nov 2024 11:21:43 +0100
+Message-ID: <20241112101852.349476283@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 37bb5628379295c1254c113a407cab03a0f4d0b4 upstream.
+commit 81235ae0c846e1fb46a2c6fe9283fe2b2b24f7dc upstream.
 
-The "dev_dbg(&urb->dev->dev, ..." which happens after usb_free_urb(urb)
-is a use after free of the "urb" pointer.  Store the "dev" pointer at the
-start of the function to avoid this issue.
+Although support for SME was merged in v5.19, we've since uncovered a
+number of issues with the implementation, including issues which might
+corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
+patches to address some of these issues, ongoing review has highlighted
+additional functional problems, and more time is necessary to analyse
+and fix these.
 
-Fixes: 984f68683298 ("USB: serial: io_edgeport.c: remove dbg() usage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+For now, mark SME as BROKEN in the hope that we can fix things properly
+in the near future. As SME is an OPTIONAL part of ARMv9.2+, and there is
+very little extant hardware, this should not adversely affect the vast
+majority of users.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org # 5.19
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20241106164220.2789279-1-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_edgeport.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/io_edgeport.c
-+++ b/drivers/usb/serial/io_edgeport.c
-@@ -770,11 +770,12 @@ static void edge_bulk_out_data_callback(
- static void edge_bulk_out_cmd_callback(struct urb *urb)
- {
- 	struct edgeport_port *edge_port = urb->context;
-+	struct device *dev = &urb->dev->dev;
- 	int status = urb->status;
- 
- 	atomic_dec(&CmdUrbs);
--	dev_dbg(&urb->dev->dev, "%s - FREE URB %p (outstanding %d)\n",
--		__func__, urb, atomic_read(&CmdUrbs));
-+	dev_dbg(dev, "%s - FREE URB %p (outstanding %d)\n", __func__, urb,
-+		atomic_read(&CmdUrbs));
- 
- 
- 	/* clean up the transfer buffer */
-@@ -784,8 +785,7 @@ static void edge_bulk_out_cmd_callback(s
- 	usb_free_urb(urb);
- 
- 	if (status) {
--		dev_dbg(&urb->dev->dev,
--			"%s - nonzero write bulk status received: %d\n",
-+		dev_dbg(dev, "%s - nonzero write bulk status received: %d\n",
- 			__func__, status);
- 		return;
- 	}
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2167,6 +2167,7 @@ config ARM64_SME
+ 	bool "ARM Scalable Matrix Extension support"
+ 	default y
+ 	depends on ARM64_SVE
++	depends on BROKEN
+ 	help
+ 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
+ 	  execution state which utilises a substantial subset of the SVE
 
 
 
