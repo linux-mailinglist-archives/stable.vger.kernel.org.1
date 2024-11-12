@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-92516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C13F9C54A8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:48:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33569C55AD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38362894F4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A2391F21E76
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C9121F4C9;
-	Tue, 12 Nov 2024 10:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2562194A0;
+	Tue, 12 Nov 2024 10:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm5NWpWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDYE2bRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DFA21EBBB;
-	Tue, 12 Nov 2024 10:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811F213ECF;
+	Tue, 12 Nov 2024 10:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407827; cv=none; b=N7Ee0lAdP3F4N4td8rnKDe/GZwNMxFsr4EctLQMxLypkJ5nAJ9hp4UE3GFvdIb3sywHLv5unROB5IVkZkOAC3vt7ltXAqZIH+FTpldty1ubOtfQY7IUUNh1wOGmb4vaaOdJynSZuB8bnbVl5LyRMT5wr7lslzL27QCoUcDs+E48=
+	t=1731408272; cv=none; b=W4rsq3aiuvJA0TRIza+pmKo+CbJZK3x5A8ERjh6wl2RI6NQj+ReV4LxpQlNCoO1ELnyT2o7Hos3SC6EwZLkWDVtUDRVYhTOkqYzeUgaSGo9PzIDYRJYILyUGL0lOly3exawDFLqSOZZwDGHzbjpM9ElDzbWQI6+JbjrcrV1kVL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407827; c=relaxed/simple;
-	bh=xtP2FcuwhLO4bJVH1aZuwM5B9cg4VYpgMvgBiKa+4yw=;
+	s=arc-20240116; t=1731408272; c=relaxed/simple;
+	bh=LWdSg7o1vDxSOzTC/EjuG9IhJPqouiyRTKWFVDNYtuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+woFYv9Qdreaj3kXIINEgYEWBaPKF6rdrMTUSfQGocxRhk9fYcJQNF7iiyKgpoU1pJV3scN0rXx1vbHHTwrTPe7rlGS1orrsAfF7cmMzkdnStzgzPEVt83GmarfqTcZnf42mJRUgnm8Y5U/TYBKNSXFnqZrzFObn7enovoy1BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm5NWpWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31234C4CED6;
-	Tue, 12 Nov 2024 10:37:06 +0000 (UTC)
+	 MIME-Version; b=DYmsn/jlI3VjK1+KCEdbECgItGqE1ynQewv+EhqQxqPGm2+CAGxsRtOCSKwe3a1tMnf+atXQmIptCQdJ3uVJGwInXwImtrNaGg7DJjuHnS4zLEoedzahH0BwI0neOdfZP8Fe11fv5e/ttQrQ8hJGb7joLILJLdRJChQ2vIMWsbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDYE2bRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F0CC4CED4;
+	Tue, 12 Nov 2024 10:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407826;
-	bh=xtP2FcuwhLO4bJVH1aZuwM5B9cg4VYpgMvgBiKa+4yw=;
+	s=korg; t=1731408272;
+	bh=LWdSg7o1vDxSOzTC/EjuG9IhJPqouiyRTKWFVDNYtuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mm5NWpWxFmz6h+V2jag87nzvLD5qhvfx8xfQadKCuNXlo0bj75gMvh4WuXm/KpW8W
-	 W5hebjBSvl+WlPSsr8zmElMR8PIsWFuXoUP/hkW38NnJU2Kh6cRxcd2jtX6crZICZi
-	 I6p4+sOWNit8qoOZKud3AD0XrGKNFt8Z1GzLfidM=
+	b=IDYE2bRvaj4TSIW6zMedRWfd3dbyME3khKHwVkZ2JirmvQDX28YSdHkUD3zNmlqSd
+	 36hTG5V/6R5y9TvSFtdtAPVtr5zBV9AZFzIm30jiRzoF8AeUJ18qI+9YIIpeE48Rn8
+	 CphmzjtPS3me1VRPfNyrd/8ldnQLbxLIPiig9ppk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 063/119] media: cx24116: prevent overflows on SNR calculus
+	Parthiban N <parthiban@linumiz.com>,
+	David Gstir <david@sigma-star.at>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.11 113/184] KEYS: trusted: dcp: fix NULL dereference in AEAD crypto operation
 Date: Tue, 12 Nov 2024 11:21:11 +0100
-Message-ID: <20241112101851.122058885@linuxfoundation.org>
+Message-ID: <20241112101905.201538619@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: David Gstir <david@sigma-star.at>
 
-commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
+commit 04de7589e0a95167d803ecadd115235ba2c14997 upstream.
 
-as reported by Coverity, if reading SNR registers fail, a negative
-number will be returned, causing an underflow when reading SNR
-registers.
+When sealing or unsealing a key blob we currently do not wait for
+the AEAD cipher operation to finish and simply return after submitting
+the request. If there is some load on the system we can exit before
+the cipher operation is done and the buffer we read from/write to
+is already removed from the stack. This will e.g. result in NULL
+pointer dereference errors in the DCP driver during blob creation.
 
-Prevent that.
+Fix this by waiting for the AEAD cipher operation to finish before
+resuming the seal and unseal calls.
 
-Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key")
+Reported-by: Parthiban N <parthiban@linumiz.com>
+Closes: https://lore.kernel.org/keyrings/254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com/
+Signed-off-by: David Gstir <david@sigma-star.at>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_dcp.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/media/dvb-frontends/cx24116.c
-+++ b/drivers/media/dvb-frontends/cx24116.c
-@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
- {
- 	struct cx24116_state *state = fe->demodulator_priv;
- 	u8 snr_reading;
-+	int ret;
- 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
- 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
- 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
-@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
+--- a/security/keys/trusted-keys/trusted_dcp.c
++++ b/security/keys/trusted-keys/trusted_dcp.c
+@@ -133,6 +133,7 @@ static int do_aead_crypto(u8 *in, u8 *ou
+ 	struct scatterlist src_sg, dst_sg;
+ 	struct crypto_aead *aead;
+ 	int ret;
++	DECLARE_CRYPTO_WAIT(wait);
  
- 	dprintk("%s()\n", __func__);
+ 	aead = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
+ 	if (IS_ERR(aead)) {
+@@ -163,8 +164,8 @@ static int do_aead_crypto(u8 *in, u8 *ou
+ 	}
  
--	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	if (ret  < 0)
-+		return ret;
-+
-+	snr_reading = ret;
+ 	aead_request_set_crypt(aead_req, &src_sg, &dst_sg, len, nonce);
+-	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL,
+-				  NULL);
++	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP,
++				  crypto_req_done, &wait);
+ 	aead_request_set_ad(aead_req, 0);
  
- 	if (snr_reading >= 0xa0 /* 100% */)
- 		*snr = 0xffff;
+ 	if (crypto_aead_setkey(aead, key, AES_KEYSIZE_128)) {
+@@ -174,9 +175,9 @@ static int do_aead_crypto(u8 *in, u8 *ou
+ 	}
+ 
+ 	if (do_encrypt)
+-		ret = crypto_aead_encrypt(aead_req);
++		ret = crypto_wait_req(crypto_aead_encrypt(aead_req), &wait);
+ 	else
+-		ret = crypto_aead_decrypt(aead_req);
++		ret = crypto_wait_req(crypto_aead_decrypt(aead_req), &wait);
+ 
+ free_req:
+ 	aead_request_free(aead_req);
 
 
 
