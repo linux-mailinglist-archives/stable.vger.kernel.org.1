@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F415F9C5458
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:41:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1985F9C536E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0321F21B84
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D327E288C9E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B63E218335;
-	Tue, 12 Nov 2024 10:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2E5214439;
+	Tue, 12 Nov 2024 10:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmG+6FJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REWP/hrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A77121832B;
-	Tue, 12 Nov 2024 10:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4642141B9;
+	Tue, 12 Nov 2024 10:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407780; cv=none; b=KNxKiuH8s8PXu5NSfb4vASmj0HmqRNA0ssm+PQbUEaPfGf2jMxS1rt/ibaXTLuMTvBRVxYpueVBwnC3DuDjp9Xl/830IFgmAK2mQXuzZ57qtOBnWO9zTdjqAXFJBxSv7bdAzTaWHwiOEH++QinrWOIoMR+qyPx9WCAXH9wGqf9o=
+	t=1731407197; cv=none; b=Z7iBbgA+252fBJSIdcWQDTt6vIqGwVlVbE1YWiu/K4xBP74+Fq5qcKQNTpwhZTXbYai+rFx8R6V5oMsGQIf96s1nu1dD0ZTUXyfSsSa2NW5XdsYL05axUgtoIez4jRkf2puzPQVZ7Q33AXMSZumQtWxKbZj8vMS1A3Doi543SFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407780; c=relaxed/simple;
-	bh=5HQsGKC+NYmSWMQfL8UuG0DNhV2cQR67dIxfzzHNWwg=;
+	s=arc-20240116; t=1731407197; c=relaxed/simple;
+	bh=eqacKVqTjeBSbJC5wEZvVmiPSp8SA6nTrqzlY9xDfJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIlj37/Pz4SQeQCR3o/CsqBUJb7xtLgydWIospbnd44kzUxAYiALNnpKqb5ml8hNamHy3ygBan8jWWQOYgyV5hRUHXqIAqQtf6iD0/9ZjEtVJ2LSKVd67BbR7LBhtYArUy3VisnV74jFdrIvVxRoosmfHzOkWarA9uRX2FHGL0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmG+6FJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FEDC4CED7;
-	Tue, 12 Nov 2024 10:36:19 +0000 (UTC)
+	 MIME-Version; b=LqNjNJ7XHtEW9NJkyUc8mfDKCY8bCVebymZHJphfSClRPIl1cPXHya/wH8WUNk8hXy/20hU50pVO/djwR5mUpqqBR7oYxjlgPoZmDm/f7kb5llhb5F/Q8FVtRRuwOEwV2qZyol0hdbnKHWmvFa/FLEjPRyzxyBkWWthl4vv0Cvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REWP/hrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACB8C4CECD;
+	Tue, 12 Nov 2024 10:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407780;
-	bh=5HQsGKC+NYmSWMQfL8UuG0DNhV2cQR67dIxfzzHNWwg=;
+	s=korg; t=1731407197;
+	bh=eqacKVqTjeBSbJC5wEZvVmiPSp8SA6nTrqzlY9xDfJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmG+6FJE2vHB2dsoHjm99ad6VVlrxqW5eBmm2qT5xOU//MoBECDnKKCsw9cO9ZG4h
-	 6PMFQR8MDOfly9ErWC6nEIz2BXpQ87JVwrZURXI3kdqs6EhWF1cGT9uq3SkZAbrUtX
-	 w2tNYtq8WXqVr5LjrZxJpC8u5dSqtisjYYsVACqg=
+	b=REWP/hrGKv6llgmjYDr36e5tFTj1AaPj9p6T8cUchWIoSBlC6RxhQxBNkw3Y1dxfk
+	 mzFsZS+FLaJgibfUL9INQiBgo8WIF+ZPTqOfP9B54wE0Rb4V/whZi2mQCEVBStpXaX
+	 fbsbiSihT7SbiFI8HOP4dcs4oGQ1LFMBKphcoHSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 080/119] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 63/76] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
 Date: Tue, 12 Nov 2024 11:21:28 +0100
-Message-ID: <20241112101851.775426318@linuxfoundation.org>
+Message-ID: <20241112101842.185533958@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+commit 7dd08a0b4193087976db6b3ee7807de7e8316f96 upstream.
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+The "*cmd" variable can be controlled by the user via debugfs.  That means
+"new_cam" can be as high as 255 while the size of the uc->updated[] array
+is UCSI_MAX_ALTMODES (30).
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
+The call tree is:
+ucsi_cmd() // val comes from simple_attr_write_xsigned()
+-> ucsi_send_command()
+   -> ucsi_send_command_common()
+      -> ucsi_run_command() // calls ucsi->ops->sync_control()
+         -> ucsi_ccg_sync_control()
 
-Bail out also when status is AE_NOT_FOUND.
-
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
-
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
-Cc: stable@vger.kernel.org
+Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/325102b3-eaa8-4918-a947-22aca1146586@stanley.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -172,8 +172,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -436,6 +436,8 @@ static void ucsi_ccg_update_set_new_cam_
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
+ 	port = uc->orig;
+ 	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
++	if (new_cam >= ARRAY_SIZE(uc->updated))
++		return;
+ 	new_port = &uc->updated[new_cam];
+ 	cam = new_port->linked_idx;
+ 	enter_new_mode = UCSI_SET_NEW_CAM_ENTER(*cmd);
 
 
 
