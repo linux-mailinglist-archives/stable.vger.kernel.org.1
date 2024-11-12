@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-92705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88809C5729
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:00:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228689C57FA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD3CCB43430
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EEC4B423AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662FB219CAD;
-	Tue, 12 Nov 2024 10:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D6219E58;
+	Tue, 12 Nov 2024 10:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SLexu3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r96HdaOm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B58B219E23;
-	Tue, 12 Nov 2024 10:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625A72144A4;
+	Tue, 12 Nov 2024 10:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408321; cv=none; b=afiRNGJQisg4CJCCDbCv2A11JykFA7qTCNyk/pQAD+5baqop75nlLI5DRbzTppM8bWoW2j3RncEA2KRFWXNFwcWqQLq9RcwHgb1NIL6x60Vij+fnPvhjHCvlykDWRmYdcK5Y9nuiGPX1aTor1a7S2MjDcHdb1HBoIsB1cHJF3bQ=
+	t=1731408367; cv=none; b=kGUW+C4j9MCGZOd+HCa9eZA8fMcWJJ9Rd5Ln2yw5VNf5hMYOJiVxMeMXEOhU5gWt33M9GzUSSyinX3BjUtorNHg2Ak6xKctrOB1pA26IrkEib1kkPRGk1VooebjGkyIctEJA0rt4a4Pz4mSnqkfcBXEbzKwDYgIlpPOpCR+EFzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408321; c=relaxed/simple;
-	bh=wbCI4opvV8kBW5mZSDUUs8Q+XSH/7w4CMDvcYjax2pU=;
+	s=arc-20240116; t=1731408367; c=relaxed/simple;
+	bh=/ilhoi9Y3meSGnG+Pt2xebKZxKblFzGHIjvzb+swLSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzVzlur+nY5zH+oYEQnOXtNDRy1PTyqkBEoXPnzIJUr9hA97Cd7Fw3d6muyOCj37PGNTIPIb1fnv7NUag4mlaCO6E7jNOBfcvXeBcx6OeBy6RMFST6eYfFz2woIPBKIBvnl/582r6TQncMPN38wi7zNM4S5Cl4JbNUYzyGMx+RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SLexu3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED93C4CECD;
-	Tue, 12 Nov 2024 10:45:19 +0000 (UTC)
+	 MIME-Version; b=bYXMrH8RgBnX0g1EsLhgo0Wq+3BVm7IBUxSPJUa7yuCi4KPNNcYFAl3RTkSV5rrg1F1MW3ZykwUnubX1HYfIKETuw83KIum8Q0pjxLTS1sv1WcavhyF7o9bfwLwTGbsw0YOyvv+jN4PjULh9U7oXWbCDqpwlQ9bqpTCAiX/+hSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r96HdaOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F00C4CECD;
+	Tue, 12 Nov 2024 10:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408320;
-	bh=wbCI4opvV8kBW5mZSDUUs8Q+XSH/7w4CMDvcYjax2pU=;
+	s=korg; t=1731408367;
+	bh=/ilhoi9Y3meSGnG+Pt2xebKZxKblFzGHIjvzb+swLSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SLexu3LYS5QeeooI55mUHlivVk4Yh1ic8zmv6TqMAoNmFBvZOXNFe3zMP5R27bo1
-	 uETTOfmnOyNHewvV9Msh+iOL2JBSqpoeImL/0SOIEpAIbyDoaQJgHtK499FqM7U8zn
-	 v2jr/XNw+gNhfwXQydltQ8jqDC8VxMuNVR74/FIk=
+	b=r96HdaOmnUh/RDismojc7ng9QNcMwJQtSuGv4aGna7Gnzk8YRpObfNRj/v7Dh6Y4r
+	 Qi2usKX6au89WTtYidLKBgC9ac75xvmDeVqqhFfSvXwNUZqy1hk6h+BU/77I/WaGFY
+	 X6RIiwlz2I7XqcG9HltiCXGMwgLLi0x2HRLoLW0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Ali Zahraee <ahzahraee@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Kalesh Singh <kaleshsingh@google.com>
-Subject: [PATCH 6.11 125/184] tracing: Fix tracefs mount options
-Date: Tue, 12 Nov 2024 11:21:23 +0100
-Message-ID: <20241112101905.664209414@linuxfoundation.org>
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.11 141/184] platform/x86/amd/pmf: Add SMU metrics table support for 1Ah family 60h model
+Date: Tue, 12 Nov 2024 11:21:39 +0100
+Message-ID: <20241112101906.283877341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -72,127 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kalesh Singh <kaleshsingh@google.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-commit e4d32142d1de8bcafd90ea5f4f557104f0969c41 upstream.
+commit 8ca8d07857c698503b2b3bf615238c87c02f064e upstream.
 
-Commit 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
-converted tracefs to use the new mount APIs caused mount options
-(e.g. gid=<gid>) to not take effect.
+Add SMU metrics table support for 1Ah family 60h model. This information
+will be used by the PMF driver to alter the system thermals.
 
-The tracefs superblock can be updated from multiple paths:
-    - on fs_initcall() to init_trace_printk_function_export()
-    - from a work queue to initialize eventfs
-      tracer_init_tracefs_work_func()
-    - fsconfig() syscall to mount or remount of tracefs
-
-The tracefs superblock root inode gets created early on in
-init_trace_printk_function_export().
-
-With the new mount API, tracefs effectively uses get_tree_single() instead
-of the old API mount_single().
-
-Previously, mount_single() ensured that the options are always applied to
-the superblock root inode:
-    (1) If the root inode didn't exist, call fill_super() to create it
-        and apply the options.
-    (2) If the root inode exists, call reconfigure_single() which
-        effectively calls tracefs_apply_options() to parse and apply
-        options to the subperblock's fs_info and inode and remount
-        eventfs (if necessary)
-
-On the other hand, get_tree_single() effectively calls vfs_get_super()
-which:
-    (3) If the root inode doesn't exists, calls fill_super() to create it
-        and apply the options.
-    (4) If the root inode already exists, updates the fs_context root
-        with the superblock's root inode.
-
-(4) above is always the case for tracefs mounts, since the super block's
-root inode will already be created by init_trace_printk_function_export().
-
-This means that the mount options get ignored:
-    - Since it isn't applied to the superblock's root inode, it doesn't
-      get inherited by the children.
-    - Since eventfs is initialized from a separate work queue and
-      before call to mount with the options, and it doesn't get remounted
-      for mount.
-
-Ensure that the mount options are applied to the super block and eventfs
-is remounted to respect the mount options.
-
-To understand this better, if fstab has the following:
-
- tracefs  /sys/kernel/tracing  tracefs   nosuid,nodev,noexec,gid=tracing 0  0
-
-On boot up, permissions look like:
-
- # ls -l /sys/kernel/tracing/trace
- -rw-r----- 1 root root 0 Nov  1 08:37 /sys/kernel/tracing/trace
-
-When it should look like:
-
- # ls -l /sys/kernel/tracing/trace
- -rw-r----- 1 root tracing 0 Nov  1 08:37 /sys/kernel/tracing/trace
-
-Link: https://lore.kernel.org/r/536e99d3-345c-448b-adee-a21389d7ab4b@redhat.com/
-
-Cc: Eric Sandeen <sandeen@redhat.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Ali Zahraee <ahzahraee@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
-Link: https://lore.kernel.org/20241030171928.4168869-2-kaleshsingh@google.com
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241023063245.1404420-2-Shyam-sundar.S-k@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/platform/x86/amd/pmf/core.c |    1 +
+ drivers/platform/x86/amd/pmf/spc.c  |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 1748dff58c3b..cfc614c638da 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -392,6 +392,9 @@ static int tracefs_reconfigure(struct fs_context *fc)
- 	struct tracefs_fs_info *sb_opts = sb->s_fs_info;
- 	struct tracefs_fs_info *new_opts = fc->s_fs_info;
- 
-+	if (!new_opts)
-+		return 0;
-+
- 	sync_filesystem(sb);
- 	/* structure copy of new mount options to sb */
- 	*sb_opts = *new_opts;
-@@ -478,14 +481,17 @@ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	sb->s_op = &tracefs_super_operations;
- 	sb->s_d_op = &tracefs_dentry_operations;
- 
--	tracefs_apply_options(sb, false);
--
- 	return 0;
- }
- 
- static int tracefs_get_tree(struct fs_context *fc)
- {
--	return get_tree_single(fc, tracefs_fill_super);
-+	int err = get_tree_single(fc, tracefs_fill_super);
-+
-+	if (err)
-+		return err;
-+
-+	return tracefs_reconfigure(fc);
- }
- 
- static void tracefs_free_fc(struct fs_context *fc)
--- 
-2.47.0
-
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -261,6 +261,7 @@ int amd_pmf_set_dram_addr(struct amd_pmf
+ 			dev->mtable_size = sizeof(dev->m_table);
+ 			break;
+ 		case PCI_DEVICE_ID_AMD_1AH_M20H_ROOT:
++		case PCI_DEVICE_ID_AMD_1AH_M60H_ROOT:
+ 			dev->mtable_size = sizeof(dev->m_table_v2);
+ 			break;
+ 		default:
+--- a/drivers/platform/x86/amd/pmf/spc.c
++++ b/drivers/platform/x86/amd/pmf/spc.c
+@@ -86,6 +86,7 @@ static void amd_pmf_get_smu_info(struct
+ 					 ARRAY_SIZE(dev->m_table.avg_core_c0residency), in);
+ 		break;
+ 	case PCI_DEVICE_ID_AMD_1AH_M20H_ROOT:
++	case PCI_DEVICE_ID_AMD_1AH_M60H_ROOT:
+ 		memcpy(&dev->m_table_v2, dev->buf, dev->mtable_size);
+ 		in->ev_info.socket_power = dev->m_table_v2.apu_power + dev->m_table_v2.dgpu_power;
+ 		in->ev_info.skin_temperature = dev->m_table_v2.skin_temp;
 
 
 
