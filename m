@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBBF9C55E2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D84A19C550A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 658B21F243A5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0AE28A55F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26BB2144C4;
-	Tue, 12 Nov 2024 10:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05F91CD1E0;
+	Tue, 12 Nov 2024 10:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OflSw7fo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6UdObje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC23213155;
-	Tue, 12 Nov 2024 10:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808CC3DAC00;
+	Tue, 12 Nov 2024 10:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408464; cv=none; b=ExCTTd1gcQFsHm7JBr5jLS4hbLc8/jSdLmooXF9bRRjEyAhcojCHFaMVqDE+xHq6bR6fENCTwJLyXugX3RgAMEBlBwL7f9o1tb7R2VM94WCiemXz3p2NQ7TRz6fWKM6kvmx1QQRYOwOr24UmoXiu2gNuSkaMOlR3u8If2FzCBLY=
+	t=1731407886; cv=none; b=j0gdtmXJZJ6sbaB2GlSW5KYZVURrIOjgxi5efguXYkYuD94nBZP0jBsUDFE0yUO+6VQQew9FexWvvbhBet7F+Kr00oIe5q63cRaO8g87GiSKBcCV+QbXlQQg8rgQ5As2Qsh7UcdhiSmFdSXp2G9kS8Y0pLFz5+wyrgwOuM5dPxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408464; c=relaxed/simple;
-	bh=LCsL8GHx/3aSgZk1X0Ysja87UEFQMBa681DqMZDqVAw=;
+	s=arc-20240116; t=1731407886; c=relaxed/simple;
+	bh=nJVLcUSJM6Pt6Ux+R15cCCCwRK16flNVmetUSjGQTBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ux/Y7BJ5sUWtjbsGH0UZFTdZtT866rrcqLMpum117jORtOBPDnnLSKvO14NUD7U57Jjnbs3XVOgISTDSW0lJIlnVHzZWwCL4ya/hxicHpoy1gdToE7XFUDnN8lOpZ18BEGobK2DtOyXTmlDxuLyzelFihNiWzi9fx4Rt+lCN7bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OflSw7fo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10639C4CECD;
-	Tue, 12 Nov 2024 10:47:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WyzU58YcSrrxYlXvNE6oumB6yp5E2dHPkJw3xUHKHolWYTQG8Ko9zsLA++0WCTWrxPKqJ8fRNWLg3OuALSJ2TUdOVOfGqHo1sQs1B2f0eeAoftw8TLODh5ryKSju+9F1NV9hZ1lieNiJMqhZmjimC0Tk9QlD9/WAv52u4OreRgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6UdObje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB980C4CED4;
+	Tue, 12 Nov 2024 10:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408464;
-	bh=LCsL8GHx/3aSgZk1X0Ysja87UEFQMBa681DqMZDqVAw=;
+	s=korg; t=1731407886;
+	bh=nJVLcUSJM6Pt6Ux+R15cCCCwRK16flNVmetUSjGQTBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OflSw7foNYNh8gsT0WHWauW0DXw09W3PqPVq+hy9t/h0qILQU8JDbxWEN6crdm4cK
-	 w7PYvGeP3ZyEYaTT3YXAvbn10LIyM0rRI5k6z3+LXkLM5MxDtcTKTgFUuEMe8sPcsJ
-	 cBu9YTUur7WT9rIlXi+7U906DKGIcLXmFIp0Xbq0=
+	b=G6UdObje0eEoEPg2C32EQELTutWJzbpAeh71Wf8eH7wdUycVunm9BV53A9f8rgGhI
+	 y/KgOlIaJvwcHq58kOquitvUYxJd34jbheEaW/sgh8TIDD2YG8k2gPhJHvLd91pwZ9
+	 8qFRseR2+7BS0JbJZj4Pi4Invy/CtHj0rSoP+ZSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.11 163/184] USB: serial: option: add Quectel RG650V
+Subject: [PATCH 6.6 113/119] USB: serial: option: add Quectel RG650V
 Date: Tue, 12 Nov 2024 11:22:01 +0100
-Message-ID: <20241112101907.125134819@linuxfoundation.org>
+Message-ID: <20241112101853.035535463@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
