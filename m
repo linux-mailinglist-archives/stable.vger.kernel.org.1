@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-92283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4427E9C535C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5293B9C559C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E452885D0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17ABA28F110
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E2220F5DD;
-	Tue, 12 Nov 2024 10:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D3021895E;
+	Tue, 12 Nov 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcLVOd6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDZF2kDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC620B20B;
-	Tue, 12 Nov 2024 10:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A6B218927;
+	Tue, 12 Nov 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407151; cv=none; b=fr5BMm+oV9ICTWVrHTqw6QY1vnEfiDccgHbDwhCuROFvOPE4XyqJ3sc6v/9MiHa01aU9WdEhvrvgpKTK++HUVgamxnslO7Wqa7G1rC/9TS4CaVhFFepDlCvEJqToItlTv2/Wkh+/qzBzJhrVs4WyMHrYw83ujUpqDUeZGejTYRw=
+	t=1731408206; cv=none; b=BJjgcNIhdw5qEliVHdkC23LZbOyQoWF5uSdXI2BzxNR41OktCYlMWMLn/dgSvSFoN97A0Vw7uNjHHrH8LdO2JzayUUqQC96aUsNjtEdnmJYI0o0ZSJT4h3h8G6/A7ywJwQ3xd31ayrdl8jCtGze76VQ2bCehLhTfyDFsAib8eHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407151; c=relaxed/simple;
-	bh=kBU/p1gc1jD9LdxX1pSrI7gRD8SEteYR+jUbn6wRuow=;
+	s=arc-20240116; t=1731408206; c=relaxed/simple;
+	bh=8qMKC/9M9jYaq7hfjWZfa5s3a1HgglaxQ/oZH71Qdwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQzEYz5VS/82HvhpeUFWnmFFWiRLjtQG5lCSC4e60vbiJIEHfT7VFwGFEwo7y3c3EsBSzdtNqLa4PTl34dZncsy29z0q71nS7dsbqot+yFAgvg07f/uxqOzK9dPHQHA38Bp3QZhj3OZ5ZfUhujQ5rMBuBTodhVsTZwBGWM+AeV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcLVOd6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0ED2C4CED4;
-	Tue, 12 Nov 2024 10:25:50 +0000 (UTC)
+	 MIME-Version; b=osGM7q6DUrP7atFf5zVCTQONpfDp5fa/AcANWqfobZLhHuAM4cZJgTaBrFBygl079wASIY08QEipZHLpJRzyA2t7emNkMYB8VQDWK8AIAh3b2WN5G3ZpIgMF1Jd+wG9G1WSYMdoLLx+8FFH+IHoatR/KCxBpOP63Xy0rLs2MtcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDZF2kDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB979C4CECD;
+	Tue, 12 Nov 2024 10:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407151;
-	bh=kBU/p1gc1jD9LdxX1pSrI7gRD8SEteYR+jUbn6wRuow=;
+	s=korg; t=1731408206;
+	bh=8qMKC/9M9jYaq7hfjWZfa5s3a1HgglaxQ/oZH71Qdwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DcLVOd6O0xdNM747SsMdWZ47050JIGOQi7ToOn0EtuC82+GOK7VoEJK+9pYupCV0h
-	 l0wLFGcQb2gzXog1J34MuekAxnhL4I0i9isbg9vdm88WcuWNvC5vrrPNpOZGI34yN0
-	 UJP+4i5TMUacQDvsxOlzq/rjdD6GHZ0laRKvhW6g=
+	b=mDZF2kDOF4TmQ2Yw+exHEdCUbQoddhXGhh2i9oWo2yRYNT8TUl7Ang+cTDtu0dD5G
+	 K/vcQX22+DxAMi1n22CCZQs/LDCDCSrkuJVOXpzGNpTvXtbK9KkphzDTgc6SsJFTFz
+	 6gds8jv73sqhAeUXnEkNjbWpSUFyMy023E5F2FEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wu <david.wu@rock-chips.com>,
-	Johan Jonker <jbx6244@gmail.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/76] net: arc: fix the device for dma_map_single/dma_unmap_single
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.11 091/184] ksmbd: Fix the missing xa_store error check
 Date: Tue, 12 Nov 2024 11:20:49 +0100
-Message-ID: <20241112101840.708585093@linuxfoundation.org>
+Message-ID: <20241112101904.352010033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 71803c1dfa29e0d13b99e48fda11107cc8caebc7 ]
+commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
 
-The ndev->dev and pdev->dev aren't the same device, use ndev->dev.parent
-which has dma_mask, ndev->dev.parent is just pdev->dev.
-Or it would cause the following issue:
+xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
+be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
+so check error for xa_store() to fix it.
 
-[   39.933526] ------------[ cut here ]------------
-[   39.938414] WARNING: CPU: 1 PID: 501 at kernel/dma/mapping.c:149 dma_map_page_attrs+0x90/0x1f8
-
-Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
-Signed-off-by: David Wu <david.wu@rock-chips.com>
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/arc/emac_main.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ fs/smb/server/mgmt/user_session.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/arc/emac_main.c b/drivers/net/ethernet/arc/emac_main.c
-index 333333692caa5..bafa63e5ce252 100644
---- a/drivers/net/ethernet/arc/emac_main.c
-+++ b/drivers/net/ethernet/arc/emac_main.c
-@@ -111,6 +111,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
+ 
+ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
  {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
- 	struct net_device_stats *stats = &ndev->stats;
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
+-	struct ksmbd_session_rpc *entry;
++	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+ 	int method;
  
- 	for (i = 0; i < TX_BD_NUM; i++) {
-@@ -140,7 +141,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
- 			stats->tx_bytes += skb->len;
- 		}
+@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	entry->id = ksmbd_ipc_id_alloc();
+ 	if (entry->id < 0)
+ 		goto free_entry;
+-	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	if (xa_is_err(old))
++		goto free_id;
  
--		dma_unmap_single(&ndev->dev, dma_unmap_addr(tx_buff, addr),
-+		dma_unmap_single(dev, dma_unmap_addr(tx_buff, addr),
- 				 dma_unmap_len(tx_buff, len), DMA_TO_DEVICE);
+ 	resp = ksmbd_rpc_open(sess, entry->id);
+ 	if (!resp)
+-		goto free_id;
++		goto erase_xa;
  
- 		/* return the sk_buff to system */
-@@ -174,6 +175,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
- static int arc_emac_rx(struct net_device *ndev, int budget)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int work_done;
- 
- 	for (work_done = 0; work_done < budget; work_done++) {
-@@ -223,9 +225,9 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
- 			continue;
- 		}
- 
--		addr = dma_map_single(&ndev->dev, (void *)skb->data,
-+		addr = dma_map_single(dev, (void *)skb->data,
- 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(&ndev->dev, addr)) {
-+		if (dma_mapping_error(dev, addr)) {
- 			if (net_ratelimit())
- 				netdev_err(ndev, "cannot map dma buffer\n");
- 			dev_kfree_skb(skb);
-@@ -237,7 +239,7 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
- 		}
- 
- 		/* unmap previosly mapped skb */
--		dma_unmap_single(&ndev->dev, dma_unmap_addr(rx_buff, addr),
-+		dma_unmap_single(dev, dma_unmap_addr(rx_buff, addr),
- 				 dma_unmap_len(rx_buff, len), DMA_FROM_DEVICE);
- 
- 		pktlen = info & LEN_MASK;
-@@ -423,6 +425,7 @@ static int arc_emac_open(struct net_device *ndev)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
- 	struct phy_device *phy_dev = ndev->phydev;
-+	struct device *dev = ndev->dev.parent;
- 	int i;
- 
- 	phy_dev->autoneg = AUTONEG_ENABLE;
-@@ -445,9 +448,9 @@ static int arc_emac_open(struct net_device *ndev)
- 		if (unlikely(!rx_buff->skb))
- 			return -ENOMEM;
- 
--		addr = dma_map_single(&ndev->dev, (void *)rx_buff->skb->data,
-+		addr = dma_map_single(dev, (void *)rx_buff->skb->data,
- 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(&ndev->dev, addr)) {
-+		if (dma_mapping_error(dev, addr)) {
- 			netdev_err(ndev, "cannot dma map\n");
- 			dev_kfree_skb(rx_buff->skb);
- 			return -ENOMEM;
-@@ -548,6 +551,7 @@ static void arc_emac_set_rx_mode(struct net_device *ndev)
- static void arc_free_tx_queue(struct net_device *ndev)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
- 
- 	for (i = 0; i < TX_BD_NUM; i++) {
-@@ -555,7 +559,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
- 		struct buffer_state *tx_buff = &priv->tx_buff[i];
- 
- 		if (tx_buff->skb) {
--			dma_unmap_single(&ndev->dev,
-+			dma_unmap_single(dev,
- 					 dma_unmap_addr(tx_buff, addr),
- 					 dma_unmap_len(tx_buff, len),
- 					 DMA_TO_DEVICE);
-@@ -579,6 +583,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
- static void arc_free_rx_queue(struct net_device *ndev)
- {
- 	struct arc_emac_priv *priv = netdev_priv(ndev);
-+	struct device *dev = ndev->dev.parent;
- 	unsigned int i;
- 
- 	for (i = 0; i < RX_BD_NUM; i++) {
-@@ -586,7 +591,7 @@ static void arc_free_rx_queue(struct net_device *ndev)
- 		struct buffer_state *rx_buff = &priv->rx_buff[i];
- 
- 		if (rx_buff->skb) {
--			dma_unmap_single(&ndev->dev,
-+			dma_unmap_single(dev,
- 					 dma_unmap_addr(rx_buff, addr),
- 					 dma_unmap_len(rx_buff, len),
- 					 DMA_FROM_DEVICE);
-@@ -679,6 +684,7 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
- 	unsigned int len, *txbd_curr = &priv->txbd_curr;
- 	struct net_device_stats *stats = &ndev->stats;
- 	__le32 *info = &priv->txbd[*txbd_curr].info;
-+	struct device *dev = ndev->dev.parent;
- 	dma_addr_t addr;
- 
- 	if (skb_padto(skb, ETH_ZLEN))
-@@ -692,10 +698,9 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
- 		return NETDEV_TX_BUSY;
- 	}
- 
--	addr = dma_map_single(&ndev->dev, (void *)skb->data, len,
--			      DMA_TO_DEVICE);
-+	addr = dma_map_single(dev, (void *)skb->data, len, DMA_TO_DEVICE);
- 
--	if (unlikely(dma_mapping_error(&ndev->dev, addr))) {
-+	if (unlikely(dma_mapping_error(dev, addr))) {
- 		stats->tx_dropped++;
- 		stats->tx_errors++;
- 		dev_kfree_skb_any(skb);
--- 
-2.43.0
-
+ 	kvfree(resp);
+ 	return entry->id;
+-free_id:
++erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
++free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
 
 
 
