@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9489C5668
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:27:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE109C53BA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D962BB2EBF4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C712812EB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9C3213ED2;
-	Tue, 12 Nov 2024 10:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C704214423;
+	Tue, 12 Nov 2024 10:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s179PZMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6zEAA3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE36215C66;
-	Tue, 12 Nov 2024 10:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CF2141C5;
+	Tue, 12 Nov 2024 10:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407700; cv=none; b=obLgi6ylgXwyPhp9YW2fXMz1ezJX9pLJnbfT2V05GZeRjrs1lu0dZqcKHflQ8jcD9IslWYgRqS2kQ07LYIYFwHM8NSPSHvaWbJxQ+JGiY9wa18CvegblfWOW4MLfKWDGQ2hZ17Fk3IDOdd494rRLOoV7hwcjxrB8NVAaYmOkCuQ=
+	t=1731407447; cv=none; b=J2ZIeGq2fmlaxTdm4z+Kc2S9pU953Sobn8VPAZ52WOUJmL9XtVvWu2sLhc4ohkG43cDGhDXhnkQvbdmkXDwVBz9bsDAGLv3vC/a1wH4kZlpChdK2H1BTpzpYX9susw8niqDSX8yR88KpdXB3/E05eBwNtePR6w0F6A4gZdq+wIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407700; c=relaxed/simple;
-	bh=6Ue/1caWEEWImcuRj3YHOUAtUhYpnVfEYFDGVEYsk3U=;
+	s=arc-20240116; t=1731407447; c=relaxed/simple;
+	bh=Pf1P6Ccsn1wkoMFlalHv2g86vgyu+mH4sNAKo6YqqAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z00VtWcbqbejgfdrkTEIy036jfRxeEBeoDEPFGzbg+RtVz2hs8/dqyUstGZq1zYwx4v04P+AWBRwpja9xObYnKB06pO+50oLOPYrp0oRxLl9bHKeUAfQuuHBrrpu7Inb9ib6hiCnf7c7gbqIU7Io0pXgoPoYWrkGY7Tz+p2eTKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s179PZMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E6FC4CED6;
-	Tue, 12 Nov 2024 10:34:59 +0000 (UTC)
+	 MIME-Version; b=uH4+3ZRznlZdrvtj2gT038KxgLaMEgXMqbWc0SvFWzH4vFWNwYSqiW1cUynfWyF+NK+IPCYOrXJed/9NLsTTKJ/Qt4u6wu8m4rOjot/5InMKE/1vfaFpvJvgDhHm6BvYIi4+ZctT3najil2WpOHwSBwr52cWb/9PcG1IZFcc/mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6zEAA3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99891C4CECD;
+	Tue, 12 Nov 2024 10:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407699;
-	bh=6Ue/1caWEEWImcuRj3YHOUAtUhYpnVfEYFDGVEYsk3U=;
+	s=korg; t=1731407447;
+	bh=Pf1P6Ccsn1wkoMFlalHv2g86vgyu+mH4sNAKo6YqqAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s179PZMi1rL38DhOOS6U6qajW0Ngb6e5BWanJo0sI8lpIjNV8HeGrGyPe/fCJ5I8h
-	 ElRmF7djX1w5fJTtlfyarPUDkquW+bl9NpU9MGCM+DuUXDwXlR7kktV12+RQmY3oGL
-	 FlsSCEGPbOdK2YNZJOpJnwppXQvWvVztRE4B4cZI=
+	b=F6zEAA3IjCwwOAvpE4Cs5hOxEXF5AyADJ42QOpXHTSp5XLyuALcUjyuykCJ+XFETx
+	 A9bEw8NZy+EWzFkAqs2IjGobirp+m4UmR2jw6Kv+qTUUF0mHAjtEohAAhmIoIaTqUx
+	 yMhMhKmdvCoaKY2a5zrVyVaPOSC8LZzftWo0Fnl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/119] media: adv7604: prevent underflow condition when reporting colorspace
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.1 47/98] media: pulse8-cec: fix data timestamp at pulse8_setup()
 Date: Tue, 12 Nov 2024 11:21:02 +0100
-Message-ID: <20241112101850.781988592@linuxfoundation.org>
+Message-ID: <20241112101846.062429181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
+commit ba9cf6b430433e57bfc8072364e944b7c0eca2a4 upstream.
 
-Currently, adv76xx_log_status() reads some date using
-io_read() which may return negative values. The current logic
-doesn't check such errors, causing colorspace to be reported
-on a wrong way at adv76xx_log_status(), as reported by Coverity.
+As pointed by Coverity, there is a hidden overflow condition there.
+As date is signed and u8 is unsigned, doing:
 
-If I/O error happens there, print a different message, instead
-of reporting bogus messages to userspace.
+	date = (data[0] << 24)
 
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+With a value bigger than 07f will make all upper bits of date
+0xffffffff. This can be demonstrated with this small code:
+
+<code>
+typedef int64_t time64_t;
+typedef uint8_t u8;
+
+int main(void)
+{
+	u8 data[] = { 0xde ,0xad , 0xbe, 0xef };
+	time64_t date;
+
+	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+	printf("Invalid data = 0x%08lx\n", date);
+
+	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+	printf("Expected data = 0x%08lx\n", date);
+
+	return 0;
+}
+</code>
+
+Fix it by converting the upper bit calculation to unsigned.
+
+Fixes: cea28e7a55e7 ("media: pulse8-cec: reorganize function order")
+Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/media/cec/usb/pulse8/pulse8-cec.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-index b202a85fbeaa0..d1609bd8f0485 100644
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -2519,10 +2519,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	const struct adv76xx_chip_info *info = state->info;
- 	struct v4l2_dv_timings timings;
- 	struct stdi_readback stdi;
--	u8 reg_io_0x02 = io_read(sd, 0x02);
-+	int ret;
-+	u8 reg_io_0x02;
- 	u8 edid_enabled;
- 	u8 cable_det;
--
- 	static const char * const csc_coeff_sel_rb[16] = {
- 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
- 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-@@ -2621,13 +2621,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	v4l2_info(sd, "-----Color space-----\n");
- 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
- 			rgb_quantization_range_txt[state->rgb_quantization_range]);
--	v4l2_info(sd, "Input color space: %s\n",
--			input_color_space_txt[reg_io_0x02 >> 4]);
--	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
--			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
--			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
--				"(16-235)" : "(0-255)",
--			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+
-+	ret = io_read(sd, 0x02);
-+	if (ret < 0) {
-+		v4l2_info(sd, "Can't read Input/Output color space\n");
-+	} else {
-+		reg_io_0x02 = ret;
-+
-+		v4l2_info(sd, "Input color space: %s\n",
-+				input_color_space_txt[reg_io_0x02 >> 4]);
-+		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-+				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-+				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-+					"(16-235)" : "(0-255)",
-+				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	}
- 	v4l2_info(sd, "Color space conversion: %s\n",
- 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
+--- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
++++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
+@@ -685,7 +685,7 @@ static int pulse8_setup(struct pulse8 *p
+ 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
+ 	if (err)
+ 		return err;
+-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
++	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
+ 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
  
--- 
-2.43.0
-
+ 	dev_dbg(pulse8->dev, "Persistent config:\n");
 
 
 
