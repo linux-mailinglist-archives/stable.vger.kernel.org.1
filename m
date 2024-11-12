@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE809C5334
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:24:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1B79C539E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BC0285B76
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BFE28335F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECFE21262C;
-	Tue, 12 Nov 2024 10:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25FF213ECC;
+	Tue, 12 Nov 2024 10:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7mbU3tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3DO3pVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80D120EA2D;
-	Tue, 12 Nov 2024 10:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF88213ED2;
+	Tue, 12 Nov 2024 10:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407015; cv=none; b=Z5bT1Pr2rCW3cvDt5CIAQ01O58utuOVRxRGaKI1pPO4X2t8nS3pgHaBXRqUn/UWEUAVExpfQVwIm0yOrIUVHRDQbKpsGXr8RBNKWRfFsjpLQGeTExuS2/LOCCJjFkrBzi5VKQwJZImeA1kmtaa4jWt8MTMB4I/PN5cPVgs0DjlY=
+	t=1731407330; cv=none; b=erN1zj9J9nZbbPd48iffdg+1s5E8+s5eYRs22k7eXlYpOq6cD4A4P2zw+QyLOW9pbQB3g5S9+57MjmgMiQMfKXut0SPxYIiL+FS2+VfxUMMfrYD/1+r773OzsPUJUVoiIsGPWaP37RXf2988kODBFO02Iqy4KjEdFh+EswumPVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407015; c=relaxed/simple;
-	bh=PUy/vbsuSIasYfLGLIuazPIVEPsSbWfDPCJxLWYqBRw=;
+	s=arc-20240116; t=1731407330; c=relaxed/simple;
+	bh=8av7FckwtDsvfCcp+kN0KTdr1C/fe4kPOH2ifluYnzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7xXjB7IwoLw09xxlPS8Jf5INoN+di1pqwKKJD92CIGmQU96HakYY/v+uL6o/lJJZEffpZXcomkUjM12usv5LrF5cvYvO/62b6zDXOlFgSDArOmndz+WxkuIEfaM8J1lRejn+ClxOG6FZZYVPtgnNPf9dZlsQDqX3by6Q13WJHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7mbU3tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD837C4CECD;
-	Tue, 12 Nov 2024 10:23:34 +0000 (UTC)
+	 MIME-Version; b=Eaz18J16Andyd1oz1OkXTlTvTPFrX+JnJtUJP4a33o0K+LBHwVv6fzDXthtt1XMcjnhq7KFiBZHfU9P8l6U5HtDIV2XGukScso5FOLZ1imSSWMwVDwwpqx/W6za5heuCAN+0HrWQ9wm+d5IEItQqD7Z91nlA1PS65JjiiyOAlYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3DO3pVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD9AC4CECD;
+	Tue, 12 Nov 2024 10:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407015;
-	bh=PUy/vbsuSIasYfLGLIuazPIVEPsSbWfDPCJxLWYqBRw=;
+	s=korg; t=1731407330;
+	bh=8av7FckwtDsvfCcp+kN0KTdr1C/fe4kPOH2ifluYnzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7mbU3tz8IOEx4SH+edesRNnYbzNX6HhuGQ6qCdd8G2w4TDEW3L3eOIqUdlviRzow
-	 BpTRqk/YwbZ7pFxB0FRR+wVrcv15RIlfe8CBuKwZsOHtbFG7PGK2qiRUrD6DyTD0h3
-	 HwvyWD3YeuisIBU0d81ryMnR3UpYrBxt4zoqbABU=
+	b=C3DO3pVBXAfSQWMQAgpDyvzrktRTo89BbMebwKDaQDmiS/ZzfuV5nbNOkFtnUR7R8
+	 StyUREjEc6IdGjaGivvqBcVp0hff4pAQi6voGPtCud0j0tU7ofXOcvyKzzVuFWfHzl
+	 4Lvb9PZNAKbP9UfEld1zRuoHfu8461F6wC4YTk/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Caesar Wang <wxt@rock-chips.com>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/76] arm64: dts: rockchip: Fix bluetooth properties on Rock960 boards
+Subject: [PATCH 6.1 13/98] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
 Date: Tue, 12 Nov 2024 11:20:28 +0100
-Message-ID: <20241112101839.913581816@linuxfoundation.org>
+Message-ID: <20241112101844.776242161@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit ea74528aaea5a1dfc8e3de09ef2af37530eca526 ]
+[ Upstream commit 1580ccb6ed9dc76b8ff3e2d8912e8215c8b0fa6d ]
 
-The expected clock-name is different, and extclk also is deprecated
-in favor of txco for clocks that are not crystals.
+Neither the binding nor the driver implementation specify/use the grf
+reference provided in the rk3036. And neither does the newer rk3128
+user of the hdmi controller. So drop the rockchip,grf property.
 
-So fix it to match the binding.
-
-Fixes: c72235c288c8 ("arm64: dts: rockchip: Add on-board WiFi/BT support for Rock960 boards")
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: b7217cf19c63 ("ARM: dts: rockchip: add hdmi device node for rk3036")
+Cc: Caesar Wang <wxt@rock-chips.com>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-5-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-13-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/rk3036.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-index 25dc61c26a943..68d59394a9304 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
-@@ -574,7 +574,7 @@
- 	bluetooth {
- 		compatible = "brcm,bcm43438-bt";
- 		clocks = <&rk808 1>;
--		clock-names = "ext_clock";
-+		clock-names = "txco";
- 		device-wakeup-gpios = <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
- 		host-wakeup-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
- 		shutdown-gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index e6bb1d7a2b4ec..4e208528eebf2 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -398,7 +398,6 @@
+ 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru  PCLK_HDMI>;
+ 		clock-names = "pclk";
+-		rockchip,grf = <&grf>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
 -- 
 2.43.0
 
