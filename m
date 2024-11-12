@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-92861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBF99C6514
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:23:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841AF9C6519
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC5728394A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A781F24ED5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C7B21CFB2;
-	Tue, 12 Nov 2024 23:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DA121D23F;
+	Tue, 12 Nov 2024 23:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vhSGDvqb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hwbmFwJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D33521CF91
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 23:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262AA21D22E
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 23:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731453786; cv=none; b=TERPqaybQCi/C+2bxqYU4iKqyuAmQbiRZ9USnsEeRqfQ52vUTl6192P6TViy2xsT/a91xAdTbKfIFStJbV+F1c0D08P3d4y6qP52ucQWQZN9GfhHySb5WE5Ioxa7Q1FNkXMwjPaQTV1NicrWgEjfdN6nTQOmZ+8DkTePTzIaaWY=
+	t=1731453792; cv=none; b=i4bdhdi41G6WMhEvhWmJl29+XOwFpH+ufBij+1Y55L6K4uQsbaHbMM28Hzlgutj8HHZFvEX3pWM54VKozLkYNvhkaUJ6YaqOFLfukmxTek/1SNUVHOY7DKabJLcIZCvquoa2dpNA71+rOW9wwNJFCo025A3BKrQ0e4SDoOZO5aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731453786; c=relaxed/simple;
-	bh=ayby78yQOyjOz6ls+yE5cxTfghhQvc3yyzZlL7gs+bU=;
+	s=arc-20240116; t=1731453792; c=relaxed/simple;
+	bh=1hS42kMCXh2fd2/NsPf3DiCppJSEIF2GD7L2ejW+7Kw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BDtXmX326h82vlHRFk+en9FU9HqYq2Hwv/U7x99zaxTKRDVXOXwjrxDeXPsN+2Lnb849sIH2Tk2rJTyRaIH/AJq1gNRpGAlJvX3YkKNipkPjCuUoqyFc268HskQ0KC0yJPX3Xd8gI8bsVkiF7aj6sxSq03cnfXgYmIn6h5ydO2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vhSGDvqb; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=oKiRQ42l62EnogofLaik96WGfNp49GuFq2zckeu2WsEj8z69iJWbrkqw5z6E4I8Fi0eqOulClhG8wZxxAp/5/wwLMkQFdcoSLnEWvp7b4mHW8yv1uAMO9R8hPB8fV5u3LTtITRuyiYKnpgutIT6jBQbD42j9YayK13WD28CJNYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hwbmFwJZ; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e2bb354e91so6498025a91.2
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:23:05 -0800 (PST)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e6101877abso115122857b3.0
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:23:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731453784; x=1732058584; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731453790; x=1732058590; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WmL++hD8fgHMSusvyHDFwqq57StgWysj/njcEHmccMk=;
-        b=vhSGDvqb1dkZp23maJjOm0aVpI8AuAJy8zaOHGi1Ce2dLhI1Eboz1WTOohRMcP0xMS
-         FpYWPLcJk8aZIKnmsjL3Y+Idv3Jwg4msGh++kQhDx1XRFcdbVsVDZA5oN+/zflE1UCiX
-         wWJ74ulIO5b6b/NL/1E4UbVqHWAxkCRBllUGzNRfAjZQusRUKUCVAhsThbQJaG8Yo2C8
-         ebrQvVtea9tkmGTmNmFldRS+4bEjf3n8AHZZ5dVaM4W5zFfD1K52Q8CHa/uezxcLaUUR
-         0Q9S9jn3KpYAtPnc3H9qzU6X1eU2KMdSV1fsJXObLopapE/XjucGHhLY61A1yWwFFKiV
-         g2TA==
+        bh=JK/GSTSvm9liRNiU4g1TG7hfg4UB9r2AkllQ23c8pWk=;
+        b=hwbmFwJZheMTdJGo1HiVCF9wqDcwF5u+FwhtlW3G9ms9LeCYbPC/hPNbpEkAP+5AOL
+         bZA4z4gBwmYgYh4yNv1igCTPNqIQWNLJyoaQQqekSersyJXkl336IsW+sCx0pW/PuyyJ
+         Ho4wXdqS3aG5jP+mcaSoCmsf36bdNQEKKEIt+tyRRuqyTE5GBuahgP3Szky00UZ+sdeS
+         OD9NQO9q1vMNCxdOPP+6nXq+49UH4C+wKRdFI38LDEZYSjyx1ZDwC7BNT1Jb+G8/krQx
+         uD2ALkV22MIOzQo1tkhw3gRfvMQchsvdhjsBhT5EuxXqXPBA9lHU6qG9b/7Wrk4fV5Ql
+         uSJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731453784; x=1732058584;
+        d=1e100.net; s=20230601; t=1731453790; x=1732058590;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WmL++hD8fgHMSusvyHDFwqq57StgWysj/njcEHmccMk=;
-        b=JbDB7yJ3tSnZzeudywASon8qlYepPhj/C5BHlrr9AWq3ol5FhQKbVDu/mUvYig+onO
-         Zsqp1xA5BaloTV5mBOrH6hm24fhMc7hNAzBOgi0moaT5OwFBSEpzarFsR9wdW8KA6NTj
-         kbdmrEbobZPIT8oHSCw0HpjjmmyJ088TpaCaYHqPOpjg/a0dx1QEIOWz8Fpcgbv0IM5n
-         7x4sLPEiQrnn6GjoGYTyRzx2fUVJyI1PjTSAsXymcrE2WVvx3DxhWwww2YvM3rLbIJ1g
-         yZOscLeT8C8mUSzqAJFiXfD/sx/hGZqoOMvEY68s3yqn13cyalmx/M3ulxCSw4gIPLIT
-         8wnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEeY7CTmUmhkgscXaPtRlau5KFRL6eGIJrkJQwtkUqJU0EZHPQfGhgg1YkzeSvnXF/QB4wi3E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysiwvAnSXt3MR3EqHa1W2dT/2gYUOaZBCHDV2t8M2QxTj2PUL0
-	05E6pgKAdTeGX8d1ppRpMPJdpPw7uIZrsAWDfYGU+XP6E/GVBiAbjhqk+XVcE+H+C1HNJgqjwYy
-	BBPSAwzuz6invLg0fwjehzQ==
-X-Google-Smtp-Source: AGHT+IEKIx/zzlZD9qfrCEEtWDHbsmZlYa32pBSY0nOxUmKrJ4QniZXwOwxKWzCDaGQhHEeyreWYnDeyUdJT3VYCwQ==
+        bh=JK/GSTSvm9liRNiU4g1TG7hfg4UB9r2AkllQ23c8pWk=;
+        b=XXKUJUgcz3iGiffuFT0gIsVQsr2y1FmQdbrjqS/6AVwFf/AxDb3AGa0NLDaBqTejfI
+         DKHyJV7u9zkpwoM6qFtBdQDlDaUCrdpqEf+ZqmdjvtHYe5FnIJgOZssEbpOrv38jNoqL
+         MAhOkcVaDBKA1B66z6hq/ZmTmrwXv7mBEj07x5yclm5kyOv6HYqge4umO/MKt+4bhfqL
+         Xo9e6BpXmrRDsuiW/KwsuBO0dw5+iEMMn3QcIESHxRUrIa//jxtF2omhapwm7wtVYFgh
+         dRJwMNHJ84fiaq43UXM8+PYhxkMwjTjEzn+5QV9tYqUkKb+ww9g0HIp9DGBaN1K5E8ez
+         4G2g==
+X-Forwarded-Encrypted: i=1; AJvYcCUQU7/Zfdk3CE5voxMHyRMv2XtcXJ9++jN199fJvit+dtephCvi4XPie1iMyuSuhHq/GCSc66E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfZJEz2uHHXxq4I1zsLyG5f8QAkT+LJPup7SPfM5EVUrEsJsf0
+	wqpDJZcWt6QGDWK6nEoB2tYbr1c2xK1iuGl+HlXxaSuz5XLP5CtAzTWWypRcg2VaCTZlpg7CwEn
+	o2P8e8APOi53uMMefxxfmuA==
+X-Google-Smtp-Source: AGHT+IHGhhefKoRV5e5OubSGAwAM0UWk5yFk6qkA96dyKOOGAJu9z6Gb09Ycpw7kFzXXPso5tbzga53kt7B3No4ObA==
 X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:36:e7b8:ac13:c9e8])
- (user=dionnaglaze job=sendgmr) by 2002:a17:90b:2ec3:b0:2e2:bb49:1052 with
- SMTP id 98e67ed59e1d1-2e9e4c7f1aamr70975a91.4.1731453784634; Tue, 12 Nov 2024
- 15:23:04 -0800 (PST)
-Date: Tue, 12 Nov 2024 23:22:41 +0000
+ (user=dionnaglaze job=sendgmr) by 2002:a25:a22a:0:b0:e30:b93a:b3e4 with SMTP
+ id 3f1490d57ef6-e337f85f1c8mr43720276.4.1731453790070; Tue, 12 Nov 2024
+ 15:23:10 -0800 (PST)
+Date: Tue, 12 Nov 2024 23:22:43 +0000
 In-Reply-To: <20241112232253.3379178-1-dionnaglaze@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,28 +74,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241112232253.3379178-1-dionnaglaze@google.com>
 X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241112232253.3379178-3-dionnaglaze@google.com>
-Subject: [PATCH v6 2/8] KVM: SVM: Fix snp_context_create error reporting
+Message-ID: <20241112232253.3379178-5-dionnaglaze@google.com>
+Subject: [PATCH v6 4/8] crypto: ccp: Fix uapi definitions of PSP errors
 From: Dionna Glaze <dionnaglaze@google.com>
 To: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Brijesh Singh <brijesh.singh@amd.com>
+Cc: linux-coco@lists.linux.dev, Alexey Kardashevskiy <aik@amd.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>
-Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, John Allen <john.allen@amd.com>, 
 	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
 	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
 	Danilo Krummrich <dakr@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, 
-	Alexey Kardashevskiy <aik@amd.com>, stable@vger.kernel.org, kvm@vger.kernel.org
+	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, stable@vger.kernel.org, 
+	Dionna Glaze <dionnaglaze@google.com>, linux-crypto@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Failure to allocate should not return -ENOTTY.
-Command failure has multiple possible error modes.
+From: Alexey Kardashevskiy <aik@amd.com>
 
-Fixes: 136d8bc931c8 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_START command")
+Additions to the error enum after the explicit 0x27 setting for
+SEV_RET_INVALID_KEY leads to incorrect value assignments.
+
+Use explicit values to match the manufacturer specifications more
+clearly.
+
+Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
 
 CC: Sean Christopherson <seanjc@google.com>
 CC: Paolo Bonzini <pbonzini@redhat.com>
@@ -118,44 +123,44 @@ CC: Tianfei zhang <tianfei.zhang@intel.com>
 CC: Alexey Kardashevskiy <aik@amd.com>
 CC: stable@vger.kernel.org
 
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 ---
- arch/x86/kvm/svm/sev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/uapi/linux/psp-sev.h | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 357906375ec59..d0e0152aefb32 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2171,7 +2171,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	/* Allocate memory for context page */
- 	context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
- 	if (!context)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
+diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+index 832c15d9155bd..eeb20dfb1fdaa 100644
+--- a/include/uapi/linux/psp-sev.h
++++ b/include/uapi/linux/psp-sev.h
+@@ -73,13 +73,20 @@ typedef enum {
+ 	SEV_RET_INVALID_PARAM,
+ 	SEV_RET_RESOURCE_LIMIT,
+ 	SEV_RET_SECURE_DATA_INVALID,
+-	SEV_RET_INVALID_KEY = 0x27,
+-	SEV_RET_INVALID_PAGE_SIZE,
+-	SEV_RET_INVALID_PAGE_STATE,
+-	SEV_RET_INVALID_MDATA_ENTRY,
+-	SEV_RET_INVALID_PAGE_OWNER,
+-	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
+-	SEV_RET_RMP_INIT_REQUIRED,
++	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
++	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
++	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
++	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
++	SEV_RET_AEAD_OFLOW                 = 0x001D,
++	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
++	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
++	SEV_RET_BAD_SVN                    = 0x0021,
++	SEV_RET_BAD_VERSION                = 0x0022,
++	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
++	SEV_RET_UPDATE_FAILED              = 0x0024,
++	SEV_RET_RESTORE_REQUIRED           = 0x0025,
++	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
++	SEV_RET_INVALID_KEY                = 0x0027,
+ 	SEV_RET_MAX,
+ } sev_ret_code;
  
- 	data.address = __psp_pa(context);
- 	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_GCTX_CREATE, &data, &argp->error);
-@@ -2179,7 +2179,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 		pr_warn("Failed to create SEV-SNP context, rc %d fw_error %d",
- 			rc, argp->error);
- 		snp_free_firmware_page(context);
--		return NULL;
-+		return ERR_PTR(rc);
- 	}
- 
- 	return context;
-@@ -2227,8 +2227,8 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 		return -EINVAL;
- 
- 	sev->snp_context = snp_context_create(kvm, argp);
--	if (!sev->snp_context)
--		return -ENOTTY;
-+	if (IS_ERR(sev->snp_context))
-+		return PTR_ERR(sev->snp_context);
- 
- 	start.gctx_paddr = __psp_pa(sev->snp_context);
- 	start.policy = params.policy;
 -- 
 2.47.0.277.g8800431eea-goog
 
