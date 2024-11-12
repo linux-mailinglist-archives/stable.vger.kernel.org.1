@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CE09C55B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4917F9C56B7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4AB28F14F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04B0BB2BD93
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC702194B0;
-	Tue, 12 Nov 2024 10:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE282141B2;
+	Tue, 12 Nov 2024 10:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJR/aszO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/Og5rhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F5213144;
-	Tue, 12 Nov 2024 10:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3ED213EFC;
+	Tue, 12 Nov 2024 10:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408293; cv=none; b=JORNH3Bzt7Ldrqd8Sl2AC4yR6my5EUhrgsifBqQQ8ObZMhQ/1Jf1ZZPqbD9oDJ5wkgCWA3GiVJoLmaF69ceiXGfA9kD9hPKuA6K5WMERbzRMC8W83NiQqtCK+WoBHW1mXdwZVaVFk0NO3ve/24ztCwCDRiomdtRWnhPcTXMYdzI=
+	t=1731407393; cv=none; b=PjpPLtW9LV5htsnuSfg80oIX8qKGU5lFfebDUo2BG8ENsGgx0ko4ZS9/oAN/o7mt+2XRAVw9vLA9mh98OVK0yIOufyTLHGtmHTuzuNG40jgFA2XDVyXLuQiow36djV6ppppApTm1P0jbjjgwSnBcSkJ+ffI5LWHpym2p/J8UBTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408293; c=relaxed/simple;
-	bh=yTP9onIMtloUwdyTj0JMtXokwjMZ5OrdCua2+90C+4k=;
+	s=arc-20240116; t=1731407393; c=relaxed/simple;
+	bh=Jb+SK9FkJl1vpNG4SaVso6T90pkUr9y33B7huTxwwT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQ6nYDOzhqML06ZdJc3b4QtUD7cqafFQ/Rr0wuYyazPKVx/EZbx9l1ukqrgAQ2cNTP4YaFjq0RIpDaIrpwGhTHQUDOWvpq9ZtPisTq8+kTqSFM3Unuf1IwHyer2/K1ZVBzs2zfaxTsh6iifeiwN3YrK8v0WvrB9r7lFX+E40ahA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJR/aszO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0EBC4CECD;
-	Tue, 12 Nov 2024 10:44:52 +0000 (UTC)
+	 MIME-Version; b=JMd2eqnkwhOWIO7PVF5KzkK1f+d3theWV9DPWrIJQXeLbbdJ09RMVdZhkW6wvWJ0F5fpYXrC+K4jl/XGamYRU8PGe/imbN5z9DiqSPhwUC1+p9xBnR6jhdIImwO6L613j5nTaBmrJRMHsqLI04KLxnodYbn7jIweaYxVNOTnWwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Og5rhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD44C4CECD;
+	Tue, 12 Nov 2024 10:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408293;
-	bh=yTP9onIMtloUwdyTj0JMtXokwjMZ5OrdCua2+90C+4k=;
+	s=korg; t=1731407393;
+	bh=Jb+SK9FkJl1vpNG4SaVso6T90pkUr9y33B7huTxwwT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJR/aszODYWZ3IQHTMmgVQL39aEQMyFjEwyPoPlNLbK6BfIbwibmOBZnd/Kv02r3J
-	 j/LMdpjTo9medm4xl5nUjq27+4WpXZB3Zdqdfx7mOLGsjbigVqwg04SXFJmx0fVgXe
-	 zD49mvU0cdG/fAFBpMT/1i3Llm1Gh7SmHXpSCOrc=
+	b=w/Og5rhpAJk34PWWMBi8paZAV0qW0HsQf0wYaCF+UxBEWPuuWeexCbFwzWmSkgVt5
+	 1Pgo5AMN2F2fbPUjXcek+8q3UuviF3L86NGwlAqM52c9RFBd252ngU5b2fLufn4757
+	 Oafe3QWW9rx3Wt7gtFc4Z8Nuh6asmKsA+qtMp1NQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ming-Hung Tsai <mtsai@redhat.com>,
 	Mikulas Patocka <mpatocka@redhat.com>,
 	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.11 118/184] dm cache: fix potential out-of-bounds access on the first resume
-Date: Tue, 12 Nov 2024 11:21:16 +0100
-Message-ID: <20241112101905.397314077@linuxfoundation.org>
+Subject: [PATCH 6.1 62/98] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+Date: Tue, 12 Nov 2024 11:21:17 +0100
+Message-ID: <20241112101846.625138901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
+commit 792227719725497ce10a8039803bec13f89f8910 upstream.
 
-Out-of-bounds access occurs if the fast device is expanded unexpectedly
-before the first-time resume of the cache table. This happens because
-expanding the fast device requires reloading the cache table for
-cache_create to allocate new in-core data structures that fit the new
-size, and the check in cache_preresume is not performed during the
-first resume, leading to the issue.
+dm-cache checks the dirty bits of the cache blocks to be dropped when
+shrinking the fast device, but an index bug in bitset iteration causes
+out-of-bounds access.
 
 Reproduce steps:
 
-1. prepare component devices:
+1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
 
 dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
 dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
 dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-
-2. load a cache table of 512 cache blocks, and deliberately expand the
-   fast device before resuming the cache, making the in-core data
-   structures inadequate.
-
-dmsetup create cache --notable
-dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
 /dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
+
+2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
+   access to the dirty bitset (offset 0x80)
+
+dmsetup suspend cache
+dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
 dmsetup resume cdata
 dmsetup resume cache
 
-3. suspend the cache to write out the in-core dirty bitset and hint
-   array, leading to out-of-bounds access to the dirty bitset at offset
-   0x40:
-
-dmsetup suspend cache
-
 KASAN reports:
 
-  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
-  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
+  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
+  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
 
   (...snip...)
   The buggy address belongs to the virtual mapping at
-   [ffffc90000085000, ffffc90000087000) created by:
+   [ffffc900000f3000, ffffc900000f5000) created by:
    cache_ctr+0x176a/0x35f0
 
   (...snip...)
   Memory state around the buggy address:
-   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
-                                             ^
-   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                     ^
+   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
 
-Fix by checking the size change on the first resume.
+Fix by making the index post-incremented.
 
 Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
 Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
@@ -131,73 +121,26 @@ Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/md/dm-cache-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/md/dm-cache-target.c
 +++ b/drivers/md/dm-cache-target.c
-@@ -2901,24 +2901,24 @@ static dm_cblock_t get_cache_dev_size(st
- static bool can_resize(struct cache *cache, dm_cblock_t new_size)
- {
- 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
--		if (cache->sized) {
--			DMERR("%s: unable to extend cache due to missing cache table reload",
--			      cache_device_name(cache));
--			return false;
--		}
-+		DMERR("%s: unable to extend cache due to missing cache table reload",
-+		      cache_device_name(cache));
-+		return false;
- 	}
- 
- 	/*
+@@ -2889,13 +2889,13 @@ static bool can_resize(struct cache *cac
  	 * We can't drop a dirty block when shrinking the cache.
  	 */
--	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
--					   from_cblock(cache->cache_size),
--					   from_cblock(new_size)));
--	if (new_size != cache->cache_size) {
--		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--		      cache_device_name(cache),
--		      (unsigned long long) from_cblock(new_size));
--		return false;
-+	if (cache->loaded_mappings) {
-+		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+						   from_cblock(cache->cache_size),
-+						   from_cblock(new_size)));
-+		if (new_size != cache->cache_size) {
-+			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+			      cache_device_name(cache),
-+			      (unsigned long long) from_cblock(new_size));
-+			return false;
-+		}
+ 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		new_size = to_cblock(from_cblock(new_size) + 1);
+ 		if (is_dirty(cache, new_size)) {
+ 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+ 			      cache_device_name(cache),
+ 			      (unsigned long long) from_cblock(new_size));
+ 			return false;
+ 		}
++		new_size = to_cblock(from_cblock(new_size) + 1);
  	}
  
  	return true;
-@@ -2949,20 +2949,15 @@ static int cache_preresume(struct dm_tar
- 	/*
- 	 * Check to see if the cache has resized.
- 	 */
--	if (!cache->sized) {
--		r = resize_cache_dev(cache, csize);
--		if (r)
--			return r;
--
--		cache->sized = true;
--
--	} else if (csize != cache->cache_size) {
-+	if (!cache->sized || csize != cache->cache_size) {
- 		if (!can_resize(cache, csize))
- 			return -EINVAL;
- 
- 		r = resize_cache_dev(cache, csize);
- 		if (r)
- 			return r;
-+
-+		cache->sized = true;
- 	}
- 
- 	if (!cache->loaded_mappings) {
 
 
 
