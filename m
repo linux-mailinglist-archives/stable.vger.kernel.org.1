@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-92360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2AD9C5474
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:43:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3545C9C55B7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDB29B24B26
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF16B28EE9B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508D2141D9;
-	Tue, 12 Nov 2024 10:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B493B20EA23;
+	Tue, 12 Nov 2024 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ug7q40Be"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np4kUpgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72182141DA;
-	Tue, 12 Nov 2024 10:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCA1219CA1;
+	Tue, 12 Nov 2024 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407403; cv=none; b=ZLrUYiHvM8UbNyujXxH96rm4TaPM32N005/2U0I4bs8Kg8/FHvFv53Rb5vGGQrpMDCnIxAg9p5XiDegqWJU6HjM258rA3JGQF4ZvV6jfaitA646chIJHW9wD8N8nAMRljnzeTaYR/jZWBV5NyeIMRq4NbD1b4G46zmoSeEriT9Y=
+	t=1731408310; cv=none; b=K4207P7q3aAu7tKUt12WIvdb9SX9l4ECcUaGVbwWAjj5ZMTWDFg5y9EFunxgTYaZLzpehr9sORg+pS2447kcGvzXmtnEK2o6Qi76oaWHGstfetKtom6LKFAs8dbIjYhO3ZQPZds6LFJ42hMyxoLveaFchZEN2xcrpxthTFOINY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407403; c=relaxed/simple;
-	bh=RleiS/un3CERaqrCtbu0qeY1qt3rXbzbisLXhIu42Mo=;
+	s=arc-20240116; t=1731408310; c=relaxed/simple;
+	bh=OEeVy9XabaFem20dzXpojZHfHiygc3PCa2a8SSm8f1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7Bj88HOmXsrMT6jnEKQnuX68Vmq/O4f9nwzRZc47FQJRhJ7dG6DiN3tiTb7kVy3kIWwRw5HILyqSk9/IwbOSHrkizGVgvkZgOGk6sXrYXUpEt01U9QlhuYWWjKdplU4lxd9vWHc7vYJilqluN2WRynkRu84r4qJks4xdvCb9jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug7q40Be; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9858C4CED4;
-	Tue, 12 Nov 2024 10:30:02 +0000 (UTC)
+	 MIME-Version; b=geXBfvhyvcE0FJ12+23rCX6yLVwW2hRowqqIVPfHsjfKK4Eu+v/1329+OAvh4JN6TAlnMmXdFGuc6grM/gSi5tqw4PanwgKD3iI9qvGLYu9mvd8dqxao/lhboV6gGCS6yOb7Qe7mdKJ5cykkDgqrfeBJl9fOPjpZdCHMyLeMvIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np4kUpgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59BEC4CED6;
+	Tue, 12 Nov 2024 10:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407403;
-	bh=RleiS/un3CERaqrCtbu0qeY1qt3rXbzbisLXhIu42Mo=;
+	s=korg; t=1731408310;
+	bh=OEeVy9XabaFem20dzXpojZHfHiygc3PCa2a8SSm8f1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ug7q40Be7WhHaKBexh5W7hhpVArYmgm3jlWp5VMJYQir0MMeS2OvcmwL/bqS9G2P5
-	 zFWQ7+o3d6jEfND/n51d1A70SxD4e7hAbjZ75KIyF9wA+wcrvr3vgwTIaO+IcCafiK
-	 iz+Hy2VexMKlrbPrjYvYejPEZnbXcuYzJjQLKlQM=
+	b=Np4kUpgMO6umHRcKZmSifThwy814ErV98WiYCxzv6Y4DNQfvX+x/3DeOdR8M1G+yc
+	 jF76UKOR7rZSqg1VgHparyGa+9rE0ia6McHFqWCm2boERVH11BbjQiqFYc48U68OJd
+	 vIPRk/jFDXt83KudGk/J6j97MtrPtChSBH0paxno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 65/98] dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
-Date: Tue, 12 Nov 2024 11:21:20 +0100
-Message-ID: <20241112101846.736550189@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.11 123/184] scsi: ufs: core: Start the RTC update work later
+Date: Tue, 12 Nov 2024 11:21:21 +0100
+Message-ID: <20241112101905.586328610@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 5a4510c762fc04c74cff264cd4d9e9f5bf364bae upstream.
+commit 54c814c8b23bc7617be3d46abdb896937695dbfa upstream.
 
-This was found by a static analyzer.
-There may be a potential integer overflow issue in
-unstripe_ctr(). uc->unstripe_offset and uc->unstripe_width are
-defined as "sector_t"(uint64_t), while uc->unstripe,
-uc->chunk_size and uc->stripes are all defined as "uint32_t".
-The result of the calculation will be limited to "uint32_t"
-without correct casting.
-So, we recommend adding an extra cast to prevent potential
-integer overflow.
+The RTC update work involves runtime resuming the UFS controller. Hence,
+only start the RTC update work after runtime power management in the UFS
+driver has been fully initialized. This patch fixes the following kernel
+crash:
 
-Fixes: 18a5bf270532 ("dm: add unstriped target")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
+Workqueue: events ufshcd_rtc_work
+Call trace:
+ _raw_spin_lock_irqsave+0x34/0x8c (P)
+ pm_runtime_get_if_active+0x24/0x9c (L)
+ pm_runtime_get_if_active+0x24/0x9c
+ ufshcd_rtc_work+0x138/0x1b4
+ process_one_work+0x148/0x288
+ worker_thread+0x2cc/0x3d4
+ kthread+0x110/0x114
+ ret_from_fork+0x10/0x20
+
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Closes: https://lore.kernel.org/linux-scsi/0c0bc528-fdc2-4106-bc99-f23ae377f6f5@linaro.org/
+Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
+Cc: Bean Huo <beanhuo@micron.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20241031212632.2799127-1-bvanassche@acm.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-unstripe.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-unstripe.c
-+++ b/drivers/md/dm-unstripe.c
-@@ -84,8 +84,8 @@ static int unstripe_ctr(struct dm_target
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8641,6 +8641,14 @@ static int ufshcd_add_lus(struct ufs_hba
+ 		ufshcd_init_clk_scaling_sysfs(hba);
  	}
- 	uc->physical_start = start;
  
--	uc->unstripe_offset = uc->unstripe * uc->chunk_size;
--	uc->unstripe_width = (uc->stripes - 1) * uc->chunk_size;
-+	uc->unstripe_offset = (sector_t)uc->unstripe * uc->chunk_size;
-+	uc->unstripe_width = (sector_t)(uc->stripes - 1) * uc->chunk_size;
- 	uc->chunk_shift = is_power_of_2(uc->chunk_size) ? fls(uc->chunk_size) - 1 : 0;
++	/*
++	 * The RTC update code accesses the hba->ufs_device_wlun->sdev_gendev
++	 * pointer and hence must only be started after the WLUN pointer has
++	 * been initialized by ufshcd_scsi_add_wlus().
++	 */
++	schedule_delayed_work(&hba->ufs_rtc_update_work,
++			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
++
+ 	ufs_bsg_probe(hba);
+ 	scsi_scan_host(hba->host);
  
- 	tmp_len = ti->len;
+@@ -8800,8 +8808,6 @@ static int ufshcd_device_init(struct ufs
+ 	ufshcd_force_reset_auto_bkops(hba);
+ 
+ 	ufshcd_set_timestamp_attr(hba);
+-	schedule_delayed_work(&hba->ufs_rtc_update_work,
+-			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
+ 
+ 	/* Gear up to HS gear if supported */
+ 	if (hba->max_pwr_info.is_valid) {
 
 
 
