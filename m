@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9D99C55E1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E0C9C536A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACFAB2837A2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0BFF1F229B9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1FA214429;
-	Tue, 12 Nov 2024 10:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F338213EDF;
+	Tue, 12 Nov 2024 10:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeTGFKCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs6zsWLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB8F214409;
-	Tue, 12 Nov 2024 10:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F5212D04;
+	Tue, 12 Nov 2024 10:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408461; cv=none; b=ZNH3u7wD7cn46BE0o5HFordw/93+Crs0Scp4OPmtGCQZgOJMSFunjkn/CPUP1sl20TsyvD6AZY8hT2Kmq/9EMY+mJrhzYjk7FA2ucBMcsKqBwwaq7OubK7zhhZw69c4DT7eqnvDZ1u82KI8zNCeJkVW/Ri/79VrsVdhxxB/t7oE=
+	t=1731407191; cv=none; b=FZFeLvpm5LkKLKkkk6FOxI+Yi5mOvTWHZSS83XrI3FQ93j5Gbf9AFL7BwiSPh+Rbhlbs9FwRRLn4mvm3kFfHp6wlrZ07W1z49X4Y9SPTI2HzyFwhnrDYnNbC9TzxdLF2M1+vRhBp7kGOMNd+kxI03A9YTGWvGqnbLTZhiZC2Iak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408461; c=relaxed/simple;
-	bh=OfOFZTRqIL/Hz/w01aOETAsyGNkFpfCpmN6a21sYzYQ=;
+	s=arc-20240116; t=1731407191; c=relaxed/simple;
+	bh=SfiNVX7DYnYMbYB8Ays7jhHirE9noIyLl+URYXPRBBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdWYpFwHOgCygvwwr4MAbA/5U/4G5Yl4tcOqtx8TbU8/AmHEoMhQxYpexm2sqSIrwyaGt16zN7bIPDQQorAYdxEGtgTIIvyVyYKg63XbMPJJU8QzA/lTq6bI/MP82GsrqcaHKPBjrorh3pCuVOxZYR/lU4GJj5oGsh0xt8pbzaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeTGFKCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF62C4CECD;
-	Tue, 12 Nov 2024 10:47:40 +0000 (UTC)
+	 MIME-Version; b=aq2QWK2jbz/coucgaCQU8qmskfAgUssu0KUWVzZa4JP04FFmeAqwbVdhyHADbUv2JUgf6XYZylfQjJ2dSqfhbsBxY5P0POwnuZu2ba32xxhrbwGRPX6T2NIofkPleI+hjHpFJ8CTwkr8dFI1Vx3EJsR50zbO1+B/CV+dRbQj7bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs6zsWLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B174CC4CECD;
+	Tue, 12 Nov 2024 10:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408461;
-	bh=OfOFZTRqIL/Hz/w01aOETAsyGNkFpfCpmN6a21sYzYQ=;
+	s=korg; t=1731407191;
+	bh=SfiNVX7DYnYMbYB8Ays7jhHirE9noIyLl+URYXPRBBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PeTGFKCc0DXLDunAFMC1WH4p1QEpXW1bkGWzPuD8d/7qYfzK1ceBs3EbQW8GGGtpl
-	 aN6lzvuBKlXJtvwKlNX9Vz+1zs1u1G5exTiv41HL+59Cq7fDp/RzSe0m05hYmKJ6pc
-	 aX4nz9xp8pNShz7NoXapilqWggTKqZKmNZrWVb4Y=
+	b=hs6zsWLLtzpjlpMcf8VvtwvTIRO12xIUldmiCXMD00tfAJD6MWpBRJJh15rsmxNG0
+	 LkAcodp44lkhkE08GerSBUgtkwSmtS2FmsB37I5LPCHLTz0fV28IzyBe5azg2smAi2
+	 jNBoP5eoGNkuIXHlDxm0ZsjKXHO5k1oycIOoJHM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 128/184] mptcp: use sock_kfree_s instead of kfree
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 5.15 61/76] usb: musb: sunxi: Fix accessing an released usb phy
 Date: Tue, 12 Nov 2024 11:21:26 +0100
-Message-ID: <20241112101905.778647701@linuxfoundation.org>
+Message-ID: <20241112101842.102354927@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 99635c91fb8b860a6404b9bc8b769df7bdaa2ae3 upstream.
+commit 498dbd9aea205db9da674994b74c7bf8e18448bd upstream.
 
-The local address entries on userspace_pm_local_addr_list are allocated
-by sock_kmalloc().
+Commit 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on
+exit") will cause that usb phy @glue->xceiv is accessed after released.
 
-It's then required to use sock_kfree_s() instead of kfree() to free
-these entries in order to adjust the allocated size on the sk side.
+1) register platform driver @sunxi_musb_driver
+// get the usb phy @glue->xceiv
+sunxi_musb_probe() -> devm_usb_get_phy().
 
-Fixes: 24430f8bf516 ("mptcp: add address into userspace pm list")
+2) register and unregister platform driver @musb_driver
+musb_probe() -> sunxi_musb_init()
+use the phy here
+//the phy is released here
+musb_remove() -> sunxi_musb_exit() -> devm_usb_put_phy()
+
+3) register @musb_driver again
+musb_probe() -> sunxi_musb_init()
+use the phy here but the phy has been released at 2).
+...
+
+Fixed by reverting the commit, namely, removing devm_usb_put_phy()
+from sunxi_musb_exit().
+
+Fixes: 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on exit")
 Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241104-net-mptcp-misc-6-12-v1-2-c13f2ff1656f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241029-sunxi_fix-v1-1-9431ed2ab826@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/musb/sunxi.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -91,6 +91,7 @@ static int mptcp_userspace_pm_delete_loc
- 						struct mptcp_pm_addr_entry *addr)
- {
- 	struct mptcp_pm_addr_entry *entry, *tmp;
-+	struct sock *sk = (struct sock *)msk;
+--- a/drivers/usb/musb/sunxi.c
++++ b/drivers/usb/musb/sunxi.c
+@@ -286,8 +286,6 @@ static int sunxi_musb_exit(struct musb *
+ 	if (test_bit(SUNXI_MUSB_FL_HAS_SRAM, &glue->flags))
+ 		sunxi_sram_release(musb->controller->parent);
  
- 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
- 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
-@@ -98,7 +99,7 @@ static int mptcp_userspace_pm_delete_loc
- 			 * be used multiple times (e.g. fullmesh mode).
- 			 */
- 			list_del_rcu(&entry->list);
--			kfree(entry);
-+			sock_kfree_s(sk, entry, sizeof(*entry));
- 			msk->pm.local_addr_used--;
- 			return 0;
- 		}
+-	devm_usb_put_phy(glue->dev, glue->xceiv);
+-
+ 	return 0;
+ }
+ 
 
 
 
