@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-92496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4271F9C547B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:44:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F179C53CB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF2701F228AA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEF3828140F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A8121A4C8;
-	Tue, 12 Nov 2024 10:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711442123DB;
+	Tue, 12 Nov 2024 10:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRzUct9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StHi1IMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42F621A6E1;
-	Tue, 12 Nov 2024 10:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2888519E992;
+	Tue, 12 Nov 2024 10:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407796; cv=none; b=UleccPsTzzb6gUpIh0KoxK2wL58UFWl8rYzL4WFhufiYi3Luh6anxNcbjmg7khY1uOLzDJPPq66vuVXVW53bsJUt2H6Qrohl/lh22C4FeCZAUo65hUrouBOX6uBPmLDgklYJSgrDjTc2w/DT9n9xB6pn0IjKMrPxAmv+OyQ0heQ=
+	t=1731407524; cv=none; b=Ddl+2vtpupe0V3e0vf/1xXBBzZOaAotYnMW5B62OAf93m1WyA1hmDuI4MH/m+EAe5UXzJ6g6j8RAMo1uB/yZl6jmNMfvvG4bkAGCTEvDSrp9bGpMe2l2LrE1A3Mc8CXujsVRPHvOnejJ39/1WHWErXKGej0Y9Xp6fES78ZVTr7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407796; c=relaxed/simple;
-	bh=mzMTVLZEHaXLE2Jak7pHs01MyLYItFE+XsXbGPIiyBg=;
+	s=arc-20240116; t=1731407524; c=relaxed/simple;
+	bh=thTQ3sPUSA+9QR6vxYA1SNzCiWMGogBLTnnooD9vU14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXVkUfU0yqO9/Lkedr2ONS5gjUMJGBk7dtv/6xsJKVTGZFaze9Uk7S9lQCplHy8ky5iu0nwcVr+Il161i2R0VS2hz3ojr5jtarPGytRL+3IHgjCyd1XNd1JSYD1AvUaA3oKCg2zJXz/AvsEQ0K6OeKESXp7jCj5HV7S6xZlZfMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRzUct9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FECC4CED6;
-	Tue, 12 Nov 2024 10:36:35 +0000 (UTC)
+	 MIME-Version; b=Cxy0p5G1Dhd6A6EBr+YK0CjrUvJC73QxQ0SD1E8FqldBqk8bCPrS8bfZrqFPnDVJGKjiWPS6g3ilhtMCSCFqm2toDY56/FKjK2xSKqvMGAYdw3jJHz+rWMtqhjHI8/4FZPmR4cHQZtnC3O2oPrZs1iBOMO0V2730lm0yjlSWJKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StHi1IMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAFCC4CECD;
+	Tue, 12 Nov 2024 10:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407796;
-	bh=mzMTVLZEHaXLE2Jak7pHs01MyLYItFE+XsXbGPIiyBg=;
+	s=korg; t=1731407523;
+	bh=thTQ3sPUSA+9QR6vxYA1SNzCiWMGogBLTnnooD9vU14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRzUct9snKO99GC3jxB6PzSaQA/rJgskOpnVINYlgt4DCSQQ/4+exMDOjNfkqHn9r
-	 xKUqCf1/zmZKq9Vj8FEMUU8duTxumTLebKJhwgzjxF+GsFFIBPE6qiXRfFtFh47TXs
-	 oyllEErUqEFXt4/bgI5dSzk7gVGXDqcL3iNA5n9o=
+	b=StHi1IMrk4J6aZUQd+UchDnHKx5J1F232Zur0JvUcQcQGUNbD3qkU3hx4vGSJG+Fe
+	 nndFfBBE5PweyprvF4HjkSTz1w9d/L61RygfTnT5fKtEpzycmG3xU0sZQ2VTbyfx4F
+	 lL0PKC1h/FzLF03ZsaKl8Op/c2EvB5warTNOR6ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.6 085/119] dm cache: optimize dirty bit checking with find_next_bit when resizing
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Abdelkareem Abdelsaamad <kareemem@amazon.com>
+Subject: [PATCH 6.1 78/98] net: do not delay dst_entries_add() in dst_release()
 Date: Tue, 12 Nov 2024 11:21:33 +0100
-Message-ID: <20241112101851.965234776@linuxfoundation.org>
+Message-ID: <20241112101847.225273849@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +66,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f484697e619a83ecc370443a34746379ad99d204 upstream.
+commit ac888d58869bb99753e7652be19a151df9ecb35d upstream.
 
-When shrinking the fast device, dm-cache iteratively searches for a
-dirty bit among the cache blocks to be dropped, which is less efficient.
-Use find_next_bit instead, as it is twice as fast as the iterative
-approach with test_bit.
+dst_entries_add() uses per-cpu data that might be freed at netns
+dismantle from ip6_route_net_exit() calling dst_entries_destroy()
 
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Before ip6_route_net_exit() can be called, we release all
+the dsts associated with this netns, via calls to dst_release(),
+which waits an rcu grace period before calling dst_destroy()
+
+dst_entries_add() use in dst_destroy() is racy, because
+dst_entries_destroy() could have been called already.
+
+Decrementing the number of dsts must happen sooner.
+
+Notes:
+
+1) in CONFIG_XFRM case, dst_destroy() can call
+   dst_release_immediate(child), this might also cause UAF
+   if the child does not have DST_NOCOUNT set.
+   IPSEC maintainers might take a look and see how to address this.
+
+2) There is also discussion about removing this count of dst,
+   which might happen in future kernels.
+
+Fixes: f88649721268 ("ipv4: fix dst race in sk_dst_get()")
+Closes: https://lore.kernel.org/lkml/CANn89iLCCGsP7SFn9HKpvnKu96Td4KD08xf7aGtiYgZnkjaL=w@mail.gmail.com/T/
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20241008143110.1064899-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ resolved conflict due to bc9d3a9f2afc ("net: dst: Switch to rcuref_t
+  reference counting") is not in the tree ]
+Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/core/dst.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2915,14 +2915,14 @@ static bool can_resize(struct cache *cac
- 	/*
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
--	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		if (is_dirty(cache, new_size)) {
--			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--			      cache_device_name(cache),
--			      (unsigned long long) from_cblock(new_size));
--			return false;
--		}
--		new_size = to_cblock(from_cblock(new_size) + 1);
-+	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+					   from_cblock(cache->cache_size),
-+					   from_cblock(new_size)));
-+	if (new_size != cache->cache_size) {
-+		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+		      cache_device_name(cache),
-+		      (unsigned long long) from_cblock(new_size));
-+		return false;
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -108,9 +108,6 @@ struct dst_entry *dst_destroy(struct dst
+ 		child = xdst->child;
  	}
+ #endif
+-	if (!(dst->flags & DST_NOCOUNT))
+-		dst_entries_add(dst->ops, -1);
+-
+ 	if (dst->ops->destroy)
+ 		dst->ops->destroy(dst);
+ 	netdev_put(dst->dev, &dst->dev_tracker);
+@@ -160,6 +157,12 @@ void dst_dev_put(struct dst_entry *dst)
+ }
+ EXPORT_SYMBOL(dst_dev_put);
  
- 	return true;
++static void dst_count_dec(struct dst_entry *dst)
++{
++	if (!(dst->flags & DST_NOCOUNT))
++		dst_entries_add(dst->ops, -1);
++}
++
+ void dst_release(struct dst_entry *dst)
+ {
+ 	if (dst) {
+@@ -169,8 +172,10 @@ void dst_release(struct dst_entry *dst)
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release);
+@@ -184,8 +189,10 @@ void dst_release_immediate(struct dst_en
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release_immediate underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			dst_destroy(dst);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release_immediate);
 
 
 
