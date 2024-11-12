@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-92437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DAA9C53FD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A49C560B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D8511F218BC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4D39B32958
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1BE2123E3;
-	Tue, 12 Nov 2024 10:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26264212634;
+	Tue, 12 Nov 2024 10:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9kDI8Gy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSplS3OA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596241A76C7;
-	Tue, 12 Nov 2024 10:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D771E21263E;
+	Tue, 12 Nov 2024 10:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407657; cv=none; b=Ah5f7E2WGjD6Vr5iAXkU7Z29h4O+JN+WYvhyMnkPC8eOR9OWpbbwrB3lynHKBHn/+5X0GeDCB6H/CjaXXs9oiOcpZM9yZo02kNlZQc4icw/gmeIST/Z8jV9M1GkDsDnVqayCycoeLcjDjkWpE75deaYXn7809hAsLDelLT35vPw=
+	t=1731407031; cv=none; b=CPfQn8z6KZONct2Y/U7sf26ayUsx/PIStGMnV4endjX792M+PIB+1VWNfJwqawW3q+wyIvcTzyvNUGZz/LZQ8ryI6zkKzGq5JDBQX0KSYEhHrwsXDmhDRIzGh7LagcYLOgmSN+RB+RmHNvLOOmB2vidkzWpQLpW+sbtW/PRgl8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407657; c=relaxed/simple;
-	bh=pun9ucIohujwxWF4H+2sJ25k1iFywKcOpU+IPIW0yP0=;
+	s=arc-20240116; t=1731407031; c=relaxed/simple;
+	bh=43ndCtTTIO5IrN3BD8zByq7EJwMilS+t4XUufRnxHlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=byO39G5CS/3PTPHmNoIs0WNzaB9QQgh3EY/7Bmq5tTDhjV7JMpz+cQOE/KDMyD3nnhuRdZibRJa0bQSkTSlT9mUOXkmsN6mtmtjzPYF/nxu1We0j7RbrqvKfnM1e9DNKBiBioJ8tz0wiDxitvVKz+zQT26WAZsEQYfLeJvhyfp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9kDI8Gy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AED0C4CECD;
-	Tue, 12 Nov 2024 10:34:16 +0000 (UTC)
+	 MIME-Version; b=XofkgSDwQCGx3E0ZBHAxJfpG5d769l+WMUNP/11P1O2I0LgxlACcHlcUSPViFs9sJv/LqZluMMHQO6KnYVYwTeAI96WiYoRqBvpMTPaEHn7ZEzC5LO8zVd3aTxeFwPdxTDCUIEKk35n5z8KMuJStzoW2xw15abPG4wLFdYYfY9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSplS3OA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54263C4CECD;
+	Tue, 12 Nov 2024 10:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407657;
-	bh=pun9ucIohujwxWF4H+2sJ25k1iFywKcOpU+IPIW0yP0=;
+	s=korg; t=1731407031;
+	bh=43ndCtTTIO5IrN3BD8zByq7EJwMilS+t4XUufRnxHlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9kDI8GyGeSnUM1Ia/AUuLfervMyiGT/e4hnOxvHG7/kTxQJaLvzzuv72XykrAqXa
-	 ou34ne+6SZ2cVwwDouJ51PzaheTvu9FD2l+4XUleH9uCKK6iQw5xCsOxiySY8Dqogi
-	 TroyLFSK3TR+4qHbxnf/3UZPR8uJPDyJM06ifsrU=
+	b=wSplS3OA0hQoqtxTefCa8bNolgRX7xrrOXstx8mvatK29LeNpbSHEA8/D2HxDzPm4
+	 SKBS+Lb+qlg+UI+CyBsN/SDvjWqArU8MnlDx28yTqCVMd3CX2QOChjsGrbh2DvupWW
+	 l67Thc/7od7KfbLFYcDCm5ccxlQ0POuZGxuJAuQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Corey Hickey <bugfood-c@fatooh.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Caesar Wang <wxt@rock-chips.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/119] platform/x86/amd/pmc: Detect when STB is not available
+Subject: [PATCH 5.15 08/76] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
 Date: Tue, 12 Nov 2024 11:20:33 +0100
-Message-ID: <20241112101849.674808473@linuxfoundation.org>
+Message-ID: <20241112101840.100476185@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Hickey <bugfood-c@fatooh.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit bceec87a73804bb4c33b9a6c96e2d27cd893a801 ]
+[ Upstream commit 1580ccb6ed9dc76b8ff3e2d8912e8215c8b0fa6d ]
 
-Loading the amd_pmc module as:
+Neither the binding nor the driver implementation specify/use the grf
+reference provided in the rk3036. And neither does the newer rk3128
+user of the hdmi controller. So drop the rockchip,grf property.
 
-    amd_pmc enable_stb=1
-
-...can result in the following messages in the kernel ring buffer:
-
-    amd_pmc AMDI0009:00: SMU cmd failed. err: 0xff
-    ioremap on RAM at 0x0000000000000000 - 0x0000000000ffffff
-    WARNING: CPU: 10 PID: 2151 at arch/x86/mm/ioremap.c:217 __ioremap_caller+0x2cd/0x340
-
-Further debugging reveals that this occurs when the requests for
-S2D_PHYS_ADDR_LOW and S2D_PHYS_ADDR_HIGH return a value of 0,
-indicating that the STB is inaccessible. To prevent the ioremap
-warning and provide clarity to the user, handle the invalid address
-and display an error message.
-
-Link: https://lore.kernel.org/platform-driver-x86/c588ff5d-3e04-4549-9a86-284b9b4419ba@amd.com
-Fixes: 3d7d407dfb05 ("platform/x86: amd-pmc: Add support for AMD Spill to DRAM STB feature")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Corey Hickey <bugfood-c@fatooh.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241028180241.1341624-1-bugfood-ml@fatooh.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: b7217cf19c63 ("ARM: dts: rockchip: add hdmi device node for rk3036")
+Cc: Caesar Wang <wxt@rock-chips.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-13-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/dts/rk3036.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 96caf2221d877..f49b1bb258c73 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -931,6 +931,11 @@ static int amd_pmc_s2d_init(struct amd_pmc_dev *dev)
- 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_LOW, &phys_addr_low, dev->s2d_msg_id, true);
- 	amd_pmc_send_cmd(dev, S2D_PHYS_ADDR_HIGH, &phys_addr_hi, dev->s2d_msg_id, true);
- 
-+	if (!phys_addr_hi && !phys_addr_low) {
-+		dev_err(dev->dev, "STB is not enabled on the system; disable enable_stb or contact system vendor\n");
-+		return -EINVAL;
-+	}
-+
- 	stb_phys_addr = ((u64)phys_addr_hi << 32 | phys_addr_low);
- 
- 	/* Clear msg_port for other SMU operation */
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index 4db4e19b22a1e..e0d4c71f109a7 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -398,7 +398,6 @@
+ 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&cru  PCLK_HDMI>;
+ 		clock-names = "pclk";
+-		rockchip,grf = <&grf>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
 -- 
 2.43.0
 
