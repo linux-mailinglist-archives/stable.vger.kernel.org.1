@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C009C543A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2EB9C55B6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649C5284B99
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 642421F21679
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1542123D6;
-	Tue, 12 Nov 2024 10:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C3F219CA0;
+	Tue, 12 Nov 2024 10:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKUATsKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BguMuzJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580201EE02B;
-	Tue, 12 Nov 2024 10:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F194E219C9F;
+	Tue, 12 Nov 2024 10:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407751; cv=none; b=p9Ax9ca33WjuEC7iiN69zMmq0B/UEGh57iqmU9x3S9dzqClF0w4cCiIQegEeEVHFPn83bvkID9knQj4DJCs44ZZuedMzpGpnMCbqGvc4Dn2WN5f7tnTEZfNgTCPiLZ7cwq4Enz2YHzsY/Z1I/wtmR4fEoJIuqQbBiA13LB7H1yc=
+	t=1731408307; cv=none; b=Ru0oW2CTjDeoH2yrCQgjiLu3RAG0So0s99+NBpa7XYoGvc6fz6H0/ZslXvQb9K7vrHR/BQtqgBZ/fg3xF1JK4GyTQbioHa20RY+k3AcEkAjrMetc3N8Y0L5OSdqJfAGKTUyZH33aIXhVhCAdnwBDcoQKXr9yG326GVMh6ScGu4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407751; c=relaxed/simple;
-	bh=UDyt7Z4650mLmUC6OWx3uWcA5b12r1dSLFp61ZX+ojE=;
+	s=arc-20240116; t=1731408307; c=relaxed/simple;
+	bh=/qOOwv5DSe8lktcqnIWaJwtbdyxkuWMqmrelKNuFyAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHBQg4/4kiwekKZhsVxHc9QdEbjSFvbLGWVV6SJu7KjCkCsvgY0b0Ef0Plx62Ab0k02Rz1iOw+UWKiiTG7ZLTmeQjXbU8onidMABS5GNvhZUmRjvwRupsnzGOpsQjLUxJKvfmRSbzWDnw29/vlsJPqTN/Nuym/jxJLsuDrez2fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKUATsKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4478C4CED4;
-	Tue, 12 Nov 2024 10:35:50 +0000 (UTC)
+	 MIME-Version; b=VkZxNPDx70uiQjrU3+Gzhzsw83HqtmygF2WLKBGbh+pnu036SHTsIPzLd68I/chyzQjAH2K3FBRElKDuD9bCHZGYXBDkqlGvzhT8VICQ3ccPuYzhjbaXD2VUPRl0XtQq28U3+7KQCAVk3bK+khcHHhiZ7lGJxKp0WibfveRnQz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BguMuzJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6078CC4CECD;
+	Tue, 12 Nov 2024 10:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407751;
-	bh=UDyt7Z4650mLmUC6OWx3uWcA5b12r1dSLFp61ZX+ojE=;
+	s=korg; t=1731408306;
+	bh=/qOOwv5DSe8lktcqnIWaJwtbdyxkuWMqmrelKNuFyAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKUATsKEU1NEP6B1bUthJ7G7xoEegibR268otPTQYpk/pW+0/tB0d8jSFpEWA3W0c
-	 y6SB3gpd5TCjeTOewtd5rnSEU+m0F/dgfKTNW3bw0V+4a8l3n1lH3ZYEOZPwyPq7+Y
-	 r6D3kUXtxryQtN47XVZXB+3ynir7nQO2UqsmK5fw=
+	b=BguMuzJmW1euIMpfjLg7zUl/usizO6MYHSWoNaHiWK8jPtqttwB/zZv/NmUFR7Unq
+	 I8JLjZArsMu+GrTspPKwC+rqAS8RN539NCIiuAxvH7KB8fT1ynBBVZYYGoBnxDEzue
+	 VxSgX8wXMjLqPXr7BSG9HCPtOHlCnD+d6Ie+JwSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 072/119] ksmbd: Fix the missing xa_store error check
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 122/184] ALSA: usb-audio: Add quirk for HP 320 FHD Webcam
 Date: Tue, 12 Nov 2024 11:21:20 +0100
-Message-ID: <20241112101851.466329463@linuxfoundation.org>
+Message-ID: <20241112101905.548313076@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
+commit dabc44c28f118910dea96244d903f0c270225669 upstream.
 
-xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
-be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
-so check error for xa_store() to fix it.
+HP 320 FHD Webcam (03f0:654a) seems to have flaky firmware like other
+webcam devices that don't like the frequency inquiries.  Also, Mic
+Capture Volume has an invalid resolution, hence fix it to be 16 (as a
+blind shot).
 
-Cc: stable@vger.kernel.org
-Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1232768
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241105120220.5740-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/usb/mixer.c  |    1 +
+ sound/usb/quirks.c |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1205,6 +1205,7 @@ static void volume_control_quirks(struct
+ 		}
+ 		break;
+ 	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
++	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
+ 		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+ 			usb_audio_info(chip,
+ 				"set resolution quirk: cval->res = 16\n");
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2114,6 +2114,8 @@ struct usb_audio_quirk_flags_table {
  
- int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
- {
--	struct ksmbd_session_rpc *entry;
-+	struct ksmbd_session_rpc *entry, *old;
- 	struct ksmbd_rpc_command *resp;
- 	int method;
- 
-@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
- 	entry->id = ksmbd_ipc_id_alloc();
- 	if (entry->id < 0)
- 		goto free_entry;
--	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	if (xa_is_err(old))
-+		goto free_id;
- 
- 	resp = ksmbd_rpc_open(sess, entry->id);
- 	if (!resp)
--		goto free_id;
-+		goto erase_xa;
- 
- 	kvfree(resp);
- 	return entry->id;
--free_id:
-+erase_xa:
- 	xa_erase(&sess->rpc_handle_list, entry->id);
-+free_id:
- 	ksmbd_rpc_id_free(entry->id);
- free_entry:
- 	kfree(entry);
+ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	/* Device matches */
++	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
 
 
 
