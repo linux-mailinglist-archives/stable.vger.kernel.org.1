@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-92644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6C29C5583
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F73E9C556A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5570F1F2177B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170111F22A6E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F932178EF;
-	Tue, 12 Nov 2024 10:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB252309A9;
+	Tue, 12 Nov 2024 10:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsRPsjhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2HZGeFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D886212F00;
-	Tue, 12 Nov 2024 10:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E812309A4;
+	Tue, 12 Nov 2024 10:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408120; cv=none; b=Uh15lREOpcl2ZR3oadJ7xlyssBg6cf1S3eWEh+F4W41xfpmNfsFcJCZ4yhSB1uT8wq5rNRrEjb96VI0/uo02V5jYjTPZtReU0Tl2OqsbuwFaLF+uMeFvUl/8RnxorpsUzI7KMcRBR4uWyXLvNqA0a5jU/zQINazaW2tv7JvIuZE=
+	t=1731408019; cv=none; b=NTmVGhX61GrKCuhPRD9Ae3rqc3eXN2052/r0TisAVDBLuXVMc1V55zK96CywOb3i5djK/GgSvUnb8SkDObuS31EQc/tsJyoWKEuXL2fzNqYo6QkzpNReZ7Iyw5CXkaHM/qxvcNHqh48HgOg5XU1mJAyklE/FjN+2vjSw54vG+vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408120; c=relaxed/simple;
-	bh=Mo/ZRE10DG5mJd7Z8aAAGqUG1/Xb1MtLUCJBJRA8AlI=;
+	s=arc-20240116; t=1731408019; c=relaxed/simple;
+	bh=Sg3kU1RNErxA1PfXE/4A44WWaWHX5Uzh20H8LRodDVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSHHvIuGAs35vmcNIHAWEa81imPOOJznaruoJVDdJEY+F5nS3UxUQ+1xbUYLBVGXC1Ze3DcQ0ZG0OGJuwrLHcirVH0n8bFcX3qeMK5N6HkRV/421DNyefnHcem9K2nsFpctAF4rLsqddlhhQR9MpiTf5CDVtZlQlXoxs1ClvDEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsRPsjhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96857C4CED4;
-	Tue, 12 Nov 2024 10:41:59 +0000 (UTC)
+	 MIME-Version; b=LicmZAza9ZuoyokgEM9ZUG/wxXPDrJRhPLIwXP5xIBSys+jkFkd1/3i7cGLNvVUPDsb7EU7tmWTQ+M5Aa5n6nQxc++uFys1eBlFTPnOYQQ+n+kdKo+lVpIb6nD35GPz1KbHld7AyPvUYODqXW1JQXg3LY4/WpICtJzUCKCtXXK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2HZGeFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB17C4CED4;
+	Tue, 12 Nov 2024 10:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408120;
-	bh=Mo/ZRE10DG5mJd7Z8aAAGqUG1/Xb1MtLUCJBJRA8AlI=;
+	s=korg; t=1731408019;
+	bh=Sg3kU1RNErxA1PfXE/4A44WWaWHX5Uzh20H8LRodDVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsRPsjhHoALbJA/azktv+z/SubKGlbYxP0JtVn8unRstaYhJ4g0CiSQhJifkci4bu
-	 0ZWBIWjBIrbZGaKJrshl113nvk35cYFbpBRuD6VSayLC/8hzB1dv8b6LnGkPcwztMA
-	 vloTtZqRXH7YpHCONTfQOk1QfFW5EWee0KiA8PDg=
+	b=n2HZGeFGqUHqER/ekSKePvSnohs7NLvUVA+uxqn5NdQV/jpkkz2ZOyLnB3DtflxFF
+	 Z690BtEZXw/zRIZ+zhvf6w7Wjg/A1XohT9SJ/S8Ojeml15UfaoKAJHiQsk8bENqboq
+	 S0YwPEHCKAWcmX7fHfikhTOdpTwo6sd6xVG5TzIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	NeilBrown <neilb@suse.de>,
-	Benjamin Coddington <bcodding@redhat.com>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 034/184] sunrpc: handle -ENOTCONN in xs_tcp_setup_socket()
-Date: Tue, 12 Nov 2024 11:19:52 +0100
-Message-ID: <20241112101902.175930579@linuxfoundation.org>
+Subject: [PATCH 6.11 035/184] NFSv3: only use NFS timeout for MOUNT when protocols are compatible
+Date: Tue, 12 Nov 2024 11:19:53 +0100
+Message-ID: <20241112101902.214881887@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -69,42 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 10f0740234f0b157b41bdc7e9c3555a9b86c1599 ]
+[ Upstream commit 6e2a10343ecb71c4457bc16be05758f9c7aae7d9 ]
 
-xs_tcp_finish_connecting() can return -ENOTCONN but the switch statement
-in xs_tcp_setup_socket() treats that as an unhandled error.
+If a timeout is specified in the mount options, it currently applies to
+both the NFS protocol and (with v3) the MOUNT protocol.  This is
+sensible when they both use the same underlying protocol, or those
+protocols are compatible w.r.t timeouts as RDMA and TCP are.
 
-If we treat it as a known error it would propagate back to
-call_connect_status() which does handle that error code.  This appears
-to be the intention of the commit (given below) which added -ENOTCONN as
-a return status for xs_tcp_finish_connecting().
+However if, for example, NFS is using TCP and MOUNT is using UDP then
+using the same timeout doesn't make much sense.
 
-So add -ENOTCONN to the switch statement as an error to pass through to
-the caller.
+If you
+   mount -o vers=3,proto=tcp,mountproto=udp,timeo=600,retrans=5 \
+      server:/path /mountpoint
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1231050
-Link: https://access.redhat.com/discussions/3434091
-Fixes: 01d37c428ae0 ("SUNRPC: xprt_connect() don't abort the task if the transport isn't bound")
+then the timeo=600 which was intended for the NFS/TCP request will
+apply to the MOUNT/UDP requests with the result that there will only be
+one request sent (because UDP has a maximum timeout of 60 seconds).
+This is not what a reasonable person might expect.
+
+This patch disables the sharing of timeout information in cases where
+the underlying protocols are not compatible.
+
+Fixes: c9301cb35b59 ("nfs: hornor timeo and retrans option when mounting NFSv3")
 Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/super.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 0e1691316f423..1326fbf45a347 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2459,6 +2459,7 @@ static void xs_tcp_setup_socket(struct work_struct *work)
- 	case -EHOSTUNREACH:
- 	case -EADDRINUSE:
- 	case -ENOBUFS:
-+	case -ENOTCONN:
- 		break;
- 	default:
- 		printk("%s: connect returned unhandled error %d\n",
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 97b386032b717..e17d80876cf07 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -882,7 +882,15 @@ static int nfs_request_mount(struct fs_context *fc,
+ 	 * Now ask the mount server to map our export path
+ 	 * to a file handle.
+ 	 */
+-	status = nfs_mount(&request, ctx->timeo, ctx->retrans);
++	if ((request.protocol == XPRT_TRANSPORT_UDP) ==
++	    !(ctx->flags & NFS_MOUNT_TCP))
++		/*
++		 * NFS protocol and mount protocol are both UDP or neither UDP
++		 * so timeouts are compatible.  Use NFS timeouts for MOUNT
++		 */
++		status = nfs_mount(&request, ctx->timeo, ctx->retrans);
++	else
++		status = nfs_mount(&request, NFS_UNSPEC_TIMEO, NFS_UNSPEC_RETRANS);
+ 	if (status != 0) {
+ 		dfprintk(MOUNT, "NFS: unable to mount server %s, error %d\n",
+ 				request.hostname, status);
 -- 
 2.43.0
 
