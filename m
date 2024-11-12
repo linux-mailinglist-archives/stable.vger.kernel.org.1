@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-92744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16079C5676
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:29:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9949C53CA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3054CB43C8F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2487D1F22FA7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD5321B430;
-	Tue, 12 Nov 2024 10:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F172123E8;
+	Tue, 12 Nov 2024 10:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNjpPebp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEUkvOnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1920E307;
-	Tue, 12 Nov 2024 10:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D6719E992;
+	Tue, 12 Nov 2024 10:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408448; cv=none; b=aHMEHnCfScbfEWHwlMLeNKaROxxHvfPNERD10z2rAz88eNmyBP82iNte3T/Okn0q7pG3dncLCVl1CMtxYfGvPTmZstwp6pUNd9dL+BF0dcHPKo0+mPiyct5AxmRSkUHPxg/NySO99tT4woWNcEF6SZ7yE/YiuelUJt4Q0ufXCU0=
+	t=1731407519; cv=none; b=KSgb/6Tc2LHoSAQf5weskHvSmw0iGzadC9emrFrwnuBUauOeVaPw6roNo5zQNAPG5gry+qTDdR2mzGKwE8WdHr4fZCcxqStx8/uSlRnHAiIrbSVcoHDM6MlXCsBiDsYS5F3XMkkTsjNRGg4GlVePoAPGUaXoum6dH+EhTY/te+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408448; c=relaxed/simple;
-	bh=1fQq/uH/YurESwMJPYSH8tbDYSCl2DrFPhuZEbyb+7Q=;
+	s=arc-20240116; t=1731407519; c=relaxed/simple;
+	bh=edGDVbMNfyaARbh6pJlGGTkQD7hNoOL4x1CxjORzN3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvUz2LuPa/EyTjbvHmB8pJT4clD6swQ76F+z3x0rpYXpdXEKmn2Gut4jF/vxr9Y8boR+sHjKbzhW0AD2lFpQHOkHBR8BlrSlDT+axNNYwv9n+KLn6vQFqKIFHszeGBD9kh5PMksrmkKDbTBVAsIlctkMX2/bZHwSesBDtnZAlg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNjpPebp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D7DC4CECD;
-	Tue, 12 Nov 2024 10:47:27 +0000 (UTC)
+	 MIME-Version; b=urwQ/OiJJxcN6DB9JaVUfvlmqTSbEHkGSUyFoBLm5kzimnVZ3y4OoW6VQNHfM1NqlEzlpkUK+gZxsQ7YZyH7qUDjskVNGgyc5e98/qa7TxWbspOU7cb9I/iH1CrHsbIfsa3KjugyApWGUCyGmeEIZzLFFTywgBQRNAk937IaFMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEUkvOnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDAAC4CED4;
+	Tue, 12 Nov 2024 10:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408448;
-	bh=1fQq/uH/YurESwMJPYSH8tbDYSCl2DrFPhuZEbyb+7Q=;
+	s=korg; t=1731407519;
+	bh=edGDVbMNfyaARbh6pJlGGTkQD7hNoOL4x1CxjORzN3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNjpPebpzU1WPyKjusOEwYybZUXCNWuVJ+DJkQbtgp9uS/ya6YeMRZuSFndoikYzV
-	 Q09fRvF1xtcLAiTtfgXEv0FI4GeHqKAXFOPouxhO4asx50bjA6tBw5QbTEgrY59zRn
-	 rpYFRXmqdrfaxY+Ag8CYcWD6Uj6073j3otVYRqi0=
+	b=pEUkvOnlAu0p0x1vbI39NcxjpRqI1QUS4+5BhuilnJ135uzBKrtviCbOBOX8g1Daq
+	 Cv18LgaOqkSdOOlfISAGaSv8h3oml9dq22X2P0V32W5iQng1JzXbAcXPGMtH8Whp/O
+	 rCfQeZa+nJRucpS8OooElTcY82jSrJy6ImrFwsxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tarun K Singh <tarun.k.singh@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.11 134/184] idpf: avoid vport access in idpf_get_link_ksettings
+	Johannes Berg <johannes@sipsolutions.net>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.1 77/98] Revert "wifi: mac80211: fix RCU list iterations"
 Date: Tue, 12 Nov 2024 11:21:32 +0100
-Message-ID: <20241112101906.012383754@linuxfoundation.org>
+Message-ID: <20241112101847.188215210@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 81d2fb4c7c18a3b36ba3e00b9d5b753107472d75 upstream.
+This reverts commit b0b2dc1eaa7ec509e07a78c9974097168ae565b7 which is
+commit ac35180032fbc5d80b29af00ba4881815ceefcb6 upstream.
 
-When the device control plane is removed or the platform
-running device control plane is rebooted, a reset is detected
-on the driver. On driver reset, it releases the resources and
-waits for the reset to complete. If the reset fails, it takes
-the error path and releases the vport lock. At this time if the
-monitoring tools tries to access link settings, it call traces
-for accessing released vport pointer.
+It should not have been backported here due to lack of other rcu
+changes in the stable branches.
 
-To avoid it, move link_speed_mbps to netdev_priv structure
-which removes the dependency on vport pointer and the vport lock
-in idpf_get_link_ksettings. Also use netif_carrier_ok()
-to check the link status and adjust the offsetof to use link_up
-instead of link_speed_mbps.
-
-Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-Cc: stable@vger.kernel.org # 6.7+
-Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
-Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h          |    4 ++--
- drivers/net/ethernet/intel/idpf/idpf_ethtool.c  |   11 +++--------
- drivers/net/ethernet/intel/idpf/idpf_lib.c      |    4 ++--
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    2 +-
- 4 files changed, 8 insertions(+), 13 deletions(-)
+ net/mac80211/chan.c |    4 +---
+ net/mac80211/mlme.c |    2 +-
+ net/mac80211/scan.c |    2 +-
+ net/mac80211/util.c |    4 +---
+ 4 files changed, 4 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -141,6 +141,7 @@ enum idpf_vport_state {
-  * @adapter: Adapter back pointer
-  * @vport: Vport back pointer
-  * @vport_id: Vport identifier
-+ * @link_speed_mbps: Link speed in mbps
-  * @vport_idx: Relative vport index
-  * @state: See enum idpf_vport_state
-  * @netstats: Packet and byte stats
-@@ -150,6 +151,7 @@ struct idpf_netdev_priv {
- 	struct idpf_adapter *adapter;
- 	struct idpf_vport *vport;
- 	u32 vport_id;
-+	u32 link_speed_mbps;
- 	u16 vport_idx;
- 	enum idpf_vport_state state;
- 	struct rtnl_link_stats64 netstats;
-@@ -287,7 +289,6 @@ struct idpf_port_stats {
-  * @tx_itr_profile: TX profiles for Dynamic Interrupt Moderation
-  * @port_stats: per port csum, header split, and other offload stats
-  * @link_up: True if link is up
-- * @link_speed_mbps: Link speed in mbps
-  * @sw_marker_wq: workqueue for marker packets
-  */
- struct idpf_vport {
-@@ -331,7 +332,6 @@ struct idpf_vport {
- 	struct idpf_port_stats port_stats;
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -245,9 +245,7 @@ ieee80211_get_max_required_bw(struct iee
+ 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
+ 	struct sta_info *sta;
  
- 	bool link_up;
--	u32 link_speed_mbps;
- 
- 	wait_queue_head_t sw_marker_wq;
- };
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -1296,24 +1296,19 @@ static void idpf_set_msglevel(struct net
- static int idpf_get_link_ksettings(struct net_device *netdev,
- 				   struct ethtool_link_ksettings *cmd)
- {
--	struct idpf_vport *vport;
+-	lockdep_assert_wiphy(sdata->local->hw.wiphy);
 -
--	idpf_vport_ctrl_lock(netdev);
--	vport = idpf_netdev_to_vport(netdev);
-+	struct idpf_netdev_priv *np = netdev_priv(netdev);
+-	list_for_each_entry(sta, &sdata->local->sta_list, list) {
++	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
+ 		if (sdata != sta->sdata &&
+ 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
+ 			continue;
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -660,7 +660,7 @@ static bool ieee80211_add_vht_ie(struct
+ 		bool disable_mu_mimo = false;
+ 		struct ieee80211_sub_if_data *other;
  
- 	ethtool_link_ksettings_zero_link_mode(cmd, supported);
- 	cmd->base.autoneg = AUTONEG_DISABLE;
- 	cmd->base.port = PORT_NONE;
--	if (vport->link_up) {
-+	if (netif_carrier_ok(netdev)) {
- 		cmd->base.duplex = DUPLEX_FULL;
--		cmd->base.speed = vport->link_speed_mbps;
-+		cmd->base.speed = np->link_speed_mbps;
- 	} else {
- 		cmd->base.duplex = DUPLEX_UNKNOWN;
- 		cmd->base.speed = SPEED_UNKNOWN;
- 	}
- 
--	idpf_vport_ctrl_unlock(netdev);
--
- 	return 0;
- }
- 
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1873,7 +1873,7 @@ int idpf_initiate_soft_reset(struct idpf
- 	 * mess with. Nothing below should use those variables from new_vport
- 	 * and should instead always refer to them in vport if they need to.
+-		list_for_each_entry(other, &local->interfaces, list) {
++		list_for_each_entry_rcu(other, &local->interfaces, list) {
+ 			if (other->vif.bss_conf.mu_mimo_owner) {
+ 				disable_mu_mimo = true;
+ 				break;
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -501,7 +501,7 @@ static void __ieee80211_scan_completed(s
+ 	 * the scan was in progress; if there was none this will
+ 	 * just be a no-op for the particular interface.
  	 */
--	memcpy(new_vport, vport, offsetof(struct idpf_vport, link_speed_mbps));
-+	memcpy(new_vport, vport, offsetof(struct idpf_vport, link_up));
- 
- 	/* Adjust resource parameters prior to reallocating resources */
- 	switch (reset_cause) {
-@@ -1919,7 +1919,7 @@ int idpf_initiate_soft_reset(struct idpf
- 	/* Same comment as above regarding avoiding copying the wait_queues and
- 	 * mutexes applies here. We do not want to mess with those if possible.
- 	 */
--	memcpy(vport, new_vport, offsetof(struct idpf_vport, link_speed_mbps));
-+	memcpy(vport, new_vport, offsetof(struct idpf_vport, link_up));
- 
- 	if (reset_cause == IDPF_SR_Q_CHANGE)
- 		idpf_vport_alloc_vec_indexes(vport);
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -141,7 +141,7 @@ static void idpf_handle_event_link(struc
+-	list_for_each_entry(sdata, &local->interfaces, list) {
++	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		if (ieee80211_sdata_running(sdata))
+ 			ieee80211_queue_work(&sdata->local->hw, &sdata->work);
  	}
- 	np = netdev_priv(vport->netdev);
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -767,9 +767,7 @@ static void __iterate_interfaces(struct
+ 	struct ieee80211_sub_if_data *sdata;
+ 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
  
--	vport->link_speed_mbps = le32_to_cpu(v2e->link_speed);
-+	np->link_speed_mbps = le32_to_cpu(v2e->link_speed);
- 
- 	if (vport->link_up == v2e->link_status)
- 		return;
+-	list_for_each_entry_rcu(sdata, &local->interfaces, list,
+-				lockdep_is_held(&local->iflist_mtx) ||
+-				lockdep_is_held(&local->hw.wiphy->mtx)) {
++	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		switch (sdata->vif.type) {
+ 		case NL80211_IFTYPE_MONITOR:
+ 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
 
 
 
