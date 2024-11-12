@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-92281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34E79C5356
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC19C5632
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992A72881D0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 822CBB434F8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5321218E;
-	Tue, 12 Nov 2024 10:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05B5219E38;
+	Tue, 12 Nov 2024 10:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deMC8/OX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHOZPqr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AC82101A9;
-	Tue, 12 Nov 2024 10:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE34B20F5AF;
+	Tue, 12 Nov 2024 10:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407144; cv=none; b=P0M3KSMxTwiQbVQVgIdHOG+TD9lIYL+iDC5TJAJ3oNtmeuhpENBNRPhojJPARqsUU1BJe70GIfZnWrCwUjYeyLaf6Ah3fc8k2SHY0IsbF2pkooRD9oEP4bhbSNSwc4Nvwmgvuq/aLPfxNkBYTpDe3g1vet+xyeS9slztWSqbWSw=
+	t=1731408337; cv=none; b=VxgnROHfvcr7EVAr8slkTePWgFkqLcDc7QOm6EM/VYKHU9OCTuWQUjDaRZYce9iWaptChzN/Zp7sHDPWNuqKWGi/VsSmb4xKLr/ei+IrjZ69GLw/xmgC8SLajdpmke/C+5O6hojnPPFbKd+L/Cfjp0sRxdS6KsL79iH23uihsCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407144; c=relaxed/simple;
-	bh=PEcPCxYMj0FMP74FaQV6UGReU4l1Jtqc4jZY085IdfU=;
+	s=arc-20240116; t=1731408337; c=relaxed/simple;
+	bh=SMscc8jEikxk+xRScaAO2j43irbgdjfaInDjf5MVlVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uw8wge9oT0Vl/woCweT110Fg8cE6tYuSun/NnRjfgTyfk6q8dhfsuzGTO/OA2GsCjYrlf5BTvWpt/CLmkabxC661xiy6X36jXnwC3EZiTLLHcjNnoRJ55bm2a5/eEGlE9crQnkFGuqtX+Pq93K89TE//HHmxk0Z/sGQuKOW7LqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deMC8/OX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08915C4CECD;
-	Tue, 12 Nov 2024 10:25:43 +0000 (UTC)
+	 MIME-Version; b=geNtBj6loK7nVhg+BcHqgh+AtyWKtv2aPMG1//yKw8U0Y7u3hzsnnalrKzPDNcBiRSWPz3/N+1IDKVxZhTj+dmgiNseVq6RcTWAojhPniqvX8cHKCiKeNm95vPf57WRhy8q8BMiZl2BS/TeGLMGXhtuYGAmXonloDNUQ9/2ZNzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHOZPqr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C41EC4CECD;
+	Tue, 12 Nov 2024 10:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407144;
-	bh=PEcPCxYMj0FMP74FaQV6UGReU4l1Jtqc4jZY085IdfU=;
+	s=korg; t=1731408337;
+	bh=SMscc8jEikxk+xRScaAO2j43irbgdjfaInDjf5MVlVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deMC8/OX45UNE5JEgbP3KMfEz8GULZJKoRYBLWfT5iRITvjLrXe0tBKUXOLWJusfD
-	 b2B8X2E8vjNB8+8PcfNnczNtZYbgdk8WAkVN/cBMyIEmEFXo8dOhQd8Eg3lih7+t4B
-	 tn+KJLC7CNYPpqvniByJwghsaa5NRjxHQan2XLIE=
+	b=GHOZPqr9z/dla1oV6ug5lVFfVSelvizxDEwEhOuBwPQ6Cqb36P2fkiPISVweBR7T7
+	 S7E4jMCoMsGU4TRnU18XXnI1qycyjKUUjauJ+u26mYfJV5K+IL6BZy+fvbz9zcz91h
+	 HP4SEo0bLQBSWgb8pr6kNoLtFrnZmcqxxeTbcU/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/76] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
-Date: Tue, 12 Nov 2024 11:20:57 +0100
-Message-ID: <20241112101841.010797583@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mark Herbert <mark.herbert42@gmail.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.11 100/184] drm/amd/display: Fix brightness level not retained over reboot
+Date: Tue, 12 Nov 2024 11:20:58 +0100
+Message-ID: <20241112101904.701424665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
+commit 4f26c95ffc21a91281429ed60180619bae19ae92 upstream.
 
-In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
-null. So the release of the dma channel leads to the following issue:
-[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
-dma_request_slave_channel error -19
-[    4.888975] Unable to handle kernel NULL pointer dereference
-at virtual address 000000000000003d
-[...]
-[    5.096577] Call trace:
-[    5.099099]  dma_release_channel+0x24/0x100
-[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
-[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
+[Why]
+During boot up and resume the DC layer will reset the panel
+brightness to fix a flicker issue.
 
-To avoid this issue, release channel only if the pointer is valid.
+It will cause the dm->actual_brightness is not the current panel
+brightness level. (the dm->brightness is the correct panel level)
 
-Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+Set the backlight level after do the set mode.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
+Reported-by: Mark Herbert <mark.herbert42@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3655
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7875afafba84817b791be6d2282b836695146060)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_spdifrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
-index 48145f5535880..e3d6258afbac8 100644
---- a/sound/soc/stm/stm32_spdifrx.c
-+++ b/sound/soc/stm/stm32_spdifrx.c
-@@ -947,7 +947,7 @@ static int stm32_spdifrx_remove(struct platform_device *pdev)
- {
- 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9384,6 +9384,7 @@ static void amdgpu_dm_commit_streams(str
+ 	bool mode_set_reset_required = false;
+ 	u32 i;
+ 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
++	bool set_backlight_level = false;
  
--	if (spdifrx->ctrl_chan)
-+	if (!IS_ERR(spdifrx->ctrl_chan))
- 		dma_release_channel(spdifrx->ctrl_chan);
+ 	/* Disable writeback */
+ 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
+@@ -9503,6 +9504,7 @@ static void amdgpu_dm_commit_streams(str
+ 			acrtc->hw_mode = new_crtc_state->mode;
+ 			crtc->hwmode = new_crtc_state->mode;
+ 			mode_set_reset_required = true;
++			set_backlight_level = true;
+ 		} else if (modereset_required(new_crtc_state)) {
+ 			drm_dbg_atomic(dev,
+ 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
+@@ -9554,6 +9556,19 @@ static void amdgpu_dm_commit_streams(str
+ 				acrtc->otg_inst = status->primary_otg_inst;
+ 		}
+ 	}
++
++	/* During boot up and resume the DC layer will reset the panel brightness
++	 * to fix a flicker issue.
++	 * It will cause the dm->actual_brightness is not the current panel brightness
++	 * level. (the dm->brightness is the correct panel level)
++	 * So we set the backlight level with dm->brightness value after set mode
++	 */
++	if (set_backlight_level) {
++		for (i = 0; i < dm->num_of_edps; i++) {
++			if (dm->backlight_dev[i])
++				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
++		}
++	}
+ }
  
- 	if (spdifrx->dmab)
--- 
-2.43.0
-
+ static void dm_set_writeback(struct amdgpu_display_manager *dm,
 
 
 
