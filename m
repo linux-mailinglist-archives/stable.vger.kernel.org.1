@@ -1,121 +1,137 @@
-Return-Path: <stable+bounces-92798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2688B9C5F01
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:32:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8123A9C5EAE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0CD8B3C2C2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:02:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55BD4B47643
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83F443AA1;
-	Tue, 12 Nov 2024 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43B02003C4;
+	Tue, 12 Nov 2024 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Xu+Rt82N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrhzn39U"
 X-Original-To: stable@vger.kernel.org
-Received: from ms11p00im-qufo17281601.me.com (ms11p00im-qufo17281601.me.com [17.58.38.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6B920126E
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 14:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2032003A9;
+	Tue, 12 Nov 2024 15:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731423518; cv=none; b=gvZoJHOXEpIcr/ji626OOAoZqXu4iU0IVX3wT90fcK4YaTiED4GLNCO7tYFzTU5dvjqpY2XjLwQVwb9hUEJdokHXUa+fUxZdaHRaWsblw5Rx9ejzg5ccM5hIvT584PbO93psSkFb90tEWCKxzeC1JM71cZSo9H3nXWoy6HQRGUA=
+	t=1731423661; cv=none; b=Iz+tNBBuIIX1GAsbvf3bpEOybgKAC56fIfURozBWFGJ7AJwf2MJz7BX637EzG6o6Wq3uJz9pct870ny5I87ns+I/MrOuGhCSNHkwOLJ7xCxdVRkqJHnzw5HiaCzmp23P9/T+L03oGfIeSwLx1dM4BmNIKBf3Ah6oRwxAu8f5P+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731423518; c=relaxed/simple;
-	bh=yRmtPN0TFHkU99Flp+fEchW2OsR8PBdDUPKHR2odiLQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M3kSKcILlj2QU9dV7intxJH2cLn9Y5oy6GPV4+XbiU43QGTsHPyYZzrizJQZzdMaT4MuEux8a+L9VEAkUaKp7M1fQdseeXAOlxKW7O1oK94F0/1y7Ri1pe042yQ8lfB2xjEashwSUhIO97e5yAhKazauIEd4zY+DVwhp0nix2ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Xu+Rt82N; arc=none smtp.client-ip=17.58.38.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1731423516;
-	bh=Eh44U3KL7qWcwQYFzXUwloAPncqESfrGkSg2LByutzI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=Xu+Rt82NWGawAyXcrKqEmFdwZC5k+gTO5JOqa3bSrzaWqn1fFShXHLV9r6lg/9Yk2
-	 sT8svgev72ExV2fA/yzfehaNCzBJep1PkNN/M11mcVqFhNkx7cVxMhC6rVIV8FX+Q/
-	 KFMAyG+5dBouzUKoqcuKluy2wEAzynME2DsUpf0fNPj3ywBtxnpA0cJJrV/clGbUew
-	 uBLz5DFK/MdgYFRDmQCtSsridVTsz6g4T64oc7lgPIewyCNVHi2CG39q9UIEyS7w4H
-	 kxsGMUGacUM0O7tEwDQJVaZzRWVp3XdjlIcS7FZK00NSJvxCGkOplreNIF82YIvKy/
-	 kZBsCu+QqaEuw==
-Received: from [192.168.1.26] (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17281601.me.com (Postfix) with ESMTPSA id DD7FFAA00C9;
-	Tue, 12 Nov 2024 14:58:32 +0000 (UTC)
-Message-ID: <2682bae5-9ae6-4781-8d57-47587084a58f@icloud.com>
-Date: Tue, 12 Nov 2024 22:58:29 +0800
+	s=arc-20240116; t=1731423661; c=relaxed/simple;
+	bh=fq9G1Hsbr7N1585fJCE6/DPAyIA64ydEht/eAP8gtHo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NPxZBa9JSz+pGKhdrrP5UuPYk77V06ldwYsyt/WkrycgM4zCrhO0PzN4lyvWM5218ZVSil17oYF5jvF5xpLsDVykqZ80geUV695hlXbE2eDUXP4746HohtJ/EPwcLEUh7hjAD8F3PyzZZRZozWk9HH/Um5m0mhmOxemte7MABs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrhzn39U; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so3971873f8f.2;
+        Tue, 12 Nov 2024 07:00:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731423658; x=1732028458; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqmvX+SxdAffVmub2S37622rNo2JHBYGCOpSigKS02o=;
+        b=mrhzn39U/UcdaELLW2h1TshleyEzmIq4YnMdhvrB7NtovLgP2aC7SeEvjiGyV5yD+A
+         kjjr5hIQJ0l6Y3VlrugqKZjcde6NJoWt7dSPhdWAhXLIOTm/qZ5hjYoELXmiLeG5pf2H
+         mh5TU2+3jbF+AjVjhD8tPeowNsEu2F5Ax9C4wiVDDuzri/H/ObqcLYjMiwBKMhV7QNxw
+         TSeWRu10pSE9Y0sjnB25OZiYMyS1EBK0wEWZMH+Iq/7hi9SgloRPY9MiwVcAi9eSf+12
+         p30TtTkfOE27ffHH6zyvD30uWAcYoh/TGWw5Rt4FiSvXguNoL6SD/VY7fk5nEhKPpfSf
+         /Xig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731423658; x=1732028458;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IqmvX+SxdAffVmub2S37622rNo2JHBYGCOpSigKS02o=;
+        b=IpVZTsWOgjBADN8UTUOpt6DtmdvuysW1KpPNgsljuAhOs1g7dPb/9eZ4Lldb4BCE7D
+         XdgcoJdVYS8CK+jyaPPyye5SAhMAUmpW3LGKTuOvZ7E2zr2UYn9yRzlnKE84KS9lLmJt
+         gR/iMek5IMWnsDVhZ+fWPTBOfSgkKI9BJARm8sJNYgHp6caorTZLqhhaJCLZ9KkMaonw
+         CihvyeF6NxO0wDdLJcSFQRx8Y5LyWlByZsd/I3w4gOHS7ch+RMRhA819vfCnL9S8GA1Z
+         V/nXWTKC0A+GCb1UkRLeAWHjdLNDvjVr7eocWLfqFUyw3f6v2eLTqeNQaCHfVEcJOaxS
+         3Afw==
+X-Forwarded-Encrypted: i=1; AJvYcCVuOe4Q1h4IOUPbiOr9z39rBPLEcbssafKEAIT7ECOVJ491v9Os+2Ure/0U03lUE6QQnjssPwradM7pNjg=@vger.kernel.org, AJvYcCWWKrSZCIAooXqlE7WHYlmYvFxTTX+gpU84+EmlK7+vNcDJRzD48ekT7gtQwSfw2SrXaqXw37Rq@vger.kernel.org, AJvYcCXs3AaONZjS9qV5aHZqtjoPA4zUlcVYBrrJQO/JNDBoB9DSgWhKCFcd2LtFHpB2ZXt1eXwavqJlpa0GJxEC@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywak3mSRfOOZh4mw9cDgUvoZ2cUjMSAH34rn6ilKJJcn3lo+U/P
+	RPMII9cT1G3cUkQavrcCKs+q8bfAao+/6WuHiU25wVVwvWn9hTgT
+X-Google-Smtp-Source: AGHT+IGNrcNi9F65h6+8t+PRAUL0bPu2V2+blpIe8qyC+KpDDsoflYU289CxmYaEJHlUtJiROE6UcQ==
+X-Received: by 2002:a05:6000:18af:b0:36c:ff0c:36d7 with SMTP id ffacd0b85a97d-381f1863104mr14709742f8f.2.1731423656111;
+        Tue, 12 Nov 2024 07:00:56 -0800 (PST)
+Received: from partp-nb.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda05f89sm15537386f8f.98.2024.11.12.07.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 07:00:55 -0800 (PST)
+From: Parth Pancholi <parth105105@gmail.com>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: Parth Pancholi <parth.pancholi@toradex.com>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH] kbuild: switch from lz4c to lz4 for compression
+Date: Tue, 12 Nov 2024 16:00:06 +0100
+Message-Id: <20241112150006.265900-1-parth105105@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] PM: domains: Fix return value of API
- dev_pm_get_subsys_data()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
- stable@vger.kernel.org
-References: <20241028-fix_dev_pm_get_subsys_data-v1-1-20385f4b1e17@quicinc.com>
- <2024111257-collide-finalist-7a0c@gregkh>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <2024111257-collide-finalist-7a0c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 0ab2Ysty0ejJwHjOS-IKdzmmv4mTLVK4
-X-Proofpoint-ORIG-GUID: 0ab2Ysty0ejJwHjOS-IKdzmmv4mTLVK4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-12_05,2024-11-12_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxscore=0 clxscore=1015 spamscore=0 mlxlogscore=905 phishscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411120120
+Content-Transfer-Encoding: 8bit
 
-On 2024/11/12 19:46, Greg Kroah-Hartman wrote:
-> On Mon, Oct 28, 2024 at 08:31:11PM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> dev_pm_get_subsys_data() has below 2 issues under condition
->> (@dev->power.subsys_data != NULL):
->>
->> - it will do unnecessary kzalloc() and kfree().
-> 
-> But that's ok, everything still works, right?
+From: Parth Pancholi <parth.pancholi@toradex.com>
 
-yes.
+Replace lz4c with lz4 for kernel image compression.
+Although lz4 and lz4c are functionally similar, lz4c has been
+deprecated upstream since 2018. Since as early as Ubuntu 16.04 and
+Fedora 25, lz4 and lz4c have been packaged together, making it safe
+to update the requirement from lz4c to lz4. Consequently, some
+distributions and build systems, such as OpenEmbedded, have fully
+transitioned to using lz4. OpenEmbedded core adopted this change in
+commit fe167e082cbd ("bitbake.conf: require lz4 instead of lz4c"),
+causing compatibility issues when building the mainline kernel in
+the latest OpenEmbedded environment, as seen in the errors below.
+This change maintains compatibility with current kernel builds
+because both tools have a similar command-line interface while
+fixing the mainline kernel build failures with the latest master
+OpenEmbedded builds associated with the mentioned compatibility
+issues.
 
-> 
->> - it will return -ENOMEM if the kzalloc() fails, that is wrong
->>   since the kzalloc() is not needed.
-> 
-> But it's ok to return the proper error if the system is that broken.
+LZ4     arch/arm/boot/compressed/piggy_data
+/bin/sh: 1: lz4c: not found
+...
+...
+ERROR: oe_runmake failed
 
-IMO, the API should return 0 (success) instead of -ENOMEM since it does
-not need to do kzalloc().
+Cc: stable@vger.kernel.org
+Link: https://github.com/lz4/lz4/pull/553
+Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Different return value should impact caller's logic.
-
-> 
->>
->> Fixed by not doing kzalloc() and returning 0 for the condition.
->>
->> Fixes: ef27bed1870d ("PM: Reference counting of power.subsys_data")
->> Cc: stable@vger.kernel.org
-> 
-> Why is this relevant for stable kernels?
-
-you can remove both Fix and stable tag directly if you like this change.(^^)
-
-> 
-> thanks,
-> 
-> greg k-h
+diff --git a/Makefile b/Makefile
+index 79192a3024bf..7630f763f5b2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -508,7 +508,7 @@ KGZIP		= gzip
+ KBZIP2		= bzip2
+ KLZOP		= lzop
+ LZMA		= lzma
+-LZ4		= lz4c
++LZ4		= lz4
+ XZ		= xz
+ ZSTD		= zstd
+ 
+-- 
+2.34.1
 
 
