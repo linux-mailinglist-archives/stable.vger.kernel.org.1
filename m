@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6493B9C541F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:37:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5E19C5347
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24777B35876
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C732866FC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562FD2141A9;
-	Tue, 12 Nov 2024 10:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214D92123F2;
+	Tue, 12 Nov 2024 10:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6RkZfeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfrFfqZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BEE2141A5;
-	Tue, 12 Nov 2024 10:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30A01F26E3;
+	Tue, 12 Nov 2024 10:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407377; cv=none; b=kRBPD5jkeridT2w5ywdfsSNpAd5UnttMNzrQgaHJA2MRXHryB5j4yHzdbifX2p9YP9lrx8abQJLn55By1MhCNr6IfFUzj6sqO52+hAdkEBawIugXCY740fWcL9K6I0O0oGv7SJixLJRHkwpaKBtIZato4BlNzfTtXFMY0azqoQ4=
+	t=1731407094; cv=none; b=LgQmWkOX1phIoi/v+GfjX9DKRBhZDKBRZeaHW5sprn2Zl0hLZLbb6j0gisK2f6Qj1YB6Q0lk2ztazWva0hCbA1430W3j3A8fEipHGON6CG1ORqCv3NCirEDfjyoPZdhe2fCG+dhJ8F7a8h3ax2sMckYvz9KUcNJGP0MUsiLEa90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407377; c=relaxed/simple;
-	bh=6A9wYgpecM+UrMpBIwKIKJyx0zeYcAOCG9g9g15pVGo=;
+	s=arc-20240116; t=1731407094; c=relaxed/simple;
+	bh=/XMjWF5YdNtloOrImZjr1cwxMxnxfdfWjdA4pvEmY9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OzUsOwAm09zC+qtZ+USjQFF7jtpCJ7KBs3xpz/MbLDIyhX8uddzACMhk4qYyLPTezFGCI//c101uNvahqwCCs6yknBdRYn7MMxjVax/T03Ip5MA6fQV7ioxHPIeNqC+vGv+2XGZYrg5564RzMFTmAnrDciOtihBmrA9rrAqapDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6RkZfeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75967C4CECD;
-	Tue, 12 Nov 2024 10:29:36 +0000 (UTC)
+	 MIME-Version; b=sO/ig1mzdmB3E+FjXA4YFbXBBTdj/loN6x21PZ7doexUS/sxhO8jt4KsrCwP9HgGwG3S5IB8ij5+4ec2ddHln/v8FDKuVJpmjsTXlQ9P5n4BY6Gs+YgctnFRdYSxpFoirl5rwpX0wNXt/scdI9WphF1vaVxoFuAvBp6AzEXUiWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfrFfqZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A97FC4CED4;
+	Tue, 12 Nov 2024 10:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407376;
-	bh=6A9wYgpecM+UrMpBIwKIKJyx0zeYcAOCG9g9g15pVGo=;
+	s=korg; t=1731407094;
+	bh=/XMjWF5YdNtloOrImZjr1cwxMxnxfdfWjdA4pvEmY9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6RkZfeVCmaZnR53YiloZEqA7xGusvR0SjzdncHMdjOPsr9X3od8dBcRcamIEccyt
-	 fpeMdQzhGssPCz9TXyvMz8hQHgX4ju2QFj/M30nYPCWrDPu7rGfJ6diXkMrLBEl0TB
-	 E2ML7v8ROTBWoNyu9Yx1zKfEsTlv2+N5UO8mCNA4=
+	b=XfrFfqZhUb/mGzNGLfXdEHk9FvHtJ/kSVoS0fz8vXiZlG8crI2Dzeb+6+Tgv3WQxf
+	 m6rjrl6QxJSE1fVprZjmMYeHLgnbTL/zCRiMEraEMedGRqrWr9z7qc+oDCvOozN253
+	 MSyyFv4AUnWaEzeoMdy340VuqOVajwXWTtnbCPtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 58/98] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 48/76] ALSA: usb-audio: Add quirk for HP 320 FHD Webcam
 Date: Tue, 12 Nov 2024 11:21:13 +0100
-Message-ID: <20241112101846.476196447@linuxfoundation.org>
+Message-ID: <20241112101841.613108379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+commit dabc44c28f118910dea96244d903f0c270225669 upstream.
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+HP 320 FHD Webcam (03f0:654a) seems to have flaky firmware like other
+webcam devices that don't like the frequency inquiries.  Also, Mic
+Capture Volume has an invalid resolution, hence fix it to be 16 (as a
+blind shot).
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
-
-Bail out also when status is AE_NOT_FOUND.
-
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
-
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
-Cc: stable@vger.kernel.org
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1232768
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241105120220.5740-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer.c  |    1 +
+ sound/usb/quirks.c |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -132,8 +132,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1206,6 +1206,7 @@ static void volume_control_quirks(struct
+ 		}
+ 		break;
+ 	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
++	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
+ 		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+ 			usb_audio_info(chip,
+ 				"set resolution quirk: cval->res = 16\n");
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1747,6 +1747,8 @@ struct usb_audio_quirk_flags_table {
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
+ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	/* Device matches */
++	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
 
 
 
