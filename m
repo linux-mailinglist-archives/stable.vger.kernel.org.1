@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7C09C55A3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75B09C539C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3491F213E6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CF23280E23
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9148D218D85;
-	Tue, 12 Nov 2024 10:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658692139DB;
+	Tue, 12 Nov 2024 10:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu2cfs96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K+FhQSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA4E214411;
-	Tue, 12 Nov 2024 10:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225AA1CBE8F;
+	Tue, 12 Nov 2024 10:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408233; cv=none; b=tEp0kx3bqewBCGJHLHd8psT1HfEhWyf6pwbB/7T3OiYU6MERZuCC8OjvGdFwIU9f+6PCpU0etfFoopDHbAKfb8KH/3A6QggEqQ8IXrJUnHyEZpgr+zeOEweKvl9cps5FCwsQ7NCD+mzIbswKQnUWz/1caQUjKR1iPGsDh041v9k=
+	t=1731407324; cv=none; b=thuDyvmRx5Vl3ZBF+BGgb+wQYovFoK9p/pXFAlDSjw4b0j4lZ/bxZcizMqf7gHqIFtszWrYNZGZse9qrJ727om3aNvtobeX+jLCD2FfqjxL1wdbDxT8n6c2JfT4j7AZogz+oEX6rSMTOlImSG0OI/AGcXJ+KB2AfR29goDtbxpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408233; c=relaxed/simple;
-	bh=xFNGGNMhfzZ6ujQhgxsaCtg++mlQEvsebSxKQyfFYag=;
+	s=arc-20240116; t=1731407324; c=relaxed/simple;
+	bh=PC5IEDlu5xWITmMK2icHKDu91nnAl4Ijl7V5fkmm/5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYq8aIfcJdxdGvP76Srh4MNzYWTWlcp1r3rFvkfiGQqIuLMNmCOyZa2OjZ6UFUyhjFkrhJ0sx4BRzDQjrJKwgqeey118gUHit9td4i+vGcVvgUWPmI8CyVEMTTkwWYH2VVciNtcTnl338x0mdbDUhV8iv4B2aEAycJ6WexfKeTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu2cfs96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFBFC4CECD;
-	Tue, 12 Nov 2024 10:43:52 +0000 (UTC)
+	 MIME-Version; b=lMp1aoBT290uB+3C2Cjx86aJ5hjGtSjOfBAK8LeDvFaMmo+6cLUbicSoVDrGCbxcf3DIlF/bwJAaLLjY58Fa1OFaAzpf2Ocp3wv7Vc4x0CELQqq4yjbPfw2jNjx4fGilql2gwUC9N6thdW4+BGJAZZ6Ar9vZIkqdCBgMuWBJvTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2K+FhQSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9885FC4CECD;
+	Tue, 12 Nov 2024 10:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408233;
-	bh=xFNGGNMhfzZ6ujQhgxsaCtg++mlQEvsebSxKQyfFYag=;
+	s=korg; t=1731407324;
+	bh=PC5IEDlu5xWITmMK2icHKDu91nnAl4Ijl7V5fkmm/5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qu2cfs967IakWdycPu62kfspK1Mj9U8dWO4MiMWqFGgsg3puoVmgDRHiBk1lLS5J6
-	 dlyzE4SE+G1CWPj80NVCpJpM8g3lwv/xIGKI8Go39FVDOuP4BEzv6sPrN2mhltJmWd
-	 SVvRLQrHnI9zBkJhqVg35y+OpE8Xc5mC9IPi247w=
+	b=2K+FhQSXiPlCoYuJye6/zShzDbmOZc1nPDA9PbIPgP1LZ1Eif1jMPKu+j37pMrBsz
+	 J8irVZsKIpzCB7rAdF0mjQ6aNMsI97FIRNewVcoJa6PQwTNlhRvE8oPsbF5BI169vI
+	 VIXkADPfOtDLysan2soLJRUSwJD0RSLrUtKSzvt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 068/184] media: adv7604: prevent underflow condition when reporting colorspace
+Subject: [PATCH 6.1 11/98] arm64: dts: imx8mp: correct sdhc ipg clk
 Date: Tue, 12 Nov 2024 11:20:26 +0100
-Message-ID: <20241112101903.476309857@linuxfoundation.org>
+Message-ID: <20241112101844.701624434@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
+[ Upstream commit eab6ba2aa3bbaf598a66e31f709bf84b7bb7dc8a ]
 
-Currently, adv76xx_log_status() reads some date using
-io_read() which may return negative values. The current logic
-doesn't check such errors, causing colorspace to be reported
-on a wrong way at adv76xx_log_status(), as reported by Coverity.
+The ipg clk for sdhc sources from IPG_CLK_ROOT per i.MX 8M Plus
+Applications Processor Reference Manual, Table 5-2. System Clocks.
 
-If I/O error happens there, print a different message, instead
-of reporting bogus messages to userspace.
-
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 6d9b8d20431f ("arm64: dts: freescale: Add i.MX8MP dtsi support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-index 48230d5109f05..272945a878b3c 100644
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -2519,10 +2519,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	const struct adv76xx_chip_info *info = state->info;
- 	struct v4l2_dv_timings timings;
- 	struct stdi_readback stdi;
--	u8 reg_io_0x02 = io_read(sd, 0x02);
-+	int ret;
-+	u8 reg_io_0x02;
- 	u8 edid_enabled;
- 	u8 cable_det;
--
- 	static const char * const csc_coeff_sel_rb[16] = {
- 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
- 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-@@ -2621,13 +2621,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	v4l2_info(sd, "-----Color space-----\n");
- 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
- 			rgb_quantization_range_txt[state->rgb_quantization_range]);
--	v4l2_info(sd, "Input color space: %s\n",
--			input_color_space_txt[reg_io_0x02 >> 4]);
--	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
--			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
--			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
--				"(16-235)" : "(0-255)",
--			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+
-+	ret = io_read(sd, 0x02);
-+	if (ret < 0) {
-+		v4l2_info(sd, "Can't read Input/Output color space\n");
-+	} else {
-+		reg_io_0x02 = ret;
-+
-+		v4l2_info(sd, "Input color space: %s\n",
-+				input_color_space_txt[reg_io_0x02 >> 4]);
-+		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-+				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-+				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-+					"(16-235)" : "(0-255)",
-+				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	}
- 	v4l2_info(sd, "Color space conversion: %s\n",
- 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
- 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 8c34b3e12a66a..86af7115ac60c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -934,7 +934,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx8mm-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b40000 0x10000>;
+ 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC1_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
+@@ -948,7 +948,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx8mm-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b50000 0x10000>;
+ 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC2_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
+@@ -962,7 +962,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx8mm-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b60000 0x10000>;
+ 				interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC3_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
 -- 
 2.43.0
 
