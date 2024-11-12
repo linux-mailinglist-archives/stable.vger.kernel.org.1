@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-92692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6941B9C574B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F18A09C57A6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3671EB3F550
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0634BB37EED
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C542194A1;
-	Tue, 12 Nov 2024 10:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC93219E21;
+	Tue, 12 Nov 2024 10:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjLa/3aO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9IvYJH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D12214423;
-	Tue, 12 Nov 2024 10:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C302214415;
+	Tue, 12 Nov 2024 10:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408275; cv=none; b=I1bogEueowoqiahYDl1tfaPDI7IrIwh7kVDUUlbwiWl0IIUFsGa/RTNEDikcKrf+VINnomWTJRFZxd3SQYQT+Tj1BUI1IBapk7W3hAh188jGRt5wzjdm17uD03j0Qa3MRLtSZFmsNJ1/HEFcO+bGZgFQrbIm9tX2JK8anKm6Q/s=
+	t=1731408334; cv=none; b=nltdNl3VjHL4Cc2w2x4cBtITRtiJd5mNXMOx0TXukA3itVBoQxFDNlW7jqxjpMYo0WS/HWb8vLtbbkehbGJBdMQHlQjmzcBXG86tc9YLGeS1jBotiKs/50c+x3P5BFOIC0V2Zb2pB3k9GYP016l3+m8OztDJL6tMB2T1yRdhR5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408275; c=relaxed/simple;
-	bh=ws6bboMGDtDYvN50V5NW26lI7MAoDfjVBxlG4V9qHIw=;
+	s=arc-20240116; t=1731408334; c=relaxed/simple;
+	bh=G7vBc6dAock588Agrtx/nc9zo1uN/47JHez/y8dmkxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r+9FwuAM1vG63G6QWzZeaqdhgv5uCh03G43SA6+7aYPbgGKfOmsUHNg6bpae3gCkryYilpGRhW1ypD2yPIpWOf9TL39+WAHm8hzI2ss6QQcB6qZkNOen17K7nf9KGCj6uQtIuI4bFKWhLO6GLeWNk11a6C7iPztLk/KUE/wwyis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjLa/3aO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BACC4CECD;
-	Tue, 12 Nov 2024 10:44:34 +0000 (UTC)
+	 MIME-Version; b=QvdIU/VOy9mjJxLhCskB+OyiEmHrwC9Xs2liE8Ti1Xizy5kXnRioQ6FxzffMCbTPKHdPs1kgU38LBijwQW8uzuaS7WFobm/dgmQmu5WOrZLoAk5qVGoRVaLLtzftbUZAfMUMQw7PrJH97JB+YNbRDmp7XKvE5jCGEflVzGZG45k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9IvYJH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96974C4CECD;
+	Tue, 12 Nov 2024 10:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408275;
-	bh=ws6bboMGDtDYvN50V5NW26lI7MAoDfjVBxlG4V9qHIw=;
+	s=korg; t=1731408334;
+	bh=G7vBc6dAock588Agrtx/nc9zo1uN/47JHez/y8dmkxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjLa/3aOWHFNMVFlynFlgu4zhXwLpMPkwZCIJzjdHaK9QA0Fe8bz7taNiGgmb8tzA
-	 VFGjDWyj45sz7ty/XO2xFJioZ9a+yXCHH5SVV0rl42jN5RJny7go0JPF8/z+113DB0
-	 Vh0QN1tWCE28ZRuL/rWxoqAV7VtcSwWpxWdpDWxI=
+	b=e9IvYJH8pK291pj5A9NBI4vHlYNpvWMOTGUbPnO9wu+nawFyrqXmxy71Gl7beuOog
+	 2NwRvc1TBdqfE1OdNUZIlwZzTDG3EzV5dyzjqUgjhHvTrwbGKRdxMQCaLngo6Zj9Dr
+	 EMBhvjbZ+M2hQsAds0sOgz2JosVIfBFsYNVwSQ1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.11 096/184] pwm: imx-tpm: Use correct MODULO value for EPWM mode
-Date: Tue, 12 Nov 2024 11:20:54 +0100
-Message-ID: <20241112101904.544918361@linuxfoundation.org>
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 099/184] drm/amd/pm: always pick the pptable from IFWI
+Date: Tue, 12 Nov 2024 11:20:57 +0100
+Message-ID: <20241112101904.662279749@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -59,49 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
+commit 1356bfc54c8d4c8e7c9fb8553dc8c28e9714b07b upstream.
 
-The modulo register defines the period of the edge-aligned PWM mode
-(which is the only mode implemented). The reference manual states:
-"The EPWM period is determined by (MOD + 0001h) ..." So the value that
-is written to the MOD register must therefore be one less than the
-calculated period length. Return -EINVAL if the calculated length is
-already zero.
-A correct MODULO value is particularly relevant if the PWM has to output
-a high frequency due to a low period value.
+always pick the pptable from IFWI on smu v14.0.2/3
 
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 136ce12bd5907388cb4e9aa63ee5c9c8c441640b)
+Cc: stable@vger.kernel.org # 6.11.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c |   65 -------------------
+ 1 file changed, 1 insertion(+), 64 deletions(-)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -106,7 +106,9 @@ static int pwm_imx_tpm_round_state(struc
- 	p->prescale = prescale;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -354,54 +354,6 @@ static int smu_v14_0_2_store_powerplay_t
+ 	return 0;
+ }
  
- 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
--	p->mod = period_count;
-+	if (period_count == 0)
-+		return -EINVAL;
-+	p->mod = period_count - 1;
+-#ifndef atom_smc_dpm_info_table_14_0_0
+-struct atom_smc_dpm_info_table_14_0_0 {
+-	struct atom_common_table_header table_header;
+-	BoardTable_t BoardTable;
+-};
+-#endif
+-
+-static int smu_v14_0_2_append_powerplay_table(struct smu_context *smu)
+-{
+-	struct smu_table_context *table_context = &smu->smu_table;
+-	PPTable_t *smc_pptable = table_context->driver_pptable;
+-	struct atom_smc_dpm_info_table_14_0_0 *smc_dpm_table;
+-	BoardTable_t *BoardTable = &smc_pptable->BoardTable;
+-	int index, ret;
+-
+-	index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
+-					    smc_dpm_info);
+-
+-	ret = amdgpu_atombios_get_data_table(smu->adev, index, NULL, NULL, NULL,
+-					     (uint8_t **)&smc_dpm_table);
+-	if (ret)
+-		return ret;
+-
+-	memcpy(BoardTable, &smc_dpm_table->BoardTable, sizeof(BoardTable_t));
+-
+-	return 0;
+-}
+-
+-#if 0
+-static int smu_v14_0_2_get_pptable_from_pmfw(struct smu_context *smu,
+-					     void **table,
+-					     uint32_t *size)
+-{
+-	struct smu_table_context *smu_table = &smu->smu_table;
+-	void *combo_pptable = smu_table->combo_pptable;
+-	int ret = 0;
+-
+-	ret = smu_cmn_get_combo_pptable(smu);
+-	if (ret)
+-		return ret;
+-
+-	*table = combo_pptable;
+-	*size = sizeof(struct smu_14_0_powerplay_table);
+-
+-	return 0;
+-}
+-#endif
+-
+ static int smu_v14_0_2_get_pptable_from_pmfw(struct smu_context *smu,
+ 					     void **table,
+ 					     uint32_t *size)
+@@ -423,16 +375,12 @@ static int smu_v14_0_2_get_pptable_from_
+ static int smu_v14_0_2_setup_pptable(struct smu_context *smu)
+ {
+ 	struct smu_table_context *smu_table = &smu->smu_table;
+-	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
  
- 	/* calculate real period HW can support */
- 	tmp = (u64)period_count << prescale;
+ 	if (amdgpu_sriov_vf(smu->adev))
+ 		return 0;
+ 
+-	if (!adev->scpm_enabled)
+-		ret = smu_v14_0_setup_pptable(smu);
+-	else
+-		ret = smu_v14_0_2_get_pptable_from_pmfw(smu,
++	ret = smu_v14_0_2_get_pptable_from_pmfw(smu,
+ 							&smu_table->power_play_table,
+ 							&smu_table->power_play_table_size);
+ 	if (ret)
+@@ -442,16 +390,6 @@ static int smu_v14_0_2_setup_pptable(str
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * With SCPM enabled, the operation below will be handled
+-	 * by PSP. Driver involvment is unnecessary and useless.
+-	 */
+-	if (!adev->scpm_enabled) {
+-		ret = smu_v14_0_2_append_powerplay_table(smu);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	ret = smu_v14_0_2_check_powerplay_table(smu);
+ 	if (ret)
+ 		return ret;
+@@ -1938,7 +1876,6 @@ static const struct pptable_funcs smu_v1
+ 	.check_fw_status = smu_v14_0_check_fw_status,
+ 	.setup_pptable = smu_v14_0_2_setup_pptable,
+ 	.check_fw_version = smu_v14_0_check_fw_version,
+-	.write_pptable = smu_cmn_write_pptable,
+ 	.set_driver_table_location = smu_v14_0_set_driver_table_location,
+ 	.system_features_control = smu_v14_0_system_features_control,
+ 	.set_allowed_mask = smu_v14_0_set_allowed_mask,
 
 
 
