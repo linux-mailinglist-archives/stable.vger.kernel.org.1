@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-92286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7073E9C55B3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490189C5480
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F9F5B33BF9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEEE287213
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26821265F;
-	Tue, 12 Nov 2024 10:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E02621A717;
+	Tue, 12 Nov 2024 10:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUSIgWih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQ+CCwkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878852123F7;
-	Tue, 12 Nov 2024 10:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6BF21A4AD;
+	Tue, 12 Nov 2024 10:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407161; cv=none; b=s5IhkDRWtLc5Bq79gG+maA7xALGb8h87R+zGTusAPJloe5iFFLKf3h92qgUcffRxZW44kV0ek9p34NynBeqpxVlNsneV9SdXWhLBAB7qxKBY9QB6ybzWVlDAUdJAn+Vkf3gMa5+4DH/IrsilP/ShBgJLQiHltXW8VR/DWsJjwt8=
+	t=1731407800; cv=none; b=uf1pKC7PqlccrfXAADTR8fFuaPUIVYw4oAbA/PE8gLCx7ermX7gcymWJERUCBzfepzdu+XNauYEwPXPoB8GBOJyTKTCuWd18ZX/nYtSSxJWS0La5JakIlM4fk1KcnU9NesC4VUdHHLXnETH1upsFVeJGv0OQqm2mjKWgFENCkv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407161; c=relaxed/simple;
-	bh=gLW/QaNabNTT9br4e6bxdAkY6Rqx7OP/hbmtddJw4fk=;
+	s=arc-20240116; t=1731407800; c=relaxed/simple;
+	bh=wZn0Pwbzlgc+wrmmm8OUB3I4Q36a6CbayuqV6yXozrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHEE2ajLMCPS+cGLd/KO46kV6auxlHItU6ckQk7e7hgY5pSzg6xu2nS3yiE4r1ShQlxIBpGUMX1N2Ge0IKUQoQh/WhPosHOPXozsq5gcpV3Q+eNfue9kAsWEXlwu70BhyW39uCCvN7U/GfhRyTLvjcYM7TdCCRC466eXwNU44pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUSIgWih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAB3C4CECD;
-	Tue, 12 Nov 2024 10:26:00 +0000 (UTC)
+	 MIME-Version; b=XawADjIdyEMaD3CMCavfUjoygPhgyGB8zyjPRfST3BbP7bcHurOhPulupKr1tXn6+gBbtZT5G44wzZXl38K274utqR3tfdu2fm1BigBHjbrf5+gF5cWrif6HnDJFodjU80f6UqtxM2XdR71ULjWiNUr6aUTnoPPZuI4W7nwOlGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQ+CCwkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6198AC4CED4;
+	Tue, 12 Nov 2024 10:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407161;
-	bh=gLW/QaNabNTT9br4e6bxdAkY6Rqx7OP/hbmtddJw4fk=;
+	s=korg; t=1731407799;
+	bh=wZn0Pwbzlgc+wrmmm8OUB3I4Q36a6CbayuqV6yXozrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUSIgWih65nQVW0OLhbxiY3V1oe/id9v+UdUPZPqrJedNxsZJUE52aLDtuDIl6Nih
-	 t5ckt6XC4eF8OxR9YgqWArLMMfSV+Plrv8thGPw8wusXF2K875vQt2PfMPNkEfEBUO
-	 xzwAVvxcVKI8vNFn6YXTMiBxuJmmHEqWOiGLxGs0=
+	b=ZQ+CCwkwUq7G4BXIQ1zDiBGGpPgWJSvuGZ/xYZnbP70YXUm5IHBoSoeY4J2uhtCnQ
+	 6221t5/QdTdArSBI6sAk3uelXVxnPgblO0nv4FomfsoNp3CsDfKmS/4DingiE27ovx
+	 UQng9A7dz1XBxgIvIzZrHcyXCLwqZvmnPGel7itM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Kanner <andrew.kanner@gmail.com>,
-	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 69/76] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.6 086/119] dm cache: fix potential out-of-bounds access on the first resume
 Date: Tue, 12 Nov 2024 11:21:34 +0100
-Message-ID: <20241112101842.408212564@linuxfoundation.org>
+Message-ID: <20241112101852.002836963@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 0b63c0e01fba40e3992bc627272ec7b618ccaef7 upstream.
+commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
 
-Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
+Out-of-bounds access occurs if the fast device is expanded unexpectedly
+before the first-time resume of the cache table. This happens because
+expanding the fast device requires reloading the cache table for
+cache_create to allocate new in-core data structures that fit the new
+size, and the check in cache_preresume is not performed during the
+first resume, leading to the issue.
 
-[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
-[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
-[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
-[...]
-[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[...]
-[   57.331328] Call Trace:
-[   57.331477]  <TASK>
-[...]
-[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
-[   57.333778]  ? exc_page_fault+0x70/0x170
-[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
-[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
-[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
-[   57.335164]  ocfs2_xa_set+0x704/0xcf0
-[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
-[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
-[   57.335915]  ? trace_preempt_on+0x1e/0x70
-[   57.336153]  ? start_this_handle+0x16c/0x500
-[   57.336410]  ? preempt_count_sub+0x50/0x80
-[   57.336656]  ? _raw_read_unlock+0x20/0x40
-[   57.336906]  ? start_this_handle+0x16c/0x500
-[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
-[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
-[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
-[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
-[   57.338207]  ? dput+0x46/0x1c0
-[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338948]  __vfs_removexattr+0x92/0xc0
-[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
-[   57.339456]  ? preempt_count_sub+0x50/0x80
-[   57.339705]  vfs_removexattr+0x5f/0x100
-[...]
+Reproduce steps:
 
-Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
-ocfs2_xa_value_truncate() with -ENOMEM.
+1. prepare component devices:
 
-In this case the comment mentions that we can return 0 if
-ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
-anyway. But the following 'rc' check is wrong and execution flow do
-'ocfs2_xa_remove_entry(loc);' twice:
-* 1st: in ocfs2_xa_cleanup_value_truncate();
-* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
 
-Fix this by skipping the 2nd removal of the same entry and making
-syzkaller repro happy.
+2. load a cache table of 512 cache blocks, and deliberately expand the
+   fast device before resuming the cache, making the in-core data
+   structures inadequate.
 
-Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
-Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
-Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+dmsetup create cache --notable
+dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+3. suspend the cache to write out the in-core dirty bitset and hint
+   array, leading to out-of-bounds access to the dirty bitset at offset
+   0x40:
+
+dmsetup suspend cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
+  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc90000085000, ffffc90000087000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
+                                             ^
+   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by checking the size change on the first resume.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/xattr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -2040,8 +2040,7 @@ static int ocfs2_xa_remove(struct ocfs2_
- 				rc = 0;
- 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
- 							orig_clusters);
--			if (rc)
--				goto out;
-+			goto out;
- 		}
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2905,24 +2905,24 @@ static dm_cblock_t get_cache_dev_size(st
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+-		if (cache->sized) {
+-			DMERR("%s: unable to extend cache due to missing cache table reload",
+-			      cache_device_name(cache));
+-			return false;
+-		}
++		DMERR("%s: unable to extend cache due to missing cache table reload",
++		      cache_device_name(cache));
++		return false;
  	}
  
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
+-					   from_cblock(cache->cache_size),
+-					   from_cblock(new_size)));
+-	if (new_size != cache->cache_size) {
+-		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-		      cache_device_name(cache),
+-		      (unsigned long long) from_cblock(new_size));
+-		return false;
++	if (cache->loaded_mappings) {
++		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++						   from_cblock(cache->cache_size),
++						   from_cblock(new_size)));
++		if (new_size != cache->cache_size) {
++			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++			      cache_device_name(cache),
++			      (unsigned long long) from_cblock(new_size));
++			return false;
++		}
+ 	}
+ 
+ 	return true;
+@@ -2953,20 +2953,15 @@ static int cache_preresume(struct dm_tar
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
+-	if (!cache->sized) {
+-		r = resize_cache_dev(cache, csize);
+-		if (r)
+-			return r;
+-
+-		cache->sized = true;
+-
+-	} else if (csize != cache->cache_size) {
++	if (!cache->sized || csize != cache->cache_size) {
+ 		if (!can_resize(cache, csize))
+ 			return -EINVAL;
+ 
+ 		r = resize_cache_dev(cache, csize);
+ 		if (r)
+ 			return r;
++
++		cache->sized = true;
+ 	}
+ 
+ 	if (!cache->loaded_mappings) {
 
 
 
