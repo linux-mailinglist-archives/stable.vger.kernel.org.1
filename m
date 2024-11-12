@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-92756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A05D9C55EA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B49C55EB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F4F6284537
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D637283A1F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3AE21C169;
-	Tue, 12 Nov 2024 10:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C1321C177;
+	Tue, 12 Nov 2024 10:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNA5iS27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8qG0rfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5854719E992;
-	Tue, 12 Nov 2024 10:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A048E212D16;
+	Tue, 12 Nov 2024 10:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408487; cv=none; b=dKaXQP55s3Irovz/9s+XznLCA+0PNiiRXW737dfe1Hg/TfiZ2Kf3qDUEcYXg9Ao6NLRmUjviS3pxxGIt/3dXgLPW9xB3o2cv8DJVLSIHvYQu6WN0VKV9+Y1yjb7o1XEg1DTsxJcbVApw25NhZpzS3Aq3PrjFLc+jPp2C6RM1B5U=
+	t=1731408493; cv=none; b=dOeYcp+QxnhKeTTwNX96PEeo9NJFrw8mg3jHT8TXclxP77PHL2MynWof2Tt+gl1yi+mDMur9p3pk8Cv4yUC4vwq9bS1dS6qEY9IW1g1pvfi6YMrLVIUxpX6CZUDzbMqBnVXmK7Mf2L2ltX5+8J9yITJam8BKSa+Yj7zfhK68xss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408487; c=relaxed/simple;
-	bh=zYeu6R/TH5JBTb53uUtEmeT8NmCNHzdG8gJp+NHEWPQ=;
+	s=arc-20240116; t=1731408493; c=relaxed/simple;
+	bh=jRvF0/7/98EmAAwQ7N/T/9YOuPCAPcc7SWmonDWjXc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcFNrPph8RL+ZEL8RT2lVET8psjxHHu3hOkguOgxbgyxJDTPyJZL3aSlJcCdJDxkhZ0bJ67PWWInzZ4dzhn0eawcPlJLP55uwZZGyKj9dm06lOXD1xyc8hu4Hd6a8R6h9MA3gbEu9fdpefNSjIZkvRwEVQKsXBBEqovkXq2e5CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNA5iS27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C955FC4CECD;
-	Tue, 12 Nov 2024 10:48:06 +0000 (UTC)
+	 MIME-Version; b=q2KUBIDWRoiMpTamWb+1txdXOpI1A11sd3CXv4oy+xOHaS2Igmd7GFmp4Q5ml/KkBnHiFRDXhuBkF/Wi1ZYhxYjmSCqhVv22p5TB+ETE40oyiGf/HwTYH8zEt7C7t9e/QIEZwLTBpipV9+tC4QM1EIvvy0YYYmxG3Uk4JBor9Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8qG0rfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2583DC4CECD;
+	Tue, 12 Nov 2024 10:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408487;
-	bh=zYeu6R/TH5JBTb53uUtEmeT8NmCNHzdG8gJp+NHEWPQ=;
+	s=korg; t=1731408493;
+	bh=jRvF0/7/98EmAAwQ7N/T/9YOuPCAPcc7SWmonDWjXc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNA5iS275TecwrFIsPad+6IUiUFVy9+01FdXT5kCgCfoolschJHIHxD8zUUdOryt9
-	 EO0TUN6Ih2jD+sDu6qMcyQ9sSTRHXU9qV99EchtiCh11uw5slH26qmaPe6GsStSeul
-	 6URdo6/c8Thf0lMQNr67N5T9Tr9X5bbTs7lYjlbU=
+	b=H8qG0rfDGEwEqifSlkuAQ0ixBgSe7uyQSj2o8FwVcaYNJmsEWujVUiZOrDeJ1+l35
+	 bqedlrlroMIElh9Ejm/D0jCWxSeVKLfLKBfQZdwAhunaauT9JoJqGouOLvJR5hBpj4
+	 gBN5wUhRs6njLaX4t7iXOF2uV8WtbYoahuIHfVxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Badal Nilawar <badal.nilawar@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
 	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
 	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
 	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 178/184] drm/xe: Move LNL scheduling WA to xe_device.h
-Date: Tue, 12 Nov 2024 11:22:16 +0100
-Message-ID: <20241112101907.692988332@linuxfoundation.org>
+Subject: [PATCH 6.11 180/184] drm/xe/guc/tlb: Flush g2h worker in case of tlb timeout
+Date: Tue, 12 Nov 2024 11:22:18 +0100
+Message-ID: <20241112101907.771106636@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -73,78 +73,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 55e8a3f37e54eb1c7b914d6d5565a37282ec1978 ]
+[ Upstream commit 1491efb39acee3848b61fcb3e5cc4be8de304352 ]
 
-Move LNL scheduling WA to xe_device.h so this can be used in other
-places without needing keep the same comment about removal of this WA
-in the future. The WA, which flushes work or workqueues, is now wrapped
-in macros and can be reused wherever needed.
+Flush the g2h worker explicitly if TLB timeout happens which is
+observed on LNL and that points to the recent scheduling issue with
+E-cores on LNL.
+
+This is similar to the recent fix:
+commit e51527233804 ("drm/xe/guc/ct: Flush g2h worker in case of g2h
+response timeout") and should be removed once there is E core
+scheduling fix.
+
+v2: Add platform check(Himal)
+v3: Remove gfx platform check as the issue related to cpu
+    platform(John)
+    Use the common WA macro(John) and print when the flush
+    resolves timeout(Matt B)
+v4: Remove the resolves log and do the flush before taking
+    pending_lock(Matt A)
 
 Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-cc: stable@vger.kernel.org # v6.11+
-Suggested-by: John Harrison <John.C.Harrison@Intel.com>
+Cc: stable@vger.kernel.org # v6.11+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2687
 Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241029120117.449694-1-nirmoy.das@intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029120117.449694-3-nirmoy.das@intel.com
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit cbe006a6492c01a0058912ae15d473f4c149896c)
+(cherry picked from commit e1f6fa55664a0eeb0a641f497e1adfcf6672e995)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.h | 14 ++++++++++++++
- drivers/gpu/drm/xe/xe_guc_ct.c | 11 +----------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.h b/drivers/gpu/drm/xe/xe_device.h
-index 533ccfb2567a2..41d6ca3cce96a 100644
---- a/drivers/gpu/drm/xe/xe_device.h
-+++ b/drivers/gpu/drm/xe/xe_device.h
-@@ -174,4 +174,18 @@ void xe_device_declare_wedged(struct xe_device *xe);
- struct xe_file *xe_file_get(struct xe_file *xef);
- void xe_file_put(struct xe_file *xef);
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+index 82795133e129e..836c15253ce7e 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+@@ -71,6 +71,8 @@ static void xe_gt_tlb_fence_timeout(struct work_struct *work)
+ 	struct xe_device *xe = gt_to_xe(gt);
+ 	struct xe_gt_tlb_invalidation_fence *fence, *next;
  
-+/*
-+ * Occasionally it is seen that the G2H worker starts running after a delay of more than
-+ * a second even after being queued and activated by the Linux workqueue subsystem. This
-+ * leads to G2H timeout error. The root cause of issue lies with scheduling latency of
-+ * Lunarlake Hybrid CPU. Issue disappears if we disable Lunarlake atom cores from BIOS
-+ * and this is beyond xe kmd.
-+ *
-+ * TODO: Drop this change once workqueue scheduling delay issue is fixed on LNL Hybrid CPU.
-+ */
-+#define LNL_FLUSH_WORKQUEUE(wq__) \
-+	flush_workqueue(wq__)
-+#define LNL_FLUSH_WORK(wrk__) \
-+	flush_work(wrk__)
++	LNL_FLUSH_WORK(&gt->uc.guc.ct.g2h_worker);
 +
- #endif
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index ab24053f8766f..12e1fe6a8da28 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -888,17 +888,8 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 
- 	ret = wait_event_timeout(ct->g2h_fence_wq, g2h_fence.done, HZ);
- 
--	/*
--	 * Occasionally it is seen that the G2H worker starts running after a delay of more than
--	 * a second even after being queued and activated by the Linux workqueue subsystem. This
--	 * leads to G2H timeout error. The root cause of issue lies with scheduling latency of
--	 * Lunarlake Hybrid CPU. Issue dissappears if we disable Lunarlake atom cores from BIOS
--	 * and this is beyond xe kmd.
--	 *
--	 * TODO: Drop this change once workqueue scheduling delay issue is fixed on LNL Hybrid CPU.
--	 */
- 	if (!ret) {
--		flush_work(&ct->g2h_worker);
-+		LNL_FLUSH_WORK(&ct->g2h_worker);
- 		if (g2h_fence.done) {
- 			xe_gt_warn(gt, "G2H fence %u, action %04x, done\n",
- 				   g2h_fence.seqno, action[0]);
+ 	spin_lock_irq(&gt->tlb_invalidation.pending_lock);
+ 	list_for_each_entry_safe(fence, next,
+ 				 &gt->tlb_invalidation.pending_fences, link) {
 -- 
 2.43.0
 
