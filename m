@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-92635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81699C557A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D907B9C55F7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E6ED1F21861
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39318B366ED
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4CE21765C;
-	Tue, 12 Nov 2024 10:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48369212F0B;
+	Tue, 12 Nov 2024 10:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPXc+1ZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLL+qhbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694FD2123FF;
-	Tue, 12 Nov 2024 10:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F045F1BD031;
+	Tue, 12 Nov 2024 10:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408091; cv=none; b=Ijty2xa9TwKhRYapQUpQnE0hV8hjhzGgOx6BMZcRcpL/TlEL6RagEU8UZwTNCT3gzs27Owdiiqck4YcMDZyA5LNfiQEYWuNpbiGe1/ppfmYHQ+zxHYDvHygS9H38DVicVpzFZO14HXBTbelC45kLRG/1wVkh+zwM5QWh9Z29vGM=
+	t=1731407603; cv=none; b=e2rpKVrAD0cXnAXsU0nj979MyZrw2GLrJj4KBYJ6xLf3g4c9sfTKh/iXL85FaD3ffsNXvXZkwcmL5Dl6n2lJG9Ygp+qPcprevaEeM4UmYoiwpcCHYhLkc1lLaILCtFf1k7bILVkeLhNzhWaUzZsPLnAUpZEm+IlKhN/Orce+aNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408091; c=relaxed/simple;
-	bh=JWdLJPU+LqVWiNXBUYkNm/yd3E7fgYKi5i12Br0y2+Q=;
+	s=arc-20240116; t=1731407603; c=relaxed/simple;
+	bh=syQM+QKZviJfqK0IjrFHTkH+KfYjCwyhrQb0PSyQOJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAZmrCQrB7vNNvU1lC6+Ai1lhxpoVDOJ6T19v0xNbSVuofTsGfzVYS4kwViEYU6mW7AiGW7jc+f7Lh7in9z2RWsyGRVJXGMV7yzqi5DSHkR2eXs/prVp67QcG0xyjCHq/b0+hZGQOIrEJn9RlD9OAtHT42OHAw1YGxZOZ7F+Dak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPXc+1ZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3CCC4CECD;
-	Tue, 12 Nov 2024 10:41:30 +0000 (UTC)
+	 MIME-Version; b=C5n0WXcTRS9ckomKPGPXw2kbLd7H+33GZZnCQ1r0QF7bexbKrEodAamgU5OxcSjcuiqZ6Vk++kXj0+u0hL0QxE68yer8hP+OanmuM3ObVfy2EjKsMRjBbhxV2Xm0ozeM4mcDCLZzPRIEgL84mu6299Qdqv3b7KkjjKuZYFyhyh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLL+qhbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B254C4CECD;
+	Tue, 12 Nov 2024 10:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408091;
-	bh=JWdLJPU+LqVWiNXBUYkNm/yd3E7fgYKi5i12Br0y2+Q=;
+	s=korg; t=1731407602;
+	bh=syQM+QKZviJfqK0IjrFHTkH+KfYjCwyhrQb0PSyQOJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPXc+1ZCj2J+9WW/6F51FrHtRS7VLMDw5h3rQ3uTpww4ljOpG56OTiGXbiXmgCJVa
-	 jiBE54yf1Tob87shKdOukIAiE1kGu2Pfkxw6QOpmRqf5C5SlHOnlN7CUqzVedQQMgR
-	 b4RLpZ04uRXdpr9XNuJmi3Q1ioFQFdeF4EWc7ho0=
+	b=YLL+qhbScCqW5NMCH/taQ+Fdplx0HkFjAr9BU59/69qi736nR+tiHwtD+EsK6YOoo
+	 pNyjwFhn9KQl5EOk7AgidDWZOWMQcWSRCjaknHZxWHFl1v/iBqdBRsxt2hajv5k/Q0
+	 X7+iUTfmTqriqYMQou1Jue99zhzfF+X28pLeBtgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Joe Damato <jdamato@fastly.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 055/184] virtio_net: Support dynamic rss indirection table size
+Subject: [PATCH 6.6 005/119] arm64: dts: rockchip: Fix reset-gpios property on brcm BT nodes
 Date: Tue, 12 Nov 2024 11:20:13 +0100
-Message-ID: <20241112101902.973830389@linuxfoundation.org>
+Message-ID: <20241112101848.919367623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philo Lu <lulie@linux.alibaba.com>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-[ Upstream commit 86a48a00efdf61197b6658e52c6140463eb313dc ]
+[ Upstream commit 2b6a3f857550e52b1cd4872ebb13cb3e3cf12f5f ]
 
-When reading/writing virtio_net_ctrl_rss, we get the indirection table
-size from vi->rss_indir_table_size, which is initialized in
-virtnet_probe(). However, the actual size of indirection_table was set
-as VIRTIO_NET_RSS_MAX_TABLE_LEN=128. This collision may cause issues if
-the vi->rss_indir_table_size exceeds 128.
+For most compatibles, the "brcm,bluetooth.yaml" binding doesn't allow
+the 'reset-gpios' property, but there is a 'shutdown-gpios' property.
 
-This patch instead uses dynamic indirection table, allocated with
-vi->rss after vi->rss_indir_table_size initialized. And free it in
-virtnet_remove().
+Page 12 of the AzureWave-CM256SM datasheet (v1.9) has the following wrt
+pin 34 'BT_REG_ON' (connected to GPIO0_C4_d on the PineNote):
 
-In virtnet_commit_rss_command(), sgs for rss is initialized differently
-with hash_report. So indirection_table is not used if !vi->has_rss, and
-then we don't need to alloc indirection_table for hash_report only uses.
+  Used by PMU to power up or power down the internal regulators used
+  by the Bluetooth section. Also, when deasserted, this pin holds the
+  Bluetooth section in reset. This pin has an internal 200k ohm pull
+  down resistor that is enabled by default.
 
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Joe Damato <jdamato@fastly.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So it is safe to replace 'reset-gpios' with 'shutdown-gpios'.
+
+Fixes: d449121e5e8a ("arm64: dts: rockchip: Add Pine64 PineNote board")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/20241008113344.23957-5-didi.debian@cknow.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi  | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 792e9eadbfc3d..4b507007d242b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -368,15 +368,16 @@ struct receive_queue {
-  * because table sizes may be differ according to the device configuration.
-  */
- #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
--#define VIRTIO_NET_RSS_MAX_TABLE_LEN    128
- struct virtio_net_ctrl_rss {
- 	u32 hash_types;
- 	u16 indirection_table_mask;
- 	u16 unclassified_queue;
--	u16 indirection_table[VIRTIO_NET_RSS_MAX_TABLE_LEN];
-+	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
- 	u16 max_tx_vq;
- 	u8 hash_key_length;
- 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-+
-+	u16 *indirection_table;
- };
- 
- /* Control VQ buffers: protected by the rtnl lock */
-@@ -512,6 +513,25 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
- 					       struct page *page, void *buf,
- 					       int len, int truesize);
- 
-+static int rss_indirection_table_alloc(struct virtio_net_ctrl_rss *rss, u16 indir_table_size)
-+{
-+	if (!indir_table_size) {
-+		rss->indirection_table = NULL;
-+		return 0;
-+	}
-+
-+	rss->indirection_table = kmalloc_array(indir_table_size, sizeof(u16), GFP_KERNEL);
-+	if (!rss->indirection_table)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void rss_indirection_table_free(struct virtio_net_ctrl_rss *rss)
-+{
-+	kfree(rss->indirection_table);
-+}
-+
- static bool is_xdp_frame(void *ptr)
- {
- 	return (unsigned long)ptr & VIRTIO_XDP_FLAG;
-@@ -3828,11 +3848,15 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
- 	/* prepare sgs */
- 	sg_init_table(sgs, 4);
- 
--	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, indirection_table);
-+	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, hash_cfg_reserved);
- 	sg_set_buf(&sgs[0], &vi->rss, sg_buf_size);
- 
--	sg_buf_size = sizeof(uint16_t) * (vi->rss.indirection_table_mask + 1);
--	sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
-+	if (vi->has_rss) {
-+		sg_buf_size = sizeof(uint16_t) * vi->rss_indir_table_size;
-+		sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
-+	} else {
-+		sg_set_buf(&sgs[1], &vi->rss.hash_cfg_reserved, sizeof(uint16_t));
-+	}
- 
- 	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, key)
- 			- offsetof(struct virtio_net_ctrl_rss, max_tx_vq);
-@@ -6420,6 +6444,9 @@ static int virtnet_probe(struct virtio_device *vdev)
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
- 	}
-+	err = rss_indirection_table_alloc(&vi->rss, vi->rss_indir_table_size);
-+	if (err)
-+		goto free;
- 
- 	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
-@@ -6674,6 +6701,8 @@ static void virtnet_remove(struct virtio_device *vdev)
- 
- 	remove_vq_common(vi);
- 
-+	rss_indirection_table_free(&vi->rss);
-+
- 	free_netdev(vi->dev);
- }
- 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
+index 42f9507c01da1..27d89f48c42bd 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
+@@ -685,9 +685,9 @@
+ 		clock-names = "lpo";
+ 		device-wakeup-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
+ 		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+-		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+ 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
+ 		pinctrl-names = "default";
++		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+ 		vbat-supply = <&vcc_wl>;
+ 		vddio-supply = <&vcca_1v8_pmu>;
+ 	};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
+index 45de2630bb503..e9fa9bee995ae 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
+@@ -402,9 +402,9 @@
+ 		clock-names = "lpo";
+ 		device-wakeup-gpios = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
+ 		host-wakeup-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
+-		reset-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&bt_host_wake_h &bt_reg_on_h &bt_wake_host_h>;
++		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
+ 		vbat-supply = <&vcc_3v3>;
+ 		vddio-supply = <&vcc_1v8>;
+ 	};
 -- 
 2.43.0
 
