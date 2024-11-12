@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39979C53C1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9449C5542
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3141F22C15
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2252428BE74
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EBE2144A8;
-	Tue, 12 Nov 2024 10:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67F3216DF6;
+	Tue, 12 Nov 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3iDnzhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TL4prutQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0EC21263E;
-	Tue, 12 Nov 2024 10:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639C222DAAF;
+	Tue, 12 Nov 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407485; cv=none; b=c/dv0PohRkw1K3aVGRdX4gn0W0s4WCS3Hqgd21tgh3AWPjkVnHl2QcNFjtRUhvqnaH0ufRNsyXlNjNBmeuaSTZYT24fbVkyl1U41BOfKQVBwFYlCXbAG2EvyGceTF7OF9h06ClzVKXB/kuOc85qvO953rXUFUU0YHmE5v61fZhk=
+	t=1731407915; cv=none; b=SPiwNEV2ortxHE2C0B8bWwghoNpL0a7ij0cF4vVfqOBYofrkFrda82mSZXLd4ooPuT0/wNgmGe+F89sKDVLarL7MZAHYxKGqrDLEsfcsJxWG7ctU+46JGdgr3FeoSrqGg7ksF4vTfex8Ht7HleSlCOyd6UyjF4eIsw9zmsQlXzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407485; c=relaxed/simple;
-	bh=x2DsQcwkZ80VIFA5j7Xo59AkCwAeUNB9Gej28rK46hM=;
+	s=arc-20240116; t=1731407915; c=relaxed/simple;
+	bh=PoMSSZQc3HEgCS9mXz2Em0s+H9nNvwW2RP02zOII+Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rqFFsIEAv8EuPdr9BaIyBT40R0457scFkZlNs7iZxTa0LoMsCFtxE+UYtJ6keW6cNGg5MBoDpFNmmqrUnktrJFm3Cu6LLtzvJusaisT04JHCz0p4/7XyB3Xwx0QmO4BBFo3j7SdXwcTUxpk3W5RgrrKcyqaJtfJewO+DazoqINU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3iDnzhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11B7C4CECD;
-	Tue, 12 Nov 2024 10:31:24 +0000 (UTC)
+	 MIME-Version; b=TsISQlUShjXTODoPCjH14GGe7tGKlq8wBGTRIu8a2Vjia0OpK8KI00E/x+vKuuElzH7pgNMX93T8cquIc5WFH50hR3bOcFN7WZVdFgd/ax7EOA7GaG9yb/vEybPBr58HPZeci3hoHVHFeFYNtmbteBxEJOKYTdQcVWBfKrdaf4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TL4prutQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50EEC4CED6;
+	Tue, 12 Nov 2024 10:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407485;
-	bh=x2DsQcwkZ80VIFA5j7Xo59AkCwAeUNB9Gej28rK46hM=;
+	s=korg; t=1731407915;
+	bh=PoMSSZQc3HEgCS9mXz2Em0s+H9nNvwW2RP02zOII+Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3iDnzhBoLsTEocG+PIkNobT5y0VEB1XgTgVJ5h0WIDUNaNfbELtg17U5RlhzE5Sa
-	 7jnCatS36YTH1pIpMDSvjJwpYR0CTxlUGhjqBuIS1Zhazw23OXIbLYqQD/NLqJHfBP
-	 kGtfHFkH77nhnANy++wovtKHsMNJSmqSRQSQ6jdc=
+	b=TL4prutQjIE3kZZgzFrHEFUCavNxXJD4KZRDwtyqDn3Esb/Zm687hqA0RxmvdpNnw
+	 EwnRyJRw79AaWyQMd8ujfsYiwZgO3ziSZkAlsP3TUSqYs6Sk9OiTDc1AldXzc3oMrZ
+	 WCr0o/RPWqVmRM/jZ3Lb+Kw8oChDAChx3GU7Wnhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 90/98] USB: serial: option: add Quectel RG650V
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 097/119] btrfs: reinitialize delayed ref list after deleting it from the list
 Date: Tue, 12 Nov 2024 11:21:45 +0100
-Message-ID: <20241112101847.676256305@linuxfoundation.org>
+Message-ID: <20241112101852.426717942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 3b05949ba39f305b585452d0e177470607842165 upstream.
+commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+At insert_delayed_ref() if we need to update the action of an existing
+ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
+ref_add_list using list_del(), which leaves the ref's add_list member
+not reinitialized, as list_del() sets the next and prev members of the
+list to LIST_POISON1 and LIST_POISON2, respectively.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0122 Rev=05.15
-S:  Manufacturer=Quectel
-S:  Product=RG650V-EU
-S:  SerialNumber=xxxxxxx
-C:  #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
+If later we end up calling drop_delayed_ref() against the ref, which can
+happen during merging or when destroying delayed refs due to a transaction
+abort, we can trigger a crash since at drop_delayed_ref() we call
+list_empty() against the ref's add_list, which returns false since
+the list was not reinitialized after the list_del() and as a consequence
+we call list_del() again at drop_delayed_ref(). This results in an
+invalid list access since the next and prev members are set to poison
+pointers, resulting in a splat if CONFIG_LIST_HARDENED and
+CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
+otherwise.
 
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+So fix this by deleting from the list with list_del_init() instead.
+
+Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
+CC: stable@vger.kernel.org # 4.19+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/delayed-ref.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_VENDOR_ID			0x2c7c
- /* These Quectel products use Quectel's vendor ID */
- #define QUECTEL_PRODUCT_EC21			0x0121
-+#define QUECTEL_PRODUCT_RG650V			0x0122
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-@@ -1273,6 +1274,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
- 
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_CMU_300) },
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -615,7 +615,7 @@ static bool insert_delayed_ref(struct bt
+ 					      &href->ref_add_list);
+ 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
+ 				ASSERT(!list_empty(&exist->add_list));
+-				list_del(&exist->add_list);
++				list_del_init(&exist->add_list);
+ 			} else {
+ 				ASSERT(0);
+ 			}
 
 
 
