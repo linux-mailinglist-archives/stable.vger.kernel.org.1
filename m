@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-92388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34069C53C4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79D09C5548
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B16E1F228DA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C80428C46A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5B2144C9;
-	Tue, 12 Nov 2024 10:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015461FA83D;
+	Tue, 12 Nov 2024 10:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lI+B7gId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCnsLElM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E7D2144C0;
-	Tue, 12 Nov 2024 10:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE231FA848;
+	Tue, 12 Nov 2024 10:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407495; cv=none; b=nYfGdDz6bvKqt7xdL45zJjrHAMVX/hfz0ld+Lswh/nmwQhUdTO+ebL7gmZ7eemDLbLSeBNvh1ZdIBczMAaZ1sA/ndzf21zlMxqVA3vR7lsZJScYNqXwZs1b3dWG/xBNPUfPpmNsvVgbZWH29knQpjcVPty9TlMVG4JC8/GWB+Is=
+	t=1731407928; cv=none; b=NZusMNckYcyAy9HkH2+bMR7r/CsvW6bvNTeTHi0AVZUHH0+9i3l0VMd8NW4lC/BICPROeimaDtadhg3lKgspoXinZ2HS8Xq8x+Af66XF/8s7qJKrQAKRVitbU6SD1TI1xMHZK3716jj6st4H3yCJIBgCjTAjB8RQpUPURdcmm8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407495; c=relaxed/simple;
-	bh=BweZHoy9Rgl/marJLTfldn4mm9oZW4kQMADyqT9djUU=;
+	s=arc-20240116; t=1731407928; c=relaxed/simple;
+	bh=G+1FA6JxDxrmnBwk12uFdxF0/GYqrSU18md7Pc4KYUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3WoD4ZCJtDV+j50mre2URWQHzre5nSdm5ipx0a/bwPpo38Iy2Sc8zKXskhkS/MitIyKB0kOYlWt3rR6K766eQAcGB5r8cDyCZDVivgTyB/IccWQjSFRUm6RUvlsaqE2Kwc4jmqJlh0uPJNE61JIYFdKeJuXufDem9B3K8nNnIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lI+B7gId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A635C4CED6;
-	Tue, 12 Nov 2024 10:31:34 +0000 (UTC)
+	 MIME-Version; b=ffiQ4ESAljUk+iBO8wZv5K/yEi6EC0XtgPN/UoX2nfvAZaUb+mloabs84wx5CP8ucMPwgD1hNreFrsbHDWRatMe/c3uj/r84C872RJV2crnnNRd8z6QGo6rZTjEBwnhz380MQ/8m1wuelUPup0bnrb9TV8TpKlUGZg0eAN1i8JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCnsLElM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF15C4CECD;
+	Tue, 12 Nov 2024 10:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407495;
-	bh=BweZHoy9Rgl/marJLTfldn4mm9oZW4kQMADyqT9djUU=;
+	s=korg; t=1731407928;
+	bh=G+1FA6JxDxrmnBwk12uFdxF0/GYqrSU18md7Pc4KYUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lI+B7gIdfZawEWc5JLO0xmW7QYaK7xmq1dlgNvIAf7iabRxsRXUirsjwqbjKJa3Fx
-	 0YEisaK8h77l3qo11MTU8vPObTH3srt4+N54zhzUD+QHjIktOulpZXHoN5FTCjGx1s
-	 sS4nBoC3VmRrt97ILet12xKvyMpvkMTNW4WBqhfE=
+	b=VCnsLElMTLGQccbQMGXXwQm0qpG8yp6sbN90sQqAsb7Kvz1ETjTwicufUFJ7vJgUr
+	 r7xvIr9Yu6Ig1DGFX1E8Fdjroua42Gs082i3Gahq4tJeo51AxR6Ewl9ACXsxARLmZv
+	 fqLWz+brjnCND8bC3yNyK4JbEiLCcaAITsbF+NEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Vagin <avagin@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexey Gladkov <legion@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 93/98] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Date: Tue, 12 Nov 2024 11:21:48 +0100
-Message-ID: <20241112101847.787688183@linuxfoundation.org>
+	Benoit Sevens <bsevens@google.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 101/119] media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format
+Date: Tue, 12 Nov 2024 11:21:49 +0100
+Message-ID: <20241112101852.583560725@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Vagin <avagin@google.com>
+From: Benoit Sevens <bsevens@google.com>
 
-commit 432dc0654c612457285a5dcf9bb13968ac6f0804 upstream.
+commit ecf2b43018da9579842c774b7f35dbe11b5c38dd upstream.
 
-The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-then checks its limit.  If the value exceeds the limit, the function
-returns an error without decrementing the counter.
+This can lead to out of bounds writes since frames of this type were not
+taken into account when calculating the size of the frames buffer in
+uvc_parse_streaming.
 
-Link: https://lkml.kernel.org/r/20241101191940.3211128-1-roman.gushchin@linux.dev
-Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Co-developed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Signed-off-by: Benoit Sevens <bsevens@google.com>
+Cc: stable@vger.kernel.org
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/ucount.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -318,7 +318,7 @@ long inc_rlimit_get_ucounts(struct ucoun
- 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
- 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
- 		if (new < 0 || new > max)
--			goto unwind;
-+			goto dec_unwind;
- 		if (iter == ucounts)
- 			ret = new;
- 		if (!override_rlimit)
-@@ -336,7 +336,6 @@ long inc_rlimit_get_ucounts(struct ucoun
- dec_unwind:
- 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
- 	WARN_ON_ONCE(dec < 0);
--unwind:
- 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
- 	return 0;
- }
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -371,7 +371,7 @@ static int uvc_parse_format(struct uvc_d
+ 	 * Parse the frame descriptors. Only uncompressed, MJPEG and frame
+ 	 * based formats have frame descriptors.
+ 	 */
+-	while (buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
++	while (ftype && buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE &&
+ 	       buffer[2] == ftype) {
+ 		unsigned int maxIntervalIndex;
+ 
 
 
 
