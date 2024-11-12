@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EB39C539F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9909C536D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F8641F22A0D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 355E6B2D6DB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D9B213ED1;
-	Tue, 12 Nov 2024 10:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7754B212642;
+	Tue, 12 Nov 2024 10:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYL1tYXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBSs0vgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13009170A3A;
-	Tue, 12 Nov 2024 10:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE7019E992;
+	Tue, 12 Nov 2024 10:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407334; cv=none; b=UKSCiFPf2gKPHLNHu3UZGpPTIBiUuWoDo8ElzqJvciTRoPrD9Gn0jtoS4IoXeMffMwqPIlW+92KatM0nR22NWgCYnMMxZxnIqWlhuV9sII59apFds1QLUGWdiVvF/yqnQdHL0Je5td0mMu42Fr/TihalqWeEqnfkE9hi31s1YCI=
+	t=1731407019; cv=none; b=LS9J3MET5ESbvXPTrNhkrVir0nc7zsEfHMi+cRKqQKYYJ6hIgTPoUUXCISVU+LiDHhK749Pv6OQ9Cdba6k4NzMGfFGLs1G/GTBlFUxqSqYA1l2n9B+FX01MdtXh+kOxvmNdW/TcaMENASLztLsUl2lwjNZolFzQbCGR6WoYPAC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407334; c=relaxed/simple;
-	bh=/18pJu6vInkdd3amG/6+/zl0R8VJa5z4FDTyqSMMzlU=;
+	s=arc-20240116; t=1731407019; c=relaxed/simple;
+	bh=xb/em1ZqdlY7m4kn/hbrjAQADfcb2raZHygkP776VA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2NUqPLI/lfax6riYzSXIGTRur3QGSiI5YobEVH39MBUBhZkmIqDXpC2IT0+2NBc0KRHJuBzyl+Eu1OfFEO0Jom2FElsaovWeCjgxm/LyO9E0K2hcFXdrEu0ykBzDzmiBeqvrZovbyuWmpvCITwcGITVE9ZCEqxAsdso/c4fZfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYL1tYXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7457AC4CECD;
-	Tue, 12 Nov 2024 10:28:53 +0000 (UTC)
+	 MIME-Version; b=Q6ox8p5gx6AWBORfeN9o2DJuyWbzUQlRfiz18UnXE8tyUaeWn0UnLpRWLe6yptMSbTgrbJlKW3ct+tmUaGoispyzc13v7eqyAJJQTl7B3xcZSY01FZxf4FnRh8bumQJtwwMp3J9Oa463AWANOI30zjPQC5w8pNMIJfzVcLHcy8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBSs0vgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E35FC4CECD;
+	Tue, 12 Nov 2024 10:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407333;
-	bh=/18pJu6vInkdd3amG/6+/zl0R8VJa5z4FDTyqSMMzlU=;
+	s=korg; t=1731407019;
+	bh=xb/em1ZqdlY7m4kn/hbrjAQADfcb2raZHygkP776VA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYL1tYXWBf293raWppbwIJm9J3oCgqM/2XfLctBH7Dz5FnidOgltfKlkssMmlz5Z8
-	 fD+wrB0tKHkY0pYpEyF7xX3eMPsvQWEM0arL10yrP2ejARwdyVrLahGbCB37R9WNs7
-	 tfltTXsUbL+vlqhMQvBqEshl/e4nKzhtc1hmyic8=
+	b=bBSs0vgxJUBNJ5yzwszLKrELspJCoo9q75gzNA6pWxKz5cHmm1jJtH3ZW02ZNdWNN
+	 doE4SCMelcCtQoR0HnRlS9cIDwrL7U6XotHOKhUiP+yzofCIvR+hv6M1+K9oqKmqp+
+	 hrp0q5dYmAEbGuLwkTsL+toUlWRK1NNybilqT6P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caesar Wang <wxt@rock-chips.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Klaus Goger <klaus.goger@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/98] ARM: dts: rockchip: Fix the spi controller on rk3036
+Subject: [PATCH 5.15 04/76] arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
 Date: Tue, 12 Nov 2024 11:20:29 +0100
-Message-ID: <20241112101844.814456164@linuxfoundation.org>
+Message-ID: <20241112101839.950461747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 8bade1ad1f0821aef31f6a8fb1027ae292566d85 ]
+[ Upstream commit 5ed96580568c4f79a0aff11a67f10b3e9229ba86 ]
 
-Compatible and clock names did not match the existing binding.
-So set the correct values and re-order+rename the clocks.
+All Theobroma boards use a ti,amc6821 as fan controller.
+It normally runs in an automatically controlled way and while it may be
+possible to use it as part of a dt-based thermal management, this is
+not yet specified in the binding, nor implemented in any kernel.
 
-It looks like no rk3036 board did use the spi controller so far,
-so this was never detected on a running device yet.
+Newer boards already don't contain that #cooling-cells property, but
+older ones do. So remove them for now, they can be re-added if thermal
+integration gets implemented in the future.
 
-Fixes: f629fcfab2cd ("ARM: dts: rockchip: support the spi for rk3036")
-Cc: Caesar Wang <wxt@rock-chips.com>
+There are two further occurences in v6.12-rc in px30-ringneck and
+rk3399-puma, but those already get removed by the i2c-mux conversion
+scheduled for 6.13 . As the undocumented property is in the kernel so
+long, I opted for not causing extra merge conflicts between 6.12 and 6.13
+
+Fixes: d99a02bcfa81 ("arm64: dts: rockchip: add RK3368-uQ7 (Lion) SoM")
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: Klaus Goger <klaus.goger@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-14-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-7-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index 4e208528eebf2..5bdbadd879fe8 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -550,11 +550,11 @@
- 	};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+index bcd7977fb0f8e..6b28bfec8b4b6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+@@ -60,7 +60,6 @@
+ 			fan: fan@18 {
+ 				compatible = "ti,amc6821";
+ 				reg = <0x18>;
+-				#cooling-cells = <2>;
+ 			};
  
- 	spi: spi@20074000 {
--		compatible = "rockchip,rockchip-spi";
-+		compatible = "rockchip,rk3036-spi";
- 		reg = <0x20074000 0x1000>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_SPI>, <&cru SCLK_SPI>;
--		clock-names = "apb-pclk","spi_pclk";
-+		clocks = <&cru SCLK_SPI>, <&cru PCLK_SPI>;
-+		clock-names = "spiclk", "apb_pclk";
- 		dmas = <&pdma 8>, <&pdma 9>;
- 		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
+ 			rtc_twi: rtc@6f {
 -- 
 2.43.0
 
