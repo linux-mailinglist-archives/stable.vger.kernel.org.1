@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-92326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEDC9C567A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:29:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35C59C532D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90F97B25A5E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB1421F23FFA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5878212194;
-	Tue, 12 Nov 2024 10:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C572020E33B;
+	Tue, 12 Nov 2024 10:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjxLKw9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me2FU7w9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628D420E31D;
-	Tue, 12 Nov 2024 10:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC4A20ADFC;
+	Tue, 12 Nov 2024 10:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407291; cv=none; b=sMRgd+DJaN6vyhI4frZ7OdINnlNCUxd5q5ZuHPjvuP+N9xif6/uGdp3CGetWLYza1iHocsEGReSSHqZHsO5BHBgrAoklejonqSH+fVZ/I+Q5XMas63hPEu9ZqVrhTM03sVKklYPY3asxj2A4jM4dA0lWtG2+v7VeWp6DBiPZB4U=
+	t=1731407005; cv=none; b=lx2UgwqWDGyNat4jhOW/eV1F+brcaFtdNglmBNZC/wnSieSyBMhycwM3/D+DUqxKLK8ci5iZnnUV7EtCb/mLxsrkhKRkYxtWm1Bml5tSQjtCYbP7X52+R/io2XEpFfR6L+tCbcXf/WgixnrNnMDuvBy8bmV6MUlKBL4NPvtLFzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407291; c=relaxed/simple;
-	bh=aYJtXjncOrRkWtwB4tkpl8jgR/LtvadlQurqc4A3MCY=;
+	s=arc-20240116; t=1731407005; c=relaxed/simple;
+	bh=TKwjH3MC03r5xxZR1GW42KjGVesr3Cu5/BdGPMaweLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7DbgcStV5/qWqc8YhDE/HLIH014RKLILWQVaW9yjHNVAf1xJpR59Zcsv8YvUEl9wC//y4v1bik4jnl822n5J7NoZEJOhlZP97OGbOydL6qNWi9V9czN2vZ1O5+jxs+2A1Mv6F0JM2Ha4oSuo51Kt/UMRKORdru/iKsMpBPEz8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjxLKw9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FEEC4CED6;
-	Tue, 12 Nov 2024 10:28:10 +0000 (UTC)
+	 MIME-Version; b=uAd14zJ1XrYR0RYv1XKipuyJsYhpWy0E63MpKLbgDHz1kC2oLXoqJIkxaat8dnSnuKhKmUAE7IxB1rJaFi9R/Q88box0GTRr2RVXoDR20vFpEGg3/U+tmKlODKLvyVovIPOf8CqEgnZg58hGQrnUAV0iwWI8HfIMGi0XBLHJvBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me2FU7w9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FAFC4CECD;
+	Tue, 12 Nov 2024 10:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407291;
-	bh=aYJtXjncOrRkWtwB4tkpl8jgR/LtvadlQurqc4A3MCY=;
+	s=korg; t=1731407005;
+	bh=TKwjH3MC03r5xxZR1GW42KjGVesr3Cu5/BdGPMaweLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjxLKw9vmXOmZ4O2yiZuB8n0h9kenv9zyAWVpgE1MQYtGpWu0SIqiMBgTrMEhVqJT
-	 aj80B3XckDD8C8PfSWOQ/ySyop/iiP0IHcN1lLDAsUJv778ciEGfPx/4uaVfJ1k+Yi
-	 zrXurEc0cz4fP/3o+f2x4UxGH++sDPp30BRyhws8=
+	b=Me2FU7w9sbT4qBfH/Zvihp6Tbj3R7w4p5HVzTeJ0lrsq/JVsjfIB/6WLzfMkxnHVC
+	 XI8oD/CviDRJiDaEMLg9tazlqVGUJZiSvTfNcxgQIAL501/Up/XbpEaRuqnYnadNDs
+	 AASSEeO02dRSk0US9hjFTCqMFM41Ui1g3P96FiGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Joe Damato <jdamato@fastly.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/98] virtio_net: Add hash_key_length check
+Subject: [PATCH 5.15 21/76] net: hns3: fix kernel crash when uninstalling driver
 Date: Tue, 12 Nov 2024 11:20:46 +0100
-Message-ID: <20241112101845.459123043@linuxfoundation.org>
+Message-ID: <20241112101840.593552989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philo Lu <lulie@linux.alibaba.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit 3f7d9c1964fcd16d02a8a9d4fd6f6cb60c4cc530 ]
+[ Upstream commit df3dff8ab6d79edc942464999d06fbaedf8cdd18 ]
 
-Add hash_key_length check in virtnet_probe() to avoid possible out of
-bound errors when setting/reading the hash key.
+When the driver is uninstalled and the VF is disabled concurrently, a
+kernel crash occurs. The reason is that the two actions call function
+pci_disable_sriov(). The num_VFs is checked to determine whether to
+release the corresponding resources. During the second calling, num_VFs
+is not 0 and the resource release function is called. However, the
+corresponding resource has been released during the first invoking.
+Therefore, the problem occurs:
 
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Joe Damato <jdamato@fastly.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+[15277.839633][T50670] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+...
+[15278.131557][T50670] Call trace:
+[15278.134686][T50670]  klist_put+0x28/0x12c
+[15278.138682][T50670]  klist_del+0x14/0x20
+[15278.142592][T50670]  device_del+0xbc/0x3c0
+[15278.146676][T50670]  pci_remove_bus_device+0x84/0x120
+[15278.151714][T50670]  pci_stop_and_remove_bus_device+0x6c/0x80
+[15278.157447][T50670]  pci_iov_remove_virtfn+0xb4/0x12c
+[15278.162485][T50670]  sriov_disable+0x50/0x11c
+[15278.166829][T50670]  pci_disable_sriov+0x24/0x30
+[15278.171433][T50670]  hnae3_unregister_ae_algo_prepare+0x60/0x90 [hnae3]
+[15278.178039][T50670]  hclge_exit+0x28/0xd0 [hclge]
+[15278.182730][T50670]  __se_sys_delete_module.isra.0+0x164/0x230
+[15278.188550][T50670]  __arm64_sys_delete_module+0x1c/0x30
+[15278.193848][T50670]  invoke_syscall+0x50/0x11c
+[15278.198278][T50670]  el0_svc_common.constprop.0+0x158/0x164
+[15278.203837][T50670]  do_el0_svc+0x34/0xcc
+[15278.207834][T50670]  el0_svc+0x20/0x30
+
+For details, see the following figure.
+
+     rmmod hclge              disable VFs
+----------------------------------------------------
+hclge_exit()            sriov_numvfs_store()
+  ...                     device_lock()
+  pci_disable_sriov()     hns3_pci_sriov_configure()
+                            pci_disable_sriov()
+                              sriov_disable()
+    sriov_disable()             if !num_VFs :
+      if !num_VFs :               return;
+        return;                 sriov_del_vfs()
+      sriov_del_vfs()             ...
+        ...                       klist_put()
+        klist_put()               ...
+        ...                     num_VFs = 0;
+      num_VFs = 0;        device_unlock();
+
+In this patch, when driver is removing, we get the device_lock()
+to protect num_VFs, just like sriov_numvfs_store().
+
+Fixes: 0dd8a25f355b ("net: hns3: disable sriov before unload hclge layer")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241101091507.3644584-1-shaojijie@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hnae3.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index e3e5107adaca6..11aa0a7d54cd7 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3887,6 +3887,12 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
-+		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
-+			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
-+				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
-+			err = -EINVAL;
-+			goto free;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.c b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+index 67b0bf310daaa..9a63fbc694083 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hnae3.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+@@ -25,8 +25,11 @@ void hnae3_unregister_ae_algo_prepare(struct hnae3_ae_algo *ae_algo)
+ 		pci_id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
+ 		if (!pci_id)
+ 			continue;
+-		if (IS_ENABLED(CONFIG_PCI_IOV))
++		if (IS_ENABLED(CONFIG_PCI_IOV)) {
++			device_lock(&ae_dev->pdev->dev);
+ 			pci_disable_sriov(ae_dev->pdev);
++			device_unlock(&ae_dev->pdev->dev);
 +		}
- 
- 		vi->rss_hash_types_supported =
- 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
+ 	}
+ }
+ EXPORT_SYMBOL(hnae3_unregister_ae_algo_prepare);
 -- 
 2.43.0
 
