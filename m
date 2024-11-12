@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282579C53A0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD07D9C558A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51741F226B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BDB228EF62
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD903213EDC;
-	Tue, 12 Nov 2024 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70EB217919;
+	Tue, 12 Nov 2024 10:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz0WUmDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC3PGQkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A26920DD62;
-	Tue, 12 Nov 2024 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646CE2178FC;
+	Tue, 12 Nov 2024 10:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407340; cv=none; b=qOX5z4jDtjV7jDUENW1kvWlmqOsHyjKcGCCUG7dbFuiThKtc6l5DG8XdG3hcasyoHVclZ0foAab2FQPhwNATtOoCsG0c84lD0IzP4SwARQkkkXrq/WG8oE0d7ZAEVSseXaQOrOoBhfojD9fbKhn/7E4z4cWNdxL+7IU+iVBfbAE=
+	t=1731408141; cv=none; b=UhNAxEyQAt+4SFk/xQoqTO+AS1yfgEH9wCy6PTxPnzeV4M/sUxhQ9m9u5rzwiM9V66Fw0q1HFMlV2MQwI5fzGp9fHa+F904R9+8z8SJC6fd8vlpmZCiFFCZhJOjQbExULy+Hr8TXFPohmzj5mnV1ei2xL9HNALXU7peXfi6D73A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407340; c=relaxed/simple;
-	bh=NGcC9zJ6wJmrdUSRp5A9/5WOFxFoWv/GbPWLd9r2eg0=;
+	s=arc-20240116; t=1731408141; c=relaxed/simple;
+	bh=5DbOuZtjUNnvVvGA/aFZ1ATJ4zvgMNt68AmQOc9IB6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABpH4ubze0WG7bTrXS76Fi10DQBb1eGNf3c5K+8Mn0V23OoCTYvREFlmcrZ14gSLme2MSvQQlNG3wD7HQJuwgx3KU+APzmgAfjiQjpU1d8ObuxVGeGMnBR2meLAVMBZ/vcVM92G8HljmhdvzAsLy4W+gqbJCtI2VXkKxbw3JddU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz0WUmDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C1BC4CECD;
-	Tue, 12 Nov 2024 10:28:59 +0000 (UTC)
+	 MIME-Version; b=VJtrJj2Mcy5o1WJS0uxduquxw7YmkFx+GZ5i06IIk+HRLbTfs/yIR+bkI29BLEQpvaEKt1Qft38YpV39ee/s/A+buzATMtxHUO/kTXjQUorMyjiRzJ0CLNwmTOCw5yt4RUJNjx5qmdZ2dOa4VJOjKoNK+iWzZo5xPWt4FZKyZGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC3PGQkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E029EC4CECD;
+	Tue, 12 Nov 2024 10:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407340;
-	bh=NGcC9zJ6wJmrdUSRp5A9/5WOFxFoWv/GbPWLd9r2eg0=;
+	s=korg; t=1731408141;
+	bh=5DbOuZtjUNnvVvGA/aFZ1ATJ4zvgMNt68AmQOc9IB6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pz0WUmDSzry4j453EpqAnIE9DlZ4Nvma9VQyJZI8c07vkvAEf63CBW1Iu7RRXRHbL
-	 z0qxQPG6ifNnGXAtkWgvWoVAskUX7Y4Q9bKNQiF8IHExohb1gAHqHnPot1A/fFdC6W
-	 ePe6GlWtR7LB6n1M6ITVXI/QRyCBmaJVPvyXuyU8=
+	b=fC3PGQkGC8JFPlgzEszEqb7UtR9LLn26zKTmyJfNy9zkh+D8It+KNbSnm/BFV0Vvr
+	 Q6vbB7yPYx8wU59pSwFWGunsZWHD/FdIjvoRrxlNMKNY1A4nkOmLGDR26AaINo464L
+	 Vb69QJCCWdvy5M0tNQmhBDnaFw+tER0ZFMp0IGhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 16/98] HID: core: zero-initialize the report buffer
+Subject: [PATCH 6.11 073/184] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
 Date: Tue, 12 Nov 2024 11:20:31 +0100
-Message-ID: <20241112101844.888730261@linuxfoundation.org>
+Message-ID: <20241112101903.665181242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
+[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
 
-Since the report buffer is used by all kinds of drivers in various ways, let's
-zero-initialize it during allocation to make sure that it can't be ever used
-to leak kernel memory via specially-crafted report.
+In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
+null. So the release of the dma channel leads to the following issue:
+[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
+dma_request_slave_channel error -19
+[    4.888975] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000003d
+[...]
+[    5.096577] Call trace:
+[    5.099099]  dma_release_channel+0x24/0x100
+[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
+[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
 
-Fixes: 27ce405039bf ("HID: fix data access in implement()")
-Reported-by: Benoît Sevens <bsevens@google.com>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+To avoid this issue, release channel only if the pointer is valid.
+
+Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 2 +-
+ sound/soc/stm/stm32_spdifrx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index e2e52aa0eeba9..b5887658c6af6 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1878,7 +1878,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index 9eed3c57e3f11..a438df468571f 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -939,7 +939,7 @@ static void stm32_spdifrx_remove(struct platform_device *pdev)
+ {
+ 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
  
- 	u32 len = hid_report_len(report) + 7;
+-	if (spdifrx->ctrl_chan)
++	if (!IS_ERR(spdifrx->ctrl_chan))
+ 		dma_release_channel(spdifrx->ctrl_chan);
  
--	return kmalloc(len, flags);
-+	return kzalloc(len, flags);
- }
- EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
- 
+ 	if (spdifrx->dmab)
 -- 
 2.43.0
 
