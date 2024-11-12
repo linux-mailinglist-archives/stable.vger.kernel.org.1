@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DF59C5477
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:43:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEFE9C5432
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A0FB2B3B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93721F225ED
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173902123F7;
-	Tue, 12 Nov 2024 10:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8F820DD5A;
+	Tue, 12 Nov 2024 10:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hp5OtpBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pb18rXju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53E320DD62;
-	Tue, 12 Nov 2024 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5DA1EE02B;
+	Tue, 12 Nov 2024 10:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406973; cv=none; b=cp80o/x0Bu70jjr4/YmYp6CjRe3wAxkj771KNwLfeirLdXRZQ1TSK8k9i6oytH2dinqa1FXnKO90GlmVWpYR2C4WUKoVWSvxkuixSG3EEh0ESN7Tc9zuNGcMfmkTLp5xIdzifzYFm9kosb5Zpfica3xsBFGnAwfFke7aiT93wtw=
+	t=1731407723; cv=none; b=NI8mc4JHL1oAYAxKnYOTUJLGdlXABWux6/CSztsMZ8GtKlL7W1+f8KM8ISuSIRzYEYmiciDDWFKwUQzrqYxlWS0HG1YZAqgnwkgiR1icupArQCyKRbjzXEaU+NTS4St/OpWY0uUZlbtGg/DkmlHmkhkhpLN4P99JBx7z/rh5x5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406973; c=relaxed/simple;
-	bh=OSGVvaKndjAw2Ye1egS7BZPx2UO+WhP4qn4IOInITqM=;
+	s=arc-20240116; t=1731407723; c=relaxed/simple;
+	bh=iow3Sfsbtozb1yVMMVJqdZuCeakqV6F163VjRbm4p70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWYftfJ7Nro332fg4kQB1MeGQUqM8IW1iCJ88hGjmivwYNnGiEgma8MZCigBujXojQPYae4bexaOVMRyzXOKpKFuA4YPX+ftg+nZsflQuyFB3tSU5nX5QtPlfrVf+90JSoqClYOxjd3hvGilq8B654veL4mFF5wTpeSjG9Kek3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hp5OtpBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEFDC4CECD;
-	Tue, 12 Nov 2024 10:22:52 +0000 (UTC)
+	 MIME-Version; b=OixBBXKheJTIWX2VEbYfusEpoKfJ6pwtDX30B3vgzZk4l8qBuf2BDJa6Wcj9Busy/sOFK2jV2aX8v6oHcbeDUERmLG32hHgaaj+stJwQA8AJFjkK3ECwFB4YeB9PC9HFfTaAti9tEo/ZU9YXHZBni4l+ofGwpC+hogIbsF3ZRiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pb18rXju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B38C4CECD;
+	Tue, 12 Nov 2024 10:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406973;
-	bh=OSGVvaKndjAw2Ye1egS7BZPx2UO+WhP4qn4IOInITqM=;
+	s=korg; t=1731407722;
+	bh=iow3Sfsbtozb1yVMMVJqdZuCeakqV6F163VjRbm4p70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hp5OtpBRpLU+StHgbv2OwDxpb2YgVbXw4cK5Q5cg1yUo1uRD2+gY/ifhhh1rh5wpR
-	 Hx8UOeuX9fB12Fy/Cc5OVIpqskuwt4QAJw0IGD3GlBCMRjsZRIW7K4z4WXw+vKKDfK
-	 ABvQU+LdLy1LuGbl3kJgCqafHgdzi4KraWZ9a3hE=
+	b=pb18rXjueE+GFraJ10zB072hyJ9OmrzFkhn/67LLxVBQo7za11LOrzB8SWkIqEWRM
+	 filtHVMP74nxxrLogaIMfj7Wyt6ZcsRp+oeOlcA78kEpAU/gSMbcBM8xspouk98XZs
+	 JpBSBfq5ietTeE53buPvnpq5Uffzc1K0tbKHl27E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/76] NFS: Add a tracepoint to show the results of nfs_set_cache_invalid()
+Subject: [PATCH 6.6 030/119] regulator: rtq2208: Fix uninitialized use of regulator_config
 Date: Tue, 12 Nov 2024 11:20:38 +0100
-Message-ID: <20241112101840.286944596@linuxfoundation.org>
+Message-ID: <20241112101849.865476857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[ Upstream commit 93c2e5e0a9ecfc183ab1204e1ecaa7ee7eb2a61a ]
+[ Upstream commit 2feb023110843acce790e9089e72e9a9503d9fa5 ]
 
-This provides some insight into the client's invalidation behavior to show
-both when the client uses the helper, and the results of calling the
-helper which can vary depending on how the helper is called.
+Fix rtq2208 driver uninitialized use to cause kernel error.
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 867da60d463b ("nfs: avoid i_lock contention in nfs_clear_invalid_mapping")
+Fixes: 85a11f55621a ("regulator: rtq2208: Add Richtek RTQ2208 SubPMIC")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Link: https://patch.msgid.link/00d691cfcc0eae9ce80a37b62e99851e8fdcffe2.1729829243.git.cy_huang@richtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c    | 1 +
- fs/nfs/nfstrace.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/regulator/rtq2208-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 48ade92d4ce8c..3861cd056cec3 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -219,6 +219,7 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
- 					  NFS_INO_DATA_INVAL_DEFER);
- 	else if (nfsi->cache_validity & NFS_INO_INVALID_DATA)
- 		nfsi->cache_validity &= ~NFS_INO_DATA_INVAL_DEFER;
-+	trace_nfs_set_cache_invalid(inode, 0);
- }
- EXPORT_SYMBOL_GPL(nfs_set_cache_invalid);
- 
-diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
-index 6804ca2efbf99..cbdfe091f56a6 100644
---- a/fs/nfs/nfstrace.h
-+++ b/fs/nfs/nfstrace.h
-@@ -162,6 +162,7 @@ DEFINE_NFS_INODE_EVENT_DONE(nfs_writeback_inode_exit);
- DEFINE_NFS_INODE_EVENT(nfs_fsync_enter);
- DEFINE_NFS_INODE_EVENT_DONE(nfs_fsync_exit);
- DEFINE_NFS_INODE_EVENT(nfs_access_enter);
-+DEFINE_NFS_INODE_EVENT_DONE(nfs_set_cache_invalid);
- 
- TRACE_EVENT(nfs_access_exit,
- 		TP_PROTO(
+diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
+index 2d54844c4226b..e05531c8c0298 100644
+--- a/drivers/regulator/rtq2208-regulator.c
++++ b/drivers/regulator/rtq2208-regulator.c
+@@ -513,7 +513,7 @@ static int rtq2208_probe(struct i2c_client *i2c)
+ 	struct regmap *regmap;
+ 	struct rtq2208_regulator_desc *rdesc[RTQ2208_LDO_MAX];
+ 	struct regulator_dev *rdev;
+-	struct regulator_config cfg;
++	struct regulator_config cfg = {};
+ 	struct rtq2208_rdev_map *rdev_map;
+ 	int i, ret = 0, idx, n_regulator = 0;
+ 	unsigned int regulator_idx_table[RTQ2208_LDO_MAX],
 -- 
 2.43.0
 
