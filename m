@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8109C5579
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861F89C557F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11ED128E9FC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7571F217C7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F552309AE;
-	Tue, 12 Nov 2024 10:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F30217666;
+	Tue, 12 Nov 2024 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEahEriX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ondsRjIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374D21765C;
-	Tue, 12 Nov 2024 10:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63862141DB;
+	Tue, 12 Nov 2024 10:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408088; cv=none; b=rImi8YVozn79tLMMyBDxWb4mgpRfOxRo2ub/P8bYCuOUt2zxks8XoxICHNVHDInKgX8tFghMn0iGJShs8OUEamcyQ6SZx5kGzN+fq7rYx9R/az08ZI2jZ53lEGYRDXh/kk4/VBoY1WcQ4YW54y5DTUML4C6eFPhqx9MBGmgdZps=
+	t=1731408103; cv=none; b=tp5DHh6AGQEFcXGcrrexstrRYU+/jEc6p2e8AC7grFl5muEc+POqN10+FR3Fc0BGhyAwYWc+WXyKuhfecxZxeh09XbVsofOTCpbuyRGQK0SrpY9G68ho+u0WxMFwedruO14YmuqPBQIfcmRJeZudLvpe7vAidLAN7sPBEkh3oT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408088; c=relaxed/simple;
-	bh=fqwJ2nix1izA0wza+3iTiDITDeqIlNeyCrG7S6UvBmc=;
+	s=arc-20240116; t=1731408103; c=relaxed/simple;
+	bh=yVdLX32m1p8Om2pSpay/lNqkLjyFyeeTkEzDXmUOtg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlGWQRhpY6CNvCAXPxAeu6sQioXtUOyFk+ZoGJ2+8DMutvMvcFOz4ZaHh3NIydUrK0mhXYmPARZlk7uA92nnl3Nl1KDDtKTTOHieNJNTi6iKLFQqy7KbXk/t+Tbu5YpNbyTtK/mR66ASc7v9yVKPlU1fFWBQdcW00Z72AKDeP0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEahEriX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A533C4CECD;
-	Tue, 12 Nov 2024 10:41:27 +0000 (UTC)
+	 MIME-Version; b=bo6MIi5jJZEmm/nfxHzAu7/BsiWAA4WRTHDgM9FyweW4PJ/wQJpU3jEFCkiaXXQDzto8YgxA7eluP8ONpuoEeWtR8pkLr5WAWgqfbe6p7E5I+I2PPhgyTH9hxd2lQE3nA64v8VbMfpPcvkqoBN4WYBla0MYIfxy3FrbSBeo2yWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ondsRjIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CFBC4CECD;
+	Tue, 12 Nov 2024 10:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408088;
-	bh=fqwJ2nix1izA0wza+3iTiDITDeqIlNeyCrG7S6UvBmc=;
+	s=korg; t=1731408103;
+	bh=yVdLX32m1p8Om2pSpay/lNqkLjyFyeeTkEzDXmUOtg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEahEriXNaHQbk17s4NeEoL7eeVy6h4lDBPys0Xy5wstnVxpZYpvkvNLlqkbnEQ9x
-	 qBlfppZRiBdYDtZb3cZHYQ30akenauFVqu8nW51JVVf5azvUkoCHbUO/t9uESRc60y
-	 CwtIzIu2rVod9JtzxHmNw+/ESzNCHSpwaCMFYSwI=
+	b=ondsRjIP4m1E7KI9yxVNe35tKhcN4+n6KovaJDO4vITAiwkTwfaYSBOmAwZk+bt7W
+	 XmBpbP2HTZowwG4n1ULZ2GJMQAc3Whyl29OYc6KLnR59SwokY0DOMix/kr18H7mWrU
+	 gL59QGK0/yE4JB6MqlUjyVFR9at4b36AZpGWatTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 028/184] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
-Date: Tue, 12 Nov 2024 11:19:46 +0100
-Message-ID: <20241112101901.947410492@linuxfoundation.org>
+Subject: [PATCH 6.11 029/184] ARM: dts: rockchip: Fix the spi controller on rk3036
+Date: Tue, 12 Nov 2024 11:19:47 +0100
+Message-ID: <20241112101901.985348046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -69,35 +69,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 1580ccb6ed9dc76b8ff3e2d8912e8215c8b0fa6d ]
+[ Upstream commit 8bade1ad1f0821aef31f6a8fb1027ae292566d85 ]
 
-Neither the binding nor the driver implementation specify/use the grf
-reference provided in the rk3036. And neither does the newer rk3128
-user of the hdmi controller. So drop the rockchip,grf property.
+Compatible and clock names did not match the existing binding.
+So set the correct values and re-order+rename the clocks.
 
-Fixes: b7217cf19c63 ("ARM: dts: rockchip: add hdmi device node for rk3036")
+It looks like no rk3036 board did use the spi controller so far,
+so this was never detected on a running device yet.
+
+Fixes: f629fcfab2cd ("ARM: dts: rockchip: support the spi for rk3036")
 Cc: Caesar Wang <wxt@rock-chips.com>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-13-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-14-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rockchip/rk3036.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/boot/dts/rockchip/rk3036.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
-index 37369538483f7..09371f07d7b4b 100644
+index 09371f07d7b4b..63b9912be06a7 100644
 --- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
 +++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
-@@ -400,7 +400,6 @@
- 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&cru  PCLK_HDMI>;
- 		clock-names = "pclk";
--		rockchip,grf = <&grf>;
+@@ -553,11 +553,11 @@
+ 	};
+ 
+ 	spi: spi@20074000 {
+-		compatible = "rockchip,rockchip-spi";
++		compatible = "rockchip,rk3036-spi";
+ 		reg = <0x20074000 0x1000>;
+ 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+-		clocks = <&cru PCLK_SPI>, <&cru SCLK_SPI>;
+-		clock-names = "apb-pclk","spi_pclk";
++		clocks = <&cru SCLK_SPI>, <&cru PCLK_SPI>;
++		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&pdma 8>, <&pdma 9>;
+ 		dma-names = "tx", "rx";
  		pinctrl-names = "default";
- 		pinctrl-0 = <&hdmi_ctl>;
- 		#sound-dai-cells = <0>;
 -- 
 2.43.0
 
