@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3D99C555B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:05:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A84C9C5584
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672A01F234D0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D018728EDF4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8C92141A2;
-	Tue, 12 Nov 2024 10:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578E920E31D;
+	Tue, 12 Nov 2024 10:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWt70MpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtDLtBgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A06E2123F3;
-	Tue, 12 Nov 2024 10:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1542E213120;
+	Tue, 12 Nov 2024 10:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407986; cv=none; b=G+Od3UpZEsd27Rq0V0h6PF7jITzL+kJa0dZpDksXTjdwilMrqhOS8PiNKGnDFfJCDnNqjtL2arm0vRnWS/L+kWfh9HHnmTQLOVf1Qx4lUNgaj8WAx1V/VZvMdEcZMqHELATf1wn4/InVALqmRLfj6cOdgDmi2fZH04cMdQQ/ikM=
+	t=1731408123; cv=none; b=d6zf1+j/aa9olTNgiuw0WfqEe7x5HOgdRQao+1A7qJf4vGLXqbWTrGOc6izheHztGzOu/QMI2ahoFM26Hq3Sqf3waLXzYfo+55XfQ0PVQHdG5SBclEpQgPU5ygTZCzFhjXgsyr6mUogJUTXXNirnswmVwgJClVHxvJZO5b41Nlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407986; c=relaxed/simple;
-	bh=5fcUZDxUUsOJAOxYwsveN7Y1n6wn1/i68YMi/HyZzeA=;
+	s=arc-20240116; t=1731408123; c=relaxed/simple;
+	bh=V90/5f0vM2WVnzWRMOczzYxGmJFmpzxybS/HsCY1m24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtCZS8vId6ETEGoNaMztA8o56qqxFSXjr2uLidXnMsB2DF1EiC5a7oQDaL1Xq5F9UZL/Lha88jtKsSZiXmWnvp6sukW5np/nNNZ639D8e0Xy1+Mm6BVMVqN2diLz796hwyUr6Ue5aVBgYvCKvu+yBUvDQC/mC/FjvIqtuNIzMn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWt70MpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE14C4CECD;
-	Tue, 12 Nov 2024 10:39:45 +0000 (UTC)
+	 MIME-Version; b=Z+oeH1VoxLM9VlWI30Zp5ZF5u2ibVq8PNhf4hF1vPZANTe79fJoc41Hj/iI9dZnkDrzXbMMCG4XNO4FULMrlniSdJSz/WQjo2thSnZa53Z/vimkO2BIo8pUXMCzIS0Zxl7ETYe/ZtvIIPoyv/5BbMKV9E2L77Ki3NIF3y78cP6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtDLtBgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C7C4CED6;
+	Tue, 12 Nov 2024 10:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407986;
-	bh=5fcUZDxUUsOJAOxYwsveN7Y1n6wn1/i68YMi/HyZzeA=;
+	s=korg; t=1731408123;
+	bh=V90/5f0vM2WVnzWRMOczzYxGmJFmpzxybS/HsCY1m24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWt70MpJlYdokyjJdyRpTTu3CL4B0QYVmA3qM6KsioNMHdDSlsEBsIIfTopW7sFDG
-	 nBnsdsdKcU6utQ9ZGeYto0mws3MtHTmFijYVZlS+4wqRA9v98BKBm6XRvKqI7kfoHa
-	 XigaN7tA3iUKimHwGqhoKJs6e2MRJQf0bVTXn4EU=
+	b=dtDLtBgbp0OG0Q6d0z7C+jJ23+NuVRxYMRyrdIzMTKlVrOC/6wuJmztmq6r6YyOeM
+	 UE0N1uOwVqx2EXC2XbKOlSwCOyH4AOJ4/mw/ELNTnSh8uF7TbrXzafKX1SOD3e8Zsa
+	 adodS0yFC8oSzbsuxRApSmgbv7LXNg6FeQ6qLE6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinqi Zhang <quic_xinqzhan@quicinc.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+	Qingqing Zhou <quic_qqzhou@quicinc.com>,
+	Kuldeep Singh <quic_kuldsing@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 024/184] firmware: arm_scmi: Fix slab-use-after-free in scmi_bus_notifier()
-Date: Tue, 12 Nov 2024 11:19:42 +0100
-Message-ID: <20241112101901.794833502@linuxfoundation.org>
+Subject: [PATCH 6.11 025/184] firmware: qcom: scm: Return -EOPNOTSUPP for unsupported SHM bridge enabling
+Date: Tue, 12 Nov 2024 11:19:43 +0100
+Message-ID: <20241112101901.833194343@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -68,153 +69,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xinqi Zhang <quic_xinqzhan@quicinc.com>
+From: Qingqing Zhou <quic_qqzhou@quicinc.com>
 
-[ Upstream commit 295416091e44806760ccf753aeafdafc0ae268f3 ]
+[ Upstream commit f489f6c6eb26482010470d77bad3901a3de1b166 ]
 
-The scmi_dev->name is released prematurely in __scmi_device_destroy(),
-which causes slab-use-after-free when accessing scmi_dev->name in
-scmi_bus_notifier(). So move the release of scmi_dev->name to
-scmi_device_release() to avoid slab-use-after-free.
+When enabling SHM bridge, QTEE returns 0 and sets error 4 in result to
+qcom_scm for unsupported platforms. Currently, tzmem interprets this as
+an unknown error rather than recognizing it as an unsupported platform.
 
-  |  BUG: KASAN: slab-use-after-free in strncmp+0xe4/0xec
-  |  Read of size 1 at addr ffffff80a482bcc0 by task swapper/0/1
-  |
-  |  CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.6.38-debug #1
-  |  Hardware name: Qualcomm Technologies, Inc. SA8775P Ride (DT)
-  |  Call trace:
-  |   dump_backtrace+0x94/0x114
-  |   show_stack+0x18/0x24
-  |   dump_stack_lvl+0x48/0x60
-  |   print_report+0xf4/0x5b0
-  |   kasan_report+0xa4/0xec
-  |   __asan_report_load1_noabort+0x20/0x2c
-  |   strncmp+0xe4/0xec
-  |   scmi_bus_notifier+0x5c/0x54c
-  |   notifier_call_chain+0xb4/0x31c
-  |   blocking_notifier_call_chain+0x68/0x9c
-  |   bus_notify+0x54/0x78
-  |   device_del+0x1bc/0x840
-  |   device_unregister+0x20/0xb4
-  |   __scmi_device_destroy+0xac/0x280
-  |   scmi_device_destroy+0x94/0xd0
-  |   scmi_chan_setup+0x524/0x750
-  |   scmi_probe+0x7fc/0x1508
-  |   platform_probe+0xc4/0x19c
-  |   really_probe+0x32c/0x99c
-  |   __driver_probe_device+0x15c/0x3c4
-  |   driver_probe_device+0x5c/0x170
-  |   __driver_attach+0x1c8/0x440
-  |   bus_for_each_dev+0xf4/0x178
-  |   driver_attach+0x3c/0x58
-  |   bus_add_driver+0x234/0x4d4
-  |   driver_register+0xf4/0x3c0
-  |   __platform_driver_register+0x60/0x88
-  |   scmi_driver_init+0xb0/0x104
-  |   do_one_initcall+0xb4/0x664
-  |   kernel_init_freeable+0x3c8/0x894
-  |   kernel_init+0x24/0x1e8
-  |   ret_from_fork+0x10/0x20
-  |
-  |  Allocated by task 1:
-  |   kasan_save_stack+0x2c/0x54
-  |   kasan_set_track+0x2c/0x40
-  |   kasan_save_alloc_info+0x24/0x34
-  |   __kasan_kmalloc+0xa0/0xb8
-  |   __kmalloc_node_track_caller+0x6c/0x104
-  |   kstrdup+0x48/0x84
-  |   kstrdup_const+0x34/0x40
-  |   __scmi_device_create.part.0+0x8c/0x408
-  |   scmi_device_create+0x104/0x370
-  |   scmi_chan_setup+0x2a0/0x750
-  |   scmi_probe+0x7fc/0x1508
-  |   platform_probe+0xc4/0x19c
-  |   really_probe+0x32c/0x99c
-  |   __driver_probe_device+0x15c/0x3c4
-  |   driver_probe_device+0x5c/0x170
-  |   __driver_attach+0x1c8/0x440
-  |   bus_for_each_dev+0xf4/0x178
-  |   driver_attach+0x3c/0x58
-  |   bus_add_driver+0x234/0x4d4
-  |   driver_register+0xf4/0x3c0
-  |   __platform_driver_register+0x60/0x88
-  |   scmi_driver_init+0xb0/0x104
-  |   do_one_initcall+0xb4/0x664
-  |   kernel_init_freeable+0x3c8/0x894
-  |   kernel_init+0x24/0x1e8
-  |   ret_from_fork+0x10/0x20
-  |
-  |  Freed by task 1:
-  |   kasan_save_stack+0x2c/0x54
-  |   kasan_set_track+0x2c/0x40
-  |   kasan_save_free_info+0x38/0x5c
-  |   __kasan_slab_free+0xe8/0x164
-  |   __kmem_cache_free+0x11c/0x230
-  |   kfree+0x70/0x130
-  |   kfree_const+0x20/0x40
-  |   __scmi_device_destroy+0x70/0x280
-  |   scmi_device_destroy+0x94/0xd0
-  |   scmi_chan_setup+0x524/0x750
-  |   scmi_probe+0x7fc/0x1508
-  |   platform_probe+0xc4/0x19c
-  |   really_probe+0x32c/0x99c
-  |   __driver_probe_device+0x15c/0x3c4
-  |   driver_probe_device+0x5c/0x170
-  |   __driver_attach+0x1c8/0x440
-  |   bus_for_each_dev+0xf4/0x178
-  |   driver_attach+0x3c/0x58
-  |   bus_add_driver+0x234/0x4d4
-  |   driver_register+0xf4/0x3c0
-  |   __platform_driver_register+0x60/0x88
-  |   scmi_driver_init+0xb0/0x104
-  |   do_one_initcall+0xb4/0x664
-  |   kernel_init_freeable+0x3c8/0x894
-  |   kernel_init+0x24/0x1e8
-  |   ret_from_fork+0x10/0x20
+Error log:
+[    0.177224] qcom_scm firmware:scm: error (____ptrval____): Failed to enable the TrustZone memory allocator
+[    0.177244] qcom_scm firmware:scm: probe with driver qcom_scm failed with error 4
 
-Fixes: ee7a9c9f67c5 ("firmware: arm_scmi: Add support for multiple device per protocol")
-Signed-off-by: Xinqi Zhang <quic_xinqzhan@quicinc.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Message-Id: <20241016-fix-arm-scmi-slab-use-after-free-v2-1-1783685ef90d@quicinc.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+To address this, modify the function call qcom_scm_shm_bridge_enable()
+to remap result to indicate an unsupported error. This way, tzmem will
+correctly identify it as an unsupported platform case instead of
+reporting it as an error.
+
+Fixes: 178e19c0df1b ("firmware: qcom: scm: add support for SHM bridge operations")
+Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
+Co-developed-by: Kuldeep Singh <quic_kuldsing@quicinc.com>
+Signed-off-by: Kuldeep Singh <quic_kuldsing@quicinc.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/20241022192148.1626633-1-quic_kuldsing@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/bus.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
-index 96b2e5f9a8ef0..157172a5f2b57 100644
---- a/drivers/firmware/arm_scmi/bus.c
-+++ b/drivers/firmware/arm_scmi/bus.c
-@@ -325,7 +325,10 @@ EXPORT_SYMBOL_GPL(scmi_driver_unregister);
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index a50d8e8d0f1b8..6436bd09587a5 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -112,6 +112,7 @@ enum qcom_scm_qseecom_tz_cmd_info {
+ };
  
- static void scmi_device_release(struct device *dev)
+ #define QSEECOM_MAX_APP_NAME_SIZE		64
++#define SHMBRIDGE_RESULT_NOTSUPP		4
+ 
+ /* Each bit configures cold/warm boot address for one of the 4 CPUs */
+ static const u8 qcom_scm_cpu_cold_bits[QCOM_SCM_BOOT_MAX_CPUS] = {
+@@ -1353,6 +1354,8 @@ EXPORT_SYMBOL_GPL(qcom_scm_lmh_dcvsh_available);
+ 
+ int qcom_scm_shm_bridge_enable(void)
  {
--	kfree(to_scmi_dev(dev));
-+	struct scmi_device *scmi_dev = to_scmi_dev(dev);
++	int ret;
 +
-+	kfree_const(scmi_dev->name);
-+	kfree(scmi_dev);
+ 	struct qcom_scm_desc desc = {
+ 		.svc = QCOM_SCM_SVC_MP,
+ 		.cmd = QCOM_SCM_MP_SHM_BRIDGE_ENABLE,
+@@ -1365,7 +1368,15 @@ int qcom_scm_shm_bridge_enable(void)
+ 					  QCOM_SCM_MP_SHM_BRIDGE_ENABLE))
+ 		return -EOPNOTSUPP;
+ 
+-	return qcom_scm_call(__scm->dev, &desc, &res) ?: res.result[0];
++	ret = qcom_scm_call(__scm->dev, &desc, &res);
++
++	if (ret)
++		return ret;
++
++	if (res.result[0] == SHMBRIDGE_RESULT_NOTSUPP)
++		return -EOPNOTSUPP;
++
++	return res.result[0];
  }
+ EXPORT_SYMBOL_GPL(qcom_scm_shm_bridge_enable);
  
- static void __scmi_device_destroy(struct scmi_device *scmi_dev)
-@@ -338,7 +341,6 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
- 	if (scmi_dev->protocol_id == SCMI_PROTOCOL_SYSTEM)
- 		atomic_set(&scmi_syspower_registered, 0);
- 
--	kfree_const(scmi_dev->name);
- 	ida_free(&scmi_bus_id, scmi_dev->id);
- 	device_unregister(&scmi_dev->dev);
- }
-@@ -410,7 +412,6 @@ __scmi_device_create(struct device_node *np, struct device *parent,
- 
- 	return scmi_dev;
- put_dev:
--	kfree_const(scmi_dev->name);
- 	put_device(&scmi_dev->dev);
- 	ida_free(&scmi_bus_id, id);
- 	return NULL;
 -- 
 2.43.0
 
