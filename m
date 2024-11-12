@@ -1,140 +1,184 @@
-Return-Path: <stable+bounces-92828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649FF9C60B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:46:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C8D9C60CE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187091F2151E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:46:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505821F23841
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55121218335;
-	Tue, 12 Nov 2024 18:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TNZTecwv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B283217F27;
+	Tue, 12 Nov 2024 18:51:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C147B219C9F
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 18:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDD22144D8;
+	Tue, 12 Nov 2024 18:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731437077; cv=none; b=u8+XTfapv/2GQuEE8YK6xNzXBoTj48UMx+Aqy212pVCgcNao5Ek5e9AW+VdmiGjkF2wq+3RDUNq0XiBVuGyB9Xa9jvVPnFW16qFWF2k4OAXai0TcXg5uIaUrjsqFskBOKgdHNhE5ZgPvBv4s+WMKAmzlbJ1czu7eEUkSQlB7nbY=
+	t=1731437514; cv=none; b=jhef3NIUv9xLu4eJfKzez8ojy7y+KNVpvJ50V0CDOYbg57pAQ1GPmNPczjseC/PH/H1AIAVQ+zs85LqZLnL9mwqsEKR6ZWqi4GB/ehzNhL6RiZjwl6O2Vg71OQgK/OsM5QBDCpNOPCx9xh1MJl5YOksQd4o0cwISrXnKoT36UD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731437077; c=relaxed/simple;
-	bh=Oa/YrficsfeyjH0/jTjfnABLWOfA6T78uM65AF9s+o8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JuZL0G+QQi+wmQvtZtKh0ejNJyTI5zFJrDbIg41XZ/e/oPp74Gmy2ResR19915oVmKN1gcamZT+MFY2VKZMFFyO+YRVi/x4wlnQtehXyhMgYk5/Gef0vmMkgKvTKUVI66HrpkXwhjdlCvc2OrfCIDcpFk34BgA24PrHCw7kUQfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TNZTecwv; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6e9ba45d67fso55975177b3.1
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 10:44:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731437073; x=1732041873; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xGvVgCeLO47x1MsXySaQq6071hjPH/NhHOthZqYhKSQ=;
-        b=TNZTecwvlx2iw0NB+5v5GER1r97bOxENB1eMz5KB28cOyVBciLOVze0vhbmFNskiIt
-         iD/lRXPfodp/5YeLrbpyMMqdOhSkqLdIp80dkqWUST5hc8JwXcCizlA5A9HF3sMMLGQo
-         UanHNml33M3SSmTxkqbFYpfZ5RQd2pe8NrG/bKY6f92RKZ0NrFmnTGu4WtwYXL9ASfAc
-         XVhHDMhDD5YqURN7lFoA8LyFLSeNMOSOeikTz9Zal1LZOFZbBXaW9m3n12Vze65n0Miz
-         m8CyvxWhiaZVQz2fpXkHCwgr0Tz3m+PynHPnL0X292CoDpa2y1+Qj3X/Dpk3hCxPAfLZ
-         QNUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731437073; x=1732041873;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xGvVgCeLO47x1MsXySaQq6071hjPH/NhHOthZqYhKSQ=;
-        b=bAzmex1jXdoWWV2bQaYpBWjFwBnCNsFO57sMYNQJQKGI2lARbfIkGhOAMEQDwPPWpB
-         E4Vg+fRZLPf99fe2KbG6U6W1zU17UFBUAj2JWX0Y5WeblfayyxQV/aNQTi/E0WCB2yIW
-         9scdOHH+mpL4/iSysjNrjrASp4lSj7ekLeD+oy5BfL47CaCU/K5bPDw3hMMEqk87C+SX
-         1eOVoim38aDaIkNnpuWskwrMS7YV8+FfGCT3pETMN0nD3WUOKCoiePuNS/z7h7GcKceW
-         XoMGRgSoyf5+61/lj7IFnoFX8XOLKGG9ECyCjhGtd011dr4yBg+GbzwS1GPRdsmTdJW1
-         WA3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUsS7FrOc7LWy4fE0/rGgunaxRX8+uirHrswY47OnHTwttIWpo6gJrbRGW7YGUCotFm3D11veo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6M1nxkVIzjaALJFy0n1YQPh5SSSZNTbkKMU9ITyEJxO3O0G92
-	8AGOgtz8AZa26eKTXwKhu62TpwIuxTdxmHNS9ig+CjMwpR7v5/vu9O1Q1Tv0Cfx29Fp5wz7TCpg
-	Tuo+3MjE/g1elQ9+eSp6ygEM0sEAlBQV4nuqmnA==
-X-Google-Smtp-Source: AGHT+IEe8csqC3Pg0F21RvUMA9aG223tYNBFweh8Drp5qTSmfQtunv7apTIfO3K79mr2mEtEH9f9z4XcBwW5aOMunNg=
-X-Received: by 2002:a05:690c:2501:b0:6dd:cdd7:ce49 with SMTP id
- 00721157ae682-6eca4640ff7mr44651927b3.6.1731437073569; Tue, 12 Nov 2024
- 10:44:33 -0800 (PST)
+	s=arc-20240116; t=1731437514; c=relaxed/simple;
+	bh=IZb9Qolb6oqweuQOCiBsezlbcxbtYXIsJBMpLCYyCo0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hFhSq9EXxiz2foKB+PZ1FYEsCMLRqrpQfRq0l/xtYZSpz5KetZjf1jvWlNgAxJO4uRDTbTkmfiA6zKD8h40Zb24dLKrNW9hiszsjtIXtZLA4z6LTjRgkkF1lyM9uf/17+JUPPqVREFnpB+6yg7U8V++oYjzaKDCRostUxTMffSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC1801516;
+	Tue, 12 Nov 2024 10:52:20 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EF473F66E;
+	Tue, 12 Nov 2024 10:51:49 -0800 (PST)
+Message-ID: <33f8430e-0adc-4060-afb5-2cc5c79c8dec@arm.com>
+Date: Tue, 12 Nov 2024 18:51:48 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110114700.622372-1-aurelien@aurel32.net>
-In-Reply-To: <20241110114700.622372-1-aurelien@aurel32.net>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 12 Nov 2024 19:43:57 +0100
-Message-ID: <CAPDyKFp4t0zHo_sJ3F7D1atwiPK+e38KbhTfcr76Jv+32yUw6w@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: dw_mmc: Fix IDMAC operation with pages
- bigger than 4K"
-To: Aurelien Jarno <aurelien@aurel32.net>
-Cc: linux-kernel@vger.kernel.org, Jaehoon Chung <jh80.chung@samsung.com>, 
-	Sam Protsenko <semen.protsenko@linaro.org>, 
-	"open list:SYNOPSYS DESIGNWARE MMC/SD/SDIO DRIVER" <linux-mmc@vger.kernel.org>, Ron Economos <re@w6rz.net>, Adam Green <greena88@gmail.com>, 
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: rockchip: Fix vdd_gpu voltage constraints on
+ PinePhone Pro
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org
+References: <0718feb8e95344a0b615f61e6d909f6e105e3bf9.1731264205.git.dsimic@manjaro.org>
+ <607a731c-41e9-497a-a08c-f718339610ae@arm.com>
+ <fdf58f3e9fcb4c672a4bb114fbdab60d@manjaro.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <fdf58f3e9fcb4c672a4bb114fbdab60d@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, 10 Nov 2024 at 12:47, Aurelien Jarno <aurelien@aurel32.net> wrote:
->
-> The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
-> bigger than 4K") increased the max_req_size, even for 4K pages, causing
-> various issues:
-> - Panic booting the kernel/rootfs from an SD card on Rockchip RK3566
-> - Panic booting the kernel/rootfs from an SD card on StarFive JH7100
-> - "swiotlb buffer is full" and data corruption on StarFive JH7110
->
-> At this stage no fix have been found, so it's probably better to just
-> revert the change.
->
-> This reverts commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890.
->
-> Cc: stable@vger.kernel.org
-> Cc: Sam Protsenko <semen.protsenko@linaro.org>
-> Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
-> Closes: https://lore.kernel.org/linux-mmc/614692b4-1dbe-31b8-a34d-cb6db1909bb7@w6rz.net/
-> Closes: https://lore.kernel.org/linux-mmc/CAC8uq=Ppnmv98mpa1CrWLawWoPnu5abtU69v-=G-P7ysATQ2Pw@mail.gmail.com/
-> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+On 12/11/2024 2:36 pm, Dragan Simic wrote:
+> Hello Robin,
+> 
+> On 2024-11-12 15:19, Robin Murphy wrote:
+>> On 10/11/2024 6:44 pm, Dragan Simic wrote:
+>>> The regulator-{min,max}-microvolt values for the vdd_gpu regulator in 
+>>> the
+>>> PinePhone Pro device dts file are too restrictive, which prevents the 
+>>> highest
+>>> GPU OPP from being used, slowing the GPU down unnecessarily.  Let's 
+>>> fix that
+>>> by making the regulator-{min,max}-microvolt values less strict, using 
+>>> the
+>>> voltage range that the Silergy SYR838 chip used for the vdd_gpu 
+>>> regulator is
+>>> actually capable of producing. [1][2]
+>>
+>> Specifying the absolute limits which the regulator driver necessarily
+>> already knows doesn't seem particularly useful... Moreover, the RK3399
+>> datasheet specifies the operating range for GPU_VDD as 0.80-1.20V, so
+>> at the very least, allowing the regulator to go outside that range
+>> seems inadvisable.
+> 
+> Indeed, which is why I already mentioned in the patch description
+> that I do plan to update the constraints of all regulators to match
+> the summary of the constraints of their consumers.  Though, I plan
+> to do that later, as a separate directory-wide cleanup, for which
+> I must find and allocate a substantial amount of time, to make sure
+> there will be no mistakes.
 
-Applied for fixes, thanks!
+Sure, but even if every other DT needs fixing, that still doesn't make 
+it a good idea to deliberately introduce the same mistake to *this* DT 
+and thus create even more work to fix it again. There's no value in 
+being consistently wrong over inconsistently wrong - if there's 
+justification for changing this DT at all, change it to be right.
 
-Kind regards
-Uffe
+>> However there's a separate datasheet for the
+>> RK3399-T variant, which does specify this 875-975mV range and a
+>> maximum GPU clock of 600MHz, along with the same 1.5GHz max.
+>> Cortex-A72 clock as advertised for RK3399S, so it seems quite possible
+>> that these GPU constraints here are in fact intentional as well.
+>> Obviously users are free to overclock and overvolt if they wish - I do
+>> for my actively-cooled RK3399 board :) - but it's a different matter
+>> for mainline to force it upon them.
+> 
+> Well, maybe the RK3399S is the same in that regard as the RK3399-T,
+> but maybe it actually isn't -- unfortunately, we don't have some
+> official RK3399S datasheet that would provide us with the required
+> information.  As another, somewhat unrelated example, we don't have
+> some official documentation to tell us is the RK3399S supposed not
+> to have working PCI Express interface, which officially isn't present
+> in the RK3399-T variant.
 
+Looking back at the original submission, v2 *was* proposing the RK3399-T 
+OPPs, with the GPU capped at 600MHz, and it was said that those are what 
+PPP *should* be using[1]. It seems there was a semantic objection to 
+having a separate rk3399-t-opp.dtsi at the time, and when the main DTS 
+was reworked for v3 the 800MHz GPU OPP seems to have been overlooked. 
+However, since rk3399-t.dtsi does now exist anyway, it would seem more 
+logical to just use that instead of including rk3399.dtsi and then 
+overriding it to be pretty much equivalent to the T variant anyway.
 
-> ---
->  drivers/mmc/host/dw_mmc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> I have posted a patch to fix the issue, but unfortunately it only fixes
-> the JH7110 case:
-> https://lore.kernel.org/linux-mmc/20241020142931.138277-1-aurelien@aurel32.net/
->
-> diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-> index 41e451235f637..e9f6e4e622901 100644
-> --- a/drivers/mmc/host/dw_mmc.c
-> +++ b/drivers/mmc/host/dw_mmc.c
-> @@ -2957,8 +2957,8 @@ static int dw_mci_init_slot(struct dw_mci *host)
->         if (host->use_dma == TRANS_MODE_IDMAC) {
->                 mmc->max_segs = host->ring_size;
->                 mmc->max_blk_size = 65535;
-> -               mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
-> -               mmc->max_seg_size = mmc->max_req_size;
-> +               mmc->max_seg_size = 0x1000;
-> +               mmc->max_req_size = mmc->max_seg_size * host->ring_size;
->                 mmc->max_blk_count = mmc->max_req_size / 512;
->         } else if (host->use_dma == TRANS_MODE_EDMAC) {
->                 mmc->max_segs = 64;
-> --
-> 2.45.2
->
+Thanks,
+Robin.
+
+[1] 
+https://lore.kernel.org/linux-rockchip/CAN1fySWVVTeGHAD=_hFH+ZdcR_AEiBc0wqes9Y4VRzB=zcdvSw@mail.gmail.com/
+
+> However, I fully agree that forcing any kind of an overclock is not
+> what we want to do.  Thus, I'll do my best, as I already noted in this
+> thread, to extract the dtb from the "reference" Android build that
+> Rockchip itself provided for the RK3399S-based PinePhone Pro.  That's
+> closest to the official documentation for the RK3399S variant that we
+> can get our hands on.
+> 
+>>> This also eliminates the following error messages from the kernel log:
+>>>
+>>>    core: _opp_supported_by_regulators: OPP minuV: 1100000 maxuV: 
+>>> 1150000, not supported by regulator
+>>>    panfrost ff9a0000.gpu: _opp_add: OPP not supported by regulators 
+>>> (800000000)
+>>>
+>>> These changes to the regulator-{min,max}-microvolt values make the 
+>>> PinePhone
+>>> Pro device dts consistent with the dts files for other Rockchip 
+>>> RK3399-based
+>>> boards and devices.  It's possible to be more strict here, by 
+>>> specifying the
+>>> regulator-{min,max}-microvolt values that don't go outside of what 
+>>> the GPU
+>>> actually may use, as the consumer of the vdd_gpu regulator, but those 
+>>> changes
+>>> are left for a later directory-wide regulator cleanup.
+>>>
+>>> [1] 
+>>> https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
+>>> [2] 
+>>> https://www.t-firefly.com/download/Firefly-RK3399/docs/Chip%20Specifications/DC-DC_SYR837_838.pdf
+>>>
+>>> Fixes: 78a21c7d5952 ("arm64: dts: rockchip: Add initial support for 
+>>> Pine64 PinePhone Pro")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+>>> ---
+>>>   arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 4 ++--
+>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts 
+>>> b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> index 1a44582a49fb..956d64f5b271 100644
+>>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> @@ -410,8 +410,8 @@ vdd_gpu: regulator@41 {
+>>>           pinctrl-names = "default";
+>>>           pinctrl-0 = <&vsel2_pin>;
+>>>           regulator-name = "vdd_gpu";
+>>> -        regulator-min-microvolt = <875000>;
+>>> -        regulator-max-microvolt = <975000>;
+>>> +        regulator-min-microvolt = <712500>;
+>>> +        regulator-max-microvolt = <1500000>;
+>>>           regulator-ramp-delay = <1000>;
+>>>           regulator-always-on;
+>>>           regulator-boot-on;
 
