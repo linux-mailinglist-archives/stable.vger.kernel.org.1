@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B620B9C5364
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F7B9C548A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47BB41F2399C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64ABD1F2105C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249312139DA;
-	Tue, 12 Nov 2024 10:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A718421C193;
+	Tue, 12 Nov 2024 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2D3HMaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlzBVVJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D419121262C;
-	Tue, 12 Nov 2024 10:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D621C189;
+	Tue, 12 Nov 2024 10:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407167; cv=none; b=IvuwvFQ04qut092aiUYbdWuBNsZ1BqGiLEg5f1Ga6z07oNVytr6SbnjrtRrJTGVdKc+SHQtNvEIDhvnLWmrwxDCNdnCCQ/wcDUMlXRSO2nS3EQJ3BN+YwyARSPzAW+jkMxbWfVKb5daY8yNRw2tTnnndCWTu9SdzM2TsoAdKPi4=
+	t=1731407809; cv=none; b=b4dJQjpbJmt6Qfj9f6I68h3suh2BehEdeCPfxZWU89But7WOTxIBW7bHItRgKadAKWPFnm8hL6hhJulwBspiC0y63/zdDX4JI3mZhW2qgEi+XRfhYO2aYFy8UrfVgQ2pV2z0xdPBPFRYSFr/ZiroMvLgksx0AOnQx9SguqVwnpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407167; c=relaxed/simple;
-	bh=ypxDzIjP+b5/L7GHN7n7vhjOB65dCPV6tMhXCZobass=;
+	s=arc-20240116; t=1731407809; c=relaxed/simple;
+	bh=yTPJMTT2GpSKHQO5+anLFClTVO0taON68QOjUwRTiaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FvtmXMxod+VK993o4orVRK4yBrCJaEM/Xjs/fTjzhrMPNyAJ3XEcIaTf2mfLy/4tlu3mewV7vGGBRepQUJTmrAoJsZuXJGNWHqhuTQh0TljFUxpyBl59bD4B4WeqlsgWdNnzKCYUo8+hE4aSIxps4cceeGI8USlJMAquiQ6FY8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2D3HMaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B81C4CECD;
-	Tue, 12 Nov 2024 10:26:07 +0000 (UTC)
+	 MIME-Version; b=OoeeZ7A0LAZHkCedrB1VcJ1iXZpuJfwPjSVFHEd/N4m/K1utnbN7NfKtz0OOQuRuMiW0l8OAXG4uX7m/By/PsUrfTGRIOOt0eJh7Mxk33L43bSzkM7JeNN7dpL5Tz5tqKWCnTOJPY7Cuh3XX3tEKhqAHgo/2O0atDM+iMNiSHEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlzBVVJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8BCC4CED4;
+	Tue, 12 Nov 2024 10:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407167;
-	bh=ypxDzIjP+b5/L7GHN7n7vhjOB65dCPV6tMhXCZobass=;
+	s=korg; t=1731407809;
+	bh=yTPJMTT2GpSKHQO5+anLFClTVO0taON68QOjUwRTiaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2D3HMaJ3aIYaoK8q0AsQ6HnPy4yofGMql0+JVFOZRdcKRYgRn4fhOb0C5Yo37mwO
-	 h9XGv56K5uYHkk+tprTODLjIpR+KPSlYmCtVrzG/G1EZnzvGSBt4sHzSDjruuGeTr3
-	 SvpNYoTOyUrWr7knFtf3VcQGiRDJM+sRNGoBVKh8=
+	b=HlzBVVJSIc4oBSvYRK+eAi8wAhX0iTRtOBKkMCJ+ToOdyAhoMbqC6xECXDd//V28O
+	 XvB0108nWRNykZPVyaLlAqvxUdRLTMu+m2NKRAFwkcoIAnVGrWbcZBaHIoIijbSKl8
+	 fO1D2cVoqgmHk4Zai+K+7j6Ac8cIVLLjSwLGuhMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 71/76] ALSA: usb-audio: Support jack detection on Dell dock
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 088/119] ALSA: usb-audio: Add quirk for HP 320 FHD Webcam
 Date: Tue, 12 Nov 2024 11:21:36 +0100
-Message-ID: <20241112101842.483292527@linuxfoundation.org>
+Message-ID: <20241112101852.077438108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,238 +58,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Schär <jan@jschaer.ch>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4b8ea38fabab45ad911a32a336416062553dfe9c ]
+commit dabc44c28f118910dea96244d903f0c270225669 upstream.
 
-The Dell WD15 dock has a headset and a line out port. Add support for
-detecting if a jack is inserted into one of these ports.
-For the headset jack, additionally determine if a mic is present.
+HP 320 FHD Webcam (03f0:654a) seems to have flaky firmware like other
+webcam devices that don't like the frequency inquiries.  Also, Mic
+Capture Volume has an invalid resolution, hence fix it to be 16 (as a
+blind shot).
 
-The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
-from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
-detection. Instead, jack detection works by sending HD Audio commands over
-vendor-type USB messages.
-
-I found out how it works by looking at USB captures on Windows.
-The audio codec is very similar to the one supported by
-sound/soc/codecs/rt298.c / rt298.h, some constant names and the mic
-detection are adapted from there. The realtek_add_jack function is adapted
-from build_connector_control in sound/usb/mixer.c.
-
-I tested this on a WD15 dock with the latest firmware.
-
-Signed-off-by: Jan Schär <jan@jschaer.ch>
-Link: https://lore.kernel.org/r/20220627171855.42338-1-jan@jschaer.ch
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1232768
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241105120220.5740-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 4413665dd6c5 ("ALSA: usb-audio: Add quirks for Dell WD19 dock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c | 167 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 167 insertions(+)
+ sound/usb/mixer.c  |    1 +
+ sound/usb/quirks.c |    2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 9d58f8d20f6a5..25bad7a791d7a 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -24,6 +24,7 @@
- #include <sound/asoundef.h>
- #include <sound/core.h>
- #include <sound/control.h>
-+#include <sound/hda_verbs.h>
- #include <sound/hwdep.h>
- #include <sound/info.h>
- #include <sound/tlv.h>
-@@ -1934,6 +1935,169 @@ static int snd_soundblaster_e1_switch_create(struct usb_mixer_interface *mixer)
- 					  NULL);
- }
- 
-+/*
-+ * Dell WD15 dock jack detection
-+ *
-+ * The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
-+ * from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
-+ * detection. Instead, jack detection works by sending HD Audio commands over
-+ * vendor-type USB messages.
-+ */
-+
-+#define HDA_VERB_CMD(V, N, D) (((N) << 20) | ((V) << 8) | (D))
-+
-+#define REALTEK_HDA_VALUE 0x0038
-+
-+#define REALTEK_HDA_SET		62
-+#define REALTEK_HDA_GET_OUT	88
-+#define REALTEK_HDA_GET_IN	89
-+
-+#define REALTEK_LINE1			0x1a
-+#define REALTEK_VENDOR_REGISTERS	0x20
-+#define REALTEK_HP_OUT			0x21
-+
-+#define REALTEK_CBJ_CTRL2 0x50
-+
-+#define REALTEK_JACK_INTERRUPT_NODE 5
-+
-+#define REALTEK_MIC_FLAG 0x100
-+
-+static int realtek_hda_set(struct snd_usb_audio *chip, u32 cmd)
-+{
-+	struct usb_device *dev = chip->dev;
-+	u32 buf = cpu_to_be32(cmd);
-+
-+	return snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_SET,
-+			       USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
-+			       REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+}
-+
-+static int realtek_hda_get(struct snd_usb_audio *chip, u32 cmd, u32 *value)
-+{
-+	struct usb_device *dev = chip->dev;
-+	int err;
-+	u32 buf = cpu_to_be32(cmd);
-+
-+	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_GET_OUT,
-+			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
-+			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+	if (err < 0)
-+		return err;
-+	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), REALTEK_HDA_GET_IN,
-+			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_IN,
-+			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
-+	if (err < 0)
-+		return err;
-+
-+	*value = be32_to_cpu(buf);
-+	return 0;
-+}
-+
-+static int realtek_ctl_connector_get(struct snd_kcontrol *kcontrol,
-+				     struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-+	struct snd_usb_audio *chip = cval->head.mixer->chip;
-+	u32 pv = kcontrol->private_value;
-+	u32 node_id = pv & 0xff;
-+	u32 sense;
-+	u32 cbj_ctrl2;
-+	bool presence;
-+	int err;
-+
-+	err = snd_usb_lock_shutdown(chip);
-+	if (err < 0)
-+		return err;
-+	err = realtek_hda_get(chip,
-+			      HDA_VERB_CMD(AC_VERB_GET_PIN_SENSE, node_id, 0),
-+			      &sense);
-+	if (err < 0)
-+		goto err;
-+	if (pv & REALTEK_MIC_FLAG) {
-+		err = realtek_hda_set(chip,
-+				      HDA_VERB_CMD(AC_VERB_SET_COEF_INDEX,
-+						   REALTEK_VENDOR_REGISTERS,
-+						   REALTEK_CBJ_CTRL2));
-+		if (err < 0)
-+			goto err;
-+		err = realtek_hda_get(chip,
-+				      HDA_VERB_CMD(AC_VERB_GET_PROC_COEF,
-+						   REALTEK_VENDOR_REGISTERS, 0),
-+				      &cbj_ctrl2);
-+		if (err < 0)
-+			goto err;
-+	}
-+err:
-+	snd_usb_unlock_shutdown(chip);
-+	if (err < 0)
-+		return err;
-+
-+	presence = sense & AC_PINSENSE_PRESENCE;
-+	if (pv & REALTEK_MIC_FLAG)
-+		presence = presence && (cbj_ctrl2 & 0x0070) == 0x0070;
-+	ucontrol->value.integer.value[0] = presence;
-+	return 0;
-+}
-+
-+static const struct snd_kcontrol_new realtek_connector_ctl_ro = {
-+	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
-+	.name = "", /* will be filled later manually */
-+	.access = SNDRV_CTL_ELEM_ACCESS_READ,
-+	.info = snd_ctl_boolean_mono_info,
-+	.get = realtek_ctl_connector_get,
-+};
-+
-+static int realtek_resume_jack(struct usb_mixer_elem_list *list)
-+{
-+	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+		       &list->kctl->id);
-+	return 0;
-+}
-+
-+static int realtek_add_jack(struct usb_mixer_interface *mixer,
-+			    char *name, u32 val)
-+{
-+	struct usb_mixer_elem_info *cval;
-+	struct snd_kcontrol *kctl;
-+
-+	cval = kzalloc(sizeof(*cval), GFP_KERNEL);
-+	if (!cval)
-+		return -ENOMEM;
-+	snd_usb_mixer_elem_init_std(&cval->head, mixer,
-+				    REALTEK_JACK_INTERRUPT_NODE);
-+	cval->head.resume = realtek_resume_jack;
-+	cval->val_type = USB_MIXER_BOOLEAN;
-+	cval->channels = 1;
-+	cval->min = 0;
-+	cval->max = 1;
-+	kctl = snd_ctl_new1(&realtek_connector_ctl_ro, cval);
-+	if (!kctl) {
-+		kfree(cval);
-+		return -ENOMEM;
-+	}
-+	kctl->private_value = val;
-+	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
-+	kctl->private_free = snd_usb_mixer_elem_free;
-+	return snd_usb_mixer_add_control(&cval->head, kctl);
-+}
-+
-+static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
-+{
-+	int err;
-+
-+	err = realtek_add_jack(mixer, "Line Out Jack", REALTEK_LINE1);
-+	if (err < 0)
-+		return err;
-+	err = realtek_add_jack(mixer, "Headphone Jack", REALTEK_HP_OUT);
-+	if (err < 0)
-+		return err;
-+	err = realtek_add_jack(mixer, "Headset Mic Jack",
-+			       REALTEK_HP_OUT | REALTEK_MIC_FLAG);
-+	if (err < 0)
-+		return err;
-+	return 0;
-+}
-+
- static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
- {
- 	u16 buf = 0;
-@@ -3272,6 +3436,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
- 		err = snd_soundblaster_e1_switch_create(mixer);
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1205,6 +1205,7 @@ static void volume_control_quirks(struct
+ 		}
  		break;
- 	case USB_ID(0x0bda, 0x4014): /* Dell WD15 dock */
-+		err = dell_dock_mixer_create(mixer);
-+		if (err < 0)
-+			break;
- 		err = dell_dock_mixer_init(mixer);
- 		break;
+ 	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
++	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
+ 		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+ 			usb_audio_info(chip,
+ 				"set resolution quirk: cval->res = 16\n");
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2016,6 +2016,8 @@ struct usb_audio_quirk_flags_table {
  
--- 
-2.43.0
-
+ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	/* Device matches */
++	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
 
 
 
