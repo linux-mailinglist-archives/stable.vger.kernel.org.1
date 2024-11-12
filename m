@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61F49C54A6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:47:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032D49C5506
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC6CB35DD8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE42A1F263F4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46372144A1;
-	Tue, 12 Nov 2024 10:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB62332D1;
+	Tue, 12 Nov 2024 10:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxWFNvcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngmqiEUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9313220EA2D;
-	Tue, 12 Nov 2024 10:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8653A2332C8;
+	Tue, 12 Nov 2024 10:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407471; cv=none; b=kyQALt+c0Er2NKpElenpXucXq+4vzWJCG+80BQ+vMd0+gL6Oq6aWfZWsJ3RoXpBs8mKIx1BE27qbTBeMzMkXkK14Ijv0uC9BAjbB92B6gycWZjubm2ObEMTE3kK9Oc5TjeT019MfB/QWXu7bMgh/fU03NDf3jT4d+irVXuug6Jg=
+	t=1731407880; cv=none; b=Br223A9g/NwhKwVg+JKKhv+05itNepO6Mt4YUrmL2OVBjSsMrF/waK0r7T93bFQgS+6R6otcG7Qyf3bhSqMtRXwzeo9jmz1vx+/F/xyW1mC0a7HKnW022xOohCCaT6cGBqQm7wKekbdXU55szisyscMheRRkazu9eyL4yeFMxGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407471; c=relaxed/simple;
-	bh=qJC/vVRZrmRnuMSllWyZwxv8kC5AYANCX97p8bv01Nw=;
+	s=arc-20240116; t=1731407880; c=relaxed/simple;
+	bh=y+kW2kzhSQjQSG2AeEcrjJKJ0Zp5Ys1QwKTIyyZ2jgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxQvQFxM5CJdXsThsVKfe4Eh42Zu9kfe29nLbIWNJegMhGMy+MSJCtwtjZAyLUvQ22KwuRzaz65B3q9usm07mCrXdACd1c2mML92w1rzUNE0TvyCtvcGweJwK46zA0y5V05EajXjUa9fZz2FRARXVzl3bXdgR7yCS3NAD1MEoxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxWFNvcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02598C4CECD;
-	Tue, 12 Nov 2024 10:31:10 +0000 (UTC)
+	 MIME-Version; b=avLfTGPBEa/4hKwAh5xBs2AgFEoY9Jbc/qOWR7P2+rsotdBs+gSuF24EmFNp5OYfVbh8/Slk8O5MHiuhsM52Fm3yqVu0Qd2jHJPDr0bGXMwEXnNl0rqj6JAmz4JPGz2I/3xO3nRWXbFKKDfOgdqGRGTRyJF2heAbufzhmDkmge8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngmqiEUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5F1C4CED8;
+	Tue, 12 Nov 2024 10:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407471;
-	bh=qJC/vVRZrmRnuMSllWyZwxv8kC5AYANCX97p8bv01Nw=;
+	s=korg; t=1731407880;
+	bh=y+kW2kzhSQjQSG2AeEcrjJKJ0Zp5Ys1QwKTIyyZ2jgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxWFNvcvTIiIJfRzPjreKH8+/Gj7WQnrtTod6dX5qMceJq7+NiR6tZqd1loJpxnr5
-	 fHUmAGyFuWyZhoA7eOEaKOUD/YFSKi15UYJ9DLDU6KsRQayywtIKKcm8oYrdFcf+6O
-	 TCZL8kKXQzY8TLSJLuhMfvNklG0dZS7SsKA6R2js=
+	b=ngmqiEUckJtZPjLymEBr/AcGIYK2u9Hm4ZHVADBy9RPUxL0Fx7q3hsvNQvkByyl7k
+	 AQJJeD0TNie01UwdFdos3+lDSu5dt/fyX05DOIiiG5u7v33IEwmXh40XfpXULiVZuX
+	 fEizZbLEJWj70r7u8srdvVcCpI9JglNL5wdzV1EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 86/98] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
-Date: Tue, 12 Nov 2024 11:21:41 +0100
-Message-ID: <20241112101847.526172788@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 094/119] arm64/sve: Discard stale CPU state when handling SVE traps
+Date: Tue, 12 Nov 2024 11:21:42 +0100
+Message-ID: <20241112101852.312087736@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit 7dd08a0b4193087976db6b3ee7807de7e8316f96 upstream.
+commit 751ecf6afd6568adc98f2a6052315552c0483d18 upstream.
 
-The "*cmd" variable can be controlled by the user via debugfs.  That means
-"new_cam" can be as high as 255 while the size of the uc->updated[] array
-is UCSI_MAX_ALTMODES (30).
+The logic for handling SVE traps manipulates saved FPSIMD/SVE state
+incorrectly, and a race with preemption can result in a task having
+TIF_SVE set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
+is stale (e.g. with SVE traps enabled). This has been observed to result
+in warnings from do_sve_acc() where SVE traps are not expected while
+TIF_SVE is set:
 
-The call tree is:
-ucsi_cmd() // val comes from simple_attr_write_xsigned()
--> ucsi_send_command()
-   -> ucsi_send_command_common()
-      -> ucsi_run_command() // calls ucsi->ops->sync_control()
-         -> ucsi_ccg_sync_control()
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
 
-Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/325102b3-eaa8-4918-a947-22aca1146586@stanley.mountain
+Warnings of this form have been reported intermittently, e.g.
+
+  https://lore.kernel.org/linux-arm-kernel/CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com/
+  https://lore.kernel.org/linux-arm-kernel/000000000000511e9a060ce5a45c@google.com/
+
+The race can occur when the SVE trap handler is preempted before and
+after manipulating the saved FPSIMD/SVE state, starting and ending on
+the same CPU, e.g.
+
+| void do_sve_acc(unsigned long esr, struct pt_regs *regs)
+| {
+|         // Trap on CPU 0 with TIF_SVE clear, SVE traps enabled
+|         // task->fpsimd_cpu is 0.
+|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
+|
+|         ...
+|
+|         // Preempted; migrated from CPU 0 to CPU 1.
+|         // TIF_FOREIGN_FPSTATE is set.
+|
+|         get_cpu_fpsimd_context();
+|
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
+|
+|         sve_init_regs() {
+|                 if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
+|                         ...
+|                 } else {
+|                         fpsimd_to_sve(current);
+|                         current->thread.fp_type = FP_STATE_SVE;
+|                 }
+|         }
+|
+|         put_cpu_fpsimd_context();
+|
+|         // Preempted; migrated from CPU 1 to CPU 0.
+|         // task->fpsimd_cpu is still 0
+|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
+|         // - Stale HW state is reused (with SVE traps enabled)
+|         // - TIF_FOREIGN_FPSTATE is cleared
+|         // - A return to userspace skips HW state restore
+| }
+
+Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
+by calling fpsimd_flush_task_state() to detach from the saved CPU
+state. This ensures that a subsequent context switch will not reuse the
+stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
+new state to be reloaded from memory prior to a return to userspace.
+
+Fixes: cccb78ce89c4 ("arm64/sve: Rework SVE access trap to convert state in registers")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/fpsimd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -441,6 +441,8 @@ static void ucsi_ccg_update_set_new_cam_
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1445,6 +1445,7 @@ static void sve_init_regs(void)
+ 	} else {
+ 		fpsimd_to_sve(current);
+ 		current->thread.fp_type = FP_STATE_SVE;
++		fpsimd_flush_task_state(current);
+ 	}
+ }
  
- 	port = uc->orig;
- 	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
-+	if (new_cam >= ARRAY_SIZE(uc->updated))
-+		return;
- 	new_port = &uc->updated[new_cam];
- 	cam = new_port->linked_idx;
- 	enter_new_mode = UCSI_SET_NEW_CAM_ENTER(*cmd);
 
 
 
