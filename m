@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115889C5617
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20159C566B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E80ABB2E8A8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63A4DB434AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5C22123E6;
-	Tue, 12 Nov 2024 10:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CE6219E29;
+	Tue, 12 Nov 2024 10:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7ppBuXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMp2/pAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F720B20B;
-	Tue, 12 Nov 2024 10:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0647214404;
+	Tue, 12 Nov 2024 10:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407141; cv=none; b=BpghYp/4XmSyMgxTAh2L5e7T9HNezsLyFmXK3dGhxjDv7oWZn79JlVTnbODsr3Bejf7rETLJfEa7mZ5Omanv3cBKb1l0BYaPBjR7ps42JwOA33ECQcRA43QYwg6raOYy2UfgDg8XwZ5GabnSUgIZxxhVV48gnXu8biMDviAYtxw=
+	t=1731408330; cv=none; b=Zn8DLPOcnqPBizwuBHkScmdp6X4CZll3pCA5F4oW2UeeuS2KV/YUrkuRuD0IpFrfabv0g9Df31fwnjbw+7kiiBYPl1j6K1lFlRx2hSqQUv3zS+kSJUV5R1s9ybE0IZvw08LjnFGzD2AnAARPe/jwGX7hJYK7D+LK12LK+XKZBW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407141; c=relaxed/simple;
-	bh=KW1rnn5kgWO+pD47FHk67BZhvBM3rQ7PDIpIwESL+PY=;
+	s=arc-20240116; t=1731408330; c=relaxed/simple;
+	bh=qhAxGBOpkCSpOnf/Yy32tXBLgkP4ojrKvOOWClQHRg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrRySYOPI+JFNQhuooDBtfBLo7U3x1wFyfI8BA2gNE/0ItTT/ps/575zAF0+lQqTIf5H6dRq8XfWY3WGv3eNLGT7LZ97DOwN44P9rYOc6L79q4cbrfLR+RFyqXNKrmL/2as4luKjaFZYaQbszaqJ8uMI9QLIl2ypmcJXnxhCxqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7ppBuXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F630C4CED4;
-	Tue, 12 Nov 2024 10:25:40 +0000 (UTC)
+	 MIME-Version; b=c+cBKrqVGK0rGCyE7B+EhJwA934282CamkLSQYuM+VTjZOIjXnp2UMl5EF8q7Q7x73t8g+KoaNeZ0RB5yOrGoJ3oIhIqb/w8GyrqRYo0rh/+i2oxVKFTTVt02zXtctadD12o916paRwGRNw3kH0pp9ph4M8NSYDH8WY+DJjr/tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMp2/pAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C66FC4CECD;
+	Tue, 12 Nov 2024 10:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407141;
-	bh=KW1rnn5kgWO+pD47FHk67BZhvBM3rQ7PDIpIwESL+PY=;
+	s=korg; t=1731408330;
+	bh=qhAxGBOpkCSpOnf/Yy32tXBLgkP4ojrKvOOWClQHRg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7ppBuXbT4sHOGV0S0K4GqXFgbqnvUE9ZaaUPp0NEfB+5zp2LGwKTsb4jIS7xO/rK
-	 WmXSI1Fie/7vNXRpEz4tsedi8R0wxDt8p4ZVGqVP1gKQKV6CiGRgbn58+xwbVglRxs
-	 xiL3cDIAiBucgsC/6aCMDG2hTd4guW0YSWuuf2uQ=
+	b=SMp2/pAAQjtim/mXarGtBei83Kq/SDnT/yY+Qt/ncziuzN8LIDQTcF3/JIi2+Hc6a
+	 aZrr1kza3Ye9KiebaHt7CxMoolfjSQwEhCwpwfNFKoI2nFFw2J2rM2ipEC26YDrU61
+	 780x+IWn7bECFXPQFc8rDzYSJpKqJLr8PETEiPgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/76] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 098/184] rpmsg: glink: Handle rejected intent request better
 Date: Tue, 12 Nov 2024 11:20:56 +0100
-Message-ID: <20241112101840.972948419@linuxfoundation.org>
+Message-ID: <20241112101904.625370588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
+commit a387e73fedd6307c0e194deaa53c42b153ff0bd6 upstream.
 
-If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
-though it's supposed to return error code, which is checked inside
-init_stream() in file tascam-stream.c.
+GLINK operates using pre-allocated buffers, aka intents, where incoming
+messages are aggregated before being passed up the stack. In the case
+that no suitable intents have been announced by the receiver, the sender
+can request an intent to be allocated.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The initial implementation of the response to such request dealt
+with two outcomes; granted allocations, and all other cases being
+considered -ECANCELLED (likely from "cancelling the operation as the
+remote is going down").
 
-Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But on some channels intent allocation is not supported, instead the
+remote will pre-allocate and announce a fixed number of intents for the
+sender to use. If for such channels an rpmsg_send() is being invoked
+before any channels have been announced, an intent request will be
+issued and as this comes back rejected the call fails with -ECANCELED.
+
+Given that this is reported in the same way as the remote being shut
+down, there's no way for the client to differentiate the two cases.
+
+In line with the original GLINK design, change the return value to
+-EAGAIN for the case where the remote rejects an intent allocation
+request.
+
+It's tempting to handle this case in the GLINK core, as we expect
+intents to show up in this case. But there's no way to distinguish
+between this case and a rejection for a too big allocation, nor is it
+possible to predict if a currently used (and seemingly suitable) intent
+will be returned for reuse or not. As such, returning the error to the
+client and allow it to react seems to be the only sensible solution.
+
+In addition to this, commit 'c05dfce0b89e ("rpmsg: glink: Wait for
+intent, not just request ack")' changed the logic such that the code
+always wait for an intent request response and an intent. This works out
+in most cases, but in the event that an intent request is rejected and no
+further intent arrives (e.g. client asks for a too big intent), the code
+will stall for 10 seconds and then return -ETIMEDOUT; instead of a more
+suitable error.
+
+This change also resulted in intent requests racing with the shutdown of
+the remote would be exposed to this same problem, unless some intent
+happens to arrive. A patch for this was developed and posted by Sarannya
+S [1], and has been incorporated here.
+
+To summarize, the intent request can end in 4 ways:
+- Timeout, no response arrived => return -ETIMEDOUT
+- Abort TX, the edge is going away => return -ECANCELLED
+- Intent request was rejected => return -EAGAIN
+- Intent request was accepted, and an intent arrived => return 0
+
+This patch was developed with input from Sarannya S, Deepak Kumar Singh,
+and Chris Lew.
+
+[1] https://lore.kernel.org/all/20240925072328.1163183-1-quic_deesin@quicinc.com/
+
+Fixes: c05dfce0b89e ("rpmsg: glink: Wait for intent, not just request ack")
+Cc: stable@vger.kernel.org
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Link: https://lore.kernel.org/r/20241023-pmic-glink-ecancelled-v2-1-ebc268129407@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/tascam/amdtp-tascam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/qcom_glink_native.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
-index 64d66a8025455..ad185ff3209db 100644
---- a/sound/firewire/tascam/amdtp-tascam.c
-+++ b/sound/firewire/tascam/amdtp-tascam.c
-@@ -244,7 +244,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
- 	err = amdtp_stream_init(s, unit, dir, flags, fmt,
- 			process_ctx_payloads, sizeof(struct amdtp_tscm));
- 	if (err < 0)
--		return 0;
-+		return err;
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1354,14 +1354,18 @@ static int qcom_glink_request_intent(str
+ 		goto unlock;
  
- 	if (dir == AMDTP_OUT_STREAM) {
- 		// Use fixed value for FDF field.
--- 
-2.43.0
-
+ 	ret = wait_event_timeout(channel->intent_req_wq,
+-				 READ_ONCE(channel->intent_req_result) >= 0 &&
+-				 READ_ONCE(channel->intent_received),
++				 READ_ONCE(channel->intent_req_result) == 0 ||
++				 (READ_ONCE(channel->intent_req_result) > 0 &&
++				  READ_ONCE(channel->intent_received)) ||
++				 glink->abort_tx,
+ 				 10 * HZ);
+ 	if (!ret) {
+ 		dev_err(glink->dev, "intent request timed out\n");
+ 		ret = -ETIMEDOUT;
++	} else if (glink->abort_tx) {
++		ret = -ECANCELED;
+ 	} else {
+-		ret = READ_ONCE(channel->intent_req_result) ? 0 : -ECANCELED;
++		ret = READ_ONCE(channel->intent_req_result) ? 0 : -EAGAIN;
+ 	}
+ 
+ unlock:
 
 
 
