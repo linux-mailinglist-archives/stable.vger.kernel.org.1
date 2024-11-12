@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD179C538D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7219C5323
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB9E284220
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91FFD2841E1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24FB2101A9;
-	Tue, 12 Nov 2024 10:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F8720EA37;
+	Tue, 12 Nov 2024 10:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcAgTGo5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkB3B4q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4BA19E992;
-	Tue, 12 Nov 2024 10:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CB41F26E3;
+	Tue, 12 Nov 2024 10:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407255; cv=none; b=SvBF2UFn/QHUubVI4irgXXv8bAU9Y0ewWqWk4O8iyiiD4dYUNOjzYeTAAU9ezIeTvvt0xWScAL0VqymqEP9vCiFE0AcMdcRaQc8EEvJBSzh3ATK6/w670j6ws7CctSoKrF2wAgUqZ3NQwQuzMkWK6Boq+xVVK0Wwz3Ve4mVx2/4=
+	t=1731406967; cv=none; b=QZz4xAdiClIa6zlg2K0TzHa5bkkSHk2RUomKs6cxxGpo9KnRYvTsaVx0B3v72FgRDNB4YVYOe3yIE1stQq+VaX/DtgwbwH6BSYzLHs5UB2iv9MSnyba+4BuNor0SWQHylWBmLqBKiMJjVJ/4lnYHOCNuX9qq0knK7EVWJ98/ZTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407255; c=relaxed/simple;
-	bh=pDR0Bcd1gyvp6tbRV6Q7X4RYnlbAuyI3NTtR8Xfo8YA=;
+	s=arc-20240116; t=1731406967; c=relaxed/simple;
+	bh=57femVrZ83SA65T1WnLOjKWW2/rcWUSd4W2061L8Cvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYSgqUREkpFKM5RnpV1n3fkgDsahoaD9hwHsU8LyJJLAzp6OF10fWVs/QgerscUojDG29FQvaXGfSInEpvdkAJuW+N7A6V99VVLLcHFxC4SWtvgfqzh0vWuLupVo0DU+xS/hgTwahL8vCA1VS1JVdHmOmR+fvsjevGLf3AJftmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcAgTGo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16609C4CECD;
-	Tue, 12 Nov 2024 10:27:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fmI3xkRx8SMskcPfTmO4rP2qLOPEOPtUDthqWVgaowGQGIE1KvbOYlkwZeRTDGhJO26KSdLeSERiBJ7jlktl86FQWcqfl7gZLDPDQQNX0uwXUUz8/Uyi+86+c5sNAOjgg2rgJa97I1VREylK5LeWEUo7R2ov/3h6DGUvWfgOni8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkB3B4q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28246C4CECD;
+	Tue, 12 Nov 2024 10:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407255;
-	bh=pDR0Bcd1gyvp6tbRV6Q7X4RYnlbAuyI3NTtR8Xfo8YA=;
+	s=korg; t=1731406966;
+	bh=57femVrZ83SA65T1WnLOjKWW2/rcWUSd4W2061L8Cvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcAgTGo5KF4R1R1JWd66OgwREU0BYwc2T0AQcxE31VzzbLtokGIpZ0swGTej6hbVd
-	 wKkjiBnBHUrIrkz2ZCe1kYIREHnnZNT5JbxU59JTXKbreZVZW8Vl9WV4SBsJKlzVhR
-	 zazGoAI1ag9yCeUNn4eSs8okJhWRjTjdbb4yScLo=
+	b=UkB3B4q9A/u1s1tBeN+1HegABOHXytoGF5V3v5SPCViu7x2mb/sVwV0uA3C3X6xpm
+	 WOUCca0v3T9tjhzk9ffexprz36vPBFQ23RzaKzbGdbewdRmMtDKD878ji58VAH4xQ6
+	 5yOLBLLPezOt9Dv8hhRPXX41dNPDACv659EoGHTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/98] nfs: avoid i_lock contention in nfs_clear_invalid_mapping
+Subject: [PATCH 5.15 11/76] HID: core: zero-initialize the report buffer
 Date: Tue, 12 Nov 2024 11:20:36 +0100
-Message-ID: <20241112101845.077512137@linuxfoundation.org>
+Message-ID: <20241112101840.212437609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit 867da60d463bb2a3e28c9235c487e56e96cffa00 ]
+[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
 
-Multi-threaded buffered reads to the same file exposed significant
-inode spinlock contention in nfs_clear_invalid_mapping().
+Since the report buffer is used by all kinds of drivers in various ways, let's
+zero-initialize it during allocation to make sure that it can't be ever used
+to leak kernel memory via specially-crafted report.
 
-Eliminate this spinlock contention by checking flags without locking,
-instead using smp_rmb and smp_load_acquire accordingly, but then take
-spinlock and double-check these inode flags.
-
-Also refactor nfs_set_cache_invalid() slightly to use
-smp_store_release() to pair with nfs_clear_invalid_mapping()'s
-smp_load_acquire().
-
-While this fix is beneficial for all multi-threaded buffered reads
-issued by an NFS client, this issue was identified in the context of
-surprisingly low LOCALIO performance with 4K multi-threaded buffered
-read IO.  This fix dramatically speeds up LOCALIO performance:
-
-before: read: IOPS=1583k, BW=6182MiB/s (6482MB/s)(121GiB/20002msec)
-after:  read: IOPS=3046k, BW=11.6GiB/s (12.5GB/s)(232GiB/20001msec)
-
-Fixes: 17dfeb911339 ("NFS: Fix races in nfs_revalidate_mapping")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 27ce405039bf ("HID: fix data access in implement()")
+Reported-by: Benoît Sevens <bsevens@google.com>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/hid/hid-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 82e846611d5e1..719448d81aed2 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -206,12 +206,15 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
- 		nfs_fscache_invalidate(inode, 0);
- 	flags &= ~NFS_INO_REVAL_FORCED;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 15f4a80477974..07c2e5e38fcba 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1664,7 +1664,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
  
--	nfsi->cache_validity |= flags;
-+	flags |= nfsi->cache_validity;
-+	if (inode->i_mapping->nrpages == 0)
-+		flags &= ~NFS_INO_INVALID_DATA;
+ 	u32 len = hid_report_len(report) + 7;
  
--	if (inode->i_mapping->nrpages == 0) {
--		nfsi->cache_validity &= ~NFS_INO_INVALID_DATA;
--		nfs_ooo_clear(nfsi);
--	} else if (nfsi->cache_validity & NFS_INO_INVALID_DATA) {
-+	/* pairs with nfs_clear_invalid_mapping()'s smp_load_acquire() */
-+	smp_store_release(&nfsi->cache_validity, flags);
-+
-+	if (inode->i_mapping->nrpages == 0 ||
-+	    nfsi->cache_validity & NFS_INO_INVALID_DATA) {
- 		nfs_ooo_clear(nfsi);
- 	}
- 	trace_nfs_set_cache_invalid(inode, 0);
-@@ -1331,6 +1334,13 @@ int nfs_clear_invalid_mapping(struct address_space *mapping)
- 					 TASK_KILLABLE|TASK_FREEZABLE_UNSAFE);
- 		if (ret)
- 			goto out;
-+		smp_rmb(); /* pairs with smp_wmb() below */
-+		if (test_bit(NFS_INO_INVALIDATING, bitlock))
-+			continue;
-+		/* pairs with nfs_set_cache_invalid()'s smp_store_release() */
-+		if (!(smp_load_acquire(&nfsi->cache_validity) & NFS_INO_INVALID_DATA))
-+			goto out;
-+		/* Slow-path that double-checks with spinlock held */
- 		spin_lock(&inode->i_lock);
- 		if (test_bit(NFS_INO_INVALIDATING, bitlock)) {
- 			spin_unlock(&inode->i_lock);
+-	return kmalloc(len, flags);
++	return kzalloc(len, flags);
+ }
+ EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
+ 
 -- 
 2.43.0
 
