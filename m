@@ -1,84 +1,87 @@
-Return-Path: <stable+bounces-92195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30EA9C4DAB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 05:13:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361FF9C4DE7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 05:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73AC028384C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 04:13:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A29AB26508
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 04:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DF620822F;
-	Tue, 12 Nov 2024 04:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4702207A17;
+	Tue, 12 Nov 2024 04:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="UyrUamGe"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="csVk/iTK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB063207A35
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 04:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16D91F81B5
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 04:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731384828; cv=none; b=TSDhZmWkYBugH4cpO2f9dnGDywjx4MdkgO57BWUABIzJIi4gj9t0n+2QzU0IQwjbBmTEdQyj4Zx4fUpPYUMmjF2OTNjawCpLlwCUv/axAU4BP/5Tl00YPa+jPznCAyD0YpnfD4ylcH0GN+4q9r2UxzjLUhAzv067C5BDImhTcOI=
+	t=1731386971; cv=none; b=tluIxiFJ60kc7EmDMXe0Bnrn/1yGI9B3pqNdbY+k7XWCFheMdp+V4G8jjaMQn8EokE2EOMq1RnVKueBNwOY/3IVjTjeKdn2DjHaDoGJQ7lpr69ZZf8NdjNAKQnLNqaL56GwIKJ2GP56m9zrYQRgaxnW2xcuijx5Y6NdbkBBfYQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731384828; c=relaxed/simple;
-	bh=4+qn2G/L9LuNS1ZzLP0x9RH7ytlOlEKTVz6DYkBkSeI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpMqXnFIf5Z4zO1UPYKumQp7z0N4yIA+OuYaxt1BMkDhE/iWmk7791sJcPBdArE4z3iLT/1rlRvQk4GLZkoGS9RS+hEghF9O5qm48ViuZqoZk8djsl1R4XtTxl2q8gT/IJbQZyiPMP6HwZPpAmHlh/2nHtDByZabdiQGAFAodBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=UyrUamGe; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wbinvd.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2114214c63eso43465365ad.3
-        for <stable@vger.kernel.org>; Mon, 11 Nov 2024 20:13:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wbinvd.org; s=wbinvd; t=1731384824; x=1731989624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14vnJNy4yOkx1mk8L2TJ8OG7FBA2mqe+zEt5Iy+kdLY=;
-        b=UyrUamGeYQIvwhp9uju9WZr+B8n1Pa/Xp1Vsr382z+KYsq5Q4EuK+uNeYscpqwTtXc
-         FMJQpKpbsMa68OBDUKW/OzfhMa4Uoi9TeORXcajbIbCKG8YQKyRBpMRpvg7DlTC/7+97
-         aVN3wBbC3lSI49bYTnaeyvfMYSq82TUOF5AqJO4VetjrQHIz8tGlcAkXG4e7Jr6vRPZD
-         tvT44CEnHW8U90bDFvQ87iQ9yfvnFDnQiuISZjx5RV0IuO+HX4zJ79iRT6E7xx4J4Hv7
-         ENMdzaZHmjUNFlCk81OWZxq9GGqRswiXgKUCC0PKRjb8oY825h88An9B2VVfYWUrHJAw
-         nmzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731384824; x=1731989624;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=14vnJNy4yOkx1mk8L2TJ8OG7FBA2mqe+zEt5Iy+kdLY=;
-        b=KeIirFlj1LbMJSuAYpVFQRUj/4W/t/5L/tHPnz+PwBGYkx6TzKhUByojQCZ2w7pwmH
-         j2seUsd04/JHcg7f9EdOXAHp2y5x7Qg6o+gYDdxzY+CZ0PTh8bhCKHrN5AqBytGU1ksv
-         Qlqzbe1c2K1GLuDjL++ajxzsA1T3dg10uoM+Kp/dfvTXDkjMbhy1EzNaBZ0O9HesapQs
-         i9ERy4AKBp5HfkzK+2k5Q/7o2PIC20wyLQvmKTY4KaQQspadDdRSVFrPMi49ropYQNlK
-         oLAFZhZpN3DXcQbhmwN5JK5n+cqgWMzIhL/SUIr5jt8kpreMqlEqEXmlVkpfGmUA+fMb
-         aHnA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrlth/jEwQjDu5Zr1Pig5CCuNydN4b/dX05CEUmCIMITGQdNU4+v6HLcdm/aYIJpB+p20fzO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI/IV0VtnCAineKufqLa6q8Skx7+gUHjpWodl7ND3Cl2VjqNIs
-	PHL/bFvFjKFE/B6zq6897iKgb9So4oKdvvzRZrXn1c+A8Tak9/5k88SjhmR02vA=
-X-Google-Smtp-Source: AGHT+IG4gBe/XcB68BlhR9o9lCUBqlj8ARV1ASMzknwPYXCvnkoVXDwyD0+YotgL3r8zSaHxi5xecg==
-X-Received: by 2002:a17:903:1cf:b0:20c:f39e:4c15 with SMTP id d9443c01a7336-211835268a9mr223076325ad.22.1731384823996;
-        Mon, 11 Nov 2024 20:13:43 -0800 (PST)
-Received: from mozart.vkv.me (192-184-160-110.fiber.dynamic.sonic.net. [192.184.160.110])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc835fsm84004075ad.41.2024.11.11.20.13.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 20:13:43 -0800 (PST)
-From: Calvin Owens <calvin@wbinvd.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rodolfo Giometti <giometti@enneenne.com>,
-	George Spelvin <linux@horizon.com>,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1731386971; c=relaxed/simple;
+	bh=hzlx0r+BPiyBMAWemg9/s2nEEW0rNzF6HfmzUnnCr3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=eZAYLmR2qFrGtQ4NTVuCKrCHgMEaESp5Nl3uCKqh70gL2RjrmkaiZFEOUBZpSpBW9VkILQUNnF0sM6IkTQyaPM7Fylom7O166u9LVikJlWJwznkXnVsp798xk1g04084fTuNBoOpteIz4mfm0yqcDhV3Kw382pc0XhFONXcn64E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=csVk/iTK; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20241112044921epoutp04a82912990a50aaffff4fd874d68e8774~HH0SfXT1R3110231102epoutp04D
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 04:49:21 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20241112044921epoutp04a82912990a50aaffff4fd874d68e8774~HH0SfXT1R3110231102epoutp04D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1731386961;
+	bh=AUlIJmCgvQ17KMTVrciEg97C52EGYQL/lVWfAmojbFQ=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=csVk/iTKPDvibGOeu/MBweXo+PKxcY+nnNaTnwnQ1/d1s+RnDwKGhMtNtwhn9Eke+
+	 ULfLnhy1LEzKOou+Ts6JtTKOk0C5BDDnk0PPrfr5aIWIyZb7A8h4jHcdxp5cecOF+J
+	 9nWlhM2TOj7NbQM583Wir3LWWbeGWluY3Vi+K8xg=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+	20241112044920epcas5p306a13edf42e25eba1dcd31f47a03e886~HH0SIJx-Y1756517565epcas5p3U;
+	Tue, 12 Nov 2024 04:49:20 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.182]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4XnYq274R3z4x9QG; Tue, 12 Nov
+	2024 04:49:18 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	B0.39.08574.E4ED2376; Tue, 12 Nov 2024 13:49:18 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20241112044918epcas5p448b475256fc5232bcb34b67f564088b9~HH0PzKiDJ2466524665epcas5p4y;
+	Tue, 12 Nov 2024 04:49:18 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241112044918epsmtrp2030aacc80eff3679e80645ee8ebc2f86~HH0Pw7oWt0825008250epsmtrp2N;
+	Tue, 12 Nov 2024 04:49:18 +0000 (GMT)
+X-AuditID: b6c32a44-93ffa7000000217e-92-6732de4e3e07
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	FD.7C.18937.E4ED2376; Tue, 12 Nov 2024 13:49:18 +0900 (KST)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20241112044915epsmtip2449b0c626e7b422ec3ab6e53aa23894f~HH0NOjMxj2584225842epsmtip2H;
+	Tue, 12 Nov 2024 04:49:15 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	quic_akakum@quicinc.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stern@rowland.harvard.edu
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, rc93.raju@samsung.com, taehyun.cho@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
+	alim.akhtar@samsung.com, Selvarasu Ganesan <selvarasu.g@samsung.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v4] pps: Fix a use-after-free
-Date: Mon, 11 Nov 2024 20:13:29 -0800
-Message-ID: <a17975fd5ae99385791929e563f72564edbcf28f.1731383727.git.calvin@wbinvd.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024110551-fiction-casket-7597@gregkh>
-References: <2024110551-fiction-casket-7597@gregkh>
+Subject: [PATCH v3] usb: dwc3: gadget: Add missing check for single port RAM
+ in TxFIFO resizing logic
+Date: Tue, 12 Nov 2024 10:18:02 +0530
+Message-ID: <20241112044807.623-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,624 +89,214 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIJsWRmVeSWpSXmKPExsWy7bCmhq7fPaN0g21zzS3eXF3FavFg3jY2
+	izsLpjFZnFq+kMmiefF6NotJe7ayWNx9+IPF4vKuOWwWi5a1Mlt8Ovqf1eL2n72sFqs657BY
+	HFn+kcni8vedzBYLNj5itJjw+wJQ20FRi1ULDrA7CHnsn7uG3WPinjqP2Xd/MHr0bVnF6LFl
+	/2dGj8+b5ALYorJtMlITU1KLFFLzkvNTMvPSbZW8g+Od403NDAx1DS0tzJUU8hJzU22VXHwC
+	dN0yc4AeUFIoS8wpBQoFJBYXK+nb2RTll5akKmTkF5fYKqUWpOQUmBToFSfmFpfmpevlpZZY
+	GRoYGJkCFSZkZ8yc8Yel4KNexaETRxgbGFepdTFyckgImEhcvHyTvYuRi0NIYDejxMTJp1kg
+	nE+MEot2fGSEc46dv8wE0/JuyQ02iMRORok9HxdB9X8HclY9AHI4ONgEDCWenbABiYsIrGKU
+	+He0iRXEYRbYzSSx6sF9dpBRwgLpEhce/GYFsVkEVCUWv5/GCGLzClhJPP5+nB1inabE2r17
+	mCDighInZz5hAbGZBeQlmrfOZgYZKiGwhUPixYYNzCCbJQRcJJY88oDoFZZ4dXwL1Bwpic/v
+	9rJB2MkSeyZ9gYpnSBxadYgZwraXWL3gDCvIGGagvet36UOs4pPo/f2ECWI6r0RHmxBEtarE
+	qcbLUBOlJe4tucYKYXtIzH7TC2YLCcRKvPh6mHUCo9wsJA/MQvLALIRlCxiZVzFKphYU56an
+	JpsWGOallsMjMzk/dxMjOO1quexgvDH/n94hRiYOxkOMEhzMSiK8Gv766UK8KYmVValF+fFF
+	pTmpxYcYTYGhOpFZSjQ5H5j480riDU0sDUzMzMxMLI3NDJXEeV+3zk0REkhPLEnNTk0tSC2C
+	6WPi4JRqYDLy9DlTMzN8/4Lvl/Z++R2zaj5rW+/mGP6PUf5OMx6v/v/4/c+J366Wzzjzc0/W
+	m0czRXlXCLZu2JQvttTjvbfvn/4zB148EP8pEGbRpavLcpF3bnDmpw1hDlEx08WO9cQX7FeZ
+	Xy67a++VxbkPrexflVzoSD4Y+krSJs7agO2Zg996Zc3Vbppi8SdCjWzlP2hf0r5YJzpvzpbf
+	HnqRs9f0tl5zMqn4uJNJIHfH9LXV77cZ8Qvc8bpQIBFcbzP7/46cjB8+89i3Ja/TUQ91idni
+	KXW7UdNJUsbyRhZHqjrvD4G631MWevryavF4nrj944elp8ai2V/vLmSpuKp8/FqspJbCHY1Z
+	b6rL5ZhsvimxFGckGmoxFxUnAgAa+sLNRAQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDLMWRmVeSWpSXmKPExsWy7bCSvK7fPaN0g46dwhZvrq5itXgwbxub
+	xZ0F05gsTi1fyGTRvHg9m8WkPVtZLO4+/MFicXnXHDaLRctamS0+Hf3PanH7z15Wi1Wdc1gs
+	jiz/yGRx+ftOZosFGx8xWkz4fQGo7aCoxaoFB9gdhDz2z13D7jFxT53H7Ls/GD36tqxi9Niy
+	/zOjx+dNcgFsUVw2Kak5mWWpRfp2CVwZM2f8YSn4qFdx6MQRxgbGVWpdjJwcEgImEu+W3GDr
+	YuTiEBLYzihx7O59FoiEtMTrWV2MELawxMp/z9khir4ySvz58p+5i5GDg03AUOLZCRuQuIjA
+	BkaJp5cvgU1iFjjJJNH89RHYJGGBVImP/c+YQGwWAVWJxe+ngU3lFbCSePz9ODvEBk2JtXv3
+	MEHEBSVOznzCArKAWUBdYv08IZAws4C8RPPW2cwTGPlnIamahVA1C0nVAkbmVYyiqQXFuem5
+	yQWGesWJucWleel6yfm5mxjBEaQVtINx2fq/eocYmTgYDzFKcDArifBq+OunC/GmJFZWpRbl
+	xxeV5qQWH2KU5mBREudVzulMERJITyxJzU5NLUgtgskycXBKNTAxPj1yxc4qmsUowik/d8f+
+	JJ89dQ9tq621Y/4L7VGYmePXwJVSsNr5kb/8+s1P9WtFDl0MuFt+fvPjdYsNvx00i/8itYe1
+	K7NH5aHSU/WKXsEJ07ISH5StcOWftNZ3smiR/KylYfkm3lKVCy8422nVrAh7VV3nuOKM4JUF
+	J2ex+v+w/9bR+fVhEZ90yKvbKxQSL1yWiDJbLTVD/yW/2EXt6axfb5adOnp12Vkrd6cm33j1
+	NZ9n5XXt7249FR/q+OxRrUjoSeWF8YnMbZOY5hnIBSYrnZZYM+U+J2Nk7K2athzvhvjN8Rl+
+	MiYCMiZmPpOVl0+NZrwxY+1ft1AWFZO5taaPs17eO+yvszPvmBJLcUaioRZzUXEiANtS1v4P
+	AwAA
+X-CMS-MailID: 20241112044918epcas5p448b475256fc5232bcb34b67f564088b9
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241112044918epcas5p448b475256fc5232bcb34b67f564088b9
+References: <CGME20241112044918epcas5p448b475256fc5232bcb34b67f564088b9@epcas5p4.samsung.com>
 
-On a board running ntpd and gpsd, I'm seeing a consistent use-after-free
-in sys_exit() from gpsd when rebooting:
+The existing implementation of the TxFIFO resizing logic only supports
+scenarios where more than one port RAM is used. However, there is a need
+to resize the TxFIFO in USB2.0-only mode where only a single port RAM is
+available. This commit introduces the necessary changes to support
+TxFIFO resizing in such scenarios by adding a missing check for single
+port RAM.
 
-    pps pps1: removed
-    ------------[ cut here ]------------
-    kobject: '(null)' (00000000db4bec24): is not initialized, yet kobject_put() is being called.
-    WARNING: CPU: 2 PID: 440 at lib/kobject.c:734 kobject_put+0x120/0x150
-    CPU: 2 UID: 299 PID: 440 Comm: gpsd Not tainted 6.11.0-rc6-00308-gb31c44928842 #1
-    Hardware name: Raspberry Pi 4 Model B Rev 1.1 (DT)
-    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : kobject_put+0x120/0x150
-    lr : kobject_put+0x120/0x150
-    sp : ffffffc0803d3ae0
-    x29: ffffffc0803d3ae0 x28: ffffff8042dc9738 x27: 0000000000000001
-    x26: 0000000000000000 x25: ffffff8042dc9040 x24: ffffff8042dc9440
-    x23: ffffff80402a4620 x22: ffffff8042ef4bd0 x21: ffffff80405cb600
-    x20: 000000000008001b x19: ffffff8040b3b6e0 x18: 0000000000000000
-    x17: 0000000000000000 x16: 0000000000000000 x15: 696e6920746f6e20
-    x14: 7369203a29343263 x13: 205d303434542020 x12: 0000000000000000
-    x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-    x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-    x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-    x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-    Call trace:
-     kobject_put+0x120/0x150
-     cdev_put+0x20/0x3c
-     __fput+0x2c4/0x2d8
-     ____fput+0x1c/0x38
-     task_work_run+0x70/0xfc
-     do_exit+0x2a0/0x924
-     do_group_exit+0x34/0x90
-     get_signal+0x7fc/0x8c0
-     do_signal+0x128/0x13b4
-     do_notify_resume+0xdc/0x160
-     el0_svc+0xd4/0xf8
-     el0t_64_sync_handler+0x140/0x14c
-     el0t_64_sync+0x190/0x194
-    ---[ end trace 0000000000000000 ]---
+This fix addresses certain platform configurations where the existing
+TxFIFO resizing logic does not work properly due to the absence of
+support for single port RAM. By adding this missing check, we ensure
+that the TxFIFO resizing logic works correctly in all scenarios,
+including those with a single port RAM.
 
-...followed by more symptoms of corruption, with similar stacks:
-
-    refcount_t: underflow; use-after-free.
-    kernel BUG at lib/list_debug.c:62!
-    Kernel panic - not syncing: Oops - BUG: Fatal exception
-
-This happens because pps_device_destruct() frees the pps_device with the
-embedded cdev immediately after calling cdev_del(), but, as the comment
-above cdev_del() notes, fops for previously opened cdevs are still
-callable even after cdev_del() returns. I think this bug has always
-been there: I can't explain why it suddenly started happening every time
-I reboot this particular board.
-
-In commit d953e0e837e6 ("pps: Fix a use-after free bug when
-unregistering a source."), George Spelvin suggested removing the
-embedded cdev. That seems like the simplest way to fix this, so I've
-implemented his suggestion, using __register_chrdev() with pps_idr
-becoming the source of truth for which minor corresponds to which
-device.
-
-But now that pps_idr defines userspace visibility instead of cdev_add(),
-we need to be sure the pps->dev refcount can't reach zero while
-userspace can still find it again. So, the idr_remove() call moves to
-pps_unregister_cdev(), and pps_idr now holds a reference to pps->dev.
-
-    pps_core: source serial1 got cdev (251:1)
-    <...>
-    pps pps1: removed
-    pps_core: unregistering pps1
-    pps_core: deallocating pps1
-
-Fixes: d953e0e837e6 ("pps: Fix a use-after free bug when unregistering a source.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Fixes: 9f607a309fbe ("usb: dwc3: Resize TX FIFOs to meet EP bursting requirements")
+Cc: stable@vger.kernel.org # 6.12.x: fad16c82: usb: dwc3: gadget: Refine the logic for resizing Tx FIFOs
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 ---
-Changes in v4:
-- Fix compile error in ptp_ocp
-- Change five dev_info() calls to dev_dbg()
+
 Changes in v3:
-- Shorten patch title
-- Embed the device struct in the pps struct
-- Use foo_device(&pps->dev) instead of kobject_foo(&pps->dev.kobj)
-Changes in v2:
-- Don't move pr_debug() from pps_device_destruct() to pps_unregister_cdev()
-- Actually add stable@vger.kernel.org to CC
----
- drivers/pps/clients/pps-gpio.c    |   4 +-
- drivers/pps/clients/pps-ktimer.c  |   4 +-
- drivers/pps/clients/pps-ldisc.c   |   6 +-
- drivers/pps/clients/pps_parport.c |   4 +-
- drivers/pps/kapi.c                |  10 +--
- drivers/pps/kc.c                  |  10 +--
- drivers/pps/pps.c                 | 127 ++++++++++++++++--------------
- drivers/ptp/ptp_ocp.c             |   2 +-
- include/linux/pps_kernel.h        |   3 +-
- 9 files changed, 87 insertions(+), 83 deletions(-)
+ - Updated the $subject and commit message.
+ - Added Fixes tag, and addressed some minor comments from reviewer .
+ - Link to v2: https://lore.kernel.org/linux-usb/20241111142049.604-1-selvarasu.g@samsung.com/
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index 791fdc9326dd..93e662912b53 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -214,8 +214,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+Changes in v2:
+ - Removed the code change that limits the number of FIFOs for bulk EP,
+   as plan to address this issue in a separate patch.
+ - Renamed the variable spram_type to is_single_port_ram for better
+   understanding.
+ - Link to v1: https://lore.kernel.org/lkml/20241107104040.502-1-selvarasu.g@samsung.com/
+---
+ drivers/usb/dwc3/core.h   |  4 +++
+ drivers/usb/dwc3/gadget.c | 54 +++++++++++++++++++++++++++++++++------
+ 2 files changed, 50 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index eaa55c0cf62f..8306b39e5c64 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -915,6 +915,7 @@ struct dwc3_hwparams {
+ #define DWC3_MODE(n)		((n) & 0x7)
  
--	dev_info(data->pps->dev, "Registered IRQ %d as PPS source\n",
--		 data->irq);
-+	dev_dbg(&data->pps->dev, "Registered IRQ %d as PPS source\n",
-+		data->irq);
+ /* HWPARAMS1 */
++#define DWC3_SPRAM_TYPE(n)	(((n) >> 23) & 1)
+ #define DWC3_NUM_INT(n)		(((n) & (0x3f << 15)) >> 15)
  
- 	return 0;
- }
-diff --git a/drivers/pps/clients/pps-ktimer.c b/drivers/pps/clients/pps-ktimer.c
-index d33106bd7a29..2f465549b843 100644
---- a/drivers/pps/clients/pps-ktimer.c
-+++ b/drivers/pps/clients/pps-ktimer.c
-@@ -56,7 +56,7 @@ static struct pps_source_info pps_ktimer_info = {
+ /* HWPARAMS3 */
+@@ -925,6 +926,9 @@ struct dwc3_hwparams {
+ #define DWC3_NUM_IN_EPS(p)	(((p)->hwparams3 &		\
+ 			(DWC3_NUM_IN_EPS_MASK)) >> 18)
  
- static void __exit pps_ktimer_exit(void)
- {
--	dev_info(pps->dev, "ktimer PPS source unregistered\n");
-+	dev_dbg(&pps->dev, "ktimer PPS source unregistered\n");
++/* HWPARAMS6 */
++#define DWC3_RAM0_DEPTH(n)	(((n) & (0xffff0000)) >> 16)
++
+ /* HWPARAMS7 */
+ #define DWC3_RAM1_DEPTH(n)	((n) & 0xffff)
  
- 	del_timer_sync(&ktimer);
- 	pps_unregister_source(pps);
-@@ -74,7 +74,7 @@ static int __init pps_ktimer_init(void)
- 	timer_setup(&ktimer, pps_ktimer_event, 0);
- 	mod_timer(&ktimer, jiffies + HZ);
- 
--	dev_info(pps->dev, "ktimer PPS source registered\n");
-+	dev_dbg(&pps->dev, "ktimer PPS source registered\n");
- 
- 	return 0;
- }
-diff --git a/drivers/pps/clients/pps-ldisc.c b/drivers/pps/clients/pps-ldisc.c
-index 443d6bae19d1..fa5660f3c4b7 100644
---- a/drivers/pps/clients/pps-ldisc.c
-+++ b/drivers/pps/clients/pps-ldisc.c
-@@ -32,7 +32,7 @@ static void pps_tty_dcd_change(struct tty_struct *tty, bool active)
- 	pps_event(pps, &ts, active ? PPS_CAPTUREASSERT :
- 			PPS_CAPTURECLEAR, NULL);
- 
--	dev_dbg(pps->dev, "PPS %s at %lu\n",
-+	dev_dbg(&pps->dev, "PPS %s at %lu\n",
- 			active ? "assert" : "clear", jiffies);
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 2fed2aa01407..6101e5467b08 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -687,6 +687,44 @@ static int dwc3_gadget_calc_tx_fifo_size(struct dwc3 *dwc, int mult)
+ 	return fifo_size;
  }
  
-@@ -69,7 +69,7 @@ static int pps_tty_open(struct tty_struct *tty)
- 		goto err_unregister;
- 	}
- 
--	dev_info(pps->dev, "source \"%s\" added\n", info.path);
-+	dev_dbg(&pps->dev, "source \"%s\" added\n", info.path);
- 
- 	return 0;
- 
-@@ -89,7 +89,7 @@ static void pps_tty_close(struct tty_struct *tty)
- 	if (WARN_ON(!pps))
- 		return;
- 
--	dev_info(pps->dev, "removed\n");
-+	dev_info(&pps->dev, "removed\n");
- 	pps_unregister_source(pps);
- }
- 
-diff --git a/drivers/pps/clients/pps_parport.c b/drivers/pps/clients/pps_parport.c
-index abaffb4e1c1c..24db06750297 100644
---- a/drivers/pps/clients/pps_parport.c
-+++ b/drivers/pps/clients/pps_parport.c
-@@ -81,7 +81,7 @@ static void parport_irq(void *handle)
- 	/* check the signal (no signal means the pulse is lost this time) */
- 	if (!signal_is_set(port)) {
- 		local_irq_restore(flags);
--		dev_err(dev->pps->dev, "lost the signal\n");
-+		dev_err(&dev->pps->dev, "lost the signal\n");
- 		goto out_assert;
- 	}
- 
-@@ -98,7 +98,7 @@ static void parport_irq(void *handle)
- 	/* timeout */
- 	dev->cw_err++;
- 	if (dev->cw_err >= CLEAR_WAIT_MAX_ERRORS) {
--		dev_err(dev->pps->dev, "disabled clear edge capture after %d"
-+		dev_err(&dev->pps->dev, "disabled clear edge capture after %d"
- 				" timeouts\n", dev->cw_err);
- 		dev->cw = 0;
- 		dev->cw_err = 0;
-diff --git a/drivers/pps/kapi.c b/drivers/pps/kapi.c
-index d9d566f70ed1..92d1b62ea239 100644
---- a/drivers/pps/kapi.c
-+++ b/drivers/pps/kapi.c
-@@ -41,7 +41,7 @@ static void pps_add_offset(struct pps_ktime *ts, struct pps_ktime *offset)
- static void pps_echo_client_default(struct pps_device *pps, int event,
- 		void *data)
- {
--	dev_info(pps->dev, "echo %s %s\n",
-+	dev_info(&pps->dev, "echo %s %s\n",
- 		event & PPS_CAPTUREASSERT ? "assert" : "",
- 		event & PPS_CAPTURECLEAR ? "clear" : "");
- }
-@@ -112,7 +112,7 @@ struct pps_device *pps_register_source(struct pps_source_info *info,
- 		goto kfree_pps;
- 	}
- 
--	dev_info(pps->dev, "new PPS source %s\n", info->name);
-+	dev_dbg(&pps->dev, "new PPS source %s\n", info->name);
- 
- 	return pps;
- 
-@@ -166,7 +166,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 	/* check event type */
- 	BUG_ON((event & (PPS_CAPTUREASSERT | PPS_CAPTURECLEAR)) == 0);
- 
--	dev_dbg(pps->dev, "PPS event at %lld.%09ld\n",
-+	dev_dbg(&pps->dev, "PPS event at %lld.%09ld\n",
- 			(s64)ts->ts_real.tv_sec, ts->ts_real.tv_nsec);
- 
- 	timespec_to_pps_ktime(&ts_real, ts->ts_real);
-@@ -188,7 +188,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 		/* Save the time stamp */
- 		pps->assert_tu = ts_real;
- 		pps->assert_sequence++;
--		dev_dbg(pps->dev, "capture assert seq #%u\n",
-+		dev_dbg(&pps->dev, "capture assert seq #%u\n",
- 			pps->assert_sequence);
- 
- 		captured = ~0;
-@@ -202,7 +202,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 		/* Save the time stamp */
- 		pps->clear_tu = ts_real;
- 		pps->clear_sequence++;
--		dev_dbg(pps->dev, "capture clear seq #%u\n",
-+		dev_dbg(&pps->dev, "capture clear seq #%u\n",
- 			pps->clear_sequence);
- 
- 		captured = ~0;
-diff --git a/drivers/pps/kc.c b/drivers/pps/kc.c
-index 50dc59af45be..fbd23295afd7 100644
---- a/drivers/pps/kc.c
-+++ b/drivers/pps/kc.c
-@@ -43,11 +43,11 @@ int pps_kc_bind(struct pps_device *pps, struct pps_bind_args *bind_args)
- 			pps_kc_hardpps_mode = 0;
- 			pps_kc_hardpps_dev = NULL;
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_info(pps->dev, "unbound kernel"
-+			dev_info(&pps->dev, "unbound kernel"
- 					" consumer\n");
- 		} else {
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_err(pps->dev, "selected kernel consumer"
-+			dev_err(&pps->dev, "selected kernel consumer"
- 					" is not bound\n");
- 			return -EINVAL;
- 		}
-@@ -57,11 +57,11 @@ int pps_kc_bind(struct pps_device *pps, struct pps_bind_args *bind_args)
- 			pps_kc_hardpps_mode = bind_args->edge;
- 			pps_kc_hardpps_dev = pps;
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_info(pps->dev, "bound kernel consumer: "
-+			dev_info(&pps->dev, "bound kernel consumer: "
- 				"edge=0x%x\n", bind_args->edge);
- 		} else {
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_err(pps->dev, "another kernel consumer"
-+			dev_err(&pps->dev, "another kernel consumer"
- 					" is already bound\n");
- 			return -EINVAL;
- 		}
-@@ -83,7 +83,7 @@ void pps_kc_remove(struct pps_device *pps)
- 		pps_kc_hardpps_mode = 0;
- 		pps_kc_hardpps_dev = NULL;
- 		spin_unlock_irq(&pps_kc_hardpps_lock);
--		dev_info(pps->dev, "unbound kernel consumer"
-+		dev_info(&pps->dev, "unbound kernel consumer"
- 				" on device removal\n");
- 	} else
- 		spin_unlock_irq(&pps_kc_hardpps_lock);
-diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
-index 25d47907db17..6a02245ea35f 100644
---- a/drivers/pps/pps.c
-+++ b/drivers/pps/pps.c
-@@ -25,7 +25,7 @@
-  * Local variables
-  */
- 
--static dev_t pps_devt;
-+static int pps_major;
- static struct class *pps_class;
- 
- static DEFINE_MUTEX(pps_idr_lock);
-@@ -62,7 +62,7 @@ static int pps_cdev_pps_fetch(struct pps_device *pps, struct pps_fdata *fdata)
- 	else {
- 		unsigned long ticks;
- 
--		dev_dbg(pps->dev, "timeout %lld.%09d\n",
-+		dev_dbg(&pps->dev, "timeout %lld.%09d\n",
- 				(long long) fdata->timeout.sec,
- 				fdata->timeout.nsec);
- 		ticks = fdata->timeout.sec * HZ;
-@@ -80,7 +80,7 @@ static int pps_cdev_pps_fetch(struct pps_device *pps, struct pps_fdata *fdata)
- 
- 	/* Check for pending signals */
- 	if (err == -ERESTARTSYS) {
--		dev_dbg(pps->dev, "pending signal caught\n");
-+		dev_dbg(&pps->dev, "pending signal caught\n");
- 		return -EINTR;
- 	}
- 
-@@ -98,7 +98,7 @@ static long pps_cdev_ioctl(struct file *file,
- 
- 	switch (cmd) {
- 	case PPS_GETPARAMS:
--		dev_dbg(pps->dev, "PPS_GETPARAMS\n");
-+		dev_dbg(&pps->dev, "PPS_GETPARAMS\n");
- 
- 		spin_lock_irq(&pps->lock);
- 
-@@ -114,7 +114,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		break;
- 
- 	case PPS_SETPARAMS:
--		dev_dbg(pps->dev, "PPS_SETPARAMS\n");
-+		dev_dbg(&pps->dev, "PPS_SETPARAMS\n");
- 
- 		/* Check the capabilities */
- 		if (!capable(CAP_SYS_TIME))
-@@ -124,14 +124,14 @@ static long pps_cdev_ioctl(struct file *file,
- 		if (err)
- 			return -EFAULT;
- 		if (!(params.mode & (PPS_CAPTUREASSERT | PPS_CAPTURECLEAR))) {
--			dev_dbg(pps->dev, "capture mode unspecified (%x)\n",
-+			dev_dbg(&pps->dev, "capture mode unspecified (%x)\n",
- 								params.mode);
- 			return -EINVAL;
- 		}
- 
- 		/* Check for supported capabilities */
- 		if ((params.mode & ~pps->info.mode) != 0) {
--			dev_dbg(pps->dev, "unsupported capabilities (%x)\n",
-+			dev_dbg(&pps->dev, "unsupported capabilities (%x)\n",
- 								params.mode);
- 			return -EINVAL;
- 		}
-@@ -144,7 +144,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		/* Restore the read only parameters */
- 		if ((params.mode & (PPS_TSFMT_TSPEC | PPS_TSFMT_NTPFP)) == 0) {
- 			/* section 3.3 of RFC 2783 interpreted */
--			dev_dbg(pps->dev, "time format unspecified (%x)\n",
-+			dev_dbg(&pps->dev, "time format unspecified (%x)\n",
- 								params.mode);
- 			pps->params.mode |= PPS_TSFMT_TSPEC;
- 		}
-@@ -165,7 +165,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		break;
- 
- 	case PPS_GETCAP:
--		dev_dbg(pps->dev, "PPS_GETCAP\n");
-+		dev_dbg(&pps->dev, "PPS_GETCAP\n");
- 
- 		err = put_user(pps->info.mode, iuarg);
- 		if (err)
-@@ -176,7 +176,7 @@ static long pps_cdev_ioctl(struct file *file,
- 	case PPS_FETCH: {
- 		struct pps_fdata fdata;
- 
--		dev_dbg(pps->dev, "PPS_FETCH\n");
-+		dev_dbg(&pps->dev, "PPS_FETCH\n");
- 
- 		err = copy_from_user(&fdata, uarg, sizeof(struct pps_fdata));
- 		if (err)
-@@ -206,7 +206,7 @@ static long pps_cdev_ioctl(struct file *file,
- 	case PPS_KC_BIND: {
- 		struct pps_bind_args bind_args;
- 
--		dev_dbg(pps->dev, "PPS_KC_BIND\n");
-+		dev_dbg(&pps->dev, "PPS_KC_BIND\n");
- 
- 		/* Check the capabilities */
- 		if (!capable(CAP_SYS_TIME))
-@@ -218,7 +218,7 @@ static long pps_cdev_ioctl(struct file *file,
- 
- 		/* Check for supported capabilities */
- 		if ((bind_args.edge & ~pps->info.mode) != 0) {
--			dev_err(pps->dev, "unsupported capabilities (%x)\n",
-+			dev_err(&pps->dev, "unsupported capabilities (%x)\n",
- 					bind_args.edge);
- 			return -EINVAL;
- 		}
-@@ -227,7 +227,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		if (bind_args.tsformat != PPS_TSFMT_TSPEC ||
- 				(bind_args.edge & ~PPS_CAPTUREBOTH) != 0 ||
- 				bind_args.consumer != PPS_KC_HARDPPS) {
--			dev_err(pps->dev, "invalid kernel consumer bind"
-+			dev_err(&pps->dev, "invalid kernel consumer bind"
- 					" parameters (%x)\n", bind_args.edge);
- 			return -EINVAL;
- 		}
-@@ -259,7 +259,7 @@ static long pps_cdev_compat_ioctl(struct file *file,
- 		struct pps_fdata fdata;
- 		int err;
- 
--		dev_dbg(pps->dev, "PPS_FETCH\n");
-+		dev_dbg(&pps->dev, "PPS_FETCH\n");
- 
- 		err = copy_from_user(&compat, uarg, sizeof(struct pps_fdata_compat));
- 		if (err)
-@@ -296,20 +296,36 @@ static long pps_cdev_compat_ioctl(struct file *file,
- #define pps_cdev_compat_ioctl	NULL
- #endif
- 
-+static struct pps_device *pps_idr_get(unsigned long id)
++/**
++ * dwc3_gadget_calc_ram_depth - calculates the ram depth for txfifo
++ * @dwc: pointer to the DWC3 context
++ */
++static int dwc3_gadget_calc_ram_depth(struct dwc3 *dwc)
 +{
-+	struct pps_device *pps;
++	int ram_depth;
++	int fifo_0_start;
++	bool is_single_port_ram;
 +
-+	mutex_lock(&pps_idr_lock);
-+	pps = idr_find(&pps_idr, id);
-+	if (pps)
-+		get_device(&pps->dev);
++	/* Check supporting RAM type by HW */
++	is_single_port_ram = DWC3_SPRAM_TYPE(dwc->hwparams.hwparams1);
 +
-+	mutex_unlock(&pps_idr_lock);
-+	return pps;
++	/*
++	 * If a single port RAM is utilized, then allocate TxFIFOs from
++	 * RAM0. otherwise, allocate them from RAM1.
++	 */
++	ram_depth = is_single_port_ram ? DWC3_RAM0_DEPTH(dwc->hwparams.hwparams6) :
++			DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
++
++	/*
++	 * In a single port RAM configuration, the available RAM is shared
++	 * between the RX and TX FIFOs. This means that the txfifo can begin
++	 * at a non-zero address.
++	 */
++	if (is_single_port_ram) {
++		u32 reg;
++
++		/* Check if TXFIFOs start at non-zero addr */
++		reg = dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(0));
++		fifo_0_start = DWC3_GTXFIFOSIZ_TXFSTADDR(reg);
++
++		ram_depth -= (fifo_0_start >> 16);
++	}
++
++	return ram_depth;
 +}
 +
- static int pps_cdev_open(struct inode *inode, struct file *file)
+ /**
+  * dwc3_gadget_clear_tx_fifos - Clears txfifo allocation
+  * @dwc: pointer to the DWC3 context
+@@ -753,7 +791,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
  {
--	struct pps_device *pps = container_of(inode->i_cdev,
--						struct pps_device, cdev);
-+	struct pps_device *pps = pps_idr_get(iminor(inode));
-+
-+	if (!pps)
-+		return -ENODEV;
-+
- 	file->private_data = pps;
--	kobject_get(&pps->dev->kobj);
- 	return 0;
- }
+ 	struct dwc3 *dwc = dep->dwc;
+ 	int fifo_0_start;
+-	int ram1_depth;
++	int ram_depth;
+ 	int fifo_size;
+ 	int min_depth;
+ 	int num_in_ep;
+@@ -773,7 +811,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
+ 	if (dep->flags & DWC3_EP_TXFIFO_RESIZED)
+ 		return 0;
  
- static int pps_cdev_release(struct inode *inode, struct file *file)
- {
--	struct pps_device *pps = container_of(inode->i_cdev,
--						struct pps_device, cdev);
--	kobject_put(&pps->dev->kobj);
-+	struct pps_device *pps = file->private_data;
-+
-+	WARN_ON(pps->id != iminor(inode));
-+	put_device(&pps->dev);
- 	return 0;
- }
+-	ram1_depth = DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
++	ram_depth = dwc3_gadget_calc_ram_depth(dwc);
  
-@@ -331,22 +347,13 @@ static void pps_device_destruct(struct device *dev)
- {
- 	struct pps_device *pps = dev_get_drvdata(dev);
+ 	switch (dwc->gadget->speed) {
+ 	case USB_SPEED_SUPER_PLUS:
+@@ -809,7 +847,7 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
  
--	cdev_del(&pps->cdev);
--
--	/* Now we can release the ID for re-use */
- 	pr_debug("deallocating pps%d\n", pps->id);
--	mutex_lock(&pps_idr_lock);
--	idr_remove(&pps_idr, pps->id);
--	mutex_unlock(&pps_idr_lock);
--
--	kfree(dev);
- 	kfree(pps);
- }
- 
- int pps_register_cdev(struct pps_device *pps)
- {
- 	int err;
--	dev_t devt;
- 
- 	mutex_lock(&pps_idr_lock);
+ 	/* Reserve at least one FIFO for the number of IN EPs */
+ 	min_depth = num_in_ep * (fifo + 1);
+-	remaining = ram1_depth - min_depth - dwc->last_fifo_depth;
++	remaining = ram_depth - min_depth - dwc->last_fifo_depth;
+ 	remaining = max_t(int, 0, remaining);
  	/*
-@@ -363,40 +370,29 @@ int pps_register_cdev(struct pps_device *pps)
- 		goto out_unlock;
- 	}
- 	pps->id = err;
--	mutex_unlock(&pps_idr_lock);
--
--	devt = MKDEV(MAJOR(pps_devt), pps->id);
--
--	cdev_init(&pps->cdev, &pps_cdev_fops);
--	pps->cdev.owner = pps->info.owner;
+ 	 * We've already reserved 1 FIFO per EP, so check what we can fit in
+@@ -835,9 +873,9 @@ static int dwc3_gadget_resize_tx_fifos(struct dwc3_ep *dep)
+ 		dwc->last_fifo_depth += DWC31_GTXFIFOSIZ_TXFDEP(fifo_size);
  
--	err = cdev_add(&pps->cdev, devt, 1);
--	if (err) {
--		pr_err("%s: failed to add char device %d:%d\n",
--				pps->info.name, MAJOR(pps_devt), pps->id);
-+	pps->dev.class = pps_class;
-+	pps->dev.parent = pps->info.dev;
-+	pps->dev.devt = MKDEV(pps_major, pps->id);
-+	dev_set_drvdata(&pps->dev, pps);
-+	dev_set_name(&pps->dev, "pps%d", pps->id);
-+	err = device_register(&pps->dev);
-+	if (err)
- 		goto free_idr;
--	}
--	pps->dev = device_create(pps_class, pps->info.dev, devt, pps,
--							"pps%d", pps->id);
--	if (IS_ERR(pps->dev)) {
--		err = PTR_ERR(pps->dev);
--		goto del_cdev;
--	}
+ 	/* Check fifo size allocation doesn't exceed available RAM size. */
+-	if (dwc->last_fifo_depth >= ram1_depth) {
++	if (dwc->last_fifo_depth >= ram_depth) {
+ 		dev_err(dwc->dev, "Fifosize(%d) > RAM size(%d) %s depth:%d\n",
+-			dwc->last_fifo_depth, ram1_depth,
++			dwc->last_fifo_depth, ram_depth,
+ 			dep->endpoint.name, fifo_size);
+ 		if (DWC3_IP_IS(DWC3))
+ 			fifo_size = DWC3_GTXFIFOSIZ_TXFDEP(fifo_size);
+@@ -3090,7 +3128,7 @@ static int dwc3_gadget_check_config(struct usb_gadget *g)
+ 	struct dwc3 *dwc = gadget_to_dwc(g);
+ 	struct usb_ep *ep;
+ 	int fifo_size = 0;
+-	int ram1_depth;
++	int ram_depth;
+ 	int ep_num = 0;
  
- 	/* Override the release function with our own */
--	pps->dev->release = pps_device_destruct;
-+	pps->dev.release = pps_device_destruct;
+ 	if (!dwc->do_fifo_resize)
+@@ -3113,8 +3151,8 @@ static int dwc3_gadget_check_config(struct usb_gadget *g)
+ 	fifo_size += dwc->max_cfg_eps;
  
--	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name,
--			MAJOR(pps_devt), pps->id);
-+	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
-+		 pps->id);
+ 	/* Check if we can fit a single fifo per endpoint */
+-	ram1_depth = DWC3_RAM1_DEPTH(dwc->hwparams.hwparams7);
+-	if (fifo_size > ram1_depth)
++	ram_depth = dwc3_gadget_calc_ram_depth(dwc);
++	if (fifo_size > ram_depth)
+ 		return -ENOMEM;
  
-+	get_device(&pps->dev);
-+	mutex_unlock(&pps_idr_lock);
  	return 0;
- 
--del_cdev:
--	cdev_del(&pps->cdev);
--
- free_idr:
--	mutex_lock(&pps_idr_lock);
- 	idr_remove(&pps_idr, pps->id);
-+	put_device(&pps->dev);
- out_unlock:
- 	mutex_unlock(&pps_idr_lock);
- 	return err;
-@@ -406,7 +402,13 @@ void pps_unregister_cdev(struct pps_device *pps)
- {
- 	pr_debug("unregistering pps%d\n", pps->id);
- 	pps->lookup_cookie = NULL;
--	device_destroy(pps_class, pps->dev->devt);
-+	device_destroy(pps_class, pps->dev.devt);
-+
-+	/* Now we can release the ID for re-use */
-+	mutex_lock(&pps_idr_lock);
-+	idr_remove(&pps_idr, pps->id);
-+	put_device(&pps->dev);
-+	mutex_unlock(&pps_idr_lock);
- }
- 
- /*
-@@ -426,6 +428,11 @@ void pps_unregister_cdev(struct pps_device *pps)
-  * so that it will not be used again, even if the pps device cannot
-  * be removed from the idr due to pending references holding the minor
-  * number in use.
-+ *
-+ * Since pps_idr holds a reference to the device, the returned
-+ * pps_device is guaranteed to be valid until pps_unregister_cdev() is
-+ * called on it. But after calling pps_unregister_cdev(), it may be
-+ * freed at any time.
-  */
- struct pps_device *pps_lookup_dev(void const *cookie)
- {
-@@ -448,13 +455,11 @@ EXPORT_SYMBOL(pps_lookup_dev);
- static void __exit pps_exit(void)
- {
- 	class_destroy(pps_class);
--	unregister_chrdev_region(pps_devt, PPS_MAX_SOURCES);
-+	__unregister_chrdev(pps_major, 0, PPS_MAX_SOURCES, "pps");
- }
- 
- static int __init pps_init(void)
- {
--	int err;
--
- 	pps_class = class_create("pps");
- 	if (IS_ERR(pps_class)) {
- 		pr_err("failed to allocate class\n");
-@@ -462,8 +467,9 @@ static int __init pps_init(void)
- 	}
- 	pps_class->dev_groups = pps_groups;
- 
--	err = alloc_chrdev_region(&pps_devt, 0, PPS_MAX_SOURCES, "pps");
--	if (err < 0) {
-+	pps_major = __register_chrdev(0, 0, PPS_MAX_SOURCES, "pps",
-+				      &pps_cdev_fops);
-+	if (pps_major < 0) {
- 		pr_err("failed to allocate char device region\n");
- 		goto remove_class;
- 	}
-@@ -476,8 +482,7 @@ static int __init pps_init(void)
- 
- remove_class:
- 	class_destroy(pps_class);
--
--	return err;
-+	return pps_major;
- }
- 
- subsys_initcall(pps_init);
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 5feecaadde8e..120db96d9e95 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4420,7 +4420,7 @@ ptp_ocp_complete(struct ptp_ocp *bp)
- 
- 	pps = pps_lookup_dev(bp->ptp);
- 	if (pps)
--		ptp_ocp_symlink(bp, pps->dev, "pps");
-+		ptp_ocp_symlink(bp, &pps->dev, "pps");
- 
- 	ptp_ocp_debugfs_add_device(bp);
- 
-diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
-index 78c8ac4951b5..c7abce28ed29 100644
---- a/include/linux/pps_kernel.h
-+++ b/include/linux/pps_kernel.h
-@@ -56,8 +56,7 @@ struct pps_device {
- 
- 	unsigned int id;			/* PPS source unique ID */
- 	void const *lookup_cookie;		/* For pps_lookup_dev() only */
--	struct cdev cdev;
--	struct device *dev;
-+	struct device dev;
- 	struct fasync_struct *async_queue;	/* fasync method */
- 	spinlock_t lock;
- };
 -- 
-2.45.2
+2.17.1
 
 
