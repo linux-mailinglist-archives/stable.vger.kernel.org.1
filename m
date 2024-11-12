@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-92513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75629C54A3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:47:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998219C54AC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:48:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0CF2894F0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ED5C289516
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CA321EBAD;
-	Tue, 12 Nov 2024 10:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C7521F4D7;
+	Tue, 12 Nov 2024 10:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNLEyjSX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcuzQBaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3417121EB93;
-	Tue, 12 Nov 2024 10:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149E421F4D0;
+	Tue, 12 Nov 2024 10:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407823; cv=none; b=ljz44aEuJQunQ4bvdH2HT5bKxGb074ljr41pa2wgAd35nDiXrI6GGyCVgUi3Z7EQ668nQk1N+DfqeDIz9z5FIpSsl4xKCz8RE+AP7A2Ko379krTfDA0XK0pcmLGMUeu1CMFpvWihFy0fottjVZZmQRTeUwCPA5sE8jvJdeHmoRk=
+	t=1731407828; cv=none; b=axD0cm5F0D3hZcLdNFPqfNkx7DrOu9522P4ScDX1LXgnyIgodZKhdvw3GF7NRQru4kA3I0oKAbe6glnyUbYlQw7/7JxK8Ts68mkuzNUNNZ8kYWUrwQWMwLcpztsX1k334MkrGZioih7pDa8g9Ss+YMYuJYMqAASChmnuHoBmJoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407823; c=relaxed/simple;
-	bh=mH0Xx9pnQKbS/pmT69wEitT1nowdxH6DcNJvkhuFaFM=;
+	s=arc-20240116; t=1731407828; c=relaxed/simple;
+	bh=gcv43duiZlx3LiKyePNQ3QLqwqId7kWDW/PegWv9o20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnCQMnlR9uKP+Cm/seGACPJziOrpU7kqSFoHBZtRzkvJZvyCObwcEjdjZtZHzn5x9OT82tVz6RKm6ANYnF5JXWfX50FD/JMqP6adXlLgt7rb1ClCYbl701JkBABMHoyAP+EVDqrfZbAJmT8RU6GZnE1R16EMj+167q/xQUBAq8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNLEyjSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D44DC4CECD;
-	Tue, 12 Nov 2024 10:37:01 +0000 (UTC)
+	 MIME-Version; b=sXSv0M/2wdPE6xG91qaU5O4RBENBpozVMXKzYJK/SU28NSnTunXF6S1HZ+RnmNpy97lR/KpZLy4Xen9o3WO0YwqXn0nB5ARRBcVbVosl2ek/nB5MvVwb1HXqF5OD4LPBqRS++kn2VoBCiepQ6w7OySUSrFr9oaufJvTxciTCJP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcuzQBaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1245AC4CED7;
+	Tue, 12 Nov 2024 10:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407823;
-	bh=mH0Xx9pnQKbS/pmT69wEitT1nowdxH6DcNJvkhuFaFM=;
+	s=k20201202; t=1731407827;
+	bh=gcv43duiZlx3LiKyePNQ3QLqwqId7kWDW/PegWv9o20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNLEyjSXDZrtRV+ev3con6HglcKKQp/AEA37VoQFI7YRmt+a1vcFucnfV6q10ST0j
-	 58v9D42OQKSLbRv6BvBph3jcsAM+EnRe9Fp7/futZch6RtZ0HHLMPYqyGe57wFGw8v
-	 VUUBiGO+fCfnrx1lxNm5Lzrb48aPZT/IBg0vrPE/Asmv8C2irm49fCQJ4asXZjLHRF
-	 ts6lIb9m1xntL0wQIfoJpnJgQfAFXyITKrCkMdaPBWoGLD8rxmM6j6sykONgrzUVfs
-	 19WQFfSgdBah/dWYAJthdO638Xy1Ce/JtZxvCF0nxWNBcqglUPKulr6sLj2j7qpTG5
-	 3TkajAISCsxOw==
+	b=BcuzQBaDCvka7cJavNwqvkZQkLkwdocA4aFbdSevA0WHGWlIpbVCawiOT8vlny9Ip
+	 0HIdSVmpnOg9lZ67hv8eTmcWn7PxKWGIBLXtJX4xnxRygCmo4MzrH3Deb19iNTfXhY
+	 DPxKQr7kka2AKiOc28zClQc78eX+aJuOtnMsWE1Tx5gwrTvNlieMMNe4MiJCECmBgc
+	 jZQCN20Ow5wv27rV6EzFYRQcD7PqarofcyzHuJh282ok9wIEmyJJo2E/jOqEpPtYkY
+	 cVUCQdVCxF22FTTbn1/YwQvVVapqwCVB+INzGqOxVXqFSh3iYpUpRQyRpDIvLyj7PN
+	 GAThcyuMpL1Jg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mingcong Bai <jeffbai@aosc.io>,
+Cc: Luo Yifan <luoyifan@cmss.chinamobile.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	olivier.moysan@foss.st.com,
+	arnaud.pouliquen@foss.st.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	end.to.start@mail.ru,
-	me@jwang.link,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 10/15] ASoC: amd: yc: fix internal mic on Xiaomi Book Pro 14 2022
-Date: Tue, 12 Nov 2024 05:36:31 -0500
-Message-ID: <20241112103643.1653381-10-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 12/15] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
+Date: Tue, 12 Nov 2024 05:36:33 -0500
+Message-ID: <20241112103643.1653381-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112103643.1653381-1-sashal@kernel.org>
 References: <20241112103643.1653381-1-sashal@kernel.org>
@@ -71,50 +75,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.60
 Content-Transfer-Encoding: 8bit
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit de156f3cf70e17dc6ff4c3c364bb97a6db961ffd ]
+[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
 
-Xiaomi Book Pro 14 2022 (MIA2210-AD) requires a quirk entry for its
-internal microphone to be enabled.
+This patch checks if div is less than or equal to zero (div <= 0). If
+div is zero or negative, the function returns -EINVAL, ensuring the
+division operation (*prate / div) is safe to perform.
 
-This is likely due to similar reasons as seen previously on Redmi Book
-14/15 Pro 2022 models (since they likely came with similar firmware):
-
-- commit dcff8b7ca92d ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 15 2022
-  into DMI table")
-- commit c1dd6bf61997 ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 14 2022
-  into DMI table")
-
-A quirk would likely be needed for Xiaomi Book Pro 15 2022 models, too.
-However, I do not have such device on hand so I will leave it for now.
-
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://patch.msgid.link/20241106024052.15748-1-jeffbai@aosc.io
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/stm/stm32_sai_sub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 76f5d926d1eac..e027bc1d35f4f 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -381,6 +381,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Redmi Book Pro 15 2022"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 0acc848c1f004..1b61110cb9174 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -378,8 +378,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	int div;
+ 
+ 	div = stm32_sai_get_clk_div(sai, *prate, rate);
+-	if (div < 0)
+-		return div;
++	if (div <= 0)
++		return -EINVAL;
+ 
+ 	mclk->freq = *prate / div;
+ 
 -- 
 2.43.0
 
