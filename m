@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-92587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA689C573B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:03:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC189C57C4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74683B3EFD2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:04:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDFCAB326FB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F5B212160;
-	Tue, 12 Nov 2024 10:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D822EE71;
+	Tue, 12 Nov 2024 10:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JO+2S6pi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCOcMRdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10A020E30A;
-	Tue, 12 Nov 2024 10:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A0822EE69;
+	Tue, 12 Nov 2024 10:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407938; cv=none; b=iwUQ9D3RF2wouB/x0ruIL8fQtGRQd3Psp3wIN6VxSza+7Rcmw3WtQDziL0fxNqmepWg5agvffe0XZAvJp10CXT4u5m98gOrmGRlnIc1jPUk6i2HK+RJvXKGkI05+59tQ8BGh5SoFEtNCuYElLKBTCasCof1Uk56NCetOIOS1Yqc=
+	t=1731407961; cv=none; b=Qva98wQ6kcc4mXEqDt6Ol0RseEIO1ERzHGMA4/4O42MgZDTPUqR+BXqh1TZI9LtG6J7OUAvPVIGC3p74W6NV3v0k7c52AjLQlXRZ6fuKPvwCPk5sp3HKLl0GH0cSSBC2V3vtVvlj6yA/XzuqNeC5Azce1DWf3NxJRWADCMAHV1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407938; c=relaxed/simple;
-	bh=AfDlQ/5xSZ4aCI3n2XQyXjNG7HH0UI8qwwSRsOGDSf4=;
+	s=arc-20240116; t=1731407961; c=relaxed/simple;
+	bh=L8LL7hL/kS+HyLMak9H8frMvNGwGyELtSbBM6PxhX0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFggHDqyUM70rqIKI7d26rdAzQGpPBPXAT85eL8cuDoKviDj8pcRekYvL1iUx9QTIUET/n405oD1bZvhmeqIBq3rKrNFX+K/gPbqUg3Yv0oPo/TXLptdZO6BVBotB0yAtTfgZOJByEcmbJ742EL1D+DHjpUm1m3fVRGAUKY9xQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JO+2S6pi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B604DC4CED4;
-	Tue, 12 Nov 2024 10:38:57 +0000 (UTC)
+	 MIME-Version; b=mMJW+0HSA6bK1BS2qv432AbD5euweGcMeZfIVN6KzxDP6HJm3blXdXERvXmIb1i5e6U82x7pc2GvqKGGcj0iCtmPqPrUD852p5WzUnlLn+EmbWoxQXWwt7A14rtUwao3u3SerAXFj622abJYlrPikM6poXdcuFtzAZQipPKV/D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCOcMRdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E068C4CED6;
+	Tue, 12 Nov 2024 10:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407938;
-	bh=AfDlQ/5xSZ4aCI3n2XQyXjNG7HH0UI8qwwSRsOGDSf4=;
+	s=korg; t=1731407960;
+	bh=L8LL7hL/kS+HyLMak9H8frMvNGwGyELtSbBM6PxhX0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JO+2S6pi4bMWmJ+79VYNoEC9pJ0zaWJ2gyr+uMT/IDvKE1EBnLoYFsU2UCML8IYiY
-	 3OPgUhOdL4nuYNVYsQ/vu709GA1IOcCDdeVbXRwwqqORC9eZvJo2Il+hRM6vmJgK7Y
-	 vzclsCHqlTD8OZSF1LOphBoKZLnIhlQXdAy6WM6E=
+	b=mCOcMRdiUbAL6YGSqgAGJRXxTtOUqIU+cN80yei7K1H6948U98n9VCzedxHbDOtol
+	 K+rzbhtdhz/GbhGT+SdAce+3dslDuF5veVkXhvnMjKL1Tb/bkyD7Dgr6HOyANWEQa2
+	 rGj9HwB88t7upIiPSjugpC+Ie8mHBLMgHLZVKPqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Klaus Goger <klaus.goger@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 010/184] arm64: dts: rockchip: Fix reset-gpios property on brcm BT nodes
-Date: Tue, 12 Nov 2024 11:19:28 +0100
-Message-ID: <20241112101901.269073585@linuxfoundation.org>
+Subject: [PATCH 6.11 017/184] arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
+Date: Tue, 12 Nov 2024 11:19:35 +0100
+Message-ID: <20241112101901.532310676@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,63 +69,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 2b6a3f857550e52b1cd4872ebb13cb3e3cf12f5f ]
+[ Upstream commit 5ed96580568c4f79a0aff11a67f10b3e9229ba86 ]
 
-For most compatibles, the "brcm,bluetooth.yaml" binding doesn't allow
-the 'reset-gpios' property, but there is a 'shutdown-gpios' property.
+All Theobroma boards use a ti,amc6821 as fan controller.
+It normally runs in an automatically controlled way and while it may be
+possible to use it as part of a dt-based thermal management, this is
+not yet specified in the binding, nor implemented in any kernel.
 
-Page 12 of the AzureWave-CM256SM datasheet (v1.9) has the following wrt
-pin 34 'BT_REG_ON' (connected to GPIO0_C4_d on the PineNote):
+Newer boards already don't contain that #cooling-cells property, but
+older ones do. So remove them for now, they can be re-added if thermal
+integration gets implemented in the future.
 
-  Used by PMU to power up or power down the internal regulators used
-  by the Bluetooth section. Also, when deasserted, this pin holds the
-  Bluetooth section in reset. This pin has an internal 200k ohm pull
-  down resistor that is enabled by default.
+There are two further occurences in v6.12-rc in px30-ringneck and
+rk3399-puma, but those already get removed by the i2c-mux conversion
+scheduled for 6.13 . As the undocumented property is in the kernel so
+long, I opted for not causing extra merge conflicts between 6.12 and 6.13
 
-So it is safe to replace 'reset-gpios' with 'shutdown-gpios'.
-
-Fixes: d449121e5e8a ("arm64: dts: rockchip: Add Pine64 PineNote board")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20241008113344.23957-5-didi.debian@cknow.org
+Fixes: d99a02bcfa81 ("arm64: dts: rockchip: add RK3368-uQ7 (Lion) SoM")
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: Klaus Goger <klaus.goger@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-7-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi  | 2 +-
- arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index ca7666bf5c0a5..a477bd992b40e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-@@ -686,9 +686,9 @@
- 		clock-names = "lpo";
- 		device-wakeup-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
- 		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
--		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
- 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
- 		pinctrl-names = "default";
-+		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
- 		vbat-supply = <&vcc_wl>;
- 		vddio-supply = <&vcca_1v8_pmu>;
- 	};
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-index 45de2630bb503..e9fa9bee995ae 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-@@ -402,9 +402,9 @@
- 		clock-names = "lpo";
- 		device-wakeup-gpios = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
- 		host-wakeup-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
--		reset-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&bt_host_wake_h &bt_reg_on_h &bt_wake_host_h>;
-+		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
- 		vbat-supply = <&vcc_3v3>;
- 		vddio-supply = <&vcc_1v8>;
- 	};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+index 8ac8acf4082df..ab3fda69a1fb7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
+@@ -61,7 +61,6 @@
+ 			fan: fan@18 {
+ 				compatible = "ti,amc6821";
+ 				reg = <0x18>;
+-				#cooling-cells = <2>;
+ 			};
+ 
+ 			rtc_twi: rtc@6f {
 -- 
 2.43.0
 
