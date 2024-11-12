@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-92770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26249C55FA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:12:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7969C55E4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9091F24FD4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3BFB285023
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A3521D21B;
-	Tue, 12 Nov 2024 10:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D97321B458;
+	Tue, 12 Nov 2024 10:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsSu3LCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXeO7Wol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED7221D216;
-	Tue, 12 Nov 2024 10:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC13C21B451;
+	Tue, 12 Nov 2024 10:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408534; cv=none; b=u7e45RjBJpzClliMKf4zG4ztKODstfHOQ8b3UoPZ61PyrvxQLg9Q6hL02mWrjbqNuBxR1my3QmCFIsyCTMjDHleyqeGZAc1DBc7brJoJ8d+kZKnLtH3NaYUwQ9V0FZ5ZND68+7mBzacYG2px1nBEOFDH4MdjSsQZur279fK4zYs=
+	t=1731408467; cv=none; b=L1XZhZkCPwVRYc6GVk4YS1R4ofN7fPFBSf2kq8GSyzq9qHGDJLwIOxdKheBzgYigACwbzoxEhFwjiMoRVWRC6o9+wbI4HkDOuBsxxGSFfq98g2kWS1qqTH950OR/p7JOEEnSafSqqCprOalSjtSyQse/TTLJHzCGnFuyeuyV5qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408534; c=relaxed/simple;
-	bh=8N8abYrkrIyfsxb4CNUzsZ9om/2+JfCgD6+02CGnX0w=;
+	s=arc-20240116; t=1731408467; c=relaxed/simple;
+	bh=S39WOH8cc6W3hlYOuGbudMYwoVXjWuk/hcdqOnj6ims=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRokxO9MB+rTwP1tMD6YJLSU99eUP1d2IrH+shiNuLXCakjAcjU6jv1jbprqc1YkkuvLX7p7ICjO3QBvfi/1XIkQW51pmkmne2JdalmQBC24KdpPkMosFRC029hP4YjI35hE7p20bEv83GFVOi8Wax3CgEWyrm4HehzOvqFpA5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsSu3LCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F754C4CECD;
-	Tue, 12 Nov 2024 10:48:53 +0000 (UTC)
+	 MIME-Version; b=dcFcKvWcs3AfX3Otm0JVHE4pA/08kSPgnhFf8hZZ5GIdrFwJMg1aLA5ptcUXyz8VTZtpnJ4ctoRuAEUrkNNjV+7LmkEGTYuJV+BaT5/IvuZCFcvnAvaFuFCvRw51R0IwqPxvBjZiBkALQ9oAXxdjCms4AC1clpINBa222hwfSSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXeO7Wol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AF8C4CECD;
+	Tue, 12 Nov 2024 10:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408534;
-	bh=8N8abYrkrIyfsxb4CNUzsZ9om/2+JfCgD6+02CGnX0w=;
+	s=korg; t=1731408467;
+	bh=S39WOH8cc6W3hlYOuGbudMYwoVXjWuk/hcdqOnj6ims=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsSu3LCdUGljSMYnHUQjleiJY8mBzeYzntF4DiheeWXPnqSCTMu8xHWzXhN9MESt8
-	 m6iLwkfESCobCMiiAG4y8cUjCqeh433Dd91aU0xZpdyAAF3ayXUYJkEOsz963ENdFw
-	 makj7Pih3SMRtjvY86idTgLaDeINRNAAGJJFdP/U=
+	b=YXeO7WolXQYy0bSqb0uAG1WTqJ5s8zsy7HjzPitKcIhuDiNA1uhZaWzT/e175VV+f
+	 idoSWEdsEzf3itB7JFq9iHNALFPgZdnzuwb6RcGQ1vV5QKHFeYf/qZUu7xTn0JYutR
+	 EwjAQLdNrZm4+rekSYxwk7Z1HNMy114hI4ZyDMGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Vagin <avagin@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexey Gladkov <legion@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Oleg Nesterov <oleg@redhat.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Donet Tom <donettom@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 171/184] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Date: Tue, 12 Nov 2024 11:22:09 +0100
-Message-ID: <20241112101907.429791431@linuxfoundation.org>
+Subject: [PATCH 6.11 172/184] selftests: hugetlb_dio: check for initial conditions to skip in the start
+Date: Tue, 12 Nov 2024 11:22:10 +0100
+Message-ID: <20241112101907.466930520@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -70,52 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrei Vagin <avagin@google.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 432dc0654c612457285a5dcf9bb13968ac6f0804 upstream.
+commit 0268d4579901821ff17259213c2d8c9679995d48 upstream.
 
-The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-then checks its limit.  If the value exceeds the limit, the function
-returns an error without decrementing the counter.
+The test should be skipped if initial conditions aren't fulfilled in the
+start instead of failing and outputting non-compliant TAP logs.  This kind
+of failure pollutes the results.  The initial conditions are:
 
-Link: https://lkml.kernel.org/r/20241101191940.3211128-1-roman.gushchin@linux.dev
-Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Co-developed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
+- The test should only execute if /tmp file can be allocated.
+- The test should only execute if huge pages are free.
+
+Before:
+TAP version 13
+1..4
+Bail out! Error opening file
+: Read-only file system (30)
+ # Planned tests != run tests (4 != 0)
+ # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+After:
+TAP version 13
+1..0 # SKIP Unable to allocate file: Read-only file system
+
+Link: https://lkml.kernel.org/r/20241101141557.3159432-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Fixes: 3a103b5315b7 ("selftest: mm: Test if hugepage does not get leaked during __bio_release_pages()")
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/ucount.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/mm/hugetlb_dio.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -318,7 +318,7 @@ long inc_rlimit_get_ucounts(struct ucoun
- 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
- 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
- 		if (new < 0 || new > max)
--			goto unwind;
-+			goto dec_unwind;
- 		if (iter == ucounts)
- 			ret = new;
- 		if (!override_rlimit)
-@@ -336,7 +336,6 @@ long inc_rlimit_get_ucounts(struct ucoun
- dec_unwind:
- 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
- 	WARN_ON_ONCE(dec < 0);
--unwind:
- 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
- 	return 0;
- }
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index f9ac20c657ec..60001c142ce9 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -44,13 +44,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 	if (fd < 0)
+ 		ksft_exit_fail_perror("Error opening file\n");
+ 
+-	/* Get the free huge pages before allocation */
+-	free_hpage_b = get_free_hugepages();
+-	if (free_hpage_b == 0) {
+-		close(fd);
+-		ksft_exit_skip("No free hugepage, exiting!\n");
+-	}
+-
+ 	/* Allocate a hugetlb page */
+ 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
+ 	if (orig_buffer == MAP_FAILED) {
+@@ -94,8 +87,20 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ int main(void)
+ {
+ 	size_t pagesize = 0;
++	int fd;
+ 
+ 	ksft_print_header();
++
++	/* Open the file to DIO */
++	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
++	if (fd < 0)
++		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
++	close(fd);
++
++	/* Check if huge pages are free */
++	if (!get_free_hugepages())
++		ksft_exit_skip("No free hugepage, exiting\n");
++
+ 	ksft_set_plan(4);
+ 
+ 	/* Get base page size */
+-- 
+2.47.0
+
 
 
 
