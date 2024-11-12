@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-92343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629369C53DC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5560F9C53A7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60DFFB356E0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B530281A8A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2E820FA90;
-	Tue, 12 Nov 2024 10:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798A2141B0;
+	Tue, 12 Nov 2024 10:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jt3p7IKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0VxX8Ak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B5E20899D;
-	Tue, 12 Nov 2024 10:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540342141AD;
+	Tue, 12 Nov 2024 10:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407347; cv=none; b=GGdx49eyxhxNAp5zLCVPV4QqDQMGhqTMXfMDK+oTudqgZNG/bxJ/Dqwd1DGcpb35Ktvm4x8GuvYgYEJoWsKByEI69/o0LEASkS8Ezl5NsqJf6JK45tiDYs7vcI7u9MzphZ4lBmv2lA6gx20E1YBN1t+KfrJb6nuF+VCSIyN+otI=
+	t=1731407383; cv=none; b=pL4Y6R0wDmxZTCMgOWCnvfiAeY1O+zkOeaFYC9fWCKux0qISG8fPosqUzBnPjj4JFLo2VP6WTkVcm4xV5viQEKPNhf3bZg5WtRIarbNhjZbPQcfRrkgUa8/+Ik/ipRjcp9gV2FLWIJVbHK18QOUuz7N9melcBVD0NfWuODSrrGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407347; c=relaxed/simple;
-	bh=aSnem5EBFMzFEPVVl0iW2C5mzkKRql5byfnkdSJhNUQ=;
+	s=arc-20240116; t=1731407383; c=relaxed/simple;
+	bh=27aTPHbz4rfg0OONj0oSU1JN67pDUSwPrvgPhjtpeUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLi/M8aE272nw3hPcEYpfw3WekE7svkhyq2ki2snQNbbYaCMXbe6Z+kIU0036AMzOeNQA+ZVlc5ldPW1LTHWCdJy4lZGXlY2Bs+CMIiNU74HL67a6F7zfi2+nGmaTdxlYrbXEca/FpZfEJVSj0hGUi8kCqZ7YudQHoz7Tp1B0vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt3p7IKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E773C4CECD;
-	Tue, 12 Nov 2024 10:29:06 +0000 (UTC)
+	 MIME-Version; b=SMiHaWPAJ72AqPD1hAcKksX/xhbuboyaUEb0+r1I1Xz3Qperinq4lMxK9JVwqTYCY/zB+mUyK27CdTTNsRjOSeEDvpiGuYp53Gpay9ck5o5I9BQuxL1fC52DkfONghwlDpIp9Kw2QVTC5LEeEksKa6Tg2AW0au98PhYKJwMlcnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0VxX8Ak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFB3C4CECD;
+	Tue, 12 Nov 2024 10:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407347;
-	bh=aSnem5EBFMzFEPVVl0iW2C5mzkKRql5byfnkdSJhNUQ=;
+	s=korg; t=1731407383;
+	bh=27aTPHbz4rfg0OONj0oSU1JN67pDUSwPrvgPhjtpeUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jt3p7IKsTJjXd1YSPc1+8fLMkIpzfSqc051CNLd/wr7lcA3qJAfmsllVvUZbqrERv
-	 v5V5uldlzgRo3puOCdNMjtnUEorK2DXokpRbLjaJeH21bZvUOFByz1piNgxUz9qDoX
-	 c+tBkXtaQ8dbnkPygZKf93/AvuSILj9XxuJrPxGE=
+	b=n0VxX8AkcsKktl/sbTxXKLuJ9pQbAk6NRYaQJeX0rur0g4qUieQW3VZO4hFrYG+6l
+	 lN6Lko6GQnsHx9UIaRU5xuoi+877oZv7dWRy4WiUjwyYeG9mylfkTxnnyn3IWd2xaM
+	 QpPGrR73/w+YS2njE9M+SBz2YEf/a7sdSkaDs1Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Dahl Juhl <emdj@bang-olufsen.dk>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/98] tools/lib/thermal: Fix sampling handler context ptr
-Date: Tue, 12 Nov 2024 11:20:56 +0100
-Message-ID: <20241112101845.837759237@linuxfoundation.org>
+Subject: [PATCH 6.1 42/98] thermal/of: support thermal zones w/o trips subnode
+Date: Tue, 12 Nov 2024 11:20:57 +0100
+Message-ID: <20241112101845.874840377@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
 References: <20241112101844.263449965@linuxfoundation.org>
@@ -66,42 +68,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Emil Dahl Juhl <emdj@bang-olufsen.dk>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit fcd54cf480c87b96313a97dbf898c644b7bb3a2e ]
+[ Upstream commit 725f31f300e300a9d94976bd8f1db6e746f95f63 ]
 
-The sampling handler, provided by the user alongside a void* context,
-was invoked with an internal structure instead of the user context.
+Although the current device tree binding of thermal zones require the
+trips subnode, the binding in kernel v5.15 does not require it, and many
+device trees shipped with the kernel, for example,
+allwinner/sun50i-a64.dtsi and mediatek/mt8183-kukui.dtsi in ARM64, still
+comply to the old binding and contain no trips subnode.
 
-Correct the invocation of the sampling handler to pass the user context
-pointer instead.
+Allow the code to successfully register thermal zones w/o trips subnode
+for DT binding compatibility now.
 
-Note that the approach taken is similar to that in events.c, and will
-reduce the chances of this mistake happening if additional sampling
-callbacks are added.
+Furtherly, the inconsistency between DTs and bindings should be resolved
+by either adding empty trips subnode or dropping the trips subnode
+requirement.
 
-Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
-Signed-off-by: Emil Dahl Juhl <emdj@bang-olufsen.dk>
-Link: https://lore.kernel.org/r/20241015171826.170154-1-emdj@bang-olufsen.dk
+Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+[wenst@chromium.org: Reworked logic and kernel log messages]
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20241018073139.1268995-1-wenst@chromium.org
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/sampling.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thermal/thermal_of.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/tools/lib/thermal/sampling.c b/tools/lib/thermal/sampling.c
-index 70577423a9f0c..f67c1f9ea1d78 100644
---- a/tools/lib/thermal/sampling.c
-+++ b/tools/lib/thermal/sampling.c
-@@ -16,6 +16,8 @@ static int handle_thermal_sample(struct nl_msg *n, void *arg)
- 	struct thermal_handler_param *thp = arg;
- 	struct thermal_handler *th = thp->th;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 323c8cd171485..07476147559a5 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -238,18 +238,15 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+ 	struct device_node *trips;
+ 	int ret, count;
  
-+	arg = thp->arg;
++	*ntrips = 0;
++	
+ 	trips = of_get_child_by_name(np, "trips");
+-	if (!trips) {
+-		pr_err("Failed to find 'trips' node\n");
+-		return ERR_PTR(-EINVAL);
+-	}
++	if (!trips)
++		return NULL;
+ 
+ 	count = of_get_child_count(trips);
+-	if (!count) {
+-		pr_err("No trip point defined\n");
+-		ret = -EINVAL;
+-		goto out_of_node_put;
+-	}
++	if (!count)
++		return NULL;
+ 
+ 	tt = kzalloc(sizeof(*tt) * count, GFP_KERNEL);
+ 	if (!tt) {
+@@ -272,7 +269,6 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+ 
+ out_kfree:
+ 	kfree(tt);
+-	*ntrips = 0;
+ out_of_node_put:
+ 	of_node_put(trips);
+ 
+@@ -619,11 +615,14 @@ struct thermal_zone_device *thermal_of_zone_register(struct device_node *sensor,
+ 
+ 	trips = thermal_of_trips_init(np, &ntrips);
+ 	if (IS_ERR(trips)) {
+-		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
++		pr_err("Failed to parse trip points for %pOFn id=%d\n", sensor, id);
+ 		ret = PTR_ERR(trips);
+ 		goto out_kfree_of_ops;
+ 	}
+ 
++	if (!trips)
++		pr_info("No trip points found for %pOFn id=%d\n", sensor, id);
 +
- 	genlmsg_parse(nlh, 0, attrs, THERMAL_GENL_ATTR_MAX, NULL);
- 
- 	switch (genlhdr->cmd) {
+ 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
+ 	if (ret) {
+ 		pr_err("Failed to initialize monitoring delays from %pOFn\n", np);
 -- 
 2.43.0
 
