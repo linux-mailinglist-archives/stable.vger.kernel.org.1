@@ -1,86 +1,112 @@
-Return-Path: <stable+bounces-92816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318509C5DA4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 17:46:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6600A9C5EA6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA3CD281AB8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 16:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B346282EBB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 17:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2129207204;
-	Tue, 12 Nov 2024 16:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6250D1FF7A2;
+	Tue, 12 Nov 2024 17:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sw5tfxPQ"
+	dkim=pass (2048-bit key) header.d=jakstys.lt header.i=@jakstys.lt header.b="QoBMY5hs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332D1207202
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 16:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006CF20D515
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 17:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731429965; cv=none; b=dVGswT7dUvmPp4UlkLQpaEnJ/7uoa3YPerEh17mW2P8/CMzJDdqc/fZt/g62DWO3e31cFxQRsRMaeASvY8Dp/FChgjdE/c2t2GZXqRMs0CQAfgS6NuZ8Td67oF5T6IOjTRkcLl4L+wTliwE2E2s1Ue/+zb9n0I5CIeH6kAWPem4=
+	t=1731431839; cv=none; b=SrXfrW1SW2R2cEwWZLKC/V62ujZJ7hIXfWKo1VSZn/j9T/8uuA9VPyMHk3Tu4dGgTd0nRONOXNyKgeYm2j/Gpgpry6LxLysFUcp9O7CtjD/G6MB9/4UjbsJEETum/KEEGzm2I+v3HWlOR4N0MoMXa6N0kHPctaqKisT6e+vy9NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731429965; c=relaxed/simple;
-	bh=WR+aOSyYwrgldXqeUgY/GrhfFKL6OmuAO/PaK1Z+ZLM=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=GEXl9MaVwKd2X0rUy/YPMsVA0PDjxkxoge4EpB1NBAbas58Aai7+XwkuyJvRqmuqKqAQDS8DeAzXqzIm+eFiu+/VBFvkoQWTQ/KvNfEUPJu49ESPdUAy8nxCTVspjs5eJaGCkx6nWK4Q+uOHLlQxfRg+7lV+G454bzgYhmBow1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sw5tfxPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B272C4CECD;
-	Tue, 12 Nov 2024 16:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1731429964;
-	bh=WR+aOSyYwrgldXqeUgY/GrhfFKL6OmuAO/PaK1Z+ZLM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sw5tfxPQpykxtH4qrAnt4kFGBs/rMGI0o05HWTaMivXx6/Pn/oSB1g5dDI5o7JsaJ
-	 mtNhDR0dcExCRJ9S8K8d/t2G/9DHbjR77+kK4zeZOfv5XlLsXVkzWCLfWW7OiuN1Wq
-	 CarqRsV4zeXbslmRRByvjyi6fJ9ksyFjzCNc/gOo=
-Date: Tue, 12 Nov 2024 08:46:03 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: linux-mm@kvack.org, maple-tree@lists.infradead.org,
- stable@vger.kernel.org, Hajime Tazaki <thehajime@gmail.com>
-Subject: Re: [PATCH] nommu: pass NULL argument to vma_iter_prealloc()
-Message-Id: <20241112084603.1c4e351fe21c9602422bf052@linux-foundation.org>
-In-Reply-To: <uyvmziiho2gq2h2f2qwxob2ji7xztrkpxadhcso5lpdrplt24q@nyuqxxiww623>
-References: <20241108222834.3625217-1-thehajime@gmail.com>
-	<uyvmziiho2gq2h2f2qwxob2ji7xztrkpxadhcso5lpdrplt24q@nyuqxxiww623>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731431839; c=relaxed/simple;
+	bh=AD39npRnZp76MJARZ59TlSrkX85P6kcuVPrlIc0qGzU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N0v0sEdQgxAOwkjxEOPDYzLa2xvSyjKo6YhqAf5wp/2MEQ9Mr1OTgjj6qCZxAilTNFxx8iYK77L/nn7UkpcnqDLOkm8V9wXFq0dwLke1B0njRpzCteoLPvvRoUTJ0o5M+YWz8P5UVjLp2PDC9YvbZVMDGyrPedNldLEWZl06mSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jakstys.lt; spf=pass smtp.mailfrom=jakstys.lt; dkim=pass (2048-bit key) header.d=jakstys.lt header.i=@jakstys.lt header.b=QoBMY5hs; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jakstys.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jakstys.lt
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5ceccffadfdso8143892a12.2
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 09:17:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jakstys.lt; s=google; t=1731431833; x=1732036633; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8QARBTOrEr1jUq9d1+48ytVIG5GO2275wa3LHpCtbk=;
+        b=QoBMY5hsEtkMnuRVWmN7KzmWUgy7biTTAen+myFIkEIQWEnLcpvY3poSOtbJtzv/KC
+         xuLw+ZKK1KJZQpJ228I2ekia1DBxo86F1nM/COgBln+TK5HMHOcEo/S5ovdTqzYMVeUX
+         Sd7AjlrXFUHVOf29iPC+4/mdErPtv4GJ+c2nEkTW8BqYcCcNypluwWwO8RLJXx9HuLBh
+         lP2kCOKu1X4YD23BzCjLSozWLmNI3SQ3waVVxlW1sRuWqss348JpbpGgQDWfD6Jo7dKv
+         KIhzUdcL9kvBm84gezVBIaUWRYQZVoBjrGy79wLBZVIbl9pXCa9tXnnLoF8owdVLDPW8
+         d7Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731431833; x=1732036633;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i8QARBTOrEr1jUq9d1+48ytVIG5GO2275wa3LHpCtbk=;
+        b=cGlCijckQBzemK9mwRE380lzjjo0fWMX32EmS2paTemIsYMRNEpc4AcFW1YVcvV/lY
+         wj3iG95q91L1L3KFpqoOSMply2OFzrRUkLhkXvY44X7oCAAlCK4wUWFgo3HOqE3H4BUO
+         DfofzDTWjnMBK2jG4gk08gvPAFDaTxlzCXf6qN7hQpmYJVIeSS8i/i+tr6NchViq6AL/
+         9Qa4cU8T/8CLNzrMsrvM1UFH/NeK/asTlWuOXg+vl0huBea3e5GE7rngEWZ762M4WYS/
+         c4dHiqvbDJlWwTkf/k92rIYHuN0UvEcqydw5jFOPFAQXpDeNW4WtUwPc7eopJp8cV7CA
+         RjBw==
+X-Gm-Message-State: AOJu0YwHR+bZifXjqBluNYKNnALL/dlogwZFaHtdV3SiwmJkgKHC4gQN
+	//7Zi/6lOJVCD+t5zJXiwZdX3S8dLstCNF2donTaloF/3Nv6YB4CZMZO8QTZ3CFstdbxwDWsd74
+	=
+X-Google-Smtp-Source: AGHT+IGYlbJj7N4kYrGVX8KXUmt7arrPzVNNdlq9/30jDjCUugJ6j8PXX6SJqd4BL9IhbwCLKjBWUg==
+X-Received: by 2002:a05:6402:5192:b0:5ce:d43c:70a8 with SMTP id 4fb4d7f45d1cf-5cf0a444352mr13383988a12.25.1731431832976;
+        Tue, 12 Nov 2024 09:17:12 -0800 (PST)
+Received: from localhost ([88.223.107.21])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03bb7fcasm6443923a12.52.2024.11.12.09.17.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 09:17:11 -0800 (PST)
+From: =?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+To: linux-mm@kvack.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] tools/mm: fix compile error
+Date: Tue, 12 Nov 2024 19:16:55 +0200
+Message-ID: <20241112171655.1662670-1-motiejus@jakstys.lt>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Nov 2024 07:46:18 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+Not much to be said here, add a missing semicolon.
 
-> Andrew,
-> 
-> Just in case you didn't notice, this patch was reviewed on another list.
-> 
-> Thanks,
-> Liam
-> 
-> * Hajime Tazaki <thehajime@gmail.com> [241108 17:29]:
-> > When deleting a vma entry from a maple tree, it has to pass NULL to
-> > vma_iter_prealloc() in order to calculate internal state of the tree,
-> > but it passed a wrong argument.  As a result, nommu kernels crashed upon
-> > accessing a vma iterator, such as acct_collect() reading the size of
-> > vma entries after do_munmap().
-> > 
-> > This commit fixes this issue by passing a right argument to the
-> > preallocation call.
-> > 
-> > Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-> > Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+Fixes: ece5897e5a10 ("tools/mm: -Werror fixes in page-types/slabinfo")
+Closes: https://github.com/NixOS/nixpkgs/issues/355369
+Signed-off-by: Motiejus Jakštys <motiejus@jakstys.lt>
+Cc: <stable@vger.kernel.org>
+---
+ tools/mm/page-types.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yep, thanks, 247d720b2c5d in mm-hotfixes-stable.
+diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+index 6eb17cc1a06c..bcac7ebfb51f 100644
+--- a/tools/mm/page-types.c
++++ b/tools/mm/page-types.c
+@@ -420,7 +420,7 @@ static void show_page(unsigned long voffset, unsigned long offset,
+ 	if (opt_file)
+ 		printf("%lx\t", voffset);
+ 	if (opt_list_cgroup)
+-		printf("@%" PRIu64 "\t", cgroup)
++		printf("@%" PRIu64 "\t", cgroup);
+ 	if (opt_list_mapcnt)
+ 		printf("%" PRIu64 "\t", mapcnt);
+ 
+
+base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+-- 
+2.44.2
+
 
