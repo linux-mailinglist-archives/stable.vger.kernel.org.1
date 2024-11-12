@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DA69C54B8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:49:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA0D9C53AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7D91F22D28
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565B11F21B84
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666CF220D5E;
-	Tue, 12 Nov 2024 10:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6492141AA;
+	Tue, 12 Nov 2024 10:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/C8bYcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyyNq/Py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A92139A1;
-	Tue, 12 Nov 2024 10:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E94A213EFC;
+	Tue, 12 Nov 2024 10:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407840; cv=none; b=Il8sSzK1LT/7banAaUtsUpaGsW+ZXOUahKx4E+QcTOsQlUHljTUOMgWAz9rnxnrzMC3grv9PzCY28f9oSdlBJjjyk+hJ+WowSH3u4hwzzihzTbkDnmOwbeIb0xgGw9fTlnuyMRc5j9nXiyqSCFPYs/K8VxX7sKXaasu0gX83wak=
+	t=1731407390; cv=none; b=FDKO56KtWe7Mlmxpog6Gt2QEdgya5JLM+UAEnKfzcwesSEQljdweuJ6iLlb33sRFqScLyDqKNin7Jb3rZm8ZLzSHglkFz+Ws0Qt2UAHWAeYh+mMhjzg0zq/FBAhw7yo/G/JOmEgQSEwKMnUt3vDpaGGHxyRCH9A2PiWFFWSEMLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407840; c=relaxed/simple;
-	bh=PBm0/4ht76Ez0NREHdI+rwCQjvaDAVOmv/KZJp7eDnk=;
+	s=arc-20240116; t=1731407390; c=relaxed/simple;
+	bh=6cCh/yQpcoE6u6sB3EUeBSBXRsHBscworY2bDwgKiPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEiYemUCeiIOOxDztCh/D4f1YE8mupO4sYgUIzor2y49ToyCZUSZcWtz3Ww62TTc0E9v7ARLUM1CAw79Cgxhb1AyJIerJtfu4agzSXxzQ1XDV3HtiX07a2FmGzi6mALaMlKCcVDRBX2xOlcbPv7bGXyDYAhV45W4/xSI2hdVji8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/C8bYcp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F03CC4CED4;
-	Tue, 12 Nov 2024 10:37:19 +0000 (UTC)
+	 MIME-Version; b=NWMqSWhjodSoXD85pXACRZuqo4hCwIRRL2JlcR3NO3jnr+qCVCaToaN4T/CwkLGo4CYt+JBTAQc74N12TXUPNfuE2Ta6p21RQonNQT7B+v0RBRtWuF1nYSfOQZR+1nVmRwxVnqlFvzylAF9MZAxMg3PyBYpBU1N2MnhsmlOHYXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyyNq/Py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDD2C4CECD;
+	Tue, 12 Nov 2024 10:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407840;
-	bh=PBm0/4ht76Ez0NREHdI+rwCQjvaDAVOmv/KZJp7eDnk=;
+	s=korg; t=1731407389;
+	bh=6cCh/yQpcoE6u6sB3EUeBSBXRsHBscworY2bDwgKiPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/C8bYcpFDLRCE0PzCpiBGta1TKqjqACUd9hSPn68PxG+gAJdCJtWeS0CxeGOwhWw
-	 zXY1iGPjRdtqxQUyyjGw7hLreLx6Mu7zQNdbA8IG8sBoX9CXe9voOkXRhJ2NOtpStJ
-	 dKjMneVqa/M4hz73R7XD92v611Q+PN7qXkct9qPA=
+	b=SyyNq/Py3WIfGf5hGfWwXPUmu60PnIOTa5D3kFaBNiUYXvd2k/PHDYjZlEDFDRHI1
+	 NPX/BayJA8U5oLRCA3z3cWUdzW+1vR22bqs2HEbPNp+RYHIL+1HTlt7IVawpq/OtQZ
+	 xpMPcln0/MHfw8/u3g2cO4c/Kbxg6ibN8a8iLIyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 067/119] can: m_can: m_can_close(): dont call free_irq() for IRQ-less devices
-Date: Tue, 12 Nov 2024 11:21:15 +0100
-Message-ID: <20241112101851.272002553@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.1 61/98] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
+Date: Tue, 12 Nov 2024 11:21:16 +0100
+Message-ID: <20241112101846.587814973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit e4de81f9e134c78ff7c75a00e43bd819643530d0 upstream.
+commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
 
-In commit b382380c0d2d ("can: m_can: Add hrtimer to generate software
-interrupt") support for IRQ-less devices was added. Instead of an
-interrupt, the interrupt routine is called by a hrtimer-based polling
-loop.
+An unexpected WARN_ON from flush_work() may occur when cache creation
+fails, caused by destroying the uninitialized delayed_work waker in the
+error path of cache_create(). For example, the warning appears on the
+superblock checksum error.
 
-That patch forgot to change free_irq() to be only called for devices
-with IRQs. Fix this, by calling free_irq() conditionally only if an
-IRQ is available for the device (and thus has been requested
-previously).
+Reproduce steps:
 
-Fixes: b382380c0d2d ("can: m_can: Add hrtimer to generate software interrupt")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20240930-m_can-cleanups-v1-1-001c579cdee4@pengutronix.de
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+Kernel logs:
+
+(snip)
+WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
+
+Fix by pulling out the cancel_delayed_work_sync() from the constructor's
+error path. This patch doesn't affect the use-after-free fix for
+concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
+UAF in destroy()")) as cache_dtr is not changed.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1600,7 +1600,8 @@ static int m_can_close(struct net_device
- 	netif_stop_queue(dev);
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1882,16 +1882,13 @@ static void check_migrations(struct work
+  * This function gets called on the error paths of the constructor, so we
+  * have to cope with a partially initialised struct.
+  */
+-static void destroy(struct cache *cache)
++static void __destroy(struct cache *cache)
+ {
+-	unsigned int i;
+-
+ 	mempool_exit(&cache->migration_pool);
  
- 	m_can_stop(dev);
--	free_irq(dev->irq, dev);
-+	if (dev->irq)
-+		free_irq(dev->irq, dev);
+ 	if (cache->prison)
+ 		dm_bio_prison_destroy_v2(cache->prison);
  
- 	if (cdev->is_peripheral) {
- 		cdev->tx_skb = NULL;
+-	cancel_delayed_work_sync(&cache->waker);
+ 	if (cache->wq)
+ 		destroy_workqueue(cache->wq);
+ 
+@@ -1919,13 +1916,22 @@ static void destroy(struct cache *cache)
+ 	if (cache->policy)
+ 		dm_cache_policy_destroy(cache->policy);
+ 
++	bioset_exit(&cache->bs);
++
++	kfree(cache);
++}
++
++static void destroy(struct cache *cache)
++{
++	unsigned int i;
++
++	cancel_delayed_work_sync(&cache->waker);
++
+ 	for (i = 0; i < cache->nr_ctr_args ; i++)
+ 		kfree(cache->ctr_args[i]);
+ 	kfree(cache->ctr_args);
+ 
+-	bioset_exit(&cache->bs);
+-
+-	kfree(cache);
++	__destroy(cache);
+ }
+ 
+ static void cache_dtr(struct dm_target *ti)
+@@ -2538,7 +2544,7 @@ static int cache_create(struct cache_arg
+ 	*result = cache;
+ 	return 0;
+ bad:
+-	destroy(cache);
++	__destroy(cache);
+ 	return r;
+ }
+ 
+@@ -2589,7 +2595,7 @@ static int cache_ctr(struct dm_target *t
+ 
+ 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
+ 	if (r) {
+-		destroy(cache);
++		__destroy(cache);
+ 		goto out;
+ 	}
+ 
 
 
 
