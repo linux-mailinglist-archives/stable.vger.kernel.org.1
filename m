@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-92355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAB09C53A9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0800A9C534C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E3A281F0C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C289E28748E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06352141A8;
-	Tue, 12 Nov 2024 10:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AA52141C3;
+	Tue, 12 Nov 2024 10:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TinrR3rE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMSNC6FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE8A213EFC;
-	Tue, 12 Nov 2024 10:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7212C21216C;
+	Tue, 12 Nov 2024 10:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407386; cv=none; b=Ct+ayP88FErSPC4xszcjT1naVlYwdGVk3HIorIOhfZe8CUmX6HSaL6o1avYQ3WrTHf/pxq2s5yE1b6YonfNILB2FSAyXGkZFy7MssAU47ecneCiCSk8SJvZh/DNPg/vA/RPMkhn0Px24MpVg8xyu4xdsHAdocpbn6Xrpc0sc4XU=
+	t=1731407102; cv=none; b=nUHiPMRFAdjZOyEgfHs0t7UK1wVRjR4QmfiR7I6J/fE5vB4FSVOW7eMhSTE3IDTaiY9muG2oUPaWScojdNalquANZFR5cVoxzw/1r9+fM4skqXXLAsovUP3uFhp5D9l3hIx0kdk/UX6pOzFgWwDaCWh0+mrN3MnZ/AWF11gaAFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407386; c=relaxed/simple;
-	bh=6dvHFLbkFyYgxXYGrYH0kdbKRB98wMss4eRp6iFkuf8=;
+	s=arc-20240116; t=1731407102; c=relaxed/simple;
+	bh=ntLewRwRsbQ86A5F+sQ7/CZXuK3K451djtpJil8ZeKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwU453oWo2dedlY5tRMEmK1ycvusxVHBHksCw9FclOdXVe8ayOVrmhMZ2i8CRCPVS1/gZ9HK2vEBQGTBsz0KI7jwAHb8VpniSzB2zPb06TgZ+Vlb1D+N7NNXl+uhqvHj/2vrQNb+e7qu7aOH9nYD6t39WEcQhMxmOUbYFflmnUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TinrR3rE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE06C4CECD;
-	Tue, 12 Nov 2024 10:29:45 +0000 (UTC)
+	 MIME-Version; b=hIynVDWjopuS0Uf5wKgcT8byylEIoh8Ouy1JBq0G7fDrP7vCtQAtZH+w5z0IOQ+EYeG0NhQhLk8brywXEE0GJul17fihOAXjbHMDgHDiXbRLS4EZGUv5dY6c8dc/HYKzQ/JyG7zFM/FbNjkM1ZJMAwuQ0MuDwX/TsXnKoDiNkIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMSNC6FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8721DC4CECD;
+	Tue, 12 Nov 2024 10:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407386;
-	bh=6dvHFLbkFyYgxXYGrYH0kdbKRB98wMss4eRp6iFkuf8=;
+	s=korg; t=1731407102;
+	bh=ntLewRwRsbQ86A5F+sQ7/CZXuK3K451djtpJil8ZeKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TinrR3rE5whFRvjsJeQ4HgIBrzeqzErYa1jVnIKcab1yeRnSGwA/gY08rM1CDOuSw
-	 xsycl/YcR7+x+Bsqhhv+pXDkhGFvZGG7aM/TRnMVJRKHZ3mlWi8dstE7z2sI1EaKLo
-	 NRXwY+WsJUwiRaSnfVJiI1LovCIaCeFq5WeRWuT8=
+	b=ZMSNC6FUx3MY8Ssvp0ZBnLJvDz4YoL6FsPaOBdLTXJvFTsjQdGcf/bkg3NP+MQWBA
+	 NLJi9wYMwBQf4dMn1Sbp+4H+GV54MaoAWHpj7K1FhLkOAB85h8b/LRvVrLgtPlZMBp
+	 8Tt9rOq3Gsi9AdXnJpsZM10Z4eVOXfCRez6LyGQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.1 60/98] dm cache: correct the number of origin blocks to match the target length
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 50/76] io_uring: rename kiocb_end_write() local helper
 Date: Tue, 12 Nov 2024 11:21:15 +0100
-Message-ID: <20241112101846.550309156@linuxfoundation.org>
+Message-ID: <20241112101841.689321485@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
+Commit a370167fe526123637965f60859a9f1f3e1a58b7 upstream.
 
-When creating a cache device, the actual size of the cache origin might
-be greater than the specified cache target length. In such case, the
-number of origin blocks should match the cache target length, not the
-full size of the origin device, since access beyond the cache target is
-not possible. This issue occurs when reducing the origin device size
-using lvm, as lvreduce preloads the new cache table before resuming the
-cache origin, which can result in incorrect sizes for the discard bitset
-and smq hotspot blocks.
+This helper does not take a kiocb as input and we want to create a
+common helper by that name that takes a kiocb as input.
 
-Reproduce steps:
-
-1. create a cache device consists of 4096 origin blocks
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
-
-dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup suspend cache
-dmsetup suspend corig
-dmsetup suspend cdata
-dmsetup suspend cmeta
-dmsetup resume corig
-dmsetup resume cdata
-dmsetup resume cmeta
-dmsetup resume cache
-
-3. shutdown the cache, and check the number of discard blocks in
-   superblock. The value is expected to be 2048, but actually is 4096.
-
-dmsetup remove cache corig cdata cmeta
-dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
-
-Fix by correcting the origin_blocks initialization in cache_create and
-removing the unused origin_sectors from struct cache_args accordingly.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: c6b4fcbad044 ("dm: add cache target")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Message-Id: <20230817141337.1025891-2-amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |    8 ++++----
+ io_uring/io_uring.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1980,7 +1980,6 @@ struct cache_args {
- 	sector_t cache_sectors;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index f1ab0cd987273..7afa3827bfd5e 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2672,7 +2672,7 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
+ 	return ret;
+ }
  
- 	struct dm_dev *origin_dev;
--	sector_t origin_sectors;
- 
- 	uint32_t block_size;
- 
-@@ -2061,6 +2060,7 @@ static int parse_cache_dev(struct cache_
- static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
- 			    char **error)
+-static void kiocb_end_write(struct io_kiocb *req)
++static void io_req_end_write(struct io_kiocb *req)
  {
-+	sector_t origin_sectors;
- 	int r;
+ 	/*
+ 	 * Tell lockdep we inherited freeze protection from submission
+@@ -2742,7 +2742,7 @@ static void io_req_io_end(struct io_kiocb *req)
+ 	struct io_rw *rw = &req->rw;
  
- 	if (!at_least_one_arg(as, error))
-@@ -2073,8 +2073,8 @@ static int parse_origin_dev(struct cache
- 		return r;
- 	}
+ 	if (rw->kiocb.ki_flags & IOCB_WRITE) {
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 		fsnotify_modify(req->file);
+ 	} else {
+ 		fsnotify_access(req->file);
+@@ -2822,7 +2822,7 @@ static void io_complete_rw_iopoll(struct kiocb *kiocb, long res, long res2)
+ 	struct io_kiocb *req = container_of(kiocb, struct io_kiocb, rw.kiocb);
  
--	ca->origin_sectors = get_dev_size(ca->origin_dev);
--	if (ca->ti->len > ca->origin_sectors) {
-+	origin_sectors = get_dev_size(ca->origin_dev);
-+	if (ca->ti->len > origin_sectors) {
- 		*error = "Device size larger than cached device";
- 		return -EINVAL;
- 	}
-@@ -2384,7 +2384,7 @@ static int cache_create(struct cache_arg
- 
- 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
- 
--	origin_blocks = cache->origin_sectors = ca->origin_sectors;
-+	origin_blocks = cache->origin_sectors = ti->len;
- 	origin_blocks = block_div(origin_blocks, ca->block_size);
- 	cache->origin_blocks = to_oblock(origin_blocks);
- 
+ 	if (kiocb->ki_flags & IOCB_WRITE)
+-		kiocb_end_write(req);
++		io_req_end_write(req);
+ 	if (unlikely(res != req->result)) {
+ 		if (res == -EAGAIN && io_rw_should_reissue(req)) {
+ 			req->flags |= REQ_F_REISSUE;
+@@ -3822,7 +3822,7 @@ static int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 		ret = io_setup_async_rw(req, iovec, inline_vecs, iter, false);
+ 		if (!ret) {
+ 			if (kiocb->ki_flags & IOCB_WRITE)
+-				kiocb_end_write(req);
++				io_req_end_write(req);
+ 			return -EAGAIN;
+ 		}
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
