@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-92503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F7B9C548A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:45:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524359C55C8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64ABD1F2105C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:45:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A4EC1F235DA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A718421C193;
-	Tue, 12 Nov 2024 10:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3108219E54;
+	Tue, 12 Nov 2024 10:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlzBVVJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7p6JNAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D621C189;
-	Tue, 12 Nov 2024 10:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF9F219E52;
+	Tue, 12 Nov 2024 10:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407809; cv=none; b=b4dJQjpbJmt6Qfj9f6I68h3suh2BehEdeCPfxZWU89But7WOTxIBW7bHItRgKadAKWPFnm8hL6hhJulwBspiC0y63/zdDX4JI3mZhW2qgEi+XRfhYO2aYFy8UrfVgQ2pV2z0xdPBPFRYSFr/ZiroMvLgksx0AOnQx9SguqVwnpk=
+	t=1731408357; cv=none; b=AsSveO2nIJKmmTeg+kQrK8LrgaimlxlPditb4D/9BAc5G4oMavWTS/5LOjwpD+TRh/4+B2Seg/mgAOEPVTuj4IOhC3X8/6OP6W7k/iKCnbIa3GI+0ZLPIrYaQbVuIDuzkMe3ahjk7BsvHCAveok4Rozi943U+h86ldJy4hfoYxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407809; c=relaxed/simple;
-	bh=yTPJMTT2GpSKHQO5+anLFClTVO0taON68QOjUwRTiaI=;
+	s=arc-20240116; t=1731408357; c=relaxed/simple;
+	bh=5bi6RLFuFx9tdEpndaWYObEEPJqPDXlXYcg5pbd5TrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OoeeZ7A0LAZHkCedrB1VcJ1iXZpuJfwPjSVFHEd/N4m/K1utnbN7NfKtz0OOQuRuMiW0l8OAXG4uX7m/By/PsUrfTGRIOOt0eJh7Mxk33L43bSzkM7JeNN7dpL5Tz5tqKWCnTOJPY7Cuh3XX3tEKhqAHgo/2O0atDM+iMNiSHEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlzBVVJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8BCC4CED4;
-	Tue, 12 Nov 2024 10:36:48 +0000 (UTC)
+	 MIME-Version; b=NGaBL3EgVTNGY/3Atq2yvqlO3Y4+tJG4pKURAvRT4ltqRXh3XHGuzk2ys/Hs13Cv9mJeBqjU/m945C6laZEu2/dvFHWSkFPSj8EvPAlcrPplSBdDd0AtZ+XtB+dEPTEI5dFHOQCbghXzZ86BAlzcOtZaWQ+Wc7v1Na96TvCF5UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7p6JNAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57DEC4CECD;
+	Tue, 12 Nov 2024 10:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407809;
-	bh=yTPJMTT2GpSKHQO5+anLFClTVO0taON68QOjUwRTiaI=;
+	s=korg; t=1731408357;
+	bh=5bi6RLFuFx9tdEpndaWYObEEPJqPDXlXYcg5pbd5TrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlzBVVJSIc4oBSvYRK+eAi8wAhX0iTRtOBKkMCJ+ToOdyAhoMbqC6xECXDd//V28O
-	 XvB0108nWRNykZPVyaLlAqvxUdRLTMu+m2NKRAFwkcoIAnVGrWbcZBaHIoIijbSKl8
-	 fO1D2cVoqgmHk4Zai+K+7j6Ac8cIVLLjSwLGuhMI=
+	b=Z7p6JNAwCtiMG/Oq+h0+wa7vcIakEFOcaeus70GSznUahrnEK7z8aKHWRZddnmMbE
+	 YNSKfnklzZALbybdnfIGI0QKeXHxMgW5MRdgJW4sGW1KNe3QIeSoxCePKhkWX1Eu5V
+	 z9QwxYs49M7dBISyKDfPcyMFTbBFr5CbkOPr9g5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 088/119] ALSA: usb-audio: Add quirk for HP 320 FHD Webcam
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 138/184] btrfs: reinitialize delayed ref list after deleting it from the list
 Date: Tue, 12 Nov 2024 11:21:36 +0100
-Message-ID: <20241112101852.077438108@linuxfoundation.org>
+Message-ID: <20241112101906.169743472@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit dabc44c28f118910dea96244d903f0c270225669 upstream.
+commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
 
-HP 320 FHD Webcam (03f0:654a) seems to have flaky firmware like other
-webcam devices that don't like the frequency inquiries.  Also, Mic
-Capture Volume has an invalid resolution, hence fix it to be 16 (as a
-blind shot).
+At insert_delayed_ref() if we need to update the action of an existing
+ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
+ref_add_list using list_del(), which leaves the ref's add_list member
+not reinitialized, as list_del() sets the next and prev members of the
+list to LIST_POISON1 and LIST_POISON2, respectively.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1232768
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241105120220.5740-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+If later we end up calling drop_delayed_ref() against the ref, which can
+happen during merging or when destroying delayed refs due to a transaction
+abort, we can trigger a crash since at drop_delayed_ref() we call
+list_empty() against the ref's add_list, which returns false since
+the list was not reinitialized after the list_del() and as a consequence
+we call list_del() again at drop_delayed_ref(). This results in an
+invalid list access since the next and prev members are set to poison
+pointers, resulting in a splat if CONFIG_LIST_HARDENED and
+CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
+otherwise.
+
+So fix this by deleting from the list with list_del_init() instead.
+
+Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
+CC: stable@vger.kernel.org # 4.19+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c  |    1 +
- sound/usb/quirks.c |    2 ++
- 2 files changed, 3 insertions(+)
+ fs/btrfs/delayed-ref.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1205,6 +1205,7 @@ static void volume_control_quirks(struct
- 		}
- 		break;
- 	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
-+	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
- 		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
- 			usb_audio_info(chip,
- 				"set resolution quirk: cval->res = 16\n");
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2016,6 +2016,8 @@ struct usb_audio_quirk_flags_table {
- 
- static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 	/* Device matches */
-+	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -649,7 +649,7 @@ static bool insert_delayed_ref(struct bt
+ 					      &href->ref_add_list);
+ 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
+ 				ASSERT(!list_empty(&exist->add_list));
+-				list_del(&exist->add_list);
++				list_del_init(&exist->add_list);
+ 			} else {
+ 				ASSERT(0);
+ 			}
 
 
 
