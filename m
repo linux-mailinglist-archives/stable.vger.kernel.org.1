@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-92597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4084A9C5816
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C909C57F4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09443B41DD8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65FFCB41F66
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B342123E1;
-	Tue, 12 Nov 2024 10:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0892F2141AE;
+	Tue, 12 Nov 2024 10:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN3+FbRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8yIyJas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6565A2123CE;
-	Tue, 12 Nov 2024 10:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63502141AB;
+	Tue, 12 Nov 2024 10:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407970; cv=none; b=c6RnHN+DJe9YQl2C+G5d19G8KGIV9rlHVks6Jq2NYC4Ph8qjZf1XPJXNjSbRE1SZ4gMYPkT0YRd3MHpkQvW9EmOEfNb3Py9U+gb2ujFy60zhudxvjz/a16uW9/b+S839QFy5EqZDGkYfO52WLjSxrP9ssaOB9/YdRsX5c+iFOMk=
+	t=1731407989; cv=none; b=rC9/0UgBJpXB/G11+MIjqIx0Ymt1oOhrVMnArbF5QOhnqPHRwMNwWHaWKv2rG75OR2iz9NdRvmX61Ej+FMYveTCeEd/t3j1nMDaPrykIR1sUFfASelJXu9K1cRKIBz0Nr9NDMXg/WMMWanm+o1rbleMvzPzua+jCloGqqBGPkWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407970; c=relaxed/simple;
-	bh=p5gBbgV8R5TE+OEMCAXbiPznJ0/OQw4gjoBuXFfiBjQ=;
+	s=arc-20240116; t=1731407989; c=relaxed/simple;
+	bh=SObnhBLnmEHdf5PzoYQMAd3PlFCNhRMeLa5mI7iAMeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfHGntiSzB9/urvlIzGDqtO0mrJULjgTCVYLj7z3zZW6llSALD+rOAW6Q8bVJ1S3L+YKmnWgxQkrw/BGZnmUZYeUg/y+dRAbsk5SQVtkfZ2j4c1q6+R+LxIxxx+G/dKjt1UsMKg/m1hDG+aV5BVsTOjS2q6GySvM5uzUcirLcE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN3+FbRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A04C4CECD;
-	Tue, 12 Nov 2024 10:39:29 +0000 (UTC)
+	 MIME-Version; b=a+obrkwIZ9Prh7UQvGhDlmIfgAI1K6bucjZodajIp305NW6OQ3UuCdzpI0jWMZ/6pmc6T4xqVXSCd/gFsVZg2qf7WUyae4+GJ6/TucxWsfcnADVMrTbGQ141M0uDcY0RFeLv/W82XonFhBOQ/t0Ed/DKCtyxAAt9RcO2ptENizQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8yIyJas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2494BC4CECD;
+	Tue, 12 Nov 2024 10:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407970;
-	bh=p5gBbgV8R5TE+OEMCAXbiPznJ0/OQw4gjoBuXFfiBjQ=;
+	s=korg; t=1731407989;
+	bh=SObnhBLnmEHdf5PzoYQMAd3PlFCNhRMeLa5mI7iAMeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN3+FbRgEnF5eR5XpD6jSsWQ5cJNQRPOQswA0KkjJV7P9vFLkuUZjeB5L5dSNyNfH
-	 QyHYvrmnY7QXqKI2f5ASm4GkGqvxShlJJMFRaqF1Jbfm34yQH3wuePLk8cQAlrqGju
-	 MPPuBqjoxBG9mZYWGx3vLEeNQ7VkWlZF6PGcfBiU=
+	b=m8yIyJaso4b6SOfVkkkY4rI7Shv6KAQxvNm6fQL+AlOyJNqQM7+F/W7DKPFlzujpY
+	 kMcdnm5MckiE6mMc9HPKyDCeSo+L9zL7PWrlQY3OLlN06GIWmR3vzklbXN9R8IDVM0
+	 8zgPLW9H9MGqAK6/v5tcD9LewgBA6UZl+MG3Q92k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 002/184] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
-Date: Tue, 12 Nov 2024 11:19:20 +0100
-Message-ID: <20241112101900.963166760@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Subject: [PATCH 6.11 003/184] arm64: dts: rockchip: Move L3 cache outside CPUs in RK3588(S) SoC dtsi
+Date: Tue, 12 Nov 2024 11:19:21 +0100
+Message-ID: <20241112101901.001267093@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,36 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 577b5761679da90e691acc939ebbe7879fff5f31 ]
+[ Upstream commit df5f6f2f62b9b50cef78f32909485b00fc7cf7f2 ]
 
-There are no DT bindings and driver support for a "rockchip,rt5651"
-codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
-"simple-audio-card,name" property in the "rt5651-sound" node.
+Move the "l3_cache" node outside the "cpus" node in the base dtsi file for
+Rockchip RK3588(S) SoCs.  The A55 and A76 CPU cores in these SoCs belong to
+the ARM DynamIQ IP core lineup, which places the L3 cache outside the CPUs
+and into the DynamIQ Shared Unit (DSU). [1]  Thus, moving the L3 cache DT
+node one level higher in the DT improves the way the physical topology of
+the RK3588(S) SoCs is represented in the SoC dtsi files.
 
-Fixes: 0a3c78e251b3a266 ("arm64: dts: rockchip: Add support for rk3399 excavator main board")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/abc6c89811b3911785601d6d590483eacb145102.1727358193.git.geert+renesas@glider.be
+While there, add a comment that explains it briefly, to save curious readers
+from the need to reference the repository log for a clarification.
+
+[1] ARM DynamIQ Shared Unit revision r4p0 TRM, version 0400-02
+
+Fixes: c9211fa2602b ("arm64: dts: rockchip: Add base DT for rk3588 SoC")
+Helped-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/84264d0713fb51ae2b9b731e28fc14681beea853.1727345965.git.dsimic@manjaro.org
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 20 +++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-index dbec2b7173a0b..31ea3d0182c06 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-@@ -163,7 +163,7 @@
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index ee99166ebd46f..f695c5d5f9144 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -337,15 +337,19 @@
+ 			cache-unified;
+ 			next-level-cache = <&l3_cache>;
+ 		};
++	};
  
- 	rt5651: rt5651@1a {
--		compatible = "rockchip,rt5651";
-+		compatible = "realtek,rt5651";
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_I2S_8CH_OUT>;
- 		clock-names = "mclk";
+-		l3_cache: l3-cache {
+-			compatible = "cache";
+-			cache-size = <3145728>;
+-			cache-line-size = <64>;
+-			cache-sets = <4096>;
+-			cache-level = <3>;
+-			cache-unified;
+-		};
++	/*
++	 * The L3 cache belongs to the DynamIQ Shared Unit (DSU),
++	 * so it's represented here, outside the "cpus" node
++	 */
++	l3_cache: l3-cache {
++		compatible = "cache";
++		cache-size = <3145728>;
++		cache-line-size = <64>;
++		cache-sets = <4096>;
++		cache-level = <3>;
++		cache-unified;
+ 	};
+ 
+ 	display_subsystem: display-subsystem {
 -- 
 2.43.0
 
