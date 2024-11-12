@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-92319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BB39C5391
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632C09C5434
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B58D71F22778
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A4F91F22E53
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5871212F1D;
-	Tue, 12 Nov 2024 10:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33F52139A4;
+	Tue, 12 Nov 2024 10:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCmaHl6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0KRGmy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715222123DC;
-	Tue, 12 Nov 2024 10:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21C81CBE8F;
+	Tue, 12 Nov 2024 10:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407268; cv=none; b=NsS05dUvsCa+izQyeoEBwSEAAEVrs+5hxyVD8KBMm0/sE+rzGx1mno+b9nR5PTFuMqKrz3wsi9YeSknoAB5PeumNuoJ42EzCF5M41HEx+RuOSF9gNaHIl4sVNSp3JEp1iL7PE+pK4WVCkja9ax5Fh3xo5gsQQ3uW+V606nKWuFU=
+	t=1731407729; cv=none; b=T1ZTTfNso7eoJMQwgsa7hg5l/hmr+lNCZQa7vUCj2NACmLyhVOBTIwdD5rQIT8/rluG5KFAep80fu65PdH03BNSFZk8aD1rG23cnbzk8R0JuVO2pTP+cPRq3kZln+ZLTndJRZYGKrD8nQmkFHIrXaPMoJ1wr3+QbSgBPn/kW+Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407268; c=relaxed/simple;
-	bh=gWKFlF2TfV/cne3lzg8u4FAKY+9YZNXw1A9UJk/099M=;
+	s=arc-20240116; t=1731407729; c=relaxed/simple;
+	bh=bwD5icwAZDgihN2Jxg8m0UwQp1Id+Kf3+8E6W3DhsoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ix9VOK1/QvROMk1jqLmZKzJSOLXDY4sNzIgJrAkTFG3rqq3TRpoWwtxtWDmfs3DmToxD+KoFmVahqsKVhSh/I6Doc4Z53QQkgkHgOhHYWaqPnMUjVmq6Bid/RWlOW+a/lIqdXSnKWaLDTlRT0U3TslqLiz+W1h55FT9vsx6Z/Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCmaHl6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4468C4CECD;
-	Tue, 12 Nov 2024 10:27:47 +0000 (UTC)
+	 MIME-Version; b=LgLXZj55mcM5g6Y9Yk+1Eot9F39ERxvW08z3C8NyL54qYmgpOVSK489x1h/zCMnCJmJ/sIOt1DzILyXJF+p3udGBrOcoQC2ydrwHxJ3nGVhXhX0FL3hqsctLBJVpQ26hHib3yImI+F2Ug6M7Iotadjz37Q8JM5olZ9fq//ic4go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0KRGmy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E27C4CECD;
+	Tue, 12 Nov 2024 10:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407268;
-	bh=gWKFlF2TfV/cne3lzg8u4FAKY+9YZNXw1A9UJk/099M=;
+	s=korg; t=1731407729;
+	bh=bwD5icwAZDgihN2Jxg8m0UwQp1Id+Kf3+8E6W3DhsoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCmaHl6l+NlAZS4WNFfcTfSgvDkUx406x7GKuYkeIgDewjvgjpK6Rre9USXvwSXVH
-	 7znH5RtDb5qqwgKDitkS0QHBMDyJM+plDW31UYqTJFom4UGkBOA0CT0w3ScBL1NR5r
-	 tMGYUjCVdbRkwRECxSI0if+BDRmkT1x40rGikbGM=
+	b=g0KRGmy+4WtGTAIe2gMcM+ykqdpUKYxZMy9wl6IxBtLow4JMvw4+F7l0dcXblvm9w
+	 gz6rsxVIiBSF8EAM2jaliPu7eUHn+mcvrq37TQdAHe+c/UKYFHecslu0HS/IGdw7Go
+	 jr5Dpfsa6QJMAYpPjfeCYNwMrkwd+zGQsV5ZMrgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/98] can: c_can: fix {rx,tx}_errors statistics
+Subject: [PATCH 6.6 032/119] dt-bindings: net: xlnx,axi-ethernet: Correct phy-mode property value
 Date: Tue, 12 Nov 2024 11:20:40 +0100
-Message-ID: <20241112101845.227897112@linuxfoundation.org>
+Message-ID: <20241112101849.940775288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Suraj Gupta <suraj.gupta2@amd.com>
 
-[ Upstream commit 4d6d26537940f3b3e17138987ed9e4a334780bf7 ]
+[ Upstream commit b2183187c5fd30659b9caccb92f7e5e680301769 ]
 
-The c_can_handle_bus_err() function was incorrectly incrementing only the
-receive error counter, even in cases of bit or acknowledgment errors that
-occur during transmission. The patch fixes the issue by incrementing the
-appropriate counter based on the type of error.
+Correct phy-mode property value to 1000base-x.
 
-Fixes: 881ff67ad450 ("can: c_can: Added support for Bosch C_CAN controller")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241014135319.2009782-1-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: cbb1ca6d5f9a ("dt-bindings: net: xlnx,axi-ethernet: convert bindings document to yaml")
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20241028091214.2078726-1-suraj.gupta2@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index c63f7fc1e6917..511615dc33419 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1011,7 +1011,6 @@ static int c_can_handle_bus_err(struct net_device *dev,
+diff --git a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+index 652d696bc9e90..f0d98c4705856 100644
+--- a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+@@ -61,7 +61,7 @@ properties:
+       - gmii
+       - rgmii
+       - sgmii
+-      - 1000BaseX
++      - 1000base-x
  
- 	/* common for all type of bus errors */
- 	priv->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
-@@ -1027,26 +1026,32 @@ static int c_can_handle_bus_err(struct net_device *dev,
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
- 		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		stats->rx_errors++;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
- 		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		stats->rx_errors++;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
- 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
- 		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
- 		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
- 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		stats->rx_errors++;
- 		break;
- 	default:
- 		break;
+   xlnx,phy-type:
+     description:
 -- 
 2.43.0
 
