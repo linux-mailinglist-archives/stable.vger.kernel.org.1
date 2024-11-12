@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-92269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704729C53A8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A2B9C5603
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41DF2B26B01
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:26:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 189AFB37ACD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A802141DA;
-	Tue, 12 Nov 2024 10:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD921213EF4;
+	Tue, 12 Nov 2024 10:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNuMfifu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPGYmHQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0222141D5;
-	Tue, 12 Nov 2024 10:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B29C1BD031;
+	Tue, 12 Nov 2024 10:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407105; cv=none; b=g0zCwraA1faMqu1Wt01F0Ujolj2U6cvslAgsBEROSt6V4JyYpnq9qOYzXcbzOZMHGvC2N3U5BnBtky6AhiJValNViHQUXvZFQ8NvQVcGYK0AI29cDB5aB1+4BiyJYkqLSolRgYQhTyCcz7zTN+aJMeOSNrCM6Woro2zsBS0A3p4=
+	t=1731407738; cv=none; b=GIIVwG2aI6moJge7AZqGzsMh1WoWARVSmAITMU8qVP8p9cu3svsE1slVFkjb24MT06Y1yVpy1kLLhd0aMqXbPy/cN5iuRXLKbjerOxEcw9avv465opzZNnsdE3IBpAyLtZUr8csbs3ur6kUAxRpuDYNTc5kiVPUZSV8owMcWnFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407105; c=relaxed/simple;
-	bh=ddnrFRYvSTCj0rDNI/UVIHjpkWuGhmDnRP9avmC6+Jg=;
+	s=arc-20240116; t=1731407738; c=relaxed/simple;
+	bh=4by0597Gx6ocyiukH7gi1Yy/euNTQp8NdgEUYkvRhq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvYqTDDVdgTTryc1r4n6JKAvBYC4Coq+RjbHvZzLGig2A7K8MdKnwQfSubbwo4FgQrwGpa7ipdjP3TsozbNv6QLxxfCxTBXgnxfkzOoRUtZvUoc16CT/adptZrS4+ymExnexZCsizjE9reZOvrcA/u0MKSMwGTPW5pFNvUQlbig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNuMfifu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6301C4CECD;
-	Tue, 12 Nov 2024 10:25:04 +0000 (UTC)
+	 MIME-Version; b=TFXqeI6kUTYUYCCfs5kmAiYK0gsDdTKctvsspOTbvgeulSqG5L7aMJUltUfVPPmMJHEBzp6rWteAMh357cS+YQIA7MKGde9+bbxE+1xnx/6hSFvdA31Z7PS8//jJZc7e4G9G7+bv4FnFS4bNbhybBwxsQOfR+G8d4kswL4PC/2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPGYmHQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28398C4CED4;
+	Tue, 12 Nov 2024 10:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407105;
-	bh=ddnrFRYvSTCj0rDNI/UVIHjpkWuGhmDnRP9avmC6+Jg=;
+	s=korg; t=1731407738;
+	bh=4by0597Gx6ocyiukH7gi1Yy/euNTQp8NdgEUYkvRhq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNuMfifuuMoIYtms7JN666ddKq9t0T6rRFb1lEAUB6UU5+Gmm0U1dQtT8nNbXXjoJ
-	 UEyxJkHSeRj5kEL2h0e0rZ8dApLh8zI/iTIFVx6iVPQAecBoFDRqFdMXdlYcywZMpA
-	 Sv0EYYncZ5f0Y95OHZEm5DFHY5uWYGFmKIw376Mk=
+	b=VPGYmHQAppKV4t4qsbflO8cyP6T5aIU+LBn4j/8hMX6EM0GoJVJddPC8ey6QItH/Y
+	 UU6B/YanAN79tnRkZHndDpXeTdJcUGSlyjLp1Ze72HoydAlLPT880cY32Kt7sVEmWO
+	 YyQVEqcKjJI2Qtapf5HY4RpzIRMPxQIJNp5BwvXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 51/76] fs: create kiocb_{start,end}_write() helpers
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 068/119] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
 Date: Tue, 12 Nov 2024 11:21:16 +0100
-Message-ID: <20241112101841.726033077@linuxfoundation.org>
+Message-ID: <20241112101851.312693799@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Commit ed0360bbab72b829437b67ebb2f9cfac19f59dfe upstream.
+commit 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a upstream.
 
-aio, io_uring, cachefiles and overlayfs, all open code an ugly variant
-of file_{start,end}_write() to silence lockdep warnings.
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-Create helpers for this lockdep dance so we can use the helpers in all
-the callers.
+As the TEF has no head pointer, the driver uses the TX FIFO's tail
+pointer instead, assuming that send frames are completed. However the
+check for the TEF being full was not correct. This leads to the driver
+stop working if the TEF is full.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Message-Id: <20230817141337.1025891-4-amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the TEF full check by assuming that if, from the driver's point of
+view, there are no free TX buffers in the chip and the TX FIFO is
+empty, all messages must have been sent and the TEF must therefore be
+full.
+
+Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fs.h | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 6ff6ade229a07..2ef0e48c89ec4 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3058,6 +3058,42 @@ static inline void file_end_write(struct file *file)
- 	__sb_end_write(file_inode(file)->i_sb, SB_FREEZE_WRITE);
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -16,9 +16,9 @@
+ 
+ #include "mcp251xfd.h"
+ 
+-static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
++static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+ {
+-	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
  }
  
-+/**
-+ * kiocb_start_write - get write access to a superblock for async file io
-+ * @iocb: the io context we want to submit the write with
-+ *
-+ * This is a variant of sb_start_write() for async io submission.
-+ * Should be matched with a call to kiocb_end_write().
-+ */
-+static inline void kiocb_start_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	sb_start_write(inode->i_sb);
-+	/*
-+	 * Fool lockdep by telling it the lock got released so that it
-+	 * doesn't complain about the held lock when we return to userspace.
+ static inline int
+@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
+ 	if (err)
+ 		return err;
+ 
+-	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
++	/* If the chip says the TX-FIFO is empty, but there are no TX
++	 * buffers free in the ring, we assume all have been sent.
 +	 */
-+	__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
-+}
-+
-+/**
-+ * kiocb_end_write - drop write access to a superblock after async file io
-+ * @iocb: the io context we sumbitted the write with
-+ *
-+ * Should be matched with a call to kiocb_start_write().
-+ */
-+static inline void kiocb_end_write(struct kiocb *iocb)
-+{
-+	struct inode *inode = file_inode(iocb->ki_filp);
-+
-+	/*
-+	 * Tell lockdep we inherited freeze protection from submission thread.
-+	 */
-+	__sb_writers_acquired(inode->i_sb, SB_FREEZE_WRITE);
-+	sb_end_write(inode->i_sb);
-+}
-+
- /*
-  * This is used for regular files where some users -- especially the
-  * currently executed binary in a process, previously handled via
--- 
-2.43.0
-
++	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0) {
+ 		*len_p = tx_ring->obj_num;
+ 		return 0;
+ 	}
 
 
 
