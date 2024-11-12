@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDD69C559F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3D19C5389
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8286B28F0C0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F5F284E61
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B6E218D6B;
-	Tue, 12 Nov 2024 10:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B0F217470;
+	Tue, 12 Nov 2024 10:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in+H0txX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTk6tKgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A8F214411;
-	Tue, 12 Nov 2024 10:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8382C21745F;
+	Tue, 12 Nov 2024 10:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408219; cv=none; b=WX+coJ5uq9+Fg35AYdx3ti48iOqqmg04t6mwrgjAE4m/EUo/xyyUSHTcuOF8ayiH0K/0EbvSj37BDWK4Fw+NhIrh8Ifdg+lncbyB0XSINVlFaXd+2A0m2+dhxnB/2PmBDVNZjkLqccp1+AZSBovvp5jtKa85pf9e6vPpIMx5DpU=
+	t=1731407239; cv=none; b=pVVQ3ShmdVpn/vVMKrtBnZ8kliuYi3K+rxLLwrjXgk/OZtEuWZaGZ3zvJO10q/0t+pvFekoOUOnuIcwEHbUx3L5XsSXPQS3fbHdO9t7mJ3OkfrEzUMeoSVJzxGkP5bEX/NEEa7Yycl70ImtEBalq5f++aGA1uqorkRBCQrNmP3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408219; c=relaxed/simple;
-	bh=jhezMph3gOdpz+xS/Iz/POpEfYnjY6M9wQYKhcVrG0k=;
+	s=arc-20240116; t=1731407239; c=relaxed/simple;
+	bh=eTCPauiIB2OijRdcJROO4Y85zFLiBDYYms2vAhilxcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g13/cRzQPROJjxv6MbvKi0xR9mdkZNRokTcqA92b9c3+cwmZ7izGBsTde4fF0oSWeHKHzgiF0fwshdChnfYEK4YM8K35TODXmrIArfnAekUS5LjPjvMwxEWwGzjJaQRl/ZzOjimkb1ap+hk7TLzZNPx0lHmevS0IPKXFnpPiKng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in+H0txX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01DAC4CECD;
-	Tue, 12 Nov 2024 10:43:38 +0000 (UTC)
+	 MIME-Version; b=GQ+BOBazbxm6nEd61s2DHYM8Q2tQZWCegf/Ta1M0F72MjIzyOuYocqAOEUlSIzdaoSLEkLDwXmWy3U78lTbg37Xo5oEHzYbXjBGU/u//7b6JUFLP7Qv7Vqi14bHTAPJYUOtbQTAdGPkOw7uwoBTH3apZ3S6jDocQNyRqep7ierA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTk6tKgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C619C4CECD;
+	Tue, 12 Nov 2024 10:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408219;
-	bh=jhezMph3gOdpz+xS/Iz/POpEfYnjY6M9wQYKhcVrG0k=;
+	s=korg; t=1731407239;
+	bh=eTCPauiIB2OijRdcJROO4Y85zFLiBDYYms2vAhilxcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=in+H0txX7vTpaWMD0d3PxAu/un7ROlN0iNRcYr8c2tlhcmV678eHp/llTybxcWyQ2
-	 G5yGjtSA26hUMqf+8LQO4/Fh+01b2pFlClsbc7qVBMmyweesrU2gZDTpBOG8gMUmx3
-	 7kUChjoCIy5P3Zv7RjWmSJOTGEEkM6YYPDn96ggU=
+	b=FTk6tKgkptQgXDI6EPrsl/3lnbRNBkJ+DhohdfsBtQE+GPLXlsZgfwJXb6JF0t6lb
+	 ZqOp2ciFAmRlGmQjYWVKouAxya2Nh+db4xRfpfD4oseHf3XIASJrXusZLUDfkINxhP
+	 3AkOmfxq+kXJkqybYzBnJo892zx86/rChqAkirJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 064/184] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
-Date: Tue, 12 Nov 2024 11:20:22 +0100
-Message-ID: <20241112101903.320628868@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 08/98] arm64: dts: imx8qm: Fix VPU core alias name
+Date: Tue, 12 Nov 2024 11:20:23 +0100
+Message-ID: <20241112101844.588050581@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarosław Janik <jaroslaw.janik@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit c9363bbb0f68dd1ddb8be7bbfe958cdfcd38d851 upstream.
+[ Upstream commit f6038de293f28503eccbfcfa84d39faf56d09150 ]
 
-Commit 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend /
-shutdown") mutes speakers on system shutdown or whenever HDA controller
-is suspended by PM; this however interacts badly with Thinkpad's ACPI
-firmware behavior which uses beeps to signal various events (enter/leave
-suspend or hibernation, AC power connect/disconnect, low battery, etc.);
-now those beeps are either muted altogether (for suspend/hibernate/
-shutdown related events) or work more or less randomly (eg. AC
-plug/unplug is only audible when you are playing music at the moment,
-because HDA device is likely in suspend mode otherwise).
+Alias names use dashes instead of underscores, fix this. Silences also
+dtbs_check warning:
+imx8qxp-tqma8xqp-mba8xx.dtb: aliases: 'vpu_core0', 'vpu_core1', 'vpu_core2'
+ do not match any of the regexes: '^[a-z][a-z0-9\\-]*$', 'pinctrl-[0-9]+'
+from schema $id: http://devicetree.org/schemas/aliases.yaml#
 
-Since the original bug report mentioned in 4f61c8fe3520 complained about
-Lenovo's Thinkpad laptop - revert this commit altogether.
-
-Fixes: 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend / shutdown")
-Signed-off-by: Jarosław Janik <jaroslaw.janik@gmail.com>
-Link: https://patch.msgid.link/20241030171813.18941-2-jaroslaw.janik@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: eed2d8e8d005 ("arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -205,8 +205,6 @@ static void cx_auto_shutdown(struct hda_
- {
- 	struct conexant_spec *spec = codec->spec;
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+index f4ea18bb95abf..dce699dffb9bf 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+@@ -46,9 +46,9 @@
+ 		serial1 = &lpuart1;
+ 		serial2 = &lpuart2;
+ 		serial3 = &lpuart3;
+-		vpu_core0 = &vpu_core0;
+-		vpu_core1 = &vpu_core1;
+-		vpu_core2 = &vpu_core2;
++		vpu-core0 = &vpu_core0;
++		vpu-core1 = &vpu_core1;
++		vpu-core2 = &vpu_core2;
+ 	};
  
--	snd_hda_gen_shutup_speakers(codec);
--
- 	/* Turn the problematic codec into D3 to avoid spurious noises
- 	   from the internal speaker during (and after) reboot */
- 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
+ 	cpus {
+-- 
+2.43.0
+
 
 
 
