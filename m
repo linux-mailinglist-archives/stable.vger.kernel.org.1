@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDD09C55AA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61499C5342
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7731F222E8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9ED1F23B41
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEA218D99;
-	Tue, 12 Nov 2024 10:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F172123F1;
+	Tue, 12 Nov 2024 10:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/VroZWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+VGKeJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0162213ECF;
-	Tue, 12 Nov 2024 10:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D882123C8;
+	Tue, 12 Nov 2024 10:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408253; cv=none; b=k8Gw+QJRDq4jC8M5B5FlOkyeFBLqou3XTyBMYuzrbRnmUSg3UNuQP0IIuwF4g3ogF15UqQzJtRB16W4+TatolQERzCvssBgVZjlMt51PBee7EaObYXp4WHXEEb7vpppRHI2y4ykVzmPsLhN9NxECxDfbaXV8X0Zs662G4jfhbqI=
+	t=1731407064; cv=none; b=T1+tAb1GMCMb0QzpbtOoqoFLCn2P+OEEeOgcNK9LtRJslcSgJNayNkM69uJWOP9ykMcXA/o4OZtk3/r5EHSyVkv319fcSkzbzFX3/6/MtW9x++GWhq6iagvAivY4VdQk0tGSgX6NhXdHpe3Gg/HFCv0VTFPsmqNmp99mJVeeKk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408253; c=relaxed/simple;
-	bh=GGNlUJKGG77M1UMnjRfY2Ed3roYC3NmW5h/9qSR4qu0=;
+	s=arc-20240116; t=1731407064; c=relaxed/simple;
+	bh=JK3b3oJIvKWGlV1+SyeD0OKZjfazv7PH3GQcGZ9qpFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sK93Tz4HC5jmqpGfPVSjPRYrHNiftBTJVtB9S3S3HxHasnt/AKgm9KHUIOuRLfXqDmx6Tsz3wrlW0fFn41rZtA+kz5g5JOxBLEi3dA+6IrIS5bV3TBcXi0XdfiLTrPBkStwcsXEMUcwCtiQ756Ydo74caZswrXdzGQ8WPZDaZVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/VroZWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0508EC4CECD;
-	Tue, 12 Nov 2024 10:44:11 +0000 (UTC)
+	 MIME-Version; b=BVnNDn5p3jFP9M170ZG4FR8OezrvChrsm37SpzEP9OpKQAGVnHmUmCt0IpT6XZfFQqwLc3X92ZPFT0ofBx9Vkg4uNseQDNifWDC/LeLbW/PxgCu6OkMHWDOpIcYmtVP42ZVkkSFA1lKoawP/2h/xl//pt47FKq7C4pT5wwR7UEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+VGKeJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25044C4CECD;
+	Tue, 12 Nov 2024 10:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408252;
-	bh=GGNlUJKGG77M1UMnjRfY2Ed3roYC3NmW5h/9qSR4qu0=;
+	s=korg; t=1731407064;
+	bh=JK3b3oJIvKWGlV1+SyeD0OKZjfazv7PH3GQcGZ9qpFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/VroZWflnSNKMKPk+Ba9ML1WXJw4FywaW1fJw+qZMsBFITGcKhOxmQcB1ZxBxVK5
-	 scGm/PaKpccgnwvUMhrLy8oYh+lyfS5GMp/zbTxzBEhTLCpWDzxMzwdoXM2hO0TS0y
-	 6FuYkMul3v2a0511rsdjnFvqV2nNXd6TrloRJesk=
+	b=D+VGKeJnYgbpk5LGQyGTm+gMM080kkKmdICK3OGigXeWk0xKKNf7Z1GkCZDTTcU78
+	 7zpCfkTY79ITUu+JdgPxyS1at2lpLm0O+1gxDUQa3981tinTZQBufpRNeTPwYeTJEN
+	 qOm4D4sjob6XB75uD082pVsQsl7CNnl7f2ZgVd5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Yang Wang <kevinyang.wang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 107/184] drm/amdgpu: Adjust debugfs eviction and IB access permissions
+Subject: [PATCH 5.15 40/76] drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()
 Date: Tue, 12 Nov 2024 11:21:05 +0100
-Message-ID: <20241112101904.974431373@linuxfoundation.org>
+Message-ID: <20241112101841.310832049@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-commit f790a2c494c4ef587eeeb9fca20124de76a1646f upstream.
+commit 4d75b9468021c73108b4439794d69e892b1d24e3 upstream.
 
-Users should not be able to run these.
+Avoid a possible buffer overflow if size is larger than 4K.
 
 Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7ba9395430f611cfc101b1c2687732baafa239d5)
+(cherry picked from commit f5d873f5825b40d886d03bd2aede91d4cf002434)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -2194,11 +2194,11 @@ int amdgpu_debugfs_init(struct amdgpu_de
- 	amdgpu_securedisplay_debugfs_init(adev);
- 	amdgpu_fw_attestation_debugfs_init(adev);
+@@ -401,7 +401,7 @@ static ssize_t amdgpu_debugfs_regs_didt_
+ 	ssize_t result = 0;
+ 	int r;
  
--	debugfs_create_file("amdgpu_evict_vram", 0444, root, adev,
-+	debugfs_create_file("amdgpu_evict_vram", 0400, root, adev,
- 			    &amdgpu_evict_vram_fops);
--	debugfs_create_file("amdgpu_evict_gtt", 0444, root, adev,
-+	debugfs_create_file("amdgpu_evict_gtt", 0400, root, adev,
- 			    &amdgpu_evict_gtt_fops);
--	debugfs_create_file("amdgpu_test_ib", 0444, root, adev,
-+	debugfs_create_file("amdgpu_test_ib", 0400, root, adev,
- 			    &amdgpu_debugfs_test_ib_fops);
- 	debugfs_create_file("amdgpu_vm_info", 0444, root, adev,
- 			    &amdgpu_debugfs_vm_info_fops);
+-	if (size & 0x3 || *pos & 0x3)
++	if (size > 4096 || size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+ 
+ 	if (!adev->didt_wreg)
 
 
 
