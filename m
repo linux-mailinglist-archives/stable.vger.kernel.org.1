@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-92445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0819C5426
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203059C53B3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8DABB36FEC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7711F2167F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA42144BB;
-	Tue, 12 Nov 2024 10:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8381C2141BE;
+	Tue, 12 Nov 2024 10:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR6u2DA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9+uNQ+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEBD2144B3;
-	Tue, 12 Nov 2024 10:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412AD212160;
+	Tue, 12 Nov 2024 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407681; cv=none; b=cFZ4Tj3lQlTji4MProWk12l8ldqgyY4MxnR3dQJgbxEtCTBQIwD3xbnLS3pP4WY4T+X02iJelHjYusB/UMYWozPbVtyTtw/LuzwY7W8d0A6fpwRrhwlsSgiVRiX8JhBNfXN2uxTY8U6MAbrqFcOI9LMsEXK8kl3/SuqSSS/Fo38=
+	t=1731407420; cv=none; b=doBUfVjP1aTrae+yxPEdj9Ft9m5P2zvqWKcr8Au2r1kHwN/SokO4prG67dA/TVGnyyYVPkLkITvuGvfvCXoqiudctYpYR6916VRCtGJ1AfSKRW4SmBViFeBiMBVB0Rknj0IXo7K99zSP6BctP8u5tQJLgA1TEIKXcmjFTZmuhZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407681; c=relaxed/simple;
-	bh=4CgQHFSO7PILVa7WI277YHzBBnKSDybjHCWMep9iAOM=;
+	s=arc-20240116; t=1731407420; c=relaxed/simple;
+	bh=GTadoM5PyavZVr1W/DMJCtrGrSmoMRHeSgRvdYbPscU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qxUA4DrCqDVABLUkE9nu0TaLyAd6wRw7DkZwaGxJCo55oIYVjALXXwrg7Id9/jXv2xapvxu6m0ZT+WLz/8cyWsus7hhNj5rPrmrT00SIvMYUPyvydg/zes1DgaHPGdkSCaWPgIbNvQsbZUlP3g8ohRw3u4hZhGp3lsA9HoES1gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR6u2DA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23902C4CED4;
-	Tue, 12 Nov 2024 10:34:40 +0000 (UTC)
+	 MIME-Version; b=RGpJy9mVfvR2KPMqo59EuFNJnYPKWwI7g+Its7QjtDWXSKRFpvZmZzIq2+em09RGVwXX47T5Ae/srd6Xa+VNK/MIMpJZPJA/kj7jYECVkQuL8/fdIrB2g6FIU54vXJNX3V/+du7mTRtKfJ1PB3iYE6H7w3CuQmX401qw6nb2R2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9+uNQ+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA0FC4CECD;
+	Tue, 12 Nov 2024 10:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407681;
-	bh=4CgQHFSO7PILVa7WI277YHzBBnKSDybjHCWMep9iAOM=;
+	s=korg; t=1731407419;
+	bh=GTadoM5PyavZVr1W/DMJCtrGrSmoMRHeSgRvdYbPscU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iR6u2DA/mwKHlhWOGYVEdGOtVWLsAGT63mrtmf0EMNVpaDrvZ5POiEs1YQ7ZqKvIx
-	 RMnWQBHmVOU65aKHxt/6IrTUgf9BZcorxcJlU7AQPD9CDgoFWpL5j74KljVYELkD9i
-	 yf4xmoj5Jn9aEApo04g77ZvtLVTfE+CjQE4T8l6w=
+	b=s9+uNQ+ByzeHP2UWa8afizLxAdaYDE57T1sqIYxMCoDQe8r/dycURIRv24dxzJpmx
+	 B+likq1cSUW/8I1ehX3ooY8znonL/kAv9Vaj1XZUopMNlG5uFcm7h32GpST2D9vZja
+	 cSTOvdJRdey7XbBHpoI7cUnvPOnZ/WZ0imyT80Lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 050/119] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 43/98] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
 Date: Tue, 12 Nov 2024 11:20:58 +0100
-Message-ID: <20241112101850.629945198@linuxfoundation.org>
+Message-ID: <20241112101845.911475759@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarosław Janik <jaroslaw.janik@gmail.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-commit c9363bbb0f68dd1ddb8be7bbfe958cdfcd38d851 upstream.
+[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
 
-Commit 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend /
-shutdown") mutes speakers on system shutdown or whenever HDA controller
-is suspended by PM; this however interacts badly with Thinkpad's ACPI
-firmware behavior which uses beeps to signal various events (enter/leave
-suspend or hibernation, AC power connect/disconnect, low battery, etc.);
-now those beeps are either muted altogether (for suspend/hibernate/
-shutdown related events) or work more or less randomly (eg. AC
-plug/unplug is only audible when you are playing music at the moment,
-because HDA device is likely in suspend mode otherwise).
+In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
+null. So the release of the dma channel leads to the following issue:
+[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
+dma_request_slave_channel error -19
+[    4.888975] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000003d
+[...]
+[    5.096577] Call trace:
+[    5.099099]  dma_release_channel+0x24/0x100
+[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
+[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
 
-Since the original bug report mentioned in 4f61c8fe3520 complained about
-Lenovo's Thinkpad laptop - revert this commit altogether.
+To avoid this issue, release channel only if the pointer is valid.
 
-Fixes: 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend / shutdown")
-Signed-off-by: Jarosław Janik <jaroslaw.janik@gmail.com>
-Link: https://patch.msgid.link/20241030171813.18941-2-jaroslaw.janik@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |    2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/stm/stm32_spdifrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -205,8 +205,6 @@ static void cx_auto_shutdown(struct hda_
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index d399c906bb921..e66382680e098 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -943,7 +943,7 @@ static int stm32_spdifrx_remove(struct platform_device *pdev)
  {
- 	struct conexant_spec *spec = codec->spec;
+ 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
  
--	snd_hda_gen_shutup_speakers(codec);
--
- 	/* Turn the problematic codec into D3 to avoid spurious noises
- 	   from the internal speaker during (and after) reboot */
- 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
+-	if (spdifrx->ctrl_chan)
++	if (!IS_ERR(spdifrx->ctrl_chan))
+ 		dma_release_channel(spdifrx->ctrl_chan);
+ 
+ 	if (spdifrx->dmab)
+-- 
+2.43.0
+
 
 
 
