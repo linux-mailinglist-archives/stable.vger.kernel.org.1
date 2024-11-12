@@ -1,52 +1,59 @@
-Return-Path: <stable+bounces-92690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410579C5728
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:00:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88809C5729
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F12EDB43158
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD3CCB43430
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE5B219492;
-	Tue, 12 Nov 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662FB219CAD;
+	Tue, 12 Nov 2024 10:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhBZOOXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SLexu3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D36F218D98;
-	Tue, 12 Nov 2024 10:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B58B219E23;
+	Tue, 12 Nov 2024 10:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408269; cv=none; b=ettJTL6GB56xVmDxFojYkR4/XV4hyZmRJWbkyhFjcyPriR6HXDeeXurZhDSDnR8bvonJjrshmNEaFeGSbBYQi30r1otcl839NInYmUXlbFK7L4U0IK8J1YQe8rSQQeql2bwtUntyCn0wd75Tmu56peN8QD9HkeHg+hDQyzwR4Js=
+	t=1731408321; cv=none; b=afiRNGJQisg4CJCCDbCv2A11JykFA7qTCNyk/pQAD+5baqop75nlLI5DRbzTppM8bWoW2j3RncEA2KRFWXNFwcWqQLq9RcwHgb1NIL6x60Vij+fnPvhjHCvlykDWRmYdcK5Y9nuiGPX1aTor1a7S2MjDcHdb1HBoIsB1cHJF3bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408269; c=relaxed/simple;
-	bh=ovVKH9HtbtHc7BQuv94+remnyVwicTTt+fGLCnoBq1M=;
+	s=arc-20240116; t=1731408321; c=relaxed/simple;
+	bh=wbCI4opvV8kBW5mZSDUUs8Q+XSH/7w4CMDvcYjax2pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmOrv4O2Wlg5X0iG7/+8dsToJJOShzq+lu/oODmj0OkA91MOoofvwD0vcDGPI5YCgwFc+92qhnJlZ1M++mfFx8W6kxtDkugKCA1GLPK8Vi/3QZcLpoFlW6ny0O0+uGE2Zr9wiXs5d1hiqjtOkvQr0OH+V1oimM7I4j8ACAusc+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhBZOOXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B1EC4CECD;
-	Tue, 12 Nov 2024 10:44:28 +0000 (UTC)
+	 MIME-Version; b=AzVzlur+nY5zH+oYEQnOXtNDRy1PTyqkBEoXPnzIJUr9hA97Cd7Fw3d6muyOCj37PGNTIPIb1fnv7NUag4mlaCO6E7jNOBfcvXeBcx6OeBy6RMFST6eYfFz2woIPBKIBvnl/582r6TQncMPN38wi7zNM4S5Cl4JbNUYzyGMx+RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SLexu3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED93C4CECD;
+	Tue, 12 Nov 2024 10:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408268;
-	bh=ovVKH9HtbtHc7BQuv94+remnyVwicTTt+fGLCnoBq1M=;
+	s=korg; t=1731408320;
+	bh=wbCI4opvV8kBW5mZSDUUs8Q+XSH/7w4CMDvcYjax2pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhBZOOXRYaTKCMLn/pHmiIx2M11QY8wXyeI/RDeXKjsrXDJZVVh9DB4oCpFGSjt5j
-	 MNsmiz7i8JW7yJo8KaYNSmgj+qKAwJVNSqmMH+cGoByuEyhFzULLe2bhCZCuqjQyPy
-	 66621H/uO+VsK6NboBq83d+qBuXtlqXXOsz3I0WQ=
+	b=2SLexu3LYS5QeeooI55mUHlivVk4Yh1ic8zmv6TqMAoNmFBvZOXNFe3zMP5R27bo1
+	 uETTOfmnOyNHewvV9Msh+iOL2JBSqpoeImL/0SOIEpAIbyDoaQJgHtK499FqM7U8zn
+	 v2jr/XNw+gNhfwXQydltQ8jqDC8VxMuNVR74/FIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.11 112/184] thermal/drivers/qcom/lmh: Remove false lockdep backtrace
-Date: Tue, 12 Nov 2024 11:21:10 +0100
-Message-ID: <20241112101905.162450062@linuxfoundation.org>
+	Eric Sandeen <sandeen@redhat.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Ali Zahraee <ahzahraee@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Kalesh Singh <kaleshsingh@google.com>
+Subject: [PATCH 6.11 125/184] tracing: Fix tracefs mount options
+Date: Tue, 12 Nov 2024 11:21:23 +0100
+Message-ID: <20241112101905.664209414@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -65,87 +72,127 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kalesh Singh <kaleshsingh@google.com>
 
-commit f16beaaee248eaa37ad40b5905924fcf70ae02e3 upstream.
+commit e4d32142d1de8bcafd90ea5f4f557104f0969c41 upstream.
 
-Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
-report possible recursive locking issue between LMH and GIC interrupts.
+Commit 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
+converted tracefs to use the new mount APIs caused mount options
+(e.g. gid=<gid>) to not take effect.
 
-For the reference:
+The tracefs superblock can be updated from multiple paths:
+    - on fs_initcall() to init_trace_printk_function_export()
+    - from a work queue to initialize eventfs
+      tracer_init_tracefs_work_func()
+    - fsconfig() syscall to mount or remount of tracefs
 
-       CPU0
-       ----
-  lock(&irq_desc_lock_class);
-  lock(&irq_desc_lock_class);
+The tracefs superblock root inode gets created early on in
+init_trace_printk_function_export().
 
- *** DEADLOCK ***
+With the new mount API, tracefs effectively uses get_tree_single() instead
+of the old API mount_single().
 
-Call trace:
- dump_backtrace+0x98/0xf0
- show_stack+0x18/0x24
- dump_stack_lvl+0x90/0xd0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x258/0x348
- __lock_acquire+0x1078/0x1f44
- lock_acquire+0x1fc/0x32c
- _raw_spin_lock_irqsave+0x60/0x88
- __irq_get_desc_lock+0x58/0x98
- enable_irq+0x38/0xa0
- lmh_enable_interrupt+0x2c/0x38
- irq_enable+0x40/0x8c
- __irq_startup+0x78/0xa4
- irq_startup+0x78/0x168
- __enable_irq+0x70/0x7c
- enable_irq+0x4c/0xa0
- qcom_cpufreq_ready+0x20/0x2c
- cpufreq_online+0x2a8/0x988
- cpufreq_add_dev+0x80/0x98
- subsys_interface_register+0x104/0x134
- cpufreq_register_driver+0x150/0x234
- qcom_cpufreq_hw_driver_probe+0x2a8/0x388
- platform_probe+0x68/0xc0
- really_probe+0xbc/0x298
- __driver_probe_device+0x78/0x12c
- driver_probe_device+0x3c/0x160
- __device_attach_driver+0xb8/0x138
- bus_for_each_drv+0x84/0xe0
- __device_attach+0x9c/0x188
- device_initial_probe+0x14/0x20
- bus_probe_device+0xac/0xb0
- deferred_probe_work_func+0x8c/0xc8
- process_one_work+0x20c/0x62c
- worker_thread+0x1bc/0x36c
- kthread+0x120/0x124
- ret_from_fork+0x10/0x20
+Previously, mount_single() ensured that the options are always applied to
+the superblock root inode:
+    (1) If the root inode didn't exist, call fill_super() to create it
+        and apply the options.
+    (2) If the root inode exists, call reconfigure_single() which
+        effectively calls tracefs_apply_options() to parse and apply
+        options to the subperblock's fs_info and inode and remount
+        eventfs (if necessary)
 
-Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+On the other hand, get_tree_single() effectively calls vfs_get_super()
+which:
+    (3) If the root inode doesn't exists, calls fill_super() to create it
+        and apply the options.
+    (4) If the root inode already exists, updates the fs_context root
+        with the superblock's root inode.
+
+(4) above is always the case for tracefs mounts, since the super block's
+root inode will already be created by init_trace_printk_function_export().
+
+This means that the mount options get ignored:
+    - Since it isn't applied to the superblock's root inode, it doesn't
+      get inherited by the children.
+    - Since eventfs is initialized from a separate work queue and
+      before call to mount with the options, and it doesn't get remounted
+      for mount.
+
+Ensure that the mount options are applied to the super block and eventfs
+is remounted to respect the mount options.
+
+To understand this better, if fstab has the following:
+
+ tracefs  /sys/kernel/tracing  tracefs   nosuid,nodev,noexec,gid=tracing 0  0
+
+On boot up, permissions look like:
+
+ # ls -l /sys/kernel/tracing/trace
+ -rw-r----- 1 root root 0 Nov  1 08:37 /sys/kernel/tracing/trace
+
+When it should look like:
+
+ # ls -l /sys/kernel/tracing/trace
+ -rw-r----- 1 root tracing 0 Nov  1 08:37 /sys/kernel/tracing/trace
+
+Link: https://lore.kernel.org/r/536e99d3-345c-448b-adee-a21389d7ab4b@redhat.com/
+
+Cc: Eric Sandeen <sandeen@redhat.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Ali Zahraee <ahzahraee@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241011-lmh-lockdep-v1-1-495cbbe6fef1@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
+Link: https://lore.kernel.org/20241030171928.4168869-2-kaleshsingh@google.com
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/qcom/lmh.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/tracefs/inode.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/thermal/qcom/lmh.c
-+++ b/drivers/thermal/qcom/lmh.c
-@@ -73,7 +73,14 @@ static struct irq_chip lmh_irq_chip = {
- static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 1748dff58c3b..cfc614c638da 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -392,6 +392,9 @@ static int tracefs_reconfigure(struct fs_context *fc)
+ 	struct tracefs_fs_info *sb_opts = sb->s_fs_info;
+ 	struct tracefs_fs_info *new_opts = fc->s_fs_info;
+ 
++	if (!new_opts)
++		return 0;
++
+ 	sync_filesystem(sb);
+ 	/* structure copy of new mount options to sb */
+ 	*sb_opts = *new_opts;
+@@ -478,14 +481,17 @@ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_op = &tracefs_super_operations;
+ 	sb->s_d_op = &tracefs_dentry_operations;
+ 
+-	tracefs_apply_options(sb, false);
+-
+ 	return 0;
+ }
+ 
+ static int tracefs_get_tree(struct fs_context *fc)
  {
- 	struct lmh_hw_data *lmh_data = d->host_data;
-+	static struct lock_class_key lmh_lock_key;
-+	static struct lock_class_key lmh_request_key;
+-	return get_tree_single(fc, tracefs_fill_super);
++	int err = get_tree_single(fc, tracefs_fill_super);
++
++	if (err)
++		return err;
++
++	return tracefs_reconfigure(fc);
+ }
  
-+	/*
-+	 * This lock class tells lockdep that GPIO irqs are in a different
-+	 * category than their parents, so it won't report false recursion.
-+	 */
-+	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
- 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
- 	irq_set_chip_data(irq, lmh_data);
- 
+ static void tracefs_free_fc(struct fs_context *fc)
+-- 
+2.47.0
+
 
 
 
