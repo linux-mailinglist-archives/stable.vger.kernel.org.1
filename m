@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-92622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547C39C5736
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:03:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACBC9C57AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 716EBB33F9F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08091B429BC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC740217451;
-	Tue, 12 Nov 2024 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F82217903;
+	Tue, 12 Nov 2024 10:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxYYezt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKR8tXos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6995C2309AE;
-	Tue, 12 Nov 2024 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66302178FD;
+	Tue, 12 Nov 2024 10:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408049; cv=none; b=JxbtyrH4KmFiO5CxVeQvfj9J2V7ZBEGGcE2flXP24Uv5kFNLvdo9Z3/Tv7mLNxdWzh6CH2EYqkm0Fx7Mmftaj56IGFMWuOjih2Brn+DyWHoKNV7zpoQanu0e1oGb3qY4hyGcK2uXRiCCxjd62YjPQW/Zx5VqDfr2IKRvaLyEpmw=
+	t=1731408128; cv=none; b=EifxoXAKFsmtEvwbNIrhGUFI8lGHMZhSF1s/EUrcnD6NknqQvWczQ9relRmi+AvX1XizqAtZWDLBgwOBQJCLIWjKJlZ7Y7OvtnHGEu4XTGDPjGsn3RFZ3eGLmRqbewudmS5YdM4x0Ggq3YTrDg2laia0iBUUyvuZJD8mYrRJA3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408049; c=relaxed/simple;
-	bh=dgLVqrqtlcgWaj1E1OAHTeUHDMdd6vjcFdI0RtAKEv0=;
+	s=arc-20240116; t=1731408128; c=relaxed/simple;
+	bh=c7jcCVL55icsr4UgS3ueHPmFznycVfK2ufpDRtZZeF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOoNNAzx186l9Jnmh87uw6Mgbc3pnZD2R9GAhNrRryFIZ2dcDOJ7cLtdRk/UVSVPKxzwIBtKj7GGoxpe5BtG0K04RPljSIblQRS9whp3zi3oyzbxvdXINmb89Xh630+jLQsMXcEQ2EiWz5eAq9OxpRa4jPJomL2HUW+Q3DTama4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxYYezt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC07C4CED4;
-	Tue, 12 Nov 2024 10:40:48 +0000 (UTC)
+	 MIME-Version; b=r10ebYgYscWIa/S0zw8ytUW+MW/bBcbFDvuCv74m+UTLDluMLDsnIlI7sNVKUntYy/ESB/zEu3EUhECRqCi7vS9I6TsaTmfoqrEwmnZyJv0Zz6+Q2Jg0Xjha9Ut1GR6UP6sVfPHYGYir4WvIaOK7MvhiTph4KXAPsBJZtmDQxPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKR8tXos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4979FC4CED4;
+	Tue, 12 Nov 2024 10:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408048;
-	bh=dgLVqrqtlcgWaj1E1OAHTeUHDMdd6vjcFdI0RtAKEv0=;
+	s=korg; t=1731408128;
+	bh=c7jcCVL55icsr4UgS3ueHPmFznycVfK2ufpDRtZZeF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxYYezt6lQVEXMqu6yE48FicMRqXO9O7Nw5uBTIKx73OeR5S6Ub10tcpjoB85KRht
-	 B0mXdgTujiQ1do8y03NUC8LrH5DIYlJHOZ1UUONCEntY7U4dtTrEuhJ3mlhiNz7muV
-	 ykDx8yoMz4ykR0UI5yM3eVIdoWD2SLa7oGufkR3A=
+	b=SKR8tXosF2EbmsK3Ze/zNMCy1Ci7RBiRuf84qTNShuFRoQi5VDd3OwLgng3dbNfVy
+	 5y3tYSWs3lqgqRAZ94qOPjw0Yku4Gf2gp+W1eZqOf6czD8hokf8guaqW+0s5ZfhK8D
+	 NfFAA3q2ioadPgrBDe6b9UtP1PNF706AQERKMNnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qu Wenru <wqu@suse.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 044/184] sctp: properly validate chunk size in sctp_sf_ootb()
-Date: Tue, 12 Nov 2024 11:20:02 +0100
-Message-ID: <20241112101902.556313239@linuxfoundation.org>
+Subject: [PATCH 6.11 069/184] scsi: sd_zbc: Use kvzalloc() to allocate REPORT ZONES buffer
+Date: Tue, 12 Nov 2024 11:20:27 +0100
+Message-ID: <20241112101903.513894773@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -67,47 +69,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 0ead60804b64f5bd6999eec88e503c6a1a242d41 ]
+[ Upstream commit 7ce3e6107103214d354a16729a472f588be60572 ]
 
-A size validation fix similar to that in Commit 50619dbf8db7 ("sctp: add
-size validation when walking chunks") is also required in sctp_sf_ootb()
-to address a crash reported by syzbot:
+We have two reports of failed memory allocation in btrfs' code which is
+calling into report zones.
 
-  BUG: KMSAN: uninit-value in sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
-  sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
-  sctp_do_sm+0x181/0x93d0 net/sctp/sm_sideeffect.c:1166
-  sctp_endpoint_bh_rcv+0xc38/0xf90 net/sctp/endpointola.c:407
-  sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
-  sctp_rcv+0x3831/0x3b20 net/sctp/input.c:243
-  sctp4_rcv+0x42/0x50 net/sctp/protocol.c:1159
-  ip_protocol_deliver_rcu+0xb51/0x13d0 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+Both of these reports have the following signature coming from
+__vmalloc_area_node():
 
-Reported-by: syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/a29ebb6d8b9f8affd0f9abb296faafafe10c17d8.1730223981.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ kworker/u17:5: vmalloc error: size 0, failed to allocate pages, mode:0x10dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NORETRY|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0
+
+Further debugging showed these where allocations of one sector (512
+bytes) and at least one of the reporter's systems where low on memory,
+so going through the overhead of allocating a vm area failed.
+
+Switching the allocation from __vmalloc() to kvzalloc() avoids the
+overhead of vmalloc() on small allocations and succeeds.
+
+Note: the buffer is already freed using kvfree() so there's no need to
+adjust the free path.
+
+Cc: Qu Wenru <wqu@suse.com>
+Cc: Naohiro Aota <naohiro.aota@wdc.com>
+Link: https://github.com/kdave/btrfs-progs/issues/779
+Link: https://github.com/kdave/btrfs-progs/issues/915
+Fixes: 23a50861adda ("scsi: sd_zbc: Cleanup sd_zbc_alloc_report_buffer()")
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241030110253.11718-1-jth@kernel.org
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sd_zbc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 7d315a18612ba..a0524ba8d7878 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -3751,7 +3751,7 @@ enum sctp_disposition sctp_sf_ootb(struct net *net,
- 		}
+diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
+index c8b9654d30f0c..a4d17f3da25d0 100644
+--- a/drivers/scsi/sd_zbc.c
++++ b/drivers/scsi/sd_zbc.c
+@@ -188,8 +188,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
+ 	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
  
- 		ch = (struct sctp_chunkhdr *)ch_end;
--	} while (ch_end < skb_tail_pointer(skb));
-+	} while (ch_end + sizeof(*ch) < skb_tail_pointer(skb));
- 
- 	if (ootb_shut_ack)
- 		return sctp_sf_shut_8_4_5(net, ep, asoc, type, arg, commands);
+ 	while (bufsize >= SECTOR_SIZE) {
+-		buf = __vmalloc(bufsize,
+-				GFP_KERNEL | __GFP_ZERO | __GFP_NORETRY);
++		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
+ 		if (buf) {
+ 			*buflen = bufsize;
+ 			return buf;
 -- 
 2.43.0
 
