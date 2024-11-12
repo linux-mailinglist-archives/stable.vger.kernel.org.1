@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-92520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521719C54B0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:48:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBCF9C54B3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083191F22A7D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C87881F2304F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1AE21FDB7;
-	Tue, 12 Nov 2024 10:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21416220D57;
+	Tue, 12 Nov 2024 10:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5uIo/SF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5isNNVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3949621FD8F;
-	Tue, 12 Nov 2024 10:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF94521FD97;
+	Tue, 12 Nov 2024 10:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407832; cv=none; b=DY6j1ymztNOOZ+IJzFLn/nYlmau9ahCY2n3kheUNWloSOeVl17btp/1gcyUIwOeiKx+57XweYAiERZizS1nxpToAKW9wf9Ia1NXcX1kr38ZFEWUNof9XBAOHR0IPRkgRZlhIKcwSXOpjE8em9qeS5uqu2WgLwUhvKk3YeBS/28c=
+	t=1731407833; cv=none; b=e8uLY+jKbZPvLqZ8bzZ+VJShT+C//o42838lp403Ev23jOj4cvkk5uK2HQfcKwJeOUsfDNuPym5QQTiOuRdPmBW57LxCv02o7HeokUR+RxSCEYBACrLpB+kyDmM15G7vbfhu0gHgGPtmseUpLubi7nlQrd3XcIbLOK7xf8WFu6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407832; c=relaxed/simple;
-	bh=qdWgcfyKGVXdA0wrJRrU9EglvC2lqyCHhSITgPoypUY=;
+	s=arc-20240116; t=1731407833; c=relaxed/simple;
+	bh=tSHtvglTHqGCMeJEkIb1FMtoexRMYub3jo+WZxZEg8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwM3KwMODvNYjbvibzn9fExBc9dMOZ1gwD1XPlUdgv9YXUBviXS8KxhX8k6/GwlzeRYftqPZ3EvWGJvl8gTeQ07K1cZMQND1gxarE7v3qfn+bTu+rwiDCJD+irijpHJ0d+BtiOo/bl6W4G1tM3YpV8Xdcsq+ALIQBXmc3l8vfr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5uIo/SF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905A4C4CED9;
-	Tue, 12 Nov 2024 10:37:10 +0000 (UTC)
+	 MIME-Version; b=GCC9CEmrIEpe1StkEvb3rNA7Pvt2qA6ITTcRXfLKBLCZ5vTZyvGUEmpkInZNnslYM21NBuVaIj3XOhrANM3Amgm1WujYGh/hcvDkUWg3sbiiIKyU/sb0TW5tNJ1wRnQjHNSELMVjoNVWJKSXj5mRdt0K/Ne60UVFkXnoj41DCuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5isNNVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BDBC4CED6;
+	Tue, 12 Nov 2024 10:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407831;
-	bh=qdWgcfyKGVXdA0wrJRrU9EglvC2lqyCHhSITgPoypUY=;
+	s=k20201202; t=1731407833;
+	bh=tSHtvglTHqGCMeJEkIb1FMtoexRMYub3jo+WZxZEg8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5uIo/SF2CPz23lazbTl/5jSfCEvizmF4zwA68lx86Ci1dQzdGSfXV7JWvA0zBqyi
-	 MsZL9YF+VlESSpZ8KKCpb7jngQy4EEb0WT2ZGdqmOosYYqE/qHoKb6ZfBqOT2Dltl2
-	 n0eiwKCPrGsmbvmZo3bj9UwO1F2emaQoOFpSaftGxRgTYtQGU2HE09wL9m5DfVUrby
-	 NX0bY6i8V1ikI/HYjgVbI7X4D8NdSMWE0X44nvoBwgg1InnRA2FItvyJMZitQ9uf0c
-	 z4jxNuTRcll9JNene+z8p5wdkZDlaXSEAHvCRgsMJvVWEnqHryc8Alev1D4H3ORmme
-	 KDFDSNFoVZVSA==
+	b=Q5isNNVVhcxcVZbjamxBcBQGubym/ZGajZzAaN1tJFm+Hx40nNihFhbFHCbEysJX4
+	 xxNKTZ6ncf9ywBYyxJax4NBiR/p8BHAiVbDdNAWFL9RFXlseSLAnHS9Q47Y4Qq6sSk
+	 KyjzMi4anC9Apy206KmSPFDXABz1XBAyx++CHCT3R6QGy01vJntjJjS38qflVeM4k8
+	 fLqBhs9F6qjQVDhiXBJQRnnMbBfxQagvL7aurfkXLVeT/1eA/yq/LngTCqXt1Zegxz
+	 I95LeDLvAvr31b193lwrQVhv/+FmbRmx+MeJkUT9cQmyIvE1hrs4q58Ns33voSacKE
+	 lWnkSfPU7mS4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+Cc: David Wang <00107082@163.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 14/15] drm: panel-orientation-quirks: Make Lenovo Yoga Tab 3 X90F DMI match less strict
-Date: Tue, 12 Nov 2024 05:36:35 -0500
-Message-ID: <20241112103643.1653381-14-sashal@kernel.org>
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 15/15] proc/softirqs: replace seq_printf with seq_put_decimal_ull_width
+Date: Tue, 12 Nov 2024 05:36:36 -0500
+Message-ID: <20241112103643.1653381-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112103643.1653381-1-sashal@kernel.org>
 References: <20241112103643.1653381-1-sashal@kernel.org>
@@ -70,39 +65,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.60
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: David Wang <00107082@163.com>
 
-[ Upstream commit 052ef642bd6c108a24f375f9ad174b97b425a50b ]
+[ Upstream commit 84b9749a3a704dcc824a88aa8267247c801d51e4 ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+seq_printf is costy, on a system with n CPUs, reading /proc/softirqs
+would yield 10*n decimal values, and the extra cost parsing format string
+grows linearly with number of cpus. Replace seq_printf with
+seq_put_decimal_ull_width have significant performance improvement.
+On an 8CPUs system, reading /proc/softirqs show ~40% performance
+gain with this patch.
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240825132131.6643-1-hdegoede@redhat.com
+Signed-off-by: David Wang <00107082@163.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/proc/softirqs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 5b2506c65e952..259a0c765bafb 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -403,7 +403,6 @@ static const struct dmi_system_id orientation_data[] = {
- 	}, {	/* Lenovo Yoga Tab 3 X90F */
- 		.matches = {
- 		 DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--		 DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 		 DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
+diff --git a/fs/proc/softirqs.c b/fs/proc/softirqs.c
+index f4616083faef3..04bb29721419b 100644
+--- a/fs/proc/softirqs.c
++++ b/fs/proc/softirqs.c
+@@ -20,7 +20,7 @@ static int show_softirqs(struct seq_file *p, void *v)
+ 	for (i = 0; i < NR_SOFTIRQS; i++) {
+ 		seq_printf(p, "%12s:", softirq_to_name[i]);
+ 		for_each_possible_cpu(j)
+-			seq_printf(p, " %10u", kstat_softirqs_cpu(i, j));
++			seq_put_decimal_ull_width(p, " ", kstat_softirqs_cpu(i, j), 10);
+ 		seq_putc(p, '\n');
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
