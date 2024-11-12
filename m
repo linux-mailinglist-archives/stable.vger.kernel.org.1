@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-92387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4609C53C3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05C49C5546
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3D03281D75
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9378428C12D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8224C2144BD;
-	Tue, 12 Nov 2024 10:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BE81FA833;
+	Tue, 12 Nov 2024 10:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvFjHHrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQcQuz5E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F0A213124;
-	Tue, 12 Nov 2024 10:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532C81FA82E;
+	Tue, 12 Nov 2024 10:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407492; cv=none; b=tkWMSN/+AfDHYIUf6YeIhob2NLtUE/rb5Hq5MMwRXSt/eymqmAQkRZpxqt6U4DcC7NP9xAeJaw+uF86HH/7Q9e9Tao2tmIQG1AQsPM7o8lIIAX0zkoi7847wskvUwDkfcjndqCdc3jOs4BYXD+TE6N2TXygB20W3Bg3y0CrWhk0=
+	t=1731407922; cv=none; b=JrSK+tctvgNxAn2ebBZA37+MGijit9I8W0N7ywXjfC+rG0e3JzjJOxCVakO2bUC/ckXk7jkJ1LIm9pBCRm11WXxkgu62cxtnjqPAid2MbpQd7TRshV7KA4M5WKx5G75hxXA8J4StgoQf9ybc2M1pi4JixKV0YCd7oHpTM2X7C3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407492; c=relaxed/simple;
-	bh=oNRK+Zr9f8YOt7MvvnT+dRUiwpxJUVY7Ut0gOY8b+SY=;
+	s=arc-20240116; t=1731407922; c=relaxed/simple;
+	bh=FXud2FAT/XCFtPhKxPvffYzoBYGI/jS24rBrqQZIRHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgKb7ZQvxa7IL3ccOIQI6EQdvhuaJnd6kbffpnMl1iHdS50OxUaq9I02ZrD1zeTvKKFmbCV0aopHr/OYv9a8IgSR0Bbq+T4BdrpgbzogktHjle2a0SiEXYVmRoHnZQX4LOMzPCbBOrMnP9CefIydrQS1/qAwf8kznk1M0qPDNoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvFjHHrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7628CC4CED4;
-	Tue, 12 Nov 2024 10:31:31 +0000 (UTC)
+	 MIME-Version; b=XY8nrZrAdj2C6D3jy8IC0Oaa7jsNoHlBDfrdm5/EC59zUSB6hP4p1IaPHOzo60vvr2ac+Ves73lNE3tanwXuYkL2rkVWy4ctsUO6WPno2rUeMau5vOMFZ7uTPjVbB3ww7I9kueVDy8EwtSKOOeLOmuDm5+XpOFKDOU9eZA4Z5/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQcQuz5E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AF5C4CECD;
+	Tue, 12 Nov 2024 10:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407492;
-	bh=oNRK+Zr9f8YOt7MvvnT+dRUiwpxJUVY7Ut0gOY8b+SY=;
+	s=korg; t=1731407922;
+	bh=FXud2FAT/XCFtPhKxPvffYzoBYGI/jS24rBrqQZIRHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvFjHHrCBK98FXixH9+2rqH8mIP/1mYvOGd2L7FHhQV/IQheqkBzL24majLuimp+O
-	 bnARv2z99pk4nNIJ6neYEVRGpuoYaC8kaUhx1bs7meueDZRkgKVy+gGe3jq9D4ekvF
-	 hvLIqxsSy8J7I+5SuhiLvtQgidFK8DCwNn55tqGU=
+	b=fQcQuz5E4uz4Z7OG+N4aC96PlYxbL2SB/i5XfOcEma/EIeMV2uR1Rnw4KM5pFZCB3
+	 wW9WOjBHA9VV1E1hNxJbuKgb1Dq98dSZlI0syOe4q+DOqIPUpVjMevWeuwARCHX5or
+	 NaYH/LERmCKAp228M603vrliE1TKxQ4Y58DEr5+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Kanner <andrew.kanner@gmail.com>,
-	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 92/98] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+	Johannes Berg <johannes@sipsolutions.net>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.6 099/119] Revert "wifi: mac80211: fix RCU list iterations"
 Date: Tue, 12 Nov 2024 11:21:47 +0100
-Message-ID: <20241112101847.750477953@linuxfoundation.org>
+Message-ID: <20241112101852.504933955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 0b63c0e01fba40e3992bc627272ec7b618ccaef7 upstream.
+This reverts commit f37319609335d3eb2f7edfec4bad7996668a4d29 which is
+commit ac35180032fbc5d80b29af00ba4881815ceefcb6 upstream.
 
-Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
+It should not have been backported here due to lack of other rcu
+changes in the stable branches.
 
-[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
-[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
-[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
-[...]
-[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[...]
-[   57.331328] Call Trace:
-[   57.331477]  <TASK>
-[...]
-[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
-[   57.333778]  ? exc_page_fault+0x70/0x170
-[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
-[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
-[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
-[   57.335164]  ocfs2_xa_set+0x704/0xcf0
-[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
-[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
-[   57.335915]  ? trace_preempt_on+0x1e/0x70
-[   57.336153]  ? start_this_handle+0x16c/0x500
-[   57.336410]  ? preempt_count_sub+0x50/0x80
-[   57.336656]  ? _raw_read_unlock+0x20/0x40
-[   57.336906]  ? start_this_handle+0x16c/0x500
-[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
-[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
-[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
-[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
-[   57.338207]  ? dput+0x46/0x1c0
-[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338948]  __vfs_removexattr+0x92/0xc0
-[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
-[   57.339456]  ? preempt_count_sub+0x50/0x80
-[   57.339705]  vfs_removexattr+0x5f/0x100
-[...]
-
-Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
-ocfs2_xa_value_truncate() with -ENOMEM.
-
-In this case the comment mentions that we can return 0 if
-ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
-anyway. But the following 'rc' check is wrong and execution flow do
-'ocfs2_xa_remove_entry(loc);' twice:
-* 1st: in ocfs2_xa_cleanup_value_truncate();
-* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
-
-Fix this by skipping the 2nd removal of the same entry and making
-syzkaller repro happy.
-
-Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
-Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
-Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/xattr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mac80211/chan.c |    4 +---
+ net/mac80211/mlme.c |    2 +-
+ net/mac80211/scan.c |    2 +-
+ net/mac80211/util.c |    4 +---
+ 4 files changed, 4 insertions(+), 8 deletions(-)
 
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -2040,8 +2040,7 @@ static int ocfs2_xa_remove(struct ocfs2_
- 				rc = 0;
- 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
- 							orig_clusters);
--			if (rc)
--				goto out;
-+			goto out;
- 		}
- 	}
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -245,9 +245,7 @@ ieee80211_get_max_required_bw(struct iee
+ 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
+ 	struct sta_info *sta;
  
+-	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+-
+-	list_for_each_entry(sta, &sdata->local->sta_list, list) {
++	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
+ 		if (sdata != sta->sdata &&
+ 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
+ 			continue;
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -732,7 +732,7 @@ static bool ieee80211_add_vht_ie(struct
+ 		bool disable_mu_mimo = false;
+ 		struct ieee80211_sub_if_data *other;
+ 
+-		list_for_each_entry(other, &local->interfaces, list) {
++		list_for_each_entry_rcu(other, &local->interfaces, list) {
+ 			if (other->vif.bss_conf.mu_mimo_owner) {
+ 				disable_mu_mimo = true;
+ 				break;
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -490,7 +490,7 @@ static void __ieee80211_scan_completed(s
+ 	 * the scan was in progress; if there was none this will
+ 	 * just be a no-op for the particular interface.
+ 	 */
+-	list_for_each_entry(sdata, &local->interfaces, list) {
++	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		if (ieee80211_sdata_running(sdata))
+ 			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	}
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -745,9 +745,7 @@ static void __iterate_interfaces(struct
+ 	struct ieee80211_sub_if_data *sdata;
+ 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
+ 
+-	list_for_each_entry_rcu(sdata, &local->interfaces, list,
+-				lockdep_is_held(&local->iflist_mtx) ||
+-				lockdep_is_held(&local->hw.wiphy->mtx)) {
++	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		switch (sdata->vif.type) {
+ 		case NL80211_IFTYPE_MONITOR:
+ 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
 
 
 
