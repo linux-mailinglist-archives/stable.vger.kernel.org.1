@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-92566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284C69C551C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5577A9C5523
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E327428B913
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B5AD283A8F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9BA1FB752;
-	Tue, 12 Nov 2024 10:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6D922ABCF;
+	Tue, 12 Nov 2024 10:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFKvp9cE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apalGjAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C7A1FB748;
-	Tue, 12 Nov 2024 10:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093EB22ABC9;
+	Tue, 12 Nov 2024 10:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407893; cv=none; b=c8WiJyDJXLNilRgQK+/HLuD3Y1PLy+V4kMA7Pij/mLd+Of5B/0jtGDzLlh6WO9+oqrRLg/6oJVJsRo1W8hMh9/2a+ZKr9nctxrW5DVXhqAUgAKCTfKRo2v2YjbyvdNI0pREPyLHiSOH6u6E5HyKhrzwgexHN02n6THfzssjgQIo=
+	t=1731407900; cv=none; b=Xb+FMO6b+6wntFK00PZUSvkmh0ETo077l8l9znELeD3jAhK54dfUuzJyr416dwv3vda1Ds58ytClUCPTrTor0ZrEzlEtD/g1T9ozLOVzPiKia8uCXpxhNkdt7hssHHnR+5fNCOpExDa3Pbh5U9Wyq8O7Fj2HvZuqtrJuqEIf6dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407893; c=relaxed/simple;
-	bh=gQlW2cwXESWjdYBxHe3WgqAb0ars9D3QYrkWX2iMrJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFUmHpvlIGbAeco7BcWhaXygbauhq9fFcwFBzVg3dbTHbQ9OYFfMKBxXbxj9IxDSTHDB3cHknEUxHMRpFM0B9LTHlaDIi8NfYpa5XXP64D1SZfstfrKQUW9w4UZsoa8Jbjd6uTAFUwvpYyKayuFDVOxW7XCAGr5EHIb4y+UgdXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFKvp9cE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C85C4CECD;
-	Tue, 12 Nov 2024 10:38:11 +0000 (UTC)
+	s=arc-20240116; t=1731407900; c=relaxed/simple;
+	bh=kBmfT+2MaIKwAD0O7GVP0b1yByXEfpXufGLr1Rpv7Us=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j539uZ16WghH1yCEyzk4j3QWDgcqCrm++HE1M9PkSfiJ7GDp4bUxcryCqjBsL5HGl4/tPm9ZkjHt1v8ToYwnhoJCTYHbBPtcVPUMDUPaq1HfT67El+1Shgr3E2b723vO7EtzpKxUk07dAC1KrE8rIXcVhJObqzqDm7oi3rZgXa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apalGjAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5ADC4CECD;
+	Tue, 12 Nov 2024 10:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407893;
-	bh=gQlW2cwXESWjdYBxHe3WgqAb0ars9D3QYrkWX2iMrJk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFKvp9cEMeavg+1yXZ6Yx4xRdS48tciq7FIX1ikoTWlNkwf1h5WoLNDxko2RFzWle
-	 ULFfnyQVpmO7wz1qsUjZF2cWbOH9z5Q6RE5yugwRqe4Ba7gqgXMOhIxmQq9XinPj/N
-	 YQ6NK94bsG3gGTX9BEnMbGbYQ8nyD3M3zPbg/XEVrHnaMZ+MUajbnBx6iuiQo7VLd7
-	 a9H7zBPDjnKchDCevm6dex1uA9vJTrXaVjebXxswE4unjxwwickU3e7ClF5NbJcKtg
-	 5OIpWhfnl1s8km5Lvgi3kRs2B4D9AHUN36qXSSZdbkd8F7dVkNfHqcaJE0AwFUSMlC
-	 fimODpkiics4g==
+	s=k20201202; t=1731407899;
+	bh=kBmfT+2MaIKwAD0O7GVP0b1yByXEfpXufGLr1Rpv7Us=;
+	h=From:To:Cc:Subject:Date:From;
+	b=apalGjADgPCVq109+sC+CMbgsJYJ3ZNS7KPJ56cog6i90Ru9gCeMmjvgY8t5aEnxy
+	 dq4um3NyE7XxAxVcxRH6iEqTRVBWlXiWHYhSgy0XvKGjO3R3Nc3qXk1Q0tViMcq4vo
+	 g+WTm7esvb9Cu3mSun06H4m/zHgFWYeBlJJ7/NOANSrT1NQoRWFCfdIDAxP4Ah8ECO
+	 uD4XN0h7WHVmOryb/QCZhsUIjqC1Sy2tBnTOZHUVZerOn3rbrJNk/X9Fv4E/AxJZF3
+	 +GsGnf9Tfjnp5VKynDJcl8Bargmn2sgLQDjj54EFj71R6JHL8j+J1MoamtCtpyh1QT
+	 tA8VxfGseei+g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Charles Han <hanchunchao@inspur.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	arnaud.pouliquen@foss.st.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 5/6] ASoC: stm: Prevent potential division by zero in stm32_sai_get_clk_div()
-Date: Tue, 12 Nov 2024 05:38:00 -0500
-Message-ID: <20241112103803.1654174-5-sashal@kernel.org>
+	konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/5] soc: qcom: Add check devm_kasprintf() returned value
+Date: Tue, 12 Nov 2024 05:38:11 -0500
+Message-ID: <20241112103817.1654333-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241112103803.1654174-1-sashal@kernel.org>
-References: <20241112103803.1654174-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,39 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.229
+X-stable-base: Linux 5.4.285
 Content-Transfer-Encoding: 8bit
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 23569c8b314925bdb70dd1a7b63cfe6100868315 ]
+[ Upstream commit e694d2b5c58ba2d1e995d068707c8d966e7f5f2a ]
 
-This patch checks if div is less than or equal to zero (div <= 0). If
-div is zero or negative, the function returns -EINVAL, ensuring the
-division operation is safe to perform.
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value in qcom_socinfo_probe() is not checked.
 
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20241107015936.211902-1-luoyifan@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20240929072349.202520-1-hanchunchao@inspur.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/socinfo.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 3a7f0102b4c5c..90e4757f76b0f 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -319,7 +319,7 @@ static int stm32_sai_get_clk_div(struct stm32_sai_sub_data *sai,
- 	int div;
+diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+index 3303bcaf67154..8a9f781ba83f7 100644
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -433,10 +433,16 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
+ 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
+ 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
+ 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
+-	if (offsetof(struct socinfo, serial_num) <= item_size)
++	if (!qs->attr.soc_id || qs->attr.revision)
++		return -ENOMEM;
++
++	if (offsetof(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
++		if (!qs->attr.serial_number)
++			return -ENOMEM;
++	}
  
- 	div = DIV_ROUND_CLOSEST(input_rate, output_rate);
--	if (div > SAI_XCR1_MCKDIV_MAX(version)) {
-+	if (div > SAI_XCR1_MCKDIV_MAX(version) || div <= 0) {
- 		dev_err(&sai->pdev->dev, "Divider %d out of range\n", div);
- 		return -EINVAL;
- 	}
+ 	qs->soc_dev = soc_device_register(&qs->attr);
+ 	if (IS_ERR(qs->soc_dev))
 -- 
 2.43.0
 
