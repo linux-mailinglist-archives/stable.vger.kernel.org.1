@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CCD9C5596
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A797C9C53F6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A12131F21BBE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A1C71F21639
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B91217F37;
-	Tue, 12 Nov 2024 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC582141BD;
+	Tue, 12 Nov 2024 10:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6INkgjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTHtaQOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7DD21312A;
-	Tue, 12 Nov 2024 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D046C1A76C7;
+	Tue, 12 Nov 2024 10:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408183; cv=none; b=i8gcgQCJN1gmxx+o32xSjZlLHv8Ys3glsZqtFvyU/BtevnM+7vAcvcIkGbasQp8OvGXV96Ik/9WYqYrDdT3nllR2vWoTms60wAtdYSZ3aJHiYG6dRhA8k9z0tZRgaMmdUunwkLZ10X2frI8l9CCgEM1lFiCRGL3X3t5c/mn6AIc=
+	t=1731407632; cv=none; b=iHpgMhePwnrAiwtPr4NHe00c8HmG/9IIPIkRSREIJSGOZHIar8dckE9Nae9Nhkwv81+U7mOO87IjeSSpxsQrS1bW/LqIqdyLvbQI2VKdYn5aQU4hb0t6mZhJ+/75/Fjdq5c3HdIJDaif5Zhbwqvfvk9wWGV20yssbreqbL4GE90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408183; c=relaxed/simple;
-	bh=dCcq5ZyDQs8NnfHeEqSG3HF54WDb1SwmXaKwupiDhtg=;
+	s=arc-20240116; t=1731407632; c=relaxed/simple;
+	bh=SGCHwOwIUKYxUHaoe6s8VodiVyPrcniPNKEjbGVjU7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzEWWvwedqopK/39B1utkMGL8981lg/Ud2rwFTVc0OzDeAb5rRgvRKsnD1EGtoYvOf8uEvKbKBlE0mvhBrgZUeO2ULrvdfGWHaPabIzuBSXtmwJgLLMkZL9KEKjRj+4n/YaD+qalEgkBCi8562AEbZ4adlFkCoaaElS9xW5xXj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6INkgjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B81DC4CECD;
-	Tue, 12 Nov 2024 10:43:02 +0000 (UTC)
+	 MIME-Version; b=h7KeoDUEwBf13B4LHqxU94Oo4LIBo/2j3/UMZcLPziyCH2b/PYLby+t4/4pJOnO2YBDvxc9eWAXWMgIiYC61OJ4EZOsfkr7cnIhK4SbqSeNQGb7p2Ly83yFoT2dj0vYD3YoblA5AF3gc09RV5/K8kC/Kxp93luxcXKlD/WMN1jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTHtaQOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB203C4CECD;
+	Tue, 12 Nov 2024 10:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408183;
-	bh=dCcq5ZyDQs8NnfHeEqSG3HF54WDb1SwmXaKwupiDhtg=;
+	s=korg; t=1731407632;
+	bh=SGCHwOwIUKYxUHaoe6s8VodiVyPrcniPNKEjbGVjU7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6INkgjbKdD+DeyQ7uSV5QjJKx+7V7rg558qmzfSpVUhtIauzsrMENivEJtidFN/0
-	 /YNEZDy5BP9g0kElYWFakPC+Ix+8Y/eE3PDLQl4+6hJMb48jOdJuFsS42tB9y/m0RR
-	 nmssPRJknd/gBMoZM/8UNBHnPlULMGVo8oyb6+KI=
+	b=HTHtaQOqHrjvJTz03N0mAj4UYg6VMZcZJiiYhQHrnxhl+46/JsWNGuxciKfZqrX5t
+	 VDvPDdpZwDwkaIk5P2wjpmwRlsIi4VSXtHHPdcYt/ar3c/vOTAjG0FJO+6xhriPsRW
+	 k8+HG829M7sOdtXvorxE3yzqTYDgtga7Zu59+oLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.11 085/184] can: m_can: m_can_close(): dont call free_irq() for IRQ-less devices
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/119] can: c_can: fix {rx,tx}_errors statistics
 Date: Tue, 12 Nov 2024 11:20:43 +0100
-Message-ID: <20241112101904.121609178@linuxfoundation.org>
+Message-ID: <20241112101850.054340202@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit e4de81f9e134c78ff7c75a00e43bd819643530d0 upstream.
+[ Upstream commit 4d6d26537940f3b3e17138987ed9e4a334780bf7 ]
 
-In commit b382380c0d2d ("can: m_can: Add hrtimer to generate software
-interrupt") support for IRQ-less devices was added. Instead of an
-interrupt, the interrupt routine is called by a hrtimer-based polling
-loop.
+The c_can_handle_bus_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission. The patch fixes the issue by incrementing the
+appropriate counter based on the type of error.
 
-That patch forgot to change free_irq() to be only called for devices
-with IRQs. Fix this, by calling free_irq() conditionally only if an
-IRQ is available for the device (and thus has been requested
-previously).
-
-Fixes: b382380c0d2d ("can: m_can: Add hrtimer to generate software interrupt")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20240930-m_can-cleanups-v1-1-001c579cdee4@pengutronix.de
-Cc: <stable@vger.kernel.org> # v6.6+
+Fixes: 881ff67ad450 ("can: c_can: Added support for Bosch C_CAN controller")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241014135319.2009782-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1764,7 +1764,8 @@ static int m_can_close(struct net_device
- 	netif_stop_queue(dev);
+diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
+index c63f7fc1e6917..511615dc33419 100644
+--- a/drivers/net/can/c_can/c_can_main.c
++++ b/drivers/net/can/c_can/c_can_main.c
+@@ -1011,7 +1011,6 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
- 	m_can_stop(dev);
--	free_irq(dev->irq, dev);
-+	if (dev->irq)
-+		free_irq(dev->irq, dev);
+ 	/* common for all type of bus errors */
+ 	priv->can.can_stats.bus_error++;
+-	stats->rx_errors++;
  
- 	m_can_clean(dev);
- 
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+@@ -1027,26 +1026,32 @@ static int c_can_handle_bus_err(struct net_device *dev,
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.43.0
+
 
 
 
