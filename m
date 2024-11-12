@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3D19C5389
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFA69C53D5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F5F284E61
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757EC2815CF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B0F217470;
-	Tue, 12 Nov 2024 10:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B88212D04;
+	Tue, 12 Nov 2024 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTk6tKgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t580F3Bn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8382C21745F;
-	Tue, 12 Nov 2024 10:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FC31CBE8F;
+	Tue, 12 Nov 2024 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407239; cv=none; b=pVVQ3ShmdVpn/vVMKrtBnZ8kliuYi3K+rxLLwrjXgk/OZtEuWZaGZ3zvJO10q/0t+pvFekoOUOnuIcwEHbUx3L5XsSXPQS3fbHdO9t7mJ3OkfrEzUMeoSVJzxGkP5bEX/NEEa7Yycl70ImtEBalq5f++aGA1uqorkRBCQrNmP3M=
+	t=1731407566; cv=none; b=GRRtHo/6r+AuXRqUAjdePpnlw9926uqlaVxwiw3Dye3EEEQTmOUkig3h0eVX/UH5oph7bYYtEZocUX8MjnuUzHPSpTKIRnGwFgEoCuVGREYY5cN/ooUjtGkypqyoTg3GXIaTV0eX/ubJWf+W8ERBdfRVBxWyFvmyO13sEZ5fPfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407239; c=relaxed/simple;
-	bh=eTCPauiIB2OijRdcJROO4Y85zFLiBDYYms2vAhilxcc=;
+	s=arc-20240116; t=1731407566; c=relaxed/simple;
+	bh=ilni2XCRLLvqV/GiTANXPVELi49IhI6sVwmhSYo76+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ+BOBazbxm6nEd61s2DHYM8Q2tQZWCegf/Ta1M0F72MjIzyOuYocqAOEUlSIzdaoSLEkLDwXmWy3U78lTbg37Xo5oEHzYbXjBGU/u//7b6JUFLP7Qv7Vqi14bHTAPJYUOtbQTAdGPkOw7uwoBTH3apZ3S6jDocQNyRqep7ierA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTk6tKgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C619C4CECD;
-	Tue, 12 Nov 2024 10:27:18 +0000 (UTC)
+	 MIME-Version; b=DP2MafHWDsc+695pZiV5p7Wp4Dxc63GC1l+ZD5msOp3ZzxKFf+UHfOj/zHmZZqPs9DBXFqNXTdwgWLqiNADIDhEDP5Rj2Dou/7EmfZPp+1Ewh8gdFi2OonTbCD2+tQysVKZnnIB/8xzcoY7J44SI6Ay0kMLxPEKrWUXFtg2gel0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t580F3Bn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AF7C4CECD;
+	Tue, 12 Nov 2024 10:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407239;
-	bh=eTCPauiIB2OijRdcJROO4Y85zFLiBDYYms2vAhilxcc=;
+	s=korg; t=1731407565;
+	bh=ilni2XCRLLvqV/GiTANXPVELi49IhI6sVwmhSYo76+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FTk6tKgkptQgXDI6EPrsl/3lnbRNBkJ+DhohdfsBtQE+GPLXlsZgfwJXb6JF0t6lb
-	 ZqOp2ciFAmRlGmQjYWVKouAxya2Nh+db4xRfpfD4oseHf3XIASJrXusZLUDfkINxhP
-	 3AkOmfxq+kXJkqybYzBnJo892zx86/rChqAkirJQ=
+	b=t580F3Bnjip4IloKjcFlz62m/o73iDXMLK4Us8YIs1Mwz6Giif7zMmI5kBRDHnGeP
+	 /9KruwKJTZxjLCbQnHs7x6heqsxxoGaz1yDKs+dTg6U61xDWS8l+t4/hAFt9P1oJ98
+	 lSm+3sdzWqnrYeAMMP8Py2Mnd4PKiwdtKZBXHyBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/98] arm64: dts: imx8qm: Fix VPU core alias name
+Subject: [PATCH 6.6 015/119] arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs
 Date: Tue, 12 Nov 2024 11:20:23 +0100
-Message-ID: <20241112101844.588050581@linuxfoundation.org>
+Message-ID: <20241112101849.296309358@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit f6038de293f28503eccbfcfa84d39faf56d09150 ]
+[ Upstream commit eed2d8e8d0051a6551e4dffba99e16eb88c676ac ]
 
-Alias names use dashes instead of underscores, fix this. Silences also
-dtbs_check warning:
-imx8qxp-tqma8xqp-mba8xx.dtb: aliases: 'vpu_core0', 'vpu_core1', 'vpu_core2'
- do not match any of the regexes: '^[a-z][a-z0-9\\-]*$', 'pinctrl-[0-9]+'
-from schema $id: http://devicetree.org/schemas/aliases.yaml#
+imx8-ss-vpu only contained imx8qxp IRQ numbers, only mu2_m0 uses the
+correct imx8qm IRQ number, as imx8qxp lacks this MU.
+Fix this by providing imx8qm IRQ numbers in the main imx8-ss-vpu.dtsi
+and override the IRQ numbers in SoC-specific imx8qxp-ss-vpu.dtsi, similar
+to reg property for VPU core devices.
 
+Fixes: 0d9968d98467d ("arm64: dts: freescale: imx8q: add imx vpu codec entries")
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: eed2d8e8d005 ("arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qxp.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi    | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi | 8 ++++++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-index f4ea18bb95abf..dce699dffb9bf 100644
---- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-@@ -46,9 +46,9 @@
- 		serial1 = &lpuart1;
- 		serial2 = &lpuart2;
- 		serial3 = &lpuart3;
--		vpu_core0 = &vpu_core0;
--		vpu_core1 = &vpu_core1;
--		vpu_core2 = &vpu_core2;
-+		vpu-core0 = &vpu_core0;
-+		vpu-core1 = &vpu_core1;
-+		vpu-core2 = &vpu_core2;
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
+index c6540768bdb92..87211c18d65a9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-vpu.dtsi
+@@ -15,7 +15,7 @@ vpu: vpu@2c000000 {
+ 	mu_m0: mailbox@2d000000 {
+ 		compatible = "fsl,imx6sx-mu";
+ 		reg = <0x2d000000 0x20000>;
+-		interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 472 IRQ_TYPE_LEVEL_HIGH>;
+ 		#mbox-cells = <2>;
+ 		power-domains = <&pd IMX_SC_R_VPU_MU_0>;
+ 		status = "disabled";
+@@ -24,7 +24,7 @@ vpu: vpu@2c000000 {
+ 	mu1_m0: mailbox@2d020000 {
+ 		compatible = "fsl,imx6sx-mu";
+ 		reg = <0x2d020000 0x20000>;
+-		interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 473 IRQ_TYPE_LEVEL_HIGH>;
+ 		#mbox-cells = <2>;
+ 		power-domains = <&pd IMX_SC_R_VPU_MU_1>;
+ 		status = "disabled";
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+index 7894a3ab26d6b..f81937b5fb720 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+@@ -5,6 +5,14 @@
+  * Author: Alexander Stein
+  */
  
- 	cpus {
++&mu_m0 {
++	interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
++};
++
++&mu1_m0 {
++	interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
++};
++
+ &vpu_core0 {
+ 	reg = <0x2d040000 0x10000>;
+ };
 -- 
 2.43.0
 
