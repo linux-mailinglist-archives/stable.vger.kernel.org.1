@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-92324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884659C5393
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DE99C5597
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8BD1F211A8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC7F28EDDD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAA9213159;
-	Tue, 12 Nov 2024 10:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85EE218925;
+	Tue, 12 Nov 2024 10:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb3Uaiwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUqyNpL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA1C2123FF;
-	Tue, 12 Nov 2024 10:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB5212F1D;
+	Tue, 12 Nov 2024 10:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407285; cv=none; b=FopizTQWDnlAkov1OIhSrVTYR0uBo2+I1BIxoFswT4z3o6JdyDLCZQcyYOV3UPuVSMh6WFaMK6gCTIKNC3/M6eVkfAE2A9uVr9dc/YVaO24wyuUPOTcrbIzkkUDgXvei7rPMWF0B0DGzdxlehfsgfVv0rn98h8u1efJCdzREICY=
+	t=1731408186; cv=none; b=BWISV05VXzPy7GKKF1ysGTvnViqVJNWkYy0mzxQK/ofDTjcRoXx7vupdIe4lElrFGAatbVPsPJZqG7yxNKEK7AyPY8dcEZ/TttE9ZfaNPfgFjdJ6TQ6UvYSogQKqin91wY6jPNDZUCIE0D7z3dG6zD72mDmoWyOFlMWhv89RVe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407285; c=relaxed/simple;
-	bh=Ae916rlDjM1Np4PhkrDBy1qzoSCPs3OBCClu5PRH44M=;
+	s=arc-20240116; t=1731408186; c=relaxed/simple;
+	bh=kQr1lr/VtQ0MwmXLass/7hHt5h/PTtsE/SsvqfTT/ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGGrHu0BAJEq5MpC2w19UZcHGbrPR7BVyzBfCJJGPDW3Vh6pHLueOQHbsWiEiykwQVMa++BSmotL4hwlQiTmjHQ4Ij0rJ5GJ5vtCEIxyhGNxF+XmX1SW/x1hxD2PIbGN8xywsix8PZceawiKsST/kSTgCu4Eq3leOJNN5fMT0wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yb3Uaiwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5ADC4CECD;
-	Tue, 12 Nov 2024 10:28:04 +0000 (UTC)
+	 MIME-Version; b=fzPa3/5hGL4iQ/5waQCLol9Ox6AYmP9pwqkus8w+3CQ1Aw4AulEK/UfjCRd5qCy2TBZjMZME1EKg7hwuZdJgc7J/ymiVSjN79Dcx0JUJvsEzlog8H6XpyROfYEMUm/q33z0BGzKrKBRWlNz+M8NHHCaDPlAb+aEHdBdv8F1av+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUqyNpL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37C7C4CECD;
+	Tue, 12 Nov 2024 10:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407284;
-	bh=Ae916rlDjM1Np4PhkrDBy1qzoSCPs3OBCClu5PRH44M=;
+	s=korg; t=1731408186;
+	bh=kQr1lr/VtQ0MwmXLass/7hHt5h/PTtsE/SsvqfTT/ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yb3UaiwlP4EE2GVU+Sd6kIYsgiGTEQfueZ+RfJ8Ysei+T8HUDcLYJZ5yZ1CkIsm+i
-	 vqHAp39uk6EMVNZ+Nsm+H/uh7tagQreqkZlS2CjkeKnB7tdIVJ1vXldxpEuQGLJk5g
-	 2lveMv3pL2d82ojkhK3hN/bSbgp65R2mdCG47xQw=
+	b=IUqyNpL5jJgeHZ7Qlv/eY+K61+Tm3FQaVkyOeqelazQthtEKeWSI2cJdHkjzKXE4c
+	 Ubgph7LVkmO30eMircYQVhovj7HjbFMDEth7d0v85JrzlOqD1hni7Zw4i/zo9DXNCB
+	 Eb7B5vKuXm+sdWBYam28N/Sfod4reBgZNwSrnEwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Silva <diogompaissilva@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/98] net: phy: ti: add PHY_RST_AFTER_CLK_EN flag
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.11 086/184] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
 Date: Tue, 12 Nov 2024 11:20:44 +0100
-Message-ID: <20241112101845.382692158@linuxfoundation.org>
+Message-ID: <20241112101904.160288657@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Silva <diogompaissilva@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 256748d5480bb3c4b731236c6d6fc86a8e2815d8 ]
+commit 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a upstream.
 
-DP83848	datasheet (section 4.7.2) indicates that the reset pin should be
-toggled after the clocks are running. Add the PHY_RST_AFTER_CLK_EN to
-make sure that this indication is respected.
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-In my experience not having this flag enabled would lead to, on some
-boots, the wrong MII mode being selected if the PHY was initialized on
-the bootloader and was receiving data during Linux boot.
+As the TEF has no head pointer, the driver uses the TX FIFO's tail
+pointer instead, assuming that send frames are completed. However the
+check for the TEF being full was not correct. This leads to the driver
+stop working if the TEF is full.
 
-Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Fixes: 34e45ad9378c ("net: phy: dp83848: Add TI DP83848 Ethernet PHY")
-Link: https://patch.msgid.link/20241102151504.811306-1-paissilva@ld-100007.ds1.internal
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the TEF full check by assuming that if, from the driver's point of
+view, there are no free TX buffers in the chip and the TX FIFO is
+empty, all messages must have been sent and the TEF must therefore be
+full.
+
+Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/dp83848.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/dp83848.c b/drivers/net/phy/dp83848.c
-index 937061acfc613..351411f0aa6f4 100644
---- a/drivers/net/phy/dp83848.c
-+++ b/drivers/net/phy/dp83848.c
-@@ -147,6 +147,8 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
- 		/* IRQ related */				\
- 		.config_intr	= dp83848_config_intr,		\
- 		.handle_interrupt = dp83848_handle_interrupt,	\
-+								\
-+		.flags		= PHY_RST_AFTER_CLK_EN,		\
- 	}
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -16,9 +16,9 @@
  
- static struct phy_driver dp83848_driver[] = {
--- 
-2.43.0
-
+ #include "mcp251xfd.h"
+ 
+-static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
++static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+ {
+-	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
+ 
+ static inline int
+@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
+ 	if (err)
+ 		return err;
+ 
+-	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
++	/* If the chip says the TX-FIFO is empty, but there are no TX
++	 * buffers free in the ring, we assume all have been sent.
++	 */
++	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0) {
+ 		*len_p = tx_ring->obj_num;
+ 		return 0;
+ 	}
 
 
 
