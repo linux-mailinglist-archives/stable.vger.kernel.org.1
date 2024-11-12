@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-92683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094959C55A8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC7D9C54E1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616431F21478
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D9CEB35C46
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E1F218D92;
-	Tue, 12 Nov 2024 10:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605E121442F;
+	Tue, 12 Nov 2024 10:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcM4UEPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MezTWUsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F94213ECF;
-	Tue, 12 Nov 2024 10:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1E1210184;
+	Tue, 12 Nov 2024 10:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408246; cv=none; b=b25dcVlLBSJi9UhhJsYiHY/b6XTqTrvVu0KPVfccDWxjeG2avy1oy5z2+BeuYQMlAo0hjf3rXPs6YY3AKaA+UNScYCjAlLoFoqgTp7uqLd3z9Zj6/ZZYHbrOQdyYqumC0bRryUWvy8rhcywY/UVl0fK7UnR+g9XY5VQUKofn1/k=
+	t=1731407451; cv=none; b=eYT4rbPRM/Ck+kqjP3EYmkEtPzKFfJ8B5YoQjT4CCQh/I3kdM/2zqlIeo6kHFt/ysa2mPDEeBBfd0VN6ODpPk1zZ9icjtrjldi0se6BG0ov6b74PCnt5Gn879gvIas3lcds5UkON2Nyzo7C58CmaI/J6cXToLB6bx3SaiPEXejE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408246; c=relaxed/simple;
-	bh=v7mv32BJKJECU66bFwq4qy4NykUKdL+Sm8riekILCok=;
+	s=arc-20240116; t=1731407451; c=relaxed/simple;
+	bh=2/RGji/5KUnWNxZYTEG0CCU7vCYq8yfwJZUMuYyLBhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMGYel2PH38OFNEaC2vHTScZVho08Y/mwzU+pxT2i5wkrA7QwqCbtVdycjlCadymI+PUQRySM6VN5GgkHSzyB8DG0/DB1OPtuEqJxCCRkt3tRMgpNcOBddK8bcOUWsKAgUPKgSv5aSehWIAQgQUNP5dEeFzjCaYRmR33hchjIDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcM4UEPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EAAC4CECD;
-	Tue, 12 Nov 2024 10:44:05 +0000 (UTC)
+	 MIME-Version; b=fGbpxSMFwCc8neD1+IYlIr1jx6wgzdvFGoYOAQcnMd61MoSKYlN9dCt9fsaBDodscOAX5I4gY71ATT2HrCoFeYke5Ryi21rQHC437laLFUpnKZLZEuJuvlMDq2i12Gn3/ZUhSmeZQivwtIPiFGKRUZ5baPx4ISDwtPn5uw+M5KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MezTWUsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025AEC4CECD;
+	Tue, 12 Nov 2024 10:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408246;
-	bh=v7mv32BJKJECU66bFwq4qy4NykUKdL+Sm8riekILCok=;
+	s=korg; t=1731407450;
+	bh=2/RGji/5KUnWNxZYTEG0CCU7vCYq8yfwJZUMuYyLBhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcM4UEPRm0wbFV7yITm0WRk3ojk5LPZRDX54RSCa5kAmiuYIhEjVvvObiwpgYA9Hh
-	 p/VpTHGY+aVMJm+GGI/rkxsGW+m2tX40MHkO7ytfP5thBWgHyhYA6Zsb1/Y/4y95Im
-	 dfylh79SiJSw+W7aIBMJjSODidd2hRAjQLFekh6Q=
+	b=MezTWUsgJtIlz1jg7dM7eqp58cZHaIWQE2bkoXTUDMn76ViRgCuyjxuRzEIaB092F
+	 JHRa6R3zeVEK4JYunzU0FVPBXQ4WU5pFtdmmFcjfE/Hd58MnS3Fn0dZybWCItPJzi6
+	 +pxp+U0zEBk2cabHuWEdOcfKKg4J76+d18liPTCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH 6.11 105/184] drm/panthor: Lock XArray when getting entries for the VM
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.1 48/98] media: v4l2-tpg: prevent the risk of a division by zero
 Date: Tue, 12 Nov 2024 11:21:03 +0100
-Message-ID: <20241112101904.897642181@linuxfoundation.org>
+Message-ID: <20241112101846.100102566@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liviu Dudau <liviu.dudau@arm.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 444fa5b100e5c90550d6bccfe4476efb0391b3ca upstream.
+commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
 
-Similar to commit cac075706f29 ("drm/panthor: Fix race when converting
-group handle to group object") we need to use the XArray's internal
-locking when retrieving a vm pointer from there.
+As reported by Coverity, the logic at tpg_precalculate_line()
+blindly rescales the buffer even when scaled_witdh is equal to
+zero. If this ever happens, this will cause a division by zero.
 
-v2: Removed part of the patch that was trying to protect fetching
-the heap pointer from XArray, as that operation is protected by
-the @pool->lock.
+Instead, add a WARN_ON_ONCE() to trigger such cases and return
+without doing any precalculation.
 
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Reported-by: Jann Horn <jannh@google.com>
+Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241106185806.389089-1-liviu.dudau@arm.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1580,7 +1580,9 @@ panthor_vm_pool_get_vm(struct panthor_vm
- {
- 	struct panthor_vm *vm;
+--- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
++++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
+@@ -1795,6 +1795,9 @@ static void tpg_precalculate_line(struct
+ 	unsigned p;
+ 	unsigned x;
  
-+	xa_lock(&pool->xa);
- 	vm = panthor_vm_get(xa_load(&pool->xa, handle));
-+	xa_unlock(&pool->xa);
- 
- 	return vm;
- }
++	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
++		return;
++
+ 	switch (tpg->pattern) {
+ 	case TPG_PAT_GREEN:
+ 		contrast = TPG_COLOR_100_RED;
 
 
 
