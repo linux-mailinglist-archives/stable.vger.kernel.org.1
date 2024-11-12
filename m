@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-92666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962639C5598
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEFC9C532C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205751F21532
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC91F2853EF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC911218944;
-	Tue, 12 Nov 2024 10:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9F32123EF;
+	Tue, 12 Nov 2024 10:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQpVNTjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk8RxFQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BA4218937;
-	Tue, 12 Nov 2024 10:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6854A2123E5;
+	Tue, 12 Nov 2024 10:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408189; cv=none; b=jNjRriDbMrRXa04CWrZmS9QMQpJME+/OdxsanisIp25GQa59+Iz1AjumyUM7G0LrVtdBK8Up9p73YeRICzqcKedGFlPQqAZcEpEhV8WWK8jJqOevTHjPXP71qZ3uaKoVH4ll3iQfU3EvqAGaWpbAXeW8r+Hz3409zAPHaZQjjaY=
+	t=1731407001; cv=none; b=AtVz3I8UZaLb5vLDGZpXF4K6vM+Y6HjIRnWCTMm3PynSBn4PZ6F7Sqkf9M9ods0F6wi+kX3Op7TXPwOmqBZUPvrIkrcraNU1Vtc/VsV4lHHPNDJg/JouoWxaRH8MKNqIbdpTBVErZAR339HmMsQ717IfB92XTzgJPsqnM8Og1aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408189; c=relaxed/simple;
-	bh=kAq+bByb3WSQ7W6VqfJbvGr0WSZChqEwsIBxbskA34Y=;
+	s=arc-20240116; t=1731407001; c=relaxed/simple;
+	bh=gdzbVcbIn+t4kuZ3P1PJvV+HE0TlBp7J+i1jReUiz0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHKBTn2D2H4nzpHHivqi836TH6IHKiqZwoGIMX83xmQJsTw52K3gnWtQmqqLuiettBgeELvpi6yLdP3p7LLEQxLkDhC9ggtlaZFFE+JyS8aLrEq2OQbeg1R4B8MkVs8vLv8Nzme7yKqkDqLsD3hxobbgztZ1CIl+Rxfps2BiGZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQpVNTjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F48C4CECD;
-	Tue, 12 Nov 2024 10:43:08 +0000 (UTC)
+	 MIME-Version; b=cjfL45uCNdjmTW2OcLqtl4QT1kYGeMf5JLnN48+TsEP0Tx1mdUydaUqpVW8afMvBCp+CP5Ar9aIyCSUnfG9SqD6gVOR40eo6CanYdLffGWACJBcziRfjt8r/DmHM9Z9LU+55wTIGTiGFHU/U8lPSUUqG9GrfFbtm05sj4BBf5t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk8RxFQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D3EC4CECD;
+	Tue, 12 Nov 2024 10:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408189;
-	bh=kAq+bByb3WSQ7W6VqfJbvGr0WSZChqEwsIBxbskA34Y=;
+	s=korg; t=1731407001;
+	bh=gdzbVcbIn+t4kuZ3P1PJvV+HE0TlBp7J+i1jReUiz0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQpVNTjMbhB0w16+EDhPqTapdsLqGiwNnnGZQyGviVjfySUYfc3RzOo1JWze5z2k5
-	 RahkST2E8uyGdjQaA3aqyxPbeIpJNrBymflpKzXRFtNnP4lHIg2yI3fONj9Sh/lYTa
-	 n1XHWznHLGyb8zyWvYl1a03N4zhvIEPylLXRSI9Q=
+	b=Qk8RxFQtrDI+X3CbP+HYzHSM+di+ygAZIY6fPXNCS14ed47yd2lA1Z6z9flwfgtzN
+	 uZ0KJAbHBaO5u8MedCqui0x0yXJcNgp93C3IkMeyfHf10/MsLQ/aGmpNFNdd2Adwuy
+	 jHCHgFZI8zrjh1dCgCGWDaKPWw/5mRA7HuiQXVx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.11 087/184] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 20/76] i40e: fix race condition by adding filters intermediate sync state
 Date: Tue, 12 Nov 2024 11:20:45 +0100
-Message-ID: <20241112101904.198327751@linuxfoundation.org>
+Message-ID: <20241112101840.553449209@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-commit eb9a839b3d8a989be5970035a5cf29bcd6ffd24d upstream.
+[ Upstream commit f30490e9695ef7da3d0899c6a0293cc7cd373567 ]
 
-Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
-when switching from CAN-CC to CAN-FD mode"), the current ring and
-coalescing configuration is passed to can_ram_get_layout(). That fixed
-the issue when switching between CAN-CC and CAN-FD mode with
-configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
-tx-frames-irq).
+Fix a race condition in the i40e driver that leads to MAC/VLAN filters
+becoming corrupted and leaking. Address the issue that occurs under
+heavy load when multiple threads are concurrently modifying MAC/VLAN
+filters by setting mac and port VLAN.
 
-However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
-switching from CAN-CC to CAN-FD mode"), introduced a regression when
-switching CAN modes with disabled coalescing configuration: Even if
-the previous CAN mode has no coalescing configured, the new mode is
-configured with active coalescing. This leads to delayed receiving of
-CAN-FD frames.
+1. Thread T0 allocates a filter in i40e_add_filter() within
+        i40e_ndo_set_vf_port_vlan().
+2. Thread T1 concurrently frees the filter in __i40e_del_filter() within
+        i40e_ndo_set_vf_mac().
+3. Subsequently, i40e_service_task() calls i40e_sync_vsi_filters(), which
+        refers to the already freed filter memory, causing corruption.
 
-This comes from the fact, that ethtool uses usecs = 0 and max_frames =
-1 to disable coalescing, however the driver uses internally
-priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
-coalescing.
+Reproduction steps:
+1. Spawn multiple VFs.
+2. Apply a concurrent heavy load by running parallel operations to change
+        MAC addresses on the VFs and change port VLANs on the host.
+3. Observe errors in dmesg:
+"Error I40E_AQ_RC_ENOSPC adding RX filters on VF XX,
+	please set promiscuous on manually for VF XX".
 
-Fix the regression by assigning struct ethtool_coalesce
-ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
-the driver as can_ram_get_layout() expects this.
+Exact code for stable reproduction Intel can't open-source now.
 
-Reported-by: https://github.com/vdh-robothania
-Closes: https://github.com/raspberrypi/linux/issues/6407
-Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix involves implementing a new intermediate filter state,
+I40E_FILTER_NEW_SYNC, for the time when a filter is on a tmp_add_list.
+These filters cannot be deleted from the hash list directly but
+must be removed using the full process.
+
+Fixes: 278e7d0b9d68 ("i40e: store MAC/VLAN filters in a hash with the MAC Address as key")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
+Tested-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h         |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_debugfs.c |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c    | 12 ++++++++++--
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -483,9 +483,11 @@ int mcp251xfd_ring_alloc(struct mcp251xf
- 		};
- 		const struct ethtool_coalesce ec = {
- 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
--			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
-+			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->rx_obj_num_coalesce_irq,
- 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
--			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
-+			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->tx_obj_num_coalesce_irq,
- 		};
- 		struct can_ram_layout layout;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index a05103e2fb522..a143440f3db62 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -776,6 +776,7 @@ enum i40e_filter_state {
+ 	I40E_FILTER_ACTIVE,		/* Added to switch by FW */
+ 	I40E_FILTER_FAILED,		/* Rejected by FW */
+ 	I40E_FILTER_REMOVE,		/* To be removed */
++	I40E_FILTER_NEW_SYNC,		/* New, not sent yet, is in i40e_sync_vsi_filters() */
+ /* There is no 'removed' state; the filter struct is freed */
+ };
+ struct i40e_mac_filter {
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+index 7c5f874ef335a..503818f0714d4 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+@@ -105,6 +105,7 @@ static char *i40e_filter_state_string[] = {
+ 	"ACTIVE",
+ 	"FAILED",
+ 	"REMOVE",
++	"NEW_SYNC",
+ };
  
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index c1f21713ab8d1..bc5da0b8648c1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1233,6 +1233,7 @@ int i40e_count_filters(struct i40e_vsi *vsi)
+ 
+ 	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
+ 		if (f->state == I40E_FILTER_NEW ||
++		    f->state == I40E_FILTER_NEW_SYNC ||
+ 		    f->state == I40E_FILTER_ACTIVE)
+ 			++cnt;
+ 	}
+@@ -1419,6 +1420,8 @@ static int i40e_correct_mac_vlan_filters(struct i40e_vsi *vsi,
+ 
+ 			new->f = add_head;
+ 			new->state = add_head->state;
++			if (add_head->state == I40E_FILTER_NEW)
++				add_head->state = I40E_FILTER_NEW_SYNC;
+ 
+ 			/* Add the new filter to the tmp list */
+ 			hlist_add_head(&new->hlist, tmp_add_list);
+@@ -1528,6 +1531,8 @@ static int i40e_correct_vf_mac_vlan_filters(struct i40e_vsi *vsi,
+ 				return -ENOMEM;
+ 			new_mac->f = add_head;
+ 			new_mac->state = add_head->state;
++			if (add_head->state == I40E_FILTER_NEW)
++				add_head->state = I40E_FILTER_NEW_SYNC;
+ 
+ 			/* Add the new filter to the tmp list */
+ 			hlist_add_head(&new_mac->hlist, tmp_add_list);
+@@ -2417,7 +2422,8 @@ static int
+ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
+ 			  struct i40e_mac_filter *f)
+ {
+-	bool enable = f->state == I40E_FILTER_NEW;
++	bool enable = f->state == I40E_FILTER_NEW ||
++		      f->state == I40E_FILTER_NEW_SYNC;
+ 	struct i40e_hw *hw = &vsi->back->hw;
+ 	int aq_ret;
+ 
+@@ -2591,6 +2597,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 
+ 				/* Add it to the hash list */
+ 				hlist_add_head(&new->hlist, &tmp_add_list);
++				f->state = I40E_FILTER_NEW_SYNC;
+ 			}
+ 
+ 			/* Count the number of active (current and new) VLAN
+@@ -2742,7 +2749,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 		spin_lock_bh(&vsi->mac_filter_hash_lock);
+ 		hlist_for_each_entry_safe(new, h, &tmp_add_list, hlist) {
+ 			/* Only update the state if we're still NEW */
+-			if (new->f->state == I40E_FILTER_NEW)
++			if (new->f->state == I40E_FILTER_NEW ||
++			    new->f->state == I40E_FILTER_NEW_SYNC)
+ 				new->f->state = new->state;
+ 			hlist_del(&new->hlist);
+ 			netdev_hw_addr_refcnt(new->f, vsi->netdev, -1);
+-- 
+2.43.0
+
 
 
 
