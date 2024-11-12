@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-92261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004939C55B8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E399C53FF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A0B7B32D47
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E605C2840EB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBE52123DB;
-	Tue, 12 Nov 2024 10:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B29212194;
+	Tue, 12 Nov 2024 10:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI5jokoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veIYlb1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9421F26E3;
-	Tue, 12 Nov 2024 10:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B6319E992;
+	Tue, 12 Nov 2024 10:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407078; cv=none; b=iVEDvQItspa/R+agSba2sKKxxCGvECGS2db1Ff75NEzN7+0jYVO6DIexTfi2GAsITC3/S9uvfssbflRYqZiTL2u1ARPSpc5yZgaW3XkdsTy2llQ8UrIdjtMqNKWoS7x9uHAA1ve35sAGb1pQ2asfyd0KtoWRYcaTPN1bCgcrHGQ=
+	t=1731407660; cv=none; b=jL/e4kY0LBk3TJg2Jvw6RLdLR8BG+vcVOzW6vMWhwrgh3U+oLV0ZgyPsgtWhW+9uO74WsoIJv2QORG/gdx0fei8DeRcXgQqX1ktRTbaaBC4wKxWIn4rtaogxio8sWdmwBaBMmPWYq7N0UwnfrGcZwfF4NKFQA1DrTEVUGv21eLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407078; c=relaxed/simple;
-	bh=Iv4r7q2/4gDf4Uhzd27nyZHTAXc8ZodAbrK/+kR1bqc=;
+	s=arc-20240116; t=1731407660; c=relaxed/simple;
+	bh=1VAJVRNvcm1TVFb3xwnI9kuYOvvOBzyZBqr56JMOyiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnZ3/9MlUOC0EyMJb8rgBVFH46ITzzIr2A/rmHLfofjk1iQXfQZHTM6d25jpEG6ORatTtK3EUFcGeLh/HC6Ipcsp1WKs/JZq4dxkQMshSuBJKLYftcEi2Jyqo3gj9sh5Wo1XTir8wOeXfJrc61VW48KGw4bdkHY8HOkXGB+2W0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI5jokoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56357C4CECD;
-	Tue, 12 Nov 2024 10:24:37 +0000 (UTC)
+	 MIME-Version; b=dTRWdgm7uiuXmP0qgwVSDTE/oYyrHaVJt9Fd4U00SzKwcZ+P/3vXZcRFJ9Gy8SmFCJfJD4O6PP2cuitUuoteNyp63agoex6EImKQ+PmSAJU/hd/Ke6/JdmhFksZMdgRwV1xlZI584tuuRgx2wLdZhc0XldJMsWX9LlP9BSUVFuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veIYlb1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9EAC4CED6;
+	Tue, 12 Nov 2024 10:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407077;
-	bh=Iv4r7q2/4gDf4Uhzd27nyZHTAXc8ZodAbrK/+kR1bqc=;
+	s=korg; t=1731407660;
+	bh=1VAJVRNvcm1TVFb3xwnI9kuYOvvOBzyZBqr56JMOyiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI5jokoLKdsihmMlUPJWHIeCxdPRHL8kXPmJj89Hs1MAnb6uyzKh0xi43ALxtUa+E
-	 gOKZU94ML8Nrna6GhJyqq7RG7/3v+tYkOphomMDZYLZGJ/n2W5CZvX5k7XDUi7+CUh
-	 JrnoZVYF1j8x7C0TTaIsc+F1ksHwx+ZyE++VGyEg=
+	b=veIYlb1m3IY6avHnNbNhnuNrxxkh1c1xYFakvy3zhZZySYRIPPlz7BA7c3DfqRbH0
+	 lbKkM6qqD1OHnXIZFuTCeH/ZiFhLyp3IbuOjV1KZajwBQj9qt0vb0do7P7RmAlBV+9
+	 hQyYyIEPoZCqbnr5oNnc6+R8yojCXHEyhYoPNRlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 26/76] media: stb0899_algo: initialize cfr before using it
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 043/119] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
 Date: Tue, 12 Nov 2024 11:20:51 +0100
-Message-ID: <20241112101840.783922955@linuxfoundation.org>
+Message-ID: <20241112101850.363778734@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 2d861977e7314f00bf27d0db17c11ff5e85e609a upstream.
+[ Upstream commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd ]
 
-The loop at stb0899_search_carrier() starts with a random
-value for cfr, as reported by Coverity.
+It would be better to not store nft_ctx inside nft_trans object,
+the netlink ctx strucutre is huge and most of its information is
+never needed in places that use trans->ctx.
 
-Initialize it to zero, just like stb0899_dvbs_algo() to ensure
-that carrier search won't bail out.
+Avoid/reduce its usage if possible, no runtime behaviour change
+intended.
 
-Fixes: 8bd135bab91f ("V4L/DVB (9375): Add STB0899 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/stb0899_algo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |  2 +-
+ net/netfilter/nf_tables_api.c     | 17 ++++++++---------
+ net/netfilter/nft_immediate.c     |  2 +-
+ 3 files changed, 10 insertions(+), 11 deletions(-)
 
---- a/drivers/media/dvb-frontends/stb0899_algo.c
-+++ b/drivers/media/dvb-frontends/stb0899_algo.c
-@@ -269,7 +269,7 @@ static enum stb0899_status stb0899_searc
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index af62804b27ec7..b5f9ee5810a34 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1157,7 +1157,7 @@ static inline bool nft_chain_is_bound(struct nft_chain *chain)
  
- 	short int derot_freq = 0, last_derot_freq = 0, derot_limit, next_loop = 3;
- 	int index = 0;
--	u8 cfr[2];
-+	u8 cfr[2] = {0};
- 	u8 reg;
+ int nft_chain_add(struct nft_table *table, struct nft_chain *chain);
+ void nft_chain_del(struct nft_chain *chain);
+-void nf_tables_chain_destroy(struct nft_ctx *ctx);
++void nf_tables_chain_destroy(struct nft_chain *chain);
  
- 	internal->status = NOCARRIER;
+ struct nft_stats {
+ 	u64			bytes;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index aacb0d7f82e9f..eff94dcb49090 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2068,9 +2068,9 @@ static void nf_tables_chain_free_chain_rules(struct nft_chain *chain)
+ 	kvfree(chain->blob_next);
+ }
+ 
+-void nf_tables_chain_destroy(struct nft_ctx *ctx)
++void nf_tables_chain_destroy(struct nft_chain *chain)
+ {
+-	struct nft_chain *chain = ctx->chain;
++	const struct nft_table *table = chain->table;
+ 	struct nft_hook *hook, *next;
+ 
+ 	if (WARN_ON(chain->use > 0))
+@@ -2082,7 +2082,7 @@ void nf_tables_chain_destroy(struct nft_ctx *ctx)
+ 	if (nft_is_base_chain(chain)) {
+ 		struct nft_base_chain *basechain = nft_base_chain(chain);
+ 
+-		if (nft_base_chain_netdev(ctx->family, basechain->ops.hooknum)) {
++		if (nft_base_chain_netdev(table->family, basechain->ops.hooknum)) {
+ 			list_for_each_entry_safe(hook, next,
+ 						 &basechain->hook_list, list) {
+ 				list_del_rcu(&hook->list);
+@@ -2571,7 +2571,7 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+ err_trans:
+ 	nft_use_dec_restore(&table->use);
+ err_destroy_chain:
+-	nf_tables_chain_destroy(ctx);
++	nf_tables_chain_destroy(chain);
+ 
+ 	return err;
+ }
+@@ -9415,7 +9415,7 @@ static void nft_commit_release(struct nft_trans *trans)
+ 		if (nft_trans_chain_update(trans))
+ 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+ 		else
+-			nf_tables_chain_destroy(&trans->ctx);
++			nf_tables_chain_destroy(nft_trans_chain(trans));
+ 		break;
+ 	case NFT_MSG_DELRULE:
+ 	case NFT_MSG_DESTROYRULE:
+@@ -10406,7 +10406,7 @@ static void nf_tables_abort_release(struct nft_trans *trans)
+ 		if (nft_trans_chain_update(trans))
+ 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+ 		else
+-			nf_tables_chain_destroy(&trans->ctx);
++			nf_tables_chain_destroy(nft_trans_chain(trans));
+ 		break;
+ 	case NFT_MSG_NEWRULE:
+ 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+@@ -11144,7 +11144,7 @@ int __nft_release_basechain(struct nft_ctx *ctx)
+ 	}
+ 	nft_chain_del(ctx->chain);
+ 	nft_use_dec(&ctx->table->use);
+-	nf_tables_chain_destroy(ctx);
++	nf_tables_chain_destroy(ctx->chain);
+ 
+ 	return 0;
+ }
+@@ -11219,10 +11219,9 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
+ 		nft_obj_destroy(&ctx, obj);
+ 	}
+ 	list_for_each_entry_safe(chain, nc, &table->chains, list) {
+-		ctx.chain = chain;
+ 		nft_chain_del(chain);
+ 		nft_use_dec(&table->use);
+-		nf_tables_chain_destroy(&ctx);
++		nf_tables_chain_destroy(chain);
+ 	}
+ 	nf_tables_table_destroy(&ctx);
+ }
+diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
+index 6475c7abc1fe3..ac2422c215e54 100644
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -221,7 +221,7 @@ static void nft_immediate_destroy(const struct nft_ctx *ctx,
+ 			list_del(&rule->list);
+ 			nf_tables_rule_destroy(&chain_ctx, rule);
+ 		}
+-		nf_tables_chain_destroy(&chain_ctx);
++		nf_tables_chain_destroy(chain);
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.43.0
+
 
 
 
