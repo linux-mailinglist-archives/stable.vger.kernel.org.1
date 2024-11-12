@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-92276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8303E9C5354
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A709C9C55BB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1248C1F24010
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605101F221A1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32A82123D9;
-	Tue, 12 Nov 2024 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B59219CA4;
+	Tue, 12 Nov 2024 10:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu7tyf8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFyU1hzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32A21312A;
-	Tue, 12 Nov 2024 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5194F2141A4;
+	Tue, 12 Nov 2024 10:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407128; cv=none; b=FS2Sn9cUV3NRrxXYQ9fmJSOZoKbblf74wZsFOlGrpY6Ab070YZfl7astJrN6OaBJGey2PubnBU2IA2Lm/NYq86xJ4AlQPcWV0STtapV+sFjj/k2oumkBHpSUdAp3nRNVfduDY19EjSaY7dwSPM77CNYLkjWogb6Kx2iyk4P63iU=
+	t=1731408317; cv=none; b=r/60Jy3wFk1nFVwC50nBElHQkpkDM2zO99ZuNBRBEofaxY78ZLJOG57cvEKF2sAiVEe8FfSklzM5Wk0lVHgYviYmps/rTxhVAaDalmSQgIALC2uDcO96Y11t3BaFWK/qLgXw3D1tKr4LUuCf2AEt9OmM1KXNQY6NrU0OkoZfLa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407128; c=relaxed/simple;
-	bh=EBfbwbDt1IEtC9nXCsRQE5tjcgN/53M1gObIVVpgutU=;
+	s=arc-20240116; t=1731408317; c=relaxed/simple;
+	bh=IrYdpeEkbmiV6NN+eQv8avAraMLs0AQd18nIdSv7/lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7z57i3N0CfGtk1Ub+wKRKqwba/a+ShSj+1oY1mMaZRnfqUPVQfck2rWB9t0edWwXJvkNME+GzV+JVuIwKhLbqvwOr0Po1eNLhja63PWSgKsm5RGI6qK8TeEfu/gIJhP1KvVEZ890GmcjHt4wAGc8Te1wKuYCqe63fr5KKQ2INM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu7tyf8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C25C4CECD;
-	Tue, 12 Nov 2024 10:25:27 +0000 (UTC)
+	 MIME-Version; b=teoarMhUxDQFsdwdm91qHWxKbFo5pJ99HOG+SRBzl4Mc06jUA4aPHH7EoIbk42nlPqvzMiEovFG13O0Xd1Z2wGOGNe+vX+8GdcvdpPeQJ9+WTDvqlq8rF0vtKCemmRzxd1XGJPVY54qCTx2155gkJIAOsp7AVUNQapTJSEwmjMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFyU1hzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B436AC4CECD;
+	Tue, 12 Nov 2024 10:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407128;
-	bh=EBfbwbDt1IEtC9nXCsRQE5tjcgN/53M1gObIVVpgutU=;
+	s=korg; t=1731408317;
+	bh=IrYdpeEkbmiV6NN+eQv8avAraMLs0AQd18nIdSv7/lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iu7tyf8bhNgYE6IZLXOS0cCf+A2hsSNmCAoSZBJdNyoA4f8tJchF0slAl331RKHao
-	 7ni/JYiPNKeXGj0cvOlGu91hjT5OzAncBS3kK8aQjOjMXEC3MTOoJ9autMlsTCPoJr
-	 PjaB/nvQfOgaxKbp8QM4MsYQAWQrh46kaagANP7w=
+	b=aFyU1hzULJwEnDp1seLIAb18lRpmYg7awLFvOp8w/XWqKVbN1pQyReszb1KCRFcIE
+	 E+/dpCibsfDnlh8Z0F339f67MEtMLFR/QJ3STyyKk9Nqgjg/nE9BUoitS6ZWG6iWR2
+	 mb/ZM/+1Whsf/9uAnqxwEkTysVwSZdYVi2ivIbgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 5.15 57/76] ice: Add a per-VF limit on number of FDIR filters
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.11 124/184] nfs: Fix KMSAN warning in decode_getfattr_attrs()
 Date: Tue, 12 Nov 2024 11:21:22 +0100
-Message-ID: <20241112101841.952688018@linuxfoundation.org>
+Message-ID: <20241112101905.624750981@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,132 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit 6ebbe97a488179f5dc85f2f1e0c89b486e99ee97 upstream.
+commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
 
-While the iavf driver adds a s/w limit (128) on the number of FDIR
-filters that the VF can request, a malicious VF driver can request more
-than that and exhaust the resources for other VFs.
+Fix the following KMSAN warning:
 
-Add a similar limit in ice.
+CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
+Tainted: [B]=BAD_PAGE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+=====================================================
+=====================================================
+BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_generic+0x806/0xb00
+ nfs4_xdr_dec_getattr+0x1de/0x240
+ rpcauth_unwrap_resp_decode+0xab/0x100
+ rpcauth_unwrap_resp+0x95/0xc0
+ call_decode+0x4ff/0xb50
+ __rpc_execute+0x57b/0x19d0
+ rpc_execute+0x368/0x5e0
+ rpc_run_task+0xcfe/0xee0
+ nfs4_proc_getattr+0x5b5/0x990
+ __nfs_revalidate_inode+0x477/0xd00
+ nfs_access_get_cached+0x1021/0x1cc0
+ nfs_do_access+0x9f/0xae0
+ nfs_permission+0x1e4/0x8c0
+ inode_permission+0x356/0x6c0
+ link_path_walk+0x958/0x1330
+ path_lookupat+0xce/0x6b0
+ filename_lookup+0x23e/0x770
+ vfs_statx+0xe7/0x970
+ vfs_fstatat+0x1f2/0x2c0
+ __se_sys_newfstatat+0x67/0x880
+ __x64_sys_newfstatat+0xbd/0x120
+ x64_sys_call+0x1826/0x3cf0
+ do_syscall_64+0xd0/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-CC: stable@vger.kernel.org
-Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-[ Sherry: bp to fix CVE-2024-42291. Ignore context change in ice_fdir.h
-  to resolve conflicts.  ]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
+decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
+initialized.
+
+Fix the issue by initializing fattr->mdsthreshold to NULL in
+nfs_fattr_init().
+
+Cc: stable@vger.kernel.org # v3.5.x
+Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c  |    2 +-
- drivers/net/ethernet/intel/ice/ice_fdir.h          |    3 +++
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   16 ++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h |    1 +
- 4 files changed, 21 insertions(+), 1 deletion(-)
+ fs/nfs/inode.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -456,7 +456,7 @@ ice_parse_rx_flow_user_data(struct ethto
-  *
-  * Returns the number of available flow director filters to this VSI
-  */
--static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
- {
- 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
- 	u16 num_guar;
---- a/drivers/net/ethernet/intel/ice/ice_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
-@@ -201,6 +201,8 @@ struct ice_fdir_base_pkt {
- 	const u8 *tun_pkt;
- };
- 
-+struct ice_vsi;
-+
- enum ice_status ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
- enum ice_status ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
- enum ice_status
-@@ -214,6 +216,7 @@ enum ice_status
- ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
- 			  u8 *pkt, bool frag, bool tun);
- int ice_get_fdir_cnt_all(struct ice_hw *hw);
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
- bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
- bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
- struct ice_fdir_fltr *
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -744,6 +744,8 @@ static void ice_vc_fdir_reset_cnt_all(st
- 		fdir->fdir_fltr_cnt[flow][0] = 0;
- 		fdir->fdir_fltr_cnt[flow][1] = 0;
- 	}
-+
-+	fdir->fdir_fltr_cnt_total = 0;
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1656,6 +1656,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
+ 	fattr->gencount = nfs_inc_attr_generation_counter();
+ 	fattr->owner_name = NULL;
+ 	fattr->group_name = NULL;
++	fattr->mdsthreshold = NULL;
  }
+ EXPORT_SYMBOL_GPL(nfs_fattr_init);
  
- /**
-@@ -1837,6 +1839,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf
- 	resp->status = status;
- 	resp->flow_id = conf->flow_id;
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
-+	vf->fdir.fdir_fltr_cnt_total++;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -1901,6 +1904,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf
- 	resp->status = status;
- 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
-+	vf->fdir.fdir_fltr_cnt_total--;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -2065,6 +2069,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
- 	struct virtchnl_fdir_add *stat = NULL;
- 	struct virtchnl_fdir_fltr_conf *conf;
- 	enum virtchnl_status_code v_ret;
-+	struct ice_vsi *vf_vsi;
- 	struct device *dev;
- 	struct ice_pf *pf;
- 	int is_tun = 0;
-@@ -2073,6 +2078,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
- 
- 	pf = vf->pf;
- 	dev = ice_pf_to_dev(pf);
-+	vf_vsi = ice_get_vf_vsi(vf);
-+
-+#define ICE_VF_MAX_FDIR_FILTERS	128
-+	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
-+	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
-+			vf->vf_id);
-+		goto err_exit;
-+	}
-+
- 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
- 	if (ret) {
- 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-@@ -28,6 +28,7 @@ struct ice_vf_fdir_ctx {
- struct ice_vf_fdir {
- 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
- 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
-+	u16 fdir_fltr_cnt_total;
- 	struct ice_fd_hw_prof **fdir_prof;
- 
- 	struct idr fdir_rule_idr;
 
 
 
