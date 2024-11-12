@@ -1,167 +1,231 @@
-Return-Path: <stable+bounces-92854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8999C64C8
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8579C64F4
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 00:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5B5E2838DD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:04:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF42728480E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 23:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6C1531C4;
-	Tue, 12 Nov 2024 23:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D07021C16A;
+	Tue, 12 Nov 2024 23:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X8NBNGta"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="xnSYJeBm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127E205ABD
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 23:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076421B457;
+	Tue, 12 Nov 2024 23:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731452670; cv=none; b=aH1GFoVUHExP3TXvU5gR24J2NhqMMx23NtASn/ihfyvVQAqvlEk68bVb9AcaRowW4qZv3r9INbJydIoYFUV8CZqrnUTSjUA1ihHpbFU7ELTeU3L8fvjLvYG5oijRQp339kqlfHaHrpsEOgUmFBP1OCz2fmIKFyCF+sOt0oYRgXQ=
+	t=1731453137; cv=none; b=FedBYKSlBgWLll5CSr4NfROmCTwBlfQM0f68/srveJEwtT+jiHUrqpnU+VkUqcjcDzp5LVlyejDcypthW+Go6mzbHwlu5b8h8WzB5rETNYctTGIPImZaBSxds5oRGhEX18XLDMWqeZGmrivRDZnqZMztoG9xYfNDaGQPxX1fxu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731452670; c=relaxed/simple;
-	bh=M8QZHdkR0C/TG//Jvt6IIv8ZeuA/WUQAchDPKwDVZpI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DCajT3F6JaFZz/YqgMlnAxp8nmsvufCL436Hbtjy9wIMMcd8s3JGlac1Sy1qrth8BUpTZNoBIQgr8Hu/XBcl3HgGyVIXJ2aWuKxKoEUQdWs2yelZci35lvoeUiU7Y8hN/ZJPHvFthJ/1ktuScsqvuVBVThhI4bo2c4vRmS3dB50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X8NBNGta; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20ca4877690so26485ad.1
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:04:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731452668; x=1732057468; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oGcmcooZ3eXi2btPtJV6KWC5Ib7k9JOuUxsYyFpp28w=;
-        b=X8NBNGtap8j/pQDYpbgxQyYFoFhMz/9CYkXOhUIujbN6hM6mbFmElOLrmTj3SIwHoV
-         LAPuPHlti+K0DCcG4gpJ6H+fOXSEAYxnnfk/zUkmO+r5RfGu5x/0lFuNGOjhibh4I3HI
-         wJwlNM6z3kMSRXmCu70bvrZSmAR4B3xwVlJ2TLDTvdbi6KzT1wEOl/fap7EKKCkr5AfG
-         dlFbZmJpiXLa6qG8pw8fkvomtsX/ymApAwz4XFMtj4SHBgTDgOaMTzFYorPR8OrEQkna
-         1ufTNBR2SFyxF8z9tCciRB4z1AUixg1CdmRdwP+lMlnWUhKT9E2DE3esnQhBQg7SgxbL
-         h9zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731452668; x=1732057468;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oGcmcooZ3eXi2btPtJV6KWC5Ib7k9JOuUxsYyFpp28w=;
-        b=dvzG/gWJbPCPqitKuivuriPpPCyJOvBqDgC0mxpIeFed8w6DhoTQnM9INaqv6pcECs
-         onnoM44XUK6WaqdVqMRCL29v4vKRu1lNLjqHNcpOZA2eBLpdKeOCqOId6Nn92JZ7qBZz
-         6nLkDQNWhbPRJvdq+y3FU877qoEfsOAB5NjgzVl+HO2y5wliiGtBh9LesCdzRmJKWhv2
-         RH5K2iF/HUWA/3Dc9KDnxGIH/1g72CQ/IXAPp7Ul6IIl2msQu3ox0hDfNtEyBKlumCN0
-         uRp5w0rB6v7hZad/UgzNwEwFclfOTYXjGDO/7Z/lMZHU1ThmsMABOH9YFgH40MmOrGW1
-         xq+A==
-X-Gm-Message-State: AOJu0YwM8zLrobeRNzTn+d28M5Ae1MUUZBBRx8wb0hfsAhHfn459oj9q
-	G1m62oZPdwE7UzrpepaMV85IsuQyueJLPoDC+354lKToy2haissaCbo57bw5UyFsBxWVPlYmSjA
-	imy0H
-X-Gm-Gg: ASbGnctWMwoK7ordZeCykmJ5QE1egi1+fyCutGveCmAFp5i9EBtAWXztTLHoZc02Cfd
-	Jwtm8y9e3nGbqqEAr8MCXVs2jD7LxbchNP6quifHkQRB3uTC1uTzh5C/U/aDcoEYUYYn09DMKCB
-	pt8x3rseMJoNLPnCijZu/A9VLN34EdASBotnjx0PAQvSbfk2x0F5UYhcanCknXoOsZBwyxuf8W5
-	QMRiB98N0CBcDfBiThNKAlYGRq1uhINZPeUhwox
-X-Google-Smtp-Source: AGHT+IHOy09+IsPJGVNT6MLd6Ag2vBUkiSWhTo9lb9O6NU0vAC5+WyRM3S3Z/m5iZlqrTpgtb91ezw==
-X-Received: by 2002:a17:903:192:b0:20c:e8df:2500 with SMTP id d9443c01a7336-211b6ffbb98mr262825ad.3.1731452667677;
-        Tue, 12 Nov 2024 15:04:27 -0800 (PST)
-Received: from google.com ([2620:15c:2d3:205:d954:735:c86e:9b56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f41f5ea0d5sm11198004a12.47.2024.11.12.15.04.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 15:04:27 -0800 (PST)
-Date: Tue, 12 Nov 2024 15:04:22 -0800
-From: Peter Collingbourne <pcc@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH 5.4 462/462] mm: krealloc: Fix MTE false alarm in
- __do_krealloc
-Message-ID: <ZzPe9ossmfQP_s77@google.com>
-References: <20241106120331.497003148@linuxfoundation.org>
- <20241106120342.916487840@linuxfoundation.org>
+	s=arc-20240116; t=1731453137; c=relaxed/simple;
+	bh=pVXkJ5pXW/TAGK884JUjhObBcVb09TxXB22O2gyPvYs=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=J13Cj8KRE/5itKdVcwb5jlFX6lo6RmKLmV4wQ3dwulrfBXEFiKIjRrpkJp2dzgXwLtpex5/Ae8eE5uaqBiYwObtkYI9AFR3yrM2XwwFS4QUfZTqbYXN26A6ldcZohIFvwXNFMHeTeMy0HvkYnoFhjWYJHo6rdgew3xL3fzSCHV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=xnSYJeBm; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106120342.916487840@linuxfoundation.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1731453133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4I0/umEkHMESvC3qIgXCsO3xJ243mX0eXN3WO9pKnZc=;
+	b=xnSYJeBmZn9GNFWJYuF0tjise9MfXrpkwsPLs3TvfQ+DjC2NUcrnHmAtRassDigPEKc8Ff
+	p6ZGBtEAevz/3s2Hr8xzgFKODfT6Zhs1ya4NtpwjWffpqQmZeHeUS3n4pe3UbdqIm/E/Hu
+	UWuY+KdW0Z7ANcddxsnWQRzHA8ByEYwmb9grAkkJO4Z6W+3OQCF4ypt7/cjRd1q6N4FjV2
+	0Kl3NinqNQI7eHwEyMMCffZPgYi0ELRHwfs31s3Py5ArrKQxTEm82vEd9jr5YCPxV3wjvU
+	34UuIlxNGIYuEYsHPXn2wvtsaVK0gmo+aN4FK+n4ACfXMchLM911P3F4fX/qlg==
+Date: Wed, 13 Nov 2024 00:12:12 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: rockchip: Fix vdd_gpu voltage constraints on
+ PinePhone Pro
+In-Reply-To: <33f8430e-0adc-4060-afb5-2cc5c79c8dec@arm.com>
+References: <0718feb8e95344a0b615f61e6d909f6e105e3bf9.1731264205.git.dsimic@manjaro.org>
+ <607a731c-41e9-497a-a08c-f718339610ae@arm.com>
+ <fdf58f3e9fcb4c672a4bb114fbdab60d@manjaro.org>
+ <33f8430e-0adc-4060-afb5-2cc5c79c8dec@arm.com>
+Message-ID: <4ba2d58cf1da5b90930b630ba0978e2c@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On Wed, Nov 06, 2024 at 01:05:55PM +0100, Greg Kroah-Hartman wrote:
-> 5.4-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-> 
-> commit 704573851b51808b45dae2d62059d1d8189138a2 upstream.
-> 
-> This patch addresses an issue introduced by commit 1a83a716ec233 ("mm:
-> krealloc: consider spare memory for __GFP_ZERO") which causes MTE
-> (Memory Tagging Extension) to falsely report a slab-out-of-bounds error.
-> 
-> The problem occurs when zeroing out spare memory in __do_krealloc. The
-> original code only considered software-based KASAN and did not account
-> for MTE. It does not reset the KASAN tag before calling memset, leading
-> to a mismatch between the pointer tag and the memory tag, resulting
-> in a false positive.
-> 
-> Example of the error:
-> ==================================================================
-> swapper/0: BUG: KASAN: slab-out-of-bounds in __memset+0x84/0x188
-> swapper/0: Write at addr f4ffff8005f0fdf0 by task swapper/0/1
-> swapper/0: Pointer tag: [f4], memory tag: [fe]
-> swapper/0:
-> swapper/0: CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.
-> swapper/0: Hardware name: MT6991(ENG) (DT)
-> swapper/0: Call trace:
-> swapper/0:  dump_backtrace+0xfc/0x17c
-> swapper/0:  show_stack+0x18/0x28
-> swapper/0:  dump_stack_lvl+0x40/0xa0
-> swapper/0:  print_report+0x1b8/0x71c
-> swapper/0:  kasan_report+0xec/0x14c
-> swapper/0:  __do_kernel_fault+0x60/0x29c
-> swapper/0:  do_bad_area+0x30/0xdc
-> swapper/0:  do_tag_check_fault+0x20/0x34
-> swapper/0:  do_mem_abort+0x58/0x104
-> swapper/0:  el1_abort+0x3c/0x5c
-> swapper/0:  el1h_64_sync_handler+0x80/0xcc
-> swapper/0:  el1h_64_sync+0x68/0x6c
-> swapper/0:  __memset+0x84/0x188
-> swapper/0:  btf_populate_kfunc_set+0x280/0x3d8
-> swapper/0:  __register_btf_kfunc_id_set+0x43c/0x468
-> swapper/0:  register_btf_kfunc_id_set+0x48/0x60
-> swapper/0:  register_nf_nat_bpf+0x1c/0x40
-> swapper/0:  nf_nat_init+0xc0/0x128
-> swapper/0:  do_one_initcall+0x184/0x464
-> swapper/0:  do_initcall_level+0xdc/0x1b0
-> swapper/0:  do_initcalls+0x70/0xc0
-> swapper/0:  do_basic_setup+0x1c/0x28
-> swapper/0:  kernel_init_freeable+0x144/0x1b8
-> swapper/0:  kernel_init+0x20/0x1a8
-> swapper/0:  ret_from_fork+0x10/0x20
-> ==================================================================
-> 
-> Fixes: 1a83a716ec233 ("mm: krealloc: consider spare memory for __GFP_ZERO")
-> Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-> Acked-by: David Rientjes <rientjes@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  mm/slab_common.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hello Robin,
 
-Hi Greg,
+On 2024-11-12 19:51, Robin Murphy wrote:
+> On 12/11/2024 2:36 pm, Dragan Simic wrote:
+>> On 2024-11-12 15:19, Robin Murphy wrote:
+>>> On 10/11/2024 6:44 pm, Dragan Simic wrote:
+>>>> The regulator-{min,max}-microvolt values for the vdd_gpu regulator 
+>>>> in the
+>>>> PinePhone Pro device dts file are too restrictive, which prevents 
+>>>> the highest
+>>>> GPU OPP from being used, slowing the GPU down unnecessarily.  Let's 
+>>>> fix that
+>>>> by making the regulator-{min,max}-microvolt values less strict, 
+>>>> using the
+>>>> voltage range that the Silergy SYR838 chip used for the vdd_gpu 
+>>>> regulator is
+>>>> actually capable of producing. [1][2]
+>>> 
+>>> Specifying the absolute limits which the regulator driver necessarily
+>>> already knows doesn't seem particularly useful... Moreover, the 
+>>> RK3399
+>>> datasheet specifies the operating range for GPU_VDD as 0.80-1.20V, so
+>>> at the very least, allowing the regulator to go outside that range
+>>> seems inadvisable.
+>> 
+>> Indeed, which is why I already mentioned in the patch description
+>> that I do plan to update the constraints of all regulators to match
+>> the summary of the constraints of their consumers.  Though, I plan
+>> to do that later, as a separate directory-wide cleanup, for which
+>> I must find and allocate a substantial amount of time, to make sure
+>> there will be no mistakes.
+> 
+> Sure, but even if every other DT needs fixing, that still doesn't make
+> it a good idea to deliberately introduce the same mistake to *this* DT
+> and thus create even more work to fix it again. There's no value in
+> being consistently wrong over inconsistently wrong - if there's
+> justification for changing this DT at all, change it to be right.
 
-Can this be picked up for the other stable trees as well please? The
-patch that caused MTE false positives is in linux-5.10.y, linux-5.15.y,
-linux-6.1.y and linux-6.6.y but this fix is not. I checked that it
-applies cleanly to all of them.
+After thinking a bit more about it, I agree.  At least, setting the
+voltage regulator constraints according to the constraints of its
+consumer(s) in one place sets an example for what's to be done in
+the future for the other voltage regulators.
 
-Peter
+>>> However there's a separate datasheet for the
+>>> RK3399-T variant, which does specify this 875-975mV range and a
+>>> maximum GPU clock of 600MHz, along with the same 1.5GHz max.
+>>> Cortex-A72 clock as advertised for RK3399S, so it seems quite 
+>>> possible
+>>> that these GPU constraints here are in fact intentional as well.
+>>> Obviously users are free to overclock and overvolt if they wish - I 
+>>> do
+>>> for my actively-cooled RK3399 board :) - but it's a different matter
+>>> for mainline to force it upon them.
+>> 
+>> Well, maybe the RK3399S is the same in that regard as the RK3399-T,
+>> but maybe it actually isn't -- unfortunately, we don't have some
+>> official RK3399S datasheet that would provide us with the required
+>> information.  As another, somewhat unrelated example, we don't have
+>> some official documentation to tell us is the RK3399S supposed not
+>> to have working PCI Express interface, which officially isn't present
+>> in the RK3399-T variant.
+> 
+> Looking back at the original submission, v2 *was* proposing the
+> RK3399-T OPPs, with the GPU capped at 600MHz, and it was said that
+> those are what PPP *should* be using[*]. It seems there was a semantic
+> objection to having a separate rk3399-t-opp.dtsi at the time, and when
+> the main DTS was reworked for v3 the 800MHz GPU OPP seems to have been
+> overlooked. However, since rk3399-t.dtsi does now exist anyway, it
+> would seem more logical to just use that instead of including
+> rk3399.dtsi and then overriding it to be pretty much equivalent to the
+> T variant anyway.
+
+Ah, I see, thanks for pointing this out.  With this in mind, I think
+that the RK3399S is actually just the RK3399-T binned specifically
+for lower leakage values and, as a result, lower power consumption.
+I've already assumed so, but this reaffirms it.
+
+Actually, there's now also the rk3399-s.dtsi, [**] in which I just
+spotted a rather small, non-critical mistake that I made, for which
+I'll send a separate patch later.
+
+Anyway, the rk3399-t.dtsi, originally known as rk3399-t-opp.dtsi and
+added in the commit 9176ba910ba0 (arm64: dts: rockchip: Add RK3399-T
+OPP table, 2022-09-02) specifies a bit higher voltages for the OPPs
+than those found in the rk3399-s.dtsi, which fits well together with
+the above-described assumption that the RK3399S is actually just the
+RK3399-T specifically binned for lower leakage values...
+
+... which also means that the RK3399S's GPU is supposed to run at
+the GPU OPPs _below_ 800 MHz, just like the RK3399-T, but at slightly
+lower voltages specified in the rk3399-s.dtsi.
+
+Let me dig out that Rockchip Android dtb for the PinePhone Pro that
+I mentioned already, to provide the last piece of evidence, and I'll
+come back with the v2 of this patch.
+
+[*] 
+https://lore.kernel.org/linux-rockchip/CAN1fySWVVTeGHAD=_hFH+ZdcR_AEiBc0wqes9Y4VRzB=zcdvSw@mail.gmail.com/
+[**] 
+https://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git/commit/?h=for-next&id=f7f8ec7d8cef4cf62ee13b526d59438c23bbb34f
+
+>> However, I fully agree that forcing any kind of an overclock is not
+>> what we want to do.  Thus, I'll do my best, as I already noted in this
+>> thread, to extract the dtb from the "reference" Android build that
+>> Rockchip itself provided for the RK3399S-based PinePhone Pro.  That's
+>> closest to the official documentation for the RK3399S variant that we
+>> can get our hands on.
+>> 
+>>>> This also eliminates the following error messages from the kernel 
+>>>> log:
+>>>> 
+>>>>    core: _opp_supported_by_regulators: OPP minuV: 1100000 maxuV: 
+>>>> 1150000, not supported by regulator
+>>>>    panfrost ff9a0000.gpu: _opp_add: OPP not supported by regulators 
+>>>> (800000000)
+>>>> 
+>>>> These changes to the regulator-{min,max}-microvolt values make the 
+>>>> PinePhone
+>>>> Pro device dts consistent with the dts files for other Rockchip 
+>>>> RK3399-based
+>>>> boards and devices.  It's possible to be more strict here, by 
+>>>> specifying the
+>>>> regulator-{min,max}-microvolt values that don't go outside of what 
+>>>> the GPU
+>>>> actually may use, as the consumer of the vdd_gpu regulator, but 
+>>>> those changes
+>>>> are left for a later directory-wide regulator cleanup.
+>>>> 
+>>>> [1] 
+>>>> https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
+>>>> [2] 
+>>>> https://www.t-firefly.com/download/Firefly-RK3399/docs/Chip%20Specifications/DC-DC_SYR837_838.pdf
+>>>> 
+>>>> Fixes: 78a21c7d5952 ("arm64: dts: rockchip: Add initial support for 
+>>>> Pine64 PinePhone Pro")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+>>>> ---
+>>>>   arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 4 ++--
+>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>> 
+>>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts 
+>>>> b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>>> index 1a44582a49fb..956d64f5b271 100644
+>>>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>>> @@ -410,8 +410,8 @@ vdd_gpu: regulator@41 {
+>>>>           pinctrl-names = "default";
+>>>>           pinctrl-0 = <&vsel2_pin>;
+>>>>           regulator-name = "vdd_gpu";
+>>>> -        regulator-min-microvolt = <875000>;
+>>>> -        regulator-max-microvolt = <975000>;
+>>>> +        regulator-min-microvolt = <712500>;
+>>>> +        regulator-max-microvolt = <1500000>;
+>>>>           regulator-ramp-delay = <1000>;
+>>>>           regulator-always-on;
+>>>>           regulator-boot-on;
 
