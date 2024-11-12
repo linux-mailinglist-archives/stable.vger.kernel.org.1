@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-92234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A969C55B0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5183D9C5595
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 125EDB26DD1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 127C128F10D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFD22123D6;
-	Tue, 12 Nov 2024 10:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3712185B3;
+	Tue, 12 Nov 2024 10:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzSgSbMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5i+RLVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A54210184;
-	Tue, 12 Nov 2024 10:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7F321312A;
+	Tue, 12 Nov 2024 10:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406987; cv=none; b=VP1tDIFmcc8NXEIoFrGt4n8XXBfW95VOjky6JZ2f4DnNfJqg6+2alC9E5qKIs8j5hvBinFGBHTWiTUksfiUGRQJBdu/3a8ytgw4304SNnMFprlmlewz249JMuxpBXA9TIh+m2qtHbWltL8lOFQFwh5Bb3UcBf+LVms3vkXH0eXg=
+	t=1731408180; cv=none; b=stlTVlyLiBqQ0DjkI7qkBR+1QXuFrWKoKstuBIV8NqzI8bHMRRelmeBeL4znJ2niAnq7FMtqsi9dKq3VsoUV3dRnNQdH/p5RjPlBHnbLCOXFO1DHa94nYwe8V0ZzfDOR9Ildk4Hsa1u2itrZVyZMdUt9uG7UkDarWmj3CanyRuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406987; c=relaxed/simple;
-	bh=CMfq7SW5dsLqWt0mjoT1k96hfe1/eg0N5I6cXqbxrco=;
+	s=arc-20240116; t=1731408180; c=relaxed/simple;
+	bh=gjPp3pwbweBpSmLGasau3o1OO0c9mrlMXYh7jeQgd38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b43OEOFL39OPaN5mG7lI825LoIh+mTDVPFniyX1leD+PM21s5H5XyROr9KpcmSTIL+jiX5aU9WzIqjSG/b5pr6Riqjf0DpMu3Wi7t7TFUWg3wXLMNjU6ZiqemeFVLfIj4Vh91bb/DsNwNRfH8U1UMvKomIiHnsJZ1+nN9WQGu/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzSgSbMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD47C4CECD;
-	Tue, 12 Nov 2024 10:23:06 +0000 (UTC)
+	 MIME-Version; b=tWuH4cx8ttqUU73NnOKd3xKYpyD60PzWjYlKJdr57InXFtyaWNMfXFYoKQyikpeTjositcCNlCvL+MnRByTCZveo+R9NKK9/78n766KGn2yn2tbcxHqNP8oC66AVfFLA8gLjWh5OsRVdjBKJ0ZymTElcN1EGE9KAH/e8Muh9RJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5i+RLVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B2CC4CED4;
+	Tue, 12 Nov 2024 10:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406986;
-	bh=CMfq7SW5dsLqWt0mjoT1k96hfe1/eg0N5I6cXqbxrco=;
+	s=korg; t=1731408179;
+	bh=gjPp3pwbweBpSmLGasau3o1OO0c9mrlMXYh7jeQgd38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzSgSbMtgCOxyJs1asRhDTtu9mS5IdHL8I72ZiHOl+BkqQxzijPwqHn7rXHNTa/Zz
-	 aZEXz0bj2vOPHHT+V1MyCeEaBmsuKjhTZjsYQkbr5nHaGYeVeiYnaKPGR6qEQQzMv2
-	 ZYygOknBp2T/z/hCJ+y12I7ElUquzUwqrQyp3fKo=
+	b=q5i+RLVzzUiC5mC9RAK5AkWbyAkju/q9yhRVtVIzaK5LDAUMnkzW37r6K/0Qk/Pfh
+	 G0mK4cfcR0u220s6aWZuR6mUd+En/3+xUutM/5Ckhy/IU5N/eOnNO9HzQ5Oh/QPeyi
+	 ggRV3ZQscNyqBYdrYEKJSNHIxY8Ol6rJ1RKYehpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 17/76] net: enetc: set MAC address to the VF net_device
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.11 084/184] media: v4l2-ctrls-api: fix error handling for v4l2_g_ctrl()
 Date: Tue, 12 Nov 2024 11:20:42 +0100
-Message-ID: <20241112101840.438861381@linuxfoundation.org>
+Message-ID: <20241112101904.083340827@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit badccd49b93bb945bf4e5cc8707db67cdc5e27e5 ]
+commit 4c76f331a9a173ac8fe1297a9231c2a38f88e368 upstream.
 
-The MAC address of VF can be configured through the mailbox mechanism of
-ENETC, but the previous implementation forgot to set the MAC address in
-net_device, resulting in the SMAC of the sent frames still being the old
-MAC address. Since the MAC address in the hardware has been changed, Rx
-cannot receive frames with the DMAC address as the new MAC address. The
-most obvious phenomenon is that after changing the MAC address, we can
-see that the MAC address of eno0vf0 has not changed through the "ifconfig
-eno0vf0" command and the IP address cannot be obtained .
+As detected by Coverity, the error check logic at get_ctrl() is
+broken: if ptr_to_user() fails to fill a control due to an error,
+no errors are returned and v4l2_g_ctrl() returns success on a
+failed operation, which may cause applications to fail.
 
-root@ls1028ardb:~# ifconfig eno0vf0 down
-root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
-root@ls1028ardb:~# ifconfig eno0vf0
-eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
-        RX packets 794  bytes 69239 (69.2 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 11  bytes 2226 (2.2 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+Add an error check at get_ctrl() and ensure that it will
+be returned to userspace without filling the control value if
+get_ctrl() fails.
 
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20241029090406.841836-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 71c689dc2e73 ("media: v4l2-ctrls: split up into four source files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-ctrls-api.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-index acd4a3167ed6a..88dfcebf2b873 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	struct sockaddr *saddr = addr;
-+	int err;
- 
- 	if (!is_valid_ether_addr(saddr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
--	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	if (err)
-+		return err;
+--- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
+@@ -753,9 +753,10 @@ static int get_ctrl(struct v4l2_ctrl *ct
+ 		for (i = 0; i < master->ncontrols; i++)
+ 			cur_to_new(master->cluster[i]);
+ 		ret = call_op(master, g_volatile_ctrl);
+-		new_to_user(c, ctrl);
++		if (!ret)
++			ret = new_to_user(c, ctrl);
+ 	} else {
+-		cur_to_user(c, ctrl);
++		ret = cur_to_user(c, ctrl);
+ 	}
+ 	v4l2_ctrl_unlock(master);
+ 	return ret;
+@@ -770,7 +771,10 @@ int v4l2_g_ctrl(struct v4l2_ctrl_handler
+ 	if (!ctrl || !ctrl->is_int)
+ 		return -EINVAL;
+ 	ret = get_ctrl(ctrl, &c);
+-	control->value = c.value;
 +
-+	eth_hw_addr_set(ndev, saddr->sa_data);
++	if (!ret)
++		control->value = c.value;
 +
-+	return 0;
+ 	return ret;
  }
+ EXPORT_SYMBOL(v4l2_g_ctrl);
+@@ -811,10 +815,11 @@ static int set_ctrl_lock(struct v4l2_fh
+ 	int ret;
  
- static int enetc_vf_set_features(struct net_device *ndev,
--- 
-2.43.0
-
+ 	v4l2_ctrl_lock(ctrl);
+-	user_to_new(c, ctrl);
+-	ret = set_ctrl(fh, ctrl, 0);
++	ret = user_to_new(c, ctrl);
++	if (!ret)
++		ret = set_ctrl(fh, ctrl, 0);
+ 	if (!ret)
+-		cur_to_user(c, ctrl);
++		ret = cur_to_user(c, ctrl);
+ 	v4l2_ctrl_unlock(ctrl);
+ 	return ret;
+ }
 
 
 
