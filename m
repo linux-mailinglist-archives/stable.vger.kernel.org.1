@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E399C53FF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A789C5396
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E605C2840EB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCB051F2277F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B29212194;
-	Tue, 12 Nov 2024 10:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218242139A7;
+	Tue, 12 Nov 2024 10:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veIYlb1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFk8UafQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B6319E992;
-	Tue, 12 Nov 2024 10:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D207B20D4E3;
+	Tue, 12 Nov 2024 10:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407660; cv=none; b=jL/e4kY0LBk3TJg2Jvw6RLdLR8BG+vcVOzW6vMWhwrgh3U+oLV0ZgyPsgtWhW+9uO74WsoIJv2QORG/gdx0fei8DeRcXgQqX1ktRTbaaBC4wKxWIn4rtaogxio8sWdmwBaBMmPWYq7N0UwnfrGcZwfF4NKFQA1DrTEVUGv21eLQ=
+	t=1731407307; cv=none; b=dTfydJs+0Cb7JQBOSE5dpa0JgTUgACRC9hRSKzcORNJctBMKLCG0ui7FszhjBN13mC362JckD+uWiEt2kdvRGWnwTQceZYS4F9s8ch9mqf2MTymVQebmOqMgNpiY4FUt3CDUzOjfUONdILMHll5/MPJSBBhDTO/Rxyw6ODTadRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407660; c=relaxed/simple;
-	bh=1VAJVRNvcm1TVFb3xwnI9kuYOvvOBzyZBqr56JMOyiw=;
+	s=arc-20240116; t=1731407307; c=relaxed/simple;
+	bh=x5iR/z0YbX0yFxFsl6eNX0toyyusggsmOtn5EFGGHhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTRWdgm7uiuXmP0qgwVSDTE/oYyrHaVJt9Fd4U00SzKwcZ+P/3vXZcRFJ9Gy8SmFCJfJD4O6PP2cuitUuoteNyp63agoex6EImKQ+PmSAJU/hd/Ke6/JdmhFksZMdgRwV1xlZI584tuuRgx2wLdZhc0XldJMsWX9LlP9BSUVFuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veIYlb1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9EAC4CED6;
-	Tue, 12 Nov 2024 10:34:19 +0000 (UTC)
+	 MIME-Version; b=anvVP4Ce6iQaGPcG2SI53HW9TjCxlreGJZT3Ywz2lZx75gLSZ2qgs0YbL0MKfXhPm3omyxUM97pFBzSn8daCCv6fp+uwzdRSozkOk/LSkwWWU/IxZlGuDau2kEYMncrfkELma0xhiEveeBW34W7glJw8HWzaSoqyG80eoWxJnXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFk8UafQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4046DC4CECD;
+	Tue, 12 Nov 2024 10:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407660;
-	bh=1VAJVRNvcm1TVFb3xwnI9kuYOvvOBzyZBqr56JMOyiw=;
+	s=korg; t=1731407307;
+	bh=x5iR/z0YbX0yFxFsl6eNX0toyyusggsmOtn5EFGGHhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veIYlb1m3IY6avHnNbNhnuNrxxkh1c1xYFakvy3zhZZySYRIPPlz7BA7c3DfqRbH0
-	 lbKkM6qqD1OHnXIZFuTCeH/ZiFhLyp3IbuOjV1KZajwBQj9qt0vb0do7P7RmAlBV+9
-	 hQyYyIEPoZCqbnr5oNnc6+R8yojCXHEyhYoPNRlU=
+	b=LFk8UafQqHfTI5+WSgA2KRPT7vYhpsvQlC0JdVpJV/QyZASSMVv/2bSL7tTLpbv44
+	 ACKjTVLE7fq/GMKsuZe+oTg7nQzbaT8A9GeHw667IpJXrVP1fKbZZHFDyxIRb5EIZF
+	 VeBoIjlU5JEdj3pvbdMBKHEqhwTfptDJVBScKfIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/119] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+Subject: [PATCH 6.1 36/98] media: dvbdev: prevent the risk of out of memory access
 Date: Tue, 12 Nov 2024 11:20:51 +0100
-Message-ID: <20241112101850.363778734@linuxfoundation.org>
+Message-ID: <20241112101845.648386785@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd ]
+[ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
 
-It would be better to not store nft_ctx inside nft_trans object,
-the netlink ctx strucutre is huge and most of its information is
-never needed in places that use trans->ctx.
+The dvbdev contains a static variable used to store dvb minors.
 
-Avoid/reduce its usage if possible, no runtime behaviour change
-intended.
+The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
+or not. When not set, dvb_register_device() won't check for
+boundaries, as it will rely that a previous call to
+dvb_register_adapter() would already be enforcing it.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
+On a similar way, dvb_device_open() uses the assumption
+that the register functions already did the needed checks.
+
+This can be fragile if some device ends using different
+calls. This also generate warnings on static check analysers
+like Coverity.
+
+So, add explicit guards to prevent potential risk of OOM issues.
+
+Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 +-
- net/netfilter/nf_tables_api.c     | 17 ++++++++---------
- net/netfilter/nft_immediate.c     |  2 +-
- 3 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index af62804b27ec7..b5f9ee5810a34 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1157,7 +1157,7 @@ static inline bool nft_chain_is_bound(struct nft_chain *chain)
- 
- int nft_chain_add(struct nft_table *table, struct nft_chain *chain);
- void nft_chain_del(struct nft_chain *chain);
--void nf_tables_chain_destroy(struct nft_ctx *ctx);
-+void nf_tables_chain_destroy(struct nft_chain *chain);
- 
- struct nft_stats {
- 	u64			bytes;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index aacb0d7f82e9f..eff94dcb49090 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2068,9 +2068,9 @@ static void nf_tables_chain_free_chain_rules(struct nft_chain *chain)
- 	kvfree(chain->blob_next);
- }
- 
--void nf_tables_chain_destroy(struct nft_ctx *ctx)
-+void nf_tables_chain_destroy(struct nft_chain *chain)
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 04b7ce479fc38..d1212acb70932 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -86,10 +86,15 @@ static DECLARE_RWSEM(minor_rwsem);
+ static int dvb_device_open(struct inode *inode, struct file *file)
  {
--	struct nft_chain *chain = ctx->chain;
-+	const struct nft_table *table = chain->table;
- 	struct nft_hook *hook, *next;
+ 	struct dvb_device *dvbdev;
++	unsigned int minor = iminor(inode);
++
++	if (minor >= MAX_DVB_MINORS)
++		return -ENODEV;
  
- 	if (WARN_ON(chain->use > 0))
-@@ -2082,7 +2082,7 @@ void nf_tables_chain_destroy(struct nft_ctx *ctx)
- 	if (nft_is_base_chain(chain)) {
- 		struct nft_base_chain *basechain = nft_base_chain(chain);
+ 	mutex_lock(&dvbdev_mutex);
+ 	down_read(&minor_rwsem);
+-	dvbdev = dvb_minors[iminor(inode)];
++
++	dvbdev = dvb_minors[minor];
  
--		if (nft_base_chain_netdev(ctx->family, basechain->ops.hooknum)) {
-+		if (nft_base_chain_netdev(table->family, basechain->ops.hooknum)) {
- 			list_for_each_entry_safe(hook, next,
- 						 &basechain->hook_list, list) {
- 				list_del_rcu(&hook->list);
-@@ -2571,7 +2571,7 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
- err_trans:
- 	nft_use_dec_restore(&table->use);
- err_destroy_chain:
--	nf_tables_chain_destroy(ctx);
-+	nf_tables_chain_destroy(chain);
- 
- 	return err;
- }
-@@ -9415,7 +9415,7 @@ static void nft_commit_release(struct nft_trans *trans)
- 		if (nft_trans_chain_update(trans))
- 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
- 		else
--			nf_tables_chain_destroy(&trans->ctx);
-+			nf_tables_chain_destroy(nft_trans_chain(trans));
- 		break;
- 	case NFT_MSG_DELRULE:
- 	case NFT_MSG_DESTROYRULE:
-@@ -10406,7 +10406,7 @@ static void nf_tables_abort_release(struct nft_trans *trans)
- 		if (nft_trans_chain_update(trans))
- 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
- 		else
--			nf_tables_chain_destroy(&trans->ctx);
-+			nf_tables_chain_destroy(nft_trans_chain(trans));
- 		break;
- 	case NFT_MSG_NEWRULE:
- 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
-@@ -11144,7 +11144,7 @@ int __nft_release_basechain(struct nft_ctx *ctx)
+ 	if (dvbdev && dvbdev->fops) {
+ 		int err = 0;
+@@ -529,7 +534,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+ 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
+ 		if (dvb_minors[minor] == NULL)
+ 			break;
+-	if (minor == MAX_DVB_MINORS) {
++	if (minor >= MAX_DVB_MINORS) {
+ 		if (new_node) {
+ 			list_del (&new_node->list_head);
+ 			kfree(dvbdevfops);
+@@ -544,6 +549,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
  	}
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
--	nf_tables_chain_destroy(ctx);
-+	nf_tables_chain_destroy(ctx->chain);
- 
- 	return 0;
- }
-@@ -11219,10 +11219,9 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
- 		nft_obj_destroy(&ctx, obj);
- 	}
- 	list_for_each_entry_safe(chain, nc, &table->chains, list) {
--		ctx.chain = chain;
- 		nft_chain_del(chain);
- 		nft_use_dec(&table->use);
--		nf_tables_chain_destroy(&ctx);
-+		nf_tables_chain_destroy(chain);
- 	}
- 	nf_tables_table_destroy(&ctx);
- }
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 6475c7abc1fe3..ac2422c215e54 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -221,7 +221,7 @@ static void nft_immediate_destroy(const struct nft_ctx *ctx,
- 			list_del(&rule->list);
- 			nf_tables_rule_destroy(&chain_ctx, rule);
- 		}
--		nf_tables_chain_destroy(&chain_ctx);
-+		nf_tables_chain_destroy(chain);
- 		break;
- 	default:
- 		break;
+ #else
+ 	minor = nums2minor(adap->num, type, id);
++	if (minor >= MAX_DVB_MINORS) {
++		dvb_media_device_free(dvbdev);
++		list_del(&dvbdev->list_head);
++		kfree(dvbdev);
++		*pdvbdev = NULL;
++		mutex_unlock(&dvbdev_register_lock);
++		return ret;
++	}
+ #endif
+ 	dvbdev->minor = minor;
+ 	dvb_minors[minor] = dvb_device_get(dvbdev);
 -- 
 2.43.0
 
