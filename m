@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBD39C5687
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:30:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A97C9C5680
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 142DDB2D3D8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F85FB358AC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76363214423;
-	Tue, 12 Nov 2024 10:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5981F2141A2;
+	Tue, 12 Nov 2024 10:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t3zrWbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPl5bpT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328E3213144;
-	Tue, 12 Nov 2024 10:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17218213EFC;
+	Tue, 12 Nov 2024 10:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408286; cv=none; b=YJm7oPxnZ3B+oJ4C1QGzc6aGdDOlzQ5foHGr0MjhPU3jd+GxC1I40gVkXkOT8hj0CRZJ1s4SfS+HiN2AfhjL7WfUNuJRJCgcNleHki+uePAxIn5l50T4g47mt9/zUG/uiO/hA41k4f8nksJkA95zcq28RgY/FhPZi7odvmUj8uY=
+	t=1731407380; cv=none; b=A8lB+mCuG2P/KTAV5UehbHg7QQe2UQ21pCEZ0gX4ViyIlyvM45oWkw2AcWWqZ0zckXeojNonLj/SnCq4w2JrCcwM1y0rke7dRxLzqlAqpbvVJuvulRRzbZ43B2MIleRntERmFOjKn2jc88bnNy8iP157crhyp2BwxCtmbpZmuaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408286; c=relaxed/simple;
-	bh=ni2bWzybE32OW5GvA5O69HZngaD/5pK946aqq2ecyTc=;
+	s=arc-20240116; t=1731407380; c=relaxed/simple;
+	bh=+Fjx6AAawz1MbfoM2z6/aJrlxi4u9xrSWj5FaB/ksB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spUalnQW8b1tO/ODvyompIa53+NJCFEvijX46Y3eqv9MtjIn86nunGvHboSNv6pUqPp8/1Bals6WGD7lxZRasNhSv6usuw2ZbuPZQdQngToZxPO6FY45/hAbtFQKRuJATL0MrZsCxw7nTBh/vwQE36bioWNEC6XnoMeXKvJl+OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t3zrWbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94651C4CED4;
-	Tue, 12 Nov 2024 10:44:45 +0000 (UTC)
+	 MIME-Version; b=Ec+aC5xFjvQHV7OcTaa/jeMgQX6Skf8RMaC7CTO1XPOfN3FzpxMcUxyZHMWMa+yZ9x6/PNF6jc2KdBeays1yjEowRVhSOsunnqmA23nY0TYaHj67k5Pz+FhO+5ZzsXXPgjLKm4AFRS6N+pKdP92+89mH0DnlVXSSycTV4ugQYVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPl5bpT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84209C4CECD;
+	Tue, 12 Nov 2024 10:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408286;
-	bh=ni2bWzybE32OW5GvA5O69HZngaD/5pK946aqq2ecyTc=;
+	s=korg; t=1731407380;
+	bh=+Fjx6AAawz1MbfoM2z6/aJrlxi4u9xrSWj5FaB/ksB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0t3zrWbp0Hn0hDmRkvm+OPEKrvTFirZsioiePWiKTZ0heDmIuR8hwxHuDZ70y2Nn0
-	 xyuMYdp95cjljXo7scaQ4s4C4+837TPzBzajbXqX5ZYJiln0LgOut4jMc/KwKma8r0
-	 VO3NVp25m4QTzdguR44KDwHSe5NnkxedHJI6cguM=
+	b=pPl5bpT3FWsXDaWu9QEbO8AT6g3PPC7e/FfTdOacJNRxPTY1B4IiFmJ62vDKIXX6q
+	 x2uP5QF6fXXItqOg3mR1y809eoM4LUY18WWNaR3OU1YXQ5tCzDr26snPsO0PjMTQ9E
+	 WlgqF92w4HiUSxiJXdhABK06QtZihTtoI2cO4diA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.11 116/184] dm cache: fix out-of-bounds access to the dirty bitset when resizing
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.1 59/98] thermal/drivers/qcom/lmh: Remove false lockdep backtrace
 Date: Tue, 12 Nov 2024 11:21:14 +0100
-Message-ID: <20241112101905.321552018@linuxfoundation.org>
+Message-ID: <20241112101846.513662974@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 792227719725497ce10a8039803bec13f89f8910 upstream.
+commit f16beaaee248eaa37ad40b5905924fcf70ae02e3 upstream.
 
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access.
+Annotate LMH IRQs with lockdep classes so that the lockdep doesn't
+report possible recursive locking issue between LMH and GIC interrupts.
 
-Reproduce steps:
+For the reference:
 
-1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+       CPU0
+       ----
+  lock(&irq_desc_lock_class);
+  lock(&irq_desc_lock_class);
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+ *** DEADLOCK ***
 
-2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
-   access to the dirty bitset (offset 0x80)
+Call trace:
+ dump_backtrace+0x98/0xf0
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x90/0xd0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x258/0x348
+ __lock_acquire+0x1078/0x1f44
+ lock_acquire+0x1fc/0x32c
+ _raw_spin_lock_irqsave+0x60/0x88
+ __irq_get_desc_lock+0x58/0x98
+ enable_irq+0x38/0xa0
+ lmh_enable_interrupt+0x2c/0x38
+ irq_enable+0x40/0x8c
+ __irq_startup+0x78/0xa4
+ irq_startup+0x78/0x168
+ __enable_irq+0x70/0x7c
+ enable_irq+0x4c/0xa0
+ qcom_cpufreq_ready+0x20/0x2c
+ cpufreq_online+0x2a8/0x988
+ cpufreq_add_dev+0x80/0x98
+ subsys_interface_register+0x104/0x134
+ cpufreq_register_driver+0x150/0x234
+ qcom_cpufreq_hw_driver_probe+0x2a8/0x388
+ platform_probe+0x68/0xc0
+ really_probe+0xbc/0x298
+ __driver_probe_device+0x78/0x12c
+ driver_probe_device+0x3c/0x160
+ __device_attach_driver+0xb8/0x138
+ bus_for_each_drv+0x84/0xe0
+ __device_attach+0x9c/0x188
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0xac/0xb0
+ deferred_probe_work_func+0x8c/0xc8
+ process_one_work+0x20c/0x62c
+ worker_thread+0x1bc/0x36c
+ kthread+0x120/0x124
+ ret_from_fork+0x10/0x20
 
-dmsetup suspend cache
-dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
-  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc900000f3000, ffffc900000f5000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                     ^
-   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by making the index post-incremented.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241011-lmh-lockdep-v1-1-495cbbe6fef1@linaro.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/qcom/lmh.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2912,13 +2912,13 @@ static bool can_resize(struct cache *cac
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
- 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
--		new_size = to_cblock(from_cblock(new_size) + 1);
- 		if (is_dirty(cache, new_size)) {
- 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
- 			      cache_device_name(cache),
- 			      (unsigned long long) from_cblock(new_size));
- 			return false;
- 		}
-+		new_size = to_cblock(from_cblock(new_size) + 1);
- 	}
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -73,7 +73,14 @@ static struct irq_chip lmh_irq_chip = {
+ static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
+ {
+ 	struct lmh_hw_data *lmh_data = d->host_data;
++	static struct lock_class_key lmh_lock_key;
++	static struct lock_class_key lmh_request_key;
  
- 	return true;
++	/*
++	 * This lock class tells lockdep that GPIO irqs are in a different
++	 * category than their parents, so it won't report false recursion.
++	 */
++	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
+ 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
+ 	irq_set_chip_data(irq, lmh_data);
+ 
 
 
 
