@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-92427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB6E9C53F3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65A99C5594
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C681F22DC7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B88928F100
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B378212F03;
-	Tue, 12 Nov 2024 10:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E232185B9;
+	Tue, 12 Nov 2024 10:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFTKMXZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdamLtB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095082141AC;
-	Tue, 12 Nov 2024 10:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5121213EE5;
+	Tue, 12 Nov 2024 10:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407626; cv=none; b=Ltso4gpDbAStD7TO4npdXKg0lnIJXNR7P37TtgpUAGO2NqhTGPXkHa3B9HGsdJ4220CcZwgl3HGwtrV20Nly/mmVHvjx7/zUoOfCVqHONf4awCF8qubfXaoT6v+0ixmz7ecIXeRbT2mqRIEmFCp4kJzTWscwN9iMfBXhdJ/iJng=
+	t=1731408176; cv=none; b=aXiZskCVsDmJc+SVtNs34OMCMUKdCm5/YDkumGHYbxvBZdQXuRHnZRx+SPBvPfpBuEp7FynNaSVz6MlOnG38bcinFY5qaVF73x9L3LoG/nNUFT/sy3BWBGQfu66LLZ++Dw4wIHsqvm+zvHLjJvh2RWDq/bNiAwNyzO5bGg77lf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407626; c=relaxed/simple;
-	bh=cWuwgj3Tq3k4aTNNQveMQ2OUBF8rqDE8MfQdwUl4uU4=;
+	s=arc-20240116; t=1731408176; c=relaxed/simple;
+	bh=74fiWBkEqX8twxGcdq9X/k9jLlxZHXLgsR+U2KAvUsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0s3pCpOKJt2UatIbt+KsHAH4+NBoYlpVD4ejdAiN1ekRcblpVsUMmTYkE8qWyq7x6dyNFKoyLzJaC8imMAgl2JE15x3V1mk9fqtGETiYnDf/9lGdmHpf3HdjUA5JCBTxAdnfTUAaYbixfeMiqeZquJLgBmEzov8Io1gz/7DG2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFTKMXZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C603C4CED8;
-	Tue, 12 Nov 2024 10:33:44 +0000 (UTC)
+	 MIME-Version; b=Hoa593j9jW74PO8uFlC1P5xnc+AoZEDKKvDQwGwrH8wFjV2KcFsAiBuiy/zdaaWYpGGKojYCirgV9GhCpCu2KwDpLnQ+xcv20uplPJci5nds/0d6YC0GHsQPEr2+gh7fAL21kI5MDq0RZzk+hmL11HWCnqphKrBW/IbvhGHqtZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdamLtB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3C6C4CED4;
+	Tue, 12 Nov 2024 10:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407625;
-	bh=cWuwgj3Tq3k4aTNNQveMQ2OUBF8rqDE8MfQdwUl4uU4=;
+	s=korg; t=1731408176;
+	bh=74fiWBkEqX8twxGcdq9X/k9jLlxZHXLgsR+U2KAvUsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QFTKMXZ6xs8lRN8LEZ9/efEOMxkyp89Cd95964LcZTSsvveyx8tQiIAiB1tdRpU2s
-	 qyaPqZaeLUaBbIvKcs7KVyhg464jmE6k3NbDQSdEDdteVqiqkL15nBCizkAXijlqiy
-	 1McqQjrvFxUy/Wy2274ItNrZTnKbewOaRaBgg/pc=
+	b=ZdamLtB9iouqJwyPRZXuCHvdekrYUa4T9cgKVy2bcAES0SkMODmJ0W+c9faEtb1Wp
+	 L3VsRiPLvJJkAujjjR96iq9kWTO1Vo2hVpmdT2eDvewTcXf6fb4pf5VEcVy9u4Htxs
+	 dmI0+518ngxlniAp4sbc4ldOt/P/OefAOP2xIOsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/119] sctp: properly validate chunk size in sctp_sf_ootb()
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.11 083/184] media: v4l2-tpg: prevent the risk of a division by zero
 Date: Tue, 12 Nov 2024 11:20:41 +0100
-Message-ID: <20241112101849.978273515@linuxfoundation.org>
+Message-ID: <20241112101904.044493059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 0ead60804b64f5bd6999eec88e503c6a1a242d41 ]
+commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
 
-A size validation fix similar to that in Commit 50619dbf8db7 ("sctp: add
-size validation when walking chunks") is also required in sctp_sf_ootb()
-to address a crash reported by syzbot:
+As reported by Coverity, the logic at tpg_precalculate_line()
+blindly rescales the buffer even when scaled_witdh is equal to
+zero. If this ever happens, this will cause a division by zero.
 
-  BUG: KMSAN: uninit-value in sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
-  sctp_sf_ootb+0x7f5/0xce0 net/sctp/sm_statefuns.c:3712
-  sctp_do_sm+0x181/0x93d0 net/sctp/sm_sideeffect.c:1166
-  sctp_endpoint_bh_rcv+0xc38/0xf90 net/sctp/endpointola.c:407
-  sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
-  sctp_rcv+0x3831/0x3b20 net/sctp/input.c:243
-  sctp4_rcv+0x42/0x50 net/sctp/protocol.c:1159
-  ip_protocol_deliver_rcu+0xb51/0x13d0 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+Instead, add a WARN_ON_ONCE() to trigger such cases and return
+without doing any precalculation.
 
-Reported-by: syzbot+f0cbb34d39392f2746ca@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/a29ebb6d8b9f8affd0f9abb296faafafe10c17d8.1730223981.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 3649a4e1eb9de..808863e047e0c 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -3750,7 +3750,7 @@ enum sctp_disposition sctp_sf_ootb(struct net *net,
- 		}
+--- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
++++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
+@@ -1795,6 +1795,9 @@ static void tpg_precalculate_line(struct
+ 	unsigned p;
+ 	unsigned x;
  
- 		ch = (struct sctp_chunkhdr *)ch_end;
--	} while (ch_end < skb_tail_pointer(skb));
-+	} while (ch_end + sizeof(*ch) < skb_tail_pointer(skb));
- 
- 	if (ootb_shut_ack)
- 		return sctp_sf_shut_8_4_5(net, ep, asoc, type, arg, commands);
--- 
-2.43.0
-
++	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
++		return;
++
+ 	switch (tpg->pattern) {
+ 	case TPG_PAT_GREEN:
+ 		contrast = TPG_COLOR_100_RED;
 
 
 
