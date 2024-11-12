@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D1D9C5398
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907989C55A5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE35328436B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430711F2228C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A637F2139BF;
-	Tue, 12 Nov 2024 10:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290BC218D8C;
+	Tue, 12 Nov 2024 10:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVp5p2hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU8IxZd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DB220D4E3;
-	Tue, 12 Nov 2024 10:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A221441B;
+	Tue, 12 Nov 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407314; cv=none; b=K9MFwtjN22wGtW3rasROGheMUnVTi+G/2l1CfRpBg/KCqhCLtgd3p1SbIJnYWcKDQ2gk10HBBnnyCyp6geBZvzg9XerhrgN7235PRRaqZzWsfp8uTaT8MbWWzKg3ViqU+0p/zQ1sQR0gr/WrhQ7sbr5vif+zYtfQjDtm91DvfYg=
+	t=1731408239; cv=none; b=uKGJ0nQBms0GNoSTtVQJMDDgZ1JD2UjMGIuINipLZSFutkmoBhzqyRdT9FDGtOGYfruhxbWlS1jvaI5h0esEIBvgoWiVbDNuRn5oGdmV+B8Pmv6F/V0GCksQ2g3Mt86D9J116zTrqLfGemp29246ad8p97XAEfYKj22FovySXiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407314; c=relaxed/simple;
-	bh=5XWWtCIdaN4NO2m2JwiMZTwSIjXhCPrNcqlzJMipU4I=;
+	s=arc-20240116; t=1731408239; c=relaxed/simple;
+	bh=1ZwTyRQ+QBLe8Q5kIBh57pnq8ZDJSfz7XAY2utMFv6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDQ6p0K3tR6EnVOC4PoPmh5ryzt5zbL8O1t9guZJuGFA6KwAVvne/5cT6mJ8E9aixx22KvKeU5y8i38E2Xtzop1/hdNNTFkjrdBlcFJq4+kU0X0odl92o4DeVVpurZWuIpztON5h9B9Ow9RXQutW/50LLnbbaxwFdBHFCmUNjC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVp5p2hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C804BC4CECD;
-	Tue, 12 Nov 2024 10:28:33 +0000 (UTC)
+	 MIME-Version; b=Wp/DUArUkaDL+ClG/oNixYEb+v+H4vmQmKj4eriPDBKR+Er6qntGpHStVb2KZc4MPF88xtMW+RhWUbO1GbDFwFr78HxxvUtdfT0NndnSHCGHWLRwh4FkbFXDPRvRjmwe//VE0P7BDuCXX4QHbMQGRrRPPto7/dFG6hcsDyxeA30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU8IxZd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E9AC4CECD;
+	Tue, 12 Nov 2024 10:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407314;
-	bh=5XWWtCIdaN4NO2m2JwiMZTwSIjXhCPrNcqlzJMipU4I=;
+	s=korg; t=1731408239;
+	bh=1ZwTyRQ+QBLe8Q5kIBh57pnq8ZDJSfz7XAY2utMFv6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVp5p2hvVd1p+4tSZ/TmqPh0eIE/sOWr27T0rkTUVHc1QzEQVs+xfcTEr46aaSoYB
-	 a460kmM/bo+uFc0tN+TrmpmQvLE/QfmW9vW3YSBO/5o6YiE05Zo95hRyRu4p6nfeje
-	 OdU48ix2FarboY1+l42M4EFvSDQjB9dUn5QlsZsg=
+	b=KU8IxZd28IRFhzB8M+gLs+xgTgK9mG9L1haJYmnq3sqKEvMJ24UpmMWR92JqYgybp
+	 3ndzplFrCXGN9Xs8i/sHFl1IDB+zmwd0z1JPHJ11ykP1YoFu0ifH0nTzJyvwy08OLZ
+	 1bwALPth+OaCWGGYuLpWUMYr18G9i2u7vOp92D8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/98] media: dvb_frontend: dont play tricks with underflow values
-Date: Tue, 12 Nov 2024 11:20:52 +0100
-Message-ID: <20241112101845.686589658@linuxfoundation.org>
+	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 095/184] drm/xe: Set mask bits for CCS_MODE register
+Date: Tue, 12 Nov 2024 11:20:53 +0100
+Message-ID: <20241112101904.505016779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 
-[ Upstream commit 9883a4d41aba7612644e9bb807b971247cea9b9d ]
+commit 7fd3fa006fa56c0ec299c61ecf5c572c723adad5 upstream.
 
-fepriv->auto_sub_step is unsigned. Setting it to -1 is just a
-trick to avoid calling continue, as reported by Coverity.
+CCS_MODE register requires setting mask bits from Xe2+ platforms. Set
+the mask bits unconditionally, as those bits are unused for older
+platforms.
 
-It relies to have this code just afterwards:
-
-	if (!ready) fepriv->auto_sub_step++;
-
-Simplify the code by simply setting it to zero and use
-continue to return to the while loop.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Cc: stable@vger.kernel.org # v6.11+
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008073628.377433-2-balasubramani.vivekanandan@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 23ea2c7572d4735ef66beb1e4feb8ae510b78247)
+[ Fix conflict with mmio refactors ]
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h |    2 +-
+ drivers/gpu/drm/xe/xe_gt_ccs_mode.c  |    6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index a1a3dbb0e7388..a997cffbc8ea2 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -443,8 +443,8 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
- 
- 		default:
- 			fepriv->auto_step++;
--			fepriv->auto_sub_step = -1; /* it'll be incremented to 0 in a moment */
--			break;
-+			fepriv->auto_sub_step = 0;
-+			continue;
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -509,7 +509,7 @@
+  *   [4-6]     RSVD
+  *   [7]       Disabled
+  */
+-#define CCS_MODE				XE_REG(0x14804)
++#define CCS_MODE				XE_REG(0x14804, XE_REG_OPTION_MASKED)
+ #define   CCS_MODE_CSLICE_0_3_MASK		REG_GENMASK(11, 0) /* 3 bits per cslice */
+ #define   CCS_MODE_CSLICE_MASK			0x7 /* CCS0-3 + rsvd */
+ #define   CCS_MODE_CSLICE_WIDTH			ilog2(CCS_MODE_CSLICE_MASK + 1)
+--- a/drivers/gpu/drm/xe/xe_gt_ccs_mode.c
++++ b/drivers/gpu/drm/xe/xe_gt_ccs_mode.c
+@@ -68,6 +68,12 @@ static void __xe_gt_apply_ccs_mode(struc
  		}
+ 	}
  
- 		if (!ready) fepriv->auto_sub_step++;
--- 
-2.43.0
-
++	/*
++	 * Mask bits need to be set for the register. Though only Xe2+
++	 * platforms require setting of mask bits, it won't harm for older
++	 * platforms as these bits are unused there.
++	 */
++	mode |= CCS_MODE_CSLICE_0_3_MASK << 16;
+ 	xe_mmio_write32(gt, CCS_MODE, mode);
+ 
+ 	xe_gt_dbg(gt, "CCS_MODE=%x config:%08x, num_engines:%d, num_slices:%d\n",
 
 
 
