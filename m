@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F2C9C5320
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:23:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF83F9C53DF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D5F1F264B4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AED58281D75
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994CC20ADFC;
-	Tue, 12 Nov 2024 10:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978E0213EDC;
+	Tue, 12 Nov 2024 10:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywL3QPG+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUi2G5zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B27920E31D;
-	Tue, 12 Nov 2024 10:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5701E1CBE8F;
+	Tue, 12 Nov 2024 10:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406960; cv=none; b=ZyPJTMHVo1b47YMfEJnNtZTqjjvJInO1nTbChnnomdv0S8P6y0FZ9+u5EuCKe27msaq3YxVUhKeTIii7TXlgk5DiLmXNEYUEq3scFnsSWzWfrQeqZMTj8qrKb6Xy4juUMkmbjwzQ88mb97xvJ8e1qZo59xyk/Wa1juakGDvreg8=
+	t=1731407579; cv=none; b=iVr3bjOZ/lishYQ+skbZWOFYd7GMfXP7STCsftX0iK4b5RGbe5+R36gxQVXE1a8T2eeppMpp7sIlD9HdMIOm7vdC6mngRFgemqpgPGc0eFFFGmYWgvmXMc0pnIiIj3Zh5Pyi1lN/twkCS1WducZC7lItr05+2pV/2jtUohoL1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406960; c=relaxed/simple;
-	bh=gTHukjRadpnVYoLy2t/k84b8EgfMtG+Nv7lEPlMDXTw=;
+	s=arc-20240116; t=1731407579; c=relaxed/simple;
+	bh=2zERLNs6/s20NDqnn5ujHdYqMJlDLkAGZtmOSoSjqEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DooxOid3Ln/C48nuavMjmzw9xdf9E6TxY1vRMUXno4jM5Pi5MENQ9XjcTc9uu2iw+2D9LGJqyvGSoT/GDqdQPpCIlOaZnldrjqzDcYMIBGJQQ71EUg/9prFJ4myyH3B/Ty4GZi2KAB1rEzWwGn8qkDxHQg5gZRnbmPubhhiEDPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywL3QPG+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D5EC4CECD;
-	Tue, 12 Nov 2024 10:22:39 +0000 (UTC)
+	 MIME-Version; b=RaPZ/GTfuWgEM2ryvdmkUR3nWPC429NN9QLkKhvRZRpZTKDeBizid2FaQmDMsP2u2TV1zzKYh4E+Q6+9aMDB1brTaVzWJCk76QbTx0UAQpRTqkPO5UorTI8aGsJK5YHlDNYwdLY0rgTNeqNHae4rERJDPh9sH4vq2EM8+k6Xd6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUi2G5zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FEFC4CED4;
+	Tue, 12 Nov 2024 10:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406959;
-	bh=gTHukjRadpnVYoLy2t/k84b8EgfMtG+Nv7lEPlMDXTw=;
+	s=korg; t=1731407579;
+	bh=2zERLNs6/s20NDqnn5ujHdYqMJlDLkAGZtmOSoSjqEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywL3QPG+JwjB2Q/VW0H0DECWm7Lor5CK3A/lMgCATRyGaipIl6RhNJYjxigmfMz+r
-	 1lsgeJS+GQbGUvJqjw/wXhTX3sy13kqot80L91IOk8R/JCvl8eH8GlpGf7WjCTwzXv
-	 XnyPdzxwjYoCbuFqR+y5MwqZV9qAgQY4cVz/1eXk=
+	b=GUi2G5zpB5KKOc8NUCwnHPU6NYoNScqItR4KAulJpXOLBWdmJqm373LMAz8cvAGUU
+	 FLMlFzZ+63jC0NZu0wLqEMtjRLmcbKytADDHtsj5Rmhyilco8WTmZQMvs/rOFa3UQe
+	 hOQ22+bZOz/wA/JJBJ0ioAj4iJ6ucvhuu1Wl9Owc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/76] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
-Date: Tue, 12 Nov 2024 11:20:26 +0100
-Message-ID: <20241112101839.837975127@linuxfoundation.org>
+Subject: [PATCH 6.6 019/119] ARM: dts: rockchip: fix rk3036 acodec node
+Date: Tue, 12 Nov 2024 11:20:27 +0100
+Message-ID: <20241112101849.448009254@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 577b5761679da90e691acc939ebbe7879fff5f31 ]
+[ Upstream commit c7206853cd7d31c52575fb1dc7616b4398f3bc8f ]
 
-There are no DT bindings and driver support for a "rockchip,rt5651"
-codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
-"simple-audio-card,name" property in the "rt5651-sound" node.
+The acodec node is not conformant to the binding.
 
-Fixes: 0a3c78e251b3a266 ("arm64: dts: rockchip: Add support for rk3399 excavator main board")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/abc6c89811b3911785601d6d590483eacb145102.1727358193.git.geert+renesas@glider.be
+Set the correct nodename, use the correct compatible, add the needed
+#sound-dai-cells and sort the rockchip,grf below clocks properties
+as expected.
+
+Fixes: faea098e1808 ("ARM: dts: rockchip: add core rk3036 dtsi")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-12-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/rockchip/rk3036.dtsi | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-index f6b2199a42bda..3b168da34617b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-@@ -163,7 +163,7 @@
- 	status = "okay";
+diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+index c420c7c642cb0..e6bb1d7a2b4ec 100644
+--- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+@@ -382,12 +382,13 @@
+ 		};
+ 	};
  
- 	rt5651: rt5651@1a {
--		compatible = "rockchip,rt5651";
-+		compatible = "realtek,rt5651";
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_I2S_8CH_OUT>;
- 		clock-names = "mclk";
+-	acodec: acodec-ana@20030000 {
+-		compatible = "rk3036-codec";
++	acodec: audio-codec@20030000 {
++		compatible = "rockchip,rk3036-codec";
+ 		reg = <0x20030000 0x4000>;
+-		rockchip,grf = <&grf>;
+ 		clock-names = "acodec_pclk";
+ 		clocks = <&cru PCLK_ACODEC>;
++		rockchip,grf = <&grf>;
++		#sound-dai-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
 -- 
 2.43.0
 
