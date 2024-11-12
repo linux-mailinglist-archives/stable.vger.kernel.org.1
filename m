@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8723F9C56FA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:50:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B620B9C5364
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50C42B2FB13
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47BB41F2399C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A287221A4D6;
-	Tue, 12 Nov 2024 10:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249312139DA;
+	Tue, 12 Nov 2024 10:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="we2N/nlB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2D3HMaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5418121B42A;
-	Tue, 12 Nov 2024 10:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D419121262C;
+	Tue, 12 Nov 2024 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408458; cv=none; b=uNGUtXKZ0ay5Bh1VSbIqFI2nRayww7XsYjdnhi32HLjSvmuKvdlmWUxrmdIxi1XUG/GbseEjdmMxA4/1JsJlE+5vCbRBzf3LCnfw1GxUzOS5Oe0Ow0UEnIlZiApRp4I2/ldY5Qhu0Pk7ZFeA2C4WTSxj6twYy2L2QKUwv/Me/GM=
+	t=1731407167; cv=none; b=IvuwvFQ04qut092aiUYbdWuBNsZ1BqGiLEg5f1Ga6z07oNVytr6SbnjrtRrJTGVdKc+SHQtNvEIDhvnLWmrwxDCNdnCCQ/wcDUMlXRSO2nS3EQJ3BN+YwyARSPzAW+jkMxbWfVKb5daY8yNRw2tTnnndCWTu9SdzM2TsoAdKPi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408458; c=relaxed/simple;
-	bh=KyWRJ+xoBBxjoS0iJpVpF4KF/o2a1C8Pz8PFItadu1Y=;
+	s=arc-20240116; t=1731407167; c=relaxed/simple;
+	bh=ypxDzIjP+b5/L7GHN7n7vhjOB65dCPV6tMhXCZobass=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eajpxtSZu2wcxFdFI/4NBj1yPgdmAR9OTVc/Fc99q+5rUdyFnc0kMPT+pWj0cP/SVggVgIl2Jk0hFNOvfKN1P9ygvzF6BOY7G2qMfnJKQZy5PxRcAovDCdxSCWY9X+3eAIGet2IWbUbOhHbcAAJvpbE7kgzwhCoX4phf9WqYVAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=we2N/nlB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9ABC4CECD;
-	Tue, 12 Nov 2024 10:47:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FvtmXMxod+VK993o4orVRK4yBrCJaEM/Xjs/fTjzhrMPNyAJ3XEcIaTf2mfLy/4tlu3mewV7vGGBRepQUJTmrAoJsZuXJGNWHqhuTQh0TljFUxpyBl59bD4B4WeqlsgWdNnzKCYUo8+hE4aSIxps4cceeGI8USlJMAquiQ6FY8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2D3HMaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B81C4CECD;
+	Tue, 12 Nov 2024 10:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408457;
-	bh=KyWRJ+xoBBxjoS0iJpVpF4KF/o2a1C8Pz8PFItadu1Y=;
+	s=korg; t=1731407167;
+	bh=ypxDzIjP+b5/L7GHN7n7vhjOB65dCPV6tMhXCZobass=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=we2N/nlB++FxhlPnaSdmxb+4cy6PxRar+FheVpY0DjiLPwpm+CIHXzSCGBS04Lbvv
-	 MMUEqui6VtI8sBq98dj3ykmbpIeCYN6dL6ZY3RzFJnQ3qlEMGJByXxXahXqTadxl4+
-	 /vdnV8Xo3FQAQWwHCYBIDxnPDwMkxjbPdhudcTYQ=
+	b=r2D3HMaJ3aIYaoK8q0AsQ6HnPy4yofGMql0+JVFOZRdcKRYgRn4fhOb0C5Yo37mwO
+	 h9XGv56K5uYHkk+tprTODLjIpR+KPSlYmCtVrzG/G1EZnzvGSBt4sHzSDjruuGeTr3
+	 SvpNYoTOyUrWr7knFtf3VcQGiRDJM+sRNGoBVKh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 137/184] btrfs: fix per-subvolume RO/RW flags with new mount API
-Date: Tue, 12 Nov 2024 11:21:35 +0100
-Message-ID: <20241112101906.129488553@linuxfoundation.org>
+	=?UTF-8?q?Jan=20Sch=C3=A4r?= <jan@jschaer.ch>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 71/76] ALSA: usb-audio: Support jack detection on Dell dock
+Date: Tue, 12 Nov 2024 11:21:36 +0100
+Message-ID: <20241112101842.483292527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,124 +60,238 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jan Schär <jan@jschaer.ch>
 
-commit cda7163d4e3d99db93aa38f0e825b8433c7a8452 upstream.
+[ Upstream commit 4b8ea38fabab45ad911a32a336416062553dfe9c ]
 
-[BUG]
-With util-linux 2.40.2, the 'mount' utility is already utilizing the new
-mount API. e.g:
+The Dell WD15 dock has a headset and a line out port. Add support for
+detecting if a jack is inserted into one of these ports.
+For the headset jack, additionally determine if a mic is present.
 
-  # strace  mount -o subvol=subv1,ro /dev/test/scratch1 /mnt/test/
-  ...
-  fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/mapper/test-scratch1", 0) = 0
-  fsconfig(3, FSCONFIG_SET_STRING, "subvol", "subv1", 0) = 0
-  fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0
-  fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = 0
-  fsmount(3, FSMOUNT_CLOEXEC, 0)          = 4
-  mount_setattr(4, "", AT_EMPTY_PATH, {attr_set=MOUNT_ATTR_RDONLY, attr_clr=0, propagation=0 /* MS_??? */, userns_fd=0}, 32) = 0
-  move_mount(4, "", AT_FDCWD, "/mnt/test", MOVE_MOUNT_F_EMPTY_PATH) = 0
+The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
+from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
+detection. Instead, jack detection works by sending HD Audio commands over
+vendor-type USB messages.
 
-But this leads to a new problem, that per-subvolume RO/RW mount no
-longer works, if the initial mount is RO:
+I found out how it works by looking at USB captures on Windows.
+The audio codec is very similar to the one supported by
+sound/soc/codecs/rt298.c / rt298.h, some constant names and the mic
+detection are adapted from there. The realtek_add_jack function is adapted
+from build_connector_control in sound/usb/mixer.c.
 
-  # mount -o subvol=subv1,ro /dev/test/scratch1 /mnt/test
-  # mount -o rw,subvol=subv2 /dev/test/scratch1  /mnt/scratch
-  # mount | grep mnt
-  /dev/mapper/test-scratch1 on /mnt/test type btrfs (ro,relatime,discard=async,space_cache=v2,subvolid=256,subvol=/subv1)
-  /dev/mapper/test-scratch1 on /mnt/scratch type btrfs (ro,relatime,discard=async,space_cache=v2,subvolid=257,subvol=/subv2)
-  # touch /mnt/scratch/foobar
-  touch: cannot touch '/mnt/scratch/foobar': Read-only file system
+I tested this on a WD15 dock with the latest firmware.
 
-This is a common use cases on distros.
-
-[CAUSE]
-We have a workaround for remount to handle the RO->RW change, but if the
-mount is using the new mount API, we do not do that, and rely on the
-mount tool NOT to set the ro flag.
-
-But that's not how the mount tool is doing for the new API:
-
-  fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/mapper/test-scratch1", 0) = 0
-  fsconfig(3, FSCONFIG_SET_STRING, "subvol", "subv1", 0) = 0
-  fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0       <<<< Setting RO flag for super block
-  fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = 0
-  fsmount(3, FSMOUNT_CLOEXEC, 0)          = 4
-  mount_setattr(4, "", AT_EMPTY_PATH, {attr_set=MOUNT_ATTR_RDONLY, attr_clr=0, propagation=0 /* MS_??? */, userns_fd=0}, 32) = 0
-  move_mount(4, "", AT_FDCWD, "/mnt/test", MOVE_MOUNT_F_EMPTY_PATH) = 0
-
-This means we will set the super block RO at the first mount.
-
-Later RW mount will not try to reconfigure the fs to RW because the
-mount tool is already using the new API.
-
-This totally breaks the per-subvolume RO/RW mount behavior.
-
-[FIX]
-Do not skip the reconfiguration even if using the new API.  The old
-comments are just expecting any mount tool to properly skip the RO flag
-set even if we specify "ro", which is not the reality.
-
-Update the comments regarding the backward compatibility on the kernel
-level so it works with old and new mount utilities.
-
-CC: stable@vger.kernel.org # 6.8+
-Fixes: f044b318675f ("btrfs: handle the ro->rw transition for mounting different subvolumes")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jan Schär <jan@jschaer.ch>
+Link: https://lore.kernel.org/r/20220627171855.42338-1-jan@jschaer.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 4413665dd6c5 ("ALSA: usb-audio: Add quirks for Dell WD19 dock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |   25 +++++--------------------
- 1 file changed, 5 insertions(+), 20 deletions(-)
+ sound/usb/mixer_quirks.c | 167 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 167 insertions(+)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1979,25 +1979,10 @@ error:
-  *     fsconfig(FSCONFIG_SET_FLAG, "ro"). This option is seen by the filesystem
-  *     in fc->sb_flags.
-  *
-- * This disambiguation has rather positive consequences.  Mounting a subvolume
-- * ro will not also turn the superblock ro. Only the mount for the subvolume
-- * will become ro.
-- *
-- * So, if the superblock creation request comes from the new mount API the
-- * caller must have explicitly done:
-- *
-- *      fsconfig(FSCONFIG_SET_FLAG, "ro")
-- *      fsmount/mount_setattr(MOUNT_ATTR_RDONLY)
-- *
-- * IOW, at some point the caller must have explicitly turned the whole
-- * superblock ro and we shouldn't just undo it like we did for the old mount
-- * API. In any case, it lets us avoid the hack in the new mount API.
-- *
-- * Consequently, the remounting hack must only be used for requests originating
-- * from the old mount API and should be marked for full deprecation so it can be
-- * turned off in a couple of years.
-- *
-- * The new mount API has no reason to support this hack.
-+ * But, currently the util-linux mount command already utilizes the new mount
-+ * API and is still setting fsconfig(FSCONFIG_SET_FLAG, "ro") no matter if it's
-+ * btrfs or not, setting the whole super block RO.  To make per-subvolume mounting
-+ * work with different options work we need to keep backward compatibility.
-  */
- static struct vfsmount *btrfs_reconfigure_for_mount(struct fs_context *fc)
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 9d58f8d20f6a5..25bad7a791d7a 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -24,6 +24,7 @@
+ #include <sound/asoundef.h>
+ #include <sound/core.h>
+ #include <sound/control.h>
++#include <sound/hda_verbs.h>
+ #include <sound/hwdep.h>
+ #include <sound/info.h>
+ #include <sound/tlv.h>
+@@ -1934,6 +1935,169 @@ static int snd_soundblaster_e1_switch_create(struct usb_mixer_interface *mixer)
+ 					  NULL);
+ }
+ 
++/*
++ * Dell WD15 dock jack detection
++ *
++ * The WD15 contains an ALC4020 USB audio controller and ALC3263 audio codec
++ * from Realtek. It is a UAC 1 device, and UAC 1 does not support jack
++ * detection. Instead, jack detection works by sending HD Audio commands over
++ * vendor-type USB messages.
++ */
++
++#define HDA_VERB_CMD(V, N, D) (((N) << 20) | ((V) << 8) | (D))
++
++#define REALTEK_HDA_VALUE 0x0038
++
++#define REALTEK_HDA_SET		62
++#define REALTEK_HDA_GET_OUT	88
++#define REALTEK_HDA_GET_IN	89
++
++#define REALTEK_LINE1			0x1a
++#define REALTEK_VENDOR_REGISTERS	0x20
++#define REALTEK_HP_OUT			0x21
++
++#define REALTEK_CBJ_CTRL2 0x50
++
++#define REALTEK_JACK_INTERRUPT_NODE 5
++
++#define REALTEK_MIC_FLAG 0x100
++
++static int realtek_hda_set(struct snd_usb_audio *chip, u32 cmd)
++{
++	struct usb_device *dev = chip->dev;
++	u32 buf = cpu_to_be32(cmd);
++
++	return snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_SET,
++			       USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
++			       REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
++}
++
++static int realtek_hda_get(struct snd_usb_audio *chip, u32 cmd, u32 *value)
++{
++	struct usb_device *dev = chip->dev;
++	int err;
++	u32 buf = cpu_to_be32(cmd);
++
++	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), REALTEK_HDA_GET_OUT,
++			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_OUT,
++			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
++	if (err < 0)
++		return err;
++	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), REALTEK_HDA_GET_IN,
++			      USB_RECIP_DEVICE | USB_TYPE_VENDOR | USB_DIR_IN,
++			      REALTEK_HDA_VALUE, 0, &buf, sizeof(buf));
++	if (err < 0)
++		return err;
++
++	*value = be32_to_cpu(buf);
++	return 0;
++}
++
++static int realtek_ctl_connector_get(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	struct usb_mixer_elem_info *cval = kcontrol->private_data;
++	struct snd_usb_audio *chip = cval->head.mixer->chip;
++	u32 pv = kcontrol->private_value;
++	u32 node_id = pv & 0xff;
++	u32 sense;
++	u32 cbj_ctrl2;
++	bool presence;
++	int err;
++
++	err = snd_usb_lock_shutdown(chip);
++	if (err < 0)
++		return err;
++	err = realtek_hda_get(chip,
++			      HDA_VERB_CMD(AC_VERB_GET_PIN_SENSE, node_id, 0),
++			      &sense);
++	if (err < 0)
++		goto err;
++	if (pv & REALTEK_MIC_FLAG) {
++		err = realtek_hda_set(chip,
++				      HDA_VERB_CMD(AC_VERB_SET_COEF_INDEX,
++						   REALTEK_VENDOR_REGISTERS,
++						   REALTEK_CBJ_CTRL2));
++		if (err < 0)
++			goto err;
++		err = realtek_hda_get(chip,
++				      HDA_VERB_CMD(AC_VERB_GET_PROC_COEF,
++						   REALTEK_VENDOR_REGISTERS, 0),
++				      &cbj_ctrl2);
++		if (err < 0)
++			goto err;
++	}
++err:
++	snd_usb_unlock_shutdown(chip);
++	if (err < 0)
++		return err;
++
++	presence = sense & AC_PINSENSE_PRESENCE;
++	if (pv & REALTEK_MIC_FLAG)
++		presence = presence && (cbj_ctrl2 & 0x0070) == 0x0070;
++	ucontrol->value.integer.value[0] = presence;
++	return 0;
++}
++
++static const struct snd_kcontrol_new realtek_connector_ctl_ro = {
++	.iface = SNDRV_CTL_ELEM_IFACE_CARD,
++	.name = "", /* will be filled later manually */
++	.access = SNDRV_CTL_ELEM_ACCESS_READ,
++	.info = snd_ctl_boolean_mono_info,
++	.get = realtek_ctl_connector_get,
++};
++
++static int realtek_resume_jack(struct usb_mixer_elem_list *list)
++{
++	snd_ctl_notify(list->mixer->chip->card, SNDRV_CTL_EVENT_MASK_VALUE,
++		       &list->kctl->id);
++	return 0;
++}
++
++static int realtek_add_jack(struct usb_mixer_interface *mixer,
++			    char *name, u32 val)
++{
++	struct usb_mixer_elem_info *cval;
++	struct snd_kcontrol *kctl;
++
++	cval = kzalloc(sizeof(*cval), GFP_KERNEL);
++	if (!cval)
++		return -ENOMEM;
++	snd_usb_mixer_elem_init_std(&cval->head, mixer,
++				    REALTEK_JACK_INTERRUPT_NODE);
++	cval->head.resume = realtek_resume_jack;
++	cval->val_type = USB_MIXER_BOOLEAN;
++	cval->channels = 1;
++	cval->min = 0;
++	cval->max = 1;
++	kctl = snd_ctl_new1(&realtek_connector_ctl_ro, cval);
++	if (!kctl) {
++		kfree(cval);
++		return -ENOMEM;
++	}
++	kctl->private_value = val;
++	strscpy(kctl->id.name, name, sizeof(kctl->id.name));
++	kctl->private_free = snd_usb_mixer_elem_free;
++	return snd_usb_mixer_add_control(&cval->head, kctl);
++}
++
++static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
++{
++	int err;
++
++	err = realtek_add_jack(mixer, "Line Out Jack", REALTEK_LINE1);
++	if (err < 0)
++		return err;
++	err = realtek_add_jack(mixer, "Headphone Jack", REALTEK_HP_OUT);
++	if (err < 0)
++		return err;
++	err = realtek_add_jack(mixer, "Headset Mic Jack",
++			       REALTEK_HP_OUT | REALTEK_MIC_FLAG);
++	if (err < 0)
++		return err;
++	return 0;
++}
++
+ static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
  {
-@@ -2019,7 +2004,7 @@ static struct vfsmount *btrfs_reconfigur
- 	if (IS_ERR(mnt))
- 		return mnt;
+ 	u16 buf = 0;
+@@ -3272,6 +3436,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 		err = snd_soundblaster_e1_switch_create(mixer);
+ 		break;
+ 	case USB_ID(0x0bda, 0x4014): /* Dell WD15 dock */
++		err = dell_dock_mixer_create(mixer);
++		if (err < 0)
++			break;
+ 		err = dell_dock_mixer_init(mixer);
+ 		break;
  
--	if (!fc->oldapi || !ro2rw)
-+	if (!ro2rw)
- 		return mnt;
- 
- 	/* We need to convert to rw, call reconfigure. */
+-- 
+2.43.0
+
 
 
 
