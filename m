@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0199C5454
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6E99C5694
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD64283ADC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:40:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19279B35B2C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504712178FE;
-	Tue, 12 Nov 2024 10:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551F221441B;
+	Tue, 12 Nov 2024 10:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E79LpM7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dpgSmZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1F22141CF;
-	Tue, 12 Nov 2024 10:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067F3214415;
+	Tue, 12 Nov 2024 10:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407777; cv=none; b=QpUL6bXj87GS9ZpD9nn8dNwyvAOryEa1oJXUQMVCFpRZg7CVrNvmxKFBkyvAhUJbdO/07+zef+pG1UA6PrZndgo+rIvwKpusboSHDff+9SmPDK331HsyuC3059jwRLKdtBIVIUjvpDefBAsbFhIxQUe/DY/kh99MNqnf9LuST6g=
+	t=1731407430; cv=none; b=K84KyPEcdEiCRffamPZyKksGCB0yG+H93CAA2T1B3d9VXinSEwiBuMMjGQ5fA712oNBgu4Yd56/x+wIRdoSPgT57kUm+4xH46S2K5YGGQZ1HHRxOjODjL4uzM2LPJ3V25d8m8WECb30NijTIv8YTtWiTxa+4A9I4zUYnTiwV0ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407777; c=relaxed/simple;
-	bh=wjyNy990E69z4uXvJ400mhpRL4upZBOWlhmmQF+NHDI=;
+	s=arc-20240116; t=1731407430; c=relaxed/simple;
+	bh=0M5fTNfhzjJ98wYkcBuzoKyKIGyT514qjGeMcoLqzKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7ko1BbUOTJQ8DGb2cjYC09Z023Yip9WgW1IfWSpWR3Zt7pG6GAbqbwu6lI11OKli2rB9oSZRx+6N09J4c1aCyMDNOjMRBxe4+EcS+xdl3+osY48+FB23EWCxO6lirS/+aK1kWlMjP/5afZu9dd0EFX9ig/XNMYj7MQkpFb//Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E79LpM7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C61C4CED4;
-	Tue, 12 Nov 2024 10:36:16 +0000 (UTC)
+	 MIME-Version; b=WHo1RnojZlRmZw8+TEk8Z48Fr7ocXiFQUC3GcSTGWEjHRv6J/MCO6SG1hDnxIjtzTVU+AN09rroYjGPq8wkNJjMyccjjZvOnOe0HG8whZXb7LCWqrhop8R9V4DV/CLIs6MLApM+0lvIPsekYdGDtGUXgLV+desLnzAGkWOKHTx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dpgSmZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6402BC4CECD;
+	Tue, 12 Nov 2024 10:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407776;
-	bh=wjyNy990E69z4uXvJ400mhpRL4upZBOWlhmmQF+NHDI=;
+	s=korg; t=1731407429;
+	bh=0M5fTNfhzjJ98wYkcBuzoKyKIGyT514qjGeMcoLqzKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E79LpM7naRuIag0I+axSIak7EvowzEi7SoRKVOlKe3Nl4J4X14yLw4zyFqRigDE8N
-	 jeEsDz6LZnAUX1jgoUeBOq2iRQqH5w8dVFLwda0kN6OFkFl8RR/e7rHAZje52pPZMH
-	 IvOMHFPxmAojxCWbX6DD+xyqzg2jBVCO3C4mkz/M=
+	b=1dpgSmZbNG6w0fP1lxAtMZnHnoN9w7FkFolkg2JuegonrCaCLrZY3Zo187ITPTgOv
+	 WVQCrbnOeivYocFN1kgfF0cYMXLweZ93gEWUY8lGqj/AIUHiLIt80S9ZP85exCH0GJ
+	 9Lz8VTZkHqCfofdDbDjFl7d3gDW917kd4lFr7pJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 079/119] drm/amdgpu: Fix DPX valid mode check on GC 9.4.3
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 72/98] mptcp: use sock_kfree_s instead of kfree
 Date: Tue, 12 Nov 2024 11:21:27 +0100
-Message-ID: <20241112101851.737919941@linuxfoundation.org>
+Message-ID: <20241112101846.999266605@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 3ce3f85787352fa48fc02ef6cbd7a5e5aba93347 upstream.
+commit 99635c91fb8b860a6404b9bc8b769df7bdaa2ae3 upstream.
 
-For DPX mode, the number of memory partitions supported should be less
-than or equal to 2.
+The local address entries on userspace_pm_local_addr_list are allocated
+by sock_kmalloc().
 
-Fixes: 1589c82a1085 ("drm/amdgpu: Check memory ranges for valid xcp mode")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 990c4f580742de7bb78fa57420ffd182fc3ab4cd)
+It's then required to use sock_kfree_s() instead of kfree() to free
+these entries in order to adjust the allocated size on the sk side.
+
+Fixes: 24430f8bf516 ("mptcp: add address into userspace pm list")
 Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241104-net-mptcp-misc-6-12-v1-2-c13f2ff1656f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_userspace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-@@ -440,7 +440,7 @@ static bool __aqua_vanjaram_is_valid_mod
- 	case AMDGPU_SPX_PARTITION_MODE:
- 		return adev->gmc.num_mem_partitions == 1 && num_xcc > 0;
- 	case AMDGPU_DPX_PARTITION_MODE:
--		return adev->gmc.num_mem_partitions != 8 && (num_xcc % 4) == 0;
-+		return adev->gmc.num_mem_partitions <= 2 && (num_xcc % 4) == 0;
- 	case AMDGPU_TPX_PARTITION_MODE:
- 		return (adev->gmc.num_mem_partitions == 1 ||
- 			adev->gmc.num_mem_partitions == 3) &&
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -89,6 +89,7 @@ static int mptcp_userspace_pm_delete_loc
+ 						struct mptcp_pm_addr_entry *addr)
+ {
+ 	struct mptcp_pm_addr_entry *entry, *tmp;
++	struct sock *sk = (struct sock *)msk;
+ 
+ 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
+ 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
+@@ -96,7 +97,7 @@ static int mptcp_userspace_pm_delete_loc
+ 			 * be used multiple times (e.g. fullmesh mode).
+ 			 */
+ 			list_del_rcu(&entry->list);
+-			kfree(entry);
++			sock_kfree_s(sk, entry, sizeof(*entry));
+ 			msk->pm.local_addr_used--;
+ 			return 0;
+ 		}
 
 
 
