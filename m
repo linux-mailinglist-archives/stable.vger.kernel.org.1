@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C299C5508
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:57:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5279C55FB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD70B1F26427
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:57:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551451F250C2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8103E3DAC02;
-	Tue, 12 Nov 2024 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7DA21D223;
+	Tue, 12 Nov 2024 10:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJdWmsl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnjG8lIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC343DABFB;
-	Tue, 12 Nov 2024 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F3B21D214;
+	Tue, 12 Nov 2024 10:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407883; cv=none; b=kq9YSg36gzgELVTSv1mlRN/VaPY1l5JYXbHscfoelAV8rY4ZDA5QeRiHUbANnFp9+a1eyRxQbdSC97Efdhkh0tXV0aXvZFEDX8pN8Y5ala2bVqXEjsdbwjMSpUFZkCHL54Xk2rX8K4FsTqp7qTiF69SPMMQRWxtV+9y5YOYph64=
+	t=1731408537; cv=none; b=FZKS5TshTEL3ms418rFEFZgumImTfn5Ev6Fh5RvlF2mUWR/IaYfgTTTE3lEDUPWinVKAe6zwkS/i+lsVWucWWw1Ksto4Sfy4cb3LPUB8Jy4W/9UfGTznFjT4120R1b9uTUZ9bwCVRpxP8YtB2LjpGoG0kTTZX56rPOmL+fHntKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407883; c=relaxed/simple;
-	bh=yPZTntClUueZyHoYbTFCMyG/iTMwvmHA+fX2NlUU8mk=;
+	s=arc-20240116; t=1731408537; c=relaxed/simple;
+	bh=DCZXHkiMqsZeXLYsBsk0XtMCLQ3xsTfjwVgg6VTMjcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p04ZiAV/Rke2A3V0p1JJsDGPOa1JD8m6Gh40JGhu+ZYW62WGgiKW6KqzvRwagElhFnSeE3yQdbiIBXLZbnqpY1KFbPEB8tsR8SiBY1mWPdQBLvfsam1/X155ezh+bW+LvC7Te3zwOoBWNZAyOVSfkjkT0fA7+3jY7SG7eAUbAno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJdWmsl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1A3C4CED4;
-	Tue, 12 Nov 2024 10:38:02 +0000 (UTC)
+	 MIME-Version; b=eC9JQhjk4wVcBBCuRRlc9MOhb7nmtPh6KUs6obqhfJf5zYMSYjWJbyZtUeXEmpJ1hck4m/spPS61DHV7EJ6uLwCdIEJgm2dKVOGch6mNb3LlLE6n+JnXBMCc5/w1HF7D7KNoEF7pPz4KINGuo0RvIF8BdEIy5unUyEbc5YC/8aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnjG8lIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CDFC4CECD;
+	Tue, 12 Nov 2024 10:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407883;
-	bh=yPZTntClUueZyHoYbTFCMyG/iTMwvmHA+fX2NlUU8mk=;
+	s=korg; t=1731408537;
+	bh=DCZXHkiMqsZeXLYsBsk0XtMCLQ3xsTfjwVgg6VTMjcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJdWmsl+XI8HpAYrzeqhcXi8GXKhOwfrYUSmr5+Rb40sunMNfDwrflawt7HqA9jtk
-	 kzHaXTTFlm3xImgMnfF+dq+PVud/CogCesrdY7npvIQEME01lEzqUeuJ8WJABJgV7j
-	 jp6lhF6nIBFPBF5/ccj9YvPTWNK5w/MxzwrTO7gA=
+	b=OnjG8lIxKogHe/2Eadgj6aZH7+tACeoVArJOYyCLx3tHvf9eCkOjPeIOFDUe5aMm0
+	 X/khrGQF7gQphosET9+v01Zs0wsODiPJBkDvc6izV21GVJxT0lIohxAQdcpYRyZKCx
+	 arW7D0WHVxtio+3okb6fJ+thSBsc0DUH7TTzwxk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Reinhard Speyerer <rspmn@arcor.de>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 112/119] USB: serial: option: add Fibocom FG132 0x0112 composition
+Subject: [PATCH 6.11 162/184] USB: serial: option: add Fibocom FG132 0x0112 composition
 Date: Tue, 12 Nov 2024 11:22:00 +0100
-Message-ID: <20241112101852.997329261@linuxfoundation.org>
+Message-ID: <20241112101907.086600759@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
