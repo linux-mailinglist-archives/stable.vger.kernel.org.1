@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-92373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE109C53BA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094959C55A8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C712812EB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616431F21478
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C704214423;
-	Tue, 12 Nov 2024 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E1F218D92;
+	Tue, 12 Nov 2024 10:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6zEAA3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcM4UEPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CF2141C5;
-	Tue, 12 Nov 2024 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F94213ECF;
+	Tue, 12 Nov 2024 10:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407447; cv=none; b=J2ZIeGq2fmlaxTdm4z+Kc2S9pU953Sobn8VPAZ52WOUJmL9XtVvWu2sLhc4ohkG43cDGhDXhnkQvbdmkXDwVBz9bsDAGLv3vC/a1wH4kZlpChdK2H1BTpzpYX9susw8niqDSX8yR88KpdXB3/E05eBwNtePR6w0F6A4gZdq+wIc=
+	t=1731408246; cv=none; b=b25dcVlLBSJi9UhhJsYiHY/b6XTqTrvVu0KPVfccDWxjeG2avy1oy5z2+BeuYQMlAo0hjf3rXPs6YY3AKaA+UNScYCjAlLoFoqgTp7uqLd3z9Zj6/ZZYHbrOQdyYqumC0bRryUWvy8rhcywY/UVl0fK7UnR+g9XY5VQUKofn1/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407447; c=relaxed/simple;
-	bh=Pf1P6Ccsn1wkoMFlalHv2g86vgyu+mH4sNAKo6YqqAA=;
+	s=arc-20240116; t=1731408246; c=relaxed/simple;
+	bh=v7mv32BJKJECU66bFwq4qy4NykUKdL+Sm8riekILCok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uH4+3ZRznlZdrvtj2gT038KxgLaMEgXMqbWc0SvFWzH4vFWNwYSqiW1cUynfWyF+NK+IPCYOrXJed/9NLsTTKJ/Qt4u6wu8m4rOjot/5InMKE/1vfaFpvJvgDhHm6BvYIi4+ZctT3najil2WpOHwSBwr52cWb/9PcG1IZFcc/mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6zEAA3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99891C4CECD;
-	Tue, 12 Nov 2024 10:30:46 +0000 (UTC)
+	 MIME-Version; b=IMGYel2PH38OFNEaC2vHTScZVho08Y/mwzU+pxT2i5wkrA7QwqCbtVdycjlCadymI+PUQRySM6VN5GgkHSzyB8DG0/DB1OPtuEqJxCCRkt3tRMgpNcOBddK8bcOUWsKAgUPKgSv5aSehWIAQgQUNP5dEeFzjCaYRmR33hchjIDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcM4UEPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EAAC4CECD;
+	Tue, 12 Nov 2024 10:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407447;
-	bh=Pf1P6Ccsn1wkoMFlalHv2g86vgyu+mH4sNAKo6YqqAA=;
+	s=korg; t=1731408246;
+	bh=v7mv32BJKJECU66bFwq4qy4NykUKdL+Sm8riekILCok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6zEAA3IjCwwOAvpE4Cs5hOxEXF5AyADJ42QOpXHTSp5XLyuALcUjyuykCJ+XFETx
-	 A9bEw8NZy+EWzFkAqs2IjGobirp+m4UmR2jw6Kv+qTUUF0mHAjtEohAAhmIoIaTqUx
-	 yMhMhKmdvCoaKY2a5zrVyVaPOSC8LZzftWo0Fnl4=
+	b=gcM4UEPRm0wbFV7yITm0WRk3ojk5LPZRDX54RSCa5kAmiuYIhEjVvvObiwpgYA9Hh
+	 p/VpTHGY+aVMJm+GGI/rkxsGW+m2tX40MHkO7ytfP5thBWgHyhYA6Zsb1/Y/4y95Im
+	 dfylh79SiJSw+W7aIBMJjSODidd2hRAjQLFekh6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 47/98] media: pulse8-cec: fix data timestamp at pulse8_setup()
-Date: Tue, 12 Nov 2024 11:21:02 +0100
-Message-ID: <20241112101846.062429181@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.11 105/184] drm/panthor: Lock XArray when getting entries for the VM
+Date: Tue, 12 Nov 2024 11:21:03 +0100
+Message-ID: <20241112101904.897642181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Liviu Dudau <liviu.dudau@arm.com>
 
-commit ba9cf6b430433e57bfc8072364e944b7c0eca2a4 upstream.
+commit 444fa5b100e5c90550d6bccfe4476efb0391b3ca upstream.
 
-As pointed by Coverity, there is a hidden overflow condition there.
-As date is signed and u8 is unsigned, doing:
+Similar to commit cac075706f29 ("drm/panthor: Fix race when converting
+group handle to group object") we need to use the XArray's internal
+locking when retrieving a vm pointer from there.
 
-	date = (data[0] << 24)
+v2: Removed part of the patch that was trying to protect fetching
+the heap pointer from XArray, as that operation is protected by
+the @pool->lock.
 
-With a value bigger than 07f will make all upper bits of date
-0xffffffff. This can be demonstrated with this small code:
-
-<code>
-typedef int64_t time64_t;
-typedef uint8_t u8;
-
-int main(void)
-{
-	u8 data[] = { 0xde ,0xad , 0xbe, 0xef };
-	time64_t date;
-
-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Invalid data = 0x%08lx\n", date);
-
-	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-	printf("Expected data = 0x%08lx\n", date);
-
-	return 0;
-}
-</code>
-
-Fix it by converting the upper bit calculation to unsigned.
-
-Fixes: cea28e7a55e7 ("media: pulse8-cec: reorganize function order")
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
+Reported-by: Jann Horn <jannh@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241106185806.389089-1-liviu.dudau@arm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/usb/pulse8/pulse8-cec.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
-+++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-@@ -685,7 +685,7 @@ static int pulse8_setup(struct pulse8 *p
- 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
- 	if (err)
- 		return err;
--	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-+	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
- 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -1580,7 +1580,9 @@ panthor_vm_pool_get_vm(struct panthor_vm
+ {
+ 	struct panthor_vm *vm;
  
- 	dev_dbg(pulse8->dev, "Persistent config:\n");
++	xa_lock(&pool->xa);
+ 	vm = panthor_vm_get(xa_load(&pool->xa, handle));
++	xa_unlock(&pool->xa);
+ 
+ 	return vm;
+ }
 
 
 
