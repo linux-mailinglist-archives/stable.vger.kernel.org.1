@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-92253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EBC9C5544
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4F89C53B8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CB09B32BA4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B591F229C9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C89213154;
-	Tue, 12 Nov 2024 10:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D19214429;
+	Tue, 12 Nov 2024 10:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSTDZREC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlAtZieY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544032123D2;
-	Tue, 12 Nov 2024 10:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF9214415;
+	Tue, 12 Nov 2024 10:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407051; cv=none; b=AOsgZA681t9drDetJ82x1af5r+A1Fk34bMjngHst5F5EF/10Me6dkItkaoETmk+CgDJvcLD7w6Eqty6zaYSdVhwanVmvlV0KHxxJJZUCRYp7a5jt808aYUrr2N3OlAJpAnP01fMZ9nsCP8oTZ9wOTkZMJnLNoKiMUOfIi00kjTY=
+	t=1731407444; cv=none; b=U1jgKIUS/+GN2Kolxw+N7iLo4CJ2z2fux0ijAtLUd0L6BnyAEOWxNzWVPPwAgp943LA1M7spipt3exb4UmJvQBnkVbpO7CpyxbqkTg5UYO0tbwS+JFSYc/tLXiKa4rrWRQGLJ2MUS0lratvxLvAsUHLz3snh11Gw+MEBbqqwz4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407051; c=relaxed/simple;
-	bh=DNNZuzLSjgw4LBrneyP/7J8GTolqwE+yVo0HyQL+yL4=;
+	s=arc-20240116; t=1731407444; c=relaxed/simple;
+	bh=bwgQZWOgIboe7MF3/g3/ETdE2vc9/uffaYcdjl8FwBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1Us7I3fJP7FzHVfAzN2T0eBzlPOwLGqZv9xIfYdpkca+8HH0IY24HrptX8+ek/TbZdMRph+O59A9ZAmOINlxLBzWA9jYsF15qXynOUaZNZNdtZBOi5oVe9s5ZW/vGIq3M7Nhkb1gnpy0+iCpJWUwiiDRqNbmKOvHSvDYFXOuHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSTDZREC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD037C4CECD;
-	Tue, 12 Nov 2024 10:24:10 +0000 (UTC)
+	 MIME-Version; b=YkWFCg3qQW6x0T28bgFaxwAhqDCoNv1/iG5H9YxRjvYoiovcRPXHdhN/ogJRa2EpVC2qQ6Lub9aqkeLVBJBNskpiM6QwcvMDe5h6SaB5kMmceCC8bWSyrfraifTG6x6xnOgdzqBnZTrdWD7aowtcb+fLtmZtM1IKqJQNAkzRX60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlAtZieY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B782C4CECD;
+	Tue, 12 Nov 2024 10:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407051;
-	bh=DNNZuzLSjgw4LBrneyP/7J8GTolqwE+yVo0HyQL+yL4=;
+	s=korg; t=1731407443;
+	bh=bwgQZWOgIboe7MF3/g3/ETdE2vc9/uffaYcdjl8FwBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSTDZRECMy1bRG8/6667aO+yy9UmYU5qQyEnzzAxiATP8+WxVM/StTcCRhsV6Xv3d
-	 78zEFvIPQtzoNvtm5ocXFpLB/3qwW9keFT/uVP49TA5C49q/hS1EJ9duYVxUvB5+jS
-	 w9aT5Uwih9ZUuGQA1x+xgmrzUe1GVOzjp3BLwc/Y=
+	b=HlAtZieYuPo1Z7glsl4Zjx9kL5LJGcAInTuX4qEiHhRJJtnrcQFOMGQh5+IB/bO1F
+	 KsEM8bYhax93Tznzk3ref5cz3FiiTCF8PSQqvIZnMu3MQWLu43qDzmKXKkClHZqhNV
+	 d7O+K12NtDyA+Tip0EWpTexbGhP3/IXXq7bOV6xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 36/76] media: v4l2-tpg: prevent the risk of a division by zero
+Subject: [PATCH 6.1 46/98] media: cx24116: prevent overflows on SNR calculus
 Date: Tue, 12 Nov 2024 11:21:01 +0100
-Message-ID: <20241112101841.161898614@linuxfoundation.org>
+Message-ID: <20241112101846.024590455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
+commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
 
-As reported by Coverity, the logic at tpg_precalculate_line()
-blindly rescales the buffer even when scaled_witdh is equal to
-zero. If this ever happens, this will cause a division by zero.
+as reported by Coverity, if reading SNR registers fail, a negative
+number will be returned, causing an underflow when reading SNR
+registers.
 
-Instead, add a WARN_ON_ONCE() to trigger such cases and return
-without doing any precalculation.
+Prevent that.
 
-Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
+Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-+++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-@@ -1789,6 +1789,9 @@ static void tpg_precalculate_line(struct
- 	unsigned p;
- 	unsigned x;
+--- a/drivers/media/dvb-frontends/cx24116.c
++++ b/drivers/media/dvb-frontends/cx24116.c
+@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
+ {
+ 	struct cx24116_state *state = fe->demodulator_priv;
+ 	u8 snr_reading;
++	int ret;
+ 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
+ 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
+ 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
+@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
  
-+	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
-+		return;
+ 	dprintk("%s()\n", __func__);
+ 
+-	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	if (ret  < 0)
++		return ret;
 +
- 	switch (tpg->pattern) {
- 	case TPG_PAT_GREEN:
- 		contrast = TPG_COLOR_100_RED;
++	snr_reading = ret;
+ 
+ 	if (snr_reading >= 0xa0 /* 100% */)
+ 		*snr = 0xffff;
 
 
 
