@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A969C53DB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F44C9C5406
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41591B2BE7C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1199B1F21A80
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836F421216C;
-	Tue, 12 Nov 2024 10:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036E3212F00;
+	Tue, 12 Nov 2024 10:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEOSRjJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/b953Zs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B9620DD7D;
-	Tue, 12 Nov 2024 10:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B9619E992;
+	Tue, 12 Nov 2024 10:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407458; cv=none; b=YO7KIEGHvDY7wxd+NGJs6rSFHnq+HJGMUqx28qrCVtmu+YkDZdTTJdG1PZl3P2RsAIy2cAKe4W3jwsH+kqC30DKOOaR79i3J6QPhmqDYLsFjHnpXvzSqz9E9L7gWajrkTz0cGwZgXo+OKWNZ2JtqyLwVuYuu6ibGk0bXE4lYMj8=
+	t=1731407672; cv=none; b=Tv3vMbMZjhU7ip89uIQXqpCnuOi9Sem+Lo/h0gUz4w/ALRrBHlaB2lsaoCBBMWnsSDmZuKRwh3z0tMR/yFTczzdBquloA+nhCvN7MvXCcbmbCbA38RWMOgpCBCPNatooAVYpVe46EAvoxWBH1ZMiE3AnstzZHTIh3tFgsJoV8to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407458; c=relaxed/simple;
-	bh=EQU4g40FFrV8JlVjQRfO04shZ4op57BUUHzPyjeP6Nw=;
+	s=arc-20240116; t=1731407672; c=relaxed/simple;
+	bh=20BQj+7Qw+x+3gGJYqBCXee8f0le+DSpxohzUzAuwkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1aaUQGzRsSKk2AnjBx7UbdfPtiGAfc8TX/hSyYMXFO9fgZ4O9kLwehcvNVVaNL7LTpdwFDtpEtMPvdxVxC4M4rXUcBa85tvYVitmGRDjh3xZE7jxKW9tSCHEs3LsMzH6aovpmbGPkRPvnJhZ4re+NNOwwx81RptsUXndVd6aYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEOSRjJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B57C4CECD;
-	Tue, 12 Nov 2024 10:30:56 +0000 (UTC)
+	 MIME-Version; b=ojzVxfGbFigch5gHThUvDCjRoElinf3by0Vf9blO9KPmyGJrkXoMI9eMZMvvV133SJSAVUy9ymfwFKKygU1w+Pj0aiR82rjCPVBJT4kKr/S9RGoEDbsewNGMbBldnOjM4lmU/pzrMc9D/adQd0aZOVk+g+U7pZyxDGWurQ5Zzvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/b953Zs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1DFC4CECD;
+	Tue, 12 Nov 2024 10:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407457;
-	bh=EQU4g40FFrV8JlVjQRfO04shZ4op57BUUHzPyjeP6Nw=;
+	s=korg; t=1731407672;
+	bh=20BQj+7Qw+x+3gGJYqBCXee8f0le+DSpxohzUzAuwkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEOSRjJnHlryXK+Ye9rFYwXxgU5aAkPOCqr5s2dBEPhmpoBQwLe+P++HEPbGiW7hm
-	 2oJ5SWjmvOv6UYbP9nefmB7Y3wEcm+rQE+3Z+vHe/Z64vj6HPkWsu7o/TzDJHZ6OOo
-	 dFOuCGOBKWkhnAMWmJFfYVY9+WKQuKR3vU25zUWo=
+	b=t/b953Zsw8qMbWZmr0HP5iDk7KU0opqPDoqxconSDYn8WH46tuaY4ppjrc5wWBahR
+	 c1SHsEy0WquRunRCy0KxcjuXpnljUuot/F+zxevXumwDxVm17CI2mtjb5garMCLFOU
+	 0ot7JCQyWm94/GrTGeFb0Aj5TlmRJlZoMuC30514=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Andy Yan <andyshrk@163.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 40/98] ALSA: firewire-lib: fix return value on fail in amdtp_tscm_init()
+Subject: [PATCH 6.6 047/119] net: arc: rockchip: fix emac mdio node support
 Date: Tue, 12 Nov 2024 11:20:55 +0100
-Message-ID: <20241112101845.800591138@linuxfoundation.org>
+Message-ID: <20241112101850.515345091@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 8abbf1f01d6a2ef9f911f793e30f7382154b5a3a ]
+[ Upstream commit 0a1c7a7b0adbf595ce7f218609db53749e966573 ]
 
-If amdtp_stream_init() fails in amdtp_tscm_init(), the latter returns zero,
-though it's supposed to return error code, which is checked inside
-init_stream() in file tascam-stream.c.
+The binding emac_rockchip.txt is converted to YAML.
+Changed against the original binding is an added MDIO subnode.
+This make the driver failed to find the PHY, and given the 'mdio
+has invalid PHY address' it is probably looking in the wrong node.
+Fix emac_mdio.c so that it can handle both old and new
+device trees.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 47faeea25ef3 ("ALSA: firewire-tascam: add data block processing layer")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241101185517.1819-1-m.masimov@maxima.ru
+Fixes: 1dabb74971b3 ("ARM: dts: rockchip: restyle emac nodes")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Tested-by: Andy Yan <andyshrk@163.com>
+Link: https://lore.kernel.org/r/20220603163539.537-3-jbx6244@gmail.com
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/tascam/amdtp-tascam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/arc/emac_mdio.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/firewire/tascam/amdtp-tascam.c b/sound/firewire/tascam/amdtp-tascam.c
-index 64d66a8025455..ad185ff3209db 100644
---- a/sound/firewire/tascam/amdtp-tascam.c
-+++ b/sound/firewire/tascam/amdtp-tascam.c
-@@ -244,7 +244,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
- 	err = amdtp_stream_init(s, unit, dir, flags, fmt,
- 			process_ctx_payloads, sizeof(struct amdtp_tscm));
- 	if (err < 0)
--		return 0;
-+		return err;
+diff --git a/drivers/net/ethernet/arc/emac_mdio.c b/drivers/net/ethernet/arc/emac_mdio.c
+index 87f40c2ba9040..078b1a72c1613 100644
+--- a/drivers/net/ethernet/arc/emac_mdio.c
++++ b/drivers/net/ethernet/arc/emac_mdio.c
+@@ -133,6 +133,7 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
+ 	struct arc_emac_mdio_bus_data *data = &priv->bus_data;
+ 	struct device_node *np = priv->dev->of_node;
+ 	const char *name = "Synopsys MII Bus";
++	struct device_node *mdio_node;
+ 	struct mii_bus *bus;
+ 	int error;
  
- 	if (dir == AMDTP_OUT_STREAM) {
- 		// Use fixed value for FDF field.
+@@ -164,7 +165,13 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
+ 
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", bus->name);
+ 
+-	error = of_mdiobus_register(bus, priv->dev->of_node);
++	/* Backwards compatibility for EMAC nodes without MDIO subnode. */
++	mdio_node = of_get_child_by_name(np, "mdio");
++	if (!mdio_node)
++		mdio_node = of_node_get(np);
++
++	error = of_mdiobus_register(bus, mdio_node);
++	of_node_put(mdio_node);
+ 	if (error) {
+ 		mdiobus_free(bus);
+ 		return dev_err_probe(priv->dev, error,
 -- 
 2.43.0
 
