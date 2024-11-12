@@ -1,156 +1,149 @@
-Return-Path: <stable+bounces-92824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8A39C600C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:14:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9768C9C6013
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 809231F21CEA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 126651F24904
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F5121730C;
-	Tue, 12 Nov 2024 18:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DCB217444;
+	Tue, 12 Nov 2024 18:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="XiZTzKH4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bTDZTJKP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EB3215C77
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 18:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1254215021;
+	Tue, 12 Nov 2024 18:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731435249; cv=none; b=M6iGdUIrdYrwqsORi150J1NC8aSgX/pmndOKHsYAVNxb0AyZfJayFHdi+3WUxRSn2z//b6O5/ohCcMLyHEn4rkItYvzRA9CTfpeCuVdzk8LrwIr7bVrjY0mCRtGAm/72a2zBbjvHO+OHwqj/x7ivj663/8wFXxRgMjnpj6AnkT4=
+	t=1731435271; cv=none; b=KzY2P7Ddhj+Sf62nCUyjNFa+R0beCGzBmuv43CmqoKfiUMNu2jX2vGqAuwpVxU4S94OAihKDOPIX5qmRtXIdd1qF31SpqqL/ZXO/j6pDBAtGKdWIJV0rugE6W9EoHQmxYiJ284vhOUNjqqrlbMcyRWZqJxe7tA6QjYXXYoqzXb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731435249; c=relaxed/simple;
-	bh=m4IUo/6+jT3GJMI/KjjBd5O43l+Kv6mXo2TjJbd0l2I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YAsYfSG36HByEnW5JsSsrk0DM/65L5RkpLNW6JImN8IJ0jF5tRj+Se1qzWisX31kZW8IwAG/Azs3oDpQUXnCRfJ0KSBSC67bi44idlI+du9co/tVe1ekVdfwmFMuJO/vN608wQs09nmTjERiASRY3JnsA+UqrJNwfEBHKVbwLGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=XiZTzKH4; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20cb47387ceso62382895ad.1
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 10:14:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1731435247; x=1732040047; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=teWV7RlCNBWe+PzZ4k+NAZdNBT+7H7hRE9gJ+PBKThU=;
-        b=XiZTzKH405YZ3xOur+O6cWsTdExJIzWK6PNkkYEvbHMZ7Njo2Gy5INpID5NpsuB9DT
-         AKBk+Ns/9wqir/RuTI1kv54puPz5um13iaa/ON1kaGQMZtVm2UyyVRON+/b3l7ebOoJM
-         SHCtQnTxLtGmT9Pf/8QhMCx9pf7HpyGG2v+gQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731435247; x=1732040047;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=teWV7RlCNBWe+PzZ4k+NAZdNBT+7H7hRE9gJ+PBKThU=;
-        b=Q5eZuVk+Hnqrs1H2n7HwHx0iIbtEkRhEFvcN6RWxn86cV4zvQlQg+pOOsU+5m201tv
-         Pn780uk5uz2ue9Ua/bqJXntgnjltdSX0GXRYamEPY1jYXTw9PhNpmUdUJAgs/N11ulwF
-         eKjuHSuyAXeJS+qoEWL+YizEozWaN6EFmBPhgiSm9lvCvkv8i8hFNwM7lCOx2iqzR9ra
-         mG+DfnPynbIXw63cinxyg8BbkAHx+JDDBgyOem6aq/BTNTIVPbHDfuMwGYn3umEto1SU
-         ZRZ//f/EEL1MCRS+Xs4i3xLGK5xeC2S0IxYzCIsprmw8+nOcDmwGgF/Hdpc85C/z2X3B
-         nsng==
-X-Forwarded-Encrypted: i=1; AJvYcCWLGRTteWMSRkKBhXGAGrX8PVxNwE6YTRvoR7MQ6bPSG+qlZh7kAJoijFtuI9zPeUOUMGymMTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEhWbfQFE50eiq2xSatz4+PqjmfnEAK43xVH1XpegmrEfPDc4Y
-	jvF4ZjIkUqrY16wQMrGtsmThzYDniajh+C2JNKCgbcufrnyKC2XdvkhehvwzgM4=
-X-Google-Smtp-Source: AGHT+IFkvYy2Fn69Yhbz4h/Ou4o/m5wZnP9kf467luoR95X+WqKPdUDcTvzw49a7ncHxUXTtG/h5LQ==
-X-Received: by 2002:a17:902:d4c5:b0:20e:552c:5408 with SMTP id d9443c01a7336-211835cc3ffmr243543955ad.51.1731435247521;
-        Tue, 12 Nov 2024 10:14:07 -0800 (PST)
-Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6a388sm96639035ad.245.2024.11.12.10.14.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 10:14:07 -0800 (PST)
-From: Joe Damato <jdamato@fastly.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com,
-	kuba@kernel.org,
-	mkarsten@uwaterloo.ca,
-	Joe Damato <jdamato@fastly.com>,
-	stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [RFC net 1/2] netdev-genl: Hold rcu_read_lock in napi_get
-Date: Tue, 12 Nov 2024 18:13:58 +0000
-Message-Id: <20241112181401.9689-2-jdamato@fastly.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241112181401.9689-1-jdamato@fastly.com>
-References: <20241112181401.9689-1-jdamato@fastly.com>
+	s=arc-20240116; t=1731435271; c=relaxed/simple;
+	bh=E1F1Eo/GeJe0d4SWjnY7HHztQ3rwhHjK/4Oq/UoWHcw=;
+	h=Date:To:From:Subject:Message-Id; b=C55g73F9grOky1HMfHEKQEjPNDm7ayN5K/Riw63xlMg+MxzkHDHzYCcy1fuRLwSEYd9kO7N74XEFxXgS/MOjwrktVSyO7UKrEOMBK5w+FRa5clGFmw/i82yXhi62LjhZEaxAAhRQVjSkd5CxyGQo5YS2UZ2tZ7qE2YP+LyGp86E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bTDZTJKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D21C4CED5;
+	Tue, 12 Nov 2024 18:14:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1731435271;
+	bh=E1F1Eo/GeJe0d4SWjnY7HHztQ3rwhHjK/4Oq/UoWHcw=;
+	h=Date:To:From:Subject:From;
+	b=bTDZTJKPd8+wiTa8A+mxTQh0RGTgYldVBlKeVm4sofHZFo3VfGiWApzcew3rRRQap
+	 /3LDpGWcgj0RX+YEKyDASjsg/IOlqBPGpjq8d9KtcEXgKdMYQcrnvx00rNVZqLjr6B
+	 ReDrxyUX8bYW5X29MKi4yanPZhe/sPH6rrTx3OTQ=
+Date: Tue, 12 Nov 2024 10:14:30 -0800
+To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,donettom@linux.ibm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch removed from -mm tree
+Message-Id: <20241112181431.55D21C4CED5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hold rcu_read_lock in netdev_nl_napi_get_doit, which calls napi_by_id
-and is required to be called under rcu_read_lock.
 
-Cc: stable@vger.kernel.org
-Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
+The quilt patch titled
+     Subject: selftests: hugetlb_dio: fixup check for initial conditions to skip in the start
+has been removed from the -mm tree.  Its filename was
+     selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start.patch
+
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Donet Tom <donettom@linux.ibm.com>
+Subject: selftests: hugetlb_dio: fixup check for initial conditions to skip in the start
+Date: Sun, 10 Nov 2024 00:49:03 -0600
+
+This test verifies that a hugepage, used as a user buffer for DIO
+operations, is correctly freed upon unmapping.  To test this, we read the
+count of free hugepages before and after the mmap, DIO, and munmap
+operations, then check if the free hugepage count is the same.
+
+Reading free hugepages before the test was removed by commit 0268d4579901
+('selftests: hugetlb_dio: check for initial conditions to skip at the
+start'), causing the test to always fail.
+
+This patch adds back reading the free hugepages before starting the test. 
+With this patch, the tests are now passing.
+
+Test results without this patch:
+
+./tools/testing/selftests/mm/hugetlb_dio
+TAP version 13
+1..4
+ # No. Free pages before allocation : 0
+ # No. Free pages after munmap : 100
+not ok 1 : Huge pages not freed!
+ # No. Free pages before allocation : 0
+ # No. Free pages after munmap : 100
+not ok 2 : Huge pages not freed!
+ # No. Free pages before allocation : 0
+ # No. Free pages after munmap : 100
+not ok 3 : Huge pages not freed!
+ # No. Free pages before allocation : 0
+ # No. Free pages after munmap : 100
+not ok 4 : Huge pages not freed!
+ # Totals: pass:0 fail:4 xfail:0 xpass:0 skip:0 error:0
+
+Test results with this patch:
+
+/tools/testing/selftests/mm/hugetlb_dio
+TAP version 13
+1..4
+# No. Free pages before allocation : 100
+# No. Free pages after munmap : 100
+ok 1 : Huge pages freed successfully !
+# No. Free pages before allocation : 100
+# No. Free pages after munmap : 100
+ok 2 : Huge pages freed successfully !
+# No. Free pages before allocation : 100
+# No. Free pages after munmap : 100
+ok 3 : Huge pages freed successfully !
+# No. Free pages before allocation : 100
+# No. Free pages after munmap : 100
+ok 4 : Huge pages freed successfully !
+
+# Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Link: https://lkml.kernel.org/r/20241110064903.23626-1-donettom@linux.ibm.com
+Fixes: 0268d4579901 ("selftests: hugetlb_dio: check for initial conditions to skip in the start")
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/core/netdev-genl.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 765ce7c9d73b..934c63a93524 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -216,6 +216,23 @@ netdev_nl_napi_fill_one(struct sk_buff *rsp, struct napi_struct *napi,
- 	return -EMSGSIZE;
- }
+ tools/testing/selftests/mm/hugetlb_dio.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/tools/testing/selftests/mm/hugetlb_dio.c~selftests-hugetlb_dio-fixup-check-for-initial-conditions-to-skip-in-the-start
++++ a/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -44,6 +44,13 @@ void run_dio_using_hugetlb(unsigned int
+ 	if (fd < 0)
+ 		ksft_exit_fail_perror("Error opening file\n");
  
-+/* must be called under rcu_read_lock(), because napi_by_id requires it */
-+static struct napi_struct *__do_napi_by_id(unsigned int napi_id,
-+					   struct genl_info *info, int *err)
-+{
-+	struct napi_struct *napi;
-+
-+	napi = napi_by_id(napi_id);
-+	if (napi) {
-+		*err = 0;
-+	} else {
-+		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
-+		*err = -ENOENT;
++	/* Get the free huge pages before allocation */
++	free_hpage_b = get_free_hugepages();
++	if (free_hpage_b == 0) {
++		close(fd);
++		ksft_exit_skip("No free hugepage, exiting!\n");
 +	}
 +
-+	return napi;
-+}
-+
- int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct napi_struct *napi;
-@@ -233,15 +250,13 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
- 		return -ENOMEM;
- 
- 	rtnl_lock();
-+	rcu_read_lock();
- 
--	napi = napi_by_id(napi_id);
--	if (napi) {
-+	napi = __do_napi_by_id(napi_id, info, &err);
-+	if (!err)
- 		err = netdev_nl_napi_fill_one(rsp, napi, info);
--	} else {
--		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
--		err = -ENOENT;
--	}
- 
-+	rcu_read_unlock();
- 	rtnl_unlock();
- 
- 	if (err)
--- 
-2.25.1
+ 	/* Allocate a hugetlb page */
+ 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
+ 	if (orig_buffer == MAP_FAILED) {
+_
+
+Patches currently in -mm which might be from donettom@linux.ibm.com are
+
 
 
