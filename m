@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-92658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADBD9C5738
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:03:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3E59C57C0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93AFDB2A1EE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A87CB2B653
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4832185A0;
-	Tue, 12 Nov 2024 10:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC612185BB;
+	Tue, 12 Nov 2024 10:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwIy/xc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olt6vzgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B89217F37;
-	Tue, 12 Nov 2024 10:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8577A212F1D;
+	Tue, 12 Nov 2024 10:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408164; cv=none; b=I1fgnlIr2U7nOK43B+8l7KYDzetIiK5jyuTQ2TVa4o5GbVO+RO6MIYt5Z6jyCWod07HIXg2LYkjxHcDRRRaM2Z+i9LHQ6e+hfr5PbjwDSw9lHjy6eK3uG1gnciENdi9QOAtn0CB1sxk8YW2orAFSM2I3lz3alG4BkKDuCE9qrEI=
+	t=1731408173; cv=none; b=pn8Krjl1JOn1XaoYA0zLOf8q7VSCWzD5ijcjaFPAtqC7oe2E7vgylqlRt83xjoYzgLXV4yNSNYdVjSUpdzf+ZLaWp5jNwYgeWJ5MMQlkoGtXXg3M4IpDU05ER6rpbahYJNYd0nNh/PzbxNXEI2ZPtuH+b87F0XgHFpK5Oie9G9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408164; c=relaxed/simple;
-	bh=+gMLKW0VItw9QRdPUNYVSZtgvhw8Esyqphcq+zt00XM=;
+	s=arc-20240116; t=1731408173; c=relaxed/simple;
+	bh=Q3W+0UTuJUo2wrRaV2/bvHsQH/lbgQj3o+aelbrbohE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYYNvTqluxFbSrCV/noCK0LXjaFzUlUiWQgaIWNDpW4c8YhDIctVybV+QohK5qO+VNKLSSMztQBF1/D1duPpeC9FH64RZUFIndRRxOchwxW9tjpuPd9DzqtsOImJ6gPFq4QIiDBnijJelPpcYNw6P4Te0kADzMIN6eqYQUsMY+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwIy/xc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C60C4CED4;
-	Tue, 12 Nov 2024 10:42:43 +0000 (UTC)
+	 MIME-Version; b=nIuOpdjTTrTWrVkiswMQ2Bnj1PaU+/DRxY/yv52fV3ZsQMUOu2N4FbwFR4xCIQdLfoGQGXiGRTorSSw6ax3IUKz6ildZQ1UyGmcdsiAsvsFNIls8AwJdTrSJP/pjVV+DwOsq9XFzqSoXcbSv8lhjS3nWd7gGdutHHiPDO5UFXOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olt6vzgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBE2C4CECD;
+	Tue, 12 Nov 2024 10:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408163;
-	bh=+gMLKW0VItw9QRdPUNYVSZtgvhw8Esyqphcq+zt00XM=;
+	s=korg; t=1731408173;
+	bh=Q3W+0UTuJUo2wrRaV2/bvHsQH/lbgQj3o+aelbrbohE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwIy/xc0xx3RJxMPCzA0fws6CwkFLX6Y7j17z1wllKE3/2HayueD7vAKeFZqIUphA
-	 KrdSACzA5x5r2DiG3bLA20DBiLK1NnNmj6iA++p3taANjdCmaE/ZT9J9zF6bz7jmho
-	 hd3ML6827fkP/LnJ+SMgm7T0POvM8q5ppX0owc1o=
+	b=olt6vzgRrzwsBTcjK8w+6BOThDs+qgDynHdRPaQcGB8F5GhEV7pUB1KWdgEp7jrjZ
+	 fT8pYHjs+2d2abstFGW2VVUmBzYAvKGFP9sY2DQKotB+pp4FjIsohkBQEOBIumckt6
+	 AuwV0B9KJ+C3eTtAwxvg2j3Khx8YZwiOYEoUsMtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.11 079/184] media: cx24116: prevent overflows on SNR calculus
-Date: Tue, 12 Nov 2024 11:20:37 +0100
-Message-ID: <20241112101903.894035056@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.11 082/184] media: vivid: fix buffer overwrite when using > 32 buffers
+Date: Tue, 12 Nov 2024 11:20:40 +0100
+Message-ID: <20241112101904.006993933@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -64,47 +64,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
+commit 96d8569563916fe2f8fe17317e20e43f54f9ba4b upstream.
 
-as reported by Coverity, if reading SNR registers fail, a negative
-number will be returned, causing an underflow when reading SNR
-registers.
+The maximum number of buffers that can be requested was increased to
+64 for the video capture queue. But video capture used a must_blank
+array that was still sized for 32 (VIDEO_MAX_FRAME). This caused an
+out-of-bounds write when using buffer indices >= 32.
 
-Prevent that.
+Create a new define MAX_VID_CAP_BUFFERS that is used to access the
+must_blank array and set max_num_buffers for the video capture queue.
 
-Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
+This solves a crash reported by:
+
+	https://bugzilla.kernel.org/show_bug.cgi?id=219258
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: cea70ed416b4 ("media: test-drivers: vivid: Increase max supported buffers for capture queues")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/test-drivers/vivid/vivid-core.c    |    2 +-
+ drivers/media/test-drivers/vivid/vivid-core.h    |    4 +++-
+ drivers/media/test-drivers/vivid/vivid-ctrls.c   |    2 +-
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    2 +-
+ 4 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/media/dvb-frontends/cx24116.c
-+++ b/drivers/media/dvb-frontends/cx24116.c
-@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
- {
- 	struct cx24116_state *state = fe->demodulator_priv;
- 	u8 snr_reading;
-+	int ret;
- 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
- 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
- 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
-@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
+--- a/drivers/media/test-drivers/vivid/vivid-core.c
++++ b/drivers/media/test-drivers/vivid/vivid-core.c
+@@ -910,7 +910,7 @@ static int vivid_create_queue(struct viv
+ 	 * videobuf2-core.c to MAX_BUFFER_INDEX.
+ 	 */
+ 	if (buf_type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
+-		q->max_num_buffers = 64;
++		q->max_num_buffers = MAX_VID_CAP_BUFFERS;
+ 	if (buf_type == V4L2_BUF_TYPE_SDR_CAPTURE)
+ 		q->max_num_buffers = 1024;
+ 	if (buf_type == V4L2_BUF_TYPE_VBI_CAPTURE)
+--- a/drivers/media/test-drivers/vivid/vivid-core.h
++++ b/drivers/media/test-drivers/vivid/vivid-core.h
+@@ -26,6 +26,8 @@
+ #define MAX_INPUTS 16
+ /* The maximum number of outputs */
+ #define MAX_OUTPUTS 16
++/* The maximum number of video capture buffers */
++#define MAX_VID_CAP_BUFFERS 64
+ /* The maximum up or down scaling factor is 4 */
+ #define MAX_ZOOM  4
+ /* The maximum image width/height are set to 4K DMT */
+@@ -481,7 +483,7 @@ struct vivid_dev {
+ 	/* video capture */
+ 	struct tpg_data			tpg;
+ 	unsigned			ms_vid_cap;
+-	bool				must_blank[VIDEO_MAX_FRAME];
++	bool				must_blank[MAX_VID_CAP_BUFFERS];
  
- 	dprintk("%s()\n", __func__);
+ 	const struct vivid_fmt		*fmt_cap;
+ 	struct v4l2_fract		timeperframe_vid_cap;
+--- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
++++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+@@ -553,7 +553,7 @@ static int vivid_vid_cap_s_ctrl(struct v
+ 		break;
+ 	case VIVID_CID_PERCENTAGE_FILL:
+ 		tpg_s_perc_fill(&dev->tpg, ctrl->val);
+-		for (i = 0; i < VIDEO_MAX_FRAME; i++)
++		for (i = 0; i < MAX_VID_CAP_BUFFERS; i++)
+ 			dev->must_blank[i] = ctrl->val < 100;
+ 		break;
+ 	case VIVID_CID_INSERT_SAV:
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -213,7 +213,7 @@ static int vid_cap_start_streaming(struc
  
--	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
-+	if (ret  < 0)
-+		return ret;
-+
-+	snr_reading = ret;
- 
- 	if (snr_reading >= 0xa0 /* 100% */)
- 		*snr = 0xffff;
+ 	dev->vid_cap_seq_count = 0;
+ 	dprintk(dev, 1, "%s\n", __func__);
+-	for (i = 0; i < VIDEO_MAX_FRAME; i++)
++	for (i = 0; i < MAX_VID_CAP_BUFFERS; i++)
+ 		dev->must_blank[i] = tpg_g_perc_fill(&dev->tpg) < 100;
+ 	if (dev->start_streaming_error) {
+ 		dev->start_streaming_error = false;
 
 
 
