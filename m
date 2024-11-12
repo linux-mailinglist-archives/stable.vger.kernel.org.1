@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24CA9C5435
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DC89C545B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A6871F214AC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B687B28618
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA2E20B801;
-	Tue, 12 Nov 2024 10:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C879D212D37;
+	Tue, 12 Nov 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkpzkNBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmRNMvpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498FD213EE4;
-	Tue, 12 Nov 2024 10:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8476419E992;
+	Tue, 12 Nov 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407732; cv=none; b=UeprsdVxhlKL0yD1NmavxrcMmvXuwCKVDRcsS4HTgxat/96voL7AlbTIMTipNnYLQkSutq+CvDQuXfnBo+c6nLm1ezPIIBFf+AztEUhNGGh4piwNrkUwEqS9tA4M8ADIMCd9erSR0K8nGK+M3vs9NOpdbZ0Aqy6tAN01XspYg/8=
+	t=1731407025; cv=none; b=fCaE4xirFpytu/M1ecapLaKhTPCIb0PJdw+g/V2Xa1B3LXT1pVJ8vKb6cCJn3vbVN/wu/8amOrIOyONofkPFPKLpPbmnkz1TGvyV0VM7iHohe01PWjYxN5oGi/QE6a2v0kVc3VLlSLMiYyMrWMFEAlkuqFYmExoLb0tijoUbjgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407732; c=relaxed/simple;
-	bh=dphSEdx4h4661FOze0DOPF+zQFFCOkkLwjQlQWLYPbk=;
+	s=arc-20240116; t=1731407025; c=relaxed/simple;
+	bh=ZHLUyf4izq8L+IZoOKnTouPeCkMNqz54XDqge1jPJrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfnGoFdckcedwtNA3zDdp9WyLuAyAOG37Gn17b+5d8AdbAbgR2dIQc4vvKOYDUBOZfC0ZRNInkiEisPhjpYfALHpvB269Bq6MDbxsEfvv3fNAJ7JPRiHdjgHPnpNhakcqa1FImRqZdJRuTSfD4NuTprQAsxcl8kowvW5wdr41Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkpzkNBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9B1C4CED4;
-	Tue, 12 Nov 2024 10:35:31 +0000 (UTC)
+	 MIME-Version; b=Y0VhS4Um1bthNq1HhjIIVEZhDWQn5Xe+p0kM8+BhAQVfj+ySrG26MMsauvYQlu47/OErAvPP4Iqq7EQ8xfwQC5FJ96STg5Qb9h7p7TvVf30qcjmGQwk6Oy3ZKBuSsbxvFMhFK1HLmdYnG7kC412ezDgyxg/0lcpI/HNBuIpjNLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmRNMvpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ACBC4CECD;
+	Tue, 12 Nov 2024 10:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407732;
-	bh=dphSEdx4h4661FOze0DOPF+zQFFCOkkLwjQlQWLYPbk=;
+	s=korg; t=1731407025;
+	bh=ZHLUyf4izq8L+IZoOKnTouPeCkMNqz54XDqge1jPJrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkpzkNBolLmFWnZstowgTWZf6a7RxdjqSN1IWwPJ3MjvbZAMRx4CNyJuezv+odpU6
-	 LqWdgCyHqyn/9ID1bPciZHML2vfkY1bE6XtJWy49C/B0gc2YwB0MgiC+xN+RGo6NPN
-	 mgtiLHU+bE+mu7/OtqFzyPANbtKMPzPWOmN8bhus=
+	b=nmRNMvpTzb53salDc6Z9NT64Bk6sko6Oe9hpXDAFQWXBP2nivw/QNZro3pelzKvHt
+	 bBrLgmLkDNss4pxnl8hgdCvu9FJ4VAdLliuOYSSGdz0Xe7yqPeOKoOTqFKc5V+p0JI
+	 7+9cOpHlk/utEJDwpv2l5jFFxvq1kAEG+gMLEWy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/119] arm64: dts: rockchip: Correct GPIO polarity on brcm BT nodes
+Subject: [PATCH 5.15 06/76] arm64: dts: imx8mp: correct sdhc ipg clk
 Date: Tue, 12 Nov 2024 11:20:31 +0100
-Message-ID: <20241112101849.598656367@linuxfoundation.org>
+Message-ID: <20241112101840.024784466@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 08846522d9a7bccf18d4f97c3f39d03c7a193970 ]
+[ Upstream commit eab6ba2aa3bbaf598a66e31f709bf84b7bb7dc8a ]
 
-Paragraph "3.4 Power up Timing Sequence" of the AzureWave-CM256SM
-datasheet mentions the following about the BT_REG_ON pin, which is
-connected to GPIO0_C4_d:
+The ipg clk for sdhc sources from IPG_CLK_ROOT per i.MX 8M Plus
+Applications Processor Reference Manual, Table 5-2. System Clocks.
 
-  When this pin is low and WL_REG_ON is high,
-  the BT section is in reset.
-
-Therefor set that pin to GPIO_ACTIVE_HIGH so that it can be pulled low
-for a reset.
-If set to GPIO_ACTIVE_LOW, the following errors are observed:
-
-  Bluetooth: hci0: command 0x0c03 tx timeout
-  Bluetooth: hci0: BCM: Reset failed (-110)
-
-So fix the GPIO polarity by setting it to ACTIVE_HIGH.
-This also matches what other devices with the same BT device have.
-
-Fixes: 2b6a3f857550 ("arm64: dts: rockchip: Fix reset-gpios property on brcm BT nodes")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20241018145053.11928-2-didi.debian@cknow.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 6d9b8d20431f ("arm64: dts: freescale: Add i.MX8MP dtsi support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi  | 2 +-
- arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index 27d89f48c42bd..9944c9d4ca9fe 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-@@ -687,7 +687,7 @@
- 		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
- 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
- 		pinctrl-names = "default";
--		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
-+		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
- 		vbat-supply = <&vcc_wl>;
- 		vddio-supply = <&vcca_1v8_pmu>;
- 	};
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-index e9fa9bee995ae..1e36f73840dad 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-@@ -404,7 +404,7 @@
- 		host-wakeup-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&bt_host_wake_h &bt_reg_on_h &bt_wake_host_h>;
--		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
-+		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_HIGH>;
- 		vbat-supply = <&vcc_3v3>;
- 		vddio-supply = <&vcc_1v8>;
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 4e8cde8972e82..b5130e7be8263 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -740,7 +740,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b40000 0x10000>;
+ 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC1_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
+@@ -754,7 +754,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b50000 0x10000>;
+ 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC2_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
+@@ -768,7 +768,7 @@
+ 				compatible = "fsl,imx8mp-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b60000 0x10000>;
+ 				interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
+-				clocks = <&clk IMX8MP_CLK_DUMMY>,
++				clocks = <&clk IMX8MP_CLK_IPG_ROOT>,
+ 					 <&clk IMX8MP_CLK_NAND_USDHC_BUS>,
+ 					 <&clk IMX8MP_CLK_USDHC3_ROOT>;
+ 				clock-names = "ipg", "ahb", "per";
 -- 
 2.43.0
 
