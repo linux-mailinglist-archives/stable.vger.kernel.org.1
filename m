@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A709C9C55BB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304959C54EB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605101F221A1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0049CB2745E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B59219CA4;
-	Tue, 12 Nov 2024 10:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2272E2123CE;
+	Tue, 12 Nov 2024 10:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFyU1hzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reMGOJCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5194F2141A4;
-	Tue, 12 Nov 2024 10:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15F520FAB3;
+	Tue, 12 Nov 2024 10:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408317; cv=none; b=r/60Jy3wFk1nFVwC50nBElHQkpkDM2zO99ZuNBRBEofaxY78ZLJOG57cvEKF2sAiVEe8FfSklzM5Wk0lVHgYviYmps/rTxhVAaDalmSQgIALC2uDcO96Y11t3BaFWK/qLgXw3D1tKr4LUuCf2AEt9OmM1KXNQY6NrU0OkoZfLa4=
+	t=1731407757; cv=none; b=dNcFMbehMtOtTG5IO4sfbTVp2ECVLwB/SAJoasRodh+WS+Ul9T+OXeHv0t9Lh8kwEdENVPjuehaxVXtiLxCaZ0ON+xmMp7d/KhAQ7BWSLYFdI6NHQG0GTrBVGi+9itGTMlO4tXWXHRLsXaRaTh9tmxEKKZZS1G/x5r0dwpZJt9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408317; c=relaxed/simple;
-	bh=IrYdpeEkbmiV6NN+eQv8avAraMLs0AQd18nIdSv7/lA=;
+	s=arc-20240116; t=1731407757; c=relaxed/simple;
+	bh=wV8O+ziYWyh/Cvo9FbAl5HVELAoqgRhCTCWsEIu6beY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=teoarMhUxDQFsdwdm91qHWxKbFo5pJ99HOG+SRBzl4Mc06jUA4aPHH7EoIbk42nlPqvzMiEovFG13O0Xd1Z2wGOGNe+vX+8GdcvdpPeQJ9+WTDvqlq8rF0vtKCemmRzxd1XGJPVY54qCTx2155gkJIAOsp7AVUNQapTJSEwmjMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFyU1hzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B436AC4CECD;
-	Tue, 12 Nov 2024 10:45:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bt2kKDl4moIOkzG+dwWWs2SzDWUA07Z0Ea1MtvdIIDZHKsoMFZxGE/vrO3xQeansEQU14ChJFEVvKK2qqGq+/BEtOGP7FCOwRDhhNFDqY2fL4V5+h4q2IT0uzEARBrVyNd304NBInabJs4XHFrQ0/851yq5lxuHXdZHBMXxTd80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reMGOJCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341B6C4CECD;
+	Tue, 12 Nov 2024 10:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408317;
-	bh=IrYdpeEkbmiV6NN+eQv8avAraMLs0AQd18nIdSv7/lA=;
+	s=korg; t=1731407757;
+	bh=wV8O+ziYWyh/Cvo9FbAl5HVELAoqgRhCTCWsEIu6beY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFyU1hzULJwEnDp1seLIAb18lRpmYg7awLFvOp8w/XWqKVbN1pQyReszb1KCRFcIE
-	 E+/dpCibsfDnlh8Z0F339f67MEtMLFR/QJ3STyyKk9Nqgjg/nE9BUoitS6ZWG6iWR2
-	 mb/ZM/+1Whsf/9uAnqxwEkTysVwSZdYVi2ivIbgg=
+	b=reMGOJCrKfpnI5pWJ48oWJ+UnHDxhnaRggxhDDC/5C+m5ZIVl42sJ0H73zW57NQSI
+	 psiKJJmLyFcfM3YB301p0lfedxBqtZmIaqtgb3y+PEZ5TZJmCECekDCXiOvAoEsxTR
+	 +yR3MDmKVQF6VQtqCDM5ttetdN8ePaDRwT5ZtTIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.11 124/184] nfs: Fix KMSAN warning in decode_getfattr_attrs()
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.6 074/119] pwm: imx-tpm: Use correct MODULO value for EPWM mode
 Date: Tue, 12 Nov 2024 11:21:22 +0100
-Message-ID: <20241112101905.624750981@linuxfoundation.org>
+Message-ID: <20241112101851.550823894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
+commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
 
-Fix the following KMSAN warning:
+The modulo register defines the period of the edge-aligned PWM mode
+(which is the only mode implemented). The reference manual states:
+"The EPWM period is determined by (MOD + 0001h) ..." So the value that
+is written to the MOD register must therefore be one less than the
+calculated period length. Return -EINVAL if the calculated length is
+already zero.
+A correct MODULO value is particularly relevant if the PWM has to output
+a high frequency due to a low period value.
 
-CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-=====================================================
-=====================================================
-BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_generic+0x806/0xb00
- nfs4_xdr_dec_getattr+0x1de/0x240
- rpcauth_unwrap_resp_decode+0xab/0x100
- rpcauth_unwrap_resp+0x95/0xc0
- call_decode+0x4ff/0xb50
- __rpc_execute+0x57b/0x19d0
- rpc_execute+0x368/0x5e0
- rpc_run_task+0xcfe/0xee0
- nfs4_proc_getattr+0x5b5/0x990
- __nfs_revalidate_inode+0x477/0xd00
- nfs_access_get_cached+0x1021/0x1cc0
- nfs_do_access+0x9f/0xae0
- nfs_permission+0x1e4/0x8c0
- inode_permission+0x356/0x6c0
- link_path_walk+0x958/0x1330
- path_lookupat+0xce/0x6b0
- filename_lookup+0x23e/0x770
- vfs_statx+0xe7/0x970
- vfs_fstatat+0x1f2/0x2c0
- __se_sys_newfstatat+0x67/0x880
- __x64_sys_newfstatat+0xbd/0x120
- x64_sys_call+0x1826/0x3cf0
- do_syscall_64+0xd0/0x1b0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
-decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
-initialized.
-
-Fix the issue by initializing fattr->mdsthreshold to NULL in
-nfs_fattr_init().
-
-Cc: stable@vger.kernel.org # v3.5.x
-Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/pwm-imx-tpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1656,6 +1656,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
- 	fattr->gencount = nfs_inc_attr_generation_counter();
- 	fattr->owner_name = NULL;
- 	fattr->group_name = NULL;
-+	fattr->mdsthreshold = NULL;
- }
- EXPORT_SYMBOL_GPL(nfs_fattr_init);
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -106,7 +106,9 @@ static int pwm_imx_tpm_round_state(struc
+ 	p->prescale = prescale;
  
+ 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
+-	p->mod = period_count;
++	if (period_count == 0)
++		return -EINVAL;
++	p->mod = period_count - 1;
+ 
+ 	/* calculate real period HW can support */
+ 	tmp = (u64)period_count << prescale;
 
 
 
