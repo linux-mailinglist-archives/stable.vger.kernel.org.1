@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BD39C554F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244769C54AA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03D50B335D3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D10FB34027
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D026920EA37;
-	Tue, 12 Nov 2024 10:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A814B213EF9;
+	Tue, 12 Nov 2024 10:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj3XQGUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxk90rxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF201F26E3;
-	Tue, 12 Nov 2024 10:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC02123CF;
+	Tue, 12 Nov 2024 10:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407543; cv=none; b=AGozodHh0zfLrUk4JhI6VE+EpxzttiWFpKW4H4Nm+SL5VsJ05d3ovtuAxwgJecX9uXESVZcXS6xy86gTNxbZO3BYiw2c2H8mnx1dvqOGphfFX+BOMJUN8fLcWClP7pLNEIvvrVdK1fBMkcVAPIw5DtZuqy4QWkqxqgGX0usTLpg=
+	t=1731407204; cv=none; b=gYBYZP/NVSHw0DhTKizPfFB+E4qpBYuMvnutYvnnRf0iDzc/lH/5+1mcvLTanR1lCOVqJvS3teO4wy9/Ztq3Mm8JvKM9drRww/w3b5q/UFBejKszs/dOx5AbztiFd1sw0Gqls+ld1oTHAUbP0lBrPRRF4H4QZdXuOqK33SfBvIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407543; c=relaxed/simple;
-	bh=s98wRWalgw0vqmGiZu7C8w8NS0pF6HMN9zJgYjNVyV4=;
+	s=arc-20240116; t=1731407204; c=relaxed/simple;
+	bh=C/b7RRqz/1F5+FwqOLWc0C+igA2ppaR9Z452TnAAWj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQHHyS5wc62dZ4gXyXlVqLopMlZzR9zwreOBvU6rODKkq9KPnmjvW3HdOTV8kOD5RkHvR6jZ4biRwcqSe5vFC0eIstXzr34StlPSrv/2pwO3B51le+WXcFk+F185IaRGbK0bmghVLbpKqE52RB7Fl/VwQOhD/k0Q8B2BMOytkGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj3XQGUL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16865C4CECD;
-	Tue, 12 Nov 2024 10:32:22 +0000 (UTC)
+	 MIME-Version; b=OOsWV3p/weJVaHO85CRReuuzh6v5puecsglH8FWDiMhdBzW5v13EojVeeA1s4sYQLBibk0wII+0SACX3Y3SPo1DF1+ti8Cgyfy9Vpve775rcrGsV5kKiYSYbisZ7I+8TZpF7XaMsZF3AIBUGEBZ2PFn3F4naJC8CkEELomIFxGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxk90rxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC901C4CECD;
+	Tue, 12 Nov 2024 10:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407543;
-	bh=s98wRWalgw0vqmGiZu7C8w8NS0pF6HMN9zJgYjNVyV4=;
+	s=korg; t=1731407204;
+	bh=C/b7RRqz/1F5+FwqOLWc0C+igA2ppaR9Z452TnAAWj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kj3XQGULATCuHozqPgnv/MxnakZBGtvNUjaCAeXBLJomPTHpOrYjvyRMquVfQ0rOT
-	 fV8ZlIrK8T0LdSudUtmHLh0bPrw9SbR8zVEVhXqSuUrBC1iPbeUSdwJDtpUDjJ/h7x
-	 /Xr2+SYHwgxMMRvXyDdm20iH9I/KuojO92MSZzdQ=
+	b=Fxk90rxCWn4eEnCAA4X1/o9jBmsOkiwzVsdzWZulCmZVlSDuw8aYN5ZhnD+pZburS
+	 zuudmYXHRrg5VFIHJq10XMp4O5kSDgha7dlD/PnEtEjaN/m9t2BOSIjjKNcRAjDe9N
+	 GmwU10NlXhg7c0AWYC3CJmdIavDvenBM72CzYVjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 74/98] btrfs: reinitialize delayed ref list after deleting it from the list
-Date: Tue, 12 Nov 2024 11:21:29 +0100
-Message-ID: <20241112101847.075617490@linuxfoundation.org>
+	Jack Wu <wojackbb@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 65/76] USB: serial: qcserial: add support for Sierra Wireless EM86xx
+Date: Tue, 12 Nov 2024 11:21:30 +0100
+Message-ID: <20241112101842.260186854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jack Wu <wojackbb@gmail.com>
 
-commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
+commit 25eb47eed52979c2f5eee3f37e6c67714e02c49c upstream.
 
-At insert_delayed_ref() if we need to update the action of an existing
-ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
-ref_add_list using list_del(), which leaves the ref's add_list member
-not reinitialized, as list_del() sets the next and prev members of the
-list to LIST_POISON1 and LIST_POISON2, respectively.
+Add support for Sierra Wireless EM86xx with USB-id 0x1199:0x90e5 and
+0x1199:0x90e4.
 
-If later we end up calling drop_delayed_ref() against the ref, which can
-happen during merging or when destroying delayed refs due to a transaction
-abort, we can trigger a crash since at drop_delayed_ref() we call
-list_empty() against the ref's add_list, which returns false since
-the list was not reinitialized after the list_del() and as a consequence
-we call list_del() again at drop_delayed_ref(). This results in an
-invalid list access since the next and prev members are set to poison
-pointers, resulting in a splat if CONFIG_LIST_HARDENED and
-CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
-otherwise.
+0x1199:0x90e5
+T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e5 Rev= 5.15
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Semtech EM8695 Mobile Broadband Adapter
+S:  SerialNumber=004403161882339
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-So fix this by deleting from the list with list_del_init() instead.
+0x1199:0x90e4
+T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e4 Rev= 0.00
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  SerialNumber=004403161882339
+C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=qcserial
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jack Wu <wojackbb@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-ref.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/qcserial.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -622,7 +622,7 @@ static int insert_delayed_ref(struct btr
- 					      &href->ref_add_list);
- 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
- 				ASSERT(!list_empty(&exist->add_list));
--				list_del(&exist->add_list);
-+				list_del_init(&exist->add_list);
- 			} else {
- 				ASSERT(0);
- 			}
+--- a/drivers/usb/serial/qcserial.c
++++ b/drivers/usb/serial/qcserial.c
+@@ -166,6 +166,8 @@ static const struct usb_device_id id_tab
+ 	{DEVICE_SWI(0x1199, 0x9090)},	/* Sierra Wireless EM7565 QDL */
+ 	{DEVICE_SWI(0x1199, 0x9091)},	/* Sierra Wireless EM7565 */
+ 	{DEVICE_SWI(0x1199, 0x90d2)},	/* Sierra Wireless EM9191 QDL */
++	{DEVICE_SWI(0x1199, 0x90e4)},	/* Sierra Wireless EM86xx QDL*/
++	{DEVICE_SWI(0x1199, 0x90e5)},	/* Sierra Wireless EM86xx */
+ 	{DEVICE_SWI(0x1199, 0xc080)},	/* Sierra Wireless EM7590 QDL */
+ 	{DEVICE_SWI(0x1199, 0xc081)},	/* Sierra Wireless EM7590 */
+ 	{DEVICE_SWI(0x413c, 0x81a2)},	/* Dell Wireless 5806 Gobi(TM) 4G LTE Mobile Broadband Card */
 
 
 
