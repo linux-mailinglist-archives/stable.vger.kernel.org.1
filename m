@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425F69C53D2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593479C55DD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2ED1B33BD6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4DE32839F6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7EF2139CF;
-	Tue, 12 Nov 2024 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77D21B438;
+	Tue, 12 Nov 2024 10:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFY12WJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKak6d7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3835620B20B;
-	Tue, 12 Nov 2024 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4C20E307;
+	Tue, 12 Nov 2024 10:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407158; cv=none; b=aQdN2/uIOZsgovaMhHfnuzoKH8RAIRzOlLp06mmrD4VhbTVSsBOdI3PKlkj9Mja4/aJwDDW8UEru4sWza18qbOAwZb9gmqgZu0UNgWbR5Tamo3H4faCZpoGnjNBh4T/7vDciFptNhbGRgip8c+WK9LkClc1QZLSQTfhbjzUfdhs=
+	t=1731408451; cv=none; b=nJ4HqV2E1TX3+EeoDBiSBfJEt/yFcOgZF9fHt77IV5H+ddYs+kV5HmgQVDjhdoKol2ROxl/rgfXOMOuV1IqpwlgdZ7ZcYG0B47FgbZaakxl1EpR4M8b/SgEce2E8rxEutz/T79k5f0ZZo0yFAXf5U+ca30ubJzk8hCHIQ+AyjPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407158; c=relaxed/simple;
-	bh=6EjPaQ0n12JmNEfJNIQusFabeu4YZXnxusFRd57/rjo=;
+	s=arc-20240116; t=1731408451; c=relaxed/simple;
+	bh=ZMeLJp96ShZUUjyMFr5Je+/DjGabfM5lMB24KpCkthE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHO4siGp22xFkWLhhytjUD0Olhik/E7vr+dXXXQ1c4Wt7HifCzu4B3ng5Tj8gBVbCuKS3seK+Z7NaWLB0c6tSwKk2ZbqJEeodnb5Y5mL7gN0vG1iFnRqaibcntvyhZ9s30azj66xZ9Tm1c2XWj7UfsLoDwpAp6HRQFlR721p3gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFY12WJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C235C4CECD;
-	Tue, 12 Nov 2024 10:25:57 +0000 (UTC)
+	 MIME-Version; b=AeryVekbdqQCpWWvvpwzOgvs1Cg6Vgk49n5QkJ+uQF0rkkBT6FFBcMdcK+a7X389//7Nk1oQ8+KYCCZE0YLwZ/3noliDecMUzSuTCK7LsAQjHWMYZNZOliYX+VFE8xtai73A3XR0PzopJZjnizthaK7mSctrNOCRan5WxIgzgh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKak6d7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC23C4CECD;
+	Tue, 12 Nov 2024 10:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407158;
-	bh=6EjPaQ0n12JmNEfJNIQusFabeu4YZXnxusFRd57/rjo=;
+	s=korg; t=1731408451;
+	bh=ZMeLJp96ShZUUjyMFr5Je+/DjGabfM5lMB24KpCkthE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFY12WJQ6J9/h0ntl6JVvivZnRKEmKUwTca7XqMH7WXIPz7gZ9RqmOaLs0Hh127Zb
-	 wB9/mk/sJiNTgfJgsL7tGbxdDPB45NAb7aiGwFKD1zXkOXnVoQbw6iY4t83qJ93ziC
-	 weiYCGT+Rh6PdftdJYRZ9JDU+gV0+adWnnP9YnB0=
+	b=wKak6d7XsDthMpVhEkpZ0Xx6MD9230NFpAoN3MQPzlh/YP77S0uJLyPL4yBGJ7Eoa
+	 fYAPTRA7GM3ejeccclGq/7iadAU9bCjVBdeQ8YBJGOxcK7cfBfrBF/7NClIHiFcQtC
+	 sIM31K8DS/QdKoNHbaTdjHN5fZeWaRTOXhQJC9+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 68/76] irqchip/gic-v3: Force propagation of the active state with a read-back
+	Tarun K Singh <tarun.k.singh@intel.com>,
+	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.11 135/184] idpf: fix idpf_vc_core_init error path
 Date: Tue, 12 Nov 2024 11:21:33 +0100
-Message-ID: <20241112101842.371419163@linuxfoundation.org>
+Message-ID: <20241112101906.050916564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 
-commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
+commit 9b58031ff96b84a38d7b73b23c7ecfb2e0557f43 upstream.
 
-Christoffer reports that on some implementations, writing to
-GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
-issuing a deactivation of that interrupt via the system register interface.
+In an event where the platform running the device control plane
+is rebooted, reset is detected on the driver. It releases
+all the resources and waits for the reset to complete. Once the
+reset is done, it tries to build the resources back. At this
+time if the device control plane is not yet started, then
+the driver timeouts on the virtchnl message and retries to
+establish the mailbox again.
 
-There are multiple reasons to this:
+In the retry flow, mailbox is deinitialized but the mailbox
+workqueue is still alive and polling for the mailbox message.
+This results in accessing the released control queue leading to
+null-ptr-deref. Fix it by unrolling the work queue cancellation
+and mailbox deinitialization in the reverse order which they got
+initialized.
 
- - this uses an early write-acknoledgement memory type (nGnRE), meaning
-   that the write may only have made it as far as some interconnect
-   by the time the store is considered "done"
-
- - the GIC itself is allowed to buffer the write until it decides to
-   take it into account (as long as it is in finite time)
-
-The effects are that the activation may not have taken effect by the time
-the kernel enters the guest, forcing an immediate exit, or that a guest
-deactivation occurs before the interrupt is active, doing nothing.
-
-In order to guarantee that the write to the ISACTIVER register has taken
-effect, read back from it, forcing the interconnect to propagate the write,
-and the GIC to process the write before returning the read.
-
-Reported-by: Christoffer Dall <christoffer.dall@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Christoffer Dall <christoffer.dall@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
+Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org # 6.9+
+Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
+Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c      |    1 +
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -429,6 +429,13 @@ static int gic_irq_set_irqchip_state(str
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1799,6 +1799,7 @@ static int idpf_init_hard_reset(struct i
+ 	 */
+ 	err = idpf_vc_core_init(adapter);
+ 	if (err) {
++		cancel_delayed_work_sync(&adapter->mbx_task);
+ 		idpf_deinit_dflt_mbx(adapter);
+ 		goto unlock_mutex;
  	}
- 
- 	gic_poke_irq(d, reg);
-+
-+	/*
-+	 * Force read-back to guarantee that the active state has taken
-+	 * effect, and won't race with a guest-driven deactivation.
-+	 */
-+	if (reg == GICD_ISACTIVER)
-+		gic_peek_irq(d, reg);
- 	return 0;
- }
- 
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3063,7 +3063,6 @@ init_failed:
+ 	adapter->state = __IDPF_VER_CHECK;
+ 	if (adapter->vcxn_mngr)
+ 		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+-	idpf_deinit_dflt_mbx(adapter);
+ 	set_bit(IDPF_HR_DRV_LOAD, adapter->flags);
+ 	queue_delayed_work(adapter->vc_event_wq, &adapter->vc_event_task,
+ 			   msecs_to_jiffies(task_delay));
 
 
 
