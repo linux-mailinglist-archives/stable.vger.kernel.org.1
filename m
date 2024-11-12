@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E82C9C5654
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C90249C544C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E01C0B2CE9D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72A18B24D00
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B4E213150;
-	Tue, 12 Nov 2024 10:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A0C213129;
+	Tue, 12 Nov 2024 10:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0sd1AE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVyC0ZAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7D20EA37;
-	Tue, 12 Nov 2024 10:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF420F5D3;
+	Tue, 12 Nov 2024 10:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407288; cv=none; b=H8YjA7kNwbL9KF/502ov3pvuk7lVPuUm+ZN9RZBv7ek8/6b8sGtraB6koTtc5l1O5T0KLgroM8NuUyKNAWcxIvW7OJQkmxI5NRS2EugrO24Un+vp4mGpuWAynXbx42kHSk21ck2UvjSdiah9QLR2SOk9fODXAIckquHVo5f1xm0=
+	t=1731407642; cv=none; b=faEcQwq+ONOHTv4KYuTIjsf7/FAbhP0jW1DqIrTs+5Q78gmT15+YIzyVFpdztgffybO9gOWd99VuvWsJKfcA5t4WeIRmSIe1NJUsf1xYnJeiOtfNKsBlDuD5PzkcIwQ6XkVz2hhBGLLaSNFHdZhYGW8V5yfoW8J6yoSezv2Q8+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407288; c=relaxed/simple;
-	bh=bjCo+KVI/MozsCVUTOzeJUcBTdLXj+o6DZJGGU9Ut9Y=;
+	s=arc-20240116; t=1731407642; c=relaxed/simple;
+	bh=zZ11e16MlqcxHM8n6PfYGUxsG/lqf4PBumE0yplIRW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y9gdGzNlMDceKBtGIwjfdW3OkHN2jLDU8dD/b0yQqQegmek5QmJOrPnzxF08yjO2lmBtXRHzJx0cHd/5OwzkxEfCyW/cPXDfxqUhkjcE+D8QaGYEjV3w9ab8dpNnpnmPrgfqdMYH0SNUxqO6D1bGwRIb78hs7DDY6ruXXCC3Zk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0sd1AE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E348C4CECD;
-	Tue, 12 Nov 2024 10:28:07 +0000 (UTC)
+	 MIME-Version; b=DT2jfP8yuezAebP1WQ5jQEm9AofTJe2DVVxP5wsfEdSwyd0IK2YtDyU4ide9gp3FEtsvamTU0UA/CIULxXE8KnF2VE92yJArV2kopasmGfWimvFF/+hNfX3LFX58OAtxwPsZwPLV65yNXl5VNrRMGOiSY6O89QJZUk0nw0UBQqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVyC0ZAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA2AC4CECD;
+	Tue, 12 Nov 2024 10:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407288;
-	bh=bjCo+KVI/MozsCVUTOzeJUcBTdLXj+o6DZJGGU9Ut9Y=;
+	s=korg; t=1731407642;
+	bh=zZ11e16MlqcxHM8n6PfYGUxsG/lqf4PBumE0yplIRW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0sd1AE18B1okuhU+Z3NpJX2PQFz0tVyrLNhHJ/ej7Ti5tmb+YaZ/8G8kI4FQz9Vp
-	 jKy1HJf+A5X2upf4i+WfUEKCV0d5fqSmkfTqWlULNU8aYwGQAyYVXuiqzhp0DU7NAI
-	 kBRSvzofE7AbeAVve307+9MM4lN0W5cAxSb2c7IA=
+	b=pVyC0ZAeIH+0X59hFkf0IIWi5bbS2/7G2cWSIFMW92brQ+x8o8y/ihCJX/tS5ZavP
+	 86voP70QjJhHJnR+ZwIjaPQGtuiHytKsEj/jVl2YjFAmgdUICZcj6wt1/GNf5UaF8w
+	 YxfWj2mXkK2RMAWfnlte6jKe8MrgrJ/+XQ8LWD5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/98] net: stmmac: Fix unbalanced IRQ wake disable warning on single irq case
-Date: Tue, 12 Nov 2024 11:20:45 +0100
-Message-ID: <20241112101845.421777065@linuxfoundation.org>
+Subject: [PATCH 6.6 038/119] e1000e: Remove Meteor Lake SMBUS workarounds
+Date: Tue, 12 Nov 2024 11:20:46 +0100
+Message-ID: <20241112101850.169277626@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 25d70702142ac2115e75e01a0a985c6ea1d78033 ]
+[ Upstream commit b8473723272e346e22aa487b9046fd324b73a0a5 ]
 
-Commit a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by
-unbalanced disable_irq_wake calls") introduced checks to prevent
-unbalanced enable and disable IRQ wake calls. However it only
-initialized the auxiliary variable on one of the paths,
-stmmac_request_irq_multi_msi(), missing the other,
-stmmac_request_irq_single().
+This is a partial revert to commit 76a0a3f9cc2f ("e1000e: fix force smbus
+during suspend flow"). That commit fixed a sporadic PHY access issue but
+introduced a regression in runtime suspend flows.
+The original issue on Meteor Lake systems was rare in terms of the
+reproduction rate and the number of the systems affected.
 
-Add the same initialization on stmmac_request_irq_single() to prevent
-"Unbalanced IRQ <x> wake disable" warnings from being printed the first
-time disable_irq_wake() is called on platforms that run on that code
-path.
+After the integration of commit 0a6ad4d9e169 ("e1000e: avoid failing the
+system during pm_suspend"), PHY access loss can no longer cause a
+system-level suspend failure. As it only occurs when the LAN cable is
+disconnected, and is recovered during system resume flow. Therefore, its
+functional impact is low, and the priority is given to stabilizing
+runtime suspend.
 
-Fixes: a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241101-stmmac-unbalanced-wake-single-fix-v1-1-5952524c97f0@collabora.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 76a0a3f9cc2f ("e1000e: fix force smbus during suspend flow")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 045e57c444fd7..14e5b94b0b5ab 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3665,6 +3665,7 @@ static int stmmac_request_irq_single(struct net_device *dev)
- 	/* Request the Wake IRQ in case of another line
- 	 * is used for WoL
- 	 */
-+	priv->wol_irq_disabled = true;
- 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
- 		ret = request_irq(priv->wol_irq, stmmac_interrupt,
- 				  IRQF_SHARED, dev->name, dev);
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index ce227b56cf724..2f9655cf5dd9e 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -1205,12 +1205,10 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	if (ret_val)
+ 		goto out;
+ 
+-	if (hw->mac.type != e1000_pch_mtp) {
+-		ret_val = e1000e_force_smbus(hw);
+-		if (ret_val) {
+-			e_dbg("Failed to force SMBUS: %d\n", ret_val);
+-			goto release;
+-		}
++	ret_val = e1000e_force_smbus(hw);
++	if (ret_val) {
++		e_dbg("Failed to force SMBUS: %d\n", ret_val);
++		goto release;
+ 	}
+ 
+ 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
+@@ -1273,13 +1271,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	}
+ 
+ release:
+-	if (hw->mac.type == e1000_pch_mtp) {
+-		ret_val = e1000e_force_smbus(hw);
+-		if (ret_val)
+-			e_dbg("Failed to force SMBUS over MTL system: %d\n",
+-			      ret_val);
+-	}
+-
+ 	hw->phy.ops.release(hw);
+ out:
+ 	if (ret_val)
 -- 
 2.43.0
 
