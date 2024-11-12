@@ -1,105 +1,112 @@
-Return-Path: <stable+bounces-92178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E849C4B80
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 02:07:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37569C4B85
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 02:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A961F21B86
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 01:07:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15EA8B2396B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 01:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFEC1F8196;
-	Tue, 12 Nov 2024 01:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547EB1F7574;
+	Tue, 12 Nov 2024 01:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NQrgGs8c";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wZsYcMRK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR0jeD4A"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49CC5234;
-	Tue, 12 Nov 2024 01:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFBC5234;
+	Tue, 12 Nov 2024 01:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731373665; cv=none; b=bS/c3qRLfKRdd85I8rZu+eWwhyTooD8pRwd26PNRHBmRWYL7QyWa2EZDxEBEFRWgAA9YuSJqp1CKJtpPVbTv11ce98j1OWjo8H7Auv0qgdafDdilSgmdzkRwUL1cflBd1K62Wovk2++/Qr8o0wLWNEcwFm4ESVjzSNG83KVr24A=
+	t=1731373703; cv=none; b=CURR4Fj2TPUVgJNvjaK2RkggqqZopQiM+PJVL4vMxYH0uOdFWbSqAfBRbRLYRBnRmnM3NMdIlSuHmvt08Y11y+V6mahmBTCZOx+vHIOjr/f+6PEVSNXCW6aSUo/DumS56Kpp6kcU5x4klGQj5PaBgR8s73KhxC3BTB2j5NYRy1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731373665; c=relaxed/simple;
-	bh=NiT2v4KtxIZJPnmu+e9fr80tgReDlEnejBG+0hbQIRQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VtHT3RHe0xcu8ZV87sOVmXfuP6CZ/PR0ylvsYotlJZ+Vseyph/nKIeK0Wk8C0ffhYesJyWvdrp/Kx1CmXmyVpeMvNxdrBmsJzO3QOS4A4n+mKH8xgrRb/PImwyLUPmJYKNNceQHWYl/lqdAXcPaE3xhy2cHXUPxFK1O907sQIYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NQrgGs8c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wZsYcMRK; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1731373661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d5s/m46v24gtVwgvBpriXEpuPGkdMoQKTK4XbSOPcW0=;
-	b=NQrgGs8cbfXP1icrl/Q/tDfZ4FitRa0D40dfkQS46xkpmA8JpxTbKqFUOGxJve0B7CtTaX
-	uMw9rqrv/A3NdUJm9eTMXMaaXRXiO9BDhJbXshSIwSACg5IMFyTqV7yAEKRtv1HJ7EoIS7
-	Sa3vfadfL+Wn4OoYxYkDcfrkIssTyoNO5RwqHMordzHU+HAwHwwenle38s8iWW69PZdKM/
-	pw2Mn52nyRFZTMr58zGCMzi4dg6/v1tRWQtLh4Sqnr56FugYEMXBohLxB9KFAxb8fu37h+
-	/qKEgIH9SjHXWdRssjqsI11zXH40i1Xclbma7ckvqcb9pBwL+CUtZhx7D6RleA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1731373661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d5s/m46v24gtVwgvBpriXEpuPGkdMoQKTK4XbSOPcW0=;
-	b=wZsYcMRKaH6IYWLT6361xLxBJTLTZi6Yd3Jr63R1BT0K+f10LZUOCMik2bAsGOl5jkpse4
-	amiJtHAq0cX7ZnDw==
-To: Len Brown <lenb@kernel.org>, peterz@infradead.org, x86@kernel.org
-Cc: rafael@kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, Len Brown <len.brown@intel.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH backport to 6.10] x86/cpu: Add INTEL_FAM6_LUNARLAKE_M to
- X86_BUG_MONITOR
-In-Reply-To: <20241108135206.435793-2-lenb@kernel.org>
-References: <20241108135206.435793-1-lenb@kernel.org>
- <20241108135206.435793-2-lenb@kernel.org>
-Date: Tue, 12 Nov 2024 02:07:27 +0100
-Message-ID: <87h68dnttc.ffs@tglx>
+	s=arc-20240116; t=1731373703; c=relaxed/simple;
+	bh=Yvcx1AXHc9kQyvfwxXWWRFwqQa663r5SsuoB/VXqYXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T2M+zF6r/kmr1xn+xxSII+lNq/efXQ/JxNSwbU0mmMLUprbDcUh+fDxG2EMM42m0gSe+5zVBiX//nRpJNnMRY4PrT9rUCtwahmulmliJ2Ka+KGrezAQr8Fgzuk+8/tCN229fuqvv5agruDiuSzJzHJ3J3goeux7zpG9t8kRA41I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR0jeD4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D626C4CECF;
+	Tue, 12 Nov 2024 01:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731373702;
+	bh=Yvcx1AXHc9kQyvfwxXWWRFwqQa663r5SsuoB/VXqYXA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CR0jeD4AnXXENKTzMnCiXV+YDbVByQZ1f1SM6m9Kz49TNoTgxYlqjiEzSrytFxW3/
+	 3yFUXYsZGSAW7NAwLrdHlKghhpBSWQLbwciLglfY+LG7CS/1HvegPgq1t3EqggOemD
+	 0GUQeW8vV0KKghLpb/dMH6o0Ma+Y9lYI182/NG2YBnIsnzgxIO61sjymclv7MUgmwt
+	 nlV/7+V5sbZZBzBP4X3XtUDaNyeUMwF1/MWaD6A2fx9FF5aX6jcTpV+JLk3xAP+tmQ
+	 G8niQcGQakL6PlRvAfZkeanxvqYc4IJZuwLSVKl4nVg2FIlKZ8vXcy/2S7xrN8woXC
+	 TYuqrgoch00bQ==
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	stable@vger.kernel.org,
+	Daniel Rosenberg <drosen@google.com>
+Subject: [PATCH] Revert "f2fs: remove unreachable lazytime mount option parsing"
+Date: Tue, 12 Nov 2024 01:08:20 +0000
+Message-ID: <20241112010820.2788822-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 08 2024 at 08:49, Len Brown wrote:
-> From: Len Brown <len.brown@intel.com>
->
-> Under some conditions, MONITOR wakeups on Lunar Lake processors
-> can be lost, resulting in significant user-visible delays.
->
-> Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
-> always sends an IPI, avoiding this potential delay.
-> Update the X86_BUG_MONITOR workaround to handle
-> the new smp_kick_mwait_play_dead() path.
->
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219364
->
-> Cc: stable@vger.kernel.org # 6.10
-> Signed-off-by: Len Brown <len.brown@intel.com>
-> ---
-> This is a backport of the upstream patch to Linux-6.10 and earlier
+This reverts commit 54f43a10fa257ad4af02a1d157fefef6ebcfa7dc.
 
-You either fail to understand or intentionally ignore the process for
-stable backports, which is in place since more than a decade.
+The above commit broke the lazytime mount, given
 
-Documentation/process/* has plenty of information how that works and
-you're around long enough to know that already.
+mount("/dev/vdb", "/mnt/test", "f2fs", 0, "lazytime");
 
-I don't care about you wasting your time, but I very much care about you
-wasting my time to deal with pointless emails. I get plenty enough of
-them every day.
+CC: stable@vger.kernel.org # 6.11+
+Signed-off-by: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/super.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Thanks,
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 49519439b770..35c4394e4fc6 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -150,6 +150,8 @@ enum {
+ 	Opt_mode,
+ 	Opt_fault_injection,
+ 	Opt_fault_type,
++	Opt_lazytime,
++	Opt_nolazytime,
+ 	Opt_quota,
+ 	Opt_noquota,
+ 	Opt_usrquota,
+@@ -226,6 +228,8 @@ static match_table_t f2fs_tokens = {
+ 	{Opt_mode, "mode=%s"},
+ 	{Opt_fault_injection, "fault_injection=%u"},
+ 	{Opt_fault_type, "fault_type=%u"},
++	{Opt_lazytime, "lazytime"},
++	{Opt_nolazytime, "nolazytime"},
+ 	{Opt_quota, "quota"},
+ 	{Opt_noquota, "noquota"},
+ 	{Opt_usrquota, "usrquota"},
+@@ -922,6 +926,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 			f2fs_info(sbi, "fault_type options not supported");
+ 			break;
+ #endif
++		case Opt_lazytime:
++			sb->s_flags |= SB_LAZYTIME;
++			break;
++		case Opt_nolazytime:
++			sb->s_flags &= ~SB_LAZYTIME;
++			break;
+ #ifdef CONFIG_QUOTA
+ 		case Opt_quota:
+ 		case Opt_usrquota:
+-- 
+2.47.0.277.g8800431eea-goog
 
-        tglx
 
