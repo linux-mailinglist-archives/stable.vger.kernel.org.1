@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC59C5647
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:23:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA799C533D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D706B3544B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344852836B6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABCD213156;
-	Tue, 12 Nov 2024 10:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0247C213129;
+	Tue, 12 Nov 2024 10:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSdMjJGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NH4MbEN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079C42123F2;
-	Tue, 12 Nov 2024 10:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0C2213124;
+	Tue, 12 Nov 2024 10:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407301; cv=none; b=Ds8tBFxkbRJ5vL6WZOuDwIMzSTTHnstyALq94JWDzcn/Y+DM0MJf3eJKWj3EpFHgV+JNbyz16TTEPgXr9uzIpNIkhUkNOwexHwoYUN2CZe9sIHfkIHSACpIzq5p6v2E1wk7M4lMI8DE7h2Ln2oq4itXUpKrtLz9n5eeX6tofQrs=
+	t=1731407041; cv=none; b=GE6LeJxwjWfs7bVnJKYyampAFsZCfs7pSybXM2tybTnHlXoXYvWI9ba66NpG5vsx4VxTJggalARdDrpViXLDR+vvc0GeH4w8ptGcfa+f7jsT21tVLxhiKfYWu2QCoCKrz8ENLFZ9UXBLXnzbhksSrEqfoO3NAtO2AfmjNAFynzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407301; c=relaxed/simple;
-	bh=IbPZQY9Wr0hOc70TGEe5vbhFb/mLxmuiaTM4kHyrcb8=;
+	s=arc-20240116; t=1731407041; c=relaxed/simple;
+	bh=GUMDMoHQ9WpTamIQQHZK+ZzTAAGe+/h8iDX74TJNdIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AO8cgc6+KbprDwajrM1CU8oDG+PgNOrs+0uu+S/ADeD6XI/gh9Udphdau+ryPe8ZTBG620SrXbca2DnHCg9KrCsXaJFj4Q5iTXALTgXmzc7IJAtlhbJN6FF7H2SOdVPZCGo65WROxrwW5UTrg5zzWzUjAF8AZTxWafYpFHYlrZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSdMjJGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA36C4CED4;
-	Tue, 12 Nov 2024 10:28:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O3PSyB/Yk56JwgW8A27Uj/pYUSOelc1t/qWZ1Lw0hCJRKIGBFuogwLYrdtpIebVp9cXZj9fPral5t5lo2IjwUJNm9nlkybVY2ZfjqAb3DR8q7SiBIr0P5ED6P6k48ZS1jMqtdKshh8zInUfAZZjW61zlqbGdaDpM8x+AyhchhuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NH4MbEN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5D4C4CED4;
+	Tue, 12 Nov 2024 10:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407300;
-	bh=IbPZQY9Wr0hOc70TGEe5vbhFb/mLxmuiaTM4kHyrcb8=;
+	s=korg; t=1731407041;
+	bh=GUMDMoHQ9WpTamIQQHZK+ZzTAAGe+/h8iDX74TJNdIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSdMjJGZQEKIbaoWii8HUwve4/ZrJzokzFJwwCHbCM2TlGJwJAlL6GaGm9Z58Tt0/
-	 q4aI+PKlAorWee6nTBL+qwKjRyUVfyCf45SBeK5XlV4teULppwnBd+72iEEJZm2NBf
-	 lDVbhP43Ma2yWGFSi4QpX8Ykr9ZE76JrwD+FbXDM=
+	b=NH4MbEN4wuMKX6fHUU9o5vBPyk6TUoLNG0/RpBpdKDUQg/UPr4DV4Z++HDYTUD9lv
+	 ckxGwA6gD7HOVox7YzmQk/zFY8Lt2ankadXH2djao7m9FPCkbGhvmd3m/kaJgQTVuG
+	 hO1xarwq+x+TOzgBLX1cBGoiE6DlBj0ROa1y3V/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 34/98] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
-Date: Tue, 12 Nov 2024 11:20:49 +0100
-Message-ID: <20241112101845.573027844@linuxfoundation.org>
+Subject: [PATCH 5.15 25/76] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
+Date: Tue, 12 Nov 2024 11:20:50 +0100
+Message-ID: <20241112101840.747529611@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
