@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-92304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2079C5371
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:29:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A90C9C5585
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D81481F21466
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE3B28EE3C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A0920899D;
-	Tue, 12 Nov 2024 10:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B172178F7;
+	Tue, 12 Nov 2024 10:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbitsCiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brCzXz24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0342123CF;
-	Tue, 12 Nov 2024 10:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634B213120;
+	Tue, 12 Nov 2024 10:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407220; cv=none; b=eozxikQnYJKND/flNFz+ajOAUAPrQSIxBZVeVIr9RGDV9rCqJjrM06suEwVt2+GA6B9mTqKP9p0T4GWS/FdDrNGi+RnsSkNGDfjwH5JcY/g9yZmFSAM7xjHYxY3m8+RrG8ICyrTQfsgEm9jtIlLoyFWqheK6cHgMFBPxyk74XAE=
+	t=1731408125; cv=none; b=FtuWgRk5jKkSRy16JsNrxuLc01JTXNVM4NR5Cudgnq46bB+EkeHN6EPA899r44mtypGOfbQnLgGUUBjRrraYPRagtQOUCS8Ee4+rC50nFSpYuV51AqIxuRdyF0m19V7VOnuwyBdVghFoR5Y6aLvGx/qmnpINtLUoYq/wMuFbSNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407220; c=relaxed/simple;
-	bh=iF4aGTEK0J/TaIgRMGPzl6Dk7+XQ6RjnTqZfbIFYEZQ=;
+	s=arc-20240116; t=1731408125; c=relaxed/simple;
+	bh=L3tvMEhzKcAGdd9QAxwuRqAFgyYRYhsZvPQ640hqbho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oc34xbbxWPWi4UyRBdRZXr3Q5Xkc42ON70tbvq30axSY806dhNV9H6y/VrOT2nwxQoEcKys0WdvKbAH8uw4J12KRkYoyZIapoxkUHjh6c3Y2lwRg6zg8eBnLMkoE7u7qJJIV1/CVfl/jiRv1anT0nQ0IzNl3dzvgTiOL69rPMr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbitsCiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06314C4CECD;
-	Tue, 12 Nov 2024 10:26:59 +0000 (UTC)
+	 MIME-Version; b=o5DFpcMzkOVeji6mofUqBGdnnBAnj7Fz0u3Ri57ffy8vjxlsPraiHq5kWmxFdkN+mlMdeuHWhZ9DDaOyJJnGZ6P5tvy9kyyg+LAgq48oMKe1AKlhcgLYTU1ujctx7UYXZTMJdItc92AQaZFDQO7oWVUpqLe3Q1kHQ+BfnHHStD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brCzXz24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCA0C4CECD;
+	Tue, 12 Nov 2024 10:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407220;
-	bh=iF4aGTEK0J/TaIgRMGPzl6Dk7+XQ6RjnTqZfbIFYEZQ=;
+	s=korg; t=1731408125;
+	bh=L3tvMEhzKcAGdd9QAxwuRqAFgyYRYhsZvPQ640hqbho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbitsCiDB1VvVGCBU6kRq7llySltiss8j8+PeNh/KvENqPUsIRTodx4Iee5BbPQiq
-	 eGPSXG4WPbgLTXuyXsMNxrJKB/ZGeFGwsnsdefjmJq9X70C3tpIGLfpohPNnNd7G2p
-	 Qobcdz7d6nJ714F0C0Lt2kQsMcA0D5Z6cfM1C6Pk=
+	b=brCzXz24nGrOAGNilJDSJGThyJsaRhb7cL+AGyCcinCWhK9UwkgbseRIx0ExzIY9A
+	 YXANbFPQLat+afRtYgU8twaLac3ctZQbSh3jnbTAhqMLGAImpNdODVPCy8f3Y8ZGkO
+	 VTo714FTolzSp7oiICu+gwrZ6t26H4wtZO3LnG1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Andy Yan <andyshrk@163.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/98] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
-Date: Tue, 12 Nov 2024 11:20:17 +0100
-Message-ID: <20241112101844.361588049@linuxfoundation.org>
+Subject: [PATCH 6.11 060/184] net: arc: rockchip: fix emac mdio node support
+Date: Tue, 12 Nov 2024 11:20:18 +0100
+Message-ID: <20241112101903.164904658@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 577b5761679da90e691acc939ebbe7879fff5f31 ]
+[ Upstream commit 0a1c7a7b0adbf595ce7f218609db53749e966573 ]
 
-There are no DT bindings and driver support for a "rockchip,rt5651"
-codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
-"simple-audio-card,name" property in the "rt5651-sound" node.
+The binding emac_rockchip.txt is converted to YAML.
+Changed against the original binding is an added MDIO subnode.
+This make the driver failed to find the PHY, and given the 'mdio
+has invalid PHY address' it is probably looking in the wrong node.
+Fix emac_mdio.c so that it can handle both old and new
+device trees.
 
-Fixes: 0a3c78e251b3a266 ("arm64: dts: rockchip: Add support for rk3399 excavator main board")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/abc6c89811b3911785601d6d590483eacb145102.1727358193.git.geert+renesas@glider.be
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 1dabb74971b3 ("ARM: dts: rockchip: restyle emac nodes")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Tested-by: Andy Yan <andyshrk@163.com>
+Link: https://lore.kernel.org/r/20220603163539.537-3-jbx6244@gmail.com
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/arc/emac_mdio.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-index dbec2b7173a0b..31ea3d0182c06 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-@@ -163,7 +163,7 @@
- 	status = "okay";
+diff --git a/drivers/net/ethernet/arc/emac_mdio.c b/drivers/net/ethernet/arc/emac_mdio.c
+index 87f40c2ba9040..078b1a72c1613 100644
+--- a/drivers/net/ethernet/arc/emac_mdio.c
++++ b/drivers/net/ethernet/arc/emac_mdio.c
+@@ -133,6 +133,7 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
+ 	struct arc_emac_mdio_bus_data *data = &priv->bus_data;
+ 	struct device_node *np = priv->dev->of_node;
+ 	const char *name = "Synopsys MII Bus";
++	struct device_node *mdio_node;
+ 	struct mii_bus *bus;
+ 	int error;
  
- 	rt5651: rt5651@1a {
--		compatible = "rockchip,rt5651";
-+		compatible = "realtek,rt5651";
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_I2S_8CH_OUT>;
- 		clock-names = "mclk";
+@@ -164,7 +165,13 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
+ 
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", bus->name);
+ 
+-	error = of_mdiobus_register(bus, priv->dev->of_node);
++	/* Backwards compatibility for EMAC nodes without MDIO subnode. */
++	mdio_node = of_get_child_by_name(np, "mdio");
++	if (!mdio_node)
++		mdio_node = of_node_get(np);
++
++	error = of_mdiobus_register(bus, mdio_node);
++	of_node_put(mdio_node);
+ 	if (error) {
+ 		mdiobus_free(bus);
+ 		return dev_err_probe(priv->dev, error,
 -- 
 2.43.0
 
