@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B15A9C53A4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA959C54A4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B671F228C6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77D82894E5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FF4213EF4;
-	Tue, 12 Nov 2024 10:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA2B21EBB7;
+	Tue, 12 Nov 2024 10:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkCPRr8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1WwApd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2462F20899D;
-	Tue, 12 Nov 2024 10:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7965821EBAB;
+	Tue, 12 Nov 2024 10:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407367; cv=none; b=ooIUJBL6T34aUKX3mJ+r+zFEfrvyvfZqoqA6WN210B2CFgzwEv7ixBxL0BBhrqWRfBxOypz773GBdkxjxVzmyngA1lk0a+dcRFO1sQCFoOq2+TYxJrvSbG4rq8hF5Z++THdsI4IZwkCdp76Vg8qGfGFEuRPAqXVVHjsJjVOeU2w=
+	t=1731407823; cv=none; b=cjtSQtOc48sz3bXj8COv635VrKMiwv/ZkysiyYuLH8Exv0rpCr2Cokb0O65oi5uOwXfsNsofC7N4q7hEmWWVBE2fjyKTXHs8gR6B6cpGPPRyNCnUA3P9mo94hPY+AwDwhR/q1XnZNYyPK1TLkX///4pPEQf7QokxgCYOlY4b8wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407367; c=relaxed/simple;
-	bh=NrYjOwQnfOSPhu7hHTfOhvic3TfnfrsyAU1Y65SgTcc=;
+	s=arc-20240116; t=1731407823; c=relaxed/simple;
+	bh=zJ0i+dYXPzsNvfGHWQK31/Re0c2MX1kAA6hF1t455IM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JAyYFZrFOLID5rVLqpwEJPH2csdoNTXNTDlKfxpzS9qfB9rcKokLcEuchWl/pPbf2G9vitmne5rc4L9GffSOpW64Pn3sj/4QUSlTTAB6TjzernhQH2Q4G6bLefHQR+5wG5j3A4P00/5zqHIPdXGIxbHjWqw6dnTYRQouS6cEARs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkCPRr8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CC1C4CECD;
-	Tue, 12 Nov 2024 10:29:26 +0000 (UTC)
+	 MIME-Version; b=Gd1fG/DTVYnC80z7wco+V5l7rvv7S0Zsfh4ZCiriarFOF+j8xvgomHwQ7tvn0/xBrabtgKx4IOzSZGZYJ73ZyX3e/6GFITHv1WJe1kr4PmjyAU1wjE/zHGJpbw5IOclDG7dljXOlnBb6wAe8VNe5FlOSL3RQHXhaxDMkNQtnV8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1WwApd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E986CC4CED4;
+	Tue, 12 Nov 2024 10:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407367;
-	bh=NrYjOwQnfOSPhu7hHTfOhvic3TfnfrsyAU1Y65SgTcc=;
+	s=korg; t=1731407823;
+	bh=zJ0i+dYXPzsNvfGHWQK31/Re0c2MX1kAA6hF1t455IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkCPRr8nGvpmYl/SVlTOeMvckylU6tzaG/RrM1yR+NrAhgFgWk8I4RuEbciJak8ig
-	 WY3OrB2aNuSg/GDDa40ix0Kc6dManW84TfpIAADL79S9g/xe/Snv4AAXpmJrq46MPv
-	 /wK15vsB+PVNT5JEc9d4fw/ZCuqyYgXaSa4qk0a4=
+	b=w1WwApd073h5VRrsCEmgiRULXWiW0eUABMQ2vl1AqqZ/7FnKetD7xmRd/wVNKFGKP
+	 DDOP1M04aO/en9DANAI8TjeoaKAmjpeY4Twq7R6VgfXmdIqrpR5jZ7f9RdM1JEjwAk
+	 SwA5+2r7et8Y0upd7Q4laTgbg2SCZ+vzAD6ZkLI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Schumacher <erik.schumacher@iris-sensing.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 55/98] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: [PATCH 6.6 062/119] media: s5p-jpeg: prevent buffer overflows
 Date: Tue, 12 Nov 2024 11:21:10 +0100
-Message-ID: <20241112101846.364058895@linuxfoundation.org>
+Message-ID: <20241112101851.084330730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +59,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Schumacher <erik.schumacher@iris-sensing.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
+commit 14a22762c3daeac59a5a534e124acbb4d7a79b3a upstream.
 
-The modulo register defines the period of the edge-aligned PWM mode
-(which is the only mode implemented). The reference manual states:
-"The EPWM period is determined by (MOD + 0001h) ..." So the value that
-is written to the MOD register must therefore be one less than the
-calculated period length. Return -EINVAL if the calculated length is
-already zero.
-A correct MODULO value is particularly relevant if the PWM has to output
-a high frequency due to a low period value.
+The current logic allows word to be less than 2. If this happens,
+there will be buffer overflows, as reported by smatch. Add extra
+checks to prevent it.
 
-Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
+While here, remove an unused word = 0 assignment.
+
+Fixes: 6c96dbbc2aa9 ("[media] s5p-jpeg: add support for 5433")
 Cc: stable@vger.kernel.org
-Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
-Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx-tpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -106,7 +106,9 @@ static int pwm_imx_tpm_round_state(struc
- 	p->prescale = prescale;
+--- a/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
++++ b/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
+@@ -775,11 +775,14 @@ static void exynos4_jpeg_parse_decode_h_
+ 		(unsigned long)vb2_plane_vaddr(&vb->vb2_buf, 0) + ctx->out_q.sos + 2;
+ 	jpeg_buffer.curr = 0;
  
- 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
--	p->mod = period_count;
-+	if (period_count == 0)
-+		return -EINVAL;
-+	p->mod = period_count - 1;
+-	word = 0;
+-
+ 	if (get_word_be(&jpeg_buffer, &word))
+ 		return;
+-	jpeg_buffer.size = (long)word - 2;
++
++	if (word < 2)
++		jpeg_buffer.size = 0;
++	else
++		jpeg_buffer.size = (long)word - 2;
++
+ 	jpeg_buffer.data += 2;
+ 	jpeg_buffer.curr = 0;
  
- 	/* calculate real period HW can support */
- 	tmp = (u64)period_count << prescale;
+@@ -1058,6 +1061,7 @@ static int get_word_be(struct s5p_jpeg_b
+ 	if (byte == -1)
+ 		return -1;
+ 	*word = (unsigned int)byte | temp;
++
+ 	return 0;
+ }
+ 
+@@ -1145,7 +1149,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			sof = jpeg_buffer.curr; /* after 0xffc0 */
+ 			sof_len = length;
+@@ -1176,7 +1180,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			if (n_dqt >= S5P_JPEG_MAX_MARKER)
+ 				return false;
+@@ -1189,7 +1193,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
+-			if (!length)
++			if (length <= 0)
+ 				return false;
+ 			if (n_dht >= S5P_JPEG_MAX_MARKER)
+ 				return false;
+@@ -1214,6 +1218,7 @@ static bool s5p_jpeg_parse_hdr(struct s5
+ 			if (get_word_be(&jpeg_buffer, &word))
+ 				break;
+ 			length = (long)word - 2;
++			/* No need to check underflows as skip() does it  */
+ 			skip(&jpeg_buffer, length);
+ 			break;
+ 		}
 
 
 
