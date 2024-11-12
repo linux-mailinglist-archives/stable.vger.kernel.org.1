@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-92375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC719C5461
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8D79C54C6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87085B3493C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5F2BB2ACE4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5347D2141CC;
-	Tue, 12 Nov 2024 10:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146DA212D21;
+	Tue, 12 Nov 2024 10:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAEKpddo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCOmhA2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B272101A7;
-	Tue, 12 Nov 2024 10:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4980212D16;
+	Tue, 12 Nov 2024 10:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407454; cv=none; b=K+3rWzs22kS26vXCjef3ApEIOxQlSKtYG6GIDz8LAn+EhQNovsQg2ig8sFqqbcp1HXfDztGU1BzoTFYMdZOBp4ANIVQCs9IffEmTt2AxOIKT5kNybc7A7KxOMMDdB+RyotXeX35Laocyyfrq0o4St6ADiHk1JE0mo5CBX/9Ne9E=
+	t=1731407350; cv=none; b=Zk1ADcvUsh2MnavMMvou6pohMBYIpa2DnhAQhReWMzeMZYtChy/lVF4Qe2Al/mvQWD3iMkjZJsOsqVx2GYU9Pv26ArcTLqDBBcnTf9OL6joq80GefXlQ/K0sI/CpCq0uGReZG/k8qSTwit0Zi4gfF+y6UkrDgafTU7/5Vvu7jkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407454; c=relaxed/simple;
-	bh=pPj3jYbGNusZ2O80Yh6BOu9GFGcxRDBXvgOJbhFNTWI=;
+	s=arc-20240116; t=1731407350; c=relaxed/simple;
+	bh=7Q1FXJpg+3n96n2V4NCvqLGCucBjKAvaDVwRVEFERcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbd1woFWJiuqdTjK5sjM1Koo+D0d0CsiL3UZYPdja2ZsYicQO2A72LWSGM4yeuFFmM/vkMCGGMwPWbljLTgdr4y9U5uEGvg3lOVtSByl8Jc4//hnLdcFhR6OSPEQscP1wPVTyn4N5vBCVEx3O6ueFBXB6KCu1rETogciOMpDFcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAEKpddo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7795FC4CECD;
-	Tue, 12 Nov 2024 10:30:53 +0000 (UTC)
+	 MIME-Version; b=GNlKkMQN5PLsBcy6WudIZM7wKX6g2M/strmr+we3SHmRn9vJzymICOKil8i5TgHtpGxfqXR9YxYWh4rGBpcjWuaFhpw2sGxBRWXzaMsRDMkt0sQq0DxUYTeYBP9GuhHKsIaDco/WAlvfO8PUEh5M86LyiYNEgWLgoR5OELYKmrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCOmhA2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D245DC4CECD;
+	Tue, 12 Nov 2024 10:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407454;
-	bh=pPj3jYbGNusZ2O80Yh6BOu9GFGcxRDBXvgOJbhFNTWI=;
+	s=korg; t=1731407350;
+	bh=7Q1FXJpg+3n96n2V4NCvqLGCucBjKAvaDVwRVEFERcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAEKpddoXIE7CHsFaGsu7MxIu8B2pxL7fd+jwPjJfcahmyPBjXaZBHEdvtl/IJc4K
-	 wa3En94TNsKAg3HL+2ei9dc3wRiz2dkteLc4mmaeGPnoqpnQqiVGOg+ZeRgGou4D+e
-	 CF9yVrRG8ioZv0thcRvHWsod3asPrfAt1aRqe3sI=
+	b=ZCOmhA2ddToY18LfXEUMXNnp2+mnLuHGh7fs+pOLddsreOUHY0A9xyV9RGkf3e0ZI
+	 jIfkbPYBGG4k2NAhqrYFM302TCqromARz7QllyxiHKSAr+f9y5cvcEuPdWaR9RaNNY
+	 xnR2bwA1wiIfqfHIBLjCWsMow8xEawa66jS9E/p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 49/98] media: v4l2-ctrls-api: fix error handling for v4l2_g_ctrl()
-Date: Tue, 12 Nov 2024 11:21:04 +0100
-Message-ID: <20241112101846.138046891@linuxfoundation.org>
+	Sven Schuchmann <schuchmann@schleissheimer.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 50/98] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
+Date: Tue, 12 Nov 2024 11:21:05 +0100
+Message-ID: <20241112101846.175216349@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
 References: <20241112101844.263449965@linuxfoundation.org>
@@ -64,69 +65,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 4c76f331a9a173ac8fe1297a9231c2a38f88e368 upstream.
+commit 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a upstream.
 
-As detected by Coverity, the error check logic at get_ctrl() is
-broken: if ptr_to_user() fails to fill a control due to an error,
-no errors are returned and v4l2_g_ctrl() returns success on a
-failed operation, which may cause applications to fail.
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-Add an error check at get_ctrl() and ensure that it will
-be returned to userspace without filling the control value if
-get_ctrl() fails.
+As the TEF has no head pointer, the driver uses the TX FIFO's tail
+pointer instead, assuming that send frames are completed. However the
+check for the TEF being full was not correct. This leads to the driver
+stop working if the TEF is full.
 
-Fixes: 71c689dc2e73 ("media: v4l2-ctrls: split up into four source files")
+Fix the TEF full check by assuming that if, from the driver's point of
+view, there are no free TX buffers in the chip and the TX FIFO is
+empty, all messages must have been sent and the TEF must therefore be
+full.
+
+Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-api.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-@@ -753,9 +753,10 @@ static int get_ctrl(struct v4l2_ctrl *ct
- 		for (i = 0; i < master->ncontrols; i++)
- 			cur_to_new(master->cluster[i]);
- 		ret = call_op(master, g_volatile_ctrl);
--		new_to_user(c, ctrl);
-+		if (!ret)
-+			ret = new_to_user(c, ctrl);
- 	} else {
--		cur_to_user(c, ctrl);
-+		ret = cur_to_user(c, ctrl);
- 	}
- 	v4l2_ctrl_unlock(master);
- 	return ret;
-@@ -770,7 +771,10 @@ int v4l2_g_ctrl(struct v4l2_ctrl_handler
- 	if (!ctrl || !ctrl->is_int)
- 		return -EINVAL;
- 	ret = get_ctrl(ctrl, &c);
--	control->value = c.value;
-+
-+	if (!ret)
-+		control->value = c.value;
-+
- 	return ret;
- }
- EXPORT_SYMBOL(v4l2_g_ctrl);
-@@ -811,10 +815,11 @@ static int set_ctrl_lock(struct v4l2_fh
- 	int ret;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index f732556d233a..d3ac865933fd 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -16,9 +16,9 @@
  
- 	v4l2_ctrl_lock(ctrl);
--	user_to_new(c, ctrl);
--	ret = set_ctrl(fh, ctrl, 0);
-+	ret = user_to_new(c, ctrl);
-+	if (!ret)
-+		ret = set_ctrl(fh, ctrl, 0);
- 	if (!ret)
--		cur_to_user(c, ctrl);
-+		ret = cur_to_user(c, ctrl);
- 	v4l2_ctrl_unlock(ctrl);
- 	return ret;
+ #include "mcp251xfd.h"
+ 
+-static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
++static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+ {
+-	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
  }
+ 
+ static inline int
+@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
+ 	if (err)
+ 		return err;
+ 
+-	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
++	/* If the chip says the TX-FIFO is empty, but there are no TX
++	 * buffers free in the ring, we assume all have been sent.
++	 */
++	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0) {
+ 		*len_p = tx_ring->obj_num;
+ 		return 0;
+ 	}
+-- 
+2.47.0
+
 
 
 
