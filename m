@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5018E9C5691
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:32:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6209C5485
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E14AFB3579B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 933EC287514
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C12213EEC;
-	Tue, 12 Nov 2024 10:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAC521B440;
+	Tue, 12 Nov 2024 10:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZZdbTFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVm+6AQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9198F20899D;
-	Tue, 12 Nov 2024 10:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389F821B427;
+	Tue, 12 Nov 2024 10:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407360; cv=none; b=GCSTTsZqV5+PbkWYDidLwYhm9yUSpODx8Z+6ZXctwNA07TF0kxE1iBuqeUZi5A2rH3bNieImvmTw1kp5Kn+53EA6HnlnBuZA+uNcR0/HCltrHEobhP0AqK51S9HO4Adi1wRTY3pDVUJHDbn0Tuy3iNZs3Cs9VjdqJre3ObIs92E=
+	t=1731407806; cv=none; b=h5ryXdjixhol1CAswb2Eb6DJIhzo8wZ2vLeMF+b8uTVcIsGUd4Dfwh8paHKyllMWuCZthasLEKgFw3ESCdWjR6+g059LgfT74SU5tdYAOJBTMGd9JmRfj0uCaTT48DpPCxQoRgXy6NHEYwrj9LG5MD39BpleqR6OdxbP1NmZwqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407360; c=relaxed/simple;
-	bh=0DMh0nI2WRzJAla3AoMDA4aOW+eH5NL2ehKI13nG4Ww=;
+	s=arc-20240116; t=1731407806; c=relaxed/simple;
+	bh=N1vPjMzG+IsUmdPudeYilaGkbuSM7+HJtkXb8xFkLA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjH8LBg4IVMg3Anqg2nxQXZOc/Y+l8q5FSTMJwqGPZwMPSOrnoE5ZhHwPVxx8GgpSt+4kMCMVH/C71WYZkDkJV1wV6mVWRjwchlS/LnU/t2vXmdTzrD5ZQt/yzDj3MQbemOHgjtbhMZNE4cS7Fa/ygYGCFqyypP4xXilxpvf/yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZZdbTFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A87C4CECD;
-	Tue, 12 Nov 2024 10:29:19 +0000 (UTC)
+	 MIME-Version; b=MHF+HzOw+62xCTNTBHzRXArGLhcl/LizstUR9h+i/1QuELJ2u9uMdWxwZzhE2DKvRyXjlHh7bZsWot3Mcg4sEmnZPzYPLVSGsq3EYN+XxzaUpUe+PLc9RNYnMlfcqVeC0QPU7LykDdn1l8YgGz2TzcoMI+JQaVk6XZeNN2XhnCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVm+6AQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A3EC4CED7;
+	Tue, 12 Nov 2024 10:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407360;
-	bh=0DMh0nI2WRzJAla3AoMDA4aOW+eH5NL2ehKI13nG4Ww=;
+	s=korg; t=1731407806;
+	bh=N1vPjMzG+IsUmdPudeYilaGkbuSM7+HJtkXb8xFkLA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZZdbTFzpuUPhepzSYHX7kRPqhBx79q29zUZpjPRLVwTBXk19PU11pQIq359Xeyac
-	 88+d1q4EcgBmLKNfodGHMo4PM/ApxNj45smeKLguRK1zp2ocUyXx8zvdb1Wx6Su3Dq
-	 zueIB92JrKS2ycG2AHu+an1sudNJPssr0nO0aqfg=
+	b=iVm+6AQ7C3cUo8EHmfcaRRH/Kp1/krMWozUyGCt3epkjI6hHrkgczPF8WH7n45qn/
+	 MwslYvXatyQfi2nMVHsE3oTcb4Om76lJQY/x+hCGfOSRGwd65/aHgheOXDZ43xmQ3K
+	 y1dTLTeZCuyHMECGvpMtOlyB372qtqBcBvT2lUJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 53/98] ksmbd: Fix the missing xa_store error check
-Date: Tue, 12 Nov 2024 11:21:08 +0100
-Message-ID: <20241112101846.288106377@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 6.6 061/119] media: ar0521: dont overflow when checking PLL values
+Date: Tue, 12 Nov 2024 11:21:09 +0100
+Message-ID: <20241112101851.045921050@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
+commit 438d3085ba5b8b5bfa5290faa594e577f6ac9aa7 upstream.
 
-xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
-be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
-so check error for xa_store() to fix it.
+The PLL checks are comparing 64 bit integers with 32 bit
+ones, as reported by Coverity. Depending on the values of
+the variables, this may underflow.
 
+Fix it ensuring that both sides of the expression are u64.
+
+Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
 Cc: stable@vger.kernel.org
-Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ar0521.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
- 
- int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
- {
--	struct ksmbd_session_rpc *entry;
-+	struct ksmbd_session_rpc *entry, *old;
- 	struct ksmbd_rpc_command *resp;
- 	int method;
- 
-@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
- 	entry->id = ksmbd_ipc_id_alloc();
- 	if (entry->id < 0)
- 		goto free_entry;
--	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	if (xa_is_err(old))
-+		goto free_id;
- 
- 	resp = ksmbd_rpc_open(sess, entry->id);
- 	if (!resp)
--		goto free_id;
-+		goto erase_xa;
- 
- 	kvfree(resp);
- 	return entry->id;
--free_id:
-+erase_xa:
- 	xa_erase(&sess->rpc_handle_list, entry->id);
-+free_id:
- 	ksmbd_rpc_id_free(entry->id);
- free_entry:
- 	kfree(entry);
+--- a/drivers/media/i2c/ar0521.c
++++ b/drivers/media/i2c/ar0521.c
+@@ -257,10 +257,10 @@ static u32 calc_pll(struct ar0521_dev *s
+ 			continue; /* Minimum value */
+ 		if (new_mult > 254)
+ 			break; /* Maximum, larger pre won't work either */
+-		if (sensor->extclk_freq * (u64)new_mult < AR0521_PLL_MIN *
++		if (sensor->extclk_freq * (u64)new_mult < (u64)AR0521_PLL_MIN *
+ 		    new_pre)
+ 			continue;
+-		if (sensor->extclk_freq * (u64)new_mult > AR0521_PLL_MAX *
++		if (sensor->extclk_freq * (u64)new_mult > (u64)AR0521_PLL_MAX *
+ 		    new_pre)
+ 			break; /* Larger pre won't work either */
+ 		new_pll = div64_round_up(sensor->extclk_freq * (u64)new_mult,
 
 
 
