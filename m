@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0819C53A3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5409C56F0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F77D28441A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E496B37DBC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2E6213EEE;
-	Tue, 12 Nov 2024 10:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DE7219490;
+	Tue, 12 Nov 2024 10:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiDDHyKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwV2686I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB74170A3A;
-	Tue, 12 Nov 2024 10:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61A7218D98;
+	Tue, 12 Nov 2024 10:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407363; cv=none; b=fnEUNuov4fNi6MaBHukgiGUiWGeXBXLQrxcg+0EpbmzCnDfi1BP8Gti7JcMZW+0LHi21u2QjpIOwC6AS4iMSmsTeqYdDpMru/U9Nh5NPAo0P/CGtZ9zydkCjFVHIplE6o7qxGpN55wKjYDTWpMAsTpNIrEsEbzLsYrQG+zwaAUk=
+	t=1731408265; cv=none; b=TwwIVhXEsB7rCX5/G7mnJs3Fit2MdMgGxWBx8I3WIrAvINvNlw+obIzMWtApBMAzgIUuk7cBpvInkX5u4nFPa8xVih2bo9mCOKX3PPnvh4TNwOhAWnBLfek8X99xsfoJgLVgx0Vke8uO4crGlff9WXX8k6xIKXKgZbw+vtNUOvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407363; c=relaxed/simple;
-	bh=v42vZgvRONYsAWWRzuL6rWLcaUHXfde/4O9U3NYQvQA=;
+	s=arc-20240116; t=1731408265; c=relaxed/simple;
+	bh=FiBCxAr/pL7q4CRbMO8aUOKODEulqBTZ0GNAndlFvnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIZ8wQHx7fDmMh0mMW3OXR9l5nkQca9qS4OlyKYLmSXRhmY/ZN7/g6Z3YiSvRphPy9m63qW5tYm++QVLLMcW8gDbYc8Ff8rL9+WabvDGmsFdZGDv8h4H3iDyEd2t+g8q7nMzZGEddDAVOg9QkStflivgcTDY/2YGNfsGjLf8wCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiDDHyKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295C4C4CECD;
-	Tue, 12 Nov 2024 10:29:22 +0000 (UTC)
+	 MIME-Version; b=u7jAjOSA83G4+DZ4/BHJmaIxBC8eW34bK6PYsuEpDYmlVDlrKy/djoMIJfDtHVPaPQmg13egwjH2aLFEqYMuNMstoLUMXQYJm/foR5mSR9zRGxSPTmGIcTt1tFgC4YEdv0hTyuHuCP4BGopk0v47gsXhngdGI2VYTXgDdn2vHfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwV2686I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4A2C4CECD;
+	Tue, 12 Nov 2024 10:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407363;
-	bh=v42vZgvRONYsAWWRzuL6rWLcaUHXfde/4O9U3NYQvQA=;
+	s=korg; t=1731408265;
+	bh=FiBCxAr/pL7q4CRbMO8aUOKODEulqBTZ0GNAndlFvnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiDDHyKYw01WB/U2/eJxb84JWz1papLgADVAdrzyutDxo7qwgcuqFLznK+DO3R6uY
-	 UhzZC3MP/J4kLHz3wIg4RL6M5WepQ7Ii5Rd6hHt+4PVTH8Rmr5OHXX/KCsdVY+YJrR
-	 i9+sOZgGlHWYjkZ7Z9wCFxafc48hzdpAnwXc97LU=
+	b=QwV2686IV1xmnz5to/CczgxNdstwm1pcsmxzfkoTV5/Nzd+YgX4CgSPyMwpao0P7g
+	 UYjis/YiZli5+mSp5/r3xZCXzKIvuJEGtb1VTJg0WPdJfVd8znqz76HrTiG1Y4p2TF
+	 l9nsWIJOA9pJrKzai/44cWK3LjXuGECxbHqVbjHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 54/98] ksmbd: fix slab-use-after-free in smb3_preauth_hash_rsp
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 111/184] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
 Date: Tue, 12 Nov 2024 11:21:09 +0100
-Message-ID: <20241112101846.325797643@linuxfoundation.org>
+Message-ID: <20241112101905.124993185@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-commit b8fc56fbca7482c1e5c0e3351c6ae78982e25ada upstream.
+commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
 
-ksmbd_user_session_put should be called under smb3_preauth_hash_rsp().
-It will avoid freeing session before calling smb3_preauth_hash_rsp().
+acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
+would result in dereferencing buffer.pointer (obj) while being NULL.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Although this case may be unrealistic for the current code, it is
+still better to protect against possible bugs.
+
+Bail out also when status is AE_NOT_FOUND.
+
+This fixes 1 FORWARD_NULL issue reported by Coverity
+Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
+
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/server.c |    4 ++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -238,11 +238,11 @@ static void __handle_ksmbd_work(struct k
- 	} while (is_chained == true);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -172,8 +172,8 @@ static union acpi_object *amdgpu_atif_ca
+ 				      &buffer);
+ 	obj = (union acpi_object *)buffer.pointer;
  
- send:
--	if (work->sess)
--		ksmbd_user_session_put(work->sess);
- 	if (work->tcon)
- 		ksmbd_tree_connect_put(work->tcon);
- 	smb3_preauth_hash_rsp(work);
-+	if (work->sess)
-+		ksmbd_user_session_put(work->sess);
- 	if (work->sess && work->sess->enc && work->encrypted &&
- 	    conn->ops->encrypt_resp) {
- 		rc = conn->ops->encrypt_resp(work);
+-	/* Fail if calling the method fails and ATIF is supported */
+-	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
++	/* Fail if calling the method fails */
++	if (ACPI_FAILURE(status)) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+ 		kfree(obj);
 
 
 
