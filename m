@@ -1,126 +1,165 @@
-Return-Path: <stable+bounces-92222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B198B9C51FF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:29:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A653F9C527C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE761F256A5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:29:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 781F5B27513
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713A520DD7A;
-	Tue, 12 Nov 2024 09:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A214020DD6A;
+	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WKmTmni5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QViwrG8G"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED5B193092;
-	Tue, 12 Nov 2024 09:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579BF204921;
+	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731403737; cv=none; b=jD15OiiISKDGs2Gx2Pma/GPu+Kt6z6twOVVGpRmykaq8XngzWwm3wM2MqWxF2YBH1q7YwxwRQoL4uKZzq/+pwULtebo6FurPDa1NCk3ewIGFOH6nA6ORTy1Lz6yBXCqhMODu274xzDG9ASjMMOTiMVrWuecgwcVLzp/jGUhcZyo=
+	t=1731403817; cv=none; b=gQhMADPDyPnjpXQGGqNpKX8HD8tDoLCjyb8xZKp03B0QdTzdUTJ88/FSJEKAsr6OGNYRGZ+P9dxkKil+onGEj18QcBCybEBRZsc7yxYLx/gRkT/k+ZtpgrfY91JUDyB9PVg8RzYIIYNnFvO+FbHOaI4N459QmHa0rDMtDDukHTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731403737; c=relaxed/simple;
-	bh=Iqcpu5dcQSdTZdbmC3lb6ryuooz772ta1slnPdadoTU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WPbjTiYGu5vkc63sj9XrM0jBL0ZtH/6dJEiz029hqrKHXczhDSVxmxMmcQGkSXXQ3g3A2u69jHlFZb/ugcMABeR++0mEO5XU/U+y0wJsJZOCKX4P08mvMhxpl2vRtxaJONbzcS5b5YAjXVKy5mZMun4a8Aq7gmF/0TE99k0d2WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WKmTmni5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AC6AcpL004261;
-	Tue, 12 Nov 2024 09:28:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=UGjdtV5zSzLXMpIfCIzg9m
-	G8AEFR1uAnZu7QX3u6OmQ=; b=WKmTmni5RQwUvBekaA4QYZOzkiqGdV9CbaYZ1s
-	uiUFZATwdWmFcaTTp9ib3f9TD/GoVho8Pm0Nyo0mp8a2rV0v2J2EtzdByp9e85l5
-	7sP8BIVDYzGJ4egGLZU+Dw2zwgwmBdXsck+faT3+LRn7dxd7wy7g0BAAtMYki2ly
-	/5VtpEG0h4rru0JaJIlTjM1CA9mU75b9TvB7uxDqZ7AJ2M/8HYwkvOIcclPqYXlm
-	P2EX1vyHsslK4DYopBbV0LIG5rI0KPvvJTU2jm++3cC/Oc7ljDeR7wTpfOyaFx5E
-	dbXVUYnjzPSUd0KXs0F/B6g11uBuwYE0RsRpmcj1ees68izQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42v1h6gf5n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2024 09:28:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AC9SnX4027955
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2024 09:28:49 GMT
-Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 12 Nov 2024 01:28:44 -0800
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
-To: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Mantas Pucka <mantas@8devices.com>, Abel Vesa <abel.vesa@linaro.org>,
-        "Komal
- Bajaj" <quic_kbajaj@quicinc.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <quic_ppratap@quicinc.com>,
-        <quic_jackp@quicinc.com>, Krishna Kurapati <quic_kriskura@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] phy: qcom-qmp: Fix register name in RX Lane config of SC8280XP
-Date: Tue, 12 Nov 2024 14:58:31 +0530
-Message-ID: <20241112092831.4110942-1-quic_kriskura@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1731403817; c=relaxed/simple;
+	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s4RlaxCm1hqXC7vgMiPCa2jde9UC+t5eBRMPnlyxJFHU+svwmfbL5YBjhkHLokqtpBY1klvUoWhQX+/8xmC3nqPvfpai0C7VMv4KMunE1Iw1WZzIgLAZlPuq9pyxUKK8EbMGED2qtbhARL2iAkfO1EVa7M56hXs06/jHaYPGosk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QViwrG8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DE4ACC4CECD;
+	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731403816;
+	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=QViwrG8G+KH5bALFXMyZa3ecubAwFYyaEohO/FjmyVVb2VI5guyIL0r2F0xqbzti7
+	 wBgJKetJkSckaF73TLDg/NXlHJsmnIPTzd4BtkefrAJb8J10QsRmINv8KOJM1PK0NA
+	 SuDQbJxu1R17yjovoKXZGpeoDRE6TcdZacBvfmKlQ3OPtgxQtOd013g63daf/Gposa
+	 UnET4aJWZ7iz7P9CEYX5uyom3xAc99zUsSHAb9qLZNA4j5ycVTlcvVNu7cjPK9s1TE
+	 jpKT/OW2yNPKyovQrzH3zm+VQLH1K2ZipjLW4gnbv91dwKJW+5TOIVgIucdnrh910m
+	 X0j25bGaChVGA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6E78D32D78;
+	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Tue, 12 Nov 2024 10:30:10 +0100
+Subject: [PATCH v2] iio: imu: inv_icm42600: fix spi burst write not
+ supported
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: VykZcjz1v4ZcAW5Sig9Y23ED1PY6Lfrh
-X-Proofpoint-GUID: VykZcjz1v4ZcAW5Sig9Y23ED1PY6Lfrh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1011
- lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=731
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411120077
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com>
+X-B4-Tracking: v=1; b=H4sIACEgM2cC/52NQQ7CIBBFr9KwdgxgK9WV9zBdtGVqJ6ZAgKKm4
+ e5ij+Dy/eS/t7GAnjCwa7Uxj4kCWVNAHio2zr15IJAuzCSXtRBcAZkENC61PHMOE70hOIJh9SH
+ Cy1NEMDZCWJ2zPqIGnFC1Wp3UpW9YkTqP5bQH713hmUK0/rP3k/itf6eSAAEt54OUjao1F7eon
+ 8fRLqzLOX8BnHrTQOoAAAA=
+X-Change-ID: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731403815; l=3521;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=7v9hwAsLUpLcVbsTisYNf2ERfbiuJIYiXvYRPsz8tx0=;
+ b=hlq8yXvk4Oc+vucDWRJ3i3I3OlJVXjHjKmsaAEgYaeD6i/+m9S2RotslVeST0sV1EnSRxVOPW
+ Z1uRlrfd9VzAGHoTHeQNUK4RLC3zng+++9EXla5uVWddL2S+VWS7BbF
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-In RX Lane configuration sequence of SC8280XP, the register
-V5_RX_UCDR_FO_GAIN is incorrectly spelled as RX_UCDR_SO_GAIN and
-hence the programming sequence is wrong. Fix the register sequence
-accordingly to avoid any compliance failures. This has been tested
-on SA8775P by checking device mode enumeration in SuperSpeed.
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Cc: <stable@vger.kernel.org>
-Fixes: c0c7769cdae2 ("phy: qcom-qmp: Add SC8280XP USB3 UNI phy")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Burst write with SPI is not working for all icm42600 chips. It was
+only used for setting user offsets with regmap_bulk_write.
+
+Add specific SPI regmap config for using only single write with SPI.
+
+Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Add new spi specific regmap config instead of editing existing one.
+- Link to v1: https://lore.kernel.org/r/20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com
+---
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 15 +++++++++++++++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  3 ++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-index acd6075bf6d9..c9c337840715 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -1052,7 +1052,7 @@ static const struct qmp_phy_init_tbl sc8280xp_usb3_uniphy_rx_tbl[] = {
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_FO_GAIN, 0x2f),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_LOW, 0xff),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_HIGH, 0x0f),
--	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_SO_GAIN, 0x0a),
-+	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FO_GAIN, 0x0a),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL1, 0x54),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL2, 0x0f),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_RX_EQU_ADAPTOR_CNTRL2, 0x0f),
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+index 3a07e43e4cf154f3107c015c30248330d8e677f8..18787a43477b89db12caee597ab040af5c8f52d5 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
+ typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+ 
+ extern const struct regmap_config inv_icm42600_regmap_config;
++extern const struct regmap_config inv_icm42600_spi_regmap_config;
+ extern const struct dev_pm_ops inv_icm42600_pm_ops;
+ 
+ const struct iio_mount_matrix *
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..834c32cb07f354ab52e69bfeea8f00b6443e8dd9 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_regmap_config = {
+ };
+ EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, IIO_ICM42600);
+ 
++/* define specific regmap for SPI not supporting burst write */
++const struct regmap_config inv_icm42600_spi_regmap_config = {
++	.name = "inv_icm42600",
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = 0x4FFF,
++	.ranges = inv_icm42600_regmap_ranges,
++	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
++	.volatile_table = inv_icm42600_regmap_volatile_accesses,
++	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
++	.cache_type = REGCACHE_RBTREE,
++	.use_single_write = true,
++};
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, IIO_ICM42600);
++
+ struct inv_icm42600_hw {
+ 	uint8_t whoami;
+ 	const char *name;
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+index 3b6d05fce65d544524b25299c6d342af92cfd1e0..deb0cbd8b7fe6fcb562067afaca931c148f6fca6 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi_device *spi)
+ 		return -EINVAL;
+ 	chip = (uintptr_t)match;
+ 
+-	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
++	/* use SPI specific regmap */
++	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
+
+---
+base-commit: c9f8285ec18c08fae0de08835eb8e5953339e664
+change-id: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
+
+Best regards,
 -- 
-2.34.1
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
 
 
