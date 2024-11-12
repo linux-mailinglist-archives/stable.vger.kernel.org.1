@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-92356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA0D9C53AB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 704729C53A8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565B11F21B84
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41DF2B26B01
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6492141AA;
-	Tue, 12 Nov 2024 10:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A802141DA;
+	Tue, 12 Nov 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyyNq/Py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNuMfifu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E94A213EFC;
-	Tue, 12 Nov 2024 10:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0222141D5;
+	Tue, 12 Nov 2024 10:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407390; cv=none; b=FDKO56KtWe7Mlmxpog6Gt2QEdgya5JLM+UAEnKfzcwesSEQljdweuJ6iLlb33sRFqScLyDqKNin7Jb3rZm8ZLzSHglkFz+Ws0Qt2UAHWAeYh+mMhjzg0zq/FBAhw7yo/G/JOmEgQSEwKMnUt3vDpaGGHxyRCH9A2PiWFFWSEMLo=
+	t=1731407105; cv=none; b=g0zCwraA1faMqu1Wt01F0Ujolj2U6cvslAgsBEROSt6V4JyYpnq9qOYzXcbzOZMHGvC2N3U5BnBtky6AhiJValNViHQUXvZFQ8NvQVcGYK0AI29cDB5aB1+4BiyJYkqLSolRgYQhTyCcz7zTN+aJMeOSNrCM6Woro2zsBS0A3p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407390; c=relaxed/simple;
-	bh=6cCh/yQpcoE6u6sB3EUeBSBXRsHBscworY2bDwgKiPY=;
+	s=arc-20240116; t=1731407105; c=relaxed/simple;
+	bh=ddnrFRYvSTCj0rDNI/UVIHjpkWuGhmDnRP9avmC6+Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWMqSWhjodSoXD85pXACRZuqo4hCwIRRL2JlcR3NO3jnr+qCVCaToaN4T/CwkLGo4CYt+JBTAQc74N12TXUPNfuE2Ta6p21RQonNQT7B+v0RBRtWuF1nYSfOQZR+1nVmRwxVnqlFvzylAF9MZAxMg3PyBYpBU1N2MnhsmlOHYXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyyNq/Py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDD2C4CECD;
-	Tue, 12 Nov 2024 10:29:49 +0000 (UTC)
+	 MIME-Version; b=IvYqTDDVdgTTryc1r4n6JKAvBYC4Coq+RjbHvZzLGig2A7K8MdKnwQfSubbwo4FgQrwGpa7ipdjP3TsozbNv6QLxxfCxTBXgnxfkzOoRUtZvUoc16CT/adptZrS4+ymExnexZCsizjE9reZOvrcA/u0MKSMwGTPW5pFNvUQlbig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNuMfifu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6301C4CECD;
+	Tue, 12 Nov 2024 10:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407389;
-	bh=6cCh/yQpcoE6u6sB3EUeBSBXRsHBscworY2bDwgKiPY=;
+	s=korg; t=1731407105;
+	bh=ddnrFRYvSTCj0rDNI/UVIHjpkWuGhmDnRP9avmC6+Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyyNq/Py3WIfGf5hGfWwXPUmu60PnIOTa5D3kFaBNiUYXvd2k/PHDYjZlEDFDRHI1
-	 NPX/BayJA8U5oLRCA3z3cWUdzW+1vR22bqs2HEbPNp+RYHIL+1HTlt7IVawpq/OtQZ
-	 xpMPcln0/MHfw8/u3g2cO4c/Kbxg6ibN8a8iLIyU=
+	b=DNuMfifuuMoIYtms7JN666ddKq9t0T6rRFb1lEAUB6UU5+Gmm0U1dQtT8nNbXXjoJ
+	 UEyxJkHSeRj5kEL2h0e0rZ8dApLh8zI/iTIFVx6iVPQAecBoFDRqFdMXdlYcywZMpA
+	 Sv0EYYncZ5f0Y95OHZEm5DFHY5uWYGFmKIw376Mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.1 61/98] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 51/76] fs: create kiocb_{start,end}_write() helpers
 Date: Tue, 12 Nov 2024 11:21:16 +0100
-Message-ID: <20241112101846.587814973@linuxfoundation.org>
+Message-ID: <20241112101841.726033077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
+Commit ed0360bbab72b829437b67ebb2f9cfac19f59dfe upstream.
 
-An unexpected WARN_ON from flush_work() may occur when cache creation
-fails, caused by destroying the uninitialized delayed_work waker in the
-error path of cache_create(). For example, the warning appears on the
-superblock checksum error.
+aio, io_uring, cachefiles and overlayfs, all open code an ugly variant
+of file_{start,end}_write() to silence lockdep warnings.
 
-Reproduce steps:
+Create helpers for this lockdep dance so we can use the helpers in all
+the callers.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-Kernel logs:
-
-(snip)
-WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
-
-Fix by pulling out the cancel_delayed_work_sync() from the constructor's
-error path. This patch doesn't affect the use-after-free fix for
-concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
-UAF in destroy()")) as cache_dtr is not changed.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Message-Id: <20230817141337.1025891-4-amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ include/linux/fs.h | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1882,16 +1882,13 @@ static void check_migrations(struct work
-  * This function gets called on the error paths of the constructor, so we
-  * have to cope with a partially initialised struct.
-  */
--static void destroy(struct cache *cache)
-+static void __destroy(struct cache *cache)
- {
--	unsigned int i;
--
- 	mempool_exit(&cache->migration_pool);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 6ff6ade229a07..2ef0e48c89ec4 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3058,6 +3058,42 @@ static inline void file_end_write(struct file *file)
+ 	__sb_end_write(file_inode(file)->i_sb, SB_FREEZE_WRITE);
+ }
  
- 	if (cache->prison)
- 		dm_bio_prison_destroy_v2(cache->prison);
- 
--	cancel_delayed_work_sync(&cache->waker);
- 	if (cache->wq)
- 		destroy_workqueue(cache->wq);
- 
-@@ -1919,13 +1916,22 @@ static void destroy(struct cache *cache)
- 	if (cache->policy)
- 		dm_cache_policy_destroy(cache->policy);
- 
-+	bioset_exit(&cache->bs);
++/**
++ * kiocb_start_write - get write access to a superblock for async file io
++ * @iocb: the io context we want to submit the write with
++ *
++ * This is a variant of sb_start_write() for async io submission.
++ * Should be matched with a call to kiocb_end_write().
++ */
++static inline void kiocb_start_write(struct kiocb *iocb)
++{
++	struct inode *inode = file_inode(iocb->ki_filp);
 +
-+	kfree(cache);
++	sb_start_write(inode->i_sb);
++	/*
++	 * Fool lockdep by telling it the lock got released so that it
++	 * doesn't complain about the held lock when we return to userspace.
++	 */
++	__sb_writers_release(inode->i_sb, SB_FREEZE_WRITE);
 +}
 +
-+static void destroy(struct cache *cache)
++/**
++ * kiocb_end_write - drop write access to a superblock after async file io
++ * @iocb: the io context we sumbitted the write with
++ *
++ * Should be matched with a call to kiocb_start_write().
++ */
++static inline void kiocb_end_write(struct kiocb *iocb)
 +{
-+	unsigned int i;
++	struct inode *inode = file_inode(iocb->ki_filp);
 +
-+	cancel_delayed_work_sync(&cache->waker);
++	/*
++	 * Tell lockdep we inherited freeze protection from submission thread.
++	 */
++	__sb_writers_acquired(inode->i_sb, SB_FREEZE_WRITE);
++	sb_end_write(inode->i_sb);
++}
 +
- 	for (i = 0; i < cache->nr_ctr_args ; i++)
- 		kfree(cache->ctr_args[i]);
- 	kfree(cache->ctr_args);
- 
--	bioset_exit(&cache->bs);
--
--	kfree(cache);
-+	__destroy(cache);
- }
- 
- static void cache_dtr(struct dm_target *ti)
-@@ -2538,7 +2544,7 @@ static int cache_create(struct cache_arg
- 	*result = cache;
- 	return 0;
- bad:
--	destroy(cache);
-+	__destroy(cache);
- 	return r;
- }
- 
-@@ -2589,7 +2595,7 @@ static int cache_ctr(struct dm_target *t
- 
- 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
- 	if (r) {
--		destroy(cache);
-+		__destroy(cache);
- 		goto out;
- 	}
- 
+ /*
+  * This is used for regular files where some users -- especially the
+  * currently executed binary in a process, previously handled via
+-- 
+2.43.0
+
 
 
 
