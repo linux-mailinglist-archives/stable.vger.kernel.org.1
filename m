@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-92725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4769C57CB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:32:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08AF9C5767
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4B98B43775
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA865B32EBB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B7F21A4A9;
-	Tue, 12 Nov 2024 10:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784DD217326;
+	Tue, 12 Nov 2024 10:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6+DXAZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuZH1SJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3372144A4;
-	Tue, 12 Nov 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3306621A4A8;
+	Tue, 12 Nov 2024 10:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408387; cv=none; b=OuZnVPkxqfsmm8kPylcAWHDE748SUTaqczyb6Hq2t9+LuxY3ZrRtjJXqLf0aqKLiEreXgqv+KGIfcdRHB0mLWtf6kaZGuTbop7o3uuq4E4vn5MTi+vMC/Vwla0whQo9r1vrst8iwdeRDqJeTjaPf2/pIN/uO+EU+RiBr69fY9ck=
+	t=1731408397; cv=none; b=Z0L/lKu+awau4ZdHixd7f92u7tgeghwOHljTcP0tTTQk4JlafGXLulWaI5jkjOukvKsz38aVWlqFcjfC6YNOUHwNFgMFomaHtZqq+wqr5vNaO57Av1kuOvEAqxnt0ysNxpIGn01/tOCMiY6/ajIm8SmQCHunVLjvAz9v66tcT6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408387; c=relaxed/simple;
-	bh=eGQ/P2gitOiLZ3MSquTzsdHenwC/d1X/7yp6DHsKdq4=;
+	s=arc-20240116; t=1731408397; c=relaxed/simple;
+	bh=qXngbfb8J0jflgj43O3oE5d2Kp/eccgg3IgbgnW7LQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VE8LalsuDLsnWb4qt6jDaR0AVR6gabbHa7eGfxp/9oydMP1k1rRKuYaC3svXkz9/SxnBuVzC/Y3R+RNHJGkQgEehqCB/VZIX8/yN1jEdzyyo3SX8RDMYFTDezpWDuO7ZGaSm4J6vZ4lQ+TVdtHq6BGl9AALSQvXT/vVhqiNkqz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6+DXAZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6035CC4CED4;
-	Tue, 12 Nov 2024 10:46:26 +0000 (UTC)
+	 MIME-Version; b=bDvRRljeLNlUUfAYTEOrxvAV+G2HtmSYPed81hstrOK0c0jRr679UOv1O0sgJ5W0iIwE86Q4tm36zcl2z3F1Guwy3xFj+UesepZAzWNjGiH0kCkL/XMINDBNxIUpUqUlQNImLzOYIuKF059CuJ7VuNRK5W6pNcIBurMS+8F+CSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuZH1SJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BAFC4CECD;
+	Tue, 12 Nov 2024 10:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408386;
-	bh=eGQ/P2gitOiLZ3MSquTzsdHenwC/d1X/7yp6DHsKdq4=;
+	s=korg; t=1731408397;
+	bh=qXngbfb8J0jflgj43O3oE5d2Kp/eccgg3IgbgnW7LQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6+DXAZxJ/rY/Rg7ZC4CQl+FOdzvE5d64VSnOLWuIu95Jwq4EDbwDkO77pKVGsr9v
-	 Uec3Nqz6QWnDwwQEo4rAM9hmB2lREUBKsn4sCMtj6FVoYPPGFHKVZz6J5sScVlsjo0
-	 0q8IUW49ZN4NPt7EIyIxmXwQLy0Ki34jbcjqawng=
+	b=NuZH1SJ7ec4oLHZR2/F9Sr3y04rGUySF/eNPQ0ZUpBXIhxpm9j+ZATiojPRf+h2+Q
+	 lPlob1uM4RmZhOQpQI8oYEHPDVkXvTy36VEGCqditqVjx6koXx7bmCcTw3mX8N5hhh
+	 27aqVc3D9YU8fZPVbnc46poszhZbJ3GsOkd+wbMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Xi <xiqi2@huawei.com>,
-	kernel test robot <lkp@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Michael Holzheu <holzheu@linux.vnet.ibm.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Wang ShaoBo <bobo.shaobowang@huawei.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrei Vagin <avagin@google.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alexey Gladkov <legion@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 147/184] fs/proc: fix compile warning about variable vmcore_mmap_ops
-Date: Tue, 12 Nov 2024 11:21:45 +0100
-Message-ID: <20241112101906.512985124@linuxfoundation.org>
+Subject: [PATCH 6.11 149/184] signal: restore the override_rlimit logic
+Date: Tue, 12 Nov 2024 11:21:47 +0100
+Message-ID: <20241112101906.588407045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -71,59 +70,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qi Xi <xiqi2@huawei.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-commit b8ee299855f08539e04d6c1a6acb3dc9e5423c00 upstream.
+commit 9e05e5c7ee8758141d2db7e8fea2cab34500c6ed upstream.
 
-When build with !CONFIG_MMU, the variable 'vmcore_mmap_ops'
-is defined but not used:
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
+signals.  However now it's enforced unconditionally, even if
+override_rlimit is set.  This behavior change caused production issues.
 
->> fs/proc/vmcore.c:458:42: warning: unused variable 'vmcore_mmap_ops'
-     458 | static const struct vm_operations_struct vmcore_mmap_ops = {
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with siginfo.
+This prevents the process from correctly identifying the fault address and
+handling the error.  From the user-space perspective, applications are
+unaware that the limit has been reached and that the siginfo is
+effectively 'corrupted'.  This can lead to unpredictable behavior and
+crashes, as we observed with java applications.
 
-Fix this by only defining it when CONFIG_MMU is enabled.
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
+the comparison to max there if override_rlimit is set.  This effectively
+restores the old behavior.
 
-Link: https://lkml.kernel.org/r/20241101034803.9298-1-xiqi2@huawei.com
-Fixes: 9cb218131de1 ("vmcore: introduce remap_oldmem_pfn_range()")
-Signed-off-by: Qi Xi <xiqi2@huawei.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/lkml/202410301936.GcE8yUos-lkp@intel.com/
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Michael Holzheu <holzheu@linux.vnet.ibm.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
+Link: https://lkml.kernel.org/r/20241104195419.3962584-1-roman.gushchin@linux.dev
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Alexey Gladkov <legion@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/linux/user_namespace.h |    3 ++-
+ kernel/signal.c                |    3 ++-
+ kernel/ucount.c                |    6 ++++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -457,10 +457,6 @@ static vm_fault_t mmap_vmcore_fault(stru
- #endif
+--- a/include/linux/user_namespace.h
++++ b/include/linux/user_namespace.h
+@@ -139,7 +139,8 @@ static inline long get_rlimit_value(stru
+ 
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
  }
  
--static const struct vm_operations_struct vmcore_mmap_ops = {
--	.fault = mmap_vmcore_fault,
--};
--
- /**
-  * vmcore_alloc_buf - allocate buffer in vmalloc memory
-  * @size: size of buffer
-@@ -488,6 +484,11 @@ static inline char *vmcore_alloc_buf(siz
-  * virtually contiguous user-space in ELF layout.
-  */
- #ifdef CONFIG_MMU
-+
-+static const struct vm_operations_struct vmcore_mmap_ops = {
-+	.fault = mmap_vmcore_fault,
-+};
-+
- /*
-  * remap_oldmem_pfn_checked - do remap_oldmem_pfn_range replacing all pages
-  * reported as not being ram with the zero page.
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 			goto unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+-		max = get_userns_rlimit_max(iter->ns, type);
++		if (!override_rlimit)
++			max = get_userns_rlimit_max(iter->ns, type);
+ 		/*
+ 		 * Grab an extra ucount reference for the caller when
+ 		 * the rlimit count was previously 0.
 
 
 
