@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90249C544C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEDC9C567A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72A18B24D00
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90F97B25A5E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A0C213129;
-	Tue, 12 Nov 2024 10:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5878212194;
+	Tue, 12 Nov 2024 10:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVyC0ZAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjxLKw9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF420F5D3;
-	Tue, 12 Nov 2024 10:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628D420E31D;
+	Tue, 12 Nov 2024 10:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407642; cv=none; b=faEcQwq+ONOHTv4KYuTIjsf7/FAbhP0jW1DqIrTs+5Q78gmT15+YIzyVFpdztgffybO9gOWd99VuvWsJKfcA5t4WeIRmSIe1NJUsf1xYnJeiOtfNKsBlDuD5PzkcIwQ6XkVz2hhBGLLaSNFHdZhYGW8V5yfoW8J6yoSezv2Q8+0=
+	t=1731407291; cv=none; b=sMRgd+DJaN6vyhI4frZ7OdINnlNCUxd5q5ZuHPjvuP+N9xif6/uGdp3CGetWLYza1iHocsEGReSSHqZHsO5BHBgrAoklejonqSH+fVZ/I+Q5XMas63hPEu9ZqVrhTM03sVKklYPY3asxj2A4jM4dA0lWtG2+v7VeWp6DBiPZB4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407642; c=relaxed/simple;
-	bh=zZ11e16MlqcxHM8n6PfYGUxsG/lqf4PBumE0yplIRW8=;
+	s=arc-20240116; t=1731407291; c=relaxed/simple;
+	bh=aYJtXjncOrRkWtwB4tkpl8jgR/LtvadlQurqc4A3MCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DT2jfP8yuezAebP1WQ5jQEm9AofTJe2DVVxP5wsfEdSwyd0IK2YtDyU4ide9gp3FEtsvamTU0UA/CIULxXE8KnF2VE92yJArV2kopasmGfWimvFF/+hNfX3LFX58OAtxwPsZwPLV65yNXl5VNrRMGOiSY6O89QJZUk0nw0UBQqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVyC0ZAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA2AC4CECD;
-	Tue, 12 Nov 2024 10:34:01 +0000 (UTC)
+	 MIME-Version; b=J7DbgcStV5/qWqc8YhDE/HLIH014RKLILWQVaW9yjHNVAf1xJpR59Zcsv8YvUEl9wC//y4v1bik4jnl822n5J7NoZEJOhlZP97OGbOydL6qNWi9V9czN2vZ1O5+jxs+2A1Mv6F0JM2Ha4oSuo51Kt/UMRKORdru/iKsMpBPEz8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjxLKw9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FEEC4CED6;
+	Tue, 12 Nov 2024 10:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407642;
-	bh=zZ11e16MlqcxHM8n6PfYGUxsG/lqf4PBumE0yplIRW8=;
+	s=korg; t=1731407291;
+	bh=aYJtXjncOrRkWtwB4tkpl8jgR/LtvadlQurqc4A3MCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVyC0ZAeIH+0X59hFkf0IIWi5bbS2/7G2cWSIFMW92brQ+x8o8y/ihCJX/tS5ZavP
-	 86voP70QjJhHJnR+ZwIjaPQGtuiHytKsEj/jVl2YjFAmgdUICZcj6wt1/GNf5UaF8w
-	 YxfWj2mXkK2RMAWfnlte6jKe8MrgrJ/+XQ8LWD5E=
+	b=kjxLKw9vmXOmZ4O2yiZuB8n0h9kenv9zyAWVpgE1MQYtGpWu0SIqiMBgTrMEhVqJT
+	 aj80B3XckDD8C8PfSWOQ/ySyop/iiP0IHcN1lLDAsUJv778ciEGfPx/4uaVfJ1k+Yi
+	 zrXurEc0cz4fP/3o+f2x4UxGH++sDPp30BRyhws8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Joe Damato <jdamato@fastly.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/119] e1000e: Remove Meteor Lake SMBUS workarounds
+Subject: [PATCH 6.1 31/98] virtio_net: Add hash_key_length check
 Date: Tue, 12 Nov 2024 11:20:46 +0100
-Message-ID: <20241112101850.169277626@linuxfoundation.org>
+Message-ID: <20241112101845.459123043@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit b8473723272e346e22aa487b9046fd324b73a0a5 ]
+[ Upstream commit 3f7d9c1964fcd16d02a8a9d4fd6f6cb60c4cc530 ]
 
-This is a partial revert to commit 76a0a3f9cc2f ("e1000e: fix force smbus
-during suspend flow"). That commit fixed a sporadic PHY access issue but
-introduced a regression in runtime suspend flows.
-The original issue on Meteor Lake systems was rare in terms of the
-reproduction rate and the number of the systems affected.
+Add hash_key_length check in virtnet_probe() to avoid possible out of
+bound errors when setting/reading the hash key.
 
-After the integration of commit 0a6ad4d9e169 ("e1000e: avoid failing the
-system during pm_suspend"), PHY access loss can no longer cause a
-system-level suspend failure. As it only occurs when the LAN cable is
-disconnected, and is recovered during system resume flow. Therefore, its
-functional impact is low, and the priority is given to stabilizing
-runtime suspend.
-
-Fixes: 76a0a3f9cc2f ("e1000e: fix force smbus during suspend flow")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ drivers/net/virtio_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index ce227b56cf724..2f9655cf5dd9e 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -1205,12 +1205,10 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	if (ret_val)
- 		goto out;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index e3e5107adaca6..11aa0a7d54cd7 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3887,6 +3887,12 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
++		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
++			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
++				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
++			err = -EINVAL;
++			goto free;
++		}
  
--	if (hw->mac.type != e1000_pch_mtp) {
--		ret_val = e1000e_force_smbus(hw);
--		if (ret_val) {
--			e_dbg("Failed to force SMBUS: %d\n", ret_val);
--			goto release;
--		}
-+	ret_val = e1000e_force_smbus(hw);
-+	if (ret_val) {
-+		e_dbg("Failed to force SMBUS: %d\n", ret_val);
-+		goto release;
- 	}
- 
- 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
-@@ -1273,13 +1271,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
- 	}
- 
- release:
--	if (hw->mac.type == e1000_pch_mtp) {
--		ret_val = e1000e_force_smbus(hw);
--		if (ret_val)
--			e_dbg("Failed to force SMBUS over MTL system: %d\n",
--			      ret_val);
--	}
--
- 	hw->phy.ops.release(hw);
- out:
- 	if (ret_val)
+ 		vi->rss_hash_types_supported =
+ 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
 -- 
 2.43.0
 
