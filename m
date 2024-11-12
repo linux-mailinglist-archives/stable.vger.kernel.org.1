@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-92637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209259C557C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16789C53E9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA9FA28EBB2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5674F283C9C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA94217661;
-	Tue, 12 Nov 2024 10:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB67213EEE;
+	Tue, 12 Nov 2024 10:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytz0zSWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7j/zA+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709C20E325;
-	Tue, 12 Nov 2024 10:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2811A76C7;
+	Tue, 12 Nov 2024 10:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408098; cv=none; b=guL7VaH3Dospw/9OPiOZ52iC3cSMH3mfA1HE+zuVvHuiHiym6BSB0E+4K5DxdEEmMVXN3gpYp5c1N9BoL4ICkSGjT2GhFFDTW9ydedtmM7MriblcY9jF8qXnfk28LwNAaQ1HiK1D+sHAkUM0DH7BcFJaKRR1GW4xwnyKD2Uhzcw=
+	t=1731407609; cv=none; b=kdVm2fYJckiG0dfERa0fX/2PL/TI4rFoaD1IDAL1KM+mYN9WKCGDB3cKp3AMVyYAZIKBo3cnAFVr7GdtfkDUcRG/WlzlOGgDUNH5TgTFO73Sh8r37Y6/N5IgEUut8gGp1Uf6DhsOY7w7cshhctZmL5aWhZZrsijLTYXFQ7Dze/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408098; c=relaxed/simple;
-	bh=u6z+Vse7OdfZ+L4+lqXPz9ZRj+Xo8gdG3vbzGGv5seE=;
+	s=arc-20240116; t=1731407609; c=relaxed/simple;
+	bh=k/tEiuPHV0h+Wdsei/jqlfBgbeh1c2v+OkxbDjS+l/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVD6L2Cw5qkwmxwgwjTZu1fKFS7hScVpdoLTSWHyjEdfh6PtDDlsHx9c1n7EPwTl4YzALdFZ3usmCzrRNCy9lpIt7lwhI99Vz+R8reLwte2DhMWONhG7JeT3nTXe4xBH6YFPlKLXItruI7BeW08fLniaW2ejKdsJke2UHy1vjeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytz0zSWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145FDC4CED7;
-	Tue, 12 Nov 2024 10:41:36 +0000 (UTC)
+	 MIME-Version; b=Qwov/lfkeUlrCMsR6FmY1RB/cQoexJid6ISkg5nQzaFa+qZR6fqj7SMidjdCk2AzqG/R/IOkVsFxzRv5lVoMvawd1Cmu5u4efOmXUKb/PUtV7mdvm3eWgAQGnt8Ey5tKUGOJ0R0Yh2s0nYi/wIdLXmri5Yk/YczYRrO8DhoA8R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7j/zA+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A268C4CECD;
+	Tue, 12 Nov 2024 10:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408097;
-	bh=u6z+Vse7OdfZ+L4+lqXPz9ZRj+Xo8gdG3vbzGGv5seE=;
+	s=korg; t=1731407609;
+	bh=k/tEiuPHV0h+Wdsei/jqlfBgbeh1c2v+OkxbDjS+l/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytz0zSWF4piqw+Hn537QKWRInfuHf49IIJaW8Yep4AaOPT5TUsZIKyQp8R0LdT0pe
-	 IHpp48kygqVrgRDcHPC5LFpBxLjHy7lGxPzVhAizwNNOu8AB706u09ZvCo4iPRyp5n
-	 t2zSVai1EmeKN2dMPpQ7ZhyAU+BwH712YRrPr+OE=
+	b=m7j/zA+l8ABILQf83P+aNYV7B4eFS0anjCpoMm9y+d9QwgMuYIYxjW7GMbBpMy5wE
+	 +seuu/TbEtB+Kz1RCONKF2Dfba73hsLssVmrCQnRRQYA9EJAQkZtF98sX9xypBY2nV
+	 WapfGtafd5LkqdjV/UtAEfx4cQ4pQv4V8PMm41Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Joe Damato <jdamato@fastly.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Yan <andyshrk@163.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 057/184] virtio_net: Sync rss config to device when virtnet_probe
+Subject: [PATCH 6.6 007/119] arm64: dts: rockchip: Fix bluetooth properties on rk3566 box demo
 Date: Tue, 12 Nov 2024 11:20:15 +0100
-Message-ID: <20241112101903.050581691@linuxfoundation.org>
+Message-ID: <20241112101848.995014582@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philo Lu <lulie@linux.alibaba.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit dc749b7b06082ccaacc602e724445da19cd03e9f ]
+[ Upstream commit 2fa98dcc8d3ea2ebbd9e6be778f8bb19231c28be ]
 
-During virtnet_probe, default rss configuration is initialized, but was
-not committed to the device. This patch fix this by sending rss command
-after device ready in virtnet_probe. Otherwise, the actual rss
-configuration used by device can be different with that read by user
-from driver, which may confuse the user.
+The expected clock-name is different, and extclk also is deprecated
+in favor of txco for clocks that are not crystals.
 
-If the command committing fails, driver rss will be disabled.
+The wakeup gpio properties are named differently too, when changing
+from vendor-tree to mainline. So fix those to match the binding.
 
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Joe Damato <jdamato@fastly.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2e0537b16b25 ("arm64: dts: rockchip: Add dts for rockchip rk3566 box demo board")
+Cc: Andy Yan <andyshrk@163.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-4-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3566-box-demo.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 545dda8ec0775..b3232b8baa256 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -6584,6 +6584,15 @@ static int virtnet_probe(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
-+	if (vi->has_rss || vi->has_rss_hash_report) {
-+		if (!virtnet_commit_rss_command(vi)) {
-+			dev_warn(&vdev->dev, "RSS disabled because committing failed.\n");
-+			dev->hw_features &= ~NETIF_F_RXHASH;
-+			vi->has_rss_hash_report = false;
-+			vi->has_rss = false;
-+		}
-+	}
-+
- 	virtnet_set_queues(vi, vi->curr_queue_pairs);
- 
- 	/* a random MAC address has been assigned, notify the device.
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-box-demo.dts b/arch/arm64/boot/dts/rockchip/rk3566-box-demo.dts
+index 0c18406e4c597..7d46809338239 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-box-demo.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-box-demo.dts
+@@ -449,9 +449,9 @@
+ 	bluetooth {
+ 		compatible = "brcm,bcm43438-bt";
+ 		clocks = <&pmucru CLK_RTC_32K>;
+-		clock-names = "ext_clock";
+-		device-wake-gpios = <&gpio2 RK_PC1 GPIO_ACTIVE_HIGH>;
+-		host-wake-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_HIGH>;
++		clock-names = "txco";
++		device-wakeup-gpios = <&gpio2 RK_PC1 GPIO_ACTIVE_HIGH>;
++		host-wakeup-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_HIGH>;
+ 		shutdown-gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_HIGH>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
 -- 
 2.43.0
 
