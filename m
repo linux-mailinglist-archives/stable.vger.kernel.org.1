@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-92731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6089C55CF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2579C53C7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F8D1F23B00
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13DB21F22BE2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18ABB21A4C6;
-	Tue, 12 Nov 2024 10:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEBD2123E3;
+	Tue, 12 Nov 2024 10:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEWI4cUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD4GOmJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DEB21314F;
-	Tue, 12 Nov 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C6420FAB3;
+	Tue, 12 Nov 2024 10:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408406; cv=none; b=IBVKQfrFkSIfIrKZJrDHn7jZNSkASJ7XjLdAXFawfN0vaQVzUROLNYSSxyFBDB6vHDg6t+IgpxXSugYSdTPzyjwpdKpDZ2o9QLHRKCjuWnm909jepCgpCBJBLhqI/uJ+bSm2YNR67OHHErjNkCdKwX1AhBnLro6VQExNG/rDSCM=
+	t=1731407509; cv=none; b=oldlF75QwdccM5QfChAdQWXKCgSfo86Wjp0HEosb3cpoAdkiIRJLR0fmoOtAmOSeGhw8sQIX4InUdaPKyU7xncBUL7yMwmp1dGKFZFBSCrw8SOjzFCExnuJOp7Eb3oz263bq+xUobUqeONXKRe9J2PBTZEHdy5/f9JANj/cmUPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408406; c=relaxed/simple;
-	bh=KQU+xeVo2m4irx5Z0YlfjuoqAXYkz4JRgnBneQ4mKXY=;
+	s=arc-20240116; t=1731407509; c=relaxed/simple;
+	bh=89MKE5koedVdN8kd/l8BpakxiSppni/2udcDpv0RpsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvuhWy8/13Pwfq9mQuBeAL9eFReneOJMzP+Aq8BcxjGT2dDfigmS+gfM6YaANXIibKesKYssZiR8P++Jsj5SCuYviOIvc5ikTETERvJzUMm0gn6fgh3tTZiZhehFVVhDPXy/IHmfTh5T74k4g/Xon9SlNGyEZ4FOWhGFvC+3lq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEWI4cUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD12C4CECD;
-	Tue, 12 Nov 2024 10:46:46 +0000 (UTC)
+	 MIME-Version; b=ne0IChmcH5dExBfudrKFXfH4LdAe1kmD9R7x5etcNQhkP9/lA+XCR/txtrxzkSLCYQzweWWkRmPc5hhW507Vva8rdSGkAK57zZMEo1xcg3F9aGwA/gio6J8G+d9MekKnDjWPChi8UAE1wS52Zq9vfcjAMleo0x9JqUsBAyU6XWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yD4GOmJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F91BC4CECD;
+	Tue, 12 Nov 2024 10:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408406;
-	bh=KQU+xeVo2m4irx5Z0YlfjuoqAXYkz4JRgnBneQ4mKXY=;
+	s=korg; t=1731407509;
+	bh=89MKE5koedVdN8kd/l8BpakxiSppni/2udcDpv0RpsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEWI4cUqDr8UsiUINcsL4Ot4BNkJSgfIfoteECN7jJ0k2FCZ9XQ1clzGVwtYfnnPf
-	 xPYVxF3cfNveBqWYkxc2y3JGoghvAWHrK+m0xVmFrzwP0FEQLRE3LrsdQdEBgFDdUa
-	 f4MqmA4Z4kPUDtuavAVkQ1C6li9+fpfLmcRFmEvM=
+	b=yD4GOmJSEECLuPjx+KRLMO6kJ8Ykdu2wJszFBJkbYNwoapaaKw+11OakS0nDUdpef
+	 El5nHmyRCyQj32bwOZr4BdSu/+96N5O0EfP36MTd0N9uMxOJITeSwMhiInCqI+i13J
+	 FcCjSjBr22l7WEnQUJnwJIKqkkDm8YQRcPAfqdhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 152/184] mm/damon/core: handle zero schemes apply interval
-Date: Tue, 12 Nov 2024 11:21:50 +0100
-Message-ID: <20241112101906.704615700@linuxfoundation.org>
+	Hyunwoo Kim <v4bel@theori.io>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 96/98] hv_sock: Initializing vsk->trans to NULL to prevent a dangling pointer
+Date: Tue, 12 Nov 2024 11:21:51 +0100
+Message-ID: <20241112101847.899629716@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 8e7bde615f634a82a44b1f3d293c049fd3ef9ca9 upstream.
+commit e629295bd60abf4da1db85b82819ca6a4f6c1e79 upstream.
 
-DAMON's logics to determine if this is the time to apply damos schemes
-assumes next_apply_sis is always set larger than current
-passed_sample_intervals.  And therefore assume continuously incrementing
-passed_sample_intervals will make it reaches to the next_apply_sis in
-future.  The logic hence does apply the scheme and update next_apply_sis
-only if passed_sample_intervals is same to next_apply_sis.
+When hvs is released, there is a possibility that vsk->trans may not
+be initialized to NULL, which could lead to a dangling pointer.
+This issue is resolved by initializing vsk->trans to NULL.
 
-If Schemes apply interval is set as zero, however, next_apply_sis is set
-same to current passed_sample_intervals, respectively.  And
-passed_sample_intervals is incremented before doing the next_apply_sis
-check.  Hence, next_apply_sis becomes larger than next_apply_sis, and the
-logic says it is not the time to apply schemes and update next_apply_sis.
-In other words, DAMON stops applying schemes until passed_sample_intervals
-overflows.
-
-Based on the documents and the common sense, a reasonable behavior for
-such inputs would be applying the schemes for every sampling interval.
-Handle the case by removing the assumption.
-
-Link: https://lkml.kernel.org/r/20241031183757.49610-3-sj@kernel.org
-Fixes: 42f994b71404 ("mm/damon/core: implement scheme-specific apply interval")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.7.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/vmw_vsock/hyperv_transport.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1406,7 +1406,7 @@ static void damon_do_apply_schemes(struc
- 	damon_for_each_scheme(s, c) {
- 		struct damos_quota *quota = &s->quota;
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -549,6 +549,7 @@ static void hvs_destruct(struct vsock_so
+ 		vmbus_hvsock_device_unregister(chan);
  
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
+ 	kfree(hvs);
++	vsk->trans = NULL;
+ }
  
- 		if (!s->wmarks.activated)
-@@ -1627,7 +1627,7 @@ static void kdamond_apply_schemes(struct
- 	bool has_schemes_to_apply = false;
- 
- 	damon_for_each_scheme(s, c) {
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
- 
- 		if (!s->wmarks.activated)
-@@ -1647,9 +1647,9 @@ static void kdamond_apply_schemes(struct
- 	}
- 
- 	damon_for_each_scheme(s, c) {
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
--		s->next_apply_sis +=
-+		s->next_apply_sis = c->passed_sample_intervals +
- 			(s->apply_interval_us ? s->apply_interval_us :
- 			 c->attrs.aggr_interval) / sample_interval;
- 	}
+ static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
 
 
 
