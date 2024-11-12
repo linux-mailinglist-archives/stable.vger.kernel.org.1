@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-92527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B9F9C54BE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:50:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD869C53A2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57F01F215D9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C582815A1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D33221FC7;
-	Tue, 12 Nov 2024 10:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E21213EE2;
+	Tue, 12 Nov 2024 10:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFrqf+gE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwaFJUce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60599221FBF;
-	Tue, 12 Nov 2024 10:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0F720899D;
+	Tue, 12 Nov 2024 10:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407843; cv=none; b=CYfX8u8C7GzLPNe5MKYKikMaXP0ZuGeYSKRJyXPMAmZvzpe24rChCAkSSYvPPmYBLX6LahWwZ+wx9yCLDzRpPSn2SHeHA2MJsSPcIKZz8c5jSypEde8SpvQayHlzsyKYrplAmy3rpo7nobcNUcCYg9sQSLJJsbc7Sup0cUw9iDQ=
+	t=1731407353; cv=none; b=qa1lBUILzKleTqjFZId4e36bC6WJQEZZcZAeyJ9uNkghfadguBGfnUQcyzbbRNvVr9y4AXyd80VtqbKCuHaQm9Yqdi9/LAYGxlxCGiaQJTHioLw8or6C0/dKU+JActIFV12LOi9ByrsJASrw64AOWRFE/J62jL5mR+wv/hCrr1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407843; c=relaxed/simple;
-	bh=/xFYdUEoeugV8BbS9cmdsOvTvIfl49P36gaN2al2V58=;
+	s=arc-20240116; t=1731407353; c=relaxed/simple;
+	bh=sW731fW7qPHr2JrY/RdJOPVK3EcnHqwVNJQ0gID0qIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4AxSTXlBNXwdjPtIRSIvqCE28YodxKDqNkMXMdYVA9vG1X5RUbLmYhorDdq6TYUpcQgBK/HoExCSPTOjRslCa6WnSCOjJYMxbEDKiP+iQ/JSCSRv3iDyrIxFxQigtH+UN8Ock4DlfwgrRIU2Fk7mqVLFTgt0O7SJzKC2Tr/rsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFrqf+gE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02E5C4CECD;
-	Tue, 12 Nov 2024 10:37:22 +0000 (UTC)
+	 MIME-Version; b=KlLv4ImJ3CBIhBc52fy2xa20vANgAd8GnE0vJwXm002kUTL7TrgbQOepgRLdiGQr35kRHgRKGhN16TEBKRgVgT0NsvHaCCG2BkJ4rahZiTmXai5WfCxSPJB5PSUu/iFpiJ8fEZsEOr5EeJpTU1LY+3RPuRcFk7zD50ADxAVG/TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwaFJUce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDE3C4CECD;
+	Tue, 12 Nov 2024 10:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407843;
-	bh=/xFYdUEoeugV8BbS9cmdsOvTvIfl49P36gaN2al2V58=;
+	s=korg; t=1731407353;
+	bh=sW731fW7qPHr2JrY/RdJOPVK3EcnHqwVNJQ0gID0qIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFrqf+gEBIMcAcDlZH59D31p2U6AwYc4KbKb8LOIbKuYTfGy7eKRN1COkav9Z9RDc
-	 FgB4d6KazdQL2CaA2ruuNkraV2y/de0QEUDh7+NPCQOyJxBpzbMUmT4DU7xKqO7Mz7
-	 OBqc1mMeiNSskPiqCZW6AS1iC+wkxr/MBvZhz58s=
+	b=DwaFJUceGyX95zlgHfRZs+eMjsa4uuMy2GunIqQPJGqm0+mneOKBsjIF41ococgB+
+	 HE/ZQbLJ73wOGtv++YCd4Nr3+q3b61khlMkHTpz62CHz6wBbix1T0NI5ghHAMkLX/6
+	 34irBjXFfWwY8B1gdYcAiwezVCjm+AuiOKmRr6FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/119] thermal/of: support thermal zones w/o trips subnode
+	Simon Horman <horms@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 51/98] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
 Date: Tue, 12 Nov 2024 11:21:06 +0100
-Message-ID: <20241112101850.934208764@linuxfoundation.org>
+Message-ID: <20241112101846.213076953@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 725f31f300e300a9d94976bd8f1db6e746f95f63 ]
+commit eb9a839b3d8a989be5970035a5cf29bcd6ffd24d upstream.
 
-Although the current device tree binding of thermal zones require the
-trips subnode, the binding in kernel v5.15 does not require it, and many
-device trees shipped with the kernel, for example,
-allwinner/sun50i-a64.dtsi and mediatek/mt8183-kukui.dtsi in ARM64, still
-comply to the old binding and contain no trips subnode.
+Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
+when switching from CAN-CC to CAN-FD mode"), the current ring and
+coalescing configuration is passed to can_ram_get_layout(). That fixed
+the issue when switching between CAN-CC and CAN-FD mode with
+configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
+tx-frames-irq).
 
-Allow the code to successfully register thermal zones w/o trips subnode
-for DT binding compatibility now.
+However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
+switching from CAN-CC to CAN-FD mode"), introduced a regression when
+switching CAN modes with disabled coalescing configuration: Even if
+the previous CAN mode has no coalescing configured, the new mode is
+configured with active coalescing. This leads to delayed receiving of
+CAN-FD frames.
 
-Furtherly, the inconsistency between DTs and bindings should be resolved
-by either adding empty trips subnode or dropping the trips subnode
-requirement.
+This comes from the fact, that ethtool uses usecs = 0 and max_frames =
+1 to disable coalescing, however the driver uses internally
+priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
+coalescing.
 
-Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-[wenst@chromium.org: Reworked logic and kernel log messages]
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20241018073139.1268995-1-wenst@chromium.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the regression by assigning struct ethtool_coalesce
+ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
+the driver as can_ram_get_layout() expects this.
+
+Reported-by: https://github.com/vdh-robothania
+Closes: https://github.com/raspberrypi/linux/issues/6407
+Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_of.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index d8dfcd49695d3..4e5f86c214561 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -126,18 +126,15 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
- 	struct device_node *trips;
- 	int ret, count;
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -473,9 +473,11 @@ int mcp251xfd_ring_alloc(struct mcp251xf
+ 		};
+ 		const struct ethtool_coalesce ec = {
+ 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
+-			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
++			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
++				1 : priv->rx_obj_num_coalesce_irq,
+ 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
+-			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
++			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
++				1 : priv->tx_obj_num_coalesce_irq,
+ 		};
+ 		struct can_ram_layout layout;
  
-+	*ntrips = 0;
-+	
- 	trips = of_get_child_by_name(np, "trips");
--	if (!trips) {
--		pr_err("Failed to find 'trips' node\n");
--		return ERR_PTR(-EINVAL);
--	}
-+	if (!trips)
-+		return NULL;
- 
- 	count = of_get_child_count(trips);
--	if (!count) {
--		pr_err("No trip point defined\n");
--		ret = -EINVAL;
--		goto out_of_node_put;
--	}
-+	if (!count)
-+		return NULL;
- 
- 	tt = kzalloc(sizeof(*tt) * count, GFP_KERNEL);
- 	if (!tt) {
-@@ -160,7 +157,6 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
- 
- out_kfree:
- 	kfree(tt);
--	*ntrips = 0;
- out_of_node_put:
- 	of_node_put(trips);
- 
-@@ -498,11 +494,14 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
- 
- 	trips = thermal_of_trips_init(np, &ntrips);
- 	if (IS_ERR(trips)) {
--		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
-+		pr_err("Failed to parse trip points for %pOFn id=%d\n", sensor, id);
- 		ret = PTR_ERR(trips);
- 		goto out_kfree_of_ops;
- 	}
- 
-+	if (!trips)
-+		pr_info("No trip points found for %pOFn id=%d\n", sensor, id);
-+
- 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
- 	if (ret) {
- 		pr_err("Failed to initialize monitoring delays from %pOFn\n", np);
--- 
-2.43.0
-
 
 
 
