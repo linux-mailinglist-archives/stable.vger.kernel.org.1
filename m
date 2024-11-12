@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-92728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08AF9C5767
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0DD9C5756
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA865B32EBB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6287EB29260
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784DD217326;
-	Tue, 12 Nov 2024 10:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C7420F5AF;
+	Tue, 12 Nov 2024 10:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuZH1SJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktD0Jw6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3306621A4A8;
-	Tue, 12 Nov 2024 10:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E4121A4BB;
+	Tue, 12 Nov 2024 10:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408397; cv=none; b=Z0L/lKu+awau4ZdHixd7f92u7tgeghwOHljTcP0tTTQk4JlafGXLulWaI5jkjOukvKsz38aVWlqFcjfC6YNOUHwNFgMFomaHtZqq+wqr5vNaO57Av1kuOvEAqxnt0ysNxpIGn01/tOCMiY6/ajIm8SmQCHunVLjvAz9v66tcT6E=
+	t=1731408403; cv=none; b=PIYuSB2Ia808p1ckQ7zE48SqMl2QoZLUDe7DnJNrCoEDd7nFfDAQfuUIvmIwpjNHgsXCW96VIqyj6bmGyfHBVrmjGobero8mjVR8OgyCWnMR2+d90nURjAfnbo1GX3A4deYd8zD/Sb/GPYMVTTsyRkwb/9IjJLLPiY7asGQsCPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408397; c=relaxed/simple;
-	bh=qXngbfb8J0jflgj43O3oE5d2Kp/eccgg3IgbgnW7LQ4=;
+	s=arc-20240116; t=1731408403; c=relaxed/simple;
+	bh=zlSHJPiFuBuRZcSjITiMaWvHjN8rI86nelzCpU6UiB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDvRRljeLNlUUfAYTEOrxvAV+G2HtmSYPed81hstrOK0c0jRr679UOv1O0sgJ5W0iIwE86Q4tm36zcl2z3F1Guwy3xFj+UesepZAzWNjGiH0kCkL/XMINDBNxIUpUqUlQNImLzOYIuKF059CuJ7VuNRK5W6pNcIBurMS+8F+CSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuZH1SJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BAFC4CECD;
-	Tue, 12 Nov 2024 10:46:36 +0000 (UTC)
+	 MIME-Version; b=Tfc2YbIkY1v3cRvrquLXdp0rZ0WtteC3td6X6/atcH+fjeaRifqsgwaPdfCIaZQOQD4Vkb5D9e/L6qscBHj25ydkIuoAX7ZgW8P2F2ad5CTNnfZ2FG3p7CDmt1HeAjzDZWk5SJCY0iMh4ifuUJQYF1OzqfyrsqkrPJsbysBe8E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktD0Jw6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89F8C4CECD;
+	Tue, 12 Nov 2024 10:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408397;
-	bh=qXngbfb8J0jflgj43O3oE5d2Kp/eccgg3IgbgnW7LQ4=;
+	s=korg; t=1731408403;
+	bh=zlSHJPiFuBuRZcSjITiMaWvHjN8rI86nelzCpU6UiB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuZH1SJ7ec4oLHZR2/F9Sr3y04rGUySF/eNPQ0ZUpBXIhxpm9j+ZATiojPRf+h2+Q
-	 lPlob1uM4RmZhOQpQI8oYEHPDVkXvTy36VEGCqditqVjx6koXx7bmCcTw3mX8N5hhh
-	 27aqVc3D9YU8fZPVbnc46poszhZbJ3GsOkd+wbMM=
+	b=ktD0Jw6ePSXu7BprnPznPdepKrMbV1yOXcmPPyuBXnS6HsLnpl0QHb3oeaxKIitVQ
+	 /NxlvG28Vhy+yhZsd/7ySKXml0LlDqrcCMwWMAqSd3e2aX0yeSGIfBWsscDzsFa654
+	 9EP0M9dH3RpzbxkRt5PRTpNdNylkIxZdVIZBqWXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrei Vagin <avagin@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Alexey Gladkov <legion@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
+	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 149/184] signal: restore the override_rlimit logic
-Date: Tue, 12 Nov 2024 11:21:47 +0100
-Message-ID: <20241112101906.588407045@linuxfoundation.org>
+Subject: [PATCH 6.11 151/184] mm/damon/core: handle zero {aggregation,ops_update} intervals
+Date: Tue, 12 Nov 2024 11:21:49 +0100
+Message-ID: <20241112101906.665579273@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -70,92 +65,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Roman Gushchin <roman.gushchin@linux.dev>
+From: SeongJae Park <sj@kernel.org>
 
-commit 9e05e5c7ee8758141d2db7e8fea2cab34500c6ed upstream.
+commit 3488af0970445ff5532c7e8dc5e6456b877aee5e upstream.
 
-Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
-signals.  However now it's enforced unconditionally, even if
-override_rlimit is set.  This behavior change caused production issues.
+Patch series "mm/damon/core: fix handling of zero non-sampling intervals".
 
-For example, if the limit is reached and a process receives a SIGSEGV
-signal, sigqueue_alloc fails to allocate the necessary resources for the
-signal delivery, preventing the signal from being delivered with siginfo.
-This prevents the process from correctly identifying the fault address and
-handling the error.  From the user-space perspective, applications are
-unaware that the limit has been reached and that the siginfo is
-effectively 'corrupted'.  This can lead to unpredictable behavior and
-crashes, as we observed with java applications.
+DAMON's internal intervals accounting logic is not correctly handling
+non-sampling intervals of zero values for a wrong assumption.  This could
+cause unexpected monitoring behavior, and even result in infinite hang of
+DAMON sysfs interface user threads in case of zero aggregation interval.
+Fix those by updating the intervals accounting logic.  For details of the
+root case and solutions, please refer to commit messages of fixes.
 
-Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
-the comparison to max there if override_rlimit is set.  This effectively
-restores the old behavior.
 
-Link: https://lkml.kernel.org/r/20241104195419.3962584-1-roman.gushchin@linux.dev
-Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Co-developed-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: <stable@vger.kernel.org>
+This patch (of 2):
+
+DAMON's logics to determine if this is the time to do aggregation and ops
+update assumes next_{aggregation,ops_update}_sis are always set larger
+than current passed_sample_intervals.  And therefore it further assumes
+continuously incrementing passed_sample_intervals every sampling interval
+will make it reaches to the next_{aggregation,ops_update}_sis in future.
+The logic therefore make the action and update
+next_{aggregation,ops_updaste}_sis only if passed_sample_intervals is same
+to the counts, respectively.
+
+If Aggregation interval or Ops update interval are zero, however,
+next_aggregation_sis or next_ops_update_sis are set same to current
+passed_sample_intervals, respectively.  And passed_sample_intervals is
+incremented before doing the next_{aggregation,ops_update}_sis check.
+Hence, passed_sample_intervals becomes larger than
+next_{aggregation,ops_update}_sis, and the logic says it is not the time
+to do the action and update next_{aggregation,ops_update}_sis forever,
+until an overflow happens.  In other words, DAMON stops doing aggregations
+or ops updates effectively forever, and users cannot get monitoring
+results.
+
+Based on the documents and the common sense, a reasonable behavior for
+such inputs is doing an aggregation and an ops update for every sampling
+interval.  Handle the case by removing the assumption.
+
+Note that this could incur particular real issue for DAMON sysfs interface
+users, in case of zero Aggregation interval.  When user starts DAMON with
+zero Aggregation interval and asks online DAMON parameter tuning via DAMON
+sysfs interface, the request is handled by the aggregation callback.
+Until the callback finishes the work, the user who requested the online
+tuning just waits.  Hence, the user will be stuck until the
+passed_sample_intervals overflows.
+
+Link: https://lkml.kernel.org/r/20241031183757.49610-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20241031183757.49610-2-sj@kernel.org
+Fixes: 4472edf63d66 ("mm/damon/core: use number of passed access sampling as a timer")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.7.x]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/user_namespace.h |    3 ++-
- kernel/signal.c                |    3 ++-
- kernel/ucount.c                |    6 ++++--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ mm/damon/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -139,7 +139,8 @@ static inline long get_rlimit_value(stru
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2001,7 +2001,7 @@ static int kdamond_fn(void *data)
+ 		if (ctx->ops.check_accesses)
+ 			max_nr_accesses = ctx->ops.check_accesses(ctx);
  
- long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
- bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit);
- void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
- bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+-		if (ctx->passed_sample_intervals == next_aggregation_sis) {
++		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
+ 			kdamond_merge_regions(ctx,
+ 					max_nr_accesses / 10,
+ 					sz_limit);
+@@ -2019,7 +2019,7 @@ static int kdamond_fn(void *data)
  
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
- 	 */
- 	rcu_read_lock();
- 	ucounts = task_ucounts(t);
--	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
-+	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
-+					    override_rlimit);
- 	rcu_read_unlock();
- 	if (!sigpending)
- 		return NULL;
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
- 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
- }
+ 		sample_interval = ctx->attrs.sample_interval ?
+ 			ctx->attrs.sample_interval : 1;
+-		if (ctx->passed_sample_intervals == next_aggregation_sis) {
++		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
+ 			ctx->next_aggregation_sis = next_aggregation_sis +
+ 				ctx->attrs.aggr_interval / sample_interval;
  
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit)
- {
- 	/* Caller must hold a reference to ucounts */
- 	struct ucounts *iter;
-@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucoun
- 			goto unwind;
- 		if (iter == ucounts)
- 			ret = new;
--		max = get_userns_rlimit_max(iter->ns, type);
-+		if (!override_rlimit)
-+			max = get_userns_rlimit_max(iter->ns, type);
- 		/*
- 		 * Grab an extra ucount reference for the caller when
- 		 * the rlimit count was previously 0.
+@@ -2029,7 +2029,7 @@ static int kdamond_fn(void *data)
+ 				ctx->ops.reset_aggregated(ctx);
+ 		}
+ 
+-		if (ctx->passed_sample_intervals == next_ops_update_sis) {
++		if (ctx->passed_sample_intervals >= next_ops_update_sis) {
+ 			ctx->next_ops_update_sis = next_ops_update_sis +
+ 				ctx->attrs.ops_update_interval /
+ 				sample_interval;
 
 
 
