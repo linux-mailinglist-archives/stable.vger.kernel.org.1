@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-92338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1B79C539E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAEF9C5692
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BFE28335F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524F3B42A14
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25FF213ECC;
-	Tue, 12 Nov 2024 10:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C644021790F;
+	Tue, 12 Nov 2024 10:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3DO3pVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCxqhpeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF88213ED2;
-	Tue, 12 Nov 2024 10:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F37212F00;
+	Tue, 12 Nov 2024 10:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407330; cv=none; b=erN1zj9J9nZbbPd48iffdg+1s5E8+s5eYRs22k7eXlYpOq6cD4A4P2zw+QyLOW9pbQB3g5S9+57MjmgMiQMfKXut0SPxYIiL+FS2+VfxUMMfrYD/1+r773OzsPUJUVoiIsGPWaP37RXf2988kODBFO02Iqy4KjEdFh+EswumPVA=
+	t=1731408134; cv=none; b=s4XX6RStpadH3xdaPKQlWTOj9R4IGIH74rjZVnsvz8PxHM/jVTdrIDxHA+eKraaP+4uqrEZh5aIeEAuar37imd08uVsb2ZYgnWwN7lPbUy9iEgLo2J4xrR0gFF5+SZPAv79ImFMG9lEEfB56A27ql1ECZmE44Fz2ScPw3ZMo/0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407330; c=relaxed/simple;
-	bh=8av7FckwtDsvfCcp+kN0KTdr1C/fe4kPOH2ifluYnzw=;
+	s=arc-20240116; t=1731408134; c=relaxed/simple;
+	bh=TVai+8R/iYsF4KSHlDl2ZOkWjXBRKMGN0LwdPkvnRAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eaz18J16Andyd1oz1OkXTlTvTPFrX+JnJtUJP4a33o0K+LBHwVv6fzDXthtt1XMcjnhq7KFiBZHfU9P8l6U5HtDIV2XGukScso5FOLZ1imSSWMwVDwwpqx/W6za5heuCAN+0HrWQ9wm+d5IEItQqD7Z91nlA1PS65JjiiyOAlYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3DO3pVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD9AC4CECD;
-	Tue, 12 Nov 2024 10:28:49 +0000 (UTC)
+	 MIME-Version; b=ChGYw3qqXexU9jgSSAYUpg56OGhKVHsJ4qUoO9ij3fkVHYrwR5kzaAeMCtR/OZ3NEd8ZlwDlWpQ6bySo2JWxOZiZmc9NuaDTrcdBHyQ0PzqUWm39CwmlSqHCgKKj9ZPEMFJKQyuj7XOgdxx/okCeBSWiYY0V0xsLGKFaHznfOBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCxqhpeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF4BC4CECD;
+	Tue, 12 Nov 2024 10:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407330;
-	bh=8av7FckwtDsvfCcp+kN0KTdr1C/fe4kPOH2ifluYnzw=;
+	s=korg; t=1731408134;
+	bh=TVai+8R/iYsF4KSHlDl2ZOkWjXBRKMGN0LwdPkvnRAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3DO3pVBXAfSQWMQAgpDyvzrktRTo89BbMebwKDaQDmiS/ZzfuV5nbNOkFtnUR7R8
-	 StyUREjEc6IdGjaGivvqBcVp0hff4pAQi6voGPtCud0j0tU7ofXOcvyKzzVuFWfHzl
-	 4Lvb9PZNAKbP9UfEld1zRuoHfu8461F6wC4YTk/s=
+	b=VCxqhpeE4M6iNi7a3lj37ZxBGbgcTdmxFtFUaWA0SvUUnOZ2M9jTVsPXqOhfGZyeX
+	 cePlw6yTHxE5/MGvdCs6T3C/cTyw8aPEAkgdrNSUcA0nhhlySvC8IivLA/pnGc9eW+
+	 VNFzRul2d3N95lDBEXTyQNwmqTrlntJlPbOpAI40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caesar Wang <wxt@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Emil Dahl Juhl <emdj@bang-olufsen.dk>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/98] ARM: dts: rockchip: drop grf reference from rk3036 hdmi
-Date: Tue, 12 Nov 2024 11:20:28 +0100
-Message-ID: <20241112101844.776242161@linuxfoundation.org>
+Subject: [PATCH 6.11 071/184] tools/lib/thermal: Fix sampling handler context ptr
+Date: Tue, 12 Nov 2024 11:20:29 +0100
+Message-ID: <20241112101903.590139319@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Emil Dahl Juhl <emdj@bang-olufsen.dk>
 
-[ Upstream commit 1580ccb6ed9dc76b8ff3e2d8912e8215c8b0fa6d ]
+[ Upstream commit fcd54cf480c87b96313a97dbf898c644b7bb3a2e ]
 
-Neither the binding nor the driver implementation specify/use the grf
-reference provided in the rk3036. And neither does the newer rk3128
-user of the hdmi controller. So drop the rockchip,grf property.
+The sampling handler, provided by the user alongside a void* context,
+was invoked with an internal structure instead of the user context.
 
-Fixes: b7217cf19c63 ("ARM: dts: rockchip: add hdmi device node for rk3036")
-Cc: Caesar Wang <wxt@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-13-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Correct the invocation of the sampling handler to pass the user context
+pointer instead.
+
+Note that the approach taken is similar to that in events.c, and will
+reduce the chances of this mistake happening if additional sampling
+callbacks are added.
+
+Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
+Signed-off-by: Emil Dahl Juhl <emdj@bang-olufsen.dk>
+Link: https://lore.kernel.org/r/20241015171826.170154-1-emdj@bang-olufsen.dk
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ tools/lib/thermal/sampling.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index e6bb1d7a2b4ec..4e208528eebf2 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -398,7 +398,6 @@
- 		interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&cru  PCLK_HDMI>;
- 		clock-names = "pclk";
--		rockchip,grf = <&grf>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&hdmi_ctl>;
- 		status = "disabled";
+diff --git a/tools/lib/thermal/sampling.c b/tools/lib/thermal/sampling.c
+index 70577423a9f0c..f67c1f9ea1d78 100644
+--- a/tools/lib/thermal/sampling.c
++++ b/tools/lib/thermal/sampling.c
+@@ -16,6 +16,8 @@ static int handle_thermal_sample(struct nl_msg *n, void *arg)
+ 	struct thermal_handler_param *thp = arg;
+ 	struct thermal_handler *th = thp->th;
+ 
++	arg = thp->arg;
++
+ 	genlmsg_parse(nlh, 0, attrs, THERMAL_GENL_ATTR_MAX, NULL);
+ 
+ 	switch (genlhdr->cmd) {
 -- 
 2.43.0
 
