@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-92254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775739C533E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1870B9C55A7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B16F1F2385B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C49FC1F21532
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0612123E6;
-	Tue, 12 Nov 2024 10:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAED21441B;
+	Tue, 12 Nov 2024 10:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3juIucm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpuKQQVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27DF2101A9;
-	Tue, 12 Nov 2024 10:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C52213127;
+	Tue, 12 Nov 2024 10:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407054; cv=none; b=YX/TIj6Kp/sVe2zxBaBNjG+A2yNwIqWK5GPbTu2bXeNCBTaes6o1TVtZn7VyiUJPhY6pEs/fE+4rZn75HeFKX/fIWzHkd23VwAfJ5MQLSgLCeEfLxri3J0VnJ3aeiwAaP52+0/qrKo/ou7wHJa1Qvw84Pi1G5zqaGB284US1SLs=
+	t=1731408243; cv=none; b=Vj3UN66ldbeyUkrUMBO+L+qZd4P+g1BzxAxYi3dnk2SpwReUb3bErYONJnbTuiHX64+g3ThXLZq4oHRSHzlN/ZDCEkyi1jCoUajcpcfjlQ66VcZiO+yFXSEfO4QbjC5VMFzsGJMQEQrMC0j8vapxFWkknOYtWaMLpleEpHmX3qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407054; c=relaxed/simple;
-	bh=d0deCBXWdsLjIlgGccxH/BZ1zPG2DBVCGDD8yhnbsSM=;
+	s=arc-20240116; t=1731408243; c=relaxed/simple;
+	bh=32FkEhIbrlOzsPWIk8UMOG4a152fL+7yGAv9LdVmkWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPi+QfpRrccOMIJZrG1UJqTOq/ArsRJnK2xvGzoKTEtljNDSiq3PreUeCoCaDnTaMm+hs7vKPBwORzjwmmY3uvDWo4yluGwdCBB8LphADEVdY64hoZ+Lg7MDNI94Tp99R2Tk4TPxBga2oZvzxXna+OJVy7qzl5jcPBjb0hcqOpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3juIucm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBD6C4CECD;
-	Tue, 12 Nov 2024 10:24:14 +0000 (UTC)
+	 MIME-Version; b=QiCUwKQoJgYmd2an8hjL2gkPIG2meO4XQRnj00igmw+tlvT4dbqyV1DQxCEleywQYHWhYxpxpBwlSFKrGdGVAZPY6SvJYs6862GRruBz14JVHOA5EdujJxZeRrpoZSkAW5zvAbtrcbC8gH4TvMGrM/63GNptnkN4mSZtYEc6b5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpuKQQVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6684EC4CED6;
+	Tue, 12 Nov 2024 10:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407054;
-	bh=d0deCBXWdsLjIlgGccxH/BZ1zPG2DBVCGDD8yhnbsSM=;
+	s=korg; t=1731408242;
+	bh=32FkEhIbrlOzsPWIk8UMOG4a152fL+7yGAv9LdVmkWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3juIucmit6n73zD9Tuy8fwuuYvQZqzPfPEYwAEkTQ3rUnHecnvdGGxvTuoV9ZNYR
-	 6Qn58yafewWH6HLkAdQiogg4nRa/IrKTPgWoyKHxMMOGDv90ugsmHNNj6Odr6awxhE
-	 32qf0tUS60FzjPo+ZIJLzSHd63hD2hdGnDqhWIok=
+	b=wpuKQQVETBqYtbcKakOaE3re9BvBaVQZhjjGFS6Rbj3m1nLowSGcdyDkoaZjpvxoS
+	 I+3a1/MgSafS/+9IsmSxwetvD/9hnRGtsSQZacF9P1ulVJg2ZMXgNlv84aKWun28iO
+	 WtsaeRO2uVb5JMhPY9sjwgFu+GQMItjs0taMpPOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.15 37/76] media: v4l2-ctrls-api: fix error handling for v4l2_g_ctrl()
+	Dillon Varone <dillon.varone@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 104/184] drm/amd/display: parse umc_info or vram_info based on ASIC
 Date: Tue, 12 Nov 2024 11:21:02 +0100
-Message-ID: <20241112101841.198640636@linuxfoundation.org>
+Message-ID: <20241112101904.856095261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 4c76f331a9a173ac8fe1297a9231c2a38f88e368 upstream.
+commit 694c79769cb384bca8b1ec1d1e84156e726bd106 upstream.
 
-As detected by Coverity, the error check logic at get_ctrl() is
-broken: if ptr_to_user() fails to fill a control due to an error,
-no errors are returned and v4l2_g_ctrl() returns success on a
-failed operation, which may cause applications to fail.
+An upstream bug report suggests that there are production dGPUs that are
+older than DCN401 but still have a umc_info in VBIOS tables with the
+same version as expected for a DCN401 product. Hence, reading this
+tables should be guarded with a version check.
 
-Add an error check at get_ctrl() and ensure that it will
-be returned to userspace without filling the control value if
-get_ctrl() fails.
-
-Fixes: 71c689dc2e73 ("media: v4l2-ctrls: split up into four source files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2551b4a321a68134360b860113dd460133e856e5)
+Fixes: 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
+Cc: stable@vger.kernel.org # 6.11.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-api.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-@@ -712,9 +712,10 @@ static int get_ctrl(struct v4l2_ctrl *ct
- 		for (i = 0; i < master->ncontrols; i++)
- 			cur_to_new(master->cluster[i]);
- 		ret = call_op(master, g_volatile_ctrl);
--		new_to_user(c, ctrl);
-+		if (!ret)
-+			ret = new_to_user(c, ctrl);
- 	} else {
--		cur_to_user(c, ctrl);
-+		ret = cur_to_user(c, ctrl);
- 	}
- 	v4l2_ctrl_unlock(master);
- 	return ret;
-@@ -729,7 +730,10 @@ int v4l2_g_ctrl(struct v4l2_ctrl_handler
- 	if (!ctrl || !ctrl->is_int)
- 		return -EINVAL;
- 	ret = get_ctrl(ctrl, &c);
--	control->value = c.value;
-+
-+	if (!ret)
-+		control->value = c.value;
-+
- 	return ret;
- }
- EXPORT_SYMBOL(v4l2_g_ctrl);
-@@ -770,10 +774,11 @@ static int set_ctrl_lock(struct v4l2_fh
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 0d8498ab9b23..be8fbb04ad98 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -3127,7 +3127,9 @@ static enum bp_result bios_parser_get_vram_info(
+ 	struct atom_data_revision revision;
  
- 	v4l2_ctrl_lock(ctrl);
--	user_to_new(c, ctrl);
--	ret = set_ctrl(fh, ctrl, 0);
-+	ret = user_to_new(c, ctrl);
-+	if (!ret)
-+		ret = set_ctrl(fh, ctrl, 0);
- 	if (!ret)
--		cur_to_user(c, ctrl);
-+		ret = cur_to_user(c, ctrl);
- 	v4l2_ctrl_unlock(ctrl);
- 	return ret;
- }
+ 	// vram info moved to umc_info for DCN4x
+-	if (info && DATA_TABLES(umc_info)) {
++	if (dcb->ctx->dce_version >= DCN_VERSION_4_01 &&
++		dcb->ctx->dce_version < DCN_VERSION_MAX &&
++		info && DATA_TABLES(umc_info)) {
+ 		header = GET_IMAGE(struct atom_common_table_header,
+ 					DATA_TABLES(umc_info));
+ 
+-- 
+2.47.0
+
 
 
 
