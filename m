@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-92331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A789C5396
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38CB9C56CC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:41:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCB051F2277F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3616AB4359F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218242139A7;
-	Tue, 12 Nov 2024 10:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F048E219E47;
+	Tue, 12 Nov 2024 10:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFk8UafQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z75kNJG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D207B20D4E3;
-	Tue, 12 Nov 2024 10:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0B0219C9F;
+	Tue, 12 Nov 2024 10:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407307; cv=none; b=dTfydJs+0Cb7JQBOSE5dpa0JgTUgACRC9hRSKzcORNJctBMKLCG0ui7FszhjBN13mC362JckD+uWiEt2kdvRGWnwTQceZYS4F9s8ch9mqf2MTymVQebmOqMgNpiY4FUt3CDUzOjfUONdILMHll5/MPJSBBhDTO/Rxyw6ODTadRU=
+	t=1731408350; cv=none; b=lYOo5pOediVru+N1lRMAe/iT9OJy81g2fQ7i+I2fe8Cqea3pH91BlyN2NDWGbfC4LEDgbM4qiz/QimNMSSHZAJAopPIrTc9z25ba8u1PNOAubCJdg2XEbbKl1abKi5PjmK1BV3BiP9n81nzex582UuF/MHs4wylKTgsXhosj44A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407307; c=relaxed/simple;
-	bh=x5iR/z0YbX0yFxFsl6eNX0toyyusggsmOtn5EFGGHhg=;
+	s=arc-20240116; t=1731408350; c=relaxed/simple;
+	bh=3H1QckuKRivPh3Gqh3UqH6PQWTYu1AZ+gAER/Fp/qMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anvVP4Ce6iQaGPcG2SI53HW9TjCxlreGJZT3Ywz2lZx75gLSZ2qgs0YbL0MKfXhPm3omyxUM97pFBzSn8daCCv6fp+uwzdRSozkOk/LSkwWWU/IxZlGuDau2kEYMncrfkELma0xhiEveeBW34W7glJw8HWzaSoqyG80eoWxJnXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFk8UafQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4046DC4CECD;
-	Tue, 12 Nov 2024 10:28:27 +0000 (UTC)
+	 MIME-Version; b=WF67yCI/222ipg3fnBpWcESuLVol1vUq4U8jib8pISrQ0ycIBHDKz5vAHHetQdWGlLG+9wqf6uvP+pDGtV/wiBnjBe1b0JAKAOEom92vct3liD/fyatB3JC0BXVxX0wA5UBx+wu2eQwGwZBmuX/05C+4kACmW5i8/A/jjCVfI0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z75kNJG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34817C4CED4;
+	Tue, 12 Nov 2024 10:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407307;
-	bh=x5iR/z0YbX0yFxFsl6eNX0toyyusggsmOtn5EFGGHhg=;
+	s=korg; t=1731408350;
+	bh=3H1QckuKRivPh3Gqh3UqH6PQWTYu1AZ+gAER/Fp/qMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFk8UafQqHfTI5+WSgA2KRPT7vYhpsvQlC0JdVpJV/QyZASSMVv/2bSL7tTLpbv44
-	 ACKjTVLE7fq/GMKsuZe+oTg7nQzbaT8A9GeHw667IpJXrVP1fKbZZHFDyxIRb5EIZF
-	 VeBoIjlU5JEdj3pvbdMBKHEqhwTfptDJVBScKfIY=
+	b=Z75kNJG2ltHBJXkx6fmMq+YXRVFy1XpTzCUVBMbfGaV/fZLX8ccUojCAPFxWhOzji
+	 KhCMbEZQ5NgsXsxusO/6QMqRSNGU0xI2ZcjOlbPFXmMQeS7DdZwYY+HFHWc0S7ElQb
+	 JgS4KCWXflgFhoE8QHE6dfoEds3lmV2R0mWRSDL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/98] media: dvbdev: prevent the risk of out of memory access
-Date: Tue, 12 Nov 2024 11:20:51 +0100
-Message-ID: <20241112101845.648386785@linuxfoundation.org>
+	Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 094/184] drm/xe: Drop VM dma-resv lock on xe_sync_in_fence_get failure in exec IOCTL
+Date: Tue, 12 Nov 2024 11:20:52 +0100
+Message-ID: <20241112101904.467704742@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 972e63e895abbe8aa1ccbdbb4e6362abda7cd457 ]
+commit 64a2b6ed4bfd890a0e91955dd8ef8422a3944ed9 upstream.
 
-The dvbdev contains a static variable used to store dvb minors.
+Upon failure all locks need to be dropped before returning to the user.
 
-The behavior of it depends if CONFIG_DVB_DYNAMIC_MINORS is set
-or not. When not set, dvb_register_device() won't check for
-boundaries, as it will rely that a previous call to
-dvb_register_adapter() would already be enforcing it.
-
-On a similar way, dvb_device_open() uses the assumption
-that the register functions already did the needed checks.
-
-This can be fragile if some device ends using different
-calls. This also generate warnings on static check analysers
-like Coverity.
-
-So, add explicit guards to prevent potential risk of OOM issues.
-
-Fixes: 5dd3f3071070 ("V4L/DVB (9361): Dynamic DVB minor allocation")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 58480c1c912f ("drm/xe: Skip VMAs pin when requesting signal to the last XE_EXEC")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105043524.4062774-3-matthew.brost@intel.com
+(cherry picked from commit 7d1a4258e602ffdce529f56686925034c1b3b095)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_exec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 04b7ce479fc38..d1212acb70932 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -86,10 +86,15 @@ static DECLARE_RWSEM(minor_rwsem);
- static int dvb_device_open(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev;
-+	unsigned int minor = iminor(inode);
-+
-+	if (minor >= MAX_DVB_MINORS)
-+		return -ENODEV;
- 
- 	mutex_lock(&dvbdev_mutex);
- 	down_read(&minor_rwsem);
--	dvbdev = dvb_minors[iminor(inode)];
-+
-+	dvbdev = dvb_minors[minor];
- 
- 	if (dvbdev && dvbdev->fops) {
- 		int err = 0;
-@@ -529,7 +534,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
- 		if (dvb_minors[minor] == NULL)
- 			break;
--	if (minor == MAX_DVB_MINORS) {
-+	if (minor >= MAX_DVB_MINORS) {
- 		if (new_node) {
- 			list_del (&new_node->list_head);
- 			kfree(dvbdevfops);
-@@ -544,6 +549,14 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
- 	}
- #else
- 	minor = nums2minor(adap->num, type, id);
-+	if (minor >= MAX_DVB_MINORS) {
-+		dvb_media_device_free(dvbdev);
-+		list_del(&dvbdev->list_head);
-+		kfree(dvbdev);
-+		*pdvbdev = NULL;
-+		mutex_unlock(&dvbdev_register_lock);
-+		return ret;
-+	}
- #endif
- 	dvbdev->minor = minor;
- 	dvb_minors[minor] = dvb_device_get(dvbdev);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/xe/xe_exec.c
++++ b/drivers/gpu/drm/xe/xe_exec.c
+@@ -212,6 +212,7 @@ retry:
+ 			fence = xe_sync_in_fence_get(syncs, num_syncs, q, vm);
+ 			if (IS_ERR(fence)) {
+ 				err = PTR_ERR(fence);
++				xe_vm_unlock(vm);
+ 				goto err_unlock_list;
+ 			}
+ 			for (i = 0; i < num_syncs; i++)
 
 
 
