@@ -1,120 +1,113 @@
-Return-Path: <stable+bounces-92834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028129C6142
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:21:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8A09C62BD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE5F61F229F4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 19:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35D42BA2458
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 17:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48B321B45A;
-	Tue, 12 Nov 2024 19:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8799A213EF0;
+	Tue, 12 Nov 2024 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9y5NWEC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RUTXOkI8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F35219E47;
-	Tue, 12 Nov 2024 19:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0320721E
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 16:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731439140; cv=none; b=sw2B52P1tan6P3J6kf1ooKe5Q6XttcM66qsxOn52QP8RDng4NV/ujxJc3rJzy9YQ8xL1yXMaGQR3Ayz/qSBC6FsTFy7DnFMJM0pYAazi2Bd0mgbYXgXVG9/dyvikCM7g0XLU820XPBptXlyuPpeD9XGJITPTP/fy3rKG+bD09gA=
+	t=1731430763; cv=none; b=e9uAMrh9rnhbwbyF0MApTv83kJF5jWOnsaXxq4SIg9zueeUZyVa/F4FbeGY2xsu4DMQu3GVPGBJ9BBlBqj1tK+Y6KMHLwxqEonfeIf8BuA+OKUi+iwdpKY8/87mVVwfl/zFCYMPvvyDWbbdZaEUXVVb9mV7XW+BIMMJhwex+6sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731439140; c=relaxed/simple;
-	bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=f3jKLc027CNxmdUu4lL6tncuVD8JBFfF1K3VwUkF6jSxBUs8TzBrC6R9LL2J7iats0faBReJZP0ha7oTNi71odobZtKpEqCD/e/mLYgh7ScUInm/mya/QlCu8/aoJbrXdHS2Wfw4nd1NhUUctRz9toTSiP49P34TBdtKF73ZwCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9y5NWEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5074CC4CECD;
-	Tue, 12 Nov 2024 19:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731439140;
-	bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=c9y5NWECVt36S1pJfBpPMEgQ4r6v24VWQqWiQCh1gjGgYOJtgHXP173JqLIJFUxyR
-	 rnMaku86UVgZ29QODrrqjblg3G81yN0cJxfIAVSf7mQPXZ1JLb8LGU3oVZ1pbh0EaC
-	 mdWR6nZUYvrF+KDCHutWiAZavyj6xwiRmCo7cS0n2oELX8kCYcIY41lS95AZXUMpAs
-	 a3bO+inqETiJdzJBhywr4zRqIVvrLG4xuScnzcLPP+5Czt6KO4rMY2ydo/KP8oeta6
-	 AMFMeEMQSZ8gDu9S4hNVNPkosPj5qkgGcsl8E014jjbrmBaP305nfdMGzKAZFCQFaY
-	 PrHb3roZ1Qp+A==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 12 Nov 2024 20:18:35 +0100
-Subject: [PATCH net 3/3] mptcp: pm: use _rcu variant under rcu_read_lock
+	s=arc-20240116; t=1731430763; c=relaxed/simple;
+	bh=b1jTEdtkPHakCF/IMGMMubosZyjuhF07sN6TNoysKrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PYo/5kaYUwuCrDoj77cPHSQ0but3Oz8qauLwol8igHkdx0INiT607dlImzbgqbMyhnaZ6EhirHL/92oZwaiYE2GQa636AzqJ7Tj19zk2C0uKjwN2dEewMgFJTk8OPNaUMtnW0MRzHd3yvci4kr2+heOI7/uTOZf+vEzArew0lEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RUTXOkI8; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a9a977d6cc7so470097066b.3
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 08:59:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1731430759; x=1732035559; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6ZPEPxQtUZVtl/O/zpSarTmTSavN7LoRspL03/jTYy4=;
+        b=RUTXOkI8HdlKelw/64aU4Tl7CzBpKXU0V8GLK67IeZHNtLnGTZ01umtK7annRScJlx
+         +gMoDoXQen4N8a5SRJx4OPjYM+k5U0FUfTAwXvyDhkF4nPYnbRV92w5RvMvp83+MdEP7
+         F6MEnZlG30f2ioqyT3QSRADp6ikh3fNItGW3s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731430759; x=1732035559;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6ZPEPxQtUZVtl/O/zpSarTmTSavN7LoRspL03/jTYy4=;
+        b=QpJO/q0rWbbRV5/sXh+g7bEyfeKZ82SgdZIyQ86Zq1H7fOI+g/0Yp7jFfUMX/2xtUj
+         Xpo4cdp2eYUwJjleKy3lSNpr6Ct61Q8Ee9thmCw3qNMZJkoIdj36deUZ5RkoBKHB9UE9
+         heZmPnaGc3D6hgVLjYYPqHXPDYmSs9qfJvLU8fzJUlyo7E3XOYp9yQSZwqZmlq7dPZz2
+         gTPYxyL5BM0QJmG8rGn1Jt3e9ofG8VV2Vd6tq8iAMoq39bvKp8QOcBc1PEYvqOGaGP4m
+         JqTqEFXt9FD8enB9+cQHrlu9ySL1WH7gzWjBY1UgZbXgd/zqC8wtm3mZhFIf1mHjQ3M8
+         nzLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjJ9BGeZX3o0eaaTLCrmgGFkMryawMKGE1xQs7HuhOxxdR3FDxsh4CURQqdSqAdaaFPM/1VOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUmsjAoT79apROaUzt4uWvQFaKoJqimxLRfVp/OuNOgY0tXY7U
+	0GujRkuuDhmjP1kdX1f1D9vXfu7WCCnnsxBeYnNzBVZF+AVHVvOQG6Vhik+40ddz47HPbZd+8W1
+	yn6M=
+X-Google-Smtp-Source: AGHT+IFBpP/XFi5mrGFF0hJwxwLOWHkbpghku74Vo+lHIn07nzMxceJZdvlCk1A18mR8WPtolSZJ4w==
+X-Received: by 2002:a05:6402:13ca:b0:5cf:4655:fe7e with SMTP id 4fb4d7f45d1cf-5cf4655feb3mr7291947a12.24.1731430759407;
+        Tue, 12 Nov 2024 08:59:19 -0800 (PST)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com. [209.85.128.46])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03b5c91esm6117573a12.4.2024.11.12.08.59.18
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 08:59:18 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4316cce103dso74305305e9.3
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 08:59:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU1EPcxUB3kfEqKT0yOvDDTTK+MM0aM4s5/LhpmKROrAZH8GlDZC/HbSLYONWtIEf9wCyQ2sJQ=@vger.kernel.org
+X-Received: by 2002:a05:6000:1a8c:b0:37c:cdbf:2cc0 with SMTP id
+ ffacd0b85a97d-381f1889e2amr16128594f8f.53.1731430758034; Tue, 12 Nov 2024
+ 08:59:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-net-mptcp-misc-6-12-pm-v1-3-b835580cefa8@kernel.org>
-References: <20241112-net-mptcp-misc-6-12-pm-v1-0-b835580cefa8@kernel.org>
-In-Reply-To: <20241112-net-mptcp-misc-6-12-pm-v1-0-b835580cefa8@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Kishen Maloor <kishen.maloor@intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1565; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnM6oVWI78RYZjhBSzAJ9i43Zzj6B5XBHtI+8u7
- jRX8SWKoV6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzOqFQAKCRD2t4JPQmmg
- c/DTEACPJSoP9uUyllHdYQNBOBZ5L87YTE9Uw76HQCk3yT2kV6najF7R8gd4edofctVsmIZ09j1
- 7FGtDWFgvMAFZU/KWBA0zZcz4vgJuaIyDwdBCZn6tsLN4ivym3lc+Exwvwy0l3ffUyCkyiBNV+h
- bEhgT0GfR8i2qDi5k+jNSWWMZZX7dAqoWH0IM5mgwvS7kRdENi6YG4BN5oSzBw0ViqcAXdebCo5
- 7fuoZRFS8DY3w4dBDDj6QM3MWZOJNuUryhoCp96q5hNShz6yf5K1V0+DKZPbb8LWlCUWwxQ73wK
- VgIzJla0pCqqqO4VgKG/4TRgjAsboWlGWDbAhqvyu0FbgG/r9QD93FQUq+8GLv7pHcDovTnr5D/
- XD3KpeS1kw0xN3l2UGrC4ycaOiFuSJrebxYCjCfhUkNra5VkVoOlI/f33FlCStmZcNJz9HAGivC
- dktMkSY1uaktqbHzw1IeQIly6Joku7ZWCC6YShBwoE+LmBRNqsG1SmI9naJETFtG9DY7hRtyJwr
- yhDkGrS+HkmX0sz4T8IPVLmxnEmAZhYjdGNtnN1gy+qdy/fSeEKKAXlH6dkflIB0dJ2j8LhTpnN
- Bb6oXqhvpwpsSYUljx3BjobnamLs1vRfJ7D9KF2jCv0IVw+hJo22L2bFy16C3nWh6wqE2FjoG05
- DV18/19kehirnBg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+References: <20241112-geregelt-hirte-ab810337e3c0@brauner>
+In-Reply-To: <20241112-geregelt-hirte-ab810337e3c0@brauner>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 12 Nov 2024 08:59:01 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whLGan4AvzmAaQiF-dZ9DRRV4-aVKj0WXVyB34HjuczaA@mail.gmail.com>
+Message-ID: <CAHk-=whLGan4AvzmAaQiF-dZ9DRRV4-aVKj0WXVyB34HjuczaA@mail.gmail.com>
+Subject: Re: [PATCH] iov_iter: fix copy_page_from_iter_atomic() for highmem
+To: Christian Brauner <brauner@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, Christoph Hellwig <hch@lst.de>, David Howells <dhowells@redhat.com>, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-In mptcp_pm_create_subflow_or_signal_addr(), rcu_read_(un)lock() are
-used as expected to iterate over the list of local addresses, but
-list_for_each_entry() was used instead of list_for_each_entry_rcu() in
-__lookup_addr(). It is important to use this variant which adds the
-required READ_ONCE() (and diagnostic checks if enabled).
+On Tue, 12 Nov 2024 at 07:36, Christian Brauner <brauner@kernel.org> wrote:
+>
+> Hey Linus,
+>
+> I think the original fix was buggy but then again my knowledge of
+> highmem isn't particularly detailed. Compile tested only. If correct, I
+> would ask you to please apply it directly.
 
-Because __lookup_addr() is also used in mptcp_pm_nl_set_flags() where it
-is called under the pernet->lock and not rcu_read_lock(), an extra
-condition is then passed to help the diagnostic checks making sure
-either the associated spin lock or the RCU lock is held.
+No, I think the original fix was fine.
 
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+As Hugh says, the "PageHighMem(page)" test is valid for the whole
+folio, even if there are multiple pages. It's not some kind of flag
+that changes dynamically per page, and a folio that spans from lowmem
+to highmem would be insane.
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index db586a5b3866f66a24431d7f2cab566f89102885..45a2b5f05d38b0e7f334578f5ee6923a8ff8f7b2 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -524,7 +524,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
- {
- 	struct mptcp_pm_addr_entry *entry;
- 
--	list_for_each_entry(entry, &pernet->local_addr_list, list) {
-+	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list,
-+				lockdep_is_held(&pernet->lock)) {
- 		if (mptcp_addresses_equal(&entry->addr, info, entry->addr.port))
- 			return entry;
- 	}
+So doing that test just once at the top of the function is actually
+the correct thing to do, even if it might look a bit wrong.
 
--- 
-2.45.2
+At most, maybe add a comment to that 'uses_kmap' initialization.
 
+             Linus
 
