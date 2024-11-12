@@ -1,164 +1,133 @@
-Return-Path: <stable+bounces-92804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7129C5BF4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 16:34:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848769C5C06
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 16:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38B7281DBE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A56284915
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB8A20102F;
-	Tue, 12 Nov 2024 15:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4859D201117;
+	Tue, 12 Nov 2024 15:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwTrH+G1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BD0201024;
-	Tue, 12 Nov 2024 15:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06270201011;
+	Tue, 12 Nov 2024 15:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731425663; cv=none; b=aCP5Ls11f1wTGISp5pzGOrlsIc5Whhy82cmNT46pAQTumv7/ZY9aGpN09cGbnWVZDOO7jWAu5hkAWCNXaFRQ1hueDIg4M8L4yY2ldLgBPwlvOuygNsj0ed0mmIdAWEa0mPdm+5xAQHBV4HuaUIioYBCMvUNx8fxrOKHDcVHJEGM=
+	t=1731425808; cv=none; b=pJK+WF8jEa/qBVBBUMTZbYzowks4ZMn+HYzC92p6k6mZCkekNTMWrC7TVCG+MwPKd8msyUKK5SS/ccztOB+ahF3iIn3v6+Ab5ALL4o+H4uKW9LE/0E5KR6ebq+A2uhu5Bx7q0t1UNnLzGhzwDWYJEO+m3IYVyxre7sA/ZUd6VbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731425663; c=relaxed/simple;
-	bh=0NGIVkcyQz/aQ+hIPBIw/XshyCLcHpHPKFfkVYTrPiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y+/nBA6cyJOLHPRrrUsjyFY7ex6c7/mneli2DN+CQWszVAd1QXpnwFPWs+45gtUWTM3DHiuFwLXdz6upx21GVL4e+8I3FpWqOl9MWTxaim4dhz1lRmizOGCjoW8F0co41AL/sOBi9YuRABKjykAkiNIZ7d+9ju0KdXOZ1NIb3Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD33C4CECD;
-	Tue, 12 Nov 2024 15:34:21 +0000 (UTC)
-Date: Tue, 12 Nov 2024 10:34:38 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Michael C. Pratt" <mcpratt@pm.me>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton
- <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
- <vschneid@redhat.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 2 1/1] sched/syscalls: Allow setting niceness
- using sched_param struct
-Message-ID: <20241112103438.57ab1727@gandalf.local.home>
-In-Reply-To: <20241111070152.9781-2-mcpratt@pm.me>
-References: <20241111070152.9781-1-mcpratt@pm.me>
-	<20241111070152.9781-2-mcpratt@pm.me>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731425808; c=relaxed/simple;
+	bh=kMlXDmOWUKzRt5dKs6VeajTwf8T192AMUztsAE4cSR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bcgKb6pIdT6Hxtwbt1nXx2kF9I9vkfaatcNqak0TOcdQm+cbqZKOxopQsxjfT9BLFSReaoRSbXBDe//UqohrkW7ZmyPNGKHyqSDAs/bFqa4Lv0241ps7lS53iMvEgQ1ZddsxJ4ldbO6je2P401TJ6sPoook95t8/lEhYP4CWeCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwTrH+G1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C4DC4CECD;
+	Tue, 12 Nov 2024 15:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731425807;
+	bh=kMlXDmOWUKzRt5dKs6VeajTwf8T192AMUztsAE4cSR8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DwTrH+G1idF+vu7kt7bAW1UZTwhhr3WIfAwE5SNwKz1lnxMqjesjq5NlBXp9Znc1+
+	 3iGSGKU1dy2tA1PI/X3oPKYlvXAYGl0yzdDq4+egcpM6UMUr2tw4mai6Fa3U+lR7kE
+	 VeabQ/Pt/uq+ZfcQp1PxYKF9vFWfd31vQTUJFNNSJDRJXgIcBsB/2+H+VBw1k0gF3R
+	 tbwtRdDBgWyRTh2NKAzfVMfDdnd0Ro4ks1sGXImP2HshKrotiRJQiJsqAqD71nDqNY
+	 4x3/x0yBc5jfk4aFb4zQ0yDDNnLpHsQyeV8Y6l9x0q8FbtFXu6Jed3Oo6kWDVREswz
+	 Dwj93il8qlMYw==
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	David Howells <dhowells@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] iov_iter: fix copy_page_from_iter_atomic() for highmem
+Date: Tue, 12 Nov 2024 16:36:11 +0100
+Message-ID: <20241112-geregelt-hirte-ab810337e3c0@brauner>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2199; i=brauner@kernel.org; h=from:subject:message-id; bh=P/6/Ri9l3HPEWisxKk3LYAQbScVl0oRh/0ntUpxUuS4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQbl75bZZCYctHTWyigp0N2yxEuSb8PSuKb/nBKCGVMM njx8+/njlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImw5zL898lkaTw/5Un+y0OH p6y2NP84fcPtnhPJMjY3bXrzOIumxjIybNjSlt1n9qRim+0nxyn61QmMXG7nM4RMPVktb8/yYVz MBgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Mon, 11 Nov 2024 07:03:51 +0000
-"Michael C. Pratt" <mcpratt@pm.me> wrote:
+When fixing copy_page_from_iter_atomic() in c749d9b7ebbc ("iov_iter: fix
+copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP") the check for
+PageHighMem() got moved out of the loop. If copy_page_from_iter_atomic()
+crosses page boundaries it will use a stale PageHighMem() check for an
+earlier page.
 
-> >From userspace, spawning a new process with, for example,  
-> posix_spawn(), only allows the user to work with
-> the scheduling priority value defined by POSIX
-> in the sched_param struct.
-> 
-> However, sched_setparam() and similar syscalls lead to
-> __sched_setscheduler() which rejects any new value
-> for the priority other than 0 for non-RT schedule classes,
-> a behavior that existed since Linux 2.6 or earlier.
-> 
-> Linux translates the usage of the sched_param struct
-> into it's own internal sched_attr struct during the syscall,
-> but the user currently has no way to manage the other values
-> within the sched_attr struct using only POSIX functions.
-> 
-> The only other way to adjust niceness when using posix_spawn()
-> would be to set the value after the process has started,
-> but this introduces the risk of the process being dead
-> before the syscall can set the priority afterward.
-> 
-> To resolve this, allow the use of the priority value
-> originally from the POSIX sched_param struct in order to
-> set the niceness value instead of rejecting the priority value.
-> 
-> Edit the sched_get_priority_*() POSIX syscalls
-> in order to reflect the range of values accepted.
-> 
-> Cc: stable@vger.kernel.org # Apply to kernel/sched/core.c
+Fixes: 908a1ad89466 ("iov_iter: Handle compound highmem pages in copy_page_from_iter_atomic()")
+Fixes: c749d9b7ebbc ("iov_iter: fix copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP")
+Cc: stable@vger.kernel.org
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+Hey Linus,
 
-Why is stable Cc'd?
+I think the original fix was buggy but then again my knowledge of
+highmem isn't particularly detailed. Compile tested only. If correct, I
+would ask you to please apply it directly.
 
-> Signed-off-by: Michael C. Pratt <mcpratt@pm.me>
-> ---
->  kernel/sched/syscalls.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-> index 24f9f90b6574..43eb283e6281 100644
-> --- a/kernel/sched/syscalls.c
-> +++ b/kernel/sched/syscalls.c
-> @@ -785,6 +785,19 @@ static int _sched_setscheduler(struct task_struct *p, int policy,
->  		attr.sched_policy = policy;
->  	}
->  
-> +	if (attr.sched_priority > MAX_PRIO-1)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * If priority is set for SCHED_NORMAL or SCHED_BATCH,
-> +	 * set the niceness instead, but only for user calls.
-> +	 */
-> +	if (check && attr.sched_priority > MAX_RT_PRIO-1 &&
-> +	   ((policy != SETPARAM_POLICY && fair_policy(policy)) || fair_policy(p->policy))) {
-> +		attr.sched_nice = PRIO_TO_NICE(attr.sched_priority);
-> +		attr.sched_priority = 0;
-> +	}
+Thanks!
+Christian
+---
+ lib/iov_iter.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-This really looks like a hack. Specifically that we are exposing how the
-kernel records priority to user space. That is the greater than
-MAX_RT_PRIO-1. 120 may be the priority the kernel sees on nice values, but
-it is not something that we should every expose to user space system calls.
-
-That said, you are worried about the race of spawning a new task and
-setting its nice value because the new task may have exited. What about
-using pidfd? Create a task returning the pidfd and use that to set its nice
-value.
-
--- Steve
-
-
-> +
->  	return __sched_setscheduler(p, &attr, check, true);
->  }
->  /**
-> @@ -1532,9 +1545,11 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
->  	case SCHED_RR:
->  		ret = MAX_RT_PRIO-1;
->  		break;
-> -	case SCHED_DEADLINE:
->  	case SCHED_NORMAL:
->  	case SCHED_BATCH:
-> +		ret = MAX_PRIO-1;
-> +		break;
-> +	case SCHED_DEADLINE:
->  	case SCHED_IDLE:
->  	case SCHED_EXT:
->  		ret = 0;
-> @@ -1560,9 +1575,11 @@ SYSCALL_DEFINE1(sched_get_priority_min, int, policy)
->  	case SCHED_RR:
->  		ret = 1;
->  		break;
-> -	case SCHED_DEADLINE:
->  	case SCHED_NORMAL:
->  	case SCHED_BATCH:
-> +		ret = MAX_RT_PRIO;
-> +		break;
-> +	case SCHED_DEADLINE:
->  	case SCHED_IDLE:
->  	case SCHED_EXT:
->  		ret = 0;
-> 
-> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 908e75a28d90..e90a5ababb11 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -457,12 +457,16 @@ size_t iov_iter_zero(size_t bytes, struct iov_iter *i)
+ }
+ EXPORT_SYMBOL(iov_iter_zero);
+ 
++static __always_inline bool iter_atomic_uses_kmap(struct page *page)
++{
++	return IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
++	       PageHighMem(page);
++}
++
+ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		size_t bytes, struct iov_iter *i)
+ {
+ 	size_t n, copied = 0;
+-	bool uses_kmap = IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
+-			 PageHighMem(page);
+ 
+ 	if (!page_copy_sane(page, offset, bytes))
+ 		return 0;
+@@ -473,7 +477,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		char *p;
+ 
+ 		n = bytes - copied;
+-		if (uses_kmap) {
++		if (iter_atomic_uses_kmap(page)) {
+ 			page += offset / PAGE_SIZE;
+ 			offset %= PAGE_SIZE;
+ 			n = min_t(size_t, n, PAGE_SIZE - offset);
+@@ -484,7 +488,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
+ 		kunmap_atomic(p);
+ 		copied += n;
+ 		offset += n;
+-	} while (uses_kmap && copied != bytes && n > 0);
++	} while (iter_atomic_uses_kmap(page) && copied != bytes && n > 0);
+ 
+ 	return copied;
+ }
+-- 
+2.45.2
 
 
