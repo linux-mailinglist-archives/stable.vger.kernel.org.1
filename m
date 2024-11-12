@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6209C5485
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:44:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013B19C5344
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 933EC287514
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA121F236FA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAC521B440;
-	Tue, 12 Nov 2024 10:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCBA2139B5;
+	Tue, 12 Nov 2024 10:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVm+6AQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La4SAII1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389F821B427;
-	Tue, 12 Nov 2024 10:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE320D4E3;
+	Tue, 12 Nov 2024 10:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407806; cv=none; b=h5ryXdjixhol1CAswb2Eb6DJIhzo8wZ2vLeMF+b8uTVcIsGUd4Dfwh8paHKyllMWuCZthasLEKgFw3ESCdWjR6+g059LgfT74SU5tdYAOJBTMGd9JmRfj0uCaTT48DpPCxQoRgXy6NHEYwrj9LG5MD39BpleqR6OdxbP1NmZwqQ=
+	t=1731407081; cv=none; b=JTkk5j9c7TuqfVFuToTDfYuOVYS+UBoznxUeMsPwozgLbp1tZS8qPkhDD8Kj2xKq42UsU3AlB0o9RD8Xg6YS5SPlmXdtUZAHKEaT3gKRHSdDY6hB/6ZxU8yRE0gvFsFRsJm1zMa+bL5EdgquMi7UNG8vX7bz75DEug2Dc162s9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407806; c=relaxed/simple;
-	bh=N1vPjMzG+IsUmdPudeYilaGkbuSM7+HJtkXb8xFkLA4=;
+	s=arc-20240116; t=1731407081; c=relaxed/simple;
+	bh=X1Z1IEkHUbY+bKF4prBAG4ymXFPCHkru0dO4UtN/Y2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHF+HzOw+62xCTNTBHzRXArGLhcl/LizstUR9h+i/1QuELJ2u9uMdWxwZzhE2DKvRyXjlHh7bZsWot3Mcg4sEmnZPzYPLVSGsq3EYN+XxzaUpUe+PLc9RNYnMlfcqVeC0QPU7LykDdn1l8YgGz2TzcoMI+JQaVk6XZeNN2XhnCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVm+6AQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A3EC4CED7;
-	Tue, 12 Nov 2024 10:36:45 +0000 (UTC)
+	 MIME-Version; b=Neog024OpS9/cJzxkWyfvfN8jpJ0jSOm0wzaI3/kfC0YVdS4WsLqrIbzsQYfeig2AxNouK7Oig2xJmh64+urirnmenZ+BE0zFzmqU9dq95NKz8cewYIoE1rGqE1Hy61W+goSP1Vlh60Oq/zM1DKUYGXbno2bOk7kSpmNmpnS2jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La4SAII1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B7C4CECD;
+	Tue, 12 Nov 2024 10:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407806;
-	bh=N1vPjMzG+IsUmdPudeYilaGkbuSM7+HJtkXb8xFkLA4=;
+	s=korg; t=1731407081;
+	bh=X1Z1IEkHUbY+bKF4prBAG4ymXFPCHkru0dO4UtN/Y2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVm+6AQ7C3cUo8EHmfcaRRH/Kp1/krMWozUyGCt3epkjI6hHrkgczPF8WH7n45qn/
-	 MwslYvXatyQfi2nMVHsE3oTcb4Om76lJQY/x+hCGfOSRGwd65/aHgheOXDZ43xmQ3K
-	 y1dTLTeZCuyHMECGvpMtOlyB372qtqBcBvT2lUJ4=
+	b=La4SAII1rvcf1QqP8AzDmKFw70eXcnwNR1YMDL9uHxZIwOtQAS5hCaFow0mxYJARU
+	 LpGeQs0iwkD7GLmCsONZVX30SglP9Ziw3BxvYWN7hTHWoglAsGwEcJpId+Wy6kC84I
+	 Ui5W/5hxXzJb2RBZ5IIKK3lVxsVWDA9bnbZV2ABg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.6 061/119] media: ar0521: dont overflow when checking PLL values
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 5.15 44/76] dm cache: fix out-of-bounds access to the dirty bitset when resizing
 Date: Tue, 12 Nov 2024 11:21:09 +0100
-Message-ID: <20241112101851.045921050@linuxfoundation.org>
+Message-ID: <20241112101841.461553592@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 438d3085ba5b8b5bfa5290faa594e577f6ac9aa7 upstream.
+commit 792227719725497ce10a8039803bec13f89f8910 upstream.
 
-The PLL checks are comparing 64 bit integers with 32 bit
-ones, as reported by Coverity. Depending on the values of
-the variables, this may underflow.
+dm-cache checks the dirty bits of the cache blocks to be dropped when
+shrinking the fast device, but an index bug in bitset iteration causes
+out-of-bounds access.
 
-Fix it ensuring that both sides of the expression are u64.
+Reproduce steps:
 
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+1. create a cache device of 1024 cache blocks (128 bytes dirty bitset)
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. shrink the fast device to 512 cache blocks, triggering out-of-bounds
+   access to the dirty bitset (offset 0x80)
+
+dmsetup suspend cache
+dmsetup reload cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in cache_preresume+0x269/0x7b0
+  Read of size 8 at addr ffffc900000f3080 by task dmsetup/131
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc900000f3000, ffffc900000f5000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc900000f2f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  >ffffc900000f3080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+                     ^
+   ffffc900000f3100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc900000f3180: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by making the index post-incremented.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ar0521.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-cache-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -257,10 +257,10 @@ static u32 calc_pll(struct ar0521_dev *s
- 			continue; /* Minimum value */
- 		if (new_mult > 254)
- 			break; /* Maximum, larger pre won't work either */
--		if (sensor->extclk_freq * (u64)new_mult < AR0521_PLL_MIN *
-+		if (sensor->extclk_freq * (u64)new_mult < (u64)AR0521_PLL_MIN *
- 		    new_pre)
- 			continue;
--		if (sensor->extclk_freq * (u64)new_mult > AR0521_PLL_MAX *
-+		if (sensor->extclk_freq * (u64)new_mult > (u64)AR0521_PLL_MAX *
- 		    new_pre)
- 			break; /* Larger pre won't work either */
- 		new_pll = div64_round_up(sensor->extclk_freq * (u64)new_mult,
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2891,13 +2891,13 @@ static bool can_resize(struct cache *cac
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+ 	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		new_size = to_cblock(from_cblock(new_size) + 1);
+ 		if (is_dirty(cache, new_size)) {
+ 			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+ 			      cache_device_name(cache),
+ 			      (unsigned long long) from_cblock(new_size));
+ 			return false;
+ 		}
++		new_size = to_cblock(from_cblock(new_size) + 1);
+ 	}
+ 
+ 	return true;
 
 
 
