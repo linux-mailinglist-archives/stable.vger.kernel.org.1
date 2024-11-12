@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5409C56F0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:49:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B15A9C53A4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E496B37DBC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B671F228C6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DE7219490;
-	Tue, 12 Nov 2024 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FF4213EF4;
+	Tue, 12 Nov 2024 10:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwV2686I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkCPRr8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61A7218D98;
-	Tue, 12 Nov 2024 10:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2462F20899D;
+	Tue, 12 Nov 2024 10:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408265; cv=none; b=TwwIVhXEsB7rCX5/G7mnJs3Fit2MdMgGxWBx8I3WIrAvINvNlw+obIzMWtApBMAzgIUuk7cBpvInkX5u4nFPa8xVih2bo9mCOKX3PPnvh4TNwOhAWnBLfek8X99xsfoJgLVgx0Vke8uO4crGlff9WXX8k6xIKXKgZbw+vtNUOvQ=
+	t=1731407367; cv=none; b=ooIUJBL6T34aUKX3mJ+r+zFEfrvyvfZqoqA6WN210B2CFgzwEv7ixBxL0BBhrqWRfBxOypz773GBdkxjxVzmyngA1lk0a+dcRFO1sQCFoOq2+TYxJrvSbG4rq8hF5Z++THdsI4IZwkCdp76Vg8qGfGFEuRPAqXVVHjsJjVOeU2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408265; c=relaxed/simple;
-	bh=FiBCxAr/pL7q4CRbMO8aUOKODEulqBTZ0GNAndlFvnI=;
+	s=arc-20240116; t=1731407367; c=relaxed/simple;
+	bh=NrYjOwQnfOSPhu7hHTfOhvic3TfnfrsyAU1Y65SgTcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7jAjOSA83G4+DZ4/BHJmaIxBC8eW34bK6PYsuEpDYmlVDlrKy/djoMIJfDtHVPaPQmg13egwjH2aLFEqYMuNMstoLUMXQYJm/foR5mSR9zRGxSPTmGIcTt1tFgC4YEdv0hTyuHuCP4BGopk0v47gsXhngdGI2VYTXgDdn2vHfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwV2686I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4A2C4CECD;
-	Tue, 12 Nov 2024 10:44:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JAyYFZrFOLID5rVLqpwEJPH2csdoNTXNTDlKfxpzS9qfB9rcKokLcEuchWl/pPbf2G9vitmne5rc4L9GffSOpW64Pn3sj/4QUSlTTAB6TjzernhQH2Q4G6bLefHQR+5wG5j3A4P00/5zqHIPdXGIxbHjWqw6dnTYRQouS6cEARs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkCPRr8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CC1C4CECD;
+	Tue, 12 Nov 2024 10:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408265;
-	bh=FiBCxAr/pL7q4CRbMO8aUOKODEulqBTZ0GNAndlFvnI=;
+	s=korg; t=1731407367;
+	bh=NrYjOwQnfOSPhu7hHTfOhvic3TfnfrsyAU1Y65SgTcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwV2686IV1xmnz5to/CczgxNdstwm1pcsmxzfkoTV5/Nzd+YgX4CgSPyMwpao0P7g
-	 UYjis/YiZli5+mSp5/r3xZCXzKIvuJEGtb1VTJg0WPdJfVd8znqz76HrTiG1Y4p2TF
-	 l9nsWIJOA9pJrKzai/44cWK3LjXuGECxbHqVbjHA=
+	b=HkCPRr8nGvpmYl/SVlTOeMvckylU6tzaG/RrM1yR+NrAhgFgWk8I4RuEbciJak8ig
+	 WY3OrB2aNuSg/GDDa40ix0Kc6dManW84TfpIAADL79S9g/xe/Snv4AAXpmJrq46MPv
+	 /wK15vsB+PVNT5JEc9d4fw/ZCuqyYgXaSa4qk0a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 111/184] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
-Date: Tue, 12 Nov 2024 11:21:09 +0100
-Message-ID: <20241112101905.124993185@linuxfoundation.org>
+	Erik Schumacher <erik.schumacher@iris-sensing.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.1 55/98] pwm: imx-tpm: Use correct MODULO value for EPWM mode
+Date: Tue, 12 Nov 2024 11:21:10 +0100
+Message-ID: <20241112101846.364058895@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Erik Schumacher <erik.schumacher@iris-sensing.com>
 
-commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
+commit cc6a931d1f3b412263d515fd93b21fc0ca5147fe upstream.
 
-acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
-would result in dereferencing buffer.pointer (obj) while being NULL.
+The modulo register defines the period of the edge-aligned PWM mode
+(which is the only mode implemented). The reference manual states:
+"The EPWM period is determined by (MOD + 0001h) ..." So the value that
+is written to the MOD register must therefore be one less than the
+calculated period length. Return -EINVAL if the calculated length is
+already zero.
+A correct MODULO value is particularly relevant if the PWM has to output
+a high frequency due to a low period value.
 
-Although this case may be unrealistic for the current code, it is
-still better to protect against possible bugs.
-
-Bail out also when status is AE_NOT_FOUND.
-
-This fixes 1 FORWARD_NULL issue reported by Coverity
-Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
-
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
+Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Erik Schumacher <erik.schumacher@iris-sensing.com>
+Link: https://lore.kernel.org/r/1a3890966d68b9f800d457cbf095746627495e18.camel@iris-sensing.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-imx-tpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -172,8 +172,8 @@ static union acpi_object *amdgpu_atif_ca
- 				      &buffer);
- 	obj = (union acpi_object *)buffer.pointer;
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -106,7 +106,9 @@ static int pwm_imx_tpm_round_state(struc
+ 	p->prescale = prescale;
  
--	/* Fail if calling the method fails and ATIF is supported */
--	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
-+	/* Fail if calling the method fails */
-+	if (ACPI_FAILURE(status)) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
- 		kfree(obj);
+ 	period_count = (clock_unit + ((1 << prescale) >> 1)) >> prescale;
+-	p->mod = period_count;
++	if (period_count == 0)
++		return -EINVAL;
++	p->mod = period_count - 1;
+ 
+ 	/* calculate real period HW can support */
+ 	tmp = (u64)period_count << prescale;
 
 
 
