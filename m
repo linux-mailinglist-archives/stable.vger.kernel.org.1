@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B720F9C543B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0A59C53B1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AD8C1F214FF
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8349E283557
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDE32101BB;
-	Tue, 12 Nov 2024 10:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DDB2141C3;
+	Tue, 12 Nov 2024 10:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6g7BOTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adl4FLRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFBA20FAB3;
-	Tue, 12 Nov 2024 10:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5040520D4FC;
+	Tue, 12 Nov 2024 10:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407761; cv=none; b=POH89ye7gETPpEakD7iDyD2Yg5q4kcZ6CiHdklQdrfSyZqp4Erg256PJi443FZ80zmNLcOnEHSfaLDAnDCENKSh81vTDW8Zeh2iwbMJ2mY9/AqXgTy0UvwHlCXfIQbrmXNyZyibU9E3nVz8py7jMX8AUpRt7KZPNV7iH7NbYjwU=
+	t=1731407413; cv=none; b=ZLHKhV8Il2LAAYXDhp/SXn6Ar/v7GAcil8Ve4Ru09lZvx1qqVj3cjlb7+c+Amw9T9og+G7sFH8uE4v+MVIGfb0ciJq8IkKe+2D1Ko+v3v3IU43hhPFdK7/XHfYRwYQcEbAf8NKUzvz1HlrZUdEiwPo6Fx402fTRBCdNMgmZg95s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407761; c=relaxed/simple;
-	bh=z6zh3se6RGXquFF3JdBGM7WTTeXkhwG73rTYWyvbWnw=;
+	s=arc-20240116; t=1731407413; c=relaxed/simple;
+	bh=7U0BN1SymYkSZ9nMuHfmbhTbfez0cvDe1hE6rHHFAk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fng0IHaOkJMs3jxOFpONja4CLVog6zTy9R584p4AZRBNSfaHhdiyoQHG0p2tSVbnLmQBHN74g3Ho3bCIg9US/bzksa7/tvu+MO35oer05wNMVZVTQTkaKWhXG/D3pQ3I3e9yO06xhB18fLGfjzfIfsfEeugCUL0lzWAdoJ63DKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6g7BOTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688F1C4CECD;
-	Tue, 12 Nov 2024 10:36:00 +0000 (UTC)
+	 MIME-Version; b=CYNKmBS+OHmXjgM0v2jqKqTKRe6UJoWntZ3npTxyGjYQnTvOQzk2RDM2Rx+uXXJmeWrtzUHxAGmuO1PtLYrnAjniVGGEvj/B6nrGDXoPHmocVJBaf8YPVZcMCQTc9vRouh1MHJaSO+5Gbw2kYVLzt29+CL7psCZG3Tmy21uFzDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adl4FLRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F48AC4CED4;
+	Tue, 12 Nov 2024 10:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407760;
-	bh=z6zh3se6RGXquFF3JdBGM7WTTeXkhwG73rTYWyvbWnw=;
+	s=korg; t=1731407413;
+	bh=7U0BN1SymYkSZ9nMuHfmbhTbfez0cvDe1hE6rHHFAk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6g7BOTFwF7Ki72fHoE/etv3Js1X6KHAtSY0wdylwyS0wKRvH3tKZvprpFBXyetKr
-	 r7HZUwLvgaifZckGcEx/MrQOA4Rwd3pIW7hW0HXekR/y5zQcajUybQkPPMZQeq3HVE
-	 GuZY5zxvC6z9W1cWs/38r6cp39bqiKJK5k4JDvCY=
+	b=adl4FLRtfhaMGbSjth5aa3UmUTpH7iAOu9Zg9cf6Lk8mZpKqnqoFHOV5HkFVw/5/S
+	 G8gt7GSxGvNB6aZzI4xl479TahPg7ikjsP9Tj/iV/AoU1t1TBfaY34K6LM3UNPkZxB
+	 Ttqtd3IqgzeGoju8fiKWq25IEWW06UHeQr6G+QiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 075/119] rpmsg: glink: Handle rejected intent request better
+	Ben Segall <bsegall@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 68/98] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
 Date: Tue, 12 Nov 2024 11:21:23 +0100
-Message-ID: <20241112101851.588990817@linuxfoundation.org>
+Message-ID: <20241112101846.848315574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Benjamin Segall <bsegall@google.com>
 
-commit a387e73fedd6307c0e194deaa53c42b153ff0bd6 upstream.
+[ Upstream commit b5413156bad91dc2995a5c4eab1b05e56914638a ]
 
-GLINK operates using pre-allocated buffers, aka intents, where incoming
-messages are aggregated before being passed up the stack. In the case
-that no suitable intents have been announced by the receiver, the sender
-can request an intent to be allocated.
+When cloning a new thread, its posix_cputimers are not inherited, and
+are cleared by posix_cputimers_init(). However, this does not clear the
+tick dependency it creates in tsk->tick_dep_mask, and the handler does
+not reach the code to clear the dependency if there were no timers to
+begin with.
 
-The initial implementation of the response to such request dealt
-with two outcomes; granted allocations, and all other cases being
-considered -ECANCELLED (likely from "cancelling the operation as the
-remote is going down").
+Thus if a thread has a cputimer running before clone/fork, all
+descendants will prevent nohz_full unless they create a cputimer of
+their own.
 
-But on some channels intent allocation is not supported, instead the
-remote will pre-allocate and announce a fixed number of intents for the
-sender to use. If for such channels an rpmsg_send() is being invoked
-before any channels have been announced, an intent request will be
-issued and as this comes back rejected the call fails with -ECANCELED.
+Fix this by entirely clearing the tick_dep_mask in copy_process().
+(There is currently no inherited state that needs a tick dependency)
 
-Given that this is reported in the same way as the remote being shut
-down, there's no way for the client to differentiate the two cases.
+Process-wide timers do not have this problem because fork does not copy
+signal_struct as a baseline, it creates one from scratch.
 
-In line with the original GLINK design, change the return value to
--EAGAIN for the case where the remote rejects an intent allocation
-request.
-
-It's tempting to handle this case in the GLINK core, as we expect
-intents to show up in this case. But there's no way to distinguish
-between this case and a rejection for a too big allocation, nor is it
-possible to predict if a currently used (and seemingly suitable) intent
-will be returned for reuse or not. As such, returning the error to the
-client and allow it to react seems to be the only sensible solution.
-
-In addition to this, commit 'c05dfce0b89e ("rpmsg: glink: Wait for
-intent, not just request ack")' changed the logic such that the code
-always wait for an intent request response and an intent. This works out
-in most cases, but in the event that an intent request is rejected and no
-further intent arrives (e.g. client asks for a too big intent), the code
-will stall for 10 seconds and then return -ETIMEDOUT; instead of a more
-suitable error.
-
-This change also resulted in intent requests racing with the shutdown of
-the remote would be exposed to this same problem, unless some intent
-happens to arrive. A patch for this was developed and posted by Sarannya
-S [1], and has been incorporated here.
-
-To summarize, the intent request can end in 4 ways:
-- Timeout, no response arrived => return -ETIMEDOUT
-- Abort TX, the edge is going away => return -ECANCELLED
-- Intent request was rejected => return -EAGAIN
-- Intent request was accepted, and an intent arrived => return 0
-
-This patch was developed with input from Sarannya S, Deepak Kumar Singh,
-and Chris Lew.
-
-[1] https://lore.kernel.org/all/20240925072328.1163183-1-quic_deesin@quicinc.com/
-
-Fixes: c05dfce0b89e ("rpmsg: glink: Wait for intent, not just request ack")
+Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Cc: stable@vger.kernel.org
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Link: https://lore.kernel.org/r/20241023-pmic-glink-ecancelled-v2-1-ebc268129407@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/linux/tick.h | 8 ++++++++
+ kernel/fork.c        | 2 ++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1354,14 +1354,18 @@ static int qcom_glink_request_intent(str
- 		goto unlock;
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index 9459fef5b8573..9701c571a5cfe 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -252,12 +252,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_set_task(tsk, bit);
+ }
++
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+ 	if (tick_nohz_full_enabled())
+ 		tick_nohz_dep_clear_task(tsk, bit);
+ }
++
++static inline void tick_dep_init_task(struct task_struct *tsk)
++{
++	atomic_set(&tsk->tick_dep_mask, 0);
++}
++
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit)
+ {
+@@ -291,6 +298,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
+ 				     enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_task(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
++static inline void tick_dep_init_task(struct task_struct *tsk) { }
+ static inline void tick_dep_set_signal(struct task_struct *tsk,
+ 				       enum tick_dep_bits bit) { }
+ static inline void tick_dep_clear_signal(struct signal_struct *signal,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 8dd46baee4c39..09a935724bd95 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -97,6 +97,7 @@
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ #include <linux/bpf.h>
++#include <linux/tick.h>
  
- 	ret = wait_event_timeout(channel->intent_req_wq,
--				 READ_ONCE(channel->intent_req_result) >= 0 &&
--				 READ_ONCE(channel->intent_received),
-+				 READ_ONCE(channel->intent_req_result) == 0 ||
-+				 (READ_ONCE(channel->intent_req_result) > 0 &&
-+				  READ_ONCE(channel->intent_received)) ||
-+				 glink->abort_tx,
- 				 10 * HZ);
- 	if (!ret) {
- 		dev_err(glink->dev, "intent request timed out\n");
- 		ret = -ETIMEDOUT;
-+	} else if (glink->abort_tx) {
-+		ret = -ECANCELED;
- 	} else {
--		ret = READ_ONCE(channel->intent_req_result) ? 0 : -ECANCELED;
-+		ret = READ_ONCE(channel->intent_req_result) ? 0 : -EAGAIN;
- 	}
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -2183,6 +2184,7 @@ static __latent_entropy struct task_struct *copy_process(
+ 	acct_clear_integrals(p);
  
- unlock:
+ 	posix_cputimers_init(&p->posix_cputimers);
++	tick_dep_init_task(p);
+ 
+ 	p->io_context = NULL;
+ 	audit_set_context(p, NULL);
+-- 
+2.43.0
+
 
 
 
