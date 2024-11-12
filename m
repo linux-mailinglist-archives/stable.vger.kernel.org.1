@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-92435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC159C53FA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4427E9C535C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13057283F7F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E452885D0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4CA2123D2;
-	Tue, 12 Nov 2024 10:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E2220F5DD;
+	Tue, 12 Nov 2024 10:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j883fBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcLVOd6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4661A76C7;
-	Tue, 12 Nov 2024 10:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC620B20B;
+	Tue, 12 Nov 2024 10:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407651; cv=none; b=tgho7PA671PxOnXiMCJHusINeDK4eg36ZYTtHi58n+W0RFUVUSdxTCCNxQkCjgwsEQkRu2BaLX3U8sgimCZuMOsWb05pZRdLWZ3VfMF78ZB6bURTA9Z/Rj1fuG6OmGhXfopC8/TMN0r18xIXuQ17FdMbKWDTz43o/D/THxvKSbo=
+	t=1731407151; cv=none; b=fr5BMm+oV9ICTWVrHTqw6QY1vnEfiDccgHbDwhCuROFvOPE4XyqJ3sc6v/9MiHa01aU9WdEhvrvgpKTK++HUVgamxnslO7Wqa7G1rC/9TS4CaVhFFepDlCvEJqToItlTv2/Wkh+/qzBzJhrVs4WyMHrYw83ujUpqDUeZGejTYRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407651; c=relaxed/simple;
-	bh=i00dunWrbFm20pdalcHe4iLBDuHnRBxTCbgD1SXCFnI=;
+	s=arc-20240116; t=1731407151; c=relaxed/simple;
+	bh=kBU/p1gc1jD9LdxX1pSrI7gRD8SEteYR+jUbn6wRuow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A+xHja6HIpeozEIK2fhfy43Nhs7sFfqvX8q8o/fPfkggR/1rjCV4XFxQbTv3hYsyXeLvrhdBPz9w8WRnNe9r4t12shrOa2i2Mo6IYo27ffYJ5waUjaOt0wYRCKX8Zrf9L3n8KSxipduEO9uae2E9vl/++gfpMtq+y88ByDoCL18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j883fBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9695DC4CECD;
-	Tue, 12 Nov 2024 10:34:10 +0000 (UTC)
+	 MIME-Version; b=lQzEYz5VS/82HvhpeUFWnmFFWiRLjtQG5lCSC4e60vbiJIEHfT7VFwGFEwo7y3c3EsBSzdtNqLa4PTl34dZncsy29z0q71nS7dsbqot+yFAgvg07f/uxqOzK9dPHQHA38Bp3QZhj3OZ5ZfUhujQ5rMBuBTodhVsTZwBGWM+AeV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DcLVOd6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0ED2C4CED4;
+	Tue, 12 Nov 2024 10:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407651;
-	bh=i00dunWrbFm20pdalcHe4iLBDuHnRBxTCbgD1SXCFnI=;
+	s=korg; t=1731407151;
+	bh=kBU/p1gc1jD9LdxX1pSrI7gRD8SEteYR+jUbn6wRuow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1j883fBDthtWjzy1eWr2b/pGfAo7MmwhBOyre8kx7NkV/kRuxjGX0b++ax9SveeXy
-	 yCYSu6PV1Q6XIKHh2zZZFGdLziDX4UYkZHt1RxTT+DFdvHmOJOtQvJGPXVWBCNPj3o
-	 Tt2WdFotCzwrJ9KRbaLTfAq2cR6Rx2s0OUT+638E=
+	b=DcLVOd6O0xdNM747SsMdWZ47050JIGOQi7ToOn0EtuC82+GOK7VoEJK+9pYupCV0h
+	 l0wLFGcQb2gzXog1J34MuekAxnhL4I0i9isbg9vdm88WcuWNvC5vrrPNpOZGI34yN0
+	 UJP+4i5TMUacQDvsxOlzq/rjdD6GHZ0laRKvhW6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Simon Horman <horms@kernel.org>,
+	David Wu <david.wu@rock-chips.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/119] net: stmmac: Fix unbalanced IRQ wake disable warning on single irq case
+Subject: [PATCH 5.15 24/76] net: arc: fix the device for dma_map_single/dma_unmap_single
 Date: Tue, 12 Nov 2024 11:20:49 +0100
-Message-ID: <20241112101850.288081415@linuxfoundation.org>
+Message-ID: <20241112101840.708585093@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 25d70702142ac2115e75e01a0a985c6ea1d78033 ]
+[ Upstream commit 71803c1dfa29e0d13b99e48fda11107cc8caebc7 ]
 
-Commit a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by
-unbalanced disable_irq_wake calls") introduced checks to prevent
-unbalanced enable and disable IRQ wake calls. However it only
-initialized the auxiliary variable on one of the paths,
-stmmac_request_irq_multi_msi(), missing the other,
-stmmac_request_irq_single().
+The ndev->dev and pdev->dev aren't the same device, use ndev->dev.parent
+which has dma_mask, ndev->dev.parent is just pdev->dev.
+Or it would cause the following issue:
 
-Add the same initialization on stmmac_request_irq_single() to prevent
-"Unbalanced IRQ <x> wake disable" warnings from being printed the first
-time disable_irq_wake() is called on platforms that run on that code
-path.
+[   39.933526] ------------[ cut here ]------------
+[   39.938414] WARNING: CPU: 1 PID: 501 at kernel/dma/mapping.c:149 dma_map_page_attrs+0x90/0x1f8
 
-Fixes: a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241101-stmmac-unbalanced-wake-single-fix-v1-1-5952524c97f0@collabora.com
+Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
+Signed-off-by: David Wu <david.wu@rock-chips.com>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/arc/emac_main.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a116423adb30a..853851d5f3620 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3678,6 +3678,7 @@ static int stmmac_request_irq_single(struct net_device *dev)
- 	/* Request the Wake IRQ in case of another line
- 	 * is used for WoL
- 	 */
-+	priv->wol_irq_disabled = true;
- 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
- 		ret = request_irq(priv->wol_irq, stmmac_interrupt,
- 				  IRQF_SHARED, dev->name, dev);
+diff --git a/drivers/net/ethernet/arc/emac_main.c b/drivers/net/ethernet/arc/emac_main.c
+index 333333692caa5..bafa63e5ce252 100644
+--- a/drivers/net/ethernet/arc/emac_main.c
++++ b/drivers/net/ethernet/arc/emac_main.c
+@@ -111,6 +111,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
+ {
+ 	struct arc_emac_priv *priv = netdev_priv(ndev);
+ 	struct net_device_stats *stats = &ndev->stats;
++	struct device *dev = ndev->dev.parent;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < TX_BD_NUM; i++) {
+@@ -140,7 +141,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
+ 			stats->tx_bytes += skb->len;
+ 		}
+ 
+-		dma_unmap_single(&ndev->dev, dma_unmap_addr(tx_buff, addr),
++		dma_unmap_single(dev, dma_unmap_addr(tx_buff, addr),
+ 				 dma_unmap_len(tx_buff, len), DMA_TO_DEVICE);
+ 
+ 		/* return the sk_buff to system */
+@@ -174,6 +175,7 @@ static void arc_emac_tx_clean(struct net_device *ndev)
+ static int arc_emac_rx(struct net_device *ndev, int budget)
+ {
+ 	struct arc_emac_priv *priv = netdev_priv(ndev);
++	struct device *dev = ndev->dev.parent;
+ 	unsigned int work_done;
+ 
+ 	for (work_done = 0; work_done < budget; work_done++) {
+@@ -223,9 +225,9 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
+ 			continue;
+ 		}
+ 
+-		addr = dma_map_single(&ndev->dev, (void *)skb->data,
++		addr = dma_map_single(dev, (void *)skb->data,
+ 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
+-		if (dma_mapping_error(&ndev->dev, addr)) {
++		if (dma_mapping_error(dev, addr)) {
+ 			if (net_ratelimit())
+ 				netdev_err(ndev, "cannot map dma buffer\n");
+ 			dev_kfree_skb(skb);
+@@ -237,7 +239,7 @@ static int arc_emac_rx(struct net_device *ndev, int budget)
+ 		}
+ 
+ 		/* unmap previosly mapped skb */
+-		dma_unmap_single(&ndev->dev, dma_unmap_addr(rx_buff, addr),
++		dma_unmap_single(dev, dma_unmap_addr(rx_buff, addr),
+ 				 dma_unmap_len(rx_buff, len), DMA_FROM_DEVICE);
+ 
+ 		pktlen = info & LEN_MASK;
+@@ -423,6 +425,7 @@ static int arc_emac_open(struct net_device *ndev)
+ {
+ 	struct arc_emac_priv *priv = netdev_priv(ndev);
+ 	struct phy_device *phy_dev = ndev->phydev;
++	struct device *dev = ndev->dev.parent;
+ 	int i;
+ 
+ 	phy_dev->autoneg = AUTONEG_ENABLE;
+@@ -445,9 +448,9 @@ static int arc_emac_open(struct net_device *ndev)
+ 		if (unlikely(!rx_buff->skb))
+ 			return -ENOMEM;
+ 
+-		addr = dma_map_single(&ndev->dev, (void *)rx_buff->skb->data,
++		addr = dma_map_single(dev, (void *)rx_buff->skb->data,
+ 				      EMAC_BUFFER_SIZE, DMA_FROM_DEVICE);
+-		if (dma_mapping_error(&ndev->dev, addr)) {
++		if (dma_mapping_error(dev, addr)) {
+ 			netdev_err(ndev, "cannot dma map\n");
+ 			dev_kfree_skb(rx_buff->skb);
+ 			return -ENOMEM;
+@@ -548,6 +551,7 @@ static void arc_emac_set_rx_mode(struct net_device *ndev)
+ static void arc_free_tx_queue(struct net_device *ndev)
+ {
+ 	struct arc_emac_priv *priv = netdev_priv(ndev);
++	struct device *dev = ndev->dev.parent;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < TX_BD_NUM; i++) {
+@@ -555,7 +559,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
+ 		struct buffer_state *tx_buff = &priv->tx_buff[i];
+ 
+ 		if (tx_buff->skb) {
+-			dma_unmap_single(&ndev->dev,
++			dma_unmap_single(dev,
+ 					 dma_unmap_addr(tx_buff, addr),
+ 					 dma_unmap_len(tx_buff, len),
+ 					 DMA_TO_DEVICE);
+@@ -579,6 +583,7 @@ static void arc_free_tx_queue(struct net_device *ndev)
+ static void arc_free_rx_queue(struct net_device *ndev)
+ {
+ 	struct arc_emac_priv *priv = netdev_priv(ndev);
++	struct device *dev = ndev->dev.parent;
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < RX_BD_NUM; i++) {
+@@ -586,7 +591,7 @@ static void arc_free_rx_queue(struct net_device *ndev)
+ 		struct buffer_state *rx_buff = &priv->rx_buff[i];
+ 
+ 		if (rx_buff->skb) {
+-			dma_unmap_single(&ndev->dev,
++			dma_unmap_single(dev,
+ 					 dma_unmap_addr(rx_buff, addr),
+ 					 dma_unmap_len(rx_buff, len),
+ 					 DMA_FROM_DEVICE);
+@@ -679,6 +684,7 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
+ 	unsigned int len, *txbd_curr = &priv->txbd_curr;
+ 	struct net_device_stats *stats = &ndev->stats;
+ 	__le32 *info = &priv->txbd[*txbd_curr].info;
++	struct device *dev = ndev->dev.parent;
+ 	dma_addr_t addr;
+ 
+ 	if (skb_padto(skb, ETH_ZLEN))
+@@ -692,10 +698,9 @@ static netdev_tx_t arc_emac_tx(struct sk_buff *skb, struct net_device *ndev)
+ 		return NETDEV_TX_BUSY;
+ 	}
+ 
+-	addr = dma_map_single(&ndev->dev, (void *)skb->data, len,
+-			      DMA_TO_DEVICE);
++	addr = dma_map_single(dev, (void *)skb->data, len, DMA_TO_DEVICE);
+ 
+-	if (unlikely(dma_mapping_error(&ndev->dev, addr))) {
++	if (unlikely(dma_mapping_error(dev, addr))) {
+ 		stats->tx_dropped++;
+ 		stats->tx_errors++;
+ 		dev_kfree_skb_any(skb);
 -- 
 2.43.0
 
