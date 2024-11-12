@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244769C54AA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D589C56C1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D10FB34027
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7985B39181
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A814B213EF9;
-	Tue, 12 Nov 2024 10:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08471218D7A;
+	Tue, 12 Nov 2024 10:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxk90rxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfWRLfw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC02123CF;
-	Tue, 12 Nov 2024 10:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D00219C87;
+	Tue, 12 Nov 2024 10:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407204; cv=none; b=gYBYZP/NVSHw0DhTKizPfFB+E4qpBYuMvnutYvnnRf0iDzc/lH/5+1mcvLTanR1lCOVqJvS3teO4wy9/Ztq3Mm8JvKM9drRww/w3b5q/UFBejKszs/dOx5AbztiFd1sw0Gqls+ld1oTHAUbP0lBrPRRF4H4QZdXuOqK33SfBvIc=
+	t=1731407786; cv=none; b=NgTgHNzJUZ6aC6DoceInvnVH4BI04svrEsOqDcnab/GNv4wM0Ipkw2VoTaQizqB5hT0796jtwi1AeRBMhLg3lYCe90Du82YdqQc8biU5v6VG+/Cvci6KWOVoixE1g1QvTdGBZAFSBg4MURXaK1uaeT2wYphnETAhYn0/zFcWqFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407204; c=relaxed/simple;
-	bh=C/b7RRqz/1F5+FwqOLWc0C+igA2ppaR9Z452TnAAWj0=;
+	s=arc-20240116; t=1731407786; c=relaxed/simple;
+	bh=bWFKmbzhbxgSqAZG8ZdBa5juIyADcj7ESSh+Kz/en90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOsWV3p/weJVaHO85CRReuuzh6v5puecsglH8FWDiMhdBzW5v13EojVeeA1s4sYQLBibk0wII+0SACX3Y3SPo1DF1+ti8Cgyfy9Vpve775rcrGsV5kKiYSYbisZ7I+8TZpF7XaMsZF3AIBUGEBZ2PFn3F4naJC8CkEELomIFxGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxk90rxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC901C4CECD;
-	Tue, 12 Nov 2024 10:26:43 +0000 (UTC)
+	 MIME-Version; b=OKsef6h0ZPeFBHVu+ORZHm4JCKibz90U0kRTqOeAR1yTDJs7XV1Ro3L1mMwSY13dKOrhYGiftJT+ZC5LO+JUiUzvkmujjoX2cXuc00VKFP9y1qDJhoLDT2Ek+rbzzPh741cPD4paHruBRfJyYl38vGF/H1hHAHhIRLrEbwhCC9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfWRLfw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F24DC4CECD;
+	Tue, 12 Nov 2024 10:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407204;
-	bh=C/b7RRqz/1F5+FwqOLWc0C+igA2ppaR9Z452TnAAWj0=;
+	s=korg; t=1731407786;
+	bh=bWFKmbzhbxgSqAZG8ZdBa5juIyADcj7ESSh+Kz/en90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fxk90rxCWn4eEnCAA4X1/o9jBmsOkiwzVsdzWZulCmZVlSDuw8aYN5ZhnD+pZburS
-	 zuudmYXHRrg5VFIHJq10XMp4O5kSDgha7dlD/PnEtEjaN/m9t2BOSIjjKNcRAjDe9N
-	 GmwU10NlXhg7c0AWYC3CJmdIavDvenBM72CzYVjs=
+	b=EfWRLfw9/5qf17l8aGzLSrM5mY2EbaIzSMl+8o4n8rSPxhed2ZwSPGLoVilxAw/Lq
+	 ddQY67APsiiaVeeIBBfobN6mSSS30XyuY6AgoUiO75bZXTCxVt7TvWfA/74uVhfcpe
+	 WaqKrIzq6i8xZZctey7x6Ru9KJHNa3mKLb3kSxlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 65/76] USB: serial: qcserial: add support for Sierra Wireless EM86xx
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.6 082/119] dm cache: correct the number of origin blocks to match the target length
 Date: Tue, 12 Nov 2024 11:21:30 +0100
-Message-ID: <20241112101842.260186854@linuxfoundation.org>
+Message-ID: <20241112101851.849880324@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <wojackbb@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 25eb47eed52979c2f5eee3f37e6c67714e02c49c upstream.
+commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
 
-Add support for Sierra Wireless EM86xx with USB-id 0x1199:0x90e5 and
-0x1199:0x90e4.
+When creating a cache device, the actual size of the cache origin might
+be greater than the specified cache target length. In such case, the
+number of origin blocks should match the cache target length, not the
+full size of the origin device, since access beyond the cache target is
+not possible. This issue occurs when reducing the origin device size
+using lvm, as lvreduce preloads the new cache table before resuming the
+cache origin, which can result in incorrect sizes for the discard bitset
+and smq hotspot blocks.
 
-0x1199:0x90e5
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e5 Rev= 5.15
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Semtech EM8695 Mobile Broadband Adapter
-S:  SerialNumber=004403161882339
-C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Reproduce steps:
 
-0x1199:0x90e4
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e4 Rev= 0.00
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  SerialNumber=004403161882339
-C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=qcserial
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+1. create a cache device consists of 4096 origin blocks
 
-Signed-off-by: Jack Wu <wojackbb@gmail.com>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
+
+dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup suspend cache
+dmsetup suspend corig
+dmsetup suspend cdata
+dmsetup suspend cmeta
+dmsetup resume corig
+dmsetup resume cdata
+dmsetup resume cmeta
+dmsetup resume cache
+
+3. shutdown the cache, and check the number of discard blocks in
+   superblock. The value is expected to be 2048, but actually is 4096.
+
+dmsetup remove cache corig cdata cmeta
+dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
+
+Fix by correcting the origin_blocks initialization in cache_create and
+removing the unused origin_sectors from struct cache_args accordingly.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: c6b4fcbad044 ("dm: add cache target")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/qcserial.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-cache-target.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -166,6 +166,8 @@ static const struct usb_device_id id_tab
- 	{DEVICE_SWI(0x1199, 0x9090)},	/* Sierra Wireless EM7565 QDL */
- 	{DEVICE_SWI(0x1199, 0x9091)},	/* Sierra Wireless EM7565 */
- 	{DEVICE_SWI(0x1199, 0x90d2)},	/* Sierra Wireless EM9191 QDL */
-+	{DEVICE_SWI(0x1199, 0x90e4)},	/* Sierra Wireless EM86xx QDL*/
-+	{DEVICE_SWI(0x1199, 0x90e5)},	/* Sierra Wireless EM86xx */
- 	{DEVICE_SWI(0x1199, 0xc080)},	/* Sierra Wireless EM7590 QDL */
- 	{DEVICE_SWI(0x1199, 0xc081)},	/* Sierra Wireless EM7590 */
- 	{DEVICE_SWI(0x413c, 0x81a2)},	/* Dell Wireless 5806 Gobi(TM) 4G LTE Mobile Broadband Card */
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2007,7 +2007,6 @@ struct cache_args {
+ 	sector_t cache_sectors;
+ 
+ 	struct dm_dev *origin_dev;
+-	sector_t origin_sectors;
+ 
+ 	uint32_t block_size;
+ 
+@@ -2088,6 +2087,7 @@ static int parse_cache_dev(struct cache_
+ static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
+ 			    char **error)
+ {
++	sector_t origin_sectors;
+ 	int r;
+ 
+ 	if (!at_least_one_arg(as, error))
+@@ -2100,8 +2100,8 @@ static int parse_origin_dev(struct cache
+ 		return r;
+ 	}
+ 
+-	ca->origin_sectors = get_dev_size(ca->origin_dev);
+-	if (ca->ti->len > ca->origin_sectors) {
++	origin_sectors = get_dev_size(ca->origin_dev);
++	if (ca->ti->len > origin_sectors) {
+ 		*error = "Device size larger than cached device";
+ 		return -EINVAL;
+ 	}
+@@ -2411,7 +2411,7 @@ static int cache_create(struct cache_arg
+ 
+ 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
+ 
+-	origin_blocks = cache->origin_sectors = ca->origin_sectors;
++	origin_blocks = cache->origin_sectors = ti->len;
+ 	origin_blocks = block_div(origin_blocks, ca->block_size);
+ 	cache->origin_blocks = to_oblock(origin_blocks);
+ 
 
 
 
