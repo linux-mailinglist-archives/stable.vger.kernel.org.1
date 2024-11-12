@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A54B9C53AE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC529C55B5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A72814DC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7EFE1F2236C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CEB2141B8;
-	Tue, 12 Nov 2024 10:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0521219C89;
+	Tue, 12 Nov 2024 10:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDRdv3k7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXHrU+l/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB3213EFC;
-	Tue, 12 Nov 2024 10:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D808219C8A;
+	Tue, 12 Nov 2024 10:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407400; cv=none; b=s8pMu3vs6/ZOGNTehe4uy5cTxsHmqNVvJx/si2PhHY9Phc2cdkmVBA/dRiBjNsA1qZre5qNTuWWsICPJWO2tTu4YTsv7+gfT/etsNcypqhdMBdsuZ9GYLT0rzmv7hch4rqVn4WXD04xAPBbzjvY1eXuQdewPdu4j8hNxTIedbK4=
+	t=1731408303; cv=none; b=sZfYMXgXqfT7VIT1YR6ZrYZY06b2dFEqGbrOJtEeOh560IUwbpwjnsuqR8Uy4TifGnCfNREL3HBRVk9TkrMnconBuzUrsfh9vpJ0/6KCc8rG7pZyYxLnvaGzeepBsoMi0/XX2yV22sDRTyKJPC3irHoIEjaRg/5FEws+dZbSJ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407400; c=relaxed/simple;
-	bh=hSxAwxJQ2I6JhbwcY0/3nF7RDDAdQMhBlrTKLwPUf9c=;
+	s=arc-20240116; t=1731408303; c=relaxed/simple;
+	bh=noR7LvMedfxNBpyY9jgrxMarB6WqL9VFdQUsxKfPpYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gswey6XfC3veM38ByVj2yUtJIo0RxPhc1x2fqMZ36QvZ06Wu9P/RwLryS/gO+c3gYSEUYsoT3hT9cm+Lq9PxnCmzmROflKzQj3+CBJ52zRD1i9gKSmpQYmirpjWOsfe4/sAO7TdnEXmbkrtPcVOWAGLNig+IjQPPDlvyq33JjNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDRdv3k7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70768C4CECD;
-	Tue, 12 Nov 2024 10:29:59 +0000 (UTC)
+	 MIME-Version; b=Q+OG0Ia6UMvu7uOE/MSdHuJvNo+Jm3jYL+i2UvobW8t4AkCXqqEWUKIbGDAbWjzyCJxnuj8UABy32ws3W/D0pNWs5DinPQtr0a6OijUh5MBKO/5aShHg2FLs7wLrVEbu2xG71hpbcNoGNVhDFwYhSiVhdX4B8NwzGXtxUms8h4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXHrU+l/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E968CC4CECD;
+	Tue, 12 Nov 2024 10:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407399;
-	bh=hSxAwxJQ2I6JhbwcY0/3nF7RDDAdQMhBlrTKLwPUf9c=;
+	s=korg; t=1731408303;
+	bh=noR7LvMedfxNBpyY9jgrxMarB6WqL9VFdQUsxKfPpYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDRdv3k7sF5ZLSWoCTX5H5rs9GRQJwMFq4eYspOFOT3WD6gb+dXezN+XjUulavenK
-	 PgprXQ9w7qTTpjBwAoSUrrTm8RF8UXpXIEaLlBfU+9WwWC1o1RCAH2W4b5j78o6cwq
-	 TOc6/FE3cnAM1MLkuiZkhn4yLHVGV0D2bmno+LFU=
+	b=TXHrU+l/J8b5Izfr4bydtRJsMhfQTCeakF64ye4BvnltwLt92bt4uQdSgUgqKB9IY
+	 y92aq0QAu51mzBq5RC47Yxwf5n2MbAqKIXZ5e4Pa9YRtlRvZlWKzcEON5FzOnm/Jmd
+	 CToWGZILavFTglm23p9Gm8uM94CHEZeWJEKdT68s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 6.1 64/98] dm cache: fix potential out-of-bounds access on the first resume
+	Davide Caratti <dcaratti@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 121/184] mptcp: no admin perm to list endpoints
 Date: Tue, 12 Nov 2024 11:21:19 +0100
-Message-ID: <20241112101846.699659538@linuxfoundation.org>
+Message-ID: <20241112101905.511200237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
+commit cfbbd4859882a5469f6f4945937a074ee78c4b46 upstream.
 
-Out-of-bounds access occurs if the fast device is expanded unexpectedly
-before the first-time resume of the cache table. This happens because
-expanding the fast device requires reloading the cache table for
-cache_create to allocate new in-core data structures that fit the new
-size, and the check in cache_preresume is not performed during the
-first resume, leading to the issue.
+During the switch to YNL, the command to list all endpoints has been
+accidentally restricted to users with admin permissions.
 
-Reproduce steps:
+It looks like there are no reasons to have this restriction which makes
+it harder for a user to quickly check if the endpoint list has been
+correctly populated by an automated tool. Best to go back to the
+previous behaviour then.
 
-1. prepare component devices:
+mptcp_pm_gen.c has been modified using ynl-gen-c.py:
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+   $ ./tools/net/ynl/ynl-gen-c.py --mode kernel \
+     --spec Documentation/netlink/specs/mptcp_pm.yaml --source \
+     -o net/mptcp/mptcp_pm_gen.c
 
-2. load a cache table of 512 cache blocks, and deliberately expand the
-   fast device before resuming the cache, making the in-core data
-   structures inadequate.
+The header file doesn't need to be regenerated.
 
-dmsetup create cache --notable
-dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup resume cdata
-dmsetup resume cache
-
-3. suspend the cache to write out the in-core dirty bitset and hint
-   array, leading to out-of-bounds access to the dirty bitset at offset
-   0x40:
-
-dmsetup suspend cache
-
-KASAN reports:
-
-  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
-  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
-
-  (...snip...)
-  The buggy address belongs to the virtual mapping at
-   [ffffc90000085000, ffffc90000087000) created by:
-   cache_ctr+0x176a/0x35f0
-
-  (...snip...)
-  Memory state around the buggy address:
-   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
-                                             ^
-   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-
-Fix by checking the size change on the first resume.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Fixes: 1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241104-net-mptcp-misc-6-12-v1-1-c13f2ff1656f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml |    1 -
+ net/mptcp/mptcp_pm_gen.c                  |    1 -
+ 2 files changed, 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2878,24 +2878,24 @@ static dm_cblock_t get_cache_dev_size(st
- static bool can_resize(struct cache *cache, dm_cblock_t new_size)
- {
- 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
--		if (cache->sized) {
--			DMERR("%s: unable to extend cache due to missing cache table reload",
--			      cache_device_name(cache));
--			return false;
--		}
-+		DMERR("%s: unable to extend cache due to missing cache table reload",
-+		      cache_device_name(cache));
-+		return false;
- 	}
- 
- 	/*
- 	 * We can't drop a dirty block when shrinking the cache.
- 	 */
--	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
--					   from_cblock(cache->cache_size),
--					   from_cblock(new_size)));
--	if (new_size != cache->cache_size) {
--		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
--		      cache_device_name(cache),
--		      (unsigned long long) from_cblock(new_size));
--		return false;
-+	if (cache->loaded_mappings) {
-+		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
-+						   from_cblock(cache->cache_size),
-+						   from_cblock(new_size)));
-+		if (new_size != cache->cache_size) {
-+			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
-+			      cache_device_name(cache),
-+			      (unsigned long long) from_cblock(new_size));
-+			return false;
-+		}
- 	}
- 
- 	return true;
-@@ -2926,20 +2926,15 @@ static int cache_preresume(struct dm_tar
- 	/*
- 	 * Check to see if the cache has resized.
- 	 */
--	if (!cache->sized) {
--		r = resize_cache_dev(cache, csize);
--		if (r)
--			return r;
--
--		cache->sized = true;
--
--	} else if (csize != cache->cache_size) {
-+	if (!cache->sized || csize != cache->cache_size) {
- 		if (!can_resize(cache, csize))
- 			return -EINVAL;
- 
- 		r = resize_cache_dev(cache, csize);
- 		if (r)
- 			return r;
-+
-+		cache->sized = true;
- 	}
- 
- 	if (!cache->loaded_mappings) {
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -293,7 +293,6 @@ operations:
+       doc: Get endpoint information
+       attribute-set: attr
+       dont-validate: [ strict ]
+-      flags: [ uns-admin-perm ]
+       do: &get-addr-attrs
+         request:
+           attributes:
+--- a/net/mptcp/mptcp_pm_gen.c
++++ b/net/mptcp/mptcp_pm_gen.c
+@@ -112,7 +112,6 @@ const struct genl_ops mptcp_pm_nl_ops[11
+ 		.dumpit		= mptcp_pm_nl_get_addr_dumpit,
+ 		.policy		= mptcp_pm_get_addr_nl_policy,
+ 		.maxattr	= MPTCP_PM_ATTR_TOKEN,
+-		.flags		= GENL_UNS_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd		= MPTCP_PM_CMD_FLUSH_ADDRS,
 
 
 
