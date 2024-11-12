@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-92508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6F89C56C2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:39:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382C89C53BE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B557B2AEE6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:46:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1A69281D02
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A7721CFA1;
-	Tue, 12 Nov 2024 10:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2B8214439;
+	Tue, 12 Nov 2024 10:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq19e6f6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrdA8UZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C6F21D219;
-	Tue, 12 Nov 2024 10:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B9921440D;
+	Tue, 12 Nov 2024 10:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407816; cv=none; b=GdIdorXzEH6clx9bMZrJY4QcIn87anxsP3EBHTgHVolnsXKu2j8qWtoWZ0UJlVzcEtOQ5QbdX6YCj7CecDn43YmJD/BtlkBQtrMef2vrIGGbZ5Cvq793KpH60EdEso62Y1aZY/sII2ELo0z+fHpP0jYSshsqWfPZ1+WipqwDDF4=
+	t=1731407465; cv=none; b=ES1XriTtFwHkCV+vFt/O7MEkpRc9JpFC/zjBXnlAhx3if1vZBSG4PxdYE63D5ybgntD5zJnmpj0aB8aqeIoMghFACovFPEpOJhnOog3UispM+whrKv+ohg/936ZJHG6SXfYIE7PscKXCKiU73FbnD/pqyYc5Baqn00jkkKsn/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407816; c=relaxed/simple;
-	bh=z6hre/xRTAi2eUj+gW4ZVWZwadvTblMwqwBL5DNbFV8=;
+	s=arc-20240116; t=1731407465; c=relaxed/simple;
+	bh=Bnyj1oAzVPFHpeCRsqvrh3OyZ4DXL35Dx5088ciIHAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSkCrXPG0K7O4rarVyivrLiHG0jdWGfdX3PpLTn9AuIqodVGzSxzPH9KwUS8BsAr6VzLAhEkYx5eoJBSzpPyP9U9cJNuRNQKbBVDK+Pv21yUcykeNMLfUewoGFt2OBReJFYwgBCiv5xQ/vz+gK5sH3NJd9hL9zgeMnV3CFOLpiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq19e6f6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A12C4CED7;
-	Tue, 12 Nov 2024 10:36:55 +0000 (UTC)
+	 MIME-Version; b=frlM2GuWJX0cN5RKhNPFoVZi38ZlrapRcb5gxrJx3RzaPVRKpr4zrtJ/Lodo4oPGyYYHyp/VkMbDmrxu8JKyKkIhpi83Jm2NCqntMapEPPboS6xG6l2XLg26hSqItDtXpSUAVtQgl2UpzOggvy5R1Nemreet9vgkGL5q6tWAC+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrdA8UZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E90C4CECD;
+	Tue, 12 Nov 2024 10:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407816;
-	bh=z6hre/xRTAi2eUj+gW4ZVWZwadvTblMwqwBL5DNbFV8=;
+	s=korg; t=1731407464;
+	bh=Bnyj1oAzVPFHpeCRsqvrh3OyZ4DXL35Dx5088ciIHAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aq19e6f6Zn9JpN5TZayy01t0r5ZgjTsEomAPL+u4PSP1cxXKEV59MQ7YiJJ7WtR6N
-	 bMWevtL7cGBA286DHK1Vc6UKNseg65C08OfbVFmt+mNGiNCmtAjawIefeKzcp4Rkcl
-	 J8YmnPnY+hu3CeYM+b5FrvH5ckgCZbrIKX1nPhYc=
+	b=MrdA8UZE90HVn6XaEJtfPy3Xr9QMuAqAXWyO9gjdK/H12Zj8K/7ona0SD4ttaeGxM
+	 60sXtoyZT5c6nhwEEfRK7rJH/DdjZz9CtuDXR92VEnCKGMriWLWijMIIWqIfvEmOvO
+	 0ezTtuqlIACOfZjNzyLViD4i0TTAnhd2XkkT59nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.6 090/119] nfs: Fix KMSAN warning in decode_getfattr_attrs()
-Date: Tue, 12 Nov 2024 11:21:38 +0100
-Message-ID: <20241112101852.153490585@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.1 84/98] usb: musb: sunxi: Fix accessing an released usb phy
+Date: Tue, 12 Nov 2024 11:21:39 +0100
+Message-ID: <20241112101847.449424675@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
+commit 498dbd9aea205db9da674994b74c7bf8e18448bd upstream.
 
-Fix the following KMSAN warning:
+Commit 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on
+exit") will cause that usb phy @glue->xceiv is accessed after released.
 
-CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-=====================================================
-=====================================================
-BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_generic+0x806/0xb00
- nfs4_xdr_dec_getattr+0x1de/0x240
- rpcauth_unwrap_resp_decode+0xab/0x100
- rpcauth_unwrap_resp+0x95/0xc0
- call_decode+0x4ff/0xb50
- __rpc_execute+0x57b/0x19d0
- rpc_execute+0x368/0x5e0
- rpc_run_task+0xcfe/0xee0
- nfs4_proc_getattr+0x5b5/0x990
- __nfs_revalidate_inode+0x477/0xd00
- nfs_access_get_cached+0x1021/0x1cc0
- nfs_do_access+0x9f/0xae0
- nfs_permission+0x1e4/0x8c0
- inode_permission+0x356/0x6c0
- link_path_walk+0x958/0x1330
- path_lookupat+0xce/0x6b0
- filename_lookup+0x23e/0x770
- vfs_statx+0xe7/0x970
- vfs_fstatat+0x1f2/0x2c0
- __se_sys_newfstatat+0x67/0x880
- __x64_sys_newfstatat+0xbd/0x120
- x64_sys_call+0x1826/0x3cf0
- do_syscall_64+0xd0/0x1b0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+1) register platform driver @sunxi_musb_driver
+// get the usb phy @glue->xceiv
+sunxi_musb_probe() -> devm_usb_get_phy().
 
-The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
-decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
-initialized.
+2) register and unregister platform driver @musb_driver
+musb_probe() -> sunxi_musb_init()
+use the phy here
+//the phy is released here
+musb_remove() -> sunxi_musb_exit() -> devm_usb_put_phy()
 
-Fix the issue by initializing fattr->mdsthreshold to NULL in
-nfs_fattr_init().
+3) register @musb_driver again
+musb_probe() -> sunxi_musb_init()
+use the phy here but the phy has been released at 2).
+...
 
-Cc: stable@vger.kernel.org # v3.5.x
-Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixed by reverting the commit, namely, removing devm_usb_put_phy()
+from sunxi_musb_exit().
+
+Fixes: 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on exit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241029-sunxi_fix-v1-1-9431ed2ab826@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/musb/sunxi.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1575,6 +1575,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
- 	fattr->gencount = nfs_inc_attr_generation_counter();
- 	fattr->owner_name = NULL;
- 	fattr->group_name = NULL;
-+	fattr->mdsthreshold = NULL;
+--- a/drivers/usb/musb/sunxi.c
++++ b/drivers/usb/musb/sunxi.c
+@@ -286,8 +286,6 @@ static int sunxi_musb_exit(struct musb *
+ 	if (test_bit(SUNXI_MUSB_FL_HAS_SRAM, &glue->flags))
+ 		sunxi_sram_release(musb->controller->parent);
+ 
+-	devm_usb_put_phy(glue->dev, glue->xceiv);
+-
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(nfs_fattr_init);
  
 
 
