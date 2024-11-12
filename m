@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-92579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0631A9C5540
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:02:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39A39C5616
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA351F20F6A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:02:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1D32B35E74
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2A322DA9D;
-	Tue, 12 Nov 2024 10:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198482144AC;
+	Tue, 12 Nov 2024 10:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozs0zj8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EprGS/dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D8A22DA90;
-	Tue, 12 Nov 2024 10:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DE0210184;
+	Tue, 12 Nov 2024 10:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407912; cv=none; b=smwnjXAKtdsXU2Q6x+lgj9tUT8GTahtJvgxTTrN7ruGrGp+dtp72Q4lP5OfSU3yDUCsCZP1n+kWqocb4ctcjNZx3ROY/bpO98bSWEGq0RaOu+J3xuaPC0JdKbDPK4c0pvwNmsOBzP/HKHwGF7j77vLCx/9JnP+Y69FYqO2aXxVo=
+	t=1731407481; cv=none; b=m3eeh6PLp9GRAT8Ury8AL6n611TaiVoiK9qW6VkazwwJlq8gkqxp9Rh3P4DiuBU/yFk4VFKYdGLZc5UH27Lv9IOX8MGCy+Qq0uFOtlMdizsVRP2TE9zShtutx4E4eKUNqh1ETVdlh8L99l8/3kBA7/3wd2yZZDT0BbChUodo3pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407912; c=relaxed/simple;
-	bh=BS3LCFkkSQ1CE2dKETqpEsj6Tinr0XJmBTzGJpiUGOw=;
+	s=arc-20240116; t=1731407481; c=relaxed/simple;
+	bh=IASFF7H0SSH7n5RL1qvnwM46YOnDXFVMC+3CIugJO4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=az9HDiOwCv7aG6U8zQzc1MFOaY4GUGbVYKQcTx+wXS4YKin8QP+BI6+dHyZ32gTpyBKDDUC4uZja2T5YFp/Xg5Q/w64s91gq5iwQ8LkVNwBmQzC3a8p0NcN00Jb8uf8Hdj8Ik5wo2zjX8J6QyyzXTauvTHHY17uI5tW/EgUvfuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozs0zj8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508B3C4CECD;
-	Tue, 12 Nov 2024 10:38:31 +0000 (UTC)
+	 MIME-Version; b=daEr20XVkGT0YzrTQSQ/2pe2AWbNIzrsn+FQz/0AO8tZCM4E6Fg0s1jXrOZlGbTuSskldXnaOO0khB1OyYIT5JG2Ank7nK4q2x6pQcjgrF/UEHAzqBeqxJ3ZP9tBZVRa/4hdAW00HxtYiWItaYDsaQZRnHwAFScEFIN/6PwhTIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EprGS/dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ADBC4CECD;
+	Tue, 12 Nov 2024 10:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407911;
-	bh=BS3LCFkkSQ1CE2dKETqpEsj6Tinr0XJmBTzGJpiUGOw=;
+	s=korg; t=1731407481;
+	bh=IASFF7H0SSH7n5RL1qvnwM46YOnDXFVMC+3CIugJO4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ozs0zj8xqdzotavEbgWu8cF+ANO1NMXHGaYh6NaPc1EseutxYa92PNLwtL0sZ0pWm
-	 tL1Trb9JkBC8aNJ8IpRC+/XzzgM5C5drPguSc+RdmU/ITzfIIzw4LREyD+5rXivx/9
-	 bJ35mmAE4zp4LCBiPkEptFHk2kL6oJ29WqQeWNpo=
+	b=EprGS/dngOI4rFtF/UqZsV9SicTPcPFxes3Zcb81La5fW6Z8cZHJ1FvgwTnpMcZBp
+	 lP6jTsVSN6YjjAdbJyRKZEQTdRpm7ULpsNlBM9PKIqrnZea/o7Kd0rwUaZ09J7BHEN
+	 4Iw1TbQ8zSGrWNyyRieM8DrLZDkdtPZTECRMSeyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 096/119] arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 89/98] USB: serial: option: add Fibocom FG132 0x0112 composition
 Date: Tue, 12 Nov 2024 11:21:44 +0100
-Message-ID: <20241112101852.390169260@linuxfoundation.org>
+Message-ID: <20241112101847.639148005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,232 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit 8c462d56487e3abdbf8a61cedfe7c795a54f4a78 upstream.
+commit 393c74ccbd847bacf18865a01b422586fc7341cf upstream.
 
-SMCCCv1.3 added a hint bit which callers can set in an SMCCC function ID
-(AKA "FID") to indicate that it is acceptable for the SMCCC
-implementation to discard SVE and/or SME state over a specific SMCCC
-call. The kernel support for using this hint is broken and SMCCC calls
-may clobber the SVE and/or SME state of arbitrary tasks, though FPSIMD
-state is unaffected.
+Add Fibocom FG132 0x0112 composition:
 
-The kernel support is intended to use the hint when there is no SVE or
-SME state to save, and to do this it checks whether TIF_FOREIGN_FPSTATE
-is set or TIF_SVE is clear in assembly code:
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-|        ldr     <flags>, [<current_task>, #TSK_TI_FLAGS]
-|        tbnz    <flags>, #TIF_FOREIGN_FPSTATE, 1f   // Any live FP state?
-|        tbnz    <flags>, #TIF_SVE, 2f               // Does that state include SVE?
-|
-| 1:     orr     <fid>, <fid>, ARM_SMCCC_1_3_SVE_HINT
-| 2:
-|        << SMCCC call using FID >>
-
-This is not safe as-is:
-
-(1) SMCCC calls can be made in a preemptible context and preemption can
-    result in TIF_FOREIGN_FPSTATE being set or cleared at arbitrary
-    points in time. Thus checking for TIF_FOREIGN_FPSTATE provides no
-    guarantee.
-
-(2) TIF_FOREIGN_FPSTATE only indicates that the live FP/SVE/SME state in
-    the CPU does not belong to the current task, and does not indicate
-    that clobbering this state is acceptable.
-
-    When the live CPU state is clobbered it is necessary to update
-    fpsimd_last_state.st to ensure that a subsequent context switch will
-    reload FP/SVE/SME state from memory rather than consuming the
-    clobbered state. This and the SMCCC call itself must happen in a
-    critical section with preemption disabled to avoid races.
-
-(3) Live SVE/SME state can exist with TIF_SVE clear (e.g. with only
-    TIF_SME set), and checking TIF_SVE alone is insufficient.
-
-Remove the broken support for the SMCCCv1.3 SVE saving hint. This is
-effectively a revert of commits:
-
-* cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
-* a7c3acca5380 ("arm64: smccc: Save lr before calling __arm_smccc_sve_check()")
-
-... leaving behind the ARM_SMCCC_VERSION_1_3 and ARM_SMCCC_1_3_SVE_HINT
-definitions, since these are simply definitions from the SMCCC
-specification, and the latter is used in KVM via ARM_SMCCC_CALL_HINTS.
-
-If we want to bring this back in future, we'll probably want to handle
-this logic in C where we can use all the usual FPSIMD/SVE/SME helper
-functions, and that'll likely require some rework of the SMCCC code
-and/or its callers.
-
-Fixes: cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241106160448.2712997-1-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/smccc-call.S |   35 +++--------------------------------
- drivers/firmware/smccc/smccc.c |    4 ----
- include/linux/arm-smccc.h      |   32 +++-----------------------------
- 3 files changed, 6 insertions(+), 65 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/kernel/smccc-call.S
-+++ b/arch/arm64/kernel/smccc-call.S
-@@ -7,48 +7,19 @@
- 
- #include <asm/asm-offsets.h>
- #include <asm/assembler.h>
--#include <asm/thread_info.h>
--
--/*
-- * If we have SMCCC v1.3 and (as is likely) no SVE state in
-- * the registers then set the SMCCC hint bit to say there's no
-- * need to preserve it.  Do this by directly adjusting the SMCCC
-- * function value which is already stored in x0 ready to be called.
-- */
--SYM_FUNC_START(__arm_smccc_sve_check)
--
--	ldr_l	x16, smccc_has_sve_hint
--	cbz	x16, 2f
--
--	get_current_task x16
--	ldr	x16, [x16, #TSK_TI_FLAGS]
--	tbnz	x16, #TIF_FOREIGN_FPSTATE, 1f	// Any live FP state?
--	tbnz	x16, #TIF_SVE, 2f		// Does that state include SVE?
--
--1:	orr	x0, x0, ARM_SMCCC_1_3_SVE_HINT
--
--2:	ret
--SYM_FUNC_END(__arm_smccc_sve_check)
--EXPORT_SYMBOL(__arm_smccc_sve_check)
- 
- 	.macro SMCCC instr
--	stp     x29, x30, [sp, #-16]!
--	mov	x29, sp
--alternative_if ARM64_SVE
--	bl	__arm_smccc_sve_check
--alternative_else_nop_endif
- 	\instr	#0
--	ldr	x4, [sp, #16]
-+	ldr	x4, [sp]
- 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
- 	stp	x2, x3, [x4, #ARM_SMCCC_RES_X2_OFFS]
--	ldr	x4, [sp, #24]
-+	ldr	x4, [sp, #8]
- 	cbz	x4, 1f /* no quirk structure */
- 	ldr	x9, [x4, #ARM_SMCCC_QUIRK_ID_OFFS]
- 	cmp	x9, #ARM_SMCCC_QUIRK_QCOM_A6
- 	b.ne	1f
- 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
--1:	ldp     x29, x30, [sp], #16
--	ret
-+1:	ret
- 	.endm
- 
- /*
---- a/drivers/firmware/smccc/smccc.c
-+++ b/drivers/firmware/smccc/smccc.c
-@@ -16,7 +16,6 @@ static u32 smccc_version = ARM_SMCCC_VER
- static enum arm_smccc_conduit smccc_conduit = SMCCC_CONDUIT_NONE;
- 
- bool __ro_after_init smccc_trng_available = false;
--u64 __ro_after_init smccc_has_sve_hint = false;
- s32 __ro_after_init smccc_soc_id_version = SMCCC_RET_NOT_SUPPORTED;
- s32 __ro_after_init smccc_soc_id_revision = SMCCC_RET_NOT_SUPPORTED;
- 
-@@ -28,9 +27,6 @@ void __init arm_smccc_version_init(u32 v
- 	smccc_conduit = conduit;
- 
- 	smccc_trng_available = smccc_probe_trng();
--	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
--	    smccc_version >= ARM_SMCCC_VERSION_1_3)
--		smccc_has_sve_hint = true;
- 
- 	if ((smccc_version >= ARM_SMCCC_VERSION_1_2) &&
- 	    (smccc_conduit != SMCCC_CONDUIT_NONE)) {
---- a/include/linux/arm-smccc.h
-+++ b/include/linux/arm-smccc.h
-@@ -227,8 +227,6 @@ u32 arm_smccc_get_version(void);
- 
- void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit);
- 
--extern u64 smccc_has_sve_hint;
--
- /**
-  * arm_smccc_get_soc_id_version()
-  *
-@@ -327,15 +325,6 @@ struct arm_smccc_quirk {
- };
- 
- /**
-- * __arm_smccc_sve_check() - Set the SVE hint bit when doing SMC calls
-- *
-- * Sets the SMCCC hint bit to indicate if there is live state in the SVE
-- * registers, this modifies x0 in place and should never be called from C
-- * code.
-- */
--asmlinkage unsigned long __arm_smccc_sve_check(unsigned long x0);
--
--/**
-  * __arm_smccc_smc() - make SMC calls
-  * @a0-a7: arguments passed in registers 0 to 7
-  * @res: result values from registers 0 to 3
-@@ -402,20 +391,6 @@ asmlinkage void __arm_smccc_hvc(unsigned
- 
- #endif
- 
--/* nVHE hypervisor doesn't have a current thread so needs separate checks */
--#if defined(CONFIG_ARM64_SVE) && !defined(__KVM_NVHE_HYPERVISOR__)
--
--#define SMCCC_SVE_CHECK ALTERNATIVE("nop \n",  "bl __arm_smccc_sve_check \n", \
--				    ARM64_SVE)
--#define smccc_sve_clobbers "x16", "x30", "cc",
--
--#else
--
--#define SMCCC_SVE_CHECK
--#define smccc_sve_clobbers
--
--#endif
--
- #define __constraint_read_2	"r" (arg0)
- #define __constraint_read_3	__constraint_read_2, "r" (arg1)
- #define __constraint_read_4	__constraint_read_3, "r" (arg2)
-@@ -486,12 +461,11 @@ asmlinkage void __arm_smccc_hvc(unsigned
- 		register unsigned long r3 asm("r3"); 			\
- 		CONCATENATE(__declare_arg_,				\
- 			    COUNT_ARGS(__VA_ARGS__))(__VA_ARGS__);	\
--		asm volatile(SMCCC_SVE_CHECK				\
--			     inst "\n" :				\
-+		asm volatile(inst "\n" :				\
- 			     "=r" (r0), "=r" (r1), "=r" (r2), "=r" (r3)	\
- 			     : CONCATENATE(__constraint_read_,		\
- 					   COUNT_ARGS(__VA_ARGS__))	\
--			     : smccc_sve_clobbers "memory");		\
-+			     : "memory");				\
- 		if (___res)						\
- 			*___res = (typeof(*___res)){r0, r1, r2, r3};	\
- 	} while (0)
-@@ -540,7 +514,7 @@ asmlinkage void __arm_smccc_hvc(unsigned
- 		asm ("" :						\
- 		     : CONCATENATE(__constraint_read_,			\
- 				   COUNT_ARGS(__VA_ARGS__))		\
--		     : smccc_sve_clobbers "memory");			\
-+		     : "memory");					\
- 		if (___res)						\
- 			___res->a0 = SMCCC_RET_NOT_SUPPORTED;		\
- 	} while (0)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2320,6 +2320,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0xff, 0x30) },	/* Fibocom FG150 Diag */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x010b, 0xff, 0, 0) },		/* Fibocom FG150 AT */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x30) },	/* Fibocom FG132 Diag */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0xff, 0x40) },	/* Fibocom FG132 AT */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0112, 0xff, 0, 0) },		/* Fibocom FG132 NMEA */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0115, 0xff),			/* Fibocom FM135 (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
 
 
 
