@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-92719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228689C57FA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:39:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF839C575F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:12:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EEC4B423AB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43290B3BC53
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D6219E58;
-	Tue, 12 Nov 2024 10:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A80D2229D4;
+	Tue, 12 Nov 2024 10:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r96HdaOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIR/oLHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625A72144A4;
-	Tue, 12 Nov 2024 10:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D704215013;
+	Tue, 12 Nov 2024 10:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408367; cv=none; b=kGUW+C4j9MCGZOd+HCa9eZA8fMcWJJ9Rd5Ln2yw5VNf5hMYOJiVxMeMXEOhU5gWt33M9GzUSSyinX3BjUtorNHg2Ak6xKctrOB1pA26IrkEib1kkPRGk1VooebjGkyIctEJA0rt4a4Pz4mSnqkfcBXEbzKwDYgIlpPOpCR+EFzQ=
+	t=1731407846; cv=none; b=MXAvUyCxnPGt6NWZ95jysOuq5b8dyes/uF3Z2qdnFAlnEl7/ET9AWueRbBkyVztauzWYpO4iFOZP120JtN1BKgjAkMZHVX3yycQo9UBgqzNCOgGKW85tzfoPnAle1YcNMuc85mljEJoSCfQIyxEBiJOjovzWNLeSk/+8zMmVQTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408367; c=relaxed/simple;
-	bh=/ilhoi9Y3meSGnG+Pt2xebKZxKblFzGHIjvzb+swLSY=;
+	s=arc-20240116; t=1731407846; c=relaxed/simple;
+	bh=mBO0Rokf76GLjOuWsSn6ihhrLNh1lLe1btYmrP3XopY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYXMrH8RgBnX0g1EsLhgo0Wq+3BVm7IBUxSPJUa7yuCi4KPNNcYFAl3RTkSV5rrg1F1MW3ZykwUnubX1HYfIKETuw83KIum8Q0pjxLTS1sv1WcavhyF7o9bfwLwTGbsw0YOyvv+jN4PjULh9U7oXWbCDqpwlQ9bqpTCAiX/+hSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r96HdaOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F00C4CECD;
-	Tue, 12 Nov 2024 10:46:06 +0000 (UTC)
+	 MIME-Version; b=Og8x+1XNNq5Zl2aW3CPzQF+LCwlsLxReXqD117a3WkQ8TY0GU9FkNGf7xuO9UDhXU/RmLp2i3IwxawWA0Z6BpRgenDN+FAzMDG0SvPoP7XzMR8veSFn7a0dL0zWIFW16Tcbp1rBTE+QqlPds0dwNKg1fODSWROuvTbppnR/miJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIR/oLHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8719EC4CED4;
+	Tue, 12 Nov 2024 10:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408367;
-	bh=/ilhoi9Y3meSGnG+Pt2xebKZxKblFzGHIjvzb+swLSY=;
+	s=korg; t=1731407846;
+	bh=mBO0Rokf76GLjOuWsSn6ihhrLNh1lLe1btYmrP3XopY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r96HdaOmnUh/RDismojc7ng9QNcMwJQtSuGv4aGna7Gnzk8YRpObfNRj/v7Dh6Y4r
-	 Qi2usKX6au89WTtYidLKBgC9ac75xvmDeVqqhFfSvXwNUZqy1hk6h+BU/77I/WaGFY
-	 X6RIiwlz2I7XqcG9HltiCXGMwgLLi0x2HRLoLW0k=
+	b=XIR/oLHprPKKiayPw8RDBVsp5YaSd45NLgZboxVUbwOnMvtbPpj1V9eYAL7113KZN
+	 7OXufw4tDI4b1z0cGVNUXBZ/dqm8JCySxtm6or/4RqSQWhWYE9VMDHxINuCt9I49Ao
+	 yrY0prUwh8ZQhErWwTtFjMTX4floUHKCGws8M9Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.11 141/184] platform/x86/amd/pmf: Add SMU metrics table support for 1Ah family 60h model
-Date: Tue, 12 Nov 2024 11:21:39 +0100
-Message-ID: <20241112101906.283877341@linuxfoundation.org>
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 093/119] mptcp: use sock_kfree_s instead of kfree
+Date: Tue, 12 Nov 2024 11:21:41 +0100
+Message-ID: <20241112101852.275018206@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 8ca8d07857c698503b2b3bf615238c87c02f064e upstream.
+commit 99635c91fb8b860a6404b9bc8b769df7bdaa2ae3 upstream.
 
-Add SMU metrics table support for 1Ah family 60h model. This information
-will be used by the PMF driver to alter the system thermals.
+The local address entries on userspace_pm_local_addr_list are allocated
+by sock_kmalloc().
 
-Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241023063245.1404420-2-Shyam-sundar.S-k@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+It's then required to use sock_kfree_s() instead of kfree() to free
+these entries in order to adjust the allocated size on the sk side.
+
+Fixes: 24430f8bf516 ("mptcp: add address into userspace pm list")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241104-net-mptcp-misc-6-12-v1-2-c13f2ff1656f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmf/core.c |    1 +
- drivers/platform/x86/amd/pmf/spc.c  |    1 +
- 2 files changed, 2 insertions(+)
+ net/mptcp/pm_userspace.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -261,6 +261,7 @@ int amd_pmf_set_dram_addr(struct amd_pmf
- 			dev->mtable_size = sizeof(dev->m_table);
- 			break;
- 		case PCI_DEVICE_ID_AMD_1AH_M20H_ROOT:
-+		case PCI_DEVICE_ID_AMD_1AH_M60H_ROOT:
- 			dev->mtable_size = sizeof(dev->m_table_v2);
- 			break;
- 		default:
---- a/drivers/platform/x86/amd/pmf/spc.c
-+++ b/drivers/platform/x86/amd/pmf/spc.c
-@@ -86,6 +86,7 @@ static void amd_pmf_get_smu_info(struct
- 					 ARRAY_SIZE(dev->m_table.avg_core_c0residency), in);
- 		break;
- 	case PCI_DEVICE_ID_AMD_1AH_M20H_ROOT:
-+	case PCI_DEVICE_ID_AMD_1AH_M60H_ROOT:
- 		memcpy(&dev->m_table_v2, dev->buf, dev->mtable_size);
- 		in->ev_info.socket_power = dev->m_table_v2.apu_power + dev->m_table_v2.dgpu_power;
- 		in->ev_info.skin_temperature = dev->m_table_v2.skin_temp;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -90,6 +90,7 @@ static int mptcp_userspace_pm_delete_loc
+ 						struct mptcp_pm_addr_entry *addr)
+ {
+ 	struct mptcp_pm_addr_entry *entry, *tmp;
++	struct sock *sk = (struct sock *)msk;
+ 
+ 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
+ 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
+@@ -97,7 +98,7 @@ static int mptcp_userspace_pm_delete_loc
+ 			 * be used multiple times (e.g. fullmesh mode).
+ 			 */
+ 			list_del_rcu(&entry->list);
+-			kfree(entry);
++			sock_kfree_s(sk, entry, sizeof(*entry));
+ 			msk->pm.local_addr_used--;
+ 			return 0;
+ 		}
 
 
 
