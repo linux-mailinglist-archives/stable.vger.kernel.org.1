@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-92594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC189C57C4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:31:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D1D9C577C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDFCAB326FB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE3C1B41C55
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D822EE71;
-	Tue, 12 Nov 2024 10:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9737422EE7E;
+	Tue, 12 Nov 2024 10:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCOcMRdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajQM3bAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A0822EE69;
-	Tue, 12 Nov 2024 10:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5329B22EE70;
+	Tue, 12 Nov 2024 10:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407961; cv=none; b=Qva98wQ6kcc4mXEqDt6Ol0RseEIO1ERzHGMA4/4O42MgZDTPUqR+BXqh1TZI9LtG6J7OUAvPVIGC3p74W6NV3v0k7c52AjLQlXRZ6fuKPvwCPk5sp3HKLl0GH0cSSBC2V3vtVvlj6yA/XzuqNeC5Azce1DWf3NxJRWADCMAHV1M=
+	t=1731407967; cv=none; b=mTi6N07kmn6LSHEeScJfGjFMF5HR7FmPggJyWV2ZkFf9Ip4nU+5bLqJ7QdCseEaDPVCI93bCdQknqhMSGLBR5zna2OgAiayQpBzyWNxx8WldfLzoRV9toD8zzwez8IHrUmxpo0KuwRc8yzx/Gjnj9CvoF3b9fqCsflNzbYSJUJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407961; c=relaxed/simple;
-	bh=L8LL7hL/kS+HyLMak9H8frMvNGwGyELtSbBM6PxhX0o=;
+	s=arc-20240116; t=1731407967; c=relaxed/simple;
+	bh=sE0riKMpkD6jAtws+Py/DLDmNDaIYbbOi9PDV58L4Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMJW+0HSA6bK1BS2qv432AbD5euweGcMeZfIVN6KzxDP6HJm3blXdXERvXmIb1i5e6U82x7pc2GvqKGGcj0iCtmPqPrUD852p5WzUnlLn+EmbWoxQXWwt7A14rtUwao3u3SerAXFj622abJYlrPikM6poXdcuFtzAZQipPKV/D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCOcMRdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E068C4CED6;
-	Tue, 12 Nov 2024 10:39:20 +0000 (UTC)
+	 MIME-Version; b=p2ae5/XjmXT9vFxEyqpGQkGdDtbzVeUGPGfPwSCtpD0TiPyVDiJNFNJvLvxkiywDcePauM3HXcdz1j6+lJo7BtY8cmtN3oEME3Kl/RwHnT8OyL8JqfIUoL3ZIQJB+8PAoEIlzPkdq8DGbfmP77GiVJmSOJk2yqQ6A+6WAWJZg7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajQM3bAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF1DC4CECD;
+	Tue, 12 Nov 2024 10:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407960;
-	bh=L8LL7hL/kS+HyLMak9H8frMvNGwGyELtSbBM6PxhX0o=;
+	s=korg; t=1731407967;
+	bh=sE0riKMpkD6jAtws+Py/DLDmNDaIYbbOi9PDV58L4Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCOcMRdiUbAL6YGSqgAGJRXxTtOUqIU+cN80yei7K1H6948U98n9VCzedxHbDOtol
-	 K+rzbhtdhz/GbhGT+SdAce+3dslDuF5veVkXhvnMjKL1Tb/bkyD7Dgr6HOyANWEQa2
-	 rGj9HwB88t7upIiPSjugpC+Ie8mHBLMgHLZVKPqY=
+	b=ajQM3bAw2aAiKsA16Y3HgqqFjvoy7tuO5qGHxeD2h+OaXv876xrW/mcS720n28v/F
+	 9mDH91uQfXxM8l0XNn5Uxiw/g2f2+lwpGFsB2t78fqwCYLbz4ja1y9OJsYODFaVEzy
+	 cdQBKw7F4eg2zAGUMCtGOySCAoE9P9VO9gUvMqOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Klaus Goger <klaus.goger@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
+	Sergey Bostandzhyan <jin@mediatomb.cc>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 017/184] arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
-Date: Tue, 12 Nov 2024 11:19:35 +0100
-Message-ID: <20241112101901.532310676@linuxfoundation.org>
+Subject: [PATCH 6.11 019/184] arm64: dts: rockchip: remove num-slots property from rk3328-nanopi-r2s-plus
+Date: Tue, 12 Nov 2024 11:19:37 +0100
+Message-ID: <20241112101901.607504978@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -71,47 +69,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 5ed96580568c4f79a0aff11a67f10b3e9229ba86 ]
+[ Upstream commit b1f8d3b81d9289e171141a7120093ddefe7bd2f4 ]
 
-All Theobroma boards use a ti,amc6821 as fan controller.
-It normally runs in an automatically controlled way and while it may be
-possible to use it as part of a dt-based thermal management, this is
-not yet specified in the binding, nor implemented in any kernel.
+num-slots was not part of the dw-mmc binding and the last slipage of
+one of them seeping in from the vendor kernel was removed way back in
+2017. Somehow the nanopi-r2s-plus managed to smuggle another on in the
+kernel, so remove that as well.
 
-Newer boards already don't contain that #cooling-cells property, but
-older ones do. So remove them for now, they can be re-added if thermal
-integration gets implemented in the future.
-
-There are two further occurences in v6.12-rc in px30-ringneck and
-rk3399-puma, but those already get removed by the i2c-mux conversion
-scheduled for 6.13 . As the undocumented property is in the kernel so
-long, I opted for not causing extra merge conflicts between 6.12 and 6.13
-
-Fixes: d99a02bcfa81 ("arm64: dts: rockchip: add RK3368-uQ7 (Lion) SoM")
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Cc: Klaus Goger <klaus.goger@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Fixes: b8c028782922 ("arm64: dts: rockchip: Add DTS for FriendlyARM NanoPi R2S Plus")
+Cc: Sergey Bostandzhyan <jin@mediatomb.cc>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-7-heiko@sntech.de
+Link: https://lore.kernel.org/r/20241008203940.2573684-9-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi | 1 -
+ arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-index 8ac8acf4082df..ab3fda69a1fb7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-@@ -61,7 +61,6 @@
- 			fan: fan@18 {
- 				compatible = "ti,amc6821";
- 				reg = <0x18>;
--				#cooling-cells = <2>;
- 			};
- 
- 			rtc_twi: rtc@6f {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
+index 3093f607f282e..4b9ced67742d2 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s-plus.dts
+@@ -24,7 +24,6 @@
+ 	disable-wp;
+ 	mmc-hs200-1_8v;
+ 	non-removable;
+-	num-slots = <1>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&emmc_clk &emmc_cmd &emmc_bus8>;
+ 	status = "okay";
 -- 
 2.43.0
 
