@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-92759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D34E9C56E4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:46:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094D49C55EE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64B09B42E0F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0661F24752
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3327C21B45B;
-	Tue, 12 Nov 2024 10:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83F921C18C;
+	Tue, 12 Nov 2024 10:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ji97/cTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofk5AY3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3397212D16;
-	Tue, 12 Nov 2024 10:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DC019E992;
+	Tue, 12 Nov 2024 10:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408497; cv=none; b=ehtFtLZdyVlexu+C4yoGScyhudOTsvyQQUX5L+ibULhot0Rv97+Eoms0RyuoQGnvuoEYbfuwIqLIfmHmUlZSjhTLehtXuGOJYt+INE6OJ3aCMaMkIP9RSsFIG9J5vFq3Sw7ooJWHgyjqE8HsMicF3seiXvdiOUgPM9WQCgoIGaE=
+	t=1731408503; cv=none; b=cYdMn+rbqlH3D7Or5JNeb5R+XebPhDYz9CoX3+Pw1ib0IV8b7KbTk2vlNbpTe9O+W56cKPPVXhh/YAJ3GSi4ESVABmX/p1cMsFtWSQqNx85UMahRyWEmTtaKPZE+713ctljVRRijgVS49haGp78eLamMQnBLvQtK1iICCeC/6rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408497; c=relaxed/simple;
-	bh=jDKS6R6uI2kj2tGIjOFAeUpDzlQHmWm2o6bQIoZHezE=;
+	s=arc-20240116; t=1731408503; c=relaxed/simple;
+	bh=pYopgXeO0ClSpTkuGlZ36/bQyvw28h6eKVqvH2L4Rto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9qOHKERaGv2h+A/aDkPEi4XKW7bC1A83IM7dRmO+WYjP9gGwRSc41cvHcUSV+iXja/Jjf4H/zEwvUmCVaWGugfZf/0xdL9ZepEmmd7h0KiJRNgJNV9NgO3rcRFuA9Y2n2uG/WAkoO3YoCh3oTD3qk8D3wOmqYQyoEYr4EXPF90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ji97/cTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D23EC4CECD;
-	Tue, 12 Nov 2024 10:48:16 +0000 (UTC)
+	 MIME-Version; b=sY7TaYEBhsg91/K46hXAFjEK8CoLR729GmsxGDnZ4RV8QeRH9s4IJWh8wPM66+Wef9Z/hF7N5wNfIt1lb+F3ZQUQ266BXYKWi3pPwQcEZPDQQ4kTzc/EXeVqB4GRPBwjpfZl+0gj4+XM9eeeZqGhOnPn1qWG8pFB/FYlq4MijIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofk5AY3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DD9C4CED6;
+	Tue, 12 Nov 2024 10:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408496;
-	bh=jDKS6R6uI2kj2tGIjOFAeUpDzlQHmWm2o6bQIoZHezE=;
+	s=korg; t=1731408503;
+	bh=pYopgXeO0ClSpTkuGlZ36/bQyvw28h6eKVqvH2L4Rto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ji97/cTs1ApNKyl7vVLyLYjNjApvUKIGmzIv+G2RaeGxLe+cNiNsHQ+311ffnStK1
-	 IUiCi2GmNKX5ga3cKp+zDBmieVVbpc/v4OkZ/UmQraXZ0ckgirwGLzfk/creOZ5hSO
-	 oQ6YSx6j0fJfFGIR7+rNBdiObhmCUjBNzWlDfe8E=
+	b=Ofk5AY3qDYTHEszjuXatNhpj1qo7RR9cMN66UFeWL0s9JDGqGwcgSwJrTiriVF8OA
+	 ZemT7WDipINjoHgz6MlcNI+YEix3pgGz3Q7pOGgq8wci0X2shwBlsFLAXkS8BwunUV
+	 ZnEnpEsIkoR2rSffmmExBiPrqr0MZjUzS1hnn7CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Mark Brown <broonie@kernel.org>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.11 181/184] ASoC: amd: yc: fix internal mic on Xiaomi Book Pro 14 2022
-Date: Tue, 12 Nov 2024 11:22:19 +0100
-Message-ID: <20241112101907.810627808@linuxfoundation.org>
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Yujie Liu <yujie.liu@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.11 182/184] xtensa: Emulate one-byte cmpxchg
+Date: Tue, 12 Nov 2024 11:22:20 +0100
+Message-ID: <20241112101907.849500966@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,49 +70,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit de156f3cf70e17dc6ff4c3c364bb97a6db961ffd upstream.
+commit e799bef0d9c85b963938d8f31806a898385a5b09 upstream.
 
-Xiaomi Book Pro 14 2022 (MIA2210-AD) requires a quirk entry for its
-internal microphone to be enabled.
+Use the new cmpxchg_emu_u8() to emulate one-byte cmpxchg() on xtensa.
 
-This is likely due to similar reasons as seen previously on Redmi Book
-14/15 Pro 2022 models (since they likely came with similar firmware):
+[ paulmck: Apply kernel test robot feedback. ]
+[ paulmck: Drop two-byte support per Arnd Bergmann feedback. ]
+[ Apply Geert Uytterhoeven feedback. ]
 
-- commit dcff8b7ca92d ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 15 2022
-  into DMI table")
-- commit c1dd6bf61997 ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 14 2022
-  into DMI table")
-
-A quirk would likely be needed for Xiaomi Book Pro 15 2022 models, too.
-However, I do not have such device on hand so I will leave it for now.
-
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://patch.msgid.link/20241106024052.15748-1-jeffbai@aosc.io
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Yujie Liu <yujie.liu@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/xtensa/Kconfig               |    1 +
+ arch/xtensa/include/asm/cmpxchg.h |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -384,6 +384,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Razer"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Blade 14 (2022) - RZ09-0427"),
- 		}
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -14,6 +14,7 @@ config XTENSA
+ 	select ARCH_HAS_DMA_SET_UNCACHED if MMU
+ 	select ARCH_HAS_STRNCPY_FROM_USER if !KASAN
+ 	select ARCH_HAS_STRNLEN_USER
++	select ARCH_NEED_CMPXCHG_1_EMU
+ 	select ARCH_USE_MEMTEST
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+--- a/arch/xtensa/include/asm/cmpxchg.h
++++ b/arch/xtensa/include/asm/cmpxchg.h
+@@ -15,6 +15,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/stringify.h>
++#include <linux/cmpxchg-emu.h>
+ 
+ /*
+  * cmpxchg
+@@ -74,6 +75,7 @@ static __inline__ unsigned long
+ __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new, int size)
+ {
+ 	switch (size) {
++	case 1:  return cmpxchg_emu_u8(ptr, old, new);
+ 	case 4:  return __cmpxchg_u32(ptr, old, new);
+ 	default: __cmpxchg_called_with_bad_pointer();
+ 		 return old;
 
 
 
