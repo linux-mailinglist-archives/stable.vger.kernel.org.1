@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255C89C5430
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD179C538D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFA04284837
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB9E284220
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E6520D4FC;
-	Tue, 12 Nov 2024 10:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24FB2101A9;
+	Tue, 12 Nov 2024 10:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0kIauE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcAgTGo5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614F71BD031;
-	Tue, 12 Nov 2024 10:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4BA19E992;
+	Tue, 12 Nov 2024 10:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407716; cv=none; b=JVL7zwGP+Ae39Aiu1WfZ3jtz8UHAVmOHIBzNdUp3NlVd8Vtj2ZeZuP0VhQBb247hLfuC22nP4pVgnfYTQsVg/fEMAHu+ER778HOBrnkRBBfdIWbrWtyZ//FloYRBf/nXlYT2W3470kxeqbUEKYzX3TcjfTjb4IYc0Dq7a50CpmA=
+	t=1731407255; cv=none; b=SvBF2UFn/QHUubVI4irgXXv8bAU9Y0ewWqWk4O8iyiiD4dYUNOjzYeTAAU9ezIeTvvt0xWScAL0VqymqEP9vCiFE0AcMdcRaQc8EEvJBSzh3ATK6/w670j6ws7CctSoKrF2wAgUqZ3NQwQuzMkWK6Boq+xVVK0Wwz3Ve4mVx2/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407716; c=relaxed/simple;
-	bh=/3CFN+gpkjFPllCJmcYm3Oa39TjLS2RcFpEOnhps6vs=;
+	s=arc-20240116; t=1731407255; c=relaxed/simple;
+	bh=pDR0Bcd1gyvp6tbRV6Q7X4RYnlbAuyI3NTtR8Xfo8YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxLlxZILJNBi+ubI8i1+v5Y7fCM16k70gqQRX0FMhs2/a/rkiEf29e87vvGKLrHmBCozZFIIeoz+tOwjTcr1kajwtjYYpoHrG4vmk+DPIWEtjElgjQlPSYQuX/LdmnL8NpxzVCwMD5HhIjgWWS3iH1mq/QW2lGieORR25ikAJok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0kIauE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA5EC4CECD;
-	Tue, 12 Nov 2024 10:35:15 +0000 (UTC)
+	 MIME-Version; b=DYSgqUREkpFKM5RnpV1n3fkgDsahoaD9hwHsU8LyJJLAzp6OF10fWVs/QgerscUojDG29FQvaXGfSInEpvdkAJuW+N7A6V99VVLLcHFxC4SWtvgfqzh0vWuLupVo0DU+xS/hgTwahL8vCA1VS1JVdHmOmR+fvsjevGLf3AJftmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcAgTGo5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16609C4CECD;
+	Tue, 12 Nov 2024 10:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407716;
-	bh=/3CFN+gpkjFPllCJmcYm3Oa39TjLS2RcFpEOnhps6vs=;
+	s=korg; t=1731407255;
+	bh=pDR0Bcd1gyvp6tbRV6Q7X4RYnlbAuyI3NTtR8Xfo8YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0kIauE1otXXFcqxeKB+ykhDWhM1YMp1ZvytlkMdMEUgLDIJyfjH4GMR8cFNOcWmH
-	 qYSFZbTNs6ptYmLiDl8wew+qfViwquSxbYs5xPpzzMAH36fHJwnJv/4E3Vx2js8DUN
-	 O32xjOH4wHHwz3DbxwZeBcYrsJKKAcdpbrUF2MYU=
+	b=JcAgTGo5KF4R1R1JWd66OgwREU0BYwc2T0AQcxE31VzzbLtokGIpZ0swGTej6hbVd
+	 wKkjiBnBHUrIrkz2ZCe1kYIREHnnZNT5JbxU59JTXKbreZVZW8Vl9WV4SBsJKlzVhR
+	 zazGoAI1ag9yCeUNn4eSs8okJhWRjTjdbb4yScLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/119] nfs: avoid i_lock contention in nfs_clear_invalid_mapping
+Subject: [PATCH 6.1 21/98] nfs: avoid i_lock contention in nfs_clear_invalid_mapping
 Date: Tue, 12 Nov 2024 11:20:36 +0100
-Message-ID: <20241112101849.790694412@linuxfoundation.org>
+Message-ID: <20241112101845.077512137@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,7 +100,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index ca76b0b51b779..d0fc3e80cd64c 100644
+index 82e846611d5e1..719448d81aed2 100644
 --- a/fs/nfs/inode.c
 +++ b/fs/nfs/inode.c
 @@ -206,12 +206,15 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
@@ -124,7 +124,7 @@ index ca76b0b51b779..d0fc3e80cd64c 100644
  		nfs_ooo_clear(nfsi);
  	}
  	trace_nfs_set_cache_invalid(inode, 0);
-@@ -1340,6 +1343,13 @@ int nfs_clear_invalid_mapping(struct address_space *mapping)
+@@ -1331,6 +1334,13 @@ int nfs_clear_invalid_mapping(struct address_space *mapping)
  					 TASK_KILLABLE|TASK_FREEZABLE_UNSAFE);
  		if (ret)
  			goto out;
