@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-92334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B421A9C539A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241799C5402
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A09E1F227A0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02B41F21408
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2237D2123FE;
-	Tue, 12 Nov 2024 10:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC252123F5;
+	Tue, 12 Nov 2024 10:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NNHJKvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+DNDfRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18ED170A3A;
-	Tue, 12 Nov 2024 10:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0A32123EF;
+	Tue, 12 Nov 2024 10:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407317; cv=none; b=bDCdeWiXJnFWID35d1rDTKL5C8h8H5A0ANfa91zFz5kYXWvnv3aEE/SN71f6z6ftIKthOtnNSBPio8t2BRx1MLAAyZqn9ib5XqDNouhUVwPcrcZOWPv2Isq523rwSGVsubBQZ/DU4XjX8+FWw5XDz8uJEjItlAHvwVfiOdSZcJQ=
+	t=1731407666; cv=none; b=cGrzFrL0LKxQDu0wbzOiO1Xsnmx4lKNiqLqOt8IflteP7Bd0/aw9bluVTAHBy7MIT0jFTCeZ/pjU2iuJ8f4dH9DecPcx0zT/GbZ3C628b3KppF5GnQeneUm6UjH6W1QLvz/Veh6ART78gGDeyKqwVlikynpB2FTI84L55KOWZkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407317; c=relaxed/simple;
-	bh=pqusvHaxaUv2tTSjAhe7+Mp2XntmQ+/SHnqk/mbjsuw=;
+	s=arc-20240116; t=1731407666; c=relaxed/simple;
+	bh=quTFI4HZHBS5oG1NlN3vVuZ3dGFLktKKWAdoLTvzcyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X32HCC1PngNiLfdhY0PWp2oovZfJyDyyYU0jtsek1ZvuICIIWzMwaVlYqcFllg2//82uRMIg+6GL0sMBUAl2/oGB5BmptfM+/hWYMySgt3bNx+v+u/p4PAkhXbt9NVz9MEPGe9B/nrCm1pQM37Ysbt7uPCXH/43JS0CtH9iH9ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NNHJKvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E450C4CECD;
-	Tue, 12 Nov 2024 10:28:36 +0000 (UTC)
+	 MIME-Version; b=SaoCb4b3V2F6x0ak2WeEPgJzUtfbKrP+kJc6iAsAiRPY4pxppSr1C21wIFByXVNOF7/lBWgQnlyvpMfh7MLBXFXmx6nm98yHM4kPJjJkXv/0JMRftA/h7hqAdBjL5tHI19sHUlGe2+pnLpfyP7my1bl9H7ZJF6YnR4UYl1QYmXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+DNDfRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D4DC4CECD;
+	Tue, 12 Nov 2024 10:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407317;
-	bh=pqusvHaxaUv2tTSjAhe7+Mp2XntmQ+/SHnqk/mbjsuw=;
+	s=korg; t=1731407666;
+	bh=quTFI4HZHBS5oG1NlN3vVuZ3dGFLktKKWAdoLTvzcyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NNHJKvLmzbwUpDdOx1zHGEbKkMhC86sO/ajCyDhnJhk5SfaXtGC0zX4TXMv5Mhqg
-	 jQZRfyvGPW2hQv2G1sTQ4/eaZg2FocIccFETrMwLAcd75cfnwov/hhI0ELc7qdcS53
-	 KazhsgzF6PcpTkk/yaDgjQRT6QvsrsyHWYivlSw0=
+	b=U+DNDfRNns7DKe866Jf700mr+QI1rhw4RowCfzj8rA+7k3QTMPgnOfBRLj6WaqmMb
+	 tbMHsSdovl7MqJqnBiic02hcQ/yMjxBv25lGw9rvbNIi5wduiUGNRQdJrrn/7J83oB
+	 jDp8Cifhvule7qxai1y4y0UowOgGcU6RWW31mSfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Joe Damato <jdamato@fastly.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/98] media: adv7604: prevent underflow condition when reporting colorspace
+Subject: [PATCH 6.6 045/119] virtio_net: Add hash_key_length check
 Date: Tue, 12 Nov 2024 11:20:53 +0100
-Message-ID: <20241112101845.724821040@linuxfoundation.org>
+Message-ID: <20241112101850.439367824@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
+[ Upstream commit 3f7d9c1964fcd16d02a8a9d4fd6f6cb60c4cc530 ]
 
-Currently, adv76xx_log_status() reads some date using
-io_read() which may return negative values. The current logic
-doesn't check such errors, causing colorspace to be reported
-on a wrong way at adv76xx_log_status(), as reported by Coverity.
+Add hash_key_length check in virtnet_probe() to avoid possible out of
+bound errors when setting/reading the hash key.
 
-If I/O error happens there, print a different message, instead
-of reporting bogus messages to userspace.
-
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/net/virtio_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
-index bda0c547ce445..96c2fa2c3b7a5 100644
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -2516,10 +2516,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	const struct adv76xx_chip_info *info = state->info;
- 	struct v4l2_dv_timings timings;
- 	struct stdi_readback stdi;
--	u8 reg_io_0x02 = io_read(sd, 0x02);
-+	int ret;
-+	u8 reg_io_0x02;
- 	u8 edid_enabled;
- 	u8 cable_det;
--
- 	static const char * const csc_coeff_sel_rb[16] = {
- 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
- 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
-@@ -2618,13 +2618,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
- 	v4l2_info(sd, "-----Color space-----\n");
- 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
- 			rgb_quantization_range_txt[state->rgb_quantization_range]);
--	v4l2_info(sd, "Input color space: %s\n",
--			input_color_space_txt[reg_io_0x02 >> 4]);
--	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
--			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
--			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
--				"(16-235)" : "(0-255)",
--			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+
-+	ret = io_read(sd, 0x02);
-+	if (ret < 0) {
-+		v4l2_info(sd, "Can't read Input/Output color space\n");
-+	} else {
-+		reg_io_0x02 = ret;
-+
-+		v4l2_info(sd, "Input color space: %s\n",
-+				input_color_space_txt[reg_io_0x02 >> 4]);
-+		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
-+				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
-+				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
-+					"(16-235)" : "(0-255)",
-+				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	}
- 	v4l2_info(sd, "Color space conversion: %s\n",
- 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 2da3be3fb9423..426c05d5b1381 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4549,6 +4549,12 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
++		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
++			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
++				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
++			err = -EINVAL;
++			goto free;
++		}
  
+ 		vi->rss_hash_types_supported =
+ 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
 -- 
 2.43.0
 
