@@ -1,137 +1,137 @@
-Return-Path: <stable+bounces-92799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8123A9C5EAE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 18:20:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B869C5D89
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 17:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55BD4B47643
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:03:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49FE5B45906
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43B02003C4;
-	Tue, 12 Nov 2024 15:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DD020103E;
+	Tue, 12 Nov 2024 15:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrhzn39U"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="tMbAGiyA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2032003A9;
-	Tue, 12 Nov 2024 15:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0108A200117
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 15:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731423661; cv=none; b=Iz+tNBBuIIX1GAsbvf3bpEOybgKAC56fIfURozBWFGJ7AJwf2MJz7BX637EzG6o6Wq3uJz9pct870ny5I87ns+I/MrOuGhCSNHkwOLJ7xCxdVRkqJHnzw5HiaCzmp23P9/T+L03oGfIeSwLx1dM4BmNIKBf3Ah6oRwxAu8f5P+w=
+	t=1731423964; cv=none; b=bI0RUmWLzx9NFS3G5tL7hS/vxw8/7vAN7bg3MMp7PA+EVHfq7iSPrFV2oZEOTUtnMPq0QsoHc5/kaIJezddfn8YhEZTrWVL/jJfXMECws9Da6ngIo514MaiHo+rY4zrrJQDSHsKs6jH4sAJQ0WG4jdzKNoEPCDVqnMmjrV6lgU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731423661; c=relaxed/simple;
-	bh=fq9G1Hsbr7N1585fJCE6/DPAyIA64ydEht/eAP8gtHo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NPxZBa9JSz+pGKhdrrP5UuPYk77V06ldwYsyt/WkrycgM4zCrhO0PzN4lyvWM5218ZVSil17oYF5jvF5xpLsDVykqZ80geUV695hlXbE2eDUXP4746HohtJ/EPwcLEUh7hjAD8F3PyzZZRZozWk9HH/Um5m0mhmOxemte7MABs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrhzn39U; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so3971873f8f.2;
-        Tue, 12 Nov 2024 07:00:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731423658; x=1732028458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IqmvX+SxdAffVmub2S37622rNo2JHBYGCOpSigKS02o=;
-        b=mrhzn39U/UcdaELLW2h1TshleyEzmIq4YnMdhvrB7NtovLgP2aC7SeEvjiGyV5yD+A
-         kjjr5hIQJ0l6Y3VlrugqKZjcde6NJoWt7dSPhdWAhXLIOTm/qZ5hjYoELXmiLeG5pf2H
-         mh5TU2+3jbF+AjVjhD8tPeowNsEu2F5Ax9C4wiVDDuzri/H/ObqcLYjMiwBKMhV7QNxw
-         TSeWRu10pSE9Y0sjnB25OZiYMyS1EBK0wEWZMH+Iq/7hi9SgloRPY9MiwVcAi9eSf+12
-         p30TtTkfOE27ffHH6zyvD30uWAcYoh/TGWw5Rt4FiSvXguNoL6SD/VY7fk5nEhKPpfSf
-         /Xig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731423658; x=1732028458;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IqmvX+SxdAffVmub2S37622rNo2JHBYGCOpSigKS02o=;
-        b=IpVZTsWOgjBADN8UTUOpt6DtmdvuysW1KpPNgsljuAhOs1g7dPb/9eZ4Lldb4BCE7D
-         XdgcoJdVYS8CK+jyaPPyye5SAhMAUmpW3LGKTuOvZ7E2zr2UYn9yRzlnKE84KS9lLmJt
-         gR/iMek5IMWnsDVhZ+fWPTBOfSgkKI9BJARm8sJNYgHp6caorTZLqhhaJCLZ9KkMaonw
-         CihvyeF6NxO0wDdLJcSFQRx8Y5LyWlByZsd/I3w4gOHS7ch+RMRhA819vfCnL9S8GA1Z
-         V/nXWTKC0A+GCb1UkRLeAWHjdLNDvjVr7eocWLfqFUyw3f6v2eLTqeNQaCHfVEcJOaxS
-         3Afw==
-X-Forwarded-Encrypted: i=1; AJvYcCVuOe4Q1h4IOUPbiOr9z39rBPLEcbssafKEAIT7ECOVJ491v9Os+2Ure/0U03lUE6QQnjssPwradM7pNjg=@vger.kernel.org, AJvYcCWWKrSZCIAooXqlE7WHYlmYvFxTTX+gpU84+EmlK7+vNcDJRzD48ekT7gtQwSfw2SrXaqXw37Rq@vger.kernel.org, AJvYcCXs3AaONZjS9qV5aHZqtjoPA4zUlcVYBrrJQO/JNDBoB9DSgWhKCFcd2LtFHpB2ZXt1eXwavqJlpa0GJxEC@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywak3mSRfOOZh4mw9cDgUvoZ2cUjMSAH34rn6ilKJJcn3lo+U/P
-	RPMII9cT1G3cUkQavrcCKs+q8bfAao+/6WuHiU25wVVwvWn9hTgT
-X-Google-Smtp-Source: AGHT+IGNrcNi9F65h6+8t+PRAUL0bPu2V2+blpIe8qyC+KpDDsoflYU289CxmYaEJHlUtJiROE6UcQ==
-X-Received: by 2002:a05:6000:18af:b0:36c:ff0c:36d7 with SMTP id ffacd0b85a97d-381f1863104mr14709742f8f.2.1731423656111;
-        Tue, 12 Nov 2024 07:00:56 -0800 (PST)
-Received: from partp-nb.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda05f89sm15537386f8f.98.2024.11.12.07.00.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 07:00:55 -0800 (PST)
-From: Parth Pancholi <parth105105@gmail.com>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>
-Cc: Parth Pancholi <parth.pancholi@toradex.com>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH] kbuild: switch from lz4c to lz4 for compression
-Date: Tue, 12 Nov 2024 16:00:06 +0100
-Message-Id: <20241112150006.265900-1-parth105105@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1731423964; c=relaxed/simple;
+	bh=CiKypDlwM8sVOJy8bpgngsCBsOX0TAO4x3tdC9Z3GZk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QYv4f4756qc3RJOPYG0h63f7xR2XrlOFsqzUiKvbybE+MIN/GdMDxcbqy/FPNwczPfKM+rN+suyUKQe42eGIN3M30X38B02U4aEYi/xxXbHRxkjwk7CcEYJQepveoHJiAAUIVQ6gE5PRISelWZVxLBo/k+t0VqiAggslgPoCl6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=tMbAGiyA; arc=none smtp.client-ip=17.58.6.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1731423962;
+	bh=XorazmH3mbRA6gmyPuFX63LufteZd2QGwsYoXHaDemQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=tMbAGiyAjBo+qZkKlCGLbR2/loFAqPZq+WEVxuXTwxTblKe+fbADQUb36k1fm4fzx
+	 +ruV2iBxZw8jFDF4kb9dU7Mjg5+vDqV1Zp1FbMdpG6Qbw5qO5JTtXpwg16c5jqCG4Y
+	 hVE7218sLTdxXPF+qiffE1B7ybSjsWshtOng6sKnuNJcwoEhEc1ai3PQ2bi32U5GlE
+	 sAI0ZbRAtFEbnDLMWQe9icAKwOgPRdKUtfZlBrsTu00MRukUiXVgw7A9jE8sZvbx69
+	 NlRPJGKF0Ou3J0qvVFsTnCEcri5Gl0Q/mUgOscev6U27awjIAxSz3NF7EHbUl7//DE
+	 Kdq+3sHEjzJrg==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id 0F0603A101D;
+	Tue, 12 Nov 2024 15:05:57 +0000 (UTC)
+Message-ID: <9db43c73-cdbb-4a89-ad1c-c05baf632a72@icloud.com>
+Date: Tue, 12 Nov 2024 23:05:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] driver core: class: Fix wild pointer dereference in
+ API class_dev_iter_next()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+References: <20241105-class_fix-v1-0-80866f9994a5@quicinc.com>
+ <20241105-class_fix-v1-1-80866f9994a5@quicinc.com>
+ <2024111205-countable-clamor-d0c7@gregkh>
+ <2952f37a-7a11-42d9-9b90-4856ed200610@icloud.com>
+ <2024111230-erratic-clay-7565@gregkh>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <2024111230-erratic-clay-7565@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 9Wrctp99loJh0h8kHn2eRsK-RRstRV4g
+X-Proofpoint-ORIG-GUID: 9Wrctp99loJh0h8kHn2eRsK-RRstRV4g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-12_05,2024-11-12_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2411120121
 
-From: Parth Pancholi <parth.pancholi@toradex.com>
+On 2024/11/12 22:57, Greg Kroah-Hartman wrote:
+> On Tue, Nov 12, 2024 at 10:46:27PM +0800, Zijun Hu wrote:
+>> On 2024/11/12 19:43, Greg Kroah-Hartman wrote:
+>>> On Tue, Nov 05, 2024 at 08:20:22AM +0800, Zijun Hu wrote:
+>>>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>>>
+>>>> class_dev_iter_init(struct class_dev_iter *iter, struct class *class, ...)
+>>>> has return type void, but it does not initialize its output parameter @iter
+>>>> when suffers class_to_subsys(@class) error, so caller can not detect the
+>>>> error and call API class_dev_iter_next(@iter) which will dereference wild
+>>>> pointers of @iter's members as shown by below typical usage:
+>>>>
+>>>> // @iter's members are wild pointers
+>>>> struct class_dev_iter iter;
+>>>>
+>>>> // No change in @iter when the error happens.
+>>>> class_dev_iter_init(&iter, ...);
+>>>>
+>>>> // dereference these wild member pointers here.
+>>>> while (dev = class_dev_iter_next(&iter)) { ... }.
+>>>>
+>>>> Actually, all callers of the API have such usage pattern in kernel tree.
+>>>> Fix by memset() @iter in API *_init() and error checking @iter in *_next().
+>>>>
+>>>> Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
+>>>> Cc: stable@vger.kernel.org
+>>>
+>>> There is no in-kernel broken users of this from what I can tell, right?
+>>> Otherwise things would have blown up by now, so why is this needed in
+>>> stable kernels?
+>>>
+>>
+>> For all callers of the API in current kernel tree, the class should have
+>> been registered successfully when the API is invoking.
+> 
+> Great, so the existing code is just fine :)
+> 
+>> so, could you remove both Fix and stable tag directly?
+> 
+> Nope, sorry.  Asking a maintainer that gets hundreds of patches to
+> hand-edit them does not scale.
+>
+okay, let me send a updated revision now.
 
-Replace lz4c with lz4 for kernel image compression.
-Although lz4 and lz4c are functionally similar, lz4c has been
-deprecated upstream since 2018. Since as early as Ubuntu 16.04 and
-Fedora 25, lz4 and lz4c have been packaged together, making it safe
-to update the requirement from lz4c to lz4. Consequently, some
-distributions and build systems, such as OpenEmbedded, have fully
-transitioned to using lz4. OpenEmbedded core adopted this change in
-commit fe167e082cbd ("bitbake.conf: require lz4 instead of lz4c"),
-causing compatibility issues when building the mainline kernel in
-the latest OpenEmbedded environment, as seen in the errors below.
-This change maintains compatibility with current kernel builds
-because both tools have a similar command-line interface while
-fixing the mainline kernel build failures with the latest master
-OpenEmbedded builds associated with the mentioned compatibility
-issues.
+> But really, as all in-kernel users are just fine, why add additional
+> code if it's not needed?  THat's just going to increase our maintance
+> burden for the next 40+ years for no good reason.
+> 
 
-LZ4     arch/arm/boot/compressed/piggy_data
-/bin/sh: 1: lz4c: not found
-...
-...
-ERROR: oe_runmake failed
+IMO, this fix is very necessary for the API.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/lz4/lz4/pull/553
-Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index 79192a3024bf..7630f763f5b2 100644
---- a/Makefile
-+++ b/Makefile
-@@ -508,7 +508,7 @@ KGZIP		= gzip
- KBZIP2		= bzip2
- KLZOP		= lzop
- LZMA		= lzma
--LZ4		= lz4c
-+LZ4		= lz4
- XZ		= xz
- ZSTD		= zstd
- 
--- 
-2.34.1
+> thanks,
+> 
+> greg k-h
 
 
