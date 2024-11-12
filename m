@@ -1,52 +1,73 @@
-Return-Path: <stable+bounces-92795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BCD9C5ACA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:47:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26A79C5B28
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 16:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E011F22713
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 14:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A50F1F22C0B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 15:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FCC13F435;
-	Tue, 12 Nov 2024 14:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218BF201018;
+	Tue, 12 Nov 2024 14:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="wAN6IKSm"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="gIEqmWtg"
 X-Original-To: stable@vger.kernel.org
-Received: from ms11p00im-qufo17281701.me.com (ms11p00im-qufo17281701.me.com [17.58.38.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CADE1FA829
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 14:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261BE1FF7CC
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 14:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731422796; cv=none; b=B+Qdt9BeXHJsT8WLSrHL8QeTiFLb4AgmmJ6Af2f88B1cIlzp8wc9+ydnVENALb2ktmQeGf0zB4iSDzSNi5Py6hUEFe9AFaJW8gM5Jy1leUV2tDvSbj8TYOkt5nQ30ucH4Nu4vwKEZZ2LZTNdtOplsxJakHSMlwfAvyRwnDWgvMY=
+	t=1731423409; cv=none; b=mr5xwBvan3ZJzcD2G3MBjVD9H6HHfoV4UXkzkL2CCdexcTTvyCTFKSRFJ/PHWq+EHVTGNVAKj0OLgDtq75RVpzmL/t7+3VqHIAOWx5wOaI9MNZ4Iv7/lSZWZhzc7PBz46WDTKuYthr5D0Nxq8NYPgm9DS92RMvfk9QSPwvJMpnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731422796; c=relaxed/simple;
-	bh=awA7aFBLQ1vqUdnT5lTe7p33n4jdKtIQ+fo43elS3C0=;
+	s=arc-20240116; t=1731423409; c=relaxed/simple;
+	bh=JLl330e2j7tfWty029veGRRd9qUDDTtseDUSMpn1H7k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iq4hV/+3ZtotudzeZBrD2T/5NlaupBrkHbyIcdFxQYOsZ26YjNSN8NGaz+hQa/s76885Q7ADe/DmqA8fwyP8Co1/RYdYCbRkzZGCN2djTVMyEgyOsB3fF70rRpoP+BMNinLLMY9cG6XUIuGfh22HxU3965rfpF3EWQnMu93VpCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=wAN6IKSm; arc=none smtp.client-ip=17.58.38.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1731422794;
-	bh=v19lituYZ5eOybH+gnxaoJL6meJAbszu8oTA7JcJvVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=wAN6IKSmgzw5jmsDrE9HipYtTCGnMgshhTD90VQZVN+3R2ndfyiGBMjkxR3DZtU7T
-	 BUcKP3xBcvi3rj1wh38WhonEXfWCRGA5cnnrvEymAEM3tgDiVWLcAnD/870Pe0ptn0
-	 sgru8DO+KHX4P5WTtx0CRZbCvc+rH/qxP5ffGfJg4EZPQKAYSFy/fnZm3xfkoAfUnA
-	 ZykFjh+rWtYy/W+OC4Vk4v/9AfauXHOQQOxYzwZ7AjR3XPHGYNJ2p/3bHWDwmlm4en
-	 Xp7vWzOtimyUJJejrLPFZApCOKCmfVQ+1dnuLuqhHBlYAD9iIfqXzmQKbYLSKSW2zT
-	 kWjFT50MKnsAA==
-Received: from [192.168.1.26] (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17281701.me.com (Postfix) with ESMTPSA id 5825674236B;
-	Tue, 12 Nov 2024 14:46:31 +0000 (UTC)
-Message-ID: <2952f37a-7a11-42d9-9b90-4856ed200610@icloud.com>
-Date: Tue, 12 Nov 2024 22:46:27 +0800
+	 In-Reply-To:Content-Type; b=u9BlCIV/y46534ZTQTNnPayPXOuIgfNVPn4K3BP34QxCUL2xluFdusZZtWfi20qG6XX/hpwbiAvm46CBsPCWH4lYYEgqagGOjkEJ0VDfZClVelNhLHNxgHGqYcK/z9IJlrO6zMzYgkgph49tZQZV+N9eCftiWmx37TJGb+V+IiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=gIEqmWtg; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-295d27f9fc9so359723fac.0
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 06:56:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1731423407; x=1732028207; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eqlcEqKbSmFEnYDc07f8q+V4wAaUlOtiLge+40toFCE=;
+        b=gIEqmWtg5ZwdCUjK5PPT88v5ix3Jzx3GktebX0kfgAhorjh+nSLL/qWaCnVufd9xWG
+         kEbvIu1hCP9MLZjbg35Zr2JskePzExbeUEb6dx0lYEQO22Zs27JjwJDz4nCk9TyoEwi9
+         lwSIXNWIU0oa1wKwAAy8OTsOZ3MaAPvsXLQXcz6qTgurxbwXcarPzLjLaiNQEYvlAfms
+         MUXY118tLWeyt/bzq5/cjSPyDP53Pb4YhmUSnCQx1DQKAvSgXD5CpTTw5LfXY5Oks7ME
+         HKlTdy4fv2n9OFMcEgiGbiU4QZcf1cwpO8oG3074A78bH+BHXvryoHusMADT/kva/AA+
+         T0nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731423407; x=1732028207;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eqlcEqKbSmFEnYDc07f8q+V4wAaUlOtiLge+40toFCE=;
+        b=VJ5ZWtBX/AJoCzr/S19l76JTmFSHQ2nfo8CB6/KR3Z0DIgN9b+Cd/lE6ALYUGtDyxE
+         5WQJDWg9HQ+bZSxO7UBpJBVnQWBZDl/9ZdIiGf2EzVQkr5KEtzqApz0Qr+j/HVLDpQLm
+         cfBQguiVvy/FiiDGY8ypk9iDynuRewPnd7tFAT81K2fYoo1128GxAkaxTyLTKDWga3mn
+         l26/YbdbUzZuUjyNhgJckZsEhEBjBf4+FSNH8pFNJMou3ZUy0fOIaHETVETKtyqbcF3B
+         Ifi7aDfTIAkUWDBZjUqakgwgCHgmbtmax+JE+AlwsQeA+7Wp24nEb6omFsdruIUH83Nv
+         rX+Q==
+X-Gm-Message-State: AOJu0Yw91ZfyOoIMV6Rug4jJAxlexQhar2KhOue4v2n5PlMAJU80sCnG
+	EfCAP0rrHZA6U8e6W2iXBJfbssRu/8wMUCbDC5wlh/S4Y1/cD4CtP3we+TF/hRA=
+X-Google-Smtp-Source: AGHT+IEMBWlFc7WJVNM4x8SzafjvBUCN+VOD9k1aPxZXuwHR4elNWocsu7xAYERFQWQ8a7+VNaxpOg==
+X-Received: by 2002:a05:6870:b61a:b0:286:f24f:c232 with SMTP id 586e51a60fabf-2956033577dmr14086225fac.42.1731423407293;
+        Tue, 12 Nov 2024 06:56:47 -0800 (PST)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29546f4f22esm3441825fac.52.2024.11.12.06.56.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 06:56:46 -0800 (PST)
+Message-ID: <2f03db3f-b6cb-466f-8ab0-0ce73d31e46a@kernel.dk>
+Date: Tue, 12 Nov 2024 07:56:45 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,66 +75,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] driver core: class: Fix wild pointer dereference in
- API class_dev_iter_next()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-References: <20241105-class_fix-v1-0-80866f9994a5@quicinc.com>
- <20241105-class_fix-v1-1-80866f9994a5@quicinc.com>
- <2024111205-countable-clamor-d0c7@gregkh>
+Subject: Re: [PATCH 6.1] io_uring: fix possible deadlock in
+ io_register_iowq_max_workers()
+To: Greg KH <gregkh@linuxfoundation.org>, Hagar Hemdan <hagarhem@amazon.com>
+Cc: stable@vger.kernel.org, Maximilian Heyne <mheyne@amazon.de>
+References: <20241112083006.19917-1-hagarhem@amazon.com>
+ <2024111200-glimpse-refill-3204@gregkh>
 Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <2024111205-countable-clamor-d0c7@gregkh>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2024111200-glimpse-refill-3204@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Y0CU276VVlOBEkwLR8uXIbCXGGMqwIrK
-X-Proofpoint-ORIG-GUID: Y0CU276VVlOBEkwLR8uXIbCXGGMqwIrK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-12_05,2024-11-12_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 clxscore=1015
- phishscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411120119
 
-On 2024/11/12 19:43, Greg Kroah-Hartman wrote:
-> On Tue, Nov 05, 2024 at 08:20:22AM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
+On 11/12/24 1:39 AM, Greg KH wrote:
+> On Tue, Nov 12, 2024 at 08:30:06AM +0000, Hagar Hemdan wrote:
+>> commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
 >>
->> class_dev_iter_init(struct class_dev_iter *iter, struct class *class, ...)
->> has return type void, but it does not initialize its output parameter @iter
->> when suffers class_to_subsys(@class) error, so caller can not detect the
->> error and call API class_dev_iter_next(@iter) which will dereference wild
->> pointers of @iter's members as shown by below typical usage:
+>> The io_register_iowq_max_workers() function calls io_put_sq_data(),
+>> which acquires the sqd->lock without releasing the uring_lock.
+>> Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+>> before acquiring sqd->lock"), this can lead to a potential deadlock
+>> situation.
 >>
->> // @iter's members are wild pointers
->> struct class_dev_iter iter;
+>> To resolve this issue, the uring_lock is released before calling
+>> io_put_sq_data(), and then it is re-acquired after the function call.
 >>
->> // No change in @iter when the error happens.
->> class_dev_iter_init(&iter, ...);
+>> This change ensures that the locks are acquired in the correct
+>> order, preventing the possibility of a deadlock.
 >>
->> // dereference these wild member pointers here.
->> while (dev = class_dev_iter_next(&iter)) { ... }.
->>
->> Actually, all callers of the API have such usage pattern in kernel tree.
->> Fix by memset() @iter in API *_init() and error checking @iter in *_next().
->>
->> Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
->> Cc: stable@vger.kernel.org
+>> Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+>> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+>> Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>> [Hagar: Modified to apply on v6.1]
+>> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+>> ---
+>>  io_uring/io_uring.c | 5 +++++
+>>  1 file changed, 5 insertions(+)
 > 
-> There is no in-kernel broken users of this from what I can tell, right?
-> Otherwise things would have blown up by now, so why is this needed in
-> stable kernels?
-> 
+> What about 6.6.y?  We can't just take patches for older branches and not
+> newer ones, you know this :)
 
-For all callers of the API in current kernel tree, the class should have
-been registered successfully when the API is invoking.
+Hagar, thanks for doing the other ones too. Greg, they look fine to me.
 
-so, could you remove both Fix and stable tag directly?
-
-> thanks,
-> 
-> greg k-h
+-- 
+Jens Axboe
 
 
