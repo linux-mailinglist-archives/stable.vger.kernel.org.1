@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499FC9C5608
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:15:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F689C53B4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B162B3820F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367761F229AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F64B219E24;
-	Tue, 12 Nov 2024 10:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6870F2123DE;
+	Tue, 12 Nov 2024 10:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxP0Yga2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jV5mXl88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF23219CB6;
-	Tue, 12 Nov 2024 10:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2526520ADFD;
+	Tue, 12 Nov 2024 10:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408324; cv=none; b=FC0mI+qY6iO7VO0B1tmAh/LLWTWdpI+JVo3KTirbeTq+vNdyWj1xlQHPltEEVUTkgdjzB6WJy60lONaIUjLorA/UG4PX8d7j/Aku9rJQiJ0NT4mEGW3XuhIAmQE97zQ0XCL49pTmHMLakL9Pngph1ukp76yOoCBY+I8VLGpiaNE=
+	t=1731407423; cv=none; b=un+GzjDFDz8rG9cYiyMog0RJpP1t1tv2gPFVFyWL31jIX7+trElwJkG+fyeu90gXLJEHHIH0tW+VTwT/ZnDW3IOW+I8pz4YE/fCQskYgfJjn9a7VYdkgCSQ5Zvb6AxaLvGkvzE8r3SzYxMqidupXk2WKTCinun1WtJ6d2SaBeMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408324; c=relaxed/simple;
-	bh=FU3+wVlNLSSNV1r6XoD1A1rXB3ZX+B0IDX+qWgMZ5LY=;
+	s=arc-20240116; t=1731407423; c=relaxed/simple;
+	bh=d+TuVDKJPD4qO+zOcGpnyQrAfx+HkxevZiTldlzS86w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DXReuu9pQUg1hZ6yKPpqWaScoAcdc7VdE4jyvDk37HeGuy+04reoFDOv6B16ZcQarMO5E9b5VDW/0bpTICdHhOlV5u6Q/MSCTCKAsNMQLIv5uFCiatPkjG16oMCkB1TO2gekRPVm+yHiw1lleYgOiy1eWih71Bod+/35kdX58SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxP0Yga2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C68C4CECD;
-	Tue, 12 Nov 2024 10:45:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AVMlVWYHf7e2W9yvay3s53SemQdow8sfxWsjhcNMLb1vVqwNt8OzyuHLnJmbW/hw+AsYonRBgcOVnSSnVE7ecoFDr1yqr2mfzxWcrsrNiIX8V1RcqnMBiVObnZoV8qwQvl8+wDDS78xNwncc81d2r224dcND3YdLKQ/JKBRcU/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jV5mXl88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20CAC4CECD;
+	Tue, 12 Nov 2024 10:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408324;
-	bh=FU3+wVlNLSSNV1r6XoD1A1rXB3ZX+B0IDX+qWgMZ5LY=;
+	s=korg; t=1731407423;
+	bh=d+TuVDKJPD4qO+zOcGpnyQrAfx+HkxevZiTldlzS86w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxP0Yga2xtrp3RQOlT9XGj6OxajWy0t0isTEu8K+mi9VJbb1WGVpetZawRiwEfN0Z
-	 OhhdHXIFgu3tCigEw3T/IofC2UBu8d+heYhD7G3466rgHbg6AmiEWacjxUeQh/Sk0+
-	 9qEW//B2O1Th3FqLDyocuzUAEp58QCMrPNG8AgaY=
+	b=jV5mXl8802FHUx0oYQt0ou9AbvTfEeCSIuGEMsMD+BL1GVrBdi7g+U4jTNGGD0KRW
+	 cRj8xSz0GD+DXfUv6B4/oR4QFEeQlixHYSxGZEmU9e8JUyxpV2RBL7RLzWYcgYaTDx
+	 5GntLIgTCVARw4ana73xUnb7rnDMrCfJXWd29rnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 126/184] net: wwan: t7xx: Fix off-by-one error in t7xx_dpmaif_rx_buf_alloc()
-Date: Tue, 12 Nov 2024 11:21:24 +0100
-Message-ID: <20241112101905.702511465@linuxfoundation.org>
+Subject: [PATCH 6.1 70/98] net: wwan: t7xx: Fix off-by-one error in t7xx_dpmaif_rx_buf_alloc()
+Date: Tue, 12 Nov 2024 11:21:25 +0100
+Message-ID: <20241112101846.923995564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
 +++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-@@ -226,7 +226,7 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpma
+@@ -262,7 +262,7 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpma
  	return 0;
  
  err_unmap_skbs:
