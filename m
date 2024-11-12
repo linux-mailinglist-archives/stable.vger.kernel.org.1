@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-92260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0989C5343
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 216FC9C5443
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6817A1F23975
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB5CC283948
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEF520EA37;
-	Tue, 12 Nov 2024 10:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A86D2141C3;
+	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocEizB+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRv/jup/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771A120D4E3;
-	Tue, 12 Nov 2024 10:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F8A2141B3;
+	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407074; cv=none; b=dSVAASeiiOk0D4NMLf+AyzqW5vYnBJ0VTvX8iZ9In0mpoRKJaKUMqjSnjNy9HVM+m8h96n5xP5wB/zK3r3oq2k0oP3hmXcg3TVTxAK1We2EhL0SpAp55v1nLvYuJdaj9Wbs4ZikU7E6/HU4OXD1K9C51LuejE45+mPP4lu6epak=
+	t=1731407770; cv=none; b=cbSTqfFVNnFd73Tm2yDLjyr1v+z1rUBmRdLSoyK1kZygawJ9XsboUiVUd4Cwlxmzsd+xeijZ43D5kyxFH/pNKfFX3Ptvs3AOGoQFaYqKCcqh5y9vJ5AXvlJXFCY4qaPFwHI/tcr4TsnV7iFBV/eql/bhOF+WQu/W2ViTRedDk24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407074; c=relaxed/simple;
-	bh=Vbvbb45hU/jYd/tunflqqv86ufzRcUTPsIkcEKUhvUc=;
+	s=arc-20240116; t=1731407770; c=relaxed/simple;
+	bh=bpltndSOcXnJY6Y54QHfpIB2/p9+VuX0huBlgHKNUHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VD6BabUhrHEKeLNbZF1fTWQOxB0qF1KBqmzNTSyPYtTdzAUKWNnP141cI1xvlFvv9mhtwBaJJaLAOpBmNGqKglFGo8XEv3QLTk7PynqIlF4MgO7G9JvJn6SzqTx0cMKwyXETQN6wQBVIpjF+rpsh0RoSyiUO7Izp+n99jbvGOG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocEizB+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9430C4CECD;
-	Tue, 12 Nov 2024 10:24:33 +0000 (UTC)
+	 MIME-Version; b=UAaS0Y3rEwZE6vGXm7y6OXFzZtgxKr+r7Ex6/6VNZlPiTcoa3uS8gIvjXhIX7OHnTdHCXe5RfuxwAK+E1F7hMmXhY9cM52ZDibRrJUT1nqp9sgzbX+LH8ivIYzwru3cxPaZU2t33/HJhyH5yc0rhad2N2KP0H10+eDUIarXVcOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRv/jup/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B9BC4CED6;
+	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407074;
-	bh=Vbvbb45hU/jYd/tunflqqv86ufzRcUTPsIkcEKUhvUc=;
+	s=korg; t=1731407770;
+	bh=bpltndSOcXnJY6Y54QHfpIB2/p9+VuX0huBlgHKNUHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocEizB+PRURYKGSK9AIQLvGZgzfhHYdF2J1IRl05n8ci6MKM6GULGIsBh7I069QCG
-	 Yxb9HOWtOrG/HivTeqL1fHMZIGWfrO51F2waHsHjSrYaBY+1abNUxSp9z7KjfMw0QS
-	 Jvpp3eyZpw5NEIBrHGH62sNMaR+uZdv7LrTL5PWY=
+	b=fRv/jup/EC+ZL6mhVETvRBx32apHjPDAgiMiVq5+vC6espDXyNtI9B5gFjOVPNMs4
+	 Nkbd49WDW6jHTFp2p1uQ97oxp2/yFi823fpmbmNswdKuM2POtJsjvE/9+8deXik5am
+	 O0i8Lx7OcZ1wzxsDz2HnmK00fxT97TYRtmhBLh0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>
-Subject: [PATCH 5.15 43/76] dm cache: correct the number of origin blocks to match the target length
+	Jyri Sarha <jyri.sarha@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/119] ASoC: SOF: sof-client-probes-ipc4: Set param_size extension bits
 Date: Tue, 12 Nov 2024 11:21:08 +0100
-Message-ID: <20241112101841.424322423@linuxfoundation.org>
+Message-ID: <20241112101851.008668021@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Jyri Sarha <jyri.sarha@linux.intel.com>
 
-commit 235d2e739fcbe964c9ce179b4c991025662dcdb6 upstream.
+[ Upstream commit 48b86532c10128cf50c854a90c2d5b1410f4012d ]
 
-When creating a cache device, the actual size of the cache origin might
-be greater than the specified cache target length. In such case, the
-number of origin blocks should match the cache target length, not the
-full size of the origin device, since access beyond the cache target is
-not possible. This issue occurs when reducing the origin device size
-using lvm, as lvreduce preloads the new cache table before resuming the
-cache origin, which can result in incorrect sizes for the discard bitset
-and smq hotspot blocks.
+Write the size of the optional payload of SOF_IPC4_MOD_INIT_INSTANCE
+message to extension param_size-bits.
 
-Reproduce steps:
+The previous IPC4 version does not set these bits that should indicate
+the size of the optional payload (struct sof_ipc4_probe_cfg). The old
+firmware side component code works well without these bits, but when
+the probes are converted to use the generic module API, this does not
+work anymore.
 
-1. create a cache device consists of 4096 origin blocks
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. reduce the cache origin to 2048 oblocks, in lvreduce's approach
-
-dmsetup reload corig --table "0 262144 linear /dev/sdc 262144"
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup suspend cache
-dmsetup suspend corig
-dmsetup suspend cdata
-dmsetup suspend cmeta
-dmsetup resume corig
-dmsetup resume cdata
-dmsetup resume cmeta
-dmsetup resume cache
-
-3. shutdown the cache, and check the number of discard blocks in
-   superblock. The value is expected to be 2048, but actually is 4096.
-
-dmsetup remove cache corig cdata cmeta
-dd if=/dev/sdc bs=1c count=8 skip=224 2>/dev/null | hexdump -e '1/8 "%u\n"'
-
-Fix by correcting the origin_blocks initialization in cache_create and
-removing the unused origin_sectors from struct cache_args accordingly.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: c6b4fcbad044 ("dm: add cache target")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5623593060f ("ASoC: SOF: IPC4: probes: Implement IPC4 ops for probes client device")
+Signed-off-by: Jyri Sarha <jyri.sarha@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20241107132840.17386-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/sof/sof-client-probes-ipc4.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1988,7 +1988,6 @@ struct cache_args {
- 	sector_t cache_sectors;
+diff --git a/sound/soc/sof/sof-client-probes-ipc4.c b/sound/soc/sof/sof-client-probes-ipc4.c
+index c56a85854d92c..07bb143823d77 100644
+--- a/sound/soc/sof/sof-client-probes-ipc4.c
++++ b/sound/soc/sof/sof-client-probes-ipc4.c
+@@ -125,6 +125,7 @@ static int ipc4_probes_init(struct sof_client_dev *cdev, u32 stream_tag,
+ 	msg.primary |= SOF_IPC4_MSG_TARGET(SOF_IPC4_MODULE_MSG);
+ 	msg.extension = SOF_IPC4_MOD_EXT_DST_MOD_INSTANCE(INVALID_PIPELINE_ID);
+ 	msg.extension |= SOF_IPC4_MOD_EXT_CORE_ID(0);
++	msg.extension |= SOF_IPC4_MOD_EXT_PARAM_SIZE(sizeof(cfg) / sizeof(uint32_t));
  
- 	struct dm_dev *origin_dev;
--	sector_t origin_sectors;
- 
- 	uint32_t block_size;
- 
-@@ -2070,6 +2069,7 @@ static int parse_cache_dev(struct cache_
- static int parse_origin_dev(struct cache_args *ca, struct dm_arg_set *as,
- 			    char **error)
- {
-+	sector_t origin_sectors;
- 	int r;
- 
- 	if (!at_least_one_arg(as, error))
-@@ -2082,8 +2082,8 @@ static int parse_origin_dev(struct cache
- 		return r;
- 	}
- 
--	ca->origin_sectors = get_dev_size(ca->origin_dev);
--	if (ca->ti->len > ca->origin_sectors) {
-+	origin_sectors = get_dev_size(ca->origin_dev);
-+	if (ca->ti->len > origin_sectors) {
- 		*error = "Device size larger than cached device";
- 		return -EINVAL;
- 	}
-@@ -2392,7 +2392,7 @@ static int cache_create(struct cache_arg
- 
- 	ca->metadata_dev = ca->origin_dev = ca->cache_dev = NULL;
- 
--	origin_blocks = cache->origin_sectors = ca->origin_sectors;
-+	origin_blocks = cache->origin_sectors = ti->len;
- 	origin_blocks = block_div(origin_blocks, ca->block_size);
- 	cache->origin_blocks = to_oblock(origin_blocks);
- 
+ 	msg.data_size = sizeof(cfg);
+ 	msg.data_ptr = &cfg;
+-- 
+2.43.0
+
 
 
 
