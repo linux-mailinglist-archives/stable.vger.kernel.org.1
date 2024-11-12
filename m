@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9449C5542
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5249C53C2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2252428BE74
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D5B91F22C82
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67F3216DF6;
-	Tue, 12 Nov 2024 10:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9E32144BB;
+	Tue, 12 Nov 2024 10:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TL4prutQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOVF16yw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639C222DAAF;
-	Tue, 12 Nov 2024 10:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7254213124;
+	Tue, 12 Nov 2024 10:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407915; cv=none; b=SPiwNEV2ortxHE2C0B8bWwghoNpL0a7ij0cF4vVfqOBYofrkFrda82mSZXLd4ooPuT0/wNgmGe+F89sKDVLarL7MZAHYxKGqrDLEsfcsJxWG7ctU+46JGdgr3FeoSrqGg7ksF4vTfex8Ht7HleSlCOyd6UyjF4eIsw9zmsQlXzc=
+	t=1731407488; cv=none; b=uXOuCfwBkaiNfWW3FwQ+c9lTiWRZGcWS5CwDRB2oY/uP366hjtsoxo4zFaRugjX3lTBWRqhdNrVZCEK9rviYWWMER1rMNXtMCGNsPYgpmKIYj1dudn7Qyt8I7CD6g/X1FyMV8rD62C6+eNkOri84xO+nazJz1gelouKsY5mpr10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407915; c=relaxed/simple;
-	bh=PoMSSZQc3HEgCS9mXz2Em0s+H9nNvwW2RP02zOII+Ew=;
+	s=arc-20240116; t=1731407488; c=relaxed/simple;
+	bh=Nj+s6ZIC3SCDPARZ1jbF2fcMszXjzy/ik2uQ4E4zWTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsISQlUShjXTODoPCjH14GGe7tGKlq8wBGTRIu8a2Vjia0OpK8KI00E/x+vKuuElzH7pgNMX93T8cquIc5WFH50hR3bOcFN7WZVdFgd/ax7EOA7GaG9yb/vEybPBr58HPZeci3hoHVHFeFYNtmbteBxEJOKYTdQcVWBfKrdaf4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TL4prutQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50EEC4CED6;
-	Tue, 12 Nov 2024 10:38:34 +0000 (UTC)
+	 MIME-Version; b=eC0YjsIAKlIYl9lXK52hq7d0zR6lb2q1spIX0cXTr53AsIICsz7KBAuv0jkvFUYjbI9HZLsb3iPYXrAvKrI00s22v0J0ougxktNnHQ5KYk/1Erpe7H64gmZh6VzEZCuC1fPRpyZ3wYPmOxv8dsomWbJm7ObEKp8BBczcumBEWAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOVF16yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E2FC4CECD;
+	Tue, 12 Nov 2024 10:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407915;
-	bh=PoMSSZQc3HEgCS9mXz2Em0s+H9nNvwW2RP02zOII+Ew=;
+	s=korg; t=1731407488;
+	bh=Nj+s6ZIC3SCDPARZ1jbF2fcMszXjzy/ik2uQ4E4zWTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TL4prutQjIE3kZZgzFrHEFUCavNxXJD4KZRDwtyqDn3Esb/Zm687hqA0RxmvdpNnw
-	 EwnRyJRw79AaWyQMd8ujfsYiwZgO3ziSZkAlsP3TUSqYs6Sk9OiTDc1AldXzc3oMrZ
-	 WCr0o/RPWqVmRM/jZ3Lb+Kw8oChDAChx3GU7Wnhk=
+	b=cOVF16ywUktidU+bKLT1zpuRjPbTG4xj2D1dIs0sDAJkiZLGVi/oWpL9IwKa2taT3
+	 MzkRFmDq6PQZHChzhwM8g1swLXqxAStvxp/rBO7Gxman1Jn2+MOOmfz0MAOLBbLy8q
+	 F5gtoyU7lQULfVTCb6OTgi9C+YQhDxR4S8tvbfLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 097/119] btrfs: reinitialize delayed ref list after deleting it from the list
-Date: Tue, 12 Nov 2024 11:21:45 +0100
-Message-ID: <20241112101852.426717942@linuxfoundation.org>
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 91/98] irqchip/gic-v3: Force propagation of the active state with a read-back
+Date: Tue, 12 Nov 2024 11:21:46 +0100
+Message-ID: <20241112101847.713357314@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit c9a75ec45f1111ef530ab186c2a7684d0a0c9245 upstream.
+commit 464cb98f1c07298c4c10e714ae0c36338d18d316 upstream.
 
-At insert_delayed_ref() if we need to update the action of an existing
-ref to BTRFS_DROP_DELAYED_REF, we delete the ref from its ref head's
-ref_add_list using list_del(), which leaves the ref's add_list member
-not reinitialized, as list_del() sets the next and prev members of the
-list to LIST_POISON1 and LIST_POISON2, respectively.
+Christoffer reports that on some implementations, writing to
+GICR_ISACTIVER0 (and similar GICD registers) can race badly with a guest
+issuing a deactivation of that interrupt via the system register interface.
 
-If later we end up calling drop_delayed_ref() against the ref, which can
-happen during merging or when destroying delayed refs due to a transaction
-abort, we can trigger a crash since at drop_delayed_ref() we call
-list_empty() against the ref's add_list, which returns false since
-the list was not reinitialized after the list_del() and as a consequence
-we call list_del() again at drop_delayed_ref(). This results in an
-invalid list access since the next and prev members are set to poison
-pointers, resulting in a splat if CONFIG_LIST_HARDENED and
-CONFIG_DEBUG_LIST are set or invalid poison pointer dereferences
-otherwise.
+There are multiple reasons to this:
 
-So fix this by deleting from the list with list_del_init() instead.
+ - this uses an early write-acknoledgement memory type (nGnRE), meaning
+   that the write may only have made it as far as some interconnect
+   by the time the store is considered "done"
 
-Fixes: 1d57ee941692 ("btrfs: improve delayed refs iterations")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+ - the GIC itself is allowed to buffer the write until it decides to
+   take it into account (as long as it is in finite time)
+
+The effects are that the activation may not have taken effect by the time
+the kernel enters the guest, forcing an immediate exit, or that a guest
+deactivation occurs before the interrupt is active, doing nothing.
+
+In order to guarantee that the write to the ISACTIVER register has taken
+effect, read back from it, forcing the interconnect to propagate the write,
+and the GIC to process the write before returning the read.
+
+Reported-by: Christoffer Dall <christoffer.dall@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Christoffer Dall <christoffer.dall@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241106084418.3794612-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-ref.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -615,7 +615,7 @@ static bool insert_delayed_ref(struct bt
- 					      &href->ref_add_list);
- 			else if (ref->action == BTRFS_DROP_DELAYED_REF) {
- 				ASSERT(!list_empty(&exist->add_list));
--				list_del(&exist->add_list);
-+				list_del_init(&exist->add_list);
- 			} else {
- 				ASSERT(0);
- 			}
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -473,6 +473,13 @@ static int gic_irq_set_irqchip_state(str
+ 	}
+ 
+ 	gic_poke_irq(d, reg);
++
++	/*
++	 * Force read-back to guarantee that the active state has taken
++	 * effect, and won't race with a guest-driven deactivation.
++	 */
++	if (reg == GICD_ISACTIVER)
++		gic_peek_irq(d, reg);
+ 	return 0;
+ }
+ 
 
 
 
