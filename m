@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-92363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0A59C53B1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5E79C5582
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8349E283557
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57DDB340AB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DDB2141C3;
-	Tue, 12 Nov 2024 10:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D44F2141B7;
+	Tue, 12 Nov 2024 10:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adl4FLRt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4S643mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5040520D4FC;
-	Tue, 12 Nov 2024 10:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0D72123CF;
+	Tue, 12 Nov 2024 10:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407413; cv=none; b=ZLHKhV8Il2LAAYXDhp/SXn6Ar/v7GAcil8Ve4Ru09lZvx1qqVj3cjlb7+c+Amw9T9og+G7sFH8uE4v+MVIGfb0ciJq8IkKe+2D1Ko+v3v3IU43hhPFdK7/XHfYRwYQcEbAf8NKUzvz1HlrZUdEiwPo6Fx402fTRBCdNMgmZg95s=
+	t=1731407214; cv=none; b=XJj0s/tZ409/z00OP7I2NyfAuUc1UIjPkKyswzDlQ0bwFo76VB5o0kpJ3iIW6xxTgOzkBvBUHw8MAS1UQzRez7AZs5HSKNPPd1vLUYSMhXLtbNb06Pr0EHwPwZE/PAjTe8ZKOHJWCmx2Imj/VZKVBdotPmthlq6SaYMBjoa0aSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407413; c=relaxed/simple;
-	bh=7U0BN1SymYkSZ9nMuHfmbhTbfez0cvDe1hE6rHHFAk4=;
+	s=arc-20240116; t=1731407214; c=relaxed/simple;
+	bh=mhq2+K5hQUYBSwXVf+42Pl56mWz37v8xCvkVsDoQDaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYNKmBS+OHmXjgM0v2jqKqTKRe6UJoWntZ3npTxyGjYQnTvOQzk2RDM2Rx+uXXJmeWrtzUHxAGmuO1PtLYrnAjniVGGEvj/B6nrGDXoPHmocVJBaf8YPVZcMCQTc9vRouh1MHJaSO+5Gbw2kYVLzt29+CL7psCZG3Tmy21uFzDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adl4FLRt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F48AC4CED4;
-	Tue, 12 Nov 2024 10:30:12 +0000 (UTC)
+	 MIME-Version; b=tmbDdeFe2zfB0F6hnjzcOSIMXCCrOnOJaTTTOELHeCoRkef5ghKP53jS1m00M4tyt9sHLn0XShiSV8DFDnJqnMDt8Emi7ghtm+eablWcygDwL+kn43Dj1XdMrrGEB3Ztcp5/i32kv+W5HZoem9OkONWg52iqg5i++uglaVBM34A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4S643mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3921C4CECD;
+	Tue, 12 Nov 2024 10:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407413;
-	bh=7U0BN1SymYkSZ9nMuHfmbhTbfez0cvDe1hE6rHHFAk4=;
+	s=korg; t=1731407214;
+	bh=mhq2+K5hQUYBSwXVf+42Pl56mWz37v8xCvkVsDoQDaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adl4FLRtfhaMGbSjth5aa3UmUTpH7iAOu9Zg9cf6Lk8mZpKqnqoFHOV5HkFVw/5/S
-	 G8gt7GSxGvNB6aZzI4xl479TahPg7ikjsP9Tj/iV/AoU1t1TBfaY34K6LM3UNPkZxB
-	 Ttqtd3IqgzeGoju8fiKWq25IEWW06UHeQr6G+QiY=
+	b=U4S643mQ6eGGeMJlq4VRWGOhCZy0dox13JTfEMggYFOJ+Sdquv9kUbQozzIQO9hG+
+	 Khtik5b8Bb7Lrg+39v0GYspd11+PJ/QWMt8CfApd3Hnn9AzUQVEtFniP89DOaiyHsT
+	 voS/v2T2BcCMNggCNZeSC4vmHIeZb3A82K8mLVdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Segall <bsegall@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 68/98] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Abdelkareem Abdelsaamad <kareemem@amazon.com>
+Subject: [PATCH 5.15 58/76] net: do not delay dst_entries_add() in dst_release()
 Date: Tue, 12 Nov 2024 11:21:23 +0100
-Message-ID: <20241112101846.848315574@linuxfoundation.org>
+Message-ID: <20241112101841.991304268@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +66,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Segall <bsegall@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b5413156bad91dc2995a5c4eab1b05e56914638a ]
+commit ac888d58869bb99753e7652be19a151df9ecb35d upstream.
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+dst_entries_add() uses per-cpu data that might be freed at netns
+dismantle from ip6_route_net_exit() calling dst_entries_destroy()
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
+Before ip6_route_net_exit() can be called, we release all
+the dsts associated with this netns, via calls to dst_release(),
+which waits an rcu grace period before calling dst_destroy()
 
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
+dst_entries_add() use in dst_destroy() is racy, because
+dst_entries_destroy() could have been called already.
 
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
+Decrementing the number of dsts must happen sooner.
 
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Notes:
+
+1) in CONFIG_XFRM case, dst_destroy() can call
+   dst_release_immediate(child), this might also cause UAF
+   if the child does not have DST_NOCOUNT set.
+   IPSEC maintainers might take a look and see how to address this.
+
+2) There is also discussion about removing this count of dst,
+   which might happen in future kernels.
+
+Fixes: f88649721268 ("ipv4: fix dst race in sk_dst_get()")
+Closes: https://lore.kernel.org/lkml/CANn89iLCCGsP7SFn9HKpvnKu96Td4KD08xf7aGtiYgZnkjaL=w@mail.gmail.com/T/
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20241008143110.1064899-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ resolved conflict due to bc9d3a9f2afc ("net: dst: Switch to rcuref_t
+  reference counting") is not in the tree ]
+Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ net/core/dst.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 9459fef5b8573..9701c571a5cfe 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -252,12 +252,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -108,9 +108,6 @@ struct dst_entry *dst_destroy(struct dst
+ 		child = xdst->child;
+ 	}
+ #endif
+-	if (!(dst->flags & DST_NOCOUNT))
+-		dst_entries_add(dst->ops, -1);
+-
+ 	if (dst->ops->destroy)
+ 		dst->ops->destroy(dst);
+ 	dev_put(dst->dev);
+@@ -160,6 +157,12 @@ void dst_dev_put(struct dst_entry *dst)
  }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
+ EXPORT_SYMBOL(dst_dev_put);
+ 
++static void dst_count_dec(struct dst_entry *dst)
 +{
-+	atomic_set(&tsk->tick_dep_mask, 0);
++	if (!(dst->flags & DST_NOCOUNT))
++		dst_entries_add(dst->ops, -1);
 +}
 +
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
+ void dst_release(struct dst_entry *dst)
  {
-@@ -291,6 +298,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 8dd46baee4c39..09a935724bd95 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -97,6 +97,7 @@
- #include <linux/scs.h>
- #include <linux/io_uring.h>
- #include <linux/bpf.h>
-+#include <linux/tick.h>
- 
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2183,6 +2184,7 @@ static __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
- 
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
- 
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
--- 
-2.43.0
-
+ 	if (dst) {
+@@ -169,8 +172,10 @@ void dst_release(struct dst_entry *dst)
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release);
+@@ -184,8 +189,10 @@ void dst_release_immediate(struct dst_en
+ 		if (WARN_ONCE(newrefcnt < 0, "dst_release_immediate underflow"))
+ 			net_warn_ratelimited("%s: dst:%p refcnt:%d\n",
+ 					     __func__, dst, newrefcnt);
+-		if (!newrefcnt)
++		if (!newrefcnt){
++			dst_count_dec(dst);
+ 			dst_destroy(dst);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(dst_release_immediate);
 
 
 
