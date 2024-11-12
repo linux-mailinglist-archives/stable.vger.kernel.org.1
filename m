@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-92662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65A99C5594
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A969C55B0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B88928F100
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 125EDB26DD1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E232185B9;
-	Tue, 12 Nov 2024 10:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFD22123D6;
+	Tue, 12 Nov 2024 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdamLtB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzSgSbMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5121213EE5;
-	Tue, 12 Nov 2024 10:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A54210184;
+	Tue, 12 Nov 2024 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408176; cv=none; b=aXiZskCVsDmJc+SVtNs34OMCMUKdCm5/YDkumGHYbxvBZdQXuRHnZRx+SPBvPfpBuEp7FynNaSVz6MlOnG38bcinFY5qaVF73x9L3LoG/nNUFT/sy3BWBGQfu66LLZ++Dw4wIHsqvm+zvHLjJvh2RWDq/bNiAwNyzO5bGg77lf4=
+	t=1731406987; cv=none; b=VP1tDIFmcc8NXEIoFrGt4n8XXBfW95VOjky6JZ2f4DnNfJqg6+2alC9E5qKIs8j5hvBinFGBHTWiTUksfiUGRQJBdu/3a8ytgw4304SNnMFprlmlewz249JMuxpBXA9TIh+m2qtHbWltL8lOFQFwh5Bb3UcBf+LVms3vkXH0eXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408176; c=relaxed/simple;
-	bh=74fiWBkEqX8twxGcdq9X/k9jLlxZHXLgsR+U2KAvUsA=;
+	s=arc-20240116; t=1731406987; c=relaxed/simple;
+	bh=CMfq7SW5dsLqWt0mjoT1k96hfe1/eg0N5I6cXqbxrco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hoa593j9jW74PO8uFlC1P5xnc+AoZEDKKvDQwGwrH8wFjV2KcFsAiBuiy/zdaaWYpGGKojYCirgV9GhCpCu2KwDpLnQ+xcv20uplPJci5nds/0d6YC0GHsQPEr2+gh7fAL21kI5MDq0RZzk+hmL11HWCnqphKrBW/IbvhGHqtZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdamLtB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3C6C4CED4;
-	Tue, 12 Nov 2024 10:42:56 +0000 (UTC)
+	 MIME-Version; b=b43OEOFL39OPaN5mG7lI825LoIh+mTDVPFniyX1leD+PM21s5H5XyROr9KpcmSTIL+jiX5aU9WzIqjSG/b5pr6Riqjf0DpMu3Wi7t7TFUWg3wXLMNjU6ZiqemeFVLfIj4Vh91bb/DsNwNRfH8U1UMvKomIiHnsJZ1+nN9WQGu/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzSgSbMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD47C4CECD;
+	Tue, 12 Nov 2024 10:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408176;
-	bh=74fiWBkEqX8twxGcdq9X/k9jLlxZHXLgsR+U2KAvUsA=;
+	s=korg; t=1731406986;
+	bh=CMfq7SW5dsLqWt0mjoT1k96hfe1/eg0N5I6cXqbxrco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdamLtB9iouqJwyPRZXuCHvdekrYUa4T9cgKVy2bcAES0SkMODmJ0W+c9faEtb1Wp
-	 L3VsRiPLvJJkAujjjR96iq9kWTO1Vo2hVpmdT2eDvewTcXf6fb4pf5VEcVy9u4Htxs
-	 dmI0+518ngxlniAp4sbc4ldOt/P/OefAOP2xIOsY=
+	b=xzSgSbMtgCOxyJs1asRhDTtu9mS5IdHL8I72ZiHOl+BkqQxzijPwqHn7rXHNTa/Zz
+	 aZEXz0bj2vOPHHT+V1MyCeEaBmsuKjhTZjsYQkbr5nHaGYeVeiYnaKPGR6qEQQzMv2
+	 ZYygOknBp2T/z/hCJ+y12I7ElUquzUwqrQyp3fKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.11 083/184] media: v4l2-tpg: prevent the risk of a division by zero
-Date: Tue, 12 Nov 2024 11:20:41 +0100
-Message-ID: <20241112101904.044493059@linuxfoundation.org>
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 17/76] net: enetc: set MAC address to the VF net_device
+Date: Tue, 12 Nov 2024 11:20:42 +0100
+Message-ID: <20241112101840.438861381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit e6a3ea83fbe15d4818d01804e904cbb0e64e543b upstream.
+[ Upstream commit badccd49b93bb945bf4e5cc8707db67cdc5e27e5 ]
 
-As reported by Coverity, the logic at tpg_precalculate_line()
-blindly rescales the buffer even when scaled_witdh is equal to
-zero. If this ever happens, this will cause a division by zero.
+The MAC address of VF can be configured through the mailbox mechanism of
+ENETC, but the previous implementation forgot to set the MAC address in
+net_device, resulting in the SMAC of the sent frames still being the old
+MAC address. Since the MAC address in the hardware has been changed, Rx
+cannot receive frames with the DMAC address as the new MAC address. The
+most obvious phenomenon is that after changing the MAC address, we can
+see that the MAC address of eno0vf0 has not changed through the "ifconfig
+eno0vf0" command and the IP address cannot be obtained .
 
-Instead, add a WARN_ON_ONCE() to trigger such cases and return
-without doing any precalculation.
+root@ls1028ardb:~# ifconfig eno0vf0 down
+root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
+root@ls1028ardb:~# ifconfig eno0vf0
+eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
+        RX packets 794  bytes 69239 (69.2 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 11  bytes 2226 (2.2 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-Fixes: 63881df94d3e ("[media] vivid: add the Test Pattern Generator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20241029090406.841836-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/v4l2-tpg/v4l2-tpg-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-+++ b/drivers/media/common/v4l2-tpg/v4l2-tpg-core.c
-@@ -1795,6 +1795,9 @@ static void tpg_precalculate_line(struct
- 	unsigned p;
- 	unsigned x;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+index acd4a3167ed6a..88dfcebf2b873 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
+ {
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 	struct sockaddr *saddr = addr;
++	int err;
  
-+	if (WARN_ON_ONCE(!tpg->src_width || !tpg->scaled_width))
-+		return;
+ 	if (!is_valid_ether_addr(saddr->sa_data))
+ 		return -EADDRNOTAVAIL;
+ 
+-	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
++	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
++	if (err)
++		return err;
 +
- 	switch (tpg->pattern) {
- 	case TPG_PAT_GREEN:
- 		contrast = TPG_COLOR_100_RED;
++	eth_hw_addr_set(ndev, saddr->sa_data);
++
++	return 0;
+ }
+ 
+ static int enetc_vf_set_features(struct net_device *ndev,
+-- 
+2.43.0
+
 
 
 
