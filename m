@@ -1,102 +1,121 @@
-Return-Path: <stable+bounces-92845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349BD9C62F8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:58:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252A49C6392
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 22:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4B71F22E1E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:58:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34CBD28501A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD7C219E47;
-	Tue, 12 Nov 2024 20:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F5C21A4AD;
+	Tue, 12 Nov 2024 21:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KjP5qwzq"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037D720A5CF;
-	Tue, 12 Nov 2024 20:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418EB204930;
+	Tue, 12 Nov 2024 21:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731445087; cv=none; b=tmBY8oF9/8GmRM7sinUKWsa63s/0/Rnk53htq1OrDGiqrc+c3duYF8rdglbHbp8mMwPqdaRWxcWBbbGA3ikSjCZgkxJxM45UkKqWcDRpCbB4Qi5W/0Mxjtdz9lQKxlBGXECrUH4SOEhvq1VeGdEM35ptCnDXYWKbozr/xLWJVog=
+	t=1731447571; cv=none; b=Uxwv+pvjWqpHsCleucZnkZEfw7rt41V7F2DGRn4iEA48lnQDnLGxdjHgpWYdKU17WqfGqzXhua/xLpyW1mNPwKbITNH+BMbjwXBUpL+pA4jQsgEUp/TLIY7R3vQG0wI98AssK53HebanP3TyCe4eMWq79erfLUSrrq7GHwXNq7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731445087; c=relaxed/simple;
-	bh=57IMcks0UzNbvv0P63HRcg/VqJkgmnJEQVaZIG3NtMI=;
+	s=arc-20240116; t=1731447571; c=relaxed/simple;
+	bh=9pk1AsME6rZGiOxewMrICrzKTyHvu3xjCllKNiqeHVo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dPlRP1agAUg3pYzkVXRi20Kf5AkIRNZBUR5Ppg4syEaLrx1Hy3vnYm5aswp3BQ47gtU1CxmOXFd3DS1korGTxjrqboe4oEcmzgovAhKp8UZ5d8myqeJwASryEjoJhmL1CR/ua8iNLRRvbIDtv4FnTZsiyq9fr2n4N39DPp1MRH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 794311C00A0; Tue, 12 Nov 2024 21:58:03 +0100 (CET)
-Date: Tue, 12 Nov 2024 21:58:03 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.11 000/184] 6.11.8-rc1 review
-Message-ID: <ZzPBW26qjxwOu1pL@duo.ucw.cz>
-References: <20241112101900.865487674@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cT5Wj1jyY8hKpr4hYkI5/3j13rJdJd2dYrbVFvBF5jZiXXDjQHse5Ct07XV3hmxTZQLm/oIPVp2gCE7+GD8gb6sdrzIO7srNpD/XAVzG1P8gR2ooKEqa4L/I3WCmF9WBO4Kft8x10zO4Rfh91MTz0odm7+3hb+OZUPsx6qCvLfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KjP5qwzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9302CC4CECD;
+	Tue, 12 Nov 2024 21:39:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731447570;
+	bh=9pk1AsME6rZGiOxewMrICrzKTyHvu3xjCllKNiqeHVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KjP5qwzqavKkOvy0mCyR8hsndiZ4/WlOLOngrc8Z0VDnOAruNdaL9uE8I8ElrRksZ
+	 iR6EUBppMV1CT1Qfq79vftI8TJjSGPSXGmktKjCVkkdaRv2mMkNuSAq1n4ox8VHSBZ
+	 xZfXOyRcXXc8Yp4zq8UdH0xyB4G5gFtnkxts7BrjGmWCAJDyKbbkN9gtuDghFtav5L
+	 viyEOfg2IfemHHwl+iFtnZ2p4bgrMtxTO6KRBt8EajPqpITC01dOukTN9IuIDYWNGk
+	 Dy380jDeR3T4MFPD8od+bCk1oUIfFpQN8MR6oaCSfEgsl3PMcaFvR7b70ktDAnrt92
+	 Q4x21nhRoKSuw==
+Date: Tue, 12 Nov 2024 21:39:28 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net
+Cc: stable@vger.kernel.org, Daniel Rosenberg <drosen@google.com>,
+	Eric Sandeen <sandeen@redhat.com>
+Subject: Re: [PATCH] Revert "f2fs: remove unreachable lazytime mount option
+ parsing"
+Message-ID: <ZzPLELITeOeBsYdi@google.com>
+References: <20241112010820.2788822-1-jaegeuk@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JZyBI9jf13Ow+if5"
-Content-Disposition: inline
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-
-
---JZyBI9jf13Ow+if5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241112010820.2788822-1-jaegeuk@kernel.org>
 
-Hi!
+Hi Eric,
 
-> This is the start of the stable review cycle for the 6.11.8 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Could you please check this revert as it breaks the mount()?
+It seems F2FS needs to implement new mount support.
 
-CIP testing did not find any problems here:
+Thanks,
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.11.y
-
-6.6, 5.15 pass our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---JZyBI9jf13Ow+if5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZzPBWwAKCRAw5/Bqldv6
-8i+gAJ9VqEchISICs4AYWdlbGpyw9gLUxACgpb/g5M8tXJVyCB0cUFDSU+JMn0k=
-=BkfG
------END PGP SIGNATURE-----
-
---JZyBI9jf13Ow+if5--
+On 11/12, Jaegeuk Kim wrote:
+> This reverts commit 54f43a10fa257ad4af02a1d157fefef6ebcfa7dc.
+> 
+> The above commit broke the lazytime mount, given
+> 
+> mount("/dev/vdb", "/mnt/test", "f2fs", 0, "lazytime");
+> 
+> CC: stable@vger.kernel.org # 6.11+
+> Signed-off-by: Daniel Rosenberg <drosen@google.com>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> ---
+>  fs/f2fs/super.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+> index 49519439b770..35c4394e4fc6 100644
+> --- a/fs/f2fs/super.c
+> +++ b/fs/f2fs/super.c
+> @@ -150,6 +150,8 @@ enum {
+>  	Opt_mode,
+>  	Opt_fault_injection,
+>  	Opt_fault_type,
+> +	Opt_lazytime,
+> +	Opt_nolazytime,
+>  	Opt_quota,
+>  	Opt_noquota,
+>  	Opt_usrquota,
+> @@ -226,6 +228,8 @@ static match_table_t f2fs_tokens = {
+>  	{Opt_mode, "mode=%s"},
+>  	{Opt_fault_injection, "fault_injection=%u"},
+>  	{Opt_fault_type, "fault_type=%u"},
+> +	{Opt_lazytime, "lazytime"},
+> +	{Opt_nolazytime, "nolazytime"},
+>  	{Opt_quota, "quota"},
+>  	{Opt_noquota, "noquota"},
+>  	{Opt_usrquota, "usrquota"},
+> @@ -922,6 +926,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+>  			f2fs_info(sbi, "fault_type options not supported");
+>  			break;
+>  #endif
+> +		case Opt_lazytime:
+> +			sb->s_flags |= SB_LAZYTIME;
+> +			break;
+> +		case Opt_nolazytime:
+> +			sb->s_flags &= ~SB_LAZYTIME;
+> +			break;
+>  #ifdef CONFIG_QUOTA
+>  		case Opt_quota:
+>  		case Opt_usrquota:
+> -- 
+> 2.47.0.277.g8800431eea-goog
 
