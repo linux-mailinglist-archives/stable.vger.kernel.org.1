@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-92665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DE99C5597
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019B19C53F8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC7F28EDDD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1FA1F2155E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85EE218925;
-	Tue, 12 Nov 2024 10:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7D32123D6;
+	Tue, 12 Nov 2024 10:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUqyNpL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXVjvHZM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB5212F1D;
-	Tue, 12 Nov 2024 10:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7131A76C7;
+	Tue, 12 Nov 2024 10:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408186; cv=none; b=BWISV05VXzPy7GKKF1ysGTvnViqVJNWkYy0mzxQK/ofDTjcRoXx7vupdIe4lElrFGAatbVPsPJZqG7yxNKEK7AyPY8dcEZ/TttE9ZfaNPfgFjdJ6TQ6UvYSogQKqin91wY6jPNDZUCIE0D7z3dG6zD72mDmoWyOFlMWhv89RVe0=
+	t=1731407636; cv=none; b=cTeEwR4mLmJG0h5MMW5Hd2LmBzEQcYZbn0Q+Sbf3oiCZt2zBE6CT17+eE9ZYqe4RNDS5u2n8Tn8Fw6KbgaM491cP7scgJw6fsrc7E78r68XkYV6tnG4UTGuu7BwlP0is+dP+46dBPk2bbaTU+37hjoZTdrdNI4wVj+F+A7OG/0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408186; c=relaxed/simple;
-	bh=kQr1lr/VtQ0MwmXLass/7hHt5h/PTtsE/SsvqfTT/ks=;
+	s=arc-20240116; t=1731407636; c=relaxed/simple;
+	bh=YoLhHvXoBz+qmV5Rc+yK5/4ohAJV7rcY829FLeE1Ka4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzPa3/5hGL4iQ/5waQCLol9Ox6AYmP9pwqkus8w+3CQ1Aw4AulEK/UfjCRd5qCy2TBZjMZME1EKg7hwuZdJgc7J/ymiVSjN79Dcx0JUJvsEzlog8H6XpyROfYEMUm/q33z0BGzKrKBRWlNz+M8NHHCaDPlAb+aEHdBdv8F1av+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUqyNpL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37C7C4CECD;
-	Tue, 12 Nov 2024 10:43:05 +0000 (UTC)
+	 MIME-Version; b=NCMF1T5hQYl0yZRGHtS/76oVjnFCFRPiCfDclkqJKChFGLlou6VhtEsNONKCN2vqGm4sfOgifKE6nTvrQ41uLAm5S+rBsXRpyLUqLw9yeiq7adtLLixRGsoX0deq5TABqzFvpTN23GMoOiKp4uVWf5rau6KrDYeltNH486Lby9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXVjvHZM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508D9C4CECD;
+	Tue, 12 Nov 2024 10:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408186;
-	bh=kQr1lr/VtQ0MwmXLass/7hHt5h/PTtsE/SsvqfTT/ks=;
+	s=korg; t=1731407635;
+	bh=YoLhHvXoBz+qmV5Rc+yK5/4ohAJV7rcY829FLeE1Ka4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUqyNpL5jJgeHZ7Qlv/eY+K61+Tm3FQaVkyOeqelazQthtEKeWSI2cJdHkjzKXE4c
-	 Ubgph7LVkmO30eMircYQVhovj7HjbFMDEth7d0v85JrzlOqD1hni7Zw4i/zo9DXNCB
-	 Eb7B5vKuXm+sdWBYam28N/Sfod4reBgZNwSrnEwQ=
+	b=PXVjvHZMTpRDO0ekDQ6TEV0/swHsYmV4YSTorQxlSGUrIxZb2QEBETg2Y1e4fnC4Z
+	 SIEoM8z9vPjtXTRmxrzjUANh0lQ7BQb+ZxL0P2/FyaY414XUgnzWUZinBLOEzOtvOE
+	 y8iAFigqYz6MKo6gollQaCRR6XvknI7ntU+889UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.11 086/184] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 036/119] ice: change q_index variable type to s16 to store -1 value
 Date: Tue, 12 Nov 2024 11:20:44 +0100
-Message-ID: <20241112101904.160288657@linuxfoundation.org>
+Message-ID: <20241112101850.091960968@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 
-commit 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a upstream.
+[ Upstream commit 64502dac974a5d9951d16015fa2e16a14e5f2bb2 ]
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
+Fix Flow Director not allowing to re-map traffic to 0th queue when action
+is configured to drop (and vice versa).
 
-As the TEF has no head pointer, the driver uses the TX FIFO's tail
-pointer instead, assuming that send frames are completed. However the
-check for the TEF being full was not correct. This leads to the driver
-stop working if the TEF is full.
+The current implementation of ethtool callback in the ice driver forbids
+change Flow Director action from 0 to -1 and from -1 to 0 with an error,
+e.g:
 
-Fix the TEF full check by assuming that if, from the driver's point of
-view, there are no free TX buffers in the chip and the TX FIFO is
-empty, all messages must have been sent and the TEF must therefore be
-full.
+ # ethtool -U eth2 flow-type tcp4 src-ip 1.1.1.1 loc 1 action 0
+ # ethtool -U eth2 flow-type tcp4 src-ip 1.1.1.1 loc 1 action -1
+ rmgr: Cannot insert RX class rule: Invalid argument
 
-Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We set the value of `u16 q_index = 0` at the beginning of the function
+ice_set_fdir_input_set(). In case of "drop traffic" action (which is
+equal to -1 in ethtool) we store the 0 value. Later, when want to change
+traffic rule to redirect to queue with index 0 it returns an error
+caused by duplicate found.
+
+Fix this behaviour by change of the type of field `q_index` from u16 to s16
+in `struct ice_fdir_fltr`. This allows to store -1 in the field in case
+of "drop traffic" action. What is more, change the variable type in the
+function ice_set_fdir_input_set() and assign at the beginning the new
+`#define ICE_FDIR_NO_QUEUE_IDX` which is -1. Later, if the action is set
+to another value (point specific queue index) the variable value is
+overwritten in the function.
+
+Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_fdir.h         | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -16,9 +16,9 @@
- 
- #include "mcp251xfd.h"
- 
--static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+index 1839a37139dc1..b6bbf2376ef5c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -1694,11 +1694,12 @@ static int
+ ice_set_fdir_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
+ 		       struct ice_fdir_fltr *input)
  {
--	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
+-	u16 dest_vsi, q_index = 0;
++	s16 q_index = ICE_FDIR_NO_QUEUE_IDX;
+ 	u16 orig_q_index = 0;
+ 	struct ice_pf *pf;
+ 	struct ice_hw *hw;
+ 	int flow_type;
++	u16 dest_vsi;
+ 	u8 dest_ctl;
  
- static inline int
-@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
- 	if (err)
- 		return err;
+ 	if (!vsi || !fsp || !input)
+diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
+index b384d2a4ab198..063ea3d516532 100644
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+@@ -50,6 +50,8 @@
+  */
+ #define ICE_FDIR_IPV4_PKT_FLAG_MF		0x20
  
--	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+	/* If the chip says the TX-FIFO is empty, but there are no TX
-+	 * buffers free in the ring, we assume all have been sent.
-+	 */
-+	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0) {
- 		*len_p = tx_ring->obj_num;
- 		return 0;
- 	}
++#define ICE_FDIR_NO_QUEUE_IDX			-1
++
+ enum ice_fltr_prgm_desc_dest {
+ 	ICE_FLTR_PRGM_DESC_DEST_DROP_PKT,
+ 	ICE_FLTR_PRGM_DESC_DEST_DIRECT_PKT_QINDEX,
+@@ -181,7 +183,7 @@ struct ice_fdir_fltr {
+ 	u16 flex_fltr;
+ 
+ 	/* filter control */
+-	u16 q_index;
++	s16 q_index;
+ 	u16 orig_q_index;
+ 	u16 dest_vsi;
+ 	u8 dest_ctl;
+-- 
+2.43.0
+
 
 
 
