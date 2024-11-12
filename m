@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-92443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC269C5407
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:36:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629369C53DC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB622849B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60DFFB356E0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F93212EE3;
-	Tue, 12 Nov 2024 10:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2E820FA90;
+	Tue, 12 Nov 2024 10:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEfHcUz0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jt3p7IKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA220DD62;
-	Tue, 12 Nov 2024 10:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B5E20899D;
+	Tue, 12 Nov 2024 10:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407675; cv=none; b=gfnM4ugnYYKEDTOhcU0U5y4XgZkYXVq8SR8iAgw/HAwpOy7zUHeMYYvqMsEwi81Va2S1TirInPx3lPCjjVRJhlVzkKGbnlR5bKhPNwlnIBKVoTZfHkKLpL3Ex+gvNbl9wyQnFs8oeL8xvbY8A/VxhgGd/l2UtEOx3bs22Xydjo8=
+	t=1731407347; cv=none; b=GGdx49eyxhxNAp5zLCVPV4QqDQMGhqTMXfMDK+oTudqgZNG/bxJ/Dqwd1DGcpb35Ktvm4x8GuvYgYEJoWsKByEI69/o0LEASkS8Ezl5NsqJf6JK45tiDYs7vcI7u9MzphZ4lBmv2lA6gx20E1YBN1t+KfrJb6nuF+VCSIyN+otI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407675; c=relaxed/simple;
-	bh=ytp7kXlpAtqB9urT6gy4YaIy74UXy/ZM6dsuviAjRwY=;
+	s=arc-20240116; t=1731407347; c=relaxed/simple;
+	bh=aSnem5EBFMzFEPVVl0iW2C5mzkKRql5byfnkdSJhNUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxOBjxHh1aj/L/gketJ5ynjceVNU6Jc2OuFWvXioWk2Pi5EpF3lJVBgAJv8kQFZ6FQl/p5UeSZYg4Wtp2ol1UvuZvMafEWXr36JbSkI/+3vai1VEe2PcgEqz3phnq0J2HYIiadCcQ1U1hhGAg39JR7dYR6hiCnhIioSAuV6NSLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEfHcUz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3EFC4CED4;
-	Tue, 12 Nov 2024 10:34:35 +0000 (UTC)
+	 MIME-Version; b=TLi/M8aE272nw3hPcEYpfw3WekE7svkhyq2ki2snQNbbYaCMXbe6Z+kIU0036AMzOeNQA+ZVlc5ldPW1LTHWCdJy4lZGXlY2Bs+CMIiNU74HL67a6F7zfi2+nGmaTdxlYrbXEca/FpZfEJVSj0hGUi8kCqZ7YudQHoz7Tp1B0vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt3p7IKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E773C4CECD;
+	Tue, 12 Nov 2024 10:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407675;
-	bh=ytp7kXlpAtqB9urT6gy4YaIy74UXy/ZM6dsuviAjRwY=;
+	s=korg; t=1731407347;
+	bh=aSnem5EBFMzFEPVVl0iW2C5mzkKRql5byfnkdSJhNUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEfHcUz0CyimjX0QDYdz1jylXkSVOYdnKVvfJE0YEcC4kh8Yz68CF4aUOAKCjCy2B
-	 4kfly06LtXZHcTlfNuVJfFMh/feJBxsC3d1tyG6SlkU1S0qwTC2rlBQoeQ7ysyZ6mu
-	 co1OwsaAbaN/KtmtxA0i04SKaBJ7ietRpfeoZjA4=
+	b=Jt3p7IKsTJjXd1YSPc1+8fLMkIpzfSqc051CNLd/wr7lcA3qJAfmsllVvUZbqrERv
+	 v5V5uldlzgRo3puOCdNMjtnUEorK2DXokpRbLjaJeH21bZvUOFByz1piNgxUz9qDoX
+	 c+tBkXtaQ8dbnkPygZKf93/AvuSILj9XxuJrPxGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	linux-afs@lists.infradead.org,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Emil Dahl Juhl <emdj@bang-olufsen.dk>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/119] rxrpc: Fix missing locking causing hanging calls
+Subject: [PATCH 6.1 41/98] tools/lib/thermal: Fix sampling handler context ptr
 Date: Tue, 12 Nov 2024 11:20:56 +0100
-Message-ID: <20241112101850.552175902@linuxfoundation.org>
+Message-ID: <20241112101845.837759237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Emil Dahl Juhl <emdj@bang-olufsen.dk>
 
-[ Upstream commit fc9de52de38f656399d2ce40f7349a6b5f86e787 ]
+[ Upstream commit fcd54cf480c87b96313a97dbf898c644b7bb3a2e ]
 
-If a call gets aborted (e.g. because kafs saw a signal) between it being
-queued for connection and the I/O thread picking up the call, the abort
-will be prioritised over the connection and it will be removed from
-local->new_client_calls by rxrpc_disconnect_client_call() without a lock
-being held.  This may cause other calls on the list to disappear if a race
-occurs.
+The sampling handler, provided by the user alongside a void* context,
+was invoked with an internal structure instead of the user context.
 
-Fix this by taking the client_call_lock when removing a call from whatever
-list its ->wait_link happens to be on.
+Correct the invocation of the sampling handler to pass the user context
+pointer instead.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-afs@lists.infradead.org
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Fixes: 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O thread")
-Link: https://patch.msgid.link/726660.1730898202@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that the approach taken is similar to that in events.c, and will
+reduce the chances of this mistake happening if additional sampling
+callbacks are added.
+
+Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
+Signed-off-by: Emil Dahl Juhl <emdj@bang-olufsen.dk>
+Link: https://lore.kernel.org/r/20241015171826.170154-1-emdj@bang-olufsen.dk
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h | 1 +
- net/rxrpc/conn_client.c      | 4 ++++
- 2 files changed, 5 insertions(+)
+ tools/lib/thermal/sampling.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 3322fb93a260b..ed36f5f577a9d 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -283,6 +283,7 @@
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
-+	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
- 	E_(rxrpc_call_see_zap,			"SEE zap     ")
+diff --git a/tools/lib/thermal/sampling.c b/tools/lib/thermal/sampling.c
+index 70577423a9f0c..f67c1f9ea1d78 100644
+--- a/tools/lib/thermal/sampling.c
++++ b/tools/lib/thermal/sampling.c
+@@ -16,6 +16,8 @@ static int handle_thermal_sample(struct nl_msg *n, void *arg)
+ 	struct thermal_handler_param *thp = arg;
+ 	struct thermal_handler *th = thp->th;
  
- #define rxrpc_txqueue_traces \
-diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
-index 1d95f8bc769fa..a0231b64fb6ef 100644
---- a/net/rxrpc/conn_client.c
-+++ b/net/rxrpc/conn_client.c
-@@ -507,6 +507,7 @@ void rxrpc_connect_client_calls(struct rxrpc_local *local)
++	arg = thp->arg;
++
+ 	genlmsg_parse(nlh, 0, attrs, THERMAL_GENL_ATTR_MAX, NULL);
  
- 		spin_lock(&local->client_call_lock);
- 		list_move_tail(&call->wait_link, &bundle->waiting_calls);
-+		rxrpc_see_call(call, rxrpc_call_see_waiting_call);
- 		spin_unlock(&local->client_call_lock);
- 
- 		if (rxrpc_bundle_has_space(bundle))
-@@ -577,7 +578,10 @@ void rxrpc_disconnect_client_call(struct rxrpc_bundle *bundle, struct rxrpc_call
- 		_debug("call is waiting");
- 		ASSERTCMP(call->call_id, ==, 0);
- 		ASSERT(!test_bit(RXRPC_CALL_EXPOSED, &call->flags));
-+		/* May still be on ->new_client_calls. */
-+		spin_lock(&local->client_call_lock);
- 		list_del_init(&call->wait_link);
-+		spin_unlock(&local->client_call_lock);
- 		return;
- 	}
- 
+ 	switch (genlhdr->cmd) {
 -- 
 2.43.0
 
