@@ -1,115 +1,100 @@
-Return-Path: <stable+bounces-92842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066309C6216
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:04:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056AB9C62EB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9E52841F7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDD73281A33
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F794217472;
-	Tue, 12 Nov 2024 20:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3345219E46;
+	Tue, 12 Nov 2024 20:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="xKSVHFtG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWmIOhfO"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73EB21A4A7
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 20:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D2E18BBA2
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 20:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731441809; cv=none; b=fQExzkIsrqkD6m+tDneaDUGSCFb2Kl8sMbfnsBQFkLMHOCvfjB0Emi0JS2BdwG55SWx5Es31JO8Lva34QOWiufYy2N8S9v7x6ECU6fThknMTJsCHvu/82SbM0nBsNRXunBEop3Zo2WMXtF8krfDQcpxL1OxwMHp4jMERBV/0/3U=
+	t=1731444798; cv=none; b=OmEonXCnoPb/thlGZtBg/8gziqrg4UD8VlIFcnGhjPeVCB08MZha9O6bWPGw78MU+oJmtxRfgKk8fvZ5mHeaGwOgsD9XSjnzolvxNTXF2lUCQo0CNHI17g0FuANbJb5T0F7/hn5x/0KvA//oRWJiyaRqBl3t5dZIGJWAE4DoBbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731441809; c=relaxed/simple;
-	bh=4V+ElV7iZ7MNpOcw5Soyu9KtvCkm/qDlDKSNirfb8vA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nKkQWA20QDnmjWXZsofbN3j+jE9Q7WyiUMTGqfUcxXTIPj9kpeXVFC+YIkl0DToWPGHY5Q+jtU0MDODxIO5+AkjdkoVafnHkwLDaAxvTFT15JbMdap9jZN/ELCNFdSmqg59E0X55fThtxTcuIxISeX2b0Lw/u7aWkDzM79vdRsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=xKSVHFtG; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Xny5c4M0Mz9tGT;
-	Tue, 12 Nov 2024 21:03:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1731441796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/9PwjHXkref7LjYELDw6TCYyWgj3et7c85IEa7VdQy4=;
-	b=xKSVHFtGxQnsbZ4ZxOwf0SBXpIcO421eBWdlFtKWrjuQbL0p9FT3dppR/R/Mtv96X6Eu2f
-	AYXoLJfWTnhmLk/K/oVgJCSmiGExqAk/92HtVuyNTnRb1eRdPhJKKVMF1OYuXL43Jzarif
-	CtLsI4hqBEEH7/2M/8ifYsHXKUPAv1d+QMJXbf+H6xqC9/YFTBr0Nqjjn9zSsqBT9w4Ckc
-	IFO68AiRbvsiTVWFM6+zGFHIMtW+b+BVZV40tR3U5p8NQ+USlRRxIeb2ObMa2kkv/PjRsU
-	2zwessE6us2Jph+wSfC7uEsBficf2Wup7KBNAFEi243gf2wfFIacN/in7IKRLQ==
-Message-ID: <99d08ebb-9a99-40e6-b1a6-7c82b1ee1bc0@hauke-m.de>
-Date: Tue, 12 Nov 2024 21:03:09 +0100
+	s=arc-20240116; t=1731444798; c=relaxed/simple;
+	bh=b9nh8b0iL/UODzLeCSVY4WsOgjRikaVGumQJxkWK+7g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mYyE+uVYB4g/M5nV6QmFVCFoAe0KWVVNfapdG9gx0SvmP9oyYdz3sP4qYd2KCwXzxo/BzvhpzWrVILNNJQGN4U1Kua5NQUtnW/EFqjJ/2fAQvL8jnA0b/2AVCwpV51uYA5bSuX0F+ukwXgZKOJ4xprlfE6N7ZR8AfaB9CRKekoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWmIOhfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10478C4CECD;
+	Tue, 12 Nov 2024 20:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731444797;
+	bh=b9nh8b0iL/UODzLeCSVY4WsOgjRikaVGumQJxkWK+7g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TWmIOhfO16xwytGgbEstKtub5WRi5poUlN3Z9U/L0St7eGXVJyiG/2OIxHnpWVgu3
+	 O/JN8+oKXwIFdao5irGuvEWEnQNh14IPcAKZHgg86bdLwJf6A3e5zyYcnWOykj4eao
+	 YYIhtHka6AujJGIcGhxBoBby8gVMyWyhj57dDH2c6GXoM4ERmugPIZLdLJTn+NGUE3
+	 Q8xOBc2sjTZPYI1rN2NZwhEUlVPcYGaDTa1oe7v+KFjgsRqXQRjAr2voqoAP/qWhtc
+	 tHHFXS+h8hka3tn/dyiL4Cmu2e/DIuaFm2RsTr4Tofubl1AAUIPFMVVizoEhZQoY8K
+	 cRp0DmPxQZX5A==
+From: SeongJae Park <sj@kernel.org>
+To: =?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] tools/mm: fix compile error
+Date: Tue, 12 Nov 2024 12:53:14 -0800
+Message-Id: <20241112205314.43962-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241112171655.1662670-1-motiejus@jakstys.lt>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: backport "udf: Allocate name buffer in directory iterator on
- heap" to 5.15
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, jack@suse.com
-References: <8e759d2a-423f-4e26-b4c2-098965c50f9e@hauke-m.de>
- <2024111134-empirical-snowcap-8357@gregkh>
-Content-Language: en-US
-From: Hauke Mehrtens <hauke@hauke-m.de>
-In-Reply-To: <2024111134-empirical-snowcap-8357@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 11/11/24 13:57, Greg KH wrote:
-> On Sun, Nov 10, 2024 at 06:36:08PM +0100, Hauke Mehrtens wrote:
->> Hi,
->>
->> I am running into this compile error in 5.15.171 in OpenWrt on 32 bit
->> systems. This problem was introduced with kernel 5.15.169.
->> ```
->> fs/udf/namei.c: In function 'udf_rename':
->> fs/udf/namei.c:878:1: error: the frame size of 1144 bytes is larger than
->> 1024 bytes [-Werror=frame-larger-than=]
->>    878 | }
->>        | ^
->> cc1: all warnings being treated as errors
->> make[2]: *** [scripts/Makefile.build:289: fs/udf/namei.o] Error 1
->> make[1]: *** [scripts/Makefile.build:552: fs/udf] Error 2
->> ```
->>
->> This is fixed by this upstream commit:
->> commit 0aba4860b0d0216a1a300484ff536171894d49d8
->> Author: Jan Kara <jack@suse.cz>
->> Date:   Tue Dec 20 12:38:45 2022 +0100
->>
->>      udf: Allocate name buffer in directory iterator on heap
->>
->>
->> Please backport this patch to 5.15 too.
->> It was already backported to kernel 6.1.
+On Tue, 12 Nov 2024 19:16:55 +0200 Motiejus Jakštys <motiejus@jakstys.lt> wrote:
+
+> Not much to be said here, add a missing semicolon.
 > 
-> I tried to take it as-is, but it broek the build.  Can you please submit
-> a tested version that actually works?
+> Fixes: ece5897e5a10 ("tools/mm: -Werror fixes in page-types/slabinfo")
+> Closes: https://github.com/NixOS/nixpkgs/issues/355369
+> Signed-off-by: Motiejus Jak\u0161tys <motiejus@jakstys.lt>
+> Cc: <stable@vger.kernel.org>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  tools/mm/page-types.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> thanks,
+> diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+> index 6eb17cc1a06c..bcac7ebfb51f 100644
+> --- a/tools/mm/page-types.c
+> +++ b/tools/mm/page-types.c
+> @@ -420,7 +420,7 @@ static void show_page(unsigned long voffset, unsigned long offset,
+>  	if (opt_file)
+>  		printf("%lx\t", voffset);
+>  	if (opt_list_cgroup)
+> -		printf("@%" PRIu64 "\t", cgroup)
+> +		printf("@%" PRIu64 "\t", cgroup);
+>  	if (opt_list_mapcnt)
+>  		printf("%" PRIu64 "\t", mapcnt);
+>  
 > 
-> greg k-h
-Hi,
-
-I just noticed that it does no compile on x86, I only tested it on MIPS 
-and there it compiles.
-
-I already have a fixed version will send it soon.
+> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+> -- 
+> 2.44.2
 
 
-Hauke
+Thanks,
+SJ
 
