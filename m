@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-92428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001B49C53F5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1D29C5634
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF161F213EB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF18DB24577
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349E92141B9;
-	Tue, 12 Nov 2024 10:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7452921314F;
+	Tue, 12 Nov 2024 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4JamrEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BenYDlsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03811A76C7;
-	Tue, 12 Nov 2024 10:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DFE20F5DD;
+	Tue, 12 Nov 2024 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407629; cv=none; b=ZlPAY8rsd6HmYnlCkZWaPD2ZBzucVhCmHjRSRIqbIr6qRC33jBYVWOC8rQYFIb8jZn/KbV/E7mAQ947hvhuRj2/+UDnQVZnoJnVSiKm5wb13/kM79K57G37Um4lfjTZ7S17r6bl0p4L7fRmNMnF1jGJPtG80pvXetv3c4j6VXoI=
+	t=1731407278; cv=none; b=Xo8l+f0PsHBW/LkfmphcU6irsWfK0R8AydEXIvxgi3qGkc833a2pM/FpA78RQmyBhT2oOkAf6zel4K3SJSal/cxvbEuDIWZCmGx0uJWjem20/tDYoPFdFww7qWhvqts90wOLmZJETG2IF96EdlzRJfDKqRf4wAdw3HgGXVMEFN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407629; c=relaxed/simple;
-	bh=RjLoRp/YLq3dZEkdGb6Aact7eiO0+qyNruk+XmuBatE=;
+	s=arc-20240116; t=1731407278; c=relaxed/simple;
+	bh=mhEjBcqHoBJfGwXOs6Bawas0uXzAJUFMaviGgdREopE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0Yn0AFEl0KgYaLHV5VeZjladdk1uQehxSbhvB0kLlA593k3pk0y20JHua97BHBLCTU3zBcfNoOyBWmy9L3EkcAXtbbAI7q51PlR3/A9KLGvFaGtu70Q3dB1xnIs4tYla66vZmgMrkbvsKR5SqnRkR/dJyuFbot00u2MrEYR3wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4JamrEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64091C4CED6;
-	Tue, 12 Nov 2024 10:33:48 +0000 (UTC)
+	 MIME-Version; b=eWjR55ZJQqSNb0WxIzt30R6ZkCEO6MPna5TnMPlcFbQaiRYNpql7FYsAJhkM83XT0mgg2ZsIYtr76TNKxezWfynz1tM6Ds8wFkzVK15mZU2EIa5+hMuEQam9BZ6qyuG7FtuEModm6NCd7/bqiBieifNkCeQRK9E5ovivNA0zap8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BenYDlsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB7BC4CECD;
+	Tue, 12 Nov 2024 10:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407628;
-	bh=RjLoRp/YLq3dZEkdGb6Aact7eiO0+qyNruk+XmuBatE=;
+	s=korg; t=1731407278;
+	bh=mhEjBcqHoBJfGwXOs6Bawas0uXzAJUFMaviGgdREopE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4JamrECx5a+DU+KkDR4G7jP2ZHfpTmxPcGPpA2Ii85dUGlFIgDQhIDjWjX4+vmO5
-	 15jB7TTf1aLueTFrHdAIoDUXUseILvFjcv4MULvhS2IswZAx1kcJ3SjY+YtXYFgdy8
-	 8kn27sApZDjYXupdt3Sc/wajhVLEtqIRKhJByLyE=
+	b=BenYDlsHXLmk/fd369vR6BxPjoeFPGPPvSKyfYtLvezFfmGDqToAOGpOZpz6fsi+6
+	 5adNIBkxUvaP3as8k7/pmC8yegpl8ueBa1J4G5s2msby1FDRdKxcAoqHo0BRJoZXGe
+	 yFs/7vGjTejE84vnuLMKD2cIXXrQqTN/7yEkgXis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/119] net: enetc: allocate vf_state during PF probes
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 27/98] i40e: fix race condition by adding filters intermediate sync state
 Date: Tue, 12 Nov 2024 11:20:42 +0100
-Message-ID: <20241112101850.015170545@linuxfoundation.org>
+Message-ID: <20241112101845.304756583@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-[ Upstream commit e15c5506dd39885cd047f811a64240e2e8ab401b ]
+[ Upstream commit f30490e9695ef7da3d0899c6a0293cc7cd373567 ]
 
-In the previous implementation, vf_state is allocated memory only when VF
-is enabled. However, net_device_ops::ndo_set_vf_mac() may be called before
-VF is enabled to configure the MAC address of VF. If this is the case,
-enetc_pf_set_vf_mac() will access vf_state, resulting in access to a null
-pointer. The simplified error log is as follows.
+Fix a race condition in the i40e driver that leads to MAC/VLAN filters
+becoming corrupted and leaking. Address the issue that occurs under
+heavy load when multiple threads are concurrently modifying MAC/VLAN
+filters by setting mac and port VLAN.
 
-root@ls1028ardb:~# ip link set eno0 vf 1 mac 00:0c:e7:66:77:89
-[  173.543315] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
-[  173.637254] pc : enetc_pf_set_vf_mac+0x3c/0x80 Message from sy
-[  173.641973] lr : do_setlink+0x4a8/0xec8
-[  173.732292] Call trace:
-[  173.734740]  enetc_pf_set_vf_mac+0x3c/0x80
-[  173.738847]  __rtnl_newlink+0x530/0x89c
-[  173.742692]  rtnl_newlink+0x50/0x7c
-[  173.746189]  rtnetlink_rcv_msg+0x128/0x390
-[  173.750298]  netlink_rcv_skb+0x60/0x130
-[  173.754145]  rtnetlink_rcv+0x18/0x24
-[  173.757731]  netlink_unicast+0x318/0x380
-[  173.761665]  netlink_sendmsg+0x17c/0x3c8
+1. Thread T0 allocates a filter in i40e_add_filter() within
+        i40e_ndo_set_vf_port_vlan().
+2. Thread T1 concurrently frees the filter in __i40e_del_filter() within
+        i40e_ndo_set_vf_mac().
+3. Subsequently, i40e_service_task() calls i40e_sync_vsi_filters(), which
+        refers to the already freed filter memory, causing corruption.
 
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241031060247.1290941-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reproduction steps:
+1. Spawn multiple VFs.
+2. Apply a concurrent heavy load by running parallel operations to change
+        MAC addresses on the VFs and change port VLANs on the host.
+3. Observe errors in dmesg:
+"Error I40E_AQ_RC_ENOSPC adding RX filters on VF XX,
+	please set promiscuous on manually for VF XX".
+
+Exact code for stable reproduction Intel can't open-source now.
+
+The fix involves implementing a new intermediate filter state,
+I40E_FILTER_NEW_SYNC, for the time when a filter is on a tmp_add_list.
+These filters cannot be deleted from the hash list directly but
+must be removed using the full process.
+
+Fixes: 278e7d0b9d68 ("i40e: store MAC/VLAN filters in a hash with the MAC Address as key")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
+Tested-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/enetc/enetc_pf.c    | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h         |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_debugfs.c |  1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c    | 12 ++++++++++--
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index c153dc083aff0..a856047f1dfd6 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -665,19 +665,11 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 5293fc00938cf..22ac8c48ca340 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -790,6 +790,7 @@ enum i40e_filter_state {
+ 	I40E_FILTER_ACTIVE,		/* Added to switch by FW */
+ 	I40E_FILTER_FAILED,		/* Rejected by FW */
+ 	I40E_FILTER_REMOVE,		/* To be removed */
++	I40E_FILTER_NEW_SYNC,		/* New, not sent yet, is in i40e_sync_vsi_filters() */
+ /* There is no 'removed' state; the filter struct is freed */
+ };
+ struct i40e_mac_filter {
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+index 62497f5565c59..b438cf846c41b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+@@ -105,6 +105,7 @@ static char *i40e_filter_state_string[] = {
+ 	"ACTIVE",
+ 	"FAILED",
+ 	"REMOVE",
++	"NEW_SYNC",
+ };
  
- 	if (!num_vfs) {
- 		enetc_msg_psi_free(pf);
--		kfree(pf->vf_state);
- 		pf->num_vfs = 0;
- 		pci_disable_sriov(pdev);
- 	} else {
- 		pf->num_vfs = num_vfs;
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 5f46a0677d195..3b165d8f03dc2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1251,6 +1251,7 @@ int i40e_count_filters(struct i40e_vsi *vsi)
  
--		pf->vf_state = kcalloc(num_vfs, sizeof(struct enetc_vf_state),
--				       GFP_KERNEL);
--		if (!pf->vf_state) {
--			pf->num_vfs = 0;
--			return -ENOMEM;
--		}
--
- 		err = enetc_msg_psi_init(pf);
- 		if (err) {
- 			dev_err(&pdev->dev, "enetc_msg_psi_init (%d)\n", err);
-@@ -696,7 +688,6 @@ static int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
- err_en_sriov:
- 	enetc_msg_psi_free(pf);
- err_msg_psi:
--	kfree(pf->vf_state);
- 	pf->num_vfs = 0;
+ 	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
+ 		if (f->state == I40E_FILTER_NEW ||
++		    f->state == I40E_FILTER_NEW_SYNC ||
+ 		    f->state == I40E_FILTER_ACTIVE)
+ 			++cnt;
+ 	}
+@@ -1437,6 +1438,8 @@ static int i40e_correct_mac_vlan_filters(struct i40e_vsi *vsi,
  
- 	return err;
-@@ -1283,6 +1274,12 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	pf = enetc_si_priv(si);
- 	pf->si = si;
- 	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
-+	if (pf->total_vfs) {
-+		pf->vf_state = kcalloc(pf->total_vfs, sizeof(struct enetc_vf_state),
-+				       GFP_KERNEL);
-+		if (!pf->vf_state)
-+			goto err_alloc_vf_state;
-+	}
+ 			new->f = add_head;
+ 			new->state = add_head->state;
++			if (add_head->state == I40E_FILTER_NEW)
++				add_head->state = I40E_FILTER_NEW_SYNC;
  
- 	err = enetc_setup_mac_addresses(node, pf);
- 	if (err)
-@@ -1360,6 +1357,8 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	free_netdev(ndev);
- err_alloc_netdev:
- err_setup_mac_addresses:
-+	kfree(pf->vf_state);
-+err_alloc_vf_state:
- 	enetc_psi_destroy(pdev);
- err_psi_create:
- 	return err;
-@@ -1386,6 +1385,7 @@ static void enetc_pf_remove(struct pci_dev *pdev)
- 	enetc_free_si_resources(priv);
+ 			/* Add the new filter to the tmp list */
+ 			hlist_add_head(&new->hlist, tmp_add_list);
+@@ -1546,6 +1549,8 @@ static int i40e_correct_vf_mac_vlan_filters(struct i40e_vsi *vsi,
+ 				return -ENOMEM;
+ 			new_mac->f = add_head;
+ 			new_mac->state = add_head->state;
++			if (add_head->state == I40E_FILTER_NEW)
++				add_head->state = I40E_FILTER_NEW_SYNC;
  
- 	free_netdev(si->ndev);
-+	kfree(pf->vf_state);
+ 			/* Add the new filter to the tmp list */
+ 			hlist_add_head(&new_mac->hlist, tmp_add_list);
+@@ -2437,7 +2442,8 @@ static int
+ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
+ 			  struct i40e_mac_filter *f)
+ {
+-	bool enable = f->state == I40E_FILTER_NEW;
++	bool enable = f->state == I40E_FILTER_NEW ||
++		      f->state == I40E_FILTER_NEW_SYNC;
+ 	struct i40e_hw *hw = &vsi->back->hw;
+ 	int aq_ret;
  
- 	enetc_psi_destroy(pdev);
- }
+@@ -2611,6 +2617,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 
+ 				/* Add it to the hash list */
+ 				hlist_add_head(&new->hlist, &tmp_add_list);
++				f->state = I40E_FILTER_NEW_SYNC;
+ 			}
+ 
+ 			/* Count the number of active (current and new) VLAN
+@@ -2762,7 +2769,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 		spin_lock_bh(&vsi->mac_filter_hash_lock);
+ 		hlist_for_each_entry_safe(new, h, &tmp_add_list, hlist) {
+ 			/* Only update the state if we're still NEW */
+-			if (new->f->state == I40E_FILTER_NEW)
++			if (new->f->state == I40E_FILTER_NEW ||
++			    new->f->state == I40E_FILTER_NEW_SYNC)
+ 				new->f->state = new->state;
+ 			hlist_del(&new->hlist);
+ 			netdev_hw_addr_refcnt(new->f, vsi->netdev, -1);
 -- 
 2.43.0
 
