@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A2B9C5603
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:14:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CE09C55B2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 189AFB37ACD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4AB28F14F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD921213EF4;
-	Tue, 12 Nov 2024 10:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC702194B0;
+	Tue, 12 Nov 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPGYmHQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJR/aszO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B29C1BD031;
-	Tue, 12 Nov 2024 10:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F5213144;
+	Tue, 12 Nov 2024 10:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407738; cv=none; b=GIIVwG2aI6moJge7AZqGzsMh1WoWARVSmAITMU8qVP8p9cu3svsE1slVFkjb24MT06Y1yVpy1kLLhd0aMqXbPy/cN5iuRXLKbjerOxEcw9avv465opzZNnsdE3IBpAyLtZUr8csbs3ur6kUAxRpuDYNTc5kiVPUZSV8owMcWnFE=
+	t=1731408293; cv=none; b=JORNH3Bzt7Ldrqd8Sl2AC4yR6my5EUhrgsifBqQQ8ObZMhQ/1Jf1ZZPqbD9oDJ5wkgCWA3GiVJoLmaF69ceiXGfA9kD9hPKuA6K5WMERbzRMC8W83NiQqtCK+WoBHW1mXdwZVaVFk0NO3ve/24ztCwCDRiomdtRWnhPcTXMYdzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407738; c=relaxed/simple;
-	bh=4by0597Gx6ocyiukH7gi1Yy/euNTQp8NdgEUYkvRhq4=;
+	s=arc-20240116; t=1731408293; c=relaxed/simple;
+	bh=yTP9onIMtloUwdyTj0JMtXokwjMZ5OrdCua2+90C+4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFXqeI6kUTYUYCCfs5kmAiYK0gsDdTKctvsspOTbvgeulSqG5L7aMJUltUfVPPmMJHEBzp6rWteAMh357cS+YQIA7MKGde9+bbxE+1xnx/6hSFvdA31Z7PS8//jJZc7e4G9G7+bv4FnFS4bNbhybBwxsQOfR+G8d4kswL4PC/2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPGYmHQA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28398C4CED4;
-	Tue, 12 Nov 2024 10:35:37 +0000 (UTC)
+	 MIME-Version; b=aQ6nYDOzhqML06ZdJc3b4QtUD7cqafFQ/Rr0wuYyazPKVx/EZbx9l1ukqrgAQ2cNTP4YaFjq0RIpDaIrpwGhTHQUDOWvpq9ZtPisTq8+kTqSFM3Unuf1IwHyer2/K1ZVBzs2zfaxTsh6iifeiwN3YrK8v0WvrB9r7lFX+E40ahA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJR/aszO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0EBC4CECD;
+	Tue, 12 Nov 2024 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407738;
-	bh=4by0597Gx6ocyiukH7gi1Yy/euNTQp8NdgEUYkvRhq4=;
+	s=korg; t=1731408293;
+	bh=yTP9onIMtloUwdyTj0JMtXokwjMZ5OrdCua2+90C+4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPGYmHQAppKV4t4qsbflO8cyP6T5aIU+LBn4j/8hMX6EM0GoJVJddPC8ey6QItH/Y
-	 UU6B/YanAN79tnRkZHndDpXeTdJcUGSlyjLp1Ze72HoydAlLPT880cY32Kt7sVEmWO
-	 YyQVEqcKjJI2Qtapf5HY4RpzIRMPxQIJNp5BwvXo=
+	b=NJR/aszODYWZ3IQHTMmgVQL39aEQMyFjEwyPoPlNLbK6BfIbwibmOBZnd/Kv02r3J
+	 j/LMdpjTo9medm4xl5nUjq27+4WpXZB3Zdqdfx7mOLGsjbigVqwg04SXFJmx0fVgXe
+	 zD49mvU0cdG/fAFBpMT/1i3Llm1Gh7SmHXpSCOrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 068/119] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.11 118/184] dm cache: fix potential out-of-bounds access on the first resume
 Date: Tue, 12 Nov 2024 11:21:16 +0100
-Message-ID: <20241112101851.312693799@linuxfoundation.org>
+Message-ID: <20241112101905.397314077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a upstream.
+commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
+Out-of-bounds access occurs if the fast device is expanded unexpectedly
+before the first-time resume of the cache table. This happens because
+expanding the fast device requires reloading the cache table for
+cache_create to allocate new in-core data structures that fit the new
+size, and the check in cache_preresume is not performed during the
+first resume, leading to the issue.
 
-As the TEF has no head pointer, the driver uses the TX FIFO's tail
-pointer instead, assuming that send frames are completed. However the
-check for the TEF being full was not correct. This leads to the driver
-stop working if the TEF is full.
+Reproduce steps:
 
-Fix the TEF full check by assuming that if, from the driver's point of
-view, there are no free TX buffers in the chip and the TX FIFO is
-empty, all messages must have been sent and the TEF must therefore be
-full.
+1. prepare component devices:
 
-Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+
+2. load a cache table of 512 cache blocks, and deliberately expand the
+   fast device before resuming the cache, making the in-core data
+   structures inadequate.
+
+dmsetup create cache --notable
+dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+3. suspend the cache to write out the in-core dirty bitset and hint
+   array, leading to out-of-bounds access to the dirty bitset at offset
+   0x40:
+
+dmsetup suspend cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
+  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc90000085000, ffffc90000087000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
+                                             ^
+   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by checking the size change on the first resume.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -16,9 +16,9 @@
- 
- #include "mcp251xfd.h"
- 
--static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2901,24 +2901,24 @@ static dm_cblock_t get_cache_dev_size(st
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
  {
--	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
- 
- static inline int
-@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
- 	if (err)
- 		return err;
- 
--	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+	/* If the chip says the TX-FIFO is empty, but there are no TX
-+	 * buffers free in the ring, we assume all have been sent.
-+	 */
-+	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0) {
- 		*len_p = tx_ring->obj_num;
- 		return 0;
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+-		if (cache->sized) {
+-			DMERR("%s: unable to extend cache due to missing cache table reload",
+-			      cache_device_name(cache));
+-			return false;
+-		}
++		DMERR("%s: unable to extend cache due to missing cache table reload",
++		      cache_device_name(cache));
++		return false;
  	}
+ 
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
+-					   from_cblock(cache->cache_size),
+-					   from_cblock(new_size)));
+-	if (new_size != cache->cache_size) {
+-		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-		      cache_device_name(cache),
+-		      (unsigned long long) from_cblock(new_size));
+-		return false;
++	if (cache->loaded_mappings) {
++		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++						   from_cblock(cache->cache_size),
++						   from_cblock(new_size)));
++		if (new_size != cache->cache_size) {
++			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++			      cache_device_name(cache),
++			      (unsigned long long) from_cblock(new_size));
++			return false;
++		}
+ 	}
+ 
+ 	return true;
+@@ -2949,20 +2949,15 @@ static int cache_preresume(struct dm_tar
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
+-	if (!cache->sized) {
+-		r = resize_cache_dev(cache, csize);
+-		if (r)
+-			return r;
+-
+-		cache->sized = true;
+-
+-	} else if (csize != cache->cache_size) {
++	if (!cache->sized || csize != cache->cache_size) {
+ 		if (!can_resize(cache, csize))
+ 			return -EINVAL;
+ 
+ 		r = resize_cache_dev(cache, csize);
+ 		if (r)
+ 			return r;
++
++		cache->sized = true;
+ 	}
+ 
+ 	if (!cache->loaded_mappings) {
 
 
 
