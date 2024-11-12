@@ -1,165 +1,138 @@
-Return-Path: <stable+bounces-92223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A653F9C527C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:54:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C819C529A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 781F5B27513
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:30:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEC89B26A9E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A214020DD6A;
-	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7AA20DD78;
+	Tue, 12 Nov 2024 09:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QViwrG8G"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="UHMWgGAK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579BF204921;
-	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2BA1AAE06
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 09:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731403817; cv=none; b=gQhMADPDyPnjpXQGGqNpKX8HD8tDoLCjyb8xZKp03B0QdTzdUTJ88/FSJEKAsr6OGNYRGZ+P9dxkKil+onGEj18QcBCybEBRZsc7yxYLx/gRkT/k+ZtpgrfY91JUDyB9PVg8RzYIIYNnFvO+FbHOaI4N459QmHa0rDMtDDukHTQ=
+	t=1731404221; cv=none; b=DRWpWfxEhw5vWTM6sjNx4D5qunExdCT/SNd9PfaiEqFBynj5VZqR8ZsNZ3rR1fWMrMwCgp1vZ9EnQzTK0KZHnRBwFPgLX2Vzl54XxgCFDbpL4FTY76XQ9D7knKjrXHOOkb0qLJOG7mShhR+KGWIZ5dpL6yfNr8wY8wGwnq+nNX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731403817; c=relaxed/simple;
-	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s4RlaxCm1hqXC7vgMiPCa2jde9UC+t5eBRMPnlyxJFHU+svwmfbL5YBjhkHLokqtpBY1klvUoWhQX+/8xmC3nqPvfpai0C7VMv4KMunE1Iw1WZzIgLAZlPuq9pyxUKK8EbMGED2qtbhARL2iAkfO1EVa7M56hXs06/jHaYPGosk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QViwrG8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DE4ACC4CECD;
-	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731403816;
-	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QViwrG8G+KH5bALFXMyZa3ecubAwFYyaEohO/FjmyVVb2VI5guyIL0r2F0xqbzti7
-	 wBgJKetJkSckaF73TLDg/NXlHJsmnIPTzd4BtkefrAJb8J10QsRmINv8KOJM1PK0NA
-	 SuDQbJxu1R17yjovoKXZGpeoDRE6TcdZacBvfmKlQ3OPtgxQtOd013g63daf/Gposa
-	 UnET4aJWZ7iz7P9CEYX5uyom3xAc99zUsSHAb9qLZNA4j5ycVTlcvVNu7cjPK9s1TE
-	 jpKT/OW2yNPKyovQrzH3zm+VQLH1K2ZipjLW4gnbv91dwKJW+5TOIVgIucdnrh910m
-	 X0j25bGaChVGA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6E78D32D78;
-	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Tue, 12 Nov 2024 10:30:10 +0100
-Subject: [PATCH v2] iio: imu: inv_icm42600: fix spi burst write not
- supported
+	s=arc-20240116; t=1731404221; c=relaxed/simple;
+	bh=ZirD2o+EJXQAC2ksTSN6gD3A64U3kcldn5ThTjC+T20=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z+TgF9LTKJewG09tUtaBfeQmKEZKQe+j0OosCMtI7gCnzy5iZfOvO0YlxmWT6lIKAARdXgeLrxRyAE7gnCgOIMMF7BxCMwAy7qf3LTl8h9A35aV92Cot/mqoKvT2L1Pc3HgtdYhbOgKYO1lvOmltB04mncLKzHqUqmHtgcwHjRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=UHMWgGAK; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731404220; x=1762940220;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TITFaZOUOb9OmX8WSSXkmylCpMEuOe9AT4h680Vqef8=;
+  b=UHMWgGAKE3xkLyDPtF0oMWnkijwS7TWV0J/niHiPZ5qKqUxty+yCUR7X
+   h5XKBA6p34FtKN+LEm0UKl4ClNPavcko+Y0/HbWulzihP06VDudl1Flnp
+   /8abQBo1VTVgAMLIZR9YyqrJ3wJ9NNFwLrt9kDmpiCMlsAx0g5ATVzZk4
+   g=;
+X-IronPort-AV: E=Sophos;i="6.12,147,1728950400"; 
+   d="scan'208";a="673250461"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 09:36:37 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.10.100:14651]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.5.109:2525] with esmtp (Farcaster)
+ id 4c26cf57-edf6-4644-ad5e-cf2d10f481d4; Tue, 12 Nov 2024 09:36:35 +0000 (UTC)
+X-Farcaster-Flow-ID: 4c26cf57-edf6-4644-ad5e-cf2d10f481d4
+Received: from EX19D008EUA004.ant.amazon.com (10.252.50.158) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 12 Nov 2024 09:36:35 +0000
+Received: from EX19MTAUWB002.ant.amazon.com (10.250.64.231) by
+ EX19D008EUA004.ant.amazon.com (10.252.50.158) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Tue, 12 Nov 2024 09:36:34 +0000
+Received: from email-imr-corp-prod-iad-all-1a-47ca2651.us-east-1.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.228) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Tue, 12 Nov 2024 09:36:34 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-iad-all-1a-47ca2651.us-east-1.amazon.com (Postfix) with ESMTP id D914040411;
+	Tue, 12 Nov 2024 09:36:33 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id 9440720D8F; Tue, 12 Nov 2024 09:36:33 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Hagar Hemdan <hagarhem@amazon.com>, "Maximilian
+ Heyne" <mheyne@amazon.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+Date: Tue, 12 Nov 2024 09:36:31 +0000
+Message-ID: <20241112093631.6864-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com>
-X-B4-Tracking: v=1; b=H4sIACEgM2cC/52NQQ7CIBBFr9KwdgxgK9WV9zBdtGVqJ6ZAgKKm4
- e5ij+Dy/eS/t7GAnjCwa7Uxj4kCWVNAHio2zr15IJAuzCSXtRBcAZkENC61PHMOE70hOIJh9SH
- Cy1NEMDZCWJ2zPqIGnFC1Wp3UpW9YkTqP5bQH713hmUK0/rP3k/itf6eSAAEt54OUjao1F7eon
- 8fRLqzLOX8BnHrTQOoAAAA=
-X-Change-ID: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731403815; l=3521;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=7v9hwAsLUpLcVbsTisYNf2ERfbiuJIYiXvYRPsz8tx0=;
- b=hlq8yXvk4Oc+vucDWRJ3i3I3OlJVXjHjKmsaAEgYaeD6i/+m9S2RotslVeST0sV1EnSRxVOPW
- Z1uRlrfd9VzAGHoTHeQNUK4RLC3zng+++9EXla5uVWddL2S+VWS7BbF
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
 
-Burst write with SPI is not working for all icm42600 chips. It was
-only used for setting user offsets with regmap_bulk_write.
+The io_register_iowq_max_workers() function calls io_put_sq_data(),
+which acquires the sqd->lock without releasing the uring_lock.
+Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+before acquiring sqd->lock"), this can lead to a potential deadlock
+situation.
 
-Add specific SPI regmap config for using only single write with SPI.
+To resolve this issue, the uring_lock is released before calling
+io_put_sq_data(), and then it is re-acquired after the function call.
 
-Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+This change ensures that the locks are acquired in the correct
+order, preventing the possibility of a deadlock.
+
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[Hagar: Modified to apply on v5.10]
 ---
-Changes in v2:
-- Add new spi specific regmap config instead of editing existing one.
-- Link to v1: https://lore.kernel.org/r/20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 15 +++++++++++++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  3 ++-
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 3a07e43e4cf154f3107c015c30248330d8e677f8..18787a43477b89db12caee597ab040af5c8f52d5 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
- typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index f1ab0cd98727..3dbc704c7001 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -10818,8 +10818,10 @@ static int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	}
  
- extern const struct regmap_config inv_icm42600_regmap_config;
-+extern const struct regmap_config inv_icm42600_spi_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
+ 	}
  
- const struct iio_mount_matrix *
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..834c32cb07f354ab52e69bfeea8f00b6443e8dd9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_regmap_config = {
- };
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, IIO_ICM42600);
- 
-+/* define specific regmap for SPI not supporting burst write */
-+const struct regmap_config inv_icm42600_spi_regmap_config = {
-+	.name = "inv_icm42600",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x4FFF,
-+	.ranges = inv_icm42600_regmap_ranges,
-+	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
-+	.volatile_table = inv_icm42600_regmap_volatile_accesses,
-+	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
-+	.cache_type = REGCACHE_RBTREE,
-+	.use_single_write = true,
-+};
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, IIO_ICM42600);
+ 	if (copy_to_user(arg, new_count, sizeof(new_count)))
+@@ -10844,8 +10846,11 @@ static int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	return 0;
+ err:
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
 +
- struct inv_icm42600_hw {
- 	uint8_t whoami;
- 	const char *name;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index 3b6d05fce65d544524b25299c6d342af92cfd1e0..deb0cbd8b7fe6fcb562067afaca931c148f6fca6 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	chip = (uintptr_t)match;
- 
--	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
-+	/* use SPI specific regmap */
-+	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
-
----
-base-commit: c9f8285ec18c08fae0de08835eb8e5953339e664
-change-id: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-
-Best regards,
+ 	}
+ 	return ret;
+ }
 -- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
+2.40.1
 
 
