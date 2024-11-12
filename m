@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-92735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16CC9C55D2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8659C54E6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 798531F23BF8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 011672840CC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CDC21A4D0;
-	Tue, 12 Nov 2024 10:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42812280A5;
+	Tue, 12 Nov 2024 10:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZYTil4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6eHUwAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C883F2144B5;
-	Tue, 12 Nov 2024 10:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0922809E;
+	Tue, 12 Nov 2024 10:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408419; cv=none; b=l9/OBDxXNKiKLu1X8eBuEKdxVrUZ0zKt1RqPlalMiwGDf6pFpp+Tp67WCtEcQjLF0Ave5U1Uzck/WV397hPXSUZGjIoGt6roLi1Xua1PPFrk++zR9gtie//0Sr3xcvNO1M/oVURTBXqN6TLbercgMEaL1WHW7Alh5w1voqAew/Q=
+	t=1731407861; cv=none; b=uDZeciPPZaYR5uWgG9fmIETBjChOLpjocKfc9FDSs0Jr3E8Wf7H1NocHoyOFclNOQJR/yPQgOaf97SlMDEu2dYOdOQVpOb7IfseV/FxMHzkE3b+vDSv9YqCFrJ7eROXmR8dsKhYRoUJAlAcgKCCW0sm4xVpCTqtDwwXxAntptms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408419; c=relaxed/simple;
-	bh=YAKjjb3neQHtNmYmCA69sCC/dMlmyyirr5Mqa1MfGTI=;
+	s=arc-20240116; t=1731407861; c=relaxed/simple;
+	bh=wM/QUlVK7w6+nfEE+78DZjjgyI7rOYYsZTYbbVqJZTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHpDZi2uxgfH2czZg6KIFJ4IKxmZsntTGdYbCaMuz3HO2jt9x7NB0w3ecPAqGh8dlWABksbc2/D3N24bMvUiZaeOcEc6PsGSXZPJG/8DxKzo2Rxn7G/aJZ9GWSekBe7Q2KuISKQwIxIXzbhZC5lWSNc1zBAo6cpGxOhZAKPRNVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZYTil4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF93C4CECD;
-	Tue, 12 Nov 2024 10:46:59 +0000 (UTC)
+	 MIME-Version; b=PtCY0xJiukQOPeqVZG87ASf0RwzsEBviE8+D532wJzRPK5pFRPrOTFaAQ256s+hAHobF/U2AWisfPYCj347r5DlJrQonjhUlxc75fY+5MbnlzgZXS9RBfHrny69VO180LyZoMmk6Qg3By1/ziKhAo8azzw6g/buJh3PBat74b6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6eHUwAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB59BC4CED4;
+	Tue, 12 Nov 2024 10:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408419;
-	bh=YAKjjb3neQHtNmYmCA69sCC/dMlmyyirr5Mqa1MfGTI=;
+	s=korg; t=1731407861;
+	bh=wM/QUlVK7w6+nfEE+78DZjjgyI7rOYYsZTYbbVqJZTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZYTil4XcpkhehUV7h1J68RX/W+jcOSroVE+IGQJjpxhdXvn2UOBZ1dZJNm9wnJXA
-	 J56nJRBfSV+aCCEPhdqI/ECoNNpjkrR4zudLwO6B3+N40ivAYV0ZwaPQyGOkKiTkbA
-	 40HMvMnU+ESB1xh312E49LOVMXRD/TuCz2EY5ijg=
+	b=j6eHUwAPfm1skl+pzsvpH5kL8kAW0Yz7kFs90aO2nsRiRGMVXqts24HvSPx3fYpyu
+	 xM3+hp5yaFLY1mcbr00eX3yoTFg++F1a0wOndA5zuz9Hg0Cs9UiEepzX2w+Dqj8E2A
+	 YoGlaszZIwgsjQwQJum05GDwPXsR1Rj6wqEx7Aq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 6.11 156/184] usb: musb: sunxi: Fix accessing an released usb phy
+Subject: [PATCH 6.6 106/119] usb: musb: sunxi: Fix accessing an released usb phy
 Date: Tue, 12 Nov 2024 11:21:54 +0100
-Message-ID: <20241112101906.858393911@linuxfoundation.org>
+Message-ID: <20241112101852.772264661@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
