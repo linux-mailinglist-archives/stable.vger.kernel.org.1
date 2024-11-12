@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-92554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF779C574A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:06:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE519C5733
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A95E7B2F028
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:56:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 891F7B3247C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1CE231CA4;
-	Tue, 12 Nov 2024 10:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C721FFC5C;
+	Tue, 12 Nov 2024 10:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbE5ARv8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQ+OFVXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E452309F9;
-	Tue, 12 Nov 2024 10:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0BC1FFC4E;
+	Tue, 12 Nov 2024 10:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407877; cv=none; b=qJexOw1BnoVl/KaFWZFElK98Drpr6kbj/ndeky9XRCcbWD//XnLJsvWHdYKHTKS8l0bIvIL9cYb+K9s4PfkgSvvCOUPxxPp5wrRld5PnfvwxoXb8PeU9FmLCu43DxFTsZk35oqBz0xtSeicujk2Dntv5SS8cZTPy/0/XmUjzJj0=
+	t=1731407895; cv=none; b=olB6W9XOpOiD60/LGT8CBznj2HHKAPyXN+/ElGC10xCi2PiAJehz7esgLfCvgpi3D3HOWH+sQ/1XCghd/zYDGRqd8yTF6IWmf5fIZT5tOefJajY/vqDxZRXWgUfc5VbCBWRsJ37mGUCA0hGiKf1AgscFfpIUjrVHjBX29/F9hTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407877; c=relaxed/simple;
-	bh=od6gr/PGtSwhl7xGbZ35EBKxaOm7AXdWNVc0c5rm570=;
+	s=arc-20240116; t=1731407895; c=relaxed/simple;
+	bh=0B3GM3Pdioo3nMOBEQS4Plqu3UZIoKk5afiFKD6k6I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kr2TVU7nnqd/Spw8VUw7/wo6P8+oNosUNAsG2CXGzzFO15mT+ilSVvfuUkuhYIO8Wkkurd8fnazQhGWJqodod80a2aO4PD0iueLstusx8nzmAGno3Ei9XFdZgXc8t8iosqknFtexJ3KFxYofwENnqMAlj18ZaxIIl4AXXVzowq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbE5ARv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DB2C4CECD;
-	Tue, 12 Nov 2024 10:37:55 +0000 (UTC)
+	 MIME-Version; b=PYQDIeIhEO5Wtc13nZ4M7oGcAwROM+awDMqziCoARWs5bJwt1VbwF9FZ+2tIj8c/4KqGlR6mzizvURm5K4O5USl78ZLEJyI/Ycsp+ZcOsl3zUcMowfvmoJDiYydFA3nXOIde5F0xgz1prhz3tC2Aois4ZeojqDaJSzViqlUbh78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQ+OFVXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85147C4CED4;
+	Tue, 12 Nov 2024 10:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407877;
-	bh=od6gr/PGtSwhl7xGbZ35EBKxaOm7AXdWNVc0c5rm570=;
+	s=k20201202; t=1731407895;
+	bh=0B3GM3Pdioo3nMOBEQS4Plqu3UZIoKk5afiFKD6k6I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbE5ARv8VXVGQSnT5oDhTWAJnlxal2UCMV3RoYqOw1LwAAbqn+tMVsiBLIK9uHsW7
-	 oQ+hANPjm4kVfF+ye/Vg33Yn1LjryPK4+lCJPiPyW/Jayyw92K+F33OyyW0v6Ga7Hv
-	 Tb7WemweoHw1VS0dAipo3IVZMGFvF3IuFVeZtbD/4wlEgGsUijrHDvRHD/Im9IgAsM
-	 FTvWCTunzRJmeIWQK3aOoJNHghJxnO/DvkLd8iwh3ZKVxlPuxidkvr8Yq1meIa3SSE
-	 LYcOaxk/vrNIUAx7aDvD9P1OlM2cuigWkTL7tulcvvjEiAtt1mVcD5U+aXo6dB5alL
-	 e6uWgjmSS4muw==
+	b=sQ+OFVXe1O1qpjIuqdlz35S6ITIR2B5xtWa70bBlL02+leaGJdMiA5KgZ39QibNnv
+	 3XQWNGuHazr4YhgsOhTnOXRroCDs7bs+rmh04pS4LnCYA3wEYtdCGWltBLQ3RPEigA
+	 evNI2Fl5Gmwxi/bt9IcOU+W3wOeMvQsIVk6rB+/JTpepD/bLhSk2iELGiXbsaN1/Q/
+	 S4B8nQRMz/dhcwW73EIYqhZK/+6gJ9e8vWI79uelXiKVIOpfSd04XdoUmJ9SyL8Eps
+	 TWl8FL4oQoHJMv7hmXfPKqEX7MTSNH5SH8dGcVM0s29ICBUoQ1+84I8Z8tnkCLqcv5
+	 izf5BEKjwyGmg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: David Wang <00107082@163.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	olivier.moysan@foss.st.com,
-	arnaud.pouliquen@foss.st.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 6/8] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
-Date: Tue, 12 Nov 2024 05:37:40 -0500
-Message-ID: <20241112103745.1653994-6-sashal@kernel.org>
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 6/6] proc/softirqs: replace seq_printf with seq_put_decimal_ull_width
+Date: Tue, 12 Nov 2024 05:38:01 -0500
+Message-ID: <20241112103803.1654174-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241112103745.1653994-1-sashal@kernel.org>
-References: <20241112103745.1653994-1-sashal@kernel.org>
+In-Reply-To: <20241112103803.1654174-1-sashal@kernel.org>
+References: <20241112103803.1654174-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,40 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.171
+X-stable-base: Linux 5.10.229
 Content-Transfer-Encoding: 8bit
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: David Wang <00107082@163.com>
 
-[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
+[ Upstream commit 84b9749a3a704dcc824a88aa8267247c801d51e4 ]
 
-This patch checks if div is less than or equal to zero (div <= 0). If
-div is zero or negative, the function returns -EINVAL, ensuring the
-division operation (*prate / div) is safe to perform.
+seq_printf is costy, on a system with n CPUs, reading /proc/softirqs
+would yield 10*n decimal values, and the extra cost parsing format string
+grows linearly with number of cpus. Replace seq_printf with
+seq_put_decimal_ull_width have significant performance improvement.
+On an 8CPUs system, reading /proc/softirqs show ~40% performance
+gain with this patch.
 
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: David Wang <00107082@163.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/proc/softirqs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 9c3b8e2096565..aa9cdd93b5778 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -380,8 +380,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
- 	int div;
- 
- 	div = stm32_sai_get_clk_div(sai, *prate, rate);
--	if (div < 0)
--		return div;
-+	if (div <= 0)
-+		return -EINVAL;
- 
- 	mclk->freq = *prate / div;
- 
+diff --git a/fs/proc/softirqs.c b/fs/proc/softirqs.c
+index 12901dcf57e2b..d8f4e7d54d002 100644
+--- a/fs/proc/softirqs.c
++++ b/fs/proc/softirqs.c
+@@ -19,7 +19,7 @@ static int show_softirqs(struct seq_file *p, void *v)
+ 	for (i = 0; i < NR_SOFTIRQS; i++) {
+ 		seq_printf(p, "%12s:", softirq_to_name[i]);
+ 		for_each_possible_cpu(j)
+-			seq_printf(p, " %10u", kstat_softirqs_cpu(i, j));
++			seq_put_decimal_ull_width(p, " ", kstat_softirqs_cpu(i, j), 10);
+ 		seq_putc(p, '\n');
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
