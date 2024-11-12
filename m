@@ -1,139 +1,93 @@
-Return-Path: <stable+bounces-92209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9F49C50A2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3124C9C50A3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:31:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C77501F213A2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 08:31:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2791F213D9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 08:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF48920B1E8;
-	Tue, 12 Nov 2024 08:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DF420C002;
+	Tue, 12 Nov 2024 08:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="FVE8EUmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcwqxcaN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1256A20B217
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 08:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1292920B7F6;
+	Tue, 12 Nov 2024 08:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731400221; cv=none; b=DZ6FK2/0VJYh7ihMkC72b0B5LQ0KfEkrRpAF5Z78m38xYE+ZgcujUvDWV5po/LjoMyOQknWDVThsRxWZE1WR+RwubB9PCdMnuAg5na7QaGZ06xrQF8ZRaH8UvDHgWcYAbrv0MmSuSYQc1+LBT2eRbtBV1IM8kM18lkUpZec5WYk=
+	t=1731400232; cv=none; b=dyd4qwPQsNV3GhddeWB5UEK+onpvou1wSXtdBKwkilVJk3TJYBFGjpVEB9nxj35BxL4ltHV3PEhSoK0t/g3IeAoNfLrZPocRiLkw7gx+GwE7yB2i6A47iXGqtnaPygIOzT3jn4hrBOIdEjPcH74nJe3AgZctOpfKsRktpDoDNhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731400221; c=relaxed/simple;
-	bh=S1558sC7K7SNLvFrxopPAYYIQfwYpDyfqK5JGVLvFI0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HCU6hfW6Xhm3RZDPX4UKmGOW0tZO7o51/xS5GnKv8yrhfQ7m2nhMJviK7Wp0yQ9LPr1YAkJbdQJVR3DuxXRLLKnMTPqtfq+1UW8EodGM1TgCG4NTQpBDKXJVlYl9fYFq0QyRsb1aTZNdJ7kfFnoEgKwAf0WOs2NoilTYlTjQeik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=FVE8EUmL; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731400220; x=1762936220;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=b/LVFc/ynmQzr5DOuxZeTzgV+hwDUoUO+3cXjo8B+lc=;
-  b=FVE8EUmLapfAUxI151Thod+/hzQpEcSHYYa2+937gnvbteOK75PLaH5f
-   aRw3COefihziumoH9PTKnQ0J322/xDLHbWs4VQDICpK6s7vCH84JBkv4m
-   y1gr6DK2YtQ1eIoRf4MRXHgbpBAjXbxSHBFb0Rrx0sRNTKrnrYb0FD4hy
-   U=;
-X-IronPort-AV: E=Sophos;i="6.12,147,1728950400"; 
-   d="scan'208";a="469240662"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 08:30:14 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.17.79:2523]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.22.102:2525] with esmtp (Farcaster)
- id 6ebefd7e-a6cb-4b15-999c-6dbf1861b7c0; Tue, 12 Nov 2024 08:30:12 +0000 (UTC)
-X-Farcaster-Flow-ID: 6ebefd7e-a6cb-4b15-999c-6dbf1861b7c0
-Received: from EX19D008EUA003.ant.amazon.com (10.252.50.155) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 12 Nov 2024 08:30:12 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Tue, 12 Nov 2024 08:30:12 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com
- (10.124.125.6) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Tue, 12 Nov 2024 08:30:11 +0000
-Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com (Postfix) with ESMTP id 4E3A5A0042;
-	Tue, 12 Nov 2024 08:30:11 +0000 (UTC)
-Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id CF6F8224AB; Tue, 12 Nov 2024 08:30:10 +0000 (UTC)
-From: Hagar Hemdan <hagarhem@amazon.com>
-To:
-CC: <stable@vger.kernel.org>, Hagar Hemdan <hagarhem@amazon.com>, "Maximilian
- Heyne" <mheyne@amazon.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1] io_uring: fix possible deadlock in io_register_iowq_max_workers()
-Date: Tue, 12 Nov 2024 08:30:06 +0000
-Message-ID: <20241112083006.19917-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1731400232; c=relaxed/simple;
+	bh=qJGjeqrO3MOifyflIBZ0HVysY2YzY/j6eCF9sYrgS5E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ec2LQ4xC81ojXGfWo+oIa+vVIcGieW6I6WqoL/k9aRjcYH3FG7Zu37k/Dpr7x38vAxTItO5Zdnvx2Y5JnjqxFRbvtvmJTOsQAO7zqhn90BU/oEx14QTqpl9q0XdT0jTyW8LnFhOQ3vBjKTpanWRJGmONFs7ZfeN3UmimWR5uV5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcwqxcaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DBFC4CECD;
+	Tue, 12 Nov 2024 08:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731400231;
+	bh=qJGjeqrO3MOifyflIBZ0HVysY2YzY/j6eCF9sYrgS5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GcwqxcaNduEPK/K2fYAs0FORz7sRZtaot2h80t/HUQ6u78ZtkjV3dZeZ10yiXI1l9
+	 3qe+FYXNRb35xz7YSLEP8NsXGCgNk1HCke1X0YsQF3L9/Ku1aWBQjQorQtVCVciNUz
+	 Y0jPUKDoCHULzs5J6dND3HWQFC75xrn/6KYZkfkY=
+Date: Tue, 12 Nov 2024 09:30:27 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, jeffbai@aosc.io,
+	broonie@kernel.org, lgirdwood@gmail.com, perex@perex.cz,
+	tiwai@suse.com, mario.limonciello@amd.com, me@jwang.link,
+	end.to.start@mail.ru, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1+] ASoC: amd: yc: fix internal mic on Xiaomi Book Pro
+ 14 2022
+Message-ID: <2024111221-brittle-mumbo-d475@gregkh>
+References: <2948220EEF71E78E+20241111070804.979792-1-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2948220EEF71E78E+20241111070804.979792-1-wangyuli@uniontech.com>
 
-commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
+On Mon, Nov 11, 2024 at 03:08:04PM +0800, WangYuli wrote:
+> From: Mingcong Bai <jeffbai@aosc.io>
+> 
+> [ Upstream commit de156f3cf70e17dc6ff4c3c364bb97a6db961ffd ]
+> 
+> Xiaomi Book Pro 14 2022 (MIA2210-AD) requires a quirk entry for its
+> internal microphone to be enabled.
+> 
+> This is likely due to similar reasons as seen previously on Redmi Book
+> 14/15 Pro 2022 models (since they likely came with similar firmware):
+> 
+> - commit dcff8b7ca92d ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 15 2022
+>   into DMI table")
+> - commit c1dd6bf61997 ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 14 2022
+>   into DMI table")
+> 
+> A quirk would likely be needed for Xiaomi Book Pro 15 2022 models, too.
+> However, I do not have such device on hand so I will leave it for now.
+> 
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+> Link: https://patch.msgid.link/20241106024052.15748-1-jeffbai@aosc.io
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: WangYuli <wangyuli@uniontech.com>
+> ---
+>  sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 
-The io_register_iowq_max_workers() function calls io_put_sq_data(),
-which acquires the sqd->lock without releasing the uring_lock.
-Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
-before acquiring sqd->lock"), this can lead to a potential deadlock
-situation.
+Now queued up, thanks.
 
-To resolve this issue, the uring_lock is released before calling
-io_put_sq_data(), and then it is re-acquired after the function call.
-
-This change ensures that the locks are acquired in the correct
-order, preventing the possibility of a deadlock.
-
-Suggested-by: Maximilian Heyne <mheyne@amazon.de>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[Hagar: Modified to apply on v6.1]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
----
- io_uring/io_uring.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 92c1aa8f3501..4f0ae938b146 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3921,8 +3921,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
- 	}
- 
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
- 	}
- 
- 	if (copy_to_user(arg, new_count, sizeof(new_count)))
-@@ -3947,8 +3949,11 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
- 	return 0;
- err:
- 	if (sqd) {
-+		mutex_unlock(&ctx->uring_lock);
- 		mutex_unlock(&sqd->lock);
- 		io_put_sq_data(sqd);
-+		mutex_lock(&ctx->uring_lock);
-+
- 	}
- 	return ret;
- }
--- 
-2.40.1
-
+greg k-h
 
