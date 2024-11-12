@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5D59C5528
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:00:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884659C5393
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3139B324A1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8BD1F211A8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A238E2139A7;
-	Tue, 12 Nov 2024 10:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAA9213159;
+	Tue, 12 Nov 2024 10:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFxHRXzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb3Uaiwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC8C213150;
-	Tue, 12 Nov 2024 10:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA1C2123FF;
+	Tue, 12 Nov 2024 10:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406993; cv=none; b=XKUbghKOPiotyHgOVPZ7A4zvvMhRT4JbT++znXkkeIVFh0wLkeUdI1F1zNf6LNC+QiKHsLGIlyJnc+TuAuVMAlmB4Oj2HD4HoGZl/D6keaIGuuodMDJP/W4V9OEeDxZHcvto2/RNs6sMYJeqQ/3m8NX+jzbpjdKV/vjxOJ1YqSs=
+	t=1731407285; cv=none; b=FopizTQWDnlAkov1OIhSrVTYR0uBo2+I1BIxoFswT4z3o6JdyDLCZQcyYOV3UPuVSMh6WFaMK6gCTIKNC3/M6eVkfAE2A9uVr9dc/YVaO24wyuUPOTcrbIzkkUDgXvei7rPMWF0B0DGzdxlehfsgfVv0rn98h8u1efJCdzREICY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406993; c=relaxed/simple;
-	bh=iNK/om/es0HW/ADwj6NNv+q3GOW3lxTGRIKDbXQG7FM=;
+	s=arc-20240116; t=1731407285; c=relaxed/simple;
+	bh=Ae916rlDjM1Np4PhkrDBy1qzoSCPs3OBCClu5PRH44M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=du305WGZ4J3N2Kk2HyvlxmFyrpabIazdX0sHfLxXWPD+G242e+EY7RjF2PARHojecK4dpQWmlKJn83lTAkoXPBD2qh1cFvT6njZa49r3OFiXJo5cFQjYyq1QICGnY8mtrt9HgfFGMgRDf2G2Sv2aBznlo3PZLuedJNrYMOqV1KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFxHRXzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C031BC4CED8;
-	Tue, 12 Nov 2024 10:23:12 +0000 (UTC)
+	 MIME-Version; b=oGGrHu0BAJEq5MpC2w19UZcHGbrPR7BVyzBfCJJGPDW3Vh6pHLueOQHbsWiEiykwQVMa++BSmotL4hwlQiTmjHQ4Ij0rJ5GJ5vtCEIxyhGNxF+XmX1SW/x1hxD2PIbGN8xywsix8PZceawiKsST/kSTgCu4Eq3leOJNN5fMT0wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yb3Uaiwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5ADC4CECD;
+	Tue, 12 Nov 2024 10:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406993;
-	bh=iNK/om/es0HW/ADwj6NNv+q3GOW3lxTGRIKDbXQG7FM=;
+	s=korg; t=1731407284;
+	bh=Ae916rlDjM1Np4PhkrDBy1qzoSCPs3OBCClu5PRH44M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFxHRXzzV9FUv2UpJllchr0F5Apzh6D64X6hT+LkWGc1lRpJMyOR4jV6O1Y4DXQbj
-	 8GraVm44YOyAIBMJ8keHMbF5xSoYjqlIH5QaCACs7ysXo9Q4rcESku6WYVSnnwV7e9
-	 W+EDf3xHqgqNItul7UBY3//h9yk7WyC2ecMzdizs=
+	b=Yb3UaiwlP4EE2GVU+Sd6kIYsgiGTEQfueZ+RfJ8Ysei+T8HUDcLYJZ5yZ1CkIsm+i
+	 vqHAp39uk6EMVNZ+Nsm+H/uh7tagQreqkZlS2CjkeKnB7tdIVJ1vXldxpEuQGLJk5g
+	 2lveMv3pL2d82ojkhK3hN/bSbgp65R2mdCG47xQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Diogo Silva <diogompaissilva@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/76] can: c_can: fix {rx,tx}_errors statistics
+Subject: [PATCH 6.1 29/98] net: phy: ti: add PHY_RST_AFTER_CLK_EN flag
 Date: Tue, 12 Nov 2024 11:20:44 +0100
-Message-ID: <20241112101840.514018974@linuxfoundation.org>
+Message-ID: <20241112101845.382692158@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Diogo Silva <diogompaissilva@gmail.com>
 
-[ Upstream commit 4d6d26537940f3b3e17138987ed9e4a334780bf7 ]
+[ Upstream commit 256748d5480bb3c4b731236c6d6fc86a8e2815d8 ]
 
-The c_can_handle_bus_err() function was incorrectly incrementing only the
-receive error counter, even in cases of bit or acknowledgment errors that
-occur during transmission. The patch fixes the issue by incrementing the
-appropriate counter based on the type of error.
+DP83848	datasheet (section 4.7.2) indicates that the reset pin should be
+toggled after the clocks are running. Add the PHY_RST_AFTER_CLK_EN to
+make sure that this indication is respected.
 
-Fixes: 881ff67ad450 ("can: c_can: Added support for Bosch C_CAN controller")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241014135319.2009782-1-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+In my experience not having this flag enabled would lead to, on some
+boots, the wrong MII mode being selected if the PHY was initialized on
+the bootloader and was receiving data during Linux boot.
+
+Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 34e45ad9378c ("net: phy: dp83848: Add TI DP83848 Ethernet PHY")
+Link: https://patch.msgid.link/20241102151504.811306-1-paissilva@ld-100007.ds1.internal
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/phy/dp83848.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index e04d4e7cc8683..8ab43f1272bd9 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1022,7 +1022,6 @@ static int c_can_handle_bus_err(struct net_device *dev,
+diff --git a/drivers/net/phy/dp83848.c b/drivers/net/phy/dp83848.c
+index 937061acfc613..351411f0aa6f4 100644
+--- a/drivers/net/phy/dp83848.c
++++ b/drivers/net/phy/dp83848.c
+@@ -147,6 +147,8 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
+ 		/* IRQ related */				\
+ 		.config_intr	= dp83848_config_intr,		\
+ 		.handle_interrupt = dp83848_handle_interrupt,	\
++								\
++		.flags		= PHY_RST_AFTER_CLK_EN,		\
+ 	}
  
- 	/* common for all type of bus errors */
- 	priv->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
-@@ -1038,26 +1037,32 @@ static int c_can_handle_bus_err(struct net_device *dev,
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
- 		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		stats->rx_errors++;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
- 		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		stats->rx_errors++;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
- 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
- 		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
- 		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		stats->tx_errors++;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
- 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		stats->rx_errors++;
- 		break;
- 	default:
- 		break;
+ static struct phy_driver dp83848_driver[] = {
 -- 
 2.43.0
 
