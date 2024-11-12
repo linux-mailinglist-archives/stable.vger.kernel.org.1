@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2559C5438
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A54B9C53AE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BB31F23108
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A72814DC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F54213EFA;
-	Tue, 12 Nov 2024 10:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CEB2141B8;
+	Tue, 12 Nov 2024 10:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbb8kRTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDRdv3k7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C0B213125;
-	Tue, 12 Nov 2024 10:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB3213EFC;
+	Tue, 12 Nov 2024 10:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407745; cv=none; b=iVchJpNeVyT+NzEuF3JUqHFAUaS1QE38GhbZkFtfEWy6u1i0jE89M1CdPdJlf41BzI+2qIWeffXmgjwffaYrbJSz60KarSUVqBziqUX5dHH9gadyjz3pH9NKaXYajcg/f5m7MkXwQFV0CFwsLi5a6rczao3NMTAmHSewNQLEvqk=
+	t=1731407400; cv=none; b=s8pMu3vs6/ZOGNTehe4uy5cTxsHmqNVvJx/si2PhHY9Phc2cdkmVBA/dRiBjNsA1qZre5qNTuWWsICPJWO2tTu4YTsv7+gfT/etsNcypqhdMBdsuZ9GYLT0rzmv7hch4rqVn4WXD04xAPBbzjvY1eXuQdewPdu4j8hNxTIedbK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407745; c=relaxed/simple;
-	bh=wbLDc1TTxbkNWdnMRiMHrrVXGJmh8U4wutQ23d+i+cg=;
+	s=arc-20240116; t=1731407400; c=relaxed/simple;
+	bh=hSxAwxJQ2I6JhbwcY0/3nF7RDDAdQMhBlrTKLwPUf9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiITHGLUXBJ12vmfeOtZsm80iQvLWpjjm2GGaYQvH6zqgC+QQTAINgpzh4cLVPDpiPaFij+wTVE1F9jnQs+gL8YCqnO76VZvApBazswdElGlt4LFTBQeAHwFz+88mR1TD3T8sFU4umzXnttPCI3rC5yVLyufOSmCLwS9YMOAB6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbb8kRTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E28AC4CECD;
-	Tue, 12 Nov 2024 10:35:44 +0000 (UTC)
+	 MIME-Version; b=gswey6XfC3veM38ByVj2yUtJIo0RxPhc1x2fqMZ36QvZ06Wu9P/RwLryS/gO+c3gYSEUYsoT3hT9cm+Lq9PxnCmzmROflKzQj3+CBJ52zRD1i9gKSmpQYmirpjWOsfe4/sAO7TdnEXmbkrtPcVOWAGLNig+IjQPPDlvyq33JjNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDRdv3k7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70768C4CECD;
+	Tue, 12 Nov 2024 10:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407744;
-	bh=wbLDc1TTxbkNWdnMRiMHrrVXGJmh8U4wutQ23d+i+cg=;
+	s=korg; t=1731407399;
+	bh=hSxAwxJQ2I6JhbwcY0/3nF7RDDAdQMhBlrTKLwPUf9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbb8kRTLbjC1jxk2GHsHRp5RZOGa7zeMp3NQEt/72oWpOrkyI9wcHNAnomPueuSpC
-	 R4zNu7K/G3v36y0swPE93S7sjQP0z6Q3ZoTm8sLZOl4h7PfwThr/N4985e/9Mus3vb
-	 rMgRX9Eudut0r82PcxGVW7j7DStqaBKM4T6kfjaU=
+	b=aDRdv3k7sF5ZLSWoCTX5H5rs9GRQJwMFq4eYspOFOT3WD6gb+dXezN+XjUulavenK
+	 PgprXQ9w7qTTpjBwAoSUrrTm8RF8UXpXIEaLlBfU+9WwWC1o1RCAH2W4b5j78o6cwq
+	 TOc6/FE3cnAM1MLkuiZkhn4yLHVGV0D2bmno+LFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 070/119] ksmbd: fix slab-use-after-free in ksmbd_smb2_session_create
-Date: Tue, 12 Nov 2024 11:21:18 +0100
-Message-ID: <20241112101851.389109384@linuxfoundation.org>
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.1 64/98] dm cache: fix potential out-of-bounds access on the first resume
+Date: Tue, 12 Nov 2024 11:21:19 +0100
+Message-ID: <20241112101846.699659538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 0a77715db22611df50b178374c51e2ba0d58866e upstream.
+commit c0ade5d98979585d4f5a93e4514c2e9a65afa08d upstream.
 
-There is a race condition between ksmbd_smb2_session_create and
-ksmbd_expire_session. This patch add missing sessions_table_lock
-while adding/deleting session from global session table.
+Out-of-bounds access occurs if the fast device is expanded unexpectedly
+before the first-time resume of the cache table. This happens because
+expanding the fast device requires reloading the cache table for
+cache_create to allocate new in-core data structures that fit the new
+size, and the check in cache_preresume is not performed during the
+first resume, leading to the issue.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reproduce steps:
+
+1. prepare component devices:
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+
+2. load a cache table of 512 cache blocks, and deliberately expand the
+   fast device before resuming the cache, making the in-core data
+   structures inadequate.
+
+dmsetup create cache --notable
+dmsetup reload cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup reload cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup resume cdata
+dmsetup resume cache
+
+3. suspend the cache to write out the in-core dirty bitset and hint
+   array, leading to out-of-bounds access to the dirty bitset at offset
+   0x40:
+
+dmsetup suspend cache
+
+KASAN reports:
+
+  BUG: KASAN: vmalloc-out-of-bounds in is_dirty_callback+0x2b/0x80
+  Read of size 8 at addr ffffc90000085040 by task dmsetup/90
+
+  (...snip...)
+  The buggy address belongs to the virtual mapping at
+   [ffffc90000085000, ffffc90000087000) created by:
+   cache_ctr+0x176a/0x35f0
+
+  (...snip...)
+  Memory state around the buggy address:
+   ffffc90000084f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000084f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+  >ffffc90000085000: 00 00 00 00 00 00 00 00 f8 f8 f8 f8 f8 f8 f8 f8
+                                             ^
+   ffffc90000085080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+   ffffc90000085100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+
+Fix by checking the size change on the first resume.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   37 ++++++++++++++++---------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -174,6 +174,7 @@ static void ksmbd_expire_session(struct
- 	unsigned long id;
- 	struct ksmbd_session *sess;
- 
-+	down_write(&sessions_table_lock);
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
- 		if (atomic_read(&sess->refcnt) == 0 &&
-@@ -187,6 +188,7 @@ static void ksmbd_expire_session(struct
- 		}
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2878,24 +2878,24 @@ static dm_cblock_t get_cache_dev_size(st
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+-		if (cache->sized) {
+-			DMERR("%s: unable to extend cache due to missing cache table reload",
+-			      cache_device_name(cache));
+-			return false;
+-		}
++		DMERR("%s: unable to extend cache due to missing cache table reload",
++		      cache_device_name(cache));
++		return false;
  	}
- 	up_write(&conn->session_lock);
-+	up_write(&sessions_table_lock);
- }
  
- int ksmbd_session_register(struct ksmbd_conn *conn,
-@@ -228,7 +230,6 @@ void ksmbd_sessions_deregister(struct ks
- 			}
- 		}
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
+ 	 */
+-	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
+-					   from_cblock(cache->cache_size),
+-					   from_cblock(new_size)));
+-	if (new_size != cache->cache_size) {
+-		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-		      cache_device_name(cache),
+-		      (unsigned long long) from_cblock(new_size));
+-		return false;
++	if (cache->loaded_mappings) {
++		new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++						   from_cblock(cache->cache_size),
++						   from_cblock(new_size)));
++		if (new_size != cache->cache_size) {
++			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++			      cache_device_name(cache),
++			      (unsigned long long) from_cblock(new_size));
++			return false;
++		}
  	}
--	up_write(&sessions_table_lock);
  
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
-@@ -248,6 +249,7 @@ void ksmbd_sessions_deregister(struct ks
- 		}
+ 	return true;
+@@ -2926,20 +2926,15 @@ static int cache_preresume(struct dm_tar
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
+-	if (!cache->sized) {
+-		r = resize_cache_dev(cache, csize);
+-		if (r)
+-			return r;
+-
+-		cache->sized = true;
+-
+-	} else if (csize != cache->cache_size) {
++	if (!cache->sized || csize != cache->cache_size) {
+ 		if (!can_resize(cache, csize))
+ 			return -EINVAL;
+ 
+ 		r = resize_cache_dev(cache, csize);
+ 		if (r)
+ 			return r;
++
++		cache->sized = true;
  	}
- 	up_write(&conn->session_lock);
-+	up_write(&sessions_table_lock);
- }
  
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+ 	if (!cache->loaded_mappings) {
 
 
 
