@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B35E9C540C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:36:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34E79C5356
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45A3284BF9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992A72881D0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDDE21442F;
-	Tue, 12 Nov 2024 10:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5321218E;
+	Tue, 12 Nov 2024 10:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoZRl93h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deMC8/OX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC222214425;
-	Tue, 12 Nov 2024 10:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AC82101A9;
+	Tue, 12 Nov 2024 10:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407678; cv=none; b=FVldJ8zEj125pp/lzXxt4TPLDHuSxWVkG8OOXArRQM5jdvumXHK0GT529POCV7yxeSiKSCE+SsUN0DGes+kfk9fRVJMue1Hr1WIkxT85ikIk5+Xgb7UbeHjaLrrFrChC+J6fgRDhl4qPPD3Q1hPhgCTly5ygmLO8/c2bMhFqj9Y=
+	t=1731407144; cv=none; b=P0M3KSMxTwiQbVQVgIdHOG+TD9lIYL+iDC5TJAJ3oNtmeuhpENBNRPhojJPARqsUU1BJe70GIfZnWrCwUjYeyLaf6Ah3fc8k2SHY0IsbF2pkooRD9oEP4bhbSNSwc4Nvwmgvuq/aLPfxNkBYTpDe3g1vet+xyeS9slztWSqbWSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407678; c=relaxed/simple;
-	bh=K8lmpxVD64S82eXnru0wUaiBwpW47azgPEYczTJkRXg=;
+	s=arc-20240116; t=1731407144; c=relaxed/simple;
+	bh=PEcPCxYMj0FMP74FaQV6UGReU4l1Jtqc4jZY085IdfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8rbIf/6rAoKYFLP3vs83nfkas+yAsCmwL86I2Ao7iIlehcz5mV8y/QMoRMuf0B5RcWNOtZww7X+rgvQsWFOOArVCHYRHwNEuYrmfnhl4g+p2LaYM97dDltRGLm0VBAmISGKbq3maDKOjgdKY4yrAUx86cBpLEhzGGqxJ8rvRHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoZRl93h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42347C4CECD;
-	Tue, 12 Nov 2024 10:34:38 +0000 (UTC)
+	 MIME-Version; b=uw8wge9oT0Vl/woCweT110Fg8cE6tYuSun/NnRjfgTyfk6q8dhfsuzGTO/OA2GsCjYrlf5BTvWpt/CLmkabxC661xiy6X36jXnwC3EZiTLLHcjNnoRJ55bm2a5/eEGlE9crQnkFGuqtX+Pq93K89TE//HHmxk0Z/sGQuKOW7LqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deMC8/OX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08915C4CECD;
+	Tue, 12 Nov 2024 10:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407678;
-	bh=K8lmpxVD64S82eXnru0wUaiBwpW47azgPEYczTJkRXg=;
+	s=korg; t=1731407144;
+	bh=PEcPCxYMj0FMP74FaQV6UGReU4l1Jtqc4jZY085IdfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zoZRl93hhUCBF+yJdMcHN/FDCYcWVrUJO4+jze2xXr2TNYU5q+/C7Xhq2+0h+tFqV
-	 RyTyCPEsOJfQOP/ygRDcWC+kSkeKIIsnWyjUJ4zqcSwrEQqJ72H7nfJhheMiDF8Kxt
-	 2MDCZceZT6Wy7EJlM1jtkTQ9KO9Jt1H2bNSZYSBU=
+	b=deMC8/OX45UNE5JEgbP3KMfEz8GULZJKoRYBLWfT5iRITvjLrXe0tBKUXOLWJusfD
+	 b2B8X2E8vjNB8+8PcfNnczNtZYbgdk8WAkVN/cBMyIEmEFXo8dOhQd8Eg3lih7+t4B
+	 tn+KJLC7CNYPpqvniByJwghsaa5NRjxHQan2XLIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <Wentao_liang_g@163.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/119] drivers: net: ionic: add missed debugfs cleanup to ionic_probe() error path
+Subject: [PATCH 5.15 32/76] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
 Date: Tue, 12 Nov 2024 11:20:57 +0100
-Message-ID: <20241112101850.589728219@linuxfoundation.org>
+Message-ID: <20241112101841.010797583@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <Wentao_liang_g@163.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 71712cf519faeed529549a79559c06c7fc250a15 ]
+[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
 
-The ionic_setup_one() creates a debugfs entry for ionic upon
-successful execution. However, the ionic_probe() does not
-release the dentry before returning, resulting in a memory
-leak.
+In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
+null. So the release of the dma channel leads to the following issue:
+[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
+dma_request_slave_channel error -19
+[    4.888975] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000003d
+[...]
+[    5.096577] Call trace:
+[    5.099099]  dma_release_channel+0x24/0x100
+[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
+[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
 
-To fix this bug, we add the ionic_debugfs_del_dev() to release
-the resources in a timely manner before returning.
+To avoid this issue, release channel only if the pointer is valid.
 
-Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
-Signed-off-by: Wentao Liang <Wentao_liang_g@163.com>
-Acked-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://patch.msgid.link/20241107021756.1677-1-liangwentao@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/stm/stm32_spdifrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index 35099ad5eccc8..f49b697ab00f8 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -385,6 +385,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_out_pci:
- 	ionic_dev_teardown(ionic);
- 	ionic_clear_pci(ionic);
-+	ionic_debugfs_del_dev(ionic);
- err_out:
- 	mutex_destroy(&ionic->dev_cmd_lock);
- 	ionic_devlink_free(ionic);
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index 48145f5535880..e3d6258afbac8 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -947,7 +947,7 @@ static int stm32_spdifrx_remove(struct platform_device *pdev)
+ {
+ 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
+ 
+-	if (spdifrx->ctrl_chan)
++	if (!IS_ERR(spdifrx->ctrl_chan))
+ 		dma_release_channel(spdifrx->ctrl_chan);
+ 
+ 	if (spdifrx->dmab)
 -- 
 2.43.0
 
