@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-92328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436EE9C5567
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:06:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3629C9C5333
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DED26B285B7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A0F285B0B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029AC20EA37;
-	Tue, 12 Nov 2024 10:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B592123F0;
+	Tue, 12 Nov 2024 10:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faB/ENWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPCtFsL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B347820E31D;
-	Tue, 12 Nov 2024 10:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D5619E992;
+	Tue, 12 Nov 2024 10:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407297; cv=none; b=WICtcquLEFBsfSmbaOK7Is3f7KauzMsASeFfg+3Cfc2rOZk2CHCFw0hO5JY8TUjnOQ3nGeN9tgl7PE1rtE0N4uqUuqeUTw3fUTeuqbuE17oRZcsojXAJopszwfVeWpwWiQJpbhPqMQMw5nSOscpc6PSPuQWMVMQpsRXvCS9B7sk=
+	t=1731407012; cv=none; b=o7KTpmhSTnbUPZYZ4RkCZY1rsvrIHaYgfuYBDuepkcDj7M5Lk9RWOXm2U9M2ueWGt0FfYWlfC+HWdxFQNsD44o/8XmVDq+zgBK31hFQWUrwU75J1NyqIHFclb9m1eoX9TEt5p4NyELKk6l0saFNnZJvsWlmxCO2hrn7XofcC/nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407297; c=relaxed/simple;
-	bh=I1+WChsAd4l3+oeaKBWi/C+W396I0Rn7zSDJsOc1EbI=;
+	s=arc-20240116; t=1731407012; c=relaxed/simple;
+	bh=AuEgug5EjhQ55PpCZ9ca6k+mffawaic1D5yFZZRglo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyG8etp6Bhxy1piD+TjOJJayCUEkjOFX88UrSdhHIouO3rk/QtitrmAWmOwluPCh4RFOnUH/4Lf5T0J7RPGYr6gWJUDwE4BVnUvNbzCF2AQn9bHzlPoMy5aP5AuG+YXyedyaEBX2CQ9uQLpKju9ii5OGBlJ+Gn9bl55vtds+Td0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faB/ENWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FD5C4CECD;
-	Tue, 12 Nov 2024 10:28:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G8lP5OD6+IsFa0Xnnv5OC4L77PN8hnzPLI3FHREz616C3M8p1Yh2Oby0AqCi+RlIXBxgE6y6QmuJF6M38l4u4D43288VgeUqv8Sa7n9nJWBLbVPXb55dEwr35YOn80k0OJAX1OqxkyzRTM0ySE9QyyC+0zrRTZkrdGcim+9C0Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPCtFsL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E53C4CED4;
+	Tue, 12 Nov 2024 10:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407297;
-	bh=I1+WChsAd4l3+oeaKBWi/C+W396I0Rn7zSDJsOc1EbI=;
+	s=korg; t=1731407012;
+	bh=AuEgug5EjhQ55PpCZ9ca6k+mffawaic1D5yFZZRglo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=faB/ENWXBQUWyyU2o9C61J1ELhv+MnR35+84atb9kSEkMrlxYbQk2QgV8ntl9Z3g5
-	 1I9I0ngeOc4tlZp/CxVLjwHWkZxPwfO9ItyCvhYJWPJzVta+LFw3gMozRCYNtHmJUH
-	 4mpZGHTHrPt6i5UD8U3EoSkdsLDV4PDWLQJfUw3c=
+	b=gPCtFsL+ibZGBq+6fuxt+9wq4blmq4FAuvBs5wrUfqsbjvWL2Po6GtitpO49OJM/m
+	 8qC20K41ERGyVTdTadL0A1N0axPiqT21vNVVZjQaAxN1TOfFbWSQjkvRd60YOX4j8j
+	 rQ1t0ggMxQJVULSgZil8HBgAFcYiL7vUXaSXsVfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Andy Yan <andyshrk@163.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/98] net: arc: rockchip: fix emac mdio node support
+Subject: [PATCH 5.15 23/76] net: stmmac: Fix unbalanced IRQ wake disable warning on single irq case
 Date: Tue, 12 Nov 2024 11:20:48 +0100
-Message-ID: <20241112101845.534988251@linuxfoundation.org>
+Message-ID: <20241112101840.669926454@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 0a1c7a7b0adbf595ce7f218609db53749e966573 ]
+[ Upstream commit 25d70702142ac2115e75e01a0a985c6ea1d78033 ]
 
-The binding emac_rockchip.txt is converted to YAML.
-Changed against the original binding is an added MDIO subnode.
-This make the driver failed to find the PHY, and given the 'mdio
-has invalid PHY address' it is probably looking in the wrong node.
-Fix emac_mdio.c so that it can handle both old and new
-device trees.
+Commit a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by
+unbalanced disable_irq_wake calls") introduced checks to prevent
+unbalanced enable and disable IRQ wake calls. However it only
+initialized the auxiliary variable on one of the paths,
+stmmac_request_irq_multi_msi(), missing the other,
+stmmac_request_irq_single().
 
-Fixes: 1dabb74971b3 ("ARM: dts: rockchip: restyle emac nodes")
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Tested-by: Andy Yan <andyshrk@163.com>
-Link: https://lore.kernel.org/r/20220603163539.537-3-jbx6244@gmail.com
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Add the same initialization on stmmac_request_irq_single() to prevent
+"Unbalanced IRQ <x> wake disable" warnings from being printed the first
+time disable_irq_wake() is called on platforms that run on that code
+path.
+
+Fixes: a23aa0404218 ("net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241101-stmmac-unbalanced-wake-single-fix-v1-1-5952524c97f0@collabora.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/arc/emac_mdio.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/arc/emac_mdio.c b/drivers/net/ethernet/arc/emac_mdio.c
-index 87f40c2ba9040..078b1a72c1613 100644
---- a/drivers/net/ethernet/arc/emac_mdio.c
-+++ b/drivers/net/ethernet/arc/emac_mdio.c
-@@ -133,6 +133,7 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
- 	struct arc_emac_mdio_bus_data *data = &priv->bus_data;
- 	struct device_node *np = priv->dev->of_node;
- 	const char *name = "Synopsys MII Bus";
-+	struct device_node *mdio_node;
- 	struct mii_bus *bus;
- 	int error;
- 
-@@ -164,7 +165,13 @@ int arc_mdio_probe(struct arc_emac_priv *priv)
- 
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", bus->name);
- 
--	error = of_mdiobus_register(bus, priv->dev->of_node);
-+	/* Backwards compatibility for EMAC nodes without MDIO subnode. */
-+	mdio_node = of_get_child_by_name(np, "mdio");
-+	if (!mdio_node)
-+		mdio_node = of_node_get(np);
-+
-+	error = of_mdiobus_register(bus, mdio_node);
-+	of_node_put(mdio_node);
- 	if (error) {
- 		mdiobus_free(bus);
- 		return dev_err_probe(priv->dev, error,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 4a194f30f4a83..2478caeec763f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3650,6 +3650,7 @@ static int stmmac_request_irq_single(struct net_device *dev)
+ 	/* Request the Wake IRQ in case of another line
+ 	 * is used for WoL
+ 	 */
++	priv->wol_irq_disabled = true;
+ 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+ 		ret = request_irq(priv->wol_irq, stmmac_interrupt,
+ 				  IRQF_SHARED, dev->name, dev);
 -- 
 2.43.0
 
