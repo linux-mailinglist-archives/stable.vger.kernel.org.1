@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-92610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3F59C5563
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:06:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65B09C554C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7560F1F2394F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D09528C429
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9142123FE;
-	Tue, 12 Nov 2024 10:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A04212F03;
+	Tue, 12 Nov 2024 10:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqTXjH/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nb/TnpRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC14D2123F5;
-	Tue, 12 Nov 2024 10:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07751C1AD1;
+	Tue, 12 Nov 2024 10:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408009; cv=none; b=bHC+Z1sLFBAa3hkHri/K2iHx5e7IAYiKzRDxFOGOs+0CXIZ4UKFlT5wujovQjETdxNZTpTIbbP7rZ7MfhujCItfDduq8wEFmaUAdDsdYHyn1GGTOXR38EM+UV+SNZvawkAaOEy1vnucbpuWX0s6wEFB6PWLydjIgLQYCSPUSd2M=
+	t=1731407941; cv=none; b=Ln2QMwIAmuV3OjV1zqRWbHXHsuELUT2dM8Ba4M2pBq6n8Z7Vo/niSeUx6mBVaKvie3IHV19ZKgIAeW/NNVTvK64lOc1n00FEKey69vMHG6twg780AzuXm2AJGF21eWaW50ywEzNjfFMs8u4KYrDogmANTn1BETzdLuUkrdhPREc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408009; c=relaxed/simple;
-	bh=MCuS7uI+ToDnJnZQZEYgEAAEJQRXF5Av4AYiIvJSTwc=;
+	s=arc-20240116; t=1731407941; c=relaxed/simple;
+	bh=OX3RZUAICmq8HqQiQfgcrHVlnoVQwERhFcN1PALL3Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0BAQGBU0h7iii1yy3Cel5glU86GafTO2IOGEIt6yYloi9u9702uA+E3y7FgNyQ9lgBxULeWqK4pSksGBglZs3CCHxtTRaS2x1M3SKZ/z5ngL/Ia1B2SF/bCYsruAf+6sqymnFUDFGLHOAmNpdkwEqROsnpStA/x1UssOZ80TOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqTXjH/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8FEC4CED4;
-	Tue, 12 Nov 2024 10:40:08 +0000 (UTC)
+	 MIME-Version; b=O8A1kgwAVhhrtgO7U+8CgFxKy0GXqV6vyG5+dXLt3eVxJsN5cmyE33KZaJ951gXWml9q+Cm5Cb1ZYZXXid89WGiW9ZVIZusjbQ13n7KnO/iB8Zu1K9d35LriEeizbin3ef7QJEZ3M+x8sdPgwirqcGcdCaJG+QcMDkPXiQtjwu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nb/TnpRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F322C4CECD;
+	Tue, 12 Nov 2024 10:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408009;
-	bh=MCuS7uI+ToDnJnZQZEYgEAAEJQRXF5Av4AYiIvJSTwc=;
+	s=korg; t=1731407941;
+	bh=OX3RZUAICmq8HqQiQfgcrHVlnoVQwERhFcN1PALL3Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqTXjH/bNagV4peputaTZpUQEJY0PJ1Bcb2X2JAM683mNzVWFic/FeusY0YGwo43h
-	 vTMyQSYsJW62ZYJ016SdIpnMvPM4/ycAfx3rZcgKw9QpobnaflimTp/BkmIWE3Phvl
-	 0sW8Bf0w1TigD24/pkoJRPwPIW2ieewCKU+eEujE=
+	b=Nb/TnpRx7peSO8AgiSzRBNFDshIWbi4LapeuS87hbdFlg849GuO5V6/eJJ4DiEtEC
+	 1I3x3wLGgB22y/zLmmLpTcCBEVw85WgCYKOfJ8LlO3M/kIe5RtZcfCOmHplolKJGa5
+	 XausS57xKtLq71x+S6FKj5gQC+WhoCgvCrO4HIFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 009/184] arm64: dts: rockchip: Fix wakeup prop names on PineNote BT node
-Date: Tue, 12 Nov 2024 11:19:27 +0100
-Message-ID: <20241112101901.229519251@linuxfoundation.org>
+Subject: [PATCH 6.11 011/184] arm64: dts: rockchip: fix i2c2 pinctrl-names property on anbernic-rg353p/v
+Date: Tue, 12 Nov 2024 11:19:29 +0100
+Message-ID: <20241112101901.306363643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,41 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 87299d6ee95a37d2d576dd8077ea6860f77ad8e2 ]
+[ Upstream commit f94b934336e30cebae75d4fbe04a2109a3c8fdec ]
 
-The "brcm,bluetooth.yaml" binding has 'device-wakeup-gpios' and
-'host-wakeup-gpios' property names, not '*-wake-gpios'.
-Fix the incorrect property names.
+We want to control pins, not beer mugs, so rename pintctrl-names to the
+expected pinctrl-names.
 
-Note that the "realtek,bluetooth.yaml" binding does use the
-'*-wake-gpios' property names.
+This was not affecting functionality, because the i2c2 controller
+already had a set of pinctrl properties.
 
-Fixes: d449121e5e8a ("arm64: dts: rockchip: Add Pine64 PineNote board")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20241008113344.23957-4-didi.debian@cknow.org
+Fixes: 523adb553573 ("arm64: dts: rockchip: add Anbernic RG353P and RG503")
+Fixes: 1e141cf12726 ("arm64: dts: rockchip: add Anbernic RG353V and RG353VS")
+Cc: Chris Morgan <macromorgan@hotmail.com>
+Acked-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-2-heiko@sntech.de
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index ae2536c65a830..ca7666bf5c0a5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-@@ -684,8 +684,8 @@
- 		compatible = "brcm,bcm43438-bt";
- 		clocks = <&rk817 1>;
- 		clock-names = "lpo";
--		device-wake-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
--		host-wake-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-+		device-wakeup-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
-+		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
- 		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
- 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
- 		pinctrl-names = "default";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
+index a73cf30801ec7..9816a4ed4599e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
+@@ -92,7 +92,7 @@
+ };
+ 
+ &i2c2 {
+-	pintctrl-names = "default";
++	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c2m1_xfer>;
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
+index e9954a33e8cd3..a79a5614bcc88 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
+@@ -79,7 +79,7 @@
+ };
+ 
+ &i2c2 {
+-	pintctrl-names = "default";
++	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c2m1_xfer>;
+ 	status = "okay";
+ 
 -- 
 2.43.0
 
