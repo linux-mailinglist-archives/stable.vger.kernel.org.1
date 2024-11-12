@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-92220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EE09C517D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:08:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5559C51D8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71FAB1F21E56
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:08:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE19CB299D8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA7A20C02B;
-	Tue, 12 Nov 2024 09:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92FA20D502;
+	Tue, 12 Nov 2024 09:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="vFM8NQ8E"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="I2nZFdPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBD1209F4A
-	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 09:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCEC20D4FC
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 09:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731402507; cv=none; b=kgBqf+P94lrszkZ62GqhT/P8ZGjh23E9YaOwA7X9gPipP40gQa/2DVLRksXe4XkNCSKjaSF0XOHnhgK/z5mKNqdf+7TJw/A9czINYZDEccq3xcUSj8qTOcqhhXSLl94khzWE24SNPYfXvc+uphdAGp4dbrGgmJepcD1Uj8UOCTE=
+	t=1731402694; cv=none; b=TrH0vEleNNv2j7dJpA3dcrBNAK0i9g1X2ZouMSO2cYoRgCwsheXHSXQhu9pmu3uK3EZjIgcYhbMkIvUcN1wT/+wVrExVE60mSS7KVjYfd62gs6KqdRmMXBaezKcvlZCNoln55lOrBbqq8uWceUGVvT9+B0kvNdWx+2DNgRYVoAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731402507; c=relaxed/simple;
-	bh=S1558sC7K7SNLvFrxopPAYYIQfwYpDyfqK5JGVLvFI0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JIY/CHnAXG81kRk7Lh00kf96wijo28kHEEwRDfR3xS7fJCVdGOUBP7Pf9sf7Hxdcx21YWEvYudAg3qffLUDgiFDtUBUBpsL3FE7qP1upph92Ddsr3Ou/sqCr0TMzSZ0LRF1fVaC/Z57hYbJBd0gdNGiYqLf5nqtcNcxOppJuFPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=vFM8NQ8E; arc=none smtp.client-ip=99.78.197.220
+	s=arc-20240116; t=1731402694; c=relaxed/simple;
+	bh=W8m+6fSpXeQFs3UIIt6qtKjibam6UMZnexl27U5QBRU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H2UhEYNa09UDQN/L5TlRdbI9tHqxozGU9q2fQw8Nc01DM/8fe2d8KcqsDTd9t0ifu7AXjNlzeygSpvITbUE17kIsc57CvQOOEGn/fL6OP6PBoZNig1I/HVEM/am+BeOKr7j+Mr5wN+M3wC+jXCK3w/feT3jl9jQRy46vn8FKNek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=I2nZFdPr; arc=none smtp.client-ip=99.78.197.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731402505; x=1762938505;
+  t=1731402693; x=1762938693;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=b/LVFc/ynmQzr5DOuxZeTzgV+hwDUoUO+3cXjo8B+lc=;
-  b=vFM8NQ8EbU2KZc0lxqUQGcX6m/+jbkVytiFO9i0i4qPQl9q+hD/00RwQ
-   VhNl7LmkqqddQpuEUpkF2gzl/WHeKdEWnu2UzrJZ33iCzEpOXUfYEeR1l
-   +hwVA1Q5txHOFMkIdQwDKrkklxGi3vE4w/XURSi/SIm3LyTz0moiQtGpU
-   k=;
+  bh=C1NtDIscJ0EAhxy8jVMvSyWUgTzy+StQK+oE3RmQVcc=;
+  b=I2nZFdPr8qj4N9AnQgyNuPr7OVJfUiUP4oaADA8t5OtOpreVLJjVqbDP
+   sgUhutvIFwGt9Ticf4KviQLbf4v4HGxQIvh0f3pCIISs3lAwuZyBIwhcv
+   3URngrn0WjlHyeDDIeAMHH818PbndMhhaPkFI9smFYEQdV8OBE29QFJ+E
+   Y=;
 X-IronPort-AV: E=Sophos;i="6.12,147,1728950400"; 
-   d="scan'208";a="146572323"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 09:08:23 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.43.254:28349]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.21.103:2525] with esmtp (Farcaster)
- id f72cb613-798e-4223-b995-dce90baef3d5; Tue, 12 Nov 2024 09:08:23 +0000 (UTC)
-X-Farcaster-Flow-ID: f72cb613-798e-4223-b995-dce90baef3d5
+   d="scan'208";a="146573246"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 09:11:32 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:11768]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.210:2525] with esmtp (Farcaster)
+ id f570f716-cc1c-4220-ab7e-c33925370abf; Tue, 12 Nov 2024 09:11:31 +0000 (UTC)
+X-Farcaster-Flow-ID: f570f716-cc1c-4220-ab7e-c33925370abf
 Received: from EX19D008EUA003.ant.amazon.com (10.252.50.155) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 12 Nov 2024 09:08:22 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ Tue, 12 Nov 2024 09:11:29 +0000
+Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
  EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Tue, 12 Nov 2024 09:08:22 +0000
-Received: from email-imr-corp-prod-pdx-1box-2b-8c2c6aed.us-west-2.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
+ Tue, 12 Nov 2024 09:11:29 +0000
+Received: from email-imr-corp-prod-pdx-1box-2b-ecca39fb.us-west-2.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Tue, 12 Nov 2024 09:08:21 +0000
+ 15.2.1258.34 via Frontend Transport; Tue, 12 Nov 2024 09:11:28 +0000
 Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-pdx-1box-2b-8c2c6aed.us-west-2.amazon.com (Postfix) with ESMTP id F03C7A0155;
-	Tue, 12 Nov 2024 09:08:20 +0000 (UTC)
+	by email-imr-corp-prod-pdx-1box-2b-ecca39fb.us-west-2.amazon.com (Postfix) with ESMTP id CC0B0804BC;
+	Tue, 12 Nov 2024 09:11:28 +0000 (UTC)
 Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id 85BBD224AB; Tue, 12 Nov 2024 09:08:20 +0000 (UTC)
+	id 62E4F224AB; Tue, 12 Nov 2024 09:11:28 +0000 (UTC)
 From: Hagar Hemdan <hagarhem@amazon.com>
 To:
 CC: <stable@vger.kernel.org>, Hagar Hemdan <hagarhem@amazon.com>, "Maximilian
  Heyne" <mheyne@amazon.de>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1] io_uring: fix possible deadlock in io_register_iowq_max_workers()
-Date: Tue, 12 Nov 2024 09:08:18 +0000
-Message-ID: <20241112090818.10908-1-hagarhem@amazon.com>
+Subject: [PATCH 5.15] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+Date: Tue, 12 Nov 2024 09:11:24 +0000
+Message-ID: <20241112091124.13816-1-hagarhem@amazon.com>
 X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -100,17 +100,17 @@ Suggested-by: Maximilian Heyne <mheyne@amazon.de>
 Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[Hagar: Modified to apply on v6.1]
+[Hagar: Modified to apply on v5.15]
 Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 ---
  io_uring/io_uring.c | 5 +++++
  1 file changed, 5 insertions(+)
 
 diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 92c1aa8f3501..4f0ae938b146 100644
+index f1ab0cd98727..3dbc704c7001 100644
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -3921,8 +3921,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+@@ -10818,8 +10818,10 @@ static int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
  	}
  
  	if (sqd) {
@@ -121,7 +121,7 @@ index 92c1aa8f3501..4f0ae938b146 100644
  	}
  
  	if (copy_to_user(arg, new_count, sizeof(new_count)))
-@@ -3947,8 +3949,11 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+@@ -10844,8 +10846,11 @@ static int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
  	return 0;
  err:
  	if (sqd) {
