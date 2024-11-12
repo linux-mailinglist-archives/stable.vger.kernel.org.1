@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-92308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8B79C5635
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:21:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C0F9C559E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56ABBB316A3
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54D21F212B6
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B2A2170D5;
-	Tue, 12 Nov 2024 10:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CC8218927;
+	Tue, 12 Nov 2024 10:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOLkyqqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAndFtLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A90215C77;
-	Tue, 12 Nov 2024 10:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848421440F;
+	Tue, 12 Nov 2024 10:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407233; cv=none; b=sBuWjKhVZx+dPEfEBp+ws0j4yaYXcEzi0RXN8kDUio0xcTis1oKFKNL7IzaxVBLPcuZfM8QIFrx8ShT8gEsyJbanQY9cobpFBvpXaU4eoQp9oK1ILc/PA/cYY6lB/SWusLaywU53felAp6nk8/yxmPpAZiDO5Vef5UP7xCWbHx0=
+	t=1731408216; cv=none; b=Tz5/7yHexZJe5j0RGOl6DWSPKZb/wJlNT/rDQlowpmGlQg2JAvjTZz1yZqIS0xJ98aNTDoOROxTEx6QOkdylPuBRNT7i8Y6pZafAuCqP3qTaH7XOSOFdi08UypqXTjyITUm1AToMDExykR97TO1uTqKE+hNkdjyv1bz9wFl0LmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407233; c=relaxed/simple;
-	bh=Y7t8agpP5K64D0AJoMog/IxH4S4v0eEqOipmoGd6UR0=;
+	s=arc-20240116; t=1731408216; c=relaxed/simple;
+	bh=soqaGipknAl7bdDE62JXqZUY9yyPeQ8FbT0a9yWKIwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKllTJ3oCcbSq0dUwYCcQMewVUtXuPk5WgCzioBKNFsuE53cIJNTlfdR7wQgfqy2iCTAjA963FeW5HqMfUtYOYwnEZxdCvcD/yVY0j+CZDrcF58pK++9Ep9QrHG4PUVcFVBVbDVUD/Ake8wPDpndIGwYv+INw1XXRRz7LBOUy6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOLkyqqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE072C4CECD;
-	Tue, 12 Nov 2024 10:27:12 +0000 (UTC)
+	 MIME-Version; b=BNTnr/7IURoq8OYgsSbONPXpdh9Tr0QPVIZiyLSKuzaBlwRqEKd2OYLGdZ0Mn8o9iGe00HZJLeMbnIY2l96F3V8HCEfeq6bDB8hY/Pu74vjH9D1atKUvlZs3YPLtlpw5fQ6SnTicHYOYkdoXTLta6HGCnETztT5hmW71bxVNrVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAndFtLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C513BC4CECD;
+	Tue, 12 Nov 2024 10:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407233;
-	bh=Y7t8agpP5K64D0AJoMog/IxH4S4v0eEqOipmoGd6UR0=;
+	s=korg; t=1731408216;
+	bh=soqaGipknAl7bdDE62JXqZUY9yyPeQ8FbT0a9yWKIwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOLkyqqg6VZPoG8AiO9l9P1wMglzTOdGsva2EEGoypG5y+DyLEkp3fMrvburdKM1c
-	 6tzRNOPXXQwGPsbY1tG/D8WNexLYHqPoT4g35xwOA/qNkBz3Gdczk5LMLDsCLkS9bf
-	 tJSV3f8g7zRAKZlwxkeZt1mm5CQqwyv7sWksmEfo=
+	b=hAndFtLIoxZ7mgEXRuyjO7N6l4MDsrwHbRTRexZrwKb5H6dmO25tjwy5AeZVgLM8W
+	 BVYAUlH74wWuXrw4uYRt73sNCF4G0r1YXoevuTA8Bh6dv/0gYgDROvEweF/xXjZS6a
+	 /afKst+gWrHG0H5rwG/eyHbqQjedLUniSS/oREKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Klaus Goger <klaus.goger@theobroma-systems.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Wentao Liang <Wentao_liang_g@163.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/98] arm64: dts: rockchip: Remove #cooling-cells from fan on Theobroma lion
+Subject: [PATCH 6.11 063/184] drivers: net: ionic: add missed debugfs cleanup to ionic_probe() error path
 Date: Tue, 12 Nov 2024 11:20:21 +0100
-Message-ID: <20241112101844.511982664@linuxfoundation.org>
+Message-ID: <20241112101903.283423140@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Wentao Liang <Wentao_liang_g@163.com>
 
-[ Upstream commit 5ed96580568c4f79a0aff11a67f10b3e9229ba86 ]
+[ Upstream commit 71712cf519faeed529549a79559c06c7fc250a15 ]
 
-All Theobroma boards use a ti,amc6821 as fan controller.
-It normally runs in an automatically controlled way and while it may be
-possible to use it as part of a dt-based thermal management, this is
-not yet specified in the binding, nor implemented in any kernel.
+The ionic_setup_one() creates a debugfs entry for ionic upon
+successful execution. However, the ionic_probe() does not
+release the dentry before returning, resulting in a memory
+leak.
 
-Newer boards already don't contain that #cooling-cells property, but
-older ones do. So remove them for now, they can be re-added if thermal
-integration gets implemented in the future.
+To fix this bug, we add the ionic_debugfs_del_dev() to release
+the resources in a timely manner before returning.
 
-There are two further occurences in v6.12-rc in px30-ringneck and
-rk3399-puma, but those already get removed by the i2c-mux conversion
-scheduled for 6.13 . As the undocumented property is in the kernel so
-long, I opted for not causing extra merge conflicts between 6.12 and 6.13
-
-Fixes: d99a02bcfa81 ("arm64: dts: rockchip: add RK3368-uQ7 (Lion) SoM")
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Cc: Klaus Goger <klaus.goger@theobroma-systems.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-7-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
+Signed-off-by: Wentao Liang <Wentao_liang_g@163.com>
+Acked-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://patch.msgid.link/20241107021756.1677-1-liangwentao@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-index 5753e57fd7161..e8859cfd2d39b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3368-lion.dtsi
-@@ -60,7 +60,6 @@
- 			fan: fan@18 {
- 				compatible = "ti,amc6821";
- 				reg = <0x18>;
--				#cooling-cells = <2>;
- 			};
- 
- 			rtc_twi: rtc@6f {
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index b93791d6b5933..f5dc876eb5009 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -394,6 +394,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ err_out_pci:
+ 	ionic_dev_teardown(ionic);
+ 	ionic_clear_pci(ionic);
++	ionic_debugfs_del_dev(ionic);
+ err_out:
+ 	mutex_destroy(&ionic->dev_cmd_lock);
+ 	ionic_devlink_free(ionic);
 -- 
 2.43.0
 
