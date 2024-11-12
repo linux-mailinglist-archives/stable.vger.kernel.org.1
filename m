@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-92248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB66C9C5338
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F228E9C538C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C201F217E4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F2D283CEC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896E920DD7D;
-	Tue, 12 Nov 2024 10:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDA82123E3;
+	Tue, 12 Nov 2024 10:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTw4bSGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11A5hCHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4245919E992;
-	Tue, 12 Nov 2024 10:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF5B20FA90;
+	Tue, 12 Nov 2024 10:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407035; cv=none; b=hmWRAukvNiosGo3s1s3dyIWN1D6gAGuAKu6SlXGC06u9n+qobHKLsWqWwZNxmd+awdMbM3fNz9vRfCUqor922/rdyRd+UA68144KtH6hPlaR4/W0f8+B4ExkYP82LN+lzIgp4bFMGZ01vr6gZscm5AIY21CqBKTx3pSBqGkDpYE=
+	t=1731407249; cv=none; b=XxmW11bS2AmZj0V2tUb6wmI5OulSAvsMRyIclrUE446ENAKLAdUiASFHQcPkzuzlpdvE/3QlppQ7rAvcGOZi2geUhHYq2szL1YzsQj/vlFPUL7iIotvNHw/wLEpdtnAhHrhzWWfOWCXxYf4qyy2Wc5sljiQ+P2aX8Qi19+OCOho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407035; c=relaxed/simple;
-	bh=YJ+m3AmdL9Y20fx2OBv/DiR22IicJla0MtsyBkKWQ8Y=;
+	s=arc-20240116; t=1731407249; c=relaxed/simple;
+	bh=m7iA3qT2Onb3S/8P8MHVWSnEoMUiAJWiZ/zHX2Vsl+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mt6RbVgNdDfcQyLx3AeF+++tIvRg9lqLOCT62QoJi2XDblRsP+zlT8IRspvOmPgT9/1ReAz8AftUUTJmbdHao0xFRKMExQ543s+mCF/0KgsjJ/FvGMf4bWOMxnvayuqR2qxfmk1lNHYsBa+UXw+6ECmIsD5/1VuIDPc/inaykS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTw4bSGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51A2C4CECD;
-	Tue, 12 Nov 2024 10:23:54 +0000 (UTC)
+	 MIME-Version; b=qhVoevl1PZUGDhGUdVusPozfqKEKfon3p5FMULvmmkaTHZdSSN+ep/RAvEObBm/Vjm6ufgiLO8SwLjvXCS9ha2D8SPlz1ahf3zCP4tI+DhI1tnbgXdHrb13vKuwH24nhFX/rxIFcx+AZSB410kjdoAP+2I+2oa1u4yrGS2MrbkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11A5hCHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E9CC4CECD;
+	Tue, 12 Nov 2024 10:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407035;
-	bh=YJ+m3AmdL9Y20fx2OBv/DiR22IicJla0MtsyBkKWQ8Y=;
+	s=korg; t=1731407249;
+	bh=m7iA3qT2Onb3S/8P8MHVWSnEoMUiAJWiZ/zHX2Vsl+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTw4bSGfHmPa4iu1BDtKXgg6KQmo9LDIBDwTcqBCDMC2QX5kN4pYP/J9sJEIA8ZBO
-	 s7J//06kGhqjq6gmj6sQ8kIKJWYoJAIu4kQHNsokY/rTUfSuB4yp+BF2rvyOyUzpqk
-	 /BrB9W+WkhiTc0DG/O0y2GINBZpzSD2/xagURb3c=
+	b=11A5hCHL4+BZSr8Cpb+t5WnqtqPwQFFYNJAzN7HoQ2Ioded1Rmjv2T0YH2jFMrv7p
+	 xMj+8j2evhfrMl5NsP6V7TOwAEzV+g0/1Qg7r9ukAiASgQh9Na5X9MaqsCNjdbTJgw
+	 N60zY3phaJT29jjpazh1y5hq6E7WW1kwL74wiq04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caesar Wang <wxt@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/76] ARM: dts: rockchip: Fix the spi controller on rk3036
+Subject: [PATCH 6.1 19/98] NFSv3: only use NFS timeout for MOUNT when protocols are compatible
 Date: Tue, 12 Nov 2024 11:20:34 +0100
-Message-ID: <20241112101840.137737663@linuxfoundation.org>
+Message-ID: <20241112101845.002235425@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 8bade1ad1f0821aef31f6a8fb1027ae292566d85 ]
+[ Upstream commit 6e2a10343ecb71c4457bc16be05758f9c7aae7d9 ]
 
-Compatible and clock names did not match the existing binding.
-So set the correct values and re-order+rename the clocks.
+If a timeout is specified in the mount options, it currently applies to
+both the NFS protocol and (with v3) the MOUNT protocol.  This is
+sensible when they both use the same underlying protocol, or those
+protocols are compatible w.r.t timeouts as RDMA and TCP are.
 
-It looks like no rk3036 board did use the spi controller so far,
-so this was never detected on a running device yet.
+However if, for example, NFS is using TCP and MOUNT is using UDP then
+using the same timeout doesn't make much sense.
 
-Fixes: f629fcfab2cd ("ARM: dts: rockchip: support the spi for rk3036")
-Cc: Caesar Wang <wxt@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-14-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+If you
+   mount -o vers=3,proto=tcp,mountproto=udp,timeo=600,retrans=5 \
+      server:/path /mountpoint
+
+then the timeo=600 which was intended for the NFS/TCP request will
+apply to the MOUNT/UDP requests with the result that there will only be
+one request sent (because UDP has a maximum timeout of 60 seconds).
+This is not what a reasonable person might expect.
+
+This patch disables the sharing of timeout information in cases where
+the underlying protocols are not compatible.
+
+Fixes: c9301cb35b59 ("nfs: hornor timeo and retrans option when mounting NFSv3")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfs/super.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index e0d4c71f109a7..d7a86f21cf23f 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -550,11 +550,11 @@
- 	};
- 
- 	spi: spi@20074000 {
--		compatible = "rockchip,rockchip-spi";
-+		compatible = "rockchip,rk3036-spi";
- 		reg = <0x20074000 0x1000>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_SPI>, <&cru SCLK_SPI>;
--		clock-names = "apb-pclk","spi_pclk";
-+		clocks = <&cru SCLK_SPI>, <&cru PCLK_SPI>;
-+		clock-names = "spiclk", "apb_pclk";
- 		dmas = <&pdma 8>, <&pdma 9>;
- 		dma-names = "tx", "rx";
- 		pinctrl-names = "default";
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index f7b4df29ac5f0..3dffeb1d17b9c 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -866,7 +866,15 @@ static int nfs_request_mount(struct fs_context *fc,
+ 	 * Now ask the mount server to map our export path
+ 	 * to a file handle.
+ 	 */
+-	status = nfs_mount(&request, ctx->timeo, ctx->retrans);
++	if ((request.protocol == XPRT_TRANSPORT_UDP) ==
++	    !(ctx->flags & NFS_MOUNT_TCP))
++		/*
++		 * NFS protocol and mount protocol are both UDP or neither UDP
++		 * so timeouts are compatible.  Use NFS timeouts for MOUNT
++		 */
++		status = nfs_mount(&request, ctx->timeo, ctx->retrans);
++	else
++		status = nfs_mount(&request, NFS_UNSPEC_TIMEO, NFS_UNSPEC_RETRANS);
+ 	if (status != 0) {
+ 		dfprintk(MOUNT, "NFS: unable to mount server %s, error %d\n",
+ 				request.hostname, status);
 -- 
 2.43.0
 
