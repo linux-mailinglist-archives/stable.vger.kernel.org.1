@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-92583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04669C5547
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:03:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 105B39C5607
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583F71F215BA
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:03:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4DC2B38A3B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41271FA826;
-	Tue, 12 Nov 2024 10:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B440921A4BA;
+	Tue, 12 Nov 2024 10:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxw2MhEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LEyamfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD21FA839;
-	Tue, 12 Nov 2024 10:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F6021A4A8;
+	Tue, 12 Nov 2024 10:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407925; cv=none; b=LgWlv8Y+AOYL53YZf+0jXeE31BqCoSX4qefCgcjS+LportNxelbPHVmbJ6YCJLGDBP45MQdcQT+2fK9MEON1rBfxi+30ovNuwZNzybIZVzRuNMhS6zC2sDZa56qaqV0R/IeZPcvYdae5lUXCq5O9pGY1sfiG32eCkNrAktZURuY=
+	t=1731408400; cv=none; b=CDw0yKr7KCdMA0DtB1djowu9g3gE6eXGqFe5BY5Oe62RaoJqaaif8RC4R0V3Xdsy8FKNpAqGDBrEy4+JHpaNE+nDwP9kkJL4GtrfJdaQyyKRgFJld+1r3GmxH9vkKol69GXE8taUs7rLxsd2z13QMhxh5Y4wpi7JwHtLrd/ELwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407925; c=relaxed/simple;
-	bh=0NHtFmaGh+N0hgeZg2go9m7Tzuc2xa2M/GtIcfyB+HQ=;
+	s=arc-20240116; t=1731408400; c=relaxed/simple;
+	bh=s6cUf99GOkXMAXBJ8ooIT7bW42cVL4ZpH9sQ9MYJ9vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1OlBiOvLJr9s2GjiMidGJrUQKEWLqHRDxoxVmWTZ0HILD9YCedzaUMVXB58Z2gV5uWWwtkjQCM4/5hvN6knZqYmmGzPPBfaD7Rr8cORO6DwnP/vUIkmf6LFJ2UIt7kSZgK69SwitdW5vOjWts+rzKyWPtcF0qEqn6blK/emsm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxw2MhEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E739CC4CECD;
-	Tue, 12 Nov 2024 10:38:44 +0000 (UTC)
+	 MIME-Version; b=mvV9yUfRz8jisvNCu7+ANde4bTh9yxYinKNs3KEiLm3ZdfZiL60/hBCVpnM+N8oMK0Uy+PEiLOuKNnHLHdJc0e1TmcOsWD5MZbBmOZGC2L8+vYgVY+Sogfjf5QX6aOgZn4yjEuLHh7g8jqLEEHPoNuETUSm11/HZanqCHRgTSwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LEyamfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C42C4CECD;
+	Tue, 12 Nov 2024 10:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407925;
-	bh=0NHtFmaGh+N0hgeZg2go9m7Tzuc2xa2M/GtIcfyB+HQ=;
+	s=korg; t=1731408400;
+	bh=s6cUf99GOkXMAXBJ8ooIT7bW42cVL4ZpH9sQ9MYJ9vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxw2MhEycNbER3lOZ6bHr9hL5HgEvfuIdwvpQGrWwI/br2AwMfhAB0E6HMkPM+X6+
-	 M//UVfYR+xQqNINtKE9M+EOSTFmSdVlLhflKPvX+nncDsJXr3pJaZ24Sch2a4Ohsqa
-	 1T0gb3W3UjwlhCOCp7uAqg82YgVflfAd0QGiipX0=
+	b=1LEyamfd5JTXdflBRaKKYzGKBc/3q4AkB2R0chwUnAHkRRx9IKLZ/L0Wlvebi2+/g
+	 mznzZhxa1R4KE/0d14ac9BULy9j8qP6zzhCwCgBLUySHl37CBiguK3gt/SzzE5meBr
+	 cK8f+0N6LGWjSZGDYUrlJZJ5ba0b5nyW6mnEM2EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 6.6 100/119] Revert "selftests/bpf: Implement get_hw_ring_size function to retrieve current and max interface size"
+	SeongJae Park <sj@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 150/184] mm/damon/core: avoid overflow in damon_feed_loop_next_input()
 Date: Tue, 12 Nov 2024 11:21:48 +0100
-Message-ID: <20241112101852.544106351@linuxfoundation.org>
+Message-ID: <20241112101906.626013119@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,121 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: SeongJae Park <sj@kernel.org>
 
-This reverts commit c8c590f07ad7ffaa6ef11e90b81202212077497b which is
-commit 90a695c3d31e1c9f0adb8c4c80028ed4ea7ed5ab upstream.
+commit 4401e9d10ab0281a520b9f8c220f30f60b5c248f upstream.
 
-Commit c8c590f07ad7 ("selftests/bpf: Implement get_hw_ring_size function
-to retrieve current and max interface size") will cause the following
-bpf selftests compilation error in the 6.6 stable branch, and it is not
-the Stable-dep-of of commit 103c0431c7fb ("selftests/bpf: Drop unneeded
-error.h includes"). So let's revert commit c8c590f07ad7 to fix this
-compilation error.
+damon_feed_loop_next_input() is inefficient and fragile to overflows.
+Specifically, 'score_goal_diff_bp' calculation can overflow when 'score'
+is high.  The calculation is actually unnecessary at all because 'goal' is
+a constant of value 10,000.  Calculation of 'compensation' is again
+fragile to overflow.  Final calculation of return value for under-achiving
+case is again fragile to overflow when the current score is
+under-achieving the target.
 
-  ./network_helpers.h:66:43: error: 'struct ethtool_ringparam' declared
-    inside parameter list will not be visible outside of this definition or
-    declaration [-Werror]
-      66 | int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
+Add two corner cases handling at the beginning of the function to make the
+body easier to read, and rewrite the body of the function to avoid
+overflows and the unnecessary bp value calcuation.
 
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Link: https://lkml.kernel.org/r/20241031161203.47751-1-sj@kernel.org
+Fixes: 9294a037c015 ("mm/damon/core: implement goal-oriented feedback-driven quota auto-tuning")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/944f3d5b-9177-48e7-8ec9-7f1331a3fea3@roeck-us.net
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Cc: <stable@vger.kernel.org>	[6.8.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/network_helpers.c           |   24 ----------------
- tools/testing/selftests/bpf/network_helpers.h           |    4 --
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c |    1 
- tools/testing/selftests/bpf/xdp_hw_metadata.c           |   14 +++++++++
- 4 files changed, 15 insertions(+), 28 deletions(-)
+ mm/damon/core.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/bpf/network_helpers.c
-+++ b/tools/testing/selftests/bpf/network_helpers.c
-@@ -465,27 +465,3 @@ int get_socket_local_port(int sock_fd)
- 
- 	return -1;
- }
--
--int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
--{
--	struct ifreq ifr = {0};
--	int sockfd, err;
--
--	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
--	if (sockfd < 0)
--		return -errno;
--
--	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
--
--	ring_param->cmd = ETHTOOL_GRINGPARAM;
--	ifr.ifr_data = (char *)ring_param;
--
--	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
--		err = errno;
--		close(sockfd);
--		return -err;
--	}
--
--	close(sockfd);
--	return 0;
--}
---- a/tools/testing/selftests/bpf/network_helpers.h
-+++ b/tools/testing/selftests/bpf/network_helpers.h
-@@ -9,11 +9,8 @@ typedef __u16 __sum16;
- #include <linux/if_packet.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
--#include <linux/ethtool.h>
--#include <linux/sockios.h>
- #include <netinet/tcp.h>
- #include <bpf/bpf_endian.h>
--#include <net/if.h>
- 
- #define MAGIC_VAL 0x1234
- #define NUM_ITER 100000
-@@ -63,7 +60,6 @@ int make_sockaddr(int family, const char
- 		  struct sockaddr_storage *addr, socklen_t *len);
- char *ping_command(int family);
- int get_socket_local_port(int sock_fd);
--int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
- 
- struct nstoken;
- /**
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -2,6 +2,7 @@
- #define _GNU_SOURCE
- #include <test_progs.h>
- #include <network_helpers.h>
-+#include <linux/if.h>
- #include <linux/if_tun.h>
- #include <sys/uio.h>
- 
---- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-@@ -288,6 +288,20 @@ static int verify_metadata(struct xsk *r
- 	return 0;
- }
- 
-+struct ethtool_channels {
-+	__u32	cmd;
-+	__u32	max_rx;
-+	__u32	max_tx;
-+	__u32	max_other;
-+	__u32	max_combined;
-+	__u32	rx_count;
-+	__u32	tx_count;
-+	__u32	other_count;
-+	__u32	combined_count;
-+};
-+
-+#define ETHTOOL_GCHANNELS	0x0000003c /* Get no of channels */
-+
- static int rxq_num(const char *ifname)
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1450,17 +1450,31 @@ static unsigned long damon_feed_loop_nex
+ 		unsigned long score)
  {
- 	struct ethtool_channels ch = {
+ 	const unsigned long goal = 10000;
+-	unsigned long score_goal_diff = max(goal, score) - min(goal, score);
+-	unsigned long score_goal_diff_bp = score_goal_diff * 10000 / goal;
+-	unsigned long compensation = last_input * score_goal_diff_bp / 10000;
+ 	/* Set minimum input as 10000 to avoid compensation be zero */
+ 	const unsigned long min_input = 10000;
++	unsigned long score_goal_diff, compensation;
++	bool over_achieving = score > goal;
+ 
+-	if (goal > score)
++	if (score == goal)
++		return last_input;
++	if (score >= goal * 2)
++		return min_input;
++
++	if (over_achieving)
++		score_goal_diff = score - goal;
++	else
++		score_goal_diff = goal - score;
++
++	if (last_input < ULONG_MAX / score_goal_diff)
++		compensation = last_input * score_goal_diff / goal;
++	else
++		compensation = last_input / goal * score_goal_diff;
++
++	if (over_achieving)
++		return max(last_input - compensation, min_input);
++	if (last_input < ULONG_MAX - compensation)
+ 		return last_input + compensation;
+-	if (last_input > compensation + min_input)
+-		return last_input - compensation;
+-	return min_input;
++	return ULONG_MAX;
+ }
+ 
+ #ifdef CONFIG_PSI
 
 
 
