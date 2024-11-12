@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DEE9C5578
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC6F9C53E5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40BCB1F214FB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776FE28298D
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F181217649;
-	Tue, 12 Nov 2024 10:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE5D21314C;
+	Tue, 12 Nov 2024 10:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIoJxtUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj4gediD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB7D21265F;
-	Tue, 12 Nov 2024 10:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EF020D4FC;
+	Tue, 12 Nov 2024 10:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408085; cv=none; b=WbkKih0yJU/R7bgaw4peDxw8v9H9XpEvaHu30tYTqQp8uwdbICtK6Y60RCcEzJSMQ8nzfz7FbsRH2MxVEeejcTqhjxVfonAvcPcgLx/rQeLMftxLWqjYQRN1uncWQaQ56kmM1jeQpKhNIbaFKw/6wElVscK8hKkzKpsma/h82Tk=
+	t=1731407599; cv=none; b=dN0Zv4qeyYff+Hv0kvJZqRd9+lE1/azJbgY8tD71GcdDAkbbLKa9ySozvHiipRQMvwytHzNqjQRF9AYlMz/iXXqdvM5tvJKGnsZVIKwc42AsUlIauTDQ9bvhQVIMf7didiJBCTEF4OVIKKFuCCktQI3zwwoRakqMuVZHTgqCf5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408085; c=relaxed/simple;
-	bh=4Y8/cL7YRPnvJ9l+mPG9dXDUqLMCAbFsF6y0ugeiYUo=;
+	s=arc-20240116; t=1731407599; c=relaxed/simple;
+	bh=1Cd/ySkBjS7+Kf5QOUzoF1xvGxtv8y9Ckov25Jlc4ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXGbRBYOxH9WcoxVB5sCOxPiPmIV4wGR1F4lr33Gzoqmor56urqeK1yEbcx1/OUS0zF58Z3Hbks4IwmEMGOKkMLOl692UqA6ja2YMkphtMrnEFqL71AdOHKM04PYQYIkauDqWjlgk9CwsbP9dni2giybGMA098wVBHMA7tkXyBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIoJxtUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FC0C4CECD;
-	Tue, 12 Nov 2024 10:41:24 +0000 (UTC)
+	 MIME-Version; b=LJZi3btQqF0IClQeiphbRJ/++9Tcn6HLvHvcHb9z1/Du6y7fV/bN0ZD6gUms/TZh9MJMvrAJFimYqlOpIy9Yhp5/cPu5ED0lndfBD6n1lN0V+Hjb3MdI95O5Q3RHFu3TwQVUnUGzJIa8XuhzDu4zx/hYQTy2G2jFJ3JJsi3O5Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj4gediD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33271C4CECD;
+	Tue, 12 Nov 2024 10:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408084;
-	bh=4Y8/cL7YRPnvJ9l+mPG9dXDUqLMCAbFsF6y0ugeiYUo=;
+	s=korg; t=1731407599;
+	bh=1Cd/ySkBjS7+Kf5QOUzoF1xvGxtv8y9Ckov25Jlc4ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIoJxtUU7k4oaKbnipf/9cgAr07mNIpmeog9C8e/5TkiSm04NqNj6PLQ+nsNbtDGZ
-	 jDJ+sDeNSfHsq+eA43jBomg/pySYAwAlWr2+p5Ff7Fo0U4cN+aynxJtPlEjs4KCvfb
-	 lttPFrI55JBf9sa45x5AS/oudKnLjRQBl/94BXRs=
+	b=gj4gediD2q4Gvhd9n//1jfGC2c/7xliaZE6AuztksbrvnKO9HYDhlAEy2PU/za/Ji
+	 jetiStlol8GbDwuT1+zP+Dl8MMzXcFBMVLRFnGUIbHphdYj11MRU2K/6ne80GfmfQx
+	 BHsrgfO1/AfbLRhdc7a0jdesXF06314sA9CoJtyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 054/184] netfilter: nf_tables: wait for rcu grace period on net_device removal
+Subject: [PATCH 6.6 004/119] arm64: dts: rockchip: Fix wakeup prop names on PineNote BT node
 Date: Tue, 12 Nov 2024 11:20:12 +0100
-Message-ID: <20241112101902.934072658@linuxfoundation.org>
+Message-ID: <20241112101848.880013988@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,163 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-[ Upstream commit c03d278fdf35e73dd0ec543b9b556876b9d9a8dc ]
+[ Upstream commit 87299d6ee95a37d2d576dd8077ea6860f77ad8e2 ]
 
-8c873e219970 ("netfilter: core: free hooks with call_rcu") removed
-synchronize_net() call when unregistering basechain hook, however,
-net_device removal event handler for the NFPROTO_NETDEV was not updated
-to wait for RCU grace period.
+The "brcm,bluetooth.yaml" binding has 'device-wakeup-gpios' and
+'host-wakeup-gpios' property names, not '*-wake-gpios'.
+Fix the incorrect property names.
 
-Note that 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks
-on net_device removal") does not remove basechain rules on device
-removal, I was hinted to remove rules on net_device removal later, see
-5ebe0b0eec9d ("netfilter: nf_tables: destroy basechain and rules on
-netdevice removal").
+Note that the "realtek,bluetooth.yaml" binding does use the
+'*-wake-gpios' property names.
 
-Although NETDEV_UNREGISTER event is guaranteed to be handled after
-synchronize_net() call, this path needs to wait for rcu grace period via
-rcu callback to release basechain hooks if netns is alive because an
-ongoing netlink dump could be in progress (sockets hold a reference on
-the netns).
-
-Note that nf_tables_pre_exit_net() unregisters and releases basechain
-hooks but it is possible to see NETDEV_UNREGISTER at a later stage in
-the netns exit path, eg. veth peer device in another netns:
-
- cleanup_net()
-  default_device_exit_batch()
-   unregister_netdevice_many_notify()
-    notifier_call_chain()
-     nf_tables_netdev_event()
-      __nft_release_basechain()
-
-In this particular case, same rule of thumb applies: if netns is alive,
-then wait for rcu grace period because netlink dump in the other netns
-could be in progress. Otherwise, if the other netns is going away then
-no netlink dump can be in progress and basechain hooks can be released
-inmediately.
-
-While at it, turn WARN_ON() into WARN_ON_ONCE() for the basechain
-validation, which should not ever happen.
-
-Fixes: 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks on net_device removal")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d449121e5e8a ("arm64: dts: rockchip: Add Pine64 PineNote board")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/20241008113344.23957-4-didi.debian@cknow.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  4 +++
- net/netfilter/nf_tables_api.c     | 41 +++++++++++++++++++++++++------
- 2 files changed, 38 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 2be4738eae1cc..0d01e0310e5fe 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1099,6 +1099,7 @@ struct nft_rule_blob {
-  *	@name: name of the chain
-  *	@udlen: user data length
-  *	@udata: user data in the chain
-+ *	@rcu_head: rcu head for deferred release
-  *	@blob_next: rule blob pointer to the next in the chain
-  */
- struct nft_chain {
-@@ -1116,6 +1117,7 @@ struct nft_chain {
- 	char				*name;
- 	u16				udlen;
- 	u8				*udata;
-+	struct rcu_head			rcu_head;
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule_blob		*blob_next;
-@@ -1259,6 +1261,7 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-+ *	@net: netnamespace this table belongs to
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1278,6 +1281,7 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
-+	possible_net_t			net;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e792f153f9587..58503348ed3a3 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1493,6 +1493,7 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
- 	INIT_LIST_HEAD(&table->flowtables);
-+	write_pnet(&table->net, net);
- 	table->family = family;
- 	table->flags = flags;
- 	table->handle = ++nft_net->table_handle;
-@@ -11363,22 +11364,48 @@ int nft_data_dump(struct sk_buff *skb, int attr, const struct nft_data *data,
- }
- EXPORT_SYMBOL_GPL(nft_data_dump);
- 
--int __nft_release_basechain(struct nft_ctx *ctx)
-+static void __nft_release_basechain_now(struct nft_ctx *ctx)
- {
- 	struct nft_rule *rule, *nr;
- 
--	if (WARN_ON(!nft_is_base_chain(ctx->chain)))
--		return 0;
--
--	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
- 	list_for_each_entry_safe(rule, nr, &ctx->chain->rules, list) {
- 		list_del(&rule->list);
--		nft_use_dec(&ctx->chain->use);
- 		nf_tables_rule_release(ctx, rule);
- 	}
-+	nf_tables_chain_destroy(ctx->chain);
-+}
-+
-+static void nft_release_basechain_rcu(struct rcu_head *head)
-+{
-+	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
-+	struct nft_ctx ctx = {
-+		.family	= chain->table->family,
-+		.chain	= chain,
-+		.net	= read_pnet(&chain->table->net),
-+	};
-+
-+	__nft_release_basechain_now(&ctx);
-+	put_net(ctx.net);
-+}
-+
-+int __nft_release_basechain(struct nft_ctx *ctx)
-+{
-+	struct nft_rule *rule;
-+
-+	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
-+		return 0;
-+
-+	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
-+	list_for_each_entry(rule, &ctx->chain->rules, list)
-+		nft_use_dec(&ctx->chain->use);
-+
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
--	nf_tables_chain_destroy(ctx->chain);
-+
-+	if (maybe_get_net(ctx->net))
-+		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
-+	else
-+		__nft_release_basechain_now(ctx);
- 
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
+index d899087bf0b55..42f9507c01da1 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
+@@ -683,8 +683,8 @@
+ 		compatible = "brcm,bcm43438-bt";
+ 		clocks = <&rk817 1>;
+ 		clock-names = "lpo";
+-		device-wake-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
+-		host-wake-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
++		device-wakeup-gpios = <&gpio0 RK_PC2 GPIO_ACTIVE_HIGH>;
++		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
+ 		reset-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
+ 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
+ 		pinctrl-names = "default";
 -- 
 2.43.0
 
