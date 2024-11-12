@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-92682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1870B9C55A7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9489C5668
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C49FC1F21532
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D962BB2EBF4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAED21441B;
-	Tue, 12 Nov 2024 10:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9C3213ED2;
+	Tue, 12 Nov 2024 10:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpuKQQVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s179PZMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C52213127;
-	Tue, 12 Nov 2024 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE36215C66;
+	Tue, 12 Nov 2024 10:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408243; cv=none; b=Vj3UN66ldbeyUkrUMBO+L+qZd4P+g1BzxAxYi3dnk2SpwReUb3bErYONJnbTuiHX64+g3ThXLZq4oHRSHzlN/ZDCEkyi1jCoUajcpcfjlQ66VcZiO+yFXSEfO4QbjC5VMFzsGJMQEQrMC0j8vapxFWkknOYtWaMLpleEpHmX3qI=
+	t=1731407700; cv=none; b=obLgi6ylgXwyPhp9YW2fXMz1ezJX9pLJnbfT2V05GZeRjrs1lu0dZqcKHflQ8jcD9IslWYgRqS2kQ07LYIYFwHM8NSPSHvaWbJxQ+JGiY9wa18CvegblfWOW4MLfKWDGQ2hZ17Fk3IDOdd494rRLOoV7hwcjxrB8NVAaYmOkCuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408243; c=relaxed/simple;
-	bh=32FkEhIbrlOzsPWIk8UMOG4a152fL+7yGAv9LdVmkWo=;
+	s=arc-20240116; t=1731407700; c=relaxed/simple;
+	bh=6Ue/1caWEEWImcuRj3YHOUAtUhYpnVfEYFDGVEYsk3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiCUwKQoJgYmd2an8hjL2gkPIG2meO4XQRnj00igmw+tlvT4dbqyV1DQxCEleywQYHWhYxpxpBwlSFKrGdGVAZPY6SvJYs6862GRruBz14JVHOA5EdujJxZeRrpoZSkAW5zvAbtrcbC8gH4TvMGrM/63GNptnkN4mSZtYEc6b5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpuKQQVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6684EC4CED6;
-	Tue, 12 Nov 2024 10:44:02 +0000 (UTC)
+	 MIME-Version; b=Z00VtWcbqbejgfdrkTEIy036jfRxeEBeoDEPFGzbg+RtVz2hs8/dqyUstGZq1zYwx4v04P+AWBRwpja9xObYnKB06pO+50oLOPYrp0oRxLl9bHKeUAfQuuHBrrpu7Inb9ib6hiCnf7c7gbqIU7Io0pXgoPoYWrkGY7Tz+p2eTKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s179PZMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E6FC4CED6;
+	Tue, 12 Nov 2024 10:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408242;
-	bh=32FkEhIbrlOzsPWIk8UMOG4a152fL+7yGAv9LdVmkWo=;
+	s=korg; t=1731407699;
+	bh=6Ue/1caWEEWImcuRj3YHOUAtUhYpnVfEYFDGVEYsk3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpuKQQVETBqYtbcKakOaE3re9BvBaVQZhjjGFS6Rbj3m1nLowSGcdyDkoaZjpvxoS
-	 I+3a1/MgSafS/+9IsmSxwetvD/9hnRGtsSQZacF9P1ulVJg2ZMXgNlv84aKWun28iO
-	 WtsaeRO2uVb5JMhPY9sjwgFu+GQMItjs0taMpPOQ=
+	b=s179PZMi1rL38DhOOS6U6qajW0Ngb6e5BWanJo0sI8lpIjNV8HeGrGyPe/fCJ5I8h
+	 ElRmF7djX1w5fJTtlfyarPUDkquW+bl9NpU9MGCM+DuUXDwXlR7kktV12+RQmY3oGL
+	 FlsSCEGPbOdK2YNZJOpJnwppXQvWvVztRE4B4cZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 104/184] drm/amd/display: parse umc_info or vram_info based on ASIC
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 054/119] media: adv7604: prevent underflow condition when reporting colorspace
 Date: Tue, 12 Nov 2024 11:21:02 +0100
-Message-ID: <20241112101904.856095261@linuxfoundation.org>
+Message-ID: <20241112101850.781988592@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 694c79769cb384bca8b1ec1d1e84156e726bd106 upstream.
+[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
 
-An upstream bug report suggests that there are production dGPUs that are
-older than DCN401 but still have a umc_info in VBIOS tables with the
-same version as expected for a DCN401 product. Hence, reading this
-tables should be guarded with a version check.
+Currently, adv76xx_log_status() reads some date using
+io_read() which may return negative values. The current logic
+doesn't check such errors, causing colorspace to be reported
+on a wrong way at adv76xx_log_status(), as reported by Coverity.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2551b4a321a68134360b860113dd460133e856e5)
-Fixes: 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
-Cc: stable@vger.kernel.org # 6.11.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If I/O error happens there, print a different message, instead
+of reporting bogus messages to userspace.
+
+Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 0d8498ab9b23..be8fbb04ad98 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -3127,7 +3127,9 @@ static enum bp_result bios_parser_get_vram_info(
- 	struct atom_data_revision revision;
- 
- 	// vram info moved to umc_info for DCN4x
--	if (info && DATA_TABLES(umc_info)) {
-+	if (dcb->ctx->dce_version >= DCN_VERSION_4_01 &&
-+		dcb->ctx->dce_version < DCN_VERSION_MAX &&
-+		info && DATA_TABLES(umc_info)) {
- 		header = GET_IMAGE(struct atom_common_table_header,
- 					DATA_TABLES(umc_info));
+diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
+index b202a85fbeaa0..d1609bd8f0485 100644
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -2519,10 +2519,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
+ 	const struct adv76xx_chip_info *info = state->info;
+ 	struct v4l2_dv_timings timings;
+ 	struct stdi_readback stdi;
+-	u8 reg_io_0x02 = io_read(sd, 0x02);
++	int ret;
++	u8 reg_io_0x02;
+ 	u8 edid_enabled;
+ 	u8 cable_det;
+-
+ 	static const char * const csc_coeff_sel_rb[16] = {
+ 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
+ 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
+@@ -2621,13 +2621,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
+ 	v4l2_info(sd, "-----Color space-----\n");
+ 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
+ 			rgb_quantization_range_txt[state->rgb_quantization_range]);
+-	v4l2_info(sd, "Input color space: %s\n",
+-			input_color_space_txt[reg_io_0x02 >> 4]);
+-	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
+-			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
+-			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
+-				"(16-235)" : "(0-255)",
+-			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
++
++	ret = io_read(sd, 0x02);
++	if (ret < 0) {
++		v4l2_info(sd, "Can't read Input/Output color space\n");
++	} else {
++		reg_io_0x02 = ret;
++
++		v4l2_info(sd, "Input color space: %s\n",
++				input_color_space_txt[reg_io_0x02 >> 4]);
++		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
++				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
++				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
++					"(16-235)" : "(0-255)",
++				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
++	}
+ 	v4l2_info(sd, "Color space conversion: %s\n",
+ 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
  
 -- 
-2.47.0
+2.43.0
 
 
 
