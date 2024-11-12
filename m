@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6E89C551E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:59:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C019C54C8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9031B35F9D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD391F22466
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752FA2144CC;
-	Tue, 12 Nov 2024 10:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E2C2139AF;
+	Tue, 12 Nov 2024 10:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9EdPKIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFShHbKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344F521263E;
-	Tue, 12 Nov 2024 10:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85657215015;
+	Tue, 12 Nov 2024 10:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407502; cv=none; b=pLErybD6Rkef/ZnnGObDI/YqCng+EY8MCDXEV6qtuRY1z9Yn2bLPUbof9ttfDdwn9aOXSJ2fUZRHcvINHQN2bezpDQM85/r2CmdUaGDOiiiUfMAKU6I9diJPXLwBNJA0+4NF47i97905Ag43+FaBkZyuG9jbicONPk1WYsHYgl0=
+	t=1731407849; cv=none; b=b0FhDFSlzQYnR+7dyjNtvexOo88M3IN+3ncXmzkFTw+0hwJXqPUAGqWMg20QCUVkm7CcRBGDFF6Hm4pQCRwpvEdlF9POeysXVqcB/Ytf6FfYbTltWRbbCJe06x4b0U2tKFUZOR+p6DJbC/VX1GKjMnT56e1v+oenVZdaHQ2tIqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407502; c=relaxed/simple;
-	bh=GUCIZ3ibG5rFnhzDQBdV6R3a1+DRKdI+EBoYz4GCM8M=;
+	s=arc-20240116; t=1731407849; c=relaxed/simple;
+	bh=WHDrcxKcBdMnvRld4FXz79+dG81xHW2dgqeOUyogj0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HV908kReRawPF7j7KkpGQcyRxA0FmRgM73+Ezxkv8ez7HurqC1qDch7OUtVfGol6VYlQBV3cUX/5C+HJqvorHLnWhGzdI2F8vh6NqoOjW4Q8r6vh/tl9g6pcOV7tSF7ZzF0MeyiWXtaaUECGsCBgOq89J40GufzOayUwnI9iFCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9EdPKIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97470C4CECD;
-	Tue, 12 Nov 2024 10:31:41 +0000 (UTC)
+	 MIME-Version; b=lnAiJiM12NS0A/6kRa2sphhipot1KPkHkIAzVfrzyjCOT9tjq5vOKGncSfmMDRSvkhcw0F64sXPc9EDOM9qoh0gYNORZ/DeGQ0h/Zidzvc9qQfqC0WSoSYLAJ7b7+Zjf26N0a8tTn2DBxsZDkzhJt4y5wsKCJylv3FIHTI/yhz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFShHbKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22CFC4CED7;
+	Tue, 12 Nov 2024 10:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407502;
-	bh=GUCIZ3ibG5rFnhzDQBdV6R3a1+DRKdI+EBoYz4GCM8M=;
+	s=korg; t=1731407849;
+	bh=WHDrcxKcBdMnvRld4FXz79+dG81xHW2dgqeOUyogj0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9EdPKIMM9l+E693Wf/JTqrtrYAX8aYedAXXmA7rfnUWNiJjl6kKs/CChcQpRHlQF
-	 L38YRsK6979KxeS+XkUtmb06sPU9mOc150PwQ2UtT3bJzp9iUJ05TlvCgFsq+1WpIk
-	 5g2v7+FoP8bBieXUdZrRzU9hpFl00H/JAZ3GjseE=
+	b=uFShHbKR0mDNWXLrXg04ObrluYT3ePtDlsZJxSaLfHVRuArJAFiC27iYP5FwTqv7v
+	 7WJdAc/nbb3gdR/pYjE7myFs5rNBISC57c8H1noPDrNt6qYItqvMW1nVYfWBzw4Dji
+	 KpxG2wPZl/FhP0l1Ja9zSYgmZc/dyZHmCT4Fnagw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Mark Brown <broonie@kernel.org>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.1 94/98] ASoC: amd: yc: fix internal mic on Xiaomi Book Pro 14 2022
-Date: Tue, 12 Nov 2024 11:21:49 +0100
-Message-ID: <20241112101847.825117690@linuxfoundation.org>
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 102/119] filemap: Fix bounds checking in filemap_read()
+Date: Tue, 12 Nov 2024 11:21:50 +0100
+Message-ID: <20241112101852.622199814@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit de156f3cf70e17dc6ff4c3c364bb97a6db961ffd upstream.
+commit ace149e0830c380ddfce7e466fe860ca502fe4ee upstream.
 
-Xiaomi Book Pro 14 2022 (MIA2210-AD) requires a quirk entry for its
-internal microphone to be enabled.
+If the caller supplies an iocb->ki_pos value that is close to the
+filesystem upper limit, and an iterator with a count that causes us to
+overflow that limit, then filemap_read() enters an infinite loop.
 
-This is likely due to similar reasons as seen previously on Redmi Book
-14/15 Pro 2022 models (since they likely came with similar firmware):
+This behaviour was discovered when testing xfstests generic/525 with the
+"localio" optimisation for loopback NFS mounts.
 
-- commit dcff8b7ca92d ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 15 2022
-  into DMI table")
-- commit c1dd6bf61997 ("ASoC: amd: yc: Add Xiaomi Redmi Book Pro 14 2022
-  into DMI table")
-
-A quirk would likely be needed for Xiaomi Book Pro 15 2022 models, too.
-However, I do not have such device on hand so I will leave it for now.
-
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://patch.msgid.link/20241106024052.15748-1-jeffbai@aosc.io
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: c2a9737f45e2 ("vfs,mm: fix a dead loop in truncate_inode_pages_range()")
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -342,6 +342,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
- 		}
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2660,7 +2660,7 @@ ssize_t filemap_read(struct kiocb *iocb,
+ 	if (unlikely(!iov_iter_count(iter)))
+ 		return 0;
+ 
+-	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
++	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
+ 	folio_batch_init(&fbatch);
+ 
+ 	do {
 
 
 
