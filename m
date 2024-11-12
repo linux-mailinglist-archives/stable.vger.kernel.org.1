@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-92297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1985F9C536E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020349C5612
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D327E288C9E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 851D6B2900A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2E5214439;
-	Tue, 12 Nov 2024 10:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05ED21A4B4;
+	Tue, 12 Nov 2024 10:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REWP/hrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfA8JM0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4642141B9;
-	Tue, 12 Nov 2024 10:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47420F5AF;
+	Tue, 12 Nov 2024 10:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407197; cv=none; b=Z7iBbgA+252fBJSIdcWQDTt6vIqGwVlVbE1YWiu/K4xBP74+Fq5qcKQNTpwhZTXbYai+rFx8R6V5oMsGQIf96s1nu1dD0ZTUXyfSsSa2NW5XdsYL05axUgtoIez4jRkf2puzPQVZ7Q33AXMSZumQtWxKbZj8vMS1A3Doi543SFw=
+	t=1731408390; cv=none; b=bkOItQaQuC+Pe4JIFrXheBmFL5jEfRiwEa/aDfPaT0fOq49WDb7FNOLpCknmRIeXgzhLM2pSYc4jtkPJDPfs0MqpkGseWUJgXmkpzBTaA9La6tmqPi+17+SKtGJBpat/iX7EuSm/kmJa5zhNjefR5oQNLKxe5csKsR/tVLs2ddM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407197; c=relaxed/simple;
-	bh=eqacKVqTjeBSbJC5wEZvVmiPSp8SA6nTrqzlY9xDfJc=;
+	s=arc-20240116; t=1731408390; c=relaxed/simple;
+	bh=gLamf4uvQpjS10zu7d5vMLSYTpMeCIAb9CBuFbpyjnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LqNjNJ7XHtEW9NJkyUc8mfDKCY8bCVebymZHJphfSClRPIl1cPXHya/wH8WUNk8hXy/20hU50pVO/djwR5mUpqqBR7oYxjlgPoZmDm/f7kb5llhb5F/Q8FVtRRuwOEwV2qZyol0hdbnKHWmvFa/FLEjPRyzxyBkWWthl4vv0Cvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REWP/hrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACB8C4CECD;
-	Tue, 12 Nov 2024 10:26:36 +0000 (UTC)
+	 MIME-Version; b=emaMWdGuWYy2Z90xqWv8+zW5lb+948CxRrMVwkl4izfe5EQkgGdSQ0vVQJkNN5T9zZiK6+S1nQWMqC8JK/2c7jZI3vwsO/Qnzcwyar8BNSArKFASdE7QAv9deStsCNcAwWgo8caB3gr2rK76TS9EJoZ6AJSwBS0cD51t7rry8ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfA8JM0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4A3C4CECD;
+	Tue, 12 Nov 2024 10:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407197;
-	bh=eqacKVqTjeBSbJC5wEZvVmiPSp8SA6nTrqzlY9xDfJc=;
+	s=korg; t=1731408390;
+	bh=gLamf4uvQpjS10zu7d5vMLSYTpMeCIAb9CBuFbpyjnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REWP/hrGKv6llgmjYDr36e5tFTj1AaPj9p6T8cUchWIoSBlC6RxhQxBNkw3Y1dxfk
-	 mzFsZS+FLaJgibfUL9INQiBgo8WIF+ZPTqOfP9B54wE0Rb4V/whZi2mQCEVBStpXaX
-	 fbsbiSihT7SbiFI8HOP4dcs4oGQ1LFMBKphcoHSw=
+	b=XfA8JM0Nt0dXwUCSugWuYlITBcNgRbhIOeH8/FDVj1FcfuAWTZ9xXHbjRaWNDdLEG
+	 ybPy7PA3OB9EtHYszcfVoYcWy62T/n3LilwV3btCHqPVDm88xUSe2Kw7te1Vl17AJX
+	 r09fZbvnt9nIO2Kvz8LoZhK83kT+GjYo/UtNjhbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 63/76] usb: typec: fix potential out of bounds in ucsi_ccg_update_set_new_cam_cmd()
+	Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.11 130/184] arm64: Kconfig: Make SME depend on BROKEN for now
 Date: Tue, 12 Nov 2024 11:21:28 +0100
-Message-ID: <20241112101842.185533958@linuxfoundation.org>
+Message-ID: <20241112101905.854936497@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 7dd08a0b4193087976db6b3ee7807de7e8316f96 upstream.
+commit 81235ae0c846e1fb46a2c6fe9283fe2b2b24f7dc upstream.
 
-The "*cmd" variable can be controlled by the user via debugfs.  That means
-"new_cam" can be as high as 255 while the size of the uc->updated[] array
-is UCSI_MAX_ALTMODES (30).
+Although support for SME was merged in v5.19, we've since uncovered a
+number of issues with the implementation, including issues which might
+corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
+patches to address some of these issues, ongoing review has highlighted
+additional functional problems, and more time is necessary to analyse
+and fix these.
 
-The call tree is:
-ucsi_cmd() // val comes from simple_attr_write_xsigned()
--> ucsi_send_command()
-   -> ucsi_send_command_common()
-      -> ucsi_run_command() // calls ucsi->ops->sync_control()
-         -> ucsi_ccg_sync_control()
+For now, mark SME as BROKEN in the hope that we can fix things properly
+in the near future. As SME is an OPTIONAL part of ARMv9.2+, and there is
+very little extant hardware, this should not adversely affect the vast
+majority of users.
 
-Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/325102b3-eaa8-4918-a947-22aca1146586@stanley.mountain
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org # 5.19
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20241106164220.2789279-1-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -436,6 +436,8 @@ static void ucsi_ccg_update_set_new_cam_
- 
- 	port = uc->orig;
- 	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
-+	if (new_cam >= ARRAY_SIZE(uc->updated))
-+		return;
- 	new_port = &uc->updated[new_cam];
- 	cam = new_port->linked_idx;
- 	enter_new_mode = UCSI_SET_NEW_CAM_ENTER(*cmd);
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2173,6 +2173,7 @@ config ARM64_SME
+ 	bool "ARM Scalable Matrix Extension support"
+ 	default y
+ 	depends on ARM64_SVE
++	depends on BROKEN
+ 	help
+ 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
+ 	  execution state which utilises a substantial subset of the SVE
 
 
 
