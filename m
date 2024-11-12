@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-92369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC159C5684
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:30:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F415F9C5458
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B19BB35B53
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0321F21B84
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB4A212F0B;
-	Tue, 12 Nov 2024 10:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B63E218335;
+	Tue, 12 Nov 2024 10:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC5eeoFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmG+6FJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF619214409;
-	Tue, 12 Nov 2024 10:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A77121832B;
+	Tue, 12 Nov 2024 10:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407433; cv=none; b=hj0bZilD1HPpoyje52Six/Vq625Tb4hTMdsnPkY0qxt4XpMi4ObhLpWkbapCb9PksHZ8JBH6NiAPDzybitCssd05W03T/H6HM0okg/1IiGbSyWn0F5ds4wZi1MR61ZS2JPvowigwtKurnEKskmcqDUZQQXBFOyLA2gvhEeJi+Z8=
+	t=1731407780; cv=none; b=KNxKiuH8s8PXu5NSfb4vASmj0HmqRNA0ssm+PQbUEaPfGf2jMxS1rt/ibaXTLuMTvBRVxYpueVBwnC3DuDjp9Xl/830IFgmAK2mQXuzZ57qtOBnWO9zTdjqAXFJBxSv7bdAzTaWHwiOEH++QinrWOIoMR+qyPx9WCAXH9wGqf9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407433; c=relaxed/simple;
-	bh=i3767gGOkGdF1irdVagLzYyEDwDxcQ7WH00XSfmIAGw=;
+	s=arc-20240116; t=1731407780; c=relaxed/simple;
+	bh=5HQsGKC+NYmSWMQfL8UuG0DNhV2cQR67dIxfzzHNWwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3Qx14bbN6qsAP43kPlvGn7DUq+0pdwO6cqjzMcwwnWv/H1dONx1P6srtC3uUsr18WYCzYISs6n8Cr9WzpKlAOSY5U5fja2e2hjVwtkyXosPJpamOX5D91sP+Je/MnN6ElfVTqHkFKYxIF/hMsBIxm5hskdNVpCTUV7lUASEKmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC5eeoFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DD9C4CECD;
-	Tue, 12 Nov 2024 10:30:32 +0000 (UTC)
+	 MIME-Version; b=rIlj37/Pz4SQeQCR3o/CsqBUJb7xtLgydWIospbnd44kzUxAYiALNnpKqb5ml8hNamHy3ygBan8jWWQOYgyV5hRUHXqIAqQtf6iD0/9ZjEtVJ2LSKVd67BbR7LBhtYArUy3VisnV74jFdrIvVxRoosmfHzOkWarA9uRX2FHGL0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmG+6FJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FEDC4CED7;
+	Tue, 12 Nov 2024 10:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407433;
-	bh=i3767gGOkGdF1irdVagLzYyEDwDxcQ7WH00XSfmIAGw=;
+	s=korg; t=1731407780;
+	bh=5HQsGKC+NYmSWMQfL8UuG0DNhV2cQR67dIxfzzHNWwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nC5eeoFIuTz5YuA5KDXsWysXBw4jHs+tHj0Dj+XAWaAQ0HHKlz2FUiEiIyCcpN3xQ
-	 UouUokclGeg37k3U1u/E5q+LMbHUKnkkgVwPihYLDzcn5wFMahjBkTiukDA5iYQGOG
-	 aLdF+NA3A0ONT6oY/JWLlxbNe1K2rve4XHyTzFWI=
+	b=tmG+6FJE2vHB2dsoHjm99ad6VVlrxqW5eBmm2qT5xOU//MoBECDnKKCsw9cO9ZG4h
+	 6PMFQR8MDOfly9ErWC6nEIz2BXpQ87JVwrZURXI3kdqs6EhWF1cGT9uq3SkZAbrUtX
+	 w2tNYtq8WXqVr5LjrZxJpC8u5dSqtisjYYsVACqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 73/98] arm64: Kconfig: Make SME depend on BROKEN for now
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 080/119] drm/amdgpu: prevent NULL pointer dereference if ATIF is not supported
 Date: Tue, 12 Nov 2024 11:21:28 +0100
-Message-ID: <20241112101847.037143420@linuxfoundation.org>
+Message-ID: <20241112101851.775426318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-commit 81235ae0c846e1fb46a2c6fe9283fe2b2b24f7dc upstream.
+commit a6dd15981c03f2cdc9a351a278f09b5479d53d2e upstream.
 
-Although support for SME was merged in v5.19, we've since uncovered a
-number of issues with the implementation, including issues which might
-corrupt the FPSIMD/SVE/SME state of arbitrary tasks. While there are
-patches to address some of these issues, ongoing review has highlighted
-additional functional problems, and more time is necessary to analyse
-and fix these.
+acpi_evaluate_object() may return AE_NOT_FOUND (failure), which
+would result in dereferencing buffer.pointer (obj) while being NULL.
 
-For now, mark SME as BROKEN in the hope that we can fix things properly
-in the near future. As SME is an OPTIONAL part of ARMv9.2+, and there is
-very little extant hardware, this should not adversely affect the vast
-majority of users.
+Although this case may be unrealistic for the current code, it is
+still better to protect against possible bugs.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: stable@vger.kernel.org # 5.19
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20241106164220.2789279-1-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Bail out also when status is AE_NOT_FOUND.
+
+This fixes 1 FORWARD_NULL issue reported by Coverity
+Report: CID 1600951:  Null pointer dereferences  (FORWARD_NULL)
+
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Fixes: c9b7c809b89f ("drm/amd: Guard against bad data for ATIF ACPI method")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241031152848.4716-1-antonio@mandelbit.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c9e221fe2553edf2db71627d8453f083de87a1)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2113,6 +2113,7 @@ config ARM64_SME
- 	bool "ARM Scalable Matrix Extension support"
- 	default y
- 	depends on ARM64_SVE
-+	depends on BROKEN
- 	help
- 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
- 	  execution state which utilises a substantial subset of the SVE
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -172,8 +172,8 @@ static union acpi_object *amdgpu_atif_ca
+ 				      &buffer);
+ 	obj = (union acpi_object *)buffer.pointer;
+ 
+-	/* Fail if calling the method fails and ATIF is supported */
+-	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
++	/* Fail if calling the method fails */
++	if (ACPI_FAILURE(status)) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+ 		kfree(obj);
 
 
 
