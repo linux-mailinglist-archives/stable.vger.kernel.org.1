@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-92463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766979C54C7
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:50:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EB99C569B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A5BB2C2CC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD356B3F6DF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30C11BD031;
-	Tue, 12 Nov 2024 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B40F2194B1;
+	Tue, 12 Nov 2024 10:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js3bmw8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJy4jhku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1163213EE9;
-	Tue, 12 Nov 2024 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4622F2141A4;
+	Tue, 12 Nov 2024 10:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407741; cv=none; b=D3d83wtYWmijpFkHWJkLmW/pwI/ewJNi4mKtAjKBKQYyamhg75lbXBclL1u5KY7ohzYAFJv/TgGycSGbBlWPXF3tKnw/adAuBmL9z8HpbL1aRGufIVmsGhjd7sMbGlz+cF/ny8dHIrSS6B9WEWzJNwUmUFbT8oGOah+Kj9KbsIM=
+	t=1731408297; cv=none; b=BTAc9Wn2vQ2G+lCexXOjYWueEjjaDC1iuMEAhp8yJL8PRr0z4xEmM3zZ4Y/kKFN7RzbrzXwz1KXgYy2Am8ffY+TRbFFKNbn1kHu9/xlTclsnPWvqc15NrtEgDQVH9Xl3903Pm6D7ghGOPOZoE8vktgHDZhdfQiYVY5H4Ug9YwnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407741; c=relaxed/simple;
-	bh=rELOO1B+WkT3IP/xXvf6tirTUc4bqHX/8m140Jfpy/U=;
+	s=arc-20240116; t=1731408297; c=relaxed/simple;
+	bh=rjtdnUDnuAekcL/rKPAeDlrVogQV5XhObUvIGyU7sTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBsk7MT0Q0HkH5ypOT3TPviO1RIsa2ctxDPJ8prFoUO/U8PbkKW35NABhClyiZGoCak8ju054IuvVSydrQIvoeUnrR7Juh7fsYe/n/IYla/5TgTQB62FlrcgeYpoP5tu8iI34rbaiVomBrawKTu7PvBPGK7xbaXUUMwXyxI5SOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js3bmw8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21800C4CECD;
-	Tue, 12 Nov 2024 10:35:40 +0000 (UTC)
+	 MIME-Version; b=Dn+rIKenWuf+y9ENS1agZVNr44rTBBXX3hYNwUFzRpK7V2QmnBZpHQXJWSuOrzqVwpeVktXTJsFR7qwYdDPL/QNsPnCoN1W+dNmDKw6SZyIqkMsXRSbu0pPeKz2igJpEf5twut0Ej+M+KUhqV8dsipd3YNWbakg2LHou9q5nTDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJy4jhku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23A2C4CECD;
+	Tue, 12 Nov 2024 10:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407741;
-	bh=rELOO1B+WkT3IP/xXvf6tirTUc4bqHX/8m140Jfpy/U=;
+	s=korg; t=1731408297;
+	bh=rjtdnUDnuAekcL/rKPAeDlrVogQV5XhObUvIGyU7sTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Js3bmw8j23kgNrscULpZO8fiBhVtoi1ha2LyeYgH5cX+sNpdgnGTTPTkDTPr2vPSL
-	 u+30QPT8Bviw6DaLIJAyyYwN5WccUmmhI+7mXaZ+ds730MoPLsMU1nUx5isK654a+6
-	 EJohA51Nj6W+/V1Nb9akrE+IyjclJRKKJ46rpjDo=
+	b=rJy4jhkuxsCcUwrVrnXP/K6sUecFAVnFne4TSAwRR9kwdihfHQzjSVj/vB55ETyTM
+	 +8vLMid28WEW71IkZQR/u0CTnIXpL3AxzziEabiMPLFW74X6CSCMzMLkSgAdK2cUde
+	 E8wgXWrQBdQ4Pmu8FtBuchlcWfdPDlPQNYHrzuDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 069/119] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.11 119/184] dm-unstriped: cast an operand to sector_t to prevent potential uint32_t overflow
 Date: Tue, 12 Nov 2024 11:21:17 +0100
-Message-ID: <20241112101851.351411528@linuxfoundation.org>
+Message-ID: <20241112101905.436433283@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit eb9a839b3d8a989be5970035a5cf29bcd6ffd24d upstream.
+commit 5a4510c762fc04c74cff264cd4d9e9f5bf364bae upstream.
 
-Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
-when switching from CAN-CC to CAN-FD mode"), the current ring and
-coalescing configuration is passed to can_ram_get_layout(). That fixed
-the issue when switching between CAN-CC and CAN-FD mode with
-configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
-tx-frames-irq).
+This was found by a static analyzer.
+There may be a potential integer overflow issue in
+unstripe_ctr(). uc->unstripe_offset and uc->unstripe_width are
+defined as "sector_t"(uint64_t), while uc->unstripe,
+uc->chunk_size and uc->stripes are all defined as "uint32_t".
+The result of the calculation will be limited to "uint32_t"
+without correct casting.
+So, we recommend adding an extra cast to prevent potential
+integer overflow.
 
-However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
-switching from CAN-CC to CAN-FD mode"), introduced a regression when
-switching CAN modes with disabled coalescing configuration: Even if
-the previous CAN mode has no coalescing configured, the new mode is
-configured with active coalescing. This leads to delayed receiving of
-CAN-FD frames.
-
-This comes from the fact, that ethtool uses usecs = 0 and max_frames =
-1 to disable coalescing, however the driver uses internally
-priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
-coalescing.
-
-Fix the regression by assigning struct ethtool_coalesce
-ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
-the driver as can_ram_get_layout() expects this.
-
-Reported-by: https://github.com/vdh-robothania
-Closes: https://github.com/raspberrypi/linux/issues/6407
-Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
+Fixes: 18a5bf270532 ("dm: add unstriped target")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/md/dm-unstripe.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -483,9 +483,11 @@ int mcp251xfd_ring_alloc(struct mcp251xf
- 		};
- 		const struct ethtool_coalesce ec = {
- 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
--			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
-+			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->rx_obj_num_coalesce_irq,
- 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
--			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
-+			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->tx_obj_num_coalesce_irq,
- 		};
- 		struct can_ram_layout layout;
+--- a/drivers/md/dm-unstripe.c
++++ b/drivers/md/dm-unstripe.c
+@@ -85,8 +85,8 @@ static int unstripe_ctr(struct dm_target
+ 	}
+ 	uc->physical_start = start;
  
+-	uc->unstripe_offset = uc->unstripe * uc->chunk_size;
+-	uc->unstripe_width = (uc->stripes - 1) * uc->chunk_size;
++	uc->unstripe_offset = (sector_t)uc->unstripe * uc->chunk_size;
++	uc->unstripe_width = (sector_t)(uc->stripes - 1) * uc->chunk_size;
+ 	uc->chunk_shift = is_power_of_2(uc->chunk_size) ? fls(uc->chunk_size) - 1 : 0;
+ 
+ 	tmp_len = ti->len;
 
 
 
