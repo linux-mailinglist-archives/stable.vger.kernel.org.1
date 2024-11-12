@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33569C55AD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1B59C53A5
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A2391F21E76
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 876191F2298C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2562194A0;
-	Tue, 12 Nov 2024 10:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7290213EF9;
+	Tue, 12 Nov 2024 10:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDYE2bRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb920ccX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811F213ECF;
-	Tue, 12 Nov 2024 10:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E8520899D;
+	Tue, 12 Nov 2024 10:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408272; cv=none; b=W4rsq3aiuvJA0TRIza+pmKo+CbJZK3x5A8ERjh6wl2RI6NQj+ReV4LxpQlNCoO1ELnyT2o7Hos3SC6EwZLkWDVtUDRVYhTOkqYzeUgaSGo9PzIDYRJYILyUGL0lOly3exawDFLqSOZZwDGHzbjpM9ElDzbWQI6+JbjrcrV1kVL4=
+	t=1731407370; cv=none; b=p+A5J64dCOlYX1Av0vPjfuXSuTdGfn/xEHUUAXXGPemhpnEDKGjqPIVj28glHIExUlL3YrgdmGSBRvVf1Fq9Yv4yoG1sUFkDlFTqKOkIW+iNx7+Ez5ME2EVxDcp7ZXYKtb1VLPhKzt5MxuSIiGvjBXKT+o84lPeBRwcCyMFR9V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408272; c=relaxed/simple;
-	bh=LWdSg7o1vDxSOzTC/EjuG9IhJPqouiyRTKWFVDNYtuE=;
+	s=arc-20240116; t=1731407370; c=relaxed/simple;
+	bh=ZRZTsWnLE1ZOVWwa6D8t8zNW2X0R2vTXZmpKpLesbJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYmsn/jlI3VjK1+KCEdbECgItGqE1ynQewv+EhqQxqPGm2+CAGxsRtOCSKwe3a1tMnf+atXQmIptCQdJ3uVJGwInXwImtrNaGg7DJjuHnS4zLEoedzahH0BwI0neOdfZP8Fe11fv5e/ttQrQ8hJGb7joLILJLdRJChQ2vIMWsbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDYE2bRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F0CC4CED4;
-	Tue, 12 Nov 2024 10:44:31 +0000 (UTC)
+	 MIME-Version; b=uE+w3abmMfGHcyykazoaY74MgW8TixwUgETpIP6tXorRhxTFJJky0Rgojtg9pI7rgf7xSYDx6tevJACPzDGDS0tcFGZ0uRSMTiT0yFHUlsDs4VCbpm9yaW9j5dj0K2HFewrydx1k4xvIRAclIWvDIa8ZqaJ4kc8mbs6sUqUIDs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb920ccX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCA1C4CECD;
+	Tue, 12 Nov 2024 10:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408272;
-	bh=LWdSg7o1vDxSOzTC/EjuG9IhJPqouiyRTKWFVDNYtuE=;
+	s=korg; t=1731407370;
+	bh=ZRZTsWnLE1ZOVWwa6D8t8zNW2X0R2vTXZmpKpLesbJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDYE2bRvaj4TSIW6zMedRWfd3dbyME3khKHwVkZ2JirmvQDX28YSdHkUD3zNmlqSd
-	 36hTG5V/6R5y9TvSFtdtAPVtr5zBV9AZFzIm30jiRzoF8AeUJ18qI+9YIIpeE48Rn8
-	 CphmzjtPS3me1VRPfNyrd/8ldnQLbxLIPiig9ppk=
+	b=Sb920ccXMjIsxpSddUlA4N6NJJn/+ecrDgkdd4nEyMXl4zAaKdSIciUrn4b2Y5eUj
+	 AcHBpoYvlDnvYXMBssB7Moe4m4Le8orx50KvYuMjUSoc3/lGll+ZwqFNFK6XcSKhul
+	 oYDK4PjSNyC2khBX3w7LgfmK9Xwvcnx8rEPhuiME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban N <parthiban@linumiz.com>,
-	David Gstir <david@sigma-star.at>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.11 113/184] KEYS: trusted: dcp: fix NULL dereference in AEAD crypto operation
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 56/98] drm/amdgpu: Adjust debugfs eviction and IB access permissions
 Date: Tue, 12 Nov 2024 11:21:11 +0100
-Message-ID: <20241112101905.201538619@linuxfoundation.org>
+Message-ID: <20241112101846.401607571@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gstir <david@sigma-star.at>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 04de7589e0a95167d803ecadd115235ba2c14997 upstream.
+commit f790a2c494c4ef587eeeb9fca20124de76a1646f upstream.
 
-When sealing or unsealing a key blob we currently do not wait for
-the AEAD cipher operation to finish and simply return after submitting
-the request. If there is some load on the system we can exit before
-the cipher operation is done and the buffer we read from/write to
-is already removed from the stack. This will e.g. result in NULL
-pointer dereference errors in the DCP driver during blob creation.
+Users should not be able to run these.
 
-Fix this by waiting for the AEAD cipher operation to finish before
-resuming the seal and unseal calls.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key")
-Reported-by: Parthiban N <parthiban@linumiz.com>
-Closes: https://lore.kernel.org/keyrings/254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com/
-Signed-off-by: David Gstir <david@sigma-star.at>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7ba9395430f611cfc101b1c2687732baafa239d5)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_dcp.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -133,6 +133,7 @@ static int do_aead_crypto(u8 *in, u8 *ou
- 	struct scatterlist src_sg, dst_sg;
- 	struct crypto_aead *aead;
- 	int ret;
-+	DECLARE_CRYPTO_WAIT(wait);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -2009,11 +2009,11 @@ int amdgpu_debugfs_init(struct amdgpu_de
+ 	amdgpu_securedisplay_debugfs_init(adev);
+ 	amdgpu_fw_attestation_debugfs_init(adev);
  
- 	aead = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
- 	if (IS_ERR(aead)) {
-@@ -163,8 +164,8 @@ static int do_aead_crypto(u8 *in, u8 *ou
- 	}
- 
- 	aead_request_set_crypt(aead_req, &src_sg, &dst_sg, len, nonce);
--	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL,
--				  NULL);
-+	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
- 	aead_request_set_ad(aead_req, 0);
- 
- 	if (crypto_aead_setkey(aead, key, AES_KEYSIZE_128)) {
-@@ -174,9 +175,9 @@ static int do_aead_crypto(u8 *in, u8 *ou
- 	}
- 
- 	if (do_encrypt)
--		ret = crypto_aead_encrypt(aead_req);
-+		ret = crypto_wait_req(crypto_aead_encrypt(aead_req), &wait);
- 	else
--		ret = crypto_aead_decrypt(aead_req);
-+		ret = crypto_wait_req(crypto_aead_decrypt(aead_req), &wait);
- 
- free_req:
- 	aead_request_free(aead_req);
+-	debugfs_create_file("amdgpu_evict_vram", 0444, root, adev,
++	debugfs_create_file("amdgpu_evict_vram", 0400, root, adev,
+ 			    &amdgpu_evict_vram_fops);
+-	debugfs_create_file("amdgpu_evict_gtt", 0444, root, adev,
++	debugfs_create_file("amdgpu_evict_gtt", 0400, root, adev,
+ 			    &amdgpu_evict_gtt_fops);
+-	debugfs_create_file("amdgpu_test_ib", 0444, root, adev,
++	debugfs_create_file("amdgpu_test_ib", 0400, root, adev,
+ 			    &amdgpu_debugfs_test_ib_fops);
+ 	debugfs_create_file("amdgpu_vm_info", 0444, root, adev,
+ 			    &amdgpu_debugfs_vm_info_fops);
 
 
 
