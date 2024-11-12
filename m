@@ -1,97 +1,139 @@
-Return-Path: <stable+bounces-92208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97ECF9C50A1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:31:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9F49C50A2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 09:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C767280EEB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 08:30:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C77501F213A2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 08:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F74520C006;
-	Tue, 12 Nov 2024 08:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF48920B1E8;
+	Tue, 12 Nov 2024 08:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWQMBO17"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="FVE8EUmL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D3620B804;
-	Tue, 12 Nov 2024 08:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1256A20B217
+	for <stable@vger.kernel.org>; Tue, 12 Nov 2024 08:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731400186; cv=none; b=r40aAILESM6A/rfMGbmkoTsPAss3kCUUQ19C6xftvLQrN4YOvmoG5HRqyK00GW0jitUvP2RzIUJAUlwJnlPVyaYB+7FVjiZ/XLmw/QZRug8ch9V4O3fn7NBoCoQ/VzCP/swlaCIENo6pe5meIKfvBsCqM1FJgrpdcTXI62ovRa4=
+	t=1731400221; cv=none; b=DZ6FK2/0VJYh7ihMkC72b0B5LQ0KfEkrRpAF5Z78m38xYE+ZgcujUvDWV5po/LjoMyOQknWDVThsRxWZE1WR+RwubB9PCdMnuAg5na7QaGZ06xrQF8ZRaH8UvDHgWcYAbrv0MmSuSYQc1+LBT2eRbtBV1IM8kM18lkUpZec5WYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731400186; c=relaxed/simple;
-	bh=lewkLCFT5caOzo2eIz0/4MPy5k1mOTkPZn80H1AlMp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lZKfnzv9HSFEy0BOSztnV9MqHICccOZ4dwk50oUw/KcXBC0WobllNIzQQkezQQd3ya/FOroQfITTg3ucu0+I7GGNvjt8eHRCV55yESVcXHy41o68B8sGI6Qn6BCVeaUtU9OyEhtYvc72RwvYV/PsjngiYcnoN6Hawt88FlX2Kzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWQMBO17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E60C4CED4;
-	Tue, 12 Nov 2024 08:29:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731400185;
-	bh=lewkLCFT5caOzo2eIz0/4MPy5k1mOTkPZn80H1AlMp0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yWQMBO17MoNMueddZNh/DINix5Nh6/RihTz5Wi9Mq7I9ZwcgaNEyKaUqS2V9H/lEf
-	 juXsJrWsRhA56g9mQR0Osdso+5zvjdLHIgEN9Ur9ziLC/D2xwqPUoQSIfoVgxLJ+gf
-	 yHEED/tYKRoKVCNpF1C2IbaG1Iom732YWyD+dUt8=
-Date: Tue, 12 Nov 2024 09:29:41 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: cel@kernel.org
-Cc: stable@vger.kernel.org, Neil Brown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <dai.ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	linux-nfs@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
-	Cedric Blancher <cedric.blancher@gmail.com>,
-	Dan Shelton <dan.f.shelton@gmail.com>,
-	Roland Mainz <roland.mainz@nrubsig.org>
-Subject: Re: [PATCH 5.4] NFSD: Fix NFSv4's PUTPUBFH operation
-Message-ID: <2024111225-turmoil-tableware-933a@gregkh>
-References: <20241110184510.20129-1-cel@kernel.org>
+	s=arc-20240116; t=1731400221; c=relaxed/simple;
+	bh=S1558sC7K7SNLvFrxopPAYYIQfwYpDyfqK5JGVLvFI0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HCU6hfW6Xhm3RZDPX4UKmGOW0tZO7o51/xS5GnKv8yrhfQ7m2nhMJviK7Wp0yQ9LPr1YAkJbdQJVR3DuxXRLLKnMTPqtfq+1UW8EodGM1TgCG4NTQpBDKXJVlYl9fYFq0QyRsb1aTZNdJ7kfFnoEgKwAf0WOs2NoilTYlTjQeik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=FVE8EUmL; arc=none smtp.client-ip=207.171.184.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731400220; x=1762936220;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b/LVFc/ynmQzr5DOuxZeTzgV+hwDUoUO+3cXjo8B+lc=;
+  b=FVE8EUmLapfAUxI151Thod+/hzQpEcSHYYa2+937gnvbteOK75PLaH5f
+   aRw3COefihziumoH9PTKnQ0J322/xDLHbWs4VQDICpK6s7vCH84JBkv4m
+   y1gr6DK2YtQ1eIoRf4MRXHgbpBAjXbxSHBFb0Rrx0sRNTKrnrYb0FD4hy
+   U=;
+X-IronPort-AV: E=Sophos;i="6.12,147,1728950400"; 
+   d="scan'208";a="469240662"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 08:30:14 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [10.0.17.79:2523]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.22.102:2525] with esmtp (Farcaster)
+ id 6ebefd7e-a6cb-4b15-999c-6dbf1861b7c0; Tue, 12 Nov 2024 08:30:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 6ebefd7e-a6cb-4b15-999c-6dbf1861b7c0
+Received: from EX19D008EUA003.ant.amazon.com (10.252.50.155) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Tue, 12 Nov 2024 08:30:12 +0000
+Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
+ EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Tue, 12 Nov 2024 08:30:12 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com
+ (10.124.125.6) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Tue, 12 Nov 2024 08:30:11 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-pdx-all-2b-dbd438cc.us-west-2.amazon.com (Postfix) with ESMTP id 4E3A5A0042;
+	Tue, 12 Nov 2024 08:30:11 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id CF6F8224AB; Tue, 12 Nov 2024 08:30:10 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Hagar Hemdan <hagarhem@amazon.com>, "Maximilian
+ Heyne" <mheyne@amazon.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+Date: Tue, 12 Nov 2024 08:30:06 +0000
+Message-ID: <20241112083006.19917-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241110184510.20129-1-cel@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sun, Nov 10, 2024 at 01:45:10PM -0500, cel@kernel.org wrote:
-> From: Chuck Lever <chuck.lever@oracle.com>
-> 
-> [ Upstream commit 202f39039a11402dcbcd5fece8d9fa6be83f49ae ]
-> 
-> According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
-> 
-> Replace the XDR decoder for PUTPUBFH with a "noop" since we no
-> longer want the minorversion check, and PUTPUBFH has no arguments to
-> decode. (Ideally nfsd4_decode_noop should really be called
-> nfsd4_decode_void).
-> 
-> PUTPUBFH should now behave just like PUTROOTFH.
-> 
-> Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
-> Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
-> Cc: Dan Shelton <dan.f.shelton@gmail.com>
-> Cc: Roland Mainz <roland.mainz@nrubsig.org>
-> Cc: stable@vger.kernel.org
-> [ cel: adjusted to apply to origin/linux-5.4.y ]
-> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> ---
->  fs/nfsd/nfs4xdr.c | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
-> 
-> In response to:
-> 
-> https://lore.kernel.org/stable/2024100703-decorated-bodacious-fa3c@gregkh/
+commit 73254a297c2dd094abec7c9efee32455ae875bdf upstream.
 
-Now queued up, thanks.
+The io_register_iowq_max_workers() function calls io_put_sq_data(),
+which acquires the sqd->lock without releasing the uring_lock.
+Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+before acquiring sqd->lock"), this can lead to a potential deadlock
+situation.
 
-greg k-h
+To resolve this issue, the uring_lock is released before calling
+io_put_sq_data(), and then it is re-acquired after the function call.
+
+This change ensures that the locks are acquired in the correct
+order, preventing the possibility of a deadlock.
+
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[Hagar: Modified to apply on v6.1]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+ io_uring/io_uring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 92c1aa8f3501..4f0ae938b146 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3921,8 +3921,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	}
+ 
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
+ 	}
+ 
+ 	if (copy_to_user(arg, new_count, sizeof(new_count)))
+@@ -3947,8 +3949,11 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	return 0;
+ err:
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
++
+ 	}
+ 	return ret;
+ }
+-- 
+2.40.1
+
 
