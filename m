@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-92556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032D49C5506
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:56:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3573E9C55CB
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE42A1F263F4
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED8462833D3
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB62332D1;
-	Tue, 12 Nov 2024 10:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD42521A4A3;
+	Tue, 12 Nov 2024 10:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngmqiEUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLbZgZr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8653A2332C8;
-	Tue, 12 Nov 2024 10:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949DF20F5AF;
+	Tue, 12 Nov 2024 10:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407880; cv=none; b=Br223A9g/NwhKwVg+JKKhv+05itNepO6Mt4YUrmL2OVBjSsMrF/waK0r7T93bFQgS+6R6otcG7Qyf3bhSqMtRXwzeo9jmz1vx+/F/xyW1mC0a7HKnW022xOohCCaT6cGBqQm7wKekbdXU55szisyscMheRRkazu9eyL4yeFMxGo=
+	t=1731408377; cv=none; b=XxGjZ/oY4pAEpveKGo0wxEaG/1n8AHU4Sr7F7NA6RYkPFb43CYnaEWwoxiT5sUuojrdArRuJWsPyc1kSSTypLAgd9+a5RTUP7gz6gAZHZvC0jCrLsHXWvDzu77oSZptM5LJR3UWVCAYiOPHiEieCvBSF+fxAMMl3uco3uBifyaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407880; c=relaxed/simple;
-	bh=y+kW2kzhSQjQSG2AeEcrjJKJ0Zp5Ys1QwKTIyyZ2jgM=;
+	s=arc-20240116; t=1731408377; c=relaxed/simple;
+	bh=Ug6NTG0GazGnMETjYa/rn9I6dTY71fgeJvkcU1MF61g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avLfTGPBEa/4hKwAh5xBs2AgFEoY9Jbc/qOWR7P2+rsotdBs+gSuF24EmFNp5OYfVbh8/Slk8O5MHiuhsM52Fm3yqVu0Qd2jHJPDr0bGXMwEXnNl0rqj6JAmz4JPGz2I/3xO3nRWXbFKKDfOgdqGRGTRyJF2heAbufzhmDkmge8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngmqiEUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5F1C4CED8;
-	Tue, 12 Nov 2024 10:37:59 +0000 (UTC)
+	 MIME-Version; b=WaAixEIQ9nqIVuEW0c4qUMODrBV1EYY1FyNY+rAeRCB+Wl0WXEOy1KUuJV+BM0TG1pIVxHkv+CtEwv7CH6WVcCpxlMDESWlGbdVfjnEKgX+NQAow2Ouv/2QuD97hP956V3DUINtCNsOswqmc9YtJU0IsT62wVdmaRu1LJEMc0uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLbZgZr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839A4C4CECD;
+	Tue, 12 Nov 2024 10:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407880;
-	bh=y+kW2kzhSQjQSG2AeEcrjJKJ0Zp5Ys1QwKTIyyZ2jgM=;
+	s=korg; t=1731408377;
+	bh=Ug6NTG0GazGnMETjYa/rn9I6dTY71fgeJvkcU1MF61g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngmqiEUckJtZPjLymEBr/AcGIYK2u9Hm4ZHVADBy9RPUxL0Fx7q3hsvNQvkByyl7k
-	 AQJJeD0TNie01UwdFdos3+lDSu5dt/fyX05DOIiiG5u7v33IEwmXh40XfpXULiVZuX
-	 fEizZbLEJWj70r7u8srdvVcCpI9JglNL5wdzV1EI=
+	b=FLbZgZr8k9wkkoBpJbu/dFzZFIsPUJhKiDX+d5O/5a68yDv8ktAdf2e6NqmQFupD/
+	 jScQ73PnPIh7twgcXPwjbR2Q7WpZAtoadX5e5rRIgBda7H0I082uxHpn+63BhoX9F4
+	 EcaVKhUvF9lV9ZC2MrmHHA90dmmfYd+20HzacRtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 094/119] arm64/sve: Discard stale CPU state when handling SVE traps
+	Xiaowu Ding <xiaowu.ding@jaguarmicro.com>,
+	Angus Chen <angus.chen@jaguarmicro.com>,
+	Liu Peibao <loven.liu@jaguarmicro.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.11 144/184] i2c: designware: do not hold SCL low when I2C_DYNAMIC_TAR_UPDATE is not set
 Date: Tue, 12 Nov 2024 11:21:42 +0100
-Message-ID: <20241112101852.312087736@linuxfoundation.org>
+Message-ID: <20241112101906.398423298@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Liu Peibao <loven.liu@jaguarmicro.com>
 
-commit 751ecf6afd6568adc98f2a6052315552c0483d18 upstream.
+commit 8de3e97f3d3d62cd9f3067f073e8ac93261597db upstream.
 
-The logic for handling SVE traps manipulates saved FPSIMD/SVE state
-incorrectly, and a race with preemption can result in a task having
-TIF_SVE set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
-is stale (e.g. with SVE traps enabled). This has been observed to result
-in warnings from do_sve_acc() where SVE traps are not expected while
-TIF_SVE is set:
+When the Tx FIFO is empty and the last command has no STOP bit
+set, the master holds SCL low. If I2C_DYNAMIC_TAR_UPDATE is not
+set, BIT(13) MST_ON_HOLD of IC_RAW_INTR_STAT is not enabled,
+causing the __i2c_dw_disable() timeout. This is quite similar to
+commit 2409205acd3c ("i2c: designware: fix __i2c_dw_disable() in
+case master is holding SCL low"). Also check BIT(7)
+MST_HOLD_TX_FIFO_EMPTY in IC_STATUS, which is available when
+IC_STAT_FOR_CLK_STRETCH is set.
 
-|         if (test_and_set_thread_flag(TIF_SVE))
-|                 WARN_ON(1); /* SVE access shouldn't have trapped */
-
-Warnings of this form have been reported intermittently, e.g.
-
-  https://lore.kernel.org/linux-arm-kernel/CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com/
-  https://lore.kernel.org/linux-arm-kernel/000000000000511e9a060ce5a45c@google.com/
-
-The race can occur when the SVE trap handler is preempted before and
-after manipulating the saved FPSIMD/SVE state, starting and ending on
-the same CPU, e.g.
-
-| void do_sve_acc(unsigned long esr, struct pt_regs *regs)
-| {
-|         // Trap on CPU 0 with TIF_SVE clear, SVE traps enabled
-|         // task->fpsimd_cpu is 0.
-|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
-|
-|         ...
-|
-|         // Preempted; migrated from CPU 0 to CPU 1.
-|         // TIF_FOREIGN_FPSTATE is set.
-|
-|         get_cpu_fpsimd_context();
-|
-|         if (test_and_set_thread_flag(TIF_SVE))
-|                 WARN_ON(1); /* SVE access shouldn't have trapped */
-|
-|         sve_init_regs() {
-|                 if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-|                         ...
-|                 } else {
-|                         fpsimd_to_sve(current);
-|                         current->thread.fp_type = FP_STATE_SVE;
-|                 }
-|         }
-|
-|         put_cpu_fpsimd_context();
-|
-|         // Preempted; migrated from CPU 1 to CPU 0.
-|         // task->fpsimd_cpu is still 0
-|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
-|         // - Stale HW state is reused (with SVE traps enabled)
-|         // - TIF_FOREIGN_FPSTATE is cleared
-|         // - A return to userspace skips HW state restore
-| }
-
-Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
-by calling fpsimd_flush_task_state() to detach from the saved CPU
-state. This ensures that a subsequent context switch will not reuse the
-stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
-new state to be reloaded from memory prior to a return to userspace.
-
-Fixes: cccb78ce89c4 ("arm64/sve: Rework SVE access trap to convert state in registers")
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 2409205acd3c ("i2c: designware: fix __i2c_dw_disable() in case master is holding SCL low")
+Co-developed-by: Xiaowu Ding <xiaowu.ding@jaguarmicro.com>
+Signed-off-by: Xiaowu Ding <xiaowu.ding@jaguarmicro.com>
+Co-developed-by: Angus Chen <angus.chen@jaguarmicro.com>
+Signed-off-by: Angus Chen <angus.chen@jaguarmicro.com>
+Signed-off-by: Liu Peibao <loven.liu@jaguarmicro.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-designware-common.c |    6 ++++--
+ drivers/i2c/busses/i2c-designware-core.h   |    1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1445,6 +1445,7 @@ static void sve_init_regs(void)
- 	} else {
- 		fpsimd_to_sve(current);
- 		current->thread.fp_type = FP_STATE_SVE;
-+		fpsimd_flush_task_state(current);
- 	}
- }
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -442,7 +442,7 @@ err_release_lock:
+ void __i2c_dw_disable(struct dw_i2c_dev *dev)
+ {
+ 	struct i2c_timings *t = &dev->timings;
+-	unsigned int raw_intr_stats;
++	unsigned int raw_intr_stats, ic_stats;
+ 	unsigned int enable;
+ 	int timeout = 100;
+ 	bool abort_needed;
+@@ -450,9 +450,11 @@ void __i2c_dw_disable(struct dw_i2c_dev
+ 	int ret;
  
+ 	regmap_read(dev->map, DW_IC_RAW_INTR_STAT, &raw_intr_stats);
++	regmap_read(dev->map, DW_IC_STATUS, &ic_stats);
+ 	regmap_read(dev->map, DW_IC_ENABLE, &enable);
+ 
+-	abort_needed = raw_intr_stats & DW_IC_INTR_MST_ON_HOLD;
++	abort_needed = (raw_intr_stats & DW_IC_INTR_MST_ON_HOLD) ||
++			(ic_stats & DW_IC_STATUS_MASTER_HOLD_TX_FIFO_EMPTY);
+ 	if (abort_needed) {
+ 		if (!(enable & DW_IC_ENABLE_ENABLE)) {
+ 			regmap_write(dev->map, DW_IC_ENABLE, DW_IC_ENABLE_ENABLE);
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -117,6 +117,7 @@
+ #define DW_IC_STATUS_RFNE			BIT(3)
+ #define DW_IC_STATUS_MASTER_ACTIVITY		BIT(5)
+ #define DW_IC_STATUS_SLAVE_ACTIVITY		BIT(6)
++#define DW_IC_STATUS_MASTER_HOLD_TX_FIFO_EMPTY	BIT(7)
+ 
+ #define DW_IC_SDA_HOLD_RX_SHIFT			16
+ #define DW_IC_SDA_HOLD_RX_MASK			GENMASK(23, 16)
 
 
 
