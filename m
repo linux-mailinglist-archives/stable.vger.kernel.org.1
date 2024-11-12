@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-92745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593479C55DD
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:11:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4271F9C547B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4DE32839F6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF2701F228AA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77D21B438;
-	Tue, 12 Nov 2024 10:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A8121A4C8;
+	Tue, 12 Nov 2024 10:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKak6d7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRzUct9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4C20E307;
-	Tue, 12 Nov 2024 10:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42F621A6E1;
+	Tue, 12 Nov 2024 10:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408451; cv=none; b=nJ4HqV2E1TX3+EeoDBiSBfJEt/yFcOgZF9fHt77IV5H+ddYs+kV5HmgQVDjhdoKol2ROxl/rgfXOMOuV1IqpwlgdZ7ZcYG0B47FgbZaakxl1EpR4M8b/SgEce2E8rxEutz/T79k5f0ZZo0yFAXf5U+ca30ubJzk8hCHIQ+AyjPo=
+	t=1731407796; cv=none; b=UleccPsTzzb6gUpIh0KoxK2wL58UFWl8rYzL4WFhufiYi3Luh6anxNcbjmg7khY1uOLzDJPPq66vuVXVW53bsJUt2H6Qrohl/lh22C4FeCZAUo65hUrouBOX6uBPmLDgklYJSgrDjTc2w/DT9n9xB6pn0IjKMrPxAmv+OyQ0heQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408451; c=relaxed/simple;
-	bh=ZMeLJp96ShZUUjyMFr5Je+/DjGabfM5lMB24KpCkthE=;
+	s=arc-20240116; t=1731407796; c=relaxed/simple;
+	bh=mzMTVLZEHaXLE2Jak7pHs01MyLYItFE+XsXbGPIiyBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeryVekbdqQCpWWvvpwzOgvs1Cg6Vgk49n5QkJ+uQF0rkkBT6FFBcMdcK+a7X389//7Nk1oQ8+KYCCZE0YLwZ/3noliDecMUzSuTCK7LsAQjHWMYZNZOliYX+VFE8xtai73A3XR0PzopJZjnizthaK7mSctrNOCRan5WxIgzgh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKak6d7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC23C4CECD;
-	Tue, 12 Nov 2024 10:47:30 +0000 (UTC)
+	 MIME-Version; b=GXVkUfU0yqO9/Lkedr2ONS5gjUMJGBk7dtv/6xsJKVTGZFaze9Uk7S9lQCplHy8ky5iu0nwcVr+Il161i2R0VS2hz3ojr5jtarPGytRL+3IHgjCyd1XNd1JSYD1AvUaA3oKCg2zJXz/AvsEQ0K6OeKESXp7jCj5HV7S6xZlZfMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRzUct9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FECC4CED6;
+	Tue, 12 Nov 2024 10:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408451;
-	bh=ZMeLJp96ShZUUjyMFr5Je+/DjGabfM5lMB24KpCkthE=;
+	s=korg; t=1731407796;
+	bh=mzMTVLZEHaXLE2Jak7pHs01MyLYItFE+XsXbGPIiyBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKak6d7XsDthMpVhEkpZ0Xx6MD9230NFpAoN3MQPzlh/YP77S0uJLyPL4yBGJ7Eoa
-	 fYAPTRA7GM3ejeccclGq/7iadAU9bCjVBdeQ8YBJGOxcK7cfBfrBF/7NClIHiFcQtC
-	 sIM31K8DS/QdKoNHbaTdjHN5fZeWaRTOXhQJC9+Y=
+	b=LRzUct9snKO99GC3jxB6PzSaQA/rJgskOpnVINYlgt4DCSQQ/4+exMDOjNfkqHn9r
+	 xKUqCf1/zmZKq9Vj8FEMUU8duTxumTLebKJhwgzjxF+GsFFIBPE6qiXRfFtFh47TXs
+	 oyllEErUqEFXt4/bgI5dSzk7gVGXDqcL3iNA5n9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tarun K Singh <tarun.k.singh@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.11 135/184] idpf: fix idpf_vc_core_init error path
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>
+Subject: [PATCH 6.6 085/119] dm cache: optimize dirty bit checking with find_next_bit when resizing
 Date: Tue, 12 Nov 2024 11:21:33 +0100
-Message-ID: <20241112101906.050916564@linuxfoundation.org>
+Message-ID: <20241112101851.965234776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit 9b58031ff96b84a38d7b73b23c7ecfb2e0557f43 upstream.
+commit f484697e619a83ecc370443a34746379ad99d204 upstream.
 
-In an event where the platform running the device control plane
-is rebooted, reset is detected on the driver. It releases
-all the resources and waits for the reset to complete. Once the
-reset is done, it tries to build the resources back. At this
-time if the device control plane is not yet started, then
-the driver timeouts on the virtchnl message and retries to
-establish the mailbox again.
+When shrinking the fast device, dm-cache iteratively searches for a
+dirty bit among the cache blocks to be dropped, which is less efficient.
+Use find_next_bit instead, as it is twice as fast as the iterative
+approach with test_bit.
 
-In the retry flow, mailbox is deinitialized but the mailbox
-workqueue is still alive and polling for the mailbox message.
-This results in accessing the released control queue leading to
-null-ptr-deref. Fix it by unrolling the work queue cancellation
-and mailbox deinitialization in the reverse order which they got
-initialized.
-
-Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org # 6.9+
-Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
-Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: f494a9c6b1b6 ("dm cache: cache shrinking support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c      |    1 +
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |    1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1799,6 +1799,7 @@ static int idpf_init_hard_reset(struct i
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2915,14 +2915,14 @@ static bool can_resize(struct cache *cac
+ 	/*
+ 	 * We can't drop a dirty block when shrinking the cache.
  	 */
- 	err = idpf_vc_core_init(adapter);
- 	if (err) {
-+		cancel_delayed_work_sync(&adapter->mbx_task);
- 		idpf_deinit_dflt_mbx(adapter);
- 		goto unlock_mutex;
+-	while (from_cblock(new_size) < from_cblock(cache->cache_size)) {
+-		if (is_dirty(cache, new_size)) {
+-			DMERR("%s: unable to shrink cache; cache block %llu is dirty",
+-			      cache_device_name(cache),
+-			      (unsigned long long) from_cblock(new_size));
+-			return false;
+-		}
+-		new_size = to_cblock(from_cblock(new_size) + 1);
++	new_size = to_cblock(find_next_bit(cache->dirty_bitset,
++					   from_cblock(cache->cache_size),
++					   from_cblock(new_size)));
++	if (new_size != cache->cache_size) {
++		DMERR("%s: unable to shrink cache; cache block %llu is dirty",
++		      cache_device_name(cache),
++		      (unsigned long long) from_cblock(new_size));
++		return false;
  	}
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3063,7 +3063,6 @@ init_failed:
- 	adapter->state = __IDPF_VER_CHECK;
- 	if (adapter->vcxn_mngr)
- 		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
--	idpf_deinit_dflt_mbx(adapter);
- 	set_bit(IDPF_HR_DRV_LOAD, adapter->flags);
- 	queue_delayed_work(adapter->vc_event_wq, &adapter->vc_event_task,
- 			   msecs_to_jiffies(task_delay));
+ 
+ 	return true;
 
 
 
