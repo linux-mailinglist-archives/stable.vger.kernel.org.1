@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284919C5490
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:45:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9ED9C5366
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC92288624
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86079288C5C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A6D21CFA9;
-	Tue, 12 Nov 2024 10:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01D20E337;
+	Tue, 12 Nov 2024 10:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5aoSt9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8RJC5jx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F12821CF9F;
-	Tue, 12 Nov 2024 10:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E5620B20B;
+	Tue, 12 Nov 2024 10:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407813; cv=none; b=rnPFov7Bg9SOYE5opHhagqbXrq7PUn++eX9WkM5GHOS/l/zpehNExXpyHA1cMJfATFPAYKVsXrgUkpemXqnD/hj+U7zBbbmFhte/j4xSoVnmOT0ZGWqBT4ZJ1tlRpd6Ei9oWoEmQGW9E65bwmMGghv6bvIJVn4+IkexRYCszgZ4=
+	t=1731407174; cv=none; b=bNzoBlH8oekCNJy9q0Qs4NQpYZOD0NfJbAGxIF/988PTKsfW2FKxIi3kuedEmi386pK/cll70zjQTOlYM+0YMe1NRnUZqTOtHhiW7ms2At9ZFg4hQHIz/y8ryak2PxQdThZUfgUnEtOHQv4IeUN6jBEPpY1WIXsbqWZ6ybfmK00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407813; c=relaxed/simple;
-	bh=qX5moUBfOkM+l/FtQeys0BmlA54s75//kuatHNj+rI8=;
+	s=arc-20240116; t=1731407174; c=relaxed/simple;
+	bh=7VefaCYu/wINSpoY0SkxTA+QChKCePF5IXuVJydyxWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDL87RsMJmhCdZQpil/+Z5qvlG+3ALBmFaE29lXYJpTLVa9qO8Ng6Y2sB99EimYIxaqkeSI1lDOA6PjgjrIk3ojzE09G0YyK7eqLOi2ULObkCImgwo+SR7RJstOsSvscclnnOzfVm35uhtklmrEq23o+rtidT45NwXzhShHQcEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5aoSt9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A86C4CED6;
-	Tue, 12 Nov 2024 10:36:52 +0000 (UTC)
+	 MIME-Version; b=dsnpYHKky5bQUKIutBLuuFP6QZCv3CgVS99p+0WYGLINunKsz1pjaeMrPyVn7aboVvU7q3NDTtJKy09dljWgasEVui7HcUn4FXFl7Bik/1cOJPi89f6txOWLonoXdfckkEXaV308NazBkRlo5UsNvNGHB5AIOIzPfWiWZY2JjCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8RJC5jx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9835FC4CEDA;
+	Tue, 12 Nov 2024 10:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407813;
-	bh=qX5moUBfOkM+l/FtQeys0BmlA54s75//kuatHNj+rI8=;
+	s=korg; t=1731407174;
+	bh=7VefaCYu/wINSpoY0SkxTA+QChKCePF5IXuVJydyxWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5aoSt9qCtt9Ok81hifFa4ZZD8k25VZA6a3XUjL0x8TYs9flgFTNYo1tGUxuaiwrZ
-	 GtygEKV95MHH6HGSIdKDTSRjY03LKPz6QbIEzLCJIQF5SSR/L7ZwqIwXHJ5Fa1TreF
-	 9bLx9wAKkE8adtqvLqXX6ojpNHe7j9uUwJXZH51k=
+	b=m8RJC5jxpcBekATrhb4lTu0/+3XV9iI0Hfwn50l3rXPbgkguU1e2P9VpIyGtbKeAP
+	 d4CjHZ90+eXsPLPV9iDekRm38jQH31TiXA2JPhccXCDMuMjRM5UaW9bo0HKi4pmk1z
+	 89YBZIppB1UErsCCJ2rcs+zcxWXC09tTEIDwbDFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Segall <bsegall@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/119] posix-cpu-timers: Clear TICK_DEP_BIT_POSIX_TIMER on clone
-Date: Tue, 12 Nov 2024 11:21:37 +0100
-Message-ID: <20241112101852.115382532@linuxfoundation.org>
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.15 73/76] ACPI: PRM: Clean up guid type in struct prm_handler_info
+Date: Tue, 12 Nov 2024 11:21:38 +0100
+Message-ID: <20241112101842.557993613@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Segall <bsegall@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b5413156bad91dc2995a5c4eab1b05e56914638a ]
+commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
 
-When cloning a new thread, its posix_cputimers are not inherited, and
-are cleared by posix_cputimers_init(). However, this does not clear the
-tick dependency it creates in tsk->tick_dep_mask, and the handler does
-not reach the code to clear the dependency if there were no timers to
-begin with.
+Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
 
-Thus if a thread has a cputimer running before clone/fork, all
-descendants will prevent nohz_full unless they create a cputimer of
-their own.
+drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
+4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Werror,-Walign-mismatch]
+  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+      |                                                  ^
 
-Fix this by entirely clearing the tick_dep_mask in copy_process().
-(There is currently no inherited state that needs a tick dependency)
+The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
+is a regular guid_t.  The difference between the two types is the
+alignment.  efi_guid_t is a typedef.
 
-Process-wide timers do not have this problem because fork does not copy
-signal_struct as a baseline, it creates one from scratch.
+	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
 
-Fixes: b78783000d5c ("posix-cpu-timers: Migrate to use new tick dependency mask model")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/xm26o737bq8o.fsf@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's possible that this a bug in Clang 19.  Even though the alignment of
+&th->guid is not explicitly specified, it will still end up being aligned
+at 4 or 8 bytes.
+
+Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
+and that also makes the warning go away.
+
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[nathan: Fix conflicts due to lack of e38abdab441c]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/tick.h | 8 ++++++++
- kernel/fork.c        | 2 ++
- 2 files changed, 10 insertions(+)
+ drivers/acpi/prmt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/tick.h b/include/linux/tick.h
-index 9459fef5b8573..9701c571a5cfe 100644
---- a/include/linux/tick.h
-+++ b/include/linux/tick.h
-@@ -252,12 +252,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_set_task(tsk, bit);
- }
-+
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
- 	if (tick_nohz_full_enabled())
- 		tick_nohz_dep_clear_task(tsk, bit);
- }
-+
-+static inline void tick_dep_init_task(struct task_struct *tsk)
-+{
-+	atomic_set(&tsk->tick_dep_mask, 0);
-+}
-+
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit)
- {
-@@ -291,6 +298,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
- 				     enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_task(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
-+static inline void tick_dep_init_task(struct task_struct *tsk) { }
- static inline void tick_dep_set_signal(struct task_struct *tsk,
- 				       enum tick_dep_bits bit) { }
- static inline void tick_dep_clear_signal(struct signal_struct *signal,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 9098284720e38..23efaa2c42e4f 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -99,6 +99,7 @@
- #include <linux/stackprotector.h>
- #include <linux/user_events.h>
- #include <linux/iommu.h>
-+#include <linux/tick.h>
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -52,7 +52,7 @@ struct prm_context_buffer {
+ static LIST_HEAD(prm_module_list);
  
- #include <asm/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2418,6 +2419,7 @@ __latent_entropy struct task_struct *copy_process(
- 	acct_clear_integrals(p);
- 
- 	posix_cputimers_init(&p->posix_cputimers);
-+	tick_dep_init_task(p);
- 
- 	p->io_context = NULL;
- 	audit_set_context(p, NULL);
--- 
-2.43.0
-
+ struct prm_handler_info {
+-	guid_t guid;
++	efi_guid_t guid;
+ 	void *handler_addr;
+ 	u64 static_data_buffer_addr;
+ 	u64 acpi_param_buffer_addr;
 
 
 
