@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5293B9C559C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DC59C5647
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17ABA28F110
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D706B3544B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D3021895E;
-	Tue, 12 Nov 2024 10:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABCD213156;
+	Tue, 12 Nov 2024 10:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDZF2kDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSdMjJGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A6B218927;
-	Tue, 12 Nov 2024 10:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079C42123F2;
+	Tue, 12 Nov 2024 10:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408206; cv=none; b=BJjgcNIhdw5qEliVHdkC23LZbOyQoWF5uSdXI2BzxNR41OktCYlMWMLn/dgSvSFoN97A0Vw7uNjHHrH8LdO2JzayUUqQC96aUsNjtEdnmJYI0o0ZSJT4h3h8G6/A7ywJwQ3xd31ayrdl8jCtGze76VQ2bCehLhTfyDFsAib8eHA=
+	t=1731407301; cv=none; b=Ds8tBFxkbRJ5vL6WZOuDwIMzSTTHnstyALq94JWDzcn/Y+DM0MJf3eJKWj3EpFHgV+JNbyz16TTEPgXr9uzIpNIkhUkNOwexHwoYUN2CZe9sIHfkIHSACpIzq5p6v2E1wk7M4lMI8DE7h2Ln2oq4itXUpKrtLz9n5eeX6tofQrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408206; c=relaxed/simple;
-	bh=8qMKC/9M9jYaq7hfjWZfa5s3a1HgglaxQ/oZH71Qdwk=;
+	s=arc-20240116; t=1731407301; c=relaxed/simple;
+	bh=IbPZQY9Wr0hOc70TGEe5vbhFb/mLxmuiaTM4kHyrcb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osGM7q6DUrP7atFf5zVCTQONpfDp5fa/AcANWqfobZLhHuAM4cZJgTaBrFBygl079wASIY08QEipZHLpJRzyA2t7emNkMYB8VQDWK8AIAh3b2WN5G3ZpIgMF1Jd+wG9G1WSYMdoLLx+8FFH+IHoatR/KCxBpOP63Xy0rLs2MtcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDZF2kDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB979C4CECD;
-	Tue, 12 Nov 2024 10:43:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AO8cgc6+KbprDwajrM1CU8oDG+PgNOrs+0uu+S/ADeD6XI/gh9Udphdau+ryPe8ZTBG620SrXbca2DnHCg9KrCsXaJFj4Q5iTXALTgXmzc7IJAtlhbJN6FF7H2SOdVPZCGo65WROxrwW5UTrg5zzWzUjAF8AZTxWafYpFHYlrZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSdMjJGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA36C4CED4;
+	Tue, 12 Nov 2024 10:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408206;
-	bh=8qMKC/9M9jYaq7hfjWZfa5s3a1HgglaxQ/oZH71Qdwk=;
+	s=korg; t=1731407300;
+	bh=IbPZQY9Wr0hOc70TGEe5vbhFb/mLxmuiaTM4kHyrcb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDZF2kDOF4TmQ2Yw+exHEdCUbQoddhXGhh2i9oWo2yRYNT8TUl7Ang+cTDtu0dD5G
-	 K/vcQX22+DxAMi1n22CCZQs/LDCDCSrkuJVOXpzGNpTvXtbK9KkphzDTgc6SsJFTFz
-	 6gds8jv73sqhAeUXnEkNjbWpSUFyMy023E5F2FEU=
+	b=OSdMjJGZQEKIbaoWii8HUwve4/ZrJzokzFJwwCHbCM2TlGJwJAlL6GaGm9Z58Tt0/
+	 q4aI+PKlAorWee6nTBL+qwKjRyUVfyCf45SBeK5XlV4teULppwnBd+72iEEJZm2NBf
+	 lDVbhP43Ma2yWGFSi4QpX8Ykr9ZE76JrwD+FbXDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.11 091/184] ksmbd: Fix the missing xa_store error check
+	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 34/98] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
 Date: Tue, 12 Nov 2024 11:20:49 +0100
-Message-ID: <20241112101904.352010033@linuxfoundation.org>
+Message-ID: <20241112101845.573027844@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jarosław Janik <jaroslaw.janik@gmail.com>
 
-commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
+commit c9363bbb0f68dd1ddb8be7bbfe958cdfcd38d851 upstream.
 
-xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
-be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
-so check error for xa_store() to fix it.
+Commit 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend /
+shutdown") mutes speakers on system shutdown or whenever HDA controller
+is suspended by PM; this however interacts badly with Thinkpad's ACPI
+firmware behavior which uses beeps to signal various events (enter/leave
+suspend or hibernation, AC power connect/disconnect, low battery, etc.);
+now those beeps are either muted altogether (for suspend/hibernate/
+shutdown related events) or work more or less randomly (eg. AC
+plug/unplug is only audible when you are playing music at the moment,
+because HDA device is likely in suspend mode otherwise).
 
-Cc: stable@vger.kernel.org
-Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Since the original bug report mentioned in 4f61c8fe3520 complained about
+Lenovo's Thinkpad laptop - revert this commit altogether.
+
+Fixes: 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend / shutdown")
+Signed-off-by: Jarosław Janik <jaroslaw.janik@gmail.com>
+Link: https://patch.msgid.link/20241030171813.18941-2-jaroslaw.janik@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_conexant.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
- 
- int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -205,8 +205,6 @@ static void cx_auto_shutdown(struct hda_
  {
--	struct ksmbd_session_rpc *entry;
-+	struct ksmbd_session_rpc *entry, *old;
- 	struct ksmbd_rpc_command *resp;
- 	int method;
+ 	struct conexant_spec *spec = codec->spec;
  
-@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
- 	entry->id = ksmbd_ipc_id_alloc();
- 	if (entry->id < 0)
- 		goto free_entry;
--	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	if (xa_is_err(old))
-+		goto free_id;
- 
- 	resp = ksmbd_rpc_open(sess, entry->id);
- 	if (!resp)
--		goto free_id;
-+		goto erase_xa;
- 
- 	kvfree(resp);
- 	return entry->id;
--free_id:
-+erase_xa:
- 	xa_erase(&sess->rpc_handle_list, entry->id);
-+free_id:
- 	ksmbd_rpc_id_free(entry->id);
- free_entry:
- 	kfree(entry);
+-	snd_hda_gen_shutup_speakers(codec);
+-
+ 	/* Turn the problematic codec into D3 to avoid spurious noises
+ 	   from the internal speaker during (and after) reboot */
+ 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
 
 
 
