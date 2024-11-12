@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-92641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1089C5581
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6C29C5583
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86FF01F21A7A
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5570F1F2177B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D744121767C;
-	Tue, 12 Nov 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F932178EF;
+	Tue, 12 Nov 2024 10:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NV6xzcWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsRPsjhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9646221765D;
-	Tue, 12 Nov 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D886212F00;
+	Tue, 12 Nov 2024 10:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408110; cv=none; b=euXqqZ3Tihe5nT/bz1w8un9vOA2h5nqk4wJTIzYZI/3C0EhnUOqK0y/sZVG8ON1QRfhdNCtvRL63cLe1GprJGv2Qti4sTk2dWFYpc4b6eHNknwevsafUCjgosKFpPvwXHeT6+Gyn1Xoz+ZaV9lnUzg78QNXFs5r3AfSQ8Z6f4k4=
+	t=1731408120; cv=none; b=Uh15lREOpcl2ZR3oadJ7xlyssBg6cf1S3eWEh+F4W41xfpmNfsFcJCZ4yhSB1uT8wq5rNRrEjb96VI0/uo02V5jYjTPZtReU0Tl2OqsbuwFaLF+uMeFvUl/8RnxorpsUzI7KMcRBR4uWyXLvNqA0a5jU/zQINazaW2tv7JvIuZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408110; c=relaxed/simple;
-	bh=fHj4ljC77D84Ea9yDNhXe2GDDrfgiHl7af6TEDB23kA=;
+	s=arc-20240116; t=1731408120; c=relaxed/simple;
+	bh=Mo/ZRE10DG5mJd7Z8aAAGqUG1/Xb1MtLUCJBJRA8AlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjXfQ7SxdxtkjQP0oiW/izBkc1dHejaOepNSczlfLp/KOxtdvBuYgDDtvxwZjp3rBJ9WGhFr9wfZB+SHeeum12OneV4D2HzS/up7cSPJbuaUw2voRL4IaHNBqY0OHqJb8VC3Rs5/CULGtMqh2zt2uGc9Y6fHy23qW8MDxPJ/4ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NV6xzcWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC01C4CECD;
-	Tue, 12 Nov 2024 10:41:49 +0000 (UTC)
+	 MIME-Version; b=PSHHvIuGAs35vmcNIHAWEa81imPOOJznaruoJVDdJEY+F5nS3UxUQ+1xbUYLBVGXC1Ze3DcQ0ZG0OGJuwrLHcirVH0n8bFcX3qeMK5N6HkRV/421DNyefnHcem9K2nsFpctAF4rLsqddlhhQR9MpiTf5CDVtZlQlXoxs1ClvDEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsRPsjhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96857C4CED4;
+	Tue, 12 Nov 2024 10:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408110;
-	bh=fHj4ljC77D84Ea9yDNhXe2GDDrfgiHl7af6TEDB23kA=;
+	s=korg; t=1731408120;
+	bh=Mo/ZRE10DG5mJd7Z8aAAGqUG1/Xb1MtLUCJBJRA8AlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NV6xzcWAQuj5MFAEG71kw43ANIsIzoNbT7wEe3g3zpf7d91hCXVYomNTLhpcBfnh4
-	 80zDmOkoG3E/b3zGy9etY7rsvF5Xp5BcTX66FaF+crLvlJttGEMniEBeSxJyIaFnIL
-	 7mNx7GRWhb1mIhA5irPLK/t4RuCPlSz8yybOIbOU=
+	b=nsRPsjhHoALbJA/azktv+z/SubKGlbYxP0JtVn8unRstaYhJ4g0CiSQhJifkci4bu
+	 0ZWBIWjBIrbZGaKJrshl113nvk35cYFbpBRuD6VSayLC/8hzB1dv8b6LnGkPcwztMA
+	 vloTtZqRXH7YpHCONTfQOk1QfFW5EWee0KiA8PDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	NeilBrown <neilb@suse.de>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 031/184] arm64: dts: rockchip: Correct GPIO polarity on brcm BT nodes
-Date: Tue, 12 Nov 2024 11:19:49 +0100
-Message-ID: <20241112101902.061299152@linuxfoundation.org>
+Subject: [PATCH 6.11 034/184] sunrpc: handle -ENOTCONN in xs_tcp_setup_socket()
+Date: Tue, 12 Nov 2024 11:19:52 +0100
+Message-ID: <20241112101902.175930579@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -66,63 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 08846522d9a7bccf18d4f97c3f39d03c7a193970 ]
+[ Upstream commit 10f0740234f0b157b41bdc7e9c3555a9b86c1599 ]
 
-Paragraph "3.4 Power up Timing Sequence" of the AzureWave-CM256SM
-datasheet mentions the following about the BT_REG_ON pin, which is
-connected to GPIO0_C4_d:
+xs_tcp_finish_connecting() can return -ENOTCONN but the switch statement
+in xs_tcp_setup_socket() treats that as an unhandled error.
 
-  When this pin is low and WL_REG_ON is high,
-  the BT section is in reset.
+If we treat it as a known error it would propagate back to
+call_connect_status() which does handle that error code.  This appears
+to be the intention of the commit (given below) which added -ENOTCONN as
+a return status for xs_tcp_finish_connecting().
 
-Therefor set that pin to GPIO_ACTIVE_HIGH so that it can be pulled low
-for a reset.
-If set to GPIO_ACTIVE_LOW, the following errors are observed:
+So add -ENOTCONN to the switch statement as an error to pass through to
+the caller.
 
-  Bluetooth: hci0: command 0x0c03 tx timeout
-  Bluetooth: hci0: BCM: Reset failed (-110)
-
-So fix the GPIO polarity by setting it to ACTIVE_HIGH.
-This also matches what other devices with the same BT device have.
-
-Fixes: 2b6a3f857550 ("arm64: dts: rockchip: Fix reset-gpios property on brcm BT nodes")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/20241018145053.11928-2-didi.debian@cknow.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1231050
+Link: https://access.redhat.com/discussions/3434091
+Fixes: 01d37c428ae0 ("SUNRPC: xprt_connect() don't abort the task if the transport isn't bound")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi  | 2 +-
- arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/sunrpc/xprtsock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index a477bd992b40e..0131f2cdd312f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-@@ -688,7 +688,7 @@
- 		host-wakeup-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
- 		pinctrl-0 = <&bt_enable_h>, <&bt_host_wake_l>, <&bt_wake_h>;
- 		pinctrl-names = "default";
--		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_LOW>;
-+		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
- 		vbat-supply = <&vcc_wl>;
- 		vddio-supply = <&vcca_1v8_pmu>;
- 	};
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-index e9fa9bee995ae..1e36f73840dad 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-radxa-cm3.dtsi
-@@ -404,7 +404,7 @@
- 		host-wakeup-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&bt_host_wake_h &bt_reg_on_h &bt_wake_host_h>;
--		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_LOW>;
-+		shutdown-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_HIGH>;
- 		vbat-supply = <&vcc_3v3>;
- 		vddio-supply = <&vcc_1v8>;
- 	};
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 0e1691316f423..1326fbf45a347 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2459,6 +2459,7 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 	case -EHOSTUNREACH:
+ 	case -EADDRINUSE:
+ 	case -ENOBUFS:
++	case -ENOTCONN:
+ 		break;
+ 	default:
+ 		printk("%s: connect returned unhandled error %d\n",
 -- 
 2.43.0
 
