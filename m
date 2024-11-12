@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-92177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0DB9C4AB5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 01:27:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E849C4B80
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 02:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 831BD28430D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 00:27:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A961F21B86
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 01:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345981E048A;
-	Tue, 12 Nov 2024 00:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFEC1F8196;
+	Tue, 12 Nov 2024 01:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="so89ehvv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JkWHtz4f"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NQrgGs8c";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wZsYcMRK"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739B9481B6;
-	Tue, 12 Nov 2024 00:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49CC5234;
+	Tue, 12 Nov 2024 01:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731371257; cv=none; b=m0hcFVv51SDbpllFnwl9lw+8tVDVPNvfaVvhGK/2qTm/MlYZjkpNW78wx29JY/G53P8uXz1Hn6eUEvcgVzj0YEyjEzNMp+Trn7eGgoi7ehjbSQn6q6qZk8KOKj14L4IZ5k1JX2TPKDuX63Rnc3B0rQ+oRWA5Cbgesmw2VYxgYh8=
+	t=1731373665; cv=none; b=bS/c3qRLfKRdd85I8rZu+eWwhyTooD8pRwd26PNRHBmRWYL7QyWa2EZDxEBEFRWgAA9YuSJqp1CKJtpPVbTv11ce98j1OWjo8H7Auv0qgdafDdilSgmdzkRwUL1cflBd1K62Wovk2++/Qr8o0wLWNEcwFm4ESVjzSNG83KVr24A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731371257; c=relaxed/simple;
-	bh=a7/TgUjMn6ho1gjy0uGqBCS6T/+OApJpN/TXKYjdtzc=;
+	s=arc-20240116; t=1731373665; c=relaxed/simple;
+	bh=NiT2v4KtxIZJPnmu+e9fr80tgReDlEnejBG+0hbQIRQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Sjt9zmhisCNJEMHVIE+JVe2UuM6yC7aJ+yXRZKp3Z/3JcrLRBoZQgtEcCG19ZfUimfIMBYagR9OOO2JOtcb1BHD/lwjCDnf1I/VW9rgLhPoMoWsJf5dAPqAzEAwdLIwv9/0bvsf2rhULcie1z05pRltmJp8PUJbDW4Jo+OceXAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=so89ehvv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JkWHtz4f; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=VtHT3RHe0xcu8ZV87sOVmXfuP6CZ/PR0ylvsYotlJZ+Vseyph/nKIeK0Wk8C0ffhYesJyWvdrp/Kx1CmXmyVpeMvNxdrBmsJzO3QOS4A4n+mKH8xgrRb/PImwyLUPmJYKNNceQHWYl/lqdAXcPaE3xhy2cHXUPxFK1O907sQIYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NQrgGs8c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wZsYcMRK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1731371253;
+	s=2020; t=1731373661;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8/0EJRWuUesVbgPQELwMXBSRdd+j7HBi2B68aTjNQ9c=;
-	b=so89ehvvA7R75zntRGjF5hL0pJ83el6oavrDsxd+ai3WNSrONU9u16lQXPlFUoKMLuBII2
-	pXS7vdUNlq4ZAygg/vviwNTGJ3seryQRbMap5g6vXS1XPLg1ZQPQLlAX4+emQGcBKanS0I
-	9aHNy/JDIad3LaZOkASphAmUOxC8pmaUL4ieykA64rB/Pu6SxHAuxma0tGATSkFJpuF6SW
-	CAK9UAkK7+aGHnbBx4J5T7TW+P1Wbq4UyZGpy7EkxU0z5FjELbKjbQxVWOlEKEujE5MHDY
-	2sS//6qgJvLhZxFDbYI3qWi4uWO6e0WHxPeqMtySzJIT+Sih35v9VQZ3J45npw==
+	bh=d5s/m46v24gtVwgvBpriXEpuPGkdMoQKTK4XbSOPcW0=;
+	b=NQrgGs8cbfXP1icrl/Q/tDfZ4FitRa0D40dfkQS46xkpmA8JpxTbKqFUOGxJve0B7CtTaX
+	uMw9rqrv/A3NdUJm9eTMXMaaXRXiO9BDhJbXshSIwSACg5IMFyTqV7yAEKRtv1HJ7EoIS7
+	Sa3vfadfL+Wn4OoYxYkDcfrkIssTyoNO5RwqHMordzHU+HAwHwwenle38s8iWW69PZdKM/
+	pw2Mn52nyRFZTMr58zGCMzi4dg6/v1tRWQtLh4Sqnr56FugYEMXBohLxB9KFAxb8fu37h+
+	/qKEgIH9SjHXWdRssjqsI11zXH40i1Xclbma7ckvqcb9pBwL+CUtZhx7D6RleA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1731371253;
+	s=2020e; t=1731373661;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8/0EJRWuUesVbgPQELwMXBSRdd+j7HBi2B68aTjNQ9c=;
-	b=JkWHtz4fiuaeDZLc6VD3fQS0SqHrs0Ba/1rvgg5JrwNWxgsPY0QjECPIMzWaNhbJ3i2Z8X
-	43zlv97uIsYkFiCA==
-To: Peter Zijlstra <peterz@infradead.org>, Len Brown <lenb@kernel.org>
-Cc: x86@kernel.org, rafael@kernel.org, linux-kernel@vger.kernel.org,
+	bh=d5s/m46v24gtVwgvBpriXEpuPGkdMoQKTK4XbSOPcW0=;
+	b=wZsYcMRKaH6IYWLT6361xLxBJTLTZi6Yd3Jr63R1BT0K+f10LZUOCMik2bAsGOl5jkpse4
+	amiJtHAq0cX7ZnDw==
+To: Len Brown <lenb@kernel.org>, peterz@infradead.org, x86@kernel.org
+Cc: rafael@kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, Len Brown <len.brown@intel.com>,
  stable@vger.kernel.org
-Subject: Re: [PATCH] x86/cpu: Add INTEL_LUNARLAKE_M to X86_BUG_MONITOR
-In-Reply-To: <20241111162316.GH22801@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH backport to 6.10] x86/cpu: Add INTEL_FAM6_LUNARLAKE_M to
+ X86_BUG_MONITOR
+In-Reply-To: <20241108135206.435793-2-lenb@kernel.org>
 References: <20241108135206.435793-1-lenb@kernel.org>
- <20241108135206.435793-3-lenb@kernel.org>
- <20241111162316.GH22801@noisy.programming.kicks-ass.net>
-Date: Tue, 12 Nov 2024 01:27:06 +0100
-Message-ID: <87jzd9nvol.ffs@tglx>
+ <20241108135206.435793-2-lenb@kernel.org>
+Date: Tue, 12 Nov 2024 02:07:27 +0100
+Message-ID: <87h68dnttc.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,48 +71,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-On Mon, Nov 11 2024 at 17:23, Peter Zijlstra wrote:
-> On Fri, Nov 08, 2024 at 08:49:31AM -0500, Len Brown wrote:
->> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
->> index 766f092dab80..910cb2d72c13 100644
->> --- a/arch/x86/kernel/smpboot.c
->> +++ b/arch/x86/kernel/smpboot.c
->> @@ -1377,6 +1377,9 @@ void smp_kick_mwait_play_dead(void)
->>  		for (i = 0; READ_ONCE(md->status) != newstate && i < 1000; i++) {
->>  			/* Bring it out of mwait */
->>  			WRITE_ONCE(md->control, newstate);
->> +			/* If MONITOR unreliable, send IPI */
->> +			if (boot_cpu_has_bug(X86_BUG_MONITOR))
->> +				__apic_send_IPI(cpu, RESCHEDULE_VECTOR);
->>  			udelay(5);
->>  		}
+On Fri, Nov 08 2024 at 08:49, Len Brown wrote:
+> From: Len Brown <len.brown@intel.com>
 >
-> Going over that code again, mwait_play_dead() is doing __mwait(.exc=0)
-> with IRQs disabled.
-
-And the APIC is shut down. So it won't react on the IPI either.
-
-> So that IPI you're trying to send there won't do no nothing :-/
+> Under some conditions, MONITOR wakeups on Lunar Lake processors
+> can be lost, resulting in significant user-visible delays.
 >
-> Now that comment there says MCE/NMI/SMI are still open (non-maskable
-> etc.) so perhaps prod it on the NMI vector?
+> Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+> always sends an IPI, avoiding this potential delay.
+> Update the X86_BUG_MONITOR workaround to handle
+> the new smp_kick_mwait_play_dead() path.
 >
-> This does seem to suggest the above code path wasn't actually tested.
-
-I'm not sure whether that's just a suggestion :)
-
-> Perhaps mark your local machine with BUG_MONITOR, remove the md->control
-> WRITE_ONCE() and try kexec to test it?
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219364
 >
-> Thomas, any other thoughts?
+> Cc: stable@vger.kernel.org # 6.10
+> Signed-off-by: Len Brown <len.brown@intel.com>
+> ---
+> This is a backport of the upstream patch to Linux-6.10 and earlier
 
-NMI should work. See exc_nmi():
+You either fail to understand or intentionally ignore the process for
+stable backports, which is in place since more than a decade.
 
-	if (arch_cpu_is_offline(smp_processor_id())) {
-		if (microcode_nmi_handler_enabled())
-			microcode_offline_nmi_handler();
-		return;
-	}
+Documentation/process/* has plenty of information how that works and
+you're around long enough to know that already.
+
+I don't care about you wasting your time, but I very much care about you
+wasting my time to deal with pointless emails. I get plenty enough of
+them every day.
 
 Thanks,
 
