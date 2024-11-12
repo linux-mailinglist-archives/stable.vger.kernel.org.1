@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-92345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD869C53A2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C7D9C5493
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C582815A1
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7651EB29253
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E21213EE2;
-	Tue, 12 Nov 2024 10:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C43A213EF3;
+	Tue, 12 Nov 2024 10:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwaFJUce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4MZfhaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0F720899D;
-	Tue, 12 Nov 2024 10:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD32B1CBE8F;
+	Tue, 12 Nov 2024 10:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407353; cv=none; b=qa1lBUILzKleTqjFZId4e36bC6WJQEZZcZAeyJ9uNkghfadguBGfnUQcyzbbRNvVr9y4AXyd80VtqbKCuHaQm9Yqdi9/LAYGxlxCGiaQJTHioLw8or6C0/dKU+JActIFV12LOi9ByrsJASrw64AOWRFE/J62jL5mR+wv/hCrr1c=
+	t=1731407735; cv=none; b=l9aiTPN7Rk2UHo8hupjhRbvV4j88f6zICWFfmAZ0hK3bYv0b1Zgz+TdCeo5a32GCvb17maswEUYAAoKDjyCnxqp3zMlacpcxr56gZiuALA1zVzcM244SJoL0xO9gHmlfbQh0QDDi9oy2iwHryNDDpCTQBrCdDcpfc6ObmeODm1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407353; c=relaxed/simple;
-	bh=sW731fW7qPHr2JrY/RdJOPVK3EcnHqwVNJQ0gID0qIk=;
+	s=arc-20240116; t=1731407735; c=relaxed/simple;
+	bh=SM1gvg4niXJsid1yhhNhwha+9MHuUQyEU7PQnfLVp20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlLv4ImJ3CBIhBc52fy2xa20vANgAd8GnE0vJwXm002kUTL7TrgbQOepgRLdiGQr35kRHgRKGhN16TEBKRgVgT0NsvHaCCG2BkJ4rahZiTmXai5WfCxSPJB5PSUu/iFpiJ8fEZsEOr5EeJpTU1LY+3RPuRcFk7zD50ADxAVG/TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwaFJUce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDE3C4CECD;
-	Tue, 12 Nov 2024 10:29:13 +0000 (UTC)
+	 MIME-Version; b=WZQ7GcTPl7JYgA923CKCqD5YM3j5pMnIU90dHuDGfnakMWiLOqkuKzf3I6E0qFsctXV6e2ftqQg8H4jTEGE9ACXFvthF/k640Mr3iA9C9VyVKsralHj2K0mDaWtJqrxb45SVtXsPv1U3oamXKqpPfzJOgNiEc13iB1trGamg5aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4MZfhaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC584C4CECD;
+	Tue, 12 Nov 2024 10:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407353;
-	bh=sW731fW7qPHr2JrY/RdJOPVK3EcnHqwVNJQ0gID0qIk=;
+	s=korg; t=1731407735;
+	bh=SM1gvg4niXJsid1yhhNhwha+9MHuUQyEU7PQnfLVp20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwaFJUceGyX95zlgHfRZs+eMjsa4uuMy2GunIqQPJGqm0+mneOKBsjIF41ococgB+
-	 HE/ZQbLJ73wOGtv++YCd4Nr3+q3b61khlMkHTpz62CHz6wBbix1T0NI5ghHAMkLX/6
-	 34irBjXFfWwY8B1gdYcAiwezVCjm+AuiOKmRr6FQ=
+	b=F4MZfhaRzUJritevTfWcmuC4TBNh2qNHtMLfAynp80E7h2Wakj1QZTnZQfd2dd+g+
+	 83RWVLGpKylfyvAOzTz7UxO8NEImZBaNlGnXLZO+BURl54j8Y3+/qhwp65s8HqPDUL
+	 JlcRauMO+4V6MzvBzwP+WsNgXQSODhaqdHwiEIN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 51/98] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
-Date: Tue, 12 Nov 2024 11:21:06 +0100
-Message-ID: <20241112101846.213076953@linuxfoundation.org>
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 059/119] ASoC: stm32: spdifrx: fix dma channel release in stm32_spdifrx_remove
+Date: Tue, 12 Nov 2024 11:21:07 +0100
+Message-ID: <20241112101850.971058345@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-commit eb9a839b3d8a989be5970035a5cf29bcd6ffd24d upstream.
+[ Upstream commit 9bb4af400c386374ab1047df44c508512c08c31f ]
 
-Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
-when switching from CAN-CC to CAN-FD mode"), the current ring and
-coalescing configuration is passed to can_ram_get_layout(). That fixed
-the issue when switching between CAN-CC and CAN-FD mode with
-configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
-tx-frames-irq).
+In case of error when requesting ctrl_chan DMA channel, ctrl_chan is not
+null. So the release of the dma channel leads to the following issue:
+[    4.879000] st,stm32-spdifrx 500d0000.audio-controller:
+dma_request_slave_channel error -19
+[    4.888975] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000003d
+[...]
+[    5.096577] Call trace:
+[    5.099099]  dma_release_channel+0x24/0x100
+[    5.103235]  stm32_spdifrx_remove+0x24/0x60 [snd_soc_stm32_spdifrx]
+[    5.109494]  stm32_spdifrx_probe+0x320/0x4c4 [snd_soc_stm32_spdifrx]
 
-However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
-switching from CAN-CC to CAN-FD mode"), introduced a regression when
-switching CAN modes with disabled coalescing configuration: Even if
-the previous CAN mode has no coalescing configured, the new mode is
-configured with active coalescing. This leads to delayed receiving of
-CAN-FD frames.
+To avoid this issue, release channel only if the pointer is valid.
 
-This comes from the fact, that ethtool uses usecs = 0 and max_frames =
-1 to disable coalescing, however the driver uses internally
-priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
-coalescing.
-
-Fix the regression by assigning struct ethtool_coalesce
-ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
-the driver as can_ram_get_layout() expects this.
-
-Reported-by: https://github.com/vdh-robothania
-Closes: https://github.com/raspberrypi/linux/issues/6407
-Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 794df9448edb ("ASoC: stm32: spdifrx: manage rebind issue")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241105140242.527279-1-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/stm/stm32_spdifrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -2,7 +2,7 @@
- //
- // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
- //
--// Copyright (c) 2019, 2020, 2021 Pengutronix,
-+// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
- //               Marc Kleine-Budde <kernel@pengutronix.de>
- //
- // Based on:
-@@ -473,9 +473,11 @@ int mcp251xfd_ring_alloc(struct mcp251xf
- 		};
- 		const struct ethtool_coalesce ec = {
- 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
--			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
-+			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->rx_obj_num_coalesce_irq,
- 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
--			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
-+			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
-+				1 : priv->tx_obj_num_coalesce_irq,
- 		};
- 		struct can_ram_layout layout;
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index a359b528b26b7..4e17909d21267 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -943,7 +943,7 @@ static void stm32_spdifrx_remove(struct platform_device *pdev)
+ {
+ 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
  
+-	if (spdifrx->ctrl_chan)
++	if (!IS_ERR(spdifrx->ctrl_chan))
+ 		dma_release_channel(spdifrx->ctrl_chan);
+ 
+ 	if (spdifrx->dmab)
+-- 
+2.43.0
+
 
 
 
