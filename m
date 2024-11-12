@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-92654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD4B9C5814
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADBD9C5738
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADF0DB299F9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93AFDB2A1EE
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA48B217F3B;
-	Tue, 12 Nov 2024 10:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4832185A0;
+	Tue, 12 Nov 2024 10:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZySNPyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwIy/xc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C7F217F2A;
-	Tue, 12 Nov 2024 10:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B89217F37;
+	Tue, 12 Nov 2024 10:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408151; cv=none; b=cdrWHghmS9z4WsCRlt37v/WIo+R9rdFCQG/d8hv8PaarWBmMU6T650SxtMZNoD3/IRoC0A72igRPb9h7vj20YzOpCTkSRVvJY+SmOpmXXP8TLU5kTmDhaFMwElcaCDGAcnF5yrYhyENDlpzqJdHTZSOTSrA1bDKG1O6pApV4AFA=
+	t=1731408164; cv=none; b=I1fgnlIr2U7nOK43B+8l7KYDzetIiK5jyuTQ2TVa4o5GbVO+RO6MIYt5Z6jyCWod07HIXg2LYkjxHcDRRRaM2Z+i9LHQ6e+hfr5PbjwDSw9lHjy6eK3uG1gnciENdi9QOAtn0CB1sxk8YW2orAFSM2I3lz3alG4BkKDuCE9qrEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408151; c=relaxed/simple;
-	bh=p3s8aogREnyTu70nnD9Ob9pMkw8hsM52cu4oOHzh0qo=;
+	s=arc-20240116; t=1731408164; c=relaxed/simple;
+	bh=+gMLKW0VItw9QRdPUNYVSZtgvhw8Esyqphcq+zt00XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVkUjJvk3FPMHjRqAQsKlucD3NmZif8EJqZCIIaP17sIkxlrYWc9CUfV0BvCvnUQdAlOnFdd+g4MGfMbA4nqro7LOFxZ7b/Q4FQqrO9XblXXkKfP/9ZBiIIeuDJpA+SLRTczl3GRARxNJq79vaajlRS7CoaColkFaAb6hMC1Mwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZySNPyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1ECC4CECD;
-	Tue, 12 Nov 2024 10:42:30 +0000 (UTC)
+	 MIME-Version; b=AYYNvTqluxFbSrCV/noCK0LXjaFzUlUiWQgaIWNDpW4c8YhDIctVybV+QohK5qO+VNKLSSMztQBF1/D1duPpeC9FH64RZUFIndRRxOchwxW9tjpuPd9DzqtsOImJ6gPFq4QIiDBnijJelPpcYNw6P4Te0kADzMIN6eqYQUsMY+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwIy/xc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C60C4CED4;
+	Tue, 12 Nov 2024 10:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408151;
-	bh=p3s8aogREnyTu70nnD9Ob9pMkw8hsM52cu4oOHzh0qo=;
+	s=korg; t=1731408163;
+	bh=+gMLKW0VItw9QRdPUNYVSZtgvhw8Esyqphcq+zt00XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZySNPyBUc0eZuFrmHrG5QlHCHuPLpMb6nqgC/Nft6c6hb1QczPKsn25D1TvXsToF
-	 qvjkoJqN8ipWuJne2wZ0X+lAj5sVv3PoR/hNutswuk+aNTxckMDsaMXRejlcVeiK3a
-	 CfA/7P/lzPXXplzsdreM1dE8t0Xbg4awuX1XaTdE=
+	b=SwIy/xc0xx3RJxMPCzA0fws6CwkFLX6Y7j17z1wllKE3/2HayueD7vAKeFZqIUphA
+	 KrdSACzA5x5r2DiG3bLA20DBiLK1NnNmj6iA++p3taANjdCmaE/ZT9J9zF6bz7jmho
+	 hd3ML6827fkP/LnJ+SMgm7T0POvM8q5ppX0owc1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>
-Subject: [PATCH 6.11 076/184] media: mgb4: protect driver against spectre
-Date: Tue, 12 Nov 2024 11:20:34 +0100
-Message-ID: <20241112101903.778683645@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.11 079/184] media: cx24116: prevent overflows on SNR calculus
+Date: Tue, 12 Nov 2024 11:20:37 +0100
+Message-ID: <20241112101903.894035056@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -59,7 +58,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
@@ -68,41 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 2aee207e5b3c94ef859316008119ea06d6798d49 upstream.
+commit 576a307a7650bd544fbb24df801b9b7863b85e2f upstream.
 
-Frequency range is set from sysfs via frequency_range_store(),
-being vulnerable to spectre, as reported by smatch:
+as reported by Coverity, if reading SNR registers fail, a negative
+number will be returned, causing an underflow when reading SNR
+registers.
 
-	drivers/media/pci/mgb4/mgb4_cmt.c:231 mgb4_cmt_set_vin_freq_range() warn: potential spectre issue 'cmt_vals_in' [r]
-	drivers/media/pci/mgb4/mgb4_cmt.c:238 mgb4_cmt_set_vin_freq_range() warn: possible spectre second half.  'reg_set'
+Prevent that.
 
-Fix it.
-
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
+Fixes: 8953db793d5b ("V4L/DVB (9178): cx24116: Add module parameter to return SNR as ESNO.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/mgb4/mgb4_cmt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/dvb-frontends/cx24116.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/mgb4/mgb4_cmt.c b/drivers/media/pci/mgb4/mgb4_cmt.c
-index 70dc78ef193c..a25b68403bc6 100644
---- a/drivers/media/pci/mgb4/mgb4_cmt.c
-+++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-@@ -227,6 +227,8 @@ void mgb4_cmt_set_vin_freq_range(struct mgb4_vin_dev *vindev,
- 	u32 config;
- 	size_t i;
+--- a/drivers/media/dvb-frontends/cx24116.c
++++ b/drivers/media/dvb-frontends/cx24116.c
+@@ -741,6 +741,7 @@ static int cx24116_read_snr_pct(struct d
+ {
+ 	struct cx24116_state *state = fe->demodulator_priv;
+ 	u8 snr_reading;
++	int ret;
+ 	static const u32 snr_tab[] = { /* 10 x Table (rounded up) */
+ 		0x00000, 0x0199A, 0x03333, 0x04ccD, 0x06667,
+ 		0x08000, 0x0999A, 0x0b333, 0x0cccD, 0x0e667,
+@@ -749,7 +750,11 @@ static int cx24116_read_snr_pct(struct d
  
-+	freq_range = array_index_nospec(freq_range, ARRAY_SIZE(cmt_vals_in));
+ 	dprintk("%s()\n", __func__);
+ 
+-	snr_reading = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	ret = cx24116_readreg(state, CX24116_REG_QUALITY0);
++	if (ret  < 0)
++		return ret;
 +
- 	addr = cmt_addrs_in[vindev->config->id];
- 	reg_set = cmt_vals_in[freq_range];
++	snr_reading = ret;
  
--- 
-2.47.0
-
+ 	if (snr_reading >= 0xa0 /* 100% */)
+ 		*snr = 0xffff;
 
 
 
