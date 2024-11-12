@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132059C558B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DA79C538B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAC9D28EFCE
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C50A2840D8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD3C217F27;
-	Tue, 12 Nov 2024 10:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9C92123E6;
+	Tue, 12 Nov 2024 10:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDwvECLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udQs9bOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0AA212EEF;
-	Tue, 12 Nov 2024 10:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54520FAB3;
+	Tue, 12 Nov 2024 10:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408148; cv=none; b=rDIbaovUPmq5bT5IiUF8mnOD++cVC5qvxWgbgRreq9MT/JyYkgtDC4xKwCs+fYSjKcuwcu2pvh0BvdNrzup0SoSsPyHhzHb4JJflKY09FEJvkIevMr0OWHjWD7oovA4M1w0sY8lQsnexJMOZY3+auvIJ1J9HXE7Hmn+YYSLrbpA=
+	t=1731407247; cv=none; b=TRZOkNTRMHlQLku7pxyUNf1cfpQpC5poijt0s/kJChaFbAwoZF94dQJ3Vp3KIejFoUn3zh08tl3n+VMub+iu6eHbd8q8bk/MrFPq0z3pz/DsLTbYXBCt07W198Aj9PpLcRC7SxbPKmhydABYENdxN8ANWDWltDuydI6xPNLvRnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408148; c=relaxed/simple;
-	bh=kIIhF42DtGOmLLSwCz+pcinGmVuYkAIFo8SZWbqNVJc=;
+	s=arc-20240116; t=1731407247; c=relaxed/simple;
+	bh=C3UJb6S3lENqqcu8lqWzw7GI+absJyAg7duXsZRmNTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAZixM2zi3YLL293UC0QVRV1pE+ziYNa5VUmcv91l+hC3KkP+KlheCJjXGbfNRYgF4VDNjAhNzh/q5oON/sfucohWqnXACOPCEW96ACRMzwS2mVTW1wBNvJY79ZNYxqwmCdrJlk5pKsdKWqG0zwKCTlpAcrqq39oj7L99OOiHY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDwvECLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA455C4CECD;
-	Tue, 12 Nov 2024 10:42:27 +0000 (UTC)
+	 MIME-Version; b=pcRmUQscP8dNQfUg3WuilnroFhLRZcqnSjCOs+L0aAbwmsTJOIORXi1o1nfUGjnlRRQudh90YZyOVmxqy7SBPoaq/rIAq2wWg1mlbXa1nwQJ7jmLW6A89nzvIWnmZ4Ch3iTdz5eNCuczZ3aqlQmn8MSbRy1AXRXihLjNwHSBBhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udQs9bOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D876C4CECD;
+	Tue, 12 Nov 2024 10:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408148;
-	bh=kIIhF42DtGOmLLSwCz+pcinGmVuYkAIFo8SZWbqNVJc=;
+	s=korg; t=1731407246;
+	bh=C3UJb6S3lENqqcu8lqWzw7GI+absJyAg7duXsZRmNTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDwvECLU0nz7ZyhwtCyF7xAsGfBvoxNHZTR+nojS6qX4grRYjY0qRzfIckaZbHoNQ
-	 ojjCcqRafAHLpZCGX8AB0IzS8vpffdKaGkEgbuGyTqiKzQyzVEzbBohqRq+1Q7laDa
-	 +wA4eleNHThskYmhVYei//tM8QHK5q9Ndho/n23M=
+	b=udQs9bOJ/qN9UIEN3Gf/e/q8UnfLC5JR/QPF9gAzxaxTmAQF5Kyz6AbPjh+XL4+Z1
+	 qhh/buvS68WCM+JbMiVBt3c3ydztZe/U9OGh1iAx2zTn8EufZBjAXFi2XHjA6Tfe7A
+	 /6sUnEt58oK4ThNmRzEj/E/TFZcvK+e7p2Vtvsa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.11 075/184] media: dvb-core: add missing buffer index check
+	NeilBrown <neilb@suse.de>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 18/98] sunrpc: handle -ENOTCONN in xs_tcp_setup_socket()
 Date: Tue, 12 Nov 2024 11:20:33 +0100
-Message-ID: <20241112101903.740370534@linuxfoundation.org>
+Message-ID: <20241112101844.965214126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: NeilBrown <neilb@suse.de>
 
-commit fa88dc7db176c79b50adb132a56120a1d4d9d18b upstream.
+[ Upstream commit 10f0740234f0b157b41bdc7e9c3555a9b86c1599 ]
 
-dvb_vb2_expbuf() didn't check if the given buffer index was
-for a valid buffer. Add this check.
+xs_tcp_finish_connecting() can return -ENOTCONN but the switch statement
+in xs_tcp_setup_socket() treats that as an unhandled error.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-media/?q=WARNING+in+vb2_core_reqbufs
-Fixes: 7dc866df4012 ("media: dvb-core: Use vb2_get_buffer() instead of directly access to buffers array")
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we treat it as a known error it would propagate back to
+call_connect_status() which does handle that error code.  This appears
+to be the intention of the commit (given below) which added -ENOTCONN as
+a return status for xs_tcp_finish_connecting().
+
+So add -ENOTCONN to the switch statement as an error to pass through to
+the caller.
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1231050
+Link: https://access.redhat.com/discussions/3434091
+Fixes: 01d37c428ae0 ("SUNRPC: xprt_connect() don't abort the task if the transport isn't bound")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_vb2.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtsock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/dvb-core/dvb_vb2.c
-+++ b/drivers/media/dvb-core/dvb_vb2.c
-@@ -366,9 +366,15 @@ int dvb_vb2_querybuf(struct dvb_vb2_ctx
- int dvb_vb2_expbuf(struct dvb_vb2_ctx *ctx, struct dmx_exportbuffer *exp)
- {
- 	struct vb2_queue *q = &ctx->vb_q;
-+	struct vb2_buffer *vb2 = vb2_get_buffer(q, exp->index);
- 	int ret;
- 
--	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, q->bufs[exp->index],
-+	if (!vb2) {
-+		dprintk(1, "[%s] invalid buffer index\n", ctx->name);
-+		return -EINVAL;
-+	}
-+
-+	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, vb2,
- 			      0, exp->flags);
- 	if (ret) {
- 		dprintk(1, "[%s] index=%d errno=%d\n", ctx->name,
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 02f651f85e739..190dae11f634a 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2351,6 +2351,7 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 	case -EHOSTUNREACH:
+ 	case -EADDRINUSE:
+ 	case -ENOBUFS:
++	case -ENOTCONN:
+ 		break;
+ 	default:
+ 		printk("%s: connect returned unhandled error %d\n",
+-- 
+2.43.0
+
 
 
 
