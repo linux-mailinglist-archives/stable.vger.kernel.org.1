@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-92473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90FD9C5510
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:58:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A0D9C5444
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF250B37DE8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA2828364F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3902141A9;
-	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94E1216E0A;
+	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHOznfuB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXCvlAw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72640213EFE;
-	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C362141B7;
+	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407769; cv=none; b=C5XwzfLvMd/pAFysldZOLrD8fbRAIUhx7+bZutjEwJYHv57UvoX/0V4OVnZnJZnzwYEHJ4AfC7Jkp1q1Z4RmNvVdIbURwyxOlDceDBYRwX4XotUt+oO64e3M1Hy72GA5ITwDV5sv2uOIuX5d96xkdKV04JodCYrbF1mKVFRIl2M=
+	t=1731407770; cv=none; b=ufmtjz8sB4NRk+Ce6k0lleblu0G0OyWLp+iJ79Dk78JR3dM51fuh0KOFW4tZErVB4N7w14WGYw08OdmaC2Anmc5ySNisNzTT/4D3UUcO7lMLRo/sn4i/7mz135WSTgSVdb/LdPe5vUT2ETx5iYshi6yl35jf013VEzKx5SY7/8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407769; c=relaxed/simple;
-	bh=Ja4POKk5WcUW9q+HbkxBJF753EhM3kQ/XNrIxY2J64A=;
+	s=arc-20240116; t=1731407770; c=relaxed/simple;
+	bh=qDTKfggIfifvJuPfik/KCBgX29H1nbyOlrV2/JiQlcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeEyHk02mVjzDQD5hIrvxa+ukHRTeu5afhqqILzhiHk0a/5oaNsKOBB7gbgpGvHXRnNPR7R+MZsqnWG2Jq9zpvzzEEZSuvEJ/bwf4nSXKjwiejtIEXZpGrAVOMPW/5U/zzJAvOcAkQSldg19XvCzmNIyoly9BYHfYUAnvxGSOq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHOznfuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322EFC4CED6;
-	Tue, 12 Nov 2024 10:36:08 +0000 (UTC)
+	 MIME-Version; b=kjCJS5cRw4GfGbIjHdyNjePfNiPl9LkiJDnvhpkCJ5PkI95NOUHWrB+Ws1oWEp17M1tobPAgUmhz6if/VX1+e0NYuelXjwaUm0dzYjH3SKjKWUl8j+7V8tChwbZqrm5Z+V7CyWsk7bYGD6rRGpuixklho6CZwCOq1LrLvaURRvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXCvlAw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F34C4CED4;
+	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407769;
-	bh=Ja4POKk5WcUW9q+HbkxBJF753EhM3kQ/XNrIxY2J64A=;
+	s=k20201202; t=1731407770;
+	bh=qDTKfggIfifvJuPfik/KCBgX29H1nbyOlrV2/JiQlcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHOznfuBi3l21PMFSXcXmloVLlTXJIlUNa7mCmSy2PALvTctkEf8Ud3ivuO2LCduq
-	 CxsknAhWVtdU5EmjxUOXBkLYMSEhmHA/ajCSRJ5SSrQ+bCigzqZNEo1YR94t+YYFY+
-	 ujBHqBRHpoHA2x9wmj7YowcwCKFh6he7kx/02EJZS773te6BZR8nk6iW+RebiG1g3C
-	 uYeAikohjDa3zEIjc457HNk4/3KWeTQs70R3xLFdvqBPJRddMpkzs6EgBJM6ab7IG8
-	 APyGs2eVtQpS1JYsb3eBR0hMNifxe5vAfB2Y1Xi8M0QiANTw19R+TJax98haVGnhQL
-	 4jKv92TZy2STQ==
+	b=WXCvlAw+73+JZ2tnp/aaO3ezb01YDJxO9EVymBdUSvXyUdte4tqRCl4SEvS360z8f
+	 QGxiUGqbyP0kZ330dUZ7DYCzZFpxM3aJK6CyFfDFW+rDEgGYwjX7VZg89AUCNbTtfP
+	 92TP2tye3zf8MqkZ2ext50XzETNo2dvzWxHxooMcp/EnCmv/KsfDBH0bVaSEMubkMC
+	 wrBSikMRcahbeXYIsFseWvbPYjku3a3lJ5ebcmIJLnJwiJqqwWpdinOvKCO1d1YwoI
+	 frwmwmXFB15r9srvKPPYG8Jvtt4i/EhkjQaXVEZhusGwkvp01wjstUL8/9n/ioA4wS
+	 eLWcOZJGxe5fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+Cc: Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 02/16] firmware: arm_scmi: Reject clear channel request on A2P
-Date: Tue, 12 Nov 2024 05:35:44 -0500
-Message-ID: <20241112103605.1652910-2-sashal@kernel.org>
+	lgirdwood@gmail.com
+Subject: [PATCH AUTOSEL 6.11 03/16] regulator: rk808: Add apply_bit for BUCK3 on RK809
+Date: Tue, 12 Nov 2024 05:35:45 -0500
+Message-ID: <20241112103605.1652910-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112103605.1652910-1-sashal@kernel.org>
 References: <20241112103605.1652910-1-sashal@kernel.org>
@@ -67,71 +65,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.7
 Content-Transfer-Encoding: 8bit
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
 
-[ Upstream commit a0a18e91eb3a6ef75a6de69dc00f206b913e3848 ]
+[ Upstream commit 5e53e4a66bc7430dd2d11c18a86410e3a38d2940 ]
 
-The clear channel transport operation is supposed to be called exclusively
-on the P2A channel from the agent, since it relinquishes the ownership of
-the channel to the platform, after this latter has initiated some sort of
-P2A communication.
+Currently, RK809's BUCK3 regulator is modelled in the driver as a
+configurable regulator with 0.5-2.4V voltage range. But the voltage
+setting is not actually applied, because when bit 6 of
+PMIC_POWER_CONFIG register is set to 0 (default), BUCK3 output voltage
+is determined by the external feedback resistor. Fix this, by setting
+bit 6 when voltage selection is set. Existing users which do not
+specify voltage constraints in their device trees will not be affected
+by this change, since no voltage setting is applied in those cases,
+and bit 6 is not enabled.
 
-Make sure that, if it is ever called on a A2P, is logged and ignored.
-
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Message-Id: <20241021171544.2579551-1-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+Link: https://patch.msgid.link/20241017-rk809-dcdc3-v1-1-e3c3de92f39c@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/common.h | 2 ++
- drivers/firmware/arm_scmi/driver.c | 6 ++++++
- 2 files changed, 8 insertions(+)
+ drivers/regulator/rk808-regulator.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
-index 4b8c5250cdb57..cd30499b2555f 100644
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -163,6 +163,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
-  *      used to initialize this channel
-  * @dev: Reference to device in the SCMI hierarchy corresponding to this
-  *	 channel
-+ * @is_p2a: A flag to identify a channel as P2A (RX)
-  * @rx_timeout_ms: The configured RX timeout in milliseconds.
-  * @handle: Pointer to SCMI entity handle
-  * @no_completion_irq: Flag to indicate that this channel has no completion
-@@ -174,6 +175,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
- struct scmi_chan_info {
- 	int id;
- 	struct device *dev;
-+	bool is_p2a;
- 	unsigned int rx_timeout_ms;
- 	struct scmi_handle *handle;
- 	bool no_completion_irq;
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index dc09f2d755f41..80b44bd1a3f3e 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1034,6 +1034,11 @@ static inline void scmi_xfer_command_release(struct scmi_info *info,
- static inline void scmi_clear_channel(struct scmi_info *info,
- 				      struct scmi_chan_info *cinfo)
- {
-+	if (!cinfo->is_p2a) {
-+		dev_warn(cinfo->dev, "Invalid clear on A2P channel !\n");
-+		return;
-+	}
-+
- 	if (info->desc->ops->clear_channel)
- 		info->desc->ops->clear_channel(cinfo);
- }
-@@ -2614,6 +2619,7 @@ static int scmi_chan_setup(struct scmi_info *info, struct device_node *of_node,
- 	if (!cinfo)
- 		return -ENOMEM;
- 
-+	cinfo->is_p2a = !tx;
- 	cinfo->rx_timeout_ms = info->desc->max_rx_timeout_ms;
- 
- 	/* Create a unique name for this transport device */
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 14b60abd6afc6..01a8d04879184 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -1379,6 +1379,8 @@ static const struct regulator_desc rk809_reg[] = {
+ 		.n_linear_ranges = ARRAY_SIZE(rk817_buck1_voltage_ranges),
+ 		.vsel_reg = RK817_BUCK3_ON_VSEL_REG,
+ 		.vsel_mask = RK817_BUCK_VSEL_MASK,
++		.apply_reg = RK817_POWER_CONFIG,
++		.apply_bit = RK817_BUCK3_FB_RES_INTER,
+ 		.enable_reg = RK817_POWER_EN_REG(0),
+ 		.enable_mask = ENABLE_MASK(RK817_ID_DCDC3),
+ 		.enable_val = ENABLE_MASK(RK817_ID_DCDC3),
 -- 
 2.43.0
 
