@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-92453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3555E9C542E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDD09C55AA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE61D284877
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7731F222E8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE993215033;
-	Tue, 12 Nov 2024 10:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEA218D99;
+	Tue, 12 Nov 2024 10:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7HthsBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/VroZWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB191CBE8F;
-	Tue, 12 Nov 2024 10:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0162213ECF;
+	Tue, 12 Nov 2024 10:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407709; cv=none; b=T1dU6AowvzcegGx3FOVUPJTHjJyVLGU6cxiswztFOkl8raJBpBqq7WdfjIlBBPF7dpWFKkzWwPvyAXNR/jVLLEvsdUM5DUd8CfbHT4PbuyL5RY3GehW2fNj8jLOlAlejoHTVmMgh3XEjUb8qtrfQbjV2GeNaVbM1n/aiVoOsSRE=
+	t=1731408253; cv=none; b=k8Gw+QJRDq4jC8M5B5FlOkyeFBLqou3XTyBMYuzrbRnmUSg3UNuQP0IIuwF4g3ogF15UqQzJtRB16W4+TatolQERzCvssBgVZjlMt51PBee7EaObYXp4WHXEEb7vpppRHI2y4ykVzmPsLhN9NxECxDfbaXV8X0Zs662G4jfhbqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407709; c=relaxed/simple;
-	bh=RGAdEPyZdLiEIHF7QVy0/4Xzv+Mhs5WZtg1eAmx8kJA=;
+	s=arc-20240116; t=1731408253; c=relaxed/simple;
+	bh=GGNlUJKGG77M1UMnjRfY2Ed3roYC3NmW5h/9qSR4qu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxrwEKnDWX+P3v+HKF+o8uTR7rZE1LAz7GDe7wdTvjeUXgXFzhAy5apuZhjJNm8H05LEfA20KNJe7Q5QgRzpPuTIh7Sy+iF7/7mgjhK2xgX8QqfDv41+QhSL7GyeckcpshB/0I+A85C47xPeLXiRJ8K8GzOBAH6suQ7kv8UkmNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7HthsBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1C9C4CECD;
-	Tue, 12 Nov 2024 10:35:08 +0000 (UTC)
+	 MIME-Version; b=sK93Tz4HC5jmqpGfPVSjPRYrHNiftBTJVtB9S3S3HxHasnt/AKgm9KHUIOuRLfXqDmx6Tsz3wrlW0fFn41rZtA+kz5g5JOxBLEi3dA+6IrIS5bV3TBcXi0XdfiLTrPBkStwcsXEMUcwCtiQ756Ydo74caZswrXdzGQ8WPZDaZVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/VroZWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0508EC4CECD;
+	Tue, 12 Nov 2024 10:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407709;
-	bh=RGAdEPyZdLiEIHF7QVy0/4Xzv+Mhs5WZtg1eAmx8kJA=;
+	s=korg; t=1731408252;
+	bh=GGNlUJKGG77M1UMnjRfY2Ed3roYC3NmW5h/9qSR4qu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7HthsBydf3JqZruPxo+4Tq5oWQ6x5I8z2ZmtbwQz5bJguTZJqkc1D5gLBAatxPoK
-	 23vUudF0kBXFIfCYSrWXpGhaQOZ9fhf0iyR9SXHEOgywxCR5/p36QvnwrJZBk7MzTD
-	 EvbBVza2iLZRKqV7wNogYErx22EpYe17V0QSq3VI=
+	b=e/VroZWflnSNKMKPk+Ba9ML1WXJw4FywaW1fJw+qZMsBFITGcKhOxmQcB1ZxBxVK5
+	 scGm/PaKpccgnwvUMhrLy8oYh+lyfS5GMp/zbTxzBEhTLCpWDzxMzwdoXM2hO0TS0y
+	 6FuYkMul3v2a0511rsdjnFvqV2nNXd6TrloRJesk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Dahl Juhl <emdj@bang-olufsen.dk>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/119] tools/lib/thermal: Fix sampling handler context ptr
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 107/184] drm/amdgpu: Adjust debugfs eviction and IB access permissions
 Date: Tue, 12 Nov 2024 11:21:05 +0100
-Message-ID: <20241112101850.895806293@linuxfoundation.org>
+Message-ID: <20241112101904.974431373@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Dahl Juhl <emdj@bang-olufsen.dk>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit fcd54cf480c87b96313a97dbf898c644b7bb3a2e ]
+commit f790a2c494c4ef587eeeb9fca20124de76a1646f upstream.
 
-The sampling handler, provided by the user alongside a void* context,
-was invoked with an internal structure instead of the user context.
+Users should not be able to run these.
 
-Correct the invocation of the sampling handler to pass the user context
-pointer instead.
-
-Note that the approach taken is similar to that in events.c, and will
-reduce the chances of this mistake happening if additional sampling
-callbacks are added.
-
-Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
-Signed-off-by: Emil Dahl Juhl <emdj@bang-olufsen.dk>
-Link: https://lore.kernel.org/r/20241015171826.170154-1-emdj@bang-olufsen.dk
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7ba9395430f611cfc101b1c2687732baafa239d5)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/thermal/sampling.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/thermal/sampling.c b/tools/lib/thermal/sampling.c
-index 70577423a9f0c..f67c1f9ea1d78 100644
---- a/tools/lib/thermal/sampling.c
-+++ b/tools/lib/thermal/sampling.c
-@@ -16,6 +16,8 @@ static int handle_thermal_sample(struct nl_msg *n, void *arg)
- 	struct thermal_handler_param *thp = arg;
- 	struct thermal_handler *th = thp->th;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -2194,11 +2194,11 @@ int amdgpu_debugfs_init(struct amdgpu_de
+ 	amdgpu_securedisplay_debugfs_init(adev);
+ 	amdgpu_fw_attestation_debugfs_init(adev);
  
-+	arg = thp->arg;
-+
- 	genlmsg_parse(nlh, 0, attrs, THERMAL_GENL_ATTR_MAX, NULL);
- 
- 	switch (genlhdr->cmd) {
--- 
-2.43.0
-
+-	debugfs_create_file("amdgpu_evict_vram", 0444, root, adev,
++	debugfs_create_file("amdgpu_evict_vram", 0400, root, adev,
+ 			    &amdgpu_evict_vram_fops);
+-	debugfs_create_file("amdgpu_evict_gtt", 0444, root, adev,
++	debugfs_create_file("amdgpu_evict_gtt", 0400, root, adev,
+ 			    &amdgpu_evict_gtt_fops);
+-	debugfs_create_file("amdgpu_test_ib", 0444, root, adev,
++	debugfs_create_file("amdgpu_test_ib", 0400, root, adev,
+ 			    &amdgpu_debugfs_test_ib_fops);
+ 	debugfs_create_file("amdgpu_vm_info", 0444, root, adev,
+ 			    &amdgpu_debugfs_vm_info_fops);
 
 
 
