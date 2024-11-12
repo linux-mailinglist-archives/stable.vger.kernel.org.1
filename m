@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-92472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6799C5653
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:24:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90FD9C5510
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC8DFB37CA9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF250B37DE8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B462123E6;
-	Tue, 12 Nov 2024 10:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3902141A9;
+	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRn9GE58"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHOznfuB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEF720EA35;
-	Tue, 12 Nov 2024 10:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72640213EFE;
+	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407768; cv=none; b=CaI/nBoIquCDb/BLPwwRB5z4km7cLw17YehXISWYCN8YOnv2K6tJlVfBB827sacpOn7fNMD3o6vDPX0eq7BQBO1dphp1Xt+a/u8+4LDzaiuVv1Zbq4BIGMvyT6WrRHuA9P9y3xefgb7SMQEXn6hcYz5bBUM/nKv1NkGdL8LPuN8=
+	t=1731407769; cv=none; b=C5XwzfLvMd/pAFysldZOLrD8fbRAIUhx7+bZutjEwJYHv57UvoX/0V4OVnZnJZnzwYEHJ4AfC7Jkp1q1Z4RmNvVdIbURwyxOlDceDBYRwX4XotUt+oO64e3M1Hy72GA5ITwDV5sv2uOIuX5d96xkdKV04JodCYrbF1mKVFRIl2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407768; c=relaxed/simple;
-	bh=DHiTAMwV398QIUGxkXtvg8oIerdlFd/qTK8p+EpW/R4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cf4d9Ltgbx259DZOO0+87VpyaEpWhzvmfZblN2fYVxZEwkDJ0lNiJe/HAboW2Lu7rtU34wOHiaSQSmDATRW3wpYoxZqsIMuUmIjBKndrmb2TKoXjVF8g8Cl47JxEE7g/QLyxjzR6f1+33At70Ls0/IUjLEOFE8ZnY+yfNz4XtuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRn9GE58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56B3C4CED4;
-	Tue, 12 Nov 2024 10:36:06 +0000 (UTC)
+	s=arc-20240116; t=1731407769; c=relaxed/simple;
+	bh=Ja4POKk5WcUW9q+HbkxBJF753EhM3kQ/XNrIxY2J64A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GeEyHk02mVjzDQD5hIrvxa+ukHRTeu5afhqqILzhiHk0a/5oaNsKOBB7gbgpGvHXRnNPR7R+MZsqnWG2Jq9zpvzzEEZSuvEJ/bwf4nSXKjwiejtIEXZpGrAVOMPW/5U/zzJAvOcAkQSldg19XvCzmNIyoly9BYHfYUAnvxGSOq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHOznfuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322EFC4CED6;
+	Tue, 12 Nov 2024 10:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407767;
-	bh=DHiTAMwV398QIUGxkXtvg8oIerdlFd/qTK8p+EpW/R4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jRn9GE58rg5jRKYzneHhwC9isjT4j93Hqwyw8MJZgGHEV3FQpizt1Y0fAdar/y4WN
-	 MsBLsRrVfokx6/upoaCt6SniNa76mwPDlWNros0ooTd73reZVQE+oQDy94mkKCxt1h
-	 vJ1pdqt5D0+9rJ610Pvbjc5T+sZ2b4t7sYPJlCOzOdaKv58jz3MXeDQRpgrpfiMZi1
-	 NT2Nd0fE1+nAb4jmnTQZp0g+zPJA+WRNZGKw2zkRSoi88osz07zAnJyCf3hd0uOtol
-	 LANQglcfj4SY7iKag+XfGuc0752AGQeGQ2yrK1M4FLJ41CJ14AX/3wR6Cr691ADCpW
-	 YGSR1kv2xVtoQ==
+	s=k20201202; t=1731407769;
+	bh=Ja4POKk5WcUW9q+HbkxBJF753EhM3kQ/XNrIxY2J64A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HHOznfuBi3l21PMFSXcXmloVLlTXJIlUNa7mCmSy2PALvTctkEf8Ud3ivuO2LCduq
+	 CxsknAhWVtdU5EmjxUOXBkLYMSEhmHA/ajCSRJ5SSrQ+bCigzqZNEo1YR94t+YYFY+
+	 ujBHqBRHpoHA2x9wmj7YowcwCKFh6he7kx/02EJZS773te6BZR8nk6iW+RebiG1g3C
+	 uYeAikohjDa3zEIjc457HNk4/3KWeTQs70R3xLFdvqBPJRddMpkzs6EgBJM6ab7IG8
+	 APyGs2eVtQpS1JYsb3eBR0hMNifxe5vAfB2Y1Xi8M0QiANTw19R+TJax98haVGnhQL
+	 4jKv92TZy2STQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Charles Han <hanchunchao@inspur.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	konradybcio@kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 01/16] soc: qcom: Add check devm_kasprintf() returned value
-Date: Tue, 12 Nov 2024 05:35:43 -0500
-Message-ID: <20241112103605.1652910-1-sashal@kernel.org>
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 02/16] firmware: arm_scmi: Reject clear channel request on A2P
+Date: Tue, 12 Nov 2024 05:35:44 -0500
+Message-ID: <20241112103605.1652910-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241112103605.1652910-1-sashal@kernel.org>
+References: <20241112103605.1652910-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,43 +67,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.7
 Content-Transfer-Encoding: 8bit
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit e694d2b5c58ba2d1e995d068707c8d966e7f5f2a ]
+[ Upstream commit a0a18e91eb3a6ef75a6de69dc00f206b913e3848 ]
 
-devm_kasprintf() can return a NULL pointer on failure but this
-returned value in qcom_socinfo_probe() is not checked.
+The clear channel transport operation is supposed to be called exclusively
+on the P2A channel from the agent, since it relinquishes the ownership of
+the channel to the platform, after this latter has initiated some sort of
+P2A communication.
 
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20240929072349.202520-1-hanchunchao@inspur.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Make sure that, if it is ever called on a A2P, is logged and ignored.
+
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Message-Id: <20241021171544.2579551-1-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/socinfo.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/common.h | 2 ++
+ drivers/firmware/arm_scmi/driver.c | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index d7359a235e3cf..1d5a69eda26e5 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -782,10 +782,16 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
- 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
- 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
- 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
--	if (offsetof(struct socinfo, serial_num) <= item_size)
-+	if (!qs->attr.soc_id || qs->attr.revision)
-+		return -ENOMEM;
-+
-+	if (offsetof(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
-+		if (!qs->attr.serial_number)
-+			return -ENOMEM;
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index 4b8c5250cdb57..cd30499b2555f 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -163,6 +163,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
+  *      used to initialize this channel
+  * @dev: Reference to device in the SCMI hierarchy corresponding to this
+  *	 channel
++ * @is_p2a: A flag to identify a channel as P2A (RX)
+  * @rx_timeout_ms: The configured RX timeout in milliseconds.
+  * @handle: Pointer to SCMI entity handle
+  * @no_completion_irq: Flag to indicate that this channel has no completion
+@@ -174,6 +175,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
+ struct scmi_chan_info {
+ 	int id;
+ 	struct device *dev;
++	bool is_p2a;
+ 	unsigned int rx_timeout_ms;
+ 	struct scmi_handle *handle;
+ 	bool no_completion_irq;
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index dc09f2d755f41..80b44bd1a3f3e 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1034,6 +1034,11 @@ static inline void scmi_xfer_command_release(struct scmi_info *info,
+ static inline void scmi_clear_channel(struct scmi_info *info,
+ 				      struct scmi_chan_info *cinfo)
+ {
++	if (!cinfo->is_p2a) {
++		dev_warn(cinfo->dev, "Invalid clear on A2P channel !\n");
++		return;
 +	}
++
+ 	if (info->desc->ops->clear_channel)
+ 		info->desc->ops->clear_channel(cinfo);
+ }
+@@ -2614,6 +2619,7 @@ static int scmi_chan_setup(struct scmi_info *info, struct device_node *of_node,
+ 	if (!cinfo)
+ 		return -ENOMEM;
  
- 	qs->soc_dev = soc_device_register(&qs->attr);
- 	if (IS_ERR(qs->soc_dev))
++	cinfo->is_p2a = !tx;
+ 	cinfo->rx_timeout_ms = info->desc->max_rx_timeout_ms;
+ 
+ 	/* Create a unique name for this transport device */
 -- 
 2.43.0
 
