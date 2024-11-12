@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-92676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE65C9C55A0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148F59C5463
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64D451F2177D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5815EB24405
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0338B218D74;
-	Tue, 12 Nov 2024 10:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B2A20F5B6;
+	Tue, 12 Nov 2024 10:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh1PQcQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHO/sSw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA1218D69;
-	Tue, 12 Nov 2024 10:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89FE2123CE;
+	Tue, 12 Nov 2024 10:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408222; cv=none; b=sfE0/7IEVQPgaMlNCOHXyeYWJnCby8erqPMMJTu2JDI4P2DsFqA0I9XxBtoSuL0pPOuPO9O2JYMpRL3Vf4lq8WSa511XKA2oXkzG0A+lvPXYdzdgl0RaEP2of+TZ+fyKxhgHk01h/1S4GpSJzlsFftOlevNO6fXogx3aRfA40P0=
+	t=1731407275; cv=none; b=WjZIpMDiga3QOWu8su/Mqa5mHBCiVYBO1OpESlDj9/pB+ltNR81EZK2ADk0VA2m54E/Z0SC4Q+mv9ugfEsD9xpXBGV5ZI1wtM42MR5WDa4HCdplU2wIv+dZDXZ/A4ahypfmod6zvBAEnU+5gkn2mTQWlpnaKOOntVVXAqtiYc2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408222; c=relaxed/simple;
-	bh=T1chZ4q/1P0kTuxO+L/4NNAYkpO0nF3OKsFmVtbUZEE=;
+	s=arc-20240116; t=1731407275; c=relaxed/simple;
+	bh=aWhcPIkFonYx+ZNbKVNNr6uY+QF3jJusltcMWyOh+2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irVgS1IVspyGmxT86N6N7m2USgMMSK736ns3V1De7Q8hc9MOm+i3k/yDOoS2LXd+2dMJCpLC9Bs7jF99WeU46gc4/Y/I2cbmvOKXyPCfYF5AYeLxT4p6955jiW+1GEa5JlhdqfFLlqT1s2YekKbyatK1YWzOg1pjD+oVnd1a23Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh1PQcQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2AEC4CECD;
-	Tue, 12 Nov 2024 10:43:42 +0000 (UTC)
+	 MIME-Version; b=dLNtDFUqAWnZrIIDl0rJQUQ1wEQ9uKIEtOdcz1sVdXCAY8n+b2mX/kMh9I280XpdR4s06g77aZVHk/mr+DDxDi/zyNCJdi9gnV2bwhYcgqkaovjzO+aBz8kERnTS9g3gauOQ6RU9/ppVYgEU2/B4EgH/LB/r90qoSz7xRN+t/x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHO/sSw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB21C4CECD;
+	Tue, 12 Nov 2024 10:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408222;
-	bh=T1chZ4q/1P0kTuxO+L/4NNAYkpO0nF3OKsFmVtbUZEE=;
+	s=korg; t=1731407274;
+	bh=aWhcPIkFonYx+ZNbKVNNr6uY+QF3jJusltcMWyOh+2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wh1PQcQnDzPEL52OabOq/pQPAC9zxfdUJ/OwUcf5eLB5O8MzJDYlcOL7D+iw6CUnc
-	 RXiqOKrBVyvpCdCh1GSP/tkf1xz9fruGtHQaWXbI4xdAySh3MMr5XfqVDH1ElF5DK/
-	 kAjQaQJpIUqQ083ySUfIYcaWZgW1gzQA7nvnSKJE=
+	b=PHO/sSw8ejZV4iDaI/ZIc8CUKD4zMPKw9eK4ylaBEhAPa1/YbTnnBuiM2P8+vGXF7
+	 wK2WK7VcMK/7O0zXBkOF8/ZNz1OaiQ82bF2SUr6ih+mMJrJKCMNF2//qIB1tW2VE7E
+	 fUhq9cINkEsjojLtG542igowT0D3qaPP4hSZ6Z6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.11 065/184] media: stb0899_algo: initialize cfr before using it
-Date: Tue, 12 Nov 2024 11:20:23 +0100
-Message-ID: <20241112101903.358429443@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 09/98] arm64: dts: imx8qxp: Add VPU subsystem file
+Date: Tue, 12 Nov 2024 11:20:24 +0100
+Message-ID: <20241112101844.626706570@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 2d861977e7314f00bf27d0db17c11ff5e85e609a upstream.
+[ Upstream commit 6bcd8b2fa2a9826fb6a849a9bfd7bdef145cabb6 ]
 
-The loop at stb0899_search_carrier() starts with a random
-value for cfr, as reported by Coverity.
+imx8qxp re-uses imx8qm VPU subsystem file, but it has different base
+addresses. Also imx8qxp has only two VPU cores, delete vpu_vore2 and
+mu2_m0 accordingly.
 
-Initialize it to zero, just like stb0899_dvbs_algo() to ensure
-that carrier search won't bail out.
-
-Fixes: 8bd135bab91f ("V4L/DVB (9375): Add STB0899 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: eed2d8e8d005 ("arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/stb0899_algo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/freescale/imx8qxp-ss-vpu.dtsi      | 17 +++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi      |  2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
 
---- a/drivers/media/dvb-frontends/stb0899_algo.c
-+++ b/drivers/media/dvb-frontends/stb0899_algo.c
-@@ -269,7 +269,7 @@ static enum stb0899_status stb0899_searc
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+new file mode 100644
+index 0000000000000..7894a3ab26d6b
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR X11)
++/*
++ * Copyright 2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * D-82229 Seefeld, Germany.
++ * Author: Alexander Stein
++ */
++
++&vpu_core0 {
++	reg = <0x2d040000 0x10000>;
++};
++
++&vpu_core1 {
++	reg = <0x2d050000 0x10000>;
++};
++
++/delete-node/ &mu2_m0;
++/delete-node/ &vpu_core2;
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+index dce699dffb9bf..bec66bb240829 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+@@ -48,7 +48,6 @@
+ 		serial3 = &lpuart3;
+ 		vpu-core0 = &vpu_core0;
+ 		vpu-core1 = &vpu_core1;
+-		vpu-core2 = &vpu_core2;
+ 	};
  
- 	short int derot_freq = 0, last_derot_freq = 0, derot_limit, next_loop = 3;
- 	int index = 0;
--	u8 cfr[2];
-+	u8 cfr[2] = {0};
- 	u8 reg;
+ 	cpus {
+@@ -316,6 +315,7 @@
+ };
  
- 	internal->status = NOCARRIER;
+ #include "imx8qxp-ss-img.dtsi"
++#include "imx8qxp-ss-vpu.dtsi"
+ #include "imx8qxp-ss-adma.dtsi"
+ #include "imx8qxp-ss-conn.dtsi"
+ #include "imx8qxp-ss-lsio.dtsi"
+-- 
+2.43.0
+
 
 
 
