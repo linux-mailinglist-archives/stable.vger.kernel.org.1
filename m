@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-92232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AFE9C5328
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BB39C5391
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74E831F229B0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B58D71F22778
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D184213124;
-	Tue, 12 Nov 2024 10:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5871212F1D;
+	Tue, 12 Nov 2024 10:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r773zbja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCmaHl6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5E2123FF;
-	Tue, 12 Nov 2024 10:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715222123DC;
+	Tue, 12 Nov 2024 10:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406980; cv=none; b=o09TBbU1eEwesqszfuCY30lsyzPddFzEqKUz9LHlCSqq5jSIQjyZGGr5KFQFBg3HFmPOaltdfRPmYmC25JVDwPzrV96F9L3omRe5LYEIU8no79b24p//1kbkObUtHY1p4lrjL8j5uybpHxVJ9KyTf7kuL/rHRlqQSsuG8MoqTnk=
+	t=1731407268; cv=none; b=NsS05dUvsCa+izQyeoEBwSEAAEVrs+5hxyVD8KBMm0/sE+rzGx1mno+b9nR5PTFuMqKrz3wsi9YeSknoAB5PeumNuoJ42EzCF5M41HEx+RuOSF9gNaHIl4sVNSp3JEp1iL7PE+pK4WVCkja9ax5Fh3xo5gsQQ3uW+V606nKWuFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406980; c=relaxed/simple;
-	bh=yN1r+OM4IOkXrOUOcRgqAn98PrQ4G51Dh27HTvqCq3g=;
+	s=arc-20240116; t=1731407268; c=relaxed/simple;
+	bh=gWKFlF2TfV/cne3lzg8u4FAKY+9YZNXw1A9UJk/099M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YG4Z38tblWlChKIg/A1HPoDuQc8Ex3JuxI9MnLaai6lFE6IlcGg09WpSZeXRZ4m/oOnwD3DurVOyMWA1OxIE227CsA+h/at+M2RZj8Rc2CYO7JyRueMyxKOuDcbHPaX/F/roSBi2PGwldpQGvngbsJtZEIhhe/PglH6/9EOOpBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r773zbja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BD1C4CECD;
-	Tue, 12 Nov 2024 10:22:59 +0000 (UTC)
+	 MIME-Version; b=ix9VOK1/QvROMk1jqLmZKzJSOLXDY4sNzIgJrAkTFG3rqq3TRpoWwtxtWDmfs3DmToxD+KoFmVahqsKVhSh/I6Doc4Z53QQkgkHgOhHYWaqPnMUjVmq6Bid/RWlOW+a/lIqdXSnKWaLDTlRT0U3TslqLiz+W1h55FT9vsx6Z/Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCmaHl6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4468C4CECD;
+	Tue, 12 Nov 2024 10:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731406980;
-	bh=yN1r+OM4IOkXrOUOcRgqAn98PrQ4G51Dh27HTvqCq3g=;
+	s=korg; t=1731407268;
+	bh=gWKFlF2TfV/cne3lzg8u4FAKY+9YZNXw1A9UJk/099M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r773zbjaL3QSshy0p7sQvJPQ7X0At4jv6Hpse76GMwzXTWTPukOHp3V9gmt3C27sQ
-	 OiW5pU7H6LfGRCDYKAxLBh2EcQJQTXAs7lJK59JGVgb56aUb4NmGSn/aP6rmV7HZoa
-	 HOVj/6YMvNEYCS0QGqSXywK/05pIVjZZQtfomHgU=
+	b=GCmaHl6l+NlAZS4WNFfcTfSgvDkUx406x7GKuYkeIgDewjvgjpK6Rre9USXvwSXVH
+	 7znH5RtDb5qqwgKDitkS0QHBMDyJM+plDW31UYqTJFom4UGkBOA0CT0w3ScBL1NR5r
+	 tMGYUjCVdbRkwRECxSI0if+BDRmkT1x40rGikbGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/76] nfs: avoid i_lock contention in nfs_clear_invalid_mapping
+Subject: [PATCH 6.1 25/98] can: c_can: fix {rx,tx}_errors statistics
 Date: Tue, 12 Nov 2024 11:20:40 +0100
-Message-ID: <20241112101840.362126459@linuxfoundation.org>
+Message-ID: <20241112101845.227897112@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 867da60d463bb2a3e28c9235c487e56e96cffa00 ]
+[ Upstream commit 4d6d26537940f3b3e17138987ed9e4a334780bf7 ]
 
-Multi-threaded buffered reads to the same file exposed significant
-inode spinlock contention in nfs_clear_invalid_mapping().
+The c_can_handle_bus_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission. The patch fixes the issue by incrementing the
+appropriate counter based on the type of error.
 
-Eliminate this spinlock contention by checking flags without locking,
-instead using smp_rmb and smp_load_acquire accordingly, but then take
-spinlock and double-check these inode flags.
-
-Also refactor nfs_set_cache_invalid() slightly to use
-smp_store_release() to pair with nfs_clear_invalid_mapping()'s
-smp_load_acquire().
-
-While this fix is beneficial for all multi-threaded buffered reads
-issued by an NFS client, this issue was identified in the context of
-surprisingly low LOCALIO performance with 4K multi-threaded buffered
-read IO.  This fix dramatically speeds up LOCALIO performance:
-
-before: read: IOPS=1583k, BW=6182MiB/s (6482MB/s)(121GiB/20002msec)
-after:  read: IOPS=3046k, BW=11.6GiB/s (12.5GB/s)(232GiB/20001msec)
-
-Fixes: 17dfeb911339 ("NFS: Fix races in nfs_revalidate_mapping")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 881ff67ad450 ("can: c_can: Added support for Bosch C_CAN controller")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241014135319.2009782-1-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/can/c_can/c_can_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index edf59f809ded9..eb549a66a748e 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -212,12 +212,15 @@ void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
- 		nfs_fscache_invalidate(inode);
- 	flags &= ~(NFS_INO_REVAL_PAGECACHE | NFS_INO_REVAL_FORCED);
+diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
+index c63f7fc1e6917..511615dc33419 100644
+--- a/drivers/net/can/c_can/c_can_main.c
++++ b/drivers/net/can/c_can/c_can_main.c
+@@ -1011,7 +1011,6 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
--	nfsi->cache_validity |= flags;
-+	flags |= nfsi->cache_validity;
-+	if (inode->i_mapping->nrpages == 0)
-+		flags &= ~NFS_INO_INVALID_DATA;
+ 	/* common for all type of bus errors */
+ 	priv->can.can_stats.bus_error++;
+-	stats->rx_errors++;
  
--	if (inode->i_mapping->nrpages == 0) {
--		nfsi->cache_validity &= ~NFS_INO_INVALID_DATA;
--		nfs_ooo_clear(nfsi);
--	} else if (nfsi->cache_validity & NFS_INO_INVALID_DATA) {
-+	/* pairs with nfs_clear_invalid_mapping()'s smp_load_acquire() */
-+	smp_store_release(&nfsi->cache_validity, flags);
-+
-+	if (inode->i_mapping->nrpages == 0 ||
-+	    nfsi->cache_validity & NFS_INO_INVALID_DATA) {
- 		nfs_ooo_clear(nfsi);
- 	}
- 	trace_nfs_set_cache_invalid(inode, 0);
-@@ -1350,6 +1353,13 @@ int nfs_clear_invalid_mapping(struct address_space *mapping)
- 					 nfs_wait_bit_killable, TASK_KILLABLE);
- 		if (ret)
- 			goto out;
-+		smp_rmb(); /* pairs with smp_wmb() below */
-+		if (test_bit(NFS_INO_INVALIDATING, bitlock))
-+			continue;
-+		/* pairs with nfs_set_cache_invalid()'s smp_store_release() */
-+		if (!(smp_load_acquire(&nfsi->cache_validity) & NFS_INO_INVALID_DATA))
-+			goto out;
-+		/* Slow-path that double-checks with spinlock held */
- 		spin_lock(&inode->i_lock);
- 		if (test_bit(NFS_INO_INVALIDATING, bitlock)) {
- 			spin_unlock(&inode->i_lock);
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+@@ -1027,26 +1026,32 @@ static int c_can_handle_bus_err(struct net_device *dev,
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
 -- 
 2.43.0
 
