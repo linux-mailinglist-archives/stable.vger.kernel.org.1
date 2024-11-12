@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-92844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9700F9C6345
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 22:20:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349BD9C62F8
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 21:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76C42B28D45
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4B71F22E1E
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 20:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12E8219E57;
-	Tue, 12 Nov 2024 20:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD7C219E47;
+	Tue, 12 Nov 2024 20:58:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF58C219E46;
-	Tue, 12 Nov 2024 20:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037D720A5CF;
+	Tue, 12 Nov 2024 20:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731445020; cv=none; b=YJOg+9rXIrByVlKg+M0fZ/SC9XrEDNpXNE9CKdwbTvqRalOCiUjBkpUZs/i9ajwfWE7NcrntJuh61kou3jqV6v4DZftBUh7gKLP8E42ohByuA4fc68r0JvCqblfZOmyBuupZi5FihH7G/0QaVPitV7Vbh+EyIoMICTNFvT6v3B8=
+	t=1731445087; cv=none; b=tmBY8oF9/8GmRM7sinUKWsa63s/0/Rnk53htq1OrDGiqrc+c3duYF8rdglbHbp8mMwPqdaRWxcWBbbGA3ikSjCZgkxJxM45UkKqWcDRpCbB4Qi5W/0Mxjtdz9lQKxlBGXECrUH4SOEhvq1VeGdEM35ptCnDXYWKbozr/xLWJVog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731445020; c=relaxed/simple;
-	bh=LsFziH9V2G80jWh+DJjqQjMT/BZ9BCusKRnehDv4Iz8=;
+	s=arc-20240116; t=1731445087; c=relaxed/simple;
+	bh=57IMcks0UzNbvv0P63HRcg/VqJkgmnJEQVaZIG3NtMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pxgUy3o19Hr0uhtEcPOondhtoF3jg0jd/UH7OgedVlBUmgg62+9+cweNM0jhlXtR1vDffSQYRcE4FrHECwjIzQti1pMzn6Cb852qdF8fno/C9mrYfOHLXh9uGgeP3+HJm5wM7n1V+eRwdNOuZUOo/4nHxLHru47CwC2xL2FC0SY=
+	 Content-Type:Content-Disposition:In-Reply-To; b=dPlRP1agAUg3pYzkVXRi20Kf5AkIRNZBUR5Ppg4syEaLrx1Hy3vnYm5aswp3BQ47gtU1CxmOXFd3DS1korGTxjrqboe4oEcmzgovAhKp8UZ5d8myqeJwASryEjoJhmL1CR/ua8iNLRRvbIDtv4FnTZsiyq9fr2n4N39DPp1MRH4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id A747F1C00A0; Tue, 12 Nov 2024 21:56:49 +0100 (CET)
-Date: Tue, 12 Nov 2024 21:56:49 +0100
+	id 794311C00A0; Tue, 12 Nov 2024 21:58:03 +0100 (CET)
+Date: Tue, 12 Nov 2024 21:58:03 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -41,9 +41,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 00/98] 6.1.117-rc1 review
-Message-ID: <ZzPBEbmSm8Gv9IPr@duo.ucw.cz>
-References: <20241112101844.263449965@linuxfoundation.org>
+Subject: Re: [PATCH 6.11 000/184] 6.11.8-rc1 review
+Message-ID: <ZzPBW26qjxwOu1pL@duo.ucw.cz>
+References: <20241112101900.865487674@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,27 +51,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dwRW/Cj9fZDwGIUr"
+	protocol="application/pgp-signature"; boundary="JZyBI9jf13Ow+if5"
 Content-Disposition: inline
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 
 
---dwRW/Cj9fZDwGIUr
+--JZyBI9jf13Ow+if5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 6.1.117 release.
-> There are 98 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.11.8 release.
+> There are 184 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 CIP testing did not find any problems here:
 
 https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
+6.11.y
+
+6.6, 5.15 pass our testing, too:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.6.y
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.15.y
 
 Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
@@ -81,15 +88,15 @@ Best regards,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---dwRW/Cj9fZDwGIUr
+--JZyBI9jf13Ow+if5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZzPBEQAKCRAw5/Bqldv6
-8v1/AJ9ip34XPbA0Rk3F81O7Phnk8IsU7wCeNT/Pra5ig3i80y+xLaeqI6EPw/4=
-=GAgn
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZzPBWwAKCRAw5/Bqldv6
+8i+gAJ9VqEchISICs4AYWdlbGpyw9gLUxACgpb/g5M8tXJVyCB0cUFDSU+JMn0k=
+=BkfG
 -----END PGP SIGNATURE-----
 
---dwRW/Cj9fZDwGIUr--
+--JZyBI9jf13Ow+if5--
 
