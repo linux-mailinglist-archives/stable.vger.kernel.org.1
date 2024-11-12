@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-92557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AD99C55C6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E6C9C5509
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A827B38E73
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:57:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D42628A4A1
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB9F2332DE;
-	Tue, 12 Nov 2024 10:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F013DAC11;
+	Tue, 12 Nov 2024 10:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQdaxhCm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwogEJO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D692332D6;
-	Tue, 12 Nov 2024 10:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018C03DAC0A;
+	Tue, 12 Nov 2024 10:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407881; cv=none; b=WvxS4TRRq18rKW5cRZx5+48P/i7ZdNmRvx7mJojkFmeuIh0Qw07lle1NTsHfTjy2m9J7GeA03Y2dnUkapvfk6V7N+dANTx9Q73ilKpv2n1SkqHPw85FoBA5GGVh2m6GIzQzBwoF7RcHZYCLx8iAFm7h+WyiQxWAtW+DICfWDc2I=
+	t=1731407886; cv=none; b=X6ZxntwQ+gtdekJMEtPJJCfgPN9vkP4c8AhD9o++znVJ0PdfhDjNHN97lUoxBIRB3XSvtn/A5V4/EWpEtQbDLZP4/6oKHxJFn3H8DjVNEufsbJC9nzQdAN79vHNp3xDTn60dY+wLuRSWyRG511hoLKdrM6IHEIw6fxIkyFp+4IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407881; c=relaxed/simple;
-	bh=0B3GM3Pdioo3nMOBEQS4Plqu3UZIoKk5afiFKD6k6I8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHXhKw6h8ANZ2tSrkvGmpm4pLzmfX/rrL+zTxcDTWdecIdD9vI4HYpT8TM3XlUpdkEhV5XvnndZ/KHdjroKliRsno0TZ4BrxEiI1C1tY4P3XjNDngX1V5J8hGoe8Wms8xHq80tHhRiY5b7ZGlr/VfT+aVuKpLfHUG9nyh6+XWqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQdaxhCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D68EC4CECD;
-	Tue, 12 Nov 2024 10:38:00 +0000 (UTC)
+	s=arc-20240116; t=1731407886; c=relaxed/simple;
+	bh=vLmLDpa5C4+ZEWhnvJzIn9iW5dllKopKUeYDJSUKq6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YP3T5dXRAeHDh5cluD/hDIUHImSCrXlIFnOyMPoxgtMXQ+70ZMcpHIaZVkinMpUzTpF3YMKFvuDfCvmTWjR/lDnEdrJHIruBpnV3HH7UGQabzKHSTJJmkeQMlE9WL+NzBCUlMSV/K3N9QLpST4sQUUjTV8+XpV7fHHkkBc2nikY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwogEJO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1F2C4CECD;
+	Tue, 12 Nov 2024 10:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407881;
-	bh=0B3GM3Pdioo3nMOBEQS4Plqu3UZIoKk5afiFKD6k6I8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQdaxhCmDtwFf/aDB4nOWh+rAXoNKxtBfDXXlCKyUsYc2iumxTXfDqXp0XZ8pbjhv
-	 Og5s/SFxkeoH329erLSDF2XpBH0qyPZTP29yxsdwAXl4bzUVJOYKW+fDSgPDKh6ZMw
-	 lz3OcQd0sK6YjeZCZLNZ16U3SlqbKKEDyvreIvtPedaBetNLdFn0+Ic1mmIXimZ6k8
-	 SpOSTa/O+6MAespLoSZaT56ChLgAKN1U21d82bXMTneUlFabnLtULXf9IXEXsMcxQg
-	 OhWcj7uBYBtcGngrYZKLwCAXGnAANI5ymkYvgYUW/oBCqJf4RziHX4+UMw8aJe9IMu
-	 lcs5WKtO//xhg==
+	s=k20201202; t=1731407885;
+	bh=vLmLDpa5C4+ZEWhnvJzIn9iW5dllKopKUeYDJSUKq6k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HwogEJO+HzFnJAHrNqyzDU3YrPdWZgH6mBk1TBWqRUsAiGtLMMn6kfLKV1qw330bY
+	 4gG30bnLnJEmLrZyVjjyO4bmhUesNlc/NnRTHS4VgIc0z8Wk6xuVfCgDyMb/anNoGd
+	 CvEshrhnBOkYVddL64QFdIo208BLLMTZ28Kc0z+PaziL524Ll8KLbYrJM74a8uFeTs
+	 U06ka+28CULPRPBY2t/ESuoecHyc6+9wc3jZijJK1Se62KNg3Gc2UPKKkrbwWQlFo0
+	 teHQyWZX0n0KvswjhA8zNr4xJIlQAId7uH8XMXDOKtZT/L++WcddL+dUhvWATenaRo
+	 Qs5PmIagHww2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Wang <00107082@163.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Charles Han <hanchunchao@inspur.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 8/8] proc/softirqs: replace seq_printf with seq_put_decimal_ull_width
-Date: Tue, 12 Nov 2024 05:37:42 -0500
-Message-ID: <20241112103745.1653994-8-sashal@kernel.org>
+	konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/6] soc: qcom: Add check devm_kasprintf() returned value
+Date: Tue, 12 Nov 2024 05:37:56 -0500
+Message-ID: <20241112103803.1654174-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241112103745.1653994-1-sashal@kernel.org>
-References: <20241112103745.1653994-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,40 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.171
+X-stable-base: Linux 5.10.229
 Content-Transfer-Encoding: 8bit
 
-From: David Wang <00107082@163.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 84b9749a3a704dcc824a88aa8267247c801d51e4 ]
+[ Upstream commit e694d2b5c58ba2d1e995d068707c8d966e7f5f2a ]
 
-seq_printf is costy, on a system with n CPUs, reading /proc/softirqs
-would yield 10*n decimal values, and the extra cost parsing format string
-grows linearly with number of cpus. Replace seq_printf with
-seq_put_decimal_ull_width have significant performance improvement.
-On an 8CPUs system, reading /proc/softirqs show ~40% performance
-gain with this patch.
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value in qcom_socinfo_probe() is not checked.
 
-Signed-off-by: David Wang <00107082@163.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20240929072349.202520-1-hanchunchao@inspur.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/softirqs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/socinfo.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/softirqs.c b/fs/proc/softirqs.c
-index 12901dcf57e2b..d8f4e7d54d002 100644
---- a/fs/proc/softirqs.c
-+++ b/fs/proc/softirqs.c
-@@ -19,7 +19,7 @@ static int show_softirqs(struct seq_file *p, void *v)
- 	for (i = 0; i < NR_SOFTIRQS; i++) {
- 		seq_printf(p, "%12s:", softirq_to_name[i]);
- 		for_each_possible_cpu(j)
--			seq_printf(p, " %10u", kstat_softirqs_cpu(i, j));
-+			seq_put_decimal_ull_width(p, " ", kstat_softirqs_cpu(i, j), 10);
- 		seq_putc(p, '\n');
- 	}
- 	return 0;
+diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+index 60c82dcaa8d1d..7bb3543e42e59 100644
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -507,10 +507,16 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
+ 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
+ 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
+ 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
+-	if (offsetof(struct socinfo, serial_num) <= item_size)
++	if (!qs->attr.soc_id || qs->attr.revision)
++		return -ENOMEM;
++
++	if (offsetof(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
++		if (!qs->attr.serial_number)
++			return -ENOMEM;
++	}
+ 
+ 	qs->soc_dev = soc_device_register(&qs->attr);
+ 	if (IS_ERR(qs->soc_dev))
 -- 
 2.43.0
 
