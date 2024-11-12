@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-92296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227D59C552D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:01:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0199C5454
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C4F9B2712F
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD64283ADC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818E2214431;
-	Tue, 12 Nov 2024 10:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504712178FE;
+	Tue, 12 Nov 2024 10:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPuMjSgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E79LpM7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AD6212D16;
-	Tue, 12 Nov 2024 10:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1F22141CF;
+	Tue, 12 Nov 2024 10:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407194; cv=none; b=om83vYfHmbaBQtcRGRWkN/AaaBoxXVR7SwkP12fcIZqs04bH1akFjAYDSJnymvIXfqZJwMyI6j+6ZFiRpYXqZTYRlD7W/n65PWu7yv/FeY+yqTCEa/5WqkWNu9ZoDZKOAqlQtF1aqLACrIumt9TG+vVoWeSqPFsdX67OxWVqQu8=
+	t=1731407777; cv=none; b=QpUL6bXj87GS9ZpD9nn8dNwyvAOryEa1oJXUQMVCFpRZg7CVrNvmxKFBkyvAhUJbdO/07+zef+pG1UA6PrZndgo+rIvwKpusboSHDff+9SmPDK331HsyuC3059jwRLKdtBIVIUjvpDefBAsbFhIxQUe/DY/kh99MNqnf9LuST6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407194; c=relaxed/simple;
-	bh=FXNqChO9dnnIZ90lPOo2f5sfirtwcLX0jtbVmhPXF7U=;
+	s=arc-20240116; t=1731407777; c=relaxed/simple;
+	bh=wjyNy990E69z4uXvJ400mhpRL4upZBOWlhmmQF+NHDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flzMwJkxMbH9Fjf7cNVwblee+rMvpy8Q1831GdT4XKoE1lkf+2KNrc5WLvHvLSg0uvZthDLLATdc2C1rHonbLyhxNxVqt8hzOO91JyZFMDCfSIz3/yhHVB+sXan18DiR+tCQmEgRJr4DTbQcdSODbv6bJ4PRIt2k0rKjMF/GJCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPuMjSgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B4FC4CECD;
-	Tue, 12 Nov 2024 10:26:33 +0000 (UTC)
+	 MIME-Version; b=C7ko1BbUOTJQ8DGb2cjYC09Z023Yip9WgW1IfWSpWR3Zt7pG6GAbqbwu6lI11OKli2rB9oSZRx+6N09J4c1aCyMDNOjMRBxe4+EcS+xdl3+osY48+FB23EWCxO6lirS/+aK1kWlMjP/5afZu9dd0EFX9ig/XNMYj7MQkpFb//Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E79LpM7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C61C4CED4;
+	Tue, 12 Nov 2024 10:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407194;
-	bh=FXNqChO9dnnIZ90lPOo2f5sfirtwcLX0jtbVmhPXF7U=;
+	s=korg; t=1731407776;
+	bh=wjyNy990E69z4uXvJ400mhpRL4upZBOWlhmmQF+NHDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPuMjSgtPrQE15rA/jxY1Q0wIMGPjkR087w1JLbUKHjI1yqZ6GfZQnGy/AqR7vx6v
-	 HIbHBX3jhWNE9Nb6HGeaSx6+ETpcdDcQyLHVEEfDkq4WN9lX3qMVSKwsbORID+y27F
-	 vE799WNd+ipdjChx6OrptHEzWqynqdaMOz992uLI=
+	b=E79LpM7naRuIag0I+axSIak7EvowzEi7SoRKVOlKe3Nl4J4X14yLw4zyFqRigDE8N
+	 jeEsDz6LZnAUX1jgoUeBOq2iRQqH5w8dVFLwda0kN6OFkFl8RR/e7rHAZje52pPZMH
+	 IvOMHFPxmAojxCWbX6DD+xyqzg2jBVCO3C4mkz/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William McVicker <willmcvicker@google.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 62/76] usb: dwc3: fix fault at system suspend if device was already runtime suspended
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 079/119] drm/amdgpu: Fix DPX valid mode check on GC 9.4.3
 Date: Tue, 12 Nov 2024 11:21:27 +0100
-Message-ID: <20241112101842.147486415@linuxfoundation.org>
+Message-ID: <20241112101851.737919941@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit 9cfb31e4c89d200d8ab7cb1e0bb9e6e8d621ca0b upstream.
+commit 3ce3f85787352fa48fc02ef6cbd7a5e5aba93347 upstream.
 
-If the device was already runtime suspended then during system suspend
-we cannot access the device registers else it will crash.
+For DPX mode, the number of memory partitions supported should be less
+than or equal to 2.
 
-Also we cannot access any registers after dwc3_core_exit() on some
-platforms so move the dwc3_enable_susphy() call to the top.
-
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: William McVicker <willmcvicker@google.com>
-Closes: https://lore.kernel.org/all/ZyVfcUuPq56R2m1Y@google.com
-Fixes: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20241104-am62-lpm-usb-fix-v1-1-e93df73a4f0d@kernel.org
+Fixes: 1589c82a1085 ("drm/amdgpu: Check memory ranges for valid xcp mode")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 990c4f580742de7bb78fa57420ffd182fc3ab4cd)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1796,10 +1796,18 @@ static int dwc3_suspend_common(struct dw
- {
- 	u32 reg;
- 
--	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
--			    DWC3_GUSB2PHYCFG_SUSPHY) ||
--			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
--			    DWC3_GUSB3PIPECTL_SUSPHY);
-+	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
-+		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-+				    DWC3_GUSB2PHYCFG_SUSPHY) ||
-+				    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
-+				    DWC3_GUSB3PIPECTL_SUSPHY);
-+		/*
-+		 * TI AM62 platform requires SUSPHY to be
-+		 * enabled for system suspend to work.
-+		 */
-+		if (!dwc->susphy_state)
-+			dwc3_enable_susphy(dwc, true);
-+	}
- 
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
-@@ -1848,15 +1856,6 @@ static int dwc3_suspend_common(struct dw
- 		break;
- 	}
- 
--	if (!PMSG_IS_AUTO(msg)) {
--		/*
--		 * TI AM62 platform requires SUSPHY to be
--		 * enabled for system suspend to work.
--		 */
--		if (!dwc->susphy_state)
--			dwc3_enable_susphy(dwc, true);
--	}
--
- 	return 0;
- }
- 
+--- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
++++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+@@ -440,7 +440,7 @@ static bool __aqua_vanjaram_is_valid_mod
+ 	case AMDGPU_SPX_PARTITION_MODE:
+ 		return adev->gmc.num_mem_partitions == 1 && num_xcc > 0;
+ 	case AMDGPU_DPX_PARTITION_MODE:
+-		return adev->gmc.num_mem_partitions != 8 && (num_xcc % 4) == 0;
++		return adev->gmc.num_mem_partitions <= 2 && (num_xcc % 4) == 0;
+ 	case AMDGPU_TPX_PARTITION_MODE:
+ 		return (adev->gmc.num_mem_partitions == 1 ||
+ 			adev->gmc.num_mem_partitions == 3) &&
 
 
 
