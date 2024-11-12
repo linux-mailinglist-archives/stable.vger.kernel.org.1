@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129D39C54BB
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:49:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BC39C5577
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89F08B365FC
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE611F21976
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08EC213EE0;
-	Tue, 12 Nov 2024 10:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE532309A4;
+	Tue, 12 Nov 2024 10:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3rAYJ89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqUNJjrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEBD1CBE8F;
-	Tue, 12 Nov 2024 10:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6824E2309AE;
+	Tue, 12 Nov 2024 10:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407582; cv=none; b=mp+Of1pdiquTWhjPEvdQ3hWaywhtmFXmUdTAVn2GbdhKueq7iac5X+/lu8fbUANDdxhB18M9Yr4qBxJuSckEajsiNtuFUgwMnze8Hh6BiG+m8HdUv0bi2ZG+bgBSDzXSk21baOUrOVHTzqUS1XYjelxCfmjB7gsSkDbu27cT+yc=
+	t=1731408078; cv=none; b=b7UM0Sq0IXfBPqC/GWU3m51BG2xyGU5e4qlzfAhiIP0aMnFA5MtWWvh56mV/PZ2gfO9qQckcdD5TVHJPn5zFdyOTAbk2mQQxdluPSA3TOy5gmsH79d54s0FnVfpO3VKPczXPhidPiAN/uojS3NHd6X1HxExvXd1D/sN7Jy4hlx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407582; c=relaxed/simple;
-	bh=9uZaIeP0TagOgJn4304BToeqfqXpVj8W5pMH/cXWPw0=;
+	s=arc-20240116; t=1731408078; c=relaxed/simple;
+	bh=muUbxRwQd8HvaNL+yNVIwALoOq+en8sCrNkv/2Iu4tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ap4zMJ0r+jBWH64UEomOpZmWMYb8E3p7PaxknLmVLjJyZxAsCSUM/2jk5UM+r1y6xps3JpxWLs8TwClAgfEXHmmFfJR9b7R6ZR3oUalwwDUqTgFB3C2LJkhKnpp7xDcANdy6vWrau3MFOZJGcIBRMF9EyWTvX0vC5IM8Hlkagew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3rAYJ89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC588C4CECD;
-	Tue, 12 Nov 2024 10:33:01 +0000 (UTC)
+	 MIME-Version; b=M8f3A2akkRxDoJy6er3qYEpEccXsW0ABSRE9cnotTZMz21JCLHenLKTaT+8zTMZzT8/3wm5p/SIqtYWHwM2RnNo4N6YDsf3oZuvkl2CBrYqkaDID1uwaoWjw0nCGQJvnImYXEDCYI5+7rmtkdLlBlS/MLGf54ekfWgCdS1y83/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqUNJjrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5BAC4CECD;
+	Tue, 12 Nov 2024 10:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407582;
-	bh=9uZaIeP0TagOgJn4304BToeqfqXpVj8W5pMH/cXWPw0=;
+	s=korg; t=1731408078;
+	bh=muUbxRwQd8HvaNL+yNVIwALoOq+en8sCrNkv/2Iu4tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3rAYJ89iL1pnlFEiG6cZEmszwijUlV7ki0BWsN6mPRSoQAABHOzJxjpbV6KVLy4P
-	 8Fl4+vN5sgXVxXCzGLfdFSv8VzPsdaC7alp70uG1OYtD0umnxJm6qKc4Ga+s+cBvCR
-	 USKDvuABc+4tYmVl+n4Io1NLix7x/TydaEWTKjBc=
+	b=UqUNJjrduV0OW+l1jr5bRL4jMCGrso+EgeIbbBcrKj9/B1oc6QeBWl/ScLzEOuFBT
+	 NB2iGofsIbStFLI4QKQo818/DvyP21CAleyHh+R63EPeNV7Yzk8nJp1EvIKStP6Qc5
+	 cl9BQfZxTbZAYWJQ9w4y5/E86xWu8955UI916URI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Diogo Silva <diogompaissilva@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/119] arm64: dts: rockchip: Fix rt5651 compatible value on rk3399-sapphire-excavator
+Subject: [PATCH 6.11 052/184] net: phy: ti: add PHY_RST_AFTER_CLK_EN flag
 Date: Tue, 12 Nov 2024 11:20:10 +0100
-Message-ID: <20241112101848.805650170@linuxfoundation.org>
+Message-ID: <20241112101902.858346449@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Diogo Silva <diogompaissilva@gmail.com>
 
-[ Upstream commit 577b5761679da90e691acc939ebbe7879fff5f31 ]
+[ Upstream commit 256748d5480bb3c4b731236c6d6fc86a8e2815d8 ]
 
-There are no DT bindings and driver support for a "rockchip,rt5651"
-codec.  Replace "rockchip,rt5651" by "realtek,rt5651", which matches the
-"simple-audio-card,name" property in the "rt5651-sound" node.
+DP83848	datasheet (section 4.7.2) indicates that the reset pin should be
+toggled after the clocks are running. Add the PHY_RST_AFTER_CLK_EN to
+make sure that this indication is respected.
 
-Fixes: 0a3c78e251b3a266 ("arm64: dts: rockchip: Add support for rk3399 excavator main board")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/abc6c89811b3911785601d6d590483eacb145102.1727358193.git.geert+renesas@glider.be
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+In my experience not having this flag enabled would lead to, on some
+boots, the wrong MII mode being selected if the PHY was initialized on
+the bootloader and was receiving data during Linux boot.
+
+Signed-off-by: Diogo Silva <diogompaissilva@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 34e45ad9378c ("net: phy: dp83848: Add TI DP83848 Ethernet PHY")
+Link: https://patch.msgid.link/20241102151504.811306-1-paissilva@ld-100007.ds1.internal
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/dp83848.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-index dbec2b7173a0b..31ea3d0182c06 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-sapphire-excavator.dts
-@@ -163,7 +163,7 @@
- 	status = "okay";
+diff --git a/drivers/net/phy/dp83848.c b/drivers/net/phy/dp83848.c
+index 937061acfc613..351411f0aa6f4 100644
+--- a/drivers/net/phy/dp83848.c
++++ b/drivers/net/phy/dp83848.c
+@@ -147,6 +147,8 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
+ 		/* IRQ related */				\
+ 		.config_intr	= dp83848_config_intr,		\
+ 		.handle_interrupt = dp83848_handle_interrupt,	\
++								\
++		.flags		= PHY_RST_AFTER_CLK_EN,		\
+ 	}
  
- 	rt5651: rt5651@1a {
--		compatible = "rockchip,rt5651";
-+		compatible = "realtek,rt5651";
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_I2S_8CH_OUT>;
- 		clock-names = "mclk";
+ static struct phy_driver dp83848_driver[] = {
 -- 
 2.43.0
 
