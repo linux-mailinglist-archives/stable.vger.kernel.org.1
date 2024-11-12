@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-92382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7683A9C53C0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDCD9C55CD
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD34281FF9
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F24282686
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A702144B3;
-	Tue, 12 Nov 2024 10:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87652144B0;
+	Tue, 12 Nov 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xidIERUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdG/ZZJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE8F2144A8;
-	Tue, 12 Nov 2024 10:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AF9214416;
+	Tue, 12 Nov 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407478; cv=none; b=ueIGE46A+o8z1eSUXXc/lxOBaQKAqizJ30dlXpShOytQjvovh1gce0eEWoRmktqixh2BWFo6rkwBVyHb82TqgXP9DmA2nGfy7QwXwU95llvJM3AQuyZ22H9M40gs7z6+Qz8DQ9BS3Qn4FztRop4QBL+mGdk5/Y/MCcgamjL3cqU=
+	t=1731408383; cv=none; b=hhH8j6mLAerza7zgFzK+wedk7RdzSmiJdscq5ou5KGNnBw5ymFoK72yF4PaRJFEZyhtko3oqe3gDWoa89+G5htSWmOjSL3p3TZH9uSD8+F/WEXzm185Q2Hpfsljs8i8HRoevuLeCr22vUatsZBeBQlVxloDijfMBHX/6dLlom9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407478; c=relaxed/simple;
-	bh=uOubz936/bqn1wPb/a7uDWJytwqdoRiLQJFxlnRvg7A=;
+	s=arc-20240116; t=1731408383; c=relaxed/simple;
+	bh=dSvDIJLBQi8+VidcwYBDzrilrovx3pzSeJPrmOre4G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM/1njzxI5s6UvURZhXTqf+FhCbQQeeOLUhxcgbUq+tbciPtKUtWMebAfsE289SNBNjHFIfIy4m9byZe758OcYNlHzYsARgynv/3efSBJv6803szMS/HcjHnJBftYwT/W6KsCAbLcc/50H85UnyHnjJ/qLxznUq6hkGYIDAQho8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xidIERUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BD7C4CECD;
-	Tue, 12 Nov 2024 10:31:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WvQpeWPTGB/I2zv1ErV64NDQ45Q+Dcylpaykd4fbajSlw4GJLjR5OMwXdhilfjdVCrFv04kB4j61EjiXs6N7T1sJrGuZBMRDEgV2HfgDVFWKR389bUL7eLEdbe1p4jXbO+ky2EYc3K2dwDvJgK/7AGCiwPMwooRNod9u3kko5eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdG/ZZJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162F6C4CECD;
+	Tue, 12 Nov 2024 10:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407478;
-	bh=uOubz936/bqn1wPb/a7uDWJytwqdoRiLQJFxlnRvg7A=;
+	s=korg; t=1731408383;
+	bh=dSvDIJLBQi8+VidcwYBDzrilrovx3pzSeJPrmOre4G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xidIERUYMznwVLjJctf8dATbmaDXAcQG0gk8PM5v3aQWD6wWIhzUlxbNTt7zYjD58
-	 2EfcFYp5QnR8D+KPJjE2lWxz8jDcA4/rRzpXpby/hBvm6CRHDnzhzGbQwWCJRygj2M
-	 t3Vbr/w2QuUhL3h1UwoXfxHv38kANwQpZIsC/G5M=
+	b=fdG/ZZJXgIs5IBDOY0zAXuEKTycQat/9FZ/neVrJ0l5nwsBh0HVJDp+A79PuekRWY
+	 c2cbbQYsnP+b8w9ibT15oLRp8+DM/22nQCZ6zjRw4M+Tag8gPvZLGRHCiiLWGUm6tv
+	 36GE42tt8g4kmOyKbWC51HWKoN5ftTlMJwXSk4Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 88/98] USB: serial: qcserial: add support for Sierra Wireless EM86xx
-Date: Tue, 12 Nov 2024 11:21:43 +0100
-Message-ID: <20241112101847.602185775@linuxfoundation.org>
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Christopher Obbard <christopher.obbard@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 146/184] clk: qcom: clk-alpha-pll: Fix pll post div mask when width is not set
+Date: Tue, 12 Nov 2024 11:21:44 +0100
+Message-ID: <20241112101906.474291985@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <wojackbb@gmail.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-commit 25eb47eed52979c2f5eee3f37e6c67714e02c49c upstream.
+commit e02bfea4d7ef587bb285ad5825da4e1973ac8263 upstream.
 
-Add support for Sierra Wireless EM86xx with USB-id 0x1199:0x90e5 and
-0x1199:0x90e4.
+Many qcom clock drivers do not have .width set. In that case value of
+(p)->width - 1 will be negative which breaks clock tree. Fix this
+by checking if width is zero, and pass 3 to GENMASK if that's the case.
 
-0x1199:0x90e5
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e5 Rev= 5.15
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Semtech EM8695 Mobile Broadband Adapter
-S:  SerialNumber=004403161882339
-C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x1199:0x90e4
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e4 Rev= 0.00
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  SerialNumber=004403161882339
-C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=10 Driver=qcserial
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Jack Wu <wojackbb@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Christopher Obbard <christopher.obbard@linaro.org>
+Tested-by: Christopher Obbard <christopher.obbard@linaro.org>
+Link: https://lore.kernel.org/r/20241006-fix-postdiv-mask-v3-1-160354980433@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/qcserial.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -166,6 +166,8 @@ static const struct usb_device_id id_tab
- 	{DEVICE_SWI(0x1199, 0x9090)},	/* Sierra Wireless EM7565 QDL */
- 	{DEVICE_SWI(0x1199, 0x9091)},	/* Sierra Wireless EM7565 */
- 	{DEVICE_SWI(0x1199, 0x90d2)},	/* Sierra Wireless EM9191 QDL */
-+	{DEVICE_SWI(0x1199, 0x90e4)},	/* Sierra Wireless EM86xx QDL*/
-+	{DEVICE_SWI(0x1199, 0x90e5)},	/* Sierra Wireless EM86xx */
- 	{DEVICE_SWI(0x1199, 0xc080)},	/* Sierra Wireless EM7590 QDL */
- 	{DEVICE_SWI(0x1199, 0xc081)},	/* Sierra Wireless EM7590 */
- 	{DEVICE_SWI(0x413c, 0x81a2)},	/* Dell Wireless 5806 Gobi(TM) 4G LTE Mobile Broadband Card */
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -40,7 +40,7 @@
+ 
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
++# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width ? (p)->width - 1 : 3, 0)
+ # define PLL_ALPHA_MSB		BIT(15)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
 
 
 
