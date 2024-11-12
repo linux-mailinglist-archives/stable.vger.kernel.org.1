@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-92290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9ED9C5366
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5ED9C53CF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86079288C5C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:28:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442EA28337C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01D20E337;
-	Tue, 12 Nov 2024 10:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A792123F2;
+	Tue, 12 Nov 2024 10:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8RJC5jx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVyCvAZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E5620B20B;
-	Tue, 12 Nov 2024 10:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E38720DD7E;
+	Tue, 12 Nov 2024 10:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407174; cv=none; b=bNzoBlH8oekCNJy9q0Qs4NQpYZOD0NfJbAGxIF/988PTKsfW2FKxIi3kuedEmi386pK/cll70zjQTOlYM+0YMe1NRnUZqTOtHhiW7ms2At9ZFg4hQHIz/y8ryak2PxQdThZUfgUnEtOHQv4IeUN6jBEPpY1WIXsbqWZ6ybfmK00=
+	t=1731407540; cv=none; b=uZN0Z/oN9g6Vuj/OXcYMNoGzZUY86M3ZZ0roULEcHsgsK2oISdf1EBFzUB4tGKsvLNT6sC7qiyLI/A5la8KM/+e2BpYC31SOagcK/74dtJEWsnaxUBDCKYnsD5LxZpUEWcYQ03N0gznXzKL3BqALVOoh6yBo/Cz+d9gQDmn5oHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407174; c=relaxed/simple;
-	bh=7VefaCYu/wINSpoY0SkxTA+QChKCePF5IXuVJydyxWE=;
+	s=arc-20240116; t=1731407540; c=relaxed/simple;
+	bh=HzFgUk1g9/Cz/MM12ddiFPO1JIfHwL0PyLimYvRroJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsnpYHKky5bQUKIutBLuuFP6QZCv3CgVS99p+0WYGLINunKsz1pjaeMrPyVn7aboVvU7q3NDTtJKy09dljWgasEVui7HcUn4FXFl7Bik/1cOJPi89f6txOWLonoXdfckkEXaV308NazBkRlo5UsNvNGHB5AIOIzPfWiWZY2JjCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8RJC5jx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9835FC4CEDA;
-	Tue, 12 Nov 2024 10:26:13 +0000 (UTC)
+	 MIME-Version; b=ETC9eaaYqkVb/qW+rX8B6A2oD6K6Qu2NyKplpCB33Ah7cBeoFT0Q9vFoj5fQJmRRyhTl45Mg6F8J0W9dwUgwqUX9jRTS16xNwXGCtpZIslSM5bhdqTP/7xOxb1lbV0R6Mm75oSXebugAzerkn3dA4uAsKJNHVJ6HpgKpwA0y5fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVyCvAZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED0EC4CECD;
+	Tue, 12 Nov 2024 10:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407174;
-	bh=7VefaCYu/wINSpoY0SkxTA+QChKCePF5IXuVJydyxWE=;
+	s=korg; t=1731407540;
+	bh=HzFgUk1g9/Cz/MM12ddiFPO1JIfHwL0PyLimYvRroJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8RJC5jxpcBekATrhb4lTu0/+3XV9iI0Hfwn50l3rXPbgkguU1e2P9VpIyGtbKeAP
-	 d4CjHZ90+eXsPLPV9iDekRm38jQH31TiXA2JPhccXCDMuMjRM5UaW9bo0HKi4pmk1z
-	 89YBZIppB1UErsCCJ2rcs+zcxWXC09tTEIDwbDFc=
+	b=jVyCvAZUn5BHRVWi5xq2RSbZd8StvH63W39j3P4LolpeVEZIU42o4i6v8BXBhE508
+	 Lb6gpJNbxKC4PvKrMYiKkKm3HhzYKE6XNAbmYl/oz16F3jcNOa6/OHUpodUJ/I74F8
+	 NjXhVwSY1Oz5XvnvVtdMqgdp/niKg6GG/YeJ48I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 73/76] ACPI: PRM: Clean up guid type in struct prm_handler_info
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrei Vagin <avagin@google.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alexey Gladkov <legion@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 83/98] signal: restore the override_rlimit logic
 Date: Tue, 12 Nov 2024 11:21:38 +0100
-Message-ID: <20241112101842.557993613@linuxfoundation.org>
+Message-ID: <20241112101847.412138827@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +66,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
+commit 9e05e5c7ee8758141d2db7e8fea2cab34500c6ed upstream.
 
-Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
+signals.  However now it's enforced unconditionally, even if
+override_rlimit is set.  This behavior change caused production issues.
 
-drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
-4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Werror,-Walign-mismatch]
-  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-      |                                                  ^
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with siginfo.
+This prevents the process from correctly identifying the fault address and
+handling the error.  From the user-space perspective, applications are
+unaware that the limit has been reached and that the siginfo is
+effectively 'corrupted'.  This can lead to unpredictable behavior and
+crashes, as we observed with java applications.
 
-The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
-is a regular guid_t.  The difference between the two types is the
-alignment.  efi_guid_t is a typedef.
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
+the comparison to max there if override_rlimit is set.  This effectively
+restores the old behavior.
 
-	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
-
-It's possible that this a bug in Clang 19.  Even though the alignment of
-&th->guid is not explicitly specified, it will still end up being aligned
-at 4 or 8 bytes.
-
-Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
-and that also makes the warning go away.
-
-Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[nathan: Fix conflicts due to lack of e38abdab441c]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lkml.kernel.org/r/20241104195419.3962584-1-roman.gushchin@linux.dev
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Alexey Gladkov <legion@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/user_namespace.h |    3 ++-
+ kernel/signal.c                |    3 ++-
+ kernel/ucount.c                |    6 ++++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -52,7 +52,7 @@ struct prm_context_buffer {
- static LIST_HEAD(prm_module_list);
+--- a/include/linux/user_namespace.h
++++ b/include/linux/user_namespace.h
+@@ -131,7 +131,8 @@ static inline long get_rlimit_value(stru
  
- struct prm_handler_info {
--	guid_t guid;
-+	efi_guid_t guid;
- 	void *handler_addr;
- 	u64 static_data_buffer_addr;
- 	u64 acpi_param_buffer_addr;
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -426,7 +426,8 @@ __sigqueue_alloc(int sig, struct task_st
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 			goto unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+-		max = get_userns_rlimit_max(iter->ns, type);
++		if (!override_rlimit)
++			max = get_userns_rlimit_max(iter->ns, type);
+ 		/*
+ 		 * Grab an extra ucount reference for the caller when
+ 		 * the rlimit count was previously 0.
 
 
 
