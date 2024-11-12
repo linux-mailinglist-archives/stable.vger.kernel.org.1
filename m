@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DA79C538B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:31:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB66C9C5338
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C50A2840D8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:31:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C201F217E4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9C92123E6;
-	Tue, 12 Nov 2024 10:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896E920DD7D;
+	Tue, 12 Nov 2024 10:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udQs9bOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTw4bSGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54520FAB3;
-	Tue, 12 Nov 2024 10:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4245919E992;
+	Tue, 12 Nov 2024 10:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407247; cv=none; b=TRZOkNTRMHlQLku7pxyUNf1cfpQpC5poijt0s/kJChaFbAwoZF94dQJ3Vp3KIejFoUn3zh08tl3n+VMub+iu6eHbd8q8bk/MrFPq0z3pz/DsLTbYXBCt07W198Aj9PpLcRC7SxbPKmhydABYENdxN8ANWDWltDuydI6xPNLvRnA=
+	t=1731407035; cv=none; b=hmWRAukvNiosGo3s1s3dyIWN1D6gAGuAKu6SlXGC06u9n+qobHKLsWqWwZNxmd+awdMbM3fNz9vRfCUqor922/rdyRd+UA68144KtH6hPlaR4/W0f8+B4ExkYP82LN+lzIgp4bFMGZ01vr6gZscm5AIY21CqBKTx3pSBqGkDpYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407247; c=relaxed/simple;
-	bh=C3UJb6S3lENqqcu8lqWzw7GI+absJyAg7duXsZRmNTY=;
+	s=arc-20240116; t=1731407035; c=relaxed/simple;
+	bh=YJ+m3AmdL9Y20fx2OBv/DiR22IicJla0MtsyBkKWQ8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcRmUQscP8dNQfUg3WuilnroFhLRZcqnSjCOs+L0aAbwmsTJOIORXi1o1nfUGjnlRRQudh90YZyOVmxqy7SBPoaq/rIAq2wWg1mlbXa1nwQJ7jmLW6A89nzvIWnmZ4Ch3iTdz5eNCuczZ3aqlQmn8MSbRy1AXRXihLjNwHSBBhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udQs9bOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D876C4CECD;
-	Tue, 12 Nov 2024 10:27:25 +0000 (UTC)
+	 MIME-Version; b=Mt6RbVgNdDfcQyLx3AeF+++tIvRg9lqLOCT62QoJi2XDblRsP+zlT8IRspvOmPgT9/1ReAz8AftUUTJmbdHao0xFRKMExQ543s+mCF/0KgsjJ/FvGMf4bWOMxnvayuqR2qxfmk1lNHYsBa+UXw+6ECmIsD5/1VuIDPc/inaykS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTw4bSGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51A2C4CECD;
+	Tue, 12 Nov 2024 10:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407246;
-	bh=C3UJb6S3lENqqcu8lqWzw7GI+absJyAg7duXsZRmNTY=;
+	s=korg; t=1731407035;
+	bh=YJ+m3AmdL9Y20fx2OBv/DiR22IicJla0MtsyBkKWQ8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udQs9bOJ/qN9UIEN3Gf/e/q8UnfLC5JR/QPF9gAzxaxTmAQF5Kyz6AbPjh+XL4+Z1
-	 qhh/buvS68WCM+JbMiVBt3c3ydztZe/U9OGh1iAx2zTn8EufZBjAXFi2XHjA6Tfe7A
-	 /6sUnEt58oK4ThNmRzEj/E/TFZcvK+e7p2Vtvsa4=
+	b=ZTw4bSGfHmPa4iu1BDtKXgg6KQmo9LDIBDwTcqBCDMC2QX5kN4pYP/J9sJEIA8ZBO
+	 s7J//06kGhqjq6gmj6sQ8kIKJWYoJAIu4kQHNsokY/rTUfSuB4yp+BF2rvyOyUzpqk
+	 /BrB9W+WkhiTc0DG/O0y2GINBZpzSD2/xagURb3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Caesar Wang <wxt@rock-chips.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/98] sunrpc: handle -ENOTCONN in xs_tcp_setup_socket()
-Date: Tue, 12 Nov 2024 11:20:33 +0100
-Message-ID: <20241112101844.965214126@linuxfoundation.org>
+Subject: [PATCH 5.15 09/76] ARM: dts: rockchip: Fix the spi controller on rk3036
+Date: Tue, 12 Nov 2024 11:20:34 +0100
+Message-ID: <20241112101840.137737663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
+References: <20241112101839.777512218@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 10f0740234f0b157b41bdc7e9c3555a9b86c1599 ]
+[ Upstream commit 8bade1ad1f0821aef31f6a8fb1027ae292566d85 ]
 
-xs_tcp_finish_connecting() can return -ENOTCONN but the switch statement
-in xs_tcp_setup_socket() treats that as an unhandled error.
+Compatible and clock names did not match the existing binding.
+So set the correct values and re-order+rename the clocks.
 
-If we treat it as a known error it would propagate back to
-call_connect_status() which does handle that error code.  This appears
-to be the intention of the commit (given below) which added -ENOTCONN as
-a return status for xs_tcp_finish_connecting().
+It looks like no rk3036 board did use the spi controller so far,
+so this was never detected on a running device yet.
 
-So add -ENOTCONN to the switch statement as an error to pass through to
-the caller.
-
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1231050
-Link: https://access.redhat.com/discussions/3434091
-Fixes: 01d37c428ae0 ("SUNRPC: xprt_connect() don't abort the task if the transport isn't bound")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: f629fcfab2cd ("ARM: dts: rockchip: support the spi for rk3036")
+Cc: Caesar Wang <wxt@rock-chips.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-14-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/rk3036.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 02f651f85e739..190dae11f634a 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2351,6 +2351,7 @@ static void xs_tcp_setup_socket(struct work_struct *work)
- 	case -EHOSTUNREACH:
- 	case -EADDRINUSE:
- 	case -ENOBUFS:
-+	case -ENOTCONN:
- 		break;
- 	default:
- 		printk("%s: connect returned unhandled error %d\n",
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index e0d4c71f109a7..d7a86f21cf23f 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -550,11 +550,11 @@
+ 	};
+ 
+ 	spi: spi@20074000 {
+-		compatible = "rockchip,rockchip-spi";
++		compatible = "rockchip,rk3036-spi";
+ 		reg = <0x20074000 0x1000>;
+ 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+-		clocks = <&cru PCLK_SPI>, <&cru SCLK_SPI>;
+-		clock-names = "apb-pclk","spi_pclk";
++		clocks = <&cru SCLK_SPI>, <&cru PCLK_SPI>;
++		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&pdma 8>, <&pdma 9>;
+ 		dma-names = "tx", "rx";
+ 		pinctrl-names = "default";
 -- 
 2.43.0
 
