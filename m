@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907989C55A5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:09:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B421A9C539A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430711F2228C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:09:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A09E1F227A0
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290BC218D8C;
-	Tue, 12 Nov 2024 10:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2237D2123FE;
+	Tue, 12 Nov 2024 10:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU8IxZd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NNHJKvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A221441B;
-	Tue, 12 Nov 2024 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18ED170A3A;
+	Tue, 12 Nov 2024 10:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408239; cv=none; b=uKGJ0nQBms0GNoSTtVQJMDDgZ1JD2UjMGIuINipLZSFutkmoBhzqyRdT9FDGtOGYfruhxbWlS1jvaI5h0esEIBvgoWiVbDNuRn5oGdmV+B8Pmv6F/V0GCksQ2g3Mt86D9J116zTrqLfGemp29246ad8p97XAEfYKj22FovySXiw=
+	t=1731407317; cv=none; b=bDCdeWiXJnFWID35d1rDTKL5C8h8H5A0ANfa91zFz5kYXWvnv3aEE/SN71f6z6ftIKthOtnNSBPio8t2BRx1MLAAyZqn9ib5XqDNouhUVwPcrcZOWPv2Isq523rwSGVsubBQZ/DU4XjX8+FWw5XDz8uJEjItlAHvwVfiOdSZcJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408239; c=relaxed/simple;
-	bh=1ZwTyRQ+QBLe8Q5kIBh57pnq8ZDJSfz7XAY2utMFv6w=;
+	s=arc-20240116; t=1731407317; c=relaxed/simple;
+	bh=pqusvHaxaUv2tTSjAhe7+Mp2XntmQ+/SHnqk/mbjsuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wp/DUArUkaDL+ClG/oNixYEb+v+H4vmQmKj4eriPDBKR+Er6qntGpHStVb2KZc4MPF88xtMW+RhWUbO1GbDFwFr78HxxvUtdfT0NndnSHCGHWLRwh4FkbFXDPRvRjmwe//VE0P7BDuCXX4QHbMQGRrRPPto7/dFG6hcsDyxeA30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU8IxZd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E9AC4CECD;
-	Tue, 12 Nov 2024 10:43:58 +0000 (UTC)
+	 MIME-Version; b=X32HCC1PngNiLfdhY0PWp2oovZfJyDyyYU0jtsek1ZvuICIIWzMwaVlYqcFllg2//82uRMIg+6GL0sMBUAl2/oGB5BmptfM+/hWYMySgt3bNx+v+u/p4PAkhXbt9NVz9MEPGe9B/nrCm1pQM37Ysbt7uPCXH/43JS0CtH9iH9ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NNHJKvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E450C4CECD;
+	Tue, 12 Nov 2024 10:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408239;
-	bh=1ZwTyRQ+QBLe8Q5kIBh57pnq8ZDJSfz7XAY2utMFv6w=;
+	s=korg; t=1731407317;
+	bh=pqusvHaxaUv2tTSjAhe7+Mp2XntmQ+/SHnqk/mbjsuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KU8IxZd28IRFhzB8M+gLs+xgTgK9mG9L1haJYmnq3sqKEvMJ24UpmMWR92JqYgybp
-	 3ndzplFrCXGN9Xs8i/sHFl1IDB+zmwd0z1JPHJ11ykP1YoFu0ifH0nTzJyvwy08OLZ
-	 1bwALPth+OaCWGGYuLpWUMYr18G9i2u7vOp92D8U=
+	b=1NNHJKvLmzbwUpDdOx1zHGEbKkMhC86sO/ajCyDhnJhk5SfaXtGC0zX4TXMv5Mhqg
+	 jQZRfyvGPW2hQv2G1sTQ4/eaZg2FocIccFETrMwLAcd75cfnwov/hhI0ELc7qdcS53
+	 KazhsgzF6PcpTkk/yaDgjQRT6QvsrsyHWYivlSw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 095/184] drm/xe: Set mask bits for CCS_MODE register
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/98] media: adv7604: prevent underflow condition when reporting colorspace
 Date: Tue, 12 Nov 2024 11:20:53 +0100
-Message-ID: <20241112101904.505016779@linuxfoundation.org>
+Message-ID: <20241112101845.724821040@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 7fd3fa006fa56c0ec299c61ecf5c572c723adad5 upstream.
+[ Upstream commit 50b9fa751d1aef5d262bde871c70a7f44262f0bc ]
 
-CCS_MODE register requires setting mask bits from Xe2+ platforms. Set
-the mask bits unconditionally, as those bits are unused for older
-platforms.
+Currently, adv76xx_log_status() reads some date using
+io_read() which may return negative values. The current logic
+doesn't check such errors, causing colorspace to be reported
+on a wrong way at adv76xx_log_status(), as reported by Coverity.
 
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008073628.377433-2-balasubramani.vivekanandan@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 23ea2c7572d4735ef66beb1e4feb8ae510b78247)
-[ Fix conflict with mmio refactors ]
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If I/O error happens there, print a different message, instead
+of reporting bogus messages to userspace.
+
+Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h |    2 +-
- drivers/gpu/drm/xe/xe_gt_ccs_mode.c  |    6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/i2c/adv7604.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -509,7 +509,7 @@
-  *   [4-6]     RSVD
-  *   [7]       Disabled
-  */
--#define CCS_MODE				XE_REG(0x14804)
-+#define CCS_MODE				XE_REG(0x14804, XE_REG_OPTION_MASKED)
- #define   CCS_MODE_CSLICE_0_3_MASK		REG_GENMASK(11, 0) /* 3 bits per cslice */
- #define   CCS_MODE_CSLICE_MASK			0x7 /* CCS0-3 + rsvd */
- #define   CCS_MODE_CSLICE_WIDTH			ilog2(CCS_MODE_CSLICE_MASK + 1)
---- a/drivers/gpu/drm/xe/xe_gt_ccs_mode.c
-+++ b/drivers/gpu/drm/xe/xe_gt_ccs_mode.c
-@@ -68,6 +68,12 @@ static void __xe_gt_apply_ccs_mode(struc
- 		}
- 	}
+diff --git a/drivers/media/i2c/adv7604.c b/drivers/media/i2c/adv7604.c
+index bda0c547ce445..96c2fa2c3b7a5 100644
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -2516,10 +2516,10 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
+ 	const struct adv76xx_chip_info *info = state->info;
+ 	struct v4l2_dv_timings timings;
+ 	struct stdi_readback stdi;
+-	u8 reg_io_0x02 = io_read(sd, 0x02);
++	int ret;
++	u8 reg_io_0x02;
+ 	u8 edid_enabled;
+ 	u8 cable_det;
+-
+ 	static const char * const csc_coeff_sel_rb[16] = {
+ 		"bypassed", "YPbPr601 -> RGB", "reserved", "YPbPr709 -> RGB",
+ 		"reserved", "RGB -> YPbPr601", "reserved", "RGB -> YPbPr709",
+@@ -2618,13 +2618,21 @@ static int adv76xx_log_status(struct v4l2_subdev *sd)
+ 	v4l2_info(sd, "-----Color space-----\n");
+ 	v4l2_info(sd, "RGB quantization range ctrl: %s\n",
+ 			rgb_quantization_range_txt[state->rgb_quantization_range]);
+-	v4l2_info(sd, "Input color space: %s\n",
+-			input_color_space_txt[reg_io_0x02 >> 4]);
+-	v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
+-			(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
+-			(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
+-				"(16-235)" : "(0-255)",
+-			(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
++
++	ret = io_read(sd, 0x02);
++	if (ret < 0) {
++		v4l2_info(sd, "Can't read Input/Output color space\n");
++	} else {
++		reg_io_0x02 = ret;
++
++		v4l2_info(sd, "Input color space: %s\n",
++				input_color_space_txt[reg_io_0x02 >> 4]);
++		v4l2_info(sd, "Output color space: %s %s, alt-gamma %s\n",
++				(reg_io_0x02 & 0x02) ? "RGB" : "YCbCr",
++				(((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
++					"(16-235)" : "(0-255)",
++				(reg_io_0x02 & 0x08) ? "enabled" : "disabled");
++	}
+ 	v4l2_info(sd, "Color space conversion: %s\n",
+ 			csc_coeff_sel_rb[cp_read(sd, info->cp_csc) >> 4]);
  
-+	/*
-+	 * Mask bits need to be set for the register. Though only Xe2+
-+	 * platforms require setting of mask bits, it won't harm for older
-+	 * platforms as these bits are unused there.
-+	 */
-+	mode |= CCS_MODE_CSLICE_0_3_MASK << 16;
- 	xe_mmio_write32(gt, CCS_MODE, mode);
- 
- 	xe_gt_dbg(gt, "CCS_MODE=%x config:%08x, num_engines:%d, num_slices:%d\n",
+-- 
+2.43.0
+
 
 
 
