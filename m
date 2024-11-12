@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-92241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3629C9C5333
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC159C53FA
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A0F285B0B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13057283F7F
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B592123F0;
-	Tue, 12 Nov 2024 10:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4CA2123D2;
+	Tue, 12 Nov 2024 10:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPCtFsL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j883fBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D5619E992;
-	Tue, 12 Nov 2024 10:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4661A76C7;
+	Tue, 12 Nov 2024 10:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407012; cv=none; b=o7KTpmhSTnbUPZYZ4RkCZY1rsvrIHaYgfuYBDuepkcDj7M5Lk9RWOXm2U9M2ueWGt0FfYWlfC+HWdxFQNsD44o/8XmVDq+zgBK31hFQWUrwU75J1NyqIHFclb9m1eoX9TEt5p4NyELKk6l0saFNnZJvsWlmxCO2hrn7XofcC/nI=
+	t=1731407651; cv=none; b=tgho7PA671PxOnXiMCJHusINeDK4eg36ZYTtHi58n+W0RFUVUSdxTCCNxQkCjgwsEQkRu2BaLX3U8sgimCZuMOsWb05pZRdLWZ3VfMF78ZB6bURTA9Z/Rj1fuG6OmGhXfopC8/TMN0r18xIXuQ17FdMbKWDTz43o/D/THxvKSbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407012; c=relaxed/simple;
-	bh=AuEgug5EjhQ55PpCZ9ca6k+mffawaic1D5yFZZRglo0=;
+	s=arc-20240116; t=1731407651; c=relaxed/simple;
+	bh=i00dunWrbFm20pdalcHe4iLBDuHnRBxTCbgD1SXCFnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G8lP5OD6+IsFa0Xnnv5OC4L77PN8hnzPLI3FHREz616C3M8p1Yh2Oby0AqCi+RlIXBxgE6y6QmuJF6M38l4u4D43288VgeUqv8Sa7n9nJWBLbVPXb55dEwr35YOn80k0OJAX1OqxkyzRTM0ySE9QyyC+0zrRTZkrdGcim+9C0Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPCtFsL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E53C4CED4;
-	Tue, 12 Nov 2024 10:23:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A+xHja6HIpeozEIK2fhfy43Nhs7sFfqvX8q8o/fPfkggR/1rjCV4XFxQbTv3hYsyXeLvrhdBPz9w8WRnNe9r4t12shrOa2i2Mo6IYo27ffYJ5waUjaOt0wYRCKX8Zrf9L3n8KSxipduEO9uae2E9vl/++gfpMtq+y88ByDoCL18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j883fBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9695DC4CECD;
+	Tue, 12 Nov 2024 10:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407012;
-	bh=AuEgug5EjhQ55PpCZ9ca6k+mffawaic1D5yFZZRglo0=;
+	s=korg; t=1731407651;
+	bh=i00dunWrbFm20pdalcHe4iLBDuHnRBxTCbgD1SXCFnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPCtFsL+ibZGBq+6fuxt+9wq4blmq4FAuvBs5wrUfqsbjvWL2Po6GtitpO49OJM/m
-	 8qC20K41ERGyVTdTadL0A1N0axPiqT21vNVVZjQaAxN1TOfFbWSQjkvRd60YOX4j8j
-	 rQ1t0ggMxQJVULSgZil8HBgAFcYiL7vUXaSXsVfA=
+	b=1j883fBDthtWjzy1eWr2b/pGfAo7MmwhBOyre8kx7NkV/kRuxjGX0b++ax9SveeXy
+	 yCYSu6PV1Q6XIKHh2zZZFGdLziDX4UYkZHt1RxTT+DFdvHmOJOtQvJGPXVWBCNPj3o
+	 Tt2WdFotCzwrJ9KRbaLTfAq2cR6Rx2s0OUT+638E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/76] net: stmmac: Fix unbalanced IRQ wake disable warning on single irq case
-Date: Tue, 12 Nov 2024 11:20:48 +0100
-Message-ID: <20241112101840.669926454@linuxfoundation.org>
+Subject: [PATCH 6.6 041/119] net: stmmac: Fix unbalanced IRQ wake disable warning on single irq case
+Date: Tue, 12 Nov 2024 11:20:49 +0100
+Message-ID: <20241112101850.288081415@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -95,10 +95,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 4a194f30f4a83..2478caeec763f 100644
+index a116423adb30a..853851d5f3620 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3650,6 +3650,7 @@ static int stmmac_request_irq_single(struct net_device *dev)
+@@ -3678,6 +3678,7 @@ static int stmmac_request_irq_single(struct net_device *dev)
  	/* Request the Wake IRQ in case of another line
  	 * is used for WoL
  	 */
