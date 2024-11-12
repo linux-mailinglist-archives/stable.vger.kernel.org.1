@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FFD9C53B6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:33:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE429C55C2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C8D02812E0
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EABE41F21CD9
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5682B214416;
-	Tue, 12 Nov 2024 10:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B127219E36;
+	Tue, 12 Nov 2024 10:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+fazg1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDlm3oYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154AD20ADFD;
-	Tue, 12 Nov 2024 10:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC37121314E;
+	Tue, 12 Nov 2024 10:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407437; cv=none; b=EDO8XqamZAm7frYCCBMw5vX39zCBCmLHzflXbf3Iw4QsO+lu2CinD5HpHlu5mDwHWbA8xAvmHn4h/etsD2L6Q7J46RW21cnfPyXWtRkTbaizVVo/Mo7MgspocBWI/jpNUOXQvDIkrEnlvA/makucZVUudWPlXH0A+9AebYzn19s=
+	t=1731408340; cv=none; b=asViGjthLFVv7dNNTzgzGSeMne7jQeITjj1CZpyISPvg9a8uTv66p/kSqOO4Uv5NAjvKfWSF9YN3rqWOjj9oFSyiUjrrLtvryeSgcfI/abuPiBBNm1NFs8llrDBy7lBg4XtcGLLPi4qFLJymEhFy2NHI3+rGVZv6Szv/8aGLCpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407437; c=relaxed/simple;
-	bh=Qh7t53ZVlei3N42QgbUDGqhA0lOw2zkK2MNkfAWgJ6g=;
+	s=arc-20240116; t=1731408340; c=relaxed/simple;
+	bh=ctWrCEEE67s6q2Kuh7FFoz7VKpz51p3ilpb+0TPVCUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XimXV40zHKn2VmnLJBWGoN1inoVg3v7tg0NFx/5iaMfSJ5SOEdHLgneIC44Cl5SsTNbOrTdICmxzJ2oprNtCt0hrw4siujg6j9SRXS7MN70BAX7o9hlir+gTZFL7OJIKmwpvAyxuqrNmUYU/by3IbC/Jt1L2JRU2xWPtsTr1Ino=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+fazg1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785A1C4CECD;
-	Tue, 12 Nov 2024 10:30:36 +0000 (UTC)
+	 MIME-Version; b=W1fkUHISejz71zvRs/bs8EGorlZdlu6V8UDHVXHStu1qPFDVt4+cVjEIEzAH2ggXoAexcKwLM/pO8QKYnBYGED3CL4Ztg/9NFaTV4hEcdbZB6r8mswxfD0U743lDF+1L8ZnjIPjgrgE7MS2u54h5HSOP16/LGvKxLesW3r9ECQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDlm3oYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF1AC4CECD;
+	Tue, 12 Nov 2024 10:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407437;
-	bh=Qh7t53ZVlei3N42QgbUDGqhA0lOw2zkK2MNkfAWgJ6g=;
+	s=korg; t=1731408340;
+	bh=ctWrCEEE67s6q2Kuh7FFoz7VKpz51p3ilpb+0TPVCUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+fazg1MLdVSFqJCRDl28UChXYkFVmWjWdQStAlHGEDsoGwdASh8Y6KsaHwq0AqW4
-	 xooHvIfm3t1/NcM7cPW4fyaK3QrDtYoCYZMv3z5s40iV/Zu0XMeFuZwSVHwdZm4XVn
-	 xFFIt3dpC0cE+Cuh7yBOvB4+VP5os7/NEJ6rTQPM=
+	b=TDlm3oYq32ZovMY3mYbX3+t/aS8eXi03g49WdBeM7I46s0J+jB4+BtXcT82LoU6kk
+	 BPa+se82oFVMgEKm78JKP3VNS3JSyXLdhdFWXqHD+HRgV3PvaPIT8Nwznex54QZztj
+	 ClpOkEmAymeV3omMwYA4Qw9hwbiNB1FCPQO9wIdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.1 44/98] media: ar0521: dont overflow when checking PLL values
+	Brendan King <brendan.king@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	Frank Binns <frank.binns@imgtec.com>
+Subject: [PATCH 6.11 101/184] drm/imagination: Add a per-file PVR context list
 Date: Tue, 12 Nov 2024 11:20:59 +0100
-Message-ID: <20241112101845.948229482@linuxfoundation.org>
+Message-ID: <20241112101904.739148160@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
-References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Brendan King <brendan.king@imgtec.com>
 
-commit 438d3085ba5b8b5bfa5290faa594e577f6ac9aa7 upstream.
+commit b0ef514bc6bbdeb8cc7492c0f473e14cb06b14d4 upstream.
 
-The PLL checks are comparing 64 bit integers with 32 bit
-ones, as reported by Coverity. Depending on the values of
-the variables, this may underflow.
+This adds a linked list of VM contexts which is needed for the next patch
+to be able to correctly track VM contexts for destruction on file close.
 
-Fix it ensuring that both sides of the expression are u64.
+It is only safe for VM contexts to be removed from the list and destroyed
+when not in interrupt context.
 
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+Signed-off-by: Brendan King <brendan.king@imgtec.com>
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Reviewed-by: Frank Binns <frank.binns@imgtec.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/e57128ea-f0ce-4e93-a9d4-3f033a8b06fa@imgtec.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ar0521.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imagination/pvr_context.c |   14 ++++++++++++++
+ drivers/gpu/drm/imagination/pvr_context.h |    3 +++
+ drivers/gpu/drm/imagination/pvr_device.h  |   10 ++++++++++
+ drivers/gpu/drm/imagination/pvr_drv.c     |    3 +++
+ 4 files changed, 30 insertions(+)
 
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -223,10 +223,10 @@ static u32 calc_pll(struct ar0521_dev *s
- 			continue; /* Minimum value */
- 		if (new_mult > 254)
- 			break; /* Maximum, larger pre won't work either */
--		if (sensor->extclk_freq * (u64)new_mult < AR0521_PLL_MIN *
-+		if (sensor->extclk_freq * (u64)new_mult < (u64)AR0521_PLL_MIN *
- 		    new_pre)
- 			continue;
--		if (sensor->extclk_freq * (u64)new_mult > AR0521_PLL_MAX *
-+		if (sensor->extclk_freq * (u64)new_mult > (u64)AR0521_PLL_MAX *
- 		    new_pre)
- 			break; /* Larger pre won't work either */
- 		new_pll = div64_round_up(sensor->extclk_freq * (u64)new_mult,
+--- a/drivers/gpu/drm/imagination/pvr_context.c
++++ b/drivers/gpu/drm/imagination/pvr_context.c
+@@ -17,10 +17,14 @@
+ 
+ #include <drm/drm_auth.h>
+ #include <drm/drm_managed.h>
++
++#include <linux/bug.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
++#include <linux/list.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/xarray.h>
+@@ -354,6 +358,10 @@ int pvr_context_create(struct pvr_file *
+ 		return err;
+ 	}
+ 
++	spin_lock(&pvr_dev->ctx_list_lock);
++	list_add_tail(&ctx->file_link, &pvr_file->contexts);
++	spin_unlock(&pvr_dev->ctx_list_lock);
++
+ 	return 0;
+ 
+ err_destroy_fw_obj:
+@@ -380,6 +388,11 @@ pvr_context_release(struct kref *ref_cou
+ 		container_of(ref_count, struct pvr_context, ref_count);
+ 	struct pvr_device *pvr_dev = ctx->pvr_dev;
+ 
++	WARN_ON(in_interrupt());
++	spin_lock(&pvr_dev->ctx_list_lock);
++	list_del(&ctx->file_link);
++	spin_unlock(&pvr_dev->ctx_list_lock);
++
+ 	xa_erase(&pvr_dev->ctx_ids, ctx->ctx_id);
+ 	pvr_context_destroy_queues(ctx);
+ 	pvr_fw_object_destroy(ctx->fw_obj);
+@@ -451,6 +464,7 @@ void pvr_destroy_contexts_for_file(struc
+ void pvr_context_device_init(struct pvr_device *pvr_dev)
+ {
+ 	xa_init_flags(&pvr_dev->ctx_ids, XA_FLAGS_ALLOC1);
++	spin_lock_init(&pvr_dev->ctx_list_lock);
+ }
+ 
+ /**
+--- a/drivers/gpu/drm/imagination/pvr_context.h
++++ b/drivers/gpu/drm/imagination/pvr_context.h
+@@ -85,6 +85,9 @@ struct pvr_context {
+ 		/** @compute: Transfer queue. */
+ 		struct pvr_queue *transfer;
+ 	} queues;
++
++	/** @file_link: pvr_file PVR context list link. */
++	struct list_head file_link;
+ };
+ 
+ static __always_inline struct pvr_queue *
+--- a/drivers/gpu/drm/imagination/pvr_device.h
++++ b/drivers/gpu/drm/imagination/pvr_device.h
+@@ -23,6 +23,7 @@
+ #include <linux/kernel.h>
+ #include <linux/math.h>
+ #include <linux/mutex.h>
++#include <linux/spinlock_types.h>
+ #include <linux/timer.h>
+ #include <linux/types.h>
+ #include <linux/wait.h>
+@@ -293,6 +294,12 @@ struct pvr_device {
+ 
+ 	/** @sched_wq: Workqueue for schedulers. */
+ 	struct workqueue_struct *sched_wq;
++
++	/**
++	 * @ctx_list_lock: Lock to be held when accessing the context list in
++	 *  struct pvr_file.
++	 */
++	spinlock_t ctx_list_lock;
+ };
+ 
+ /**
+@@ -344,6 +351,9 @@ struct pvr_file {
+ 	 * This array is used to allocate handles returned to userspace.
+ 	 */
+ 	struct xarray vm_ctx_handles;
++
++	/** @contexts: PVR context list. */
++	struct list_head contexts;
+ };
+ 
+ /**
+--- a/drivers/gpu/drm/imagination/pvr_drv.c
++++ b/drivers/gpu/drm/imagination/pvr_drv.c
+@@ -28,6 +28,7 @@
+ #include <linux/export.h>
+ #include <linux/fs.h>
+ #include <linux/kernel.h>
++#include <linux/list.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+@@ -1326,6 +1327,8 @@ pvr_drm_driver_open(struct drm_device *d
+ 	 */
+ 	pvr_file->pvr_dev = pvr_dev;
+ 
++	INIT_LIST_HEAD(&pvr_file->contexts);
++
+ 	xa_init_flags(&pvr_file->ctx_handles, XA_FLAGS_ALLOC1);
+ 	xa_init_flags(&pvr_file->free_list_handles, XA_FLAGS_ALLOC1);
+ 	xa_init_flags(&pvr_file->hwrt_handles, XA_FLAGS_ALLOC1);
 
 
 
