@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-92595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1A29C5555
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C73F49C5557
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2543A28D1E5
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840CE287A3A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8267322EE74;
-	Tue, 12 Nov 2024 10:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0662123CE;
+	Tue, 12 Nov 2024 10:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eg/jcCfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywgQbjEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF5122EE69;
-	Tue, 12 Nov 2024 10:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CCB22EE46;
+	Tue, 12 Nov 2024 10:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407964; cv=none; b=uvHnYk02E6LKaFpxd/eVJON2VT19a6yG00RjScLGygpLMlXHErUE5gYgkKNLTaeHAHr+pIHzP7GhnAQqQGIT2o5FVkOUF1BXHKSz7/5KPaMKQ8PV/xxNfGW/6MpU5wofWxVKI8mTbKkhmaKep/Js8xi6ocq14MMKnIV6trnZ9HQ=
+	t=1731407973; cv=none; b=fNGz/4RL7t9dehCkoDw5WYEmOWZjZnP+J5/lIoo0xQPfoJ7YLPGNHYupIrpKVd+08Xu1XsVG5LbbkHj5pMu4Dy/maBf/kwW1P6ccHQ4IGfUz+yEk/H4WjWwJFqaVbA4IomfE8TrlRjsmfynHmecoULj75VZpBRmRqNSBOGcdrXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407964; c=relaxed/simple;
-	bh=ma7OkM9LhcjV9bnjUELLOYSn1YUMpWe5c9pzqTRlG2s=;
+	s=arc-20240116; t=1731407973; c=relaxed/simple;
+	bh=5iW3R0Nl0Zjfv9TS9sPeuf2WhNqFB5iOM2CSvDDnrk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ/zSPVALmmRrxwtMgUJJLluFMg9y3kiuN7WZArFWYc57sI6L9hRUSwUJ3b2lCMZQiystlzeB7wXvwgdpGOL500ehXOQ3VvOvZ98oZ0y9NgqF2732hwiNXm3XlmR+UoqGamB0Ht8ffrud+mMge+3gt5SRLtpL6dA/4NScckECt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eg/jcCfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A1FC4CECD;
-	Tue, 12 Nov 2024 10:39:23 +0000 (UTC)
+	 MIME-Version; b=K4kL9SABftkkXzHgf8i4eLASL3Bii6F9h8FZfhBsFs7QDNcIwlgo10Ys1k+2MhnRecExjMx+bI7ondwMWx9MzA1T6RjiWthbBaxa5pRr2fF0Obh9yrHhhA8PyRlCnguCrO8sBXzURis4GrW8iXS3K7MbzjGI9ge82oK5S6PgBvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywgQbjEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09641C4CECD;
+	Tue, 12 Nov 2024 10:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407964;
-	bh=ma7OkM9LhcjV9bnjUELLOYSn1YUMpWe5c9pzqTRlG2s=;
+	s=korg; t=1731407973;
+	bh=5iW3R0Nl0Zjfv9TS9sPeuf2WhNqFB5iOM2CSvDDnrk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eg/jcCfdjXYuPBvIkvLSXcVTDqVw/vLYOTIAEUrOmkINxo2zAqcR/QwMshdO5ACqa
-	 ilpwsa7NaM8njQaAmedgGeUNrGVXRLWCs40sZVqS33z8MLbalBqPrCSfe5onbwuzSZ
-	 kryAPxpAXI1q9q1cewunNDYpkCs72rXk81Ms6VdA=
+	b=ywgQbjEiykYcWGg8z+uju03kiLzMhWDKRD6jLb9Yq0TTY1mnjEEszcL4LacLy7ybR
+	 UiPSKC/oU6a7YIgDVEusSY9FSBf5b8xVaxwDW5PeF0/SVRIwa+uoRsi9C38m7a6CH9
+	 KmY/vtycH6sSydZrQpUjYkGZExsC2PZkBbr3BOIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 018/184] arm64: dts: rockchip: Fix LED triggers on rk3308-roc-cc
-Date: Tue, 12 Nov 2024 11:19:36 +0100
-Message-ID: <20241112101901.569262526@linuxfoundation.org>
+Subject: [PATCH 6.11 020/184] arm64: dts: qcom: sm8450 fix PIPE clock specification for pcie1
+Date: Tue, 12 Nov 2024 11:19:38 +0100
+Message-ID: <20241112101901.645156274@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -67,50 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3a53a7187f41ec3db12cf4c2cb0db4ba87c2f3a1 ]
+[ Upstream commit 5d3d966400d0a094359009147d742b3926a2ea53 ]
 
-There are two LEDs on the board, power and user events.
-Currently both are assigned undocumented IR(-remote)
-triggers that are probably only part of the vendor-kernel.
+For historical reasons on SM8450 the second PCIe host (pcie1) also keeps
+a reference to the PIPE clock coming from the PHY. Commit e76862840660
+("arm64: dts: qcom: sm8450: correct pcie1 phy clocks inputs to gcc") has
+updated the PHY to use #clock-cells = <1>, making just <&pcie1_phy>
+clock specification invalid. Update corresponding clock entry in the
+PCIe1 host node.
 
-To make dtbs check happier, assign the power-led to a generic
-default-on trigger and the user led to the documented rc-feedback
-trigger that should mostly match its current usage.
+ /soc@0/pcie@1c08000: Failed to get clk index: 2 ret: -22
+ qcom-pcie 1c08000.pcie: Failed to get clocks
+ qcom-pcie 1c08000.pcie: probe with driver qcom-pcie failed with error -22
 
-Fixes: 4403e1237be3 ("arm64: dts: rockchip: Add devicetree for board roc-rk3308-cc")
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-8-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: e76862840660 ("arm64: dts: qcom: sm8450: correct pcie1 phy clocks inputs to gcc")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241006-fix-sm8450-pcie1-v1-1-4f227c9082ed@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-index 9232357f4fec9..d9e191ad1d77e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3308-roc-cc.dts
-@@ -36,14 +36,14 @@
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 9bafb3b350ff6..38cb524cc5689 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -1973,7 +1973,7 @@
  
- 		power_led: led-0 {
- 			label = "firefly:red:power";
--			linux,default-trigger = "ir-power-click";
-+			linux,default-trigger = "default-on";
- 			default-state = "on";
- 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
- 		};
- 
- 		user_led: led-1 {
- 			label = "firefly:blue:user";
--			linux,default-trigger = "ir-user-click";
-+			linux,default-trigger = "rc-feedback";
- 			default-state = "off";
- 			gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_HIGH>;
- 		};
+ 			clocks = <&gcc GCC_PCIE_1_PIPE_CLK>,
+ 				 <&gcc GCC_PCIE_1_PIPE_CLK_SRC>,
+-				 <&pcie1_phy>,
++				 <&pcie1_phy QMP_PCIE_PIPE_CLK>,
+ 				 <&rpmhcc RPMH_CXO_CLK>,
+ 				 <&gcc GCC_PCIE_1_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
 -- 
 2.43.0
 
