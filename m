@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-92246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625829C5336
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:25:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576E39C53EF
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142021F26487
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:25:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D436282807
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340BC212EE3;
-	Tue, 12 Nov 2024 10:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283E3213EFD;
+	Tue, 12 Nov 2024 10:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbC9CRwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOWIF1a4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B7212634;
-	Tue, 12 Nov 2024 10:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96DC213EF8;
+	Tue, 12 Nov 2024 10:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407029; cv=none; b=B9ZS3NIVyzPqzsQgI8u+YvYJ0OwlbyI5KA51LigC/LSnirXHptSktzH1OTjFP6/lrp8Yi+Ga5KpPqfBryWUvA/QtemYdSE9RuW6TNJosLVG7YP6grcceEF7L/asvOmUs4Un15FjptZFFG6z3UaNlnFjb6hFviko/ZU2/kzUwTEg=
+	t=1731407622; cv=none; b=WM1/9uMFx+XWYEYbsmFJYhwa8iqVCSPvRNuWjcsPvGtOuZoAOVcqGKxlHrAiTWMZKxeazRCDBY5eUM8/ie0fWbLS1++TmBrKYXiHO6kfQd/O46fN1ZGR6ju5ueUKgqn3kAyT/8yldC/bUTJPymIl2WbOYeKhd1Vq2QbP7N5clvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407029; c=relaxed/simple;
-	bh=1aldq+zaIw0BXeAvCMboRO/Hp0Tep7rS1hnyIA1/lZU=;
+	s=arc-20240116; t=1731407622; c=relaxed/simple;
+	bh=ZRDFNyvTOaZLHNyzDkYV6A2rFMz5uuXjF0qUO/yqjPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scwCygycwRP04zk/xg12G6XLzB5QWUckFiNUJZH99bH5zJCGgdB3ncwfNFpre7BLseBsRC2pT24nV42DRDRIMIcfAsdBGZgM37QX1NxjgSeqGO+Ns8tIA5+pxLlnAOpVJ1T8ddchRkiiXV1tIzGpPqS65wjY8Tyjrgu8fDOJfMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbC9CRwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E337C4CECD;
-	Tue, 12 Nov 2024 10:23:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HfhbsTI/CNXXrZzP4HltpDmlU9oUqjtjvFBtUW/6bSVpHEsCNoILCGzr4cM+QOCKO/tpjsgv8HrrnYVpJHCshTVG6qWzOCtmmYIfvXaaTx0FAke/R5V3tEigbNBzYEg6tuDou1rLqR6x4IO6wJAT24joNGyZyKkcjlXHI3uDWkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOWIF1a4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A995C4CECD;
+	Tue, 12 Nov 2024 10:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407028;
-	bh=1aldq+zaIw0BXeAvCMboRO/Hp0Tep7rS1hnyIA1/lZU=;
+	s=korg; t=1731407622;
+	bh=ZRDFNyvTOaZLHNyzDkYV6A2rFMz5uuXjF0qUO/yqjPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbC9CRwjMNE50UG2kHL/Ivc68/rOCN+2Auc530vaDMGaUKDZWEJwXnVtlpfXxLJQb
-	 JK3n4g7jiFz6YguXCN2r9AysqJywrCJM44rvH5B+rlJdPQzTw5quJvsYaZ3UvSbH8c
-	 fvkdKaKNKvRKx8TscghHGjROP768ThLOStE61H6I=
+	b=zOWIF1a4KLcZAilAPnRKK/RgDr4Qm/MZA4dQeFasTvHaj2i9sL+YNR4SvYmy4LdFT
+	 G9FVLjJmx9+/XEbQgIPLgr+Zvd+7s/DXheN88usxrELCr9M4ApCYXbLJH3qBwt0PZ6
+	 muEaXS7AVavilh2H+IA1URZSmbUrg17PKKDZimog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/76] ARM: dts: rockchip: fix rk3036 acodec node
+Subject: [PATCH 6.6 024/119] HID: core: zero-initialize the report buffer
 Date: Tue, 12 Nov 2024 11:20:32 +0100
-Message-ID: <20241112101840.062822549@linuxfoundation.org>
+Message-ID: <20241112101849.636601751@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit c7206853cd7d31c52575fb1dc7616b4398f3bc8f ]
+[ Upstream commit 177f25d1292c7e16e1199b39c85480f7f8815552 ]
 
-The acodec node is not conformant to the binding.
+Since the report buffer is used by all kinds of drivers in various ways, let's
+zero-initialize it during allocation to make sure that it can't be ever used
+to leak kernel memory via specially-crafted report.
 
-Set the correct nodename, use the correct compatible, add the needed
-#sound-dai-cells and sort the rockchip,grf below clocks properties
-as expected.
-
-Fixes: faea098e1808 ("ARM: dts: rockchip: add core rk3036 dtsi")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-12-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 27ce405039bf ("HID: fix data access in implement()")
+Reported-by: Benoît Sevens <bsevens@google.com>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/hid-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index 0af1a86f9dc45..4db4e19b22a1e 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -382,12 +382,13 @@
- 		};
- 	};
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 85ddeb13a3fae..1467c5a732db4 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1875,7 +1875,7 @@ u8 *hid_alloc_report_buf(struct hid_report *report, gfp_t flags)
  
--	acodec: acodec-ana@20030000 {
--		compatible = "rk3036-codec";
-+	acodec: audio-codec@20030000 {
-+		compatible = "rockchip,rk3036-codec";
- 		reg = <0x20030000 0x4000>;
--		rockchip,grf = <&grf>;
- 		clock-names = "acodec_pclk";
- 		clocks = <&cru PCLK_ACODEC>;
-+		rockchip,grf = <&grf>;
-+		#sound-dai-cells = <0>;
- 		status = "disabled";
- 	};
+ 	u32 len = hid_report_len(report) + 7;
+ 
+-	return kmalloc(len, flags);
++	return kzalloc(len, flags);
+ }
+ EXPORT_SYMBOL_GPL(hid_alloc_report_buf);
  
 -- 
 2.43.0
