@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-92738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52F99C575D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:11:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF999C578B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 13:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DA20B38188
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 697DDB25DB7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCF121A707;
-	Tue, 12 Nov 2024 10:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EEA21A717;
+	Tue, 12 Nov 2024 10:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eos/BAnY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiW+Um32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB6921A6FD;
-	Tue, 12 Nov 2024 10:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ED321A704;
+	Tue, 12 Nov 2024 10:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408429; cv=none; b=X7uShvTxqfaXfkLU1SAZGrG2QkWqLO4r4zZiP7H1vdxX/hRsUMG/EHMwUSltPiIOCnIXrLFwctTZ3pZVskI+BWhRuBBWXg3blAuIQ3C4kHAs8jjErDdOKiSkDYz25Fr2dnX7bN+NNZ0zW9pnCpaDBspZOeSzUqYTi2/i8B4KdAo=
+	t=1731408436; cv=none; b=S8LiBDBmAAa1AjIQwv8IWKCx1TCMklWweblTqo21jQJRsInFxCZBnOSpeJF69jgXGyNI+qZrV2sh2Ysw6OXhXgE5Ybvoi4uMqFmofekE8BICJmuDOrZCN+hmY64mvMN+bG39PP4oMcTK4vGrjjYqS73hRft7iCaar+UgN2kwck4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408429; c=relaxed/simple;
-	bh=G3LNwDnpkTvFAOphIkmtN12mITvynHlpQ2jHGuFRmb0=;
+	s=arc-20240116; t=1731408436; c=relaxed/simple;
+	bh=QNiDnZeIgEiKYkxa5eLbfk0SEqYKCecIFlm1KUoE+yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y03/kWeohF7UnSuAB5M4z5YOhaKdjk/Tau+5aJJfCumBg2pMWhHfuNuxUBItUDKP4KJN//5dLmDDBGee97Gio4tJbw7zOkBzfWAePxSwaxyBc+AvcnK7/u8Ewf3UOU29oWlYfgwVHFPGXj++0UcMS/4ZukWyrSX/T8Z/m/JfnTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eos/BAnY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18F3C4CEF9;
-	Tue, 12 Nov 2024 10:47:08 +0000 (UTC)
+	 MIME-Version; b=ICEsDjcRT9JYzW/kkNviPImv1c7LZP3Jcf6CT5ospvKuUYXEaox2jKWEEk6w6vMCanPV1zXaYSNcsEnMfvYlH0FzVNa7kDbwDb2OjRvNWEF6eXqNz6xsvYa5JloS4toMR0/LtFFD3iknTHx7L3BN3uFherCwzPjko5wznFq97O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiW+Um32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A351C4CECD;
+	Tue, 12 Nov 2024 10:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408429;
-	bh=G3LNwDnpkTvFAOphIkmtN12mITvynHlpQ2jHGuFRmb0=;
+	s=korg; t=1731408435;
+	bh=QNiDnZeIgEiKYkxa5eLbfk0SEqYKCecIFlm1KUoE+yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eos/BAnYDKvWwwCdsYkDCYy6K+9n+KDJQFtSoxuxAtMudbnp30Fr3Nfl4qWQIiUwq
-	 LOaYFvMUeLXipX8GYlbukZUXqkhaEka8BFsmBqQ0vjwljMVxpx24fNM7I+Jm8IunpD
-	 Osml9fd3DrO1lZjK9Lv6VUz9Mr9zWwD4UZpVXMn4=
+	b=MiW+Um322T0qoMmS9F2Uezld9CbtiMH3GueISX9KciyP+EbSCi3FvG7VAQO+ZyUcL
+	 pn67+JjAJPInKBL59w7Tnx2Leb7m7DBTV/nCIO77GKRic8WICgyna4re26i5TvwvUL
+	 ATU3omPlHAyT+ZlHzDL7aai0xQLjRd3wv9h4MOW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Nie <rex.nie@jaguarmicro.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 6.11 158/184] usb: typec: qcom-pmic: init value of hdr_len/txbuf_len earlier
-Date: Tue, 12 Nov 2024 11:21:56 +0100
-Message-ID: <20241112101906.936217816@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.11 160/184] USB: serial: io_edgeport: fix use after free in debug printk
+Date: Tue, 12 Nov 2024 11:21:58 +0100
+Message-ID: <20241112101907.010842832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
 References: <20241112101900.865487674@linuxfoundation.org>
@@ -67,50 +65,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rex Nie <rex.nie@jaguarmicro.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 029778a4fd2c90c2e76a902b797c2348a722f1b8 upstream.
+commit 37bb5628379295c1254c113a407cab03a0f4d0b4 upstream.
 
-If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
-txbuf_len are uninitialized. This commit stops to print uninitialized
-value and misleading/false data.
+The "dev_dbg(&urb->dev->dev, ..." which happens after usb_free_urb(urb)
+is a use after free of the "urb" pointer.  Store the "dev" pointer at the
+start of the function to avoid this issue.
 
+Fixes: 984f68683298 ("USB: serial: io_edgeport.c: remove dbg() usage")
 Cc: stable@vger.kernel.org
-Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
-Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20241030133632.2116-1-rex.nie@jaguarmicro.com
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c |    8 ++++----
+ drivers/usb/serial/io_edgeport.c |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-@@ -227,6 +227,10 @@ qcom_pmic_typec_pdphy_pd_transmit_payloa
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
+@@ -770,11 +770,12 @@ static void edge_bulk_out_data_callback(
+ static void edge_bulk_out_cmd_callback(struct urb *urb)
+ {
+ 	struct edgeport_port *edge_port = urb->context;
++	struct device *dev = &urb->dev->dev;
+ 	int status = urb->status;
  
- 	spin_lock_irqsave(&pmic_typec_pdphy->lock, flags);
+ 	atomic_dec(&CmdUrbs);
+-	dev_dbg(&urb->dev->dev, "%s - FREE URB %p (outstanding %d)\n",
+-		__func__, urb, atomic_read(&CmdUrbs));
++	dev_dbg(dev, "%s - FREE URB %p (outstanding %d)\n", __func__, urb,
++		atomic_read(&CmdUrbs));
  
-+	hdr_len = sizeof(msg->header);
-+	txbuf_len = pd_header_cnt_le(msg->header) * 4;
-+	txsize_len = hdr_len + txbuf_len - 1;
-+
- 	ret = regmap_read(pmic_typec_pdphy->regmap,
- 			  pmic_typec_pdphy->base + USB_PDPHY_RX_ACKNOWLEDGE_REG,
- 			  &val);
-@@ -244,10 +248,6 @@ qcom_pmic_typec_pdphy_pd_transmit_payloa
- 	if (ret)
- 		goto done;
  
--	hdr_len = sizeof(msg->header);
--	txbuf_len = pd_header_cnt_le(msg->header) * 4;
--	txsize_len = hdr_len + txbuf_len - 1;
--
- 	/* Write message header sizeof(u16) to USB_PDPHY_TX_BUFFER_HDR_REG */
- 	ret = regmap_bulk_write(pmic_typec_pdphy->regmap,
- 				pmic_typec_pdphy->base + USB_PDPHY_TX_BUFFER_HDR_REG,
+ 	/* clean up the transfer buffer */
+@@ -784,8 +785,7 @@ static void edge_bulk_out_cmd_callback(s
+ 	usb_free_urb(urb);
+ 
+ 	if (status) {
+-		dev_dbg(&urb->dev->dev,
+-			"%s - nonzero write bulk status received: %d\n",
++		dev_dbg(dev, "%s - nonzero write bulk status received: %d\n",
+ 			__func__, status);
+ 		return;
+ 	}
 
 
 
