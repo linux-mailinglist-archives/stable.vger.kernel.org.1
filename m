@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-92674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C0F9C559E
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B479C53D4
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54D21F212B6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:08:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE92A1F23174
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CC8218927;
-	Tue, 12 Nov 2024 10:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A107212F1D;
+	Tue, 12 Nov 2024 10:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAndFtLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD3Rn/ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848421440F;
-	Tue, 12 Nov 2024 10:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC02620E337;
+	Tue, 12 Nov 2024 10:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408216; cv=none; b=Tz5/7yHexZJe5j0RGOl6DWSPKZb/wJlNT/rDQlowpmGlQg2JAvjTZz1yZqIS0xJ98aNTDoOROxTEx6QOkdylPuBRNT7i8Y6pZafAuCqP3qTaH7XOSOFdi08UypqXTjyITUm1AToMDExykR97TO1uTqKE+hNkdjyv1bz9wFl0LmE=
+	t=1731407563; cv=none; b=g7a3pnmNye4Vtkp5IMpm19ZZsHjVw/PEUtJ7dcy/AeFiGtKcwxpI8Wrpb99+hbK9sV2PAAAMIgo0B6VzZGGQUWJ9EDEvvhPweN/FqlVU3nCAAuqEFLpWZTlzFMZ4t0ln65zS88QJZJ3BRWxi7bwlAgJvKwxGJddCjI0upbbwgLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408216; c=relaxed/simple;
-	bh=soqaGipknAl7bdDE62JXqZUY9yyPeQ8FbT0a9yWKIwI=;
+	s=arc-20240116; t=1731407563; c=relaxed/simple;
+	bh=6N9P0w2OczyanDiSJolkHc4M042C0RiKFss54p2VmTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNTnr/7IURoq8OYgsSbONPXpdh9Tr0QPVIZiyLSKuzaBlwRqEKd2OYLGdZ0Mn8o9iGe00HZJLeMbnIY2l96F3V8HCEfeq6bDB8hY/Pu74vjH9D1atKUvlZs3YPLtlpw5fQ6SnTicHYOYkdoXTLta6HGCnETztT5hmW71bxVNrVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAndFtLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C513BC4CECD;
-	Tue, 12 Nov 2024 10:43:35 +0000 (UTC)
+	 MIME-Version; b=XEdGAs6FbHTLo04TlkPggzAnRqs43+zCsIbbZ+RUA2ZK976zN/Z6b4tImRzR8o0EOSpWSOB+3Kr7YD+aH5l2DxKUMN7Bch2ycMXG0aEE16AKc/JghQZi75qB4Fc+79gu1sIGxDNTFm4YAf8XhEsCcDuxDjhoEpf2pxenaApq4Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD3Rn/ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539C9C4CECD;
+	Tue, 12 Nov 2024 10:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408216;
-	bh=soqaGipknAl7bdDE62JXqZUY9yyPeQ8FbT0a9yWKIwI=;
+	s=korg; t=1731407562;
+	bh=6N9P0w2OczyanDiSJolkHc4M042C0RiKFss54p2VmTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAndFtLIoxZ7mgEXRuyjO7N6l4MDsrwHbRTRexZrwKb5H6dmO25tjwy5AeZVgLM8W
-	 BVYAUlH74wWuXrw4uYRt73sNCF4G0r1YXoevuTA8Bh6dv/0gYgDROvEweF/xXjZS6a
-	 /afKst+gWrHG0H5rwG/eyHbqQjedLUniSS/oREKo=
+	b=KD3Rn/ijTg1rPP193WzT+Xz4Vj3AP4vQCzgvnYCY8oAIPYTDttySJ+wlO2Ix96zR1
+	 rwEZ1DN+6d3+gVnrfFHbuLuDcWNXT3yF2R3CGbFzLdBGiUnOJmu29bwzhJ8KCCZGpV
+	 y2SNXsre9HmhRes3uModCs52utxYKmjGQr/d37d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <Wentao_liang_g@163.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 063/184] drivers: net: ionic: add missed debugfs cleanup to ionic_probe() error path
-Date: Tue, 12 Nov 2024 11:20:21 +0100
-Message-ID: <20241112101903.283423140@linuxfoundation.org>
+Subject: [PATCH 6.6 014/119] arm64: dts: imx8qxp: Add VPU subsystem file
+Date: Tue, 12 Nov 2024 11:20:22 +0100
+Message-ID: <20241112101849.258535673@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <Wentao_liang_g@163.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 71712cf519faeed529549a79559c06c7fc250a15 ]
+[ Upstream commit 6bcd8b2fa2a9826fb6a849a9bfd7bdef145cabb6 ]
 
-The ionic_setup_one() creates a debugfs entry for ionic upon
-successful execution. However, the ionic_probe() does not
-release the dentry before returning, resulting in a memory
-leak.
+imx8qxp re-uses imx8qm VPU subsystem file, but it has different base
+addresses. Also imx8qxp has only two VPU cores, delete vpu_vore2 and
+mu2_m0 accordingly.
 
-To fix this bug, we add the ionic_debugfs_del_dev() to release
-the resources in a timely manner before returning.
-
-Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
-Signed-off-by: Wentao Liang <Wentao_liang_g@163.com>
-Acked-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://patch.msgid.link/20241107021756.1677-1-liangwentao@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: eed2d8e8d005 ("arm64: dts: imx8-ss-vpu: Fix imx8qm VPU IRQs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/freescale/imx8qxp-ss-vpu.dtsi      | 17 +++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi      |  2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index b93791d6b5933..f5dc876eb5009 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -394,6 +394,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_out_pci:
- 	ionic_dev_teardown(ionic);
- 	ionic_clear_pci(ionic);
-+	ionic_debugfs_del_dev(ionic);
- err_out:
- 	mutex_destroy(&ionic->dev_cmd_lock);
- 	ionic_devlink_free(ionic);
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+new file mode 100644
+index 0000000000000..7894a3ab26d6b
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-ss-vpu.dtsi
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR X11)
++/*
++ * Copyright 2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * D-82229 Seefeld, Germany.
++ * Author: Alexander Stein
++ */
++
++&vpu_core0 {
++	reg = <0x2d040000 0x10000>;
++};
++
++&vpu_core1 {
++	reg = <0x2d050000 0x10000>;
++};
++
++/delete-node/ &mu2_m0;
++/delete-node/ &vpu_core2;
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+index c80c85a4b4059..b155180cc249b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+@@ -48,7 +48,6 @@
+ 		serial3 = &lpuart3;
+ 		vpu-core0 = &vpu_core0;
+ 		vpu-core1 = &vpu_core1;
+-		vpu-core2 = &vpu_core2;
+ 	};
+ 
+ 	cpus {
+@@ -317,6 +316,7 @@
+ };
+ 
+ #include "imx8qxp-ss-img.dtsi"
++#include "imx8qxp-ss-vpu.dtsi"
+ #include "imx8qxp-ss-adma.dtsi"
+ #include "imx8qxp-ss-conn.dtsi"
+ #include "imx8qxp-ss-lsio.dtsi"
 -- 
 2.43.0
 
