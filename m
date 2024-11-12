@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-92478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B9A9C54B2
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5E09C548B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4DBAB3844D
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D697B385F7
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B96D21764E;
-	Tue, 12 Nov 2024 10:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD9C2178E4;
+	Tue, 12 Nov 2024 10:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kynl31Xd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biL9g32O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147F8217476;
-	Tue, 12 Nov 2024 10:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3120217672;
+	Tue, 12 Nov 2024 10:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407775; cv=none; b=MkofR9d2MwJWnr8UFDIlpl6bJBAriHwEeR7k/P/FpwPG6Sm1LtCqL7z9YYHfkXmeGqPtl1tpspy5zk0BP97vzfngYVQvuwBw8RaGpRYneZQqHWuzb6UMtZsa0rVgrl7ze8PUybXTTAuH76mNpAAyWzGKwFbDzj7vM227cUoazpA=
+	t=1731407776; cv=none; b=gCztx2fS9ZewV+b55c98Xq2aGnns3QLiJ3QQYbTu7ASnugoxlBlQDYC2ezjhYwEKtl1tcGicbgk4v9/bRdW9qJEEP2xeXhOjp/osljau4kdAFEZC5m4WUqJ/buqzxYvaJJnT6k5hVRrMjtFS9dL4EkHgzTSiu0/3aQT3JWB+i/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407775; c=relaxed/simple;
-	bh=V2SfHRj42Qh9xvWSj4r98rg50craP88nJP0wIotBYdI=;
+	s=arc-20240116; t=1731407776; c=relaxed/simple;
+	bh=Epzx8G6BYbngJJ6zR/oP5V9Ou8PfZXAlIi4S4zWQIz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fcqfFrXvViGfSWUtsnBTNKyg/L8oXM15CdM/fkaTUs3xavdL0EY9dU/4A6ZUgNPit5rViMT8IRwzkI6qHLOzsgUehTwfXDmjQlKawVEUJSBAOuLyTnbNjix1bdxlGzAIxfQWn1IP0foLNme8SeRci9tjJJ+PX4CQ0wxVD6YArCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kynl31Xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B0FC4CECD;
-	Tue, 12 Nov 2024 10:36:13 +0000 (UTC)
+	 MIME-Version; b=t60WsOL2/V6Bdd0aKo7yjIIxb2/BuPW+Nh/mSK7mgE6YZolL2pYlLHHqB68vDU4Bc2+FwRCFHtmv0SnfgoRQjOOOy/l5Tm/lyy9/Gg2sTpqaUP9SjsG0IEVc1bhQlael429kbFmbjaoQt0cnJZABK95M7hIjrvqg4DNnWNxJdLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biL9g32O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5291BC4CEDA;
+	Tue, 12 Nov 2024 10:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731407774;
-	bh=V2SfHRj42Qh9xvWSj4r98rg50craP88nJP0wIotBYdI=;
+	s=k20201202; t=1731407776;
+	bh=Epzx8G6BYbngJJ6zR/oP5V9Ou8PfZXAlIi4S4zWQIz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kynl31XdvCOSHh+UDy1meTdGGAjw5vDiJdD31yMclIhh59SVL++UOXzPMF/qZ3uFT
-	 dxtdqsMRBFZwEE2Wfwqpw+V7CHz2Yn5aDVeLZthInOS7CZUFUnj3BrZaJRXdzgLpwa
-	 AnzVXxiETk+E8zUKZ/jiYWQKHiPhrK9Bjrwn25vD0U2X0IaVxQZPggmkAELo7KQogb
-	 Tmj/YSOP9qRWoNi18dm4CugV/k3El3G8pSONvPsqgvL6s9UYtCJoKAimLZH2c/Dkye
-	 cNz1hmByHZ/E8h0tzv99fqb0cvawnLxqw0y1ANysDL9DksjNYaD1W2hIg3LeUiDpjQ
-	 dBuS19vyDGHCA==
+	b=biL9g32Ocp8omJ8/pvfj6c8fPNqdPpeueH1iYxdGks4NHQQsimpGExQw36TLQprXQ
+	 DHbfY2beJQb3ngXVWvrQxajSAs34wmD4BbGYbX/ZQGTE1s1LQVlzHtpZCBS+aclIgK
+	 +bkxz27nASEQewpnxaObix7ipNsuTaU88n4MvYEQtTe+VP/7rwRw8cVNaDWIb8kUSA
+	 kHisvUymya+woYBLBXXz5CVZK6izAkx9PwC77SXuvPC/6Avb4Eqq/HlokTcGtLI640
+	 9omMwB/9cefgFLCxrt58OFhqkxWs8x9Tuovwx5M2jAgEttKLNCEVTNpM5YMRF1OlFL
+	 lUR6f90nMIQTg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kurt Borja <kuurtb@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+Cc: Renato Caldas <renato@calgera.com>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mjg59@srcf.ucam.org,
+	ike.pan@canonical.com,
 	ilpo.jarvinen@linux.intel.com,
 	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 05/16] platform/x86: dell-wmi-base: Handle META key Lock/Unlock events
-Date: Tue, 12 Nov 2024 05:35:47 -0500
-Message-ID: <20241112103605.1652910-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 06/16] platform/x86: ideapad-laptop: add missing Ideapad Pro 5 fn keys
+Date: Tue, 12 Nov 2024 05:35:48 -0500
+Message-ID: <20241112103605.1652910-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241112103605.1652910-1-sashal@kernel.org>
 References: <20241112103605.1652910-1-sashal@kernel.org>
@@ -64,53 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.7
 Content-Transfer-Encoding: 8bit
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Renato Caldas <renato@calgera.com>
 
-[ Upstream commit ec61f0bb4feec3345626a2b93b970b6719743997 ]
+[ Upstream commit 36e66be874a7ea9d28fb9757629899a8449b8748 ]
 
-Some Alienware devices have a key that locks/unlocks the Meta key. This
-key triggers a WMI event that should be ignored by the kernel, as it's
-handled by internally the firmware.
+The scancodes for the Mic Mute and Airplane keys on the Ideapad Pro 5
+(14AHP9 at least, probably the other variants too) are different and
+were not being picked up by the driver. This adds them to the keymap.
 
-There is no known way of changing this default behavior. The firmware
-would lock/unlock the Meta key, regardless of how the event is handled.
+Apart from what is already supported, the remaining fn keys are
+unfortunately producing windows-specific key-combos.
 
-Tested on an Alienware x15 R1.
-
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20241031154441.6663-2-kuurtb@gmail.com
+Signed-off-by: Renato Caldas <renato@calgera.com>
+Link: https://lore.kernel.org/r/20241102183116.30142-1-renato@calgera.com
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/ideapad-laptop.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
-index 24fd7ffadda95..841a5414d28a6 100644
---- a/drivers/platform/x86/dell/dell-wmi-base.c
-+++ b/drivers/platform/x86/dell/dell-wmi-base.c
-@@ -80,6 +80,12 @@ static const struct dmi_system_id dell_wmi_smbios_list[] __initconst = {
- static const struct key_entry dell_wmi_keymap_type_0000[] = {
- 	{ KE_IGNORE, 0x003a, { KEY_CAPSLOCK } },
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index b58df617d4fda..2fde38f506508 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1159,6 +1159,9 @@ static const struct key_entry ideapad_keymap[] = {
+ 	{ KE_KEY,	0x27 | IDEAPAD_WMI_KEY, { KEY_HELP } },
+ 	/* Refresh Rate Toggle */
+ 	{ KE_KEY,	0x0a | IDEAPAD_WMI_KEY, { KEY_REFRESH_RATE_TOGGLE } },
++	/* Specific to some newer models */
++	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
++	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
  
-+	/* Meta key lock */
-+	{ KE_IGNORE, 0xe000, { KEY_RIGHTMETA } },
-+
-+	/* Meta key unlock */
-+	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
-+
- 	/* Key code is followed by brightness level */
- 	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
- 	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
+ 	{ KE_END },
+ };
 -- 
 2.43.0
 
