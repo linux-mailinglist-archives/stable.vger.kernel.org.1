@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-92474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216FC9C5443
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5018E9C5691
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB5CC283948
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E14AFB3579B
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A86D2141C3;
-	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C12213EEC;
+	Tue, 12 Nov 2024 10:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRv/jup/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZZdbTFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F8A2141B3;
-	Tue, 12 Nov 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9198F20899D;
+	Tue, 12 Nov 2024 10:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407770; cv=none; b=cbSTqfFVNnFd73Tm2yDLjyr1v+z1rUBmRdLSoyK1kZygawJ9XsboUiVUd4Cwlxmzsd+xeijZ43D5kyxFH/pNKfFX3Ptvs3AOGoQFaYqKCcqh5y9vJ5AXvlJXFCY4qaPFwHI/tcr4TsnV7iFBV/eql/bhOF+WQu/W2ViTRedDk24=
+	t=1731407360; cv=none; b=GCSTTsZqV5+PbkWYDidLwYhm9yUSpODx8Z+6ZXctwNA07TF0kxE1iBuqeUZi5A2rH3bNieImvmTw1kp5Kn+53EA6HnlnBuZA+uNcR0/HCltrHEobhP0AqK51S9HO4Adi1wRTY3pDVUJHDbn0Tuy3iNZs3Cs9VjdqJre3ObIs92E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407770; c=relaxed/simple;
-	bh=bpltndSOcXnJY6Y54QHfpIB2/p9+VuX0huBlgHKNUHo=;
+	s=arc-20240116; t=1731407360; c=relaxed/simple;
+	bh=0DMh0nI2WRzJAla3AoMDA4aOW+eH5NL2ehKI13nG4Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAaS0Y3rEwZE6vGXm7y6OXFzZtgxKr+r7Ex6/6VNZlPiTcoa3uS8gIvjXhIX7OHnTdHCXe5RfuxwAK+E1F7hMmXhY9cM52ZDibRrJUT1nqp9sgzbX+LH8ivIYzwru3cxPaZU2t33/HJhyH5yc0rhad2N2KP0H10+eDUIarXVcOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRv/jup/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B9BC4CED6;
-	Tue, 12 Nov 2024 10:36:09 +0000 (UTC)
+	 MIME-Version; b=mjH8LBg4IVMg3Anqg2nxQXZOc/Y+l8q5FSTMJwqGPZwMPSOrnoE5ZhHwPVxx8GgpSt+4kMCMVH/C71WYZkDkJV1wV6mVWRjwchlS/LnU/t2vXmdTzrD5ZQt/yzDj3MQbemOHgjtbhMZNE4cS7Fa/ygYGCFqyypP4xXilxpvf/yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZZdbTFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A87C4CECD;
+	Tue, 12 Nov 2024 10:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407770;
-	bh=bpltndSOcXnJY6Y54QHfpIB2/p9+VuX0huBlgHKNUHo=;
+	s=korg; t=1731407360;
+	bh=0DMh0nI2WRzJAla3AoMDA4aOW+eH5NL2ehKI13nG4Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRv/jup/EC+ZL6mhVETvRBx32apHjPDAgiMiVq5+vC6espDXyNtI9B5gFjOVPNMs4
-	 Nkbd49WDW6jHTFp2p1uQ97oxp2/yFi823fpmbmNswdKuM2POtJsjvE/9+8deXik5am
-	 O0i8Lx7OcZ1wzxsDz2HnmK00fxT97TYRtmhBLh0o=
+	b=KZZdbTFzpuUPhepzSYHX7kRPqhBx79q29zUZpjPRLVwTBXk19PU11pQIq359Xeyac
+	 88+d1q4EcgBmLKNfodGHMo4PM/ApxNj45smeKLguRK1zp2ocUyXx8zvdb1Wx6Su3Dq
+	 zueIB92JrKS2ycG2AHu+an1sudNJPssr0nO0aqfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jyri Sarha <jyri.sarha@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/119] ASoC: SOF: sof-client-probes-ipc4: Set param_size extension bits
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 53/98] ksmbd: Fix the missing xa_store error check
 Date: Tue, 12 Nov 2024 11:21:08 +0100
-Message-ID: <20241112101851.008668021@linuxfoundation.org>
+Message-ID: <20241112101846.288106377@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jyri Sarha <jyri.sarha@linux.intel.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 48b86532c10128cf50c854a90c2d5b1410f4012d ]
+commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
 
-Write the size of the optional payload of SOF_IPC4_MOD_INIT_INSTANCE
-message to extension param_size-bits.
+xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
+be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
+so check error for xa_store() to fix it.
 
-The previous IPC4 version does not set these bits that should indicate
-the size of the optional payload (struct sof_ipc4_probe_cfg). The old
-firmware side component code works well without these bits, but when
-the probes are converted to use the generic module API, this does not
-work anymore.
-
-Fixes: f5623593060f ("ASoC: SOF: IPC4: probes: Implement IPC4 ops for probes client device")
-Signed-off-by: Jyri Sarha <jyri.sarha@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20241107132840.17386-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/sof-client-probes-ipc4.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/mgmt/user_session.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/sof-client-probes-ipc4.c b/sound/soc/sof/sof-client-probes-ipc4.c
-index c56a85854d92c..07bb143823d77 100644
---- a/sound/soc/sof/sof-client-probes-ipc4.c
-+++ b/sound/soc/sof/sof-client-probes-ipc4.c
-@@ -125,6 +125,7 @@ static int ipc4_probes_init(struct sof_client_dev *cdev, u32 stream_tag,
- 	msg.primary |= SOF_IPC4_MSG_TARGET(SOF_IPC4_MODULE_MSG);
- 	msg.extension = SOF_IPC4_MOD_EXT_DST_MOD_INSTANCE(INVALID_PIPELINE_ID);
- 	msg.extension |= SOF_IPC4_MOD_EXT_CORE_ID(0);
-+	msg.extension |= SOF_IPC4_MOD_EXT_PARAM_SIZE(sizeof(cfg) / sizeof(uint32_t));
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
  
- 	msg.data_size = sizeof(cfg);
- 	msg.data_ptr = &cfg;
--- 
-2.43.0
-
+ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
+ {
+-	struct ksmbd_session_rpc *entry;
++	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+ 	int method;
+ 
+@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	entry->id = ksmbd_ipc_id_alloc();
+ 	if (entry->id < 0)
+ 		goto free_entry;
+-	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	if (xa_is_err(old))
++		goto free_id;
+ 
+ 	resp = ksmbd_rpc_open(sess, entry->id);
+ 	if (!resp)
+-		goto free_id;
++		goto erase_xa;
+ 
+ 	kvfree(resp);
+ 	return entry->id;
+-free_id:
++erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
++free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
 
 
 
