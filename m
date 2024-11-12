@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-92710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBC19C5632
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0819C5426
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 822CBB434F8
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:10:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8DABB36FEC
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05B5219E38;
-	Tue, 12 Nov 2024 10:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA42144BB;
+	Tue, 12 Nov 2024 10:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHOZPqr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR6u2DA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE34B20F5AF;
-	Tue, 12 Nov 2024 10:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEBD2144B3;
+	Tue, 12 Nov 2024 10:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408337; cv=none; b=VxgnROHfvcr7EVAr8slkTePWgFkqLcDc7QOm6EM/VYKHU9OCTuWQUjDaRZYce9iWaptChzN/Zp7sHDPWNuqKWGi/VsSmb4xKLr/ei+IrjZ69GLw/xmgC8SLajdpmke/C+5O6hojnPPFbKd+L/Cfjp0sRxdS6KsL79iH23uihsCs=
+	t=1731407681; cv=none; b=cFZ4Tj3lQlTji4MProWk12l8ldqgyY4MxnR3dQJgbxEtCTBQIwD3xbnLS3pP4WY4T+X02iJelHjYusB/UMYWozPbVtyTtw/LuzwY7W8d0A6fpwRrhwlsSgiVRiX8JhBNfXN2uxTY8U6MAbrqFcOI9LMsEXK8kl3/SuqSSS/Fo38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408337; c=relaxed/simple;
-	bh=SMscc8jEikxk+xRScaAO2j43irbgdjfaInDjf5MVlVI=;
+	s=arc-20240116; t=1731407681; c=relaxed/simple;
+	bh=4CgQHFSO7PILVa7WI277YHzBBnKSDybjHCWMep9iAOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geNtBj6loK7nVhg+BcHqgh+AtyWKtv2aPMG1//yKw8U0Y7u3hzsnnalrKzPDNcBiRSWPz3/N+1IDKVxZhTj+dmgiNseVq6RcTWAojhPniqvX8cHKCiKeNm95vPf57WRhy8q8BMiZl2BS/TeGLMGXhtuYGAmXonloDNUQ9/2ZNzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHOZPqr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C41EC4CECD;
-	Tue, 12 Nov 2024 10:45:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qxUA4DrCqDVABLUkE9nu0TaLyAd6wRw7DkZwaGxJCo55oIYVjALXXwrg7Id9/jXv2xapvxu6m0ZT+WLz/8cyWsus7hhNj5rPrmrT00SIvMYUPyvydg/zes1DgaHPGdkSCaWPgIbNvQsbZUlP3g8ohRw3u4hZhGp3lsA9HoES1gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR6u2DA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23902C4CED4;
+	Tue, 12 Nov 2024 10:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731408337;
-	bh=SMscc8jEikxk+xRScaAO2j43irbgdjfaInDjf5MVlVI=;
+	s=korg; t=1731407681;
+	bh=4CgQHFSO7PILVa7WI277YHzBBnKSDybjHCWMep9iAOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHOZPqr9z/dla1oV6ug5lVFfVSelvizxDEwEhOuBwPQ6Cqb36P2fkiPISVweBR7T7
-	 S7E4jMCoMsGU4TRnU18XXnI1qycyjKUUjauJ+u26mYfJV5K+IL6BZy+fvbz9zcz91h
-	 HP4SEo0bLQBSWgb8pr6kNoLtFrnZmcqxxeTbcU/g=
+	b=iR6u2DA/mwKHlhWOGYVEdGOtVWLsAGT63mrtmf0EMNVpaDrvZ5POiEs1YQ7ZqKvIx
+	 RMnWQBHmVOU65aKHxt/6IrTUgf9BZcorxcJlU7AQPD9CDgoFWpL5j74KljVYELkD9i
+	 yf4xmoj5Jn9aEApo04g77ZvtLVTfE+CjQE4T8l6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mark Herbert <mark.herbert42@gmail.com>,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.11 100/184] drm/amd/display: Fix brightness level not retained over reboot
+	=?UTF-8?q?Jaros=C5=82aw=20Janik?= <jaroslaw.janik@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 050/119] Revert "ALSA: hda/conexant: Mute speakers at suspend / shutdown"
 Date: Tue, 12 Nov 2024 11:20:58 +0100
-Message-ID: <20241112101904.701424665@linuxfoundation.org>
+Message-ID: <20241112101850.629945198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
-References: <20241112101900.865487674@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Jarosław Janik <jaroslaw.janik@gmail.com>
 
-commit 4f26c95ffc21a91281429ed60180619bae19ae92 upstream.
+commit c9363bbb0f68dd1ddb8be7bbfe958cdfcd38d851 upstream.
 
-[Why]
-During boot up and resume the DC layer will reset the panel
-brightness to fix a flicker issue.
+Commit 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend /
+shutdown") mutes speakers on system shutdown or whenever HDA controller
+is suspended by PM; this however interacts badly with Thinkpad's ACPI
+firmware behavior which uses beeps to signal various events (enter/leave
+suspend or hibernation, AC power connect/disconnect, low battery, etc.);
+now those beeps are either muted altogether (for suspend/hibernate/
+shutdown related events) or work more or less randomly (eg. AC
+plug/unplug is only audible when you are playing music at the moment,
+because HDA device is likely in suspend mode otherwise).
 
-It will cause the dm->actual_brightness is not the current panel
-brightness level. (the dm->brightness is the correct panel level)
+Since the original bug report mentioned in 4f61c8fe3520 complained about
+Lenovo's Thinkpad laptop - revert this commit altogether.
 
-[How]
-Set the backlight level after do the set mode.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Fixes: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
-Reported-by: Mark Herbert <mark.herbert42@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3655
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7875afafba84817b791be6d2282b836695146060)
-Cc: stable@vger.kernel.org
+Fixes: 4f61c8fe3520 ("ALSA: hda/conexant: Mute speakers at suspend / shutdown")
+Signed-off-by: Jarosław Janik <jaroslaw.janik@gmail.com>
+Link: https://patch.msgid.link/20241030171813.18941-2-jaroslaw.janik@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ sound/pci/hda/patch_conexant.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9384,6 +9384,7 @@ static void amdgpu_dm_commit_streams(str
- 	bool mode_set_reset_required = false;
- 	u32 i;
- 	struct dc_commit_streams_params params = {dc_state->streams, dc_state->stream_count};
-+	bool set_backlight_level = false;
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -205,8 +205,6 @@ static void cx_auto_shutdown(struct hda_
+ {
+ 	struct conexant_spec *spec = codec->spec;
  
- 	/* Disable writeback */
- 	for_each_old_connector_in_state(state, connector, old_con_state, i) {
-@@ -9503,6 +9504,7 @@ static void amdgpu_dm_commit_streams(str
- 			acrtc->hw_mode = new_crtc_state->mode;
- 			crtc->hwmode = new_crtc_state->mode;
- 			mode_set_reset_required = true;
-+			set_backlight_level = true;
- 		} else if (modereset_required(new_crtc_state)) {
- 			drm_dbg_atomic(dev,
- 				       "Atomic commit: RESET. crtc id %d:[%p]\n",
-@@ -9554,6 +9556,19 @@ static void amdgpu_dm_commit_streams(str
- 				acrtc->otg_inst = status->primary_otg_inst;
- 		}
- 	}
-+
-+	/* During boot up and resume the DC layer will reset the panel brightness
-+	 * to fix a flicker issue.
-+	 * It will cause the dm->actual_brightness is not the current panel brightness
-+	 * level. (the dm->brightness is the correct panel level)
-+	 * So we set the backlight level with dm->brightness value after set mode
-+	 */
-+	if (set_backlight_level) {
-+		for (i = 0; i < dm->num_of_edps; i++) {
-+			if (dm->backlight_dev[i])
-+				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
-+		}
-+	}
- }
- 
- static void dm_set_writeback(struct amdgpu_display_manager *dm,
+-	snd_hda_gen_shutup_speakers(codec);
+-
+ 	/* Turn the problematic codec into D3 to avoid spurious noises
+ 	   from the internal speaker during (and after) reboot */
+ 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
 
 
 
