@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-92273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719DF9C5352
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:27:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C009C543A
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2946E1F2436C
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649C5284B99
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039572123E3;
-	Tue, 12 Nov 2024 10:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1542123D6;
+	Tue, 12 Nov 2024 10:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0ubMYPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKUATsKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B586D1F26E3;
-	Tue, 12 Nov 2024 10:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580201EE02B;
+	Tue, 12 Nov 2024 10:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407118; cv=none; b=ljRrbh0Ly6VMbDFVCeNUEjZ2ZqLK9C+9DTugRpP7qHBhVi06CPMI9F5O9pzRFdbCSz7FI5d/qYYfovwM1AxFLRU2Uk1pMDyvylCfVsZ4Mf55b99v1ZcNrbx+t9oo/pbrlLXCmT5vCffn1/l/yhTzyb3zP4ceVqr3Tbjk0B9pp2g=
+	t=1731407751; cv=none; b=p9Ax9ca33WjuEC7iiN69zMmq0B/UEGh57iqmU9x3S9dzqClF0w4cCiIQegEeEVHFPn83bvkID9knQj4DJCs44ZZuedMzpGpnMCbqGvc4Dn2WN5f7tnTEZfNgTCPiLZ7cwq4Enz2YHzsY/Z1I/wtmR4fEoJIuqQbBiA13LB7H1yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407118; c=relaxed/simple;
-	bh=YEaisjAzQpBi1Qb5BpCySpjMFB0biiS6Kh9MqItxOLo=;
+	s=arc-20240116; t=1731407751; c=relaxed/simple;
+	bh=UDyt7Z4650mLmUC6OWx3uWcA5b12r1dSLFp61ZX+ojE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p80E7XsF3cl34OYHm74ybZ9Ve3vLp9T4dRPCEuuXUPYuIIN5Qyh29hz1AjE1kEGAOBttNGWdCKVevo7nDqyGAZ0R2hLin3ODBLKUmMJzYZQ4BgEQ1OF73Kr6QZXBvOHVgXEsZhyAHTfRGJJwuVUCTM5URPhsPd1Z8lenkTtNp/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0ubMYPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3896DC4CECD;
-	Tue, 12 Nov 2024 10:25:17 +0000 (UTC)
+	 MIME-Version; b=YHBQg4/4kiwekKZhsVxHc9QdEbjSFvbLGWVV6SJu7KjCkCsvgY0b0Ef0Plx62Ab0k02Rz1iOw+UWKiiTG7ZLTmeQjXbU8onidMABS5GNvhZUmRjvwRupsnzGOpsQjLUxJKvfmRSbzWDnw29/vlsJPqTN/Nuym/jxJLsuDrez2fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKUATsKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4478C4CED4;
+	Tue, 12 Nov 2024 10:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407118;
-	bh=YEaisjAzQpBi1Qb5BpCySpjMFB0biiS6Kh9MqItxOLo=;
+	s=korg; t=1731407751;
+	bh=UDyt7Z4650mLmUC6OWx3uWcA5b12r1dSLFp61ZX+ojE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0ubMYPRpZ+dEzFKkXJyMUL/jWEdU9qhIt2X4uhveKhbQFamt0AOr72sSXTYGf9iP
-	 jdeqTOkBwUToUukVesTLJsrKb4qsv5wDcaSgQmXcwRxRKH8jtCKb2Kje1aKsfQr6Pu
-	 d2Tsu8av3TjnqDWjZLfCfI+zTkFO+7JJ4o65XHy0=
+	b=WKUATsKEU1NEP6B1bUthJ7G7xoEegibR268otPTQYpk/pW+0/tB0d8jSFpEWA3W0c
+	 y6SB3gpd5TCjeTOewtd5rnSEU+m0F/dgfKTNW3bw0V+4a8l3n1lH3ZYEOZPwyPq7+Y
+	 r6D3kUXtxryQtN47XVZXB+3ynir7nQO2UqsmK5fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 5.15 54/76] nfs: Fix KMSAN warning in decode_getfattr_attrs()
-Date: Tue, 12 Nov 2024 11:21:19 +0100
-Message-ID: <20241112101841.836881348@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 072/119] ksmbd: Fix the missing xa_store error check
+Date: Tue, 12 Nov 2024 11:21:20 +0100
+Message-ID: <20241112101851.466329463@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-References: <20241112101839.777512218@linuxfoundation.org>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101848.708153352@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit dc270d7159699ad6d11decadfce9633f0f71c1db upstream.
+commit 3abab905b14f4ba756d413f37f1fb02b708eee93 upstream.
 
-Fix the following KMSAN warning:
+xa_store() can fail, it return xa_err(-EINVAL) if the entry cannot
+be stored in an XArray, or xa_err(-ENOMEM) if memory allocation failed,
+so check error for xa_store() to fix it.
 
-CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-=====================================================
-=====================================================
-BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_generic+0x806/0xb00
- nfs4_xdr_dec_getattr+0x1de/0x240
- rpcauth_unwrap_resp_decode+0xab/0x100
- rpcauth_unwrap_resp+0x95/0xc0
- call_decode+0x4ff/0xb50
- __rpc_execute+0x57b/0x19d0
- rpc_execute+0x368/0x5e0
- rpc_run_task+0xcfe/0xee0
- nfs4_proc_getattr+0x5b5/0x990
- __nfs_revalidate_inode+0x477/0xd00
- nfs_access_get_cached+0x1021/0x1cc0
- nfs_do_access+0x9f/0xae0
- nfs_permission+0x1e4/0x8c0
- inode_permission+0x356/0x6c0
- link_path_walk+0x958/0x1330
- path_lookupat+0xce/0x6b0
- filename_lookup+0x23e/0x770
- vfs_statx+0xe7/0x970
- vfs_fstatat+0x1f2/0x2c0
- __se_sys_newfstatat+0x67/0x880
- __x64_sys_newfstatat+0xbd/0x120
- x64_sys_call+0x1826/0x3cf0
- do_syscall_64+0xd0/0x1b0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
-decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
-initialized.
-
-Fix the issue by initializing fattr->mdsthreshold to NULL in
-nfs_fattr_init().
-
-Cc: stable@vger.kernel.org # v3.5.x
-Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/mgmt/user_session.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1586,6 +1586,7 @@ void nfs_fattr_init(struct nfs_fattr *fa
- 	fattr->gencount = nfs_inc_attr_generation_counter();
- 	fattr->owner_name = NULL;
- 	fattr->group_name = NULL;
-+	fattr->mdsthreshold = NULL;
- }
- EXPORT_SYMBOL_GPL(nfs_fattr_init);
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -90,7 +90,7 @@ static int __rpc_method(char *rpc_name)
  
+ int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name)
+ {
+-	struct ksmbd_session_rpc *entry;
++	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+ 	int method;
+ 
+@@ -106,16 +106,19 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	entry->id = ksmbd_ipc_id_alloc();
+ 	if (entry->id < 0)
+ 		goto free_entry;
+-	xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	if (xa_is_err(old))
++		goto free_id;
+ 
+ 	resp = ksmbd_rpc_open(sess, entry->id);
+ 	if (!resp)
+-		goto free_id;
++		goto erase_xa;
+ 
+ 	kvfree(resp);
+ 	return entry->id;
+-free_id:
++erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
++free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
 
 
 
