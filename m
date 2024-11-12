@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-92421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD649C53E6
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:35:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 209259C557C
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 12:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4771283A0B
-	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 10:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA9FA28EBB2
+	for <lists+stable@lfdr.de>; Tue, 12 Nov 2024 11:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9803E213EEC;
-	Tue, 12 Nov 2024 10:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA94217661;
+	Tue, 12 Nov 2024 10:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEnn4ks/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytz0zSWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546E120ADFD;
-	Tue, 12 Nov 2024 10:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709C20E325;
+	Tue, 12 Nov 2024 10:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731407606; cv=none; b=mp9YJkXdKWA608YoqG9avc0J/aFzGZO5/dbi6REziXhcfBUie52SZrTLUDtNmlo46N37Yno+Kv8gKa17ZU0gNx8J9WJAbzFuEfF+D5Ud2Ib7JlluxwqFDVE7WDaGZUJu9gJOrv4DeosUz8/Vv0acCoTsRbeox7OgNkon6csZWFQ=
+	t=1731408098; cv=none; b=guL7VaH3Dospw/9OPiOZ52iC3cSMH3mfA1HE+zuVvHuiHiym6BSB0E+4K5DxdEEmMVXN3gpYp5c1N9BoL4ICkSGjT2GhFFDTW9ydedtmM7MriblcY9jF8qXnfk28LwNAaQ1HiK1D+sHAkUM0DH7BcFJaKRR1GW4xwnyKD2Uhzcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731407606; c=relaxed/simple;
-	bh=PRDqa0UV+UaF4LARxOZ9h+c7bUVJYSarfRMKE4m7XOM=;
+	s=arc-20240116; t=1731408098; c=relaxed/simple;
+	bh=u6z+Vse7OdfZ+L4+lqXPz9ZRj+Xo8gdG3vbzGGv5seE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j81vGE7KfBGGnd6bNlly8vHFaN9P1oFIZFpqM8D6nusSD29LzwMqT9tqkrOYk96rdHS8Y3fwbgxC3Zz4Na+W1LWPWHRjBoZBZRwsbAjomfjDpDh4cZTVCpc7vi83kiYtzWr0jMyc6vWz2TR67xbmuQZ9avmaefa0TxZG+yMySZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEnn4ks/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA332C4CECD;
-	Tue, 12 Nov 2024 10:33:25 +0000 (UTC)
+	 MIME-Version; b=fVD6L2Cw5qkwmxwgwjTZu1fKFS7hScVpdoLTSWHyjEdfh6PtDDlsHx9c1n7EPwTl4YzALdFZ3usmCzrRNCy9lpIt7lwhI99Vz+R8reLwte2DhMWONhG7JeT3nTXe4xBH6YFPlKLXItruI7BeW08fLniaW2ejKdsJke2UHy1vjeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytz0zSWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145FDC4CED7;
+	Tue, 12 Nov 2024 10:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731407606;
-	bh=PRDqa0UV+UaF4LARxOZ9h+c7bUVJYSarfRMKE4m7XOM=;
+	s=korg; t=1731408097;
+	bh=u6z+Vse7OdfZ+L4+lqXPz9ZRj+Xo8gdG3vbzGGv5seE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEnn4ks/cXfUoYlbCS2h4ALhOgxshyobOJBkMIhVIBg+indLVndJn4gyjSxnFsjiz
-	 tikJJ1w2cBp1sDykIJDLmRLspC9gBySc+o286dFEhFnQekrD4Sj+rVDp82nVsQJUsx
-	 e8QkKu+Gg8nZOOIXypxMW0tdyvOTmv2dx0kOBNws=
+	b=ytz0zSWF4piqw+Hn537QKWRInfuHf49IIJaW8Yep4AaOPT5TUsZIKyQp8R0LdT0pe
+	 IHpp48kygqVrgRDcHPC5LFpBxLjHy7lGxPzVhAizwNNOu8AB706u09ZvCo4iPRyp5n
+	 t2zSVai1EmeKN2dMPpQ7ZhyAU+BwH712YRrPr+OE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Joe Damato <jdamato@fastly.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/119] arm64: dts: rockchip: fix i2c2 pinctrl-names property on anbernic-rg353p/v
-Date: Tue, 12 Nov 2024 11:20:14 +0100
-Message-ID: <20241112101848.957891163@linuxfoundation.org>
+Subject: [PATCH 6.11 057/184] virtio_net: Sync rss config to device when virtnet_probe
+Date: Tue, 12 Nov 2024 11:20:15 +0100
+Message-ID: <20241112101903.050581691@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
-References: <20241112101848.708153352@linuxfoundation.org>
+In-Reply-To: <20241112101900.865487674@linuxfoundation.org>
+References: <20241112101900.865487674@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit f94b934336e30cebae75d4fbe04a2109a3c8fdec ]
+[ Upstream commit dc749b7b06082ccaacc602e724445da19cd03e9f ]
 
-We want to control pins, not beer mugs, so rename pintctrl-names to the
-expected pinctrl-names.
+During virtnet_probe, default rss configuration is initialized, but was
+not committed to the device. This patch fix this by sending rss command
+after device ready in virtnet_probe. Otherwise, the actual rss
+configuration used by device can be different with that read by user
+from driver, which may confuse the user.
 
-This was not affecting functionality, because the i2c2 controller
-already had a set of pinctrl properties.
+If the command committing fails, driver rss will be disabled.
 
-Fixes: 523adb553573 ("arm64: dts: rockchip: add Anbernic RG353P and RG503")
-Fixes: 1e141cf12726 ("arm64: dts: rockchip: add Anbernic RG353V and RG353VS")
-Cc: Chris Morgan <macromorgan@hotmail.com>
-Acked-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241008203940.2573684-2-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts | 2 +-
- arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
-index 8aa93c646becf..5f1b12166231f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353p.dts
-@@ -92,7 +92,7 @@
- };
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 545dda8ec0775..b3232b8baa256 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -6584,6 +6584,15 @@ static int virtnet_probe(struct virtio_device *vdev)
  
- &i2c2 {
--	pintctrl-names = "default";
-+	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c2m1_xfer>;
- 	status = "okay";
+ 	virtio_device_ready(vdev);
  
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
-index f49ce29ba5977..2957529a27486 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353v.dts
-@@ -79,7 +79,7 @@
- };
++	if (vi->has_rss || vi->has_rss_hash_report) {
++		if (!virtnet_commit_rss_command(vi)) {
++			dev_warn(&vdev->dev, "RSS disabled because committing failed.\n");
++			dev->hw_features &= ~NETIF_F_RXHASH;
++			vi->has_rss_hash_report = false;
++			vi->has_rss = false;
++		}
++	}
++
+ 	virtnet_set_queues(vi, vi->curr_queue_pairs);
  
- &i2c2 {
--	pintctrl-names = "default";
-+	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c2m1_xfer>;
- 	status = "okay";
- 
+ 	/* a random MAC address has been assigned, notify the device.
 -- 
 2.43.0
 
