@@ -1,121 +1,193 @@
-Return-Path: <stable+bounces-92942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BD99C7A86
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 19:01:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9682C9C7B05
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 19:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D601F23718
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 18:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57375282CE0
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 18:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E889D2022E8;
-	Wed, 13 Nov 2024 17:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3B1202641;
+	Wed, 13 Nov 2024 18:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pG7URdrH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDdE52/T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19920262E
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 17:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC111FE0F8;
+	Wed, 13 Nov 2024 18:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731520780; cv=none; b=od/RkoXXX8I9bSQJSjJCRx5pxY4F4tfZ8dPiubkrLMX2GD0CjnfK/tdQrK2NZr7pfmQJyAPtNrisdmdam210RqjWVMNVW4/TLLyqijZ8FO2t9kUF00fBQnAHm4LEbYD/54gNQy3zPBGbPU6p+Oc/sv5ASz28Ii7LHydZDvIYmRU=
+	t=1731522366; cv=none; b=uh1TMEJD2mvBRr5ECl8TlJiFnRkwUly5ZmfQvXKDpxjY9oaVj1xZnWuT600KRShyYIanWmWuDKRG6xmGYkXrhoEodFbkxmQ9cx923bh56bw7maV1wSdByESdAAFf1eaUBaoENzCG/R3Z2/aGSdj0HRantEY0ec6trbYQ2Ez1Ahw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731520780; c=relaxed/simple;
-	bh=oa4jHsPwhGmEGp/xTbs7SGwv0y0lkkYSeGlEeRdKrSE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MLyDjJaI5hbYFiS0ZdvQRkgy2VlPsbXaoOqCYORYiFUik4tcnzS4B9kPd6TxjxJ/BqLnsrljhdjpjp9m39xstRfem6d8QX4n1ek2DeQBwz0owNX6LvOScUPBMzBt0J/lXhjdM6TEoe7cj6+bMAPMEJ3ezuDwQtcszXhIjp6/VAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pG7URdrH; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7d4dee4dfdcso5800254a12.2
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 09:59:39 -0800 (PST)
+	s=arc-20240116; t=1731522366; c=relaxed/simple;
+	bh=WA94T5jgN0zpdJt1zlpKvS9AQMF31zwZaCTaPC0MNPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WKpmoKlXXE9qW9BLJ3tVmGj4k7kDn+YqS3pOTZ6FPWv+756FR2uGM7oJASty+1TBNWh7KWvfdfNtxRDIDVVKbLTL+dRdzI1WkiQDSrO/j4WLM/pd0exOwfadm1m0gw8H8e1tv+qeh2z3FO5iqV+6chDOR3xlWndJxvWXg1utT5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDdE52/T; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6cbe700dcc3so49105026d6.3;
+        Wed, 13 Nov 2024 10:26:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731520778; x=1732125578; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OGy65TxNl8Iw/c/Xptd/4fsGkFAaUFJrtao3dkf0rx0=;
-        b=pG7URdrH49QZFSmgefbyVlRvKbXj2ca5WG+Il4SjAwiT7x/1hjQT10pp75HU21KOrz
-         Io+ZDCNL8Lu4nncXTdZx4j+EpSKBUZKw2pOyK5dtHlABthZpZxdm0OYCje2wwHedfAcC
-         nlVVZz2RnBmQe1iE21uq50JwnW5MhR4mZT8LbImCZSKRnUbCAQMp4Nq0gbP65CkQXwxr
-         nAfgij0L7aUxp2UwwPKCi3773VT7AjPZ22hOHNtuzfZvLG8ZPc52ntyIzalfgsRb3Yhu
-         sLyOyhtytDLB6TuIAqwxQ/DA+fmzQ6bOkN5AzSrVOdaw/jo8nduY1ddKcrbSCuakwZxj
-         f16w==
+        d=gmail.com; s=20230601; t=1731522363; x=1732127163; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B0dcZ2I9Hai+ox/2ELeoGLFzko3gEU+akmOmMIKSkPo=;
+        b=FDdE52/TP5mduXJrfQv3vxBtKszGy82yFZnaAWM1n5GI+lrLr2nK4nrugzaS7zBtrB
+         dexI9lmPr+hy0Mm6S1elCPI3CbwJrdoLhwEKTADlEYpmM4SQPyv0z7PO2DBhMk+Kp0B1
+         hWSUYGpvFhxmkuHwd1ZjcDbQDLRBN5JlXb1UXoldmLRlJV1oI4hoY9k5iN0gvSon4arL
+         qqHm4MlHbrmBqyqUBCgKWyosI1m0+eckb60K7t90dvNg2BIiBkYA0VUZaX8dAgRpr0Iq
+         wCGv1yHt5FEHpZkdmmc8H2F6mhyGFbrAGrhnMghzlyP2tpmlI4mCCMMprwnQHHqBYHtR
+         ntHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731520778; x=1732125578;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OGy65TxNl8Iw/c/Xptd/4fsGkFAaUFJrtao3dkf0rx0=;
-        b=TDBepkgT3hFN4Gw/qwKYmSLKSWFOJlC1/5/Vjjyui71KH11AXdzQXw+pyohgQh924L
-         ljn1Um2/gY0BRSfA5QIZBkozYUnVdGD0Jgzn0zW77hoKtpWBSfI3+m90ZhKgW6Rjb+Q/
-         zN+QZXR7CDeMtmEkM2JGblga6XiNBCfWrgDuxuqbYfA4xZY+0hUBBjc5lu7rNKwgUcjH
-         NdvHeuUWnXgrJgNI5qKoNVVDflsTdLZBV3VC2AUn/bAkDix4xQsHMqdmcPAsTnnVw1B+
-         Glqy7tTbwI+H3fOXDrP80J1ls1/Hw/odRsw5KC+CEK5246Ql1TkYAYv30S26RuTGTkmO
-         0EAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlaEO5fDRW/WQtxluCwBplUZOrsB/jZz9uCrIa6a/WDGOPt8cr934SGnucuRc0GVMNGPyc6L0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2xemOFOZEbUWNKU+TwV5ByWaIbQoFLMSciAK2HaeUhbX64/fU
-	Cf36cdNJkTlhEMuxy4kfmpTSk3g0jAUNZJNjz0Xlv3mwxieXxl6LsjofE3n3u1dfQYYHUaE/uIV
-	Iqd1TaXfryw==
-X-Google-Smtp-Source: AGHT+IFnQmgQwAkgXmsMOhAVpX9rj07R7oOJPSSW/T5CmMuKWbs0D1lxQHdUyOHeErsKTzwFQKa/GTC2muDPJQ==
-X-Received: from jeroendb9128802.sea.corp.google.com ([2620:15c:11c:202:6a11:574c:76ac:faa3])
- (user=jeroendb job=sendgmr) by 2002:a63:3e85:0:b0:7e6:b3ab:697 with SMTP id
- 41be03b00d2f7-7f6f1a10ac7mr11209a12.5.1731520777728; Wed, 13 Nov 2024
- 09:59:37 -0800 (PST)
-Date: Wed, 13 Nov 2024 09:59:30 -0800
+        d=1e100.net; s=20230601; t=1731522363; x=1732127163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B0dcZ2I9Hai+ox/2ELeoGLFzko3gEU+akmOmMIKSkPo=;
+        b=URRyJw+VJTySuWAi1HrfAGkiBmjs/cZfhQmi7bidFOlBCRGIsT8GCRQ/8T7QZk/v52
+         jEbUz0F21rnerFn4/K0r55umdf6nchgGkt0+mNbZHomHfY9ECX/bqSkbsLlTQ0umvy4K
+         fWQy3RuECtANwTiqr7HdgirR4IDczHiLRxWFE6Z9jtKLyiG3Q/X5vujke9EBRG4Os9zi
+         NHPgU2uYUZVJnVo26QFqz4KsNCefhK9hkYqGplPCt680U8MH0c3530dv6PZfhI9Xn+TX
+         8xwtRnhquyrrTezk2DRaul/oo4ZLPJ/J7CgBafV4Sfp+4WJCfdZqg0LMIXFMw1tzAmei
+         S6EA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgzLuGnSM0fp2CTydhUjGnxlY0VsRrm/IBrr86dFtXab9i6ACgM0vPnG6WjCFOqVNnSBLFt+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXJutotDyKqrtijydjoyWdeeosuPRGS4UTM9LYUmViaB21sMK/
+	gqZAb0pr/F2PBNSQ6SZ5Vpghu0as/VheKCx1GlOt7aeHeY9gfkMDnSgaK9o848sdCTNCwfob0wq
+	yPrmbxbvCI85J2jLZkWTRxC8bI/I4l33W
+X-Google-Smtp-Source: AGHT+IEJfwePPlfVVrqJAjjQqzWY0AtFuykkyeKTnRFqInIcdvIW7MXWcJah7cB998HAbug4AfysU8STH08A8bbFcfQ=
+X-Received: by 2002:a05:6214:428d:b0:6cb:f907:ae4b with SMTP id
+ 6a1803df08f44-6d39e17feabmr291203086d6.20.1731522363388; Wed, 13 Nov 2024
+ 10:26:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
-Message-ID: <20241113175930.2585680-1-jeroendb@google.com>
-Subject: [PATCH net V2] gve: Flow steering trigger reset only for timeout error
-From: Jeroen de Borst <jeroendb@google.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	stable@vger.kernel.org, pabeni@redhat.com, jeroendb@google.com, 
-	pkaligineedi@google.com, shailend@google.com, andrew+netdev@lunn.ch, 
-	willemb@google.com, hramamurthy@google.com, ziweixiao@google.com
+MIME-Version: 1.0
+References: <20241113155525.22856-1-jack@suse.cz>
+In-Reply-To: <20241113155525.22856-1-jack@suse.cz>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Wed, 13 Nov 2024 19:25:52 +0100
+Message-ID: <CAOQ4uxghXtO=f_1bPv=w3030XikY4BmmxuWpxhgRFfj1B5TMYg@mail.gmail.com>
+Subject: Re: [PATCH v2] fsnotify: fix sending inotify event with unexpected filename
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ziwei Xiao <ziweixiao@google.com>
+On Wed, Nov 13, 2024 at 4:55=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> We got a report that adding a fanotify filsystem watch prevents tail -f
+> from receiving events.
+>
+> Reproducer:
+>
+> 1. Create 3 windows / login sessions. Become root in each session.
+> 2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+> 3. In the first window, run: fsnotifywait -S -m /boot
+> 4. In the second window, run: echo data >> /boot/foo
+> 5. In the third window, run: tail -f /boot/foo
+> 6. Go back to the second window and run: echo more data >> /boot/foo
+> 7. Observe that the tail command doesn't show the new data.
+> 8. In the first window, hit control-C to interrupt fsnotifywait.
+> 9. In the second window, run: echo still more data >> /boot/foo
+> 10. Observe that the tail command in the third window has now printed
+> the missing data.
+>
+> When stracing tail, we observed that when fanotify filesystem mark is
+> set, tail does get the inotify event, but the event is receieved with
+> the filename:
+>
+> read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+> 50) =3D 32
+>
+> This is unexpected, because tail is watching the file itself and not its
+> parent and is inconsistent with the inotify event received by tail when
+> fanotify filesystem mark is not set:
+>
+> read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) =3D 16
+>
+> The inteference between different fsnotify groups was caused by the fact
+> that the mark on the sb requires the filename, so the filename is passed
+> to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+> not passing the filename to groups (such as inotify) that are interested
+> in the filename only when the parent is watching.
+>
+> But the logic was incorrect for the case that no group is watching the
+> parent, some groups are watching the sb and some watching the inode.
+>
+> Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+> Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with wat=
+ched parent")
+> Cc: stable@vger.kernel.org # 5.10+
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
 
-When configuring flow steering rules, the driver is currently going
-through a reset for all errors from the device. Instead, the driver
-should only reset when there's a timeout error from the device.
+Looks good,
 
-Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-v2: Added missing Signed-off-by
+Thanks,
+Amir.
 
- drivers/net/ethernet/google/gve/gve_adminq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index e44e8b139633..060e0e674938 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1248,10 +1248,10 @@ gve_adminq_configure_flow_rule(struct gve_priv *priv,
- 			sizeof(struct gve_adminq_configure_flow_rule),
- 			flow_rule_cmd);
- 
--	if (err) {
-+	if (err == -ETIME) {
- 		dev_err(&priv->pdev->dev, "Timeout to configure the flow rule, trigger reset");
- 		gve_reset(priv, true);
--	} else {
-+	} else if (!err) {
- 		priv->flow_rules_cache.rules_cache_synced = false;
- 	}
- 
--- 
-2.47.0.277.g8800431eea-goog
-
+>  fs/notify/fsnotify.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
+>
+> This is what I plan to merge into my tree.
+>
+> diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
+> index 82ae8254c068..f976949d2634 100644
+> --- a/fs/notify/fsnotify.c
+> +++ b/fs/notify/fsnotify.c
+> @@ -333,16 +333,19 @@ static int fsnotify_handle_event(struct fsnotify_gr=
+oup *group, __u32 mask,
+>         if (!inode_mark)
+>                 return 0;
+>
+> -       if (mask & FS_EVENT_ON_CHILD) {
+> -               /*
+> -                * Some events can be sent on both parent dir and child m=
+arks
+> -                * (e.g. FS_ATTRIB).  If both parent dir and child are
+> -                * watching, report the event once to parent dir with nam=
+e (if
+> -                * interested) and once to child without name (if interes=
+ted).
+> -                * The child watcher is expecting an event without a file=
+ name
+> -                * and without the FS_EVENT_ON_CHILD flag.
+> -                */
+> -               mask &=3D ~FS_EVENT_ON_CHILD;
+> +       /*
+> +        * Some events can be sent on both parent dir and child marks (e.=
+g.
+> +        * FS_ATTRIB).  If both parent dir and child are watching, report=
+ the
+> +        * event once to parent dir with name (if interested) and once to=
+ child
+> +        * without name (if interested).
+> +        *
+> +        * In any case regardless whether the parent is watching or not, =
+the
+> +        * child watcher is expecting an event without the FS_EVENT_ON_CH=
+ILD
+> +        * flag. The file name is expected if and only if this is a direc=
+tory
+> +        * event.
+> +        */
+> +       mask &=3D ~FS_EVENT_ON_CHILD;
+> +       if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+>                 dir =3D NULL;
+>                 name =3D NULL;
+>         }
+> --
+> 2.35.3
+>
 
