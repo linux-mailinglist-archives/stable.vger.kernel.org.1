@@ -1,178 +1,256 @@
-Return-Path: <stable+bounces-92927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDD69C74B2
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:45:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F23559C74C9
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026A128460B
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D711F228AB
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B987201011;
-	Wed, 13 Nov 2024 14:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3080C13AA2D;
+	Wed, 13 Nov 2024 14:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Ma2QXgHI"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E921EF956
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBA214A4DE
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731509084; cv=none; b=n3ySmKdsdcOetBBwNDmjyAM4LGvB3WIrYQ7BIk+SVxZGODpjNqI7MbTAY88EujmOyOSnr//lPZBm2vrmduMSeQBGIND/tBHX6OSoWXOere9wUYpYZuh1CsETWtWyu4tbH7/Rq44tRJSIseaKFvX9WSykopiAfnVv3GONVpmVIng=
+	t=1731509444; cv=none; b=fQeNIw9wQ5KYCVPQq7IEB4Jbp/m5GKyyBv8kibEMhHO3d+DgnonlXz6GeWqB2EqajWKWDYeM9bXqg7WU/GVey3hLUcAGFvzfIRiYJlA3cBRoG4Vq76ncvtebyUH/cFY2b0v1a5iapBjLXBgC3Yv2zF8P5yOkn0ULNxqGNM5Sg3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731509084; c=relaxed/simple;
-	bh=ckSeqNZkTzZoc8tNAlJMv3QaS0XCMd5+YScgBG0e10Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bB3+dgOo3T2+VCvaF4pUaPCPIN4HraJdJE7OMo+IV1Bh/4uYUwKtZy3xKJ1Vp4YMfYbYsW7mZA/hzeSxrwuSZbUg/lKvOvJqbYVoO/o6K5BafLfzzk5idjOKzl/y8Z0GT0YpOr7Jf1Yi1mvtspsbd4JRFOzYpz5VFZEPQhMG95M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tBEbd-0007tl-30; Wed, 13 Nov 2024 15:44:29 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tBEbc-000air-1W;
-	Wed, 13 Nov 2024 15:44:28 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tBEbc-009iom-1D;
-	Wed, 13 Nov 2024 15:44:28 +0100
-Date: Wed, 13 Nov 2024 15:44:28 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 02/12] wifi: mwifiex: fix MAC address handling
-Message-ID: <ZzS7TKwPC1uxqzbg@pengutronix.de>
-References: <20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de>
- <20240918-mwifiex-cleanup-1-v2-2-2d0597187d3c@pengutronix.de>
- <ZwB3FCdpL85yA2Si@google.com>
+	s=arc-20240116; t=1731509444; c=relaxed/simple;
+	bh=GfcJKPlJaexN7qKOmAAhjcdKoEbrjo0SGnTJrySikp4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NCwQSTkm7ly7+3kZwx6OkqGsNdM/DkAWobpm4Xf/ElDKtFFmXXKxnK9tfTAMCyjnw7a6St9JtTquPMiCvCs9V2ELhPL2nRhz/7lO6iPP/ZZPBkfqq7MvitP5ar6WsEzymK04Wf5AwGxkQxmua4JzuYPZv7FaBhv7C7zx7SGEmcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Ma2QXgHI; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731509443; x=1763045443;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WZXxmXHeX0K6eypw1h1xUanL4UR0EiR6FP3PUSHo+y0=;
+  b=Ma2QXgHIvSjV8KmfDU2tHB/u3czRncjRseJ33HP9xM8+QguqWrDqOe02
+   nE3bsRGGPDS+M3oirHRSbxCnnGBD4Z5GeiSUMwxyWAPo4kbj3LWPcJLxd
+   26rvDWi/8wZ346OUKsFuoqIfZUD0TAlfFgVPWrvoU24bROLXJIMpteWc9
+   4=;
+X-IronPort-AV: E=Sophos;i="6.12,151,1728950400"; 
+   d="scan'208";a="673700998"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 14:50:40 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:30355]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.85:2525] with esmtp (Farcaster)
+ id b9699113-ea46-4fa7-82a2-a930dbd49a2e; Wed, 13 Nov 2024 14:50:38 +0000 (UTC)
+X-Farcaster-Flow-ID: b9699113-ea46-4fa7-82a2-a930dbd49a2e
+Received: from EX19MTAUWB002.ant.amazon.com (10.250.64.231) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 13 Nov 2024 14:50:38 +0000
+Received: from email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.228) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Wed, 13 Nov 2024 14:50:38 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com (Postfix) with ESMTP id 9C36E404FD;
+	Wed, 13 Nov 2024 14:50:37 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id 51CF022471; Wed, 13 Nov 2024 14:50:37 +0000 (UTC)
+Date: Wed, 13 Nov 2024 14:50:37 +0000
+From: Hagar Hemdan <hagarhem@amazon.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+CC: <stable@vger.kernel.org>, Zheng Yejian <zhengyejian1@huawei.com>,
+	<mhiramat@kernel.org>, <mark.rutland@arm.com>,
+	<mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH 5.4] ftrace: Fix possible use-after-free issue in
+ ftrace_location()
+Message-ID: <20241113145037.GA7895@amazon.com>
+References: <20241111144445.27428-1-hagarhem@amazon.com>
+ <20241112104618.4f2720d8@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <ZwB3FCdpL85yA2Si@google.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+In-Reply-To: <20241112104618.4f2720d8@gandalf.local.home>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Hi Brian,
-
-It's been a while, but I'd like to get this forward now.
-
-On Fri, Oct 04, 2024 at 04:15:32PM -0700, Brian Norris wrote:
-> I think I'm generally supportive of the direction this changes things,
-> but I'm a bit hesitant about two things:
-> 1. the potential user-visible changes and
-> 2. the linux-stable backport (Cc stable below)
+On Tue, Nov 12, 2024 at 10:46:18AM -0500, Steven Rostedt wrote:
+> On Mon, 11 Nov 2024 14:44:45 +0000
+> Hagar Hemdan <hagarhem@amazon.com> wrote:
 > 
-> For 1: MAC addresses are important in some contexts, and this might
-> significantly change the addresses that devices get in practice. Such
-> users might not really care about the weird details of when the address
-> incremented; but they *probably* care that a certain sequence of "boot
-> device; run hostapd with <foo> config file" produces the same address.
+> > From: Zheng Yejian <zhengyejian1@huawei.com>
+> > 
+> > commit e60b613df8b6253def41215402f72986fee3fc8d upstream.
+> > 
+> > KASAN reports a bug:
+> > 
+> >   BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
+> >   Read of size 8 at addr ffff888141d40010 by task insmod/424
+> >   CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+
+> >   [...]
+> >   Call Trace:
+> >    <TASK>
+> >    dump_stack_lvl+0x68/0xa0
+> >    print_report+0xcf/0x610
+> >    kasan_report+0xb5/0xe0
+> >    ftrace_location+0x90/0x120
+> >    register_kprobe+0x14b/0xa40
+> >    kprobe_init+0x2d/0xff0 [kprobe_example]
+> >    do_one_initcall+0x8f/0x2d0
+> >    do_init_module+0x13a/0x3c0
+> >    load_module+0x3082/0x33d0
+> >    init_module_from_file+0xd2/0x130
+> >    __x64_sys_finit_module+0x306/0x440
+> >    do_syscall_64+0x68/0x140
+> >    entry_SYSCALL_64_after_hwframe+0x71/0x79
+> > 
+> > The root cause is that, in ftrace_location_range(), ftrace record of some address
+> > is being searched in ftrace pages of some module, but those ftrace pages
+> > at the same time is being freed in ftrace_release_mod() as the
+> > corresponding module is being deleted:
+> > 
+> >            CPU1                       |      CPU2
+> >   register_kprobes() {                | delete_module() {
+> >     check_kprobe_address_safe() {     |
+> >       arch_check_ftrace_location() {  |
+> >         ftrace_location() {           |
+> >           lookup_rec() // USE!        |   ftrace_release_mod() // Free!
+> > 
+> > To fix this issue:
+> >   1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();
+> >   2. Use ftrace_location_range() instead of lookup_rec() in
+> >      ftrace_location();
+> >   3. Call synchronize_rcu() before freeing any ftrace pages both in
+> >      ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().
+> > 
+> > Link: https://lore.kernel.org/linux-trace-kernel/20240509192859.1273558-1-zhengyejian1@huawei.com
+> > 
+> > Cc: stable@vger.kernel.org
+> > Cc: <mhiramat@kernel.org>
+> > Cc: <mark.rutland@arm.com>
+> > Cc: <mathieu.desnoyers@efficios.com>
+> > Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
+> > Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> > Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+> > Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> > [Hagar: Modified to apply on v5.4.y]
+> > Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+> > ---
+> > only compile tested.
 > 
-> Also, I'm not sure I know enough of the implications of potential
-> over-use of the locally administered bit. Are there significant
-> downsides to it (aside from the simple fact that it's a different
-> address)?
-
-Not that I know of, but that doesn't mean much.
-
+> You should do more than that. At least run the ftrace selftests.
+ok, tested v2 and will send it soon.
 > 
-> And I see that you rightly don't know how many addresses are actually
-> reserved, but I have an educated guess that it's not just 1.
-
-Even if there are more addresses reserved, we don't know which these
-are, see below.
-
-> For one,
-> this driver used to default-create 3 interfaces:
-> 1211c961170c mwifiex: do not create AP and P2P interfaces upon driver loading
+> > ---
+> >  kernel/trace/ftrace.c | 30 +++++++++++++++++++++---------
+> >  1 file changed, 21 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> > index 412505d94865..60bf8a6d55ce 100644
+> > --- a/kernel/trace/ftrace.c
+> > +++ b/kernel/trace/ftrace.c
+> > @@ -1552,7 +1552,9 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+> >  	struct ftrace_page *pg;
+> >  	struct dyn_ftrace *rec;
+> >  	struct dyn_ftrace key;
+> > +	unsigned long ip = 0;
+> >  
+> > +	rcu_read_lock();
+> >  	key.ip = start;
+> >  	key.flags = end;	/* overload flags, as it is unsigned long */
+> >  
+> > @@ -1565,10 +1567,13 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+> >  			      sizeof(struct dyn_ftrace),
+> >  			      ftrace_cmp_recs);
+> >  		if (rec)
+> > -			return rec->ip;
+> > +		{
+> > +			ip = rec->ip;
+> > +			break;
+> > +		}
 > 
-> and when we stopped doing that, we still kept support for a module
-> parameter for the old way:
-> 0013c7cebed6 mwifiex: module load parameter for interface creation
+> The above breaks Linux coding style. It should be:
 > 
-> Perhaps these "initial" interfaces should at least be allowed permanent
-> addresses?
-
-I started up a board with the downstream driver. It comes up with these
-MAC addresses:
-
-wlp1s0    Link encap:Ethernet  HWaddr 34:6F:24:4E:E0:3D
-uap0      Link encap:Ethernet  HWaddr 36:6F:24:4E:E1:3D
-wfd0      Link encap:Ethernet  HWaddr 36:6F:24:4E:E0:3D
-
-The permanent address from EEPROM is 34:6F:24:4E:E0:3D which is
-used for wlp1s0. For the other addresses the locally admistered bit is
-set (34 -> 36). Here's the corresponding code:
-
-	if (priv->bss_type == MLAN_BSS_TYPE_WIFIDIRECT) {
-		if (priv->bss_virtual) {
-			...
-		} else {
-			priv->current_addr[0] |= 0x02;
-		}
-	}
-
-	if (priv->bss_type != MLAN_BSS_TYPE_WIFIDIRECT) {
-		if (priv->bss_index) {
-			priv->current_addr[0] |= 0x02;
-			priv->current_addr[4] += priv->bss_index;
-		}
-	}
-
-See https://github.com/nxp-imx/mwifiex/blob/lf-6.6.3_1.0.0/mxm_wifiex/wlan_src/mlinux/moal_main.c#L8383
-
-Note this behaviour was changed in the driver in a0835444f1
-("mxm_wifiex: update to mxm5x17344.p1 release"). Before that the driver
-has just done a priv->current_addr[4] += priv->bss_index without
-setting the locally admistered bit. Of course the commit message
-says nothing about the reasons for this change.
-
-The downstream driver puts the bss_num (or bss_index) into different
-bits than the upstream driver does. It uses current_addr[4] whereas the
-upstream driver uses current_addr[5]. So even when there's more than
-one MAC address reserved for one chip, both drivers disagree on which
-addresses these are.
-
-Given that, I think our safest bet is to always set the locally
-admistered bit for derived MAC addresses.
-
+> 		if (rec) {
+> 			ip = rec->ip;
+> 			break;
+> 		}
 > 
-> So anyway, I don't really know for sure the right answer, but I want to
-> log my concerns, in case you had more thoughts on backward
-> compatibility.
+> -- Steve
+ok, updated in v2, thanks!
 > 
-> And given all the uncertainty above, I'm extra hesitant about
-> backporting likely-user-visible changes to stable (#2).
-
-I can remove the stable tag if makes you feel more comfortable.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> >  	}
+> > -
+> > -	return 0;
+> > +	rcu_read_unlock();
+> > +	return ip;
+> >  }
+> >  
+> >  /**
+> > @@ -5736,6 +5741,8 @@ static int ftrace_process_locs(struct module *mod,
+> >  	/* We should have used all pages unless we skipped some */
+> >  	if (pg_unuse) {
+> >  		WARN_ON(!skipped);
+> > +		/* Need to synchronize with ftrace_location_range() */
+> > +		synchronize_rcu();
+> >  		ftrace_free_pages(pg_unuse);
+> >  	}
+> >  	return ret;
+> > @@ -5889,6 +5896,9 @@ void ftrace_release_mod(struct module *mod)
+> >   out_unlock:
+> >  	mutex_unlock(&ftrace_lock);
+> >  
+> > +	/* Need to synchronize with ftrace_location_range() */
+> > +	if (tmp_page)
+> > +		synchronize_rcu();
+> >  	for (pg = tmp_page; pg; pg = tmp_page) {
+> >  
+> >  		/* Needs to be called outside of ftrace_lock */
+> > @@ -6196,6 +6206,7 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+> >  	unsigned long start = (unsigned long)(start_ptr);
+> >  	unsigned long end = (unsigned long)(end_ptr);
+> >  	struct ftrace_page **last_pg = &ftrace_pages_start;
+> > +	struct ftrace_page *tmp_page = NULL;
+> >  	struct ftrace_page *pg;
+> >  	struct dyn_ftrace *rec;
+> >  	struct dyn_ftrace key;
+> > @@ -6239,12 +6250,8 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+> >  		ftrace_update_tot_cnt--;
+> >  		if (!pg->index) {
+> >  			*last_pg = pg->next;
+> > -			if (pg->records) {
+> > -				free_pages((unsigned long)pg->records, pg->order);
+> > -				ftrace_number_of_pages -= 1 << pg->order;
+> > -			}
+> > -			ftrace_number_of_groups--;
+> > -			kfree(pg);
+> > +			pg->next = tmp_page;
+> > +			tmp_page = pg;
+> >  			pg = container_of(last_pg, struct ftrace_page, next);
+> >  			if (!(*last_pg))
+> >  				ftrace_pages = pg;
+> > @@ -6261,6 +6268,11 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+> >  		clear_func_from_hashes(func);
+> >  		kfree(func);
+> >  	}
+> > +	/* Need to synchronize with ftrace_location_range() */
+> > +	if (tmp_page) {
+> > +		synchronize_rcu();
+> > +		ftrace_free_pages(tmp_page);
+> > +	}
+> >  }
+> >  
+> >  void __init ftrace_free_init_mem(void)
+> 
 
