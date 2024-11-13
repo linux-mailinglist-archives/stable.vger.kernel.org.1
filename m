@@ -1,296 +1,121 @@
-Return-Path: <stable+bounces-92941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B889C7AA4
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 19:05:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BD99C7A86
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 19:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6654BB28C65
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 17:59:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D601F23718
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 18:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F26205AC8;
-	Wed, 13 Nov 2024 17:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E889D2022E8;
+	Wed, 13 Nov 2024 17:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RCOgAmM7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pG7URdrH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41513203715
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 17:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A19920262E
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 17:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731520643; cv=none; b=WICduH1J80APVEV3h6hsm5BTYxnMrwNe24N3CvO4uie0UP81F1Gh8peHeSzwAuVFQ21VHv5u3IWxOmzEsY/t+Y+CVi75qmy+B+EX0VgC2nyOkDqUobHE07RfhwZhzgPuuDAAjepQ1xpOah7BBDHuGyHBhUNhNtPux7NF4gW3wQo=
+	t=1731520780; cv=none; b=od/RkoXXX8I9bSQJSjJCRx5pxY4F4tfZ8dPiubkrLMX2GD0CjnfK/tdQrK2NZr7pfmQJyAPtNrisdmdam210RqjWVMNVW4/TLLyqijZ8FO2t9kUF00fBQnAHm4LEbYD/54gNQy3zPBGbPU6p+Oc/sv5ASz28Ii7LHydZDvIYmRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731520643; c=relaxed/simple;
-	bh=bWNp+nhKHNfXBJ/H1NXhpkIfJa/54tqi7cajg/FN4hw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JN+twa9/Tsi1LXtf3pffoysAZAj6xFyfvhB5KYWGXwS5Sv5afM00cxDroaznKPqQ8mfjXKM6Z/bp/j10nA0itVvmCnDleccZ/3DzfKBreMKoTi744fTutCkVXG2I3ai6vcWPAGV1txZ3zjSuoxRFDdjqJry/wy4NK37KDcaYTpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RCOgAmM7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731520640;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NYHcFHzsHOhUpz2S51Ub1XvP2nN79YNrCvbVuoxCmCQ=;
-	b=RCOgAmM7CeFEx1l4O6K/T8isWvrHd7fK8OFa+R5/DsvhbSfD/bKvXhovlc8/e8qmMUNXT6
-	Cfe07pmqltPKUjAWSGtVbG6NKuUqMcnMeaaj5gPn4KI3izDWVQmPK/xlHjD+WVSusAv2qF
-	GLAi1X8UA6qB+FD2ChxTvrkn53Zi5MU=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-ZWseb8dwNTuK5gRjGLXe6Q-1; Wed, 13 Nov 2024 12:57:19 -0500
-X-MC-Unique: ZWseb8dwNTuK5gRjGLXe6Q-1
-X-Mimecast-MFC-AGG-ID: ZWseb8dwNTuK5gRjGLXe6Q
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a9a2c3e75f0so530328066b.1
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 09:57:18 -0800 (PST)
+	s=arc-20240116; t=1731520780; c=relaxed/simple;
+	bh=oa4jHsPwhGmEGp/xTbs7SGwv0y0lkkYSeGlEeRdKrSE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MLyDjJaI5hbYFiS0ZdvQRkgy2VlPsbXaoOqCYORYiFUik4tcnzS4B9kPd6TxjxJ/BqLnsrljhdjpjp9m39xstRfem6d8QX4n1ek2DeQBwz0owNX6LvOScUPBMzBt0J/lXhjdM6TEoe7cj6+bMAPMEJ3ezuDwQtcszXhIjp6/VAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pG7URdrH; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7d4dee4dfdcso5800254a12.2
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 09:59:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731520778; x=1732125578; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OGy65TxNl8Iw/c/Xptd/4fsGkFAaUFJrtao3dkf0rx0=;
+        b=pG7URdrH49QZFSmgefbyVlRvKbXj2ca5WG+Il4SjAwiT7x/1hjQT10pp75HU21KOrz
+         Io+ZDCNL8Lu4nncXTdZx4j+EpSKBUZKw2pOyK5dtHlABthZpZxdm0OYCje2wwHedfAcC
+         nlVVZz2RnBmQe1iE21uq50JwnW5MhR4mZT8LbImCZSKRnUbCAQMp4Nq0gbP65CkQXwxr
+         nAfgij0L7aUxp2UwwPKCi3773VT7AjPZ22hOHNtuzfZvLG8ZPc52ntyIzalfgsRb3Yhu
+         sLyOyhtytDLB6TuIAqwxQ/DA+fmzQ6bOkN5AzSrVOdaw/jo8nduY1ddKcrbSCuakwZxj
+         f16w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731520638; x=1732125438;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYHcFHzsHOhUpz2S51Ub1XvP2nN79YNrCvbVuoxCmCQ=;
-        b=Y3R7IB1yT0AvOKpjZMNvJWhPLHaYFmNL5lfWIII4G3CYsrnTYUqaM9wJbEl4/UPw5D
-         uR1nUKj4vAWlxMSjGLvi2oDO2mg2K5LatyLQsyg5V2nGmUp2OGYphZ9nqJVCFH+bw9NQ
-         wjeIu9ISRxwC8SgB5SEcY685hp/mH0VMbTr27Xdm6/pcumaFyqksNTAJsWRDiEFaOj2Y
-         oB2fcE2Q9GWx60lSJnGk4e7N4tTYR4SMeUnP1dJRv+r1ZVr7PtpchXXuPJOPvx2ywmoT
-         6Sfl+2Vpsl2DCjjHr+EO3UATK9ZD3KuA943UbSGg25f4rDmT1soVMWNH+pTK8CurmfRv
-         Skyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTUoaeUw2/rfyNbDdj/afblx4YP2nUR9m2lhKtYRyAh79696332E574tTelX4RfyugUjGj58g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC6DC5F3pmu6jo5QETykJ36g/c2P3ezPfkUsSC6Kxki1nBBXC4
-	qHgYAanWU1OmTGyY43nom/m8Cfa8/thylgDpFh7zlUjlAxSZuut2bV1NvkTZ/jVM/DgBoutJarT
-	nJcLj6yu5BKkwM4n6Q1zhKoHEns9vdlGOXuive6PqztcXV1mO225Rxg==
-X-Received: by 2002:a17:907:9494:b0:a9a:8042:bbb8 with SMTP id a640c23a62f3a-a9eeffeeeb1mr2091648466b.47.1731520637556;
-        Wed, 13 Nov 2024 09:57:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHX8eil+nJ3I3lULtavLJsuySCR8PoQLZPdhNLkUs77QfD8RMSWe/iMtAakHq97Ieijiz5DwA==
-X-Received: by 2002:a17:907:9494:b0:a9a:8042:bbb8 with SMTP id a640c23a62f3a-a9eeffeeeb1mr2091645266b.47.1731520637077;
-        Wed, 13 Nov 2024 09:57:17 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0deff4bsm893306866b.162.2024.11.13.09.57.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 09:57:16 -0800 (PST)
-Message-ID: <bd68178f-1de9-491f-8209-f67065d29283@redhat.com>
-Date: Wed, 13 Nov 2024 18:57:15 +0100
+        d=1e100.net; s=20230601; t=1731520778; x=1732125578;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OGy65TxNl8Iw/c/Xptd/4fsGkFAaUFJrtao3dkf0rx0=;
+        b=TDBepkgT3hFN4Gw/qwKYmSLKSWFOJlC1/5/Vjjyui71KH11AXdzQXw+pyohgQh924L
+         ljn1Um2/gY0BRSfA5QIZBkozYUnVdGD0Jgzn0zW77hoKtpWBSfI3+m90ZhKgW6Rjb+Q/
+         zN+QZXR7CDeMtmEkM2JGblga6XiNBCfWrgDuxuqbYfA4xZY+0hUBBjc5lu7rNKwgUcjH
+         NdvHeuUWnXgrJgNI5qKoNVVDflsTdLZBV3VC2AUn/bAkDix4xQsHMqdmcPAsTnnVw1B+
+         Glqy7tTbwI+H3fOXDrP80J1ls1/Hw/odRsw5KC+CEK5246Ql1TkYAYv30S26RuTGTkmO
+         0EAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWlaEO5fDRW/WQtxluCwBplUZOrsB/jZz9uCrIa6a/WDGOPt8cr934SGnucuRc0GVMNGPyc6L0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2xemOFOZEbUWNKU+TwV5ByWaIbQoFLMSciAK2HaeUhbX64/fU
+	Cf36cdNJkTlhEMuxy4kfmpTSk3g0jAUNZJNjz0Xlv3mwxieXxl6LsjofE3n3u1dfQYYHUaE/uIV
+	Iqd1TaXfryw==
+X-Google-Smtp-Source: AGHT+IFnQmgQwAkgXmsMOhAVpX9rj07R7oOJPSSW/T5CmMuKWbs0D1lxQHdUyOHeErsKTzwFQKa/GTC2muDPJQ==
+X-Received: from jeroendb9128802.sea.corp.google.com ([2620:15c:11c:202:6a11:574c:76ac:faa3])
+ (user=jeroendb job=sendgmr) by 2002:a63:3e85:0:b0:7e6:b3ab:697 with SMTP id
+ 41be03b00d2f7-7f6f1a10ac7mr11209a12.5.1731520777728; Wed, 13 Nov 2024
+ 09:59:37 -0800 (PST)
+Date: Wed, 13 Nov 2024 09:59:30 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/8] media: uvcvideo: Implement the Privacy GPIO as a
- evdev
-To: Ricardo Ribalda <ribalda@chromium.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Armin Wolf <W_Armin@gmx.de>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- Yunke Cao <yunkec@chromium.org>, Hans Verkuil <hverkuil@xs4all.nl>,
- stable@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>
-References: <20241112-uvc-subdev-v3-0-0ea573d41a18@chromium.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20241112-uvc-subdev-v3-0-0ea573d41a18@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.277.g8800431eea-goog
+Message-ID: <20241113175930.2585680-1-jeroendb@google.com>
+Subject: [PATCH net V2] gve: Flow steering trigger reset only for timeout error
+From: Jeroen de Borst <jeroendb@google.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	stable@vger.kernel.org, pabeni@redhat.com, jeroendb@google.com, 
+	pkaligineedi@google.com, shailend@google.com, andrew+netdev@lunn.ch, 
+	willemb@google.com, hramamurthy@google.com, ziweixiao@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Ricardo,
+From: Ziwei Xiao <ziweixiao@google.com>
 
-On 12-Nov-24 6:30 PM, Ricardo Ribalda wrote:
-> Some notebooks have a button to disable the camera (not to be mistaken
-> with the mechanical cover). This is a standard GPIO linked to the
-> camera via the ACPI table.
-> 
-> 4 years ago we added support for this button in UVC via the Privacy control.
-> This has three issues:
-> - If the camera has its own privacy control, it will be masked.
-> - We need to power-up the camera to read the privacy control gpio.
-> - Other drivers have not followed this approach and have used evdev.
-> 
-> We tried to fix the power-up issues implementing "granular power
-> saving" but it has been more complicated than anticipated...
-> 
-> This patchset implements the Privacy GPIO as a evdev.
-> 
-> The first patch of this set is already in Laurent's tree... but I
-> include it to get some CI coverage.
-> 
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
-> Changes in v3:
-> - CodeStyle (Thanks Sakari)
-> - Re-implement as input device
+When configuring flow steering rules, the driver is currently going
+through a reset for all errors from the device. Instead, the driver
+should only reset when there's a timeout error from the device.
 
-Thank you for your enthusiasm for my suggestion to implement this
-as an input device.
+Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Signed-off-by: Jeroen de Borst <jeroendb@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+---
+v2: Added missing Signed-off-by
 
-As I mentioned in my reply in the v2 thread, the goal of my
-enumeration of various way camera privacy-controls are exposed to
-userspace today is to try and get everyone to agree on a single
-userspace API for this.
+ drivers/net/ethernet/google/gve/gve_adminq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Except for this v3 patch-set, which I take as an implied vote
-from you (Ricardo) for the evdev SW_CAMERA_LENS_COVER approach,
-we have not heard anything on this subject from Sakari or Laurent
-yet. So for now I would like to first focus on / circle back to
-the userspace API discussion and then once we have a plan for
-the userspace API we can implement that for uvcvideo.
-
-First lets look at the API question top down, iow what use-cases
-do we expect there to be for information about the camera-privacy
-switch state:
-
-a) Having an app which is using (trying to use) the camera show
-a notification to the user that the camera is turned-off by
-a privacy switch.
-
-Ricardo, AFAICT this is the main use-case for chrome-os, do I have
-this right ?
-
-b) Showing on on-screen-display (OSD) with a camera /
-crossed-out-camera icon when the switch is toggled, similar to how
-muting speakers/mic show an OSD. Laptop vendor Windows add-on
-software does this and I know that some users have been asking
-for this.
-
-Then lets look at the question bottom-up which hardware interfaces
-do we have exposing this information:
-
-1. Internal UVC camera with an input privacy GPIO resource in
-the ACPI fwnode for the UVC camera, with the GPIO reporting
-the privacy-switch state. Found on some chrome-books
-
-2. Laptop firmware (EC/ACPI/WMI) which reports privacy-switch
-state, without a clear 1:1 relation between the reported state and
-which camera it applies to. In this case sometimes the whole UVC
-camera module (if it is UVC) is simply dropped of the bus when
-the camera is disabled through the privacy switch, removing
-the entire /dev/video# node for the camera. Found on many windows
-laptops.
-
-3. UVC cameras which report privacy-switch status through
-a UVC_CT_PRIVACY_CONTROL. Found on ... ?
-
-Note this will only work while the camera is streaming and
-even then may require polling of the ctrl because not all
-cameras reliably send UVC status messages when it changes.
-This renders this hardware interface as not usable 
-
-
-Currently there are 2 ways this info is being communicated
-to userspace, hw-interfaces 1. + 3. are exposed as a v4l2
-privacy-ctrl where as hw-if 2. uses and input evdev device.
-
-The advantage of the v4l2 privacy-ctrl is that it makes it
-very clear which camera is controlled by the camera
-privacy-switch.
-
-The disadvantage is that it will not work for hw-if 2,
-because the ACPI / WMI drivers have no v4l2 device to report
-the control on. We could try to add some magic glue code,
-but even then with e.g. IPU6 cameras it would still be
-unclear which v4l2(sub)device we should put the control on
-and if a UVC camera is just dropped from the bus there is
-no /dev/video# device at all.
-
-Using an input device does not has this disadvantage and
-it has the advantage of not requiring to power-up the camera
-as currently happens with a v4l2 ctrl on a UVC camera.
-
-But using an input device makes it harder to determine
-which camera the privacy-switch applies to. We can specify
-that SW_CAMERA_LENS_COVER only applies to device internal
-cameras, but then it is up to userspace to determine which
-cameras that are.
-
-Another problem with using an input device is that it will
-not work for "UVC cameras which report privacy-switch status
-through a UVC_CT_PRIVACY_CONTROL." since those need the camera
-on and even then need to be polled to get a reliable reading.
-
-Taking this all into account my proposal would be to go
-with an input device and document that SW_CAMERA_LENS_COVER
-only applies to device internal cameras.
-
-This should work well for both use-cases a) and b) described
-above and also be easy to support for both hw interfaces
-1. and 2.
-
-My proposal for hw-if 3. (UVC_CT_PRIVACY_CONTROL) would be
-to keep reporting this as V4L2_CID_PRIVACY. This means it
-will not work out of the box for userspace which expects
-the input device method, but giving the limitations of
-this hw interface I think that requiring userspace to have
-to explicitly support this use-case (and e.g. poll the
-control) is a good thing rather then a bad thing.
-
-Still before moving forward with switching the hw-if 1.
-case to an input device as this patch-series does I would
-like to hear input from others.
-
-Sakari, Laurent, any comments ?
-
-Regards,
-
-Hans
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-> - Make the code depend on UVC_INPUT_EVDEV
-> - Link to v2: https://lore.kernel.org/r/20241108-uvc-subdev-v2-0-85d8a051a3d3@chromium.org
-> 
-> Changes in v2:
-> - Rebase on top of https://patchwork.linuxtv.org/project/linux-media/patch/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org/
-> - Create uvc_gpio_cleanup and uvc_gpio_deinit
-> - Refactor quirk: do not disable irq
-> - Change define number for MEDIA_ENT_F_GPIO
-> - Link to v1: https://lore.kernel.org/r/20241031-uvc-subdev-v1-0-a68331cedd72@chromium.org
-> 
-> ---
-> Ricardo Ribalda (8):
->       media: uvcvideo: Fix crash during unbind if gpio unit is in use
->       media: uvcvideo: Factor out gpio functions to its own file
->       media: uvcvideo: Re-implement privacy GPIO as an input device
->       Revert "media: uvcvideo: Allow entity-defined get_info and get_cur"
->       media: uvcvideo: Create ancillary link for GPIO subdevice
->       media: v4l2-core: Add new MEDIA_ENT_F_GPIO
->       media: uvcvideo: Use MEDIA_ENT_F_GPIO for the GPIO entity
->       media: uvcvideo: Introduce UVC_QUIRK_PRIVACY_DURING_STREAM
-> 
->  .../userspace-api/media/mediactl/media-types.rst   |   4 +
->  drivers/media/usb/uvc/Kconfig                      |   2 +-
->  drivers/media/usb/uvc/Makefile                     |   3 +
->  drivers/media/usb/uvc/uvc_ctrl.c                   |  40 +-----
->  drivers/media/usb/uvc/uvc_driver.c                 | 112 +---------------
->  drivers/media/usb/uvc/uvc_entity.c                 |  21 ++-
->  drivers/media/usb/uvc/uvc_gpio.c                   | 144 +++++++++++++++++++++
->  drivers/media/usb/uvc/uvc_status.c                 |  13 +-
->  drivers/media/usb/uvc/uvc_video.c                  |   4 +
->  drivers/media/usb/uvc/uvcvideo.h                   |  31 +++--
->  drivers/media/v4l2-core/v4l2-async.c               |   3 +-
->  include/uapi/linux/media.h                         |   1 +
->  12 files changed, 223 insertions(+), 155 deletions(-)
-> ---
-> base-commit: 1b3bb4d69f20be5931abc18a6dbc24ff687fa780
-> change-id: 20241030-uvc-subdev-89f4467a00b5
-> 
-> Best regards,
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index e44e8b139633..060e0e674938 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -1248,10 +1248,10 @@ gve_adminq_configure_flow_rule(struct gve_priv *priv,
+ 			sizeof(struct gve_adminq_configure_flow_rule),
+ 			flow_rule_cmd);
+ 
+-	if (err) {
++	if (err == -ETIME) {
+ 		dev_err(&priv->pdev->dev, "Timeout to configure the flow rule, trigger reset");
+ 		gve_reset(priv, true);
+-	} else {
++	} else if (!err) {
+ 		priv->flow_rules_cache.rules_cache_synced = false;
+ 	}
+ 
+-- 
+2.47.0.277.g8800431eea-goog
 
 
