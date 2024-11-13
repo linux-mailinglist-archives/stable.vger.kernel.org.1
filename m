@@ -1,179 +1,98 @@
-Return-Path: <stable+bounces-92962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F3E9C7DA9
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 22:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CED819C7DE4
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 22:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 661581F220D2
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 21:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABA61F22E3A
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 21:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93474205ABD;
-	Wed, 13 Nov 2024 21:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51D018B499;
+	Wed, 13 Nov 2024 21:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="gwdBbD+g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b1mH006q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B781C9B97
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 21:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72921632FD
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 21:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731533299; cv=none; b=cuWuY9F4f3g4K5OPKEQ2NRk0wXzkupsikbxR55wnOnAmmV5luiK6zfOudY5xKJLPEmeVBlWlrR9657bWH9QqHjJIQLrXM4uonF7bzWS92K3JqCplDbvKoHkKfFtgNifrW6XVEteEP+771ZxaD4Duu0ov+7w0eL5RUWzFemYYFLM=
+	t=1731534865; cv=none; b=p21lMjVu0WoAcLwOHtCXS0upg3KhOt7MvMKpymBcrjPagK6fXx/zjv4bn6Jv/2QNOQ//ld8lGK+iLrKcZXR/Aoyw+qm7w6daszVxjsSq9o/9PjE2LlaKhz90aLUqYwuLpoLJjvg67BxTFq5TGkLdWXZ7y9JXMsy/sZy+PDZJa2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731533299; c=relaxed/simple;
-	bh=rKhHAG+LvAXKqEHhSlBUI3rw27sV72XPt1hCRbQISuo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CvaqZko9Z4YfUX2i/WSWVaSQ8aRtM5d76nlJ6x3IcsB3Spa3rlPMMSgTsEweh9GWgmsM2REYzUIx1ZGUbULW0mxkMJ0fChDEfVvh6k7T+gipsuOL3D6T9S2B7xz0q7mZqqFREvqLAgL5A99OrBAd6c57ORGdF4J9XXESDaS3s70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=gwdBbD+g; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4315e9e9642so62137775e9.0
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 13:28:16 -0800 (PST)
+	s=arc-20240116; t=1731534865; c=relaxed/simple;
+	bh=Mr2QdsB0k/jh4DLmnDo/SlAsfaP3D2NYxIGTg57QvoA=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XlyWLh5BPXyHbSpsxZ6aqCuWiZtB8J3PrEMoupWdy+7WeLO9UhpekiiVnzfj11BJrzs+tcXFoB0HzW5q2G4wGBkj9gmAFQMaapCcl5hmykKJK4/Bc2iMU1LJyni0KkOvEnzsyiMw+9lkQ53BMUpLa5R13vmkVw6xzB+sxM+DSTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b1mH006q; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20e576dbc42so78196715ad.0
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 13:54:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1731533294; x=1732138094; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQ6xAbIC8Al8OcOI95+3pwvP6j9wIJ23QXfOfXWSupE=;
-        b=gwdBbD+gMOJlgKY4stYurbeaVqgSW9rmuoGPSWiXjDn3oz/rIOpGtrACiY82gWXTjo
-         Pd/YotrMvXQx2xueYlulDGe6v/00u8vffQJj4xvSw0/JlMXxRcg2dngCdpiaQWeNNyuJ
-         G3m0hP2HDFZpL0IL4JG+ypHPODSEofGffv4MejhEjGnOcLhH/bbmn8kRbbdSb7QsGIDb
-         ksj/TwDceE7hjKTwxi1XMXMfEpdpyuDsHVbDoOcY6ZmKNVxZlXiDEQ6gtpNQdtODhhio
-         HunON0sXyr1mIioyT489OrmOjIgiLWL/fnsPaZuDeIxRqpQT0+N/mD0Wqu+oxASUUjz5
-         znCw==
+        d=gmail.com; s=20230601; t=1731534863; x=1732139663; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NunyBZUoifGXMzNtmqjEF4WY7e0r+FgMNbotXvuJCMY=;
+        b=b1mH006qQs3zXl88YnEt84sRn80x3duWIPiOjPnUwbXk3NqblzIbtPSxJMkgtGzbQ6
+         B2XheFExhXaCYhNGgLTSZmN0GgSUALdrsTgYHuIa1nToIdBlFAICtmJ00JqSNPCyBACq
+         EMg2IgyLZnPxqmET5ccdAcvCrJFNiO8EUKP+gTgxBMtV4OfM3RpEF0RnOhtbN3mOCnGZ
+         2gX6n5FB4sfXQ4UH/SZ1B+Gsluio3tmde82FLhmpBtfrgyS75izIL89c15kvBC1swZX7
+         KvnDbaA9KsaSVNIScDb8xTSvwY9QZ7TZfmB2wk8Qj/RR9Uq+0+1IC5xudYh3W4wFr5dg
+         Bqkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731533294; x=1732138094;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QQ6xAbIC8Al8OcOI95+3pwvP6j9wIJ23QXfOfXWSupE=;
-        b=kAbG5dWHKXebzer4iW7HXuU0SFC0tdAEwBCAli6bdKZxbQ90SpwFKF1H/mrfdxKw00
-         WSBom0IXpjxzLkSMK1gRKjYgP2MwGLeB2DVK0PC0tJdXO801tDr+XSMpkbx3GPff+n3x
-         mA3Ghc1IStXGMvrtmUBWcQO/DKnd94Q6QEEzoDRrelGpmfZ5f0OkEyn7LDeT7l9Z477c
-         g+c+dRO/1PV1EFwun/ajjZsR/YZe+IOto2D6FhelO8xuqncd9At//GI1zIFIEfbPOcCj
-         5sfnJUsBOZonJCV/qwkrcQjEW6Z8qrnivaMsTrUe9U5M4EbYolGO/MfGTYzqnPEIb/i1
-         X8TA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/m5X4AJLTZsm8swiDnN1I4WLANziWkfGkxdl1iez1BRfWma3r63TkHBZHuSfiyI5KfzQwcII=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3Ai/vyn0lxSImxBb4HLRdE/VJiUszRKg4ciuylEnz6wIHUBcF
-	xThol9gdpW/lRvvfPXxhuwO6ekU4aKuIzs9qRPlnX0rjrNEuieFfx4jXL0HV1Yc=
-X-Google-Smtp-Source: AGHT+IEG3+0loCICljuOQmwpXB+TVjExLPGwnEULJ4Fhnr8A6GRVCEaGZc+hzlpvGDhdAwfNGhjx+w==
-X-Received: by 2002:a05:600c:b95:b0:431:57d2:d7b4 with SMTP id 5b1f17b1804b1-432d4ad3329mr37270825e9.26.1731533294505;
-        Wed, 13 Nov 2024 13:28:14 -0800 (PST)
-Received: from localhost (17-14-180.cgnat.fonira.net. [185.17.14.180])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-432da265c45sm229285e9.11.2024.11.13.13.28.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 13:28:14 -0800 (PST)
-From: David Gstir <david@sigma-star.at>
-To: sigma star Kernel Team <upstream+dcp@sigma-star.at>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Gstir <david@sigma-star.at>,
-	stable@vger.kernel.org
-Subject: [PATCH] KEYS: trusted: dcp: fix improper sg use with CONFIG_VMAP_STACK=y
-Date: Wed, 13 Nov 2024 22:27:54 +0100
-Message-ID: <20241113212754.12758-1-david@sigma-star.at>
-X-Mailer: git-send-email 2.47.0
+        d=1e100.net; s=20230601; t=1731534863; x=1732139663;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NunyBZUoifGXMzNtmqjEF4WY7e0r+FgMNbotXvuJCMY=;
+        b=Il6JVsT8mHB0O3Jhvkzb2JKbUl8VIBqwzA6Dcd+5SAvKDoWVR1T/gUeamLqnV1qKUK
+         iE/0e5ttnIPSQWcDMmG2AYloaQCTfu2745oydJjIeWqlUlX/fCYKHFXWS6LJ4/2AZcHX
+         UEfuTuKYbKZeErK2eSWtWlinpikNmEL4L7FAAjn17J559Q1Z770cWXa0DbL9X3H3VltH
+         zU1AhSYO3z0mNOK6Gz7K/b39V97i6vLhfzSxQ5+rTQja0uV+6z37vufY3okk+ElCVE7M
+         YW3JgzYKBhHI2mwJ0Q/U2jnVK2TfamWWfwmkfq1XfM8LN2wNmX+KMuahI3FOginn3Pnn
+         KAaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEiQs4/2B+xyTlj+cpd2knRBewGlmoiRh+6TLk7xC9vbUXB1UFWtvsKy0qVLlgouxFLzkk4UQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtt5Uw6RiMdIVw0Nqlem07aa/r/Jkduj54/BTsa67I8nOh2dc/
+	f5FDeFqBjGmmaYmRPaHFTeaB/kRWxJEYwgYRkeI6BVVXkiIcVmpXJk8UIw==
+X-Google-Smtp-Source: AGHT+IF6eQLoMeC8NkWFLVKkgcu3XGZ1Y6KtAoRmMqfhHyvJGWEHpg7j93PGTb9WXpni0RUB8Pu5cQ==
+X-Received: by 2002:a17:903:2283:b0:210:f6ba:a8e9 with SMTP id d9443c01a7336-211b661d251mr49741305ad.19.1731534862979;
+        Wed, 13 Nov 2024 13:54:22 -0800 (PST)
+Received: from DESKTOP-DUKSS9G. (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6a33bsm113183645ad.239.2024.11.13.13.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 13:54:22 -0800 (PST)
+Message-ID: <6735200e.170a0220.3cb599.5d77@mx.google.com>
+X-Google-Original-Message-ID: <ZzUgC3YrLRPUieLR@DESKTOP-DUKSS9G.>
+Date: Wed, 13 Nov 2024 13:54:19 -0800
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Motiejus =?utf-8?Q?Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] tools/mm: fix compile error
+References: <20241112171655.1662670-1-motiejus@jakstys.lt>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241112171655.1662670-1-motiejus@jakstys.lt>
 
-With vmalloc stack addresses enabled (CONFIG_VMAP_STACK=y) DCP trusted
-keys can crash during en- and decryption of the blob encryption key via
-the DCP crypto driver. This is caused by improperly using sg_init_one()
-with vmalloc'd stack buffers (plain_key_blob).
+On Tue, Nov 12, 2024 at 07:16:55PM +0200, Motiejus Jakštys wrote:
+> Not much to be said here, add a missing semicolon.
+> 
+> Fixes: ece5897e5a10 ("tools/mm: -Werror fixes in page-types/slabinfo")
+> Closes: https://github.com/NixOS/nixpkgs/issues/355369
+> Signed-off-by: Motiejus Jakštys <motiejus@jakstys.lt>
+> Cc: <stable@vger.kernel.org>
 
-Fix this by always using kmalloc() for buffers we give to the DCP crypto
-driver.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key")
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- security/keys/trusted-keys/trusted_dcp.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
-index e908c53a803c..7b6eb655df0c 100644
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -201,12 +201,16 @@ static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
--	u8 plain_blob_key[AES_KEYSIZE_128];
-+	u8 *plain_blob_key;
- 
- 	blen = calc_blob_len(p->key_len);
- 	if (blen > MAX_BLOB_SIZE)
- 		return -E2BIG;
- 
-+	plain_blob_key = kmalloc(AES_KEYSIZE_128, GFP_KERNEL);
-+	if (!plain_blob_key)
-+		return -ENOMEM;
-+
- 	b->fmt_version = DCP_BLOB_VERSION;
- 	get_random_bytes(b->nonce, AES_KEYSIZE_128);
- 	get_random_bytes(plain_blob_key, AES_KEYSIZE_128);
-@@ -229,7 +233,8 @@ static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
- 	ret = 0;
- 
- out:
--	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+	memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
-+	kfree(plain_blob_key);
- 
- 	return ret;
- }
-@@ -238,7 +243,7 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
--	u8 plain_blob_key[AES_KEYSIZE_128];
-+	u8 *plain_blob_key = NULL;
- 
- 	if (b->fmt_version != DCP_BLOB_VERSION) {
- 		pr_err("DCP blob has bad version: %i, expected %i\n",
-@@ -256,6 +261,12 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- 		goto out;
- 	}
- 
-+	plain_blob_key = kmalloc(AES_KEYSIZE_128, GFP_KERNEL);
-+	if (!plain_blob_key) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
- 	ret = decrypt_blob_key(b->blob_key, plain_blob_key);
- 	if (ret) {
- 		pr_err("Unable to decrypt blob key: %i\n", ret);
-@@ -271,7 +282,10 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- 
- 	ret = 0;
- out:
--	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+	if (plain_blob_key) {
-+		memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
-+		kfree(plain_blob_key);
-+	}
- 
- 	return ret;
- }
--- 
-2.47.0
-
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com> 
 
