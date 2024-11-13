@@ -1,115 +1,127 @@
-Return-Path: <stable+bounces-92880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD1D9C6711
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 03:05:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99C09C6714
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 03:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 009EF2848CD
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B7C1F2388E
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3F113049E;
-	Wed, 13 Nov 2024 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A962370824;
+	Wed, 13 Nov 2024 02:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="v+WPt11r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHS637jb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B7D7082F
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 02:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2641C2FB;
+	Wed, 13 Nov 2024 02:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731463510; cv=none; b=txx/XVvqS8PUtHYbgwPdX3fjTKgYNDa354F/zxuOF7CH+WspC0ACn7HkyDjwyk1OWTSjG30R7Om4lMfFan8SABOXKbHIE3AhnnM7z6CJqXaE+Wz+Dk9fpIljRwENZEdTJHGUgqe7B/fzCG5bfrgdJ2X+Y8aa4hhWQpB9SUAHaZo=
+	t=1731463654; cv=none; b=Nj0ABbiAaKt7/gBVCZJVdQT/BAZ077lLAHEsmwWozDZXzgg7CkvHVDBTJFFsOBGs0+FvD0bGDwHeUKELzJWGwHX8/+swuTzzNsz3ZF1s5/t3NzxobRORf+sliV+di7r6MNmfogJ57S4SNcmZa9nbzSS+LY1JRLz3yIdPRcwJm/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731463510; c=relaxed/simple;
-	bh=cZnw/3d3PzrW45LyARayO0lNM4W6T7F7djT+bgWr9KM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ocAYJIdmCRSUbj8Gpnmm37QvqpLhKuS0y4IRaeU0Z1nvHjC6C+/LwkxPRSul0jeiu/4mXpiEHjwdOSNHC+MD7vKvEOw8lRZH6TKvjxB9rTn1SpZJg3+Jr2vbES1cMMk4jbxjcarfkDYDIcnEXSAlNWkbywnj4PBPKHeEyxFQu5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=v+WPt11r; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2a97c2681so4954360a91.2
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 18:05:08 -0800 (PST)
+	s=arc-20240116; t=1731463654; c=relaxed/simple;
+	bh=fBIDU+D9Nxyj4+oC2LH8Lvc0U3Wc+c5p99wk9ExNJ7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a4EN0y4bdMr7vV6Qf9MxJTA0mtRKNZs3VeqoRyL2TG3M04gI3UxJTa/8OXbysc9s54ST3UASH7UhparmSrRzTj+KrDTvOc1/GaGV9tw65uc0nHoAABlO/bLbHhoB0ZfAD3g+Ta283V5SJ8dpQ7ChkckqaNh2yzr2TThoU+nH6MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHS637jb; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6cbe68f787dso41181946d6.2;
+        Tue, 12 Nov 2024 18:07:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1731463508; x=1732068308; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SMHgs78kJCT59kXAGyaHtemSt2oZrSdkOMKAYsOBJwg=;
-        b=v+WPt11rn6f+WywNl7fcGBmz9BUQ4BjOvHs1RgyfVhq8no4RyR07DlUua0XokrWrxC
-         hOYiFQICXQrzHKAJsjMoYkQ3m2dgcDGsjv9jXrpruxy9tzUTzb+czjo+gVxHnRge7krr
-         4tfUUrSHvP67kiVHvwrpkYnMTBuS27QZt6lY8=
+        d=gmail.com; s=20230601; t=1731463652; x=1732068452; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=WYP6Z7D+0l/1IgcWk70OwbLKb3OwbsoyZjfuToeA0wI=;
+        b=DHS637jb9mkFEpImsh3JDuRTnmgcsSA/Ks30CAXXz8TUKVuaLuSxkYK/z8BncT+nkX
+         rm/LLHP1QoMY8yLgasq6DOmxZOC9UBWlWOeUttK+OrpVJTH3jE5e/+yd/YbZo4BZcdfH
+         jEUhMZyqB9LEyGZh/dhQ8QhUScpj97inOVOjDZEsGrp5/2mpZeeoRfJuOZnR0ziDMUsO
+         tHOlK07zmpWVOaVnWwlQp3UkhK0pn8P2y1wpzqap1asyQSWt37P8+kJqKdo3KIIyCGyA
+         Zn0Y/QcIcM1HIoItjJ15+jr1iqfQv/P96x7X46xvGy8akW3fVt/p8tsqOzxsGAKKAF2Y
+         LYFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731463508; x=1732068308;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMHgs78kJCT59kXAGyaHtemSt2oZrSdkOMKAYsOBJwg=;
-        b=TaI988wWk4/pB4o1q25N9ObFUfuYqgVIZhi6Q51wNjE4AKHZf8N5dvO5l/PVQDUsgO
-         17T+e1M2HBed35Mr57CrO1o9tcUzPiUgy+Br3A9BarXjTTox5lvwcHSs/XjTL51JUl0L
-         uqZoVv0uPoq6zYucW9JkS3XCY9bZaTe4HM90O43Z6c1mfPLwd9QYe5rpmUSa9BTJUYr6
-         ovtGIwa4dPLdhMAluNoEfIlpqp63aPJnHQBvP2Tdx0xvXe37jD3Lw/jmtSNG9lllJgFw
-         FjC7/Uy2Zj4muiFbkazVkVRKEcRX3X3cBFF9dTDL4Ns2A2T5Fj/2tHr8wZ3AnTXtk717
-         bJ9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXDfJi13V+OYHjnVYIJVK70PzeyshrJFn9I/V2SKzbZ1H5TWBjd4uOvhDD+aaE9ReFvLd5P5yI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU9bKRCuVovf5HG4617PQY5h/TiO16agkfiE12BfZGteetktTf
-	pzcXj16O4zii7zm2TC7iyjoQ6Ii9GCuhf+R2wXhckTDibIuNXeUruOLe+7Bnd7w=
-X-Google-Smtp-Source: AGHT+IE3BGRjmhR0ZvvRxux2FPKe4+dk1Cle8rzXMHK76AdSLTy/P4WM0poxY1ZTUsslRuA+89mD9Q==
-X-Received: by 2002:a17:90b:1d11:b0:2e3:171e:3b8c with SMTP id 98e67ed59e1d1-2e9e4c73c42mr6334898a91.25.1731463508401;
-        Tue, 12 Nov 2024 18:05:08 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9f3eca101sm275665a91.14.2024.11.12.18.05.06
+        d=1e100.net; s=20230601; t=1731463652; x=1732068452;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WYP6Z7D+0l/1IgcWk70OwbLKb3OwbsoyZjfuToeA0wI=;
+        b=n6vd0CbioTYelKKWOpTw9nYSDgyQffHxkSRk2DKS9FtVqfy2/vezJhYE+30EtrM6yS
+         xi/AEBUooVWp6xsb8Psc2fjkYQtJ2NHf7gIVS3JDx94Ju4tnQRdd2xzJnBBJ3ouiKDAm
+         cZl2TN7mreIkYxYTspKqr/g5P21ZthJUIcBR1i4cQ0NMkFX6zSQKsdjHL6MsigNZMgVM
+         h2eXPT7Ji/WVc641FjjDCdbxSI3nyvZen4oGWJSxdf4ULsQl1NHhlKQNPyDXKbAlDYLc
+         SXNUMJ8tFaVu7Pvhp5wfJbCddVW/RhvJuAsVJ0sdmayNhHLF3bDWWHn8kfNo+rMbRUon
+         Ujpg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2bFqqYaJh/VBaPd7IQhr4YkRmnlFcD8POKBqPqPqROEMw9wVuZrJYtfqsBBWfcOSz2c6zUfYBndVjxcs=@vger.kernel.org, AJvYcCVR1orHEMtigur0CN3Lv4OcePwDMiCuC7tg43WbB0vyj4we43CF2151QMzgIi4bYx6eRq6/NP3U@vger.kernel.org, AJvYcCWc/eoAOB3fc+zBZK4FKAurgVFDfh7IXU5rOM7uce2OY29xme5WkKNwsMRYoLAEULMIXEGViAEs9o4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMjZi05HXv4zNjUwqOLbbcNMNG8gaiLdcOTeet1M9wwMjVn8SQ
+	F7N7azRk6Dql3yk4l/DM4jvdu6RkDh9+8T4Blx+Knm1p7LZ1kyxN
+X-Google-Smtp-Source: AGHT+IEpA4+yIXpM0Wyn3hUH9jkbdaPc1sjc6OvA/euzql3H6Je2Ifa7mqh0EOe7fu+kXMtkUehaQw==
+X-Received: by 2002:a05:6214:5706:b0:6ce:2357:8a2e with SMTP id 6a1803df08f44-6d3dd06beeamr19108226d6.37.1731463651904;
+        Tue, 12 Nov 2024 18:07:31 -0800 (PST)
+Received: from lenb-Thinkpad-T16-Gen-3.mynetworksettings.com ([2600:1006:a022:33ba:88a7:81d8:bd03:622c])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3a6b3250bsm58594056d6.96.2024.11.12.18.07.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 18:05:07 -0800 (PST)
-Date: Tue, 12 Nov 2024 18:05:05 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
-	mkarsten@uwaterloo.ca, stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC net 1/2] netdev-genl: Hold rcu_read_lock in napi_get
-Message-ID: <ZzQJUdjWDGqbm2QQ@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	pabeni@redhat.com, edumazet@google.com, amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com, mkarsten@uwaterloo.ca,
-	stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20241112181401.9689-1-jdamato@fastly.com>
- <20241112181401.9689-2-jdamato@fastly.com>
- <20241112172840.0cf9731f@kernel.org>
- <ZzQFeivicJPnxzzx@LQ3V64L9R2>
- <20241112180102.465dd909@kernel.org>
+        Tue, 12 Nov 2024 18:07:31 -0800 (PST)
+Sender: Len Brown <lenb417@gmail.com>
+From: Len Brown <lenb@kernel.org>
+To: peterz@infradead.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Cc: rafael@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Len Brown <len.brown@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] x86/cpu: Add INTEL_LUNARLAKE_M to X86_BUG_MONITOR
+Date: Tue, 12 Nov 2024 21:07:00 -0500
+Message-ID: <a4aa8842a3c3bfdb7fe9807710eef159cbf0e705.1731463305.git.len.brown@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241112180102.465dd909@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 12, 2024 at 06:01:02PM -0800, Jakub Kicinski wrote:
-> On Tue, 12 Nov 2024 17:48:42 -0800 Joe Damato wrote:
-> > Sorry for the noob question: should I break it up into two patches
-> > with one CCing stable and the other not like I did for this RFC?
-> > 
-> > Patch 1 definitely "feels" like a fixes + CC stable
-> > Patch 2 could be either net-next or a net + "fixes" without stable?
-> 
-> Oh, sorry, I didn't comment on that because that part is correct.
-> The split is great, will make backporting easier.
+From: Len Brown <len.brown@intel.com>
 
-OK, cool, that's what I figured. Thanks for the guidance; will
-repost shortly.
+Under some conditions, MONITOR wakeups on Lunar Lake processors
+can be lost, resulting in significant user-visible delays.
+
+Add LunarLake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+always sends an IPI, avoiding this potential delay.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219364
+
+Cc: stable@vger.kernel.org # 6.11
+Signed-off-by: Len Brown <len.brown@intel.com>
+---
+v3 syntax tweak
+v2 leave smp_kick_mwait_play_dead() alone
+
+ arch/x86/kernel/cpu/intel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index e7656cbef68d..4b5f3d052151 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -586,7 +586,9 @@ static void init_intel(struct cpuinfo_x86 *c)
+ 	     c->x86_vfm == INTEL_WESTMERE_EX))
+ 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+ 
+-	if (boot_cpu_has(X86_FEATURE_MWAIT) && c->x86_vfm == INTEL_ATOM_GOLDMONT)
++	if (boot_cpu_has(X86_FEATURE_MWAIT) &&
++	    (c->x86_vfm == INTEL_ATOM_GOLDMONT ||
++	     c->x86_vfm == INTEL_LUNARLAKE_M))
+ 		set_cpu_bug(c, X86_BUG_MONITOR);
+ 
+ #ifdef CONFIG_X86_64
+-- 
+2.43.0
+
 
