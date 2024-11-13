@@ -1,231 +1,256 @@
-Return-Path: <stable+bounces-92908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AF09C6DF2
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 12:36:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B359C6EC6
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 13:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A71B25BDE
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 11:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C578D1F27EC8
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 12:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58881FF615;
-	Wed, 13 Nov 2024 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADDB202F6B;
+	Wed, 13 Nov 2024 12:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hGFamc9z"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LMcpnmqN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBC11FF5EA
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 11:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DB1202658
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 12:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731497309; cv=none; b=A6rQ44Pn3KTWLqz0BJSQUOSoKmtE464eOdq8Osk5KLknPiF6BJoxV1YBKb2m7a58N7VlGUde6MqMmf0jZ9t02FBCNGu/3v3vryuKou7zGCwg9IPLlQg2wiK40ttYVAAusXOUZkiGFgC6vKo+35TWOJVDI7P6rLpqIhvyFSQTCFw=
+	t=1731499841; cv=none; b=FPeEcKjlbn4ErISdgjS/Ltv0Se7xbf2zIHfrxLgs3fIuMOJoUM7NRY/c183jAjhhubDLwcTZ1AIcbMVJWq61GNiMS6GZxIevdBi22uyTmEf1iweN+V22dkG7bWkNH/vylOTqouTQfRvEwxWIGOoapZAb/mCyfMT3G6HFCPlgGT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731497309; c=relaxed/simple;
-	bh=Vks9sp8KQO13fnVv1WgRw4i3Yp4B6y1XL2G/W8zMSNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KjN4V2kJT3NLrINMMQewi6ltz7qw5SV/q5IhZTCIKnJVef5PPGEfQ4JjAf9M4WuBeKZbTQYCC8bKYoZg8yA2bCBSXWfXcJpgnqKtS2aavZn84cnwketfcIzuUIt5VQ9euubjQApEUewoWOSZKzN1W65wGehZXAln0xSSCdQXVuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hGFamc9z; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-50da1fceeacso2613559e0c.1
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 03:28:27 -0800 (PST)
+	s=arc-20240116; t=1731499841; c=relaxed/simple;
+	bh=bauWV/M6dcSK+7fkF6DgnxJySTy3+uw5qHhPi4Kv5yU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CYUpXObBhQ+WP7z8ntjwo/K5TqEnHcI0h57S4ieWqCJuQpJVj9ZzkHbfqTWe+zZ6D67SVqGYOP0Bkc1QQQqccPZruw8p9RRcAh+JX1Xg8E8lB9TWb2Ui1o/8SxPOpva2kRp792D8EPkNkBiyFvLj9kCBnYiiHzESwhkGxDm2I0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LMcpnmqN; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b15d7b7a32so520053085a.1
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 04:10:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731497306; x=1732102106; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ibM4ruWPAege2vfzEi4k/k+Sw2PCbdPHy12ELWoxDXY=;
-        b=hGFamc9zH1ux28FwwpjAfUHridanBej3s5xODY2lOzgEJ4PB5/9WUdSgA8ZiMJdXAW
-         gWJUZ8yfX43Uk99kvvBvzkWQMQEZs5jPWF0PVscmkbZPeQaNc3XaIZRn871/e7yrnuqy
-         rCDl0IlwkpjM/PGV+4tWMSWpLaFWq8v2qbgJJAB6aTPrQXWbLWns7JlUb7eYmRk6eMH7
-         Rtg5sybAxKDcLV7Il1MHUL+mViHYHRMYlvwbQrSxRsqALTDiRMV/o3YI/ARpykcSL1QM
-         P5m8JEKpX6VXlIT4CAnMmCRKd3EWqKlGOAoZdHtohqWNNOXV90lUacfxLo9WDh7eBIzd
-         BVfQ==
+        d=broadcom.com; s=google; t=1731499838; x=1732104638; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BWGgKKfnruIFCmNAQq/RA1NoQPeaVY6VHLTnlmnX0Gs=;
+        b=LMcpnmqNJ2VNXL0+9c4FSljDkBiRIIdljhrhKVfWWMwzHj6PG3LboKJsVQEAA7ctaB
+         rdXNnTdm5VQNcwdE7XqYNFL+dG+cc1Mo3dcWJINGDf4PsoPHKRBDY5XoAfUjRPhXkZlv
+         GOzCp6sXh+Zp6mPBmtdWT1xBRSbF3YKBdzNRY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731497306; x=1732102106;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ibM4ruWPAege2vfzEi4k/k+Sw2PCbdPHy12ELWoxDXY=;
-        b=Q7NlRpmU/IvIagBgvfvBbAEVCNG6jN5DFDOhPiRJS+lwSR0Mf7ebt0fomkUOtsQenx
-         HoIqPO+IdiRllYnC1HKwahK2zTcwykRRBeP6bmwAs3ZYu0RmVYJRReGO+znnZmxc/rNZ
-         Rvg2+z5vU0zISxQD+/i9oRYYTdh3JfBZR/hqlcvvkM1TX8R5ftNi56fXbfdVqOtxS70+
-         HUG50OUK9ST/3GklwYGZB8bEAQY5pBT+n1x7w0wALHtfL42dZfBJklZVKu6PC9MJ0L9A
-         EDI/IthUfxpH/lw7la+DJpBkmzjtzvV92pIYDhlYet0qrz3+aD7HAL1pCeBRMBZ0TmnI
-         aKEg==
-X-Gm-Message-State: AOJu0Yw30EIUCM6NrMA1Ned3cp7lg5kOTooEcNSOFALoM9ua2nAlotgn
-	lyWGJPyra7+3y2BZpesLgAKchh+xywrZCDc8QwIwy9rKIglo2mjZOfawtt0Q7spU0zNplgV4+yC
-	/nHRUqG7M7B0htVQ+rPada14QC9RpLw8ggWYPcQ==
-X-Google-Smtp-Source: AGHT+IE5XV1UJGSOQRX/qQMMlLJ/XPYR/3FEYamReEoaZPK8Bd0yQizWVt8DCQvzbDo/J6sVtG6e0r6gr6tGnujdFVQ=
-X-Received: by 2002:a05:6122:32cf:b0:50d:2317:5b61 with SMTP id
- 71dfb90a1353d-51454270f84mr2974738e0c.6.1731497306370; Wed, 13 Nov 2024
- 03:28:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731499838; x=1732104638;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BWGgKKfnruIFCmNAQq/RA1NoQPeaVY6VHLTnlmnX0Gs=;
+        b=QA9tVlCNpKRAgpCKHO+q4HBArveNl3+0VLvVZFCilvaeLbbla+6VzqC6aaoDvUzNh/
+         lCcbaDi7q7E9fUaGdMzodBjG6jUDAWdcjXu7XxUbtBeHv6yErDLno/d4WdJNNW05l9gp
+         xc59fT8Q9Dp81bZwSaCgLIvjMH5VQ/QqmE1vXSGuUyXpgUgdWXh9AeJH2JibbbNjCdFp
+         Bb0IcmhG/T5PQqMn93PxD7jx1QmBvXYrBVWvKUEIOwR9vS5bZ688HZ9wIE1ruPWfYlEo
+         6aK0He1wi+T4efo1ho8YwH1vOgcCm36FI9Hqk9xZiU/SeLHVv5bAp9hYVey5X+hpYrEp
+         cXLA==
+X-Gm-Message-State: AOJu0Yws17xjeAzLV2/bH8WUcajRm1pUTjAkWQZ0Is/LijlntpmQWCYj
+	4/9LR6N/wrRa/s504PHYF7h3bZUBG0DQX2TVM7wOGEP2DL/wW7K1q4fRWtmDvK+bytOxTJNeedD
+	NOBFhVeXvUODdj1ZLh4sCIc4uWb4FtGECVVS3oMtnz5D7Y+QOHFfxzgOqoH5UqX5bAx3q9QkVXw
+	tilbLNCFzVM1j6jhmgMuLmmRBtcL/3Sl8R05y6km5t4SFWLgYWLyhI1m6umryH4a/fDw==
+X-Google-Smtp-Source: AGHT+IFjtssmcQYSDLPWHMXFElrFwUn5PC8jwBOpMwg6tt3NwANpV7HOJmiNf1o83ySdAhKvsm1rwg==
+X-Received: by 2002:a05:620a:4244:b0:7ac:b197:3004 with SMTP id af79cd13be357-7b331ebcd1emr2427155885a.29.1731499837429;
+        Wed, 13 Nov 2024 04:10:37 -0800 (PST)
+Received: from vb004028-vm1.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32acae494sm683467685a.73.2024.11.13.04.10.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 04:10:36 -0800 (PST)
+From: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: Philip.Yang@amd.com,
+	Felix.Kuehling@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH v6.1] drm/amdkfd: amdkfd_free_gtt_mem clear the correct pointer
+Date: Wed, 13 Nov 2024 12:10:30 +0000
+Message-Id: <20241113121030.2405520-1-vamsi-krishna.brahmajosyula@broadcom.com>
+X-Mailer: git-send-email 2.39.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112101839.777512218@linuxfoundation.org>
-In-Reply-To: <20241112101839.777512218@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 13 Nov 2024 16:58:15 +0530
-Message-ID: <CA+G9fYtM3KGHE8boa1nvhJn-JNTtMob93KGubiXA+f-ak0OSGQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/76] 5.15.172-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Nov 2024 at 15:54, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.172 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Nov 2024 10:18:19 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.172-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Philip Yang <Philip.Yang@amd.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+[ Upstream commit c86ad39140bbcb9dc75a10046c2221f657e8083b ]
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Pass pointer reference to amdgpu_bo_unref to clear the correct pointer,
+otherwise amdgpu_bo_unref clear the local variable, the original pointer
+not set to NULL, this could cause use-after-free bug.
 
-## Build
-* kernel: 5.15.172-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 0ef052d947fe31190128abd44cbc8cebc7657c48
-* git describe: v5.15.171-77-g0ef052d947fe
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.171-77-g0ef052d947fe
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c         | 14 +++++++-------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h         |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c           |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c            |  4 ++--
+ .../gpu/drm/amd/amdkfd/kfd_device_queue_manager.c  |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c       |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c           |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |  4 ++--
+ 8 files changed, 16 insertions(+), 16 deletions(-)
 
-## Test Regressions (compared to v5.15.168-239-g7a95f8fff07f)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index 5d9a34601a1a..c31e5f9d63da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -344,15 +344,15 @@ int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
+ 	return r;
+ }
+ 
+-void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj)
++void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj)
+ {
+-	struct amdgpu_bo *bo = (struct amdgpu_bo *) mem_obj;
++	struct amdgpu_bo **bo = (struct amdgpu_bo **) mem_obj;
+ 
+-	amdgpu_bo_reserve(bo, true);
+-	amdgpu_bo_kunmap(bo);
+-	amdgpu_bo_unpin(bo);
+-	amdgpu_bo_unreserve(bo);
+-	amdgpu_bo_unref(&(bo));
++	amdgpu_bo_reserve(*bo, true);
++	amdgpu_bo_kunmap(*bo);
++	amdgpu_bo_unpin(*bo);
++	amdgpu_bo_unreserve(*bo);
++	amdgpu_bo_unref(bo);
+ }
+ 
+ int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+index 4b694886715c..c7672a1d1560 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -210,7 +210,7 @@ int amdgpu_amdkfd_evict_userptr(struct kgd_mem *mem, struct mm_struct *mm)
+ int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
+ 				void **mem_obj, uint64_t *gpu_addr,
+ 				void **cpu_ptr, bool mqd_gfx9);
+-void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj);
++void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj);
+ int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
+ 				void **mem_obj);
+ void amdgpu_amdkfd_free_gws(struct amdgpu_device *adev, void *mem_obj);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index e3cd66c4d95d..f83574107eb8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -408,7 +408,7 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
+ 
+ err_create_queue:
+ 	if (wptr_bo)
+-		amdgpu_amdkfd_free_gtt_mem(dev->adev, wptr_bo);
++		amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&wptr_bo);
+ err_wptr_map_gart:
+ err_alloc_doorbells:
+ err_bind_process:
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 27820f0a282d..e2c055abfea9 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -673,7 +673,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
+ kfd_doorbell_error:
+ 	kfd_gtt_sa_fini(kfd);
+ kfd_gtt_sa_init_error:
+-	amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
++	amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
+ alloc_gtt_mem_failure:
+ 	if (kfd->gws)
+ 		amdgpu_amdkfd_free_gws(kfd->adev, kfd->gws);
+@@ -693,7 +693,7 @@ void kgd2kfd_device_exit(struct kfd_dev *kfd)
+ 		kfd_doorbell_fini(kfd);
+ 		ida_destroy(&kfd->doorbell_ida);
+ 		kfd_gtt_sa_fini(kfd);
+-		amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
++		amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
+ 		if (kfd->gws)
+ 			amdgpu_amdkfd_free_gws(kfd->adev, kfd->gws);
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index 1b7b29426480..3ab0a796af06 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -2392,7 +2392,7 @@ static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
+ {
+ 	WARN(!mqd, "No hiq sdma mqd trunk to free");
+ 
+-	amdgpu_amdkfd_free_gtt_mem(dev->adev, mqd->gtt_mem);
++	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
+ }
+ 
+ void device_queue_manager_uninit(struct device_queue_manager *dqm)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+index 623ccd227b7d..c733d6888c30 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+@@ -204,7 +204,7 @@ void kfd_free_mqd_cp(struct mqd_manager *mm, void *mqd,
+ 	      struct kfd_mem_obj *mqd_mem_obj)
+ {
+ 	if (mqd_mem_obj->gtt_mem) {
+-		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, mqd_mem_obj->gtt_mem);
++		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, &mqd_mem_obj->gtt_mem);
+ 		kfree(mqd_mem_obj);
+ 	} else {
+ 		kfd_gtt_sa_free(mm->dev, mqd_mem_obj);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 5bca6abd55ae..9582c9449fff 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1052,7 +1052,7 @@ static void kfd_process_destroy_pdds(struct kfd_process *p)
+ 
+ 		if (pdd->dev->shared_resources.enable_mes)
+ 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
+-						   pdd->proc_ctx_bo);
++						   &pdd->proc_ctx_bo);
+ 		/*
+ 		 * before destroying pdd, make sure to report availability
+ 		 * for auto suspend
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 99aa8a8399d6..1918a3c06ac8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -441,9 +441,9 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
+ 
+ 		if (dev->shared_resources.enable_mes) {
+ 			amdgpu_amdkfd_free_gtt_mem(dev->adev,
+-						   pqn->q->gang_ctx_bo);
++						   &pqn->q->gang_ctx_bo);
+ 			if (pqn->q->wptr_bo)
+-				amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
++				amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&pqn->q->wptr_bo);
+ 
+ 		}
+ 		uninit_queue(pqn->q);
+-- 
+2.39.4
 
-## Metric Regressions (compared to v5.15.168-239-g7a95f8fff07f)
-
-## Test Fixes (compared to v5.15.168-239-g7a95f8fff07f)
-
-## Metric Fixes (compared to v5.15.168-239-g7a95f8fff07f)
-
-## Test result summary
-total: 100973, pass: 77106, fail: 2830, skip: 20889, xfail: 148
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 203 total, 203 passed, 0 failed
-* arm64: 57 total, 57 passed, 0 failed
-* i386: 45 total, 45 passed, 0 failed
-* mips: 44 total, 44 passed, 0 failed
-* parisc: 6 total, 6 passed, 0 failed
-* powerpc: 44 total, 44 passed, 0 failed
-* riscv: 16 total, 16 passed, 0 failed
-* s390: 18 total, 18 passed, 0 failed
-* sh: 20 total, 20 passed, 0 failed
-* sparc: 12 total, 12 passed, 0 failed
-* x86_64: 49 total, 49 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
