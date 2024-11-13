@@ -1,126 +1,138 @@
-Return-Path: <stable+bounces-92913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D434B9C7025
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:04:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645EE9C7034
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BD481F26968
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 13:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27B2F2829F0
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 13:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573FF200C85;
-	Wed, 13 Nov 2024 12:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD762003D8;
+	Wed, 13 Nov 2024 13:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="lLcz8paR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGkyaGIv"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10021101.me.com (pv50p00im-ztdg10021101.me.com [17.58.6.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9611DF726
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 12:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DD1200B82;
+	Wed, 13 Nov 2024 13:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731502759; cv=none; b=WworPJAF4pgOXAStM20o45FfZBurLv3eYCTZCe5z8JbSt99m+4nl5qH6ba0Pc3uaslGkiAXl6Gkbi3hIZwJw9hAGVjq2iFyef/Eknn2RHV+MnOY+1E3q8YKvnyowEqiNsTdp8DfdI/vGiupm4dUWwB4yLCQqYpYhCoWyHtGcYT0=
+	t=1731502944; cv=none; b=Oip9FlSNH5nViRZPF8bg5JsmFXB55GrBVodApeCYywV2YntJjtlPFuRBL7UgKr58S03uudIpqWoOoXNZ6dfQ64RwqdvQ9J9qmliYyER/Thtg5/J7sXf+8BSbUUgGFhrwgZckIlmgAEPvgY90QMBTj7pwywHGwkZGuCaIS4TcEzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731502759; c=relaxed/simple;
-	bh=u5tGDNtr71dYjkM5XT6nRh18NvdgCTJKoO70dbwxF2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JRdWUr6BvHPmYN3bCb3QhGofHZTH0RDWd0c27MxW8DYF27WOMVmXOWcQaEAnbgOs+QmOY0IyFyhlOJweqohWp1ppmbj6DiXevl4hD9evb/u/Nlod2YORplQu9wKzHi/cZQt2GgDxptmg6qtDnEH27mGv5u4NiWzaq2kcTY9O4n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=lLcz8paR; arc=none smtp.client-ip=17.58.6.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1731502757;
-	bh=HeW/stKMIpHwA/oQL/utsqZrC65ZV39vRcrfssf+zDA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=lLcz8paRxYMbzuSOS9mHNHIGKHPE+ezKlgxibRk7T8LY7Z7bZorMlNFPpjOXWqwS1
-	 6Hpz5XvOgozCuWFMgya2789RsMD7blCbnCPxEVVrByuvwmnk+opGPkkqUIWaZ+dP4U
-	 an85f9NOMBBC3vfMM1QgnAOXCOBY0nZAqeVy85MrnAjLqlJnvoNVkPvdeEcbjNG0Ms
-	 6jeGqARI2ZzFwZpS4ogP6P4plheOuoC0TrtE+gJBmq+gEDZbqZ+pcRD0zqcsxE2gek
-	 1yjEY+0iA4TNFZfdz8FbaG4tH0pMNFSf08EfLM3bGDkWYuE46FJzLV9ebSlKYsagSo
-	 Yfy5rFae/MLHQ==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021101.me.com (Postfix) with ESMTPSA id B98F3D00302;
-	Wed, 13 Nov 2024 12:59:11 +0000 (UTC)
-Message-ID: <0c9a06af-78e2-477d-99a4-b5626a1f791b@icloud.com>
-Date: Wed, 13 Nov 2024 20:59:08 +0800
+	s=arc-20240116; t=1731502944; c=relaxed/simple;
+	bh=HE2f+Wis+LO+3GqCujUAT+1t51bvMsaOleQBQosi4fw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I/W06TrkCS4OHQwq57DzbkVU8d5n3l4RURrKmkMR/dPEfJkS1kHi3swDxMuqbwdhxYwau9VRKuUErMF+NWRhVidWGsXhKzPbv8ALr8dPmXhMblWvPxT60JSvhhob8fSQg58MAwTBl30DwLYsOP79XYRKyYyBJ+SNwGKVg3qPdok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGkyaGIv; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20cb7139d9dso64963105ad.1;
+        Wed, 13 Nov 2024 05:02:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731502942; x=1732107742; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AbzJ+kU15cqJAnxZBlXR2yEKRSm3bncn2jZQ5PrWfNM=;
+        b=gGkyaGIv+vG7t2uHZXInGMSs4cs19hDkhC85BNk1+RCsuZSbuwfqGYyE1jiiqa49Vd
+         //U0J/nGEY0yzfW/sj4Tnm+Gd1xZRKgaXCYKYmZU6U62I01jD9PVcrj7Nmxoy5MCtfZf
+         ijH8ZhdZuiVIeKpghovCbFMTjpoMZ+mBDv48Sob63UloVniUe28XJmb4vFVVdnwkleSP
+         4KkT9Y+PSvXahJbOb+yvSs30IOgoZnQh26AUDXnRIQINcbz/XFOK4OXH5FLpz/ePuXK/
+         nIWd2BTE3DbTzGq+hr8QNhEtYl7W851uYxYF+X43um5PWZCWqmgHcs2Jhx+eVVWI4g9p
+         9fmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731502942; x=1732107742;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AbzJ+kU15cqJAnxZBlXR2yEKRSm3bncn2jZQ5PrWfNM=;
+        b=KxbHwoTrQPl9gZIG039tUl6X3zQZsv5mJXeQia8iUwjqdvTwBJQlsXrexkypFvuz7B
+         IUTiGktGywk2xH0/l8FsxpCyeNXz48VD6LOw18vVfheEZ65TxM1kGxhPFLI0ZcMcSIhx
+         w8mSfRTUczik9Lzhev8IfuAWVxrgSKhDnQ7PmfrJttKHjhtCu39b/JfepVHRFTSVY07E
+         gxW2K634K3axLRjGE1zoE2ioRui+/vzrBGQ/INwpwXFrCerQpweQGeAqSnLQwGWU/AAy
+         r3k3syH6ejGMcvrTEV+JL2u83l7bDSfn4lhYNxjmV1PUsm0dK2g7Fa2xWLnvuTKnS3XK
+         uNmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQVjhF5JAjNNGR5IwTNEyM1TSZk+XZyIeHTgNjIeDv79OizOSpERzjtUfQ8fjJa5uQ8rRTpIiV@vger.kernel.org, AJvYcCVitUYeZM54Lp9vl0Iul2D4nOqtCXsBvmMLOufttlAy8rWnqYhtMcUJymT+XV82hkud+wsATnY+@vger.kernel.org, AJvYcCVn1gNyAQzU82GA/lvhlVS0FJWkdBhSiGujEfFq3EpC2sqg0gEynw5zqZ+D22xKF5G2KwuphudufTkBlrtwEOW5@vger.kernel.org, AJvYcCXLeDQ8lbiBqt0Mh9ytYdzy4K+IiaQ4SIeCaohdYqR0mFgNMFW75BwWAnoEt4mMqcrecYU60glArxcITRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe5sXwdgEbkSGUdsY+bFlp0YeekeCYBuzIUw1VMlFq2IB2wTtI
+	dF4GR2keSy0WJMYRo66i90GrutWxqW8cHD/NBRc17c5H+PZJG0eQ
+X-Google-Smtp-Source: AGHT+IGdFzP/aFDRjwd4saC/SLz9J8R5Gbj+ehtBZMSOW2SF3ig7tLXDoRjI5T94fEhIBVNHUlScgg==
+X-Received: by 2002:a17:902:e747:b0:20c:769b:f042 with SMTP id d9443c01a7336-21183d6717dmr282119785ad.31.1731502942041;
+        Wed, 13 Nov 2024 05:02:22 -0800 (PST)
+Received: from kernelexploit-virtual-machine.localdomain ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc8c29sm109692955ad.25.2024.11.13.05.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 05:02:21 -0800 (PST)
+From: Jeongjun Park <aha310510@gmail.com>
+To: pablo@netfilter.org,
+	kadlec@netfilter.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kaber@trash.net,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH net v2] netfilter: ipset: add missing range check in bitmap_ip_uadt
+Date: Wed, 13 Nov 2024 22:02:09 +0900
+Message-Id: <20241113130209.22376-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] PM: domains: Fix return value of API
- dev_pm_get_subsys_data()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
- stable@vger.kernel.org
-References: <20241028-fix_dev_pm_get_subsys_data-v1-1-20385f4b1e17@quicinc.com>
- <2024111257-collide-finalist-7a0c@gregkh>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <2024111257-collide-finalist-7a0c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: KrzcmBmhurldNPMqFZ7RBSEX594Mi4a0
-X-Proofpoint-ORIG-GUID: KrzcmBmhurldNPMqFZ7RBSEX594Mi4a0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-12_09,2024-11-12_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- suspectscore=0 adultscore=0 malwarescore=0 mlxscore=0 clxscore=1015
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411130111
+Content-Transfer-Encoding: 8bit
 
-On 2024/11/12 19:46, Greg Kroah-Hartman wrote:
-> On Mon, Oct 28, 2024 at 08:31:11PM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> dev_pm_get_subsys_data() has below 2 issues under condition
->> (@dev->power.subsys_data != NULL):
->>
->> - it will do unnecessary kzalloc() and kfree().
-> 
-> But that's ok, everything still works, right?
-> 
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-i don't think so, as explained below:
+So we should add missing range checks and remove unnecessary range checks.
 
-under condition (@dev->power.subsys_data != NULL), the API does
-not need to do kzalloc() and should always return 0 (success).
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+---
+ net/netfilter/ipset/ip_set_bitmap_ip.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-but it actually does *unnecessary* kzalloc() and have below impact
-shown:
-
-if (kzalloc() is successfully)
-	it will degrade the API's performance
-else
-        it changed the API's return value to -ENOMEM from 0, that
-        will impact caller's logic.
-
->> - it will return -ENOMEM if the kzalloc() fails, that is wrong
->>   since the kzalloc() is not needed.
-> 
-> But it's ok to return the proper error if the system is that broken.
-> >>
->> Fixed by not doing kzalloc() and returning 0 for the condition.
->>
->> Fixes: ef27bed1870d ("PM: Reference counting of power.subsys_data")
->> Cc: stable@vger.kernel.org
-> 
-> Why is this relevant for stable kernels?
-> 
-
-it has impact related to performance and logic as explained above.
-
-> thanks,
-> 
-> greg k-h
-
+diff --git a/net/netfilter/ipset/ip_set_bitmap_ip.c b/net/netfilter/ipset/ip_set_bitmap_ip.c
+index e4fa00abde6a..5988b9bb9029 100644
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struct nlattr *tb[],
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
+ 
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struct nlattr *tb[],
+ 		ip_to = ip;
+ 	}
+ 
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
+ 
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
+--
 
