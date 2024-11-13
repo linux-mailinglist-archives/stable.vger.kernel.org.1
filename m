@@ -1,68 +1,70 @@
-Return-Path: <stable+bounces-92923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DFE9C7451
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:31:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5908F9C7522
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 16:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6E61F21FDF
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:31:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54A7DB25A74
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8749020102D;
-	Wed, 13 Nov 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE4E2022E0;
+	Wed, 13 Nov 2024 14:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PwwG8BwX"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="G5aqhW3D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59991F9EAA
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234002022D9
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731508079; cv=none; b=csRzvAUT6/0fGYq/+R0Yr8eLUGowqM2hf9on7Ua/g2ne9z5PGZCazCPYIP9icerg1v+QkwsNPvGrx/njrdW8BiVevUlwtiMTq7zRhy5FFn/PG+sgnzwwjMBle58sRmZ3ffMWF8DHgY7wohF1ERZoOhYM6n9ul2fzi8wOCsne9Cc=
+	t=1731508083; cv=none; b=fcZgCOZnkl4HcfWvfRGIPK0r1f4iWz+/QlStOHH19wHYCZB/yU7FELxJCB6xTVb41gc7jA22gLBROlVwAxXZJF7oiEvmuvOXTQbgeYp9HdPCStjSzjEwrK+pk53kIrLsOlwgOgScKMhHRFfSo1xyXJPLjNUiEHVwosN+AR8vXIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731508079; c=relaxed/simple;
-	bh=Y+2H4LdN8mN6PJGaLKpXtkX3V6r/tQyzwkTwSod6FNc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JvxvNus8FUtGlMPRB4BwKXSE1YH3wsDzY3DAp84K7BB4AwoZOp0AvV8xH6CImGONDHax1uEnjrN0DS4hiylCrrn05ygAYOqlaBVZjPIXM6xJkQYDtzxF96/AtyT2uRkaEfue7+WajPIEU9695w3n01Tna6am3RCICcvXpbfyT3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PwwG8BwX; arc=none smtp.client-ip=209.85.219.43
+	s=arc-20240116; t=1731508083; c=relaxed/simple;
+	bh=7Eni9NORmKjkt8SWZ+OGibbslnMQLpddsvCL8STPwwo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=e1MJ9JaitC6J4wOQLQpsmOWt2VrgULEtnVxOz4TyZy0xCnG11wtViwvHVpkCI2Kybk0K/1Q7fQ87BJ5FaPQNzkEfmoR6wO9EIqWlF17H2BWna9DpGoyP2HYbLdfIxn+ttGJLAfYzTQgsaiFAk3szzrediODjPykn7F9yb+ZqVtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=G5aqhW3D; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6d36f7cf765so54428976d6.0
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 06:27:57 -0800 (PST)
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6d396a6f6aaso50318776d6.2
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 06:28:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1731508076; x=1732112876; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvYXEOtoobfsjK9RlNl1WSgITYS4vYodr4T5ypoCMpg=;
-        b=PwwG8BwX48E7l1wlbo6E2QcTFnMrvTuVrxgp4XINPytAvgCn40NKTTgmeR0fGLvfi4
-         LT/gJEXucqr4713/yh+NQbRYIL5SLuRTgc2z3ylGC3+CIawGFUgViVNwl+rH1imXU2i2
-         GIee5wJT/p1vPKOZVcQuTEsT0mTXMENe4xZpw=
+        d=broadcom.com; s=google; t=1731508080; x=1732112880; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ani2W2ZQrBBpRmgkjhMcO9RTPfyjpQdKdikE2zOpotQ=;
+        b=G5aqhW3DAnupYVQbz9ppwOuebVIkkxcipkPGbiGgL/tehFzdQJhadx8ptlJRx0XXLE
+         5uy4GaQnOMSJ7iiBLkQcef7cS/xxQYM253agatDgTZd0KIKtuwutgCXRrBM9hp1X1dJO
+         XwLyXSH8lWdiBP+DvKxJ17VXETrQLOHjbLosE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731508076; x=1732112876;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PvYXEOtoobfsjK9RlNl1WSgITYS4vYodr4T5ypoCMpg=;
-        b=H6ehXWq810yEI+TvJiJXy9qmmHz3aJ6UwE+09RfxdQ3Y5fwY5QJAEDNkPo5xxzcbZr
-         ybAoDBpZZYueu4ipxu1LddInpRWzlKLb35lQwhdIDualYKRImoeakJZYVegVZWX4suzy
-         Cv4Z17eylTyBqijmm91RFwP3yEtjwO+lqMEtYmHdK/JgQf7MU8R9NGLfY+V/o8IzpkoV
-         NL9rJqRdGNLJDwHsIqv1v5NhWWaGj5Vc/QyHnP3IZv4SqrJx6H+NEz8vZZtS7FC07ClE
-         0J5d/dToRhWwr8QpXDoK8hJTKGdsPFPmxbpFfZhCsSlKox8+YW3aSyvBtWLdfMjhT6im
-         /Syg==
-X-Gm-Message-State: AOJu0YwUB03pEucMD8qsFSxSsSJp48DGLeJYgUihqAxCYRS+01Q79ERB
-	+izMD5yNZKgCMQRLOH/iGajjFAz0bLBqlXVZ+nvTa7wPKJ6KBCSuIHhwm9S1i4tCsbxpA/NV9OX
-	lW9Rx4eZZFCVy95OXskFRhsfrmcnglpoXZLjX0R+KhYs2FC4f4yYrIxjIlQFpW7G5AYqS/0UAlJ
-	obWjy/ijmDzjOv/2gazm6Sqb7d2RY8VKLaDpIBCtiuczYelHTqM9Cf2I92mIVPkS0PpQ==
-X-Google-Smtp-Source: AGHT+IHNU4BkuDoySGHigGN9ulN/IS07Uo7ecwBFdjEIsUxAiHxHdOdLhRm/oLLAi1XFBjrIj/1mmg==
-X-Received: by 2002:a0c:f64c:0:b0:6d3:e7f8:e486 with SMTP id 6a1803df08f44-6d3e7f8e4ddmr746996d6.15.1731508076325;
-        Wed, 13 Nov 2024 06:27:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731508080; x=1732112880;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ani2W2ZQrBBpRmgkjhMcO9RTPfyjpQdKdikE2zOpotQ=;
+        b=OSDdfvK+Cl8VcpzV1zooGlJnzLxJUPkK7DSW+2tQz5ZqgmJ/gWMtuA70uaCG/cT7pP
+         xT45p5pQZLotEUvkXSC6QnBriEK13x4xD4uY7A7PN24lVJ8MgAdN5GCP9mVlavlphRMf
+         ZOWF3Jt3LopGqtoJF5gvZxu/le/h46HPblLORQYLbYsbY+8O8wxJQ8Pi+/whW1vcoQE+
+         O4c9zDd67DaFMq0FD92n98eYDaSx1gPEjaYbxiCM6a3Eh5UFDL9QXfvA1kXMblUf3ueg
+         7TqBqrssex6w2zbPpUN8rmpXSl6GhWy1zKyb/21jOKhvEOr56NEDY+BY1sl9661pgjvq
+         fdWg==
+X-Gm-Message-State: AOJu0YyMh7jIlIiKGn6AVJ4Ru+KNaD7nXtcPeWmEpfiIL1oKziY4eYEK
+	uQBEzEVns0Rfrf21+d2hGK48YnzJO4Etga59YglYVNhFoc120+otFrSbbj92nPhBmiuLXTvMdc2
+	xs0bCTZWb0ZgdEDSC75eEKWdFIVui0KX6OxCZ3kdNsUaHfow6spk6Tk/5Mav7OGb5MWE7ntA5fa
+	H+MlFwtvjo+ED1zh14psYPd7UQ1Gi34wEgozp37K2ObO0g8KPejfab65A3FvKSGKp8qQ==
+X-Google-Smtp-Source: AGHT+IEI4ykwHsoz1dNLWyvPcKgN33L/wFe+HGOnWCnxtwEzVUOCsxchyzq0ByuGvekTc9rx43TbHQ==
+X-Received: by 2002:a05:6214:5c07:b0:6d3:4849:1b8a with SMTP id 6a1803df08f44-6d39e14cdb2mr295420966d6.21.1731508080057;
+        Wed, 13 Nov 2024 06:28:00 -0800 (PST)
 Received: from vb004028-vm1.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961defe5sm85134976d6.10.2024.11.13.06.27.54
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961defe5sm85134976d6.10.2024.11.13.06.27.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 06:27:55 -0800 (PST)
+        Wed, 13 Nov 2024 06:27:59 -0800 (PST)
 From: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -80,10 +82,12 @@ Cc: rostedt@goodmis.org,
 	alexey.makhalov@broadcom.com,
 	vasavi.sirnapalli@broadcom.com,
 	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH v6.1 0/2] uprobe: avoid out-of-bounds memory access of fetching args
-Date: Wed, 13 Nov 2024 14:27:32 +0000
-Message-Id: <20241113142734.2406886-1-vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH v6.1 1/2] uprobes: encapsulate preparation of uprobe args buffer
+Date: Wed, 13 Nov 2024 14:27:33 +0000
+Message-Id: <20241113142734.2406886-2-vamsi-krishna.brahmajosyula@broadcom.com>
 X-Mailer: git-send-email 2.39.4
+In-Reply-To: <20241113142734.2406886-1-vamsi-krishna.brahmajosyula@broadcom.com>
+References: <20241113142734.2406886-1-vamsi-krishna.brahmajosyula@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,17 +96,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Include additional patch (Andrii Nakryiko) since its a dependency
+From: Andrii Nakryiko <andrii@kernel.org>
 
-Andrii Nakryiko (1):
-  uprobes: encapsulate preparation of uprobe args buffer
+[ Upstream commit 3eaea21b4d27cff0017c20549aeb53034c58fc23 ]
 
-Qiao Ma (1):
-  uprobe: avoid out-of-bounds memory access of fetching args
+Move the logic of fetching temporary per-CPU uprobe buffer and storing
+uprobes args into it to a new helper function. Store data size as part
+of this buffer, simplifying interfaces a bit, as now we only pass single
+uprobe_cpu_buffer reference around, instead of pointer + dsize.
 
- kernel/trace/trace_uprobe.c | 86 ++++++++++++++++++++-----------------
- 1 file changed, 46 insertions(+), 40 deletions(-)
+This logic was duplicated across uprobe_dispatcher and uretprobe_dispatcher,
+and now will be centralized. All this is also in preparation to make
+this uprobe_cpu_buffer handling logic optional in the next patch.
 
+Link: https://lore.kernel.org/all/20240318181728.2795838-2-andrii@kernel.org/
+[Masami: update for v6.9-rc3 kernel]
+
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+---
+ kernel/trace/trace_uprobe.c | 79 +++++++++++++++++++------------------
+ 1 file changed, 41 insertions(+), 38 deletions(-)
+
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 127c78aec17d..e09eef65d32f 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -858,6 +858,7 @@ static const struct file_operations uprobe_profile_ops = {
+ struct uprobe_cpu_buffer {
+ 	struct mutex mutex;
+ 	void *buf;
++	int dsize;
+ };
+ static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
+ static int uprobe_buffer_refcnt;
+@@ -947,9 +948,26 @@ static void uprobe_buffer_put(struct uprobe_cpu_buffer *ucb)
+ 	mutex_unlock(&ucb->mutex);
+ }
+ 
++static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
++						       struct pt_regs *regs)
++{
++	struct uprobe_cpu_buffer *ucb;
++	int dsize, esize;
++
++	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
++	dsize = __get_data_size(&tu->tp, regs);
++
++	ucb = uprobe_buffer_get();
++	ucb->dsize = tu->tp.size + dsize;
++
++	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
++
++	return ucb;
++}
++
+ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 				unsigned long func, struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize,
++				struct uprobe_cpu_buffer *ucb,
+ 				struct trace_event_file *trace_file)
+ {
+ 	struct uprobe_trace_entry_head *entry;
+@@ -960,14 +978,14 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 
+ 	WARN_ON(call != trace_file->event_call);
+ 
+-	if (WARN_ON_ONCE(tu->tp.size + dsize > PAGE_SIZE))
++	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
+ 		return;
+ 
+ 	if (trace_trigger_soft_disabled(trace_file))
+ 		return;
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	entry = trace_event_buffer_reserve(&fbuffer, trace_file, size);
+ 	if (!entry)
+ 		return;
+@@ -981,14 +999,14 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
+ 	}
+ 
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+ 	trace_event_buffer_commit(&fbuffer);
+ }
+ 
+ /* uprobe handler */
+ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			     struct uprobe_cpu_buffer *ucb, int dsize)
++			     struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+@@ -997,7 +1015,7 @@ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, 0, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, 0, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ 
+ 	return 0;
+@@ -1005,13 +1023,13 @@ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+ 
+ static void uretprobe_trace_func(struct trace_uprobe *tu, unsigned long func,
+ 				 struct pt_regs *regs,
+-				 struct uprobe_cpu_buffer *ucb, int dsize)
++				 struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, func, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, func, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -1339,7 +1357,7 @@ static bool uprobe_perf_filter(struct uprobe_consumer *uc,
+ 
+ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 			       unsigned long func, struct pt_regs *regs,
+-			       struct uprobe_cpu_buffer *ucb, int dsize)
++			       struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct trace_event_call *call = trace_probe_event_call(&tu->tp);
+ 	struct uprobe_trace_entry_head *entry;
+@@ -1360,7 +1378,7 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+ 
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	size = ALIGN(size + sizeof(u32), sizeof(u64)) - sizeof(u32);
+ 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE, "profile buffer not large enough"))
+ 		return;
+@@ -1383,13 +1401,10 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
+ 	}
+ 
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
+-
+-	if (size - esize > tu->tp.size + dsize) {
+-		int len = tu->tp.size + dsize;
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+-		memset(data + len, 0, size - esize - len);
+-	}
++	if (size - esize > ucb->dsize)
++		memset(data + ucb->dsize, 0, size - esize - ucb->dsize);
+ 
+ 	perf_trace_buf_submit(entry, size, rctx, call->event.type, 1, regs,
+ 			      head, NULL);
+@@ -1399,21 +1414,21 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 
+ /* uprobe profile handler */
+ static int uprobe_perf_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			    struct uprobe_cpu_buffer *ucb, int dsize)
++			    struct uprobe_cpu_buffer *ucb)
+ {
+ 	if (!uprobe_perf_filter(&tu->consumer, 0, current->mm))
+ 		return UPROBE_HANDLER_REMOVE;
+ 
+ 	if (!is_ret_probe(tu))
+-		__uprobe_perf_func(tu, 0, regs, ucb, dsize);
++		__uprobe_perf_func(tu, 0, regs, ucb);
+ 	return 0;
+ }
+ 
+ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
+ 				struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize)
++				struct uprobe_cpu_buffer *ucb)
+ {
+-	__uprobe_perf_func(tu, func, regs, ucb, dsize);
++	__uprobe_perf_func(tu, func, regs, ucb);
+ }
+ 
+ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
+@@ -1479,10 +1494,8 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 	int ret = 0;
+ 
+-
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 	tu->nhit++;
+ 
+@@ -1494,18 +1507,14 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
++		ret |= uprobe_trace_func(tu, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
++		ret |= uprobe_perf_func(tu, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return ret;
+@@ -1517,7 +1526,6 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 
+@@ -1529,18 +1537,13 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
+-
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		uretprobe_trace_func(tu, func, regs, ucb, dsize);
++		uretprobe_trace_func(tu, func, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		uretprobe_perf_func(tu, func, regs, ucb, dsize);
++		uretprobe_perf_func(tu, func, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return 0;
 -- 
 2.39.4
 
