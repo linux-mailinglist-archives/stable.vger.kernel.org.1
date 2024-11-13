@@ -1,155 +1,218 @@
-Return-Path: <stable+bounces-92919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF2A9C7160
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:51:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC959C7161
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CB70B2F160
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 13:38:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FEC61F26406
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 13:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B422036F4;
-	Wed, 13 Nov 2024 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E231DED47;
+	Wed, 13 Nov 2024 13:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="rPzztnyQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="rUpKHDd2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3C8202638
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 13:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E1818870D
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 13:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731504962; cv=none; b=ap7EekQpr/oI9TFazhB7Ovh1fVUB5GOYoLgtoRcgdqX++YkgRjdf/kASLMpuWvpk5h+Lz3LnMspErx5J7p9diEP0Bs08ZO1k0cCpgcJRjN8DjceYuxsYJEYwBGkYsYTWf7l/5CQjsb06Z27IkXBnda0CwAxYw79NSr5dhV4LYLo=
+	t=1731505752; cv=none; b=cSuHMmJhhzDCUM+C/efwg2EsYaDzL+4d3AKc1HVQsyxIP0Tat1yg+ZYo0fEJArzCjwGk/8a4qwXkGBwp5K3ClEIearhqSA6WY1LzwJpSTJjZiVC4lO7lElREfMjQ8jobPehosQGw80vYa6t+VGjHN6Q5q8pRb/itBVGy7nS8QcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731504962; c=relaxed/simple;
-	bh=MN67nAF+CszefP3gr8RMGEznclhS5zNcjbkW5w4l35Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LFtf+hcHotOvDUfO2dRpKTNcZ2vRu9l9anN6OKCMrFUplfXC9EotLJZizGhunCsrzZlGlJCNFsEfSxcfXpT8VcwW4MSCQfMvFmYctax071aycGEUpTMWa/JV87+GLVSHrJpzsM7wCWR7/9dncOXPS6TrjQ2ziN3iYU83ZNBpi8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=rPzztnyQ; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315eac969aso4691865e9.1
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 05:35:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1731504958; x=1732109758; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1OvTZSeNAGKIV1seMePes99WD5Hn6Ptwq+/QcTfM4OA=;
-        b=rPzztnyQnWc53nQPqtQRzK30csntTKsCs8KwjXCgnVLwhrO+qHUdSv3F26A+Fbxu+P
-         pmHX0jNSaRXVxCtUq/z83LmReidtEGaAW0hLNcl36DXY6CZwuOAml+ctZnYN3F6K+1/N
-         nwPl4HiqDotbA6mcaz29gp1Ue4RD/OzySFWM/qDDx6L285B3hsEqY7pmjN32E+VGl42s
-         +FxLteK8tfuja9au5F9VRH35Gs7MN8Csg3gDksHz6y1BqImDZPBswbcIgrBc2+9UGzES
-         zPKtQQjmcJ3NRX4xI3pNtxNw559M5gIVXS1cABqNN7kmWWGu9OtWBBj99DwsbAN3Xg5e
-         PqNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731504958; x=1732109758;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1OvTZSeNAGKIV1seMePes99WD5Hn6Ptwq+/QcTfM4OA=;
-        b=Io+hltSFSZ96rKMuZdj9nVzIJfFOEwtdujkncIyW8Mm5lAzm4BzCjUuEROYsajNTPv
-         bmv+7vUO9cMZl/GlbVnA2kBPC3oaL6jUGfBnOfAsrpZayiRqLfqsYxO71BXoUmm2Bc3L
-         Vr8Ikn59ENc9QUqnHfQaSF4IfT2mictFdVC5506GXgnrIgPYgfellizAMczZ28F5AKGL
-         i3k23Zp6eHgS0N1DoHdm5WWG6vjmI+7Ukq2gE5eIy3vK0KHVUE5CKjUNBLce3buWs6gX
-         Xwpn8PFcIYc83A1uYezgpNsD5LxLqDFr1BKXMpgd8k5iCnCcKaoyEx4dXinCDe4dW+0S
-         qQTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXlO6mxWRSWFSg3iPL3F5LAR7nnfAnqJsmK8vMJPNu4tZ1zZfW+75TGVhBMR0lQxyYPf0g2rv0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDdkp5VadI5GdRYCipv/m8S4LN0YmfjAjGPni43zP2t+QBkhYs
-	ulsrqgrlpfrKrU90YmLw6pDFIFDpmjwYB2CPXjWB22cYCGW/MOLt2mJRC54a7Q4=
-X-Google-Smtp-Source: AGHT+IH0MgOpNYoww+cJhT91aFWRPXzfgZYVlvmgv7xhY7iMIMEQpgepNOVaV+LNO6p7EhOHTMdqGw==
-X-Received: by 2002:a05:600c:3c9d:b0:431:4fbd:f571 with SMTP id 5b1f17b1804b1-432b74ce199mr179115085e9.13.1731504957851;
-        Wed, 13 Nov 2024 05:35:57 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432d54e2f2esm25664165e9.1.2024.11.13.05.35.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 05:35:57 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: geert+renesas@glider.be,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	biju.das.jz@bp.renesas.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	magnus.damm@gmail.com,
-	linus.walleij@linaro.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	p.zabel@pengutronix.de
-Cc: linux-renesas-soc@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	claudiu.beznea@tuxon.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 06/25] ASoC: renesas: rz-ssi: Terminate all the DMA transactions
-Date: Wed, 13 Nov 2024 15:35:21 +0200
-Message-Id: <20241113133540.2005850-7-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241113133540.2005850-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20241113133540.2005850-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1731505752; c=relaxed/simple;
+	bh=I9NW9+oIL50nJ0UTCp+bkeUVPwbNh+77cy+MPNEr9dU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B1O1L1Qbh2S+Wt1a0nYd7VvAACOLCPAtMOZIHS1Q1ULvOP1PMFXPtUppoTQ8zo6JF10+Wtn0nHEEPLeTqjqPxMXxv4SblwnmzgLF2QkZW5XmekvmuHU+uUBYC8So4o5n8eVMcRdiD0nwcpQM6gAn2Y8R6oa9lzbfsn0Vbpq01P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=rUpKHDd2; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=mkTC7L0/xuxDefO5g47U8/DuYH74+ifW2z160/bsXQ0=; b=rUpKHDd26x4HajFNn+u6rYJ5Q+
+	N1xnShrP6BMGQygFlXiNnxzxT0B0nJg1MTOoGDB+mMad7mO3ODr9ZSxCOWYTe6GCZIyMgL/3ENnHm
+	9gBwnQVwUNo0KmvCXGuaYXf3bcpoio6f7/CqOrqCkmOcOpje3gyNCvpX/alMWBLz3hHKenAIwdxXh
+	wZSmQJ6l+4yfFPmyLI/8L9KXCz6amXwboLox5iaqHQqmhMOLEC9rdWf3m9wF8wafc3MoQIeZemRUn
+	AvWSeODCcU1a4Rmbe5k74v1IyWZubE2UhIfPD2NScySYMIYAvIfIM1llTPaKJzTOFjE5br09+DJ8G
+	fcgBwt5w==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tBDjs-006LLQ-RW; Wed, 13 Nov 2024 14:48:56 +0100
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	stable@vger.kernel.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH] drm/amdgpu: Make the submission path memory reclaim safe
+Date: Wed, 13 Nov 2024 13:48:38 +0000
+Message-ID: <20241113134838.52608-1-tursulin@igalia.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-In case of full duplex the 1st closed stream doesn't benefit from the
-dmaengine_terminate_async(). Call it after the companion stream is
-closed.
+As commit 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+points out, ever since
+a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue rather than kthread"),
+any workqueue flushing done from the job submission path must only
+involve memory reclaim safe workqueues to be safe against reclaim
+deadlocks.
 
-Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+This is also pointed out by workqueue sanity checks:
+
+ [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_enable_gfx_off [amdgpu]
+...
+ [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
+...
+ [ ] Call Trace:
+ [ ]  <TASK>
+...
+ [ ]  ? check_flush_dependency+0xf5/0x110
+...
+ [ ]  cancel_delayed_work_sync+0x6e/0x80
+ [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
+ [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
+ [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
+ [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
+ [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
+ [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
+ [ ]  process_one_work+0x217/0x720
+...
+ [ ]  </TASK>
+
+Fix this by creating a memory reclaim safe driver workqueue and make the
+submission path use it.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+Fixes: a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue rather than kthread")
 Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
 ---
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  2 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 25 +++++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |  5 +++--
+ 3 files changed, 30 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- collected tags
-- use proper fixes commit SHA1 and description
-- s/sh/renesas in patch title
-
-Changes in v2:
-- none
-
- sound/soc/renesas/rz-ssi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/sound/soc/renesas/rz-ssi.c b/sound/soc/renesas/rz-ssi.c
-index 6efd017aaa7f..2d8721156099 100644
---- a/sound/soc/renesas/rz-ssi.c
-+++ b/sound/soc/renesas/rz-ssi.c
-@@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 7645e498faa4..a6aad687537e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -268,6 +268,8 @@ extern int amdgpu_agp;
  
- 	/* Cancel all remaining DMA transactions */
--	if (rz_ssi_is_dma_enabled(ssi))
--		dmaengine_terminate_async(strm->dma_ch);
-+	if (rz_ssi_is_dma_enabled(ssi)) {
-+		if (ssi->playback.dma_ch)
-+			dmaengine_terminate_async(ssi->playback.dma_ch);
-+		if (ssi->capture.dma_ch)
-+			dmaengine_terminate_async(ssi->capture.dma_ch);
-+	}
+ extern int amdgpu_wbrf;
  
- 	rz_ssi_set_idle(ssi);
++extern struct workqueue_struct *amdgpu_reclaim_wq;
++
+ #define AMDGPU_VM_MAX_NUM_CTX			4096
+ #define AMDGPU_SG_THRESHOLD			(256*1024*1024)
+ #define AMDGPU_WAIT_IDLE_TIMEOUT_IN_MS	        3000
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 38686203bea6..f5b7172e8042 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -255,6 +255,8 @@ struct amdgpu_watchdog_timer amdgpu_watchdog_timer = {
+ 	.period = 0x0, /* default to 0x0 (timeout disable) */
+ };
  
++struct workqueue_struct *amdgpu_reclaim_wq;
++
+ /**
+  * DOC: vramlimit (int)
+  * Restrict the total amount of VRAM in MiB for testing.  The default is 0 (Use full VRAM).
+@@ -2971,6 +2973,21 @@ static struct pci_driver amdgpu_kms_pci_driver = {
+ 	.dev_groups = amdgpu_sysfs_groups,
+ };
+ 
++static int amdgpu_wq_init(void)
++{
++	amdgpu_reclaim_wq =
++		alloc_workqueue("amdgpu-reclaim", WQ_MEM_RECLAIM, 0);
++	if (!amdgpu_reclaim_wq)
++		return -ENOMEM;
++
++	return 0;
++}
++
++static void amdgpu_wq_fini(void)
++{
++	destroy_workqueue(amdgpu_reclaim_wq);
++}
++
+ static int __init amdgpu_init(void)
+ {
+ 	int r;
+@@ -2978,6 +2995,10 @@ static int __init amdgpu_init(void)
+ 	if (drm_firmware_drivers_only())
+ 		return -EINVAL;
+ 
++	r = amdgpu_wq_init();
++	if (r)
++		goto error_wq;
++
+ 	r = amdgpu_sync_init();
+ 	if (r)
+ 		goto error_sync;
+@@ -3006,6 +3027,9 @@ static int __init amdgpu_init(void)
+ 	amdgpu_sync_fini();
+ 
+ error_sync:
++	amdgpu_wq_fini();
++
++error_wq:
+ 	return r;
+ }
+ 
+@@ -3017,6 +3041,7 @@ static void __exit amdgpu_exit(void)
+ 	amdgpu_acpi_release();
+ 	amdgpu_sync_fini();
+ 	amdgpu_fence_slab_fini();
++	amdgpu_wq_fini();
+ 	mmu_notifier_synchronize();
+ 	amdgpu_xcp_drv_release();
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 2f3f09dfb1fd..f8fd71d9382f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -790,8 +790,9 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable)
+ 						AMD_IP_BLOCK_TYPE_GFX, true))
+ 					adev->gfx.gfx_off_state = true;
+ 			} else {
+-				schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
+-					      delay);
++				queue_delayed_work(amdgpu_reclaim_wq,
++						   &adev->gfx.gfx_off_delay_work,
++						   delay);
+ 			}
+ 		}
+ 	} else {
 -- 
-2.39.2
+2.46.0
 
 
