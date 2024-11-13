@@ -1,206 +1,132 @@
-Return-Path: <stable+bounces-92882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EC29C6726
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 03:16:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6BA9C672A
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 03:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE18B23852
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:16:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870B81F21A63
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4323F7083F;
-	Wed, 13 Nov 2024 02:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D026413B5A1;
+	Wed, 13 Nov 2024 02:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gSph2ksK"
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="FyL92bcT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB3A42A9E
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 02:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F4139CE3
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 02:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731464207; cv=none; b=YeIoBVgLAlP4JG5ZzvbCemeuiiO5sjoATFMZDChu7sOaZRGqUfRyNFAi0J4EAmENsfQE2DNHG+8mLXDoBq4jh84BN9MglyUHvZwLGzQbY1FXdqfOHLHgkqgwMUxHLIO2WnyDJkj6vRjraexbZa/2qpCpIhA/HV/uCFC75Ls4fBw=
+	t=1731464291; cv=none; b=UPnRVeycUhjnlarSXAxx6IEMp3HRgmVC5wZFWekfbJkmw3Wp3+KkfVBGMXNlRHLGLoP78SOMtX8XJn70Fg4nDfWVGlcP+FTn0wh3wwoFsA9gLEBWmHEdq8re+tncxSBoeRYuJRfMey5gAk46Y0UQR0eT6SteloVzPIEQvjxT3fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731464207; c=relaxed/simple;
-	bh=PlYUhUcsPmwPDBIh9w61cOeqDhMpV0uV5BDrrbzYP2w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5Pm0KrMWNASvi3w6rM2kmM+bGM98fPTceQw2V/wcfXDFpH9KkVjgU3ZKwHSY0j8zg1JYzHOWCNQ/ALT26p4b1tTqcTO+tg+2zaMGdrWD2x9s7Wchl2IoItWv81toUum1LgdwR5O//A6fs1JFnLM/BrjzEHwQH/e3Kn9/yYHHXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gSph2ksK; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ea339a41f1so54695707b3.2
-        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 18:16:45 -0800 (PST)
+	s=arc-20240116; t=1731464291; c=relaxed/simple;
+	bh=VBaKG7sS3+bFmnPdr4IqHzNMfBCmbNJFBokvNs/FN3Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gFA5arFMM/0bnGB3UjLuxjZl3Qp+5BhL8DiCHj3YQXd7DY68M/L2eeree4CPcsETYhKUP9dBXknNFhig3t51MVnDKT5gF2hNkI1jl4jYU0pQwkBszdhqw7pNxhn88LL74+h7uf2Fr/NtVfaPfN9NN5iswG/wLpq+TKd+c63AEcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=FyL92bcT; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20c803787abso2235245ad.0
+        for <stable@vger.kernel.org>; Tue, 12 Nov 2024 18:18:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731464204; x=1732069004; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=fastly.com; s=google; t=1731464289; x=1732069089; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xaUhAfwWn67oPOmbocpvOSZXxg4dsQa9E4lX/jyrObM=;
-        b=gSph2ksKTOFK4yqo8QEoaQAFckyjazhu2saKp/ARvESFJE9YzX7DJSGkIsYHr86mpD
-         DDNJAGK2sE5NtWcCjWY9NLMLn0E2kZvk/XvX6zEhIN5C6mIbyeH0Luzn1NC2J8f7LmRu
-         iyMRhjybwZzml8pFrhzK4rWEUcrLjuID7xH/8t2R6hLimEfdtzIkQhdwwjsjEmqycr2s
-         6gYcv4bLdG7nAzkXdbeehY4S3oKZzu2lZroMn44cdTTkxaMqmCXCH71qaYxE0dAJ+iPN
-         8AVov/us/RSpQzR6B7Afafgmc4/Fz7HoZ9efKeKSRovnZr3/uuwLEsyvEp2NZZjN3x23
-         WSOA==
+        bh=lKBid5QRb/kAhtogYHDhzeEdvI0mEg25tnKEi7AhX6E=;
+        b=FyL92bcT5FMc9roNmTkc73hyyelyRZqtesXbJoylmSOcr//jSCHmm2JtwMmg9Ha74u
+         WYwzKG5dANmDe5NMjoQ5rWzTK1geMmxoZxZEAvKsqCuzgjLsWR+of2/E9HOn8V1ejvGQ
+         HKnYbqnTGpRypf+NBcogpdL62e1It7aRTdImY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731464204; x=1732069004;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1731464289; x=1732069089;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xaUhAfwWn67oPOmbocpvOSZXxg4dsQa9E4lX/jyrObM=;
-        b=hBrB0IhE0dznvWcGdYqtCTZyIvuq2B3SGKtQP9TpNzQZZDjkHepVcGsRUsSElflwig
-         CSDrIJQ2lCHg45FOR6WHPM15pUsD4VOwo12547orgeJcGVS7+hxTK5GKHEOUu4JctME3
-         zXqQxbrYt3xegRCitjthSfExt9/xLDv8AaHtVDMEwSZIBEdPG/F0OLJvDBYjC1w2U/PC
-         no/7VUCr+Oh/28tzus7C7x9hbsxemXfc1r6/5XpB6MGz4XowavuBDomf0C8TD8RgetWF
-         +VkUM2WgBpBAWZ6dqK5ywkvF1ZGR7jVdoZlrTtR6lRT24CprGdupcE1jWEjL0Y9k26Qr
-         nE3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVbmY+3odPKmlxjTAF2VZcYZ5tBTq7omCiF0rN8cjPkyVwaXOybaEPMo/VubRdRTk+rAe6QP8c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMB8qfGZ0KZkfSRbdWHsrzt8RFowh7C3xnGaHkSeExtzzFMDk7
-	JbnLfQCJgpwHb/ZfkNSkpeG2r/jXIpcEu7Q3KmqvXiLPShZv1Vjd37Qouuq8V69AP5UydVOwv2U
-	etAt3sEUPIFT+7HdFMdhZLmUzdnk=
-X-Google-Smtp-Source: AGHT+IGsRx8cx11tb/7TeovnH5vzxI3uRLJeSykRy70Vv4kV6hIHwn/aXyYqQfU3ZRmhCUpTSwhg9DQSrsXC70xT0X8=
-X-Received: by 2002:a05:690c:4981:b0:6e2:ab93:8c68 with SMTP id
- 00721157ae682-6ecb32f00e7mr16753477b3.25.1731464204351; Tue, 12 Nov 2024
- 18:16:44 -0800 (PST)
+        bh=lKBid5QRb/kAhtogYHDhzeEdvI0mEg25tnKEi7AhX6E=;
+        b=ggqZBn5XtfMEGQDrSxMTUuRSW+GNGkulJmwWMAGuCIfZg18UQ770PEYowDy3bJzJON
+         w7qvo/tN/JOcU8lWFkgl9E+rzHbcYxnjhLRo/tVQ7psWuEo60fVHKAvpl+Wd1Qmn9f9V
+         +XJMXIcmT8UkNNkF4JU7gKv2bmw2AWjZr4kqNlv/hgSl87XH0683I7YqORMu7+WeQvW0
+         6URDpCEajBElW4BnYXmeFf6YL6z+rf52L725hAsJmD/7djxpPrNbRBTa8KMYUub/Ca22
+         iag9M0Mmg3j1xPD9zDOS27c81iWq0+Y1utdGR3kYRtQVW9/Ci/mQ+zJO4cvb6jWTtP5P
+         AfXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxI4EhsU4t3jLKd6q8tYST9Up4pgkZnGdKCpDFEZDGUhKRx/bgkdeaW9f8pSup66seY3qNDjQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWqmUwRT0p38qqPAPfWOlIaK0EBndmAFPiEOh0ighkEVXgymVv
+	2aKLlu0L5VkGNzqCItiYUlRYc1LfQimydbItgtHc+0yNeMzhfpGJLa+8AU3H5LU=
+X-Google-Smtp-Source: AGHT+IHI5KSL7qnXQ088ADYDMAiYRAqIH80E+3/aTvBMuDhB8SyMPvP3rnQzeByPamSOepx19J3iNA==
+X-Received: by 2002:a17:903:228d:b0:20c:5d5a:af6f with SMTP id d9443c01a7336-211836e6dcemr267759715ad.10.1731464289523;
+        Tue, 12 Nov 2024 18:18:09 -0800 (PST)
+Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dcb1dfsm100209505ad.14.2024.11.12.18.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 18:18:09 -0800 (PST)
+From: Joe Damato <jdamato@fastly.com>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	edumazet@google.com,
+	amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com,
+	kuba@kernel.org,
+	mkarsten@uwaterloo.ca,
+	Joe Damato <jdamato@fastly.com>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [net v2 1/2] netdev-genl: Hold rcu_read_lock in napi_get
+Date: Wed, 13 Nov 2024 02:17:51 +0000
+Message-Id: <20241113021755.11125-2-jdamato@fastly.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241113021755.11125-1-jdamato@fastly.com>
+References: <20241113021755.11125-1-jdamato@fastly.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241108141710.9721-1-laoar.shao@gmail.com> <85cfc467-320f-4388-b027-2cbad85dfbed@redhat.com>
- <CALOAHbAe8GSf2=+sqzy32pWM2jtENmDnZcMhBEYruJVyWa_dww@mail.gmail.com>
- <fe1b512e-a9ba-454a-b4ac-d4471f1b0c6e@redhat.com> <CALOAHbD6HsrMhY0S_d9XA0LRdMGr6wwxFYAnv6u-d7VRFt6aKg@mail.gmail.com>
- <cf446ada-ad3a-41a4-b775-6cb32f846f2a@redhat.com> <CALOAHbA=GuxdfQ8j-bnz=MT=0DTnrcNu5PcXvftfNh37WzRy1Q@mail.gmail.com>
- <a1fe53f7-a520-488c-9136-4e5e1421427e@redhat.com>
-In-Reply-To: <a1fe53f7-a520-488c-9136-4e5e1421427e@redhat.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 13 Nov 2024 10:16:08 +0800
-Message-ID: <CALOAHbAohzxsG7Fq2kNDc5twbtpzJRCPbJ1C=oYB8fy8PsQzaQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/readahead: Fix large folio support in async readahead
-To: David Hildenbrand <david@redhat.com>
-Cc: willy@infradead.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 12, 2024 at 11:19=E2=80=AFPM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-> >> Sorry, but this code is getting quite confusing, especially with such
-> >> misleading "large folio" comments.
-> >>
-> >> Even without MADV_HUGEPAGE we will be allocating large folios, as
-> >> emphasized by Willy [1]. So the only thing MADV_HUGEPAGE controls is
-> >> *which* large folios we allocate. .. as Willy says [2]: "We were only
-> >> intending to breach the 'max' for the MADV_HUGE case, not for all case=
-s."
-> >>
-> >> I have no idea how *anybody* should derive from the code here that we
-> >> treat MADV_HUGEPAGE in a special way.
-> >>
-> >> Simply completely confusing.
-> >>
-> >> My interpretation of "I don't know if we should try to defend a stupid
-> >> sysadmin against the consequences of their misconfiguration like this"
-> >> means" would be "drop this patch and don't change anything".
-> >
-> > Without this change, large folios won=E2=80=99t function as expected.
-> > Currently, to support MADV_HUGEPAGE, you=E2=80=99d need to set readahea=
-d_kb to
-> > 2MB, 4MB, or more. However, many applications run without
->  > MADV_HUGEPAGE, and a larger readahead_kb might not be optimal for> the=
-m.
->
-> Someone configured: "Don't readahead more than 128KiB"
->
-> And then we complain why we "don't readahead more than 128KiB".
+Hold rcu_read_lock in netdev_nl_napi_get_doit, which calls napi_by_id
+and is required to be called under rcu_read_lock.
 
-That is just bikeshielding.
+Cc: stable@vger.kernel.org
+Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+---
+ v2:
+   - Simplified by removing the helper and calling rcu_read_lock /
+     unlock directly instead.
 
-So, what=E2=80=99s your suggestion? Simply setting readahead_kb to 2MB? Tha=
-t
-would almost certainly cause issues elsewhere.
+ net/core/netdev-genl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->
-> :)
->
-> "mm/filemap: Support VM_HUGEPAGE for file mappings" talks about "even if
-> we have no history of readahead being successful".
->
-> So not about exceeding the configured limit, but exceeding the
-> "readahead history".
->
-> So I consider VM_HUGEPAGE the sign here to "ignore readahead history"
-> and not to "violate the config".
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 765ce7c9d73b..0b684410b52d 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -233,6 +233,7 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 		return -ENOMEM;
+ 
+ 	rtnl_lock();
++	rcu_read_lock();
+ 
+ 	napi = napi_by_id(napi_id);
+ 	if (napi) {
+@@ -242,6 +243,7 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 		err = -ENOENT;
+ 	}
+ 
++	rcu_read_unlock();
+ 	rtnl_unlock();
+ 
+ 	if (err)
+-- 
+2.25.1
 
-MADV_HUGEPAGE is definitely a new addition to readahead, and its
-behavior isn=E2=80=99t yet defined in the documentation. All we need to do =
-is
-clarify its behavior there. The documentation isn=E2=80=99t set in stone=E2=
-=80=94we
-can update it as long as it doesn=E2=80=99t disrupt existing applications.
-
->
-> But that's just my opinion.
->
-> >
-> >>
-> >> No changes to API, no confusing code.
-> >
-> > New features like large folios can often create confusion with
-> > existing rules or APIs, correct?
->
-> We should not try making it even more confusing, if possible.
-
-A quick tip for you: the readahead size already exceeds readahead_kb
-even without MADV_HUGEPAGE. You might want to spend some time tracing
-that behavior.
-
-In summary, it=E2=80=99s really the readahead code itself that=E2=80=99s ca=
-using the
-confusion=E2=80=94not MADV_HUGEPAGE.
-
->
-> >
-> >>
-> >> Maybe pr_info_once() when someone uses MADV_HUGEPAGE with such backend=
-s
-> >> to tell the sysadmin that something stupid is happening ...
-> >
-> > It's not a flawed setup; it's just that this new feature doesn=E2=80=99=
-t work
-> > well with the existing settings, and updating those settings to
-> > accommodate it isn't always feasible.
-> I don't agree. But it really is Willy's take.
->
-> The code, as it stands is confusing and nobody will be able to figure
-> out how MADV_HUGEPAGE comes into play here and why we suddenly exceed
-> "max/config" simply because "cur" is larger than max.
->
-> For example, in the code
->
-> ra->size =3D start - index;       /* old async_size */
-> ra->size +=3D req_count;
-> ra->size =3D get_next_ra_size(ra, max_pages);
->
-> What happens if ra->size was at max, then we add "req_count" and
-> suddenly we exceed "max" and say "well, sure that's fine now". Even if
-> MADV_HUGEPAGE was never involved? Maybe it cannot happen, but it sure is
-> confusing.
->
->
-> Not to mention that "It's worth noting that if read_ahead_kb is set to a
-> larger value that isn't aligned with huge page sizes (e.g., 4MB +
-> 128KB), it may still fail to map to hugepages." sounds very odd :(
-
-This will be beneficial if you're open to using MADV_HUGEPAGE in a
-production environment.
-
---=20
-Regards
-Yafang
 
