@@ -1,253 +1,210 @@
-Return-Path: <stable+bounces-92892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D299C6991
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 07:57:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD599C6A0D
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 08:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1298B26E19
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 06:57:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF14C2822BD
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 07:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F5C17DFE9;
-	Wed, 13 Nov 2024 06:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GdOo8JDZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE82317C9B7;
+	Wed, 13 Nov 2024 07:31:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2057.outbound.protection.outlook.com [40.107.96.57])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3617C992;
-	Wed, 13 Nov 2024 06:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CA017C7D4
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 07:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731481031; cv=fail; b=FyTmQae4jn8LwUJ4SUy5t81BhbQpEQnYLueBG02f/LO6WREKBPX5FTMCy6pFVN8XRGNrgv2S4kkC6uqUG6y0mNTUi5xCuBUQCyCPK41oHVx8JqaGZzWeBcU/g+DlprTmzFBCQJ6Wk2XJ9IyPTOqUclNK4VqM9djwWD+LTH33DWU=
+	t=1731483103; cv=fail; b=UJEzUEHxd9P+y+E4lUgtwOe+54niPd8m3XmzADhc4KnDL/FN8qk7ZoojnAs/M30MQQsAHI/0w7i4VNbwRmXOel8Iwz997xMYgalCeSg6qh+x0SzF7l5yA0iFImu3pYse82VFXUIut66ZVhYEOVGOPnLrp/5qlcrWXSbv2pTqgdc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731481031; c=relaxed/simple;
-	bh=0gx3NPsnC5kAc75Jd25H1lWiNOhuDneAfMTIzEP08l0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a1WJ7iFII6yXzvq6dVyezV/erobnBWvPed06Z1lscMoFfjWEfRKNT+SfmsGXK43RGnqh0Y+xyC2LvWxqGOw3w+VNEknHptKpKWhXGL+0ksNTHEtMZnzhnZ8rmC4Pc6pcVTKJA7/k2N8/IyEhVARnP8AVfQsSxlyR8TI0BFyIoA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GdOo8JDZ; arc=fail smtp.client-ip=40.107.96.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1731483103; c=relaxed/simple;
+	bh=S4PLHMFTwxe+RPjOUTrgTqxnLZtRqDjt8IIKFVmusAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=k2ho2y30Lxe0r8myn8dJuTrRDVjzTei+Jp8/5LYNHFP0syYCgMjK3F+z4Poq/klxuboSgpKUk5F/qUo98uRzz0j/KlBd4wNT2UM9sjfaSCRnkFBLwkyT4rPUKTgZ0Uo1sXnzvs+yUb7kqx2rpasx4StPYdTCR6Wb0loZu8tjBOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AD6n1bp030252;
+	Tue, 12 Nov 2024 23:31:37 -0800
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2177.outbound.protection.outlook.com [104.47.57.177])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42uwpp9q4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 23:31:37 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SKCkFeVWmZQUoAHzbN2y7qx7BORyAeY10z7q5+ex1yBDCU01Ahi+ykurbfyWL4feXGtq9Wcbs0xmCkY62xmwGY+C42oEPpTo1phL7NfTQSjCLVcpDtjTb3KEqi3EzdOYyenS8R2Tnd9i/lManhZHREfXVwEko3KvZ9fG1IL2S6c/7MxTzgcaFBXwEfB+oCNdF+r5cj+0gSq48sO1ymQKRZWIXxQfpxpvAksBNwvkHuhvsWWtgByeF1zt6iSjNt+DGAEuh3wEN4388LteNBbAf50YCg1bfqzuq5Fe1In5dz2QwyMHtgrfPsSowG/lKkmRoyxFsFVBYwbMTqXOE1miPg==
+ b=SOBhY3jDk+u3imSuxPTkLLh0ihrv5SnNuUhylup1JwZ6hXVMK6jFBGNv+n2bQIWYCXGO/XUI4dzFms5RbQ6foQhOdOna62P4Sr0Ce9QRWxZTTHd9Y+BlQJUm9bgFTPbdQW3gBiYzictzzi31/kusitnNG5exb2xdaobYZT3P8GBkZKWnnBLRynwd5UHd0/TgtcpsLtpSMhDIh8+OwiYxD+ntqLYd5xBiHQyjacxY/nSz8uGmYYntX0Oufqni1LTHdJKfCFr1kr/9WhC9gEED4JsdpZFNTGY8qXi4aa9i2cCLhuSPeqiU9X1qWQ1rUygcOfcxBN5PBwa2gm6HcUaEPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IRm/7x4Qg2mLRotFUPHNCuT9RUvBUb1a/mLmrkR+PQc=;
- b=rwd5vm3mf0M0PQazPvs92Jr8TGVupQTZNwEwcDqqsYWmmRuaSpiaU5+yRw9mlOSgFaS/6AFpjbbXBlsuoteX/E7Cw4hOzvpLfIP8o5bYT/0qeaaK54na/AuJC6MBYBWUdIM9l8yPZCTtYWhYLH8v0TDVmWiJR2u1amfRrUW2AJ+08sIKij77FrQIFTtmT1JvQRXmM0mE30TL+MeaTabuctQJbZ34AgAJLYQMAB9lp8HZThIOLv9lnkeb5g27y+RF1txxTeQ7eCirO13jitbVYcQ+tfcWUsKpymE/+LZDHqqfD/wcmCFaOpYu2ZQO+HwNG0JcL2kOfvbC50sXonNC3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IRm/7x4Qg2mLRotFUPHNCuT9RUvBUb1a/mLmrkR+PQc=;
- b=GdOo8JDZuEyCL+4ezv0kLGKda+iWawkpWvzOIMiBLiX6BiEaJIhA6z9NPXv49DRPeLHqRbgJOXmXjSVk3mlbSrtKXfrwHHg6EBlZ5GH3yQlSuuR6CXL+HAIq8seGrYIvaa9S9SS3NrOAo4SqwcFB9ufuBmYHbYAuoPtSP7+3tbo=
-Received: from BN9PR03CA0199.namprd03.prod.outlook.com (2603:10b6:408:f9::24)
- by SJ0PR12MB7065.namprd12.prod.outlook.com (2603:10b6:a03:4ae::19) with
+ bh=6VMPny6H8yDKRBA7cM46aU1EdUTfjyIU8rlemacvMXI=;
+ b=lJPN6nHu1wu9HlhaBWnntm8l+lxgV9B3u3AQ+T25GQc+ud4xy6TkRIPctCyf6lz3FEN4mr+lUeGTS0oGVoT3RipSh4Y80nOmsvv9T9212JIUatZ4RDAvv/zNxxOFKSpTwlo175sg/nfN1oTC02hLH4LlkLDpxzr9CuvnZk4ScDLOEbttsxwvJwoSpIdcIUnhGt39+Bm99+c+ZzUPg7ZQtDTTatqVrW70rCrcp29ByASSetlrnpJwfDxGZj+6xegR9f+t58aEhZa9P9DtxsZMdh2rnaaW9RkplN0IFjZvWgGog5KRFlr8GMBA4Vg3sBU80OeNS8GFugWWjDIephLxCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
+ by CO1PR11MB4929.namprd11.prod.outlook.com (2603:10b6:303:6d::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Wed, 13 Nov
- 2024 06:57:04 +0000
-Received: from BN2PEPF0000449E.namprd02.prod.outlook.com
- (2603:10b6:408:f9:cafe::b3) by BN9PR03CA0199.outlook.office365.com
- (2603:10b6:408:f9::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29 via Frontend
- Transport; Wed, 13 Nov 2024 06:57:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF0000449E.mail.protection.outlook.com (10.167.243.149) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8158.14 via Frontend Transport; Wed, 13 Nov 2024 06:57:03 +0000
-Received: from airavat.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 13 Nov
- 2024 00:57:01 -0600
-From: Raju Rangoju <Raju.Rangoju@amd.com>
-To: <linux-usb@vger.kernel.org>
-CC: <mathias.nyman@intel.com>, <gregkh@linuxfoundation.org>,
-	<linux-kernel@vger.kernel.org>, Raju Rangoju <Raju.Rangoju@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v3] usb: xhci: quirk for data loss in ISOC transfers
-Date: Wed, 13 Nov 2024 12:26:32 +0530
-Message-ID: <20241113065632.150451-1-Raju.Rangoju@amd.com>
-X-Mailer: git-send-email 2.34.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.16; Wed, 13 Nov
+ 2024 07:31:33 +0000
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8137.027; Wed, 13 Nov 2024
+ 07:31:33 +0000
+From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
+To: shenxiaxi26@gmail.com, gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org, xiangyu.chen@aol.com
+Subject: [PATCH 6.1] ext4: fix timer use-after-free on failed mount
+Date: Wed, 13 Nov 2024 15:31:40 +0800
+Message-ID: <20241113073140.1814792-1-xiangyu.chen@eng.windriver.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0001.apcprd04.prod.outlook.com
+ (2603:1096:4:197::12) To MW4PR11MB5824.namprd11.prod.outlook.com
+ (2603:10b6:303:187::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000449E:EE_|SJ0PR12MB7065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 948660c1-a36c-451c-56d3-08dd03b06156
+X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CO1PR11MB4929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a12649d-26ad-4190-55b9-08dd03b53286
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
+	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wE1+hSIVe/KqL030Gq3mT20BrDAQ4FEV7XnuCR9gDActO/dMKBCeWoRS7LGU?=
- =?us-ascii?Q?6E8mnzNECcFfTLGfgH7g6wl9LvwjvUJaehJOqv1iGpWUctJdon4idE3ygLg5?=
- =?us-ascii?Q?7qgCfsrUEQw80v6D/iUtffpYpXyYfmoMjtNmyoS8eWNnGLFyM7D0mb0+WDC0?=
- =?us-ascii?Q?88Qm5EG3hDFKb9tXA5fo7PYoQAipAxnY/xrieUaAFaPd6tmdnGRJlrCNkgkA?=
- =?us-ascii?Q?zxdr6Tz77BiTfRteJKl7MPq3cIo5IkvvXZzCCe2JoV+864xKqQOjExXCMGFW?=
- =?us-ascii?Q?yA9hMxEbpG09zz+shMt7vr0gRytWLEKGUdwiUADqmYn0fHWuqbWhP5e4ux95?=
- =?us-ascii?Q?r66U2I6UzvLOvDYDaxEVyUO6irt8drCvU7znmqRib7OeD0hfQDUIMZiIKMzl?=
- =?us-ascii?Q?F7hWI1CZeQ7bKY31SgRtbR/Pfxhimc9m0hYdfULuqisFGvyrPYt4IouE293S?=
- =?us-ascii?Q?Dqg5lOIbWvbFRkQIV3gnjStx8NojNVvHa8FRkeq8VTRG8wAXznNyPjPW4ueG?=
- =?us-ascii?Q?gT1Ih0bl3Dgwn6c6OIh6c1cegl5WuvE7ivZYxMnKxFkhsAtdW1smpTw3uQpI?=
- =?us-ascii?Q?SpC7s9RFz0x6r1XymFFr90WWupLSBwnd9xXUW23TH88pxpZr2BbBuO5/7i0o?=
- =?us-ascii?Q?OfeLpKiPHwLHO/vLLSjhlS9ndGU0TI38sya75o2G32xFJrZMtruXetRAsFrE?=
- =?us-ascii?Q?FpkMWuzQawEu9nK4L3j7FQz/Bt+MYq7hv5271fffS7xV9Qz3FeBZFc6dRjQc?=
- =?us-ascii?Q?oxuO8tof9c7hIC/k1qGvdpXFIIqQ6wVX0EOCC3J+Jwfs7mQbIRbEcIqm1nWR?=
- =?us-ascii?Q?iscJ5alQUmiMZ24A3pdBC2UmOUvnbM/6kfGv2iixUPFmfgOFTe7zT5HlK7fQ?=
- =?us-ascii?Q?sIjrs3CrRHgejtcgVoMebTVB4FdPCDH7RvTcov2tkojV4dEH10+SlmcLHj/p?=
- =?us-ascii?Q?XbrUtLMf+HderY8wmd4bmvAGL9fUuQI8EGmRDhaHMSmVzWAj4GCtNsS9GC01?=
- =?us-ascii?Q?OzJ2iYnGF8swHfIYqJM2irYFAGBqwDpOUUQa8lvPy+SLJ1sqo3FiyRR5XyrS?=
- =?us-ascii?Q?FUotE2yCH/7bCKA9UYC+4aOF7oStUtfJyYtpQiBXrrQLwgTKjrsnehUXxNAS?=
- =?us-ascii?Q?pwYoLR/msXRFfWTiKStMMTuQtqdQjkN9UhMlApp2oG97DOLOcjrX3mXMnIlf?=
- =?us-ascii?Q?NT9BIH4rL2ektRuR0l8gx7eTgkb+CA4DhgGOjpPtcDZL+5RXzAX/GrdCwoCO?=
- =?us-ascii?Q?J1ss6JZuXtp2U5Wqs9nbuLicvSMMh1T97CFJ0cWj3nTyQSS0MbajFcrL0XHN?=
- =?us-ascii?Q?NhDAWGwJ/+1afGz6FXlU0hSoTyfTuKQwATbU6e4/W6o3d3pzab9W3X+QhjMl?=
- =?us-ascii?Q?OOZCfrQHNLqAmFCcCcL8NcQYqDCwa+qeEC5lwPKFy9mxreBYtQ=3D=3D?=
+	=?us-ascii?Q?PQUnslczjFjp/bNpgFKXOUlT1XVEbrg4AqZssTFb22TYX24X+epK+iNHDyQa?=
+ =?us-ascii?Q?1D32KPVSvLZvNJB58FjJaXcxK1i3NH3TUbkiVXkMTszgYfywMj7Ugv8KWAVm?=
+ =?us-ascii?Q?uN2o/SDXFwXn/w6yllkJSXJhh3/8s9KIvSi2yuTTGhItlZftQg2P1Q5+/935?=
+ =?us-ascii?Q?ct1gmBzyT0MtEZSp748Fw18infFzPrA43XX5hyiSKv771I5rRetp0EaBTGbi?=
+ =?us-ascii?Q?xBV7eGIPZECXksnbW9mSGFs8wFhP9WQzI4uMkPO52IFulb8EELAlYJz6chkK?=
+ =?us-ascii?Q?nBxHJrDX55kuZz1OZZR7tCq6LTu2YzZjWLXs2BWCW+QqKgPqTqio58t27zKw?=
+ =?us-ascii?Q?BCQorZhbnIaS1hqkx7BsaW8msLCHko4H7Ci6TP7OcL/E2sHq4MaBItQwPm1U?=
+ =?us-ascii?Q?/FoSUDC+BbAu+uNS9tWfQFdiWMfMEgx4PIx2CSuIswRID8FRFErpzqfQFm5r?=
+ =?us-ascii?Q?kVlMDI/lrl4FR/yXfG0u4cGQMIhmMl8iD40xCgzEGIgk6avbpeAay+cjCY04?=
+ =?us-ascii?Q?7JFNuxYJj6TRQJzfBI6uNVYMT/O2LtEiSxXQ/l9Z6CJKZwb1mIhib7aGubh1?=
+ =?us-ascii?Q?qnAn67uGx1IEuc7NrO4iFxOu/V1iyzibtUBZTLmjI7ZrXBD3w1nrPdgYm3qn?=
+ =?us-ascii?Q?V4tD9/QQIumMnVGOF+Jk3xRjnJ0izAr4rU0hjoW1W7DIBFuhRgVFsC5WB9eF?=
+ =?us-ascii?Q?RFnRwwyO2p9Mq1QHtN7XLIz9qnahiGHJUT6NlFr08MV0OtYDJ7vmPpvrtsGu?=
+ =?us-ascii?Q?4Wzydf7VVi8vbuE5KipvPVUl++08tX/M16yAqvrzc32ZwsO8GURIHMlVBXdl?=
+ =?us-ascii?Q?MttSsR26nCZlaGM3JIiR88T2ovxeSZB7bWjv4Y397MO9WEQB9Q5HNg00vlqh?=
+ =?us-ascii?Q?J+LCcCIQsbN+u4M53lcM8jrFXaaNo6XKDTd9HZJr/Un/97yjo5+7h3efOEY3?=
+ =?us-ascii?Q?oMxyX2gUOjA60zDEvIUR7kgbNgyLcw//8wMZ7HctqdKZQzmmbsM5x2qGPZ3X?=
+ =?us-ascii?Q?rxjPQ+thgU06oYIeKg3JxXmcNBpkj4k0RxWcC7HwlpKbDGTNVR/jWSInABN1?=
+ =?us-ascii?Q?BkrzM9gEEgh0YmaJ6KJiRY2f4WHDFcWWu+a2HBnjXqw7w5DeV/8ys/QpdE0R?=
+ =?us-ascii?Q?6/cTGbWk7uXtwk0SZpq85y6kam02JbUTizeC7i3E8r5p3rFXdQC8LZZYkHFj?=
+ =?us-ascii?Q?kFFBTx9LaxR2o6STa2rbxyjmbIBtOkRRoRVKnY5o5obr7a3ZyKNfZr45+j10?=
+ =?us-ascii?Q?2mGLuO9MWokS8McTEgM+YTh+SJplkGMA+Jkwqx1iD44vxr6rGJ6+wfvDl1Eg?=
+ =?us-ascii?Q?aFTl0cgDz7BSxeAdHxk6cs9g?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 06:57:03.7872
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+kHLVNUSqTUUpC+97jl2QvuKbrhiBtnc4uiSWG/zkclBtTeteHqKdNDtDsRP?=
+ =?us-ascii?Q?7or/tR9Z8QZLvbv0ZTGp3SLHNM33CePMN1mSFNEyJf5SiBEYzOp1J8+PWvqs?=
+ =?us-ascii?Q?Wef1EHSe53N7H6uCzIeKwMsu1g5ay7C2U75KhUC9EyCrICAnSziE7hiTAqdJ?=
+ =?us-ascii?Q?yRd8NkFB0f3WX0Mb4zTq4E79NLNyNM/KIlo0PmpDI1PujOQgK76aXPeSF7xB?=
+ =?us-ascii?Q?l46MswdFfuojhAW5nZTEB+111YMHk7fSlwoeoztLrN0CCg9mBh+O++vgLIeL?=
+ =?us-ascii?Q?cfKTSlVyjvgBECnzoj7bSYaGduY9ypexsalGe4jc1mW3q3dfKCnu0eOv57Qu?=
+ =?us-ascii?Q?GzQ693rzJZR8QOnehogt1/dau47Clnp0Q94JMAVek7TeJRJ5HE0WHpDMROkP?=
+ =?us-ascii?Q?4mTiKRF8PLCPG1Qpz+27L6KbB4J1QPQrmy9QrOCZnSNf+XAK5ziBfeDeNu9Y?=
+ =?us-ascii?Q?RtIAMQ/rfE8PldtIE6jlBUfKRLtJTi/ur2gaSTriomM1KCRayTyP+WqK4YWo?=
+ =?us-ascii?Q?ykv9lf5eMxH6HYpUJai0WYUGsxeMxEAa2refqFrE0NAXgAA/ZCjyg6EKvUCN?=
+ =?us-ascii?Q?gW7x4Jsp08Lg689X+oxRe+g0DeMxngAqpbuHjeMxHwfuB7bn0XiIAuBj52Az?=
+ =?us-ascii?Q?LHa6NX/MdnP5f50lmzge5Fk7KfDRnLwddK/abkQ91ftmkdqwxXHTxp5mWSOJ?=
+ =?us-ascii?Q?cGVRJrfOhNS5K/VgkadHSrvyg4cYjadhO9AQf7Dff7RCtbwaLt7wxi8laegv?=
+ =?us-ascii?Q?n//fzcpVkBTqu4qZdQZbe4UZ+iQJRMsT+iYolql3PWRvygth1PN35gd0rHH1?=
+ =?us-ascii?Q?WH2EQjnfz4uJrcxwPLd9AxtJnKFd8mQp/jItR9LDqoVBT3UW2rWFqAfoQN0v?=
+ =?us-ascii?Q?9XB6m83OZSeJHq7O8bZ7I7W6Cff8Jh5a2bScZeciLOM7K8bwBtceWyA6LeKQ?=
+ =?us-ascii?Q?5LuEOsRQ1X/cYGGeP4LDa1UI5j7IXTj14szbj8mJ2/bCm0/JocJuxvxXnTWP?=
+ =?us-ascii?Q?us6vZM7enAApkL5oG1B031qMXUTPgCttialyfG6IpZ/Hihzf9YyFnhgtyaBi?=
+ =?us-ascii?Q?acg0sRSBTpTtGTm6GKlMJHkS/cIsZYe83ZTW/n4hlqoelTnoimadgiwTzYNe?=
+ =?us-ascii?Q?tSV+nzovvSOwOekKZyzL3jsmJUuSVBQSq2kVxTRD9811VUr1qZo+dnzSN9vk?=
+ =?us-ascii?Q?xUxVYEe63K9FZ+nNbRr1Cn0xm9ZN7WXIfyOsZcfCX/C6NDENXaA/aAhI3zVQ?=
+ =?us-ascii?Q?53218gqmm1tIgIgRPtBx2+2LviajmSvBGWBzO7AyMwtdxdKFEz8enOwt/3MN?=
+ =?us-ascii?Q?Tpp1c72FWAMAlBYsvfziTOmIGJ4ZldwWRym9Tk6yUMIZE6cOPZYMFMjo86QK?=
+ =?us-ascii?Q?wz4lyg+vfhsDiPHhsTznrU6Ieq8eptKYrfwcMKjCOpRU6OxxSN/5rz4S5B8c?=
+ =?us-ascii?Q?LJsCLpBFELmXjmuWhVqQvTIERHOkamnajEYj6VrhXqt8Lt/cruo2Vl+bh4g7?=
+ =?us-ascii?Q?VO+5IlovcV/snVyyPlACVqxtrAA9RZOjbBqz815U3brWFXgc+Xq9s8FDCxOd?=
+ =?us-ascii?Q?o+bvbgWvesNXZJUvEcfYvBiqs7fvVoenWIQvH52iyMYAKOaWmycKSDh6IXRw?=
+ =?us-ascii?Q?Sg=3D=3D?=
+X-OriginatorOrg: eng.windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a12649d-26ad-4190-55b9-08dd03b53286
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2024 07:31:32.9970
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 948660c1-a36c-451c-56d3-08dd03b06156
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000449E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7065
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: volxyL1yVPr2qmf2wMHvbHKp68dbaQrOA25MJ3fdgxmvswz0B0n2YsD3HXEoqD/hJ3GrTorQLMttctWbADyOyGpi1UPS5cRfuwzi7GgkdFs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4929
+X-Proofpoint-ORIG-GUID: jBg1Kxv6hAJ6bjVVkZyuz0a5rqK62sLJ
+X-Proofpoint-GUID: jBg1Kxv6hAJ6bjVVkZyuz0a5rqK62sLJ
+X-Authority-Analysis: v=2.4 cv=J4f47xnS c=1 sm=1 tr=0 ts=673455d9 cx=c_pps a=XlWNgFwcAB8XWrBhwjv7Vg==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=VlfZXiiP6vEA:10 a=_Eqp4RXO4fwA:10 a=pGLkceISAAAA:8
+ a=hSkVLCK3AAAA:8 a=edf1wS77AAAA:8 a=bC-a23v3AAAA:8 a=VwQbUJbxAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=LUACZsOYbq23hAV1XZkA:9 a=-FEs8UIgK8oA:10 a=cQPPKAXgyycSBL8etih5:22 a=DcSpbTIhAlouE1Uv7lRv:22 a=FO4_E8m0qiDe52t0p3_H:22 a=Yupwre4RP9_Eg_Bd0iYG:22
+ a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-12_09,2024-11-12_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ bulkscore=0 clxscore=1011 mlxscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=879 phishscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2411130065
 
-During the High-Speed Isochronous Audio transfers, xHCI
-controller on certain AMD platforms experiences momentary data
-loss. This results in Missed Service Errors (MSE) being
-generated by the xHCI.
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-The root cause of the MSE is attributed to the ISOC OUT endpoint
-being omitted from scheduling. This can happen either when an IN
-endpoint with a 64ms service interval is pre-scheduled prior to
-the ISOC OUT endpoint or when the interval of the ISOC OUT
-endpoint is shorter than that of the IN endpoint. Consequently,
-the OUT service is neglected when an IN endpoint with a service
-interval exceeding 32ms is scheduled concurrently (every 64ms in
-this scenario).
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-This issue is particularly seen on certain older AMD platforms.
-To mitigate this problem, it is recommended to adjust the service
-interval of the IN endpoint to not exceed 32ms (interval 8). This
-adjustment ensures that the OUT endpoint will not be bypassed,
-even if a smaller interval value is utilized.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
+
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
+
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 ---
-Changes since v2:
- - added stable tag to backport to all stable kernels
+ fs/ext4/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes since v1:
- - replaced hex values with pci device names
- - corrected the commit message
-
- drivers/usb/host/xhci-mem.c |  5 +++++
- drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
- drivers/usb/host/xhci.h     |  1 +
- 3 files changed, 31 insertions(+)
-
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index d2900197a49e..4892bb9afa6e 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1426,6 +1426,11 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
- 	/* Periodic endpoint bInterval limit quirk */
- 	if (usb_endpoint_xfer_int(&ep->desc) ||
- 	    usb_endpoint_xfer_isoc(&ep->desc)) {
-+		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-+		    usb_endpoint_xfer_int(&ep->desc) &&
-+		    interval >= 9) {
-+			interval = 8;
-+		}
- 		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
- 		    udev->speed >= USB_SPEED_HIGH &&
- 		    interval >= 7) {
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index cb07cee9ed0c..82657ca30030 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -69,12 +69,22 @@
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_4C_XHCI		0x15ec
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_XHCI		0x15f0
- 
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI		0x13ed
-+#define PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI		0x13ee
-+#define PCI_DEVICE_ID_AMD_STARSHIP_XHCI			0x148c
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI		0x15d4
-+#define PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI		0x15d5
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI		0x15e0
-+#define PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI		0x15e1
-+#define PCI_DEVICE_ID_AMD_RAVEN2_XHCI			0x15e5
- #define PCI_DEVICE_ID_AMD_RENOIR_XHCI			0x1639
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_4			0x43b9
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_3			0x43ba
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_2			0x43bb
- #define PCI_DEVICE_ID_AMD_PROMONTORYA_1			0x43bc
- 
-+#define PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI		0x7316
-+
- #define PCI_DEVICE_ID_ASMEDIA_1042_XHCI			0x1042
- #define PCI_DEVICE_ID_ASMEDIA_1042A_XHCI		0x1142
- #define PCI_DEVICE_ID_ASMEDIA_1142_XHCI			0x1242
-@@ -284,6 +294,21 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 	if (pdev->vendor == PCI_VENDOR_ID_NEC)
- 		xhci->quirks |= XHCI_NEC_HOST;
- 
-+	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-+	    (pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEC_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_ARIEL_TYPEA_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_STARSHIP_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D4_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_FIREFLIGHT_15D5_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E0_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN_15E1_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_AMD_RAVEN2_XHCI))
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
-+	if (pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    pdev->device == PCI_DEVICE_ID_ATI_NAVI10_7316_XHCI)
-+		xhci->quirks |= XHCI_LIMIT_ENDPOINT_INTERVAL_9;
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version == 0x96)
- 		xhci->quirks |= XHCI_AMD_0x96_HOST;
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index f0fb696d5619..fa69f7ac09b5 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1624,6 +1624,7 @@ struct xhci_hcd {
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
-+#define XHCI_LIMIT_ENDPOINT_INTERVAL_9	BIT_ULL(49)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 3bf214d4afef..987d49e18dbe 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5617,8 +5617,8 @@ failed_mount9: __maybe_unused
+ failed_mount3:
+ 	/* flush s_error_work before sbi destroy */
+ 	flush_work(&sbi->s_error_work);
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ 	ext4_group_desc_free(sbi);
+ failed_mount:
+ 	if (sbi->s_chksum_driver)
 -- 
-2.34.1
+2.43.0
 
 
