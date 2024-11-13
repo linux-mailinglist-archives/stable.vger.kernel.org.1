@@ -1,113 +1,197 @@
-Return-Path: <stable+bounces-92930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CD49C74E3
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:58:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780C29C75A5
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 16:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C81728851F
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 073AD1F2572B
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F28B12DD8A;
-	Wed, 13 Nov 2024 14:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DB9208A7;
+	Wed, 13 Nov 2024 15:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gX/QZvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6280E2AD21;
-	Wed, 13 Nov 2024 14:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22167C0BE;
+	Wed, 13 Nov 2024 15:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731509879; cv=none; b=KMKXUw5+D4rmMuQ4uy3kolYtmeJ+lw+We0l/MsnY1Zgrc3r2HhJkhHEtqt4kzX+TwtR4NKNMKBDKE3E6fM/F7msu8d3vFlxf92Kz6gsKY3Y6T8xVsDqDASHovvaHnojhZ9OplJrOp1BnreR7OrbMFDrTlRfFW0HKejVUKEUPACA=
+	t=1731510629; cv=none; b=mdn8gzzSh6VJy8aex6qSVd4v+Jjn9Ctx841FK++KGcSnKHKUgdMy+3jfDc0NOaDhUXfGAuExuCPQtwy76dyIq/b5u2J0qthpOEi5sJxJIEFz6Z4GPPza1WLUd/mnuF4aVErGibPeuC2gq4ixjfP0nW5KkLVLKkXij7FvQCI+uqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731509879; c=relaxed/simple;
-	bh=5JCFyov5MKCRlAdKii3E/dCxGF/WwSiXXi37DywlQL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tGe3g6aArfd9QhH/i7Er7UyZJMtaYGm4aWBI0VS15FOe+ZMOHtHRaP5fXw8Q+O3kBKR8TNzBpDB7xvTFF88lPLKrIXXGGGuGUBBnD87eMpy0UBCyCsXPpHoVFpfRuDM/PEOMHijW5bLc9RakReyUpuFiwcpit4+HCE9udUBB7SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4340FC4CEC3;
-	Wed, 13 Nov 2024 14:57:57 +0000 (UTC)
-Date: Wed, 13 Nov 2024 09:58:16 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Michael Pratt <mcpratt@pm.me>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton
- <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
- <vschneid@redhat.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 2 1/1] sched/syscalls: Allow setting niceness
- using sched_param struct
-Message-ID: <20241113095816.6ed4cefd@gandalf.local.home>
-In-Reply-To: <82xsONg6yQRk_uyZ0-JkTqF2OjxuM4J8IgoNm45Xc6IXAvtX2lPKYxffzZ9GrhIA1TPhpvFoHx9wqWaH3nQyKWRcBggGIsc_61rMDyfMrOE=@pm.me>
-References: <20241111070152.9781-1-mcpratt@pm.me>
-	<20241111070152.9781-2-mcpratt@pm.me>
-	<20241112103438.57ab1727@gandalf.local.home>
-	<e3Nl9UdWoWuPJauA6X3vNj71jDUwHZYS5b5WSmKCHrU7AyivFG5oLkrL-ewb3IjoQyUouDgZO2T-3WEzBIJ9Uru1AcEDTaVsRzHrukUfto8=@pm.me>
-	<20241112193617.169fefbc@gandalf.local.home>
-	<82xsONg6yQRk_uyZ0-JkTqF2OjxuM4J8IgoNm45Xc6IXAvtX2lPKYxffzZ9GrhIA1TPhpvFoHx9wqWaH3nQyKWRcBggGIsc_61rMDyfMrOE=@pm.me>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731510629; c=relaxed/simple;
+	bh=QYFSOYDdVLfS5YvraGarwe6E2kpCYK3vhWADsFqc9sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cmsl6FdUdb8a4Miu8aKWyjfMfH2p/5Wk/DYSB551n3wwBgyfBp9uBZrgjlNJfqdzQUGLleO6PUP0vg6jGXL/F+3phVGUsiTwzwM/Cwm1aOtfeC9H/56aXN+Fsy8LKxdW4ZkCN35c/fkMeB81rFvFVHD/dOXVB5AVHuM8LxX5KHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gX/QZvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970A7C4CEC3;
+	Wed, 13 Nov 2024 15:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1731510627;
+	bh=QYFSOYDdVLfS5YvraGarwe6E2kpCYK3vhWADsFqc9sY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0gX/QZvpbG6fUp8FTLfnOoMwoiH1B1SJ4akmGr52ZQdoF3fTBeovk0LUBhV6PRpEQ
+	 w6ZLrZ6ZcZgPOH6gXj5klZdEICyu5oBQgVsn87EKoPszhEw4ewOYxWcgRZzLAphjQj
+	 kn8+oKUp+u97p5cajiMw72S5kcCSaE3ekzWeRkBo=
+Date: Wed, 13 Nov 2024 16:10:23 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Mike <user.service2016@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeremy =?iso-8859-1?Q?Lain=E9?= <jeremy.laine@m4x.org>,
+	Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
+Message-ID: <2024111358-catching-unclog-31f3@gregkh>
+References: <ZyMkvAkZXuoTHFtd@eldamar.lan>
+ <ab5e25d8-3381-452e-ad13-5d65c0e12306@leemhuis.info>
+ <CABBYNZKQAJGzA8th8A7Foiy7YaSFZDpLvLZqDFsVJ3Yzn8C_5g@mail.gmail.com>
+ <Zypwz65wRM-FMXte@eldamar.lan>
+ <2024110652-blooming-deck-f0d9@gregkh>
+ <Zysdc3wJy0jAYHzA@eldamar.lan>
+ <CABBYNZKz_5bnBxrBC3SoaGc1MTXXYsgdOXB42B0x+2dcPRkJyw@mail.gmail.com>
+ <2024110703-subsoil-jasmine-fcaa@gregkh>
+ <4f8542be-5175-4cf1-9c39-1809a899601c@leemhuis.info>
+ <2024111225-regulate-ruckus-1a46@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024111225-regulate-ruckus-1a46@gregkh>
 
-On Wed, 13 Nov 2024 06:04:59 +0000
-Michael Pratt <mcpratt@pm.me> wrote:
-
-> > $ man sched_setscheduler
-> > [..]
-> > SCHED_OTHER the standard round-robin time-sharing policy;
+On Tue, Nov 12, 2024 at 01:04:03PM +0100, Greg KH wrote:
+> On Tue, Nov 12, 2024 at 12:54:46PM +0100, Thorsten Leemhuis wrote:
+> > On 07.11.24 05:38, Greg KH wrote:
+> > > On Wed, Nov 06, 2024 at 10:02:40AM -0500, Luiz Augusto von Dentz wrote:
+> > >> On Wed, Nov 6, 2024 at 2:40 AM Salvatore Bonaccorso <carnil@debian.org> wrote:
+> > >>> On Wed, Nov 06, 2024 at 08:26:05AM +0100, Greg KH wrote:
+> > >>>> On Tue, Nov 05, 2024 at 08:23:59PM +0100, Salvatore Bonaccorso wrote:
+> > >>>>> On Tue, Nov 05, 2024 at 12:53:50PM -0500, Luiz Augusto von Dentz wrote:
+> > >>>>>> On Tue, Nov 5, 2024 at 12:29 PM Thorsten Leemhuis
+> > >>>>>> <regressions@leemhuis.info> wrote:
+> > >>>>>>> On 31.10.24 07:33, Salvatore Bonaccorso wrote:
+> > >>>>>>>> On Tue, Jun 18, 2024 at 12:30:18PM +0200, Thorsten Leemhuis wrote:
+> > >>>>>>>>> On 12.06.24 14:04, Greg KH wrote:
+> > >>>>>>>>>> On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
+> > >>>>>>>>>>> On 03.06.24 22:03, Mike wrote:
+> > >>>>>>>>>>>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
+> > >>>>>>>>>>>> [...]
+> > >>>>>>>>>>>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
+> > >>>>>>>>>>>> time to be
+> > >>>>>>>>>>>> included in Debian stable, so having a patch for 6.1.x will be much
+> > >>>>>>>>>>>> appreciated.
+> > >>>>>>>>>>>> I do not have the time to follow the vanilla (latest) release as is
+> > >>>>>>>>>>>> likely the case for
+> > >>>>>>>>>>>> many other Linux users.
+> > >>>>>>>>>>>>
+> > >>>>>>>>>>> Still no reaction from the bluetooth developers. Guess they are busy
+> > >>>>>>>>>>> and/or do not care about 6.1.y. In that case:
+> > >>>>>>>>>>>
+> > >>>>>>>>>>> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
+> > >>>>>>>>>>> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
+> > >>>>>>>>>>> cause this or if it's missing some per-requisite? If not I wonder if
+> > >>>>>>>>>>> reverting that patch from 6.1.y might be the best move to resolve this
+> > >>>>>>>>>>> regression. Mike earlier in
+> > >>>>>>>>>>> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
+> > >>>>>>>>>>> confirmed that this fixed the problem in tests. Jeremy (who started the
+> > >>>>>>>>>>> thread and afaics has the same problem) did not reply.
+> > >>>>>>>>>>
+> > >>>>>>>>>> How was this reverted?  I get a bunch of conflicts as this commit was
+> > >>>>>>>>>> added as a dependency of a patch later in the series.
+> > >>>>>>>>>>
+> > >>>>>>>>>> So if this wants to be reverted from 6.1.y, can someone send me the
+> > >>>>>>>>>> revert that has been tested to work?
+> > >>>>>>>>>
+> > >>>>>>>>> Mike, can you help out here, as you apparently managed a revert earlier?
+> > >>>>>>>>> Without you or someone else submitting a revert I fear this won't be
+> > >>>>>>>>> resolved...
+> > >>>>>>>>
+> > >>>>>>>> Trying to reboostrap this, as people running 6.1.112 based kernel
+> > >>>>>>>> seems still hitting the issue, but have not asked yet if it happens as
+> > >>>>>>>> well for 6.114.
+> > >>>>>>>>
+> > >>>>>>>> https://bugs.debian.org/1086447
+> > >>>>>>>>
+> > >>>>>>>> Mike, since I guess you are still as well affected as well, does the
+> > >>>>>>>> issue trigger on 6.1.114 for you and does reverting changes from
+> > >>>>>>>> a13f316e90fdb1 still fix the issue? Can you send your
+> > >>>>>>>> backport/changes?
+> > >>>>>>>
+> > >>>>>>> Hmmm, no reply. Is there maybe someone in that bug that could create and
+> > >>>>>>> test a new revert to finally get this resolved upstream? Seem we
+> > >>>>>>> otherwise are kinda stuck here.
+> > >>>>>>
+> > >>>>>> Looks like we didn't tag things like 5af1f84ed13a ("Bluetooth:
+> > >>>>>> hci_sync: Fix UAF on hci_abort_conn_sync") and a239110ee8e0
+> > >>>>>> ("Bluetooth: hci_sync: always check if connection is alive before
+> > >>>>>> deleting") that are actually fixes to a13f316e90fdb1.
+> > >>>>>
+> > >>>>> Ah good I see :). None of those were yet applied to the 6.1.y series
+> > >>>>> were the issue is still presend. Would you be up to provide the needed
+> > >>>>> changes to the stable team?  That would be very much appreciated for
+> > >>>>> those affected running the 6.1.y series.
+> > >>>>
+> > >>>> We would need backports for these as they do not apply cleanly :(
+> > >>>
+> > >>> Looks our mails overlapped, yes came to the same conclusion as I tried
+> > >>> to apply them on top of 6.1.y. I hope Luiz can help here.
+> > >>>
+> > >>> We have defintively users in Debian affected by this, and two
+> > >>> confirmed that using a newer kernel which contains naturally those
+> > >>> fixes do not expose the problem. If we have backports I might be able
+> > >>> to convice those affected users to test our 6.1.115-1 + patches to
+> > >>> verify the issue is gone.
+> > >>
+> > >> Then perhaps it is easier to just revert that change?
+> > > 
+> > > Please send a revert then.
 > > 
-> > SCHED_BATCH for "batch" style execution of processes; and
+> > We afaics are kinda stuck here .
 > > 
-> > SCHED_IDLE for running very low priority background jobs.
+> > Seems Mike (who apparently had a local revert that worked) does not care
+> > anymore.
 > > 
-> > For each of the above policies, param->sched_priority must be 0.
+> > It looks like Luiz does not care about 6.1.y either, which is fine, as
+> > participation in stable is optional.
 > > 
+> > And looks like nobody else cares enough and has the skills to
+> > prepare and submit a revert.
 > > 
-> > Where we already document that the sched_priority "must be 0".  
+> > In the end the one that asked for the changes to be included in the
+> > 6.1.y series thus submit one. Not sure who that is, though, a very quick
+> > search on Lore gave no answer. :-/
+> > 
+> > There is also still the question "might a revert now cause another
+> > regression for users of the 6.1.y series, as the change might improved
+> > things for other users".
+> > 
+> > :-(
 > 
-> I think we should all agree that documentation is a summary of development,
-> not the other way around. Not only that, but this is poor documentation.
-> The kernel is subject to change, imagine using the word "always"
-> for design decisions that are not standardized.
-> A more appropriate description would be
-> "for each policy, sched_priority must be within the range
-> provided by the return of [the query system calls]"
-> just as POSIX describes the relationship.
-> 
-> As far as I can see, the "must be 0" requirement is completely arbitrary,
-> or, if there is a reason, it must be a fairly poor one.
-> However, I do recognize that the actual static priority cannot change,
-> hence the adjustment to niceness instead is the obvious intention
-> to any attempt to adjust the priority on the kernel-side from userspace.
-> 
-> I consider this patch to be a fix for a design decision
-> that makes no sense when reading about the intended purpose
-> of these values, not that it's the only way to achieve the priority adjustment.
-> If anyone considers that something this simple should have been done already,
-> the fact that documentation would have to be adjusted should not block it.
-> Besides, a well-written program would already have been using
-> the functions that return the accepted range before executing
-> the sched_setscheduler() system call with a value that would be rejected.
-> 
-> Am I really the only one to read that you can't set the priority
-> with this system call when I can do it on the command line with the "nice" program
-> which uses a different system call, and ask "what's the point of this restriction?"
+> I care as this affects Debian, which is the largest user of Linux
+> outside of Android.  I'll try to do a local version of the revert to
+> unstick this...
 
-Honestly, I would actually prefer your change. But modifying an existing
-API is above my pay grade ;-)   I think you really need Linus to answer that.
+Ok, I have a series of reverts that seems to build properly for 6.1.y
+that I'll queue up after this round of stable releases goes out
+tomorrrow to hopefully resolve this.
 
-Linus?
+thanks,
 
--- Steve
-
+greg k-h
 
