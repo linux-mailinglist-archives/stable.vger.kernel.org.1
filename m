@@ -1,278 +1,248 @@
-Return-Path: <stable+bounces-92925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD9F9C749B
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:41:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9559C74A6
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3D74B3872D
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D152E1F25B84
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 14:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176AC200C82;
-	Wed, 13 Nov 2024 14:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C9A200CA7;
+	Wed, 13 Nov 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dUN837Gt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="eas3XR0a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF2620262D
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7E81DF73C
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 14:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731508090; cv=none; b=QgO3UlorT37F/krs3ioDEG58FamCgskOIp7zvyi8B4d10wmHgnPKfX5uVZ1Hah4oOhX+DAF6UXA23K8LYrfqtKDNanJ9ABHrIrJKzEDlVfxgQ/2CZ90TAp91I1CNDh/dPoVhmUlVCzuqhZqesOJ0P6I1Dw8W2Lw32y2rvQukt2w=
+	t=1731508979; cv=none; b=rJjDyHJxQczYsgYlYV2pmFpIePN2F1N31t1EcHeirwNpVo5Vyl/B7eBTeK7vwhKg4alunogUy27HYkvMThKSncAakstX5VgVC0Rq6v1aBixMV13b4QbP2LsKXE64wwQKZpq2+JmZLlJDC67QY9FoqWFrJHA86FNBC6Wz5s1yVYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731508090; c=relaxed/simple;
-	bh=e3tKvAENgT1t91Jk2QWLaDwnuAoEYVDBIwQYDspG3d8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=juKt0KVqWpk8l8P89Ln5tLuE6ufJpQwF2cOjy67TDtSx85NqqjzrQLARr3jVlqusRhFDgx4s6a7riK/ySnULLPFTgKwAWI/vAm6t0jPSNNftMmESxs2JZLZrJxeacUGneCi94zFJAKnreYnHxFPbvnnZdak8X9n5Jyue8F1TXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dUN837Gt; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b1488fde46so502404185a.2
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 06:28:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1731508083; x=1732112883; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XEHbh/duNWJqgspUZhgQYf55G1Gom+pwpEcdzlYloE8=;
-        b=dUN837GtgJ1JDKlkS1aIv5lpzvtAy9vPRbrlOPisGmBrgMBKR9TlmNlsP6lZ9kdi0P
-         4JJ1DlLCj/4ivN42Dc5sbwX/omIjjRjk7lc0JRJW8ejRcD5akBmkeMhqYA2vWbop+G+Q
-         NLr1WS5iRiSuTyS4ctzKT/p5lCUE80DXa6NF4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731508083; x=1732112883;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XEHbh/duNWJqgspUZhgQYf55G1Gom+pwpEcdzlYloE8=;
-        b=BZfDoTqDGT1qsxirWey2FfOF2o9bcB5ef9XI8Y60U1pDgDXNDS33qu+9CzcGxYeTAq
-         EbYUMrwc0WPtGXRSgBWbewJ58VayOwUiAy74+zChqoYoD0Fj936sKfHIkZJiCq5y+JBj
-         OExdQ+4z/RMrcj92SDGdfteo6EZoG0P2AsaT3jY+UJ8v2KQYy8S6NcfHL8aYWG9RuqhF
-         Ytm20VEPs+iDqYqKPM0RF7RTIMjlH/fDACWIF361Ep676T1v0RLYM6nCq8tONphoz6lU
-         jmgr2VUKpvVixy3bTIkKnNJxgjOD5rRyjfRPm8QK6n/Uv3sBVPwBsOW5LhTVAYuCb41m
-         Ogyw==
-X-Gm-Message-State: AOJu0Yyl1GhPWdjhFZtxsIZjXisCZ4gOE6RpkKdb9XHACGYMkCC3mfNv
-	QctJys026ZAYWhg1ysPgOJQ2j9qCn5w8grWBX2XulsxwldHQ9LkErQGjLTPMuQC+EvXVYI6n3Dz
-	brvR+nX2LDP3ud6m/G1bmzwhjT09cdw/SIltysn9Fh3UaI6LqdH6IZdjsDFlpHvCoev0g21agHq
-	FMW6AIWczsvFHssxQv08gpP8V6/mEVSpKM6adoGYv/KY7QeHAInU5KmwZcCPnFyUV8+g==
-X-Google-Smtp-Source: AGHT+IGKsfb5qCjLVoyCtZSg3Na9acwl7ff97AOrrv2+jJxIw+mkA/tSW7GMk8T0IzM/qYZJ/Czvyg==
-X-Received: by 2002:a05:6214:4990:b0:6cb:3c08:6a6a with SMTP id 6a1803df08f44-6d39e1ce9b1mr331094176d6.49.1731508083409;
-        Wed, 13 Nov 2024 06:28:03 -0800 (PST)
-Received: from vb004028-vm1.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961defe5sm85134976d6.10.2024.11.13.06.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 06:28:02 -0800 (PST)
-From: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mqaio@linux.alibaba.com,
-	namhyung.kim@lge.com,
-	oleg@redhat.com,
-	andrii@kernel.org,
-	jolsa@kernel.org,
-	sashal@kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH v6.1 2/2] uprobe: avoid out-of-bounds memory access of fetching args
-Date: Wed, 13 Nov 2024 14:27:34 +0000
-Message-Id: <20241113142734.2406886-3-vamsi-krishna.brahmajosyula@broadcom.com>
-X-Mailer: git-send-email 2.39.4
-In-Reply-To: <20241113142734.2406886-1-vamsi-krishna.brahmajosyula@broadcom.com>
-References: <20241113142734.2406886-1-vamsi-krishna.brahmajosyula@broadcom.com>
+	s=arc-20240116; t=1731508979; c=relaxed/simple;
+	bh=GphOMQ3JHeXgAEtyqOKtazUEXSmXt76O+FFkJxP6U6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Miqolm6Azs53Me45NZFI19MZkA4nQjZgivEXJD/5yZKRSybGa5GTEtKaPu3LaGZtLMSLw8PykGF86Yt37hSPOKK0qnFl8crkFHjKxgZrPyJV8YE5vVi4upg2SsecJ7CCoU6lFzH2mbuEVzQFsFrtpo+4ODkD/FoYN1vQHmt/+6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=eas3XR0a; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=b4bUv+GEGXVxAIcEx3qqbxi31PEN/oaPS3pmUUAzR2g=; b=eas3XR0a8jM6bI6uEv+nGNZnGB
+	TyA1mbSRmSNn9lTJidmaBSEzL98HgbmO2QXIl3m1VaToFfaHX9YEW3G4uRw967HlXB5f+sUTaLDMa
+	uzcDAqb1NaWk2tlG6ORUUqfaKMfkSD7Ymd3DOp3A6QWayYOpDF4oDdWGG2EB0QaEZIK/5Rm4qvaey
+	hkjr72gA1409NHkYnPTy6LAWjrlfuv4gnGUXuN9H2iDkUNlnFkzTiPJjvvt1l/IfE9gZQ0IEIKppo
+	JKs9eNcwmLXrfMOCVNLE+87kbwpSJVEj86j17U3jWOGaiMkz3quHRPrz+EIHJu0egyHwCZd1xzWCY
+	v5uGi9Yw==;
+Received: from [90.241.98.187] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1tBEa0-006MCy-G7; Wed, 13 Nov 2024 15:42:48 +0100
+Message-ID: <154641d9-be2a-4018-af5e-a57dbffb45d5@igalia.com>
+Date: Wed, 13 Nov 2024 14:42:47 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amdgpu: Make the submission path memory reclaim safe
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, stable@vger.kernel.org,
+ Matthew Brost <matthew.brost@intel.com>, Danilo Krummrich <dakr@kernel.org>,
+ Philipp Stanner <pstanner@redhat.com>,
+ Alex Deucher <alexander.deucher@amd.com>
+References: <20241113134838.52608-1-tursulin@igalia.com>
+ <e30428ce-a4d1-43e0-89d3-1487f7af2fde@amd.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <e30428ce-a4d1-43e0-89d3-1487f7af2fde@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Qiao Ma <mqaio@linux.alibaba.com>
 
-[ Upstream commit 373b9338c9722a368925d83bc622c596896b328e ]
+On 13/11/2024 14:26, Christian König wrote:
+> Am 13.11.24 um 14:48 schrieb Tvrtko Ursulin:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>
+>> As commit 746ae46c1113 ("drm/sched: Mark scheduler work queues with 
+>> WQ_MEM_RECLAIM")
+>> points out, ever since
+>> a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue 
+>> rather than kthread"),
+>> any workqueue flushing done from the job submission path must only
+>> involve memory reclaim safe workqueues to be safe against reclaim
+>> deadlocks.
+>>
+>> This is also pointed out by workqueue sanity checks:
+>>
+>>   [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work 
+>> [gpu_sched] is flushing !WQ_MEM_RECLAIM 
+>> events:amdgpu_device_delay_enable_gfx_off [amdgpu]
+>> ...
+>>   [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
+>> ...
+>>   [ ] Call Trace:
+>>   [ ]  <TASK>
+>> ...
+>>   [ ]  ? check_flush_dependency+0xf5/0x110
+>> ...
+>>   [ ]  cancel_delayed_work_sync+0x6e/0x80
+>>   [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
+>>   [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
+>>   [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
+>>   [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
+>>   [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
+>>   [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
+>>   [ ]  process_one_work+0x217/0x720
+>> ...
+>>   [ ]  </TASK>
+>>
+>> Fix this by creating a memory reclaim safe driver workqueue and make the
+>> submission path use it.
+> 
+> Oh well, that is a really good catch! I wasn't aware the workqueues 
+> could be blocked by memory reclaim as well.
 
-Uprobe needs to fetch args into a percpu buffer, and then copy to ring
-buffer to avoid non-atomic context problem.
+Only credit I can take is for the habit that I often run with many 
+kernel debugging aids enabled.
 
-Sometimes user-space strings, arrays can be very large, but the size of
-percpu buffer is only page size. And store_trace_args() won't check
-whether these data exceeds a single page or not, caused out-of-bounds
-memory access.
+> Do we have system wide workqueues for that? It seems a bit overkill that 
+> amdgpu has to allocate one on his own.
 
-It could be reproduced by following steps:
-1. build kernel with CONFIG_KASAN enabled
-2. save follow program as test.c
+I wondered the same but did not find any. Only ones I am aware of are 
+system_wq&co created in workqueue_init_early().
 
-```
-\#include <stdio.h>
-\#include <stdlib.h>
-\#include <string.h>
+Regards,
 
-// If string length large than MAX_STRING_SIZE, the fetch_store_strlen()
-// will return 0, cause __get_data_size() return shorter size, and
-// store_trace_args() will not trigger out-of-bounds access.
-// So make string length less than 4096.
-\#define STRLEN 4093
+Tvrtko
 
-void generate_string(char *str, int n)
-{
-    int i;
-    for (i = 0; i < n; ++i)
-    {
-        char c = i % 26 + 'a';
-        str[i] = c;
-    }
-    str[n-1] = '\0';
-}
-
-void print_string(char *str)
-{
-    printf("%s\n", str);
-}
-
-int main()
-{
-    char tmp[STRLEN];
-
-    generate_string(tmp, STRLEN);
-    print_string(tmp);
-
-    return 0;
-}
-```
-3. compile program
-`gcc -o test test.c`
-
-4. get the offset of `print_string()`
-```
-objdump -t test | grep -w print_string
-0000000000401199 g     F .text  000000000000001b              print_string
-```
-
-5. configure uprobe with offset 0x1199
-```
-off=0x1199
-
-cd /sys/kernel/debug/tracing/
-echo "p /root/test:${off} arg1=+0(%di):ustring arg2=\$comm arg3=+0(%di):ustring"
- > uprobe_events
-echo 1 > events/uprobes/enable
-echo 1 > tracing_on
-```
-
-6. run `test`, and kasan will report error.
-==================================================================
-BUG: KASAN: use-after-free in strncpy_from_user+0x1d6/0x1f0
-Write of size 8 at addr ffff88812311c004 by task test/499CPU: 0 UID: 0 PID: 499 Comm: test Not tainted 6.12.0-rc3+ #18
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x55/0x70
- print_address_description.constprop.0+0x27/0x310
- kasan_report+0x10f/0x120
- ? strncpy_from_user+0x1d6/0x1f0
- strncpy_from_user+0x1d6/0x1f0
- ? rmqueue.constprop.0+0x70d/0x2ad0
- process_fetch_insn+0xb26/0x1470
- ? __pfx_process_fetch_insn+0x10/0x10
- ? _raw_spin_lock+0x85/0xe0
- ? __pfx__raw_spin_lock+0x10/0x10
- ? __pte_offset_map+0x1f/0x2d0
- ? unwind_next_frame+0xc5f/0x1f80
- ? arch_stack_walk+0x68/0xf0
- ? is_bpf_text_address+0x23/0x30
- ? kernel_text_address.part.0+0xbb/0xd0
- ? __kernel_text_address+0x66/0xb0
- ? unwind_get_return_address+0x5e/0xa0
- ? __pfx_stack_trace_consume_entry+0x10/0x10
- ? arch_stack_walk+0xa2/0xf0
- ? _raw_spin_lock_irqsave+0x8b/0xf0
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? depot_alloc_stack+0x4c/0x1f0
- ? _raw_spin_unlock_irqrestore+0xe/0x30
- ? stack_depot_save_flags+0x35d/0x4f0
- ? kasan_save_stack+0x34/0x50
- ? kasan_save_stack+0x24/0x50
- ? mutex_lock+0x91/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- prepare_uprobe_buffer.part.0+0x2cd/0x500
- uprobe_dispatcher+0x2c3/0x6a0
- ? __pfx_uprobe_dispatcher+0x10/0x10
- ? __kasan_slab_alloc+0x4d/0x90
- handler_chain+0xdd/0x3e0
- handle_swbp+0x26e/0x3d0
- ? __pfx_handle_swbp+0x10/0x10
- ? uprobe_pre_sstep_notifier+0x151/0x1b0
- irqentry_exit_to_user_mode+0xe2/0x1b0
- asm_exc_int3+0x39/0x40
-RIP: 0033:0x401199
-Code: 01 c2 0f b6 45 fb 88 02 83 45 fc 01 8b 45 fc 3b 45 e4 7c b7 8b 45 e4 48 98 48 8d 50 ff 48 8b 45 e8 48 01 d0 ce
-RSP: 002b:00007ffdf00576a8 EFLAGS: 00000206
-RAX: 00007ffdf00576b0 RBX: 0000000000000000 RCX: 0000000000000ff2
-RDX: 0000000000000ffc RSI: 0000000000000ffd RDI: 00007ffdf00576b0
-RBP: 00007ffdf00586b0 R08: 00007feb2f9c0d20 R09: 00007feb2f9c0d20
-R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000401040
-R13: 00007ffdf0058780 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-This commit enforces the buffer's maxlen less than a page-size to avoid
-store_trace_args() out-of-memory access.
-
-Link: https://lore.kernel.org/all/20241015060148.1108331-1-mqaio@linux.alibaba.com/
-
-Fixes: dcad1a204f72 ("tracing/uprobes: Fetch args before reserving a ring buffer")
-Signed-off-by: Qiao Ma <mqaio@linux.alibaba.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
----
- kernel/trace/trace_uprobe.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index e09eef65d32f..a6a3ff2a441e 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -862,6 +862,7 @@ struct uprobe_cpu_buffer {
- };
- static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
- static int uprobe_buffer_refcnt;
-+#define MAX_UCB_BUFFER_SIZE PAGE_SIZE
- 
- static int uprobe_buffer_init(void)
- {
-@@ -960,6 +961,11 @@ static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
- 	ucb = uprobe_buffer_get();
- 	ucb->dsize = tu->tp.size + dsize;
- 
-+	if (WARN_ON_ONCE(ucb->dsize > MAX_UCB_BUFFER_SIZE)) {
-+		ucb->dsize = MAX_UCB_BUFFER_SIZE;
-+		dsize = MAX_UCB_BUFFER_SIZE - tu->tp.size;
-+	}
-+
- 	store_trace_args(ucb->buf, &tu->tp, regs, esize, dsize);
- 
- 	return ucb;
-@@ -978,9 +984,6 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
- 
- 	WARN_ON(call != trace_file->event_call);
- 
--	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
--		return;
--
- 	if (trace_trigger_soft_disabled(trace_file))
- 		return;
- 
--- 
-2.39.4
-
+> Apart from that looks good to me.
+> 
+> Regards,
+> Christian.
+> 
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with 
+>> WQ_MEM_RECLAIM")
+>> Fixes: a6149f039369 ("drm/sched: Convert drm scheduler to use a work 
+>> queue rather than kthread")
+>> Cc: stable@vger.kernel.org
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Cc: Danilo Krummrich <dakr@kernel.org>
+>> Cc: Philipp Stanner <pstanner@redhat.com>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: Christian König <christian.koenig@amd.com>
+>> ---
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  2 ++
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 25 +++++++++++++++++++++++++
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |  5 +++--
+>>   3 files changed, 30 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h 
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> index 7645e498faa4..a6aad687537e 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> @@ -268,6 +268,8 @@ extern int amdgpu_agp;
+>>   extern int amdgpu_wbrf;
+>> +extern struct workqueue_struct *amdgpu_reclaim_wq;
+>> +
+>>   #define AMDGPU_VM_MAX_NUM_CTX            4096
+>>   #define AMDGPU_SG_THRESHOLD            (256*1024*1024)
+>>   #define AMDGPU_WAIT_IDLE_TIMEOUT_IN_MS            3000
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c 
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> index 38686203bea6..f5b7172e8042 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> @@ -255,6 +255,8 @@ struct amdgpu_watchdog_timer amdgpu_watchdog_timer 
+>> = {
+>>       .period = 0x0, /* default to 0x0 (timeout disable) */
+>>   };
+>> +struct workqueue_struct *amdgpu_reclaim_wq;
+>> +
+>>   /**
+>>    * DOC: vramlimit (int)
+>>    * Restrict the total amount of VRAM in MiB for testing.  The 
+>> default is 0 (Use full VRAM).
+>> @@ -2971,6 +2973,21 @@ static struct pci_driver amdgpu_kms_pci_driver = {
+>>       .dev_groups = amdgpu_sysfs_groups,
+>>   };
+>> +static int amdgpu_wq_init(void)
+>> +{
+>> +    amdgpu_reclaim_wq =
+>> +        alloc_workqueue("amdgpu-reclaim", WQ_MEM_RECLAIM, 0);
+>> +    if (!amdgpu_reclaim_wq)
+>> +        return -ENOMEM;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static void amdgpu_wq_fini(void)
+>> +{
+>> +    destroy_workqueue(amdgpu_reclaim_wq);
+>> +}
+>> +
+>>   static int __init amdgpu_init(void)
+>>   {
+>>       int r;
+>> @@ -2978,6 +2995,10 @@ static int __init amdgpu_init(void)
+>>       if (drm_firmware_drivers_only())
+>>           return -EINVAL;
+>> +    r = amdgpu_wq_init();
+>> +    if (r)
+>> +        goto error_wq;
+>> +
+>>       r = amdgpu_sync_init();
+>>       if (r)
+>>           goto error_sync;
+>> @@ -3006,6 +3027,9 @@ static int __init amdgpu_init(void)
+>>       amdgpu_sync_fini();
+>>   error_sync:
+>> +    amdgpu_wq_fini();
+>> +
+>> +error_wq:
+>>       return r;
+>>   }
+>> @@ -3017,6 +3041,7 @@ static void __exit amdgpu_exit(void)
+>>       amdgpu_acpi_release();
+>>       amdgpu_sync_fini();
+>>       amdgpu_fence_slab_fini();
+>> +    amdgpu_wq_fini();
+>>       mmu_notifier_synchronize();
+>>       amdgpu_xcp_drv_release();
+>>   }
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c 
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> index 2f3f09dfb1fd..f8fd71d9382f 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> @@ -790,8 +790,9 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_device 
+>> *adev, bool enable)
+>>                           AMD_IP_BLOCK_TYPE_GFX, true))
+>>                       adev->gfx.gfx_off_state = true;
+>>               } else {
+>> -                schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
+>> -                          delay);
+>> +                queue_delayed_work(amdgpu_reclaim_wq,
+>> +                           &adev->gfx.gfx_off_delay_work,
+>> +                           delay);
+>>               }
+>>           }
+>>       } else {
+> 
 
