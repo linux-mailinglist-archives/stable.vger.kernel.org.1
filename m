@@ -1,268 +1,250 @@
-Return-Path: <stable+bounces-92900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFA49C6BB5
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 10:46:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4279C6C25
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 10:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2570D285A3D
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 09:46:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AF2DB22B44
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 09:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B20918A6DC;
-	Wed, 13 Nov 2024 09:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9B51F8191;
+	Wed, 13 Nov 2024 09:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUlkVScb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O47a+Oez"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE456187FFE
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 09:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748041885BB
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 09:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731491193; cv=none; b=Qr44dvOar0AQfX1S9fSOET+6z1k4qMKaUlGtjpVhkCnZIFGvtf0Nd8H8PxsZBmI2byk46KKJgMrF9f0cqvwy/kBRTTg7Ep+hq/swCcG3AsKCnL3wMJbQ/QA0t03M0XEgSFLMZM8n6RPhIj8z+uGd9pJpALtKFbooyshZ0c0X8/s=
+	t=1731491694; cv=none; b=nsbViGA7YbyDMlNt35Z/NusgPAERaU7F+DVNmm0RFVFuCJ5XKv8alQTJqr2fIrbBfmD9uhRIspniaRbjxnijP0nBPHw/ZTh53fLOJPNCuLYwASKJd3CU5UFq9A9UbOQIUaI9zo40AWcsM+SSfNPmJWpglod3WFKdLfKLu8XwF40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731491193; c=relaxed/simple;
-	bh=j8JB6dTuYQXwjiiuFTNkDGKPphj+rJ0FINK0dp8nh6c=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Hxo8TEXMP9mwyD7KrA1Y+xGXOGx7hymZRymYLshs0r2tNeYtEPRGqUs9NiIcSZzb4ElV1URIZr/o2DAYvm992ZtyBQ+A+ff+vMpwpXUst6jqCl2PBgbLuU4YANPrlWhzwAg26p/s+WJtJlK62dquVjdaGHy5adv1b/5OmQbr7NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUlkVScb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731491190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oC3QsMMLjV0lEnPQ7x1H3Fq9IelCnx6YRR2jMeCABYI=;
-	b=OUlkVScbHDrpounlSGKY9A7knC61d1fSD9Ct0gr2nAZbFA5dZZVMI2uh/6psJEZP0pZlRJ
-	HRdMC0Sfq/iMakD8dlZfmie5fLLwGRiyp1Fs2CSzJ3xL7z4IADHYonr8HI47o+19hyY29b
-	2FLHRm5m5tofOmodLi+kwyGl4/wxEig=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-437-X91kuDqoOd2gUuZwdQEGlw-1; Wed, 13 Nov 2024 04:46:26 -0500
-X-MC-Unique: X91kuDqoOd2gUuZwdQEGlw-1
-X-Mimecast-MFC-AGG-ID: X91kuDqoOd2gUuZwdQEGlw
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d56061a4cso3592446f8f.2
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 01:46:26 -0800 (PST)
+	s=arc-20240116; t=1731491694; c=relaxed/simple;
+	bh=b3sjS5o/T4GT9VziYhr6nueRmxBl8KS4Ep+M6X17HbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NrlfG7Yo+G44ghkEJMlpKwWWxmo2ZCw84GDZIfS/88oBqgY7cAyX2w+dD5JAYgZcooeSM1uf7fFqtlRnWNe3YXjCacVcsDK+DZeDYXk70wzBX5XgGIk2Ds7UO9IEefIiROD1Nz/sgOlr0QVUeAo1ojF5kBYmJY6RCqw4hVmGLxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O47a+Oez; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7b148919e82so446052885a.0
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 01:54:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731491691; x=1732096491; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2U1TtglPChqxh7IcjnLyAkelVEXzu6CDrucn0Vd4ODU=;
+        b=O47a+OezpRyLT9z6tl3KGeSLOh8GhwPGP0qcivbCPZUKO22CtEXzgOLQpbs5ERJBr3
+         TJ4CmOK1e5dxTOcUp1fcIvkq69bVeyjShWkIUAZUn8x1yig+X1Y5yHtTZyrETMu8CsPw
+         bLZ/1ju3fU9makMOfPM6BNSqQnG/7M+3fZQBGnG+QMhcmrTF59HtK92EOWLQYveTo6Pw
+         xGOQQ9fShf1EB6JXkJEbHRJxCMplf49+2vnB9GOwgSip090IRWi7n9wmp/qLjn3+mK5j
+         irtjtmZnXaGO/VeL16S18AvfF25XGWZc8/tRAVCYoXhcX54VBb8w0fpaE+pRSGa4TgeI
+         3luQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731491185; x=1732095985;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oC3QsMMLjV0lEnPQ7x1H3Fq9IelCnx6YRR2jMeCABYI=;
-        b=GnXWFfBH0cGItRUYOluNF2P4vrKNBcgUDmVcEBP4B4PQadVe1e/3Xx2qIrgsB9PVX4
-         q5nQCNCPyOJNj+AFM6/JcSTnPp/iXxW0AXCp4LFXzZQe3gcPYojn/YqoLMssuh0Mc4qi
-         pbA/zfl5WcMIpmdcfxnBrBYkXsOOREPae6dKgLseeNgUbaXX+1iOkiqix20HnJbSP8zY
-         pEsJsreULYw++zUzjvriD3aW/BcJeOHAoPH6NjQBOHfsTP2UorZxKO2QBCzG0uS5p7ZE
-         SqzXKVtXPvbMo+b9t/xEhhwadC39Bt8Zu6UTvHZbKFwPB5mxLMb/KsRrua5nmhPOBY4z
-         Jc1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWLUvW3jMxt0h/n7U5AsNeRBtNNcFt6tp2WXNsxs/tjWpoF6oGmuaAfTKr+O+kELJUBxwy8YJc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyOOnSeFLcQoweaSASzF2FXhTni+MxdcxR9w9l2X/DcF2oBpie
-	TXBeJslLJXlkFPJ8ISDmbhkdaMSLrMhE0xvt/1XRORnCYAFgSUAoLhTaFGhVCH+dfuuAU82SI+r
-	s25FsmrsIYqeQJK/evwbrNkYI4pWrAeMGFsEdZZjlB6L4p/+S3el5Rg==
-X-Received: by 2002:a05:6000:1fa8:b0:37c:ddab:a626 with SMTP id ffacd0b85a97d-382080f6b00mr4643907f8f.7.1731491185483;
-        Wed, 13 Nov 2024 01:46:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNVeneRcdPTumQPGNmARtthwkMVVbNFk0l/YGl497DOIOL387fClj5sENzorvrpIx4AEq77w==
-X-Received: by 2002:a05:6000:1fa8:b0:37c:ddab:a626 with SMTP id ffacd0b85a97d-382080f6b00mr4643886f8f.7.1731491185024;
-        Wed, 13 Nov 2024 01:46:25 -0800 (PST)
-Received: from ?IPV6:2003:cb:c708:1500:d584:7ad8:d3f7:5539? (p200300cbc7081500d5847ad8d3f75539.dip0.t-ipconnect.de. [2003:cb:c708:1500:d584:7ad8:d3f7:5539])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed99681csm18254342f8f.49.2024.11.13.01.46.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 01:46:23 -0800 (PST)
-Message-ID: <c9dbb61d-83dd-4f4e-aab7-93db88441621@redhat.com>
-Date: Wed, 13 Nov 2024 10:46:22 +0100
+        d=1e100.net; s=20230601; t=1731491691; x=1732096491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2U1TtglPChqxh7IcjnLyAkelVEXzu6CDrucn0Vd4ODU=;
+        b=UD+ZImRVhGjepPOtjb6Cr2vWfwLvTQr0fbs9z4e8TRCxOUHot8MIW56KvEk1AzA1/K
+         W6zaG5ls1dqyDoJ7zWO6P37m942LhJ7ESoiWVs5ycGihoNE1oW8QsMkTxgunaIL7YkyU
+         ysr1aT7yx0lX5IJDTtbkg2YLX4uNCJgvkJxhbGCKa5aCbTQGdA42NNVjXVjnkFh1co6y
+         HI7KnI5Tv+Dy4qeosX3qtaAgg+6U79dyZ3J+FeKIU45H4ZIrtCHZhBWUrESeZnDd+nq/
+         rE5nN3BxkJS/TZn/1oz16qOPxC4PI+vDraqJEv8CPv0G6K5YcMygWgBdgpKiWfc7+dTs
+         t+xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKNjs+t9BSJR1EFBHsnn3oOy73PvMZjpu4gitpCvHe9JIs3brqjqmOwuJBcU2qoe7Q/YKf1pQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXt930s6/fqQtRixw0LJG6dOTcT5B+Y5KFU0wFagurwy4knQ8o
+	mOq/eI7gwH33pGjLZPeL1yZ/fgVND7YnKpWlJNGm6busUiTLrrBNm1Y5M+fW1J8g5KxPkhLWJfD
+	3HA05Q61xjCRymEmoJUXtv2Tcmpw=
+X-Google-Smtp-Source: AGHT+IF5TGvGNmx7N7qk61VCAvERtj2ZAL2cxQR/6GcZQD29Mtuv6fIeoKuuXXpXlvJkM6z9HcM+wkB9J7Bh3IKiIe8=
+X-Received: by 2002:a05:6214:540e:b0:6d3:9c7b:9384 with SMTP id
+ 6a1803df08f44-6d3dd07ebd6mr29570546d6.42.1731491691133; Wed, 13 Nov 2024
+ 01:54:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/readahead: Fix large folio support in async
- readahead
-From: David Hildenbrand <david@redhat.com>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: willy@infradead.org, akpm@linux-foundation.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20241108141710.9721-1-laoar.shao@gmail.com>
- <85cfc467-320f-4388-b027-2cbad85dfbed@redhat.com>
+References: <20241108141710.9721-1-laoar.shao@gmail.com> <85cfc467-320f-4388-b027-2cbad85dfbed@redhat.com>
  <CALOAHbAe8GSf2=+sqzy32pWM2jtENmDnZcMhBEYruJVyWa_dww@mail.gmail.com>
- <fe1b512e-a9ba-454a-b4ac-d4471f1b0c6e@redhat.com>
- <CALOAHbD6HsrMhY0S_d9XA0LRdMGr6wwxFYAnv6u-d7VRFt6aKg@mail.gmail.com>
- <cf446ada-ad3a-41a4-b775-6cb32f846f2a@redhat.com>
- <CALOAHbA=GuxdfQ8j-bnz=MT=0DTnrcNu5PcXvftfNh37WzRy1Q@mail.gmail.com>
- <a1fe53f7-a520-488c-9136-4e5e1421427e@redhat.com>
- <CALOAHbAohzxsG7Fq2kNDc5twbtpzJRCPbJ1C=oYB8fy8PsQzaQ@mail.gmail.com>
+ <fe1b512e-a9ba-454a-b4ac-d4471f1b0c6e@redhat.com> <CALOAHbD6HsrMhY0S_d9XA0LRdMGr6wwxFYAnv6u-d7VRFt6aKg@mail.gmail.com>
+ <cf446ada-ad3a-41a4-b775-6cb32f846f2a@redhat.com> <CALOAHbA=GuxdfQ8j-bnz=MT=0DTnrcNu5PcXvftfNh37WzRy1Q@mail.gmail.com>
+ <a1fe53f7-a520-488c-9136-4e5e1421427e@redhat.com> <CALOAHbAohzxsG7Fq2kNDc5twbtpzJRCPbJ1C=oYB8fy8PsQzaQ@mail.gmail.com>
  <88211032-80e1-4067-a74c-c9dcea1abff8@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
 In-Reply-To: <88211032-80e1-4067-a74c-c9dcea1abff8@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 13 Nov 2024 17:54:15 +0800
+Message-ID: <CALOAHbCY94=YDZcuLk5wS1jg1ycAD9Cx9=3CgxE9VOAsnj87vQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/readahead: Fix large folio support in async readahead
+To: David Hildenbrand <david@redhat.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13.11.24 09:28, David Hildenbrand wrote:
+On Wed, Nov 13, 2024 at 4:28=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
 > On 13.11.24 03:16, Yafang Shao wrote:
->> On Tue, Nov 12, 2024 at 11:19 PM David Hildenbrand <david@redhat.com> wrote:
->>>
->>>>> Sorry, but this code is getting quite confusing, especially with such
->>>>> misleading "large folio" comments.
->>>>>
->>>>> Even without MADV_HUGEPAGE we will be allocating large folios, as
->>>>> emphasized by Willy [1]. So the only thing MADV_HUGEPAGE controls is
->>>>> *which* large folios we allocate. .. as Willy says [2]: "We were only
->>>>> intending to breach the 'max' for the MADV_HUGE case, not for all cases."
->>>>>
->>>>> I have no idea how *anybody* should derive from the code here that we
->>>>> treat MADV_HUGEPAGE in a special way.
->>>>>
->>>>> Simply completely confusing.
->>>>>
->>>>> My interpretation of "I don't know if we should try to defend a stupid
->>>>> sysadmin against the consequences of their misconfiguration like this"
->>>>> means" would be "drop this patch and don't change anything".
->>>>
->>>> Without this change, large folios won’t function as expected.
->>>> Currently, to support MADV_HUGEPAGE, you’d need to set readahead_kb to
->>>> 2MB, 4MB, or more. However, many applications run without
->>>    > MADV_HUGEPAGE, and a larger readahead_kb might not be optimal for> them.
->>>
->>> Someone configured: "Don't readahead more than 128KiB"
->>>
->>> And then we complain why we "don't readahead more than 128KiB".
->>
->> That is just bikeshielding.
-> 
+> > On Tue, Nov 12, 2024 at 11:19=E2=80=AFPM David Hildenbrand <david@redha=
+t.com> wrote:
+> >>
+> >>>> Sorry, but this code is getting quite confusing, especially with suc=
+h
+> >>>> misleading "large folio" comments.
+> >>>>
+> >>>> Even without MADV_HUGEPAGE we will be allocating large folios, as
+> >>>> emphasized by Willy [1]. So the only thing MADV_HUGEPAGE controls is
+> >>>> *which* large folios we allocate. .. as Willy says [2]: "We were onl=
+y
+> >>>> intending to breach the 'max' for the MADV_HUGE case, not for all ca=
+ses."
+> >>>>
+> >>>> I have no idea how *anybody* should derive from the code here that w=
+e
+> >>>> treat MADV_HUGEPAGE in a special way.
+> >>>>
+> >>>> Simply completely confusing.
+> >>>>
+> >>>> My interpretation of "I don't know if we should try to defend a stup=
+id
+> >>>> sysadmin against the consequences of their misconfiguration like thi=
+s"
+> >>>> means" would be "drop this patch and don't change anything".
+> >>>
+> >>> Without this change, large folios won=E2=80=99t function as expected.
+> >>> Currently, to support MADV_HUGEPAGE, you=E2=80=99d need to set readah=
+ead_kb to
+> >>> 2MB, 4MB, or more. However, many applications run without
+> >>   > MADV_HUGEPAGE, and a larger readahead_kb might not be optimal for>=
+ them.
+> >>
+> >> Someone configured: "Don't readahead more than 128KiB"
+> >>
+> >> And then we complain why we "don't readahead more than 128KiB".
+> >
+> > That is just bikeshielding.
+>
 > It's called "reading the documentation and trying to make sense of a
 > patch". ;)
-> 
->>
->> So, what’s your suggestion? Simply setting readahead_kb to 2MB? That
->> would almost certainly cause issues elsewhere.
-> 
+>
+> >
+> > So, what=E2=80=99s your suggestion? Simply setting readahead_kb to 2MB?=
+ That
+> > would almost certainly cause issues elsewhere.
+>
 > I'm not 100% sure. I'm trying to make sense of it all.
-> 
+>
 > And I assume there is a relevant difference now between "readahead 2M
 > using all 4k pages" and "readahead 2M using a single large folio".
-> 
+>
 > I agree that likely readahead using many 4k pages is a worse idea than
 > just using a single large folio ... if we manage to allocate one. And
 > it's all not that clear in the code ...
-> 
+>
 > FWIW, I looked at "read_ahead_kb" values on my Fedora40 notebook and
 > they are all set to 128KiB. I'm not so sure if they really should be
-> that small ... or if large folio readahead code should just be able to
+> that small ...
+
+It depends on the use case. For our hardop servers, we set it to 4MB,
+as they prioritize throughput over latency. However, for our
+Kubernetes servers, we keep it at 128KB since those services are more
+latency-sensitive, and increasing it could lead to more frequent
+latency spikes.
+
+> or if large folio readahead code should just be able to
 > exceed it.
-> 
->>> "mm/filemap: Support VM_HUGEPAGE for file mappings" talks about "even if
->>> we have no history of readahead being successful".
->>>
->>> So not about exceeding the configured limit, but exceeding the
->>> "readahead history".
->>>
->>> So I consider VM_HUGEPAGE the sign here to "ignore readahead history"
->>> and not to "violate the config".
->>
->> MADV_HUGEPAGE is definitely a new addition to readahead, and its
->> behavior isn’t yet defined in the documentation. All we need to do is
->> clarify its behavior there. The documentation isn’t set in stone—we
->> can update it as long as it doesn’t disrupt existing applications.
-> 
+>
+> >> "mm/filemap: Support VM_HUGEPAGE for file mappings" talks about "even =
+if
+> >> we have no history of readahead being successful".
+> >>
+> >> So not about exceeding the configured limit, but exceeding the
+> >> "readahead history".
+> >>
+> >> So I consider VM_HUGEPAGE the sign here to "ignore readahead history"
+> >> and not to "violate the config".
+> >
+> > MADV_HUGEPAGE is definitely a new addition to readahead, and its
+> > behavior isn=E2=80=99t yet defined in the documentation. All we need to=
+ do is
+> > clarify its behavior there. The documentation isn=E2=80=99t set in ston=
+e=E2=80=94we
+> > can update it as long as it doesn=E2=80=99t disrupt existing applicatio=
+ns.
+>
 > If Willy thinks this is the way to go, then we should document that
 > MADV_HUGEPAGE may ignore the parameter, agreed.
-> 
+
+I'll submit an additional patch to update the documentation for MADV_HUGEPA=
+GE.
+
+>
 > I still don't understand your one comment:
-> 
+>
 > "It's worth noting that if read_ahead_kb is set to a larger value that
 > isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still
 > fail to map to hugepages."
+>
+> Do you mean that MADV_HUGEPAGE+read_ahead_kb<=3D4M will give you 2M pages=
+,
+> but MADV_HUGEPAGE+read_ahead_kb>4M won't? Or is this the case without
+> MADV_HUGEPAGE?
 
-I just played with your patch and your reproducer.
+Typically, users set read_ahead_kb to aligned sizes, such as 128KB,
+256KB, 512KB, 1MB, 2MB, 4MB, or 8MB. With this patch, MADV_HUGEPAGE
+functions well for all these settings. However, if read_ahead_kb is
+set to a non-hugepage-aligned size (e.g., 4MB + 128KB), MADV_HUGEPAGE
+won=E2=80=99t work. This is because the initial readahead size for
+MADV_HUGEPAGE is set to 4MB, as established in commit 4687fdbb805a:
 
-Setting read_ahead_kb to 0/128/4096 will give us PMDs with 
-MADV_HUGEPAGE. So we're ignoring the parameter.
+   ra->size =3D HPAGE_PMD_NR;
+   if (!(vmf->vma->vm_flags & VM_RAND_READ))
+       ra->size *=3D 2;
 
-But with 4224 we are not ignoring the parameter with MADV_HUGEPAGE. :(
+However, as Willy noted, non-aligned settings are quite stupid, so we
+should disregard them.
 
-root@localhost:~#  cat /proc/`pgrep readhahead`/smaps_rollup
-00400000-7ffe3a206000 ---p 00000000 00:00 0 
-[rollup]
-Rss:             1049728 kB
-Pss:             1048700 kB
-Pss_Dirty:        968576 kB
-Pss_Anon:             84 kB
-Pss_File:        1048616 kB
-Pss_Shmem:             0 kB
-Shared_Clean:       1056 kB
-Shared_Dirty:          0 kB
-Private_Clean:     80096 kB
-Private_Dirty:    968576 kB
-Referenced:      1049728 kB
-Anonymous:            84 kB
-KSM:                   0 kB
-LazyFree:              0 kB
-AnonHugePages:         0 kB
-ShmemPmdMapped:        0 kB
-FilePmdMapped:    135168 kB
-Shared_Hugetlb:        0 kB
-Private_Hugetlb:       0 kB
-Swap:                  0 kB
-SwapPss:               0 kB
-Locked:                0 kB
+>
+> If MADV_HUGEPAGE ignores read_ahead_kb completely, it's easy to document.
 
+Perhaps, but documenting the behavior of every unusual setting doesn=E2=80=
+=99t
+seem practical.
 
--- 
-Cheers,
+>
+> >
+> >>
+> >> But that's just my opinion.
+> >>
+> >>>
+> >>>>
+> >>>> No changes to API, no confusing code.
+> >>>
+> >>> New features like large folios can often create confusion with
+> >>> existing rules or APIs, correct?
+> >>
+> >> We should not try making it even more confusing, if possible.
+> >
+> > A quick tip for you: the readahead size already exceeds readahead_kb
+> > even without MADV_HUGEPAGE. You might want to spend some time tracing
+> > that behavior.
+>
+> Care to save me some time and point me at what you mean?
 
-David / dhildenb
+I reached this conclusion by tracing ra->size in each
+page_cache_ra_order() call, but I=E2=80=99m not fully equipped to provide a=
+ll
+the details ;=EF=BC=89
 
+--
+Regards
+
+Yafang
 
