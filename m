@@ -1,222 +1,112 @@
-Return-Path: <stable+bounces-92934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9679C790E
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 17:41:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD779C785B
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 17:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8062B3CAF1
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 15:56:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A862DB26618
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 16:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8D01632C8;
-	Wed, 13 Nov 2024 15:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD66154BFB;
+	Wed, 13 Nov 2024 16:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qAl5ejyu";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="M5NS/0oG";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="N/eDXw0E";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="oW8QbpvA"
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="KCtzAYyw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C660C70808;
-	Wed, 13 Nov 2024 15:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF285249EB
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 16:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731513346; cv=none; b=DLbEQTu5XgRbTprW/GZ56y1bd34Pr5sNduXRUnJvzK6drAsyAJFyIbuyjtwUZmf0EZ8e/AwifRu84U+mzc1gQvXyxjXLZ+fPpVYIK4qXrQaPtcS3jOrYV+3fDi28Rj28e+98M+SXG4e97sUzHi3WdwwevU3i0DsxOWcgBVw+DBM=
+	t=1731513921; cv=none; b=EqRBcPKUgT29pzs8+kooG2G6/+g2aNPrT2pQ4di28CHlWoSpRPl5XFDUrgpUmWJDXZ+waHSXHEgXxJAwD5GxoHFL6n9PVpoFnV/cD/4dOmStGSq3ral+KZIrWO7rULXy+TEnKpaVve9tZTUiZNReggVmmANV3broF9adHEI1LoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731513346; c=relaxed/simple;
-	bh=CGMyoOAvEErySPj4VWQSp/6OVN5thh33PQr0BHdBy8E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=noZ09J9Ei+hlAnj2XsTX6qC63kefGEe1/uCHIwzM/98s2NGA7kXQJMZWGSOcAfSx13vkPUgsTMB2yUySsvDpZ1/oWsCOdRC1Zhcg7EDmIrBuMrDcloAvsk/jF8laYVYfV8AUzjl0i3Js1X6ew8bxfMncjah+bnDw696AjX3XqaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qAl5ejyu; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=M5NS/0oG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=N/eDXw0E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=oW8QbpvA; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C2CC621169;
-	Wed, 13 Nov 2024 15:55:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731513343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=H4uNsiraV5oEnPbF6WIwff62D/EdVjIhGlKG/5iSKHk=;
-	b=qAl5ejyuc+Z8SVfrg8D+Yrlo0CGiv28zkxxiEDwBce17JkSwW9mTethKfxxIgIsat2RaBk
-	gmg0gGcyuuZyBafyiR5ZuNWviXhXuRqfjX3jwxC7SfVc9UBOEndZvQFHGU/bqa6Dq+NXsK
-	l50vdjb87VQH99t7/dR15Q8hxHndek4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731513343;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=H4uNsiraV5oEnPbF6WIwff62D/EdVjIhGlKG/5iSKHk=;
-	b=M5NS/0oGn7CdB9kaGy03lRXHyCTybas6nZtjyet7CxR3bH0iuz389FCH45oQ7YTtgF7GCS
-	HCPAFnR1SqCtSCBw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="N/eDXw0E";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oW8QbpvA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1731513342; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=H4uNsiraV5oEnPbF6WIwff62D/EdVjIhGlKG/5iSKHk=;
-	b=N/eDXw0Eo6AHbXDr1AotQg8Dq6E8dFyGYCRxQ+m9WKqwKGexTsNAmQ3m1ipa4R6/FK3Bem
-	KWVVJE05S6ksSPJOPkIXWBY9uXFZxlOjKzaKLUDuCZ5zxuZv88DbMC533xZTTkjKiVY1H2
-	IQW8bPnQKYnz2DDTRNhnQbQt6vbHMNc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1731513342;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=H4uNsiraV5oEnPbF6WIwff62D/EdVjIhGlKG/5iSKHk=;
-	b=oW8QbpvAb6BPNIi31n0dBDuw+DhrF+8k3Igjg4O3FlQ1+WyB7ghxwLRgMLba6tJtBKMahH
-	OYmLt1w7NzD/EgAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AAD1213A6E;
-	Wed, 13 Nov 2024 15:55:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9ISsKf7LNGcgJwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 13 Nov 2024 15:55:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 655D3A08D0; Wed, 13 Nov 2024 16:55:38 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: <linux-fsdevel@vger.kernel.org>
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fsnotify: fix sending inotify event with unexpected filename
-Date: Wed, 13 Nov 2024 16:55:25 +0100
-Message-Id: <20241113155525.22856-1-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1731513921; c=relaxed/simple;
+	bh=Na/grnMDZNedpgQeysiBdj5+/PYqTh2BndPQC5ZI/ZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4h0IagxyexpO1CKWO89NDABVggDuo2QrpkMdH9YeYhJY3ASUB+ZXj3AUMJ00586rdphy8emLAbuvpu5GUNUUOPXvhzsWr5RPDqDX+fRxnNfNO6JqSG6d9V6esyZgPdleZKvTDWkeW49Pbb3TAv8Hrh6Qe+Ko7Fy6k9Z3D4kAtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=KCtzAYyw; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6cbf0769512so47244746d6.3
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 08:05:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1731513919; x=1732118719; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vcFDogal5NryDPa48hgqdxJVj4yDxQkvbCrhPZCGTxk=;
+        b=KCtzAYyw9Ve7WG6Rr23mWNWxNHubNRn5djB2eA3xLnAtzmAquL4is+s+Sa9E4FEjyh
+         JnPYRYY7cpZ2XCU+/f+Xc756/cYT+x0ndtUfcXbXnemadCfX8eh9256INSKwSo1K+2VZ
+         rXZoGUm5A7oXxf4Qsah61ZVaGRCvh/osMKcCUALnbrKios0Ln9vB8pSoekqKdHxUiDiA
+         KN6T+szkn7G4WnldFUmJWG+DpKhJ1DRvdawB+Wi5V7pvWmKR8F3XnemDLgYsIB384uxH
+         F5d9rNFXcJB/8DikCy7iicQvK/whMOqETMHtIc9IFrdR3YZ4SKVY/QixSocDtlRpiVU3
+         NGYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731513919; x=1732118719;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vcFDogal5NryDPa48hgqdxJVj4yDxQkvbCrhPZCGTxk=;
+        b=hS8ltDkS9EQLeKhPwLZxlakNIf9svlvFgNOlFHBV6pCL9pSzBsA7E5XKw9mHiw8zKU
+         MRRdy2n29bchWHgwldj2IPV82XoipfCTaZ1AXba4FBuYzGdQqiaHeSvzAD4LEHkC/umo
+         JOt7+VsmdUntpV+44BqgOvqFtrQvjyQddIokwg1Vst+gYffm1UF6PVTWq2qOwN0XDI46
+         IBCIF7j5B4xv0PMdYUSEYqw4VKTT72NXd4FE47g4dtmT3sKl8M3ctm4BHIUNziMuxX3O
+         TipkwPl2eUp5LjBRd7YrQKsdEW6mKKnnKM2H3ajBPbWpRpTsFGgg7wFMbpk3dAqAba/S
+         qBSg==
+X-Gm-Message-State: AOJu0YxTQTKiKuBEVRpyh8jfIrUd48DbmJ4vS8j+CbWZQy82dW8tSH4o
+	o1iSWzEcsr5bSerR6PBqctVi7E5ql2irR1FasDGo4FieJ4rATm87TbNgmf9bV+Q=
+X-Google-Smtp-Source: AGHT+IGpr3Pe7mhvy60jSiQoQxLE3e5pAsnbCLZr3nlAa4MV8tpy17afRGHY6BZ3hQO21VrAWk7p3A==
+X-Received: by 2002:a05:6214:570f:b0:6d1:7438:7b94 with SMTP id 6a1803df08f44-6d3dd0813b5mr41710106d6.47.1731513918626;
+        Wed, 13 Nov 2024 08:05:18 -0800 (PST)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961ecc7asm85440196d6.43.2024.11.13.08.05.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 08:05:17 -0800 (PST)
+From: Josef Bacik <josef@toxicpanda.com>
+To: linux-btrfs@vger.kernel.org,
+	kernel-team@fb.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: fix incorrect comparison for delayed refs
+Date: Wed, 13 Nov 2024 11:05:13 -0500
+Message-ID: <fc61fb63e534111f5837c204ec341c876637af69.1731513908.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3544; i=jack@suse.cz; h=from:subject; bh=CGMyoOAvEErySPj4VWQSp/6OVN5thh33PQr0BHdBy8E=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGNJNTj83fPLefFX/sSKb7qYMz+lzvX+FCl54mvjFN/1XnV3a v70BnYzGLAyMHAyyYoosqyMval+bZ9S1NVRDBmYQKxPIFAYuTgGYSHIo+19BRbcG0YYpyYLG+xztfz iqW/Brl/4zEz3moqMlnJ4y4VEjy+Ubz6atTAjRNDBlmyR3db+IbjpznIZE/bmT4rXu6W/cfBPE3wYe u32Llz+ghHe3T7FAiIFvRHvYt60TM138pDMPq+Z3/320iafE2eJt590jUh9TFq5Oqg5v1XpYELsmea F7VtUTC1PFv8lCdiJXDa5mVb+sTskI1jP50VtiZPrLTtElZMoD6WSJI5NeXjuxIkR/l+9JxTBF/YTz uzaqV17kvvNWpJApKX329OgPLCfFbDRWHdg1lbuO3zbXgq3zinSf5vFz3U1e245e/ahxZHkhsz3zpP /BRkuf9Xx3+Pz/JY+Jw4boFXcB
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C2CC621169
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,szeredi.hu,vger.kernel.org];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
 
-We got a report that adding a fanotify filsystem watch prevents tail -f
-from receiving events.
+When I reworked delayed ref comparison in cf4f04325b2b ("btrfs: move
+->parent and ->ref_root into btrfs_delayed_ref_node"), I made a mistake
+and returned -1 for the case where ref1->ref_root was > than
+ref2->ref_root.  This is a subtle bug that can result in improper
+delayed ref running order, which can result in transaction aborts.
 
-Reproducer:
-
-1. Create 3 windows / login sessions. Become root in each session.
-2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
-3. In the first window, run: fsnotifywait -S -m /boot
-4. In the second window, run: echo data >> /boot/foo
-5. In the third window, run: tail -f /boot/foo
-6. Go back to the second window and run: echo more data >> /boot/foo
-7. Observe that the tail command doesn't show the new data.
-8. In the first window, hit control-C to interrupt fsnotifywait.
-9. In the second window, run: echo still more data >> /boot/foo
-10. Observe that the tail command in the third window has now printed
-the missing data.
-
-When stracing tail, we observed that when fanotify filesystem mark is
-set, tail does get the inotify event, but the event is receieved with
-the filename:
-
-read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
-50) = 32
-
-This is unexpected, because tail is watching the file itself and not its
-parent and is inconsistent with the inotify event received by tail when
-fanotify filesystem mark is not set:
-
-read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
-
-The inteference between different fsnotify groups was caused by the fact
-that the mark on the sb requires the filename, so the filename is passed
-to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
-not passing the filename to groups (such as inotify) that are interested
-in the filename only when the parent is watching.
-
-But the logic was incorrect for the case that no group is watching the
-parent, some groups are watching the sb and some watching the inode.
-
-Reported-by: Miklos Szeredi <miklos@szeredi.hu>
-Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+cc: stable@vger.kernel.org
+Fixes: cf4f04325b2b ("btrfs: move ->parent and ->ref_root into btrfs_delayed_ref_node")
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- fs/notify/fsnotify.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ fs/btrfs/delayed-ref.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This is what I plan to merge into my tree.
-
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 82ae8254c068..f976949d2634 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -333,16 +333,19 @@ static int fsnotify_handle_event(struct fsnotify_group *group, __u32 mask,
- 	if (!inode_mark)
- 		return 0;
- 
--	if (mask & FS_EVENT_ON_CHILD) {
--		/*
--		 * Some events can be sent on both parent dir and child marks
--		 * (e.g. FS_ATTRIB).  If both parent dir and child are
--		 * watching, report the event once to parent dir with name (if
--		 * interested) and once to child without name (if interested).
--		 * The child watcher is expecting an event without a file name
--		 * and without the FS_EVENT_ON_CHILD flag.
--		 */
--		mask &= ~FS_EVENT_ON_CHILD;
-+	/*
-+	 * Some events can be sent on both parent dir and child marks (e.g.
-+	 * FS_ATTRIB).  If both parent dir and child are watching, report the
-+	 * event once to parent dir with name (if interested) and once to child
-+	 * without name (if interested).
-+	 *
-+	 * In any case regardless whether the parent is watching or not, the
-+	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
-+	 * flag. The file name is expected if and only if this is a directory
-+	 * event.
-+	 */
-+	mask &= ~FS_EVENT_ON_CHILD;
-+	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
- 		dir = NULL;
- 		name = NULL;
+diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
+index 4d2ad5b66928..0d878dbbabba 100644
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -299,7 +299,7 @@ static int comp_refs(struct btrfs_delayed_ref_node *ref1,
+ 		if (ref1->ref_root < ref2->ref_root)
+ 			return -1;
+ 		if (ref1->ref_root > ref2->ref_root)
+-			return -1;
++			return 1;
+ 		if (ref1->type == BTRFS_EXTENT_DATA_REF_KEY)
+ 			ret = comp_data_refs(ref1, ref2);
  	}
 -- 
-2.35.3
+2.43.0
 
 
