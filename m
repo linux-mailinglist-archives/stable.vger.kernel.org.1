@@ -1,92 +1,243 @@
-Return-Path: <stable+bounces-92876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC019C66B2
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:28:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8300C9C66B8
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 02:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47D951F23E5C
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 01:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A361F259F0
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 01:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D53E18654;
-	Wed, 13 Nov 2024 01:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6C518E29;
+	Wed, 13 Nov 2024 01:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AX/fanIF"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tLl2mEJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E68BA34;
-	Wed, 13 Nov 2024 01:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323D229A5;
+	Wed, 13 Nov 2024 01:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731461322; cv=none; b=dlYftcZbRAA1sDhrKxMUA3Sf1pBvbaGXlERCOALJkSzfiUmzIBWu2ybrP6KH8TePyohfsjt8ZE256LkyM9SyRzATuTgssPBhO3HsIlBh+QU/snhA+pt5Wg9JEs1ROwJl0pxkY1W/qoFLt0mruQ8Ww2Ozbyp+YsznjWir5KKgegY=
+	t=1731461496; cv=none; b=dJem0UOPDbh7cXilMldxcOpE+oQGJwF1DaXKNCX+VCl1Bu2XNswSkFFs7UHdWqoz5e21tgAK8D6AzSzbYcOawth3rxfd/oUrBZKTJwAo+rQmOs+sOR8QrPB0zkb6hvkJRp0q5zmVj6SyqM67CPK8t/7+1UTWS1LRfjOzPZ89tk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731461322; c=relaxed/simple;
-	bh=+X+k54ktMEeVatN/itYEiydQwmUaz5SOmKOWD1vzsw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eCICz5Mw7pBfUYeSmA5mmODxQJFVpgaLQ5V3FH7peYoqgQbuoosQste11BpTaAVmNHwVk9qL3V3cWp0/X56gi6S6NQexAaj92PLGGX1B7m/9V9OyJ3WH8oBU3o4ka/cV2SH9FpEteKPz5ji18LKxEfNqbvXEiyMNkYPhNQ67Av0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AX/fanIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2994C4CECD;
-	Wed, 13 Nov 2024 01:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731461322;
-	bh=+X+k54ktMEeVatN/itYEiydQwmUaz5SOmKOWD1vzsw0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AX/fanIFaupuu4/sINoxaLFKX6Hx0jUzlvQfDsRpK5Cp72DPKQ6+K50toZc8Uaucj
-	 qYMEBrXmkNE0WNRQOIcGL7/MmsMZSy/n2szVOZXSkYsGK2ceJcp07XPJ3Df09M7W7B
-	 pveT3GcXnsGnF9U3NKpzD+YjFSZsA7WLGTVULMwvw9vPFX5pngzuB72KobMnYNz87q
-	 3zoAq5B/LuCp6qWI3A1DVS+BBgO0ua9/Ka1Xuaj92ByWpzsD3iFyFHEhsXz84Qf/Lg
-	 3LcMekJ0BjE3bzKYeDyLEGzmAaEPgLzjvUG6WKfE8SIpSe6xbWEFtHasvJ+fHAmRSp
-	 lmH/9MmSHP7oA==
-Date: Tue, 12 Nov 2024 17:28:40 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
- amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
- mkarsten@uwaterloo.ca, stable@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Mina Almasry
- <almasrymina@google.com>, linux-kernel@vger.kernel.org (open list)
-Subject: Re: [RFC net 1/2] netdev-genl: Hold rcu_read_lock in napi_get
-Message-ID: <20241112172840.0cf9731f@kernel.org>
-In-Reply-To: <20241112181401.9689-2-jdamato@fastly.com>
-References: <20241112181401.9689-1-jdamato@fastly.com>
-	<20241112181401.9689-2-jdamato@fastly.com>
+	s=arc-20240116; t=1731461496; c=relaxed/simple;
+	bh=x2yHj+KDgUyLwCQAKlmWBsyCmBxVapbNcnrLJQal0rs=;
+	h=Date:To:From:Subject:Message-Id; b=FVoCFZy5/dCwsVkPXvmJN4ljSzPyVZauXKwYRPROWH2ZxYEYE6k1I0JMM+gU2uKQExprHFOsnUNiduOCjMtkcNiWFRZ45WuLvKgnEEloz5Eg74trGn8AGseSnZ4fARJB6yuKGRVmRpJ6XFDkh50+dOwdnHufPEYrJ4OSJf8hQJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tLl2mEJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98C7C4CECD;
+	Wed, 13 Nov 2024 01:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1731461495;
+	bh=x2yHj+KDgUyLwCQAKlmWBsyCmBxVapbNcnrLJQal0rs=;
+	h=Date:To:From:Subject:From;
+	b=tLl2mEJ+6WfBRt3SWBTU+qVLNViM9/cEysPOWeAaNQRWGji0bs/JkDSdgfh/Bq4H0
+	 mxQS4IdckRkBFkBxn5B7Wj1y6GmJNNy+L67XKpwUqRXXMFrLwvx3dj05RM0P9wvAPl
+	 Y0mosio7kPj9IlllZchPsopzf939pbsZhzga6jeU=
+Date: Tue, 12 Nov 2024 17:31:35 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,Reimar.Doeffinger@gmx.de,mpe@ellerman.id.au,glaubitz@physik.fu-berlin.de,ebiederm@xmission.com,bhe@redhat.com,dave@vasilevsky.ca,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241113013135.A98C7C4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 12 Nov 2024 18:13:58 +0000 Joe Damato wrote:
-> +/* must be called under rcu_read_lock(), because napi_by_id requires it */
-> +static struct napi_struct *__do_napi_by_id(unsigned int napi_id,
-> +					   struct genl_info *info, int *err)
-> +{
-> +	struct napi_struct *napi;
-> +
-> +	napi = napi_by_id(napi_id);
-> +	if (napi) {
-> +		*err = 0;
-> +	} else {
-> +		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
-> +		*err = -ENOENT;
-> +	}
-> +
-> +	return napi;
-> +}
 
-Thanks for the quick follow up! I vote we don't factor this out.
-I don't see what it buys us, TBH, normally we factor out code
-to avoid having to unlock before return, but this code doesn't
-have extra returns...
+The patch titled
+     Subject: crash, powerpc: default to CRASH_DUMP=n on PPC_BOOK3S_32
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32.patch
 
-Just slap an rcu_read_lock / unlock around and that's it?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32.patch
 
-Feel free to repost soon.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Dave Vasilevsky <dave@vasilevsky.ca>
+Subject: crash, powerpc: default to CRASH_DUMP=n on PPC_BOOK3S_32
+Date: Tue, 17 Sep 2024 12:37:20 -0400
+
+Fixes boot failures on 6.9 on PPC_BOOK3S_32 machines using Open Firmware. 
+On these machines, the kernel refuses to boot from non-zero
+PHYSICAL_START, which occurs when CRASH_DUMP is on.
+
+Since most PPC_BOOK3S_32 machines boot via Open Firmware, it should
+default to off for them.  Users booting via some other mechanism can still
+turn it on explicitly.
+
+Does not change the default on any other architectures for the
+time being.
+
+Link: https://lkml.kernel.org/r/20240917163720.1644584-1-dave@vasilevsky.ca
+Fixes: 75bc255a7444 ("crash: clean up kdump related config items")
+Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+Reported-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
+Closes: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>	[powerpc]
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm/Kconfig       |    3 +++
+ arch/arm64/Kconfig     |    3 +++
+ arch/loongarch/Kconfig |    3 +++
+ arch/mips/Kconfig      |    3 +++
+ arch/powerpc/Kconfig   |    4 ++++
+ arch/riscv/Kconfig     |    3 +++
+ arch/s390/Kconfig      |    3 +++
+ arch/sh/Kconfig        |    3 +++
+ arch/x86/Kconfig       |    3 +++
+ kernel/Kconfig.kexec   |    2 +-
+ 10 files changed, 29 insertions(+), 1 deletion(-)
+
+--- a/arch/arm64/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/arm64/Kconfig
+@@ -1576,6 +1576,9 @@ config ARCH_DEFAULT_KEXEC_IMAGE_VERIFY_S
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+ 	def_bool CRASH_RESERVE
+ 
+--- a/arch/arm/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/arm/Kconfig
+@@ -1598,6 +1598,9 @@ config ATAGS_PROC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config AUTO_ZRELADDR
+ 	bool "Auto calculation of the decompressed kernel image address" if !ARCH_MULTIPLATFORM
+ 	default !(ARCH_FOOTBRIDGE || ARCH_RPC || ARCH_SA1100)
+--- a/arch/loongarch/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/loongarch/Kconfig
+@@ -604,6 +604,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_SELECTS_CRASH_DUMP
+ 	def_bool y
+ 	depends on CRASH_DUMP
+--- a/arch/mips/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/mips/Kconfig
+@@ -2876,6 +2876,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config PHYSICAL_START
+ 	hex "Physical address where the kernel is loaded"
+ 	default "0xffffffff84000000"
+--- a/arch/powerpc/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/powerpc/Kconfig
+@@ -684,6 +684,10 @@ config RELOCATABLE_TEST
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool PPC64 || PPC_BOOK3S_32 || PPC_85xx || (44x && !SMP)
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	bool
++	default y if !PPC_BOOK3S_32
++
+ config ARCH_SELECTS_CRASH_DUMP
+ 	def_bool y
+ 	depends on CRASH_DUMP
+--- a/arch/riscv/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/riscv/Kconfig
+@@ -898,6 +898,9 @@ config ARCH_SUPPORTS_KEXEC_PURGATORY
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+ 	def_bool CRASH_RESERVE
+ 
+--- a/arch/s390/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/s390/Kconfig
+@@ -276,6 +276,9 @@ config ARCH_SUPPORTS_CRASH_DUMP
+ 	  This option also enables s390 zfcpdump.
+ 	  See also <file:Documentation/arch/s390/zfcpdump.rst>
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ menu "Processor type and features"
+ 
+ config HAVE_MARCH_Z10_FEATURES
+--- a/arch/sh/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/sh/Kconfig
+@@ -550,6 +550,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool BROKEN_ON_SMP
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_SUPPORTS_KEXEC_JUMP
+ 	def_bool y
+ 
+--- a/arch/x86/Kconfig~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/arch/x86/Kconfig
+@@ -2084,6 +2084,9 @@ config ARCH_SUPPORTS_KEXEC_JUMP
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool X86_64 || (X86_32 && HIGHMEM)
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_SUPPORTS_CRASH_HOTPLUG
+ 	def_bool y
+ 
+--- a/kernel/Kconfig.kexec~crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32
++++ a/kernel/Kconfig.kexec
+@@ -97,7 +97,7 @@ config KEXEC_JUMP
+ 
+ config CRASH_DUMP
+ 	bool "kernel crash dumps"
+-	default y
++	default ARCH_DEFAULT_CRASH_DUMP
+ 	depends on ARCH_SUPPORTS_CRASH_DUMP
+ 	depends on KEXEC_CORE
+ 	select VMCORE_INFO
+_
+
+Patches currently in -mm which might be from dave@vasilevsky.ca are
+
+crash-powerpc-default-to-crash_dump=n-on-ppc_book3s_32.patch
+
 
