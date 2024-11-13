@@ -1,152 +1,197 @@
-Return-Path: <stable+bounces-92958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55379C7D41
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 22:03:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7339C7D49
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 22:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECF73B23F3A
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 21:03:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDB71F23808
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 21:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFDC20127A;
-	Wed, 13 Nov 2024 21:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB15206E78;
+	Wed, 13 Nov 2024 21:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="hd0JqwBS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IOnRZAiP"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7519213B2A9;
-	Wed, 13 Nov 2024 21:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E302D204021
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 21:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731531777; cv=none; b=CQ4bCH96x/1wP1T/nJBLu6w8Xas9XlkZzuWuhu3ObpHZU2iypMP6Mz7ZMFDF3TA31oLUvpRrKi4ePAbxqjA5r4rrUH6W647YdODBXVIzwOk62MGFHJBTy2Zovl7V8upqjSJcDDkuYYhzvw5kEnEX3uCnA/zukQVqUrUnF8f3sN4=
+	t=1731531833; cv=none; b=qDeVoZrlTWbd3ExZ3Y1YMwiVtJRHoMy7XLenXmEqPN98Fm0wdqfv8injevJukkTfjcdt5dds3hZDeyhSZe8FVQlNxrzWE5vCJfFfTnHTXqKqrZCUfTqTsYnPDINWeTUwabf9wBwhcXcG7Sw5hkcGn3AeoZEG21cBkcWICJzevXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731531777; c=relaxed/simple;
-	bh=cBPSpe8yztKqMAkQS/Y0tcbAqCBtecEG0558RFSZhwU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LDCqkKo3NRM5NuYUvSeGShxVgs5HUzP4Kjy9+YHzIAMaPRFAi2gshGVCFhaRnw0XEWr7QcgcpByIbdJ1iOGweD9K2pLzvybg5uDbGn7axfFoguuF6Pf3vSpWVKqxtxyq+IftnXGElGZB5xJ6PAI+uOdzALpFORrQntulvAFMKuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=hd0JqwBS; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1731531769; x=1732136569; i=quwenruo.btrfs@gmx.com;
-	bh=HxovTbPvglVD1LIV18rU73GioKzwQdo/QilhjtDUfgc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=hd0JqwBSVroy1ApplPfUp6Ubsjm1YNvgm5SW0Wmv6aKbdFwO25wv1Qgi6VODLizQ
-	 HCVoP+boQZOl/dZpnqjgCJN5urUyktPM1RFb1rcJnduAYxjiaFY5AR0Qc8KM/5cKG
-	 HI+DbvjbnBE9UeyQ0c6vqumJoO3sRwIg05Cgp6fKVE5ZSDmit5mL/QA+AKuN2nCFH
-	 v9EGsIdikD2v/bvXZ2+oZE14HtBgoHpBf2xx8Ncc5HpgAlB+TRQOXn9929bvkd5jZ
-	 kP0zeR9GUqhIvt2xeiAj/EMzYsdDM2zfx7ARmBEYGt919YRG4Vk/T5GMW+C9dXOV9
-	 cx+bNmlo3laJFHUKGw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MZktj-1tEzVv2iWN-00YmNe; Wed, 13
- Nov 2024 22:02:49 +0100
-Message-ID: <9c5033a0-ed89-470c-9a88-3c1b4f68ec8b@gmx.com>
-Date: Thu, 14 Nov 2024 07:32:45 +1030
+	s=arc-20240116; t=1731531833; c=relaxed/simple;
+	bh=Heiust2lk2TQ7+75yP27aiVUP7Gcr7UNHszJsH/pVxA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dj735hSECGhhT98VyNMF1ydN9Gm97pVR5z9Lz2FTk1VHw9KrZFSmvzClIxAQpSrrQDxWHCB3P5aU15ogtuM2QbKLLSo0tZ9q86S/noFz9oEX1hEI7GQo4ned0xbn9JuKiJm4qhA7HfEglmfnhfrPquEs8Yxk7wFZp2upyKbi2po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IOnRZAiP; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c932b47552so3570a12.0
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 13:03:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731531830; x=1732136630; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lOCUc/yJUoL2hpg7TdUrHhUe2R4Jfk9THcrUWgwfKEw=;
+        b=IOnRZAiP+ZmlIW/StkVi40qmGdfeEla6GcYRxPsKbXYqDhKAifWrlFrm6+imMF5TDq
+         zPWte9bykvoipdA0EYVjSNfZFN2FkIOhrgmZfClLf07WikPlXwS821tLv8U9sjFcFXKw
+         C+TdUTlG49bX/Mv184zM+JAZbjihSD1n97n++l4ZBIvOf6yDWxxcuyXwI8/I9RnlwEEM
+         gP3a6tDN6rT3t2LioU+w3Iehloy1+41ulasSoDF9r9UHQvROsU9N0tC3hZEcdMJe7Pgv
+         1KPRrIEZR0/5Pzniv4nK5Q67KkP2XpXAqe592BSVFL0rmeV2ID9PJb2qeXQWJr4GXKBe
+         eYqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731531830; x=1732136630;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lOCUc/yJUoL2hpg7TdUrHhUe2R4Jfk9THcrUWgwfKEw=;
+        b=SNxIX+R6KDeDNZLDT0mMo8JaC02txT8+8czWzPkiH/rxoQ5U03/ays5cLQC6bsl0wm
+         qnw/oakPQ17wo6iMQ2WKtgHzoUmcf2JkUHyXWZMvgWDaUOR9TMq9W92tlAXcyJy01Eng
+         7XEQJ4M42QesAR2c2JvP283M6tirE5iFC006nu8eHeDNWiQlwECdxPGXCbX6RngnYRMS
+         ZOPezNYWpmtEaD1YRV8I6ZEoKinl3NmbuzUYLJBJiKHERUkm+bju9maLslwIvlJHSBKn
+         F5dsu203h5OmM8h9lNGFvrxceb8GRMncB/nbH4RBZoVpcSHWdXJ2nW2Aaj2aPCcRBzOl
+         jMOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNyVtOrjXif6F10i0FUzYJspHElHPBastEwdGfp6wuRNAGWtLgNhamjLrPymlwRF1g5e95Y3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBEZ06jZfuPxMktTj6B+4X/gmx2CSiLfiRLtNKfalukf1uPwUT
+	puB6zA0vOOfUvCYJ9ylisZu7tMkJtAbx6y3jd1WABSu2Vf1PajlDa5haGSUyog==
+X-Gm-Gg: ASbGnctOZV+vruML6fDqiFwluaX8P0bgbYUPeVFB7yh24vcNRRRLfznMH9BV710t6/J
+	Lqtx5FSoFgSt/P/foXkZctbJJXUh3P9MCJ4+IWc4rlVS618YsScOPlvz1+1hJSJ/w3xzCfK6er/
+	ziUq5pDZWrb/HWboaLm/rsZ7gVUOapvEv/LDxTPOf/iY5Tn5Ix8j3Q3Xpb7tJgOPOA7YHvJu1qI
+	g+pis39uYm9SFF3FcGqJUPeaUk3lQx0HabJPQ==
+X-Google-Smtp-Source: AGHT+IG1zVNACjIiwuT159tiQbcacfdUCCAM6NVeqCGU2Yzh1607/zU+bDBumeceKweprv/UyAwMdA==
+X-Received: by 2002:a05:6402:1a52:b0:5ca:18ba:4a79 with SMTP id 4fb4d7f45d1cf-5cf762fa6b0mr66520a12.7.1731531829738;
+        Wed, 13 Nov 2024 13:03:49 -0800 (PST)
+Received: from localhost ([2a00:79e0:9d:4:69d0:c862:d7b:9232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed9ea3cbsm19603805f8f.74.2024.11.13.13.03.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 13:03:49 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Wed, 13 Nov 2024 22:03:39 +0100
+Subject: [PATCH] drm/panthor: Fix memory leak in
+ panthor_ioctl_group_create()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] btrfs: fix incorrect comparison for delayed refs
-To: Josef Bacik <josef@toxicpanda.com>, linux-btrfs@vger.kernel.org,
- kernel-team@fb.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+X-B4-Tracking: v=1; b=H4sIACoUNWcC/x2MWwqAIBAArxL73ULaA+oq0YfppguhpRVBdPekz
+ 4GZeSBRZEowFA9Eujhx8BlEWYB2yltCNplBVrIRQtS4KX+4EHHhG63ecVa8hvNAaXql667tKzK
+ Q6y1SVv7zOL3vByy90QVpAAAA
+X-Change-ID: 20241113-panthor-fix-gcq-bailout-2d9ac36590ed
+To: Boris Brezillon <boris.brezillon@collabora.com>, 
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Mary Guillemard <mary.guillemard@collabora.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731531825; l=2836;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=Heiust2lk2TQ7+75yP27aiVUP7Gcr7UNHszJsH/pVxA=;
+ b=lzcwlYsBE4dnEtS4J1h0Wf/4iptqrd0IEJ14sGcSTgw5cyU8TenlSxFixHMkQZuQfYbk44Svk
+ UYn5uJdkAWYB0zXWRUPHrMruK1IPz0rykyF1bF7/DSCL/HkIw9Syr6Y
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+
+When bailing out due to group_priority_permit() failure, the queue_args
+need to be freed. Fix it by rearranging the function to use the
+goto-on-error pattern, such that the success case flows straight without
+indentation while error cases jump forward to cleanup.
+
 Cc: stable@vger.kernel.org
-References: <fc61fb63e534111f5837c204ec341c876637af69.1731513908.git.josef@toxicpanda.com>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <fc61fb63e534111f5837c204ec341c876637af69.1731513908.git.josef@toxicpanda.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2L8vTwdAGNvh7FNHkUHa/8AEWWFuhOVrLKQpEC6ZyBL8EWEA2/O
- 0J/lYzdHWTZZWwBKV46RPCky6RhDDokDCTVkclA+a8V5oF6cV1PSkLTtuYx8q4pSwMTqd01
- BjLc7LYad8kv69aa8w7xCMnjmmMtYuhB4en48/16e+ksvubJdxj0c2NMKCqzJN/7Vyr5tth
- DIO/YqPWrETDfPHAPWtDg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:YENwQRLXloo=;aNnzR3llgWRltXcrEtAPf9kw5oc
- wf0QKCwCufNahCKbzS8lGa89IQFSGL/ZK5gpyXjsQrIOy/mrWo/eXqf41jiMGHVEfgwi/wSYE
- xL0eN1MjcX5ySfN+DDRoKRHF7xSWQszE/eCG8q2QrTcSKdWvFNlUcLJpmpf8TLO5YJdquQh3/
- DfZFX7s2GiM+4Tsdk6ZTl9eA2AWN+nwuWBgslEH03pqiCQuDhoUUMmEJ/GCBlPhdTl0PGKxzf
- HJv3FNsHQdJpHZdbr7/DR4PoCDNuh92ttFyMn/hRnHUmiJ/LwIJYqj4Lq7s1ngA9g1VimjX4B
- baZyx+VtIEQS922pXq+UCsHIewbCZ2nFr2Hdccg3ZfdhHIVzCFCMBeVcSvSQCqKmvWDZvxcJo
- jXFC+DJ++9uxYimDGOhc+YBikMp8gd9LB5l3N/PcNVue80yp9EgSNi5H2VZmJN1PDl4PPv2DW
- OjyYB+Ty2YKUqlI7WSXLnYz9w3HlXa/f5fbL9WwxuE9gLsDiQ3Yzoahg25Q6pNpKbR1QU7YJu
- TfxdI4xPtSC/OV8tIXah5ubmyBhkUbnBd384MMo0kSQzx8Wv6Bv7MArcJpbFQOWmx8x3h21+u
- elv3DqVkDZdwVtqIJfO5dhN8C+mZSw4G+Yw1oQY0qUUK7zmIAmhajmKK3YDh4gF3xeAuVmsBw
- avhU3wDBM7lD7vVzDheqCWDVv0tdcAJ/dN0/dDqOMYGTdMo0VBE5n+cL8k63IJi8yoWPkvUGV
- U8mCWKNCz7jV7/dnUvq5RuDT6ekAZb1Mc7HcMJGBFfXTaqrjUt8/dGObTD9JNoX7vhPaD9m5K
- 5WddG5kQnOCXRmQkFQZgZViWMPvmmV0TfR6O6G1Ur5gkX8q8ltF+Bltrdr2Mh3r/7hFZqGGNk
- t07uY/BuNXk2UmeW3DBJccqgwcqxlFXLbkET9n2gmas6l1ED8TgF5zQUS
+Fixes: 5f7762042f8a ("drm/panthor: Restrict high priorities on group_create")
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+testcase:
+```
+#include <err.h>
+#include <fcntl.h>
+#include <stddef.h>
+#include <sys/ioctl.h>
+#include <drm/panthor_drm.h>
 
+#define SYSCHK(x) ({          \
+  typeof(x) __res = (x);      \
+  if (__res == (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
 
+#define GPU_PATH "/dev/dri/by-path/platform-fb000000.gpu-card"
 
-=E5=9C=A8 2024/11/14 02:35, Josef Bacik =E5=86=99=E9=81=93:
-> When I reworked delayed ref comparison in cf4f04325b2b ("btrfs: move
-> ->parent and ->ref_root into btrfs_delayed_ref_node"), I made a mistake
-> and returned -1 for the case where ref1->ref_root was > than
-> ref2->ref_root.  This is a subtle bug that can result in improper
-> delayed ref running order, which can result in transaction aborts.
->
-> cc: stable@vger.kernel.org
-> Fixes: cf4f04325b2b ("btrfs: move ->parent and ->ref_root into btrfs_del=
-ayed_ref_node")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+int main(void) {
+  int fd = SYSCHK(open(GPU_PATH, O_RDWR));
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
+  while (1) {
+    struct drm_panthor_queue_create qc[16] = {};
+    struct drm_panthor_group_create gc = {
+      .queues = {
+        .stride = sizeof(struct drm_panthor_queue_create),
+        .count = 16,
+        .array = (unsigned long)qc
+      },
+      .priority = PANTHOR_GROUP_PRIORITY_HIGH+1/*invalid*/
+    };
+    ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &gc);
+  }
+}
+```
 
-Thanks,
-Qu
-> ---
->   fs/btrfs/delayed-ref.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
-> index 4d2ad5b66928..0d878dbbabba 100644
-> --- a/fs/btrfs/delayed-ref.c
-> +++ b/fs/btrfs/delayed-ref.c
-> @@ -299,7 +299,7 @@ static int comp_refs(struct btrfs_delayed_ref_node *=
-ref1,
->   		if (ref1->ref_root < ref2->ref_root)
->   			return -1;
->   		if (ref1->ref_root > ref2->ref_root)
-> -			return -1;
-> +			return 1;
->   		if (ref1->type =3D=3D BTRFS_EXTENT_DATA_REF_KEY)
->   			ret =3D comp_data_refs(ref1, ref2);
->   	}
+I have tested that without this patch, after running the testcase for a
+few seconds and then manually killing it, 2G of RAM in kmalloc-128 have
+been leaked. With the patch applied, the memory leak is gone.
+
+(By the way, get_maintainer.pl suggests that I also send this patch to
+the general DRM maintainers and the DRM-misc maintainers; looking at
+MAINTAINERS, it looks like it is normal that the general DRM maintainers
+are listed for everything under drivers/gpu/, but DRM-misc has exclusion
+rules for a bunch of drivers but not panthor. I don't know if that is
+intentional.)
+---
+ drivers/gpu/drm/panthor/panthor_drv.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index c520f156e2d73f7e735f8bf2d6d8e8efacec9362..815c23cff25f305d884e8e3e263fa22888f7d5ce 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1032,14 +1032,15 @@ static int panthor_ioctl_group_create(struct drm_device *ddev, void *data,
+ 
+ 	ret = group_priority_permit(file, args->priority);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	ret = panthor_group_create(pfile, args, queue_args);
+-	if (ret >= 0) {
+-		args->group_handle = ret;
+-		ret = 0;
+-	}
++	if (ret < 0)
++		goto out;
++	args->group_handle = ret;
++	ret = 0;
+ 
++out:
+ 	kvfree(queue_args);
+ 	return ret;
+ }
+
+---
+base-commit: 9f8e716d46c68112484a23d1742d9ec725e082fc
+change-id: 20241113-panthor-fix-gcq-bailout-2d9ac36590ed
+
+-- 
+Jann Horn <jannh@google.com>
 
 
