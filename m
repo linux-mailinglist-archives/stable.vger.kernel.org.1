@@ -1,221 +1,176 @@
-Return-Path: <stable+bounces-92888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACCB9C690C
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 07:05:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE809C6939
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 07:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D2AEB257D0
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 06:05:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC521F2372B
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 06:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51501714BC;
-	Wed, 13 Nov 2024 06:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C69B170854;
+	Wed, 13 Nov 2024 06:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=pm.me header.i=@pm.me header.b="UZDHGFXk"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="plwpOYrE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CABBA34;
-	Wed, 13 Nov 2024 06:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A4C1714BC;
+	Wed, 13 Nov 2024 06:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731477911; cv=none; b=WSHghx9GHSI9V1GzemNnv/ESihEuBulzZz3tgTtk9huAnAcnhIWsbCh23BE0xiiCiM/L63/QbNKvntJdJXO7vrt1v4MnuZJubV4CgxaMsG1h57VsWkcbPkKY8Dt3miKs9gzTQZecHDMEgjHcUpd3VW7dhHB4TX8Zygloo1XrGPo=
+	t=1731478983; cv=none; b=eacH5fElTsjMpwRxaTHz9SmEeAhi2OyPQtzwg35a5xCgZ+ejlpo4B9ZIy0F7fRVbnVxWtSUNdU+XCEfYhU2ed6h7Fmb65EatcsQ8iXYKXPnxsG2ohclYjNP0UsAjOz7sgTKJxYK6y0q+nnfi4pr+os53ipURyFrpyFBbbjDf6L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731477911; c=relaxed/simple;
-	bh=7mtgD3s0tW82nIHegBBOzw/xdRJucEFDdtfIp/VUw2E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hkgJEOmQhW8wtgcvHDzJw+SbJIGwrEQNC2RM8q9K/B5Q4dkWqVHIuUMOZWFMJ7hjV5eYO3IPaWNSlqpSv+Y/Ys+n0dBLQnN8PsxspjdcCJAmGzpGcG0kK3KP+hqA2JTrySFiy23ZXnqPUVZqgvccdWWQHlAibgKEJJCg9ihe6hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=UZDHGFXk; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1731477901; x=1731737101;
-	bh=7mtgD3s0tW82nIHegBBOzw/xdRJucEFDdtfIp/VUw2E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=UZDHGFXkDiFjjt9DIkTZLvptxE8k7aduHVfvUu63ThssQc6cXmrccJztvZkX3TOBI
-	 wvpUWDbBnAsGmu4bqvQb4tdYe3QgcgD9fGCZhwvTpP5159/vlNAL2o1bu3ds6SEtFM
-	 sLyc/S/NLg6WCSuwvFJUhAN8GBgPZnVub1WqP+kEz0n9KVmBgODf35n/h7HpweqWC9
-	 Cl3tLcBXIPlC/cpCrXvnz3BDjINPZtI44fW1h+cWWMsAO3GT7XBeUTFTPtns86stVs
-	 iRlXiORtJ+CHK1gLz3zN54T3Rsr+AuproRYYZGmE/ElRQMKd8frc22QCnJTYhiQ/C7
-	 iMFImL08nRnfw==
-Date: Wed, 13 Nov 2024 06:04:59 +0000
-To: Steven Rostedt <rostedt@goodmis.org>
-From: Michael Pratt <mcpratt@pm.me>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 2 1/1] sched/syscalls: Allow setting niceness using sched_param struct
-Message-ID: <82xsONg6yQRk_uyZ0-JkTqF2OjxuM4J8IgoNm45Xc6IXAvtX2lPKYxffzZ9GrhIA1TPhpvFoHx9wqWaH3nQyKWRcBggGIsc_61rMDyfMrOE=@pm.me>
-In-Reply-To: <20241112193617.169fefbc@gandalf.local.home>
-References: <20241111070152.9781-1-mcpratt@pm.me> <20241111070152.9781-2-mcpratt@pm.me> <20241112103438.57ab1727@gandalf.local.home> <e3Nl9UdWoWuPJauA6X3vNj71jDUwHZYS5b5WSmKCHrU7AyivFG5oLkrL-ewb3IjoQyUouDgZO2T-3WEzBIJ9Uru1AcEDTaVsRzHrukUfto8=@pm.me> <20241112193617.169fefbc@gandalf.local.home>
-Feedback-ID: 27397442:user:proton
-X-Pm-Message-ID: d077ebd46d303e7b250a212c42ee69ffd723dd5d
+	s=arc-20240116; t=1731478983; c=relaxed/simple;
+	bh=PBY/30HLJQz2xdzsPOEJYe3ZB7kO0z7wb3VcORiX+Nk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rkwbSgtJF+Bw0dONRhHIjzRYhARsPEtcWgwOYJH5ukBYbRLwP6Vo2lJSW2nEMKK0Urod4xPMmomIsH9yzJnipiiUhfx3BcSPXdOEgrWyxI6GRzY7ZG4F0bgNASWx4z0qgwkMMpUdXJL0uw/SX6Ng+YeGK6U/TI+D8fTs3wdm+bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=plwpOYrE; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AD6MmyE6853266, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1731478968; bh=PBY/30HLJQz2xdzsPOEJYe3ZB7kO0z7wb3VcORiX+Nk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version;
+	b=plwpOYrEzxsaseJw6qitztzYN+LEFt0sbuzAR/rcCN5G3E+4eUdkaZWiDJTuMzk9r
+	 oz9fKQe4UHaEF6yuvgjkU1oxtcKyeIHBBm+x0P8ufO4mYRIq4fWuFhDxtXTmMfPQno
+	 0CrKbEGTu//k5ZgyY1Jb8cBEMdBcymzELJYgPKR6ny1VckX72ZUuwfR0nTBTHavHLn
+	 MEji3OXCu+l9wQLkkQ2OjTJZFdBCi2bFYIT1DyD/xpfTDrta7k1GL5WVLsgsvLdmp1
+	 z9g+E2HgN5kJTHPg6IbV7ImZBAXWngFtgwx2UzgwvOGBkWJohTD7rQjatsnvGeKjcc
+	 J60gtcqBHnlvw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AD6MmyE6853266
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Nov 2024 14:22:48 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 13 Nov 2024 14:22:48 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 13 Nov 2024 14:22:48 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Wed, 13 Nov 2024 14:22:48 +0800
+From: Kailang <kailang@realtek.com>
+To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+CC: Takashi Iwai <tiwai@suse.de>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+        "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+	<tiwai@suse.com>,
+        Linux Sound System <linux-sound@vger.kernel.org>,
+        Greg KH
+	<gregkh@linuxfoundation.org>
+Subject: RE: No sound on speakers X1 Carbon Gen 12
+Thread-Topic: No sound on speakers X1 Carbon Gen 12
+Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAhkBggAVELQCAAGMKAIABHpMAgBUeUJCABPsHwIAAzyaAgAJLhMA=
+Date: Wed, 13 Nov 2024 06:22:48 +0000
+Message-ID: <ced4ebe356ad4e5796f059df8cdef3dd@realtek.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+ <2024101613-giggling-ceremony-aae7@gregkh>
+ <433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+ <87bjzktncb.wl-tiwai@suse.de>
+ <CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+ <87cyjzrutw.wl-tiwai@suse.de>
+ <CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+ <87ttd8jyu3.wl-tiwai@suse.de>
+ <CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+ <87h697jl6c.wl-tiwai@suse.de>
+ <CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+ <87ed4akd2a.wl-tiwai@suse.de> <87bjzekcva.wl-tiwai@suse.de>
+ <CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+ <877ca2j60l.wl-tiwai@suse.de> <43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
+ <87ldyh6eyu.wl-tiwai@suse.de> <18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+ <87h6956dgu.wl-tiwai@suse.de> <c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
+ <CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
+ <87ldyctzwt.wl-tiwai@suse.de>
+ <CAEkK70RAek2Y-syVt3S+3Q-kiriO24e8qQGDTrqC-Xt4kHzbCA@mail.gmail.com>
+ <b97c52ec20594eecb074d333095a4560@realtek.com>
+ <CAEkK70QottpLxq-prAEPe8TtPR=QBdQWuUrjf6ZT6PipcfS9xw@mail.gmail.com>
+In-Reply-To: <CAEkK70QottpLxq-prAEPe8TtPR=QBdQWuUrjf6ZT6PipcfS9xw@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: yes
+Content-Type: multipart/mixed;
+	boundary="_002_ced4ebe356ad4e5796f059df8cdef3ddrealtekcom_"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
+--_002_ced4ebe356ad4e5796f059df8cdef3ddrealtekcom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
+SGkgVGFrYXNoaSwNCg0KQXR0YWNoIHBhdGNoIHdpbGwgc29sdmUgaXNzdWUuDQoNCj4gLS0tLS1P
+cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGVhbiBNYXR0aGV3IE1lbmV6ZXMgPGRlYW4u
+bWVuZXplc0B1dGV4YXMuZWR1Pg0KPiBTZW50OiBUdWVzZGF5LCBOb3ZlbWJlciAxMiwgMjAyNCAx
+MToxOCBBTQ0KPiBUbzogS2FpbGFuZyA8a2FpbGFuZ0ByZWFsdGVrLmNvbT4NCj4gQ2M6IFRha2Fz
+aGkgSXdhaSA8dGl3YWlAc3VzZS5kZT47IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc7DQo+IHJlZ3Jl
+c3Npb25zQGxpc3RzLmxpbnV4LmRldjsgSmFyb3NsYXYgS3lzZWxhIDxwZXJleEBwZXJleC5jej47
+IFRha2FzaGkgSXdhaQ0KPiA8dGl3YWlAc3VzZS5jb20+OyBMaW51eCBTb3VuZCBTeXN0ZW0gPGxp
+bnV4LXNvdW5kQHZnZXIua2VybmVsLm9yZz47IEdyZWcNCj4gS0ggPGdyZWdraEBsaW51eGZvdW5k
+YXRpb24ub3JnPg0KPiBTdWJqZWN0OiBSZTogTm8gc291bmQgb24gc3BlYWtlcnMgWDEgQ2FyYm9u
+IEdlbiAxMg0KPiANCj4gDQo+IEV4dGVybmFsIG1haWwuDQo+IA0KPiANCj4gDQo+IFllcywgaXQg
+d29ya3MhDQo=
 
-Hi again Steven,
+--_002_ced4ebe356ad4e5796f059df8cdef3ddrealtekcom_
+Content-Type: application/octet-stream; name="0000-x1-gen12-speaker.patch"
+Content-Description: 0000-x1-gen12-speaker.patch
+Content-Disposition: attachment; filename="0000-x1-gen12-speaker.patch";
+	size=2204; creation-date="Fri, 08 Nov 2024 02:53:31 GMT";
+	modification-date="Tue, 12 Nov 2024 06:16:14 GMT"
+Content-Transfer-Encoding: base64
 
+RnJvbSA5NWI2NGJmYzI2YzQ5MmNhMmZiZmYxNzE4ZmRmNDBmN2RhNDk5YjRjIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBLYWlsYW5nIFlhbmcgPGthaWxhbmdAcmVhbHRlay5jb20+CkRh
+dGU6IFR1ZSwgMTIgTm92IDIwMjQgMTQ6MDM6NTMgKzA4MDAKU3ViamVjdDogW1BBVENIXSBBTFNB
+OiBoZGEvcmVhbHRlayAtIHVwZGF0ZSBzZXQgR1BJTzMgdG8gZGVmYXVsdCBmb3IgVGhpbmtwYWQg
+d2l0aCBBTEMxMzE4CgpJZiB1c2VyIG5vIHVwZGF0ZSBCSU9TLCB0aGUgc3BlYWtlciB3aWxsIG5v
+IHNvdW5kLgpUaGlzIHBhdGNoIHN1cHBvcnQgb2xkIEJJT1MgdG8gaGF2ZSBzb3VuZCBmcm9tIHNw
+ZWFrZXIuCgpGaXhlczogMWU3MDc3NjlkZjA3ICgiQUxTQTogaGRhL3JlYWx0ZWsgLSBTZXQgR1BJ
+TzMgdG8gZGVmYXVsdCBhdCBTNCBzdGF0ZSBmb3IgVGhpbmtwYWQgd2l0aCBBTEMxMzE4IikKU2ln
+bmVkLW9mZi1ieTogS2FpbGFuZyBZYW5nIDxrYWlsYW5nQHJlYWx0ZWsuY29tPgpkaWZmIC0tZ2l0
+IGEvc291bmQvcGNpL2hkYS9wYXRjaF9yZWFsdGVrLmMgYi9zb3VuZC9wY2kvaGRhL3BhdGNoX3Jl
+YWx0ZWsuYwppbmRleCA3NGNhMGJiNmMwOTEuLmQ4M2IyOWY5YTcwZiAxMDA2NDQKLS0tIGEvc291
+bmQvcGNpL2hkYS9wYXRjaF9yZWFsdGVrLmMKKysrIGIvc291bmQvcGNpL2hkYS9wYXRjaF9yZWFs
+dGVrLmMKQEAgLTc0NTAsNyArNzQ1MCw2IEBAIHN0YXRpYyB2b2lkIGFsYzI4N19hbGMxMzE4X3Bs
+YXliYWNrX3BjbV9ob29rKHN0cnVjdCBoZGFfcGNtX3N0cmVhbSAqaGluZm8sCiAJCQkJICAgc3Ry
+dWN0IHNuZF9wY21fc3Vic3RyZWFtICpzdWJzdHJlYW0sCiAJCQkJICAgaW50IGFjdGlvbikKIHsK
+LQlhbGNfd3JpdGVfY29lZl9pZHgoY29kZWMsIDB4MTAsIDB4ODgwNik7IC8qIENoYW5nZSBNTEsg
+dG8gR1BJTzMgKi8KIAlzd2l0Y2ggKGFjdGlvbikgewogCWNhc2UgSERBX0dFTl9QQ01fQUNUX09Q
+RU46CiAJCWFsY193cml0ZV9jb2VmZXhfaWR4KGNvZGVjLCAweDVhLCAweDAwLCAweDk1NGYpOyAv
+KiB3cml0ZSBncGlvMyB0byBoaWdoICovCkBAIC03NDY0LDcgKzc0NjMsNiBAQCBzdGF0aWMgdm9p
+ZCBhbGMyODdfYWxjMTMxOF9wbGF5YmFja19wY21faG9vayhzdHJ1Y3QgaGRhX3BjbV9zdHJlYW0g
+KmhpbmZvLAogc3RhdGljIHZvaWQgYWxjMjg3X3M0X3Bvd2VyX2dwaW8zX2RlZmF1bHQoc3RydWN0
+IGhkYV9jb2RlYyAqY29kZWMpCiB7CiAJaWYgKGlzX3M0X3N1c3BlbmQoY29kZWMpKSB7Ci0JCWFs
+Y193cml0ZV9jb2VmX2lkeChjb2RlYywgMHgxMCwgMHg4ODA2KTsgLyogQ2hhbmdlIE1MSyB0byBH
+UElPMyAqLwogCQlhbGNfd3JpdGVfY29lZmV4X2lkeChjb2RlYywgMHg1YSwgMHgwMCwgMHg1NTRm
+KTsgLyogd3JpdGUgZ3BpbzMgYXMgZGVmYXVsdCB2YWx1ZSAqLwogCX0KIH0KQEAgLTc0NzMsOSAr
+NzQ3MSwxNyBAQCBzdGF0aWMgdm9pZCBhbGMyODdfZml4dXBfbGVub3ZvX3RoaW5rcGFkX3dpdGhf
+YWxjMTMxOChzdHJ1Y3QgaGRhX2NvZGVjICpjb2RlYywKIAkJCSAgICAgICBjb25zdCBzdHJ1Y3Qg
+aGRhX2ZpeHVwICpmaXgsIGludCBhY3Rpb24pCiB7CiAJc3RydWN0IGFsY19zcGVjICpzcGVjID0g
+Y29kZWMtPnNwZWM7CisgICAgICAgIHN0YXRpYyBjb25zdCBzdHJ1Y3QgY29lZl9mdyBjb2Vmc1td
+ID0geworCQlXUklURV9DT0VGKDB4MjQsIDB4MDAxMyksIFdSSVRFX0NPRUYoMHgyNSwgMHgwMDAw
+KSwgV1JJVEVfQ09FRigweDI2LCAweEMzMDApLAorCQlXUklURV9DT0VGKDB4MjgsIDB4MDAwMSks
+IFdSSVRFX0NPRUYoMHgyOSwgMHhiMDIzKSwKKwkJV1JJVEVfQ09FRigweDI0LCAweDAwMTMpLCBX
+UklURV9DT0VGKDB4MjUsIDB4MDAwMCksIFdSSVRFX0NPRUYoMHgyNiwgMHhDMzAxKSwKKwkJV1JJ
+VEVfQ09FRigweDI4LCAweDAwMDEpLCBXUklURV9DT0VGKDB4MjksIDB4YjAyMyksCisgICAgICAg
+IH07CiAKIAlpZiAoYWN0aW9uICE9IEhEQV9GSVhVUF9BQ1RfUFJFX1BST0JFKQogCQlyZXR1cm47
+CisJYWxjX3VwZGF0ZV9jb2VmX2lkeChjb2RlYywgMHgxMCwgMTw8MTEsIDE8PDExKTsKKwlhbGNf
+cHJvY2Vzc19jb2VmX2Z3KGNvZGVjLCBjb2Vmcyk7CiAJc3BlYy0+cG93ZXJfaG9vayA9IGFsYzI4
+N19zNF9wb3dlcl9ncGlvM19kZWZhdWx0OwogCXNwZWMtPmdlbi5wY21fcGxheWJhY2tfaG9vayA9
+IGFsYzI4N19hbGMxMzE4X3BsYXliYWNrX3BjbV9ob29rOwogfQo=
 
-On Tuesday, November 12th, 2024 at 19:36, Steven Rostedt <rostedt@goodmis.o=
-rg> wrote:
-
->=20
->=20
-> On Wed, 13 Nov 2024 00:13:13 +0000
-> Michael Pratt mcpratt@pm.me wrote:
->=20
-> > > Why is stable Cc'd?
-> >=20
-> > I believe this should be backported, if accepted,
-> > so that the behavior between kernel versions is matching.
->=20
->=20
-> That's not the purpose of stable. In fact, I would argue that it's the
-> opposite of what stable is for. A stable kernel should not change
-> behavior as that can cause regressions. If you want the newest behavior,
-> then you should use the newest kernels.
-
-
-Ok that's fair. I assumed that the backport policy would be similar in this=
- case
-as it would be for downstream distributions. Maybe that's a bad assumption =
-from me.
-
-
-> > I can do:
-> >=20
-> > $ cat /proc/$$/sched
-> >=20
-> > and see the 120 without needing interpretation
-> > due to it being represented in a different way.
->=20
->=20
-> True it is exposed via files, but wouldn't this be the first change to ma=
-ke
-> it visible via a system call?
-
-If the "it" means "the accepted range" then no, but if "it" means "the (pri=
-ority + niceness) range"
-then yes. I still don't see the impact of whatever number happens to get re=
-turned.
-You would have to explain to me whatever magical security implication you h=
-ave in mind.
-
-> > > That said, you are worried about the race of spawning a new task and
-> > > setting its nice value because the new task may have exited. What abo=
-ut
-> > > using pidfd? Create a task returning the pidfd and use that to set it=
-s nice
-> > > value.
-> >=20
-> > I read a little about pidfd, but I'm not seeing the exact connection he=
-re,
-> > perhaps it will reduce the race condition but it cannot eliminate it as=
- far as I see.
-> > For example, I am not finding a function that uses it to adjust nicenes=
-s.
->=20
->=20
-> We can always add a system call do to that ;-) In fact, there's a lot of
-> system calls that need to be converted to use pidfd over pid.
-
-We can also convert system calls to be fully functional instead of mostly f=
-unctional.
-I consider this a functionality gap, not just something annoying.
-
-> > It's not that the "exit before modify" race condition is the only conce=
-rn,
-> > it's just one of the less obvious factors making up my rationale for th=
-is change.
-> > I'm also concerned with efficiency. Why do we need to call another sysc=
-all
-> > if the syscall we are already in can handle it?
-> >=20
-> > Personally, I find it strange that in sched_setscheduler()
-> > the policy can be changed but not the priority,
-> > when there is a standardized function dedicated to just that.
->=20
->=20
-> My concern is the man page that has (in Debian):
->=20
-> $ man sched_setscheduler
-> [..]
-> SCHED_OTHER the standard round-robin time-sharing policy;
->=20
-> SCHED_BATCH for "batch" style execution of processes; and
->=20
-> SCHED_IDLE for running very low priority background jobs.
->=20
-> For each of the above policies, param->sched_priority must be 0.
->=20
->=20
-> Where we already document that the sched_priority "must be 0".
-
-I think we should all agree that documentation is a summary of development,
-not the other way around. Not only that, but this is poor documentation.
-The kernel is subject to change, imagine using the word "always"
-for design decisions that are not standardized.
-A more appropriate description would be
-"for each policy, sched_priority must be within the range
-provided by the return of [the query system calls]"
-just as POSIX describes the relationship.
-
-As far as I can see, the "must be 0" requirement is completely arbitrary,
-or, if there is a reason, it must be a fairly poor one.
-However, I do recognize that the actual static priority cannot change,
-hence the adjustment to niceness instead is the obvious intention
-to any attempt to adjust the priority on the kernel-side from userspace.
-
-I consider this patch to be a fix for a design decision
-that makes no sense when reading about the intended purpose
-of these values, not that it's the only way to achieve the priority adjustm=
-ent.
-If anyone considers that something this simple should have been done alread=
-y,
-the fact that documentation would have to be adjusted should not block it.
-Besides, a well-written program would already have been using
-the functions that return the accepted range before executing
-the sched_setscheduler() system call with a value that would be rejected.
-
-Am I really the only one to read that you can't set the priority
-with this system call when I can do it on the command line with the "nice" =
-program
-which uses a different system call, and ask "what's the point of this restr=
-iction?"
-
-> > The difference between RT and normal processes
-> > is simply that for normal processes, we use "niceness" instead,
-> > so this patch simply translates the priority to "niceness",
-> > which cannot be expressed separately with the relevant POSIX functions.
->=20
->=20
-> I agree that POSIX has never been that great, but instead of modifying an
-> existing documented system call to do something that is documented not to
-> do, I believe we should either use other existing system calls or make a
-> new one.
-
-Is a POSIX function going to allow me a way to decide which set of system c=
-alls
-will get used to process it? Again, a functionality gap exists
-in functions that already exist and that gap would continue to exist...
-
-This system call is not exactly allowing the user to do what POSIX says
-its purpose is for when it's clearly capable of doing so.
-I got it to work in about 8 LOC. Which set of documentations matters more?
-To me, anything else is a workaround that leaves this system call
-in an inconsistent state, instead, this is a solution.
-
---
-MCP
+--_002_ced4ebe356ad4e5796f059df8cdef3ddrealtekcom_--
 
