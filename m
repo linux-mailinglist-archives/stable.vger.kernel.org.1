@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-92906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023A39C6D71
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 12:10:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403D29C6DC1
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 12:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870D21F247EF
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 11:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00DF028361C
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 11:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EEB1FEFDF;
-	Wed, 13 Nov 2024 11:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0491FF5E5;
+	Wed, 13 Nov 2024 11:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ByvS2wbe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f6HsbNO7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C671F80AE
-	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 11:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770C31FA256
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 11:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731496210; cv=none; b=b3xCOILiwUsBHLwpha+cgirjGzo1fsueP86To7tYUxiQLFoxF1Z93Ww9jEXwKsV7z1DjYJcqQBydBGsZPL/8bsaNigeIOxnDOMzAYO5gxZy4ATVdalhQLvM3u5YK51g0xr2/uF/wze5TXVMyyjQYOAjwZx9A/n4WZKDfQy9T3ZI=
+	t=1731497032; cv=none; b=kNCjqwV+ZL+M0EceNuHg6LOOBUBxVtntj/RiVhGNtPG33a6y2e5imu9h2uIlM6pOiYEXx+W2QLevnwOXWbOm+Wjxs2TVYr+T+kCWgPRNIdrE/dFgvn6BpkdGH8vLPj48wexe4XQX2dCe6x5dxra7IOu+CTmFjIBtQ2vRXeH/CXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731496210; c=relaxed/simple;
-	bh=o7ZakQlIa2lYgRR3nNgwkZEcN6aiF+WrAxBCWIkUVWM=;
+	s=arc-20240116; t=1731497032; c=relaxed/simple;
+	bh=gWwB35iDRGO3IreJbI3AA3gNoaf9ATe6VJvXYYnUzYk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WLVuH+e9jOP0KnetEQricDd0XyY+/6vmc37Q9tQgNScPRatxV/LIhtv8RcsCznpd+jWefZdbpRQL/GUffh2NSC6c77ERN0A44YUDltR7szuYrmZd+GJEkqDFrlJO97fQ5sXQdqpWtuHxz1DXXE98kAMQYI0b9PDwDf5kOu1pv6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ByvS2wbe; arc=none smtp.client-ip=209.85.221.177
+	 To:Cc:Content-Type; b=IhhozrE4gUn73jHVlkTdFChh5xXPNPi9gYVmujEHoIeQ3EGUirj0zBW0sQTmtH1oGnrA9+1YZNrC3oRzDERf/125K24d3TMBoDxYlmvyO/mvd6wy7ZiaevhQrv0rkgzZ9hZL/5Oc8XyxJomew4WwKnzr+8ib2XAitVLXyZAde2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f6HsbNO7; arc=none smtp.client-ip=209.85.221.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-513d1a9552cso2795316e0c.1
-        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 03:10:07 -0800 (PST)
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-513de42687dso2875606e0c.3
+        for <stable@vger.kernel.org>; Wed, 13 Nov 2024 03:23:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731496207; x=1732101007; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1731497028; x=1732101828; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aLRHbq0yedycOi7moHqeorbuEFrpPo0av/ZRKrfN6MQ=;
-        b=ByvS2wbenltC3anw9uvXRO9+tjHbHx/06f/xCdiRKNZfFREMqykYGwYvM3mw8ID67+
-         YV1MAUP21tmucxs8hcwiBVpIKdzlv5+ivjiRw1PyVhjunc+JXWwxV4xPd4qZEh84J2D3
-         VbHa5QN/X0vfGNv5RevmMMcXlxBj/fU6p6C7S0DmpBsMsekcUX2jUhwq8y3jczn5qMAR
-         w7BwJlacRvbd3rD/CstlCx8rPNsBY+G0gbl9UVCdlQIlDIe8JT5zJ8JCEALTUwRowHkp
-         DIryeRFOMBo3QR+UEoD4roALRxeYvRJkByUGwFLszpGeNKYErxTpV3jfKX70A2EHHl9M
-         LnmQ==
+        bh=wXWDlI2EiF1lhgwDYvtN/ziCfOh4o3dD2YqZ6uItYPM=;
+        b=f6HsbNO76xk8YVt4B0QpIimOteyouzS/acBcQqaCvUnUdr36GzgTsQlDu8h79ZvP/h
+         Uu/IEhQIjXjl7UMT2P8+xhzyf2tzfZdLoGVowH9PkY1UynRYEbbbCuXyicdQLBsVtNHp
+         vwBM3/gRX0FLUcUXDYqtu6wxw0KGuYzeCiqJCB4fcKQh+FTrk0lY0d3j/TBTvgBlpQYT
+         raSgxkm5AlJkttusYjpZX/fRlEGj929E5ksrQN88g061a3owxZJblrNQsDuL1CCyJkV/
+         XrDtI1240fMnozq/CfB0bSeInbB1kKiamJmtr47gf0zM8r1zhyID2N6t67yq7oXs3GWd
+         WnnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731496207; x=1732101007;
+        d=1e100.net; s=20230601; t=1731497028; x=1732101828;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aLRHbq0yedycOi7moHqeorbuEFrpPo0av/ZRKrfN6MQ=;
-        b=eEq+gWcOh8eJ88o8DY75z+7b202PNR1H/eY1O102eC5+VRV1VQB023cEl2qGpmGBNo
-         7O5YaGeNMKxPFEC3zfTj+R7ABaaeMYcWjE7wbxas0Hz+3yGRFVjy07I9MTILqjW/HnZQ
-         QjlxndvDCZAoX7pLkSa+/x6nin2tQzaO841YIlw0ZphYq8CIVoUDxSNny3UjW62YQDcI
-         MvnUoEn8DMLX76Iw83gzmixz7oDb4RrjzirO5faa4KuuXyvt2dQAUBZP8AQTx2WEaADs
-         bNQZccUNK4RttM571Scf2J5xh3m10U5TEkUSgGyKS6Jl90SEHfCCQMX9osMaRFNdYR9s
-         LH8A==
-X-Gm-Message-State: AOJu0YxdclVT+Cha0AyPp10zNYP1UW+j+vAns47xYX/hYD1eOP4mqrDy
-	MTv96pdgFgbY+++ZMHDjbt1oKGLP1eLN9pPuy89Yo3PfFWnY9zheLByC0yIwCl9jvmcddE4ANjZ
-	FDKbNOh8fWl5VZQ7quV9QxKGz+mZN5p5ruCN5SQ==
-X-Google-Smtp-Source: AGHT+IFYtql4PZnERxqsx1iVt7t5SNiqWamwYFmQtWq0EQx64r3jMppMGLMQpLIRJQlVFtUDuYAk+p5YKLimNZuqqvg=
-X-Received: by 2002:a05:6122:181c:b0:4f6:b094:80aa with SMTP id
- 71dfb90a1353d-51401e8d209mr20290230e0c.9.1731496206871; Wed, 13 Nov 2024
- 03:10:06 -0800 (PST)
+        bh=wXWDlI2EiF1lhgwDYvtN/ziCfOh4o3dD2YqZ6uItYPM=;
+        b=uwWolmdT0PL58oSWwIk8e05PEc6c468zXhwHMQ9i8FlELSdiKFlsbscw5kXlu7i0BR
+         lYg5eUAfh5SNqAhUsK8UO9m0q/6jKh0OX30N0Mfjda7eqJn16KS9F1P405/0lsZvhD07
+         HIU/4wZ3U2xTzDohHaTZZt4/TrcCdDFsgjpye58JpZNOlPnV2cUaVGDZ0zqPh3ZLRuFg
+         0gtPTJRQbSdYMz/i67ttxElUL2YdDEbyfKpykLkwU4N+HcDuAnkauBnha3E+7y7ot66N
+         ivQezzIVl5GYcQePKzz1gPTauIgpJePMwM8VT3RXuAQjL8A4Ra+sxE7KUs+ax7y3MQv+
+         fV7Q==
+X-Gm-Message-State: AOJu0YwkmQ/ZRqbPnfCYaTLhavBqV8DKwxmXiwZH1ujNAMdITgpPZiW+
+	tDaBaXQoltfhKLZYsArt/bUw+wMPxbHdEwEh6ENrf6bmfkUV2zS42yonoK/dKBfj++NOM2Spx+g
+	1aBM7Geq02N0sapWBwhGJaQrY1rNBOF9athPygw==
+X-Google-Smtp-Source: AGHT+IGGvLM8pgT//CkiY3rwXUQ9Fmj5zh9FjBQ10Hd8Z1Gm2Iz1Wpdr0yutxfe0P/2ydOyLzCuMYm0QtK/SbauAP1k=
+X-Received: by 2002:a05:6122:1697:b0:50c:5683:ad56 with SMTP id
+ 71dfb90a1353d-51401ba3348mr18377003e0c.3.1731497028273; Wed, 13 Nov 2024
+ 03:23:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112101848.708153352@linuxfoundation.org>
-In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+References: <20241112101844.263449965@linuxfoundation.org>
+In-Reply-To: <20241112101844.263449965@linuxfoundation.org>
 From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 13 Nov 2024 16:39:55 +0530
-Message-ID: <CA+G9fYuvsU3hfJd_3tDsv1HpB_hBPTpzcyGqJ1bRhUcwmhKMjw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/119] 6.6.61-rc1 review
+Date: Wed, 13 Nov 2024 16:53:37 +0530
+Message-ID: <CA+G9fYvtaB2Zmr6mWr03p2WF-ozf6JVSZVyPj03qEZHt8_VzyQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/98] 6.1.117-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
@@ -87,11 +87,11 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 12 Nov 2024 at 16:03, Greg Kroah-Hartman
+On Tue, 12 Nov 2024 at 15:57, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.6.61 release.
-> There are 119 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.117 release.
+> There are 98 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -100,10 +100,10 @@ On Tue, 12 Nov 2024 at 16:03, Greg Kroah-Hartman
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.61-rc1.gz
+6.1.117-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
+-rc.git linux-6.1.y
 > and the diffstat can be found below.
 >
 > thanks,
@@ -117,36 +117,36 @@ No regressions on arm64, arm, x86_64, and i386.
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
 ## Build
-* kernel: 6.6.61-rc1
+* kernel: 6.1.117-rc1
 * git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
 rc.git
-* git commit: ba4164ffa865e6dc8d86c0605cdf762aae20e49b
-* git describe: v6.6.60-120-gba4164ffa865
+* git commit: 41a729e6f9a934c7236c526524847c3b92f331d4
+* git describe: v6.1.116-99-g41a729e6f9a9
 * test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.6=
-0-120-gba4164ffa865
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
+16-99-g41a729e6f9a9
 
-## Test Regressions (compared to v6.6.57-484-g2daffc45f637)
+## Test Regressions (compared to v6.1.113-359-g17b301e6e4bc)
 
-## Metric Regressions (compared to v6.6.57-484-g2daffc45f637)
+## Metric Regressions (compared to v6.1.113-359-g17b301e6e4bc)
 
-## Test Fixes (compared to v6.6.57-484-g2daffc45f637)
+## Test Fixes (compared to v6.1.113-359-g17b301e6e4bc)
 
-## Metric Fixes (compared to v6.6.57-484-g2daffc45f637)
+## Metric Fixes (compared to v6.1.113-359-g17b301e6e4bc)
 
 ## Test result summary
-total: 207451, pass: 172242, fail: 2343, skip: 32689, xfail: 177
+total: 174222, pass: 141185, fail: 3150, skip: 29700, xfail: 187
 
 ## Build Summary
 * arc: 10 total, 10 passed, 0 failed
-* arm: 257 total, 257 passed, 0 failed
+* arm: 269 total, 269 passed, 0 failed
 * arm64: 81 total, 81 passed, 0 failed
 * i386: 55 total, 51 passed, 4 failed
 * mips: 52 total, 50 passed, 2 failed
 * parisc: 8 total, 8 passed, 0 failed
 * powerpc: 64 total, 62 passed, 2 failed
-* riscv: 38 total, 38 passed, 0 failed
-* s390: 28 total, 26 passed, 2 failed
+* riscv: 22 total, 22 passed, 0 failed
+* s390: 28 total, 28 passed, 0 failed
 * sh: 20 total, 20 passed, 0 failed
 * sparc: 14 total, 14 passed, 0 failed
 * x86_64: 65 total, 65 passed, 0 failed
@@ -190,7 +190,6 @@ total: 207451, pass: 172242, fail: 2343, skip: 32689, xfail: 177
 * kselftest-seccomp
 * kselftest-sigaltstack
 * kselftest-size
-* kselftest-tc-testing
 * kselftest-timers
 * kselftest-tmpfs
 * kselftest-tpm2
