@@ -1,105 +1,113 @@
-Return-Path: <stable+bounces-92902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79879C6CBB
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 11:21:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3279C6CC9
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 11:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5D72B2E435
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 10:16:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08D121F219AB
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 10:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F161FBC88;
-	Wed, 13 Nov 2024 10:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198FE1FBCB8;
+	Wed, 13 Nov 2024 10:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJ6IH4cH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eenX3yrZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7DE1FB8AD;
-	Wed, 13 Nov 2024 10:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A76C1FBCBD
+	for <stable@vger.kernel.org>; Wed, 13 Nov 2024 10:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731492890; cv=none; b=rJG1l/SvNg8iWHdiHTAuwVo5nPuJipV7g4Xe6PZCWXIo7s8PkqfjYHMli9OMi9ImGkcIaCp8Ri4WrghtDpTy13MmKGofCnGuMxmu7Mam2Ic/TQ3k9Q5WpaJmqBd68J1iFJxCPKwzQfOtv5Rn/Vr1WJ0G4bF1G/E1v3aHUYnp65w=
+	t=1731493424; cv=none; b=VZ5u2LlAwLZCbjk8vr9RS23D5b2X6VVK/u0JZf88qe26HZdPytOTDfHNgzJ9gdcA3QhvkxZz9rGOTqOxxT4ZufuEokxThWa1qxQA2sJInO1bNEW3dVqijzXRWz1TFEGlT9QOxJyvw5u+2opD/z0z8zYxWapHazNgWpNMgSwj97E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731492890; c=relaxed/simple;
-	bh=cTvviGsJ5Zk+RwbF0t22eInjdnQ+6D0bd3mqCVudOrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XnJB96jfkCxxAEaAhqrxFFt6AnojQ0MXuuMuAJkwUkAo3RAO5o+rDqJAIehowIbLwKJfrkWLeZVeq+Hb5c7rKHh7hZG9PzHOW+3DzXVW1Sz2OyH0T87dR0Y6ocQYM8fesklQwXaJQyftXcOwK9EKyScX9u/CzGz/cUjJoYE9wRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJ6IH4cH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503F1C4CECD;
-	Wed, 13 Nov 2024 10:14:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731492889;
-	bh=cTvviGsJ5Zk+RwbF0t22eInjdnQ+6D0bd3mqCVudOrU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kJ6IH4cH3EXenBS0xxRERG9dRGYdwkrqnMOYdbVAbOEY0eS+UnGGO/8A1BSU08w10
-	 qBgHgJ5hAPuiuayV74hQp1w2phzL9LYnKQS0ttFvexKEKKwwilRgQWQA3jO5o1iUWK
-	 MXhsRBWqrGYwZsyQpzUE1gAPdOc3C1CzCfTV07FX1Jfk3m+gTlxF18AGykIqGLMXS9
-	 1TaqZFsBZYjUGUa164upV1C00GP2sQeyA0z16D4HMEjVJhKsznA+p8/WCVH6BIREda
-	 vgRASk6RUYySFSIIih653tghbiypDmiLFCOqY3xmozI43a2TTJTledU8E6aGZlPipH
-	 iC6Wvj1WTLqng==
-Date: Wed, 13 Nov 2024 11:14:44 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Christoph Hellwig <hch@lst.de>, David Howells <dhowells@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iov_iter: fix copy_page_from_iter_atomic() for highmem
-Message-ID: <20241113-zutun-fortgehen-fa386e78e731@brauner>
-References: <20241112-geregelt-hirte-ab810337e3c0@brauner>
- <d2ede383-3f4e-fbe5-efff-dc5f63cead4c@google.com>
+	s=arc-20240116; t=1731493424; c=relaxed/simple;
+	bh=1NJclrHY+c/0JlcxaJ85QCbt7t3fjkwkvW8wdas1LCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vCP5xl5NpO566Ec3ZeXvn5kFZFwIFkw4JG/6QB9y8rd6iLh3ostqkeCw2rCpHF8X0ZVOvCuMqgmm8BYoZFvtp6DCajTu3ZmgVcLiBoZOfNyNZByFcYgaZfG1UCtVgxgTSpogPBu+1GlGBCkMNz9VlMCAPxaXJpuK8KyqU/HuCFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eenX3yrZ; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731493423; x=1763029423;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1NJclrHY+c/0JlcxaJ85QCbt7t3fjkwkvW8wdas1LCQ=;
+  b=eenX3yrZEAe+gtZg9yureEVQ3dTWWnI3OVCkxa5v/1DT4SfYqEenxxPN
+   dGR8tfuk+Czv/0AP+lfry++r1igwfbOR1CGddObAJpDbXW0vbS6oQG790
+   c/nN9878NqjS7Rog/0sTexSqj/BVjazQkJ0tA0QJ7x73XGsFAefJ5xkYR
+   UOWsL1a5y3RYq2qwneGJcrC9VrkwjEaFCty+q0TQBGu8GTraM/uD5BiTJ
+   TQDMb41AUp5bZL8hMzp6DixPuO5AmFD7kvY4NiFt7r0UDjddo1ACG+0vZ
+   Zd0OF87vYrNLHNrKZHRc+PJFwbmElGWxIwFgr89JMqxpb3508fI5y7Og1
+   g==;
+X-CSE-ConnectionGUID: aRLzyI2eQW+i1+X2NsglWA==
+X-CSE-MsgGUID: EEJsTMlQTDmgqhz7OSfJ7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="31470031"
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; 
+   d="scan'208";a="31470031"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 02:23:43 -0800
+X-CSE-ConnectionGUID: 8Op7CCtYSWurJjgt1Vi00A==
+X-CSE-MsgGUID: RICydwwyTI2mbvr3l7pNHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,150,1728975600"; 
+   d="scan'208";a="87992111"
+Received: from lhuot-mobl.amr.corp.intel.com (HELO [10.245.80.201]) ([10.245.80.201])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 02:23:42 -0800
+Message-ID: <1090e813-3296-45b7-b51e-eae7d7e71da0@linux.intel.com>
+Date: Wed, 13 Nov 2024 11:23:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d2ede383-3f4e-fbe5-efff-dc5f63cead4c@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/ivpu: Fix Qemu crash when running in passthrough
+To: dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com, stable@vger.kernel.org,
+ Karol Wachowski <karol.wachowski@linux.intel.com>
+References: <20241106105549.2757115-1-jacek.lawrynowicz@linux.intel.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241106105549.2757115-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 12, 2024 at 08:51:04AM -0800, Hugh Dickins wrote:
-> On Tue, 12 Nov 2024, Christian Brauner wrote:
-> 
-> > When fixing copy_page_from_iter_atomic() in c749d9b7ebbc ("iov_iter: fix
-> > copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP") the check for
-> > PageHighMem() got moved out of the loop. If copy_page_from_iter_atomic()
-> > crosses page boundaries it will use a stale PageHighMem() check for an
-> > earlier page.
-> > 
-> > Fixes: 908a1ad89466 ("iov_iter: Handle compound highmem pages in copy_page_from_iter_atomic()")
-> > Fixes: c749d9b7ebbc ("iov_iter: fix copy_page_from_iter_atomic() if KMAP_LOCAL_FORCE_MAP")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: David Howells <dhowells@redhat.com>
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> > Hey Linus,
-> > 
-> > I think the original fix was buggy but then again my knowledge of
-> > highmem isn't particularly detailed. Compile tested only. If correct, I
-> > would ask you to please apply it directly.
-> 
-> I haven't seen whatever discussion led up to this.  I don't believe
-> my commit was buggy (setting uses_kmap once at the top was intentional);
-> but I haven't looked at the other Fixee, and I've no objection if you all
-> prefer to add this on.
-> 
-> I imagine you're worried by the idea of a folio getting passed in, and
-> its first struct page is in a lowmem pageblock, but the folio somehow
-> spans pageblocks so that a later struct page is in a highmem pageblock.
-> 
-> That does not happen - except perhaps in the case of a hugetlb gigantic
-> folio, cobbled together from separate pageblocks.  But the code here,
-> before my change and after it and after this mod, does not allow for
-> that case anyway - the "page += offset / PAGE_SIZE" is assuming that
-> struct pages are contiguous.  If there is a worry here (I assumed not),
-> I think it would be that.
+Applied to drm-misc-next
 
-Thank you for the detailed reply that really cleared a lot of things up
-for me. I was very confused at first by the change and that's why I
-thought to just send a patch and see whether I can get a good
-explanation. :)
+On 11/6/2024 11:55 AM, Jacek Lawrynowicz wrote:
+> Restore PCI state after putting the NPU in D0.
+> Restoring state before powering up the device caused a Qemu crash
+> if NPU was running in passthrough mode and recovery was performed.
+> 
+> Fixes: 3534eacbf101 ("accel/ivpu: Fix PCI D0 state entry in resume")
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+> ---
+>  drivers/accel/ivpu/ivpu_pm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+> index 59d3170f5e354..5aac3d64045d3 100644
+> --- a/drivers/accel/ivpu/ivpu_pm.c
+> +++ b/drivers/accel/ivpu/ivpu_pm.c
+> @@ -73,8 +73,8 @@ static int ivpu_resume(struct ivpu_device *vdev)
+>  	int ret;
+>  
+>  retry:
+> -	pci_restore_state(to_pci_dev(vdev->drm.dev));
+>  	pci_set_power_state(to_pci_dev(vdev->drm.dev), PCI_D0);
+> +	pci_restore_state(to_pci_dev(vdev->drm.dev));
+>  
+>  	ret = ivpu_hw_power_up(vdev);
+>  	if (ret) {
+
 
