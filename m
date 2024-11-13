@@ -1,307 +1,117 @@
-Return-Path: <stable+bounces-92948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93DF9C7B86
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 19:47:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F6B9C7C19
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 20:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A9941F2120A
-	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 18:47:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 050D0B275E3
+	for <lists+stable@lfdr.de>; Wed, 13 Nov 2024 18:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4328E205E28;
-	Wed, 13 Nov 2024 18:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E8B20402C;
+	Wed, 13 Nov 2024 18:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP2p7Rcm"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="C+MA7WGX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AD8174EFA;
-	Wed, 13 Nov 2024 18:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3D202647;
+	Wed, 13 Nov 2024 18:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731523628; cv=none; b=LAJLMKpmnRNZMxok+yHelWbQUawqm8wwZ6/+VizEba0SG0rFtws3bDogR9JHaT1QWkx0R41dlYYCDMidy5Eo0Gjc6Y7dqsbHlbJI3okPWfv6bP7YU0uH+JfT+742ObT+Jppb3VPx+p/42WQi+4O++hzU2X1RSxhfX5hq5UYIkQc=
+	t=1731523970; cv=none; b=L912us9UZuD9T2n9Roi4MxLOpKuaw9ZgPdYIzqef0s+5LU+JYGIuyjyZCFdYipwVctNH4iYXBiEidGwfmx4Eu9QulNBpaBdWsiDBKoX6UB/s8n21YmWh7ncjX+k2m50fMurc5Z63g22ytYTyFXDXYyWYEKAFtnBzULphAJ4a0Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731523628; c=relaxed/simple;
-	bh=CTsmBlFxxDVOPfQoGA5HsZxKR9DCKeB5cnkROiPvkjM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RqM6Z47m0GfqjqUBW+sIh3kWM//H+O2+azRLPR7yUxyVvy7YUC5Jq3/5RRpZyisYA/e7r/mpAavTTFOj5kv/ihnkawnWzbYKW/UKdMoeE3I1wLupd7sf4WPwFmhdfflzH47Htwi2i74jOez5KJPhIVuXR5qD8tkwcJIW57kY8R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP2p7Rcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 976A1C4CED7;
-	Wed, 13 Nov 2024 18:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731523627;
-	bh=CTsmBlFxxDVOPfQoGA5HsZxKR9DCKeB5cnkROiPvkjM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eP2p7Rcm8wKcEPnr0rr1sFB3nZXseKhUfTz56sIXbqF80TN3WQSIja+0QzSUAJ/PS
-	 Rp0HXNnh/fdnKTZxfeVA/a0JeTlpSuIwC+rxWee3zlB1TFB49qZxw9ZnimL+1IW7C3
-	 SzxTuGWTp6q16guFgSgRJxfH2OPuvUdmpouh8wxlVVq1I3aHbljuN9ZWqtt1JkqTnb
-	 0KPuBtn8Z6ncPyRKl1WX4BORbMJOnX6lXqAtoJ9JNgqmneMN93/PJ27mjKimHqKfhc
-	 wkv0R1oJjOUD1urlvSEOwMG0017m4Gm9dnRfjgnMX5qpZJrIrUwX5NrQBLt0GSgPPJ
-	 mHrphfGv3BWog==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A27FD637A8;
-	Wed, 13 Nov 2024 18:47:07 +0000 (UTC)
-From: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>
-Date: Wed, 13 Nov 2024 18:46:40 +0000
-Subject: [PATCH net v2 1/5] net/diag: Do not race on dumping MD5 keys with
- adding new MD5 keys
+	s=arc-20240116; t=1731523970; c=relaxed/simple;
+	bh=y76Nso1T2M53V4Eeii+aDzTYCp9de9LzHPJbPMrvWZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WqRADifPvEAaPBk0BsVAv9PyiL1ERJjRavfFkJqQoXfwiTTzpMFMLUiN9ff44KpFBc696tiEhn37UYUVVPc3uIqQCk+lKd4rZ6ISifjGatJ3ppcTWKNG+pzENc0T5Gxqiy4kuJpPUmw4cdI/eTWZkmZaBJ8kRoyA24Fq4NMPr1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=C+MA7WGX; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4315e62afe0so68789575e9.1;
+        Wed, 13 Nov 2024 10:52:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1731523967; x=1732128767; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nRWZv4RhJ9lTHI4u4MgLnmELohU8mmM5r3pe0UhLjsw=;
+        b=C+MA7WGXDpwCOiwipK/HEMcPAahTSgAOfl0j9aR4fuzbOzhcO7HlUMMoHBGvXQatcB
+         6cBTtou5RkH9ePyVvvvKT2cUaV/eHslOi6czFLAkY+OuQP713dks/AanxpHfYDIxD9wT
+         WshD3bN/lY3wKmMHYrJ6N0rmweXgMkbLXJrqSEtOs6Ehbld9rgUyOx2xRKme2xz/EUmU
+         C8jA3rCrcofnMrMKtoHcwy/JaQO+0l0/9rtqi75nonxBO/oWqvpkYHGuXCCjmOoiMrLt
+         V+m9i3GlY30PvV1OEo47QQhQHdyN3euFQhU1JjjQSrelxJSFhNfDgt4exUqRaPWaAJf+
+         d2eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731523967; x=1732128767;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nRWZv4RhJ9lTHI4u4MgLnmELohU8mmM5r3pe0UhLjsw=;
+        b=aJ1in0WRe5UCK3Z4GPITr/YoBbDwkGGOI3GRwQsE/W3dzHRjGTYjpsBV8NHdnY4htl
+         d0ojxoJzJH+6PKXXUHHiUIdnyz3K+YYQInwfnB86qM+38oZ1/MxUIv3fJVuMXkDoCdle
+         0mHwydtQ+Kv4zddRR2EYhBESwrlHy9n82/pWvbyaIqQfy/yYuWMkf5Gj6u/Pz07jjuvB
+         Ps3kYOE1ZTNSTd6aC990k0A8qavjy/zP/VhiUxAgU8WwGFWPcWOKpakPE1Wz+OBwpJWJ
+         jpPTgn/hOMTwm3CWW7OMQlBy5s6U70LHAYZaZeKhhyCKvoqpqb68/YR9azXTa7fIkK3L
+         23yA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAHGJVBjSaqwqgz+cHsWPDjUp1PfPU1iPn5ReUUEq5TLRCmftNKuAOsL9h+0tVdSj0M6fzyK5B@vger.kernel.org, AJvYcCVBavas6vKFA84Gb1Dey62MPlcDSY2hoPgnlf8xwNCfEr6/b/9J/TqKJwMKvBWlYn//dA1Lu1PDq9eUgo8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWYHKy1WMR2PQx552ppKwLD5a0yszdJ0qqytrC6RBKx+IP3Y79
+	8gywuKCiq0Bapg1c6KyaEkRRLCm/h3urm3lycpqrDjqsKqXKs1Y=
+X-Google-Smtp-Source: AGHT+IEWNXC5afJvRa/+8LX+fS+5vNLc0NYIBcQrz9GxYov56SGAiHdFsUILOP3GIYogiLBfzA4m+g==
+X-Received: by 2002:a05:600c:3d14:b0:431:12a8:7f1a with SMTP id 5b1f17b1804b1-432b7507c50mr198707125e9.16.1731523966537;
+        Wed, 13 Nov 2024 10:52:46 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4ca6.dip0.t-ipconnect.de. [91.43.76.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432d5541824sm33198225e9.31.2024.11.13.10.52.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Nov 2024 10:52:46 -0800 (PST)
+Message-ID: <507efbc7-daf6-4812-ae4b-1abd294cedbf@googlemail.com>
+Date: Wed, 13 Nov 2024 19:52:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-tcp-md5-diag-prep-v2-1-00a2a7feb1fa@gmail.com>
-References: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
-In-Reply-To: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ivan Delalande <colona@arista.com>, 
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Davide Caratti <dcaratti@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- mptcp@lists.linux.dev, Dmitry Safonov <0x7f454c46@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731523626; l=7962;
- i=0x7f454c46@gmail.com; s=20240410; h=from:subject:message-id;
- bh=U8sITNLHEQYHGDJjLLm7TVFLT0p4xM9cgVSE67g9KWU=;
- b=X+pUajfV2uxiu98GmQaUKHT+xArrbPSMbdFXGstwhYNeWIqPfDXwYnPcS32B3i4AZfZTOV48w
- rkTKvpRyXLqABPWvuprCO7bdX+pGFGyjUAb3aXQw2LZv8j/M533A3cy
-X-Developer-Key: i=0x7f454c46@gmail.com; a=ed25519;
- pk=cFSWovqtkx0HrT5O9jFCEC/Cef4DY8a2FPeqP4THeZQ=
-X-Endpoint-Received: by B4 Relay for 0x7f454c46@gmail.com/20240410 with
- auth_id=152
-X-Original-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Reply-To: 0x7f454c46@gmail.com
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/119] 6.6.61-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241112101848.708153352@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20241112101848.708153352@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Dmitry Safonov <0x7f454c46@gmail.com>
+Am 12.11.2024 um 11:20 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.61 release.
+> There are 119 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Inet-diag has two modes: (1) dumping information for a specific socket,
-for which kernel creates one netlink message with the information and
-(2) dumping information for multiple sockets (possibly with a filter),
-where for the reply kernel sends many messages, one for each matched
-socket.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Currently those two modes work differently as the information about
-a specific socket is never split between multiple messages. For (2),
-multi-socket dump for the reply kernel allocates up to 32Kb skb and
-fills that with as many socket dumps as possible. For (1), one-socket
-dump kernel pre-calculates the required space for the reply, allocates
-a new skb and nlmsg and only then starts filling the socket's details.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Preallocating the needed size quite makes sense as most of the details
-are fix-sized and provided for each socket, see inet_sk_attr_size().
-But there's an exception: .idiag_get_aux_size() which is optional for
-a socket. This is provided only for TCP sockets by tcp_diag.
-
-For TCP-MD5 it calculates the memory needed to fill an array of
-(struct tcp_diag_md5sig). The issue here is that the amount of keys may
-change in inet_diag_dump_one_icsk() between inet_sk_attr_size() and
-sk_diag_fill() calls. As the code expects fix-sized information on any
-socket, it considers sk_diag_fill() failures by -EMSGSIZE reason as
-a bug, resulting in such WARN_ON():
-
-[] ------------[ cut here ]------------
-[] WARNING: CPU: 7 PID: 17420 at net/ipv4/inet_diag.c:586 inet_diag_dump_one_icsk+0x3c8/0x420
-[] CPU: 7 UID: 0 PID: 17420 Comm: diag_ipv4 Tainted: G        W          6.11.0-rc6-00022-gc9fd7a9f9aca-dirty #2
-[] pc : inet_diag_dump_one_icsk+0x3c8/0x420
-[] lr : inet_diag_dump_one_icsk+0x1d4/0x420
-[] sp : ffff8000aef87460
-...
-[] Call trace:
-[]  inet_diag_dump_one_icsk+0x3c8/0x420
-[]  tcp_diag_dump_one+0xa0/0xf0
-[]  inet_diag_cmd_exact+0x234/0x278
-[]  inet_diag_handler_cmd+0x16c/0x288
-[]  sock_diag_rcv_msg+0x1a8/0x550
-[]  netlink_rcv_skb+0x198/0x378
-[]  sock_diag_rcv+0x20/0x48
-[]  netlink_unicast+0x400/0x6a8
-[]  netlink_sendmsg+0x654/0xa58
-[]  __sys_sendto+0x1ec/0x330
-[]  __arm64_sys_sendto+0xc8/0x168
-...
-[] ---[ end trace 0000000000000000 ]---
-
-One way to solve it would be to grab lock_sock() in
-inet_diag_dump_one_icsk(), but that may be costly and bring new lock
-dependencies. The alternative is to call tcp_diag_put_md5sig() as
-the last attribute of the netlink message and calculate how much space
-left after all previous attributes filled and translate it into
-(struct tcp_diag_md5sig)-sized units. If it turns out that there's not
-enough space for all TCP-MD5 keys, mark the dump as inconsistent by
-setting NLM_F_DUMP_INTR flag. Userspace may figure out that dumping
-raced with the socket properties change and retry again.
-
-Currently it may be unexpected by userspace that netlink message for one
-socket may be inconsistent, but I believe we're on a safe side from
-breaking userspace as previously dump would fail and an ugly WARN was
-produced in dmesg. IOW, it is a clear improvement.
-
-This is not a theoretical issue: I've written a test and that reproduces
-the issue I suspected (the backtrace above).
-
-Fixes: c03fa9bcacd9 ("tcp_diag: report TCP MD5 signing keys and addresses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
----
- include/linux/inet_diag.h |  3 ++-
- net/ipv4/inet_diag.c      |  8 +++----
- net/ipv4/tcp_diag.c       | 55 ++++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 27 deletions(-)
-
-diff --git a/include/linux/inet_diag.h b/include/linux/inet_diag.h
-index a9033696b0aad36ab9abd47e4b68e272053019d7..cb2ba672eba131986d0432dd628fc42bbf800886 100644
---- a/include/linux/inet_diag.h
-+++ b/include/linux/inet_diag.h
-@@ -22,7 +22,8 @@ struct inet_diag_handler {
- 
- 	int		(*idiag_get_aux)(struct sock *sk,
- 					 bool net_admin,
--					 struct sk_buff *skb);
-+					 struct sk_buff *skb,
-+					 struct nlmsghdr *nlh);
- 
- 	size_t		(*idiag_get_aux_size)(struct sock *sk,
- 					      bool net_admin);
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 67639309163d05c034fad80fc9a6096c3b79d42f..67b9cc4c0e47a596a4d588e793b7f13ee040a1e3 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -350,10 +350,6 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
- 
- 	handler->idiag_get_info(sk, r, info);
- 
--	if (ext & (1 << (INET_DIAG_INFO - 1)) && handler->idiag_get_aux)
--		if (handler->idiag_get_aux(sk, net_admin, skb) < 0)
--			goto errout;
--
- 	if (sk->sk_state < TCP_TIME_WAIT) {
- 		union tcp_cc_info info;
- 		size_t sz = 0;
-@@ -368,6 +364,10 @@ int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
- 			goto errout;
- 	}
- 
-+	if (ext & (1 << (INET_DIAG_INFO - 1)) && handler->idiag_get_aux)
-+		if (handler->idiag_get_aux(sk, net_admin, skb, nlh) < 0)
-+			goto errout;
-+
- 	/* Keep it at the end for potential retry with a larger skb,
- 	 * or else do best-effort fitting, which is only done for the
- 	 * first_nlmsg.
-diff --git a/net/ipv4/tcp_diag.c b/net/ipv4/tcp_diag.c
-index f428ecf9120f2f596e1d67db2b2a0d0d0e211905..d752dc5de3536303aeb075c10fbdc2c9fc417cd5 100644
---- a/net/ipv4/tcp_diag.c
-+++ b/net/ipv4/tcp_diag.c
-@@ -53,29 +53,39 @@ static void tcp_diag_md5sig_fill(struct tcp_diag_md5sig *info,
- }
- 
- static int tcp_diag_put_md5sig(struct sk_buff *skb,
--			       const struct tcp_md5sig_info *md5sig)
-+			       const struct tcp_md5sig_info *md5sig,
-+			       struct nlmsghdr *nlh)
- {
-+	size_t key_size = sizeof(struct tcp_diag_md5sig);
-+	unsigned int attrlen, md5sig_count = 0;
- 	const struct tcp_md5sig_key *key;
- 	struct tcp_diag_md5sig *info;
- 	struct nlattr *attr;
--	int md5sig_count = 0;
- 
-+	/*
-+	 * Userspace doesn't like to see zero-filled key-values, so
-+	 * allocating too large attribute is bad.
-+	 */
- 	hlist_for_each_entry_rcu(key, &md5sig->head, node)
- 		md5sig_count++;
- 	if (md5sig_count == 0)
- 		return 0;
- 
--	attr = nla_reserve(skb, INET_DIAG_MD5SIG,
--			   md5sig_count * sizeof(struct tcp_diag_md5sig));
-+	attrlen = skb_availroom(skb) - NLA_HDRLEN;
-+	md5sig_count = min(md5sig_count, attrlen / key_size);
-+	attr = nla_reserve(skb, INET_DIAG_MD5SIG, md5sig_count * key_size);
- 	if (!attr)
- 		return -EMSGSIZE;
- 
- 	info = nla_data(attr);
--	memset(info, 0, md5sig_count * sizeof(struct tcp_diag_md5sig));
-+	memset(info, 0, md5sig_count * key_size);
- 	hlist_for_each_entry_rcu(key, &md5sig->head, node) {
--		tcp_diag_md5sig_fill(info++, key);
--		if (--md5sig_count == 0)
-+		/* More keys on a socket than pre-allocated space available */
-+		if (md5sig_count-- == 0) {
-+			nlh->nlmsg_flags |= NLM_F_DUMP_INTR;
- 			break;
-+		}
-+		tcp_diag_md5sig_fill(info++, key);
- 	}
- 
- 	return 0;
-@@ -110,25 +120,11 @@ static int tcp_diag_put_ulp(struct sk_buff *skb, struct sock *sk,
- }
- 
- static int tcp_diag_get_aux(struct sock *sk, bool net_admin,
--			    struct sk_buff *skb)
-+			    struct sk_buff *skb, struct nlmsghdr *nlh)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	int err = 0;
- 
--#ifdef CONFIG_TCP_MD5SIG
--	if (net_admin) {
--		struct tcp_md5sig_info *md5sig;
--
--		rcu_read_lock();
--		md5sig = rcu_dereference(tcp_sk(sk)->md5sig_info);
--		if (md5sig)
--			err = tcp_diag_put_md5sig(skb, md5sig);
--		rcu_read_unlock();
--		if (err < 0)
--			return err;
--	}
--#endif
--
- 	if (net_admin) {
- 		const struct tcp_ulp_ops *ulp_ops;
- 
-@@ -138,6 +134,21 @@ static int tcp_diag_get_aux(struct sock *sk, bool net_admin,
- 		if (err)
- 			return err;
- 	}
-+
-+#ifdef CONFIG_TCP_MD5SIG
-+	if (net_admin) {
-+		struct tcp_md5sig_info *md5sig;
-+
-+		rcu_read_lock();
-+		md5sig = rcu_dereference(tcp_sk(sk)->md5sig_info);
-+		if (md5sig)
-+			err = tcp_diag_put_md5sig(skb, md5sig, nlh);
-+		rcu_read_unlock();
-+		if (err < 0)
-+			return err;
-+	}
-+#endif
-+
- 	return 0;
- }
- 
+Beste Grüße,
+Peter Schneider
 
 -- 
-2.42.2
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
