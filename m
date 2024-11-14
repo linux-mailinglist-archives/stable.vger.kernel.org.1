@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-92992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C669C8826
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:54:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BF79C886F
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 12:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2195A1F26F5E
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:54:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1461D28232F
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9D21F8918;
-	Thu, 14 Nov 2024 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E291F81AC;
+	Thu, 14 Nov 2024 11:08:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F931DE4DF
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 10:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9AE1F6688;
+	Thu, 14 Nov 2024 11:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731581677; cv=none; b=bheUcWwLS+ExTW/Aw/5hincwhrlBwCSmQ+H+7YFrIxaGyOSt5GX0fVc+OuSDaIrbMVf5sCc61CsYf6ip+l1wd1qwY+qByg+QfkWWg69nyIUCafc6wP0CWLTnmItWHRmdsj8XFyQvGWfRzTjnBkl5pjBGPIYK20r8/N0x2ik9kvc=
+	t=1731582496; cv=none; b=nI1LaDVtYhYKqG94lp6AYDC9IF4t4Vq+yJLsWNxdbnw7WmX1vKs/we4PWSc7bB8eFPuoSdrPoXuLso0+vqyAI8exO2g5lHjuTKIAmBrHFlFPihTdoJe9t1wYWPBKCaXL9rfqBiL5ekKDxy49Ub5UaowwGRA2X/AQgtNh5wWYOQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731581677; c=relaxed/simple;
-	bh=SHJReqYsQIlDAA+Yf89BFwqztPRAny2m9Xkr2nb7rgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KpnA+H7AG3pAAI5QmPLFQHEGbqeI2w0W6Xx+3HwFYlHaJ9QfiqGi8uTB0QA3tj6E6RjWjqAiwqK2CxNuzDo8i9om/JjqwazVL58x8/eZat7UEaPPDIiLpXvY88g6dhhp3J0g2947DzptkKS95UeTFwcFOaJFsEXnpneNwmv47n8=
+	s=arc-20240116; t=1731582496; c=relaxed/simple;
+	bh=tb+DE/3FFVpWcHlT5GqU34l2C45HcATrVfwwmIhWgBs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OC3IbYxZs324xhUOgpYSYfJGN0ngFFXM8wnH3Gr6dyylTqCHSDqHZrx/p33WPq0RO56S5pyw1U5/2owB6I2SpvCxPy0UE/Au0J04BiekP8fkLo6qae27ZeQp/VBJH63wXn2Hfmxn22cI5JufP1wNvGk+3o7hSYk91iWZnFrXqVU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85B812BC2
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 02:55:04 -0800 (PST)
-Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 31D0C3F6A8
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 02:54:34 -0800 (PST)
-Date: Thu, 14 Nov 2024 10:54:20 +0000
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Jann Horn <jannh@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Mary Guillemard <mary.guillemard@collabora.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Fix memory leak in
- panthor_ioctl_group_create()
-Message-ID: <ZzXW3Jtw2saF-CFb@e110455-lin.cambridge.arm.com>
-References: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C29F81480;
+	Thu, 14 Nov 2024 03:08:42 -0800 (PST)
+Received: from [10.1.26.55] (e122027.cambridge.arm.com [10.1.26.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 155EE3F6A8;
+	Thu, 14 Nov 2024 03:08:09 -0800 (PST)
+Message-ID: <e661a2e2-9a6a-40f4-843b-3c7285ca2172@arm.com>
+Date: Thu, 14 Nov 2024 11:08:07 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panthor: Fix memory leak in
+ panthor_ioctl_group_create()
+To: Jann Horn <jannh@google.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Mary Guillemard <mary.guillemard@collabora.com>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
 In-Reply-To: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 13, 2024 at 10:03:39PM +0100, Jann Horn wrote:
+On 13/11/2024 21:03, Jann Horn wrote:
 > When bailing out due to group_priority_permit() failure, the queue_args
 > need to be freed. Fix it by rearranging the function to use the
 > goto-on-error pattern, such that the success case flows straight without
@@ -70,7 +70,10 @@ On Wed, Nov 13, 2024 at 10:03:39PM +0100, Jann Horn wrote:
 > Fixes: 5f7762042f8a ("drm/panthor: Restrict high priorities on group_create")
 > Signed-off-by: Jann Horn <jannh@google.com>
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+
+Thanks,
+Steve
 
 > ---
 > testcase:
@@ -118,16 +121,6 @@ Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 > are listed for everything under drivers/gpu/, but DRM-misc has exclusion
 > rules for a bunch of drivers but not panthor. I don't know if that is
 > intentional.)
-
-It is intentional, the drivers excluded from DRM-misc have their own trees
-and maintainers. DRM-misc is more of a group maintainership where everyone
-with maintainer rights in DRM-misc can push patches and send pull requests.
-Not all of us do it that often, so the most active ones are listed in the
-MAINTAINERS file.
-
-Best regards,
-Liviu
-
 > ---
 >  drivers/gpu/drm/panthor/panthor_drv.c | 11 ++++++-----
 >  1 file changed, 6 insertions(+), 5 deletions(-)
@@ -162,17 +155,5 @@ Liviu
 > base-commit: 9f8e716d46c68112484a23d1742d9ec725e082fc
 > change-id: 20241113-panthor-fix-gcq-bailout-2d9ac36590ed
 > 
-> -- 
-> Jann Horn <jannh@google.com>
-> 
 
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
 
