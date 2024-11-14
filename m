@@ -1,159 +1,152 @@
-Return-Path: <stable+bounces-92970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29049C8142
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 04:01:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95469C832D
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 07:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E4A283296
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 03:01:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F831281070
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 06:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795CC1EABC1;
-	Thu, 14 Nov 2024 03:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318C21E9061;
+	Thu, 14 Nov 2024 06:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="Lf9RBAaB"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E261EABB7;
-	Thu, 14 Nov 2024 03:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019A1632D9
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 06:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731553247; cv=none; b=s3EUzEDoJPpzPlkvDYH+jtoyZDWrhzWIjnKfBPFHAznL4fM6IjUDTSjgSuSxCL3P/+L4Oenv0BLfSjcYosNWIyBxmNBABCuRleQCMrtWVpYt4yf2NfNrLbKj4PIMuT6cP7yFbD5xxYjjuZjU7TJm4LREblluBBRxiELGQmpiC4Q=
+	t=1731565812; cv=none; b=Pop06CcW0X4bJIrkgd4D8o22GHiQrvFxIEQ+tjT9xFjs33AK4V5WscqJFlS0bGp53ON32Nd9VzCZpnrIrgLB0pvqR728MLkjpe0orkB22xM97rbqwpPy4Zr3h0XGP424chEHV6kkHYeSPP1Ga5Hg2CiCa/xWu56WYWlhSR2Zqng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731553247; c=relaxed/simple;
-	bh=6xkrHO7VCOoVirTQCd0B7V1Tb31zZhXrsXrtfdvcg+o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EIWpPw6y8AXqiKpYpXoRY6VnO5CwBCD8XXbB/HYbJzdWuWIgdczvKMtmP+9r9PXw4YgBcqnrucIVJceMQFt8u84uh3Nfx2yTRmFOx6s1ZLuXfiIfJDR670wIIxMmJdaUHVP1rhgRPzBuRmu1vUkGdT7gw/GM4mhfKtI2bvGO2Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4XplFv2j5nz1V3dH;
-	Thu, 14 Nov 2024 10:58:11 +0800 (CST)
-Received: from kwepemf500004.china.huawei.com (unknown [7.202.181.242])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5973D1400DC;
-	Thu, 14 Nov 2024 11:00:41 +0800 (CST)
-Received: from lihuafei.huawei.com (10.90.53.74) by
- kwepemf500004.china.huawei.com (7.202.181.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 14 Nov 2024 11:00:40 +0800
-From: Li Huafei <lihuafei1@huawei.com>
-To: <gregkh@linuxfoundation.org>, <tiantao6@hisilicon.com>
-CC: <rafael@kernel.org>, <Jonathan.Cameron@huawei.com>, <baohua@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lihuafei1@huawei.com>
-Subject: [PATCH v2] topology: Keep the cpumask unchanged when printing cpumap
-Date: Thu, 14 Nov 2024 19:01:41 +0800
-Message-ID: <20241114110141.94725-1-lihuafei1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1731565812; c=relaxed/simple;
+	bh=CsRf5xskqnnwINpwcylW+VBcW/qhSStwtZpmpiu+k+c=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GhIFa/t/a/V95bjk17kLIVo2iarSfN4kK23N06mwUEnMGzw7bDWNB/VdYuB6Fvt7H2LFpjQRUCxfOrkHCMjbxMc5Um3W/FOn/iok3DBvsEiGrQLpinOy4IANiqInY1QcLNig1jjfmK4TaQWdDlUjUwtTM8lRY6A9s/2PDMlxOuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=Lf9RBAaB; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1731565808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CsRf5xskqnnwINpwcylW+VBcW/qhSStwtZpmpiu+k+c=;
+	b=Lf9RBAaBjFnfNc9GlNQ20/QjNb1la/0rRQhsa+DOcIYeOZIu1q5TGI0UNVAgOZdDP+1W5G
+	Gm8esNsxVgVkNrzaAPmJ1Ddw+NEEl+SwcAXZhqosZW13QoF3bZAftTM3mc+Z8okzbGKfzo
+	bErh8LKNpjQ3rSc4OFF4DzlPgYa+qwg=
+Received: from g8t13016g.inc.hp.com (hpifallback.mail.core.hp.com
+ [15.72.64.134]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-35-6rns3xBqMvuRn99G25z-8A-1; Thu, 14 Nov 2024 01:30:05 -0500
+X-MC-Unique: 6rns3xBqMvuRn99G25z-8A-1
+X-Mimecast-MFC-AGG-ID: 6rns3xBqMvuRn99G25z-8A
+Received: from g8t13021g.inc.hpicorp.net (g8t13021g.inc.hpicorp.net [15.60.27.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g8t13016g.inc.hp.com (Postfix) with ESMTPS id 905DC6000FD4;
+	Thu, 14 Nov 2024 06:30:02 +0000 (UTC)
+Received: from mail.hp.com (unknown [15.32.134.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by g8t13021g.inc.hpicorp.net (Postfix) with ESMTPS id 334F5600075A;
+	Thu, 14 Nov 2024 06:26:14 +0000 (UTC)
+Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
+	by mail.hp.com (Postfix) with ESMTP id 6FE7CA4159F;
+	Thu, 14 Nov 2024 14:15:59 +0800 (CST)
+From: Wade Wang <wade.wang@hp.com>
+To: perex@perex.cz,
+	tiwai@suse.com,
+	kl@kl.wtf,
+	linuxhid@cosmicgizmosystems.com,
+	wangdicheng@kylinos.cn,
+	k.kosik@outlook.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	wade.wang@hp.com
+Subject: [PATCH] ALSA: usb-audio: Fix control names for Plantronics/Poly Headsets
+Date: Thu, 14 Nov 2024 14:15:53 +0800
+Message-Id: <20241114061553.1699264-1-wade.wang@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemf500004.china.huawei.com (7.202.181.242)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1eugkbEqmUW75wHDTPOUL_NVT_aji2PXBJGWX6p4kpM_1731565804
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-During fuzz testing, the following warning was discovered:
+Add a control name fixer for all headsets with VID 0x047F.
 
- different return values (15 and 11) from vsnprintf("%*pbl
- ", ...)
-
- test:keyward is WARNING in kvasprintf
- WARNING: CPU: 55 PID: 1168477 at lib/kasprintf.c:30 kvasprintf+0x121/0x130
- Call Trace:
-  kvasprintf+0x121/0x130
-  kasprintf+0xa6/0xe0
-  bitmap_print_to_buf+0x89/0x100
-  core_siblings_list_read+0x7e/0xb0
-  kernfs_file_read_iter+0x15b/0x270
-  new_sync_read+0x153/0x260
-  vfs_read+0x215/0x290
-  ksys_read+0xb9/0x160
-  do_syscall_64+0x56/0x100
-  entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-The call trace shows that kvasprintf() reported this warning during the
-printing of core_siblings_list. kvasprintf() has several steps:
-
- (1) First, calculate the length of the resulting formatted string.
-
- (2) Allocate a buffer based on the returned length.
-
- (3) Then, perform the actual string formatting.
-
- (4) Check whether the lengths of the formatted strings returned in
-     steps (1) and (2) are consistent.
-
-If the core_cpumask is modified between steps (1) and (3), the lengths
-obtained in these two steps may not match. Indeed our test includes cpu
-hotplugging, which should modify core_cpumask while printing.
-
-To fix this issue, cache the cpumask into a temporary variable before
-calling cpumap_print_{list, cpumask}_to_buf(), to keep it unchanged
-during the printing process.
-
-Fixes: bb9ec13d156e ("topology: use bin_attribute to break the size limitation of cpumap ABI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Wade Wang <wade.wang@hp.com>
 ---
-Changes in v2:
- - Return an error when calling alloc_cpumask_var() fails instead of
-   returning a size of 0. 
- - Add Cc (to stable) tag.
----
- drivers/base/topology.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ sound/usb/mixer.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/base/topology.c b/drivers/base/topology.c
-index 89f98be5c5b9..d293cbd253e4 100644
---- a/drivers/base/topology.c
-+++ b/drivers/base/topology.c
-@@ -27,9 +27,17 @@ static ssize_t name##_read(struct file *file, struct kobject *kobj,		\
- 			   loff_t off, size_t count)				\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);                                 \
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
- 										\
--	return cpumap_print_bitmask_to_buf(buf, topology_##mask(dev->id),	\
--					   off, count);                         \
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_bitmask_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
-+										\
-+	return n;								\
- }										\
- 										\
- static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
-@@ -37,9 +45,17 @@ static ssize_t name##_list_read(struct file *file, struct kobject *kobj,	\
- 				loff_t off, size_t count)			\
- {										\
- 	struct device *dev = kobj_to_dev(kobj);					\
-+	cpumask_var_t mask;							\
-+	ssize_t n;								\
-+										\
-+	if (!alloc_cpumask_var(&mask, GFP_KERNEL))				\
-+		return -ENOMEM;							\
-+										\
-+	cpumask_copy(mask, topology_##mask(dev->id));				\
-+	n = cpumap_print_list_to_buf(buf, mask, off, count);			\
-+	free_cpumask_var(mask);							\
- 										\
--	return cpumap_print_list_to_buf(buf, topology_##mask(dev->id),		\
--					off, count);				\
-+	return n;								\
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index bd67027c7677..110d43ace4d8 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1664,6 +1664,33 @@ static void check_no_speaker_on_headset(struct snd_k=
+control *kctl,
+ =09snd_ctl_rename(card, kctl, "Headphone");
  }
- 
- define_id_show_func(physical_package_id, "%d");
--- 
-2.25.1
+=20
++static void fix_plt_control_name(struct snd_kcontrol *kctl)
++{
++=09static const char * const names_to_remove[] =3D {
++=09=09"Earphone",
++=09=09"Microphone",
++=09=09"Receive",
++=09=09"Transmit",
++=09=09NULL
++=09};
++=09const char * const *n2r;
++=09char *dst, *src;
++=09size_t len;
++
++=09for (n2r =3D names_to_remove; *n2r; ++n2r) {
++=09=09dst =3D strstr(kctl->id.name, *n2r);
++=09=09if (dst !=3D NULL) {
++=09=09=09src =3D dst + strlen(*n2r);
++=09=09=09len =3D strlen(src) + 1;
++=09=09=09if ((char *)kctl->id.name !=3D dst && *(dst - 1) =3D=3D ' ')
++=09=09=09=09--dst;
++=09=09=09memmove(dst, src, len);
++=09=09}
++=09}
++=09if (kctl->id.name[0] =3D=3D '\0')
++=09=09strscpy(kctl->id.name, "Headset", SNDRV_CTL_ELEM_ID_NAME_MAXLEN);
++}
++
+ static const struct usb_feature_control_info *get_feature_control_info(int=
+ control)
+ {
+ =09int i;
+@@ -1780,6 +1807,9 @@ static void __build_feature_ctl(struct usb_mixer_inte=
+rface *mixer,
+ =09=09if (!mapped_name)
+ =09=09=09check_no_speaker_on_headset(kctl, mixer->chip->card);
+=20
++=09=09if (USB_ID_VENDOR(mixer->chip->usb_id) =3D=3D 0x047f)
++=09=09=09fix_plt_control_name(kctl);
++
+ =09=09/*
+ =09=09 * determine the stream direction:
+ =09=09 * if the connected output is USB stream, then it's likely a
+--=20
+2.43.0
 
 
