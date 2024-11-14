@@ -1,112 +1,112 @@
-Return-Path: <stable+bounces-92968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8689C7FA9
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 02:02:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6B79C7FAA
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 02:02:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C160B2618F
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 01:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B6E1282069
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 01:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A5F1C4A02;
-	Thu, 14 Nov 2024 01:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1151C3F02;
+	Thu, 14 Nov 2024 01:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="LoOFqZk/";
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="fciwpJBN";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="tsuBiy1r"
+	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="VJSPMR6F";
+	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="GrNwBTXj";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="e1P79vtm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00230701.pphosted.com (mx0a-00230701.pphosted.com [148.163.156.19])
+Received: from mx0b-00230701.pphosted.com (mx0b-00230701.pphosted.com [148.163.158.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C031BD4E2;
-	Thu, 14 Nov 2024 01:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085E61C3045;
+	Thu, 14 Nov 2024 01:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.158.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731546142; cv=fail; b=mehZVtJ26IlowAjY2qq+VrhFJzEvs3A08s/bRdXQ7/LuFJ09sxG/JGNqfseDbiuCprZw8+yBBQy4kwMIIdlAskq7zrWoiKZXt6bAJGws8AYl/uu+697aok1Bpxih/ugo9kCCF/zFMEv5cyfd3iSw7rUpdjk671+YrQLgTH9vsGU=
+	t=1731546152; cv=fail; b=mobfGOFa2fgC8N8F4/NVRxfGu9jlQ4SDv17b9CGi5320BVFNmWIDHBcNFfagsaaLUxi2CMRMBhPOw0XDZifMZ8ZZJ6gS8OUfQYW7ttWn4uXbrrX/CZjeKWfuDLRhva7HXec46sEIx02yLvbk4NMkdLrFNcL2SLurxjVdBQWzMfs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731546142; c=relaxed/simple;
-	bh=bYvs8tcpr294vK7rXqOiDKRMrIoEHdrS4Yx1BLzmqGM=;
+	s=arc-20240116; t=1731546152; c=relaxed/simple;
+	bh=iyjSWeyHKgmn446zlVIp9RUghsXQBwOc70mz8065Z30=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aqCbJLXiQw8vkGFlYDgU+aepCHxeiVnW5+eZWbBCc/Wu/AFh5HF0zWDN4EUZfRIV+jDmKHWVCMz53NLHVdrG6MHNNDnJKaXYuQNN/S1UTFtvYFsI8o04EB0ZvAmvuwb7UTvh2VfcXXFG2eAYWgP8IxzLmIe0ss+8LcPTEZEZjzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=LoOFqZk/; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=fciwpJBN; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=tsuBiy1r reason="signature verification failed"; arc=fail smtp.client-ip=148.163.156.19
+	 Content-Type:MIME-Version; b=u9c4AWnR+ISH0V3B+xJAyu2+rPDLo30NmxYpGDNMMPQPSsud0g80rdEe7VX3yYbcFRbkfndeTTFq0qZtWhWpN668/r2BUFTh8mLyBBEM5Ce4XNOThDnQQ09lPG6yIkpefzQ42scYJ20pTFTA62FootyGH4PZHEOrCCz8P3G8/+w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=VJSPMR6F; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=GrNwBTXj; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=e1P79vtm reason="signature verification failed"; arc=fail smtp.client-ip=148.163.158.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=synopsys.com
-Received: from pps.filterd (m0297266.ppops.net [127.0.0.1])
-	by mx0a-00230701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ADI8FEP017220;
-	Wed, 13 Nov 2024 17:02:19 -0800
+Received: from pps.filterd (m0297265.ppops.net [127.0.0.1])
+	by mx0a-00230701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ADMc6sK016901;
+	Wed, 13 Nov 2024 17:02:23 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=pfptdkimsnps;
-	 bh=3ZXrwiZ4ir0JHDqHd0gvin1gw6GsK2wqKqCKV509PiM=; b=LoOFqZk/u+Bu
-	uMUt/g/KapaQaRNmUw4IUsbkba5Qsk1kt/ZR2kYZtBBeNwb9lfNosyAYPQVKPJ7G
-	6OVI0onNcF3kvdlZKj4H4o5tNmSEbk8ePj7ql8+MHSfDcONFQzMTGp4MpCgg03Pw
-	FTV3WYagdSwfbDD9/6gsEMBqGd76G1Oq0wEVJOSF/K9gpeiixKi/AotVC3iCtGjY
-	gONgrUXamm6bsLXQZ57yRb2zI/rScjujYpUYIM842Mjn82IlBelTqirhcaP6iv4r
-	lzOG4uV3Y/8QdM7TTW+rLzOcJgkR6+MKhtZQXInLk8yd7HWpyaZ+dO1DxQkTzisT
-	CzG9wy+C/A==
-Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.73.133])
-	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 42t7vb20ab-1
+	 bh=GqL8/oKnzCuF2Z3LGMS2Iq4ItonGZ5ovjU5dzrsFR00=; b=VJSPMR6F3lQ+
+	ABnZUi/a1s4UEBs4lYXQASN8qaxq9Jblcj7NLezVEaWwrHAih3Vikwi2k+CGnAub
+	Pczi2RV2QYsyZszaShRu34oh2gCuJW4JvnOM7YTCXlTAu4bx2vXpN1LPJ0lv2A68
+	XL/aa92+zR5n5b9UZkw/o8btFeMHpCAa97IXMM1fASYliLN7j3V/M5KOaXHzxxEb
+	4aZW/e+TeAFSkjJUohI18xLgiFOBvCi5c7/2dsr3Z4UahsFQLoWImBeJPPT8sbxP
+	I/AlFQCu7W3qlHRRciL2HE/xtYZyW6bXVKhtCgfNoRh9Y3I9OOX0A5upP8yp7ULW
+	/U1nbmjSrw==
+Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.87.133])
+	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 42w52s8h9d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 17:02:18 -0800 (PST)
+	Wed, 13 Nov 2024 17:02:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-	t=1731546138; bh=bYvs8tcpr294vK7rXqOiDKRMrIoEHdrS4Yx1BLzmqGM=;
+	t=1731546141; bh=iyjSWeyHKgmn446zlVIp9RUghsXQBwOc70mz8065Z30=;
 	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=fciwpJBNWrmtO/UYmdvknWoqGhIRwOcFROPyS3N8i5VqCAzm3Trr7srQS5j2i/fhb
-	 rcS3GxRLELqEtmkMpSlPRUSn26+UYKwlqK2LXWcrZGUeqNfKFn8wfLvvnCOoLG1F/F
-	 oRITu08Qup8Dez4PIOYQjgrIBKbnvznDvyqArELe09AYN2WqvPkl/YcAspxgxe5wEP
-	 GlXQGGvn2tefaIlC+0NCJ/mcSB46IJqhVGPDY0D6SkjM93JXrKfrsXIoiG+Qdb0SwQ
-	 Sysd3vwGqROinAItCS23agqN/dDZqS1L3ZtJGpDEr/AbhcuDbS7q9Bpx/L+MrRWMNa
-	 bKfqGDUHAwjvg==
-Received: from mailhost.synopsys.com (us03-mailhost2.synopsys.com [10.4.17.18])
+	b=GrNwBTXjgs4RVYQqtV9L4KtFsWV2ZxcpI64ousX+lOgi5bdDOhwBlC1Uw51ynSXhB
+	 4GnH+1PoD/XlbJrE0Pof+V0KCj0VXhxgEdZh80oA9h/cOCA8CVBLSQJksj1qrukmBH
+	 41yaJsmm6InYD5oMkUMbEcnnunKsE7FVUxxWxXfSvdZV1o//f2ByS0KGMN0ZXrUERl
+	 ZyxaBCRdzzccJxz62Pjk+fU3ZDlWsS9W4PCGWem7k6hc6KPB2boP5X5mANHjpaefcW
+	 MwXmKL8/Hy4IEw2epS2JctAkMdBhmxHFgd4D9yfHmfCDZJL5dgegy4MZJVkZ1ZnhwH
+	 HqtnMHI8xNJag==
+Received: from mailhost.synopsys.com (us03-mailhost1.synopsys.com [10.4.17.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits)
 	 client-signature RSA-PSS (2048 bits))
 	(Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
-	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 3D60640126;
-	Thu, 14 Nov 2024 01:02:18 +0000 (UTC)
-Received: from o365relay-in.synopsys.com (us03-o365relay1.synopsys.com [10.4.161.137])
+	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id CA631401F8;
+	Thu, 14 Nov 2024 01:02:21 +0000 (UTC)
+Received: from o365relay-in.synopsys.com (us03-o365relay3.synopsys.com [10.4.161.139])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(Client CN "o365relay-in.synopsys.com", Issuer "Entrust Certification Authority - L1K" (not verified))
-	by mailhost.synopsys.com (Postfix) with ESMTPS id 00F2BA0084;
-	Thu, 14 Nov 2024 01:02:17 +0000 (UTC)
+	by mailhost.synopsys.com (Postfix) with ESMTPS id B7AE5A0082;
+	Thu, 14 Nov 2024 01:02:21 +0000 (UTC)
 Authentication-Results: o365relay-in.synopsys.com; dmarc=pass (p=reject dis=none) header.from=synopsys.com
 Authentication-Results: o365relay-in.synopsys.com; spf=pass smtp.mailfrom=synopsys.com
 Authentication-Results: o365relay-in.synopsys.com;
-	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=tsuBiy1r;
+	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=e1P79vtm;
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2172.outbound.protection.outlook.com [104.47.59.172])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2042.outbound.protection.outlook.com [104.47.66.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256
-	 client-signature RSA-PSS (2048 bits) client-digest SHA256)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits)
+	 client-signature RSA-PSS (2048 bits))
 	(Client CN "mail.protection.outlook.com", Issuer "DigiCert Cloud Services CA-1" (verified OK))
-	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 4BC3040114;
-	Thu, 14 Nov 2024 01:02:17 +0000 (UTC)
+	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 8C0CA40424;
+	Thu, 14 Nov 2024 01:02:21 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kElvoeCmf1eDXCdEKxp5TCEDYYSa8Ji9+hP7nOUR8mTT7ZLEUxN0NxNXBh/IL2uC0sQP/Tzk/JefRm2dYNRTkhqbzbCIqbCS3Ik4HMhxa/0m5IQGd0RP+c1L9ZPz9ClfqaO2Gl7x3YcRiSV2z18+D30VkG+rgUfD+vEV1NH9qexdnBrWLk7gMK6rjllUl9m4YBhfo01GFctgrJEbhgjpwdr13/lDHWUuvR2ema/MMT+F00o45K5M6THs1EQwDD8Fc+QGYQfiiT9IzoqmBRsLMVlCWD3OsYsuXUsuZWnlPk87GvtgOj8W/g3XV3kgtUtzU24TBGwVlW6nk2cuQs8WPg==
+ b=CVRqiNnP+mB6H3lfz3KCO4bHP73t5ZwHzAjB3G0p/vhMS04hJfA+PO+8br+FiWE0Rx0SM5ZmBep//nvgSC0rXdyC0dul6rL/hO92Itg9hNdmbgUqOZai6JJNdVd0W8RvP4DnOQMqkAl0Bo4wAoDLstURRCh4Aj12z7KVAH/oIm7KHcqRPAV+AZabPu4FlQNdxen38U3MwFLFB68xtKgDfQgNcpiPS7ObUp+RWf4/r+h9+VYLzWV2HKyvNE1oheo5XoS4CH0Hk6r4bsDQEuh/id2o+W6ibeazjhH/NWsVy3CajA4ilV5wQmLg2cLUZ0rpX6ljMxryVcLxQYsYl4NbyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3ZXrwiZ4ir0JHDqHd0gvin1gw6GsK2wqKqCKV509PiM=;
- b=QmFgFq5lduGqOcvTb/7LcvKJ7AZHI6P2okt+gfmKjO/0x9TkE1b2TfF4ucdNmL4Lh8rqcb5fFF4GugSc11EXY2T51+D4a/BQ/P70kdujFRNJZh+JBJeetD8FZ/qUsY1fHAH9nWg7osrAbs99yQLRt/JdsdLyWd8v0f6OJhfS0Sgbq5GwY5Ls31wJ+/fy7JwL7XA1GGXV5MC4Te7DFoyKEOzWgbS2MRz4NO/t0X0j71J/cRIanT2QH+HHQaRTA1efVHQDGLnCHJ+0f+cuzf0sVuR05fjbAOhoT6CIH526Ijn/3DL3gLPgLwFp6dpXNXSsb4cwOkVUTNgSf/a4IwdZ1g==
+ bh=GqL8/oKnzCuF2Z3LGMS2Iq4ItonGZ5ovjU5dzrsFR00=;
+ b=Q/rwih5WhW/X0ymLQLbeXom5w7LwKjfz33FR+CB0fT8wGWsMpmpIVWUtdPShWjeNAIlyAOKqyjzP3iQDfkQ20fFFlUdoekaStADfTu3fER1g0LZlpJ/0Yo/P5AikN6q60qlCrsL2+PfWOd52VRa7gQdfuj6hsQAPAkFaYEq+HyKpf9qfBoasm5SbF/wT37lRD1HJRnldJMqWPv0WilEVxzwMjhwAsmxy7VZGGoQRZddo2MQnDnlEE9v2TLPjN/DzPQRZhsRHUVCC9mJDxYSuaqtqQ6RUToEaXQhUSE6PKobjqrSg2VV3fCFHFh7Tpb/c55N83UKK6CkmS6uFTidFUQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
  dkim=pass header.d=synopsys.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3ZXrwiZ4ir0JHDqHd0gvin1gw6GsK2wqKqCKV509PiM=;
- b=tsuBiy1rGLsLvxHtcnsoT9PseN6keFtJXxOwuc3luMDdUMA8TjWStApSxQMO7ZhJErZd8Igch8jlx0SIzLL2aStiLGlDzWgJE7J23ChLNRITK7BIXUHAKRqAhb+GENnWWjWuQTm5hZVAAHch73lguuWjQPuZ8pbA/2fE2F9/ucw=
+ bh=GqL8/oKnzCuF2Z3LGMS2Iq4ItonGZ5ovjU5dzrsFR00=;
+ b=e1P79vtmKks+3BHRfl+6HVCueweNnde+Qe6DK4JoWI0gzNWFOsytEDT5//NNrOIm9YPttU3aHUyt7yZJYTpRuwn+4l3z4yTWKfsQjTyJovNhj5epO8QcVNdwPhReq1A5ns5FDSG8wRL75sMRm+2bVTHBWcrvSBy2xC2FdBWw35A=
 Received: from LV2PR12MB5990.namprd12.prod.outlook.com (2603:10b6:408:170::16)
  by SA3PR12MB7950.namprd12.prod.outlook.com (2603:10b6:806:31c::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Thu, 14 Nov
- 2024 01:02:12 +0000
+ 2024 01:02:18 +0000
 Received: from LV2PR12MB5990.namprd12.prod.outlook.com
  ([fe80::3d09:f15f:d888:33a8]) by LV2PR12MB5990.namprd12.prod.outlook.com
  ([fe80::3d09:f15f:d888:33a8%4]) with mapi id 15.20.8137.027; Thu, 14 Nov 2024
- 01:02:12 +0000
+ 01:02:18 +0000
 X-SNPS-Relay: synopsys.com
 From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -114,13 +114,12 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
 CC: John Youn <John.Youn@synopsys.com>,
         "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH 2/5] usb: dwc3: gadget: Fix checking for number of TRBs left
-Thread-Topic: [PATCH 2/5] usb: dwc3: gadget: Fix checking for number of TRBs
- left
-Thread-Index: AQHbNjDWG6td5szbI0yZCeDKS7tsqA==
-Date: Thu, 14 Nov 2024 01:02:12 +0000
+Subject: [PATCH 3/5] usb: dwc3: gadget: Fix looping of queued SG entries
+Thread-Topic: [PATCH 3/5] usb: dwc3: gadget: Fix looping of queued SG entries
+Thread-Index: AQHbNjDaKoOF76BebUSIN2kMbnoZ1Q==
+Date: Thu, 14 Nov 2024 01:02:18 +0000
 Message-ID:
- <708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com>
+ <d07a7c4aa0fcf746cdca0515150dbe5c52000af7.1731545781.git.Thinh.Nguyen@synopsys.com>
 References: <cover.1731545781.git.Thinh.Nguyen@synopsys.com>
 In-Reply-To: <cover.1731545781.git.Thinh.Nguyen@synopsys.com>
 Accept-Language: en-US
@@ -129,67 +128,67 @@ X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LV2PR12MB5990:EE_|SA3PR12MB7950:EE_
-x-ms-office365-filtering-correlation-id: 9e033aab-c0c6-44ce-48a2-08dd0447f93e
+x-ms-office365-filtering-correlation-id: 255f6e3b-316f-4c39-9cdd-08dd0447fcca
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
 x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?JNjpdgzvGpXQASJ5X9FCB4vijO0NzXK0qvM2k/9QKk4kHztH9jBj3ImpA2?=
- =?iso-8859-1?Q?Kowikmfs58V+LWdU5pM0xmCUpkeEyEmaeuOcd5DCgNNj3EW8JucTvxd28p?=
- =?iso-8859-1?Q?jPXbfgP2tuLrvkX9rrzammaWEBvgPbjLAyM0kijsYn5fKKl0cSAaOkVOSJ?=
- =?iso-8859-1?Q?8s9HSDrsApK52we2YWuriNrue87ZmzcwrSGd+nm5agooezd8i52mpabwOC?=
- =?iso-8859-1?Q?4gta01DV4n8p/jWCy7W5/wL+YwU1zXVbFGVYcaZ/Gp/U93uZG+u16quyhF?=
- =?iso-8859-1?Q?6GDaRHcg9ujvHjavbFzgNmBaG4SqVSE5slNtrMaF/B6VD9n8F8ed8O4f2i?=
- =?iso-8859-1?Q?BDitCnep8eFmHyou91PDSkKKrBZVUDaKY9rcYbHGuKB8G/aJ7c8LM6hwb2?=
- =?iso-8859-1?Q?o+sEIGxD/mABIToxH4I2mG5XxhRyqmvqhkb+68bapd+5cUEEDifPoPMFnb?=
- =?iso-8859-1?Q?srVxWze3/nf+o2WId5jnJBc2vheM+9OtcfmzXm8TJ0oUbiQ8nNpyFbsCkZ?=
- =?iso-8859-1?Q?lKk/WcuKGiRRNx3diQLYxn3JbkHE4Q3akhWhnR4ZpBQuzEGzYDYsYiKzNw?=
- =?iso-8859-1?Q?4GMo8kVIXV5na4AipHUPPDh4toDH3cGY1FplsMOQ6hnamfkUh9HB9QZ6p+?=
- =?iso-8859-1?Q?U4WZj0UxYCiYPZvzmbs6FussxfqdmqTDnDo+VSN2ggGA65A3lH/OrVAS8p?=
- =?iso-8859-1?Q?lJgY8N1P0lEHP54BCfREoElkaThiq0HjtH8X7KGFwunyR8Ya0Kn6WfslDv?=
- =?iso-8859-1?Q?4VsSDiRdHzmJmmmE0ZhiCcmTIKBMzpq4E9D2DSMqSyukuVOTLZGNHfSEQE?=
- =?iso-8859-1?Q?qmut1F9TuGGWa+XmfVxTZuG1J6xuswYmIjLeQB5R9RntCzHGzxQv0q33Vc?=
- =?iso-8859-1?Q?OdlFJBoNkW604G8900E1uAqyio9ok+2sXbUh+VY0X9jzz4PvqxYcEi33iV?=
- =?iso-8859-1?Q?t6IZ1JuH+glWpfgoRcS/lhb9SCH+gDZi6H93c3WFsgM609pgwv8cSQVdms?=
- =?iso-8859-1?Q?3nPlgiPDHUQZ8HkUIZlVj9oo/sU5lnLshDB8OJK6uXZ6P0p6zjQEI7ZNGd?=
- =?iso-8859-1?Q?5wHzd8kzrkDs6xZVYunqfBCX9k4q97lx4MdPs1/mDh3j/liiCaRSpjMyvs?=
- =?iso-8859-1?Q?OJJ7wfXBu5QZq4nQ5yNnP/hSczMcQkt52N4vwQFZ1cV74AiVjLlVeUnz+d?=
- =?iso-8859-1?Q?5MbiCojdzbQFaGD5fsIxoXt4vKh7wi1CsKepFCo5VNJjbBN7uAx+Zln2hL?=
- =?iso-8859-1?Q?95RkDet7bNPgCVtiU6FaQ7oUfdMVOpjhACYxLWRG3GOvVGDmYs7hdRgOap?=
- =?iso-8859-1?Q?pxIEJazNrvHhcEwH5m12B53NzOmaZQKks+BNV2LBGgW7h7IyORQjQJTy1c?=
- =?iso-8859-1?Q?PKKFT+6+OA3Os3Tw11KBWes4aX64xu96wtXUNaFrOhP4YCcNjcZSE=3D?=
+ =?iso-8859-1?Q?f/tFAhgYS3PtJIgZQr7Nv6RhH3Zn8JjKPEB/ZJOkT0kOqQj9F2WB6c0tf9?=
+ =?iso-8859-1?Q?4gNdJxHYoiM8CLC1I6kEUwDYCBxEC8tn5UJFljQ0/3iPfUD382iAuVK3pg?=
+ =?iso-8859-1?Q?UxCLmVtd/GBjuaa9NGX96j0MrX7sggK86+v9EqJ3TjIBJxwf4D56uxrirR?=
+ =?iso-8859-1?Q?UrtHlufdnPC48iUJaeFfqePQSwZCDgNO59AzjmZE9G9QagHWYrqe9U5DKl?=
+ =?iso-8859-1?Q?eAWyVtVw1V7HCdvFN+7aGJg2HDky1mmRmRsSclEibb1mR32bT/MItI8vwM?=
+ =?iso-8859-1?Q?vHs/cjRLrTxk9jk/FudgGIamXRkXbe0SLRePeSV+B6h4ZLqdIoY3GVuOhV?=
+ =?iso-8859-1?Q?AVfes5XdA0Tb8HeVjYg5Fek/grn7Tr7baMQUsvy8tovvuBJjR/4TDMxTl/?=
+ =?iso-8859-1?Q?lK7AeAXOfgPEvfbhqShjWE5Q0woaL5RKW65VCJYG7n7GIGWquUa9tQNicQ?=
+ =?iso-8859-1?Q?02Vtlu79/kIUcrO4EESZprf3rKOQ8mx/QPkIS60pbDhxGUHL7BHS+gCJ3/?=
+ =?iso-8859-1?Q?fNSnZG2JIGqOsFW2Hm2u6rr3j5HjQKcREDsdOK08JG6fsUdYkRboz11h6w?=
+ =?iso-8859-1?Q?+8qDuETYwpL2nFcBmEkhm8uD2BZxgXFKK7HB3c0F6fq7rRTNUOUj8weSmM?=
+ =?iso-8859-1?Q?1nLKOIjlPn+eYN2xaMpdI+tbrCXJGF/2VPG2JaPBnRSD5SXPypyi0TbX8C?=
+ =?iso-8859-1?Q?kvTM5tk77SJmTRZpj6aoLKeOQH0ePtMvZxi88aHrxgDJVA4oxTX596uLrv?=
+ =?iso-8859-1?Q?LKsyWJd8odOTuwuR/V2+UgfKziXOSILGJUMYoFDDSLcxCaCNQrmj5ZmJNc?=
+ =?iso-8859-1?Q?aa58TxWcN/8pt7PpBCo4A8kQ2l0SM5F7cxSbyXTnX48FAMt9Pm479UobcE?=
+ =?iso-8859-1?Q?SJO5PONxm15DfMHzrjmvLccLf/NqFaW5iyAeX5dkiBMkASUlw2+m/ThlJ/?=
+ =?iso-8859-1?Q?i41qZ9UxF9WGxz9fiZyOu8qzlqgqephEKlmFlBNfT/VFp5mq7G/JABgiAO?=
+ =?iso-8859-1?Q?3728RBH9duKU4R24t6MqBh05NU6KdE2B1qNgkHNBQfkhB8iGY9i1yvdO3y?=
+ =?iso-8859-1?Q?NYlwnnRN47KEWeW/8jnmwVJz1oAetEP24jR2rp5dPULPdwZ2x+XdUOLbUe?=
+ =?iso-8859-1?Q?CvDFV3hojNrUIldY2AnkfkQQJf/k5wnI7mhQtJu6V1/EMGyDOhKYcyCVUW?=
+ =?iso-8859-1?Q?Ww3Y59Muox9CvZckKaoChTVFP0kB03qPvE9KzyQZelAY7z3A3Elk4l3TQp?=
+ =?iso-8859-1?Q?c1iVkapBlx6/Xa1kwNRy6eaTPf8jkBfYRT3PuKE1e9GRyAO4x4cLHZ9CaD?=
+ =?iso-8859-1?Q?it5U41cihx+CDrp0TQ9NGIu2hr5NhR1waleOFRntUZlUvW3+6pZkOpxLxv?=
+ =?iso-8859-1?Q?DWnhi8iOsEZf/R1FXAFlijZ4V1GnR6TJMf+fDAh1xa2Gk+STtX03k=3D?=
 x-forefront-antispam-report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?0pjnpoDhWQhVAnrVN1Yy0tuJuiob8OhiwUHI4+5VHQMNZonCfx18vmVYUM?=
- =?iso-8859-1?Q?GoqiBT+bygMkC72MyG08FSgEOd+k5T6YRGP9DgioaoJ4Qya+NnXjmeIAJL?=
- =?iso-8859-1?Q?c9BsMaWzxKelUwoo3QQpYTMnHNMKtO8rMMgHI/xhrj0OkK7zw9N0w267hD?=
- =?iso-8859-1?Q?LH+M+CrgCA+cDTpoEsYwfyZJ2X3ejS+yMY4T3sx49WFL8uydekuW799K7Z?=
- =?iso-8859-1?Q?pFjS4shqnxZG7+GgRdrMUp+b6Y4OyrdDHZ7jv1STI3J3rxc7fK9jkPfYFw?=
- =?iso-8859-1?Q?652spUirSYTq2tkQI6QXjxXxd25gtmu9sXtBGba4h7euY5iefRS8Z5OBTU?=
- =?iso-8859-1?Q?sZWGo8iLOKnfQMP/juhqtYzLiD2Znd2Wy2qF1QXS2mQOWPyxmu9d1n3BOD?=
- =?iso-8859-1?Q?OXaYkz1g+EmNilR/yVpxHcxGFcpSRa5zd+APgttAIeXbHBRj2KrtVQsQd9?=
- =?iso-8859-1?Q?43BR5bd++D70hEAyiDcoVJW8SyaJ5cJpLBB9W5GjNSLA9g8MgtpZ5ys2/s?=
- =?iso-8859-1?Q?A0UzOex4Pm5azTWxihmE/GX/aiuJNOllU5vKRjpoPCsXkXKrCy/xW8x+XO?=
- =?iso-8859-1?Q?+yPAMKnRnrUoVlHqWk9Pof9DBO5c3F4agKwvSZ9hwcBgCPYAfyOpRKQfkM?=
- =?iso-8859-1?Q?nNIRS0AG0eHNN+coKNqrn47DVUmKWS+ZorJZipjJLChTUAuVeqnwGx/9oX?=
- =?iso-8859-1?Q?Obm2lKwH1Js69mws0VXvMaMGsatnOGHpx0aGBdW2Mk3jdhguDJcVViIKd4?=
- =?iso-8859-1?Q?jT4iidw+F990lg5o7nXSvPpNU5QEDXlyN1sZzPzkzNjYmm+Up7317nOlFp?=
- =?iso-8859-1?Q?7XbgZxp8H8EpDnn/ErINe95LHw11LF/U9iO+F4YS7ujUu420H8xU2UfVyX?=
- =?iso-8859-1?Q?4mxlE8lC5KPgm6GWLSZqsgp7g5PmLL6ODVFSFNuRYuLmC/HqVX01WW3+HQ?=
- =?iso-8859-1?Q?4NcLNNJHMZp8G2W2KETR8axHNhs5L/411ieJP6Kr1ujapJDXcjusTAeEKu?=
- =?iso-8859-1?Q?PvwaP+MFd0b1ANcU0uvCHtoRInGOTWtV/JN65bC770cUI0fGZDk/fqTSfV?=
- =?iso-8859-1?Q?ucwp5KVKiPdQR9FS4uvFFRVtHc/McIR1qwIlPd1Ey/+NUPVOBfWBXLt97T?=
- =?iso-8859-1?Q?k7Y9/dB3Moqlc1TkQVrkrV1yOv6baArf1fgm9qpsjQTfemi713sKuGN0Zl?=
- =?iso-8859-1?Q?IqArCbF2ps7N+4NF9eAfoCSp4nshgpuubWNBYjcb2Hl7gHp6SOjiGrddvH?=
- =?iso-8859-1?Q?yuecpa/5WCcYOhVrR4crhjCltgswVUTUdR/9Qk2w6ZLmROMZQQ7IMiFIVj?=
- =?iso-8859-1?Q?xlHLLZEcfSjm1EHZFfRZUWna7v1ijQ/CX6xaMt0zm+kpoC6IMbtziNbLMj?=
- =?iso-8859-1?Q?/U3+YBLjWdJZ1UBa+D1IBhNtIMk2UTDR/d6SPAKP3suiHup6OWKRhZqy6c?=
- =?iso-8859-1?Q?aPQWFtfF9lIPGnVwUiHoHa/OYSEApZjyFi9FrO0pIBdzk51sb8/wc+U5RU?=
- =?iso-8859-1?Q?n2dtTAVJwGoSm2zIhSuJEn882wfl0+BVXGUFa9me8ydoz6UkK5dE2x3Xrg?=
- =?iso-8859-1?Q?MuArfiLblHHZmq6dhVHF01nTHZVUNMFVJ2QuRChUEnVhtlBV2cqcUvQxNy?=
- =?iso-8859-1?Q?juYN1r/aedreOLL0k2P3OydFC4iLjBsN3L?=
+ =?iso-8859-1?Q?HfYiaIuqFog2Udc5SRyH4Dg1HyAu3SeVg+3AAVoRkIfavUa50kiq4UMeYg?=
+ =?iso-8859-1?Q?VOFEsaOJ/cIax9QsAHZBJ/OFqvmMayxDmNJWcD+h8sUCX2REQj/Bdj31uS?=
+ =?iso-8859-1?Q?4n6dx5Pa6NF1ulsPgelHAEIc8UiLhWqiB6sQeMfZu6lFLwJIznu+24aufB?=
+ =?iso-8859-1?Q?aOfC41nfqwmWkbxDgv2XxASN/838Qwm62eea6+4o9bA1BfF72DRjz5n46s?=
+ =?iso-8859-1?Q?zvf8k0qt1kTi6r42NewDJaOnSHJQx7fQvzec+w1diliXpXgash7cJVQKrM?=
+ =?iso-8859-1?Q?kJurd7Frm6SgYG7FgvpGT3Jg+ViYOU2xwRQ7vSGQZZiGNihzCQDDlKm1wA?=
+ =?iso-8859-1?Q?eJNImrGu/RUCA0q0ei2IxH08eJlY7JXj16OCD+cY/Y2OH2ZJSGUVyDfwq2?=
+ =?iso-8859-1?Q?FujUC9ati3H4yRVhbrgOYdZKUZEvIzvJFYkimIvfH4xU7ukP1TX9pXhT0u?=
+ =?iso-8859-1?Q?DIvtz2kpXB6IO+x9tqnpL9WWlpdsaAjla3h7dfJPQ7h0gkFruaec7bb1F5?=
+ =?iso-8859-1?Q?RhRUhOfyBQ8hY4D1PZnrs38TH5S9emvQBNGgy1bHONT0HUHhwgsKMMpf6u?=
+ =?iso-8859-1?Q?+ofFkpsJ31RUW64NoVa/MMeWAoxi0/ahWiqhqg40fQEvkpRbJNm3LiydU/?=
+ =?iso-8859-1?Q?wdYBhnPxWBcviWS4LI9gguqZ4W5bgHM50Cwu1WXkQ3ltY1Eb2kAI1Td6FB?=
+ =?iso-8859-1?Q?KGhw7CCpsUxN2bx+S8So9VjM/SFPc3e2GF1UKyuPZsUWp/0ml/ufE12FD4?=
+ =?iso-8859-1?Q?dNuCZ4QBQKbtQUpXJnqEwCz9pldBSKq29FbxVRuEuz4Rc32VL+sljkMXGP?=
+ =?iso-8859-1?Q?0iWASVa5iHEf+KzKIahNWW481A++uosmQuG7eI3j4sxr3RljHTw9c7v2Ax?=
+ =?iso-8859-1?Q?aL/q5YSfZ6T2eHy1VpCDl6g2y2aHi5b8fG86XAdAf1N2+1ZwWLJMEAoUrI?=
+ =?iso-8859-1?Q?ORP+VMrMhy1IvpUN6Lb2w7Aa29ZaOZBigkOtJ7zHsRvpz2a7/CAFMzmfim?=
+ =?iso-8859-1?Q?KoLR4tGtqhYq5eyCv3z7HMEOT5VMHj0eU6pbc6A5i+FPA1oUWXfPFa6AYo?=
+ =?iso-8859-1?Q?wqkdqKHmsHQCZPBTUxp/QOkav5UKFBqebmzusOLjx59cCj/bgY0zuH4rdH?=
+ =?iso-8859-1?Q?lduGEiaQNDvGxDEm2Y/ZX7at/kqobsFfRQDFJWRHhQb3VeH7SmrN4Iyr4H?=
+ =?iso-8859-1?Q?WL8rB5Fd1QrwVpqgzNQ31r8+NvBsZeuAiEAG7o+jrXRcv/KKW+96wQ+Lq9?=
+ =?iso-8859-1?Q?/AK/fWvGtUb7OLqdL2gJGava6HP4HAC8kj4MEAeaKQX8tLTtHRJZAUcYTy?=
+ =?iso-8859-1?Q?8I4ezScRV6iDKSDdiStPyUhYoznCa6F+5vmDdL0Qyjjo8aG+TfUxKeVBIO?=
+ =?iso-8859-1?Q?oxBD7p/KedGH1t3VADQB6zcIL+SHOybJgoFzpzqjJh0kz8f6tvE83EsURm?=
+ =?iso-8859-1?Q?nAhm2Maom4ss9O7P17pcmB4Kv3IFBcJsvEbtWzl4gZhgNhFfmLuFVbh9Eb?=
+ =?iso-8859-1?Q?1fi3MQlBp6W8uWRRqNn/hGTe/dAF4jV2PlST+ezY1MzqJCiNJy0TfD25aD?=
+ =?iso-8859-1?Q?sbZZ20Iqvq6slqpmJiQunVXT82fDgLRaidMOabLaGFcUCmi5M154HAxhLx?=
+ =?iso-8859-1?Q?hWim6EKPBTF6Szv6d3k7J63lOorQ4OxV4N?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -200,75 +199,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	2bPcxFJPRipBLwdH3HVYUTfndsQXJYmpVcQfx6KptHz9fOpVq59yTtQ8nbGt6dvnKn8Q4ccgIjsDknU2ajx2f0NV7vm6/d+9MLBo64uUOqjQlmU72014RshMzyVa60C0oWYiUCT7uSJx+W7x4iro3aZ0ndQaP87BXKHA58o2TfH8bEnmUhRwKw9PWMBUjm+hnF95txPGOU4EV9ME7eyVzjS67GgXw3is5G6SWKyX9phG9W79ac/IL7KpEAT60P9OdLdvwQYwp+CuY7ymg9cOwVmlJgeNaP75EQl2K74APIRkFFMOkDdWstebB/Kpst7vQPhja8Bci2mAdkRKjisBG5DsBDyYYJ7gIGvPJrfZsZIAB/AQvBDiDTZyKA/FlVmECxB1EC/DNAJnIQejPfTdwLmi1+LSK7hM91Ms/LRuv7MdMpe/6zXCkkBN0iSmR0d3drNU5mY9/khzqF08EIGQ9HoOcjROOcV2w2uld+Q13iFgT7XbD8OTETONEYz7C0QPxQhvw0cpMs5nNfJhmc5+o2n61ENBJ5clAzaYroZcJKE9loDMwEYZWKCDO/y4Hv6cj2JIHJBRp5VL83AB+yAoC8arfwupIkJvgXEziReb+TcT8ZK9QBfIqjDnTHP6MTrMrgn1jqS5j1zMCIB8HVLqeA==
+	GNKOFYQ0Y7PrHiP5Lu4+r0TODrSoxvzWCCmcW4923BxyETLSi3sRca4oAULho5kftzo04meZYZ0EF/7IBaTR4bB5KYf8PElt8wcwftu/LRAlnuABPPHBUcT94gALj1uyuXaXinJHpeuMqiYSDo6mIH34jPlonRFqpW0K/Bxh9Cmdk1FLnUanKmieIEROXiRMP7HX4TQqvDgtBIIiNwbTUmrTdsmURZH07aBsHAVBrp6UPXLU39myZccaR69EMX8OzPf+hKRVCHBRL90DWXqxfNyX9WAnRgBgntMc4vKVQ7gjfYuQar+SMH1Y852uggfoyOtpEfFCRgy8461svzf4aheXuMQ8OqY22+kN0fqjLhnyw/HjHHFAQ3LA7GUZy5GX083WG9HEIF0c0g6u4Hs/ouJgaZoz4WT2L7KoPfNr1zyhGAC5NWaW63wbVCrmBtYufmmmarOZNihnDBQJ+1SnXnhRqjUlsRIC/j5hAKv7tcO/74of9ocBawUNAFfPYnu7uEDhGGQR4srtZZw6dOdBJf4vrh5QSn+JxWvU4brUbvlRhDtsUVHLI8PUVpK8f96IB1UdpAVeD2sTMiTx8APGkPqCVjlXAYX/PwnUf44/ZjbE5WVfDoS9ebA0q05Mz4Sjz2Ay6apEveSuZFzBgbF4Cg==
 X-OriginatorOrg: synopsys.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e033aab-c0c6-44ce-48a2-08dd0447f93e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2024 01:02:12.6952
+X-MS-Exchange-CrossTenant-Network-Message-Id: 255f6e3b-316f-4c39-9cdd-08dd0447fcca
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2024 01:02:18.6708
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Vl35YNLYtXIHvZ/MdzJcHLP1TJCLci2Lm1D0pGItS8IrHih/8A8ja1aZWLiWp27NAZlr8jZYF8wq+zHiMxO8Yg==
+X-MS-Exchange-CrossTenant-userprincipalname: FZ8Eo1/0pIuopUHibh1Za69ETGVF7GfaPuTVAP9Lu/Z7RH2NqolXAe7yhx4H2KB+EvELEUh17lRRXSMYUhBiYA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7950
-X-Proofpoint-GUID: J3GDjRsM7jsEMI2pwY5KKQUxOmL_o2JX
-X-Proofpoint-ORIG-GUID: J3GDjRsM7jsEMI2pwY5KKQUxOmL_o2JX
-X-Authority-Analysis: v=2.4 cv=CqztcW4D c=1 sm=1 tr=0 ts=67354c1a cx=c_pps a=8EbXvwLXkpGsT4ql/pYRAw==:117 a=8EbXvwLXkpGsT4ql/pYRAw==:17 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=VlfZXiiP6vEA:10 a=nEwiWwFL_bsA:10 a=qPHU084jO2kA:10 a=VwQbUJbxAAAA:8 a=jIQo8A4GAAAA:8 a=vgzQuDIMdibFOyEokrEA:9 a=wPNLvfGTeEIA:10 a=Lf5xNeLK5dgiOs8hzIjU:22
+X-Authority-Analysis: v=2.4 cv=UvMxNPwB c=1 sm=1 tr=0 ts=67354c1e cx=c_pps a=t4gDRyhI9k+KZ5gXRQysFQ==:117 a=t4gDRyhI9k+KZ5gXRQysFQ==:17 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=VlfZXiiP6vEA:10 a=nEwiWwFL_bsA:10 a=qPHU084jO2kA:10 a=VwQbUJbxAAAA:8 a=jIQo8A4GAAAA:8 a=G-WRxraSjgDgK3-KZ7kA:9 a=wPNLvfGTeEIA:10 a=Lf5xNeLK5dgiOs8hzIjU:22
+X-Proofpoint-GUID: 0F8NQY8sLdZpGYkm0VmQS6CUu3j2YFyu
+X-Proofpoint-ORIG-GUID: 0F8NQY8sLdZpGYkm0VmQS6CUu3j2YFyu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_active_cloned_notspam policy=outbound_active_cloned score=0
- mlxlogscore=999 lowpriorityscore=0 impostorscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 malwarescore=0 adultscore=0
- clxscore=1015 spamscore=0 suspectscore=0 classifier=spam authscore=0
+ mlxlogscore=919 priorityscore=1501 malwarescore=0 adultscore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 classifier=spam authscore=0
  adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
  definitions=main-2411140005
 
-The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
-is insufficient. It assumes there are active TRBs if there's any request
-in the started_list. However, that's not the case for requests with a
-large SG list.
+The dwc3_request->num_queued_sgs is decremented on completion. If a
+partially completed request is handled, then the
+dwc3_request->num_queued_sgs no longer reflects the total number of
+num_queued_sgs (it would be cleared).
 
-That is, if we have a single usb request that requires more TRBs than
-the total TRBs in the TRB ring, the queued TRBs will be available when
-all the TRBs in the ring are completed. But the request is only
-partially completed and remains in the started_list. With the current
-logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
-
-Fix this by additionally checking for the request->num_trbs for active
-TRB count.
+Correctly check the number of request SG entries remained to be prepare
+and queued. Failure to do this may cause null pointer dereference when
+accessing non-existent SG entry.
 
 Cc: stable@vger.kernel.org
-Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
+Fixes: c96e6725db9d ("usb: dwc3: gadget: Correct the logic for queuing sgs"=
+)
 Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 ---
- drivers/usb/dwc3/gadget.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/gadget.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 6101e5467b08..38c3769a6c48 100644
+index 38c3769a6c48..3a5a0d8be33c 100644
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -1230,11 +1230,14 @@ static u32 dwc3_calc_trbs_left(struct dwc3_ep *dep)
- 	 * pending to be processed by the driver.
- 	 */
- 	if (dep->trb_enqueue =3D=3D dep->trb_dequeue) {
-+		struct dwc3_request *req;
-+
- 		/*
--		 * If there is any request remained in the started_list at
--		 * this point, that means there is no TRB available.
-+		 * If there is any request remained in the started_list with
-+		 * active TRBs at this point, then there is no TRB available.
- 		 */
--		if (!list_empty(&dep->started_list))
-+		req =3D next_request(&dep->started_list);
-+		if (req && req->num_trbs)
- 			return 0;
+@@ -1470,8 +1470,8 @@ static int dwc3_prepare_trbs_sg(struct dwc3_ep *dep,
+ 	struct scatterlist *s;
+ 	int		i;
+ 	unsigned int length =3D req->request.length;
+-	unsigned int remaining =3D req->request.num_mapped_sgs
+-		- req->num_queued_sgs;
++	unsigned int remaining =3D req->num_pending_sgs;
++	unsigned int num_queued_sgs =3D req->request.num_mapped_sgs - remaining;
+ 	unsigned int num_trbs =3D req->num_trbs;
+ 	bool needs_extra_trb =3D dwc3_needs_extra_trb(dep, req);
 =20
- 		return DWC3_TRB_NUM - 1;
+@@ -1479,7 +1479,7 @@ static int dwc3_prepare_trbs_sg(struct dwc3_ep *dep,
+ 	 * If we resume preparing the request, then get the remaining length of
+ 	 * the request and resume where we left off.
+ 	 */
+-	for_each_sg(req->request.sg, s, req->num_queued_sgs, i)
++	for_each_sg(req->request.sg, s, num_queued_sgs, i)
+ 		length -=3D sg_dma_len(s);
+=20
+ 	for_each_sg(sg, s, remaining, i) {
 --=20
 2.28.0
 
