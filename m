@@ -1,167 +1,208 @@
-Return-Path: <stable+bounces-92972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4209D9C830D
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 07:26:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A6E9C8314
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 07:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6773B23F5E
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 06:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5769285EB0
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 06:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C40F1E884A;
-	Thu, 14 Nov 2024 06:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1A21EABA5;
+	Thu, 14 Nov 2024 06:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jp0tRDRg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bzxz5TiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381061AF0DC;
-	Thu, 14 Nov 2024 06:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DCF2905;
+	Thu, 14 Nov 2024 06:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731565571; cv=none; b=RB/vqWnodLcdV9Vs0mog1HHc5cmgAQKgUBLyLuaf6zAH77t40Sc8UI76hEjLRzKd9kNM+O0NbTs9FJIrahQn3hzupo7Z09HZB1WOXOZnuQyu2xX6cRyQDaV3xXCeIWzpR+PYFUgmjBtlfCAAoTI2YCT8GMccUOlLtdDhymkA2+k=
+	t=1731565595; cv=none; b=Og4T/XVUr2Mh23EMW1BROANPZ1FxxzBEf9azd29dcCLgxqu4MWTe1IfAR/wKRGEohtYRdZnk6pe2X+FEKqW7tj1EUGVp9pSGZIzjUmvVq6dpF1vU0U6FGOV2rUDcM/adpx8+Grb7E32K7A91xQFHxhpAZXhWtdX1iuzVoe3M2aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731565571; c=relaxed/simple;
-	bh=LEL3vfhFjFruTbZaqw50YGgDPZtz6jOEqNAoRSgqgNY=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
-	 References:Content-Type; b=rKETORc28ApivhfYXoQaqOXkCeGh2B2CjL4sAgebXKsTwxdfBEWvzdDJGIHSzOaAkzupc/KZgr1gP5YWt/p8FV6hJ9kjB1K7yYWtPIyenr4gHa7cn4c/yW2gzJW9WON/0vkTbXoeNOxw6c6lHQrVXrKTAGpuXd7AWLf7iYctv0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jp0tRDRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A82C4CECF;
-	Thu, 14 Nov 2024 06:26:10 +0000 (UTC)
+	s=arc-20240116; t=1731565595; c=relaxed/simple;
+	bh=D4c4tgsZGHa7ORgVq3NUUACendP3G8FfY5f2ToJ561A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XJhNcgQYRZmhkjmsQi8TyIXOHOPpDGOA5OcqLwjzMyB0onA8l4lEm1xD8B/LA9tJUXZD+6S3QbHq3twECE/67dcYToTAoE1tVwyiJA6o3cSNKI6XxJ4XkUaB6IBPPDIkw3mpXb4F+B9rXyl/Xgv7p4C0BbsD8otbPXjurdnDi4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bzxz5TiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37736C4CECF;
+	Thu, 14 Nov 2024 06:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731565570;
-	bh=LEL3vfhFjFruTbZaqw50YGgDPZtz6jOEqNAoRSgqgNY=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=Jp0tRDRgMAzqkKe7FBjeS+/MmD7hR/rV9QNAlDaB/yZvFfS+oTHz8Vov/q8Xgzd6w
-	 VDQMb95A+1X+//N98ucu0NFHYI7jsZOeTKaKgZ8Xlf+PE+h8SZA1WicbNBII3TBsoM
-	 KLs8BEM0tSD/Cbt/vnPXJcvtHXHkZYuM6OLiwfyFvVO1YkmymccO+4AjzBsg8x+lhZ
-	 EtRefylfD0qgqQrKcrN4K/5XIzhzBZ3RhtEpKrKn6TKOigiBlJHMpOh9EcO/mX6bNI
-	 XlmczGVhjBxyXvE5sqSpLGadRBYkEclazLoEMdpaWn8ohsgfBUhSNBJwKcXIsH6DqJ
-	 iX07/EIHDg7Ow==
-Date: Wed, 13 Nov 2024 22:26:10 -0800
-Subject: [GIT PULL 01/10] xfs: convert perag to use xarrays
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Message-ID: <173156551067.1445256.3538147587347330676.stg-ugh@frogsfrogsfrogs>
+	s=k20201202; t=1731565593;
+	bh=D4c4tgsZGHa7ORgVq3NUUACendP3G8FfY5f2ToJ561A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Bzxz5TiHPyq60oGzqJ72uHY0URSWtOe1IcbkI8xtQ4SmkoqqxiUED/cVlhjwNsLyI
+	 iqwr2u9pz8PoZ35r7SlLq4vNrKy+/a2NyjJl3HlKRZmPbTX6XMJ5a3gQqNlp9KyOfg
+	 f1x9XAiXjGA5fTXmpBcydFhMYCLg4mzX6aTSMyJZ6VeW49+S6euQOFP9BFopET/EEj
+	 8bc7ZiMArRorPrn3mJ/M1c+j3agHMCN018Q8x0oIi8dLpQIcH568R59hqc0l3xDtbW
+	 5hzNFDaOixf/J7vWCJzrDNOIZd88NlvQRrgQ0t0Q1PYRnbVF8t3/5BapjTOINgotp+
+	 jbDzx7lAGDcMg==
+Message-ID: <b3f67cd7-056a-43c2-98dc-e983649124ed@kernel.org>
+Date: Thu, 14 Nov 2024 07:26:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241114062447.GO9438@frogsfrogsfrogs>
-References: <20241114062447.GO9438@frogsfrogsfrogs>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] serial: sh-sci: Check if TX data was written to
+ device in .tx_empty()
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>, geert+renesas@glider.be,
+ magnus.damm@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
+ gregkh@linuxfoundation.org, p.zabel@pengutronix.de, g.liakhovetski@gmx.de,
+ lethal@linux-sh.org
+Cc: linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-serial@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20241108100513.2814957-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241108100513.2814957-3-claudiu.beznea.uj@bp.renesas.com>
+ <530f4a8e-b71a-4db1-a2cc-df1fcfa132ec@kernel.org>
+ <3711546e-a551-4cc9-a378-17aab5b426ef@tuxon.dev>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <3711546e-a551-4cc9-a378-17aab5b426ef@tuxon.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Carlos,
+Hi,
 
-Please pull this branch with changes for xfs for 6.13-rc1.
+On 08. 11. 24, 13:19, Claudiu Beznea wrote:
+> On 08.11.2024 12:57, Jiri Slaby wrote:
+>> On 08. 11. 24, 11:05, Claudiu wrote:
+...
+>>> --- a/drivers/tty/serial/sh-sci.c
+>>> +++ b/drivers/tty/serial/sh-sci.c
+>>> @@ -157,6 +157,7 @@ struct sci_port {
+>>>          bool has_rtscts;
+>>>        bool autorts;
+>>> +    bool first_time_tx;
+>>
+>> This is a misnomer. It suggests to be set only during the first TX.
+> 
+> I chose this naming as this was the scenario I discovered it didn't work.
+> Reproducible though these steps:
+> 
+> 1/ open the serial device (w/o running any TX/RX)
+> 2/ call tx_empty()
+> 
+> What
+>> about ::did_tx, ::performed_tx, ::transmitted, or alike?
+> 
+> I have nothing against any of these. Can you please let me know if you have
+> a preferred one?
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+No, you choose, or invent even better one :). Or let AI do it for you.
 
---D
+>>> @@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+>>>            }
+>>>              sci_serial_out(port, SCxTDR, c);
+>>> +        s->first_time_tx = true;
+>>>              port->icount.tx++;
+>>>        } while (--count > 0);
+>>> @@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
+>>>        if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+>>>            uart_write_wakeup(port);
+>>>    +    s->first_time_tx = true;
+>>
+>> This is too late IMO. The first in-flight dma won't be accounted in
+>> sci_tx_empty(). From DMA submit up to now.
+> 
+> If it's in-flight we can't determine it's status anyway with one variable.
+> We can set this variable later but it wouldn't tell the truth as the TX
+> might be in progress anyway or may have been finished?
+> 
+> The hardware might help with this though the TEND bit. According to the HW
+> manual, the TEND bit has the following meaning:
+> 
+> 0: Transmission is in the waiting state or in progress.
+> 1: Transmission is completed.
+> 
+> But the problem, from my point of view, is that the 0 has double meaning.
+> 
+> I noticed the tx_empty() is called in kernel multiple times before
+> declaring TX is empty or not. E.g., uart_suspend_port() call it 3 times,
+> uart_wait_until_sent() call it in a while () look with a timeout. There is
+> the uart_ioctl() which calls it though uart_get_lsr_info() only one time
+> but I presumed the user space might implement the same multiple trials
+> approach before declaring it empty.
+> 
+> Because of this I considered it wouldn't be harmful for the scenario you
+> described "The first in-flight dma won't be accounted in sci_tx_empty()"
+> as the user may try again later to check the status. For this reason I also
+> chose to have no extra locking around this variable.
 
-The following changes since commit 59b723cd2adbac2a34fc8e12c74ae26ae45bf230:
+What about the below?
 
-Linux 6.12-rc6 (2024-11-03 14:05:52 -1000)
+>>> @@ -2076,6 +2081,10 @@ static unsigned int sci_tx_empty(struct uart_port
+>>> *port)
+>>>    {
+>>>        unsigned short status = sci_serial_in(port, SCxSR);
+>>>        unsigned short in_tx_fifo = sci_txfill(port);
+>>> +    struct sci_port *s = to_sci_port(port);
+>>> +
+>>> +    if (!s->first_time_tx)
+>>> +        return TIOCSER_TEMT;
+>>
+>> So perhaps check if there is a TX DMA running here too?
 
-are available in the Git repository at:
+This ^^^? Like dmaengine_tx_status()?
 
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/perag-xarray-6.13_2024-11-13
-
-for you to fetch changes up to 612dab1887b16838b524876555ac16fccb750e77:
-
-xfs: insert the pag structures into the xarray later (2024-11-13 22:16:54 -0800)
-
-----------------------------------------------------------------
-xfs: convert perag to use xarrays [v5.7 01/10]
-
-Convert the xfs_mount perag tree to use an xarray instead of a radix
-tree.  There should be no functional changes here.
-
-With a bit of luck, this should all go splendidly.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-
-----------------------------------------------------------------
-Christoph Hellwig (22):
-xfs: fix superfluous clearing of info->low in __xfs_getfsmap_datadev
-xfs: remove the unused pagb_count field in struct xfs_perag
-xfs: remove the unused pag_active_wq field in struct xfs_perag
-xfs: pass a pag to xfs_difree_inode_chunk
-xfs: remove the agno argument to xfs_free_ag_extent
-xfs: add xfs_agbno_to_fsb and xfs_agbno_to_daddr helpers
-xfs: add a xfs_agino_to_ino helper
-xfs: pass a pag to xfs_extent_busy_{search,reuse}
-xfs: keep a reference to the pag for busy extents
-xfs: remove the mount field from struct xfs_busy_extents
-xfs: remove the unused trace_xfs_iwalk_ag trace point
-xfs: remove the unused xrep_bmap_walk_rmap trace point
-xfs: constify pag arguments to trace points
-xfs: pass a perag structure to the xfs_ag_resv_init_error trace point
-xfs: pass objects to the xfs_irec_merge_{pre,post} trace points
-xfs: pass the iunlink item to the xfs_iunlink_update_dinode trace point
-xfs: pass objects to the xrep_ibt_walk_rmap tracepoint
-xfs: pass the pag to the trace_xrep_calc_ag_resblks{,_btsize} trace points
-xfs: pass the pag to the xrep_newbt_extent_class tracepoints
-xfs: convert remaining trace points to pass pag structures
-xfs: split xfs_initialize_perag
-xfs: insert the pag structures into the xarray later
-
-Darrick J. Wong (1):
-xfs: fix simplify extent lookup in xfs_can_free_eofblocks
-
-fs/xfs/libxfs/xfs_ag.c             | 135 ++++++++++++++------------
-fs/xfs/libxfs/xfs_ag.h             |  30 +++++-
-fs/xfs/libxfs/xfs_ag_resv.c        |   3 +-
-fs/xfs/libxfs/xfs_alloc.c          |  32 +++----
-fs/xfs/libxfs/xfs_alloc.h          |   5 +-
-fs/xfs/libxfs/xfs_alloc_btree.c    |   2 +-
-fs/xfs/libxfs/xfs_btree.c          |   7 +-
-fs/xfs/libxfs/xfs_ialloc.c         |  67 ++++++-------
-fs/xfs/libxfs/xfs_ialloc_btree.c   |   2 +-
-fs/xfs/libxfs/xfs_inode_util.c     |   4 +-
-fs/xfs/libxfs/xfs_refcount.c       |  11 +--
-fs/xfs/libxfs/xfs_refcount_btree.c |   3 +-
-fs/xfs/libxfs/xfs_rmap_btree.c     |   2 +-
-fs/xfs/scrub/agheader_repair.c     |  16 +---
-fs/xfs/scrub/alloc_repair.c        |  10 +-
-fs/xfs/scrub/bmap.c                |   5 +-
-fs/xfs/scrub/bmap_repair.c         |   4 +-
-fs/xfs/scrub/common.c              |   2 +-
-fs/xfs/scrub/cow_repair.c          |  18 ++--
-fs/xfs/scrub/ialloc.c              |   8 +-
-fs/xfs/scrub/ialloc_repair.c       |  25 ++---
-fs/xfs/scrub/newbt.c               |  46 ++++-----
-fs/xfs/scrub/reap.c                |   8 +-
-fs/xfs/scrub/refcount_repair.c     |   5 +-
-fs/xfs/scrub/repair.c              |  13 ++-
-fs/xfs/scrub/rmap_repair.c         |   9 +-
-fs/xfs/scrub/trace.h               | 161 +++++++++++++++----------------
-fs/xfs/xfs_bmap_util.c             |   8 +-
-fs/xfs/xfs_buf_item_recover.c      |   5 +-
-fs/xfs/xfs_discard.c               |  20 ++--
-fs/xfs/xfs_extent_busy.c           |  31 +++---
-fs/xfs/xfs_extent_busy.h           |  14 ++-
-fs/xfs/xfs_extfree_item.c          |   4 +-
-fs/xfs/xfs_filestream.c            |   5 +-
-fs/xfs/xfs_fsmap.c                 |  25 ++---
-fs/xfs/xfs_health.c                |   8 +-
-fs/xfs/xfs_inode.c                 |   5 +-
-fs/xfs/xfs_iunlink_item.c          |  13 ++-
-fs/xfs/xfs_iwalk.c                 |  17 ++--
-fs/xfs/xfs_log_cil.c               |   3 +-
-fs/xfs/xfs_log_recover.c           |   5 +-
-fs/xfs/xfs_trace.c                 |   1 +
-fs/xfs/xfs_trace.h                 | 191 ++++++++++++++++---------------------
-fs/xfs/xfs_trans.c                 |   2 +-
-44 files changed, 459 insertions(+), 531 deletions(-)
-
+>>
+>>>          return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT
+>>> : 0;
+>>>    }
+>>
+>> thanks,
+-- 
+js
+suse labs
 
