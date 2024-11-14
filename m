@@ -1,224 +1,171 @@
-Return-Path: <stable+bounces-92976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC1C9C83D3
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 08:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57979C83E0
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 08:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F35F1F2373F
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 07:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54E391F223DE
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 07:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C1D1F26EA;
-	Thu, 14 Nov 2024 07:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2C31EBA0F;
+	Thu, 14 Nov 2024 07:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DNq9/UtQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z7uc+JA6";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DNq9/UtQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z7uc+JA6"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="odBwl5pE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B351EBFE1;
-	Thu, 14 Nov 2024 07:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EE270818;
+	Thu, 14 Nov 2024 07:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731568216; cv=none; b=g6IDdrte/5pOio12F9e1MVmL7OAK62dXLrpFhjNHIRH+uOnYNDgCT9hVLzGpgKxU6DQt2/OCtenxNlokQc808xIhtZmSM+XqnkyrffZuoAPndsAR/m1WcCH9+y9TDHY89wmBRiGFemdh/K8WRYmt/paJzyDwc3kCjeVYIDArapI=
+	t=1731568515; cv=none; b=FLRVoRQG2qVvVan/3UIsdGky0o7Qwfd4mFjXWcxddFlu28ePoysDzuUEwzRqhef+kIpaNpsgcxwsWnzDAk6qPXpMrBpChLD/KP0u9/MoyvRv/4/hfyWylYfFBcHyzruCaB6h31gNHPwQ8vuj91RmgV8mWiHR/ysguX67GggomW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731568216; c=relaxed/simple;
-	bh=/MC70/yGLRGiAPMGIyUXF4HJjU0ZLatDt65DtIX6yhA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HYDD0oYmnNOXILoQXNxyRstZpyA9JcEhHH0b93fKxgRdHduIxrPMuh+C6MCNPdqaFF3cuMQr1utbGavdXM11oQwWkzE1Nqr7b0/tJVMMjYEO3bjdLgcaQkjZPOZ4pYdfQlhGVt5bVEVncB3hEZGtUtBjdHlPEVNtQ9mu7crK0gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DNq9/UtQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z7uc+JA6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DNq9/UtQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z7uc+JA6; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1731568515; c=relaxed/simple;
+	bh=WpXr/RM7L+0l9LR7VF/wPK+QoQZyKQDk8ICJEympyiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KgylZt+y0C5rXaLf2Gm2lmP7kMardGX5TKHd8fqoDSrKU8vlCjrX751rY9nHgv9vKMfEFeM6CoYXyAqz462fb/Hf7CYyUyTWiFngPw5uIt08+kF+GIvDIzl96xDLflJR/yNC0PRweJzW5lTMbE44FVupiTm81hHGYS1arR7nJks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=odBwl5pE; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1731568511;
+	bh=WpXr/RM7L+0l9LR7VF/wPK+QoQZyKQDk8ICJEympyiI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=odBwl5pE1ksHcTbutVvsh6vqThMdXPFYOaF5cHe90k/0JdWQt4EreYKxTET3HimSc
+	 nN5H7Vx/FzYoyaaIT8L1wrj5XxELCfgEJpN1AluNSE1TPi2tRFmShsal1FpxurUptt
+	 GNHbpjNH3uNig0HR1bK8sWSkspfL63WrNmwBDGR0WPw4wYz9OkquEAaGUr65aplzd0
+	 Ith8YeiKsfXTBX2a6aSRKQpCdsp17zCnHEs7ai5Lj62gMt/FtrdScKOGgfluNznWZQ
+	 4VqXhkcK2fTvp9ZmESpZ7qNrgBqL1ZPsECPr5M28U/SqIKdBaIDC5ND8fTd0hwjdn1
+	 a5mm3joc4XfjQ==
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C212121896;
-	Thu, 14 Nov 2024 07:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731568212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYZ9EQZ2ozB5YcOlyVuGOdrWSmtrCiQ05fGLgB0I9LM=;
-	b=DNq9/UtQzVstRl0NrqIUj6fTy2JniGle6gUk48QFimAOazKOHuRYxxCj2GNNtl1X7S9s9T
-	jfMWnlNWqngcOSaQZJyq77plyLBbx9mWcxVjRdV/lRzJelYhY5H+Mvt7tQEclRibXY1GeD
-	+3baufFyXEQ8NLrBO+v+8RlaNQ8LYCc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731568212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYZ9EQZ2ozB5YcOlyVuGOdrWSmtrCiQ05fGLgB0I9LM=;
-	b=z7uc+JA6/ga0vbKCiFiF3l0JfsGtzVk1BoxKXhRkZFR2k/qksPomECoQiPWGg6m0nTXxlG
-	tGGI5hcJGnfIlxDg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DNq9/UtQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z7uc+JA6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731568212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYZ9EQZ2ozB5YcOlyVuGOdrWSmtrCiQ05fGLgB0I9LM=;
-	b=DNq9/UtQzVstRl0NrqIUj6fTy2JniGle6gUk48QFimAOazKOHuRYxxCj2GNNtl1X7S9s9T
-	jfMWnlNWqngcOSaQZJyq77plyLBbx9mWcxVjRdV/lRzJelYhY5H+Mvt7tQEclRibXY1GeD
-	+3baufFyXEQ8NLrBO+v+8RlaNQ8LYCc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731568212;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eYZ9EQZ2ozB5YcOlyVuGOdrWSmtrCiQ05fGLgB0I9LM=;
-	b=z7uc+JA6/ga0vbKCiFiF3l0JfsGtzVk1BoxKXhRkZFR2k/qksPomECoQiPWGg6m0nTXxlG
-	tGGI5hcJGnfIlxDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E1BB13A17;
-	Thu, 14 Nov 2024 07:10:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oNumHVSiNWdgXgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 14 Nov 2024 07:10:12 +0000
-Date: Thu, 14 Nov 2024 08:10:12 +0100
-Message-ID: <87plmythnv.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Wade Wang <wade.wang@hp.com>
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	kl@kl.wtf,
-	linuxhid@cosmicgizmosystems.com,
-	wangdicheng@kylinos.cn,
-	k.kosik@outlook.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: usb-audio: Fix control names for Plantronics/Poly Headsets
-In-Reply-To: <20241114061553.1699264-1-wade.wang@hp.com>
-References: <20241114061553.1699264-1-wade.wang@hp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id BBDC917E120F;
+	Thu, 14 Nov 2024 08:15:10 +0100 (CET)
+Date: Thu, 14 Nov 2024 08:15:07 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Jann Horn <jannh@google.com>
+Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Mary Guillemard
+ <mary.guillemard@collabora.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/panthor: Fix memory leak in
+ panthor_ioctl_group_create()
+Message-ID: <20241114081507.6ac6b5f9@collabora.com>
+In-Reply-To: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+References: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: C212121896
-X-Spam-Score: -3.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[perex.cz,suse.com,kl.wtf,cosmicgizmosystems.com,kylinos.cn,outlook.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Nov 2024 07:15:53 +0100,
-Wade Wang wrote:
+On Wed, 13 Nov 2024 22:03:39 +0100
+Jann Horn <jannh@google.com> wrote:
+
+> When bailing out due to group_priority_permit() failure, the queue_args
+> need to be freed. Fix it by rearranging the function to use the
+> goto-on-error pattern, such that the success case flows straight without
+> indentation while error cases jump forward to cleanup.
 > 
-> Add a control name fixer for all headsets with VID 0x047F.
-> 
-> Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-> Signed-off-by: Wade Wang <wade.wang@hp.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 5f7762042f8a ("drm/panthor: Restrict high priorities on group_create")
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-Thanks for the patch, but from the description, it's not clear what
-this patch actually does.  What's the control name fixer and how it
-behaves?
-
-Also, are you sure that this can be applied to all devices of
-Plantonics & co?  Including the devices in future.  I thought they had
-so many different models.
-
-Last but not least, __build_feature_ctl() is no right place to add the
-vendor-specific stuff.  There is already a common place in
-mixer_quirks.c, e.g. snd_usb_mixer_fu_apply_quirk().  Please move the
-fix-up to the appropriate place.
-
-
-thanks,
-
-Takashi
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
 > ---
->  sound/usb/mixer.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> testcase:
+> ```
+> #include <err.h>
+> #include <fcntl.h>
+> #include <stddef.h>
+> #include <sys/ioctl.h>
+> #include <drm/panthor_drm.h>
 > 
-> diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-> index bd67027c7677..110d43ace4d8 100644
-> --- a/sound/usb/mixer.c
-> +++ b/sound/usb/mixer.c
-> @@ -1664,6 +1664,33 @@ static void check_no_speaker_on_headset(struct snd_kcontrol *kctl,
->  	snd_ctl_rename(card, kctl, "Headphone");
+> #define SYSCHK(x) ({          \
+>   typeof(x) __res = (x);      \
+>   if (__res == (typeof(x))-1) \
+>     err(1, "SYSCHK(" #x ")"); \
+>   __res;                      \
+> })
+> 
+> #define GPU_PATH "/dev/dri/by-path/platform-fb000000.gpu-card"
+> 
+> int main(void) {
+>   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
+> 
+>   while (1) {
+>     struct drm_panthor_queue_create qc[16] = {};
+>     struct drm_panthor_group_create gc = {
+>       .queues = {
+>         .stride = sizeof(struct drm_panthor_queue_create),
+>         .count = 16,
+>         .array = (unsigned long)qc
+>       },
+>       .priority = PANTHOR_GROUP_PRIORITY_HIGH+1/*invalid*/
+>     };
+>     ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &gc);
+>   }
+> }
+> ```
+> 
+> I have tested that without this patch, after running the testcase for a
+> few seconds and then manually killing it, 2G of RAM in kmalloc-128 have
+> been leaked. With the patch applied, the memory leak is gone.
+> 
+> (By the way, get_maintainer.pl suggests that I also send this patch to
+> the general DRM maintainers and the DRM-misc maintainers; looking at
+> MAINTAINERS, it looks like it is normal that the general DRM maintainers
+> are listed for everything under drivers/gpu/, but DRM-misc has exclusion
+> rules for a bunch of drivers but not panthor. I don't know if that is
+> intentional.)
+> ---
+>  drivers/gpu/drm/panthor/panthor_drv.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+> index c520f156e2d73f7e735f8bf2d6d8e8efacec9362..815c23cff25f305d884e8e3e263fa22888f7d5ce 100644
+> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+> @@ -1032,14 +1032,15 @@ static int panthor_ioctl_group_create(struct drm_device *ddev, void *data,
+>  
+>  	ret = group_priority_permit(file, args->priority);
+>  	if (ret)
+> -		return ret;
+> +		goto out;
+>  
+>  	ret = panthor_group_create(pfile, args, queue_args);
+> -	if (ret >= 0) {
+> -		args->group_handle = ret;
+> -		ret = 0;
+> -	}
+> +	if (ret < 0)
+> +		goto out;
+> +	args->group_handle = ret;
+> +	ret = 0;
+>  
+> +out:
+>  	kvfree(queue_args);
+>  	return ret;
 >  }
->  
-> +static void fix_plt_control_name(struct snd_kcontrol *kctl)
-> +{
-> +	static const char * const names_to_remove[] = {
-> +		"Earphone",
-> +		"Microphone",
-> +		"Receive",
-> +		"Transmit",
-> +		NULL
-> +	};
-> +	const char * const *n2r;
-> +	char *dst, *src;
-> +	size_t len;
-> +
-> +	for (n2r = names_to_remove; *n2r; ++n2r) {
-> +		dst = strstr(kctl->id.name, *n2r);
-> +		if (dst != NULL) {
-> +			src = dst + strlen(*n2r);
-> +			len = strlen(src) + 1;
-> +			if ((char *)kctl->id.name != dst && *(dst - 1) == ' ')
-> +				--dst;
-> +			memmove(dst, src, len);
-> +		}
-> +	}
-> +	if (kctl->id.name[0] == '\0')
-> +		strscpy(kctl->id.name, "Headset", SNDRV_CTL_ELEM_ID_NAME_MAXLEN);
-> +}
-> +
->  static const struct usb_feature_control_info *get_feature_control_info(int control)
->  {
->  	int i;
-> @@ -1780,6 +1807,9 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
->  		if (!mapped_name)
->  			check_no_speaker_on_headset(kctl, mixer->chip->card);
->  
-> +		if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f)
-> +			fix_plt_control_name(kctl);
-> +
->  		/*
->  		 * determine the stream direction:
->  		 * if the connected output is USB stream, then it's likely a
-> -- 
-> 2.43.0
 > 
+> ---
+> base-commit: 9f8e716d46c68112484a23d1742d9ec725e082fc
+> change-id: 20241113-panthor-fix-gcq-bailout-2d9ac36590ed
+> 
+
 
