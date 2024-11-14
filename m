@@ -1,169 +1,186 @@
-Return-Path: <stable+bounces-93017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179A39C8DE9
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 16:26:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC61C9C8E72
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 16:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6501F24CA1
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 15:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBC3288EB0
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 15:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3047615C156;
-	Thu, 14 Nov 2024 15:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B2318DF72;
+	Thu, 14 Nov 2024 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T0lJt+QV"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fkrtNc+z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2DF14E2D6
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 15:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7DC1632EF
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 15:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731597980; cv=none; b=IzSai8sW+fdWPFEkFnuiOzb3jnMKYzw1ok9WcYSCTWGpsFsA21cJneZaTkusV6vFKcUWQIt2mSa35eNAxm68mMv2XQ34bvxB+LB1W3KkXoxhi/FozPZ3YvCICcoib4yZotCv/u1u07Vn44DxYz7j/7ts+L+96PC/B7euuRncibU=
+	t=1731598453; cv=none; b=crY+uvI9GBeLdEXszPA60ivT3IqPfeikFIRQ9V1KPz+T399DTSLjmJjur6hsKSgKA2e6XOsPreGgobiHygpISK39qZ/OO21IrGYv2xPjC7nUT6cSfmVzl2YR9Dxmv9vIdxiHmwv20fClrj+6mNW6JmH2CgvXQEiboAPC58u9T0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731597980; c=relaxed/simple;
-	bh=OXm964+HL/oy8I5JgLPsZUm+UieJrQIuj9T2oe/JmoI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6tgtlxhyqJY0qWX2FCZ9+SXTK7L3XwsWw1BBI5U0zWUbNt9thTHClCr/0ncdWaw7DH1IlGyI6iVMLDG56SqSTMKG0iYnCCZ7oOzIR5hTh1wQgZ0IiXIUsXKzNiiYG4QoXH4Y4LE+NNujIapDt8zhKono3Orbc/B+tuZx1p6PRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T0lJt+QV; arc=none smtp.client-ip=209.85.218.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-a9eb3794a04so97132666b.3
-        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 07:26:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1731597975; x=1732202775; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BXfRuwtCQesbb+rpbVIxn9Ia55XQqIa+ED/3SCVnO+4=;
-        b=T0lJt+QVOgMpe98LyY/OQg5CauvRzz5aZotWG53qpiINIQPfuqm94oJDgqqTpxKQpy
-         VyPY7U+5O+0dC4OqfQqxD7ygF8MN4l31p3AAOahmwrJO8Jd/Zp5t1lx1dUKasPaKePKz
-         5u2zO7f6XsMG7Q/iCIl6hgyDRzi9MNPi/u0NjMCu8GgXrYxT4s+qzsU/tdKaHPLlG1TH
-         VTNCP7uaedHsnu4AIbUmGkCMNKJZTqEaX58qEthYKW73qRLo4BdAvR/OenXR7qAz4bQm
-         Jtb8z+RKl38uYnU4VOuJcnn7WfXWidfo4zsFFj8ZlEIoPZdxRc6NBYqiOkUt4Vg7iFb9
-         JjhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731597975; x=1732202775;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXfRuwtCQesbb+rpbVIxn9Ia55XQqIa+ED/3SCVnO+4=;
-        b=ARJMZcZJ2t7rtorI686m7Pn+VgXn7hhRI0jhnByCd6f3wabsw0oH4ueUE8VUt3LloZ
-         uMSjPLNY897yUdc6Vq18Z+Eka6ZA2adGHCxrdB9xalXkxgBZJuCPok07wG6e48ZI2ymb
-         HgYKyFJU5MztWkxEXcX91ogPgI2gIAEs8kXkoEcPAzPvTFY4Cco5LJvN7TemvQ+hWmN7
-         svk7s2NugAgNvYwipiITtLHOQ1VvP7lySwb3kfhR5f6GOl/QF5ueeBvaBFKtkDbY4Pey
-         LnBfVNQPk0ne3+e2Tkc2y0BfXEU4iBHEcWyy9GJQCtNsCgxYj7PfwPzE6tliMsl6RPn2
-         z1Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVX9UwtvrzviDgsrUWArF6q67q0lXct6fFmJ9NCO9WzYUW3jRVLRlJmhnUycViFYdHWwD+RGio=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysXS4NLPNqYxmIOQ16yt0stUDKbKdKMA1QUXeF80km3B6qyh1U
-	IxTHInF0vgloYOliQX8TBEDAnN1kO5gCnA15nLV2sxtIRDFKrae1IZo6PL61av8=
-X-Google-Smtp-Source: AGHT+IGhM6/BPmoBjuRiiI1ewZRW9R+eE3BQ4H3+p/OJfSdyeRMIoasVpFD+sR2v6s9C5C6vSshsww==
-X-Received: by 2002:a17:907:7b95:b0:a9a:c691:dcbc with SMTP id a640c23a62f3a-aa1b1024b29mr1127309766b.12.1731597974922;
-        Thu, 14 Nov 2024 07:26:14 -0800 (PST)
-Received: from localhost (host-79-19-144-50.retail.telecomitalia.it. [79.19.144.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e086ad4sm73543066b.199.2024.11.14.07.26.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 07:26:14 -0800 (PST)
-From: Andrea della Porta <andrea.porta@suse.com>
-X-Google-Original-From: Andrea della Porta <aporta@suse.de>
-Date: Thu, 14 Nov 2024 16:26:42 +0100
-To: Andrea della Porta <andrea.porta@suse.com>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczynski <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: of_property: Assign PCI instead of CPU bus address
- to dynamic PCI nodes
-Message-ID: <ZzYWso5jLkUMehQ6@apocalypse>
-References: <20241108094256.28933-1-andrea.porta@suse.com>
- <20241108110938.622014f5@bootlin.com>
- <Zy3koxz4KnV39__V@apocalypse>
+	s=arc-20240116; t=1731598453; c=relaxed/simple;
+	bh=LxBGfIl0sgrPYZfOjDAMjbmKdhTb+HwW/Yb+QsHEcQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VTtCGnelKSvCemXwQofQd2bt0sMwK+xycQu9Br6wBzfxw+tAUASpTeEwg0ZGtLrEITeeP89D2s0kPtMpG2o/oseAfxmhQwQuaYf87FqzLD7ACIFe0qXb32WtP8yWLwBrupNL6tKsJHTIkzenhCCmwJDyNrzT1MtZG2AGwl+kSAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=fkrtNc+z; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=g3dl1yOtDRwiYvNnurJG8aD2yaZbxSbQdU1pZyvI8gc=; b=fkrtNc+zuammw4VOUOUxhDZnII
+	RRxE6obOS6/3sZp5ANcwdM2UVB2m2Z4xEv1oqsw1Z9idxzpsM34fOs29F9LpucBHgXYf9Uu0kHJ1t
+	gDnPPtZ+o5dSxecTvUyoGWV6uMdAHnKyzMDrH8tdLqHsoMKYQoh3Kh0FHIvpy+/sqe8BsSGYigrTW
+	/6NxnPGuPxy3KvG9QQxSCHAjg+VWHzGpb0QsBtes3T2gvUMdwMzrWxe3rOOoInr7tJ4jRHBj1Ga1L
+	dbE2rgsQSZnbVBRK2eJOaJOeO9QbXbN4/wQel07Z9nNdk+EyrRtI2pnLDhP4O92JHPrWwcwoWVbN3
+	gsJw79WA==;
+Received: from 2a02-8389-2341-5b80-7760-efdd-0bcf-e551.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:7760:efdd:bcf:e551] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tBbrE-000000000pM-46oL;
+	Thu, 14 Nov 2024 15:34:09 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Hans Holmberg <hans.holmberg@wdc.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	stable@vger.kernel.org,
+	Zizhi Wo <wozizhi@huawei.com>
+Subject: [PATCH 5/7] xfs: fix off-by-one error in fsmap's end_daddr usage
+Date: Thu, 14 Nov 2024 16:33:49 +0100
+Message-ID: <20241114153353.318020-6-hch@lst.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241114153353.318020-1-hch@lst.de>
+References: <20241114153353.318020-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zy3koxz4KnV39__V@apocalypse>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Hi,
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-On 11:14 Fri 08 Nov     , Andrea della Porta wrote:
-> Hi herve,
-> 
-> On 11:09 Fri 08 Nov     , Herve Codina wrote:
-> > Hi Andrea,
-> > 
-> > On Fri,  8 Nov 2024 10:42:56 +0100
-> > Andrea della Porta <andrea.porta@suse.com> wrote:
-> > 
-> > > When populating "ranges" property for a PCI bridge or endpoint,
-> > > of_pci_prop_ranges() incorrectly use the CPU bus address of the resource.
-> > > In such PCI nodes, the window should instead be in PCI address space. Call
-> > > pci_bus_address() on the resource in order to obtain the PCI bus
-> > > address.
-> > > 
-> > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-> > > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> > > Tested-by: Herve Codina <herve.codina@bootlin.com>
-> > > ---
-> > > This patch, originally preparatory for a bigger patchset (see [1]), has
-> > > been splitted in a standalone one for better management and because it
-> > > contains a bugfix which is probably of interest to stable branch.
-> > 
-> > Nothing to say for the patch itself.
-> > 
-> > Just here, you mentioned "see [1]" but you didn't provide the link.
-> > 
-> > IMHO, this is not blocking for applying the patch but, just for other people
-> > looking at this email in the mailing list, can you reply providing the link?
-> 
-> Thanks for pointing that out, sorry about that. Here it is:
-> 
-> [1] - https://lore.kernel.org/all/f6b445b764312fd8ab96745fe4e97fb22f91ae4c.1730123575.git.andrea.porta@suse.com/
+In commit ca6448aed4f10a, we created an "end_daddr" variable to fix
+fsmap reporting when the end of the range requested falls in the middle
+of an unknown (aka free on the rmapbt) region.  Unfortunately, I didn't
+notice that the the code sets end_daddr to the last sector of the device
+but then uses that quantity to compute the length of the synthesized
+mapping.
 
-Do I have to resubmit the patch with the referenced url fixed or is it
-ok as it is?
+Zizhi Wo later observed that when end_daddr isn't set, we still don't
+report the last fsblock on a device because in that case (aka when
+info->last is true), the info->high mapping that we pass to
+xfs_getfsmap_group_helper has a startblock that points to the last
+fsblock.  This is also wrong because the code uses startblock to
+compute the length of the synthesized mapping.
 
-Thanks,
-Andrea
+Fix the second problem by setting end_daddr unconditionally, and fix the
+first problem by setting start_daddr to one past the end of the range to
+query.
 
-> 
-> Many thanks,
-> Andrea
-> 
-> > 
-> > Best regards,
-> > Hervé
+Cc: <stable@vger.kernel.org> # v6.11
+Fixes: ca6448aed4f10a ("xfs: Fix missing interval for missing_owner in xfs fsmap")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reported-by: Zizhi Wo <wozizhi@huawei.com>
+---
+ fs/xfs/xfs_fsmap.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 8d5d4d172d15..59b7a8e50414 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -165,7 +165,8 @@ struct xfs_getfsmap_info {
+ 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
+ 	/* daddr of low fsmap key when we're using the rtbitmap */
+ 	xfs_daddr_t		low_daddr;
+-	xfs_daddr_t		end_daddr;	/* daddr of high fsmap key */
++	/* daddr of high fsmap key, or the last daddr on the device */
++	xfs_daddr_t		end_daddr;
+ 	u64			missing_owner;	/* owner of holes */
+ 	u32			dev;		/* device id */
+ 	/*
+@@ -388,8 +389,8 @@ xfs_getfsmap_group_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
+ 	 */
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL)
+-		frec->start_daddr = info->end_daddr;
++	if (info->last)
++		frec->start_daddr = info->end_daddr + 1;
+ 	else
+ 		frec->start_daddr = xfs_gbno_to_daddr(xg, startblock);
+ 
+@@ -737,8 +738,8 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
+ 	 */
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL) {
+-		frec.start_daddr = info->end_daddr;
++	if (info->last) {
++		frec.start_daddr = info->end_daddr + 1;
+ 	} else {
+ 		frec.start_daddr = xfs_rtb_to_daddr(mp, start_rtb);
+ 	}
+@@ -1108,7 +1109,10 @@ xfs_getfsmap(
+ 	struct xfs_trans		*tp = NULL;
+ 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
+ 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
+-	struct xfs_getfsmap_info	info = { NULL };
++	struct xfs_getfsmap_info	info = {
++		.fsmap_recs		= fsmap_recs,
++		.head			= head,
++	};
+ 	bool				use_rmap;
+ 	int				i;
+ 	int				error = 0;
+@@ -1185,9 +1189,6 @@ xfs_getfsmap(
+ 
+ 	info.next_daddr = head->fmh_keys[0].fmr_physical +
+ 			  head->fmh_keys[0].fmr_length;
+-	info.end_daddr = XFS_BUF_DADDR_NULL;
+-	info.fsmap_recs = fsmap_recs;
+-	info.head = head;
+ 
+ 	/* For each device we support... */
+ 	for (i = 0; i < XFS_GETFSMAP_DEVS; i++) {
+@@ -1200,17 +1201,23 @@ xfs_getfsmap(
+ 			break;
+ 
+ 		/*
+-		 * If this device number matches the high key, we have
+-		 * to pass the high key to the handler to limit the
+-		 * query results.  If the device number exceeds the
+-		 * low key, zero out the low key so that we get
+-		 * everything from the beginning.
++		 * If this device number matches the high key, we have to pass
++		 * the high key to the handler to limit the query results, and
++		 * set the end_daddr so that we can synthesize records at the
++		 * end of the query range or device.
+ 		 */
+ 		if (handlers[i].dev == head->fmh_keys[1].fmr_device) {
+ 			dkeys[1] = head->fmh_keys[1];
+ 			info.end_daddr = min(handlers[i].nr_sectors - 1,
+ 					     dkeys[1].fmr_physical);
++		} else {
++			info.end_daddr = handlers[i].nr_sectors - 1;
+ 		}
++
++		/*
++		 * If the device number exceeds the low key, zero out the low
++		 * key so that we get everything from the beginning.
++		 */
+ 		if (handlers[i].dev > head->fmh_keys[0].fmr_device)
+ 			memset(&dkeys[0], 0, sizeof(struct xfs_fsmap));
+ 
+-- 
+2.45.2
+
 
