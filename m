@@ -1,242 +1,97 @@
-Return-Path: <stable+bounces-92986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8B49C87B3
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:36:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAB89C87DF
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD9BE2847B2
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:36:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9209E28619D
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 10:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B3B1DE4DF;
-	Thu, 14 Nov 2024 10:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="v/HytQ9L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4E31F7097;
+	Thu, 14 Nov 2024 10:41:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B742213A3EC
-	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 10:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2E913A3EC;
+	Thu, 14 Nov 2024 10:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731580470; cv=none; b=nPsQt7p+pwMjpSYAtKizvqq+vZ/9Nx+yXMCojv16KCvO7XhQxDpDOus39iFzhun4OlpTJa/wQf+h2XHuOSRhXhPynFuHFHXb0emeE9oq/YLDUct1Unrcw8tsimbzPWayALUh04pFzz/0Mme6aylXrOHS+TvAcFKJn3uXJBvsg3g=
+	t=1731580903; cv=none; b=JX2IY9vHb699fhG1PSvFzh6xFYBIxKxWcnrCvaid/MPPpK9TMyoEgCKCAnoBDOWeYP/mcNPFwvflyro9vrjYfIUnqIbWfh+NjbUb5juW0UrAbKbFzIMQ5iT7QzLqAGHFCTW2dMWQoFQ6eFzPS0pFFwpHGU2C8yj1UzjXrTgCzvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731580470; c=relaxed/simple;
-	bh=W6bHKOTQHw2lZoEIxafwIaRnd0+k/G1N2zyEqGkdMMA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P3NUp/mLzz60Hpc/42x92sB1V+R0bTDh1kFg1F8riRc+qcEWG+FkkBW8EvzNtsFZOstJRyDkPJFzOlHB5pNUrYdRGV7e0BVulFpMBRO1VAudbgGqfjr3KReMj8z4liKNeBOsqVG85bXXKdLb+kf7ABuya84U4mkmOW5pJmtL94Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=v/HytQ9L; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731580469; x=1763116469;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=dBlUcW8QG6yN1LEvwuqZSZu1m0lG4SBYm75VKnj/Lj0=;
-  b=v/HytQ9LnSXkc5wbhG1bzd2OnnVBDpRUtEJnbajiop9f4kXNFuFH70Fp
-   TYuyn6dmCxpEP0rzgZIJ4oIB/ayYXYRZ761vn2EyAFpoZgnftetFil+5D
-   KRIlTarnu8FrWB6/s17jaCW43Shnle/CTUQ8W2N9nW4oII6YIqCoP2BLx
-   4=;
-X-IronPort-AV: E=Sophos;i="6.12,153,1728950400"; 
-   d="scan'208";a="448880841"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 10:34:28 +0000
-Received: from EX19MTAUEA001.ant.amazon.com [10.0.29.78:46957]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.15.229:2525] with esmtp (Farcaster)
- id e5a500e2-c23c-42a3-afdc-069fad8560ea; Thu, 14 Nov 2024 10:34:27 +0000 (UTC)
-X-Farcaster-Flow-ID: e5a500e2-c23c-42a3-afdc-069fad8560ea
-Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 14 Nov 2024 10:34:27 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
- EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 14 Nov 2024 10:34:26 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-22fa938e.us-west-2.amazon.com
- (10.124.125.2) by mail-relay.amazon.com (10.252.135.35) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Thu, 14 Nov 2024 10:34:26 +0000
-Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
-	by email-imr-corp-prod-pdx-all-2b-22fa938e.us-west-2.amazon.com (Postfix) with ESMTP id EAF03C04D7;
-	Thu, 14 Nov 2024 10:34:25 +0000 (UTC)
-Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id 8145D224F4; Thu, 14 Nov 2024 10:34:25 +0000 (UTC)
-From: Hagar Hemdan <hagarhem@amazon.com>
-To:
-CC: <stable@vger.kernel.org>, Zheng Yejian <zhengyejian1@huawei.com>,
-	<mhiramat@kernel.org>, <mark.rutland@arm.com>,
-	<mathieu.desnoyers@efficios.com>, Steven Rostedt <rostedt@goodmis.org>, Hagar
- Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4 v2] ftrace: Fix possible use-after-free issue in ftrace_location()
-Date: Thu, 14 Nov 2024 10:33:59 +0000
-Message-ID: <20241114103359.31275-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1731580903; c=relaxed/simple;
+	bh=5/XN2yxVu+U9puVJG+0u6hyp9c6YHtVO/9QbauFX12I=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=lBQ1ige5ftGSPYZQfyLDpkT9KryPh3/jQjXKTMsv5DmhgjtVaJ2xDnaIDHmC36wIF5BY/mcRlX9EiZwWCTNvsDZO4R3OH7huFeGPB2rbLZWGxSb/NbjNmDZEbKk/B+wiJMDiyKlHclAacRvDx14wBKweU30yl8jWgJtOJPG5Swk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D61E61C000E;
+	Thu, 14 Nov 2024 10:41:35 +0000 (UTC)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.96)
+	(envelope-from <peter@korsgaard.com>)
+	id 1tBXI7-000g3w-0Z;
+	Thu, 14 Nov 2024 11:41:35 +0100
+From: Peter Korsgaard <peter@korsgaard.com>
+To: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Cc: gregkh@linuxfoundation.org,  michal.vrastil@hidglobal.com,
+  michal.vodicka@hidglobal.com,  linux-usb@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH v2] Revert "usb: gadget: composite: fix OS descriptors
+ w_value logic"
+References: <20241113235433.20244-1-quic_eserrao@quicinc.com>
+Date: Thu, 14 Nov 2024 11:41:35 +0100
+In-Reply-To: <20241113235433.20244-1-quic_eserrao@quicinc.com> (Elson Roy
+	Serrao's message of "Wed, 13 Nov 2024 15:54:33 -0800")
+Message-ID: <875xoqxfkw.fsf@dell.be.48ers.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-GND-Sasl: peter@korsgaard.com
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+>>>>> "Elson" == Elson Roy Serrao <quic_eserrao@quicinc.com> writes:
 
-commit e60b613df8b6253def41215402f72986fee3fc8d upstream.
+ > From: Michal Vrastil <michal.vrastil@hidglobal.com>
+ > This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
 
-KASAN reports a bug:
+ > Fix installation of WinUSB driver using OS descriptors. Without the
+ > fix the drivers are not installed correctly and the property
+ > 'DeviceInterfaceGUID' is missing on host side.
 
-  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
-  Read of size 8 at addr ffff888141d40010 by task insmod/424
-  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+
-  [...]
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x68/0xa0
-   print_report+0xcf/0x610
-   kasan_report+0xb5/0xe0
-   ftrace_location+0x90/0x120
-   register_kprobe+0x14b/0xa40
-   kprobe_init+0x2d/0xff0 [kprobe_example]
-   do_one_initcall+0x8f/0x2d0
-   do_init_module+0x13a/0x3c0
-   load_module+0x3082/0x33d0
-   init_module_from_file+0xd2/0x130
-   __x64_sys_finit_module+0x306/0x440
-   do_syscall_64+0x68/0x140
-   entry_SYSCALL_64_after_hwframe+0x71/0x79
+ > The original change was based on the assumption that the interface
+ > number is in the high byte of wValue but it is in the low byte,
+ > instead. Unfortunately, the fix is based on MS documentation which is
+ > also wrong.
 
-The root cause is that, in ftrace_location_range(), ftrace record of some
-address is being searched in ftrace pages of some module, but those ftrace
-pages at the same time is being freed in ftrace_release_mod() as the
-corresponding module is being deleted:
+ > The actual USB request for OS descriptors (using USB analyzer) looks
+ > like:
 
-           CPU1                       |      CPU2
-  register_kprobes() {                | delete_module() {
-    check_kprobe_address_safe() {     |
-      arch_check_ftrace_location() {  |
-        ftrace_location() {           |
-          lookup_rec() // USE!        |   ftrace_release_mod() // Free!
+ > Offset  0   1   2   3   4   5   6   7
+ > 0x000   C1  A1  02  00  05  00  0A  00
 
-To fix this issue:
-  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();
-  2. Use ftrace_location_range() instead of lookup_rec() in
-     ftrace_location();
-  3. Call synchronize_rcu() before freeing any ftrace pages both in
-     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().
+ > C1: bmRequestType (device to host, vendor, interface)
+ > A1: nas magic number
+ > 0002: wValue (2: nas interface)
+ > 0005: wIndex (5: get extended property i.e. nas interface GUID)
+ > 008E: wLength (142)
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240509192859.1273558-1-zhengyejian1@huawei.com
+ > The fix was tested on Windows 10 and Windows 11.
 
-Cc: stable@vger.kernel.org
-Cc: <mhiramat@kernel.org>
-Cc: <mark.rutland@arm.com>
-Cc: <mathieu.desnoyers@efficios.com>
-Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[Hagar: Modified to apply on v5.4.y]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
----
-V1: https://lore.kernel.org/all/20241111144445.27428-1-hagarhem@amazon.com/
-Changes in V2
-- fix coding style
-- tested before and after patch applied, no new failures
----
- kernel/trace/ftrace.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ > Cc: stable@vger.kernel.org
+ > Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
+ > Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
+ > Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 412505d94865..648b8677f71b 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1552,7 +1552,9 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
- 	struct dyn_ftrace key;
-+	unsigned long ip = 0;
- 
-+	rcu_read_lock();
- 	key.ip = start;
- 	key.flags = end;	/* overload flags, as it is unsigned long */
- 
-@@ -1564,11 +1566,13 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
- 		rec = bsearch(&key, pg->records, pg->index,
- 			      sizeof(struct dyn_ftrace),
- 			      ftrace_cmp_recs);
--		if (rec)
--			return rec->ip;
-+		if (rec) {
-+			ip = rec->ip;
-+			break;
-+		}
- 	}
--
--	return 0;
-+	rcu_read_unlock();
-+	return ip;
- }
- 
- /**
-@@ -5736,6 +5740,8 @@ static int ftrace_process_locs(struct module *mod,
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
- 		WARN_ON(!skipped);
-+		/* Need to synchronize with ftrace_location_range() */
-+		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
- 	}
- 	return ret;
-@@ -5889,6 +5895,9 @@ void ftrace_release_mod(struct module *mod)
-  out_unlock:
- 	mutex_unlock(&ftrace_lock);
- 
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page)
-+		synchronize_rcu();
- 	for (pg = tmp_page; pg; pg = tmp_page) {
- 
- 		/* Needs to be called outside of ftrace_lock */
-@@ -6196,6 +6205,7 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
- 	unsigned long start = (unsigned long)(start_ptr);
- 	unsigned long end = (unsigned long)(end_ptr);
- 	struct ftrace_page **last_pg = &ftrace_pages_start;
-+	struct ftrace_page *tmp_page = NULL;
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
- 	struct dyn_ftrace key;
-@@ -6239,12 +6249,8 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
- 		ftrace_update_tot_cnt--;
- 		if (!pg->index) {
- 			*last_pg = pg->next;
--			if (pg->records) {
--				free_pages((unsigned long)pg->records, pg->order);
--				ftrace_number_of_pages -= 1 << pg->order;
--			}
--			ftrace_number_of_groups--;
--			kfree(pg);
-+			pg->next = tmp_page;
-+			tmp_page = pg;
- 			pg = container_of(last_pg, struct ftrace_page, next);
- 			if (!(*last_pg))
- 				ftrace_pages = pg;
-@@ -6261,6 +6267,11 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
- 		clear_func_from_hashes(func);
- 		kfree(func);
- 	}
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page) {
-+		synchronize_rcu();
-+		ftrace_free_pages(tmp_page);
-+	}
- }
- 
- void __init ftrace_free_init_mem(void)
+Acked-by: Peter korsgaard <peter@korsgaard.com>
+
 -- 
-2.40.1
-
+Bye, Peter Korsgaard
 
