@@ -1,162 +1,169 @@
-Return-Path: <stable+bounces-93016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3826B9C8D6E
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 15:57:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179A39C8DE9
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 16:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D05282AE3
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 14:57:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6501F24CA1
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 15:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5575E7DA66;
-	Thu, 14 Nov 2024 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3047615C156;
+	Thu, 14 Nov 2024 15:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FN9FJE56"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T0lJt+QV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734DD74BE1;
-	Thu, 14 Nov 2024 14:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2DF14E2D6
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 15:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731596242; cv=none; b=nh9qdf6pSlodoAxvrL0wxuq8GNWhqVsfKTyiqpphJRXUcjQ5d1oxcwCBx81QJkOqLNDsq+Mdjhnt8vvnjEH67hkimzaQ5xjyhVn/QKmmQmrmc1UM/11Kdz/DtEpKAmhv27s/QHKwQKET3NCw0Bm62D8hiw+TSCsI4YTDelolxY4=
+	t=1731597980; cv=none; b=IzSai8sW+fdWPFEkFnuiOzb3jnMKYzw1ok9WcYSCTWGpsFsA21cJneZaTkusV6vFKcUWQIt2mSa35eNAxm68mMv2XQ34bvxB+LB1W3KkXoxhi/FozPZ3YvCICcoib4yZotCv/u1u07Vn44DxYz7j/7ts+L+96PC/B7euuRncibU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731596242; c=relaxed/simple;
-	bh=pkJNJxoeCzInceBm8X9JQggNQG0mKV37IxeaHZdeuOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GDK3xuLE+hcqpzfNIEG1VuQh/1TYLshU7ygHZ9+41YGj8f9V6lsKkpdd37Yw4vhq8S8aupJ644ordlXV43Mz0O3s0cl50/BlOCtyCd5StfOYFgNeN3YjYBlftaHOPfBzMDh8JImwzVFiNvGo4aLA6SApse+E7Nm3YfNJ40KEz3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FN9FJE56; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9ed49edd41so124113766b.0;
-        Thu, 14 Nov 2024 06:57:20 -0800 (PST)
+	s=arc-20240116; t=1731597980; c=relaxed/simple;
+	bh=OXm964+HL/oy8I5JgLPsZUm+UieJrQIuj9T2oe/JmoI=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6tgtlxhyqJY0qWX2FCZ9+SXTK7L3XwsWw1BBI5U0zWUbNt9thTHClCr/0ncdWaw7DH1IlGyI6iVMLDG56SqSTMKG0iYnCCZ7oOzIR5hTh1wQgZ0IiXIUsXKzNiiYG4QoXH4Y4LE+NNujIapDt8zhKono3Orbc/B+tuZx1p6PRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T0lJt+QV; arc=none smtp.client-ip=209.85.218.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-a9eb3794a04so97132666b.3
+        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 07:26:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731596239; x=1732201039; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oC1V2uPMKuCVb42okFlodDMg7VTiVJx1PFqsTRJLKbs=;
-        b=FN9FJE56Ge1iG6TNTCewC+iC6ZWABMdeHg/GHnh4qbuLh/Tm5ahfYcLvPw/EXTB5SL
-         SWXk8cRwSuG6Sfh6AAX5JXZ2miYOEyVdCKBV6qXVUVGrUvcxq+ALW5e/GAayD+0mzA82
-         5lkNpaerI46yPJ1IpDPYft0xr4LhKEAYtyeWNi+/EHNdDqt+KgGmYUmxoWN4ruDxNU+D
-         fX7Mor/y7aoZNl+XnsqQ2lrc+kgwwE39XuLYOf3dPQh3ErRh0o7ClmU6Wk1HMpK/yIyo
-         0GxPD7nMLBMWF64/NxOageMgc0VHgktonCJb7izz0TQaiOYpM1OFCicQ7fyJ1Yop26o6
-         odng==
+        d=suse.com; s=google; t=1731597975; x=1732202775; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BXfRuwtCQesbb+rpbVIxn9Ia55XQqIa+ED/3SCVnO+4=;
+        b=T0lJt+QVOgMpe98LyY/OQg5CauvRzz5aZotWG53qpiINIQPfuqm94oJDgqqTpxKQpy
+         VyPY7U+5O+0dC4OqfQqxD7ygF8MN4l31p3AAOahmwrJO8Jd/Zp5t1lx1dUKasPaKePKz
+         5u2zO7f6XsMG7Q/iCIl6hgyDRzi9MNPi/u0NjMCu8GgXrYxT4s+qzsU/tdKaHPLlG1TH
+         VTNCP7uaedHsnu4AIbUmGkCMNKJZTqEaX58qEthYKW73qRLo4BdAvR/OenXR7qAz4bQm
+         Jtb8z+RKl38uYnU4VOuJcnn7WfXWidfo4zsFFj8ZlEIoPZdxRc6NBYqiOkUt4Vg7iFb9
+         JjhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731596239; x=1732201039;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oC1V2uPMKuCVb42okFlodDMg7VTiVJx1PFqsTRJLKbs=;
-        b=SLanzxul4T524wCFXLMwhpcoRXqhyEc+0SWkQ14xMhnkboe+tEjjpHBvq3Y1O/7XOt
-         PQPQ4F7Sg9gcNGEH8RyArBFK9sd2x5BsqnAYAxOGmVuOdLeiM33zQNTL281zQg9YQ3IV
-         vBnptCeMIie/K9SwR9YcbUjclRRnQtk0IbVQJK9BCKqEfP/ctclyHs4yydzSjpPKQNOv
-         PMODqLt7VHnfHarT/3VKaSS3fatqxIeps49LKPO2O8fgRbXosTp3sW35iMXZq6nH3qKv
-         XMxvs0nVkkyemKHTyj6h+MLsOiJtCMFmWJAesIsyfJOdPIr5qttIqPFY+uHHzm+VObwn
-         rpWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdIvkG3GKWt3fNePMuNteEfoMdF8w3DVC7l3Knd544YLnpCJ/vsyyo+B9nBXwhy20FzQ4ALgE67fItpZ5Z@vger.kernel.org, AJvYcCUv3t3ACTJMec4Dxm0jDWqreVPB0RgXSe3y9T2FVEucjNQK7vEzOum3e4TSS0D/m3qclduXnOGx@vger.kernel.org, AJvYcCVbYRxvjifNbknf/H/1mbg33NtADEjR5D7CYi8IaJC1Lg4iPjah/G5e5j3lDszUDS11i44YUMTUTfIORl8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9bqNAvByM78AmVfy9a6du7c43529cPvlVo4dyE45DK+KVyrQf
-	CqcbWwMFdCUFP1nXaI0STe7C/kTxBbVfP9g5yHZac3mYnozTwswb
-X-Google-Smtp-Source: AGHT+IHYA9lOrq2gvr+JzqUCQCoRdL6fFk7XxyfZZGn7kqPkL98O6LVB5dRztX432sAiFj9y50dNYg==
-X-Received: by 2002:a17:907:60c8:b0:a9a:46:83ee with SMTP id a640c23a62f3a-a9eefff1531mr2259415866b.48.1731596238497;
-        Thu, 14 Nov 2024 06:57:18 -0800 (PST)
-Received: from partp-nb.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20dffd742sm72459566b.109.2024.11.14.06.57.17
+        d=1e100.net; s=20230601; t=1731597975; x=1732202775;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BXfRuwtCQesbb+rpbVIxn9Ia55XQqIa+ED/3SCVnO+4=;
+        b=ARJMZcZJ2t7rtorI686m7Pn+VgXn7hhRI0jhnByCd6f3wabsw0oH4ueUE8VUt3LloZ
+         uMSjPLNY897yUdc6Vq18Z+Eka6ZA2adGHCxrdB9xalXkxgBZJuCPok07wG6e48ZI2ymb
+         HgYKyFJU5MztWkxEXcX91ogPgI2gIAEs8kXkoEcPAzPvTFY4Cco5LJvN7TemvQ+hWmN7
+         svk7s2NugAgNvYwipiITtLHOQ1VvP7lySwb3kfhR5f6GOl/QF5ueeBvaBFKtkDbY4Pey
+         LnBfVNQPk0ne3+e2Tkc2y0BfXEU4iBHEcWyy9GJQCtNsCgxYj7PfwPzE6tliMsl6RPn2
+         z1Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCVX9UwtvrzviDgsrUWArF6q67q0lXct6fFmJ9NCO9WzYUW3jRVLRlJmhnUycViFYdHWwD+RGio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysXS4NLPNqYxmIOQ16yt0stUDKbKdKMA1QUXeF80km3B6qyh1U
+	IxTHInF0vgloYOliQX8TBEDAnN1kO5gCnA15nLV2sxtIRDFKrae1IZo6PL61av8=
+X-Google-Smtp-Source: AGHT+IGhM6/BPmoBjuRiiI1ewZRW9R+eE3BQ4H3+p/OJfSdyeRMIoasVpFD+sR2v6s9C5C6vSshsww==
+X-Received: by 2002:a17:907:7b95:b0:a9a:c691:dcbc with SMTP id a640c23a62f3a-aa1b1024b29mr1127309766b.12.1731597974922;
+        Thu, 14 Nov 2024 07:26:14 -0800 (PST)
+Received: from localhost (host-79-19-144-50.retail.telecomitalia.it. [79.19.144.50])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e086ad4sm73543066b.199.2024.11.14.07.26.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 06:57:18 -0800 (PST)
-From: Parth Pancholi <parth105105@gmail.com>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>
-Cc: Parth Pancholi <parth.pancholi@toradex.com>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2] kbuild: switch from lz4c to lz4 for compression
-Date: Thu, 14 Nov 2024 15:56:44 +0100
-Message-Id: <20241114145645.563356-1-parth105105@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Thu, 14 Nov 2024 07:26:14 -0800 (PST)
+From: Andrea della Porta <andrea.porta@suse.com>
+X-Google-Original-From: Andrea della Porta <aporta@suse.de>
+Date: Thu, 14 Nov 2024 16:26:42 +0100
+To: Andrea della Porta <andrea.porta@suse.com>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczynski <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Saravana Kannan <saravanak@google.com>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: of_property: Assign PCI instead of CPU bus address
+ to dynamic PCI nodes
+Message-ID: <ZzYWso5jLkUMehQ6@apocalypse>
+References: <20241108094256.28933-1-andrea.porta@suse.com>
+ <20241108110938.622014f5@bootlin.com>
+ <Zy3koxz4KnV39__V@apocalypse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zy3koxz4KnV39__V@apocalypse>
 
-From: Parth Pancholi <parth.pancholi@toradex.com>
+Hi,
 
-Replace lz4c with lz4 for kernel image compression.
-Although lz4 and lz4c are functionally similar, lz4c has been deprecated
-upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
-and lz4c have been packaged together, making it safe to update the
-requirement from lz4c to lz4.
+On 11:14 Fri 08 Nov     , Andrea della Porta wrote:
+> Hi herve,
+> 
+> On 11:09 Fri 08 Nov     , Herve Codina wrote:
+> > Hi Andrea,
+> > 
+> > On Fri,  8 Nov 2024 10:42:56 +0100
+> > Andrea della Porta <andrea.porta@suse.com> wrote:
+> > 
+> > > When populating "ranges" property for a PCI bridge or endpoint,
+> > > of_pci_prop_ranges() incorrectly use the CPU bus address of the resource.
+> > > In such PCI nodes, the window should instead be in PCI address space. Call
+> > > pci_bus_address() on the resource in order to obtain the PCI bus
+> > > address.
+> > > 
+> > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+> > > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > Tested-by: Herve Codina <herve.codina@bootlin.com>
+> > > ---
+> > > This patch, originally preparatory for a bigger patchset (see [1]), has
+> > > been splitted in a standalone one for better management and because it
+> > > contains a bugfix which is probably of interest to stable branch.
+> > 
+> > Nothing to say for the patch itself.
+> > 
+> > Just here, you mentioned "see [1]" but you didn't provide the link.
+> > 
+> > IMHO, this is not blocking for applying the patch but, just for other people
+> > looking at this email in the mailing list, can you reply providing the link?
+> 
+> Thanks for pointing that out, sorry about that. Here it is:
+> 
+> [1] - https://lore.kernel.org/all/f6b445b764312fd8ab96745fe4e97fb22f91ae4c.1730123575.git.andrea.porta@suse.com/
 
-Consequently, some distributions and build systems, such as OpenEmbedded,
-have fully transitioned to using lz4. OpenEmbedded core adopted this
-change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
-lz4c"), causing compatibility issues when building the mainline kernel
-in the latest OpenEmbedded environment, as seen in the errors below.
+Do I have to resubmit the patch with the referenced url fixed or is it
+ok as it is?
 
-This change also updates the LZ4 compression commands to make it backward
-compatible by replacing stdin and stdout with the '-' option, due to some
-unclear reason, the stdout keyword does not work for lz4 and '-' works for
-both. In addition, this modifies the legacy '-c1' with '-9' which is also
-compatible with both. This fixes the mainline kernel build failures with
-the latest master OpenEmbedded builds associated with the mentioned
-compatibility issues.
+Thanks,
+Andrea
 
-LZ4     arch/arm/boot/compressed/piggy_data
-/bin/sh: 1: lz4c: not found
-...
-...
-ERROR: oe_runmake failed
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/lz4/lz4/pull/553
-Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
----
-v2: correct the compression command line to make it compatible with lz4
-v1: https://lore.kernel.org/all/20241112150006.265900-1-parth105105@gmail.com/
----
- Makefile             | 2 +-
- scripts/Makefile.lib | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 79192a3024bf..7630f763f5b2 100644
---- a/Makefile
-+++ b/Makefile
-@@ -508,7 +508,7 @@ KGZIP		= gzip
- KBZIP2		= bzip2
- KLZOP		= lzop
- LZMA		= lzma
--LZ4		= lz4c
-+LZ4		= lz4
- XZ		= xz
- ZSTD		= zstd
- 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 01a9f567d5af..fe5e132fcea8 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -371,10 +371,10 @@ quiet_cmd_lzo_with_size = LZO     $@
-       cmd_lzo_with_size = { cat $(real-prereqs) | $(KLZOP) -9; $(size_append); } > $@
- 
- quiet_cmd_lz4 = LZ4     $@
--      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout > $@
-+      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -9 - - > $@
- 
- quiet_cmd_lz4_with_size = LZ4     $@
--      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout; \
-+      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -9 - -; \
-                   $(size_append); } > $@
- 
- # U-Boot mkimage
--- 
-2.34.1
-
+> 
+> Many thanks,
+> Andrea
+> 
+> > 
+> > Best regards,
+> > Hervé
 
