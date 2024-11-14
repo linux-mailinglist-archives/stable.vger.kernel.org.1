@@ -1,40 +1,81 @@
-Return-Path: <stable+bounces-92993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-92994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BF79C886F
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 12:08:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AFC19C88CC
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 12:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1461D28232F
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:08:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC3FB363D3
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 11:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E291F81AC;
-	Thu, 14 Nov 2024 11:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB5D1F9A91;
+	Thu, 14 Nov 2024 11:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="acM5i7sw"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9AE1F6688;
-	Thu, 14 Nov 2024 11:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57701F942F
+	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 11:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731582496; cv=none; b=nI1LaDVtYhYKqG94lp6AYDC9IF4t4Vq+yJLsWNxdbnw7WmX1vKs/we4PWSc7bB8eFPuoSdrPoXuLso0+vqyAI8exO2g5lHjuTKIAmBrHFlFPihTdoJe9t1wYWPBKCaXL9rfqBiL5ekKDxy49Ub5UaowwGRA2X/AQgtNh5wWYOQY=
+	t=1731582617; cv=none; b=t+Zegmu3e15+n8gNMQdqSvSNRFEEM754+nk48NCx14cZDwvqqEy6vx2U9zP1KdYpS9NOCGD1XdR7IdWrMCPME9wl6a1uhhnihx53TNrdmWGXSmv+25LrQOtwWdqOKQSetcEQXSQnLtbbyxarlDjlfED8tz9DK/ynHf6iInw7cqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731582496; c=relaxed/simple;
-	bh=tb+DE/3FFVpWcHlT5GqU34l2C45HcATrVfwwmIhWgBs=;
+	s=arc-20240116; t=1731582617; c=relaxed/simple;
+	bh=+PJN9W5TUF8ROvz+Dk38kDMAFGpGNYq535RDxbaJqkg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OC3IbYxZs324xhUOgpYSYfJGN0ngFFXM8wnH3Gr6dyylTqCHSDqHZrx/p33WPq0RO56S5pyw1U5/2owB6I2SpvCxPy0UE/Au0J04BiekP8fkLo6qae27ZeQp/VBJH63wXn2Hfmxn22cI5JufP1wNvGk+3o7hSYk91iWZnFrXqVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C29F81480;
-	Thu, 14 Nov 2024 03:08:42 -0800 (PST)
-Received: from [10.1.26.55] (e122027.cambridge.arm.com [10.1.26.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 155EE3F6A8;
-	Thu, 14 Nov 2024 03:08:09 -0800 (PST)
-Message-ID: <e661a2e2-9a6a-40f4-843b-3c7285ca2172@arm.com>
-Date: Thu, 14 Nov 2024 11:08:07 +0000
+	 In-Reply-To:Content-Type; b=Ms7w2LCxPbDmE7lqa8o9tVQy3CFjhrJH4k2YyY5riyMg+hSTsVL+KV+adAJSE4qBqtWlZt3iYgEJYKtE3+xoZC7OIpx/cVlTAfFryXw4tXsWN0c84kYzapKZ7Xw849VIK9gBok5LO5EVQy5kKYVPPQpxbkO+0DhaCnNmOkvAqE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=acM5i7sw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731582613;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sQSRWxbj4Jr6bem90b/I0QTuf7y4SyjrrPrHgroR4SM=;
+	b=acM5i7swvXnQURnDRv9u3dRcDTDHoHabxtiN8XTB4M9eaDOA7LmeDoX2caDM0rvgZdGyJK
+	S/GAf0GWhNVy5a7sQcag/++UotJUAbZ6Ys8XN8zsPns5MbwRsD226kkWFqdfqEurJ2rIdf
+	ZKLETosZDjOZAZ0f3vygzs8q40GDZG0=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-290-cq1H2Q0FPZq1Cr907_uPkw-1; Thu, 14 Nov 2024 06:10:10 -0500
+X-MC-Unique: cq1H2Q0FPZq1Cr907_uPkw-1
+X-Mimecast-MFC-AGG-ID: cq1H2Q0FPZq1Cr907_uPkw
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-460b71eb996so6299481cf.3
+        for <stable@vger.kernel.org>; Thu, 14 Nov 2024 03:10:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731582610; x=1732187410;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sQSRWxbj4Jr6bem90b/I0QTuf7y4SyjrrPrHgroR4SM=;
+        b=pZM3G50fQ25zzV1DpcqA4v9FIZUMW9pCyfASZws1kX3uzulquN/JJrhUCY0/tEIA88
+         uWgk8rWBUaGTn8KzgImnQA3Zumd6rsIcLkKN0KRjhtyG17AnRc85Gfjy+99TaxCB+dnG
+         incXVuy9Pc8lVIO37RtWYbQ3DXVV1lIypgMdtZUPKb2tEXver3x54na39MUUeHpgBggz
+         KWQdCSdWjqvtkW6YssSlrVvaOxfS1hjppwnAFAD9y136D0Yw9Km92KP6gwdhn0aB1k4X
+         QP1n2GFfdlpMGY0dBnfA9nh9RI2TYTXJ0HGLLVnBjp6EuHUFwrxAnb5ilaQtUB/eAYhh
+         6eCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWocT/qOX9OrtezYTclA2TqPblU0UDphaSMlwvIdPCilHFfiPC2Z+FhfOw0zAyV4mz0qmM1FoQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSPEVG90lnZMncN113hJXH66W6Ao2AE6l74VwaXUZhjJf2ZmrP
+	pGBHvuC3T5epo7SV3nmyVJcgdP8ybnuVB4UJOG0Le3iS6CGXe/hWao2cz93+Cy5AypGVKDo1pio
+	qB2ubilEBVeJh432a9zu/FmmCC/EM5/BS4NjNuuB+AYuSUyGHzPw02g==
+X-Received: by 2002:ac8:5dc6:0:b0:458:4129:1135 with SMTP id d75a77b69052e-4630930660fmr341014291cf.9.1731582609949;
+        Thu, 14 Nov 2024 03:10:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7F+M/vbAnAssFq0op9LX2J4MXfyIul3bpH8Mbu3LUHXaUTQtWRodj5XOTZ0rPlg9LI4bX1w==
+X-Received: by 2002:ac8:5dc6:0:b0:458:4129:1135 with SMTP id d75a77b69052e-4630930660fmr341014071cf.9.1731582609592;
+        Thu, 14 Nov 2024 03:10:09 -0800 (PST)
+Received: from [192.168.88.24] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4635a9e97f4sm4224781cf.22.2024.11.14.03.10.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 03:10:08 -0800 (PST)
+Message-ID: <ff1c1622-a57c-471e-b41f-8fb4cb2f233d@redhat.com>
+Date: Thu, 14 Nov 2024 12:10:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,118 +83,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/panthor: Fix memory leak in
- panthor_ioctl_group_create()
-To: Jann Horn <jannh@google.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Liviu Dudau <liviu.dudau@arm.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Mary Guillemard <mary.guillemard@collabora.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20241113-panthor-fix-gcq-bailout-v1-1-654307254d68@google.com>
+Subject: Re: [PATCH net v2] netfilter: ipset: add missing range check in
+ bitmap_ip_uadt
+To: Jeongjun Park <aha310510@gmail.com>, pablo@netfilter.org,
+ kadlec@netfilter.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ horms@kernel.org, kaber@trash.net, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+References: <20241113130209.22376-1-aha310510@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241113130209.22376-1-aha310510@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/11/2024 21:03, Jann Horn wrote:
-> When bailing out due to group_priority_permit() failure, the queue_args
-> need to be freed. Fix it by rearranging the function to use the
-> goto-on-error pattern, such that the success case flows straight without
-> indentation while error cases jump forward to cleanup.
+On 11/13/24 14:02, Jeongjun Park wrote:
+> When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+> the values of ip and ip_to are slightly swapped. Therefore, the range check
+> for ip should be done later, but this part is missing and it seems that the
+> vulnerability occurs.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 5f7762042f8a ("drm/panthor: Restrict high priorities on group_create")
-> Signed-off-by: Jann Horn <jannh@google.com>
+> So we should add missing range checks and remove unnecessary range checks.
+> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+> Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 
-Reviewed-by: Steven Price <steven.price@arm.com>
+@Pablo, @Jozsef: despite the subj prefix, I guess this should go via
+your tree. Please LMK if you prefer otherwise.
 
-Thanks,
-Steve
+Cheers,
 
-> ---
-> testcase:
-> ```
-> #include <err.h>
-> #include <fcntl.h>
-> #include <stddef.h>
-> #include <sys/ioctl.h>
-> #include <drm/panthor_drm.h>
-> 
-> #define SYSCHK(x) ({          \
->   typeof(x) __res = (x);      \
->   if (__res == (typeof(x))-1) \
->     err(1, "SYSCHK(" #x ")"); \
->   __res;                      \
-> })
-> 
-> #define GPU_PATH "/dev/dri/by-path/platform-fb000000.gpu-card"
-> 
-> int main(void) {
->   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
-> 
->   while (1) {
->     struct drm_panthor_queue_create qc[16] = {};
->     struct drm_panthor_group_create gc = {
->       .queues = {
->         .stride = sizeof(struct drm_panthor_queue_create),
->         .count = 16,
->         .array = (unsigned long)qc
->       },
->       .priority = PANTHOR_GROUP_PRIORITY_HIGH+1/*invalid*/
->     };
->     ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &gc);
->   }
-> }
-> ```
-> 
-> I have tested that without this patch, after running the testcase for a
-> few seconds and then manually killing it, 2G of RAM in kmalloc-128 have
-> been leaked. With the patch applied, the memory leak is gone.
-> 
-> (By the way, get_maintainer.pl suggests that I also send this patch to
-> the general DRM maintainers and the DRM-misc maintainers; looking at
-> MAINTAINERS, it looks like it is normal that the general DRM maintainers
-> are listed for everything under drivers/gpu/, but DRM-misc has exclusion
-> rules for a bunch of drivers but not panthor. I don't know if that is
-> intentional.)
-> ---
->  drivers/gpu/drm/panthor/panthor_drv.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> index c520f156e2d73f7e735f8bf2d6d8e8efacec9362..815c23cff25f305d884e8e3e263fa22888f7d5ce 100644
-> --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> @@ -1032,14 +1032,15 @@ static int panthor_ioctl_group_create(struct drm_device *ddev, void *data,
->  
->  	ret = group_priority_permit(file, args->priority);
->  	if (ret)
-> -		return ret;
-> +		goto out;
->  
->  	ret = panthor_group_create(pfile, args, queue_args);
-> -	if (ret >= 0) {
-> -		args->group_handle = ret;
-> -		ret = 0;
-> -	}
-> +	if (ret < 0)
-> +		goto out;
-> +	args->group_handle = ret;
-> +	ret = 0;
->  
-> +out:
->  	kvfree(queue_args);
->  	return ret;
->  }
-> 
-> ---
-> base-commit: 9f8e716d46c68112484a23d1742d9ec725e082fc
-> change-id: 20241113-panthor-fix-gcq-bailout-2d9ac36590ed
-> 
+Paolo
 
 
