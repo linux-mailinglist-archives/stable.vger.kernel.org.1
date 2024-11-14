@@ -1,71 +1,73 @@
-Return-Path: <stable+bounces-93055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-93056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1929C9224
-	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 20:11:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313179C9226
+	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 20:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 816BEB23EFC
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00AFBB23E70
 	for <lists+stable@lfdr.de>; Thu, 14 Nov 2024 19:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE821A38E3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0A1A3047;
 	Thu, 14 Nov 2024 19:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bknDODJp"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FNTxAIjg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7104F19939D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284B419D07C
 	for <stable@vger.kernel.org>; Thu, 14 Nov 2024 19:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731611449; cv=none; b=l4cj6C9yYS4cwTAk37GniK/D+TfGkiYPUPJImU8Fb9jtlTF2e7sBPd0k6P+03no2x/xTOIRRVDuoeFN/bdbV513HN10IPVuFppo8Rq+0NyO7Y7g4+MK25z7jlJJcpdUC8akDMIAPt5v9OsDXN9iRXXBmIZ1REUgDp468L+GiaR0=
+	t=1731611449; cv=none; b=kqloHSDhHlnGKQX9qkxlS+G5ViLm731NLVpf/Htnr39Fld2vo5bh9RAN4aCyqHvFeQxSzt3hKFFFQxm+ZZ9N6BghhuSx8yr/HJ7/7VBLbP4PakFkqgp6djIM7H72DVjBwrJIhMzQq0K9EEkctkPRkMwk/8gQXkRqsjLQqwbAeSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731611449; c=relaxed/simple;
-	bh=QOVfo2cFW9KORd9WPDy4R/uzsDOrwnZ7aHiZiYRxNDk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B69DJjk1ZSDBvIuBMK+Do0ajnPkXN25JgsKDcH0NJ4o8n4AVH9ce4d+MbArXemrvaATvgPRfQi1eVZNKl/wqRJ0+I3OAP8FVcnwPeA0i7A0Phr8w5wsTaBhHkqZmHtQRyToUKwsxWvOvAn9/ZGEPnpATwykAxbY2ZMD/TyjWjmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bknDODJp; arc=none smtp.client-ip=209.85.219.53
+	bh=SC8L6uuUf+/qQ8Ex1Sbi6Yirs91l4EQxu1/mHdLrT3c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=AmUihFy/k5bZROIPceFMe8yLjuuhRUR6rZBIv9hhAiLXPGj/k471W/RbSwRYmBjpbEntSrwotQcuVy4ls8IUivBsghU9RGtSp+cKGnpDLoMDeewF9cE3/tOFPlADk9YFlujgI+bEKZqKYQnD6ytCcxHLQ/RtgNU/pevoZU4od3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FNTxAIjg; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6d3f52d9598so4901216d6.1
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6cc1b20ce54so6235286d6.0
         for <stable@vger.kernel.org>; Thu, 14 Nov 2024 11:10:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1731611445; x=1732216245; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PPgixAbdIlp8B+ecfqqyWBidgsH+LckhnUGfHrml6kA=;
-        b=bknDODJpYje+11+1YmPz/oLpztMlZouAbvLAOc/Agwhs8AWZyVNO8fiJ/pxPFkCnDu
-         K3KcW3XzWUH+U5WWzXh+vxM13etb96gjAgGHc3OzuD8VLUdjX1yzKUlX7BDWs+AwKWTI
-         trN2EoxPJQhTccNQWeon+9UyH+Se8TVh3vTMU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731611445; x=1732216245;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1731611446; x=1732216246; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PPgixAbdIlp8B+ecfqqyWBidgsH+LckhnUGfHrml6kA=;
-        b=qLPlxEOImBwXHFTBCNePonhcFsgfUuyBVJ65QwE1Qs1yJ5O/OnNuXLmH+kjXhnpoPu
-         b+dWZi8tYiOjMZyLMprFX1xDfAbvz/BVIp2rVrTNmtPNXiHEz0v50zO4B7J3+OgM9XuB
-         MsbVyaEQC9PaKpgdUr9lxi367z8pU70yU0BhjbYxPugjf3imuLQusw+Fv1Yfm0KKA/tJ
-         FEPClzE/PNePy3I+p7uiamA2L544HRj+0dXFfw/T2qnTwVNN5zNDXFU9VIABsxIBxNpr
-         7+2XQRvcTQmejTGCvJUVo2zmcbUDk+p7jZcVWzs2Jfz503AxKJJZcpRDv3ncyicnoCB1
-         chNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVipyh33xpiwaH5LAaupgDAXtUmP0UQg9E4tfp64y1/l9z4sACZx2CCe1apq97YXNu/9OMkEqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgQw5XERX1Bs2h9t8Z994ei4g4HEUyJ3mXLGkW0Vo51xAsalOI
-	Qn2bDZcwVjtVzKEQS3HXd57zb2TclHGoedUWxSJuhEY5d+TMRo3OPa9AaOccQA==
-X-Google-Smtp-Source: AGHT+IHjqf72bVaMMMCz/rqyNt37/4FEE/tea+TsMcQkfnFDcEutn7duKRASVy3FvFq7gQaXkttvYA==
-X-Received: by 2002:a05:6214:2c0a:b0:6d1:8fa2:6f81 with SMTP id 6a1803df08f44-6d39e16719amr335673196d6.9.1731611445266;
-        Thu, 14 Nov 2024 11:10:45 -0800 (PST)
+        bh=g3mKyz8dYUWXDVhEiyfGTODSac7INNAwm9mfRIbHOA8=;
+        b=FNTxAIjg+AKMOAkmRibmn0/OK/f/baVvp9f4agC+dyHYJbjbXK5zv1OzAJ+fq1Qd6N
+         mo//d+fWUNdUaRr5iXKX0vRUCTGeca4QEZekiE9OVxvqjsKSuqy4pWDCarrmAHZoCBZr
+         TfsVzdewDr3Q37NLZ7qFRuesouMnk/cOmxJG4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731611446; x=1732216246;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g3mKyz8dYUWXDVhEiyfGTODSac7INNAwm9mfRIbHOA8=;
+        b=jq20YskL3bf+GUO/E6V6FCz6uyZ9uyJZoPH61ncFqz2+7q/JNE2dQNIhnNHYgLLaeQ
+         bU9hCW2L/UdKpfgPxBNvkg91ZXDvbysuWC7BVkCQ22NuIh6a2c9HE2ffdBu1PZr3SNNr
+         2X6MfoBGE6+mq6mvqsv+z/Qzlde5fmokbG+iQyBv5PoKutSFk2q84909/poY0epgmPQf
+         zAFF+LQlgOGtRiAyK5NvJThYqNq0qSzVZR3PFtJclMWVfDMJp3M0Pd8/SiDM9QyI24rv
+         RFWJnDy1w2uSlW/aEu7yzvcjiyFVUBhWaxauDRw38PzSGmx8TzGtmwjB+gvFozJAArV8
+         jQKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpQQg9LvCS4rf4IrYfHT6uJ40XknUQGutOUIVdylDHt6h+de1N2ok7A/BS0a/6c+5yet7DfwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO59zsU1N/cRotu93vREM65GXZ+evbuqwPM+oOKmC+/IgW2+M5
+	Uv6JSu4r6EN4fwfXHAvAfCEhh6xRhMrJguze8CvIHi5ebRxLwR+d8mNUWjdwPA==
+X-Google-Smtp-Source: AGHT+IFboiersPw9AuVt765dOS55ZVKctVly2CX95Gh3rA/va9J1s5reVsHiqKvLb+PaK3c6MG2r2A==
+X-Received: by 2002:a0c:fb09:0:b0:6d3:f904:5359 with SMTP id 6a1803df08f44-6d3f90454f5mr10161666d6.33.1731611446042;
+        Thu, 14 Nov 2024 11:10:46 -0800 (PST)
 Received: from denia.c.googlers.com (189.216.85.34.bc.googleusercontent.com. [34.85.216.189])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3ee7cc7e1sm8857766d6.53.2024.11.14.11.10.44
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3ee7cc7e1sm8857766d6.53.2024.11.14.11.10.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 11:10:44 -0800 (PST)
+        Thu, 14 Nov 2024 11:10:45 -0800 (PST)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v15 00/19] media: uvcvideo: Implement UVC v1.5 ROI
-Date: Thu, 14 Nov 2024 19:10:29 +0000
-Message-Id: <20241114-uvc-roi-v15-0-64cfeb56b6f8@chromium.org>
+Date: Thu, 14 Nov 2024 19:10:30 +0000
+Subject: [PATCH v15 01/19] media: uvcvideo: Fix event flags in
+ uvc_ctrl_send_events
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,9 +76,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACVLNmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDE11FJSSM
- xLz0lN1M1OAAkpGBkYmhoaGxrqlZcm6RfmZumZmSSlmyWmJhqlmJkpA1QVFqWmZFWCjomNrawF
- AnqdqWgAAAA==
+Message-Id: <20241114-uvc-roi-v15-1-64cfeb56b6f8@chromium.org>
+References: <20241114-uvc-roi-v15-0-64cfeb56b6f8@chromium.org>
+In-Reply-To: <20241114-uvc-roi-v15-0-64cfeb56b6f8@chromium.org>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
  Hans de Goede <hdegoede@redhat.com>, Ricardo Ribalda <ribalda@kernel.org>, 
@@ -84,98 +86,45 @@ To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
  Hans Verkuil <hverkuil@xs4all.nl>
 Cc: Yunke Cao <yunkec@chromium.org>, linux-media@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>, 
- stable@vger.kernel.org, Yunke Cao <yunkec@google.com>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Daniel Scally <dan.scally@ideasonboard.com>, 
- Hans Verkuil <hverkuil@xs4all.nl>
+ stable@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-This patchset implements UVC v1.5 region of interest using V4L2
-control API.
+If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
+the following events will have that flag, regardless if they need it or
+not.
 
-ROI control is consisted two uvc specific controls.
-1. A rectangle control with a newly added type V4L2_CTRL_TYPE_RECT.
-2. An auto control with type bitmask.
+This is because we keep using the same variable all the time and we do
+not reset its original value.
 
-V4L2_CTRL_WHICH_MIN/MAX_VAL is added to support the rectangle control.
-
-The corresponding v4l-utils series can be found at
-https://patchwork.linuxtv.org/project/linux-media/list/?series=11069 .
-
-Tested with v4l2-compliance, v4l2-ctl, calling ioctls on usb cameras and
-VIVID with a newly added V4L2_CTRL_TYPE_RECT control.
-
-This set includes also the patch:
-media: uvcvideo: Fix event flags in uvc_ctrl_send_events
-It is not technically part of this change, but we conflict with it.
-
-I am continuing the work that Yunke did.
-
-Changes in v15:
-- Modify mapping set/get to support any size
-- Remove v4l2_size field. It is not needed, we can use the v4l2_type to
-  infer it.
-- Improve documentation.
-- Lots of refactoring, now adding compound and roi are very small
-  patches.
-- Remove rectangle clamping, not supported by some firmware.
-- Remove init, we can add it later.
-- Move uvc_cid to USER_BASE
-
-- Link to v14: https://lore.kernel.org/linux-media/20231201071907.3080126-1-yunkec@google.com/
-
+Cc: stable@vger.kernel.org
+Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Hans Verkuil (1):
-      media: v4l2-ctrls: add support for V4L2_CTRL_WHICH_MIN/MAX_VAL
+ drivers/media/usb/uvc/uvc_ctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Ricardo Ribalda (12):
-      media: uvcvideo: Fix event flags in uvc_ctrl_send_events
-      media: uvcvideo: Handle uvc menu translation inside uvc_get_le_value
-      media: uvcvideo: Handle uvc menu translation inside uvc_set_le_value
-      media: uvcvideo: refactor uvc_ioctl_g_ext_ctrls
-      media: uvcvideo: uvc_ioctl_(g|s)_ext_ctrls: handle NoP case
-      media: uvcvideo: Support any size for mapping get/set
-      media: uvcvideo: Factor out clamping from uvc_ctrl_set
-      media: uvcvideo: Factor out query_boundaries from query_ctrl
-      media: uvcvideo: Use the camera to clamp compound controls
-      media: uvcvideo: let v4l2_query_v4l2_ctrl() work with v4l2_query_ext_ctrl
-      media: uvcvideo: Introduce uvc_mapping_v4l2_size
-      media: uvcvideo: Add sanity check to uvc_ioctl_xu_ctrl_map
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 4fe26e82e3d1..bab9fdac98e6 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1673,13 +1673,13 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+ {
+ 	struct uvc_control_mapping *mapping;
+ 	struct uvc_control *ctrl;
+-	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 	unsigned int i;
+ 	unsigned int j;
+ 
+ 	for (i = 0; i < xctrls_count; ++i) {
+-		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 
++		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
 
-Yunke Cao (6):
-      media: v4l2_ctrl: Add V4L2_CTRL_TYPE_RECT
-      media: vivid: Add a rectangle control
-      media: uvcvideo: add support for compound controls
-      media: uvcvideo: support V4L2_CTRL_WHICH_MIN/MAX_VAL
-      media: uvcvideo: implement UVC v1.5 ROI
-      media: uvcvideo: document UVC v1.5 ROI
-
- .../userspace-api/media/drivers/uvcvideo.rst       |  64 ++
- .../userspace-api/media/v4l/vidioc-g-ext-ctrls.rst |  26 +-
- .../userspace-api/media/v4l/vidioc-queryctrl.rst   |  14 +
- .../userspace-api/media/videodev2.h.rst.exceptions |   4 +
- drivers/media/i2c/imx214.c                         |   4 +-
- drivers/media/platform/qcom/venus/venc_ctrls.c     |   9 +-
- drivers/media/test-drivers/vivid/vivid-ctrls.c     |  34 +
- drivers/media/usb/uvc/uvc_ctrl.c                   | 805 ++++++++++++++++-----
- drivers/media/usb/uvc/uvc_v4l2.c                   |  77 +-
- drivers/media/usb/uvc/uvcvideo.h                   |  25 +-
- drivers/media/v4l2-core/v4l2-ctrls-api.c           |  54 +-
- drivers/media/v4l2-core/v4l2-ctrls-core.c          | 167 ++++-
- drivers/media/v4l2-core/v4l2-ioctl.c               |   4 +-
- include/media/v4l2-ctrls.h                         |  38 +-
- include/uapi/linux/usb/video.h                     |   1 +
- include/uapi/linux/uvcvideo.h                      |  13 +
- include/uapi/linux/v4l2-controls.h                 |   9 +
- include/uapi/linux/videodev2.h                     |   5 +
- 18 files changed, 1062 insertions(+), 291 deletions(-)
----
-base-commit: 5516200c466f92954551406ea641376963c43a92
-change-id: 20241113-uvc-roi-66bd6cfa1e64
-
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.47.0.338.g60cca15819-goog
 
 
